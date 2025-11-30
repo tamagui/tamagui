@@ -9,7 +9,6 @@ import {
   Upload,
   User,
 } from '@tamagui/lucide-icons'
-import { Theme } from 'tamagui'
 
 import {
   Avatar,
@@ -40,27 +39,26 @@ const Chip = styled(View, {
 
 const WindowMacView = () => {
   return (
-    <Theme name="accent">
-      <XStack
-        bg="$backgroundPress"
-        borderBottomWidth={1}
-        borderColor="$color3"
-        py="$1.5"
-        px="$2"
-        gap="$2"
-      >
-        {['$red10', '$yellow10', '$green10'].map((color, index) => (
-          <View
-            bg={color as any}
-            height={6}
-            width={6}
-            rounded={1_000_000_000}
-            key={index}
-          />
-        ))}
-        <View flex={1} />
-      </XStack>
-    </Theme>
+    <XStack
+      bg="$backgroundPress"
+      borderBottomWidth={1}
+      borderColor="$color3"
+      py="$1.5"
+      px="$2"
+      gap="$2"
+      theme="accent"
+    >
+      {['$red10', '$yellow10', '$green10'].map((color, index) => (
+        <View
+          bg={color as any}
+          height={6}
+          width={6}
+          rounded={1_000_000_000}
+          key={index}
+        />
+      ))}
+      <View flex={1} />
+    </XStack>
   )
 }
 
@@ -306,7 +304,7 @@ const ComponentPreview = {
             x={0}
           >
             <Avatar borderWidth={1.5} borderColor="$background" circular size="$5">
-              <Avatar.Image accessibilityLabel="Nate Wienert" src={`${img}?&w=100`} />
+              <Avatar.Image aria-label="Nate Wienert" src={`${img}?&w=100`} />
               <Avatar.Fallback delayMs={600} bg="$color3" />
             </Avatar>
           </View>

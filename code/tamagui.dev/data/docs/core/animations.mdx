@@ -16,67 +16,23 @@ description: Swap out animation drivers per-platform or at runtime
   features={[
     `Animate any style prop with animation config per-prop.`,
     `Can animate across all states (media queries, hover, etc).`,
-    `Three drivers you can swap out with type safety.`,
+    `Four drivers you can swap out with type safety.`,
     `SSR safe mount animations.`,
     `Enter and exit animations with AnimatePresence.`,
   ]}
 />
 
-Add animations to Tamagui with an animation driver. See the configuration docs
-for more on
-[how to set it up, and how to set up different animation drivers per-platform](/docs/core/configuration#animations).
+Add animations to Tamagui with an animation driver. Animation drivers are designed to be swappable, so you can use lightweight CSS animations or other web-focused animation libraries on the web, while using larger but more advanced libraries like `reanimated` on native - all without having to change a line outside of configuration.
 
-Animation drivers are designed to be swappable, so you can use lightweight CSS
-animations or other web-focused animation libraries on the web, while using
-larger but more advanced libraries like `reanimated` on native - all without
-having to change a line outside of configuration.
+For this guide, we'll use the React Native driver as an example, but you can choose different animation drivers: [CSS](/docs/core/animations-css), [React Native](/docs/core/animations-react-native), [Reanimated](/docs/core/animations-reanimated), or [Motion](/docs/core/animations-motion). See the [Choosing a Driver](#choosing-a-driver) section below for a comparison.
 
 ## Installation
-
-### CSS
-
-The `@tamagui/animations-css` package works with the tamagui compiler and
-runtime to give you simple ways to share typed animations across all your
-components.
-
-To install it add to your package.json:
-
-```bash
-yarn add @tamagui/animations-css
-```
-
-Then add it to your [config](/docs/core/configuration):
-
-```tsx
-import { createAnimations } from '@tamagui/animations-css'
-import { createTamagui } from 'tamagui'
-
-export default createTamagui({
-  animations: createAnimations({
-    fast: 'ease-in 150ms',
-    medium: 'ease-in 300ms',
-    slow: 'ease-in 450ms',
-  }),
-  // ...
-})
-```
-
-At runtime, the plugin does very little except to set the `transition` property
-in CSS. At compile-time, the compiler does the same, ensuring you get all the
-benefits of prop removal and view flattening even when using animations.
-
-### React Native Animated
-
-[React Native's Animated library](https://reactnative.dev/docs/animated) is the
-animation library that comes built into React Native and React Native Web.
-
-To install it add to your package.json:
 
 ```bash
 yarn add @tamagui/animations-react-native
 ```
 
-Then add it to your [config](/docs/core/configuration):
+Then add it to your [Tamagui config](/docs/core/configuration):
 
 ```tsx
 import { createAnimations } from '@tamagui/animations-react-native'
@@ -84,87 +40,106 @@ import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
-    fast: {
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
-    medium: {
+    bouncy: {
       damping: 10,
       mass: 0.9,
       stiffness: 100,
     },
-    slow: {
+    lazy: {
+      damping: 18,
+      stiffness: 50,
+    },
+    quick: {
       damping: 20,
-      stiffness: 60,
+      mass: 1.2,
+      stiffness: 250,
     },
   }),
   // ...
 })
 ```
 
-### Reanimated
+## Choosing a Driver
 
-[Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an
-animation library that targets React Native and React Native Web. It runs
-off-thread animations, and provides simple syntax and hooks.
+Tamagui supports four animation drivers, each with different strengths. The animation keys match between all drivers, so you can swap them out based on your platform needs.
 
-To install it add to your package.json:
+| Driver | Platform | Bundle Impact | Performance | Spring Physics |
+|--------|----------|---------------|-------------|----------------|
+| **[CSS](/docs/core/animations-css)** | Web only | Lightest | Fast (CSS transitions) | No (easing only) |
+| **[React Native](/docs/core/animations-react-native)** | Web + Native | No extra hit beyond RNW | On-thread | Yes (basic) |
+| **[Reanimated](/docs/core/animations-reanimated)** | Web + Native | Larger | Off-thread (native), slower (web) | Yes (advanced) |
+| **[Motion](/docs/core/animations-motion)** | Web only | Medium | Off-thread (WAAPI) | Yes (excellent) |
 
-```bash
-yarn add @tamagui/animations-moti react-native-reanimated
-```
+- **[CSS](/docs/core/animations-css)** - Lightest bundle size, but lacks spring physics (easing curves only). Best for simple web-only apps.
+- **[React Native](/docs/core/animations-react-native)** - No extra bundle hit beyond React Native Web, but runs on-thread. Good for basic cross-platform animations.
+- **[Reanimated](/docs/core/animations-reanimated)** - Wide support for both native and web with advanced features, but larger bundle size and slower web performance (though better than React Native driver).
+- **[Motion](/docs/core/animations-motion)** - Off-thread performance via WAAPI with excellent spring physics, medium bundle hit. Note: if you're also using Reanimated, this creates duplicate bundle weight.
 
-Tamagui leverages and appreciates the popular open source library [Moti](https://moti.fyi) for the Reanimated driver as it saved us many lines of complex code.
+## Platform-Specific Configuration
 
-Add your animations to your [configuration](/docs/core/configuration):
+You can use different animation drivers per-platform using platform-specific file extensions. This allows you to optimize for each platform:
 
 ```tsx
+// animations.ts (web)
+import { createAnimations } from '@tamagui/animations-motion'
+
+export const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    stiffness: 100,
+  },
+})
+```
+
+```tsx
+// animations.native.ts
 import { createAnimations } from '@tamagui/animations-moti'
-import { createTamagui } from 'tamagui'
+
+export const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    stiffness: 100,
+  },
+})
+```
+
+Then import without the extension:
+
+```tsx
+// tamagui.config.ts
+import { animations } from './animations' // Automatically picks .native.ts on native
 
 export default createTamagui({
-  animations: createAnimations({
-    fast: {
-      type: 'spring',
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
-    medium: {
-      type: 'spring',
-      damping: 10,
-      mass: 0.9,
-      stiffness: 100,
-    },
-    slow: {
-      type: 'spring',
-      damping: 20,
-      stiffness: 60,
-    },
-  }),
+  animations,
   // ...
 })
 ```
 
-At runtime, this plugin parses animatable style properties and hands them over
-to reanimated off-thread, using worklets. It doesn't do anything at compile
-time - reanimated must run via JS.
+Your bundler (Metro, Webpack, Vite) will automatically select the correct file based on the platform.
 
----
-
-Note the keys match between CSS and reanimated, so you can swap them out.
+### Optimizing Bundle Size
 
 <Notice theme="green">
-  The Animated driver in React Native Web can be excluded from your bundle with either the Webpack or Next.js plugins with [`excludeReactNativeWebExports`
-  compiler option](#excludeReactNativeWebExports).
+  **Experimental:** Use our `react-native-web-lite` library to tree-shake animation drivers on web. Set `useReactNativeWebLite: true` in any Tamagui plugin configuration. This lets you completely remove React Native Web's animation system when using CSS or Motion drivers, saving significant bundle size.
 </Notice>
 
-### Usage
+```tsx
+// next.config.js
+const { withTamagui } = require('@tamagui/next-plugin')
 
-The `animation` can now accept `slow` as a value. By default, animations will
-apply to all animatable styles, a lot like setting `all` in a CSS `transition`.
-Let's test this by setting `hoverStyle`:
+module.exports = withTamagui({
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  useReactNativeWebLite: true, // Experimental: tree-shake RNW on web
+})
+```
+
+## Usage
+
+The `animation` prop accepts the name of an animation you've configured. By default, animations will
+apply to all animatable styles, similar to setting `all` in a CSS `transition`.
 
 Here's an example animating `hoverStyle`:
 
@@ -181,7 +156,7 @@ Here's an example animating `hoverStyle`:
 If you add an `animation` prop, you must always keep the prop. If you need the animation to be disabled,
 pass false, null or even undefined if it suits you.
 
-The spring-based animation drivers have expensive hooks that would degrate runtime
+The spring-based animation drivers have expensive hooks that would degrade runtime
 performance if present on every component. As a workaround, the animation hooks
 are called conditionally on whether the animation key is present in the props object.
 
@@ -437,4 +412,4 @@ like so:
 ```
 
 Note that because of this constraint, you also will see an error if you add the
-`animation` prop to a component in dev mode during an HMR. Often just saving once more will remove the screen, or reloading at worst.
+`animation` prop to a component in dev mode during an HMR. Often just saving once more will remove the error, or reloading at worst.

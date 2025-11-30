@@ -6,7 +6,6 @@ import type { HeadingProps } from 'tamagui'
 import {
   H1,
   H2,
-  Separator,
   SizableText,
   Spacer,
   Theme,
@@ -200,7 +199,7 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
                   <Container mt={-200} items="center">
                     <>
                       <Spacer size="$8" />
-                      <XStack maxW={790} gap="$8" separator={<Separator vertical />}>
+                      <XStack maxW={790} gap="$8">
                         <H2 self="center" size="$9" fontWeight="900" $sm={{ size: '$5' }}>
                           {subTitle || 'Better apps with less code'}
                         </H2>

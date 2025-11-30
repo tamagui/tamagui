@@ -26,11 +26,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark: {
@@ -60,11 +60,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue: {
@@ -94,11 +94,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray: {
@@ -128,11 +128,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green: {
@@ -162,11 +162,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange: {
@@ -196,11 +196,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink: {
@@ -230,11 +230,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple: {
@@ -264,11 +264,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red: {
@@ -298,11 +298,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow: {
@@ -332,11 +332,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue: {
@@ -366,11 +366,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray: {
@@ -400,11 +400,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green: {
@@ -434,11 +434,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange: {
@@ -468,11 +468,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink: {
@@ -502,11 +502,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple: {
@@ -536,11 +536,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red: {
@@ -570,11 +570,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow: {
@@ -604,11 +604,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1: {
@@ -638,11 +638,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2: {
@@ -672,11 +672,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active: {
@@ -706,11 +706,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1: {
@@ -740,11 +740,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2: {
@@ -774,11 +774,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active: {
@@ -808,11 +808,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1: {
@@ -842,11 +842,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2: {
@@ -876,11 +876,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active: {
@@ -910,11 +910,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1: {
@@ -944,11 +944,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2: {
@@ -978,11 +978,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active: {
@@ -1012,11 +1012,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1: {
@@ -1046,11 +1046,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2: {
@@ -1080,11 +1080,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active: {
@@ -1114,11 +1114,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1: {
@@ -1148,11 +1148,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2: {
@@ -1182,11 +1182,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active: {
@@ -1216,11 +1216,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1: {
@@ -1250,11 +1250,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2: {
@@ -1284,11 +1284,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active: {
@@ -1318,11 +1318,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1: {
@@ -1352,11 +1352,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2: {
@@ -1386,11 +1386,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active: {
@@ -1420,11 +1420,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1: {
@@ -1454,11 +1454,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2: {
@@ -1488,11 +1488,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active: {
@@ -1522,11 +1522,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1: {
@@ -1556,11 +1556,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2: {
@@ -1590,11 +1590,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active: {
@@ -1624,11 +1624,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1: {
@@ -1658,11 +1658,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2: {
@@ -1692,11 +1692,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active: {
@@ -1726,11 +1726,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1: {
@@ -1760,11 +1760,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2: {
@@ -1794,11 +1794,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active: {
@@ -1828,11 +1828,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1: {
@@ -1862,11 +1862,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2: {
@@ -1896,11 +1896,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active: {
@@ -1930,11 +1930,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1: {
@@ -1964,11 +1964,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2: {
@@ -1998,11 +1998,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active: {
@@ -2032,11 +2032,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1: {
@@ -2066,11 +2066,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2: {
@@ -2100,11 +2100,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active: {
@@ -2134,11 +2134,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1: {
@@ -2168,11 +2168,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2: {
@@ -2202,11 +2202,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active: {
@@ -2236,11 +2236,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_ListItem: {
@@ -2270,11 +2270,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_Card: {
@@ -2304,11 +2304,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_Button: {
@@ -2338,11 +2338,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_Checkbox: {
@@ -2372,11 +2372,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_Switch: {
@@ -2406,11 +2406,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_SwitchThumb: {
@@ -2440,11 +2440,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_TooltipContent: {
@@ -2474,11 +2474,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_DrawerFrame: {
@@ -2508,11 +2508,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_Progress: {
@@ -2542,11 +2542,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_TooltipArrow: {
@@ -2576,11 +2576,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_SliderTrackActive: {
@@ -2610,11 +2610,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_SliderTrack: {
@@ -2644,11 +2644,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_SliderThumb: {
@@ -2678,11 +2678,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_Tooltip: {
@@ -2712,11 +2712,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_ProgressIndicator: {
@@ -2746,11 +2746,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_SheetOverlay: {
@@ -2780,11 +2780,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_DialogOverlay: {
@@ -2814,11 +2814,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_ModalOverlay: {
@@ -2848,11 +2848,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_Input: {
@@ -2882,11 +2882,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_TextArea: {
@@ -2916,11 +2916,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_ListItem: {
@@ -2950,11 +2950,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_Card: {
@@ -2984,11 +2984,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_Button: {
@@ -3018,11 +3018,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_Checkbox: {
@@ -3052,11 +3052,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_Switch: {
@@ -3086,11 +3086,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_SwitchThumb: {
@@ -3120,11 +3120,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_TooltipContent: {
@@ -3154,11 +3154,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_DrawerFrame: {
@@ -3188,11 +3188,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_Progress: {
@@ -3222,11 +3222,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_TooltipArrow: {
@@ -3256,11 +3256,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_SliderTrackActive: {
@@ -3290,11 +3290,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_SliderTrack: {
@@ -3324,11 +3324,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_SliderThumb: {
@@ -3358,11 +3358,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_Tooltip: {
@@ -3392,11 +3392,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_ProgressIndicator: {
@@ -3426,11 +3426,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_SheetOverlay: {
@@ -3460,11 +3460,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_DialogOverlay: {
@@ -3494,11 +3494,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_ModalOverlay: {
@@ -3528,11 +3528,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_Input: {
@@ -3562,11 +3562,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_TextArea: {
@@ -3596,11 +3596,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_ListItem: {
@@ -3630,11 +3630,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_Card: {
@@ -3664,11 +3664,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_Button: {
@@ -3698,11 +3698,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_Checkbox: {
@@ -3732,11 +3732,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_Switch: {
@@ -3766,11 +3766,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_SwitchThumb: {
@@ -3800,11 +3800,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_TooltipContent: {
@@ -3834,11 +3834,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_DrawerFrame: {
@@ -3868,11 +3868,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_Progress: {
@@ -3902,11 +3902,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_TooltipArrow: {
@@ -3936,11 +3936,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_SliderTrackActive: {
@@ -3970,11 +3970,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_SliderTrack: {
@@ -4004,11 +4004,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_SliderThumb: {
@@ -4038,11 +4038,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_Tooltip: {
@@ -4072,11 +4072,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_ProgressIndicator: {
@@ -4106,11 +4106,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_SheetOverlay: {
@@ -4140,11 +4140,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_DialogOverlay: {
@@ -4174,11 +4174,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_ModalOverlay: {
@@ -4208,11 +4208,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_Input: {
@@ -4242,11 +4242,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_TextArea: {
@@ -4276,11 +4276,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_ListItem: {
@@ -4310,11 +4310,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_Card: {
@@ -4344,11 +4344,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_Button: {
@@ -4378,11 +4378,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_Checkbox: {
@@ -4412,11 +4412,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_Switch: {
@@ -4446,11 +4446,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_SwitchThumb: {
@@ -4480,11 +4480,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_TooltipContent: {
@@ -4514,11 +4514,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_DrawerFrame: {
@@ -4548,11 +4548,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_Progress: {
@@ -4582,11 +4582,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_TooltipArrow: {
@@ -4616,11 +4616,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_SliderTrackActive: {
@@ -4650,11 +4650,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_SliderTrack: {
@@ -4684,11 +4684,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_SliderThumb: {
@@ -4718,11 +4718,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_Tooltip: {
@@ -4752,11 +4752,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_ProgressIndicator: {
@@ -4786,11 +4786,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_SheetOverlay: {
@@ -4820,11 +4820,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_DialogOverlay: {
@@ -4854,11 +4854,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_ModalOverlay: {
@@ -4888,11 +4888,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_Input: {
@@ -4922,11 +4922,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_TextArea: {
@@ -4956,11 +4956,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_ListItem: {
@@ -4990,11 +4990,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_Card: {
@@ -5024,11 +5024,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_Button: {
@@ -5058,11 +5058,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_Checkbox: {
@@ -5092,11 +5092,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_Switch: {
@@ -5126,11 +5126,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_SwitchThumb: {
@@ -5160,11 +5160,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_TooltipContent: {
@@ -5194,11 +5194,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_DrawerFrame: {
@@ -5228,11 +5228,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_Progress: {
@@ -5262,11 +5262,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_TooltipArrow: {
@@ -5296,11 +5296,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_SliderTrackActive: {
@@ -5330,11 +5330,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_SliderTrack: {
@@ -5364,11 +5364,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_SliderThumb: {
@@ -5398,11 +5398,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_Tooltip: {
@@ -5432,11 +5432,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_ProgressIndicator: {
@@ -5466,11 +5466,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_SheetOverlay: {
@@ -5500,11 +5500,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_DialogOverlay: {
@@ -5534,11 +5534,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_ModalOverlay: {
@@ -5568,11 +5568,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_Input: {
@@ -5602,11 +5602,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_TextArea: {
@@ -5636,11 +5636,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_ListItem: {
@@ -5670,11 +5670,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_Card: {
@@ -5704,11 +5704,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_Button: {
@@ -5738,11 +5738,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_Checkbox: {
@@ -5772,11 +5772,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_Switch: {
@@ -5806,11 +5806,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_SwitchThumb: {
@@ -5840,11 +5840,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_TooltipContent: {
@@ -5874,11 +5874,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_DrawerFrame: {
@@ -5908,11 +5908,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_Progress: {
@@ -5942,11 +5942,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_TooltipArrow: {
@@ -5976,11 +5976,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_SliderTrackActive: {
@@ -6010,11 +6010,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_SliderTrack: {
@@ -6044,11 +6044,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_SliderThumb: {
@@ -6078,11 +6078,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_Tooltip: {
@@ -6112,11 +6112,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_ProgressIndicator: {
@@ -6146,11 +6146,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_SheetOverlay: {
@@ -6180,11 +6180,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_DialogOverlay: {
@@ -6214,11 +6214,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_ModalOverlay: {
@@ -6248,11 +6248,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_Input: {
@@ -6282,11 +6282,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_TextArea: {
@@ -6316,11 +6316,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_ListItem: {
@@ -6350,11 +6350,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_Card: {
@@ -6384,11 +6384,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_Button: {
@@ -6418,11 +6418,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_Checkbox: {
@@ -6452,11 +6452,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_Switch: {
@@ -6486,11 +6486,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_SwitchThumb: {
@@ -6520,11 +6520,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_TooltipContent: {
@@ -6554,11 +6554,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_DrawerFrame: {
@@ -6588,11 +6588,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_Progress: {
@@ -6622,11 +6622,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_TooltipArrow: {
@@ -6656,11 +6656,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_SliderTrackActive: {
@@ -6690,11 +6690,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_SliderTrack: {
@@ -6724,11 +6724,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_SliderThumb: {
@@ -6758,11 +6758,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_Tooltip: {
@@ -6792,11 +6792,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_ProgressIndicator: {
@@ -6826,11 +6826,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_SheetOverlay: {
@@ -6860,11 +6860,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_DialogOverlay: {
@@ -6894,11 +6894,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_ModalOverlay: {
@@ -6928,11 +6928,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_Input: {
@@ -6962,11 +6962,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_TextArea: {
@@ -6996,11 +6996,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_ListItem: {
@@ -7030,11 +7030,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_Card: {
@@ -7064,11 +7064,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_Button: {
@@ -7098,11 +7098,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_Checkbox: {
@@ -7132,11 +7132,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_Switch: {
@@ -7166,11 +7166,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_SwitchThumb: {
@@ -7200,11 +7200,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_TooltipContent: {
@@ -7234,11 +7234,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_DrawerFrame: {
@@ -7268,11 +7268,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_Progress: {
@@ -7302,11 +7302,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_TooltipArrow: {
@@ -7336,11 +7336,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_SliderTrackActive: {
@@ -7370,11 +7370,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_SliderTrack: {
@@ -7404,11 +7404,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_SliderThumb: {
@@ -7438,11 +7438,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_Tooltip: {
@@ -7472,11 +7472,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_ProgressIndicator: {
@@ -7506,11 +7506,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_SheetOverlay: {
@@ -7540,11 +7540,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_DialogOverlay: {
@@ -7574,11 +7574,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_ModalOverlay: {
@@ -7608,11 +7608,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_Input: {
@@ -7642,11 +7642,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_TextArea: {
@@ -7676,11 +7676,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_ListItem: {
@@ -7710,11 +7710,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_Card: {
@@ -7744,11 +7744,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_Button: {
@@ -7778,11 +7778,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_Checkbox: {
@@ -7812,11 +7812,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_Switch: {
@@ -7846,11 +7846,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_SwitchThumb: {
@@ -7880,11 +7880,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_TooltipContent: {
@@ -7914,11 +7914,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_DrawerFrame: {
@@ -7948,11 +7948,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_Progress: {
@@ -7982,11 +7982,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_TooltipArrow: {
@@ -8016,11 +8016,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_SliderTrackActive: {
@@ -8050,11 +8050,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_SliderTrack: {
@@ -8084,11 +8084,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_SliderThumb: {
@@ -8118,11 +8118,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_Tooltip: {
@@ -8152,11 +8152,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_ProgressIndicator: {
@@ -8186,11 +8186,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_SheetOverlay: {
@@ -8220,11 +8220,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_DialogOverlay: {
@@ -8254,11 +8254,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_ModalOverlay: {
@@ -8288,11 +8288,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_Input: {
@@ -8322,11 +8322,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_TextArea: {
@@ -8356,11 +8356,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_ListItem: {
@@ -8390,11 +8390,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_Card: {
@@ -8424,11 +8424,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_Button: {
@@ -8458,11 +8458,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_Checkbox: {
@@ -8492,11 +8492,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_Switch: {
@@ -8526,11 +8526,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_SwitchThumb: {
@@ -8560,11 +8560,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_TooltipContent: {
@@ -8594,11 +8594,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_DrawerFrame: {
@@ -8628,11 +8628,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_Progress: {
@@ -8662,11 +8662,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_TooltipArrow: {
@@ -8696,11 +8696,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_SliderTrackActive: {
@@ -8730,11 +8730,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_SliderTrack: {
@@ -8764,11 +8764,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_SliderThumb: {
@@ -8798,11 +8798,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_Tooltip: {
@@ -8832,11 +8832,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_ProgressIndicator: {
@@ -8866,11 +8866,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_SheetOverlay: {
@@ -8900,11 +8900,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_DialogOverlay: {
@@ -8934,11 +8934,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_ModalOverlay: {
@@ -8968,11 +8968,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_Input: {
@@ -9002,11 +9002,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_TextArea: {
@@ -9036,11 +9036,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_ListItem: {
@@ -9070,11 +9070,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_Card: {
@@ -9104,11 +9104,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_Button: {
@@ -9138,11 +9138,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_Checkbox: {
@@ -9172,11 +9172,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_Switch: {
@@ -9206,11 +9206,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_SwitchThumb: {
@@ -9240,11 +9240,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_TooltipContent: {
@@ -9274,11 +9274,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_DrawerFrame: {
@@ -9308,11 +9308,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_Progress: {
@@ -9342,11 +9342,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_TooltipArrow: {
@@ -9376,11 +9376,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_SliderTrackActive: {
@@ -9410,11 +9410,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_SliderTrack: {
@@ -9444,11 +9444,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_SliderThumb: {
@@ -9478,11 +9478,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_Tooltip: {
@@ -9512,11 +9512,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_ProgressIndicator: {
@@ -9546,11 +9546,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_SheetOverlay: {
@@ -9580,11 +9580,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_DialogOverlay: {
@@ -9614,11 +9614,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_ModalOverlay: {
@@ -9648,11 +9648,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_Input: {
@@ -9682,11 +9682,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_TextArea: {
@@ -9716,11 +9716,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_ListItem: {
@@ -9750,11 +9750,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_Card: {
@@ -9784,11 +9784,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_Button: {
@@ -9818,11 +9818,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_Checkbox: {
@@ -9852,11 +9852,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_Switch: {
@@ -9886,11 +9886,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_SwitchThumb: {
@@ -9920,11 +9920,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_TooltipContent: {
@@ -9954,11 +9954,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_DrawerFrame: {
@@ -9988,11 +9988,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_Progress: {
@@ -10022,11 +10022,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_TooltipArrow: {
@@ -10056,11 +10056,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_SliderTrackActive: {
@@ -10090,11 +10090,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_SliderTrack: {
@@ -10124,11 +10124,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_SliderThumb: {
@@ -10158,11 +10158,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_Tooltip: {
@@ -10192,11 +10192,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_ProgressIndicator: {
@@ -10226,11 +10226,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_SheetOverlay: {
@@ -10260,11 +10260,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_DialogOverlay: {
@@ -10294,11 +10294,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_ModalOverlay: {
@@ -10328,11 +10328,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_Input: {
@@ -10362,11 +10362,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_TextArea: {
@@ -10396,11 +10396,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_ListItem: {
@@ -10430,11 +10430,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_Card: {
@@ -10464,11 +10464,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_Button: {
@@ -10498,11 +10498,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_Checkbox: {
@@ -10532,11 +10532,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_Switch: {
@@ -10566,11 +10566,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_SwitchThumb: {
@@ -10600,11 +10600,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_TooltipContent: {
@@ -10634,11 +10634,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_DrawerFrame: {
@@ -10668,11 +10668,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_Progress: {
@@ -10702,11 +10702,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_TooltipArrow: {
@@ -10736,11 +10736,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_SliderTrackActive: {
@@ -10770,11 +10770,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_SliderTrack: {
@@ -10804,11 +10804,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_SliderThumb: {
@@ -10838,11 +10838,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_Tooltip: {
@@ -10872,11 +10872,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_ProgressIndicator: {
@@ -10906,11 +10906,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_SheetOverlay: {
@@ -10940,11 +10940,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_DialogOverlay: {
@@ -10974,11 +10974,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_ModalOverlay: {
@@ -11008,11 +11008,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_Input: {
@@ -11042,11 +11042,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_TextArea: {
@@ -11076,11 +11076,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_ListItem: {
@@ -11110,11 +11110,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_Card: {
@@ -11144,11 +11144,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_Button: {
@@ -11178,11 +11178,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_Checkbox: {
@@ -11212,11 +11212,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_Switch: {
@@ -11246,11 +11246,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_SwitchThumb: {
@@ -11280,11 +11280,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_TooltipContent: {
@@ -11314,11 +11314,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_DrawerFrame: {
@@ -11348,11 +11348,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_Progress: {
@@ -11382,11 +11382,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_TooltipArrow: {
@@ -11416,11 +11416,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_SliderTrackActive: {
@@ -11450,11 +11450,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_SliderTrack: {
@@ -11484,11 +11484,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_SliderThumb: {
@@ -11518,11 +11518,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_Tooltip: {
@@ -11552,11 +11552,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_ProgressIndicator: {
@@ -11586,11 +11586,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_SheetOverlay: {
@@ -11620,11 +11620,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_DialogOverlay: {
@@ -11654,11 +11654,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_ModalOverlay: {
@@ -11688,11 +11688,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_Input: {
@@ -11722,11 +11722,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_TextArea: {
@@ -11756,11 +11756,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_ListItem: {
@@ -11790,11 +11790,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_Card: {
@@ -11824,11 +11824,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_Button: {
@@ -11858,11 +11858,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_Checkbox: {
@@ -11892,11 +11892,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_Switch: {
@@ -11926,11 +11926,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_SwitchThumb: {
@@ -11960,11 +11960,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_TooltipContent: {
@@ -11994,11 +11994,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_DrawerFrame: {
@@ -12028,11 +12028,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_Progress: {
@@ -12062,11 +12062,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_TooltipArrow: {
@@ -12096,11 +12096,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_SliderTrackActive: {
@@ -12130,11 +12130,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_SliderTrack: {
@@ -12164,11 +12164,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_SliderThumb: {
@@ -12198,11 +12198,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_Tooltip: {
@@ -12232,11 +12232,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_ProgressIndicator: {
@@ -12266,11 +12266,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_SheetOverlay: {
@@ -12300,11 +12300,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_DialogOverlay: {
@@ -12334,11 +12334,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_ModalOverlay: {
@@ -12368,11 +12368,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_Input: {
@@ -12402,11 +12402,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_TextArea: {
@@ -12436,11 +12436,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_ListItem: {
@@ -12470,11 +12470,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_Card: {
@@ -12504,11 +12504,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_Button: {
@@ -12538,11 +12538,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_Checkbox: {
@@ -12572,11 +12572,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_Switch: {
@@ -12606,11 +12606,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_SwitchThumb: {
@@ -12640,11 +12640,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_TooltipContent: {
@@ -12674,11 +12674,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_DrawerFrame: {
@@ -12708,11 +12708,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_Progress: {
@@ -12742,11 +12742,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_TooltipArrow: {
@@ -12776,11 +12776,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_SliderTrackActive: {
@@ -12810,11 +12810,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_SliderTrack: {
@@ -12844,11 +12844,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_SliderThumb: {
@@ -12878,11 +12878,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_Tooltip: {
@@ -12912,11 +12912,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_ProgressIndicator: {
@@ -12946,11 +12946,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_SheetOverlay: {
@@ -12980,11 +12980,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_DialogOverlay: {
@@ -13014,11 +13014,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_ModalOverlay: {
@@ -13048,11 +13048,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_Input: {
@@ -13082,11 +13082,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_TextArea: {
@@ -13116,11 +13116,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_ListItem: {
@@ -13150,11 +13150,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_Card: {
@@ -13184,11 +13184,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_Button: {
@@ -13218,11 +13218,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_Checkbox: {
@@ -13252,11 +13252,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_Switch: {
@@ -13286,11 +13286,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_SwitchThumb: {
@@ -13320,11 +13320,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_TooltipContent: {
@@ -13354,11 +13354,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_DrawerFrame: {
@@ -13388,11 +13388,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_Progress: {
@@ -13422,11 +13422,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_TooltipArrow: {
@@ -13456,11 +13456,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_SliderTrackActive: {
@@ -13490,11 +13490,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_SliderTrack: {
@@ -13524,11 +13524,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_SliderThumb: {
@@ -13558,11 +13558,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_Tooltip: {
@@ -13592,11 +13592,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_ProgressIndicator: {
@@ -13626,11 +13626,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_SheetOverlay: {
@@ -13660,11 +13660,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_DialogOverlay: {
@@ -13694,11 +13694,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_ModalOverlay: {
@@ -13728,11 +13728,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_Input: {
@@ -13762,11 +13762,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt1_TextArea: {
@@ -13796,11 +13796,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_ListItem: {
@@ -13830,11 +13830,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_Card: {
@@ -13864,11 +13864,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_Button: {
@@ -13898,11 +13898,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_Checkbox: {
@@ -13932,11 +13932,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_Switch: {
@@ -13966,11 +13966,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_SwitchThumb: {
@@ -14000,11 +14000,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_TooltipContent: {
@@ -14034,11 +14034,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_DrawerFrame: {
@@ -14068,11 +14068,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_Progress: {
@@ -14102,11 +14102,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_TooltipArrow: {
@@ -14136,11 +14136,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_SliderTrackActive: {
@@ -14170,11 +14170,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_SliderTrack: {
@@ -14204,11 +14204,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_SliderThumb: {
@@ -14238,11 +14238,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_Tooltip: {
@@ -14272,11 +14272,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_ProgressIndicator: {
@@ -14306,11 +14306,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_SheetOverlay: {
@@ -14340,11 +14340,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_DialogOverlay: {
@@ -14374,11 +14374,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_ModalOverlay: {
@@ -14408,11 +14408,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_Input: {
@@ -14442,11 +14442,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_alt2_TextArea: {
@@ -14476,11 +14476,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_ListItem: {
@@ -14510,11 +14510,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_Card: {
@@ -14544,11 +14544,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_Button: {
@@ -14578,11 +14578,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_Checkbox: {
@@ -14612,11 +14612,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_Switch: {
@@ -14646,11 +14646,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_SwitchThumb: {
@@ -14680,11 +14680,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_TooltipContent: {
@@ -14714,11 +14714,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_DrawerFrame: {
@@ -14748,11 +14748,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_Progress: {
@@ -14782,11 +14782,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_TooltipArrow: {
@@ -14816,11 +14816,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_SliderTrackActive: {
@@ -14850,11 +14850,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_SliderTrack: {
@@ -14884,11 +14884,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_SliderThumb: {
@@ -14918,11 +14918,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_Tooltip: {
@@ -14952,11 +14952,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_ProgressIndicator: {
@@ -14986,11 +14986,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_SheetOverlay: {
@@ -15020,11 +15020,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_DialogOverlay: {
@@ -15054,11 +15054,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_ModalOverlay: {
@@ -15088,11 +15088,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_Input: {
@@ -15122,11 +15122,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_blue_active_TextArea: {
@@ -15156,11 +15156,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_ListItem: {
@@ -15190,11 +15190,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_Card: {
@@ -15224,11 +15224,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_Button: {
@@ -15258,11 +15258,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_Checkbox: {
@@ -15292,11 +15292,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_Switch: {
@@ -15326,11 +15326,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_SwitchThumb: {
@@ -15360,11 +15360,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_TooltipContent: {
@@ -15394,11 +15394,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_DrawerFrame: {
@@ -15428,11 +15428,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_Progress: {
@@ -15462,11 +15462,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_TooltipArrow: {
@@ -15496,11 +15496,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_SliderTrackActive: {
@@ -15530,11 +15530,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_SliderTrack: {
@@ -15564,11 +15564,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_SliderThumb: {
@@ -15598,11 +15598,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_Tooltip: {
@@ -15632,11 +15632,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_ProgressIndicator: {
@@ -15666,11 +15666,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_SheetOverlay: {
@@ -15700,11 +15700,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_DialogOverlay: {
@@ -15734,11 +15734,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_ModalOverlay: {
@@ -15768,11 +15768,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_Input: {
@@ -15802,11 +15802,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt1_TextArea: {
@@ -15836,11 +15836,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_ListItem: {
@@ -15870,11 +15870,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_Card: {
@@ -15904,11 +15904,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_Button: {
@@ -15938,11 +15938,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_Checkbox: {
@@ -15972,11 +15972,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_Switch: {
@@ -16006,11 +16006,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_SwitchThumb: {
@@ -16040,11 +16040,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_TooltipContent: {
@@ -16074,11 +16074,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_DrawerFrame: {
@@ -16108,11 +16108,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_Progress: {
@@ -16142,11 +16142,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_TooltipArrow: {
@@ -16176,11 +16176,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_SliderTrackActive: {
@@ -16210,11 +16210,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_SliderTrack: {
@@ -16244,11 +16244,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_SliderThumb: {
@@ -16278,11 +16278,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_Tooltip: {
@@ -16312,11 +16312,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_ProgressIndicator: {
@@ -16346,11 +16346,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_SheetOverlay: {
@@ -16380,11 +16380,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_DialogOverlay: {
@@ -16414,11 +16414,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_ModalOverlay: {
@@ -16448,11 +16448,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_Input: {
@@ -16482,11 +16482,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_alt2_TextArea: {
@@ -16516,11 +16516,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_ListItem: {
@@ -16550,11 +16550,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_Card: {
@@ -16584,11 +16584,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_Button: {
@@ -16618,11 +16618,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_Checkbox: {
@@ -16652,11 +16652,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_Switch: {
@@ -16686,11 +16686,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_SwitchThumb: {
@@ -16720,11 +16720,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_TooltipContent: {
@@ -16754,11 +16754,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_DrawerFrame: {
@@ -16788,11 +16788,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_Progress: {
@@ -16822,11 +16822,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_TooltipArrow: {
@@ -16856,11 +16856,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_SliderTrackActive: {
@@ -16890,11 +16890,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_SliderTrack: {
@@ -16924,11 +16924,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_SliderThumb: {
@@ -16958,11 +16958,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_Tooltip: {
@@ -16992,11 +16992,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_ProgressIndicator: {
@@ -17026,11 +17026,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_SheetOverlay: {
@@ -17060,11 +17060,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_DialogOverlay: {
@@ -17094,11 +17094,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_ModalOverlay: {
@@ -17128,11 +17128,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_Input: {
@@ -17162,11 +17162,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_green_active_TextArea: {
@@ -17196,11 +17196,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_ListItem: {
@@ -17230,11 +17230,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_Card: {
@@ -17264,11 +17264,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_Button: {
@@ -17298,11 +17298,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_Checkbox: {
@@ -17332,11 +17332,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_Switch: {
@@ -17366,11 +17366,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_SwitchThumb: {
@@ -17400,11 +17400,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_TooltipContent: {
@@ -17434,11 +17434,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_DrawerFrame: {
@@ -17468,11 +17468,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_Progress: {
@@ -17502,11 +17502,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_TooltipArrow: {
@@ -17536,11 +17536,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_SliderTrackActive: {
@@ -17570,11 +17570,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_SliderTrack: {
@@ -17604,11 +17604,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_SliderThumb: {
@@ -17638,11 +17638,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_Tooltip: {
@@ -17672,11 +17672,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_ProgressIndicator: {
@@ -17706,11 +17706,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_SheetOverlay: {
@@ -17740,11 +17740,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_DialogOverlay: {
@@ -17774,11 +17774,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_ModalOverlay: {
@@ -17808,11 +17808,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_Input: {
@@ -17842,11 +17842,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt1_TextArea: {
@@ -17876,11 +17876,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_ListItem: {
@@ -17910,11 +17910,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_Card: {
@@ -17944,11 +17944,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_Button: {
@@ -17978,11 +17978,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_Checkbox: {
@@ -18012,11 +18012,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_Switch: {
@@ -18046,11 +18046,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_SwitchThumb: {
@@ -18080,11 +18080,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_TooltipContent: {
@@ -18114,11 +18114,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_DrawerFrame: {
@@ -18148,11 +18148,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_Progress: {
@@ -18182,11 +18182,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_TooltipArrow: {
@@ -18216,11 +18216,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_SliderTrackActive: {
@@ -18250,11 +18250,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_SliderTrack: {
@@ -18284,11 +18284,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_SliderThumb: {
@@ -18318,11 +18318,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_Tooltip: {
@@ -18352,11 +18352,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_ProgressIndicator: {
@@ -18386,11 +18386,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_SheetOverlay: {
@@ -18420,11 +18420,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_DialogOverlay: {
@@ -18454,11 +18454,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_ModalOverlay: {
@@ -18488,11 +18488,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_Input: {
@@ -18522,11 +18522,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_alt2_TextArea: {
@@ -18556,11 +18556,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_ListItem: {
@@ -18590,11 +18590,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_Card: {
@@ -18624,11 +18624,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_Button: {
@@ -18658,11 +18658,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_Checkbox: {
@@ -18692,11 +18692,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_Switch: {
@@ -18726,11 +18726,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_SwitchThumb: {
@@ -18760,11 +18760,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_TooltipContent: {
@@ -18794,11 +18794,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_DrawerFrame: {
@@ -18828,11 +18828,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_Progress: {
@@ -18862,11 +18862,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_TooltipArrow: {
@@ -18896,11 +18896,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_SliderTrackActive: {
@@ -18930,11 +18930,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_SliderTrack: {
@@ -18964,11 +18964,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_SliderThumb: {
@@ -18998,11 +18998,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_Tooltip: {
@@ -19032,11 +19032,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_ProgressIndicator: {
@@ -19066,11 +19066,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_SheetOverlay: {
@@ -19100,11 +19100,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_DialogOverlay: {
@@ -19134,11 +19134,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_ModalOverlay: {
@@ -19168,11 +19168,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_Input: {
@@ -19202,11 +19202,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_orange_active_TextArea: {
@@ -19236,11 +19236,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_ListItem: {
@@ -19270,11 +19270,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_Card: {
@@ -19304,11 +19304,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_Button: {
@@ -19338,11 +19338,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_Checkbox: {
@@ -19372,11 +19372,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_Switch: {
@@ -19406,11 +19406,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_SwitchThumb: {
@@ -19440,11 +19440,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_TooltipContent: {
@@ -19474,11 +19474,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_DrawerFrame: {
@@ -19508,11 +19508,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_Progress: {
@@ -19542,11 +19542,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_TooltipArrow: {
@@ -19576,11 +19576,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_SliderTrackActive: {
@@ -19610,11 +19610,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_SliderTrack: {
@@ -19644,11 +19644,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_SliderThumb: {
@@ -19678,11 +19678,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_Tooltip: {
@@ -19712,11 +19712,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_ProgressIndicator: {
@@ -19746,11 +19746,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_SheetOverlay: {
@@ -19780,11 +19780,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_DialogOverlay: {
@@ -19814,11 +19814,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_ModalOverlay: {
@@ -19848,11 +19848,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_Input: {
@@ -19882,11 +19882,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt1_TextArea: {
@@ -19916,11 +19916,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_ListItem: {
@@ -19950,11 +19950,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_Card: {
@@ -19984,11 +19984,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_Button: {
@@ -20018,11 +20018,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_Checkbox: {
@@ -20052,11 +20052,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_Switch: {
@@ -20086,11 +20086,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_SwitchThumb: {
@@ -20120,11 +20120,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_TooltipContent: {
@@ -20154,11 +20154,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_DrawerFrame: {
@@ -20188,11 +20188,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_Progress: {
@@ -20222,11 +20222,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_TooltipArrow: {
@@ -20256,11 +20256,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_SliderTrackActive: {
@@ -20290,11 +20290,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_SliderTrack: {
@@ -20324,11 +20324,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_SliderThumb: {
@@ -20358,11 +20358,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_Tooltip: {
@@ -20392,11 +20392,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_ProgressIndicator: {
@@ -20426,11 +20426,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_SheetOverlay: {
@@ -20460,11 +20460,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_DialogOverlay: {
@@ -20494,11 +20494,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_ModalOverlay: {
@@ -20528,11 +20528,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_Input: {
@@ -20562,11 +20562,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_alt2_TextArea: {
@@ -20596,11 +20596,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_ListItem: {
@@ -20630,11 +20630,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_Card: {
@@ -20664,11 +20664,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_Button: {
@@ -20698,11 +20698,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_Checkbox: {
@@ -20732,11 +20732,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_Switch: {
@@ -20766,11 +20766,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_SwitchThumb: {
@@ -20800,11 +20800,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_TooltipContent: {
@@ -20834,11 +20834,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_DrawerFrame: {
@@ -20868,11 +20868,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_Progress: {
@@ -20902,11 +20902,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_TooltipArrow: {
@@ -20936,11 +20936,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_SliderTrackActive: {
@@ -20970,11 +20970,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_SliderTrack: {
@@ -21004,11 +21004,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_SliderThumb: {
@@ -21038,11 +21038,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_Tooltip: {
@@ -21072,11 +21072,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_ProgressIndicator: {
@@ -21106,11 +21106,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_SheetOverlay: {
@@ -21140,11 +21140,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_DialogOverlay: {
@@ -21174,11 +21174,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_ModalOverlay: {
@@ -21208,11 +21208,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_Input: {
@@ -21242,11 +21242,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_pink_active_TextArea: {
@@ -21276,11 +21276,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_ListItem: {
@@ -21310,11 +21310,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_Card: {
@@ -21344,11 +21344,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_Button: {
@@ -21378,11 +21378,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_Checkbox: {
@@ -21412,11 +21412,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_Switch: {
@@ -21446,11 +21446,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_SwitchThumb: {
@@ -21480,11 +21480,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_TooltipContent: {
@@ -21514,11 +21514,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_DrawerFrame: {
@@ -21548,11 +21548,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_Progress: {
@@ -21582,11 +21582,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_TooltipArrow: {
@@ -21616,11 +21616,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_SliderTrackActive: {
@@ -21650,11 +21650,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_SliderTrack: {
@@ -21684,11 +21684,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_SliderThumb: {
@@ -21718,11 +21718,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_Tooltip: {
@@ -21752,11 +21752,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_ProgressIndicator: {
@@ -21786,11 +21786,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_SheetOverlay: {
@@ -21820,11 +21820,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_DialogOverlay: {
@@ -21854,11 +21854,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_ModalOverlay: {
@@ -21888,11 +21888,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_Input: {
@@ -21922,11 +21922,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt1_TextArea: {
@@ -21956,11 +21956,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_ListItem: {
@@ -21990,11 +21990,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_Card: {
@@ -22024,11 +22024,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_Button: {
@@ -22058,11 +22058,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_Checkbox: {
@@ -22092,11 +22092,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_Switch: {
@@ -22126,11 +22126,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_SwitchThumb: {
@@ -22160,11 +22160,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_TooltipContent: {
@@ -22194,11 +22194,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_DrawerFrame: {
@@ -22228,11 +22228,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_Progress: {
@@ -22262,11 +22262,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_TooltipArrow: {
@@ -22296,11 +22296,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_SliderTrackActive: {
@@ -22330,11 +22330,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_SliderTrack: {
@@ -22364,11 +22364,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_SliderThumb: {
@@ -22398,11 +22398,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_Tooltip: {
@@ -22432,11 +22432,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_ProgressIndicator: {
@@ -22466,11 +22466,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_SheetOverlay: {
@@ -22500,11 +22500,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_DialogOverlay: {
@@ -22534,11 +22534,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_ModalOverlay: {
@@ -22568,11 +22568,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_Input: {
@@ -22602,11 +22602,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_alt2_TextArea: {
@@ -22636,11 +22636,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_ListItem: {
@@ -22670,11 +22670,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_Card: {
@@ -22704,11 +22704,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_Button: {
@@ -22738,11 +22738,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_Checkbox: {
@@ -22772,11 +22772,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_Switch: {
@@ -22806,11 +22806,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_SwitchThumb: {
@@ -22840,11 +22840,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_TooltipContent: {
@@ -22874,11 +22874,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_DrawerFrame: {
@@ -22908,11 +22908,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_Progress: {
@@ -22942,11 +22942,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_TooltipArrow: {
@@ -22976,11 +22976,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_SliderTrackActive: {
@@ -23010,11 +23010,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_SliderTrack: {
@@ -23044,11 +23044,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_SliderThumb: {
@@ -23078,11 +23078,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_Tooltip: {
@@ -23112,11 +23112,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_ProgressIndicator: {
@@ -23146,11 +23146,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_SheetOverlay: {
@@ -23180,11 +23180,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_DialogOverlay: {
@@ -23214,11 +23214,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_ModalOverlay: {
@@ -23248,11 +23248,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_Input: {
@@ -23282,11 +23282,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_purple_active_TextArea: {
@@ -23316,11 +23316,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_ListItem: {
@@ -23350,11 +23350,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_Card: {
@@ -23384,11 +23384,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_Button: {
@@ -23418,11 +23418,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_Checkbox: {
@@ -23452,11 +23452,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_Switch: {
@@ -23486,11 +23486,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_SwitchThumb: {
@@ -23520,11 +23520,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_TooltipContent: {
@@ -23554,11 +23554,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_DrawerFrame: {
@@ -23588,11 +23588,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_Progress: {
@@ -23622,11 +23622,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_TooltipArrow: {
@@ -23656,11 +23656,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_SliderTrackActive: {
@@ -23690,11 +23690,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_SliderTrack: {
@@ -23724,11 +23724,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_SliderThumb: {
@@ -23758,11 +23758,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_Tooltip: {
@@ -23792,11 +23792,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_ProgressIndicator: {
@@ -23826,11 +23826,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_SheetOverlay: {
@@ -23860,11 +23860,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_DialogOverlay: {
@@ -23894,11 +23894,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_ModalOverlay: {
@@ -23928,11 +23928,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_Input: {
@@ -23962,11 +23962,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt1_TextArea: {
@@ -23996,11 +23996,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_ListItem: {
@@ -24030,11 +24030,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_Card: {
@@ -24064,11 +24064,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_Button: {
@@ -24098,11 +24098,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_Checkbox: {
@@ -24132,11 +24132,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_Switch: {
@@ -24166,11 +24166,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_SwitchThumb: {
@@ -24200,11 +24200,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_TooltipContent: {
@@ -24234,11 +24234,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_DrawerFrame: {
@@ -24268,11 +24268,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_Progress: {
@@ -24302,11 +24302,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_TooltipArrow: {
@@ -24336,11 +24336,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_SliderTrackActive: {
@@ -24370,11 +24370,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_SliderTrack: {
@@ -24404,11 +24404,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_SliderThumb: {
@@ -24438,11 +24438,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_Tooltip: {
@@ -24472,11 +24472,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_ProgressIndicator: {
@@ -24506,11 +24506,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_SheetOverlay: {
@@ -24540,11 +24540,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_DialogOverlay: {
@@ -24574,11 +24574,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_ModalOverlay: {
@@ -24608,11 +24608,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_Input: {
@@ -24642,11 +24642,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_alt2_TextArea: {
@@ -24676,11 +24676,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_ListItem: {
@@ -24710,11 +24710,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_Card: {
@@ -24744,11 +24744,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_Button: {
@@ -24778,11 +24778,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_Checkbox: {
@@ -24812,11 +24812,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_Switch: {
@@ -24846,11 +24846,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_SwitchThumb: {
@@ -24880,11 +24880,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_TooltipContent: {
@@ -24914,11 +24914,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_DrawerFrame: {
@@ -24948,11 +24948,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_Progress: {
@@ -24982,11 +24982,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_TooltipArrow: {
@@ -25016,11 +25016,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_SliderTrackActive: {
@@ -25050,11 +25050,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_SliderTrack: {
@@ -25084,11 +25084,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_SliderThumb: {
@@ -25118,11 +25118,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_Tooltip: {
@@ -25152,11 +25152,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_ProgressIndicator: {
@@ -25186,11 +25186,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_SheetOverlay: {
@@ -25220,11 +25220,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_DialogOverlay: {
@@ -25254,11 +25254,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_ModalOverlay: {
@@ -25288,11 +25288,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_Input: {
@@ -25322,11 +25322,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_red_active_TextArea: {
@@ -25356,11 +25356,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_ListItem: {
@@ -25390,11 +25390,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_Card: {
@@ -25424,11 +25424,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_Button: {
@@ -25458,11 +25458,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_Checkbox: {
@@ -25492,11 +25492,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_Switch: {
@@ -25526,11 +25526,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_SwitchThumb: {
@@ -25560,11 +25560,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_TooltipContent: {
@@ -25594,11 +25594,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_DrawerFrame: {
@@ -25628,11 +25628,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_Progress: {
@@ -25662,11 +25662,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_TooltipArrow: {
@@ -25696,11 +25696,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_SliderTrackActive: {
@@ -25730,11 +25730,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_SliderTrack: {
@@ -25764,11 +25764,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_SliderThumb: {
@@ -25798,11 +25798,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_Tooltip: {
@@ -25832,11 +25832,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_ProgressIndicator: {
@@ -25866,11 +25866,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_SheetOverlay: {
@@ -25900,11 +25900,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_DialogOverlay: {
@@ -25934,11 +25934,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_ModalOverlay: {
@@ -25968,11 +25968,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_Input: {
@@ -26002,11 +26002,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt1_TextArea: {
@@ -26036,11 +26036,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_ListItem: {
@@ -26070,11 +26070,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_Card: {
@@ -26104,11 +26104,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_Button: {
@@ -26138,11 +26138,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_Checkbox: {
@@ -26172,11 +26172,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_Switch: {
@@ -26206,11 +26206,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_SwitchThumb: {
@@ -26240,11 +26240,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_TooltipContent: {
@@ -26274,11 +26274,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_DrawerFrame: {
@@ -26308,11 +26308,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_Progress: {
@@ -26342,11 +26342,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_TooltipArrow: {
@@ -26376,11 +26376,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_SliderTrackActive: {
@@ -26410,11 +26410,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_SliderTrack: {
@@ -26444,11 +26444,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_SliderThumb: {
@@ -26478,11 +26478,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_Tooltip: {
@@ -26512,11 +26512,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_ProgressIndicator: {
@@ -26546,11 +26546,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_SheetOverlay: {
@@ -26580,11 +26580,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_DialogOverlay: {
@@ -26614,11 +26614,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_ModalOverlay: {
@@ -26648,11 +26648,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_Input: {
@@ -26682,11 +26682,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_alt2_TextArea: {
@@ -26716,11 +26716,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_ListItem: {
@@ -26750,11 +26750,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_Card: {
@@ -26784,11 +26784,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_Button: {
@@ -26818,11 +26818,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_Checkbox: {
@@ -26852,11 +26852,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_Switch: {
@@ -26886,11 +26886,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_SwitchThumb: {
@@ -26920,11 +26920,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_TooltipContent: {
@@ -26954,11 +26954,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_DrawerFrame: {
@@ -26988,11 +26988,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_Progress: {
@@ -27022,11 +27022,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_TooltipArrow: {
@@ -27056,11 +27056,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_SliderTrackActive: {
@@ -27090,11 +27090,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_SliderTrack: {
@@ -27124,11 +27124,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_SliderThumb: {
@@ -27158,11 +27158,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_Tooltip: {
@@ -27192,11 +27192,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_ProgressIndicator: {
@@ -27226,11 +27226,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_SheetOverlay: {
@@ -27260,11 +27260,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_DialogOverlay: {
@@ -27294,11 +27294,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_ModalOverlay: {
@@ -27328,11 +27328,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_Input: {
@@ -27362,11 +27362,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_yellow_active_TextArea: {
@@ -27396,11 +27396,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_ListItem: {
@@ -27430,11 +27430,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_Card: {
@@ -27464,11 +27464,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_Button: {
@@ -27498,11 +27498,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_Checkbox: {
@@ -27532,11 +27532,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_Switch: {
@@ -27566,11 +27566,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_SwitchThumb: {
@@ -27600,11 +27600,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_TooltipContent: {
@@ -27634,11 +27634,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_DrawerFrame: {
@@ -27668,11 +27668,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_Progress: {
@@ -27702,11 +27702,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_TooltipArrow: {
@@ -27736,11 +27736,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_SliderTrackActive: {
@@ -27770,11 +27770,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_SliderTrack: {
@@ -27804,11 +27804,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_SliderThumb: {
@@ -27838,11 +27838,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_Tooltip: {
@@ -27872,11 +27872,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_ProgressIndicator: {
@@ -27906,11 +27906,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_SheetOverlay: {
@@ -27940,11 +27940,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_DialogOverlay: {
@@ -27974,11 +27974,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_ModalOverlay: {
@@ -28008,11 +28008,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_Input: {
@@ -28042,11 +28042,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt1_TextArea: {
@@ -28076,11 +28076,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_ListItem: {
@@ -28110,11 +28110,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_Card: {
@@ -28144,11 +28144,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_Button: {
@@ -28178,11 +28178,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_Checkbox: {
@@ -28212,11 +28212,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_Switch: {
@@ -28246,11 +28246,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_SwitchThumb: {
@@ -28280,11 +28280,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_TooltipContent: {
@@ -28314,11 +28314,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_DrawerFrame: {
@@ -28348,11 +28348,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_Progress: {
@@ -28382,11 +28382,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_TooltipArrow: {
@@ -28416,11 +28416,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_SliderTrackActive: {
@@ -28450,11 +28450,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_SliderTrack: {
@@ -28484,11 +28484,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_SliderThumb: {
@@ -28518,11 +28518,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_Tooltip: {
@@ -28552,11 +28552,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_ProgressIndicator: {
@@ -28586,11 +28586,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_SheetOverlay: {
@@ -28620,11 +28620,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_DialogOverlay: {
@@ -28654,11 +28654,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_ModalOverlay: {
@@ -28688,11 +28688,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_Input: {
@@ -28722,11 +28722,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_alt2_TextArea: {
@@ -28756,11 +28756,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_ListItem: {
@@ -28790,11 +28790,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_Card: {
@@ -28824,11 +28824,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_Button: {
@@ -28858,11 +28858,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_Checkbox: {
@@ -28892,11 +28892,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_Switch: {
@@ -28926,11 +28926,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_SwitchThumb: {
@@ -28960,11 +28960,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_TooltipContent: {
@@ -28994,11 +28994,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_DrawerFrame: {
@@ -29028,11 +29028,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_Progress: {
@@ -29062,11 +29062,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_TooltipArrow: {
@@ -29096,11 +29096,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_SliderTrackActive: {
@@ -29130,11 +29130,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_SliderTrack: {
@@ -29164,11 +29164,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_SliderThumb: {
@@ -29198,11 +29198,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_Tooltip: {
@@ -29232,11 +29232,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_ProgressIndicator: {
@@ -29266,11 +29266,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_SheetOverlay: {
@@ -29300,11 +29300,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_DialogOverlay: {
@@ -29334,11 +29334,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_ModalOverlay: {
@@ -29368,11 +29368,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_Input: {
@@ -29402,11 +29402,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_blue_active_TextArea: {
@@ -29436,11 +29436,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_ListItem: {
@@ -29470,11 +29470,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_Card: {
@@ -29504,11 +29504,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_Button: {
@@ -29538,11 +29538,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_Checkbox: {
@@ -29572,11 +29572,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_Switch: {
@@ -29606,11 +29606,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_SwitchThumb: {
@@ -29640,11 +29640,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_TooltipContent: {
@@ -29674,11 +29674,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_DrawerFrame: {
@@ -29708,11 +29708,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_Progress: {
@@ -29742,11 +29742,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_TooltipArrow: {
@@ -29776,11 +29776,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_SliderTrackActive: {
@@ -29810,11 +29810,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_SliderTrack: {
@@ -29844,11 +29844,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_SliderThumb: {
@@ -29878,11 +29878,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_Tooltip: {
@@ -29912,11 +29912,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_ProgressIndicator: {
@@ -29946,11 +29946,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_SheetOverlay: {
@@ -29980,11 +29980,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_DialogOverlay: {
@@ -30014,11 +30014,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_ModalOverlay: {
@@ -30048,11 +30048,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_Input: {
@@ -30082,11 +30082,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt1_TextArea: {
@@ -30116,11 +30116,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_ListItem: {
@@ -30150,11 +30150,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_Card: {
@@ -30184,11 +30184,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_Button: {
@@ -30218,11 +30218,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_Checkbox: {
@@ -30252,11 +30252,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_Switch: {
@@ -30286,11 +30286,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_SwitchThumb: {
@@ -30320,11 +30320,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_TooltipContent: {
@@ -30354,11 +30354,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_DrawerFrame: {
@@ -30388,11 +30388,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_Progress: {
@@ -30422,11 +30422,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_TooltipArrow: {
@@ -30456,11 +30456,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_SliderTrackActive: {
@@ -30490,11 +30490,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_SliderTrack: {
@@ -30524,11 +30524,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_SliderThumb: {
@@ -30558,11 +30558,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_Tooltip: {
@@ -30592,11 +30592,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_ProgressIndicator: {
@@ -30626,11 +30626,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_SheetOverlay: {
@@ -30660,11 +30660,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_DialogOverlay: {
@@ -30694,11 +30694,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_ModalOverlay: {
@@ -30728,11 +30728,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_Input: {
@@ -30762,11 +30762,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_alt2_TextArea: {
@@ -30796,11 +30796,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_ListItem: {
@@ -30830,11 +30830,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_Card: {
@@ -30864,11 +30864,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_Button: {
@@ -30898,11 +30898,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_Checkbox: {
@@ -30932,11 +30932,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_Switch: {
@@ -30966,11 +30966,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_SwitchThumb: {
@@ -31000,11 +31000,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_TooltipContent: {
@@ -31034,11 +31034,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_DrawerFrame: {
@@ -31068,11 +31068,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_Progress: {
@@ -31102,11 +31102,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_TooltipArrow: {
@@ -31136,11 +31136,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_SliderTrackActive: {
@@ -31170,11 +31170,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_SliderTrack: {
@@ -31204,11 +31204,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_SliderThumb: {
@@ -31238,11 +31238,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_Tooltip: {
@@ -31272,11 +31272,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_ProgressIndicator: {
@@ -31306,11 +31306,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_SheetOverlay: {
@@ -31340,11 +31340,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_DialogOverlay: {
@@ -31374,11 +31374,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_ModalOverlay: {
@@ -31408,11 +31408,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_Input: {
@@ -31442,11 +31442,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_green_active_TextArea: {
@@ -31476,11 +31476,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_ListItem: {
@@ -31510,11 +31510,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_Card: {
@@ -31544,11 +31544,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_Button: {
@@ -31578,11 +31578,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_Checkbox: {
@@ -31612,11 +31612,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_Switch: {
@@ -31646,11 +31646,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_SwitchThumb: {
@@ -31680,11 +31680,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_TooltipContent: {
@@ -31714,11 +31714,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_DrawerFrame: {
@@ -31748,11 +31748,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_Progress: {
@@ -31782,11 +31782,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_TooltipArrow: {
@@ -31816,11 +31816,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_SliderTrackActive: {
@@ -31850,11 +31850,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_SliderTrack: {
@@ -31884,11 +31884,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_SliderThumb: {
@@ -31918,11 +31918,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_Tooltip: {
@@ -31952,11 +31952,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_ProgressIndicator: {
@@ -31986,11 +31986,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_SheetOverlay: {
@@ -32020,11 +32020,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_DialogOverlay: {
@@ -32054,11 +32054,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_ModalOverlay: {
@@ -32088,11 +32088,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_Input: {
@@ -32122,11 +32122,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt1_TextArea: {
@@ -32156,11 +32156,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_ListItem: {
@@ -32190,11 +32190,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_Card: {
@@ -32224,11 +32224,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_Button: {
@@ -32258,11 +32258,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_Checkbox: {
@@ -32292,11 +32292,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_Switch: {
@@ -32326,11 +32326,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_SwitchThumb: {
@@ -32360,11 +32360,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_TooltipContent: {
@@ -32394,11 +32394,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_DrawerFrame: {
@@ -32428,11 +32428,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_Progress: {
@@ -32462,11 +32462,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_TooltipArrow: {
@@ -32496,11 +32496,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_SliderTrackActive: {
@@ -32530,11 +32530,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_SliderTrack: {
@@ -32564,11 +32564,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_SliderThumb: {
@@ -32598,11 +32598,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_Tooltip: {
@@ -32632,11 +32632,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_ProgressIndicator: {
@@ -32666,11 +32666,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_SheetOverlay: {
@@ -32700,11 +32700,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_DialogOverlay: {
@@ -32734,11 +32734,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_ModalOverlay: {
@@ -32768,11 +32768,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_Input: {
@@ -32802,11 +32802,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_alt2_TextArea: {
@@ -32836,11 +32836,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_ListItem: {
@@ -32870,11 +32870,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_Card: {
@@ -32904,11 +32904,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_Button: {
@@ -32938,11 +32938,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_Checkbox: {
@@ -32972,11 +32972,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_Switch: {
@@ -33006,11 +33006,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_SwitchThumb: {
@@ -33040,11 +33040,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_TooltipContent: {
@@ -33074,11 +33074,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_DrawerFrame: {
@@ -33108,11 +33108,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_Progress: {
@@ -33142,11 +33142,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_TooltipArrow: {
@@ -33176,11 +33176,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_SliderTrackActive: {
@@ -33210,11 +33210,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_SliderTrack: {
@@ -33244,11 +33244,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_SliderThumb: {
@@ -33278,11 +33278,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_Tooltip: {
@@ -33312,11 +33312,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_ProgressIndicator: {
@@ -33346,11 +33346,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_SheetOverlay: {
@@ -33380,11 +33380,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_DialogOverlay: {
@@ -33414,11 +33414,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_ModalOverlay: {
@@ -33448,11 +33448,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_Input: {
@@ -33482,11 +33482,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_orange_active_TextArea: {
@@ -33516,11 +33516,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_ListItem: {
@@ -33550,11 +33550,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_Card: {
@@ -33584,11 +33584,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_Button: {
@@ -33618,11 +33618,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_Checkbox: {
@@ -33652,11 +33652,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_Switch: {
@@ -33686,11 +33686,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_SwitchThumb: {
@@ -33720,11 +33720,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_TooltipContent: {
@@ -33754,11 +33754,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_DrawerFrame: {
@@ -33788,11 +33788,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_Progress: {
@@ -33822,11 +33822,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_TooltipArrow: {
@@ -33856,11 +33856,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_SliderTrackActive: {
@@ -33890,11 +33890,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_SliderTrack: {
@@ -33924,11 +33924,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_SliderThumb: {
@@ -33958,11 +33958,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_Tooltip: {
@@ -33992,11 +33992,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_ProgressIndicator: {
@@ -34026,11 +34026,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_SheetOverlay: {
@@ -34060,11 +34060,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_DialogOverlay: {
@@ -34094,11 +34094,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_ModalOverlay: {
@@ -34128,11 +34128,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_Input: {
@@ -34162,11 +34162,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt1_TextArea: {
@@ -34196,11 +34196,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_ListItem: {
@@ -34230,11 +34230,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_Card: {
@@ -34264,11 +34264,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_Button: {
@@ -34298,11 +34298,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_Checkbox: {
@@ -34332,11 +34332,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_Switch: {
@@ -34366,11 +34366,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_SwitchThumb: {
@@ -34400,11 +34400,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_TooltipContent: {
@@ -34434,11 +34434,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_DrawerFrame: {
@@ -34468,11 +34468,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_Progress: {
@@ -34502,11 +34502,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_TooltipArrow: {
@@ -34536,11 +34536,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_SliderTrackActive: {
@@ -34570,11 +34570,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_SliderTrack: {
@@ -34604,11 +34604,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_SliderThumb: {
@@ -34638,11 +34638,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_Tooltip: {
@@ -34672,11 +34672,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_ProgressIndicator: {
@@ -34706,11 +34706,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_SheetOverlay: {
@@ -34740,11 +34740,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_DialogOverlay: {
@@ -34774,11 +34774,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_ModalOverlay: {
@@ -34808,11 +34808,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_Input: {
@@ -34842,11 +34842,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_alt2_TextArea: {
@@ -34876,11 +34876,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_ListItem: {
@@ -34910,11 +34910,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_Card: {
@@ -34944,11 +34944,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_Button: {
@@ -34978,11 +34978,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_Checkbox: {
@@ -35012,11 +35012,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_Switch: {
@@ -35046,11 +35046,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_SwitchThumb: {
@@ -35080,11 +35080,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_TooltipContent: {
@@ -35114,11 +35114,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_DrawerFrame: {
@@ -35148,11 +35148,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_Progress: {
@@ -35182,11 +35182,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_TooltipArrow: {
@@ -35216,11 +35216,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_SliderTrackActive: {
@@ -35250,11 +35250,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_SliderTrack: {
@@ -35284,11 +35284,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_SliderThumb: {
@@ -35318,11 +35318,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_Tooltip: {
@@ -35352,11 +35352,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_ProgressIndicator: {
@@ -35386,11 +35386,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_SheetOverlay: {
@@ -35420,11 +35420,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_DialogOverlay: {
@@ -35454,11 +35454,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_ModalOverlay: {
@@ -35488,11 +35488,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_Input: {
@@ -35522,11 +35522,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_pink_active_TextArea: {
@@ -35556,11 +35556,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_ListItem: {
@@ -35590,11 +35590,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_Card: {
@@ -35624,11 +35624,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_Button: {
@@ -35658,11 +35658,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_Checkbox: {
@@ -35692,11 +35692,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_Switch: {
@@ -35726,11 +35726,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_SwitchThumb: {
@@ -35760,11 +35760,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_TooltipContent: {
@@ -35794,11 +35794,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_DrawerFrame: {
@@ -35828,11 +35828,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_Progress: {
@@ -35862,11 +35862,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_TooltipArrow: {
@@ -35896,11 +35896,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_SliderTrackActive: {
@@ -35930,11 +35930,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_SliderTrack: {
@@ -35964,11 +35964,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_SliderThumb: {
@@ -35998,11 +35998,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_Tooltip: {
@@ -36032,11 +36032,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_ProgressIndicator: {
@@ -36066,11 +36066,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_SheetOverlay: {
@@ -36100,11 +36100,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_DialogOverlay: {
@@ -36134,11 +36134,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_ModalOverlay: {
@@ -36168,11 +36168,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_Input: {
@@ -36202,11 +36202,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt1_TextArea: {
@@ -36236,11 +36236,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_ListItem: {
@@ -36270,11 +36270,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_Card: {
@@ -36304,11 +36304,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_Button: {
@@ -36338,11 +36338,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_Checkbox: {
@@ -36372,11 +36372,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_Switch: {
@@ -36406,11 +36406,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_SwitchThumb: {
@@ -36440,11 +36440,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_TooltipContent: {
@@ -36474,11 +36474,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_DrawerFrame: {
@@ -36508,11 +36508,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_Progress: {
@@ -36542,11 +36542,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_TooltipArrow: {
@@ -36576,11 +36576,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_SliderTrackActive: {
@@ -36610,11 +36610,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_SliderTrack: {
@@ -36644,11 +36644,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_SliderThumb: {
@@ -36678,11 +36678,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_Tooltip: {
@@ -36712,11 +36712,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_ProgressIndicator: {
@@ -36746,11 +36746,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_SheetOverlay: {
@@ -36780,11 +36780,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_DialogOverlay: {
@@ -36814,11 +36814,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_ModalOverlay: {
@@ -36848,11 +36848,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_Input: {
@@ -36882,11 +36882,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_alt2_TextArea: {
@@ -36916,11 +36916,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_ListItem: {
@@ -36950,11 +36950,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_Card: {
@@ -36984,11 +36984,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_Button: {
@@ -37018,11 +37018,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_Checkbox: {
@@ -37052,11 +37052,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_Switch: {
@@ -37086,11 +37086,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_SwitchThumb: {
@@ -37120,11 +37120,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_TooltipContent: {
@@ -37154,11 +37154,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_DrawerFrame: {
@@ -37188,11 +37188,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_Progress: {
@@ -37222,11 +37222,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_TooltipArrow: {
@@ -37256,11 +37256,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_SliderTrackActive: {
@@ -37290,11 +37290,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_SliderTrack: {
@@ -37324,11 +37324,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_SliderThumb: {
@@ -37358,11 +37358,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_Tooltip: {
@@ -37392,11 +37392,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_ProgressIndicator: {
@@ -37426,11 +37426,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_SheetOverlay: {
@@ -37460,11 +37460,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_DialogOverlay: {
@@ -37494,11 +37494,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_ModalOverlay: {
@@ -37528,11 +37528,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_Input: {
@@ -37562,11 +37562,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_purple_active_TextArea: {
@@ -37596,11 +37596,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_ListItem: {
@@ -37630,11 +37630,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_Card: {
@@ -37664,11 +37664,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_Button: {
@@ -37698,11 +37698,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_Checkbox: {
@@ -37732,11 +37732,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_Switch: {
@@ -37766,11 +37766,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_SwitchThumb: {
@@ -37800,11 +37800,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_TooltipContent: {
@@ -37834,11 +37834,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_DrawerFrame: {
@@ -37868,11 +37868,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_Progress: {
@@ -37902,11 +37902,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_TooltipArrow: {
@@ -37936,11 +37936,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_SliderTrackActive: {
@@ -37970,11 +37970,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_SliderTrack: {
@@ -38004,11 +38004,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_SliderThumb: {
@@ -38038,11 +38038,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_Tooltip: {
@@ -38072,11 +38072,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_ProgressIndicator: {
@@ -38106,11 +38106,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_SheetOverlay: {
@@ -38140,11 +38140,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_DialogOverlay: {
@@ -38174,11 +38174,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_ModalOverlay: {
@@ -38208,11 +38208,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_Input: {
@@ -38242,11 +38242,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt1_TextArea: {
@@ -38276,11 +38276,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_ListItem: {
@@ -38310,11 +38310,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_Card: {
@@ -38344,11 +38344,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_Button: {
@@ -38378,11 +38378,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_Checkbox: {
@@ -38412,11 +38412,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_Switch: {
@@ -38446,11 +38446,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_SwitchThumb: {
@@ -38480,11 +38480,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_TooltipContent: {
@@ -38514,11 +38514,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_DrawerFrame: {
@@ -38548,11 +38548,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_Progress: {
@@ -38582,11 +38582,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_TooltipArrow: {
@@ -38616,11 +38616,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_SliderTrackActive: {
@@ -38650,11 +38650,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_SliderTrack: {
@@ -38684,11 +38684,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_SliderThumb: {
@@ -38718,11 +38718,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_Tooltip: {
@@ -38752,11 +38752,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_ProgressIndicator: {
@@ -38786,11 +38786,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_SheetOverlay: {
@@ -38820,11 +38820,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_DialogOverlay: {
@@ -38854,11 +38854,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_ModalOverlay: {
@@ -38888,11 +38888,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_Input: {
@@ -38922,11 +38922,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_alt2_TextArea: {
@@ -38956,11 +38956,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_ListItem: {
@@ -38990,11 +38990,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_Card: {
@@ -39024,11 +39024,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_Button: {
@@ -39058,11 +39058,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_Checkbox: {
@@ -39092,11 +39092,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_Switch: {
@@ -39126,11 +39126,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_SwitchThumb: {
@@ -39160,11 +39160,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_TooltipContent: {
@@ -39194,11 +39194,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_DrawerFrame: {
@@ -39228,11 +39228,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_Progress: {
@@ -39262,11 +39262,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_TooltipArrow: {
@@ -39296,11 +39296,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_SliderTrackActive: {
@@ -39330,11 +39330,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_SliderTrack: {
@@ -39364,11 +39364,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_SliderThumb: {
@@ -39398,11 +39398,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_Tooltip: {
@@ -39432,11 +39432,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_ProgressIndicator: {
@@ -39466,11 +39466,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_SheetOverlay: {
@@ -39500,11 +39500,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_DialogOverlay: {
@@ -39534,11 +39534,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_ModalOverlay: {
@@ -39568,11 +39568,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_Input: {
@@ -39602,11 +39602,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_red_active_TextArea: {
@@ -39636,11 +39636,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_ListItem: {
@@ -39670,11 +39670,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_Card: {
@@ -39704,11 +39704,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_Button: {
@@ -39738,11 +39738,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_Checkbox: {
@@ -39772,11 +39772,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_Switch: {
@@ -39806,11 +39806,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_SwitchThumb: {
@@ -39840,11 +39840,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_TooltipContent: {
@@ -39874,11 +39874,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_DrawerFrame: {
@@ -39908,11 +39908,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_Progress: {
@@ -39942,11 +39942,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_TooltipArrow: {
@@ -39976,11 +39976,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_SliderTrackActive: {
@@ -40010,11 +40010,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_SliderTrack: {
@@ -40044,11 +40044,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_SliderThumb: {
@@ -40078,11 +40078,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_Tooltip: {
@@ -40112,11 +40112,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_ProgressIndicator: {
@@ -40146,11 +40146,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_SheetOverlay: {
@@ -40180,11 +40180,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_DialogOverlay: {
@@ -40214,11 +40214,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_ModalOverlay: {
@@ -40248,11 +40248,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_Input: {
@@ -40282,11 +40282,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt1_TextArea: {
@@ -40316,11 +40316,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_ListItem: {
@@ -40350,11 +40350,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_Card: {
@@ -40384,11 +40384,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_Button: {
@@ -40418,11 +40418,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_Checkbox: {
@@ -40452,11 +40452,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_Switch: {
@@ -40486,11 +40486,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_SwitchThumb: {
@@ -40520,11 +40520,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_TooltipContent: {
@@ -40554,11 +40554,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_DrawerFrame: {
@@ -40588,11 +40588,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_Progress: {
@@ -40622,11 +40622,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_TooltipArrow: {
@@ -40656,11 +40656,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_SliderTrackActive: {
@@ -40690,11 +40690,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_SliderTrack: {
@@ -40724,11 +40724,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_SliderThumb: {
@@ -40758,11 +40758,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_Tooltip: {
@@ -40792,11 +40792,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_ProgressIndicator: {
@@ -40826,11 +40826,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_SheetOverlay: {
@@ -40860,11 +40860,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_DialogOverlay: {
@@ -40894,11 +40894,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_ModalOverlay: {
@@ -40928,11 +40928,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_Input: {
@@ -40962,11 +40962,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_alt2_TextArea: {
@@ -40996,11 +40996,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_ListItem: {
@@ -41030,11 +41030,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_Card: {
@@ -41064,11 +41064,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_Button: {
@@ -41098,11 +41098,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_Checkbox: {
@@ -41132,11 +41132,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_Switch: {
@@ -41166,11 +41166,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_SwitchThumb: {
@@ -41200,11 +41200,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_TooltipContent: {
@@ -41234,11 +41234,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_DrawerFrame: {
@@ -41268,11 +41268,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_Progress: {
@@ -41302,11 +41302,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_TooltipArrow: {
@@ -41336,11 +41336,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_SliderTrackActive: {
@@ -41370,11 +41370,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_SliderTrack: {
@@ -41404,11 +41404,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_SliderThumb: {
@@ -41438,11 +41438,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_Tooltip: {
@@ -41472,11 +41472,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_ProgressIndicator: {
@@ -41506,11 +41506,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_SheetOverlay: {
@@ -41540,11 +41540,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_DialogOverlay: {
@@ -41574,11 +41574,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_ModalOverlay: {
@@ -41608,11 +41608,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_Input: {
@@ -41642,11 +41642,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_yellow_active_TextArea: {
@@ -41676,11 +41676,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_ListItem: {
@@ -41710,11 +41710,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_Card: {
@@ -41744,11 +41744,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_Button: {
@@ -41778,11 +41778,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_Checkbox: {
@@ -41812,11 +41812,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_Switch: {
@@ -41846,11 +41846,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_SwitchThumb: {
@@ -41880,11 +41880,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_TooltipContent: {
@@ -41914,11 +41914,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_DrawerFrame: {
@@ -41948,11 +41948,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_Progress: {
@@ -41982,11 +41982,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_TooltipArrow: {
@@ -42016,11 +42016,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_SliderTrackActive: {
@@ -42050,11 +42050,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_SliderTrack: {
@@ -42084,11 +42084,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_SliderThumb: {
@@ -42118,11 +42118,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_Tooltip: {
@@ -42152,11 +42152,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_ProgressIndicator: {
@@ -42186,11 +42186,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_SheetOverlay: {
@@ -42220,11 +42220,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_DialogOverlay: {
@@ -42254,11 +42254,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_ModalOverlay: {
@@ -42288,11 +42288,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_Input: {
@@ -42322,11 +42322,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt1_TextArea: {
@@ -42356,11 +42356,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_ListItem: {
@@ -42390,11 +42390,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_Card: {
@@ -42424,11 +42424,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_Button: {
@@ -42458,11 +42458,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_Checkbox: {
@@ -42492,11 +42492,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_Switch: {
@@ -42526,11 +42526,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_SwitchThumb: {
@@ -42560,11 +42560,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_TooltipContent: {
@@ -42594,11 +42594,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_DrawerFrame: {
@@ -42628,11 +42628,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_Progress: {
@@ -42662,11 +42662,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_TooltipArrow: {
@@ -42696,11 +42696,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_SliderTrackActive: {
@@ -42730,11 +42730,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_SliderTrack: {
@@ -42764,11 +42764,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_SliderThumb: {
@@ -42798,11 +42798,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_Tooltip: {
@@ -42832,11 +42832,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_ProgressIndicator: {
@@ -42866,11 +42866,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_SheetOverlay: {
@@ -42900,11 +42900,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_DialogOverlay: {
@@ -42934,11 +42934,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_ModalOverlay: {
@@ -42968,11 +42968,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_Input: {
@@ -43002,11 +43002,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_alt2_TextArea: {
@@ -43036,11 +43036,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_ListItem: {
@@ -43070,11 +43070,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_Card: {
@@ -43104,11 +43104,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_Button: {
@@ -43138,11 +43138,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_Checkbox: {
@@ -43172,11 +43172,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_Switch: {
@@ -43206,11 +43206,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_SwitchThumb: {
@@ -43240,11 +43240,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_TooltipContent: {
@@ -43274,11 +43274,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_DrawerFrame: {
@@ -43308,11 +43308,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_Progress: {
@@ -43342,11 +43342,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_TooltipArrow: {
@@ -43376,11 +43376,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_SliderTrackActive: {
@@ -43410,11 +43410,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_SliderTrack: {
@@ -43444,11 +43444,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_SliderThumb: {
@@ -43478,11 +43478,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_Tooltip: {
@@ -43512,11 +43512,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_ProgressIndicator: {
@@ -43546,11 +43546,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_SheetOverlay: {
@@ -43580,11 +43580,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_DialogOverlay: {
@@ -43614,11 +43614,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_ModalOverlay: {
@@ -43648,11 +43648,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_Input: {
@@ -43682,11 +43682,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_active_TextArea: {
@@ -43716,11 +43716,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_ListItem: {
@@ -43750,11 +43750,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_Card: {
@@ -43784,11 +43784,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_Button: {
@@ -43818,11 +43818,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_Checkbox: {
@@ -43852,11 +43852,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_Switch: {
@@ -43886,11 +43886,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_SwitchThumb: {
@@ -43920,11 +43920,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_TooltipContent: {
@@ -43954,11 +43954,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_DrawerFrame: {
@@ -43988,11 +43988,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_Progress: {
@@ -44022,11 +44022,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_TooltipArrow: {
@@ -44056,11 +44056,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_SliderTrackActive: {
@@ -44090,11 +44090,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_SliderTrack: {
@@ -44124,11 +44124,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_SliderThumb: {
@@ -44158,11 +44158,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_Tooltip: {
@@ -44192,11 +44192,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_ProgressIndicator: {
@@ -44226,11 +44226,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_SheetOverlay: {
@@ -44260,11 +44260,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_DialogOverlay: {
@@ -44294,11 +44294,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_ModalOverlay: {
@@ -44328,11 +44328,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_Input: {
@@ -44362,11 +44362,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt1_TextArea: {
@@ -44396,11 +44396,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_ListItem: {
@@ -44430,11 +44430,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_Card: {
@@ -44464,11 +44464,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_Button: {
@@ -44498,11 +44498,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_Checkbox: {
@@ -44532,11 +44532,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_Switch: {
@@ -44566,11 +44566,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_SwitchThumb: {
@@ -44600,11 +44600,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_TooltipContent: {
@@ -44634,11 +44634,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_DrawerFrame: {
@@ -44668,11 +44668,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_Progress: {
@@ -44702,11 +44702,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_TooltipArrow: {
@@ -44736,11 +44736,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_SliderTrackActive: {
@@ -44770,11 +44770,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_SliderTrack: {
@@ -44804,11 +44804,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_SliderThumb: {
@@ -44838,11 +44838,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_Tooltip: {
@@ -44872,11 +44872,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_ProgressIndicator: {
@@ -44906,11 +44906,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_SheetOverlay: {
@@ -44940,11 +44940,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_DialogOverlay: {
@@ -44974,11 +44974,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_ModalOverlay: {
@@ -45008,11 +45008,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_Input: {
@@ -45042,11 +45042,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_alt2_TextArea: {
@@ -45076,11 +45076,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_ListItem: {
@@ -45110,11 +45110,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_Card: {
@@ -45144,11 +45144,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_Button: {
@@ -45178,11 +45178,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_Checkbox: {
@@ -45212,11 +45212,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_Switch: {
@@ -45246,11 +45246,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_SwitchThumb: {
@@ -45280,11 +45280,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_TooltipContent: {
@@ -45314,11 +45314,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_DrawerFrame: {
@@ -45348,11 +45348,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_Progress: {
@@ -45382,11 +45382,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_TooltipArrow: {
@@ -45416,11 +45416,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_SliderTrackActive: {
@@ -45450,11 +45450,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_SliderTrack: {
@@ -45484,11 +45484,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_SliderThumb: {
@@ -45518,11 +45518,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_Tooltip: {
@@ -45552,11 +45552,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_ProgressIndicator: {
@@ -45586,11 +45586,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_SheetOverlay: {
@@ -45620,11 +45620,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_DialogOverlay: {
@@ -45654,11 +45654,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_ModalOverlay: {
@@ -45688,11 +45688,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_Input: {
@@ -45722,11 +45722,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_active_TextArea: {
@@ -45756,11 +45756,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_ListItem: {
@@ -45790,11 +45790,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_Card: {
@@ -45824,11 +45824,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_Button: {
@@ -45858,11 +45858,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_Checkbox: {
@@ -45892,11 +45892,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_Switch: {
@@ -45926,11 +45926,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_SwitchThumb: {
@@ -45960,11 +45960,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_TooltipContent: {
@@ -45994,11 +45994,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_DrawerFrame: {
@@ -46028,11 +46028,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_Progress: {
@@ -46062,11 +46062,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_TooltipArrow: {
@@ -46096,11 +46096,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_SliderTrackActive: {
@@ -46130,11 +46130,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_SliderTrack: {
@@ -46164,11 +46164,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_SliderThumb: {
@@ -46198,11 +46198,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_Tooltip: {
@@ -46232,11 +46232,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_ProgressIndicator: {
@@ -46266,11 +46266,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_SheetOverlay: {
@@ -46300,11 +46300,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_DialogOverlay: {
@@ -46334,11 +46334,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_ModalOverlay: {
@@ -46368,11 +46368,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_Input: {
@@ -46402,11 +46402,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_TextArea: {
@@ -46436,11 +46436,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1: {
@@ -46470,11 +46470,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2: {
@@ -46504,11 +46504,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active: {
@@ -46538,11 +46538,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_ListItem: {
@@ -46572,11 +46572,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_Card: {
@@ -46606,11 +46606,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_Button: {
@@ -46640,11 +46640,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_Checkbox: {
@@ -46674,11 +46674,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_Switch: {
@@ -46708,11 +46708,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_SwitchThumb: {
@@ -46742,11 +46742,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_TooltipContent: {
@@ -46776,11 +46776,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_DrawerFrame: {
@@ -46810,11 +46810,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_Progress: {
@@ -46844,11 +46844,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_TooltipArrow: {
@@ -46878,11 +46878,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_SliderTrackActive: {
@@ -46912,11 +46912,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_SliderTrack: {
@@ -46946,11 +46946,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_SliderThumb: {
@@ -46980,11 +46980,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_Tooltip: {
@@ -47014,11 +47014,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_ProgressIndicator: {
@@ -47048,11 +47048,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_SheetOverlay: {
@@ -47082,11 +47082,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_DialogOverlay: {
@@ -47116,11 +47116,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_ModalOverlay: {
@@ -47150,11 +47150,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_Input: {
@@ -47184,11 +47184,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt1_TextArea: {
@@ -47218,11 +47218,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_ListItem: {
@@ -47252,11 +47252,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_Card: {
@@ -47286,11 +47286,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_Button: {
@@ -47320,11 +47320,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_Checkbox: {
@@ -47354,11 +47354,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_Switch: {
@@ -47388,11 +47388,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_SwitchThumb: {
@@ -47422,11 +47422,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_TooltipContent: {
@@ -47456,11 +47456,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_DrawerFrame: {
@@ -47490,11 +47490,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_Progress: {
@@ -47524,11 +47524,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_TooltipArrow: {
@@ -47558,11 +47558,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_SliderTrackActive: {
@@ -47592,11 +47592,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_SliderTrack: {
@@ -47626,11 +47626,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_SliderThumb: {
@@ -47660,11 +47660,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_Tooltip: {
@@ -47694,11 +47694,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_ProgressIndicator: {
@@ -47728,11 +47728,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_SheetOverlay: {
@@ -47762,11 +47762,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_DialogOverlay: {
@@ -47796,11 +47796,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_ModalOverlay: {
@@ -47830,11 +47830,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_Input: {
@@ -47864,11 +47864,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_alt2_TextArea: {
@@ -47898,11 +47898,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_ListItem: {
@@ -47932,11 +47932,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_Card: {
@@ -47966,11 +47966,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_Button: {
@@ -48000,11 +48000,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_Checkbox: {
@@ -48034,11 +48034,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_Switch: {
@@ -48068,11 +48068,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_SwitchThumb: {
@@ -48102,11 +48102,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_TooltipContent: {
@@ -48136,11 +48136,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_DrawerFrame: {
@@ -48170,11 +48170,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_Progress: {
@@ -48204,11 +48204,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_TooltipArrow: {
@@ -48238,11 +48238,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_SliderTrackActive: {
@@ -48272,11 +48272,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_SliderTrack: {
@@ -48306,11 +48306,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_SliderThumb: {
@@ -48340,11 +48340,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_Tooltip: {
@@ -48374,11 +48374,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_ProgressIndicator: {
@@ -48408,11 +48408,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_SheetOverlay: {
@@ -48442,11 +48442,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_DialogOverlay: {
@@ -48476,11 +48476,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_ModalOverlay: {
@@ -48510,11 +48510,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_Input: {
@@ -48544,11 +48544,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     light_gray_active_TextArea: {
@@ -48578,11 +48578,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_ListItem: {
@@ -48612,11 +48612,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_Card: {
@@ -48646,11 +48646,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_Button: {
@@ -48680,11 +48680,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_Checkbox: {
@@ -48714,11 +48714,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_Switch: {
@@ -48748,11 +48748,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_SwitchThumb: {
@@ -48782,11 +48782,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_TooltipContent: {
@@ -48816,11 +48816,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_DrawerFrame: {
@@ -48850,11 +48850,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_Progress: {
@@ -48884,11 +48884,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_TooltipArrow: {
@@ -48918,11 +48918,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_SliderTrackActive: {
@@ -48952,11 +48952,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_SliderTrack: {
@@ -48986,11 +48986,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_SliderThumb: {
@@ -49020,11 +49020,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_Tooltip: {
@@ -49054,11 +49054,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_ProgressIndicator: {
@@ -49088,11 +49088,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_SheetOverlay: {
@@ -49122,11 +49122,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_DialogOverlay: {
@@ -49156,11 +49156,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_ModalOverlay: {
@@ -49190,11 +49190,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_Input: {
@@ -49224,11 +49224,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_TextArea: {
@@ -49258,11 +49258,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1: {
@@ -49292,11 +49292,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2: {
@@ -49326,11 +49326,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active: {
@@ -49360,11 +49360,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_ListItem: {
@@ -49394,11 +49394,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_Card: {
@@ -49428,11 +49428,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_Button: {
@@ -49462,11 +49462,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_Checkbox: {
@@ -49496,11 +49496,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_Switch: {
@@ -49530,11 +49530,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_SwitchThumb: {
@@ -49564,11 +49564,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_TooltipContent: {
@@ -49598,11 +49598,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_DrawerFrame: {
@@ -49632,11 +49632,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_Progress: {
@@ -49666,11 +49666,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_TooltipArrow: {
@@ -49700,11 +49700,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_SliderTrackActive: {
@@ -49734,11 +49734,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_SliderTrack: {
@@ -49768,11 +49768,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_SliderThumb: {
@@ -49802,11 +49802,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_Tooltip: {
@@ -49836,11 +49836,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_ProgressIndicator: {
@@ -49870,11 +49870,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_SheetOverlay: {
@@ -49904,11 +49904,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_DialogOverlay: {
@@ -49938,11 +49938,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_ModalOverlay: {
@@ -49972,11 +49972,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_Input: {
@@ -50006,11 +50006,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt1_TextArea: {
@@ -50040,11 +50040,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_ListItem: {
@@ -50074,11 +50074,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_Card: {
@@ -50108,11 +50108,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_Button: {
@@ -50142,11 +50142,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_Checkbox: {
@@ -50176,11 +50176,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_Switch: {
@@ -50210,11 +50210,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_SwitchThumb: {
@@ -50244,11 +50244,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_TooltipContent: {
@@ -50278,11 +50278,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_DrawerFrame: {
@@ -50312,11 +50312,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_Progress: {
@@ -50346,11 +50346,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_TooltipArrow: {
@@ -50380,11 +50380,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_SliderTrackActive: {
@@ -50414,11 +50414,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_SliderTrack: {
@@ -50448,11 +50448,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_SliderThumb: {
@@ -50482,11 +50482,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_Tooltip: {
@@ -50516,11 +50516,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_ProgressIndicator: {
@@ -50550,11 +50550,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_SheetOverlay: {
@@ -50584,11 +50584,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_DialogOverlay: {
@@ -50618,11 +50618,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_ModalOverlay: {
@@ -50652,11 +50652,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_Input: {
@@ -50686,11 +50686,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_alt2_TextArea: {
@@ -50720,11 +50720,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_ListItem: {
@@ -50754,11 +50754,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_Card: {
@@ -50788,11 +50788,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_Button: {
@@ -50822,11 +50822,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_Checkbox: {
@@ -50856,11 +50856,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_Switch: {
@@ -50890,11 +50890,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_SwitchThumb: {
@@ -50924,11 +50924,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_TooltipContent: {
@@ -50958,11 +50958,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_DrawerFrame: {
@@ -50992,11 +50992,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_Progress: {
@@ -51026,11 +51026,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_TooltipArrow: {
@@ -51060,11 +51060,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_SliderTrackActive: {
@@ -51094,11 +51094,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_SliderTrack: {
@@ -51128,11 +51128,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_SliderThumb: {
@@ -51162,11 +51162,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_Tooltip: {
@@ -51196,11 +51196,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_ProgressIndicator: {
@@ -51230,11 +51230,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_SheetOverlay: {
@@ -51264,11 +51264,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_DialogOverlay: {
@@ -51298,11 +51298,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_ModalOverlay: {
@@ -51332,11 +51332,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_Input: {
@@ -51366,11 +51366,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
     dark_gray_active_TextArea: {
@@ -51400,11 +51400,11 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
+        borderColorPress: string;
+        borderColorFocus: string;
         backgroundStrong: string;
         backgroundTransparent: string;
         colorTransparent: string;
-        borderColorFocus: string;
-        borderColorPress: string;
         placeholderColor: string;
     };
 };

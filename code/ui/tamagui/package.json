@@ -121,6 +121,7 @@
     "@tamagui/shapes": "workspace:*",
     "@tamagui/sheet": "workspace:*",
     "@tamagui/slider": "workspace:*",
+    "@tamagui/spacer": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/switch": "workspace:*",
     "@tamagui/tabs": "workspace:*",

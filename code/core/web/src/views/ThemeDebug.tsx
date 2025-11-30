@@ -60,7 +60,7 @@ export function ThemeDebug({
                 name: themeState.name,
                 color1: themeState.theme.color1.val,
                 parentId: themeState.parentId,
-                inverses: themeState.inverses,
+                // inverses: themeState.inverses,
                 isNew: themeState.isNew,
                 themeProps: {
                   name: themeProps.name,

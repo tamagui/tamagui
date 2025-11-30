@@ -18,7 +18,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   inMenu?: boolean
 }) {
   const isExternal = external || href.startsWith('http')
-  const ref = useRef<any>(undefined)
+  const ref = useRef<any>(null)
 
   return (
     <Link

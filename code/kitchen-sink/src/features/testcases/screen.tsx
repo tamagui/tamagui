@@ -10,14 +10,14 @@ import * as TestCases from '../../usecases'
 export function TestCasesScreen() {
   return (
     <ScrollView>
-      <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$background" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
         <H2>All Test Cases</H2>
-        <YStack gap="$4" maw={600}>
-          <YGroup size="$4" separator={<Separator />}>
+        <YStack gap="$4" maxW={600}>
+          <YGroup size="$4">
             {Object.keys(TestCases).map((page) => {
               return (
                 <YGroup.Item key={page}>
-                  <LinkListItem href={`/test/${page}`} pressTheme size="$4">
+                  <LinkListItem href={`/test/${page}`} size="$4">
                     {page}
                   </LinkListItem>
                 </YGroup.Item>

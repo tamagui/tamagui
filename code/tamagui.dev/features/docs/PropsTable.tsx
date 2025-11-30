@@ -104,7 +104,6 @@ export function PropsTable({
                       flex={2}
                       minW="30%"
                       items="center"
-                      separator={<Separator self="stretch" vertical mx="$3.5" my="$2" />}
                       $xs={{
                         flexDirection: 'column',
                         items: 'flex-start',
@@ -115,7 +114,7 @@ export function PropsTable({
                         opacity={0.8}
                         fontFamily="$mono"
                         overflow="hidden"
-                        ellipse
+                        ellipsis
                         mr="auto"
                       >
                         {type}

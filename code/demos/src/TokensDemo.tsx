@@ -1,8 +1,7 @@
-import React from 'react'
 import type { Tokens } from '@tamagui/core'
 import { getConfig } from '@tamagui/core'
-
-import { Button, H2, H3, H4, Separator, Square, XGroup, XStack, YStack } from 'tamagui'
+import React from 'react'
+import { Button, H2, H3, H4, Square, XGroup, XStack, YStack } from 'tamagui'
 
 type Section = 'spaceNegative' | keyof Tokens
 
@@ -37,7 +36,6 @@ export function TokensDemo() {
               <Button
                 size="$3"
                 theme={section === key ? 'accent' : null}
-                fontFamily="$silkscreen"
                 onPress={() => setSection(key)}
               >
                 {name}
@@ -69,7 +67,7 @@ function SizeSection({ section }: { section: Section }) {
   return (
     <YStack flex={1} gap="$4">
       <H2>Sizes</H2>
-      <YStack width="100%" gap="$2" separator={<Separator />}>
+      <YStack width="100%" gap="$2">
         {(section === 'spaceNegative' ? spaceTokensNegative : spaceTokens).map(
           (token) => {
             return (

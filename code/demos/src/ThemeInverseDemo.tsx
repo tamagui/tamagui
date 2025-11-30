@@ -22,7 +22,9 @@ function Buttons(props: { name: string; title: string }) {
     <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
       <H5>{props.title}</H5>
       <Button>{props.name}</Button>
-      <Button themeInverse>inversed</Button>
+
+      <Button theme="accent">inversed</Button>
+
       <Button theme="alt1">{props.name}_alt1</Button>
       <Theme name="yellow">
         <Button>{props.name.split('_')[0] + '_yellow'}</Button>

@@ -26,9 +26,9 @@ export declare function useCheckbox<R extends View, P extends CheckboxProps>(pro
     bubbleInput: import("react/jsx-runtime").JSX.Element | null;
     checkboxRef: (node: R | null) => void;
     checkboxProps: {
-        role: "checkbox";
+        role: string;
         'aria-labelledby': string | undefined;
-        'aria-checked': boolean | "mixed";
+        'aria-checked': string | boolean;
     } & Omit<P, "disabled" | "labelledBy" | "name" | "required" | "value" | "onCheckedChange"> & {
         onPress: import("@tamagui/web").EventHandler<import("react-native").GestureResponderEvent> | undefined;
         type?: string | undefined;

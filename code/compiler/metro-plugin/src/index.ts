@@ -3,7 +3,11 @@ import {
   loadTamaguiBuildConfigSync,
   type TamaguiOptions,
 } from '@tamagui/static'
-import type { IntermediateConfigT } from 'metro-config'
+import type { ConfigT } from 'metro-config'
+
+// Support both old and new Metro versions
+// Make the config mutable since we need to modify it
+type MetroConfig = { -readonly [K in keyof ConfigT]: ConfigT[K] }
 
 export type MetroTamaguiOptions = TamaguiOptions & {
   /**
@@ -16,9 +20,9 @@ export type MetroTamaguiOptions = TamaguiOptions & {
 }
 
 export function withTamagui(
-  metroConfig: Partial<IntermediateConfigT>,
+  metroConfig: Partial<MetroConfig>,
   optionsIn?: MetroTamaguiOptions
-) {
+): MetroConfig {
   const { cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
 
   const options = {
@@ -56,5 +60,5 @@ export function withTamagui(
     tamaguiCssInterop: cssInterop,
   }
 
-  return metroConfig
+  return metroConfig as MetroConfig
 }
