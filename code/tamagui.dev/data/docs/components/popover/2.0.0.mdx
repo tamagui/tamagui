@@ -116,7 +116,7 @@ export default () => (
 
 ## Scoping
 
-Popover support scoping which lets you mount one or more Popover instances at
+Popover supports scoping which lets you mount one or more Popover instances at
 the root of your app, while having a deeply nested child Trigger or Content
 attach to the proper parent Popover instance.
 
@@ -140,7 +140,7 @@ export default ({ children }) => (
       <Popover.ScrollView>{/* ... */}</Popover.ScrollView>
     </Popover.Content>
 
-    {/* the rest of of your app, note that it's inside of Popover */}
+    {/* the rest of your app, note that it's inside of Popover */}
     {children}
   </Popover>
 )
@@ -174,7 +174,7 @@ Contains every component for the popover.
       name: 'size',
       type: 'SizeTokens',
       required: false,
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+      description: `Passes size down to all sub-components when set for padding, arrow, borderRadius.`,
     },
     {
       name: 'placement',
@@ -242,7 +242,7 @@ For most of these properties, you'll want to reference the
 
 <Notice>
   If using `modal={true}` (which is `true` by default), refer to the
-  [PortalProvider installation](/ui/popover/1.83.0#portalprovider) for more
+  [PortalProvider installation](#portalprovider) for more
   information.
 </Notice>
 
@@ -389,5 +389,5 @@ management. Can be used to control focus behavior from a parent component.
 
 Must be nested inside Content. Renders as a plain React Native ScrollView. If
 used alongside `<Adapt />` and Sheet, Tamagui will automatically know to remove
-this ScrollView when swapping into the Sheet, as the Sheet must use it's own
+this ScrollView when swapping into the Sheet, as the Sheet must use its own
 ScrollView that handles special logic for interactions with dragging.
