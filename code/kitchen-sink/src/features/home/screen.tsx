@@ -41,7 +41,7 @@ export function HomeScreen() {
   // )
 
   return (
-    <ScrollView>
+    <ScrollView testID="home-scroll-view">
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
@@ -64,7 +64,13 @@ export function HomeScreen() {
 
                   return (
                     <YGroup.Item key={route}>
-                      <LinkListItem bg="$color1" href={route} pressTheme size="$4">
+                      <LinkListItem
+                        bg="$color1"
+                        href={route}
+                        pressTheme
+                        size="$4"
+                        testID={(page as any).testID}
+                      >
                         {page.title}
                       </LinkListItem>
                     </YGroup.Item>
@@ -115,6 +121,7 @@ const demos = [
       {
         title: 'Test Cases',
         route: '/tests',
+        testID: 'home-test-cases-link',
       },
     ],
   },
