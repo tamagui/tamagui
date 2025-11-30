@@ -24,7 +24,7 @@ on:
         description: "Either 'Debug' or 'Release'."
     outputs:
       build-hash:
-        description: "A hash to identify the build."
+        description: "A hash to identify the build (expo fingerprint)."
         value: ${{ jobs.build-ios.outputs.build-hash }}
       built-app-cache-key:
         description: "The GitHub Actions cache key of the built .app, can be used in subsequent workflows to get the built app from cache using this key."
@@ -42,8 +42,8 @@ jobs:
       pull-requests: read
     timeout-minutes: 60
     outputs:
-      built-app-cache-key: ${{ steps.check-has-build.outputs.cache-primary-key || steps.pre-check-has-build.outputs.cache-primary-key }} # The order is important here, since in the "pre-check-has-build" step, it's possible that the build hash part of the key is "null" - in such case, the cache won't be found at that step and the `check-has-build` step will be executed. So it's always safe to place the `check-has-build` before the `pre-check-has-build` step for this condition.
-      build-hash: ${{ steps.calculate-build-hash.outputs.build_hash || steps.get-build-hash-from-cache.outputs.build_hash }} # Same as above, the order is important here.
+      built-app-cache-key: ${{ steps.check-has-build.outputs.cache-primary-key || steps.pre-check-has-build.outputs.cache-primary-key }}
+      build-hash: ${{ steps.calculate-fingerprint.outputs.fingerprint || steps.get-fingerprint-from-cache.outputs.fingerprint }}
       built-app-path: ${{ steps.get-built-app-path.outputs.built_app_path }}
     defaults:
       run:
@@ -63,58 +63,52 @@ jobs:
           echo "Built app path: $BUILT_APP_PATH"
           echo "built_app_path=$BUILT_APP_PATH" >> $GITHUB_OUTPUT
 
-      - name: Calculate Pre-Build Hash
-        id: calculate-pre-build-hash
+      - name: Calculate Pre-Fingerprint Hash
+        id: calculate-pre-fingerprint
         env:
-          # A hash that can save us more time if we can already know that the build hash will not change.
-          #
-          # Calculating the build_hash relies on generated files, for example, `Podfile.lock`, and it’ll take some time to run `yarn install`, `expo prebuild` and `pod install` in order to get that. But if `yarn.lock` didn’t change, there’s no likely that `Podfile.lock` will change - we can leverage that and skip some installation steps.
-          #
-          # This hash MUST be different if the build_hash will be different.
-          #
-          # This hash can be different if the build_hash remains the same. For example, if `yarn.lock` changes, `Podfile.lock` may not change if the updated package contains no native code.
-          PRE_BUILD_HASH: ${{ hashFiles('yarn.lock', format('{0}/app.json', env.test_container_app_path), 'packages/vxrn/expo-plugin.cjs') }}
+          # A hash that represents yarn.lock + app.json - if these haven't changed,
+          # the fingerprint likely hasn't changed either. This lets us skip yarn install
+          # and prebuild if we have a cached fingerprint for this pre-fingerprint hash.
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('yarn.lock', format('{0}/app.json', env.test_container_app_path), 'packages/vxrn/expo-plugin.cjs') }}
         run: |
-          if [ -z "$PRE_BUILD_HASH" ]; then
-            echo '[ERROR] Failed to calculate pre-build hash.'
+          if [ -z "$PRE_FINGERPRINT_HASH" ]; then
+            echo '[ERROR] Failed to calculate pre-fingerprint hash.'
           fi
-          echo "Pre-build hash: $PRE_BUILD_HASH"
-          echo "pre_build_hash=$PRE_BUILD_HASH" >> $GITHUB_OUTPUT
+          echo "Pre-fingerprint hash: $PRE_FINGERPRINT_HASH"
+          echo "pre_fingerprint_hash=$PRE_FINGERPRINT_HASH" >> $GITHUB_OUTPUT
 
-      - name: Read Cached Build Hash
-        id: get-build-hash-from-cache
+      - name: Read Cached Fingerprint
+        id: get-fingerprint-from-cache
         env:
           KV_STORE_REDIS_REST_URL: ${{ secrets.KV_STORE_REDIS_REST_URL }}
           KV_STORE_REDIS_REST_TOKEN: ${{ secrets.KV_STORE_REDIS_REST_TOKEN }}
         run: |
-          BUILD_HASH_FROM_CACHE=$(curl "$KV_STORE_REDIS_REST_URL/get/${{ env.app_id }}-build-hash-from-pre-build-hash-${{ steps.calculate-pre-build-hash.outputs.pre_build_hash }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN" | jq -r '.result')
+          FINGERPRINT_FROM_CACHE=$(curl "$KV_STORE_REDIS_REST_URL/get/${{ env.app_id }}-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN" | jq -r '.result')
 
-          if [ "$BUILD_HASH_FROM_CACHE" != "null" ]; then
-            curl -X POST "$KV_STORE_REDIS_REST_URL/EXPIRE/${{ env.app_id }}-build-hash-from-pre-build-hash-${{ steps.calculate-pre-build-hash.outputs.pre_build_hash }}/2592000" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN" # Reset TTL to 30 days
-            echo "Build hash from cache: $BUILD_HASH_FROM_CACHE"
-            echo "build_hash=$BUILD_HASH_FROM_CACHE" >> $GITHUB_OUTPUT
+          if [ "$FINGERPRINT_FROM_CACHE" != "null" ]; then
+            curl -X POST "$KV_STORE_REDIS_REST_URL/EXPIRE/${{ env.app_id }}-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}/2592000" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN" # Reset TTL to 30 days
+            echo "Fingerprint from cache: $FINGERPRINT_FROM_CACHE"
+            echo "fingerprint=$FINGERPRINT_FROM_CACHE" >> $GITHUB_OUTPUT
           else
-            echo 'No cached build hash found.'
-            echo "build_hash=null" >> $GITHUB_OUTPUT
+            echo 'No cached fingerprint found.'
+            echo "fingerprint=null" >> $GITHUB_OUTPUT
           fi
 
       - name: Check If Build Already Exists
         uses: actions/cache/restore@v4
         id: pre-check-has-build
-        if: ${{ steps.get-build-hash-from-cache.outputs.build_hash != 'null' }}
+        if: ${{ steps.get-fingerprint-from-cache.outputs.fingerprint != 'null' }}
         with:
-          key: ${{ env.app_id }}-${{ inputs.configuration }}-${{ steps.get-build-hash-from-cache.outputs.build_hash }}
+          key: ${{ env.app_id }}-${{ inputs.configuration }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
           lookup-only: true
           path: ${{ steps.get-built-app-path.outputs.built_app_path }}
 
-      # The steps below are somehow WET (Write Everything Twice) since GitHub Actions doesn't support early exit at the time of writing.
-      # So we basically add a if condition to every step below to skip them if we have a cache hit.
+      # The steps below are skipped if we have a cache hit
 
       - name: Install
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         uses: ./.github/actions/install
         with:
-          # To save time, only install dependencies for the test container app
           workspace-focus: ${{ env.test_app_package_name }}
 
       - name: Prebuild
@@ -137,34 +131,33 @@ jobs:
         run: |
           pod install --project-directory=ios
 
-      - name: Calculate Build Hash
+      - name: Calculate Fingerprint
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
-        id: calculate-build-hash
-        env:
-          # We need to list all files that will affect native code in hashFiles.
-          BUILD_HASH: ${{ hashFiles(format('{0}/ios/Podfile.lock', env.test_container_app_path), format('{0}/app.json', env.test_container_app_path), 'packages/vxrn/expo-plugin.cjs') }}
+        id: calculate-fingerprint
         run: |
-          if [ -z "$BUILD_HASH" ]; then
-            echo '[ERROR] Failed to calculate build hash.'
+          # Use expo fingerprint for accurate native dependency detection
+          FINGERPRINT=$(npx @expo/fingerprint fingerprint:generate --platform ios | jq -r '.hash')
+          if [ -z "$FINGERPRINT" ]; then
+            echo '[ERROR] Failed to calculate fingerprint.'
             exit 1
           fi
-          echo "Build hash: $BUILD_HASH"
-          echo "build_hash=$BUILD_HASH" >> $GITHUB_OUTPUT
+          echo "Fingerprint: $FINGERPRINT"
+          echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
 
-      - name: Write Build Hash
+      - name: Write Fingerprint to Cache
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         env:
           KV_STORE_REDIS_REST_URL: ${{ secrets.KV_STORE_REDIS_REST_URL }}
           KV_STORE_REDIS_REST_TOKEN: ${{ secrets.KV_STORE_REDIS_REST_TOKEN }}
         run: |
-          curl -X POST "$KV_STORE_REDIS_REST_URL/SETEX/${{ env.app_id }}-build-hash-from-pre-build-hash-${{ steps.calculate-pre-build-hash.outputs.pre_build_hash }}/2592000/${{ steps.calculate-build-hash.outputs.build_hash }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN" # Save and set TTL to 30 days
+          curl -X POST "$KV_STORE_REDIS_REST_URL/SETEX/${{ env.app_id }}-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}/2592000/${{ steps.calculate-fingerprint.outputs.fingerprint }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN"
 
       - name: Check If Build Already Exists
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         uses: actions/cache/restore@v4
         id: check-has-build
         with:
-          key: ${{ env.app_id }}-${{ inputs.configuration }}-${{ steps.calculate-build-hash.outputs.build_hash }}
+          key: ${{ env.app_id }}-${{ inputs.configuration }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
           lookup-only: true
           path: ${{ steps.get-built-app-path.outputs.built_app_path }}
 
@@ -175,11 +168,6 @@ jobs:
         env:
           cache-name: ${{ env.app_id }}-build
         with:
-          # This cache can be huge, so we share it among all configurations instead of creating a cache for each one.
-          # key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.configuration }}-${{ steps.calculate-build-hash.outputs.build_hash }}
-          # restore-keys: |
-          #   ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.configuration }}-
-          #   ${{ runner.os }}-${{ env.cache-name }}-
           key: ${{ runner.os }}-${{ env.cache-name }}
           path: |
             ${{ env.test_container_app_path }}/build
@@ -187,7 +175,7 @@ jobs:
       - name: Build
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
         run: |
-          set -o pipefail # Since we pipe the output to xcpretty, we need this to fail this step if `xcrun xcodebuild` fails
+          set -o pipefail
           xcrun xcodebuild -scheme '${{ env.ios_app_name }}' \
             -workspace 'ios/${{ env.ios_app_name }}.xcworkspace' \
             -configuration ${{ inputs.configuration }} \
@@ -217,13 +205,3 @@ jobs:
           key: ${{ steps.restore-build-cache.outputs.cache-primary-key }}
           path: |
             ${{ env.test_container_app_path }}/build
-
-      # Not useful since it's hard to find which run that actually built the app. Instead, we re-upload the app to artifacts in subsequent workflows if tests failed.
-      # - name: Upload Built App to Artifacts
-      #   if: ${{ !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
-      #   uses: actions/upload-artifact@v4.3.1
-      #   continue-on-error: true
-      #   with:
-      #     name: $${{ format('{0}-{1}', env.app_id, inputs.configuration) }}
-      #     path: |
-      #       ${{ steps.get-built-app-path.outputs.built_app_path }}

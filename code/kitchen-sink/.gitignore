@@ -126,3 +126,9 @@ web-build/
 dist/
 
 # @end expo-cli
+
+# Detox
+e2e/artifacts/
+
+# Fingerprint cache (local testing)
+.fingerprint-cache.json

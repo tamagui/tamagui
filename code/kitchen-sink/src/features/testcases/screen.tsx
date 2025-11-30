@@ -9,7 +9,7 @@ import * as TestCases from '../../usecases'
 
 export function TestCasesScreen() {
   return (
-    <ScrollView>
+    <ScrollView testID="test-cases-scroll-view">
       <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} space>
         <H2>All Test Cases</H2>
         <YStack gap="$4" maw={600}>
@@ -17,7 +17,12 @@ export function TestCasesScreen() {
             {Object.keys(TestCases).map((page) => {
               return (
                 <YGroup.Item key={page}>
-                  <LinkListItem href={`/test/${page}`} pressTheme size="$4">
+                  <LinkListItem
+                    href={`/test/${page}`}
+                    pressTheme
+                    size="$4"
+                    testID={`test-case-${page}`}
+                  >
                     {page}
                   </LinkListItem>
                 </YGroup.Item>

@@ -65,8 +65,6 @@ jobs:
 
       - name: Install Dependencies
         uses: ./.github/actions/install
-        with:
-          workspace-focus: '@tamagui/kitchen-sink'
 
       - name: Start Metro Bundler
         run: |

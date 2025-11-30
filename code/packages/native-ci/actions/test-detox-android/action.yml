@@ -1,0 +1,70 @@
+name: 'Native CI - Android Detox Tests'
+description: 'Run Detox E2E tests on Android emulator'
+author: 'Tamagui'
+
+inputs:
+  project-root:
+    description: 'Path to the project root'
+    default: '.'
+  working-directory:
+    description: 'Working directory for running tests'
+    default: '.'
+  config:
+    description: 'Detox configuration name'
+    default: 'android.emu.ci.debug'
+  record-logs:
+    description: 'Record logs mode: none, failing, all'
+    default: 'all'
+  retries:
+    description: 'Number of test retries (0 = fail fast)'
+    default: '0'
+  api-level:
+    description: 'Android API level'
+    default: '30'
+  emulator-options:
+    description: 'Emulator options'
+    default: '-no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Install Detox CLI
+      shell: bash
+      run: npm install -g detox-cli
+
+    - name: Start Android Emulator and Run Tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: ${{ inputs.api-level }}
+        target: google_apis
+        arch: x86_64
+        profile: pixel_6
+        avd-name: test
+        ram-size: 4096M
+        heap-size: 1024M
+        force-avd-creation: false
+        emulator-boot-timeout: 900
+        disable-animations: true
+        emulator-options: ${{ inputs.emulator-options }}
+        working-directory: ${{ inputs.working-directory }}
+        pre-emulator-launch-script: |
+          adb start-server
+        script: |
+          SCRIPT_PATH=$(node -e "console.log(require.resolve('@tamagui/native-ci/src/run-detox-android.ts'))")
+          bun run "$SCRIPT_PATH" \
+            --headless \
+            --project-root "$PWD" \
+            --config "${{ inputs.config }}" \
+            --record-logs "${{ inputs.record-logs }}" \
+            --retries "${{ inputs.retries }}"

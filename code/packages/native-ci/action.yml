@@ -1,0 +1,98 @@
+name: 'Native CI - Fingerprint Cache'
+description: 'Generate Expo fingerprints and manage native build caching'
+author: 'Tamagui'
+
+inputs:
+  platform:
+    description: 'Platform to generate fingerprint for (ios or android)'
+    required: true
+  project-root:
+    description: 'Path to the Expo project root'
+    required: false
+    default: '.'
+  cache-prefix:
+    description: 'Prefix for cache keys'
+    required: false
+    default: 'native-build'
+  kv-url:
+    description: 'Redis KV REST API URL for fingerprint caching'
+    required: false
+  kv-token:
+    description: 'Redis KV REST API token'
+    required: false
+  pre-hash-files:
+    description: 'Comma-separated list of files for pre-fingerprint hash'
+    required: false
+    default: 'yarn.lock,app.json'
+
+outputs:
+  fingerprint:
+    description: 'The generated fingerprint hash'
+    value: ${{ steps.fingerprint.outputs.fingerprint }}
+  cache-key:
+    description: 'The cache key to use for this build'
+    value: ${{ steps.fingerprint.outputs.cache-key }}
+  pre-fingerprint-hash:
+    description: 'Quick pre-fingerprint hash'
+    value: ${{ steps.pre-hash.outputs.pre-fingerprint-hash }}
+  cache-hit:
+    description: 'Whether the fingerprint was found in cache'
+    value: ${{ steps.check-cache.outputs.cache-hit }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Calculate Pre-Fingerprint Hash
+      id: pre-hash
+      shell: bash
+      working-directory: ${{ inputs.project-root }}
+      run: |
+        FILES="${{ inputs.pre-hash-files }}"
+        HASH=$(echo "$FILES" | tr ',' '\n' | xargs -I{} cat {} 2>/dev/null | sha256sum | cut -c1-16)
+        echo "pre-fingerprint-hash=$HASH" >> $GITHUB_OUTPUT
+
+    - name: Check KV Cache for Fingerprint
+      id: kv-lookup
+      if: inputs.kv-url != '' && inputs.kv-token != ''
+      shell: bash
+      env:
+        KV_URL: ${{ inputs.kv-url }}
+        KV_TOKEN: ${{ inputs.kv-token }}
+      run: |
+        KEY="${{ inputs.platform }}-${{ inputs.cache-prefix }}-pre-${{ steps.pre-hash.outputs.pre-fingerprint-hash }}"
+        RESULT=$(curl -s "$KV_URL/get/$KEY" -H "Authorization: Bearer $KV_TOKEN" | jq -r '.result')
+        if [ "$RESULT" != "null" ]; then
+          echo "fingerprint=$RESULT" >> $GITHUB_OUTPUT
+          echo "found=true" >> $GITHUB_OUTPUT
+          # Extend TTL
+          curl -s -X POST "$KV_URL/EXPIRE/$KEY/2592000" -H "Authorization: Bearer $KV_TOKEN" > /dev/null
+        else
+          echo "found=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Generate Fingerprint
+      id: fingerprint
+      if: steps.kv-lookup.outputs.found != 'true'
+      shell: bash
+      working-directory: ${{ inputs.project-root }}
+      run: |
+        FINGERPRINT=$(npx @expo/fingerprint fingerprint:generate --platform ${{ inputs.platform }} | jq -r '.hash')
+        echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
+        echo "cache-key=${{ inputs.cache-prefix }}-${{ inputs.platform }}-$FINGERPRINT" >> $GITHUB_OUTPUT
+
+    - name: Use Cached Fingerprint
+      if: steps.kv-lookup.outputs.found == 'true'
+      shell: bash
+      run: |
+        echo "fingerprint=${{ steps.kv-lookup.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+        echo "cache-key=${{ inputs.cache-prefix }}-${{ inputs.platform }}-${{ steps.kv-lookup.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+
+    - name: Save Fingerprint to KV
+      if: inputs.kv-url != '' && inputs.kv-token != '' && steps.kv-lookup.outputs.found != 'true'
+      shell: bash
+      env:
+        KV_URL: ${{ inputs.kv-url }}
+        KV_TOKEN: ${{ inputs.kv-token }}
+      run: |
+        KEY="${{ inputs.platform }}-${{ inputs.cache-prefix }}-pre-${{ steps.pre-hash.outputs.pre-fingerprint-hash }}"
+        curl -s -X POST "$KV_URL/SETEX/$KEY/2592000/${{ steps.fingerprint.outputs.fingerprint }}" -H "Authorization: Bearer $KV_TOKEN" > /dev/null

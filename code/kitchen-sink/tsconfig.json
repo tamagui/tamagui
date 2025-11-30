@@ -3,6 +3,7 @@
   "compilerOptions": {
     "noEmit": true
   },
+  "exclude": ["e2e"],
   "references": [
     {
       "path": "../compiler/babel-plugin"

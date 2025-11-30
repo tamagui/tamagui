@@ -5,7 +5,7 @@
 
 import { Check, ChevronDown } from '@tamagui/lucide-icons'
 import React from 'react'
-import { Adapt, Button, Select, Sheet, XStack, YStack } from 'tamagui'
+import { Adapt, Button, Select, Sheet, Text, XStack, YStack } from 'tamagui'
 
 const items = [
   { name: 'Apple' },
@@ -20,7 +20,12 @@ function SelectComponent({ id }: { id: string }) {
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll>
-      <Select.Trigger testID={`${id}-trigger`} maxWidth={220} iconAfter={ChevronDown}>
+      <Select.Trigger
+        testID={`${id}-trigger`}
+        aria-label={`${id}-trigger`}
+        maxWidth={220}
+        iconAfter={ChevronDown}
+      >
         <Select.Value placeholder="Select a fruit" />
       </Select.Trigger>
 
@@ -50,6 +55,7 @@ function SelectComponent({ id }: { id: string }) {
                 key={item.name}
                 value={item.name.toLowerCase()}
                 testID={`${id}-option-${item.name.toLowerCase()}`}
+                accessibilityLabel={`${id}-option-${item.name.toLowerCase()}`}
               >
                 <Select.ItemText>{item.name}</Select.ItemText>
                 <Select.ItemIndicator marginLeft="auto">
@@ -73,6 +79,7 @@ export function SelectRemount() {
       <XStack gap="$2">
         <Button
           testID="toggle-mount-button"
+          aria-label="toggle-mount-button"
           onPress={() => setMounted((m) => !m)}
           theme={mounted ? 'green' : 'red'}
         >
@@ -81,6 +88,7 @@ export function SelectRemount() {
 
         <Button
           testID="remount-button"
+          aria-label="remount-button"
           onPress={() => {
             setMounted(false)
             setTimeout(() => {
@@ -103,14 +111,14 @@ export function SelectRemount() {
       )}
 
       <YStack padding="$2" bg="$backgroundHover" borderRadius="$2">
-        <XStack gap="$2">
+        <XStack gap="$2" width="100%">
           <YStack
             width={10}
             height={10}
             borderRadius={5}
             bg={mounted ? '$green10' : '$red10'}
           />
-          <YStack>{mounted ? `Mounted (key: ${key})` : 'Unmounted'}</YStack>
+          <Text>{mounted ? `Mounted (key: ${key})` : 'Unmounted'}</Text>
         </XStack>
       </YStack>
     </YStack>
