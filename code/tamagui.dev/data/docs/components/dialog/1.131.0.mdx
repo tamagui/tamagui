@@ -94,7 +94,7 @@ to the proper parent Dialog instance.
 
 In performance sensitive areas you may want to take advantage of this, it allows
 you to only need to render the Dialog.Trigger inside the sensitive area as
-Dialogs aren't the cheapest component - they has a lot of functionality.
+Dialogs aren't the cheapest component - they have a lot of functionality.
 
 Here's the basic anatomy of using `scope` and placing your Dialog higher up for
 performance:
@@ -115,7 +115,7 @@ export default ({ children }) => (
       </Dialog.Content>
     </Dialog.Portal>
 
-    {/* the rest of of your app, note that it's inside of Dialog */}
+    {/* the rest of your app, note that it's inside of Dialog */}
     {children}
   </Dialog>
 )
@@ -182,7 +182,7 @@ Contains every component for the dialog. Beyond
     {
       name: 'size',
       type: 'SizeTokens',
-      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+      description: `Passes size down to all sub-components when set for padding, arrow, borderRadius.`,
     },
     {
       name: 'open',

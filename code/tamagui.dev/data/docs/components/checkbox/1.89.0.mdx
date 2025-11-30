@@ -97,13 +97,13 @@ npm install @tamagui/checkbox
 
 <Tabs.Content value="headless">
 
-To use the headless switch, you want to import it from the
-`@tamagui/switch-headless` package. This package has no dependency on
+To use the headless checkbox, you want to import it from the
+`@tamagui/checkbox-headless` package. This package has no dependency on
 `@tamagui/core`, but still works off the react-native APIs.
-This means can bring your own style library.
+This means you can bring your own style library.
 
 ```bash
-npm install @tamagui/switch-headless
+npm install @tamagui/checkbox-headless
 ```
 
 </Tabs.Content>
@@ -132,7 +132,7 @@ export default () => (
 Use the `createCheckbox` export to create a fully custom checkbox that still
 uses the Tamagui styling system. This is similar to setting `unstyled`, but goes
 a bit further. It doesn't add any types for `size` or `unstyled`, and it won't
-automatically apply the `active` theme. If does pass the `checked` prop down as
+automatically apply the `active` theme. It does pass the `checked` prop down as
 indicated in the types of `createCheckbox`.
 
 ```tsx template=CheckboxUnstyled
