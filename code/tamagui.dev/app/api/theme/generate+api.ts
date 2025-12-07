@@ -1,10 +1,4 @@
 import { anthropic } from '@ai-sdk/anthropic'
-import { deepseek } from '@ai-sdk/deepseek'
-import { google } from '@ai-sdk/google'
-import { groq } from '@ai-sdk/groq'
-import { openai } from '@ai-sdk/openai'
-import { xai } from '@ai-sdk/xai'
-import { openrouter } from '@openrouter/ai-sdk-provider'
 import slugify from '@sindresorhus/slugify'
 import { generateText } from 'ai'
 import { z } from 'zod'
@@ -15,34 +9,12 @@ import { readBodyJSON } from '~/features/api/readBodyJSON'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
 
 const models = {
-  'gemini-2.0-pro-exp': () => google('gemini-2.0-pro-exp'),
-  'gemini-2.0-flash': () => google('gemini-2.0-flash'),
-  'gemini-2.0-flash-exp': () => google('gemini-2.0-flash-exp'),
-  'gemini-2.0-flash-thinking-exp': () => google('gemini-2.0-flash-thinking-exp'),
-  'gemini-1.5-pro-latest': () => google('gemini-1.5-pro-latest'),
-  'grok-beta': () => xai('grok-beta'),
-  'grok-2-1212': () => xai('grok-2-1212'),
-  'deepseek-chat': () => deepseek('deepseek-chat'),
-  'deepseek-reasoner': () => deepseek('deepseek-reasoner'),
-  'claude-3-7-sonnet': () => anthropic('claude-3-7-sonnet-20250219'),
-  'claude-3-5-sonnet-latest': () => anthropic('claude-3-5-sonnet-latest'),
-  'claude-3-5-haiku-latest': () => anthropic('claude-3-5-haiku-latest'),
-  'gpt-4o-mini': () => openai('gpt-4o-mini'),
-  'gpt-4o': () => openai('gpt-4o'),
-  'gpt-4': () => openai('gpt-4'),
-  'gpt-4-turbo': () => openai('gpt-4-turbo'),
-  o1: () => openai('o1'),
-  'o3-mini': () => openai('o3-mini'),
-  'or-o3-mini': () => openrouter('openai/o3-mini') as any,
-  'or-o1-mini': () => openrouter('openai/o1-mini') as any,
-  'or-deepseek-r1-distill-llama-70b': () =>
-    openrouter('deepseek/deepseek-r1-distill-llama-70b') as any,
-  'groq-r1-llama-70b': () => groq('deepseek-r1-distill-llama-70b'),
+  'claude-opus-4-5': () => anthropic('claude-opus-4-5-20251101'),
 } as const
 
 type ModelName = keyof typeof models
 
-const DEFAULT_MODEL: ModelName = 'claude-3-7-sonnet'
+const DEFAULT_MODEL: ModelName = 'claude-opus-4-5'
 
 const lightDarkVal = z.object({
   light: z.number(),
