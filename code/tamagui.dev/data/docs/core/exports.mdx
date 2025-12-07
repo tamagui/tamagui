@@ -3,7 +3,8 @@ title: 'Other exports'
 description: Helpful functions and constants
 ---
 
-Let's take a quick look through some of the useful other exports in `@tamagui/core`.
+Let's take a quick look through some of the useful other exports in
+`@tamagui/core`.
 
 ## Constants
 
@@ -13,7 +14,8 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 - `isWindowDefined` - `typeof window !== 'undefined'`
 - `isServer` - `isWeb && !isWindowDefined`.
 - `isClient` - `isWeb && isWindowDefined`.
-- `useIsomorphicLayoutEffect` - `isServer ? useEffect : useLayoutEffect`. Helper for SSR rendering without warnings.
+- `useIsomorphicLayoutEffect` - `isServer ? useEffect : useLayoutEffect`. Helper
+  for SSR rendering without warnings.
 - `isChrome` - client-side Chrome
 - `isWebTouchable` - web-only touch-device (client side only)
 - `isTouchable` - True for any touch device (client side only).
@@ -24,18 +26,21 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 ### getConfig
 
-The exported `getConfig` will return your fully parsed Tamagui config. This is safer than importing it directly as it avoids circular imports. In general you want to use `useTheme` to access themes, and `getTokens`/`getToken`/`getTokenValue` for tokens, but for other parts of the config this can be useful.
+The exported `getConfig` will return your fully parsed Tamagui config. This is
+safer than importing it directly as it avoids circular imports. In general you
+want to use `useTheme` to access themes, and
+`getTokens`/`getToken`/`getTokenValue` for tokens, but for other parts of the
+config this can be useful.
 
 ### insertFont
 
 ```tsx
-type insertFont = (
-  name: string,
-  fontIn: GenericFont
-) => ParsedFont
+type insertFont = (name: string, fontIn: GenericFont) => ParsedFont
 ```
 
-Will add a new font after initial createTamagui call. Where `GenericFont` is the same as a font passed to createTamagui, and `ParsedFont` is the font with the subkeys prefixed with `$` and turned into variable objects.
+Will add a new font after initial createTamagui call. Where `GenericFont` is the
+same as a font passed to createTamagui, and `ParsedFont` is the font with the
+subkeys prefixed with `$` and turned into variable objects.
 
 ### updateFont
 
@@ -47,7 +52,8 @@ The same as insertFont, but will update an existing font.
 type isTamaguiComponent (component: any; name?: string) => boolean
 ```
 
-If no name given, true if a Tamagui component, if name given ensures it's the specific named Tamagui component.
+If no name given, true if a Tamagui component, if name given ensures it's the
+specific named Tamagui component.
 
 ### isTamaguiElement
 
@@ -55,7 +61,8 @@ If no name given, true if a Tamagui component, if name given ensures it's the sp
 type isTamaguiElement (child: any; name?: string) => boolean
 ```
 
-If no name given, true if a Tamagui ReactElement, if name given ensures it's the specific named Tamagui component element.
+If no name given, true if a Tamagui ReactElement, if name given ensures it's the
+specific named Tamagui component element.
 
 ### getTokens
 
@@ -63,15 +70,19 @@ If no name given, true if a Tamagui ReactElement, if name given ensures it's the
 ;() => TokensParsed
 ```
 
-Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens. If you are looking to get a single token value, prefer `getToken` or `getTokenValue`.
+Returns the parsed Tamagui config object of all your tokens, can be used at
+runtime to get values from tokens. If you are looking to get a single token
+value, prefer `getToken` or `getTokenValue`.
 
 ### getToken
 
 ```tsx
-(name: Token, group?: keyof Tokens) => any
+;(name: Token, group?: keyof Tokens) => any
 ```
 
-Given the specific name of a token or a name + group, will return the value as either a variable on the web, or raw value on native. So if you define a size token with key `small` and value of `14`:
+Given the specific name of a token or a name + group, will return the value as
+either a variable on the web, or raw value on native. So if you define a size
+token with key `small` and value of `14`:
 
 ```tsx
 getToken('$size.small') // returns on web var(--size-small), native 14
@@ -81,10 +92,11 @@ getToken('$small', 'size') // returns on web var(--size-small), native 14
 ### getTokenValue
 
 ```tsx
-(name: Token, group?: keyof Tokens) => any
+;(name: Token, group?: keyof Tokens) => any
 ```
 
-Similar to getToken, but always returns the raw value rather than the variable name. If you define a size token with key `small` and value of `14`:
+Similar to getToken, but always returns the raw value rather than the variable
+name. If you define a size token with key `small` and value of `14`:
 
 ```tsx
 getTokenValue('$size.small') // returns 14
@@ -105,7 +117,8 @@ Take props, returns new object with all shorthand props expanded.
 themeable<Comp extends ReactComponentLike>(component: Comp): Comp
 ```
 
-A higher order component that accepts `theme` and `themeInverse`, rendering them onto `Theme` before rendering your component.
+A higher order component that accepts `theme` and `themeInverse`, rendering them
+onto `Theme` before rendering your component.
 
 ### getVariable
 
@@ -113,21 +126,31 @@ A higher order component that accepts `theme` and `themeInverse`, rendering them
 type getVariable = (value: Variable) => string
 ```
 
-If given a `Variable` - which comes from a parsed theme or token returned from `createTamagui`, `useTheme` or `getTokens` (read more [on the useTheme docs](/docs/core/use-theme)).
+If given a `Variable` - which comes from a parsed theme or token returned from
+`createTamagui`, `useTheme` or `getTokens` (read more
+[on the useTheme docs](/docs/core/use-theme)).
 
-Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `#fff` on other platforms.
+Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and
+`#fff` on other platforms.
 
 ### setOnLayoutStrategy
 
-This is a low-level utility to control `onLayout` performance. By default, Tamagui `onLayout` on the web uses the `"async"` strategy (see below), which gives a good balance of accuracy and performance. For extremely accurate to native `onLayout`, you can use `"sync"`, but it can cause performance issues in typical usage.
+This is a low-level utility to control `onLayout` performance. By default,
+Tamagui `onLayout` on the web uses the `"async"` strategy (see below), which
+gives a good balance of accuracy and performance. For extremely accurate to
+native `onLayout`, you can use `"sync"`, but it can cause performance issues in
+typical usage.
 
 Call `setOnLayoutStrategy` with a single string argument:
 
 - `"off"` will pause all `onLayout` callbacks from running.
 - `"sync"` will run every frame and update every frame if necessary.
-- `"async"` will use an async getBoundingClientRect strategy that avoids repaints/reflows, and also waits 2 frames of debouncing before triggering the callback.
+- `"async"` will use an async getBoundingClientRect strategy that avoids
+  repaints/reflows, and also waits 2 frames of debouncing before triggering the
+  callback.
 
-The `async` stretegy generally has great performance on web, and it will also ensure to call `onLayout` sync on mount the first time, so you avoid jitters.
+The `async` stretegy generally has great performance on web, and it will also
+ensure to call `onLayout` sync on mount the first time, so you avoid jitters.
 
 ---
 
@@ -135,7 +158,12 @@ The `async` stretegy generally has great performance on web, and it will also en
 
 ### useProps
 
-Pass in props that include media styles and shorthands, get back a flat object of props with the current media styles merged and shorthands expanded. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used in the props object. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
+Pass in props that include media styles and shorthands, get back a flat object
+of props with the current media styles merged and shorthands expanded. This is
+an advanced pattern that should be used sparingly, as it will trigger updates on
+every media query used in the props object. Helpful for more complex components
+that need to pass down props they are given to children (a common example being
+the `size` prop, if it's controlling children that also accept size).
 
 ```tsx
 // if props is:
@@ -149,7 +177,8 @@ function MyButton(props) {
 }
 ```
 
-You can pass an option to disable the shorthands expansion, and another option to resolve any token strings into their respective theme or token value:
+You can pass an option to disable the shorthands expansion, and another option
+to resolve any token strings into their respective theme or token value:
 
 ```tsx
 function MyButton(props) {
@@ -157,11 +186,16 @@ function MyButton(props) {
 }
 ```
 
-useProps takes a second argument, which is the same as useStyle, documented in the next section.
+useProps takes a second argument, which is the same as useStyle, documented in
+the next section.
 
 ### useStyle
 
-Pass in props that include media styles and shorthands, get back a flat style object with the current media styles merged, shorthands expanded, and all theme/token values resolved (into CSS variables on the web or values on native by default). This will remove any non-style values and will by default expand all variants and resolve all values.
+Pass in props that include media styles and shorthands, get back a flat style
+object with the current media styles merged, shorthands expanded, and all
+theme/token values resolved (into CSS variables on the web or values on native
+by default). This will remove any non-style values and will by default expand
+all variants and resolve all values.
 
 ```tsx
 // if props is:
@@ -179,7 +213,8 @@ function MyButton(props) {
 }
 ```
 
-It can take a couple options to control how it resolves values and handles shorthands:
+It can take a couple options to control how it resolves values and handles
+shorthands:
 
 ```tsx
 function MyButton(props) {
@@ -191,14 +226,17 @@ function MyButton(props) {
     // 'value' resolves to the raw theme/token string on all platforms (the same as useTheme()[name].val)
     resolveValues: 'value',
     // pass a Tamagui component to resolve any custom variants:
-    forComponent: CustomComponent
+    forComponent: CustomComponent,
   })
 }
 ```
 
 ### usePropsAndStyle
 
-Similar to the above two hooks, this returns your fully resolved/merged/media query flattened styles, but instead of returning _just_ props or _just_ style, it returns both of them split out, as well as returning the result of useTheme() and useMedia() that it uses internally:
+Similar to the above two hooks, this returns your fully resolved/merged/media
+query flattened styles, but instead of returning _just_ props or _just_ style,
+it returns both of them split out, as well as returning the result of useTheme()
+and useMedia() that it uses internally:
 
 ```tsx
 function MyButton(props) {
@@ -214,11 +252,33 @@ Returns the string name of the current theme.
 
 ### useIsTouchDevice
 
-SSR-friendly, only true on if native touchable or web touchable device (client side, not server side).
+SSR-friendly, only true on if native touchable or web touchable device (client
+side, not server side).
 
 ### useDidFinishSSR
 
-SSR-friendly, returns true if SSR has completed on the client, false before hydration done. On server it's always false.
+SSR-friendly, returns true if SSR has completed on the client, false before
+hydration done. On server it's always false.
+
+### ClientOnly
+
+A component that opts its children out of SSR. When wrapped in `ClientOnly`,
+Tamagui avoids double-renders in various places which results in faster
+client-side rendering.
+
+```tsx
+import { ClientOnly } from 'tamagui' // or '@tamagui/core'
+
+// Children will render only on the client, skipping SSR entirely
+<ClientOnly>
+  <MyClientOnlyComponent />
+</ClientOnly>
+
+// Can be conditionally enabled
+<ClientOnly enabled={shouldSkipSSR}>
+  <MyComponent />
+</ClientOnly>
+```
 
 ---
 

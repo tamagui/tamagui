@@ -61,8 +61,12 @@ function getPool(): Piscina {
     // Piscina emits 'error' events when workers are terminated and there are no pending tasks
     // Without this handler, Node.js throws the error as an uncaught exception
     piscinaPool.on('error', (err) => {
-      // suppress termination errors during shutdown
+      // suppress termination errors during shutdown or idle timeout
       if (isClosing) {
+        return
+      }
+      const message = err && typeof err === 'object' && 'message' in err ? String(err.message) : ''
+      if (message.includes('Terminating worker thread')) {
         return
       }
       // Log other errors for debugging
