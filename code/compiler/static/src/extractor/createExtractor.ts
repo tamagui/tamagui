@@ -1260,18 +1260,45 @@ export function createExtractor(
               }
 
               if (isValidStyleKey(name, staticConfig)) {
-                // $theme-, $platform-, $group- styles not be flattened for now (needs a bit more work to get right)
+                // $theme-, $group- styles should not be flattened (needs runtime handling)
+                // $platform- can be flattened if the platform matches
                 if (name[0] === '$') {
-                  if (
-                    name.startsWith('$theme-') ||
-                    name.startsWith('$platform-') ||
-                    name.startsWith('$group-')
-                  ) {
+                  if (name.startsWith('$theme-') || name.startsWith('$group-')) {
                     if (shouldPrintDebug) {
                       logger.info(`  ! not flattening media-like style: ${name}`)
                     }
                     inlined.set(name, true)
                     return attr
+                  }
+
+                  // $platform-web, $platform-native, $platform-ios, $platform-android
+                  if (name.startsWith('$platform-')) {
+                    const platformName = name.slice(10) // remove '$platform-'
+                    const isMatchingPlatform =
+                      platformName === platform ||
+                      (platformName === 'native' && platform === 'native') ||
+                      (platformName === 'web' && platform === 'web')
+
+                    if (isMatchingPlatform && typeof styleValue === 'object') {
+                      // Flatten the inner styles directly
+                      if (shouldPrintDebug) {
+                        logger.info(
+                          `  flattening $platform-${platformName}: ${JSON.stringify(styleValue)}`
+                        )
+                      }
+                      return Object.entries(styleValue).map(([key, val]) => ({
+                        type: 'style' as const,
+                        value: { [key]: val },
+                        name: key,
+                        attr: path.node,
+                      }))
+                    } else {
+                      // Platform doesn't match, skip these styles entirely
+                      if (shouldPrintDebug) {
+                        logger.info(`  ! skipping non-matching platform style: ${name}`)
+                      }
+                      return []
+                    }
                   }
                 }
                 if (shouldPrintDebug) {

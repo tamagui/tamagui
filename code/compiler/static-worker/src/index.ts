@@ -65,7 +65,8 @@ function getPool(): Piscina {
       if (isClosing) {
         return
       }
-      const message = err && typeof err === 'object' && 'message' in err ? String(err.message) : ''
+      const message =
+        err && typeof err === 'object' && 'message' in err ? String(err.message) : ''
       if (message.includes('Terminating worker thread')) {
         return
       }

@@ -437,7 +437,7 @@ test('$theme- styles are not flattened', async () => {
   expect(output?.js).toContain('$theme-dark')
 })
 
-test('$platform-web styles are not flattened', async () => {
+test('$platform-web styles are flattened on web', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -453,8 +453,9 @@ test('$platform-web styles are not flattened', async () => {
   `
   )
 
-  // $platform-web styles should NOT be flattened - they need runtime handling
-  // The component should not be converted to a plain div
-  expect(output?.js).toContain('View')
-  expect(output?.js).toContain('$platform-web')
+  // $platform-web styles SHOULD be flattened on web - the platform is known at compile time
+  // The component should be converted to a plain div with the styles applied
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('$platform-web')
+  expect(output?.styles).toContain('background-color')
 })
