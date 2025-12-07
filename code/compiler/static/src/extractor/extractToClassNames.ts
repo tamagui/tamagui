@@ -185,8 +185,27 @@ export async function extractToClassNames({
         const classNames: string[] = []
 
         for (const style of cssStyles) {
-          const mediaName = style[0].slice(1)
-          if (tamaguiConfig.media[mediaName]) {
+          const property = style[0]
+          const mediaName = property.slice(1)
+
+          // Check for group/theme/platform media queries (e.g., $group-card-gtXs)
+          const mediaTypeMatch = mediaName.match(/^(group|theme|platform)-/)
+          if (mediaTypeMatch) {
+            const mediaType = mediaTypeMatch[1] as 'group' | 'theme' | 'platform'
+            const mediaStyle = createMediaStyle(
+              style,
+              mediaName,
+              extractor.getTamagui()!.media,
+              mediaType,
+              false,
+              mediaStylesSeen
+            )
+            const identifier = addStyle(mediaStyle)
+            classNames.push(identifier)
+            continue
+          }
+
+          if (mediaName in tamaguiConfig.media) {
             const mediaStyle = createMediaStyle(
               style,
               mediaName,
