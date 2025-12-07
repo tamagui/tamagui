@@ -3,7 +3,6 @@ import {
   loadTamaguiBuildConfigSync,
   type TamaguiOptions,
 } from '@tamagui/static'
-import type { IntermediateConfigT } from 'metro-config'
 
 export type MetroTamaguiOptions = TamaguiOptions & {
   /**
@@ -15,10 +14,18 @@ export type MetroTamaguiOptions = TamaguiOptions & {
   cssInterop?: boolean
 }
 
+// Use a loose type for metro config to avoid version-specific type incompatibilities
+type MetroConfigInput = {
+  resolver?: any
+  transformer?: any
+  transformerPath?: string
+  [key: string]: any
+}
+
 export function withTamagui(
-  metroConfig: Partial<IntermediateConfigT>,
+  metroConfig: MetroConfigInput,
   optionsIn?: MetroTamaguiOptions
-) {
+): MetroConfigInput {
   const { cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
 
   const options = {
