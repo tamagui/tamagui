@@ -54,23 +54,18 @@ function getPool(): Piscina {
       // Single worker for state consistency and simpler caching
       minThreads: 1,
       maxThreads: 1,
-      idleTimeout: 60000, // 60s - keep alive for config watching
+      // Never terminate due to idle - worker stays alive until destroy() or process exit
+      // This prevents "Terminating worker thread" errors from Piscina
+      idleTimeout: Infinity,
     })
 
     // Handle error events to prevent uncaught exceptions during pool destruction
-    // Piscina emits 'error' events when workers are terminated and there are no pending tasks
-    // Without this handler, Node.js throws the error as an uncaught exception
     piscinaPool.on('error', (err) => {
-      // suppress termination errors during shutdown or idle timeout
-      if (isClosing) {
-        return
-      }
+      if (isClosing) return
       const message =
         err && typeof err === 'object' && 'message' in err ? String(err.message) : ''
-      if (message.includes('Terminating worker thread')) {
-        return
-      }
-      // Log other errors for debugging
+      // Suppress termination errors (can still occur during explicit destroy)
+      if (message.includes('Terminating worker thread')) return
       console.error('[tamagui] Worker pool error:', err)
     })
   }
