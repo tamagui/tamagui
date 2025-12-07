@@ -226,13 +226,26 @@ export function createExtractor(
       if (platform === 'native' && name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
         return false
       }
+      // Check for $theme-, $platform-, $group- prefixed keys
+      if (name[0] === '$') {
+        const mediaName = name.slice(1)
+        if (
+          mediaName.startsWith('theme-') ||
+          mediaName.startsWith('platform-') ||
+          mediaName.startsWith('group-')
+        ) {
+          return true
+        }
+        if (mediaQueryConfig[mediaName]) {
+          return true
+        }
+      }
       return !!(
         staticConfig.validStyles?.[name] ||
         pseudoDescriptors[name] ||
         // don't disable variants or else you lose many things flattening
         staticConfig.variants?.[name] ||
-        projectInfo?.tamaguiConfig?.shorthands[name] ||
-        (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
+        projectInfo?.tamaguiConfig?.shorthands[name]
       )
     }
 
@@ -1247,6 +1260,20 @@ export function createExtractor(
               }
 
               if (isValidStyleKey(name, staticConfig)) {
+                // $theme-, $platform-, $group- styles not be flattened for now (needs a bit more work to get right)
+                if (name[0] === '$') {
+                  if (
+                    name.startsWith('$theme-') ||
+                    name.startsWith('$platform-') ||
+                    name.startsWith('$group-')
+                  ) {
+                    if (shouldPrintDebug) {
+                      logger.info(`  ! not flattening media-like style: ${name}`)
+                    }
+                    inlined.set(name, true)
+                    return attr
+                  }
+                }
                 if (shouldPrintDebug) {
                   logger.info(`  style: ${name} = ${JSON.stringify(styleValue)}`)
                 }
@@ -2035,8 +2062,20 @@ export function createExtractor(
 
           attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
             if (cur.type === 'style') {
-              const key = Object.keys(cur.value)[0]
+              const keys = Object.keys(cur.value || {})
+              if (!keys.length) {
+                return acc
+              }
+              const key = keys[0]
               const value = cur.value[key]
+
+              // Check if this is a media-like key ($theme-, $platform-, $group-, or $mediaQuery)
+              const isMediaLikeKey =
+                key[0] === '$' &&
+                (key.startsWith('$theme-') ||
+                  key.startsWith('$platform-') ||
+                  key.startsWith('$group-') ||
+                  mediaQueryConfig[key.slice(1)])
 
               const shouldKeepOriginalAttr =
                 // !isStyleAndAttr[key] &&
@@ -2044,6 +2083,7 @@ export function createExtractor(
                 // de-opt if non-style
                 !validStyles[key] &&
                 !pseudoDescriptors[key] &&
+                !isMediaLikeKey &&
                 !(key.startsWith('data-') || key.startsWith('aria-'))
 
               if (shouldKeepOriginalAttr) {

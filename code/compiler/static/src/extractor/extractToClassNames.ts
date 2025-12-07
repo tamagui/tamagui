@@ -188,10 +188,17 @@ export async function extractToClassNames({
           const property = style[0]
           const mediaName = property.slice(1)
 
-          // Check for group/theme/platform media queries (e.g., $group-card-gtXs)
-          const mediaTypeMatch = mediaName.match(/^(group|theme|platform)-/)
+          // $group- styles must bail out entirely - they need runtime handling because
+          // group changes can affect children that may be animated and need hard values.
+          // In the future, CSS animation drivers could potentially optimize this.
+          if (mediaName.startsWith('group-')) {
+            throw new BailOptimizationError()
+          }
+
+          // Check for theme/platform media queries (e.g., $theme-dark, $platform-web)
+          const mediaTypeMatch = mediaName.match(/^(theme|platform)-/)
           if (mediaTypeMatch) {
-            const mediaType = mediaTypeMatch[1] as 'group' | 'theme' | 'platform'
+            const mediaType = mediaTypeMatch[1] as 'theme' | 'platform'
             const mediaStyle = createMediaStyle(
               style,
               mediaName,
