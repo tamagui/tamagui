@@ -87,7 +87,7 @@ Things deprecated in version one that are now gone:
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
 - Moved all settings on `createTamagui` onto the `settings` object.
 
-### Headless and Unstyled Components
+#### Headless and Unstyled Components
 
 During v2 we're expanding headless components. Many components now have three
 variants:
@@ -105,6 +105,38 @@ your own styling solution.
 This makes Tamagui components usable even if you're not using Tamagui for
 styling. For now it's a subset, but we plan to continue expanding headless
 exports throughout v2.
+
+#### New Components
+
+We've added two new menu components that automatically adapt to each platform:
+
+##### Menu
+
+[Menu](/docs/components/menu) provides dropdown menus with full keyboard
+navigation, submenus, checkbox items, and animations. On iOS and Android, it
+automatically renders using native platform menus.
+
+<HeroContainer>
+  <MenuDemo />
+</HeroContainer>
+
+```tsx hero template=Menu
+
+```
+
+##### ContextMenu
+
+[ContextMenu](/docs/components/context-menu) works like Menu but activates on
+right-click (web) or long-press (native). It includes support for preview
+content on iOS.
+
+<HeroContainer>
+  <ContextMenuDemo />
+</HeroContainer>
+
+```tsx hero template=ContextMenu
+
+```
 
 ### Goals
 
