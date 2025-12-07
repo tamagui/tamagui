@@ -149,10 +149,55 @@ If you define a `checked` variant, it will apply those styles.
 
 <Tabs.Content value="headless">
 
-Using the `useSwitch` API, you can make your own Switch from scratch.
+The `useSwitch` hook provides all the state and accessibility props needed to build a custom switch with any styling solution.
 
 ```tsx template=SwitchHeadless
 
+```
+
+### Basic Usage
+
+```tsx
+import { useSwitch } from '@tamagui/switch-headless'
+import { useState } from 'react'
+import { Pressable, View } from 'react-native'
+
+function MySwitch({ defaultChecked, onCheckedChange, ...props }) {
+  const [checked, setChecked] = useState(defaultChecked || false)
+
+  const { switchProps, switchRef, bubbleInput } = useSwitch(
+    props,
+    [checked, setChecked],
+    null
+  )
+
+  return (
+    <>
+      <Pressable
+        ref={switchRef}
+        {...switchProps}
+        style={{
+          width: 50,
+          height: 28,
+          borderRadius: 14,
+          backgroundColor: checked ? '#22c55e' : '#d1d5db',
+          padding: 2,
+        }}
+      >
+        <View
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: 12,
+            backgroundColor: 'white',
+            transform: [{ translateX: checked ? 22 : 0 }],
+          }}
+        />
+      </Pressable>
+      {bubbleInput}
+    </>
+  )
+}
 ```
 
 </Tabs.Content>
@@ -235,6 +280,72 @@ Using the `useSwitch` API, you can make your own Switch from scratch.
   ]}
 />
 
+<Tabs.Content value="headless">
+
+### useSwitch
+
+The `useSwitch` hook accepts three arguments:
+
+```tsx
+const { switchProps, switchRef, bubbleInput } = useSwitch(
+  props,        // SwitchProps
+  state,        // [checked: boolean, setChecked: (checked: boolean) => void]
+  ref           // React.Ref
+)
+```
+
+#### Props (first argument)
+
+<PropsTable
+  data={[
+    {
+      name: 'labeledBy',
+      type: 'string',
+      description: `Set aria-labelledby for accessibility.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Whether the switch is disabled.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Form input name for the hidden input.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Form input value.`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Whether the switch is required in a form.`,
+    },
+    {
+      name: 'onPress',
+      type: '(event) => void',
+      description: `Called when switch is pressed (composed with internal handler).`,
+    },
+  ]}
+/>
+
+#### State (second argument)
+
+A tuple of `[checked, setChecked]` where:
+- `checked`: Current boolean state
+- `setChecked`: React state setter function
+
+#### Return Value
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `switchProps` | `object` | Props to spread on your switch element (role, aria-checked, onPress, etc.) |
+| `switchRef` | `Ref` | Composed ref to attach to your switch element |
+| `bubbleInput` | `ReactNode \| null` | Hidden input for form compatibility (render as sibling, web only) |
+
+</Tabs.Content>
+
 </Tabs>
 
-{/* TODO: document createSwitch and useSwitch's API */}

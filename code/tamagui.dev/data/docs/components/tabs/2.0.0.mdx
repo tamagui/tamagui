@@ -7,53 +7,113 @@ package: tabs
 demoName: Tabs
 ---
 
+<YStack className="is-sticky" />
+
 <Tabs id="type" defaultValue="styled">
-  <Tabs.List>
-    <TooltipSimple label="With Tamagui's default styles">
-      <Tabs.Tab value="styled">Styled</Tabs.Tab>
-    </TooltipSimple>
-    <TooltipSimple label="No dependency on Tamagui's core">
-      <Tabs.Tab value="headless">Headless</Tabs.Tab>
-    </TooltipSimple>
-  </Tabs.List>
-</Tabs>
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No default styles, easy to customize">
+    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
+
+<HeroContainer>
+  <Tabs.Content
+    value="styled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <TabsDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="unstyled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <TabsHeadlessDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="headless"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <TabsHeadlessDemo />
+  </Tabs.Content>
+</HeroContainer>
 
 <Tabs.Content value="styled">
-  <HeroContainer>
-    <TabsDemo />
-  </HeroContainer>
-
 ```tsx hero template=Tabs
 
 ```
+</Tabs.Content>
+<Tabs.Content value="unstyled">
+```tsx hero template=TabsHeadless
+
+```
+</Tabs.Content>
+<Tabs.Content value="headless">
+```tsx hero template=TabsHeadless
+
+```
+</Tabs.Content>
 
 <Highlights
   features={[
     `Accessible, easy to compose, customize and animate`,
     `Sizable & works controlled or uncontrolled`,
-    `Supports automatic and manual activation modes for web`,
+    `Supports automatic and manual activation modes`,
     `Full keyboard navigation`,
   ]}
 />
 
-Note: Tabs have landed on v1.7 and not fully ready for runtime. Send us your feedback and we'll address it. We're marking it Beta a such as there may be hopefully minimal breaking changes as we get feedback on the API.
-
 ## Installation
 
+<Tabs.Content value="styled">
 Tabs is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/tabs
 ```
 
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+Tabs is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/tabs
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+To use the headless tabs, import from the `@tamagui/tabs-headless` package. This package has no dependency on `@tamagui/core` and provides hooks for building custom tab interfaces with any styling solution.
+
+```bash
+npm install @tamagui/tabs-headless
+```
+
+</Tabs.Content>
+
 ## Usage
+
+<Tabs.Content value="styled">
 
 ```tsx
 import { SizableText, Tabs } from "tamagui";
 
 export default () => (
   <Tabs defaultValue="tab1" width={400}>
-    <Tabs.List space>
+    <Tabs.List>
       <Tabs.Tab value="tab1">
         <SizableText>Tab 1</SizableText>
       </Tabs.Tab>
@@ -72,11 +132,111 @@ export default () => (
 );
 ```
 
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+
+Use the `createTabs` export to create fully custom tabs that still use the Tamagui styling system. You provide your own styled frame components and get back a fully functional tabs component.
+
+```tsx template=TabsHeadless
+
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+The `useTabs` hook provides all the state and accessibility props needed to build custom tabs with any styling solution.
+
+```tsx
+import { useTabs } from '@tamagui/tabs-headless'
+
+function MyTabs() {
+  const { tabsProps, listProps, getTabProps, getContentProps, value } = useTabs({
+    defaultValue: 'tab1',
+    orientation: 'horizontal',
+  })
+
+  return (
+    <div {...tabsProps}>
+      <div {...listProps}>
+        <button {...getTabProps('tab1')}>Tab 1</button>
+        <button {...getTabProps('tab2')}>Tab 2</button>
+      </div>
+
+      <div {...getContentProps('tab1')}>
+        {value === 'tab1' && <p>Content 1</p>}
+      </div>
+      <div {...getContentProps('tab2')}>
+        {value === 'tab2' && <p>Content 2</p>}
+      </div>
+    </div>
+  )
+}
+```
+
+### Component-Based API
+
+For more complex use cases, you can use the context-based hooks:
+
+```tsx
+import {
+  useTabs,
+  TabsProvider,
+  useTab,
+  useTabContent
+} from '@tamagui/tabs-headless'
+
+function Tabs({ children, ...props }) {
+  const { contextValue, tabsProps } = useTabs(props)
+  return (
+    <TabsProvider value={contextValue}>
+      <div {...tabsProps}>{children}</div>
+    </TabsProvider>
+  )
+}
+
+function Tab({ value, children }) {
+  const { isSelected, tabProps } = useTab({ value })
+  return (
+    <button {...tabProps} style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
+      {children}
+    </button>
+  )
+}
+
+function TabContent({ value, children }) {
+  const { shouldMount, contentProps } = useTabContent({ value })
+  if (!shouldMount) return null
+  return <div {...contentProps}>{children}</div>
+}
+```
+
+</Tabs.Content>
+
 ## API Reference
 
 ### Tabs
 
-Root tabs component. Extends [Stack](/docs/components/stacks). Passing the `size` prop to this component will have effect on the descendants.
+<Tabs.Content value="styled">
+
+Root tabs component. Extends [Stack](/docs/components/stacks). Passing the `size` prop to this component will affect the descendants.
+
+</Tabs.Content>
+<Tabs.Content value="unstyled">
+
+When using `createTabs`, you provide three styled components:
+
+- `TabsFrame`: The root container component
+- `TabFrame`: The tab trigger component
+- `ContentFrame`: The content container component
+
+</Tabs.Content>
+<Tabs.Content value="headless">
+
+The `useTabs` hook accepts these options and returns props/helpers:
+
+</Tabs.Content>
 
 <PropsTable
   data={[
@@ -110,10 +270,60 @@ Root tabs component. Extends [Stack](/docs/components/stacks). Passing the `size
       name: "activationMode",
       type: '"manual" | "automatic"',
       default: "automatic",
-      description: `Whether or not a tab is activated automatically or manually. Not applicable on mobile`,
+      description: `Whether a tab is activated automatically (on focus) or manually (on click/enter)`,
+    },
+    {
+      name: "loop",
+      type: "boolean",
+      default: "true",
+      description: `Whether keyboard navigation should loop from last to first and vice versa`,
     },
   ]}
 />
+
+<Tabs.Content value="headless">
+
+### useTabs Return Value
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `string` | The currently selected tab value |
+| `setValue` | `(value: string) => void` | Function to change the selected tab |
+| `direction` | `'ltr' \| 'rtl'` | The resolved text direction |
+| `tabsProps` | `object` | Props to spread on the tabs container |
+| `listProps` | `object` | Props to spread on the tab list |
+| `getTabProps` | `(value: string, disabled?: boolean) => object` | Get props for a tab trigger |
+| `getContentProps` | `(value: string) => object` | Get props for a tab content panel |
+| `contextValue` | `TabsContextValue` | Context value for component-based API |
+
+### useTab
+
+Hook for individual tab triggers when using the component-based API.
+
+```tsx
+const { isSelected, tabProps } = useTab({
+  value: 'tab1',
+  disabled: false,
+  onPress: () => {},
+  onKeyDown: () => {},
+  onFocus: () => {},
+})
+```
+
+### useTabContent
+
+Hook for tab content panels when using the component-based API.
+
+```tsx
+const { isSelected, shouldMount, contentProps } = useTabContent({
+  value: 'tab1',
+  forceMount: false,
+})
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="styled">
 
 ### Tabs.List
 
@@ -130,9 +340,9 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
   ]}
 />
 
-### Tabs.Trigger
+### Tabs.Tab
 
-Extends [Button](/docs/components/button), adding:
+Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
 <PropsTable
   data={[
@@ -143,8 +353,13 @@ Extends [Button](/docs/components/button), adding:
     },
     {
       name: "onInteraction",
-      type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
+      type: `(type: InteractionType, layout: TabLayout | null) => void`,
       description: `Used for making custom indicators when trigger interacted with`,
+    },
+    {
+      name: "disabled",
+      type: `boolean`,
+      description: `Whether the tab is disabled`,
     },
     {
       name: "unstyled",
@@ -178,7 +393,7 @@ Where each tab's content will be shown. Extends [ThemeableStack](/docs/component
 
 ### Animations
 
-Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger)'s `onInteraction` prop.
+Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Tab](#tabstab)'s `onInteraction` prop.
 
 <HeroContainer noPad showAnimationDriverControl>
   <TabsAdvancedDemo />
@@ -190,25 +405,4 @@ Here is a demo with more advanced animations using [AnimatePresence](/docs/core/
 
 </Tabs.Content>
 
-<Tabs.Content value="headless">
-  <HeroContainer>
-    <TabsHeadlessDemo />
-  </HeroContainer>
-
-```tsx hero template=TabsHeadless
-
-```
-
-### Customization Options
-
-When using `createTabs`, you need to provide three styled components:
-
-- `TabsFrame`: The root container component
-- `TabFrame`: The tab trigger component
-- `ContentFrame`: The content container component
-
-The created tabs component will maintain all the accessibility features and keyboard navigation while allowing you to have complete control over the visual presentation.
-
-The headless API gives you the foundation to build completely custom tab interfaces while maintaining accessibility and interaction patterns. You can integrate it with your design system and add any custom behaviors you need.
-
-</Tabs.Content>
+</Tabs>

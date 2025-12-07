@@ -143,10 +143,52 @@ indicated in the types of `createCheckbox`.
 
 <Tabs.Content value="headless">
 
-Using the `useCheckbox` API, you can make your own Checkbox from scratch.
+The `useCheckbox` hook provides all the state and accessibility props needed to build a custom checkbox with any styling solution.
 
 ```tsx template=CheckboxHeadless
 
+```
+
+### Basic Usage
+
+```tsx
+import { useCheckbox } from '@tamagui/checkbox-headless'
+import { useState } from 'react'
+import { Pressable, View } from 'react-native'
+
+function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
+  const [checked, setChecked] = useState(defaultChecked || false)
+
+  const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
+    props,
+    [checked, setChecked],
+    null
+  )
+
+  return (
+    <>
+      <Pressable
+        ref={checkboxRef}
+        {...checkboxProps}
+        style={{
+          width: 24,
+          height: 24,
+          borderRadius: 4,
+          borderWidth: 2,
+          borderColor: checked ? '#3b82f6' : '#d1d5db',
+          backgroundColor: checked ? '#3b82f6' : 'transparent',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {checked && (
+          <View style={{ width: 12, height: 12, backgroundColor: 'white' }} />
+        )}
+      </Pressable>
+      {bubbleInput}
+    </>
+  )
+}
 ```
 
 </Tabs.Content>
@@ -247,5 +289,85 @@ Using the `useCheckbox` API, you can make your own Checkbox from scratch.
     },
   ]}
 />
+
+<Tabs.Content value="headless">
+
+### useCheckbox
+
+The `useCheckbox` hook accepts three arguments:
+
+```tsx
+const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
+  props,        // CheckboxProps
+  state,        // [checked: CheckedState, setChecked: (checked: CheckedState) => void]
+  ref           // React.Ref
+)
+```
+
+#### CheckedState
+
+The checkbox supports three states:
+- `true` - checked
+- `false` - unchecked
+- `'indeterminate'` - indeterminate/mixed state (useful for "select all" patterns)
+
+#### Props (first argument)
+
+<PropsTable
+  data={[
+    {
+      name: 'labelledBy',
+      type: 'string',
+      description: `Set aria-labelledby for accessibility.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Whether the checkbox is disabled.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Form input name for the hidden input.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      default: '"on"',
+      description: `Form input value.`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Whether the checkbox is required in a form.`,
+    },
+    {
+      name: 'onCheckedChange',
+      type: '(checked: CheckedState) => void',
+      description: `Called when checked state changes.`,
+    },
+    {
+      name: 'onPress',
+      type: '(event) => void',
+      description: `Called when checkbox is pressed (composed with internal handler).`,
+    },
+  ]}
+/>
+
+#### State (second argument)
+
+A tuple of `[checked, setChecked]` where:
+- `checked`: Current state (`boolean | 'indeterminate'`)
+- `setChecked`: React state setter function
+
+#### Return Value
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `checkboxProps` | `object` | Props to spread on your checkbox element (role, aria-checked, onPress, etc.) |
+| `checkboxRef` | `Ref` | Composed ref to attach to your checkbox element |
+| `bubbleInput` | `ReactNode \| null` | Hidden input for form compatibility (render as sibling, web only) |
+
+</Tabs.Content>
 
 </Tabs>

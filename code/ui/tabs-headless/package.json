@@ -1,0 +1,52 @@
+{
+  "name": "@tamagui/tabs-headless",
+  "version": "1.138.6",
+  "type": "module",
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "dependencies": {
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/use-direction": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

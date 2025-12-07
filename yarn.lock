@@ -8670,6 +8670,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/tabs-headless@workspace:code/ui/tabs-headless":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/tabs-headless@workspace:code/ui/tabs-headless"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+    "@tamagui/helpers": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-direction": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/tabs@workspace:*, @tamagui/tabs@workspace:code/ui/tabs":
   version: 0.0.0-use.local
   resolution: "@tamagui/tabs@workspace:code/ui/tabs"
