@@ -87,6 +87,25 @@ Things deprecated in version one that are now gone:
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
 - Moved all settings on `createTamagui` onto the `settings` object.
 
+### Headless and Unstyled Components
+
+During v2 we're expanding headless components. Many components now have three
+variants:
+
+- **Styled** - Full Tamagui components with default styles
+- **Unstyled** - Uses a `createX` factory allowing fully custom styling
+- **Headless** - Zero dependency on `@tamagui/core`, just hooks
+
+The headless packages (`@tamagui/switch-headless`, `@tamagui/checkbox-headless`,
+`@tamagui/radio-headless`, `@tamagui/tabs-headless`) provide hooks like
+`useSwitch`, `useCheckbox`, `useRadioGroup`, and `useTabs` that handle all the
+state management, accessibility, and keyboard navigation - letting you bring
+your own styling solution.
+
+This makes Tamagui components usable even if you're not using Tamagui for
+styling. For now it's a subset, but we plan to continue expanding headless
+exports throughout v2.
+
 ### Goals
 
 Our main goal with version two is **stability**. Tamagui started as a side
@@ -116,25 +135,6 @@ We've changed a lot over the last couple years to improve stability:
 - Improved our canary release process, and now use it much more often.
 - Completed all the major re-writes we wanted to do, which let us finally focus
   on the above.
-
-### Headless and Unstyled Components
-
-During v2 we're expanding headless components. Many components now have three
-variants:
-
-- **Styled** - Full Tamagui components with default styles
-- **Unstyled** - Uses a `createX` factory allowing fully custom styling
-- **Headless** - Zero dependency on `@tamagui/core`, just hooks
-
-The headless packages (`@tamagui/switch-headless`, `@tamagui/checkbox-headless`,
-`@tamagui/radio-headless`, `@tamagui/tabs-headless`) provide hooks like
-`useSwitch`, `useCheckbox`, `useRadioGroup`, and `useTabs` that handle all the
-state management, accessibility, and keyboard navigation - letting you bring
-your own styling solution.
-
-This makes Tamagui components usable even if you're not using Tamagui for
-styling. For now it's a subset, but we plan to continue expanding headless
-exports throughout v2.
 
 ### What's next
 
