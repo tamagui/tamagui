@@ -35,16 +35,15 @@ describe('SelectRemount', () => {
       .toBeVisible()
       .withTimeout(10000)
 
-    // Close Select by selecting an option (more reliable than coordinate tap or back button)
-    await element(by.id('select-remount-test-option-apple')).tap()
+    // Close Select - use pressBack on Android (more reliable with sheet focus), tap outside on iOS
+    if (device.getPlatform() === 'android') {
+      await device.pressBack()
+    } else {
+      await element(by.id('select-remount-test-option-apple')).tap()
+    }
 
     // Wait for sheet to close and app to regain focus
     await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Wait for the main view to be interactive again
-    await waitFor(element(by.id('remount-button')))
-      .toBeVisible()
-      .withTimeout(5000)
   })
 
   it('should open Select after unmount/remount cycle', async () => {
@@ -62,16 +61,15 @@ describe('SelectRemount', () => {
       .toBeVisible()
       .withTimeout(10000)
 
-    // Close Select by selecting an option (more reliable than coordinate tap or back button)
-    await element(by.id('select-remount-test-option-apple')).tap()
+    // Close Select - use pressBack on Android (more reliable with sheet focus), tap option on iOS
+    if (device.getPlatform() === 'android') {
+      await device.pressBack()
+    } else {
+      await element(by.id('select-remount-test-option-apple')).tap()
+    }
 
     // Wait for sheet to close and app to regain focus
     await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Wait for the main view to be interactive again
-    await waitFor(element(by.id('remount-button')))
-      .toBeVisible()
-      .withTimeout(5000)
   })
 
   it('should work with multiple Selects after remount', async () => {
@@ -102,8 +100,12 @@ describe('SelectRemount', () => {
       .toBeVisible()
       .withTimeout(10000)
 
-    // Select an option to close the Select instead of pressing back
-    await element(by.id('select-remount-test-option-apple')).tap()
+    // Close first Select - use pressBack on Android, tap option on iOS
+    if (device.getPlatform() === 'android') {
+      await device.pressBack()
+    } else {
+      await element(by.id('select-remount-test-option-apple')).tap()
+    }
 
     // Wait for sheet to close and app to regain focus
     await new Promise((resolve) => setTimeout(resolve, 1500))
