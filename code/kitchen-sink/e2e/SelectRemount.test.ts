@@ -15,6 +15,8 @@ describe('SelectRemount', () => {
   beforeEach(async () => {
     // Reload the app to start fresh on home screen
     await device.reloadReactNative()
+    // Wait for app to be ready (helps with Android focus issues)
+    await new Promise((resolve) => setTimeout(resolve, 500))
     // Navigate to SelectRemount test case from home screen
     await navigateToSelectRemount()
   })
@@ -28,14 +30,21 @@ describe('SelectRemount', () => {
     // Tap the select trigger
     await element(by.id('select-remount-test-trigger')).tap()
 
-    // Wait for Select options to appear
-    await expect(element(by.id('select-remount-test-option-apple'))).toBeVisible()
+    // Wait for Select options to appear (with longer timeout for Android sheet animations)
+    await waitFor(element(by.id('select-remount-test-option-apple')))
+      .toBeVisible()
+      .withTimeout(10000)
 
     // Close Select by selecting an option (more reliable than coordinate tap or back button)
     await element(by.id('select-remount-test-option-apple')).tap()
 
-    // Wait for sheet to close
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    // Wait for sheet to close and app to regain focus
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    // Wait for the main view to be interactive again
+    await waitFor(element(by.id('remount-button')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should open Select after unmount/remount cycle', async () => {
@@ -43,24 +52,33 @@ describe('SelectRemount', () => {
     await element(by.id('remount-button')).tap()
 
     // Wait a moment for remount to complete
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1500))
 
     // Try to open the Select again - THIS IS THE KEY TEST for #1859
     await element(by.id('select-remount-test-trigger')).tap()
 
     // If the bug exists, the Select won't open. With the fix, options should be visible
-    await expect(element(by.id('select-remount-test-option-apple'))).toBeVisible()
+    await waitFor(element(by.id('select-remount-test-option-apple')))
+      .toBeVisible()
+      .withTimeout(10000)
 
     // Close Select by selecting an option (more reliable than coordinate tap or back button)
     await element(by.id('select-remount-test-option-apple')).tap()
 
-    // Wait for sheet to close
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    // Wait for sheet to close and app to regain focus
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    // Wait for the main view to be interactive again
+    await waitFor(element(by.id('remount-button')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should work with multiple Selects after remount', async () => {
     // Verify we're on the SelectRemount screen
-    await expect(element(by.id('remount-button'))).toBeVisible()
+    await waitFor(element(by.id('remount-button')))
+      .toBeVisible()
+      .withTimeout(5000)
 
     // Tap remount to reset state
     await element(by.id('remount-button')).tap()
@@ -87,8 +105,8 @@ describe('SelectRemount', () => {
     // Select an option to close the Select instead of pressing back
     await element(by.id('select-remount-test-option-apple')).tap()
 
-    // Wait for sheet to close
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // Wait for sheet to close and app to regain focus
+    await new Promise((resolve) => setTimeout(resolve, 1500))
 
     // Verify we're still on the SelectRemount screen
     await waitFor(element(by.id('remount-button')))
