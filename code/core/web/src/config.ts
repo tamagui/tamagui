@@ -18,16 +18,17 @@ Haven't called createTamagui yet. ${MISSING_THEME_MESSAGE}
 `
     : `❌ Error 001`
 
-// Helper to get config from module-scoped variable or globalThis fallback
-// This handles Vite SSR bundling where multiple copies of tamagui may exist
+// helper to get config from module-scoped variable or globalthis fallback
+// this handles vite ssr bundling where multiple copies of tamagui may exist
 let hasWarnedAboutGlobalFallback = false
 
 const getConfigFromGlobalOrLocal = (): TamaguiInternalConfig | null => {
-  // Prefer local conf first
+  // prefer local conf first
   if (conf) {
     return conf
   }
-  // Fall back to globalThis (for Vite SSR bundling scenarios)
+
+  // fall back to globalthis (for vite ssr bundling scenarios)
   if (globalThis.__tamaguiConfig) {
     if (process.env.NODE_ENV === 'development' && !hasWarnedAboutGlobalFallback) {
       hasWarnedAboutGlobalFallback = true
@@ -39,6 +40,7 @@ const getConfigFromGlobalOrLocal = (): TamaguiInternalConfig | null => {
     }
     return globalThis.__tamaguiConfig
   }
+
   return null
 }
 

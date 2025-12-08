@@ -44,10 +44,13 @@ function shouldTokenCategoryHaveUnits(category: string): boolean {
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
-  // If config already exists (e.g., from another copy of tamagui in Vite SSR), reuse it
+  // if config already exists (e.g., from another copy of tamagui in vite ssr), reuse it
   const existingConfig = getConfigMaybe()
+
   if (existingConfig) {
-    return existingConfig as any
+    // merge it and re-run since this new instance may add config
+    // or maybe a test case
+    configIn = { ...existingConfig, ...configIn }
   }
 
   // ensure variables
