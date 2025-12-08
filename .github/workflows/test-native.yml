@@ -19,7 +19,7 @@ concurrency:
 env:
   test_container_app_path: code/kitchen-sink
   # Increment this to force a fresh Android build (invalidates Redis KV cache)
-  android_cache_version: v3
+  android_cache_version: v4
 
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
