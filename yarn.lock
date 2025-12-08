@@ -8468,6 +8468,12 @@ __metadata:
   resolution: "@tamagui/react-native-svg@workspace:code/packages/react-native-svg"
   dependencies:
     "@tamagui/build": "workspace:*"
+    react-native-svg: "npm:15.12.1"
+  peerDependencies:
+    react-native-svg: "*"
+  peerDependenciesMeta:
+    react-native-svg:
+      optional: true
   languageName: unknown
   linkType: soft
 
