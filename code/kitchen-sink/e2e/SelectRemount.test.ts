@@ -31,12 +31,11 @@ describe('SelectRemount', () => {
     // Wait for Select options to appear
     await expect(element(by.id('select-remount-test-option-apple'))).toBeVisible()
 
-    // Close Select by pressing back on Android or tapping outside on iOS
-    if (device.getPlatform() === 'android') {
-      await device.pressBack()
-    } else {
-      await device.tap({ x: 200, y: 100 })
-    }
+    // Close Select by selecting an option (more reliable than coordinate tap or back button)
+    await element(by.id('select-remount-test-option-apple')).tap()
+
+    // Wait for sheet to close
+    await new Promise((resolve) => setTimeout(resolve, 500))
   })
 
   it('should open Select after unmount/remount cycle', async () => {
@@ -52,12 +51,11 @@ describe('SelectRemount', () => {
     // If the bug exists, the Select won't open. With the fix, options should be visible
     await expect(element(by.id('select-remount-test-option-apple'))).toBeVisible()
 
-    // Close Select
-    if (device.getPlatform() === 'android') {
-      await device.pressBack()
-    } else {
-      await device.tap({ x: 200, y: 100 })
-    }
+    // Close Select by selecting an option (more reliable than coordinate tap or back button)
+    await element(by.id('select-remount-test-option-apple')).tap()
+
+    // Wait for sheet to close
+    await new Promise((resolve) => setTimeout(resolve, 500))
   })
 
   it('should work with multiple Selects after remount', async () => {
