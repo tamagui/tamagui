@@ -1,3 +1,5 @@
+- did we remove onlyAllowShorthands
+
 - remove group auto-index stuff, its not really doable with react
   - https://github.com/tamagui/tamagui/pull/2163
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
