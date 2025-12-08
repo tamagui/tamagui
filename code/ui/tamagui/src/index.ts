@@ -130,6 +130,7 @@ export type {
 } from '@tamagui/core'
 
 export {
+  ClientOnly,
   Configuration,
   ComponentContext,
   GroupContext,

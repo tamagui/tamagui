@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-svg",
-  "version": "1.138.6",
+  "version": "1.139.2",
   "main": "dist/cjs",
   "type": "module",
   "module": "dist/esm/index.js",
@@ -25,7 +25,16 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "peerDependencies": {
+    "react-native-svg": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-svg": {
+      "optional": true
+    }
+  },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "react-native-svg": "15.12.1"
   }
 }

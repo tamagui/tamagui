@@ -70,9 +70,9 @@ declare const generatedThemes: Record<"light_blue" | "light_green" | "light_red"
     backgroundHover: string;
     backgroundPress: string;
     backgroundFocus: string;
-    borderColorPress: string;
-    borderColorFocus: string;
     colorTransparent: string;
+    borderColorFocus: string;
+    borderColorPress: string;
     placeholderColor: string;
     outlineColor: string;
     accentBackground: string;
@@ -204,9 +204,9 @@ export declare const themes: Record<"light_blue" | "light_green" | "light_red" |
     backgroundHover: string;
     backgroundPress: string;
     backgroundFocus: string;
-    borderColorPress: string;
-    borderColorFocus: string;
     colorTransparent: string;
+    borderColorFocus: string;
+    borderColorPress: string;
     placeholderColor: string;
     outlineColor: string;
     accentBackground: string;

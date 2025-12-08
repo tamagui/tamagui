@@ -1,3 +1,2 @@
-import type { ColorTokens } from '@tamagui/web';
-export declare function opacify(color: string, opacity?: number): ColorTokens;
+export declare function opacify(color: string, opacity?: number): string;
 //# sourceMappingURL=opacify.d.ts.map

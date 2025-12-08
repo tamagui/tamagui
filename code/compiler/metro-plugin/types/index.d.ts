@@ -1,8 +1,4 @@
 import { type TamaguiOptions } from '@tamagui/static';
-import type { ConfigT } from 'metro-config';
-type MetroConfig = {
-    -readonly [K in keyof ConfigT]: ConfigT[K];
-};
 export type MetroTamaguiOptions = TamaguiOptions & {
     /**
      * When true, writes CSS to .tamagui/css/ files and imports them,
@@ -12,6 +8,12 @@ export type MetroTamaguiOptions = TamaguiOptions & {
      */
     cssInterop?: boolean;
 };
-export declare function withTamagui(metroConfig: Partial<MetroConfig>, optionsIn?: MetroTamaguiOptions): MetroConfig;
+type MetroConfigInput = {
+    resolver?: any;
+    transformer?: any;
+    transformerPath?: string;
+    [key: string]: any;
+};
+export declare function withTamagui(metroConfig: MetroConfigInput, optionsIn?: MetroTamaguiOptions): MetroConfigInput;
 export {};
 //# sourceMappingURL=index.d.ts.map

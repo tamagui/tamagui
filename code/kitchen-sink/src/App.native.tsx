@@ -1,14 +1,17 @@
-import 'react-native-gesture-handler'
-import { ToastViewport } from '@tamagui/sandbox-ui'
-import { useFonts } from 'expo-font'
+// import { ToastViewport } from '@tamagui/sandbox-ui'
 import * as SplashScreen from 'expo-splash-screen'
 import React from 'react'
-import { Appearance, useColorScheme } from 'react-native'
+import { Appearance, LogBox, useColorScheme } from 'react-native'
+import 'react-native-gesture-handler'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
+
+// Disable LogBox warnings to prevent them from blocking E2E tests
+// These are typically deep import warnings from react-native internals
+LogBox.ignoreAllLogs()
 
 SplashScreen.hideAsync()
 
@@ -55,17 +58,18 @@ export default function App() {
   )
 }
 
-const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
-  return (
-    <>
-      <ToastViewport
-        flexDirection="column-reverse"
-        top={top}
-        left={left}
-        right={right}
-        mx="auto"
-      />
-    </>
-  )
-}
+// TODO?
+// const SafeToastViewport = () => {
+//   const { left, top, right } = useSafeAreaInsets()
+//   return (
+//     <>
+//       <ToastViewport
+//         flexDirection="column-reverse"
+//         top={top}
+//         left={left}
+//         right={right}
+//         mx="auto"
+//       />
+//     </>
+//   )
+// }

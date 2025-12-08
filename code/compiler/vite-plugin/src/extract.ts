@@ -79,8 +79,10 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     async closeBundle() {
-      // Only destroy the pool at the very end of the entire build
-      await Static?.destroyPool()
+      // Don't explicitly destroy the pool - Node will clean up threads on process exit
+      // Calling destroyPool here causes "Terminating worker thread" errors because
+      // closeBundle is called per Vite environment, and destroying an active pool
+      // while other environments may still be using it causes issues
     },
 
     config(userConf) {

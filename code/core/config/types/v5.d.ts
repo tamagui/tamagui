@@ -23,6 +23,7 @@ export declare const settings: {
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
     addThemeClassName: "html";
+    onlyAllowShorthands: boolean;
     maxDarkLightNesting: number;
     styleCompat: "react-native";
 };
@@ -473,6 +474,7 @@ export declare const defaultConfig: {
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
         addThemeClassName: "html";
+        onlyAllowShorthands: boolean;
         maxDarkLightNesting: number;
         styleCompat: "react-native";
     };

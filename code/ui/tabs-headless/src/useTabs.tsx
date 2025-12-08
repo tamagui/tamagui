@@ -133,13 +133,10 @@ export function useTabs(props: UseTabsProps = {}): UseTabsReturn {
     }
   }, [])
 
-  const focusTab = useCallback(
-    (tabValue: string) => {
-      const element = tabRefs.current.get(tabValue)
-      element?.focus()
-    },
-    []
-  )
+  const focusTab = useCallback((tabValue: string) => {
+    const element = tabRefs.current.get(tabValue)
+    element?.focus()
+  }, [])
 
   const getNextTab = useCallback(
     (currentValue: string, direction: 1 | -1): string | null => {
@@ -321,7 +318,8 @@ export interface UseTabProps {
 export function useTab(props: UseTabProps) {
   const { value: tabValue, disabled, onPress, onKeyDown, onFocus } = props
   const context = useTabsContext()
-  const { value, setValue, baseId, activationMode, orientation, direction, loop } = context
+  const { value, setValue, baseId, activationMode, orientation, direction, loop } =
+    context
 
   const isSelected = value === tabValue
   const triggerId = makeTriggerId(baseId, tabValue)

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "1.138.6",
+  "version": "1.139.2",
   "type": "module",
   "source": "src/index.ts",
   "sideEffects": false,

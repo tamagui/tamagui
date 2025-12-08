@@ -22,11 +22,9 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     backgroundHover: string;
     backgroundPress: string;
     backgroundFocus: string;
-    borderColorPress: string;
-    borderColorFocus: string;
-    black: string;
-    white: string;
     colorTransparent: string;
+    borderColorFocus: string;
+    borderColorPress: string;
     placeholderColor: string;
     outlineColor: string;
     accentBackground: string;
@@ -59,6 +57,8 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     black10: string;
     black11: string;
     black12: string;
+    black: string;
+    white: string;
     shadow1: string;
     shadow2: string;
     shadow3: string;

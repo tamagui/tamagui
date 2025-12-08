@@ -1,12 +1,10 @@
-import type { ColorTokens } from '@tamagui/web'
-
-export function opacify(color: string, opacity = 0.1) {
+export function opacify(color: string, opacity = 0.1): string {
   // handle hsl/hsla
   if (color.startsWith('hsl')) {
     const match = color.match(/hsla?\((\d+),\s*(\d+)%,\s*(\d+)%(?:,\s*([\d.]+))?\)/)
     if (match) {
       const [, h, s, l] = match
-      return `hsla(${h}, ${s}%, ${l}%, ${opacity})` as ColorTokens
+      return `hsla(${h}, ${s}%, ${l}%, ${opacity})`
     }
   }
 
@@ -27,9 +25,9 @@ export function opacify(color: string, opacity = 0.1) {
       const alphaHex = Math.round(opacity * 255)
         .toString(16)
         .padStart(2, '0')
-      return `#${hex.slice(0, 6)}${alphaHex}` as ColorTokens
+      return `#${hex.slice(0, 6)}${alphaHex}`
     }
   }
 
-  return color as ColorTokens
+  return color
 }

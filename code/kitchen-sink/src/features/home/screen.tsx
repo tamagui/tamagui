@@ -7,7 +7,7 @@ import { H1, ListItem, YGroup, YStack } from 'tamagui'
 
 export function HomeScreen() {
   return (
-    <ScrollView>
+    <ScrollView testID="home-scroll-view">
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
@@ -29,6 +29,7 @@ export function HomeScreen() {
                         href={route}
                         pressStyle={{ backgroundColor: '$color2' }}
                         size="$4"
+                        testID={(page as any).testID}
                       >
                         {page.title}
                       </LinkListItem>
@@ -84,6 +85,7 @@ const demos = [
       {
         title: 'Test Cases',
         route: '/tests',
+        testID: 'home-test-cases-link',
       },
     ],
   },
