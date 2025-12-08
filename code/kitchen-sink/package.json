@@ -80,7 +80,8 @@
     "react-native-worklets": "0.5.1",
     "solito": "^4.3.0",
     "tamagui": "workspace:*",
-    "vitest": "^4.0.4"
+    "vitest": "^4.0.4",
+    "zeego": "^2.0.0"
   },
   "packageManager": "yarn@4.5.0",
   "devDependencies": {

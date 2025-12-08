@@ -60,7 +60,8 @@
   "optionalDependencies": {
     "@react-native-menu/menu": "^2.0.0",
     "react-native-ios-context-menu": "*",
-    "sf-symbols-typescript": "*"
+    "sf-symbols-typescript": "*",
+    "zeego": "^2.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
