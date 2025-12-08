@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-token",
-  "version": "1.138.6",
+  "version": "1.139.2",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

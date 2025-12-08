@@ -19,8 +19,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { Select } from '../../../components/Select'
-import { defaultModel, generateModels, type ModelNames } from '../../api/generateModels'
+import { defaultModel } from '../../api/generateModels'
 import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
@@ -42,7 +41,7 @@ interface StudioAIBarProps {
 }
 
 export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
-  const [model, setModel] = useState(defaultModel)
+  const model = defaultModel
   const inputRef = useRef<HTMLInputElement>(null)
   const user = useUser()
   const themePage = useStore(ThemePageStore)
@@ -216,7 +215,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
               shadowColor="$shadow3"
               bg="$color1"
               shadowOffset={{ height: 2, width: 0 }}
-              pr={240}
               shadowRadius={10}
               rounded="$8"
               onSubmit={() => {
@@ -228,25 +226,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                 }
               }}
             />
-
-            <Select
-              width={200}
-              position="absolute"
-              t={10}
-              rounded={100}
-              r="$4"
-              size="$4"
-              value={model}
-              onValueChange={(x) => {
-                setModel(x as ModelNames)
-              }}
-            >
-              {Object.keys(generateModels).map((modelName, index) => (
-                <Select.Item key={modelName} value={modelName} index={index}>
-                  {modelName}
-                </Select.Item>
-              ))}
-            </Select>
           </XStack>
 
           <XStack gap="$3" items="center" justify="space-between">

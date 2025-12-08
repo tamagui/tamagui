@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { configListeners, setConfig, setTokens } from './config'
+import { configListeners, getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
@@ -10,7 +10,6 @@ import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariabl
 import { ensureThemeVariable } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
-import { loadDuplicatedConfig } from './loadDuplicatedConfig'
 import { Tamagui } from './Tamagui'
 import type {
   CreateTamaguiProps,
@@ -45,9 +44,13 @@ function shouldTokenCategoryHaveUnits(category: string): boolean {
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
-  const dup = loadDuplicatedConfig()
-  if (dup) {
-    return dup as any
+  // if config already exists (e.g., from another copy of tamagui in vite ssr), reuse it
+  const existingConfig = getConfigMaybe()
+
+  if (existingConfig) {
+    // merge it and re-run since this new instance may add config
+    // or maybe a test case
+    configIn = { ...existingConfig, ...configIn }
   }
 
   // ensure variables
@@ -315,10 +318,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   setConfig(config)
   configureMedia(config)
-
-  if (process.env.NODE_ENV === 'test') {
-    globalThis.__tamaguiConfig = config
-  }
 
   if (configListeners.size) {
     configListeners.forEach((cb) => cb(config))

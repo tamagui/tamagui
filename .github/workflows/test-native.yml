@@ -19,7 +19,7 @@ concurrency:
 env:
   test_container_app_path: code/kitchen-sink
   # Increment this to force a fresh Android build (invalidates Redis KV cache)
-  android_cache_version: v3
+  android_cache_version: v4
 
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
@@ -438,9 +438,15 @@ jobs:
             adb devices
             adb wait-for-device
 
+            # Wait for boot to complete and dismiss any system dialogs
+            adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
+            adb shell input keyevent 82  # Unlock screen
+            adb shell input keyevent 4   # Back button to dismiss any dialogs
+            sleep 2
+
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # This mirrors what we do locally where it works
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 2
 
       - name: Upload Detox Artifacts on Failure
         if: failure()

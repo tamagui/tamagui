@@ -185,8 +185,34 @@ export async function extractToClassNames({
         const classNames: string[] = []
 
         for (const style of cssStyles) {
-          const mediaName = style[0].slice(1)
-          if (tamaguiConfig.media[mediaName]) {
+          const property = style[0]
+          const mediaName = property.slice(1)
+
+          // $group- styles must bail out entirely - they need runtime handling because
+          // group changes can affect children that may be animated and need hard values.
+          // In the future, CSS animation drivers could potentially optimize this.
+          if (mediaName.startsWith('group-')) {
+            throw new BailOptimizationError()
+          }
+
+          // Check for theme/platform media queries (e.g., $theme-dark, $platform-web)
+          const mediaTypeMatch = mediaName.match(/^(theme|platform)-/)
+          if (mediaTypeMatch) {
+            const mediaType = mediaTypeMatch[1] as 'theme' | 'platform'
+            const mediaStyle = createMediaStyle(
+              style,
+              mediaName,
+              extractor.getTamagui()!.media,
+              mediaType,
+              false,
+              mediaStylesSeen
+            )
+            const identifier = addStyle(mediaStyle)
+            classNames.push(identifier)
+            continue
+          }
+
+          if (mediaName in tamaguiConfig.media) {
             const mediaStyle = createMediaStyle(
               style,
               mediaName,

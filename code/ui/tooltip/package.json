@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.138.6",
+  "version": "1.139.2",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -37,7 +37,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.27.12",
+    "@floating-ui/react": "^0.27.16",
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
