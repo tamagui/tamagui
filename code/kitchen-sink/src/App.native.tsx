@@ -1,13 +1,14 @@
-// import { ToastViewport } from '@tamagui/sandbox-ui'
-import * as SplashScreen from 'expo-splash-screen'
+import 'react-native-gesture-handler'
+import { ToastViewport } from '@tamagui/sandbox-ui'
+import { useFonts } from 'expo-font'
 import React from 'react'
 import { Appearance, LogBox, useColorScheme } from 'react-native'
-import 'react-native-gesture-handler'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
+import * as SplashScreen from 'expo-splash-screen'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 // Disable LogBox warnings to prevent them from blocking E2E tests
 // These are typically deep import warnings from react-native internals
@@ -17,11 +18,10 @@ SplashScreen.hideAsync()
 
 export default function App() {
   const [theme, setTheme] = React.useState(Appearance.getColorScheme())
-  // TODO restore
-  // const [loaded] = useFonts({
-  //   Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
-  //   InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-  // })
+  const [loaded] = useFonts({
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+  })
 
   const colorScheme = useColorScheme()
 
@@ -39,9 +39,9 @@ export default function App() {
     }
   }, [theme])
 
-  // if (!loaded) {
-  //   return null
-  // }
+  if (!loaded) {
+    return null
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -49,8 +49,7 @@ export default function App() {
         <ThemeContext.Provider value={themeContext}>
           <Provider defaultTheme={theme as any}>
             <Navigation />
-            {/* // TODO restore */}
-            {/* <SafeToastViewport /> */}
+            <SafeToastViewport />
           </Provider>
         </ThemeContext.Provider>
       </SafeAreaProvider>
@@ -58,18 +57,17 @@ export default function App() {
   )
 }
 
-// TODO?
-// const SafeToastViewport = () => {
-//   const { left, top, right } = useSafeAreaInsets()
-//   return (
-//     <>
-//       <ToastViewport
-//         flexDirection="column-reverse"
-//         top={top}
-//         left={left}
-//         right={right}
-//         mx="auto"
-//       />
-//     </>
-//   )
-// }
+const SafeToastViewport = () => {
+  const { left, top, right } = useSafeAreaInsets()
+  return (
+    <>
+      <ToastViewport
+        flexDirection="column-reverse"
+        top={top}
+        left={left}
+        right={right}
+        mx="auto"
+      />
+    </>
+  )
+}
