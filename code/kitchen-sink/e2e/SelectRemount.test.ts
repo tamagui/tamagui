@@ -10,6 +10,17 @@ import { by, device, element, expect, waitFor } from 'detox'
 describe('SelectRemount', () => {
   beforeAll(async () => {
     await device.launchApp({ newInstance: true })
+    // Disable synchronization for Android due to sheet/modal focus issues
+    if (device.getPlatform() === 'android') {
+      await device.disableSynchronization()
+    }
+  })
+
+  afterAll(async () => {
+    // Re-enable synchronization
+    if (device.getPlatform() === 'android') {
+      await device.enableSynchronization()
+    }
   })
 
   beforeEach(async () => {
@@ -103,17 +114,17 @@ describe('SelectRemount', () => {
     // Close first Select - use pressBack on Android, tap option on iOS
     if (device.getPlatform() === 'android') {
       await device.pressBack()
+      // Extra wait for Android to regain window focus after sheet dismissal
+      await new Promise((resolve) => setTimeout(resolve, 3000))
     } else {
       await element(by.id('select-remount-test-option-apple')).tap()
+      await new Promise((resolve) => setTimeout(resolve, 1000))
     }
-
-    // Wait for sheet to close and app to regain focus
-    await new Promise((resolve) => setTimeout(resolve, 1500))
 
     // Verify we're still on the SelectRemount screen
     await waitFor(element(by.id('remount-button')))
       .toBeVisible()
-      .withTimeout(5000)
+      .withTimeout(10000)
 
     // Test second Select - wait for it to be visible
     await waitFor(element(by.id('select-remount-test-2-trigger')))
