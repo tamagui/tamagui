@@ -2,7 +2,7 @@ import { composeEventHandlers } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps } from '@tamagui/web'
-import { createStyledContext, styled, Text } from '@tamagui/web'
+import { createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
 
 export const context = createStyledContext({
@@ -52,26 +52,49 @@ export const ToggleFrame = styled(ThemeableStack, {
       },
     },
 
+    activeBackgroundColor: {
+      '...color': () => ({}),
+    },
+
+    activeBorderColor: {
+      '...color': () => ({}),
+    },
+
+     activeColor: {
+      '...color': () => ({}),
+    },
+
     color: {
       '...color': () => {
         return {}
       },
     },
 
-    active: {
-      true: {
-        zIndex: 1,
+  active: {
+  true: (_, extras) => {
+    const props = extras.props as { 
+      activeBackgroundColor?: string
+      activeBorderColor?: string 
+      activeColor?: string
+    }
 
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-
-        focusStyle: {
-          borderColor: '$borderColor',
-          backgroundColor: '$background',
-        },
+    return {
+      zIndex: 1,
+      backgroundColor: props.activeBackgroundColor,
+      borderColor: props.activeBorderColor,
+      color: props.activeColor,
+      hoverStyle: {
+        backgroundColor: '$backgroundHover',
       },
-    },
+      pressStyle: {
+        backgroundColor: '$backgroundPress',
+      },
+      focusStyle: {
+        borderColor: '$borderColorFocus',
+      },
+    }
+  },
+},
 
     orientation: {
       horizontal: {
@@ -127,7 +150,7 @@ export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
         aria-pressed={pressed}
         data-state={pressed ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
-        {...buttonProps}
+        {...buttonProps}             
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
           if (!props.disabled) {
@@ -140,3 +163,4 @@ export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
 )
 
 /* ---------------------------------------------------------------------------------------------- */
+

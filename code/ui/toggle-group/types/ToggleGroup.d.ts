@@ -12,6 +12,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
      * Used to disable passing styles down to children.
      */
     disablePassStyles?: boolean;
+    activeColor?: string;
 };
 type ScopedProps<P> = P & {
     __scopeToggleGroup?: string;
@@ -24,7 +25,7 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
 declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGroupProps> & React.RefAttributes<HTMLElement>> & {
-    Item: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "color" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "unstyled" | "active" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Item: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "color" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "activeBackgroundColor" | "activeBorderColor" | "activeColor" | "active" | "unstyled" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         color?: import("@tamagui/web").ColorTokens | undefined;
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
@@ -45,8 +46,11 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        unstyled?: boolean | undefined;
+        activeBackgroundColor?: import("@tamagui/web").ColorTokens | undefined;
+        activeBorderColor?: import("@tamagui/web").ColorTokens | undefined;
+        activeColor?: import("@tamagui/web").ColorTokens | undefined;
         active?: boolean | undefined;
+        unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         color?: import("@tamagui/web").ColorTokens | undefined;
@@ -69,8 +73,11 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        unstyled?: boolean | undefined;
+        activeBackgroundColor?: import("@tamagui/web").ColorTokens | undefined;
+        activeBorderColor?: import("@tamagui/web").ColorTokens | undefined;
+        activeColor?: import("@tamagui/web").ColorTokens | undefined;
         active?: boolean | undefined;
+        unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
         color?: import("@tamagui/web").ColorTokens | undefined;
@@ -93,8 +100,11 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        unstyled?: boolean | undefined;
+        activeBackgroundColor?: import("@tamagui/web").ColorTokens | undefined;
+        activeBorderColor?: import("@tamagui/web").ColorTokens | undefined;
+        activeColor?: import("@tamagui/web").ColorTokens | undefined;
         active?: boolean | undefined;
+        unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     }>> & {
         value: string;
@@ -105,6 +115,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
          * Used to disable passing styles down to children.
          */
         disablePassStyles?: boolean;
+        activeColor?: string;
     } & React.RefAttributes<HTMLButtonElement>>;
 };
 interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {

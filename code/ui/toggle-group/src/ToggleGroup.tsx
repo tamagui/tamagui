@@ -55,11 +55,17 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
 const ToggleGroupItem = ToggleFrame.extractable(
   React.forwardRef<ToggleGroupItemElement, ToggleGroupItemProps>(
     (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
-      const [_, { color }] = usePropsAndStyle(props)
       const { disablePassStyles, ...rest } = props
       const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
       const context = useToggleGroupContext(props.__scopeToggleGroup)
       const pressed = valueContext?.value.includes(props.value)
+   
+     const [propsFromStyle, { color }] = usePropsAndStyle({ 
+        ...props, 
+        active: pressed 
+      })
+
+
       const disabled = context.disabled || props.disabled || false
       const groupItemProps = useGroupItem({ disabled })
       const size = props.size ?? context.size
@@ -72,14 +78,18 @@ const ToggleGroupItem = ToggleFrame.extractable(
             padding: getVariableValue(size) * 0.6,
           }
 
+      const theme = useTheme()
       const iconSize =
         (typeof size === 'number' ? size * 0.7 : getFontSize(size as FontSizeTokens)) *
         1.2
 
-      const theme = useTheme()
+       const iconColor = pressed && (props as any).activeColor 
+        ? (props as any).activeColor 
+        : (color ?? theme.color)
+      
       const getThemedIcon = useGetThemedIcon({
         size: iconSize,
-        color: color ?? theme.color,
+        color: iconColor, 
       })
 
       const childrens = React.Children.toArray(props.children)
@@ -90,7 +100,15 @@ const ToggleGroupItem = ToggleFrame.extractable(
         return getThemedIcon(child)
       })
 
-      const commonProps = { pressed, disabled, ...sizeProps, ...rest, children }
+    const commonProps = {
+        ...propsFromStyle,
+        value: props.value, 
+        pressed,
+        active: pressed,
+        disabled,
+        ...sizeProps,
+        children,
+      }
 
       const inner = (
         <ToggleGroupItemImpl
@@ -142,28 +160,37 @@ const ToggleGroupItemImpl = React.forwardRef<
   ToggleGroupItemImplElement,
   ScopedProps<ToggleGroupItemImplProps>
 >((props: ScopedProps<ToggleGroupItemImplProps>, forwardedRef) => {
-  const { __scopeToggleGroup, value, ...itemProps } = props
+    const { __scopeToggleGroup, value, pressed, ...itemProps } = props 
 
   const valueContext = useToggleGroupValueContext(__scopeToggleGroup)
+
+  const defaultPressed =
+    valueContext.type === 'single'
+      ? valueContext.defaultValue === value
+      : Array.isArray(valueContext.defaultValue) &&
+        valueContext.defaultValue.includes(value)
+
   const singleProps = {
     'aria-pressed': undefined,
   }
   const typeProps = valueContext.type === 'single' ? singleProps : undefined
 
-  return (
-    <Toggle
-      {...typeProps}
-      {...itemProps}
-      ref={forwardedRef}
-      onPressedChange={(pressed) => {
-        if (pressed) {
-          valueContext.onItemActivate(value)
-        } else {
-          valueContext.onItemDeactivate(value)
-        }
-      }}
-    />
-  )
+    return (
+      <Toggle
+        {...typeProps}
+        {...itemProps}
+        ref={forwardedRef}
+        defaultPressed={defaultPressed}
+        pressed={pressed}  
+        onPressedChange={(pressed) => {
+          if (pressed) {
+            valueContext.onItemActivate(value)
+          } else {
+            valueContext.onItemDeactivate(value)
+          }
+        }}
+      />
+    )
 })
 
 /* -----------------------------------------------------------------------------------------------*/
