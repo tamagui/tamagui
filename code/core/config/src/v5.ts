@@ -27,7 +27,6 @@ export const settings = {
   shouldAddPrefersColorThemes: true,
   allowedStyleValues: 'somewhat-strict-web',
   addThemeClassName: 'html',
-  onlyAllowShorthands: true,
   // allow two inverses (tooltips, etc)
   // TODO on inverse theme changes
   maxDarkLightNesting: 2,
