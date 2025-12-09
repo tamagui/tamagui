@@ -38,6 +38,7 @@
   "dependencies": {
     "@dominicstop/ts-event-emitter": "1.1.0",
     "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-menu/menu": "1.2.2",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "@shopify/restyle": "^2.4.4",
@@ -72,6 +73,8 @@
     "react-dom": "*",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
+    "react-native-ios-context-menu": "3.1.0",
+    "react-native-ios-utilities": "5.1.2",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
@@ -81,7 +84,7 @@
     "solito": "^4.3.0",
     "tamagui": "workspace:*",
     "vitest": "^4.0.4",
-    "zeego": "^2.0.0"
+    "zeego": "^3.0.0"
   },
   "packageManager": "yarn@4.5.0",
   "devDependencies": {
