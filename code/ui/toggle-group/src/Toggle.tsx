@@ -1,8 +1,8 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { GetProps } from '@tamagui/web'
-import { createStyledContext, styled, Text } from '@tamagui/web'
+import type { GetProps, TamaguiElement } from '@tamagui/web'
+import { createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
 
 export const context = createStyledContext({
@@ -15,9 +15,7 @@ export const context = createStyledContext({
 
 const NAME = 'Toggle'
 
-type TamaguiButtonElement = HTMLButtonElement
-
-export type ToggleElement = TamaguiButtonElement
+export type ToggleElement = TamaguiElement
 
 export const ToggleFrame = styled(YStack, {
   name: NAME,
@@ -122,8 +120,8 @@ export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
         {...(!props.unstyled && {
           theme: pressed ? 'active' : null,
           themeShallow: true,
+          active: pressed,
         })}
-        active={!props.unstyled ? pressed : undefined}
         aria-pressed={pressed}
         data-state={pressed ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
