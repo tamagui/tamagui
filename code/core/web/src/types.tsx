@@ -127,9 +127,9 @@ export type SpaceKeys =
   | 'borderInlineStartWidth'
   | 'borderInlineEndWidth'
 
-export type StyledContext<Props extends Object = any> = Context<Props> & {
+export type StyledContext<Props extends Record<string, any> = any> = Context<Props> & {
   context: Context<Props>
-  props: Object | undefined
+  props: Record<string, any> | undefined
   Provider: ProviderExoticComponent<
     Partial<Props | undefined> & {
       children?: ReactNode
@@ -1537,7 +1537,9 @@ export type ParseFont<A extends GenericFont> = {
   face: TokenPrefixedIfExists<A['face']>
 }
 
-export type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {}
+export type TokenPrefixedIfExists<A> = A extends Record<string, any>
+  ? TokenPrefixed<A>
+  : {}
 
 //
 // adds theme short values to relevant props
