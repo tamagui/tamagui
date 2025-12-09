@@ -58,11 +58,11 @@
     "tamagui": "workspace:*"
   },
   "optionalDependencies": {
-    "@react-native-menu/menu": "*",
-    "react-native-ios-context-menu": "*",
-    "react-native-ios-utilities": "*",
+    "@react-native-menu/menu": "1.2.2",
+    "react-native-ios-context-menu": "^3.2.1",
+    "react-native-ios-utilities": "^5.2.0",
     "sf-symbols-typescript": "*",
-    "zeego": "*"
+    "zeego": "^3.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

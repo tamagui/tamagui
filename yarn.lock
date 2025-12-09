@@ -5845,16 +5845,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-menu/menu@npm:*":
-  version: 2.0.0
-  resolution: "@react-native-menu/menu@npm:2.0.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/547830a473b408cb5218298eb0e8892968ce9e2e7ff35eaef3a5e60985a19a0bd2d782bd010baed50d5f1b3beadca5ac24991a7df0b164e3d90865cd1792a2aa
-  languageName: node
-  linkType: hard
-
 "@react-native-menu/menu@npm:1.2.2":
   version: 1.2.2
   resolution: "@react-native-menu/menu@npm:1.2.2"
@@ -7848,7 +7838,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/create-menu@workspace:code/ui/create-menu"
   dependencies:
-    "@react-native-menu/menu": "npm:*"
+    "@react-native-menu/menu": "npm:1.2.2"
     "@tamagui/animate": "workspace:*"
     "@tamagui/animate-presence": "workspace:*"
     "@tamagui/build": "workspace:*"
@@ -7870,11 +7860,11 @@ __metadata:
     "@tamagui/web": "workspace:*"
     react: "npm:*"
     react-native: "npm:0.81.5"
-    react-native-ios-context-menu: "npm:*"
-    react-native-ios-utilities: "npm:*"
+    react-native-ios-context-menu: "npm:^3.2.1"
+    react-native-ios-utilities: "npm:^5.2.0"
     sf-symbols-typescript: "npm:*"
     tamagui: "workspace:*"
-    zeego: "npm:*"
+    zeego: "npm:^3.0.0"
   peerDependencies:
     react: "*"
     react-native: 0.81.5
@@ -26878,7 +26868,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-ios-context-menu@npm:*, react-native-ios-context-menu@npm:^3.2.1":
+"react-native-ios-context-menu@npm:^3.2.1":
   version: 3.2.1
   resolution: "react-native-ios-context-menu@npm:3.2.1"
   dependencies:
@@ -26891,7 +26881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-ios-utilities@npm:*, react-native-ios-utilities@npm:^5.2.0":
+"react-native-ios-utilities@npm:^5.2.0":
   version: 5.2.0
   resolution: "react-native-ios-utilities@npm:5.2.0"
   peerDependencies:
@@ -33677,7 +33667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zeego@npm:*, zeego@npm:^3.0.0":
+"zeego@npm:^3.0.0":
   version: 3.0.6
   resolution: "zeego@npm:3.0.6"
   dependencies:
