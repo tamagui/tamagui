@@ -8525,8 +8525,8 @@ __metadata:
     react-dom: "npm:*"
     react-native: "npm:0.81.5"
     react-native-gesture-handler: "npm:~2.28.0"
-    react-native-ios-context-menu: "npm:3.1.0"
-    react-native-ios-utilities: "npm:5.1.2"
+    react-native-ios-context-menu: "npm:^3.2.1"
+    react-native-ios-utilities: "npm:^5.2.0"
     react-native-reanimated: "npm:~4.1.1"
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"
@@ -26878,7 +26878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-ios-context-menu@npm:*":
+"react-native-ios-context-menu@npm:*, react-native-ios-context-menu@npm:^3.2.1":
   version: 3.2.1
   resolution: "react-native-ios-context-menu@npm:3.2.1"
   dependencies:
@@ -26891,36 +26891,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-ios-context-menu@npm:3.1.0":
-  version: 3.1.0
-  resolution: "react-native-ios-context-menu@npm:3.1.0"
-  dependencies:
-    "@dominicstop/ts-event-emitter": "npm:^1.1.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-ios-utilities: "*"
-  checksum: 10/86776ad41347a3358e31ab04614b4e59e49b4d0abd044029f2fe03095f8e61d2b60160c1d175b1d3405f62458af8ae665a4d189ae0075a998bb3125d5cdcf85a
-  languageName: node
-  linkType: hard
-
-"react-native-ios-utilities@npm:*":
+"react-native-ios-utilities@npm:*, react-native-ios-utilities@npm:^5.2.0":
   version: 5.2.0
   resolution: "react-native-ios-utilities@npm:5.2.0"
   peerDependencies:
     react: "*"
     react-native: "*"
   checksum: 10/36cc68d9773459959714e644d322d9697f7097ed13082fdcc238fe94649f0af206bb1015bee283c10e1a64aa923f095717c37ad1f3afd275cc3245bd27a9c6be
-  languageName: node
-  linkType: hard
-
-"react-native-ios-utilities@npm:5.1.2":
-  version: 5.1.2
-  resolution: "react-native-ios-utilities@npm:5.1.2"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/4a9ba56dd5cc04f7831763a5aff82eb01acf0c2c87e541b29e5619241c2f8b2ee63fe986da2fc00c3cfe96ffdf016ca4c597e08d7b84340e3bf46a296596d1a3
   languageName: node
   linkType: hard
 
