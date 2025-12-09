@@ -5845,13 +5845,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-menu/menu@npm:1.2.2":
-  version: 1.2.2
-  resolution: "@react-native-menu/menu@npm:1.2.2"
+"@react-native-menu/menu@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@react-native-menu/menu@npm:2.0.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/fb04035dae832c703bfa7e8f75c3950b7b71923c9f7d079c4482940f3e9239db7db232b1d03cbb75f1a923e9989cbebfb843c1a21469f1fc5fcc745d56239253
+  checksum: 10/547830a473b408cb5218298eb0e8892968ce9e2e7ff35eaef3a5e60985a19a0bd2d782bd010baed50d5f1b3beadca5ac24991a7df0b164e3d90865cd1792a2aa
   languageName: node
   linkType: hard
 
@@ -7838,7 +7838,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/create-menu@workspace:code/ui/create-menu"
   dependencies:
-    "@react-native-menu/menu": "npm:1.2.2"
+    "@react-native-menu/menu": "npm:^2.0.0"
     "@tamagui/animate": "workspace:*"
     "@tamagui/animate-presence": "workspace:*"
     "@tamagui/build": "workspace:*"
@@ -8471,7 +8471,7 @@ __metadata:
     "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@react-native-async-storage/async-storage": "npm:2.2.0"
-    "@react-native-menu/menu": "npm:1.2.2"
+    "@react-native-menu/menu": "npm:^2.0.0"
     "@react-navigation/native": "npm:^7.0.14"
     "@react-navigation/native-stack": "npm:^7.2.0"
     "@shopify/restyle": "npm:^2.4.4"
