@@ -28,8 +28,8 @@ Add `@tamagui/next-plugin` to your project:
 yarn add @tamagui/next-plugin
 ```
 
-While you don't have to setup a config, we recommend starting with our default
-config which gives you media queries and other nice things:
+We recommend starting with our default config which gives you media queries and
+other nice things:
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v4'
@@ -103,10 +103,8 @@ module.exports = function (name, { defaultConfig }) {
 
 ### pages/\_document.tsx
 
-You'll want modify \_document to add the global Tamagui styles using
-`tamaguiConfig.getCSS()` into the head element. If you are also using React
-Native, we can gather the `react-native-web` style with AppRegistry here as
-well.
+If you're using React Native Web components, you'll want to gather the
+`react-native-web` styles in \_document:
 
 ```tsx fileName="_document.tsx"
 import NextDocument, {
@@ -118,9 +116,6 @@ import NextDocument, {
 } from 'next/document'
 import { StyleSheet } from 'react-native'
 
-// import the config you just exported from the tamagui.config.ts file
-import { config } from './tamagui.config'
-
 export default class Document extends NextDocument {
   static async getInitialProps({ renderPage }: DocumentContext) {
     const page = await renderPage()
@@ -131,19 +126,10 @@ export default class Document extends NextDocument {
     return {
       ...page,
       styles: (
-        <>
-          {/* Link your CSS output for optimized themes */}
-          <link rel="stylesheet" href="/tamagui.css" />
-          <style
-            id={rnwStyle.id}
-            dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
-          />
-          <style
-            dangerouslySetInnerHTML={{
-              __html: tamaguiConfig.getCSS(),
-            }}
-          />
-        </>
+        <style
+          id={rnwStyle.id}
+          dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
+        />
       ),
     }
   }
@@ -164,22 +150,22 @@ export default class Document extends NextDocument {
 }
 ```
 
+<Notice theme="blue">
+  Tamagui automatically injects styles at runtime. You can optionally generate a
+  static CSS file - see the [Static CSS Output](#static-css-output) section.
+</Notice>
+
 ### pages/\_app.tsx
 
 Add `TamaguiProvider`:
 
-```tsx fileName="tamagui.config.ts"
-// Optional: add the reset to get more consistent styles across browsers
-import '@tamagui/core/reset.css'
-
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+```tsx fileName="_app.tsx"
+import { NextThemeProvider } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import React, { useMemo } from 'react'
-import { TamaguiProvider, createTamagui } from 'tamagui'
-
-// import the config you just exported from the tamagui.config.ts file
-import { config } from './tamagui.config'
+import { TamaguiProvider } from 'tamagui'
+import tamaguiConfig from '../tamagui.config'
 
 export default function App({ Component, pageProps }: AppProps) {
   // memo to avoid re-render on dark/light change
@@ -196,10 +182,10 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <NextThemeProvider>
         <TamaguiProvider
-          config={tamaguiConfig}
-          disableInjectCSS
-          disableRootThemeClass
-        >
+            config={tamaguiConfig}
+            disableInjectCSS
+            disableRootThemeClass
+          >
           {contents}
         </TamaguiProvider>
       </NextThemeProvider>
@@ -209,8 +195,7 @@ export default function App({ Component, pageProps }: AppProps) {
 ```
 
 <Notice theme="blue">
-  Because [_document.tsx](/docs/guides/next-js?#pages_documenttsx) utilizes
-  custom `getCSS()`, include `disableInjectCSS` in `TamaguiProvider`
+  Use `disableInjectCSS` for SSR apps to prevent duplicate style injection. Only omit it for client-only apps without server rendering.
 </Notice>
 
 ### Themes
@@ -227,9 +212,6 @@ yarn add @tamagui/next-theme
 Here's how you'd set up your `_app.tsx`:
 
 ```tsx fileName="_app.tsx"
-// Optional: add the reset to get more consistent styles across browsers
-import '@tamagui/core/reset.css'
-
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -280,50 +262,63 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 ```
 
-<Notice theme="green">
-  We recommend memo-ing children so they don't re-render.
-</Notice>
+### Static CSS Output
 
-### Performance
+You can generate a static CSS file for your themes and tokens. There are two
+ways to do this:
 
-Add `outputCSS` and `disableExtraction` to your `next.config.js`:
+#### Option 1: Using the CLI
+
+The simplest approach is to use the Tamagui CLI to generate the CSS file:
+
+```bash
+npx tamagui generate
+```
+
+This outputs CSS to `.tamagui/tamagui.css`. Copy it to your public folder or
+configure `outputCSS` in your `tamagui.build.ts`:
+
+```ts fileName="tamagui.build.ts"
+import type { TamaguiBuildOptions } from '@tamagui/core'
+
+export default {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+  outputCSS: './public/tamagui.css',
+} satisfies TamaguiBuildOptions
+```
+
+Then import it in your `_app.tsx`:
+
+```tsx fileName="_app.tsx"
+import '../public/tamagui.css'
+```
+
+#### Option 2: Using the Next.js Plugin
+
+You can also have the plugin generate CSS during your Next.js build:
 
 ```tsx fileName="next.config.js"
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
-  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-  disableExtraction: process.env.NODE_ENV === 'development"
+  outputCSS:
+    process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  // faster dev mode, keeps debugging helpers:
+  disableExtraction: process.env.NODE_ENV === 'development',
 })
 ```
 
-<Notice theme="green">
-  We recommend using `disableExtraction` for better performance during dev mode.
-  You still get the nice debugging helpers like file name, component name and
-  line-numbers on every dom node.
-</Notice>
-
-And then add this to include the CSS file generated at build-time:
+Then import it in your `_app.tsx`:
 
 ```tsx fileName="_app.tsx"
-if (process.env.NODE_ENV === 'production') {
-  require('../public/tamagui.css')
-}
+import '../public/tamagui.css'
 ```
 
-Add `exclude` option to `getCSS()` in `_document.tsx`:
-
-```tsx fileName="_document.tsx"
-<head>
-  <style
-    dangerouslySetInnerHTML={{
-      __html: tamaguiConfig.getCSS({
-        exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
-      }),
-    }}
-  />
-</head>
-```
+<Notice theme="green">
+  With `outputCSS`, you don't need `getCSS()` in your `_document.tsx` - all
+  styles are handled by the static CSS file and runtime style injection.
+</Notice>
 
 ### Font loading
 
@@ -336,17 +331,6 @@ To ensure font loads globally, add a global style to `styles` in
     font-family: 'Inter';
   }
 `}</style>
-```
-
-### Reseting CSS
-
-There is an optional CSS reset to get more consistent styles across browsers,
-that helps normalize styling.
-
-You can import it into your app like so:
-
-```tsx fileName="_app.tsx"
-import '@tamagui/core/reset.css'
 ```
 
 ## App router
@@ -404,9 +388,6 @@ Create a new component to add `TamaguiProvider`:
 ```tsx fileName="NextTamaguiProvider.tsx"
 'use client'
 
-import '@tamagui/core/reset.css'
-import '@tamagui/polyfill-dev'
-
 import { ReactNode } from 'react'
 import { StyleSheet } from 'react-native'
 import { useServerInsertedHTML } from 'next/navigation'
@@ -415,6 +396,7 @@ import { TamaguiProvider } from 'tamagui'
 import tamaguiConfig from '../tamagui.config'
 
 export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
+  // only if using react-native-web components like ScrollView:
   useServerInsertedHTML(() => {
     // @ts-ignore
     const rnwStyle = StyleSheet.getSheet()
@@ -423,13 +405,6 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
         <style
           dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
           id={rnwStyle.id}
-        />
-        <style
-          dangerouslySetInnerHTML={{
-            // the first time this runs you'll get the full CSS including all themes
-            // after that, it will only return CSS generated since the last call
-            __html: tamaguiConfig.getNewCSS(),
-          }}
         />
       </>
     )
@@ -512,10 +487,8 @@ Here's how you'd set up your `NextTamaguiProvider.tsx`:
 ```tsx fileName="NextTamaguiProvider.tsx"
 'use client'
 
-import '@tamagui/core/reset.css'
 import '@tamagui/font-inter/css/400.css'
 import '@tamagui/font-inter/css/700.css'
-import '@tamagui/polyfill-dev'
 
 import { ReactNode } from 'react'
 import { StyleSheet } from 'react-native'
@@ -527,28 +500,15 @@ import tamaguiConfig from '../tamagui.config'
 export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useRootTheme()
 
+  // only needed if using react-native-web components:
   useServerInsertedHTML(() => {
     // @ts-ignore
     const rnwStyle = StyleSheet.getSheet()
     return (
-      <>
-        {/* Link your CSS output for optimized themes */}
-        <link rel="stylesheet" href="/tamagui.css" />
-        <style
-          dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
-          id={rnwStyle.id}
-        />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: tamaguiConfig.getCSS({
-              // if you are using "outputCSS" option, you should use this "exclude"
-              // if not, then you can leave the option out
-              exclude:
-                process.env.NODE_ENV === 'production' ? 'design-system' : null,
-            }),
-          }}
-        />
-      </>
+      <style
+        dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
+        id={rnwStyle.id}
+      />
     )
   })
 
@@ -573,38 +533,33 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 }
 ```
 
-### Performance
+### Static CSS Output
 
-Add `outputCSS` and `disableExtraction` to your `next.config.js`:
+You can generate a static CSS file for your themes and tokens. Use either the
+CLI or the Next.js plugin:
 
 ```tsx fileName="next.config.js"
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
-  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-  disableExtraction: process.env.NODE_ENV === 'development"
+  outputCSS:
+    process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  // faster dev mode, keeps debugging helpers:
+  disableExtraction: process.env.NODE_ENV === 'development',
 })
 ```
 
-<Notice theme="green">
-  We recommend using `disableExtraction` for better performance during dev mode.
-  You still get the nice debugging helpers like file name, component name and
-  line-numbers on every dom node.
-</Notice>
+Then link the generated CSS file in your `app/layout.tsx`:
 
-Add `exclude` option to `useServerInsertedHTML` in `NextTamaguiProvider`:
-
-```tsx fileName="NextTamaguiProvider.tsx"
-<style
-  dangerouslySetInnerHTML={{
-    __html: tamaguiConfig.getCSS({
-      // if you are using "outputCSS" option, you should use this "exclude"
-      // if not, then you can leave the option out
-      exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
-    }),
-  }}
-/>
+```tsx fileName="app/layout.tsx"
+import '../public/tamagui.css'
 ```
+
+<Notice theme="green">
+  With React 19, Tamagui automatically injects runtime styles via style tags on
+  the server. The `outputCSS` file handles themes and tokens generated at build
+  time, so you don't need any `getCSS()` calls in your provider.
+</Notice>
 
 ### Font loading
 
@@ -617,17 +572,6 @@ To ensure font loads globally, add a global style to `useServerInsertedHTML` in
     font-family: 'Inter';
   }
 `}</style>
-```
-
-### Reseting CSS
-
-There is an optional CSS reset to get more consistent styles across browsers,
-that helps normalize styling.
-
-You can import it into your app like so:
-
-```tsx fileName="NextTamaguiProvider.tsx"
-import '@tamagui/core/reset.css'
 ```
 
 ## NextThemeProvider
@@ -819,7 +763,8 @@ Run `npx tamagui build` once to generate the initial CSS file, then commit it.
 
 ### CI Verification
 
-Use `--expect-optimizations` to fail builds if the compiler isn't working:
+Use `--expect-optimizations` to fail builds if the compiler optimizes fewer than
+the expected minimum number of components:
 
 ```json
 {
@@ -827,9 +772,5 @@ Use `--expect-optimizations` to fail builds if the compiler isn't working:
 }
 ```
 
-Add generated files to `.gitignore`:
-
-```gitignore
-src/_*.css
-src/*.native.tsx
-```
+This will fail the build if fewer than 5 components are optimized, helping catch
+configuration issues in CI.

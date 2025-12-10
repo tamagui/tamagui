@@ -57,6 +57,7 @@ export const docsRoutes = [
         route: '/docs/guides/how-to-build-a-button',
       },
       { title: 'Developing', route: '/docs/guides/developing' },
+      { title: 'CLI', route: '/docs/guides/cli' },
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },
       { title: 'Vite', route: '/docs/guides/vite' },

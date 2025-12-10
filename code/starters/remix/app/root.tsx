@@ -3,7 +3,6 @@ import type { LinksFunction } from '@remix-run/node'
 import { TamaguiProvider } from '@tamagui/web'
 import tamaguiConfig from '../tamagui.config'
 
-import '@tamagui/core/reset.css'
 import './tamagui.css'
 
 export const links: LinksFunction = () => [
