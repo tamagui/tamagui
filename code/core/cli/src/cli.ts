@@ -124,7 +124,7 @@ const COMMAND_MAP = {
 
   build: {
     shorthands: ['b'],
-    description: `Use to pre-build a Tamagui component directory`,
+    description: `Use to pre-build a Tamagui component directory. Use -- to run a command after optimization, then auto-restore files.`,
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
@@ -132,10 +132,24 @@ const COMMAND_MAP = {
       '--target': String,
       '--include': String,
       '--exclude': String,
+      '--expect-optimizations': Number,
     },
     async run() {
+      // Find -- separator in process.argv
+      const argvSeparatorIdx = process.argv.indexOf('--')
+      let runCommand: string[] | undefined
+
+      if (argvSeparatorIdx !== -1) {
+        // Everything after -- is the command to run
+        runCommand = process.argv.slice(argvSeparatorIdx + 1)
+        // Parse only args before --
+        const argsBeforeSeparator = process.argv.slice(0, argvSeparatorIdx)
+        process.argv = argsBeforeSeparator
+      }
+
       const { _, ...flags } = arg(this.flags)
       const [_command, dir] = _
+
       const { build } = require('./build.cjs')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
@@ -144,9 +158,10 @@ const COMMAND_MAP = {
         ...options,
         dir,
         include: flags['--include'],
-        // Default to building both web and native
         target: (flags['--target'] as 'web' | 'native' | 'both' | undefined) || 'both',
         exclude: flags['--exclude'],
+        expectOptimizations: flags['--expect-optimizations'],
+        runCommand,
       })
     },
   },

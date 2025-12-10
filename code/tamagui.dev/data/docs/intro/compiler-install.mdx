@@ -312,7 +312,28 @@ npx tamagui build ./src/components/MyComponent.tsx
 
 # Include/exclude patterns
 npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
+
+# Verify minimum optimizations (useful in CI)
+npx tamagui build --target web --expect-optimizations 10 ./src
 ```
+
+#### CI Verification with --expect-optimizations
+
+The `--expect-optimizations` flag ensures your build is actually optimizing components. This is useful in CI to catch configuration issues:
+
+```json
+{
+  "scripts": {
+    "build": "tamagui build --target web --expect-optimizations 10 ./src && next build"
+  }
+}
+```
+
+If the compiler produces fewer than the expected number of optimizations, the build will fail with an error message showing the actual count. This helps catch:
+
+- Misconfigured `components` array
+- Wrong source paths
+- Configuration files not being found
 
 #### Platform-Specific File Handling
 

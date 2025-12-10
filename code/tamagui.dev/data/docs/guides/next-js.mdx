@@ -59,6 +59,12 @@ From here, choose your Next.js routing option to continue:
 		subtitle="Allows more complex patterns and setups."
 		colorOffset={0}
 	/>
+	<NextJSRouterCard
+		title="Turbopack"
+		link="/docs/guides/next-js#turbopack"
+		subtitle="Using Tamagui with Next.js Turbopack bundler."
+		colorOffset={2}
+	/>
 </Grid>
 
 <Spacer size="$4" />
@@ -670,4 +676,94 @@ export const SwitchThemeButton = () => {
 
   return <Button onPress={themeSetting.toggle}>Change theme: {clientTheme}</Button>
 }
+```
+
+## Turbopack
+
+Turbopack doesn't support Webpack plugins, so you'll use the Tamagui CLI to optimize your build. In dev mode, Tamagui works without any setup.
+
+### Setup
+
+Install the CLI:
+
+```bash
+yarn add -D @tamagui/cli
+```
+
+Create `tamagui.build.ts`:
+
+```ts fileName="tamagui.build.ts"
+import type { TamaguiBuildOptions } from '@tamagui/core'
+
+export default {
+  components: ['@tamagui/core'], // or ['tamagui']
+  config: './tamagui.config.ts',
+  outputCSS: './public/tamagui.css',
+} satisfies TamaguiBuildOptions
+```
+
+Your `next.config.js` can be empty:
+
+```js fileName="next.config.js"
+module.exports = {}
+```
+
+### Build Scripts
+
+The CLI can wrap your build command, optimizing files beforehand and restoring them after:
+
+```json fileName="package.json"
+{
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "tamagui build --target web ./src -- next build"
+  }
+}
+```
+
+The `--` separator tells the CLI to run `next build` after optimization, then restore your source files automatically.
+
+### CSS Setup
+
+The CLI generates theme CSS to `outputCSS`. Commit this file to git and import it in your layout:
+
+```tsx fileName="app/layout.tsx"
+import '../public/tamagui.css'
+import { TamaguiProvider } from '@tamagui/core'
+import config from '../tamagui.config'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <TamaguiProvider config={config}>
+          {children}
+        </TamaguiProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+<Notice theme="blue">
+  With React 19, Tamagui automatically injects runtime styles via style tags. The `outputCSS` file handles themes and tokens that are generated at build time.
+</Notice>
+
+Run `npx tamagui build` once to generate the initial CSS file, then commit it.
+
+### CI Verification
+
+Use `--expect-optimizations` to fail builds if the compiler isn't working:
+
+```json
+{
+  "build": "tamagui build --target web --expect-optimizations 5 ./src -- next build"
+}
+```
+
+Add generated files to `.gitignore`:
+
+```gitignore
+src/_*.css
+src/*.native.tsx
 ```
