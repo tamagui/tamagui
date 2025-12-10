@@ -48,6 +48,7 @@ npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
 - `--target <platform>` - Target platform: `web`, `native`, or `both` (default: `both`)
 - `--include <pattern>` - Glob pattern to include files
 - `--exclude <pattern>` - Glob pattern to exclude files
+- `--expect-optimizations <number>` - Fail if fewer than this minimum number of components are optimized (useful for CI)
 - `--debug` - Enable debug output
 - `--verbose` - Enable verbose debug output
 
@@ -77,7 +78,19 @@ export default {
 
 **Integration Examples:**
 
-This works with any build tool - just run `tamagui build` before your build command:
+The CLI can wrap your build command using `--`, which optimizes files beforehand and automatically restores them after:
+
+```json
+{
+  "scripts": {
+    "build": "tamagui build --target web ./src -- next build"
+  }
+}
+```
+
+The `--` separator tells the CLI to run `next build` after optimization, then restore your source files automatically. This is the recommended approach as it keeps your source files unchanged.
+
+Alternatively, run `tamagui build` separately (files will remain modified):
 
 ```json
 {
@@ -87,7 +100,7 @@ This works with any build tool - just run `tamagui build` before your build comm
 }
 ```
 
-**Important:** This is meant for production builds only. It rewrites files in-place, so don't run it during development. Use in your deployment pipeline.
+**Important:** Without the `--` wrapper, files are modified in-place and not restored. Only use this approach if you're building in a CI environment where the files are discarded anyway.
 
 For more details, see the [Compiler Installation guide](/docs/intro/compiler-install#cli-based-in-place-compilation).
 
@@ -220,42 +233,31 @@ All commands support these flags:
 ```json
 {
   "scripts": {
-    "prebuild": "tamagui check && tamagui build ./src",
-    "build": "next build"
+    "build": "tamagui check && tamagui build --target web ./src -- next build"
   }
 }
 ```
 
-### Development Workflow
+### CI with Optimization Verification
 
 ```json
 {
   "scripts": {
-    "dev": "next dev",
-    "build": "tamagui build --target web ./src && next build",
-    "check": "tamagui check"
+    "build": "tamagui build --target web --expect-optimizations 10 ./src -- next build"
   }
 }
 ```
 
-### Monorepo Package Build
-
-```json
-{
-  "scripts": {
-    "build": "tamagui build --target both ./src && tsc"
-  }
-}
-```
+This fails the build if fewer than 10 components are optimized, helping catch configuration issues in CI.
 
 ### Cross-Platform Mobile App
 
 ```json
 {
   "scripts": {
-    "build:ios": "tamagui build --target native ./src && eas build --platform ios",
-    "build:android": "tamagui build --target native ./src && eas build --platform android",
-    "build:web": "tamagui build --target web ./src && vite build"
+    "build:ios": "tamagui build --target native ./src -- eas build --platform ios",
+    "build:android": "tamagui build --target native ./src -- eas build --platform android",
+    "build:web": "tamagui build --target web ./src -- vite build"
   }
 }
 ```
