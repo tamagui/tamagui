@@ -1016,10 +1016,6 @@ interface ExtraStyleProps {
     /**
      * Web-only style property. Will be omitted on native.
      */
-    userSelect?: Properties['userSelect'];
-    /**
-     * Web-only style property. Will be omitted on native.
-     */
     scrollbarWidth?: Properties['scrollbarWidth'];
     /**
      * The point at which transforms originate from.
@@ -1289,6 +1285,7 @@ interface ExtraStyleProps {
     paddingInline?: SpaceTokens | number;
     paddingInlineStart?: SpaceTokens | number;
     paddingInlineEnd?: SpaceTokens | number;
+    userSelect?: Properties['userSelect'];
     insetBlock?: SpaceTokens | number;
     insetBlockStart?: SpaceTokens | number;
     insetBlockEnd?: SpaceTokens | number;
