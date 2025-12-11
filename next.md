@@ -1,4 +1,11 @@
-- did we remove onlyAllowShorthands
+better polymorphism:
+
+- https://beta.cva.style/getting-started/polymorphism#alternative-approaches
+  - seems we could move add render alongside tag?
+    - <Button render={} />
+    - deprecate asChild?
+
+- did we remove onlyAllowShorthands? seems a bit aggressive
 
 - remove group auto-index stuff, its not really doable with react
   - https://github.com/tamagui/tamagui/pull/2163
