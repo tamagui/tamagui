@@ -1,6 +1,17 @@
+/**
+ * @vitest-environment jsdom
+ */
+
 import '@expo/match-media'
 import { render, screen } from '@testing-library/react'
+import React from 'react'
 import { describe, expect, test } from 'vitest'
+
+// Make React available globally for the webpack output
+;(global as any).React = React
+if (typeof window !== 'undefined') {
+  ;(window as any).React = React
+}
 
 /**
  * disabled for now but we really need to bring this back
@@ -115,8 +126,12 @@ describe('webpack-tests', () => {
     const { container: containerOn } = renderOn()
     const { container: containerOff } = renderOff()
 
-    const outCn = containerOn.firstChild?.firstChild?.['className']
-    const out2Cn = containerOff.firstChild?.firstChild?.['className']
+    // Find the div with is_MyComponent class which has the padding classes
+    const divOn = containerOn.querySelector('.is_MyComponent')
+    const divOff = containerOff.querySelector('.is_MyComponent')
+
+    const outCn = divOn?.className
+    const out2Cn = divOff?.className
 
     expect(outCn).not.toContain(`_pl-t-space-4`)
     expect(out2Cn).toContain(`_pl-t-space-4`)
@@ -161,7 +176,8 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexProperties')
     const { container } = renderTrue()
 
-    const element = container.firstChild?.firstChild
+    // Select the div with is_View class which is the actual component
+    const element = container.querySelector('.is_View') as HTMLElement
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)
@@ -201,7 +217,8 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexWrapWithMediaQuery')
     const { container } = renderTrue()
 
-    const element = container.firstChild?.firstChild
+    // Select the div with is_View class which is the actual component
+    const element = container.querySelector('.is_View') as HTMLElement
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)

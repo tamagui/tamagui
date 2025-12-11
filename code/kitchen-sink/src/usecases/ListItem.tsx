@@ -14,15 +14,16 @@ export const ThemedListItem = () => (
       borderRadius="$3"
     />
 
-    <ListItem
-      id="themed-list-item-inverse"
-      title="Inverse"
-      subTitle="Inverse list item"
-      icon={ChevronRight}
-      size="$3"
-      themeInverse
-      borderRadius="$3"
-    />
+    <Theme inverse>
+      <ListItem
+        id="themed-list-item-inverse"
+        title="Inverse"
+        subTitle="Inverse list item"
+        icon={ChevronRight}
+        size="$3"
+        borderRadius="$3"
+      />
+    </Theme>
 
     <Separator />
 
@@ -53,29 +54,31 @@ export const ThemedListItem = () => (
     </Theme>
 
     <Theme name="light">
-      <ListItem
-        id="themed-list-item-light-inverse"
-        title="<ListItem themeInverse/>"
-        subTitle="Forcing dark theme - light + inverse"
-        icon={ChevronRight}
-        size="$3"
-        borderRadius="$3"
-        themeInverse
-        onPress={() => console.info('Light theme inverse list item pressed')}
-      />
+      <Theme inverse>
+        <ListItem
+          id="themed-list-item-light-inverse"
+          title="<Theme inverse>"
+          subTitle="Forcing dark theme - light + inverse"
+          icon={ChevronRight}
+          size="$3"
+          borderRadius="$3"
+          onPress={() => console.info('Light theme inverse list item pressed')}
+        />
+      </Theme>
     </Theme>
 
     <Theme name="dark">
-      <ListItem
-        id="themed-list-item-dark-inverse"
-        title="<ListItem themeInverse/>"
-        subTitle="Forcing light theme - dark + inverse"
-        icon={ChevronRight}
-        size="$3"
-        borderRadius="$3"
-        themeInverse
-        onPress={() => console.info('Dark theme inverse list item pressed')}
-      />
+      <Theme inverse>
+        <ListItem
+          id="themed-list-item-dark-inverse"
+          title="<Theme inverse>"
+          subTitle="Forcing light theme - dark + inverse"
+          icon={ChevronRight}
+          size="$3"
+          borderRadius="$3"
+          onPress={() => console.info('Dark theme inverse list item pressed')}
+        />
+      </Theme>
     </Theme>
   </Stack>
 )

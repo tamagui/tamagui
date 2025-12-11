@@ -238,14 +238,6 @@ module.exports = {
 }
 ```
 
-Currently the native compiler doesn't optimize as much as it could. It bails out
-if it encounters any theme usage, like `<View backgroundColor="$background" />`.
-If you are on version `1.75` or greater, you can test enabling this experimental
-optimization by adding a new property with the key
-`experimentalFlattenThemesOnNative` set to true in the above config object and
-that will make the compiler to flat and extract any theme usage or dynamic
-values.
-
 ### Expo
 
 [Check out the Expo guide](/docs/guides/expo) for more information on setting up
@@ -263,6 +255,9 @@ will mess up your working directory, but makes it highly compatible with any
 bundler or tool. The downside is you don't get the helpful development
 compatibility parts of the plugins, plus dev-mode debugging and `data-`
 attributes.
+
+For complete CLI documentation including all available commands, see the
+[CLI Guide](/docs/guides/cli).
 
 #### Setup
 
@@ -407,6 +402,9 @@ command. Here are some examples:
 The Tamagui CLI optimizes your components in-place, then your bundler processes
 the already-optimized files.
 
+**Learn more:** See the [CLI Guide](/docs/guides/cli) for documentation on all
+CLI commands including `check`, `generate`, `add`, and more.
+
 ## Props
 
 All compiler plugins accept the same options:
@@ -487,15 +485,6 @@ All compiler plugins accept the same options:
       default: 'false',
       description:
         '(Experimental) Enables further extracting of any styled component, even if not in your components. See below for more information.',
-    },
-    {
-      name: 'experimentalFlattenThemesOnNative',
-      required: false,
-      type: 'boolean',
-      typeSimple: 'enum',
-      default: 'false',
-      description:
-        '(Experimental) Enables further extracting of components that use theme values on native.',
     },
   ]}
 />

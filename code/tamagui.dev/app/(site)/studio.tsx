@@ -8,13 +8,12 @@ import {
   EnsureFlexed,
   H1,
   H2,
-  Separator,
   Spacer,
   XStack,
   YStack,
   useComposedRefs,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerXL } from '~/components/Containers'
 import { Features } from '~/components/Features'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -68,7 +67,6 @@ export default function StudioSplashPage() {
                       mt={60}
                       animation="quick"
                       bg="$color10"
-                      color="$color1"
                       size="$6"
                       rounded="$10"
                       elevation="$2"
@@ -85,7 +83,7 @@ export default function StudioSplashPage() {
                         scale: 0.98,
                       }}
                     >
-                      Sponsor for early access
+                      <Button.Text color="$color1">Sponsor for early access</Button.Text>
                     </Button>
                   </Link>
                 </ThemeTintAlt>
@@ -97,7 +95,7 @@ export default function StudioSplashPage() {
                 </Link>
               </YStack>
 
-              <XStack maxW={790} gap="$8" separator={<Separator vertical />}>
+              <XStack maxW={790} gap="$8">
                 <H2
                   theme="alt1"
                   className="text-glow"

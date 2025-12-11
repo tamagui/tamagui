@@ -30,8 +30,8 @@ export const HeroTypography = memo(() => {
     <>
       <YStack fullscreen className="" o={0.1} />
       {/* -5 my to fir grid nicely */}
-      <YStack my={-5} position="relative" space="$8">
-        <YStack ref={ref} ai="center" space="$3">
+      <YStack my={-5} position="relative" gap="$8">
+        <YStack ref={ref} ai="center" gap="$3">
           <H2>
             Beautifully expressive font systems with{' '}
             <span className="clip-text rainbow">rhythm</span>.
@@ -130,13 +130,7 @@ const OverlayCard = () => {
   // {/* TODO elevation not overriding? */}
   return (
     <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
-      <YStack
-        jc="center"
-        p="$6"
-        space="$5"
-        maw="calc(min(90vw, 400px))"
-        $sm={{ p: '$5' }}
-      >
+      <YStack jc="center" p="$6" gap="$5" maw="calc(min(90vw, 400px))" $sm={{ p: '$5' }}>
         <Paragraph ta="left" size="$8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
@@ -146,8 +140,8 @@ const OverlayCard = () => {
           line-height, letter-spacing, color and more.
         </Paragraph>
 
-        <Button aria-label="Fonts docs" fontFamily="$silkscreen" als="flex-end">
-          Fonts &raquo;
+        <Button aria-label="Fonts docs" als="flex-end">
+          <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
         </Button>
       </YStack>
     </Card>
@@ -187,7 +181,7 @@ const AnimatedHeading = memo(
           textShadowColor="$shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
-          ellipse
+          ellipsis
           {...rest}
         >
           {children}

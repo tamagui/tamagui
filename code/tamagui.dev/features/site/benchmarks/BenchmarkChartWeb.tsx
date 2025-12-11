@@ -9,7 +9,6 @@ export const BenchmarkChartWeb = () => (
       { name: 'Tamagui', value: 0.02 },
       { name: 'react-native-web', value: 0.063 },
       { name: 'Dripsy', value: 0.108 },
-      { name: 'NativeBase', value: 0.73 },
     ]}
   />
 )

@@ -1,3 +1,7 @@
-import { Button } from 'tamagui'
+import { Button, Theme } from 'tamagui'
 
-export const ButtonInverse = () => <Button id="inverse" themeInverse />
+export const ButtonInverse = () => (
+  <Theme inverse>
+    <Button id="inverse" />
+  </Theme>
+)

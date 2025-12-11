@@ -1,15 +1,11 @@
 import React from 'react'
 import { Button, StyleSheet, View } from 'react-native'
 import { Stack, Text, styled } from 'tamagui'
-
-// 123
-
-// disabling to avoid dep
 import { ThemeProvider, createBox } from '@shopify/restyle'
+
 const Box = createBox<any>()
 
 import { TimedRender } from '../components/TimedRender'
-// import { CheckboxDemo } from '@tamagui/demos'
 
 export const Benchmark = () => {
   return (

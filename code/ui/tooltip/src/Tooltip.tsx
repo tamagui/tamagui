@@ -44,27 +44,25 @@ export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
 // warning: setting to stylebale causes issues with themeInverse across portal root
 
-const TooltipContent = PopperContentFrame.extractable(
-  React.forwardRef<TamaguiElement, TooltipContentProps>((props, ref) => {
-    const preventAnimation = React.useContext(PreventTooltipAnimationContext)
+const TooltipContent = PopperContentFrame.styleable((props: TooltipContentProps, ref) => {
+  const preventAnimation = React.useContext(PreventTooltipAnimationContext)
 
-    return (
-      <PopoverContent
-        scope={props.scope || TOOLTIP_SCOPE}
-        componentName="Tooltip"
-        disableFocusScope
-        {...(!props.unstyled && {
-          pointerEvents: 'none',
-        })}
-        ref={ref}
-        {...props}
-        {...(preventAnimation && {
-          animation: null,
-        })}
-      />
-    )
-  })
-)
+  return (
+    <PopoverContent
+      scope={props.scope || TOOLTIP_SCOPE}
+      componentName="Tooltip"
+      disableFocusScope
+      {...(!props.unstyled && {
+        pointerEvents: 'none',
+      })}
+      ref={ref}
+      {...props}
+      {...(preventAnimation && {
+        animation: null,
+      })}
+    />
+  )
+})
 
 const TooltipArrow = React.forwardRef<TamaguiElement, PopperArrowProps>((props, ref) => {
   return (

@@ -31,8 +31,9 @@ export const config = {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
     maxDarkLightNesting: 2,
-    themeClassNameOnRoot: true,
-    disableRootThemeClass: true,
+    styleCompat: 'legacy',
+    defaultPosition: 'relative',
+    addThemeClassName: 'html',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
@@ -40,8 +41,6 @@ export const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
-    // Allow full style props (not just shorthands) for demos
-    onlyAllowShorthands: true,
   },
 } satisfies CreateTamaguiProps
 

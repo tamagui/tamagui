@@ -1,6 +1,6 @@
 export { shorthands } from '@tamagui/shorthands/v5';
 export { createThemes } from '@tamagui/theme-builder';
-export { tokens, defaultThemes as themes } from '@tamagui/themes/v5';
+export { themes, tokens } from '@tamagui/themes/v5';
 export { animations } from './v5-animations';
 export { createSystemFont, fonts } from './v5-fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media';
@@ -22,9 +22,9 @@ export declare const settings: {
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
-    themeClassNameOnRoot: true;
-    onlyAllowShorthands: true;
+    addThemeClassName: "html";
     maxDarkLightNesting: number;
+    styleCompat: "react-native";
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
@@ -472,9 +472,9 @@ export declare const defaultConfig: {
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
-        themeClassNameOnRoot: true;
-        onlyAllowShorthands: true;
+        addThemeClassName: "html";
         maxDarkLightNesting: number;
+        styleCompat: "react-native";
     };
 };
 //# sourceMappingURL=v5.d.ts.map

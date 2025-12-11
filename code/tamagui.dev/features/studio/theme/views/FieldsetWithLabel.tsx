@@ -34,6 +34,7 @@ export const FieldsetWithLabel = ({
       borderWidth={0}
       px="$3"
       onPress={onPress}
+      position="relative"
     >
       <YStack
         z={100}
@@ -96,16 +97,13 @@ export const FieldsetWithLabel = ({
                 }
               >
                 <Button
-                  color="$color9"
                   size="$1"
                   scaleIcon={1.2}
                   ml="$2"
                   circular
                   rounded={100}
-                  hoverTheme={false}
-                  pressTheme={false}
                   chromeless
-                  icon={Info}
+                  icon={<Info color="$color9" />}
                   position="absolute"
                   t={0}
                   r={8}

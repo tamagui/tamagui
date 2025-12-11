@@ -76,8 +76,8 @@ export const LogoWords: React.MemoExoticComponent<
 
   return (
     <XStack
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       paddingVertical="$2"
       data-tauri-drag-region
       marginVertical="$-2"
