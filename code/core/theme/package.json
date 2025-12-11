@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme",
-  "version": "1.139.3",
+  "version": "1.139.4",
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
