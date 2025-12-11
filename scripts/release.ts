@@ -34,6 +34,9 @@ const skipTest =
   rePublish ||
   process.argv.includes('--skip-test') ||
   process.argv.includes('--skip-tests')
+const skipNativeTests =
+  process.argv.includes('--skip-native-test') ||
+  process.argv.includes('--skip-native-tests')
 const skipBuild = shouldFinish || rePublish || process.argv.includes('--skip-build')
 const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
@@ -221,8 +224,12 @@ async function run() {
           spawnify(`yarn lint`),
         ])
         await spawnify(`yarn typecheck`)
-        await spawnify(`yarn test`)
-        // await spawnify(`yarn test-ios`)
+        await spawnify(`yarn test`, {
+          env: {
+            ...process.env,
+            ...(skipNativeTests ? { SKIP_NATIVE_TESTS: 'true' } : {}),
+          },
+        })
       }
     }
 
