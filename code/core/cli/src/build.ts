@@ -7,9 +7,31 @@ import {
 } from '@tamagui/static'
 import type { CLIResolvedOptions, TamaguiOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
-import { readFile, writeFile } from 'fs-extra'
+import { copyFile, mkdir, readFile, rm, stat, writeFile } from 'fs-extra'
 import MicroMatch from 'micromatch'
 import { basename, dirname, extname, join, resolve } from 'node:path'
+import { tmpdir } from 'node:os'
+import { execSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
+
+export type BuildStats = {
+  filesProcessed: number
+  optimized: number
+  flattened: number
+  styled: number
+  found: number
+}
+
+export type TrackedFile = {
+  path: string
+  hardlinkPath: string
+  mtimeAfterWrite: number
+}
+
+export type BuildResult = {
+  stats: BuildStats
+  trackedFiles: TrackedFile[]
+}
 
 export const build = async (
   options: CLIResolvedOptions & {
@@ -17,8 +39,10 @@ export const build = async (
     dir?: string
     include?: string
     exclude?: string
+    expectOptimizations?: number
+    runCommand?: string[]
   }
-) => {
+): Promise<BuildResult> => {
   const sourceDir = options.dir ?? '.'
   const promises: Promise<void>[] = []
 
@@ -116,6 +140,46 @@ export const build = async (
     }
   }
 
+  // Track overall statistics
+  const stats: BuildStats = {
+    filesProcessed: 0,
+    optimized: 0,
+    flattened: 0,
+    styled: 0,
+    found: 0,
+  }
+
+  // Track files for restoration (when using --run)
+  const trackedFiles: TrackedFile[] = []
+  const restoreDir = options.runCommand
+    ? join(tmpdir(), `tamagui-restore-${process.pid}`)
+    : null
+
+  if (restoreDir) {
+    await mkdir(restoreDir, { recursive: true })
+  }
+
+  // Helper to backup a file before modifying it
+  const trackFile = async (filePath: string): Promise<void> => {
+    if (!restoreDir) return
+    const hash = createHash('md5').update(filePath).digest('hex')
+    const backupPath = join(restoreDir, hash)
+    // Use copy instead of hardlink - hardlinks share content, so modifying
+    // the original would also modify the "backup"
+    await copyFile(filePath, backupPath)
+    trackedFiles.push({ path: filePath, hardlinkPath: backupPath, mtimeAfterWrite: 0 })
+  }
+
+  // Helper to record mtime after writing
+  const recordMtime = async (filePath: string): Promise<void> => {
+    if (!restoreDir) return
+    const tracked = trackedFiles.find((t) => t.path === filePath)
+    if (tracked) {
+      const fileStat = await stat(filePath)
+      tracked.mtimeAfterWrite = fileStat.mtimeMs
+    }
+  }
+
   // Process all files
   for (const [sourcePath, filePlatforms] of fileToTargets) {
     promises.push(
@@ -145,13 +209,27 @@ export const build = async (
           })
 
           if (out) {
+            stats.filesProcessed++
+
             const cssName = '_' + basename(sourcePath, extname(sourcePath))
             const stylePath = join(dirname(sourcePath), cssName + '.css')
             const code = `import "./${cssName}.css"\n${out.js}`
 
+            // Track original file before modifying
+            await trackFile(sourcePath)
+
             // Write web output
             await writeFile(sourcePath, code, 'utf-8')
+            await recordMtime(sourcePath)
+
+            // CSS file is new, track for cleanup
             await writeFile(stylePath, out.styles, 'utf-8')
+            // Note: CSS files are new (generated), we'll delete them on restore
+            trackedFiles.push({
+              path: stylePath,
+              hardlinkPath: '', // Empty means delete on restore
+              mtimeAfterWrite: (await stat(stylePath)).mtimeMs,
+            })
           }
         }
 
@@ -184,7 +262,21 @@ export const build = async (
           }
 
           if (nativeOut.code) {
+            // Track original if overwriting existing file
+            if (nativeOutputPath === sourcePath || filePlatforms.length === 1) {
+              await trackFile(nativeOutputPath)
+            }
             await writeFile(nativeOutputPath, nativeOut.code, 'utf-8')
+            await recordMtime(nativeOutputPath)
+
+            // If creating new .native.tsx, track for deletion
+            if (nativeOutputPath !== sourcePath && filePlatforms.length > 1) {
+              trackedFiles.push({
+                path: nativeOutputPath,
+                hardlinkPath: '', // Empty = delete on restore
+                mtimeAfterWrite: (await stat(nativeOutputPath)).mtimeMs,
+              })
+            }
           }
         }
       })()
@@ -192,4 +284,80 @@ export const build = async (
   }
 
   await Promise.all(promises)
+
+  // Verify expected optimizations if specified
+  if (options.expectOptimizations !== undefined) {
+    const totalOptimizations = stats.optimized + stats.flattened
+    if (totalOptimizations < options.expectOptimizations) {
+      console.error(
+        `\nExpected at least ${options.expectOptimizations} optimizations but only got ${totalOptimizations}`
+      )
+      console.error(`Stats: ${JSON.stringify(stats, null, 2)}`)
+      process.exit(1)
+    }
+    console.info(
+      `\n✓ Met optimization target: ${totalOptimizations} >= ${options.expectOptimizations}`
+    )
+  }
+
+  // If a command was provided, run it and then restore files
+  if (options.runCommand && options.runCommand.length > 0) {
+    const command = options.runCommand.join(' ')
+    console.info(`\nRunning: ${command}\n`)
+
+    try {
+      execSync(command, { stdio: 'inherit' })
+    } catch (err: any) {
+      console.error(`\nCommand failed with exit code ${err.status || 1}`)
+      process.exitCode = err.status || 1
+    } finally {
+      // Always restore files
+      await restoreFiles(trackedFiles, restoreDir)
+    }
+  }
+
+  return { stats, trackedFiles }
+}
+
+async function restoreFiles(
+  trackedFiles: TrackedFile[],
+  restoreDir: string | null
+): Promise<void> {
+  if (!restoreDir || trackedFiles.length === 0) return
+
+  console.info(`\nRestoring ${trackedFiles.length} files...`)
+  let restored = 0
+  let skipped = 0
+  let deleted = 0
+
+  for (const tracked of trackedFiles) {
+    try {
+      const currentStat = await stat(tracked.path).catch(() => null)
+
+      // Check if file was modified during command execution
+      if (currentStat && currentStat.mtimeMs !== tracked.mtimeAfterWrite) {
+        console.warn(`  Skipping ${tracked.path} - modified during build`)
+        skipped++
+        continue
+      }
+
+      if (tracked.hardlinkPath === '') {
+        // This was a generated file, delete it
+        await rm(tracked.path, { force: true })
+        deleted++
+      } else {
+        // Restore from hardlink
+        await copyFile(tracked.hardlinkPath, tracked.path)
+        restored++
+      }
+    } catch (err: any) {
+      console.warn(`  Failed to restore ${tracked.path}: ${err.message}`)
+      skipped++
+    }
+  }
+
+  // Clean up tmpdir
+  await rm(restoreDir, { recursive: true, force: true })
+
+  console.info(`  Restored: ${restored}, Deleted: ${deleted}, Skipped: ${skipped}`)
 }

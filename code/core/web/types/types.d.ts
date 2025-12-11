@@ -961,7 +961,7 @@ interface ExtraStyleProps {
      */
     outlineWidth?: SpaceValue;
     /**
-     * Web-only style property. Will be omitted on native.
+     * On native, maps to the `selectable` prop on Text (userSelect !== 'none')
      */
     userSelect?: Properties['userSelect'];
     /**

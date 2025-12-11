@@ -1,0 +1,26 @@
+{
+  "name": "test-next-turbopack",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack --port 3456",
+    "next-build": "next build",
+    "next-build:optimized": "tamagui build --target web ./src -- next build",
+    "start": "next start",
+    "test": "vitest run",
+    "test:reset": "git checkout -- src/"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "next": "^15.3.1",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@tamagui/cli": "workspace:*",
+    "@types/node": "^22.1.0",
+    "@types/react": "~19.1.10",
+    "vitest": "^4.0.4"
+  },
+  "version": "1.139.3"
+}
