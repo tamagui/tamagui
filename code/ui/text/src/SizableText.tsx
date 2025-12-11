@@ -25,7 +25,12 @@ export const SizableText = styled(Text, {
 // we are doing weird stuff to avoid bad types
 // TODO make this just work
 SizableText.staticConfig.variants!.fontFamily = {
-  '...': (_val, extras) => {
+  '...': (val, extras) => {
+    // pass through inherit directly without font variant expansion
+    if (val === 'inherit') {
+      return { fontFamily: 'inherit' }
+    }
+
     const sizeProp = extras.props['size']
     const fontSizeProp = extras.props['fontSize']
     const size =
