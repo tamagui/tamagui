@@ -1,5 +1,5 @@
 import { getDocsSection, InitialPathContext } from '@tamagui/logo'
-import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
+import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'
 import { usePathname } from 'one'
 import { TamaguiProvider } from 'tamagui'
 import tamaConf from '~/config/tamagui.config'
@@ -26,10 +26,10 @@ export const Providers = (props: { children: any }) => {
 }
 
 function WebsiteTamaguiProvider(props: { children: any }) {
-  const [scheme] = useColorScheme()
+  const { value } = useUserScheme()
 
   return (
-    <TamaguiProvider disableInjectCSS defaultTheme={scheme} config={tamaConf}>
+    <TamaguiProvider disableInjectCSS defaultTheme={value} config={tamaConf}>
       <ToastProvider>{props.children}</ToastProvider>
     </TamaguiProvider>
   )

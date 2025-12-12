@@ -1,5 +1,5 @@
 import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons'
-import { useSchemeSetting } from '@vxrn/color-scheme'
+import { useSystemScheme, useUserScheme } from '@vxrn/color-scheme'
 import { memo, useEffect, useState } from 'react'
 import { Appearance } from 'react-native'
 import type { ButtonProps } from 'tamagui'
@@ -31,42 +31,43 @@ export const ThemeToggle = memo((props: ButtonProps) => {
   )
 })
 
-const schemeSettings = ['light', 'dark', 'system'] as const
+const schemeSettings = ['system', 'light', 'dark'] as const
 
 export function useToggleTheme() {
-  const [{ setting, scheme }, setSchemeSetting] = useSchemeSetting()
+  const userScheme = useUserScheme()
+  const systemScheme = useSystemScheme()
 
   // for faster re renders on heavy pages
-  const [val, setVal] = useState(setting)
+  const [val, setVal] = useState(userScheme.setting)
 
   useEffect(() => {
-    if (setting !== val) {
-      setVal(setting)
+    if (userScheme.setting !== val) {
+      setVal(userScheme.setting)
     }
-  }, [setting])
+  }, [userScheme.setting])
 
   const Icon = val === 'system' ? SunMoon : val === 'dark' ? Moon : Sun
 
   return {
-    setting,
-    scheme,
+    setting: userScheme.setting,
+    scheme: userScheme.value,
     Icon,
     onPress: () => {
-      const next =
-        setting === 'system'
-          ? scheme === 'light'
-            ? 'dark'
-            : 'light'
-          : schemeSettings[(schemeSettings.indexOf(setting) + 1) % 3]
+      // Order so that from 'system' we go to opposite first, then cycle through all three
+      const order =
+        systemScheme === 'light'
+          ? ['system', 'dark', 'light'] // system -> dark -> light -> system
+          : ['system', 'light', 'dark'] // system -> light -> dark -> system
+      const next = order[(order.indexOf(userScheme.setting) + 1) % 3] as (typeof schemeSettings)[number]
 
       setVal(next)
 
       setTimeout(() => {
         if (!isWeb) {
-          Appearance.setColorScheme(next === 'system' ? scheme : next)
+          Appearance.setColorScheme(next === 'system' ? userScheme.value : next)
         }
 
-        setSchemeSetting(next)
+        userScheme.set(next)
       }, 20)
     },
   }

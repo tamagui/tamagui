@@ -3,7 +3,7 @@ import './_layout.css'
 import './tamagui.css'
 
 import { Toast, ToastProvider, ToastViewport, useToastState } from '@tamagui/toast'
-import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
+import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'
 import { LoadProgressBar, SafeAreaView, Slot } from 'one'
 import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
@@ -83,13 +83,13 @@ export const CustomToast = () => {
 }
 
 const TamaguiRootProvider = ({ children }: { children: React.ReactNode }) => {
-  const [scheme] = useColorScheme()
+  const userScheme = useUserScheme()
 
   return (
     <TamaguiProvider
       disableInjectCSS
       config={config}
-      defaultTheme={scheme}
+      defaultTheme={userScheme.value}
       disableRootThemeClass
     >
       {children}

@@ -3,7 +3,7 @@ import { Input } from '@tamagui/input'
 import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import { useStore } from '@tamagui/use-store'
-import { useColorScheme } from '@vxrn/color-scheme'
+import { useUserScheme } from '@vxrn/color-scheme'
 import { router } from 'one'
 import { memo, useEffect, useLayoutEffect, useOptimistic, useRef, useState } from 'react'
 import useSWR, { mutate } from 'swr'
@@ -359,12 +359,12 @@ const HistoryButton = ({
 }
 
 const ThemeToggle = () => {
-  const [scheme, setUserTheme] = useColorScheme()
-  const [checked, setChecked] = useState(scheme === 'light')
+  const userScheme = useUserScheme()
+  const [checked, setChecked] = useState(userScheme.value === 'light')
 
   useEffect(() => {
-    setChecked(scheme === 'light')
-  }, [scheme === 'light'])
+    setChecked(userScheme.value === 'light')
+  }, [userScheme.value === 'light'])
 
   return (
     <XStack gap="$3" items="center">
@@ -380,7 +380,7 @@ const ThemeToggle = () => {
           onCheckedChange={(on) => {
             setChecked(on)
             setTimeout(() => {
-              setUserTheme(on ? 'light' : 'dark')
+              userScheme.set(on ? 'light' : 'dark')
             })
           }}
           size="$3"
