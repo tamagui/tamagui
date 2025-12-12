@@ -153,7 +153,8 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
   // Filter out vite, test, and blacklisted dependencies
   missingDeps = missingDeps.filter((dep) => {
     const isViteOrTest = dep.includes('vite') || dep.includes('test')
-    const isBlacklisted = dep === 'expo-linear-gradient'
+    // bun is a runtime environment like node, not a package dependency
+    const isBlacklisted = dep === 'expo-linear-gradient' || dep === 'bun'
     return !isViteOrTest && !isBlacklisted
   })
 

@@ -26,6 +26,7 @@ import {
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
+import { Link } from '../../../components/Link'
 import { Select } from '../../../components/Select'
 import { Switch } from '../../../components/Switch'
 import { sendEvent } from '../../analytics/sendEvent'
@@ -578,6 +579,15 @@ export const FaqTabContent = () => {
       <P>
         When you checkout, you'll see an input box to enter a coupon. If you have a
         coupon, enter it and click apply. If it's valid, the price will update.
+      </P>
+
+      <Question>How do I get my invoice?</Question>
+      <P>
+        You can access all your invoices through our billing partner Zenvoice.{' '}
+        <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
+          Click here to view your invoices
+        </Link>
+        .
       </P>
 
       <Spacer height="$10" />

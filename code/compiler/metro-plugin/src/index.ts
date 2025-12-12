@@ -3,17 +3,34 @@ import {
   loadTamaguiBuildConfigSync,
   type TamaguiOptions,
 } from '@tamagui/static'
-import type { IntermediateConfigT } from 'metro-config'
+
+export type MetroTamaguiOptions = TamaguiOptions & {
+  /**
+   * When true, writes CSS to .tamagui/css/ files and imports them,
+   * letting Metro handle CSS bundling. When false (default), CSS is
+   * injected inline via JS at runtime.
+   * @default false
+   */
+  cssInterop?: boolean
+}
+
+// Use a loose type for metro config to avoid version-specific type incompatibilities
+type MetroConfigInput = {
+  resolver?: any
+  transformer?: any
+  transformerPath?: string
+  [key: string]: any
+}
 
 export function withTamagui(
-  metroConfig: Partial<IntermediateConfigT>,
-  optionsIn?: TamaguiOptions & {
-    enableCSSInterop?: boolean
-  }
-) {
+  metroConfig: MetroConfigInput,
+  optionsIn?: MetroTamaguiOptions
+): MetroConfigInput {
+  const { cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
+
   const options = {
-    ...optionsIn,
-    ...loadTamaguiBuildConfigSync(optionsIn),
+    ...tamaguiOptionsIn,
+    ...loadTamaguiBuildConfigSync(tamaguiOptionsIn),
   }
 
   // run one build up front
@@ -42,6 +59,8 @@ export function withTamagui(
       ...options,
       disableInitialBuild: true,
     },
+    // @ts-ignore - metro-plugin specific option
+    tamaguiCssInterop: cssInterop,
   }
 
   return metroConfig

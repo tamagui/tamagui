@@ -1,18 +1,20 @@
 import { outputFile, pathExists } from 'fs-extra'
-import type {
-  JsTransformerConfig,
-  JsTransformOptions,
-  TransformResponse,
-} from 'metro-transform-worker'
-import worker from 'metro-transform-worker'
 import { join, posix, sep } from 'node:path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import { createExtractor, extractToClassNames } from '@tamagui/static'
 
-interface TamaguiJsTransformerConfig extends JsTransformerConfig {
+interface TamaguiJsTransformerConfig {
   transformerPath?: string
   tamagui: TamaguiOptions
+  tamaguiCssInterop?: boolean
+  [key: string]: any
+}
+
+interface JsTransformOptions {
+  platform?: string
+  type?: string
+  [key: string]: any
 }
 
 const extractor = createExtractor()
@@ -23,9 +25,12 @@ export async function transform(
   filename: string,
   data: Buffer,
   options: JsTransformOptions
-): Promise<TransformResponse> {
+): Promise<any> {
   const ogPath = config['ogTransformPath'] || config.transformerPath
-  const transformer = ogPath ? require(ogPath).transform : worker.transform
+  // Dynamically require to avoid version-locking to a specific metro version
+  const transformer = ogPath
+    ? require(ogPath).transform
+    : require('metro-transform-worker').transform
 
   if (
     config.tamagui.disable ||
@@ -70,7 +75,10 @@ export async function transform(
         console.info(' Outputting CSS file:', outStylePath)
       }
 
-      if (process.env.TAMAGUI_METRO_INLINE_CSS !== '0') {
+      const shouldOutputCSS =
+        config.tamaguiCssInterop ?? process.env.TAMAGUI_METRO_INLINE_CSS === '0'
+
+      if (!shouldOutputCSS) {
         const cssInjectionCode = `
           (function() {
             if (typeof document !== 'undefined') {

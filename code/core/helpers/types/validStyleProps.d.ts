@@ -125,7 +125,6 @@ export declare const stylePropsView: {
     borderLeftStyle?: boolean | undefined;
     borderRightStyle?: boolean | undefined;
     borderTopStyle?: boolean | undefined;
-    boxSizing?: boolean | undefined;
     caretColor?: boolean | undefined;
     clipPath?: boolean | undefined;
     contain?: boolean | undefined;
@@ -150,12 +149,9 @@ export declare const stylePropsView: {
     maskRepeat?: boolean | undefined;
     maskSize?: boolean | undefined;
     maskType?: boolean | undefined;
-    mixBlendMode?: boolean | undefined;
     objectFit?: boolean | undefined;
     objectPosition?: boolean | undefined;
     outlineOffset?: boolean | undefined;
-    outlineStyle?: boolean | undefined;
-    outlineWidth?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
@@ -167,6 +163,12 @@ export declare const stylePropsView: {
     transformStyle?: boolean | undefined;
     userSelect?: boolean | undefined;
     willChange?: boolean | undefined;
+    boxSizing?: boolean | undefined;
+    mixBlendMode?: boolean | undefined;
+    outlineColor?: boolean | undefined;
+    outlineSpread?: boolean | undefined;
+    outlineStyle?: boolean | undefined;
+    outlineWidth?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     WebkitLineClamp: boolean;
@@ -237,7 +239,6 @@ export declare const stylePropsView: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
-    outlineColor?: boolean | undefined;
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
@@ -416,7 +417,6 @@ export declare const stylePropsText: {
     borderLeftStyle?: boolean | undefined;
     borderRightStyle?: boolean | undefined;
     borderTopStyle?: boolean | undefined;
-    boxSizing?: boolean | undefined;
     caretColor?: boolean | undefined;
     clipPath?: boolean | undefined;
     contain?: boolean | undefined;
@@ -440,12 +440,9 @@ export declare const stylePropsText: {
     maskRepeat?: boolean | undefined;
     maskSize?: boolean | undefined;
     maskType?: boolean | undefined;
-    mixBlendMode?: boolean | undefined;
     objectFit?: boolean | undefined;
     objectPosition?: boolean | undefined;
     outlineOffset?: boolean | undefined;
-    outlineStyle?: boolean | undefined;
-    outlineWidth?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
@@ -456,6 +453,12 @@ export declare const stylePropsText: {
     touchAction?: boolean | undefined;
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
+    boxSizing?: boolean | undefined;
+    mixBlendMode?: boolean | undefined;
+    outlineColor?: boolean | undefined;
+    outlineSpread?: boolean | undefined;
+    outlineStyle?: boolean | undefined;
+    outlineWidth?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     animationIterationCount: boolean;
@@ -524,7 +527,6 @@ export declare const stylePropsText: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
-    outlineColor?: boolean | undefined;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -672,7 +674,6 @@ export declare const stylePropsAll: {
     borderLeftStyle?: boolean | undefined;
     borderRightStyle?: boolean | undefined;
     borderTopStyle?: boolean | undefined;
-    boxSizing?: boolean | undefined;
     caretColor?: boolean | undefined;
     clipPath?: boolean | undefined;
     contain?: boolean | undefined;
@@ -696,12 +697,9 @@ export declare const stylePropsAll: {
     maskRepeat?: boolean | undefined;
     maskSize?: boolean | undefined;
     maskType?: boolean | undefined;
-    mixBlendMode?: boolean | undefined;
     objectFit?: boolean | undefined;
     objectPosition?: boolean | undefined;
     outlineOffset?: boolean | undefined;
-    outlineStyle?: boolean | undefined;
-    outlineWidth?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
@@ -712,6 +710,12 @@ export declare const stylePropsAll: {
     touchAction?: boolean | undefined;
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
+    boxSizing?: boolean | undefined;
+    mixBlendMode?: boolean | undefined;
+    outlineColor?: boolean | undefined;
+    outlineSpread?: boolean | undefined;
+    outlineStyle?: boolean | undefined;
+    outlineWidth?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     animationIterationCount: boolean;
@@ -780,7 +784,6 @@ export declare const stylePropsAll: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
-    outlineColor?: boolean | undefined;
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
@@ -912,7 +915,6 @@ export declare const validStyles: {
     borderLeftStyle?: boolean | undefined;
     borderRightStyle?: boolean | undefined;
     borderTopStyle?: boolean | undefined;
-    boxSizing?: boolean | undefined;
     caretColor?: boolean | undefined;
     clipPath?: boolean | undefined;
     contain?: boolean | undefined;
@@ -937,12 +939,9 @@ export declare const validStyles: {
     maskRepeat?: boolean | undefined;
     maskSize?: boolean | undefined;
     maskType?: boolean | undefined;
-    mixBlendMode?: boolean | undefined;
     objectFit?: boolean | undefined;
     objectPosition?: boolean | undefined;
     outlineOffset?: boolean | undefined;
-    outlineStyle?: boolean | undefined;
-    outlineWidth?: boolean | undefined;
     overflowBlock?: boolean | undefined;
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
@@ -954,6 +953,12 @@ export declare const validStyles: {
     transformStyle?: boolean | undefined;
     userSelect?: boolean | undefined;
     willChange?: boolean | undefined;
+    boxSizing?: boolean | undefined;
+    mixBlendMode?: boolean | undefined;
+    outlineColor?: boolean | undefined;
+    outlineSpread?: boolean | undefined;
+    outlineStyle?: boolean | undefined;
+    outlineWidth?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
     WebkitLineClamp: boolean;
@@ -1024,7 +1029,6 @@ export declare const validStyles: {
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
-    outlineColor?: boolean | undefined;
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;

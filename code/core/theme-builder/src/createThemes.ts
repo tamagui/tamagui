@@ -312,13 +312,15 @@ function getAnchors(palette: SchemePalette) {
 
   const anchors = palette.light.map((lcolor, index) => {
     const dcolor = palette.dark[index]
-    const [lhue, lsat, llum] = parseToHsla(lcolor)
-    const [dhue, dsat, dlum] = parseToHsla(dcolor)
+    const [lhue, lsat, llum, lalpha] = parseToHsla(lcolor)
+    const [dhue, dsat, dlum, dalpha] = parseToHsla(dcolor)
+
     return {
       index: spreadIndex(maxIndex, numItems, index),
       hue: { light: lhue, dark: dhue },
       sat: { light: lsat, dark: dsat },
       lum: { light: llum, dark: dlum },
+      alpha: { light: lalpha, dark: dalpha },
     } as const
   })
 

@@ -7,9 +7,9 @@ export function AnimationsHoverDemo() {
       borderColor="$borderColor"
       animation="bouncy"
       elevation="$4"
-      backgroundColor="$color9"
+      bg="$color9"
       size={104}
-      borderRadius="$9"
+      rounded="$9"
       hoverStyle={{
         scale: 1.2,
       }}

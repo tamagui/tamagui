@@ -41,35 +41,55 @@ const getWorkerPath = () => {
   return require.resolve('@tamagui/static/worker').replace(/\.mjs$/, '.js')
 }
 
-let piscinaPool: Piscina | null = null
-let isClosing = false
+// Use globalThis to share pool across module instances (Vite environments)
+const POOL_KEY = '__tamagui_piscina_pool__'
+const CLOSING_KEY = '__tamagui_piscina_closing__'
+
+function getSharedPool(): Piscina | null {
+  return (globalThis as any)[POOL_KEY] ?? null
+}
+
+function setSharedPool(pool: Piscina | null) {
+  ;(globalThis as any)[POOL_KEY] = pool
+}
+
+function isClosing(): boolean {
+  return (globalThis as any)[CLOSING_KEY] === true
+}
+
+function setClosing(value: boolean) {
+  ;(globalThis as any)[CLOSING_KEY] = value
+}
 
 /**
  * Get or create the Piscina worker pool
  */
 function getPool(): Piscina {
-  if (!piscinaPool) {
-    piscinaPool = new Piscina({
+  let pool = getSharedPool()
+  if (!pool) {
+    pool = new Piscina({
       filename: getWorkerPath(),
       // Single worker for state consistency and simpler caching
       minThreads: 1,
       maxThreads: 1,
-      idleTimeout: 60000, // 60s - keep alive for config watching
+      // Never terminate due to idle - worker stays alive until close() or process exit
+      // This prevents "Terminating worker thread" errors from Piscina during idle
+      idleTimeout: Number.POSITIVE_INFINITY,
     })
 
     // Handle error events to prevent uncaught exceptions during pool destruction
-    // Piscina emits 'error' events when workers are terminated and there are no pending tasks
-    // Without this handler, Node.js throws the error as an uncaught exception
-    piscinaPool.on('error', (err) => {
-      // suppress termination errors during shutdown
-      if (isClosing) {
-        return
-      }
-      // Log other errors for debugging
+    pool.on('error', (err) => {
+      if (isClosing()) return
+      const message =
+        err && typeof err === 'object' && 'message' in err ? String(err.message) : ''
+      // Suppress termination errors (can still occur during explicit close/destroy)
+      if (message.includes('Terminating worker thread')) return
       console.error('[tamagui] Worker pool error:', err)
     })
+
+    setSharedPool(pool)
   }
-  return piscinaPool
+  return pool
 }
 
 /**
@@ -197,7 +217,7 @@ export async function watchTamaguiConfig(
   return {
     dispose: () => {
       originalDispose()
-      if (piscinaPool) {
+      if (getSharedPool()) {
         // Fire and forget - errors are handled internally
         clearWorkerCache()
       }
@@ -223,10 +243,11 @@ export async function loadTamaguiBuildConfig(
  * Call this when config files change
  */
 export async function clearWorkerCache(): Promise<void> {
-  if (!piscinaPool || isClosing) return
+  const pool = getSharedPool()
+  if (!pool || isClosing()) return
 
   const task = { type: 'clearCache' }
-  await piscinaPool.run(task, { name: 'runTask' })
+  await pool.run(task, { name: 'runTask' })
 }
 
 /**
@@ -234,22 +255,14 @@ export async function clearWorkerCache(): Promise<void> {
  * Should be called when the build process completes
  */
 export async function destroyPool(): Promise<void> {
-  if (piscinaPool) {
-    isClosing = true
+  const pool = getSharedPool()
+  if (pool) {
+    setClosing(true)
     try {
-      await piscinaPool.destroy()
-    } catch (err) {
-      // Only ignore worker termination errors during shutdown
-      // Re-throw any other errors as they may be legitimate issues
-      if (err && typeof err === 'object' && 'message' in err) {
-        const message = String(err.message)
-        if (!message.includes('Terminating worker thread')) {
-          throw err
-        }
-      }
+      await pool.close()
     } finally {
-      piscinaPool = null
-      isClosing = false
+      setSharedPool(null)
+      setClosing(false)
     }
   }
 }
@@ -258,14 +271,15 @@ export async function destroyPool(): Promise<void> {
  * Get pool statistics for debugging
  */
 export function getPoolStats() {
-  if (!piscinaPool) {
+  const pool = getSharedPool()
+  if (!pool) {
     return null
   }
   return {
-    threads: piscinaPool.threads.length,
-    queueSize: piscinaPool.queueSize,
-    completed: piscinaPool.completed,
-    duration: piscinaPool.duration,
-    utilization: piscinaPool.utilization,
+    threads: pool.threads.length,
+    queueSize: pool.queueSize,
+    completed: pool.completed,
+    duration: pool.duration,
+    utilization: pool.utilization,
   }
 }

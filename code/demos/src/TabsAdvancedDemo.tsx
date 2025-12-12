@@ -25,11 +25,11 @@ export const TabsAdvancedDemo = () => {
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
       <XStack
-        alignItems="center"
+        items="center"
         gap="$4"
         position="absolute"
-        bottom="$3"
-        left="$4"
+        b="$3"
+        l="$4"
         $xxs={{ display: 'none' }}
       >
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
@@ -90,19 +90,19 @@ const TabsAdvancedBackground = () => {
       onValueChange={setCurrentTab}
       orientation="horizontal"
       size="$4"
-      padding="$2"
+      p="$2"
       height={150}
       flexDirection="column"
       activationMode="manual"
-      backgroundColor="$background"
-      borderRadius="$4"
+      bg="$background"
+      rounded="$4"
       position="relative"
     >
       <YStack>
         <AnimatePresence>
           {intentAt && (
             <TabsRovingIndicator
-              borderRadius="$4"
+              rounded="$4"
               width={intentAt.width}
               height={intentAt.height}
               x={intentAt.x}
@@ -113,7 +113,7 @@ const TabsAdvancedBackground = () => {
         <AnimatePresence>
           {activeAt && (
             <TabsRovingIndicator
-              borderRadius="$4"
+              rounded="$4"
               theme="accent"
               width={activeAt.width}
               height={activeAt.height}
@@ -162,8 +162,8 @@ const TabsAdvancedBackground = () => {
 
       <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
         <AnimatedYStack key={currentTab}>
-          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
-            <H5 textAlign="center">{currentTab}</H5>
+          <Tabs.Content value={currentTab} forceMount flex={1} justify="center">
+            <H5 text="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>
@@ -224,8 +224,8 @@ const TabsAdvancedUnderline = () => {
       height={150}
       flexDirection="column"
       activationMode="manual"
-      backgroundColor="$background"
-      borderRadius="$4"
+      bg="$background"
+      rounded="$4"
     >
       <YStack>
         <AnimatePresence>
@@ -234,7 +234,7 @@ const TabsAdvancedUnderline = () => {
               width={intentAt.width}
               height="$0.5"
               x={intentAt.x}
-              bottom={0}
+              b={0}
             />
           )}
         </AnimatePresence>
@@ -246,7 +246,7 @@ const TabsAdvancedUnderline = () => {
               width={activeAt.width}
               height="$0.5"
               x={activeAt.x}
-              bottom={0}
+              b={0}
             />
           )}
         </AnimatePresence>
@@ -293,8 +293,8 @@ const TabsAdvancedUnderline = () => {
 
       <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
         <AnimatedYStack key={currentTab}>
-          <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
-            <H5 textAlign="center">{currentTab}</H5>
+          <Tabs.Content value={currentTab} forceMount flex={1} justify="center">
+            <H5 text="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>

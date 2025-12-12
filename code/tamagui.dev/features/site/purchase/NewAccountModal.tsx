@@ -1376,10 +1376,17 @@ const ManageTab = ({
 
   return (
     <YStack gap="$6">
-      <View>
-        <H3>Subscription Details</H3>
-        {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
-      </View>
+      <XStack justify="space-between" items="center">
+        <View>
+          <H3>Subscription Details</H3>
+          {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
+        </View>
+        <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
+          <Button size="$3" theme="alt2">
+            View Invoices
+          </Button>
+        </Link>
+      </XStack>
       {sortedSubscriptions.map((subscription) => {
         const subscriptionItems = subscription?.subscription_items || []
         return (

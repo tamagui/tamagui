@@ -87,6 +87,8 @@ const ButtonFrame = styled(ThemeableStack, {
   context: ButtonContext,
   role: 'button',
   focusable: true,
+  // forces runtime pressStyle so it passes through context text colors
+  disableClassName: true,
 
   variants: {
     unstyled: {

@@ -76,7 +76,7 @@ export default () => (
 
 ### Tabs
 
-Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size` prop to this component will have effect on the descendants.
+Root tabs component. Extends [Stack](/docs/components/stacks). Passing the `size` prop to this component will have effect on the descendants.
 
 <PropsTable
   data={[
@@ -99,7 +99,7 @@ Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size`
       name: "orientation",
       type: '"horizontal" | "vertical"',
       default: "horizontal",
-      description: `The orientation the tabs are layed out`,
+      description: `The orientation the tabs are laid out.`,
     },
     {
       name: "dir",
@@ -130,9 +130,47 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
   ]}
 />
 
+### Tabs.Tab
+
+The clickable tab button that activates its corresponding content. Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
+
+<PropsTable
+  data={[
+    {
+      name: "value",
+      type: "string",
+      description: `The value for the tabs state to be changed to after activation of the tab`,
+    },
+    {
+      name: "onInteraction",
+      type: `(type: InteractionType, layout: TabLayout | null) => void`,
+      description: `Used for making custom indicators when tab is interacted with. InteractionType is 'select' | 'focus' | 'hover'`,
+    },
+    {
+      name: "disabled",
+      type: `boolean`,
+      description: `When true, prevents user interaction with the tab`,
+    },
+    {
+      name: "disableActiveTheme",
+      type: `boolean`,
+      description: `When true, disables applying the 'active' theme when the tab is selected`,
+    },
+    {
+      name: "unstyled",
+      type: `boolean`,
+      description: `When true, remove all default tamagui styling`,
+    },
+  ]}
+/>
+
 ### Tabs.Trigger
 
-Extends [Button](/docs/components/button), adding:
+<Aside type="deprecated">
+  Use `Tabs.Tab` instead. `Tabs.Trigger` is an alias kept for backwards compatibility.
+</Aside>
+
+Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
 <PropsTable
   data={[
@@ -143,7 +181,7 @@ Extends [Button](/docs/components/button), adding:
     },
     {
       name: "onInteraction",
-      type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
+      type: `(type: InteractionType, layout: TabLayout | null) => void`,
       description: `Used for making custom indicators when trigger interacted with`,
     },
     {

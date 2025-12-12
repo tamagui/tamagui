@@ -17,9 +17,7 @@ export function Grid({ children, columns, itemMinWidth = 200, gap }: GridProps) 
           gap,
           display: 'grid',
           justifyContent: 'stretch',
-          // gridTemplateRows: 'repeat(4, 1fr)',
           gridTemplateColumns: `repeat( auto-fit, minmax(${itemMinWidth}px, 1fr) )`,
-          // gridTemplateColumns: '1fr 1fr',
         }}
       >
         {children}
@@ -30,7 +28,7 @@ export function Grid({ children, columns, itemMinWidth = 200, gap }: GridProps) 
   const childrenList = React.Children.toArray(children)
 
   return (
-    <XStack alignItems="center" justifyContent="center" flexWrap="wrap">
+    <XStack items="center" justify="center" flexWrap="wrap">
       {childrenList.map((child, i) => {
         if (!child) {
           return null
@@ -38,13 +36,7 @@ export function Grid({ children, columns, itemMinWidth = 200, gap }: GridProps) 
 
         // index key bad
         return (
-          <XStack
-            key={i}
-            flex={1}
-            minWidth={itemMinWidth}
-            marginRight={gap}
-            marginBottom={gap}
-          >
+          <XStack key={i} flex={1} minW={itemMinWidth} mr={gap} mb={gap}>
             {child}
           </XStack>
         )

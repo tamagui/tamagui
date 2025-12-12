@@ -364,3 +364,98 @@ test(`conditional classname keeps base and concats properly`, async () => {
 
   expect(output?.js).toMatchSnapshot()
 })
+
+// https://github.com/tamagui/tamagui/issues/3608
+test('flexBasis: 0 with responsive style extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View
+          fb={1}
+          $gtXs={{ fb: 0 }}
+        />
+      )
+    }
+  `
+  )
+
+  // fb: 0 should extract as 0px, not auto
+  expect(output?.styles).toContain('_fb-_gtXs_0px')
+  expect(output?.styles).not.toContain('_fb-_gtXs_auto')
+  expect(output?.js).toMatchSnapshot()
+  expect(output?.styles).toMatchSnapshot()
+})
+
+test('$group- styles are not flattened', async () => {
+  const output = await extractForWeb(
+    `
+    import { View, XStack } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <XStack group="card">
+          <View
+            width={100}
+            $group-card={{ backgroundColor: 'red' }}
+          />
+        </XStack>
+      )
+    }
+  `
+  )
+
+  // $group- styles should NOT be flattened - they need runtime handling
+  // The component should not be converted to a plain div
+  expect(output?.js).toContain('View')
+  expect(output?.js).toContain('$group-card')
+})
+
+test('$theme- styles are not flattened', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View
+          width={100}
+          $theme-light={{ backgroundColor: 'white' }}
+          $theme-dark={{ backgroundColor: 'black' }}
+        />
+      )
+    }
+  `
+  )
+
+  // $theme- styles should NOT be flattened - they need runtime handling
+  // The component should not be converted to a plain div
+  expect(output?.js).toContain('View')
+  expect(output?.js).toContain('$theme-light')
+  expect(output?.js).toContain('$theme-dark')
+})
+
+test('$platform-web styles are flattened on web', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View
+          width={100}
+          $platform-web={{ backgroundColor: 'red' }}
+        />
+      )
+    }
+  `
+  )
+
+  // $platform-web styles SHOULD be flattened on web - the platform is known at compile time
+  // The component should be converted to a plain div with the styles applied
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('$platform-web')
+  expect(output?.styles).toContain('background-color')
+})

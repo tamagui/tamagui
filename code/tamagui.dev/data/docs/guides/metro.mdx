@@ -50,8 +50,47 @@ module.exports = withTamagui(config, {
   components: ['tamagui'],
   config: './tamagui.config.ts',
   outputCSS: './tamagui-web.css',
+  cssInterop: true,
 })
 ```
+
+## Options
+
+### cssInterop
+
+When `cssInterop: true` is set, the compiler writes CSS to `.tamagui/css/` files and imports them via `require()`, letting Metro handle CSS bundling natively. This enables component flattening (View → div) for better performance.
+
+When `cssInterop: false` (default), CSS is injected inline via JavaScript at runtime. This is simpler but doesn't support flattening.
+
+```tsx
+module.exports = withTamagui(config, {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+  outputCSS: './tamagui-web.css',
+  cssInterop: true, // enables CSS file output + flattening
+})
+```
+
+## Debugging
+
+To debug the compiler output, add `// debug` at the top of a file:
+
+```tsx
+// debug
+import { YStack } from 'tamagui'
+
+export function MyComponent() {
+  return <YStack flex={1} bg="$background" />
+}
+```
+
+This will print detailed compiler output showing what optimizations are happening:
+
+```
+[✅] flattened YStack div
+```
+
+Use `// debug-verbose` for even more detailed output.
 
 <Notice>
   If you're using Metro as your web bundler, you have to turn `isCSSEnabled` on. See [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).

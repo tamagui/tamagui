@@ -1,4 +1,3 @@
-import type { SizeTokens } from 'tamagui'
 import { Label, ThemeableStack, XStack, YStack, styled } from 'tamagui'
 
 import { createRadioGroup } from '@tamagui/radio-group'
@@ -9,22 +8,22 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
   name: RADIO_GROUP_ITEM_NAME,
   tag: 'button',
 
-  borderRadius: 1000,
-  backgroundColor: '$background',
-  alignItems: 'center',
-  justifyContent: 'center',
+  rounded: 1000,
+  bg: '$background',
+  items: 'center',
+  justify: 'center',
   borderWidth: 1,
   borderColor: '$borderColor',
-  padding: 0,
+  p: 0,
 
   hoverStyle: {
     borderColor: '$borderColorHover',
-    backgroundColor: '$backgroundHover',
+    bg: '$backgroundHover',
   },
 
   focusStyle: {
     borderColor: '$borderColorHover',
-    backgroundColor: '$backgroundHover',
+    bg: '$backgroundHover',
   },
 
   focusVisibleStyle: {
@@ -35,7 +34,7 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
 
   pressStyle: {
     borderColor: '$borderColorFocus',
-    backgroundColor: '$backgroundFocus',
+    bg: '$backgroundFocus',
   },
 
   variants: {
@@ -47,12 +46,12 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
 
         hoverStyle: {
           borderColor: '$borderColor',
-          backgroundColor: '$background',
+          bg: '$background',
         },
 
         pressStyle: {
           borderColor: '$borderColor',
-          backgroundColor: '$background',
+          bg: '$background',
         },
 
         focusVisibleStyle: {
@@ -69,8 +68,8 @@ const RadioGroupIndicatorFrame = styled(ThemeableStack, {
   name: RADIO_GROUP_INDICATOR_NAME,
   width: '53%',
   height: '53%',
-  borderRadius: 1000,
-  backgroundColor: '$color',
+  rounded: 1000,
+  bg: '$color',
   pressTheme: true,
 })
 
@@ -101,7 +100,7 @@ const RadioGroup = createRadioGroup({
 export function RadioGroupUnstyledDemo() {
   return (
     <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
-      <YStack width={200} alignItems="center" space="$2">
+      <YStack width={200} items="center" gap="$2">
         <RadioGroupItemWithLabel value="2" label="Option One" />
         <RadioGroupItemWithLabel value="3" label="Option Two" />
       </YStack>
@@ -115,7 +114,7 @@ function RadioGroupItemWithLabel(props: {
 }) {
   const id = `radiogroup-${props.value}`
   return (
-    <XStack width={300} alignItems="center" gap="$4">
+    <XStack width={300} items="center" gap="$4">
       <RadioGroup.Item value={props.value} id={id}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>

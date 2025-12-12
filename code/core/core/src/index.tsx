@@ -32,7 +32,6 @@ import {
   setupHooks,
   useIsomorphicLayoutEffect,
 } from '@tamagui/web'
-import { addNativeValidStyles } from './addNativeValidStyles'
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
@@ -44,9 +43,6 @@ export {
   setOnLayoutStrategy,
   type LayoutEvent,
 } from '@tamagui/use-element-layout'
-
-// add newer style props based on react native version
-addNativeValidStyles()
 
 // adds extra types to View/Stack/Text:
 

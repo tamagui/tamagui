@@ -1014,7 +1014,7 @@ interface ExtraStyleProps {
      */
     outlineWidth?: SpaceValue;
     /**
-     * Web-only style property. Will be omitted on native.
+     * On native, maps to the `selectable` prop on Text (userSelect !== 'none')
      */
     userSelect?: Properties['userSelect'];
     /**
@@ -1497,10 +1497,11 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
-    resolvedContextVariants?: Record<string, any>;
+    overriddenContextProps?: Record<string, any>;
+    originalContextPropValues?: Record<string, any>;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
-export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any) => void) => void;
+export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any) => void) => void;
 export type GenericVariantDefinitions = {
     [key: string]: {
         [key: string]: ((a: any, b: any) => any) | {
@@ -1789,7 +1790,7 @@ export type GetStyleResult = {
     dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;
-    resolvedContextVariants?: Record<string, any>;
+    overriddenContextProps?: Record<string, any>;
 };
 export type ClassNamesObject = Record<string, string>;
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends Object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends Object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.138.3",
+  "version": "1.139.4",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/index.cjs",
@@ -17,8 +17,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "yarn build --watch",
+    "build": "tamagui-build --skip-native",
+    "watch": "yarn build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -36,7 +36,6 @@
     "express": "^4.18.2",
     "fs-extra": "^11.2.0",
     "get-port": "^7.0.0",
-    "kill-port": "^2.0.1",
     "marked": "^14.1.2",
     "marked-terminal": "^5.2.0",
     "micromatch": "^4.0.7",

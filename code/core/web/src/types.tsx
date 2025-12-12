@@ -1820,7 +1820,7 @@ interface ExtraStyleProps {
   outlineWidth?: SpaceValue
 
   /**
-   * Web-only style property. Will be omitted on native.
+   * On native, maps to the `selectable` prop on Text (userSelect !== 'none')
    */
   userSelect?: Properties['userSelect']
   /**
@@ -2502,8 +2502,11 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
-  // Track variant resolutions that map to context keys (for issue #3669)
-  resolvedContextVariants?: Record<string, any>
+  // Track style values that override context props (for issues #3670, #3676)
+  overriddenContextProps?: Record<string, any>
+  // Track original token values (like '$8') before they get resolved to CSS vars
+  // This is used to preserve token strings in overriddenContextProps
+  originalContextPropValues?: Record<string, any>
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
@@ -2519,7 +2522,7 @@ export type PropMapper = (
   value: any,
   state: GetStyleState,
   disabled: boolean,
-  map: (key: string, val: any) => void
+  map: (key: string, val: any, originalVal?: any) => void
 ) => void
 
 export type GenericVariantDefinitions = {
@@ -3007,8 +3010,8 @@ export type GetStyleResult = {
   dynamicThemeAccess?: boolean
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
-  // Variant resolutions that map to context keys (for issue #3669)
-  resolvedContextVariants?: Record<string, any>
+  // Style values that override context props (for issues #3670, #3676)
+  overriddenContextProps?: Record<string, any>
 }
 
 export type ClassNamesObject = Record<string, string>

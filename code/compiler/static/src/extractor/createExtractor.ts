@@ -226,13 +226,26 @@ export function createExtractor(
       if (platform === 'native' && name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
         return false
       }
+      // Check for $theme-, $platform-, $group- prefixed keys
+      if (name[0] === '$') {
+        const mediaName = name.slice(1)
+        if (
+          mediaName.startsWith('theme-') ||
+          mediaName.startsWith('platform-') ||
+          mediaName.startsWith('group-')
+        ) {
+          return true
+        }
+        if (mediaQueryConfig[mediaName]) {
+          return true
+        }
+      }
       return !!(
         staticConfig.validStyles?.[name] ||
         pseudoDescriptors[name] ||
         // don't disable variants or else you lose many things flattening
         staticConfig.variants?.[name] ||
-        projectInfo?.tamaguiConfig?.shorthands[name] ||
-        (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
+        projectInfo?.tamaguiConfig?.shorthands[name]
       )
     }
 
@@ -1247,6 +1260,47 @@ export function createExtractor(
               }
 
               if (isValidStyleKey(name, staticConfig)) {
+                // $theme-, $group- styles should not be flattened (needs runtime handling)
+                // $platform- can be flattened if the platform matches
+                if (name[0] === '$') {
+                  if (name.startsWith('$theme-') || name.startsWith('$group-')) {
+                    if (shouldPrintDebug) {
+                      logger.info(`  ! not flattening media-like style: ${name}`)
+                    }
+                    inlined.set(name, true)
+                    return attr
+                  }
+
+                  // $platform-web, $platform-native, $platform-ios, $platform-android
+                  if (name.startsWith('$platform-')) {
+                    const platformName = name.slice(10) // remove '$platform-'
+                    const isMatchingPlatform =
+                      platformName === platform ||
+                      (platformName === 'native' && platform === 'native') ||
+                      (platformName === 'web' && platform === 'web')
+
+                    if (isMatchingPlatform && typeof styleValue === 'object') {
+                      // Flatten the inner styles directly
+                      if (shouldPrintDebug) {
+                        logger.info(
+                          `  flattening $platform-${platformName}: ${JSON.stringify(styleValue)}`
+                        )
+                      }
+                      return Object.entries(styleValue).map(([key, val]) => ({
+                        type: 'style' as const,
+                        value: { [key]: val },
+                        name: key,
+                        attr: path.node,
+                      }))
+                    } else {
+                      // Platform doesn't match, skip these styles entirely
+                      if (shouldPrintDebug) {
+                        logger.info(`  ! skipping non-matching platform style: ${name}`)
+                      }
+                      return []
+                    }
+                  }
+                }
                 if (shouldPrintDebug) {
                   logger.info(`  style: ${name} = ${JSON.stringify(styleValue)}`)
                 }
@@ -2035,8 +2089,20 @@ export function createExtractor(
 
           attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
             if (cur.type === 'style') {
-              const key = Object.keys(cur.value)[0]
+              const keys = Object.keys(cur.value || {})
+              if (!keys.length) {
+                return acc
+              }
+              const key = keys[0]
               const value = cur.value[key]
+
+              // Check if this is a media-like key ($theme-, $platform-, $group-, or $mediaQuery)
+              const isMediaLikeKey =
+                key[0] === '$' &&
+                (key.startsWith('$theme-') ||
+                  key.startsWith('$platform-') ||
+                  key.startsWith('$group-') ||
+                  mediaQueryConfig[key.slice(1)])
 
               const shouldKeepOriginalAttr =
                 // !isStyleAndAttr[key] &&
@@ -2044,6 +2110,7 @@ export function createExtractor(
                 // de-opt if non-style
                 !validStyles[key] &&
                 !pseudoDescriptors[key] &&
+                !isMediaLikeKey &&
                 !(key.startsWith('data-') || key.startsWith('aria-'))
 
               if (shouldKeepOriginalAttr) {

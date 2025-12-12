@@ -45,6 +45,7 @@ jobs:
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
       - name: Boot iOS Simulator
+        working-directory: ${{ github.workspace }}
         run: |
           # List available simulators and boot iPhone 15
           DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == "iPhone 15") | .udid' | head -1)
@@ -58,23 +59,46 @@ jobs:
           xcrun simctl bootstatus "$DEVICE_ID" -b
 
       - name: Install App on Simulator
+        working-directory: ${{ github.workspace }}
         run: |
           xcrun simctl install booted "${{ needs.build.outputs.built-app-path }}"
 
       - name: Install Dependencies
         uses: ./.github/actions/install
-        with:
-          workspace-focus: '@tamagui/kitchen-sink'
 
       - name: Start Metro Bundler
         run: |
           EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
           # Wait for Metro to be ready
-          sleep 30
+          echo "Waiting for Metro to start..."
+          for i in {1..30}; do
+            if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
+              echo "Metro is responding!"
+              break
+            fi
+            echo "Waiting for Metro... ($i/30)"
+            sleep 2
+          done
+
+      - name: Pre-warm Bundle
+        run: |
+          # Pre-warm the JS bundle to avoid timeout on first app launch
+          echo "Pre-warming bundle..."
+          MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
+          BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
+          echo "Fetching bundle from: $BUNDLE_URL"
+          curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed (or timed out)"
+          echo "Bundle pre-warm complete"
+
+      - name: Warm up App
+        run: |
+          # Run OpenApp first to warm up the app and ensure bundle loads
+          maestro test ./flows/OpenApp.yaml --no-ansi || true
 
       - name: Run Maestro Tests
         run: |
-          maestro test ./flows --exclude-tags=util
+          # Run tests serially to avoid race conditions with app launches
+          maestro test ./flows --exclude-tags=util --shards=1 --no-ansi
 
       - name: Upload Maestro Artifacts on Failure
         if: failure()

@@ -1,3 +1,4 @@
+- option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
 - v2 useTheme({ name: '' }) should remove since .get() doesnt match
 - release v5 config now
 

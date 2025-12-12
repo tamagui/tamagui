@@ -1,6 +1,5 @@
 import { isWeb } from '@tamagui/constants'
 import { MISSING_THEME_MESSAGE } from './constants/constants'
-import { loadDuplicatedConfig } from './loadDuplicatedConfig'
 import type {
   ConfigListener,
   GenericTamaguiSettings,
@@ -19,48 +18,74 @@ Haven't called createTamagui yet. ${MISSING_THEME_MESSAGE}
 `
     : `❌ Error 001`
 
+// helper to get config from module-scoped variable or globalthis fallback
+// this handles vite ssr bundling where multiple copies of tamagui may exist
+let hasWarnedAboutGlobalFallback = false
+
+const getConfigFromGlobalOrLocal = (): TamaguiInternalConfig | null => {
+  // prefer local conf first
+  if (conf) {
+    return conf
+  }
+
+  // fall back to globalthis (for vite ssr bundling scenarios)
+  if (globalThis.__tamaguiConfig) {
+    if (process.env.NODE_ENV === 'development' && !hasWarnedAboutGlobalFallback) {
+      hasWarnedAboutGlobalFallback = true
+      console.warn(
+        process.env.NODE_ENV === 'development'
+          ? `Tamagui: Using global config fallback. This may indicate duplicate tamagui instances (e.g., from Vite SSR bundling). This is handled automatically, but may cause issues.`
+          : `❌ Error 002`
+      )
+    }
+    return globalThis.__tamaguiConfig
+  }
+
+  return null
+}
+
 export const getSetting = <Key extends keyof GenericTamaguiSettings>(
   key: Key
 ): GenericTamaguiSettings[Key] => {
+  const config = getConfigFromGlobalOrLocal()
   if (process.env.NODE_ENV === 'development') {
-    if (!conf) throw new Error(haventCalledErrorMessage)
+    if (!config) throw new Error(haventCalledErrorMessage)
   }
   return (
-    conf!.settings[key] ??
+    config!.settings[key] ??
     // @ts-expect-error
-    conf[key]
+    config[key]
   )
 }
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next
+  globalThis.__tamaguiConfig = next
 }
 
 export const setConfigFont = (name: string, font: any, fontParsed: any) => {
+  const config = getConfigFromGlobalOrLocal()
   if (process.env.NODE_ENV === 'development') {
-    if (!conf) throw new Error(haventCalledErrorMessage)
+    if (!config) throw new Error(haventCalledErrorMessage)
   }
-  conf!.fonts[name] = font
-  conf!.fontsParsed[`$${name}`] = fontParsed
+  config!.fonts[name] = font
+  config!.fontsParsed[`$${name}`] = fontParsed
 }
 
 export const getConfig = () => {
-  const dup = loadDuplicatedConfig()
-  if (dup) {
-    return dup
-  }
-  if (!conf) {
+  const config = getConfigFromGlobalOrLocal()
+  if (!config) {
     throw new Error(
       process.env.NODE_ENV !== 'production'
         ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering. Also, make sure all of your tamagui dependencies are on the same version (\`tamagui\`, \`@tamagui/package-name\`, etc.) not just in your package.json, but in your lockfile.`
         : 'Err0'
     )
   }
-  return conf
+  return config
 }
 
 export const getConfigMaybe = () => {
-  return conf
+  return getConfigFromGlobalOrLocal()
 }
 
 let tokensMerged: TokensMerged
@@ -76,18 +101,20 @@ export const getTokens = ({
    */
   prefixed?: boolean
 } = {}): TokensMerged => {
+  const config = getConfigFromGlobalOrLocal()
   if (process.env.NODE_ENV === 'development') {
-    if (!conf) throw new Error(haventCalledErrorMessage)
+    if (!config) throw new Error(haventCalledErrorMessage)
   }
-  const { tokens, tokensParsed } = conf!
+  const { tokens, tokensParsed } = config!
   if (prefixed === false) return tokens as any
   if (prefixed === true) return tokensParsed as any
   return tokensMerged
 }
 
 export const getTokenObject = (value: Token, group?: keyof Tokens) => {
+  const config = getConfigFromGlobalOrLocal()
   return (
-    conf!.specificTokens[value] ??
+    config!.specificTokens[value] ??
     (group
       ? tokensMerged[group]?.[value]
       : tokensMerged[
@@ -111,13 +138,14 @@ export const getTokenValue = (value: Token | 'unset' | 'auto', group?: keyof Tok
  */
 export const useTokens = getTokens
 
-export const getThemes = () => conf!.themes
+export const getThemes = () => getConfigFromGlobalOrLocal()!.themes
 
 export const configListeners = new Set<ConfigListener>()
 
 export const onConfiguredOnce = (cb: ConfigListener) => {
-  if (conf) {
-    cb(conf)
+  const config = getConfigFromGlobalOrLocal()
+  if (config) {
+    cb(config)
   } else {
     configListeners.add(cb)
   }
@@ -125,7 +153,8 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
 
 export const updateConfig = (key: string, value: any) => {
   // for usage internally only
-  Object.assign(conf![key], value)
+  const config = getConfigFromGlobalOrLocal()
+  Object.assign(config![key], value)
 }
 
 // searches by value name or token name

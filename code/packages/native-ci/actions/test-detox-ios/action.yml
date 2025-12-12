@@ -1,0 +1,66 @@
+name: 'Native CI - iOS Detox Tests'
+description: 'Run Detox E2E tests on iOS simulator'
+author: 'Tamagui'
+
+inputs:
+  project-root:
+    description: 'Path to the project root'
+    default: '.'
+  working-directory:
+    description: 'Working directory for running tests'
+    default: '.'
+  config:
+    description: 'Detox configuration name'
+    default: 'ios.sim.debug'
+  record-logs:
+    description: 'Record logs mode: none, failing, all'
+    default: 'all'
+  retries:
+    description: 'Number of test retries (0 = fail fast)'
+    default: '0'
+  simulator:
+    description: 'iOS simulator device type'
+    default: 'iPhone 15'
+  app-path:
+    description: 'Path to the built app (optional, uses DETOX_IOS_APP_PATH env var)'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
+
+    - name: Install Detox CLI
+      shell: bash
+      run: npm install -g detox-cli
+
+    - name: Install applesimutils
+      shell: bash
+      run: |
+        brew tap wix/brew
+        brew install applesimutils
+
+    - name: Boot iOS Simulator
+      shell: bash
+      run: |
+        DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries | .[] | select(.key | contains("iOS")) | .value[] | select(.name == "${{ inputs.simulator }}") | .udid' | head -1)
+        if [ -n "$DEVICE_ID" ]; then
+          echo "Booting simulator: ${{ inputs.simulator }} ($DEVICE_ID)"
+          xcrun simctl boot "$DEVICE_ID" || true
+        fi
+
+    - name: Run Detox Tests
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        DETOX_IOS_APP_PATH: ${{ inputs.app-path }}
+      run: |
+        SCRIPT_PATH=$(node -e "console.log(require.resolve('@tamagui/native-ci/src/run-detox-ios.ts'))")
+        bun run "$SCRIPT_PATH" \
+          --project-root "$PWD" \
+          --config "${{ inputs.config }}" \
+          --record-logs "${{ inputs.record-logs }}" \
+          --retries "${{ inputs.retries }}"

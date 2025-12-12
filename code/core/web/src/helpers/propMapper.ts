@@ -62,6 +62,9 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     }
   }
 
+  // Capture original value before resolution (for context prop tracking)
+  const originalValue = value
+
   if (value != null) {
     if (value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
@@ -81,10 +84,10 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
       const max = expanded.length
       for (let i = 0; i < max; i++) {
         const [nkey, nvalue] = expanded[i]
-        map(nkey, nvalue)
+        map(nkey, nvalue, originalValue)
       }
     } else {
-      map(key, value)
+      map(key, value, originalValue)
     }
   }
 }
@@ -232,25 +235,25 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       continue
     }
 
+    // Track context overrides for any key that's in context props (issues #3670, #3676)
+    // Store the ORIGINAL token value (like '$8') before resolution so that
+    // children's functional variants can look up token values
+    if (staticConfig) {
+      const contextProps =
+        staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
+      if (contextProps && subKey in contextProps) {
+        styleState.overriddenContextProps ||= {}
+        styleState.overriddenContextProps[subKey] = val
+        // Also track the original token value separately
+        styleState.originalContextPropValues ||= {}
+        styleState.originalContextPropValues[subKey] = val
+      }
+    }
+
     if (styleProps.noExpand) {
       res[subKey] = val
     } else {
       if (variants && subKey in variants) {
-        // Track context variant resolutions (issue #3669)
-        // When a variant maps to another variant that's also a context key,
-        // we need to track it so it can be propagated via context to children
-        // Check both current context and parent's context (in case child doesn't explicitly set context)
-        if (staticConfig) {
-          const contextProps =
-            staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
-          if (contextProps && subKey in contextProps) {
-            if (!styleState.resolvedContextVariants) {
-              styleState.resolvedContextVariants = {}
-            }
-            styleState.resolvedContextVariants[subKey] = val
-          }
-        }
-
         // avoids infinite loop if variant is matching a style prop
         // eg: { variants: { flex: { true: { flex: 2 } } } }
         if (parentVariantKey && parentVariantKey === key) {
