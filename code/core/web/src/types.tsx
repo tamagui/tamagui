@@ -2771,6 +2771,7 @@ export type VariantSpreadExtras<Props> = {
   props: Props
   fontFamily?: FontFamilyTokens
   font?: Font
+  styledContext?: Record<string, any>
 }
 
 type PropLike = { [key: string]: any }

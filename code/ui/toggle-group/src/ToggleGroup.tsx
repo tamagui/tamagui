@@ -20,7 +20,8 @@ import {
 import React from 'react'
 
 import type { ToggleProps } from './Toggle'
-import { Toggle, ToggleFrame } from './Toggle'
+import { Toggle, ToggleFrame, context as ToggleContext } from './Toggle'
+
 
 const TOGGLE_GROUP_NAME = 'ToggleGroup'
 
@@ -47,6 +48,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
   id?: string
   disabled?: boolean
   size?: SizeTokens
+ toggledStyle?: GetProps<typeof ToggleFrame>
   /**
    * Used to disable passing styles down to children.
    */
@@ -55,11 +57,12 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
 const ToggleGroupItem = ToggleFrame.extractable(
   React.forwardRef<ToggleGroupItemElement, ToggleGroupItemProps>(
     (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
-      const [_, { color }] = usePropsAndStyle(props)
       const { disablePassStyles, ...rest } = props
       const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
       const context = useToggleGroupContext(props.__scopeToggleGroup)
       const pressed = valueContext?.value.includes(props.value)
+      usePropsAndStyle({ ...props, active: pressed }, { forComponent: ToggleFrame })
+
       const disabled = context.disabled || props.disabled || false
       const groupItemProps = useGroupItem({ disabled })
       const size = props.size ?? context.size
@@ -72,14 +75,17 @@ const ToggleGroupItem = ToggleFrame.extractable(
             padding: getVariableValue(size) * 0.6,
           }
 
+      const theme = useTheme()
       const iconSize =
         (typeof size === 'number' ? size * 0.7 : getFontSize(size as FontSizeTokens)) *
         1.2
+      
+      const toggledStyle = props.toggledStyle 
+      const activeColor = (pressed && toggledStyle?.color) ? toggledStyle.color : theme.color
 
-      const theme = useTheme()
       const getThemedIcon = useGetThemedIcon({
         size: iconSize,
-        color: color ?? theme.color,
+        color: activeColor as unknown as string, 
       })
 
       const childrens = React.Children.toArray(props.children)
@@ -90,7 +96,16 @@ const ToggleGroupItem = ToggleFrame.extractable(
         return React.cloneElement(getThemedIcon(child), { active: pressed } as any)
       })
 
-      const commonProps = { pressed, disabled, ...sizeProps, ...rest, children }
+    const commonProps = {
+        ...props,
+        value: props.value, 
+        pressed,
+        disabled,
+        ...sizeProps,
+        children,
+      }
+
+      
 
       const inner = (
         <ToggleGroupItemImpl
@@ -142,28 +157,40 @@ const ToggleGroupItemImpl = React.forwardRef<
   ToggleGroupItemImplElement,
   ScopedProps<ToggleGroupItemImplProps>
 >((props: ScopedProps<ToggleGroupItemImplProps>, forwardedRef) => {
-  const { __scopeToggleGroup, value, ...itemProps } = props
+    const { __scopeToggleGroup, value, pressed, ...itemProps } = props 
+
 
   const valueContext = useToggleGroupValueContext(__scopeToggleGroup)
+
+  const defaultPressed =
+    valueContext.type === 'single'
+      ? valueContext.defaultValue === value
+      : Array.isArray(valueContext.defaultValue) &&
+        valueContext.defaultValue.includes(value)
+
   const singleProps = {
     'aria-pressed': undefined,
   }
   const typeProps = valueContext.type === 'single' ? singleProps : undefined
 
-  return (
-    <Toggle
-      {...typeProps}
-      {...itemProps}
-      ref={forwardedRef}
-      onPressedChange={(pressed) => {
-        if (pressed) {
-          valueContext.onItemActivate(value)
-        } else {
-          valueContext.onItemDeactivate(value)
-        }
-      }}
-    />
-  )
+    return (
+      <ToggleContext.Provider toggledStyle={itemProps.toggledStyle}>  
+      <Toggle
+        {...typeProps}
+        {...itemProps}
+        ref={forwardedRef}
+        defaultPressed={defaultPressed}
+        pressed={pressed}  
+        onPressedChange={(pressed) => {
+          if (pressed) {
+            valueContext.onItemActivate(value)
+          } else {
+            valueContext.onItemDeactivate(value)
+          }
+        }}
+      />
+      </ToggleContext.Provider>
+    )
 })
 
 /* -----------------------------------------------------------------------------------------------*/

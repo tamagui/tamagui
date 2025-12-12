@@ -1,12 +1,13 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { GetProps } from '@tamagui/web'
-import { createStyledContext, styled, Text } from '@tamagui/web'
+import type { GetProps, ViewProps } from '@tamagui/web'
+import { createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
 
 export const context = createStyledContext({
-  color: '',
+ toggledStyle: null as null | ViewProps,
+ color: ""
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -52,24 +53,27 @@ export const ToggleFrame = styled(ThemeableStack, {
       },
     },
 
-    color: {
+     // used this name because "activeStyle" is already taken by Tamagui
+    toggledStyle: (val: ViewProps & { color?: string }) => {
+      return {}
+    },
+
+   color: {
       '...color': () => {
         return {}
       },
     },
 
-    active: {
-      true: {
-        zIndex: 1,
-
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-
-        focusStyle: {
-          borderColor: '$borderColor',
-          backgroundColor: '$background',
-        },
+  active: {
+      true: (_, { styledContext }) => {
+       const toggledStyle = styledContext?.toggledStyle || {}
+        return {
+          zIndex: 1,
+          hoverStyle: { backgroundColor: '$backgroundHover' },
+          pressStyle: { backgroundColor: '$backgroundPress' },
+          focusStyle: { borderColor: '$borderColorFocus' },
+          ...toggledStyle
+        }
       },
     },
 
@@ -98,6 +102,7 @@ type ToggleItemExtraProps = {
   pressed?: boolean
   defaultPressed?: boolean
   onPressedChange?(pressed: boolean): void
+  
 }
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
@@ -117,6 +122,7 @@ export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
       defaultProp: defaultPressed,
     })
 
+    
     return (
       <ToggleFrame
         {...(!props.unstyled && {
@@ -127,7 +133,7 @@ export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
         aria-pressed={pressed}
         data-state={pressed ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
-        {...buttonProps}
+        {...buttonProps}             
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
           if (!props.disabled) {
@@ -140,3 +146,4 @@ export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
 )
 
 /* ---------------------------------------------------------------------------------------------- */
+
