@@ -122,8 +122,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       { name: string; declarations: string[]; language?: string }
     > = {}
 
-    for (const key in tokens) {
-      for (const skey in tokens[key]) {
+    // Sort token categories for deterministic CSS output order
+    const sortedTokenKeys = Object.keys(tokens).sort()
+    for (const key of sortedTokenKeys) {
+      // Sort token keys within each category for deterministic order
+      const sortedSubKeys = Object.keys(tokens[key]).sort()
+      for (const skey of sortedSubKeys) {
         const variable = tokens[key][skey] as any as Variable
 
         // set specific tokens (like $size.sm)
@@ -149,8 +153,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      for (const key in fontsParsed) {
-        const fontParsed = fontsParsed[key]
+      // Sort font keys for deterministic CSS output order
+      const sortedFontKeys = fontsParsed ? Object.keys(fontsParsed).sort() : []
+      for (const key of sortedFontKeys) {
+        const fontParsed = fontsParsed![key]
         const [name, language] = key.includes('_') ? key.split('_') : [key]
         const fontVars = registerFontVariables(fontParsed)
         fontDeclarations[key] = {
@@ -168,9 +174,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       // non-font
       cssRuleSets.push(declarationsToRuleSet(declarations))
 
-      // fonts
+      // fonts - iterate in sorted order for deterministic CSS output
       if (fontDeclarations) {
-        for (const key in fontDeclarations) {
+        const sortedFontDeclarationKeys = Object.keys(fontDeclarations).sort()
+        for (const key of sortedFontDeclarationKeys) {
           const { name, declarations, language = 'default' } = fontDeclarations[key]
           const fontSelector = `.font_${name}`
           const langSelector = `:root .t_lang-${name}-${language} ${fontSelector}`
@@ -344,8 +351,11 @@ function getThemesDeduped(
   const dedupedThemes: DedupedThemes = []
   const existing = new Map<string, DedupedTheme>()
 
+  // Sort theme names for deterministic CSS output order
+  const sortedThemeNames = Object.keys(themes).sort()
+
   // first, de-dupe and parse them
-  for (const themeName in themes) {
+  for (const themeName of sortedThemeNames) {
     // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
     const darkOrLightSpecificPrefix = themeName.startsWith('dark')
       ? 'dark'
