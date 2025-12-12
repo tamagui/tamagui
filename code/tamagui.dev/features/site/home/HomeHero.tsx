@@ -194,6 +194,8 @@ const HeroContents = memo(function HeroContents() {
           <YStack
             px={0}
             maxW={420}
+            // safari fix width
+            width="100%"
             // prevent layout shift
             height={70}
             $gtSm={{
