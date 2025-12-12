@@ -25,8 +25,11 @@ export function SelectDemo() {
   )
 }
 
-export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactNode }) {
-  const [val, setVal] = React.useState('apple')
+type SelectValue = Lowercase<(typeof items)[number]['name']>
+export function SelectDemoContents(
+  props: SelectProps<SelectValue> & { trigger?: React.ReactNode }
+) {
+  const [val, setVal] = React.useState<SelectValue>('apple')
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
@@ -160,4 +163,4 @@ const items = [
   { name: 'Grape' },
   { name: 'Jackfruit' },
   { name: 'Durian' },
-]
+] as const

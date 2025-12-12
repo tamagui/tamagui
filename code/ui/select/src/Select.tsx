@@ -336,7 +336,9 @@ const SelectSheetImpl = (props: SelectImplProps) => {
  * -----------------------------------------------------------------------------------------------*/
 
 export const Select = withStaticProperties(
-  function Select(props: SelectScopedProps<SelectProps>) {
+  function Select<Value extends string = string>(
+    props: SelectScopedProps<SelectProps<Value>>
+  ) {
     const adaptScope = `AdaptSelect${props.scope || ''}`
 
     return (
