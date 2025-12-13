@@ -2,5 +2,5 @@ export {
   getMDXBySlug,
   getAllFrontmatter,
   getAllVersionsFromPath,
-} from '@tamagui/mdx-2'
+} from '@vxrn/mdx'
 export { getCompilationExamples } from './getCompilationExamples'

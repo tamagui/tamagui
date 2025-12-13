@@ -1,4 +1,4 @@
-import { createCodeHighlighter } from '@tamagui/mdx-2'
+import { createCodeHighlighter } from '@vxrn/mdx'
 import { animationCode, compilationCode } from './codeExamples'
 
 const highlightCode = createCodeHighlighter()
