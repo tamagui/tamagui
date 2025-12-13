@@ -40,8 +40,13 @@ jobs:
           fail-on-cache-miss: true
 
       - name: Install Maestro
+        env:
+          MAESTRO_VERSION: cli-2.0.10
         run: |
-          curl -Ls "https://get.maestro.mobile.dev" | bash
+          # Pin to specific version via GitHub releases (avoids broken get.maestro.mobile.dev)
+          curl -fsSL "https://github.com/mobile-dev-inc/maestro/releases/download/${MAESTRO_VERSION}/maestro.zip" -o maestro.zip
+          unzip -q maestro.zip
+          mv maestro "$HOME/.maestro"
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
       - name: Boot iOS Simulator
