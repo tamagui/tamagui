@@ -24,7 +24,8 @@
     },
     "test": {
       "dependsOn": ["^build:js"],
-      "outputs": []
+      "outputs": [],
+      "env": ["SKIP_NATIVE_TESTS"]
     },
     "clean": {
       "outputs": ["dist/**"],
