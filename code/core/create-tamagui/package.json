@@ -16,7 +16,7 @@
     "build:test": "yarn build",
     "prerelease": "rimraf ./dist/",
     "prepublish": "yarn build",
-    "build": "tamagui-build --skip-types --bundle --bundle-modules",
+    "build": "tamagui-build --skip-types --bundle",
     "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"

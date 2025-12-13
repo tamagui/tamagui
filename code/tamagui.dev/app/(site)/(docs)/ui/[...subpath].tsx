@@ -14,7 +14,7 @@ import { nbspLastWord, SubTitle } from '../../../../components/SubTitle'
 import { HomeH1 } from '../../../../features/site/home/HomeHeaders'
 
 export async function generateStaticParams() {
-  const { getAllFrontmatter } = await import('@tamagui/mdx-2')
+  const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
   const frontmatters = getAllFrontmatter('data/docs/components')
   const paths = frontmatters.map((frontmatter) => {
     return {
@@ -36,7 +36,9 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
-  const { getMDXBySlug, getAllVersionsFromPath } = await import('@tamagui/mdx-2')
+  const { getMDXBySlug, getAllVersionsFromPath } = await import(
+    '~/features/mdx/getMDXBySlug'
+  )
 
   const subpath = Array.isArray(props.params.subpath)
     ? props.params.subpath[0]
