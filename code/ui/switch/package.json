@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.140.2",
+  "version": "1.140.3",
   "type": "module",
   "removeSideEffects": true,
   "sideEffects": [
