@@ -8,7 +8,6 @@ const fastGlob = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
-const alias = require('./esbuildAliasPlugin')
 const { es5Plugin } = require('./esbuild-es5')
 const ts = require('typescript')
 const path = require('node:path')
@@ -412,13 +411,21 @@ async function buildJs(allFiles) {
 
         if (!args.path.startsWith('.') && !args.path.startsWith('/')) {
           // Always keep these external (need runtime file access)
-          if (alwaysExternal.some(pkg => args.path === pkg || args.path.startsWith(pkg + '/'))) {
+          if (
+            alwaysExternal.some(
+              (pkg) => args.path === pkg || args.path.startsWith(pkg + '/')
+            )
+          ) {
             return { external: true }
           }
 
           // If bundleOnly is set, only bundle those specific packages
           if (bundleOnly) {
-            if (bundleOnly.some(pkg => args.path === pkg || args.path.startsWith(pkg + '/'))) {
+            if (
+              bundleOnly.some(
+                (pkg) => args.path === pkg || args.path.startsWith(pkg + '/')
+              )
+            ) {
               return { external: false }
             }
             return { external: true }
