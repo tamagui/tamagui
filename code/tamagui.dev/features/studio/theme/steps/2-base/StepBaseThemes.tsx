@@ -187,6 +187,10 @@ const PaletteView = memo((props: Props) => {
           light: lightHSLA[2],
           dark: darkHSLA[2],
         },
+        alpha: {
+          light: 1,
+          dark: 1,
+        },
       }
 
       const next = [...anchors]

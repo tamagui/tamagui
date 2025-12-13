@@ -19,7 +19,7 @@ export const ColorSchemeToggle = () => {
 
   return (
     <>
-      <Button chromeless disabled w={20} icon={Moon} />
+      <Button chromeless disabled width={20} icon={Moon} />
       <Switch
         native
         checked={checked}
@@ -38,7 +38,7 @@ export const ColorSchemeToggle = () => {
           ]}
         />
       </Switch>
-      <Button chromeless disabled w={20} icon={Sun} />
+      <Button chromeless disabled width={20} icon={Sun} />
     </>
   )
 }
