@@ -27,12 +27,12 @@ potentially:
   - https://github.com/tamagui/tamagui/pull/2598
 - forgot we had headless menu
   - https://github.com/tamagui/tamagui/pull/1978
-- tooltip follow
-  - https://github.com/tamagui/tamagui/pull/1318
-  - we did land scoped tooltip and better position support
 - popper origin/size
   - https://github.com/tamagui/tamagui/pull/2734/files
   - older version https://github.com/tamagui/tamagui/pull/2723
+
+- tooltip follow
+  - we did land scoped tooltip and better position support
 
 see if claude can get working well:
 
