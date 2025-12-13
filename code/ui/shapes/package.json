@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shapes",
-  "version": "1.140.1",
+  "version": "1.140.2",
   "type": "module",
   "sideEffects": [
     "*.css"
