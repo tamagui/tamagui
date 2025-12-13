@@ -1,6 +1,14 @@
-import type { GestureResponderHandlers, LayoutChangeEvent } from 'react-native'
+import type {
+  GestureResponderHandlers,
+  LayoutChangeEvent,
+  TextLayoutEventData,
+  NativeSyntheticEvent,
+} from 'react-native'
 
 type OnLayout = ((event: LayoutChangeEvent) => void) | undefined
+type OnTextLayout =
+  | ((event: NativeSyntheticEvent<TextLayoutEventData>) => void)
+  | undefined
 
 export interface RNExtraProps {
   /** @deprecated use tabIndex={0} */
@@ -31,6 +39,7 @@ export interface RNViewProps extends GestureResponderHandlers, RNExtraProps {
 
 export interface RNTextProps extends RNExtraProps {
   dir?: 'ltr' | 'rtl' | 'auto'
+  onTextLayout?: OnTextLayout
 }
 
 // KEEP IN SYNC WITH ^
@@ -42,6 +51,7 @@ export type RNOnlyProps =
   | 'onSelectionChangeShouldSetResponder'
   | 'onSelectionChangeShouldSetResponderCapture'
   | 'onLayout'
+  | 'onTextLayout'
   | 'href'
   | 'hrefAttrs'
   | 'elevationAndroid'
