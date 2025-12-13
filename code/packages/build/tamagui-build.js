@@ -64,6 +64,8 @@ const buildConfig = pkg['tamagui-build'] || {}
 // if bundleOnly is set, only bundle those packages (old behavior)
 // otherwise bundle ALL packages by default (new behavior)
 const bundleOnly = buildConfig.bundleOnly || null
+// if bundleExternal is set, always keep those packages external
+const bundleExternal = buildConfig.bundleExternal || null
 
 const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
@@ -399,7 +401,7 @@ async function buildJs(allFiles) {
     name: `bundle-all-modules`,
     setup(build) {
       // Alias esbuild to esbuild-wasm (but keep it external)
-      build.onResolve({ filter: /^esbuild$/ }, (args) => {
+      build.onResolve({ filter: /^esbuild$/ }, () => {
         return { path: 'esbuild-wasm', external: true }
       })
 
@@ -417,6 +419,17 @@ async function buildJs(allFiles) {
             )
           ) {
             return { external: true }
+          }
+
+          // If bundleExternal is set, keep those packages external
+          if (bundleExternal) {
+            if (
+              bundleExternal.some(
+                (pkg) => args.path === pkg || args.path.startsWith(pkg + '/')
+              )
+            ) {
+              return { external: true }
+            }
           }
 
           // If bundleOnly is set, only bundle those specific packages
