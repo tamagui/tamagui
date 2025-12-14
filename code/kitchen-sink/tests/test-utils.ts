@@ -8,6 +8,7 @@ type SetupPageArgs = {
   centered?: boolean
   waitExtra?: boolean
   adapt?: boolean
+  searchParams?: Record<string, string>
 }
 
 export async function setupPage(
@@ -20,12 +21,20 @@ export async function setupPage(
     adapt = false,
     centered = false,
     waitExtra = false,
+    searchParams = {},
   }: SetupPageArgs
 ) {
   const params = new URLSearchParams({
     theme,
-    animationDriver: process.env.TAMAGUI_TEST_ANIMATION_DRIVER ?? 'native',
+    animationDriver: searchParams.animationDriver ?? process.env.TAMAGUI_TEST_ANIMATION_DRIVER ?? 'native',
   })
+
+  // Add any additional custom search params
+  for (const [key, value] of Object.entries(searchParams)) {
+    if (key !== 'animationDriver') {
+      params.set(key, value)
+    }
+  }
 
   if (type === 'useCase') {
     params.append('test', name)
