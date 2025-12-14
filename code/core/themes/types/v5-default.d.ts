@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 declare const generatedThemes: Record<"light_blue" | "light_green" | "light_red" | "light_yellow" | "dark_blue" | "dark_green" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "dark_black" | "dark_white", {
-=======
-declare const generatedThemes: Record<"light_blue" | "light_green" | "light_red" | "light_yellow" | "dark_blue" | "dark_green" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_accent" | "dark_accent" | "dark_black" | "dark_white" | "light_black" | "light_white", {
->>>>>>> main
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -136,11 +132,7 @@ declare const generatedThemes: Record<"light_blue" | "light_green" | "light_red"
     accent12: string;
 }>;
 export type TamaguiThemes = typeof generatedThemes;
-<<<<<<< HEAD
 export declare const themes: Record<"light_blue" | "light_green" | "light_red" | "light_yellow" | "dark_blue" | "dark_green" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "dark_black" | "dark_white", {
-=======
-export declare const themes: Record<"light_blue" | "light_green" | "light_red" | "light_yellow" | "dark_blue" | "dark_green" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_accent" | "dark_accent" | "dark_black" | "dark_white" | "light_black" | "light_white", {
->>>>>>> main
     yellow1: string;
     yellow2: string;
     yellow3: string;
