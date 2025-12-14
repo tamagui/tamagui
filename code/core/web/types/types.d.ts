@@ -7,9 +7,9 @@ import type { RNOnlyProps } from './interfaces/RNExclusiveTypes';
 export type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight' | 'shadowRadius';
 export type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'outlineColor' | 'textShadowColor' | 'borderBlockColor' | 'borderBlockEndColor' | 'borderBlockStartColor' | 'borderInlineColor' | 'borderInlineStartColor' | 'borderInlineEndColor';
 export type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'marginBlock' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInline' | 'marginInlineStart' | 'marginInlineEnd' | 'paddingBlock' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInline' | 'paddingInlineStart' | 'paddingInlineEnd' | 'x' | 'y' | 'gap' | 'rowGap' | 'columnGap' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset' | 'borderBlockWidth' | 'borderBlockStartWidth' | 'borderBlockEndWidth' | 'borderInlineWidth' | 'borderInlineStartWidth' | 'borderInlineEndWidth';
-export type StyledContext<Props extends Object = any> = Context<Props> & {
+export type StyledContext<Props extends Record<string, any> = any> = Context<Props> & {
     context: Context<Props>;
-    props: Object | undefined;
+    props: Record<string, any> | undefined;
     Provider: ProviderExoticComponent<Partial<Props | undefined> & {
         children?: ReactNode;
         scope?: string;
@@ -859,7 +859,7 @@ export type ParseFont<A extends GenericFont> = {
     color: TokenPrefixedIfExists<A['color']>;
     face: TokenPrefixedIfExists<A['face']>;
 };
-export type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {};
+export type TokenPrefixedIfExists<A> = A extends Record<string, any> ? TokenPrefixed<A> : {};
 export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<keyof Tokens[K]> : never;
 export type FontKeys = 'fontFamily';
 export type FontSizeKeys = 'fontSize';
