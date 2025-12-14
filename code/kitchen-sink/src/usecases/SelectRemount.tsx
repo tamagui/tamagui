@@ -15,11 +15,15 @@ const items = [
   { name: 'Apricot' },
 ]
 
+// Helper to get item label from value - used by renderValue for SSR
+const getItemLabel = (value: string) =>
+  items.find((item) => item.name.toLowerCase() === value)?.name
+
 function SelectComponent({ id }: { id: string }) {
   const [val, setVal] = React.useState('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll>
+    <Select value={val} onValueChange={setVal} disablePreventBodyScroll renderValue={getItemLabel}>
       <Select.Trigger
         testID={`${id}-trigger`}
         aria-label={`${id}-trigger`}

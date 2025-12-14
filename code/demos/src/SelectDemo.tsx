@@ -26,13 +26,25 @@ export function SelectDemo() {
 }
 
 type SelectValue = Lowercase<(typeof items)[number]['name']>
+
+// Helper to get item label from value - used by renderValue for SSR
+const getItemLabel = (value: string) =>
+  items.find((item) => item.name.toLowerCase() === value)?.name
+
 export function SelectDemoContents(
   props: SelectProps<SelectValue> & { trigger?: React.ReactNode }
 ) {
   const [val, setVal] = React.useState<SelectValue>('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      {...props}
+      // renderValue enables SSR support by providing the label synchronously
+      renderValue={getItemLabel}
+    >
       {props?.trigger || (
         <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />

@@ -42,6 +42,7 @@ const SelectComponent = (
     size,
     children,
     onActiveChange,
+    renderValue,
     variant,
     color,
     ...selectTriggerProps
@@ -59,6 +60,7 @@ const SelectComponent = (
     name,
     autoComplete,
     size,
+    renderValue,
   } as SelectProps
   return (
     <TamaguiSelect {...selectProps}>
