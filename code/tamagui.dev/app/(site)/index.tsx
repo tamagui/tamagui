@@ -19,7 +19,7 @@ import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/Ti
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 
 export async function loader() {
-  const { getCompilationExamples } = await import('@tamagui/mdx-2')
+  const { getCompilationExamples } = await import('~/features/mdx/getMDXBySlug')
   return getCompilationExamples()
 }
 

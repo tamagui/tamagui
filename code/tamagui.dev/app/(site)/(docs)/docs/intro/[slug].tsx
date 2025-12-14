@@ -11,7 +11,7 @@ import { getOgUrl } from '~/features/site/getOgUrl'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
 export async function generateStaticParams() {
-  const { getAllFrontmatter } = await import('@tamagui/mdx-2')
+  const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
   const frontmatters = getAllFrontmatter('data/docs/intro')
   const paths = frontmatters.map(({ slug }) => ({
     slug: slug.replace(/.*docs\/intro\//, ''),
@@ -20,7 +20,9 @@ export async function generateStaticParams() {
 }
 
 export async function loader({ params }) {
-  const { getMDXBySlug, getCompilationExamples } = await import('@tamagui/mdx-2')
+  const { getMDXBySlug, getCompilationExamples } = await import(
+    '~/features/mdx/getMDXBySlug'
+  )
   const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug)
   return {
     frontmatter,

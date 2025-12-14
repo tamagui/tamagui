@@ -18,12 +18,12 @@ import { ActiveCircle } from '~/components/ActiveCircle'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2, HomeH3 } from './HomeHeaders'
 import { MediaPlayer } from './MediaPlayer'
-import { useColorScheme } from '@vxrn/color-scheme'
+import { useUserScheme } from '@vxrn/color-scheme'
 
 type Lock = null | 'shouldAnimate' | 'animate' | 'scroll'
 
 export const HomeThemes = memo(function HomeThemes() {
-  const [resolvedTheme, setUserTheme] = useColorScheme()
+  const userScheme = useUserScheme()
 
   const tints = useTints().tints as ThemeName[]
   const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]
@@ -170,12 +170,12 @@ export const HomeThemes = memo(function HomeThemes() {
           <XStack px="$4" gap="$2">
             <XGroup disablePassBorderRadius bordered p="$2" rounded="$10" self="center">
               {(['light', 'dark'] as const).map((name, i) => {
-                const isActive = resolvedTheme === name
+                const isActive = userScheme.value === name
                 return (
                   <XGroup.Item key={name + i}>
                     <ActiveCircle
                       bg={name === 'dark' ? '#000' : '#fff'}
-                      onPress={() => setUserTheme(name)}
+                      onPress={() => userScheme.set(name)}
                       isActive={isActive}
                     />
                   </XGroup.Item>

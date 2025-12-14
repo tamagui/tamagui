@@ -34,6 +34,10 @@ const skipTest =
   rePublish ||
   process.argv.includes('--skip-test') ||
   process.argv.includes('--skip-tests')
+const skipNativeTests =
+  process.argv.includes('--skip-native-test') ||
+  process.argv.includes('--skip-native-tests')
+const skipChecks = process.argv.includes('--skip-checks')
 const skipBuild = shouldFinish || rePublish || process.argv.includes('--skip-build')
 const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
@@ -212,17 +216,23 @@ async function run() {
 
     // run checks
     if (!shouldFinish) {
-      console.info('run checks')
-      if (!skipTest) {
+      if (!skipChecks) {
+        console.info('run checks')
         await Promise.all([
           spawnify(`chmod ug+x ./node_modules/.bin/tamagui`),
-          // spawnify(`yarn playwright install`),
           spawnify(`yarn check`),
           spawnify(`yarn lint`),
         ])
         await spawnify(`yarn typecheck`)
-        await spawnify(`yarn test`)
-        // await spawnify(`yarn test-ios`)
+      }
+      if (!skipTest) {
+        console.info('run tests')
+        await spawnify(`yarn test`, {
+          env: {
+            ...process.env,
+            ...(skipNativeTests ? { SKIP_NATIVE_TESTS: 'true' } : {}),
+          },
+        })
       }
     }
 

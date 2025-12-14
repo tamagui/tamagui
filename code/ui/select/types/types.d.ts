@@ -12,12 +12,12 @@ export type SelectImplProps = SelectScopedProps<SelectProps> & {
     selectedIndexRef: any;
     listContentRef: any;
 };
-export interface SelectProps {
+export interface SelectProps<Value extends string = string> {
     id?: string;
     children?: ReactNode;
-    value?: string;
-    defaultValue?: string;
-    onValueChange?(value: string): void;
+    value?: Value;
+    defaultValue?: Value;
+    onValueChange?(value: Value): void;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?(open: boolean): void;

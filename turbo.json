@@ -25,8 +25,12 @@
     "test": {
       "dependsOn": ["^build:js"],
       "outputs": [],
+<<<<<<< HEAD
       "env": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE"],
       "passThroughEnv": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE"]
+=======
+      "env": ["SKIP_NATIVE_TESTS"]
+>>>>>>> main
     },
     "clean": {
       "outputs": ["dist/**"],

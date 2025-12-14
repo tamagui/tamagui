@@ -68,9 +68,6 @@
       "path": "../packages/lucide-icons"
     },
     {
-      "path": "../packages/mdx"
-    },
-    {
       "path": "../packages/use-store"
     }
   ]

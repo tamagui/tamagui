@@ -8,7 +8,6 @@ const fastGlob = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
-const alias = require('./esbuildAliasPlugin')
 const { es5Plugin } = require('./esbuild-es5')
 const ts = require('typescript')
 const path = require('node:path')
@@ -59,6 +58,14 @@ const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
 const pkgTypes = Boolean(pkg.types || pkg.typings)
 const pkgRemoveSideEffects = pkg.removeSideEffects || false
+
+// build config from package.json
+const buildConfig = pkg['tamagui-build'] || {}
+// if bundleOnly is set, only bundle those packages (old behavior)
+// otherwise bundle ALL packages by default (new behavior)
+const bundleOnly = buildConfig.bundleOnly || null
+// if bundleExternal is set, always keep those packages external
+const bundleExternal = buildConfig.bundleExternal || null
 
 const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
@@ -387,11 +394,14 @@ async function buildJs(allFiles) {
     skipNodeModulesBundle: true,
   })
 
+  // packages that must always stay external (need runtime access to files/wasm/native bindings)
+  const alwaysExternal = ['esbuild-wasm', '@swc/core']
+
   const bundlePlugin = {
-    name: `external-most-modules`,
+    name: `bundle-all-modules`,
     setup(build) {
       // Alias esbuild to esbuild-wasm (but keep it external)
-      build.onResolve({ filter: /^esbuild$/ }, (args) => {
+      build.onResolve({ filter: /^esbuild$/ }, () => {
         return { path: 'esbuild-wasm', external: true }
       })
 
@@ -402,16 +412,40 @@ async function buildJs(allFiles) {
         }
 
         if (!args.path.startsWith('.') && !args.path.startsWith('/')) {
-          // Keep esbuild-wasm external (it needs access to WASM files)
-          if (args.path === 'esbuild-wasm' || args.path.startsWith('esbuild-wasm/')) {
+          // Always keep these external (need runtime file access)
+          if (
+            alwaysExternal.some(
+              (pkg) => args.path === pkg || args.path.startsWith(pkg + '/')
+            )
+          ) {
             return { external: true }
           }
-          // Bundle mdx-bundler and its dependencies
-          if (args.path === 'mdx-bundler' || args.path.startsWith('mdx-bundler/')) {
-            return { external: false }
+
+          // If bundleExternal is set, keep those packages external
+          if (bundleExternal) {
+            if (
+              bundleExternal.some(
+                (pkg) => args.path === pkg || args.path.startsWith(pkg + '/')
+              )
+            ) {
+              return { external: true }
+            }
           }
-          // Externalize all other npm packages
-          return { external: true }
+
+          // If bundleOnly is set, only bundle those specific packages
+          if (bundleOnly) {
+            if (
+              bundleOnly.some(
+                (pkg) => args.path === pkg || args.path.startsWith(pkg + '/')
+              )
+            ) {
+              return { external: false }
+            }
+            return { external: true }
+          }
+
+          // Default: bundle ALL packages
+          return { external: false }
         }
       })
     },

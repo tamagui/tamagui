@@ -8,7 +8,7 @@ import { BlogSlugPage } from '~/features/site/blog/BlogSlugPage'
 import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
-  const { getAllFrontmatter } = await import('@tamagui/mdx-2')
+  const { getAllFrontmatter } = await import('~/features/mdx/getMDXBySlug')
   const frontmatters = getAllFrontmatter('data/blog')
   return frontmatters.map(({ slug }) => ({
     slug: slug.replace('blog/', ''),
@@ -16,7 +16,9 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
-  const { getCompilationExamples, getMDXBySlug } = await import('@tamagui/mdx-2')
+  const { getCompilationExamples, getMDXBySlug } = await import(
+    '~/features/mdx/getMDXBySlug'
+  )
   const { slug } = props.params
   const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string)
   const relatedPosts = frontmatter.relatedIds

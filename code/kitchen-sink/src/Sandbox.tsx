@@ -4,11 +4,14 @@ import {
   Button,
   Circle,
   type ColorTokens,
+  Paragraph,
+  Sheet,
   styled,
   Switch as TamaguiSwitch,
   type SwitchProps as TamaguiSwitchProps,
   View,
   XStack,
+  YStack,
 } from 'tamagui'
 import { TimedRender } from './components/TimedRender'
 
@@ -17,34 +20,49 @@ const StyledButton = styled(Button, {
 })
 
 export const Sandbox = () => {
-  // const [x, setX] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [animationType, setAnimationType] = useState<'lazy' | 'quick' | 'bouncy'>('lazy')
 
   return (
-    <XStack group="testy" width={900} height={300} bg="red">
-      <Circle
-        size={200}
-        bg="green"
-        debug="verbose"
-        animation="bouncy"
-        hoverStyle={{
-          scale: 1.2,
-        }}
-        $group-testy-press={{
-          bg: 'yellow',
-        }}
-        $group-testy={{
-          bg: 'pink',
-        }}
-        $group-testy-gtXs={{
-          borderWidth: 2,
-        }}
-        // TODO kitchen-sink infinite loop because of this:
-        $group-testy-gtXs-press={{
-          scale: 1.1,
-          bg: 'white',
-        }}
-      />
-    </XStack>
+    <YStack gap="$4" padding="$4">
+      <XStack gap="$2">
+        <Button onPress={() => setAnimationType('lazy')}>
+          lazy
+        </Button>
+        <Button onPress={() => setAnimationType('quick')}>
+          quick
+        </Button>
+        <Button onPress={() => setAnimationType('bouncy')}>
+          bouncy
+        </Button>
+      </XStack>
+
+      <Button onPress={() => setOpen(true)}>
+        Open Sheet (animation="{animationType}")
+      </Button>
+
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        animation={animationType}
+        modal
+        dismissOnSnapToBottom
+        snapPoints={[50]}
+      >
+        <Sheet.Overlay
+          animation={animationType}
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <Sheet.Frame padding="$4" bg="$background">
+          <YStack gap="$4">
+            <Paragraph>Sheet with animation="{animationType}"</Paragraph>
+            <Button onPress={() => setOpen(false)}>Close</Button>
+          </YStack>
+        </Sheet.Frame>
+      </Sheet>
+    </YStack>
   )
 
   // return (
