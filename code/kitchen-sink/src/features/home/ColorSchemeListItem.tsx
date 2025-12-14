@@ -1,7 +1,14 @@
-import { Moon, Sun } from '@tamagui/lucide-icons'
 import type { ListItemProps } from 'tamagui'
-import { Button, ListItem, Spacer, Switch } from 'tamagui'
-import { useThemeControl } from '../../useKitchenSinkTheme'
+import { ListItem, Spacer, SizableText, XStack } from 'tamagui'
+import { Pressable } from 'react-native'
+import { useThemeControl, ThemeMode } from '../../useKitchenSinkTheme'
+
+const modes: ThemeMode[] = ['system', 'light', 'dark']
+const modeLabels: Record<ThemeMode, string> = {
+  system: '⚙️ System',
+  light: '☀️ Light',
+  dark: '🌙 Dark',
+}
 
 export const ColorSchemeListItem = (props: ListItemProps) => {
   return (
@@ -14,31 +21,21 @@ export const ColorSchemeListItem = (props: ListItemProps) => {
 }
 
 export const ColorSchemeToggle = () => {
-  const theme = useThemeControl()
-  const checked = theme.value === 'light'
+  const { mode, set } = useThemeControl()
+
+  const cycleMode = () => {
+    const currentIndex = modes.indexOf(mode)
+    const nextIndex = (currentIndex + 1) % modes.length
+    set(modes[nextIndex])
+  }
 
   return (
-    <>
-      <Button chromeless disabled w={20} icon={Moon} />
-      <Switch
-        native
-        checked={checked}
-        onCheckedChange={() => {
-          theme.set(theme.value === 'dark' ? 'light' : 'dark')
-        }}
-      >
-        <Switch.Thumb
-          animation={[
-            'quick',
-            {
-              transform: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-        />
-      </Switch>
-      <Button chromeless disabled w={20} icon={Sun} />
-    </>
+    <Pressable onPress={cycleMode}>
+      <XStack ai="center" px="$2" py="$1" br="$2" bg="$color3">
+        <SizableText size="$3" fontWeight="600">
+          {modeLabels[mode]}
+        </SizableText>
+      </XStack>
+    </Pressable>
   )
 }

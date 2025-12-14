@@ -6,7 +6,7 @@ import { Appearance, LogBox, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
-import { ThemeContext } from './useKitchenSinkTheme'
+import { ThemeContext, ThemeMode } from './useKitchenSinkTheme'
 import * as SplashScreen from 'expo-splash-screen'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
@@ -17,27 +17,33 @@ LogBox.ignoreAllLogs()
 SplashScreen.hideAsync()
 
 export default function App() {
-  const [theme, setTheme] = React.useState(Appearance.getColorScheme())
+  const [mode, setMode] = React.useState<ThemeMode>('system')
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
   })
 
-  const colorScheme = useColorScheme()
+  const systemColorScheme = useColorScheme()
 
-  React.useLayoutEffect(() => {
-    setTheme(colorScheme)
-  }, [colorScheme])
+  // Resolved theme based on mode
+  const resolvedTheme = mode === 'system' ? systemColorScheme : mode
+
+  // Update Appearance when mode changes (for native components)
+  React.useEffect(() => {
+    if (mode === 'system') {
+      Appearance.setColorScheme(null) // Follow system
+    } else {
+      Appearance.setColorScheme(mode)
+    }
+  }, [mode])
 
   const themeContext = React.useMemo(() => {
     return {
-      value: theme,
-      set: (next) => {
-        Appearance.setColorScheme(next)
-        setTheme(next)
-      },
+      mode,
+      resolvedTheme,
+      set: setMode,
     }
-  }, [theme])
+  }, [mode, resolvedTheme])
 
   if (!loaded) {
     return null
@@ -47,7 +53,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeContext.Provider value={themeContext}>
-          <Provider defaultTheme={theme as any}>
+          <Provider defaultTheme={resolvedTheme as any}>
             <Navigation />
             <SafeToastViewport />
           </Provider>
