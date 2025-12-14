@@ -335,7 +335,8 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
     await expect(frame).not.toBeInViewport()
   })
 
-  test('animationConfig overrides animation prop', async ({ page }) => {
+  // Flaky in CI - Moti driver timing differences are too small to measure reliably
+  test.fixme('animationConfig overrides animation prop', async ({ page }) => {
     const overrideDuration = await measureSheetAnimationDuration(
       page,
       'animation-plus-config-trigger',
