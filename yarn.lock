@@ -7557,8 +7557,8 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@ts-react/form": "npm:^1.8.3"
     "@vercel/og": "npm:^0.6.5"
-    "@vxrn/color-scheme": "npm:^1.2.32"
-    "@vxrn/mdx": "npm:^1.2.32"
+    "@vxrn/color-scheme": "npm:^1.2.33"
+    "@vxrn/mdx": "npm:^1.2.33"
     acorn: "npm:^8.11.3"
     acorn-walk: "npm:^8.3.1"
     ai: "npm:^4.1.46"
@@ -10724,7 +10724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/color-scheme@npm:1.2.32, @vxrn/color-scheme@npm:^1.2.32":
+"@vxrn/color-scheme@npm:1.2.32":
   version: 1.2.32
   resolution: "@vxrn/color-scheme@npm:1.2.32"
   dependencies:
@@ -10733,6 +10733,18 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/978969d8358cf962439ddac56ea19d2bf2da2097f5e19b3cd49dd15b984286a3d3973fe0eaa89f20923368e6d566e3d6df48aa0a98fe608608461a6a889598f9
+  languageName: node
+  linkType: hard
+
+"@vxrn/color-scheme@npm:^1.2.33":
+  version: 1.2.33
+  resolution: "@vxrn/color-scheme@npm:1.2.33"
+  dependencies:
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.2.33"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/9f6d416ee094de4d356337a51d0d2b814ee195df95a74e1067936fbaa29f460684d1e23c80b2830be08fb99623566e23894698efb80c280c083a6a807c353268
   languageName: node
   linkType: hard
 
@@ -10765,9 +10777,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/mdx@npm:^1.2.32":
-  version: 1.2.32
-  resolution: "@vxrn/mdx@npm:1.2.32"
+"@vxrn/mdx@npm:^1.2.33":
+  version: 1.2.33
+  resolution: "@vxrn/mdx@npm:1.2.33"
   dependencies:
     compare-versions: "npm:^4.1.3"
     esbuild-wasm: "npm:^0.25.11"
@@ -10786,7 +10798,7 @@ __metadata:
     shiki: "npm:1.3.0"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
-  checksum: 10/6d36af5d6ab05e909dd99054fb9773b5f1463bb1e85f138adce46fc3cb978f149bdb93f21e00204ff440f1a13805cb43c13c8450ce35d6b28c307b43f02277db
+  checksum: 10/289e0f8ad4c35b3270235d9e857bc66250648d9827e39ae142d8b335a01ef83d6bb809234f053229420d124c67493a719b0654c59783405f882df9562b309089
   languageName: node
   linkType: hard
 
@@ -10853,6 +10865,15 @@ __metadata:
   dependencies:
     react: "npm:19.1.0"
   checksum: 10/49551a0987808e4d128e9330c55fa08694e11b2538ff29207a1889f7ce0b7b3ecbfae185df0b199b5aefc874357dc6a33ff58398283c920b968e533229fa5359
+  languageName: node
+  linkType: hard
+
+"@vxrn/use-isomorphic-layout-effect@npm:1.2.33":
+  version: 1.2.33
+  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.2.33"
+  dependencies:
+    react: "npm:19.1.0"
+  checksum: 10/92c2499eaa9b8f38fbd973d8069f9a1f6733a4011941d66b63d2239c62a8ead0558c420ebc7099a8b757f7a37f9b461e6e833b437c256179800113b3830976b2
   languageName: node
   linkType: hard
 
@@ -26895,7 +26916,7 @@ __metadata:
     "@tamagui/toast": "workspace:*"
     "@tamagui/vite-plugin": "workspace:*"
     "@types/react": "npm:~19.1.10"
-    "@vxrn/color-scheme": "npm:^1.2.32"
+    "@vxrn/color-scheme": "npm:^1.2.33"
     expo: "npm:^54.0.23"
     one: "npm:1.2.32"
     react: "npm:*"
