@@ -12,7 +12,8 @@ export { getCompilationExamples } from './getCompilationExamples'
 
 // Resolve @tamagui/demos package location
 // require.resolve gives us dist/cjs/index.js, so go up 3 levels to get package root
-const requireFn = typeof require === 'undefined' ? createRequire(import.meta.url) : require
+const requireFn =
+  typeof require === 'undefined' ? createRequire(import.meta.url) : require
 const demosPackagePath = requireFn.resolve('@tamagui/demos')
 const demosPath = path.join(demosPackagePath, '..', '..', '..')
 
@@ -68,15 +69,15 @@ const rehypeHeroTemplate = () => {
           node.children[0].value = source
         }
       } catch (err: any) {
-        console.warn(`[rehypeHeroTemplate] Error loading template ${templateName}:`, err.message)
+        console.warn(
+          `[rehypeHeroTemplate] Error loading template ${templateName}:`,
+          err.message
+        )
       }
     })
   }
 }
 
 export const getMDXBySlug: typeof getMDXBySlugBase = (basePath, slug, extraPlugins) => {
-  return getMDXBySlugBase(basePath, slug, [
-    rehypeHeroTemplate,
-    ...(extraPlugins || []),
-  ])
+  return getMDXBySlugBase(basePath, slug, [rehypeHeroTemplate, ...(extraPlugins || [])])
 }
