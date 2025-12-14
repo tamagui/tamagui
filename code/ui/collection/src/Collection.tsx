@@ -103,6 +103,26 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
       return () => void context.itemMap.delete(ref)
     })
 
+    // Check if children is a valid element that can receive refs
+    // This prevents errors when custom components are passed that don't forward refs
+    const child = React.Children.only(children)
+    const canReceiveRef =
+      React.isValidElement(child) &&
+      (typeof child.type === 'string' || // DOM element
+        (typeof child.type === 'object' && 'render' in (child.type as any)) || // forwardRef
+        (typeof child.type === 'function' &&
+          child.type.prototype &&
+          child.type.prototype.isReactComponent)) // Class component
+
+    if (!canReceiveRef && React.isValidElement(child)) {
+      // Wrap in a span to receive the ref when the child can't
+      return (
+        <span {...{ [ITEM_DATA_ATTR]: '' }} ref={composedRefs as any} style={{ display: 'contents' }}>
+          {children}
+        </span>
+      )
+    }
+
     return (
       <Slot {...{ [ITEM_DATA_ATTR]: '' }} ref={composedRefs}>
         {children}
