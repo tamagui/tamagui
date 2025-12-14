@@ -34,7 +34,7 @@ const QuickNavLink = ({ href, level, showSeparator, ...rest }: QuickNavLinkProps
           style={{ textDecoration: 'none' }}
         >
           <Paragraph
-            tag="span"
+            render="span"
             size={level === 2 ? '$3' : '$2'}
             color={level === 2 ? '$color11' : '$color10'}
             cursor="pointer"
@@ -71,7 +71,7 @@ export function DocsQuickNav() {
 
   return (
     <YStack
-      tag="aside"
+      render="aside"
       display="none"
       $gtLg={{
         display: 'flex',
@@ -110,7 +110,7 @@ export function DocsQuickNav() {
         <Separator />
 
         <YStack
-          tag="nav"
+          render="nav"
           aria-labelledby="site-quick-nav-heading"
           mb="$10"
           mt="$2"

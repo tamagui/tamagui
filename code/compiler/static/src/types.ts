@@ -85,7 +85,7 @@ export type ExtractorParseProps = Omit<
   platform: TamaguiPlatform
   shouldPrintDebug?: boolean | 'verbose'
   onExtractTag: (props: ExtractTagProps) => void
-  getFlattenedNode?: (props: { isTextView: boolean; tag: string }) => string
+  getFlattenedNode?: (props: { isTextView: boolean; render: string }) => string
   extractStyledDefinitions?: boolean
   // identifer, rule
   onStyledDefinitionRule?: (identifier: string, rules: string[]) => void

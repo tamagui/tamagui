@@ -157,7 +157,7 @@ export const SelectGroupFrame = styled(YStack, {
 })
 
 const NativeSelectTextFrame = styled(SizableText, {
-  tag: 'select',
+  render: 'select',
   backgroundColor: '$background',
   borderColor: '$borderColor',
   hoverStyle: {
@@ -226,7 +226,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
             id={itemParentContext.id}
           >
             <NativeSelectTextFrame
-              // @ts-ignore it's ok since tag="select"
+              // @ts-ignore it's ok since render="select"
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                 itemParentContext.onChange(event.currentTarget.value)
               }}
@@ -288,7 +288,7 @@ const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
 
     return (
       <ListItem
-        tag="div"
+        render="div"
         componentName={LABEL_NAME}
         fontWeight="800"
         id={groupContext.id}

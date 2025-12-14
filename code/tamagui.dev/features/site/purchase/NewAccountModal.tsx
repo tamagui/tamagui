@@ -685,7 +685,7 @@ const DiscordPanel = ({
         </Form.Trigger>
       </Form>
 
-      <XStack tag="article">
+      <XStack render="article">
         <Paragraph size="$3" theme="alt1">
           Note: You must{' '}
           <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">

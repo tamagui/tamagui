@@ -98,7 +98,7 @@ const DialogTrigger = DialogTriggerFrame.styleable<ScopedProps<{}>>(
     return (
       <ButtonNestingContext.Provider value={true}>
         <DialogTriggerFrame
-          tag={isInsideButton ? 'span' : 'button'}
+          render={isInsideButton ? 'span' : 'button'}
           aria-haspopup="dialog"
           aria-expanded={context.open}
           aria-controls={context.contentId}
@@ -128,7 +128,7 @@ type DialogPortalProps = ScopedProps<
 
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
-  tag: 'dialog',
+  render: 'dialog',
 
   variants: {
     unstyled: {
@@ -694,7 +694,7 @@ const CLOSE_NAME = 'DialogClose'
 
 const DialogCloseFrame = styled(View, {
   name: CLOSE_NAME,
-  tag: 'button',
+  render: 'button',
 })
 
 export type DialogCloseExtraProps = ScopedProps<{
@@ -717,7 +717,7 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
     return (
       <DialogCloseFrame
         aria-label="Dialog Close"
-        tag={isInsideButton ? 'span' : 'button'}
+        render={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () => {

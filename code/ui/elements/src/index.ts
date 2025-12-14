@@ -2,47 +2,47 @@ import { View, styled } from '@tamagui/core'
 
 export const Section = styled(View, {
   name: 'Section',
-  tag: 'section',
+  render: 'section',
   flexDirection: 'column',
   accessibilityRole: 'summary',
 })
 
 export const Article = styled(View, {
   name: 'Article',
-  tag: 'article',
+  render: 'article',
   flexDirection: 'column',
 })
 
 export const Main = styled(View, {
   name: 'Main',
-  tag: 'main',
+  render: 'main',
   flexDirection: 'column',
 })
 
 export const Header = styled(View, {
   name: 'Header',
-  tag: 'header',
+  render: 'header',
   accessibilityRole: 'header',
   flexDirection: 'column',
 })
 
 export const Aside = styled(View, {
   name: 'Aside',
-  tag: 'aside',
+  render: 'aside',
   flexDirection: 'column',
   // accessibilityRole: 'complementary',
 })
 
 export const Footer = styled(View, {
   name: 'Footer',
-  tag: 'footer',
+  render: 'footer',
   flexDirection: 'column',
   // accessibilityRole: 'contentinfo',
 })
 
 export const Nav = styled(View, {
   name: 'Nav',
-  tag: 'nav',
+  render: 'nav',
   flexDirection: 'column',
   // accessibilityRole: 'navigation',
 })

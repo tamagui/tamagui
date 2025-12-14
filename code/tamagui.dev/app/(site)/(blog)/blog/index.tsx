@@ -34,7 +34,7 @@ export default function Blog() {
             <Link asChild key={frontmatter.title} href={`/blog/${frontmatter.slug}`}>
               <TamaguiCard
                 title={frontmatter.title}
-                tag="a"
+                render="a"
                 subTitle={
                   <Paragraph o={0.5} cursor="inherit" theme="alt1" size="$3">
                     {Intl.DateTimeFormat('en-US', {

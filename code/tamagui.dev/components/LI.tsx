@@ -2,7 +2,7 @@ import { Paragraph, styled } from 'tamagui'
 
 export const LI = styled(Paragraph, {
   display: 'list-item' as any,
-  tag: 'li',
+  render: 'li',
   size: '$5',
   pb: '$1',
   style: {

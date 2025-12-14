@@ -20,7 +20,7 @@ export const TabsFrame = styled(SizableStack, {
 
 export const TabFrame = styled(ThemeableStack, {
   name: 'TabsTrigger',
-  tag: 'button',
+  render: 'button',
   cursor: 'pointer',
   variants: {
     size: {

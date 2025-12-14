@@ -220,7 +220,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           scope={scope || DROPDOWN_MENU_CONTEXT}
         >
           <Comp
-            tag="button"
+            render="button"
             id={context.triggerId}
             aria-haspopup="menu"
             aria-expanded={context.open}

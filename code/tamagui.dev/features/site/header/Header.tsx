@@ -164,7 +164,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
     <XStack
       items="center"
       position="relative"
-      tag="header"
+      render="header"
       py={props.minimal ? '$4' : props.floating ? 0 : '$2'}
       z={50000}
     >
@@ -252,7 +252,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         </Link>
       </XStack>
 
-      <XStack height={40} justify="flex-end" pointerEvents="auto" tag="nav">
+      <XStack height={40} justify="flex-end" pointerEvents="auto" render="nav">
         <XStack items="center" gap="$2">
           <HeaderLinksPopover>
             <HeaderLink id="core" href="/docs/intro/introduction">
@@ -872,7 +872,7 @@ const HeaderMenuMoreContents = () => {
 
       <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
         <Link asChild href="/takeout">
-          <HeadAnchor grid half tag="a">
+          <HeadAnchor grid half render="a">
             <XStack items="center">
               <span>Takeout </span>
               <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
@@ -886,7 +886,7 @@ const HeaderMenuMoreContents = () => {
         </Link>
 
         <Link asChild href="/bento">
-          <HeadAnchor grid half tag="a">
+          <HeadAnchor grid half render="a">
             <XStack items="center">
               <span>Bento </span>
               <YStack
@@ -909,7 +909,7 @@ const HeaderMenuMoreContents = () => {
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
       <Link asChild href="/community">
-        <HeadAnchor grid tag="a">
+        <HeadAnchor grid render="a">
           Community
         </HeadAnchor>
       </Link>
@@ -954,7 +954,7 @@ const HeaderMenuMoreContents = () => {
 }
 
 const HeadAnchor = styled(Paragraph, {
-  tag: 'a',
+  render: 'a',
   fontFamily: '$mono',
   px: '$4',
   py: '$4',

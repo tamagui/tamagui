@@ -33,7 +33,7 @@ const context = createStyledContext({
 const ListItemFrame = styled(View, {
   context,
   name: NAME,
-  tag: 'li',
+  render: 'li',
   role: 'listitem',
 
   ...themeableVariants.pressTheme.true,

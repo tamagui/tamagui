@@ -605,7 +605,7 @@ export default function TakeoutPage() {
 }
 
 const CodeInline = styled(Paragraph, {
-  tag: 'code',
+  render: 'code',
   fontFamily: '$mono',
   color: '$color12',
   backgroundColor: 'color-mix(in srgb, var(--color8) 50%, transparent 50%)' as any,
@@ -883,7 +883,7 @@ const Point = ({
   size?: FontSizeTokens
 }) => {
   return (
-    <XStack tag="li" items="flex-start" gap="$4" flex={1} overflow="hidden" {...props}>
+    <XStack render="li" items="flex-start" gap="$4" flex={1} overflow="hidden" {...props}>
       <YStack mr={-12} py="$1.5">
         <Dot size={16} color="$color10" />
       </YStack>

@@ -25,7 +25,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         {/* capture all docs pages */}
         <ThemeNameEffect colorKey="$color1" />
 
-        <YStack tag="article">
+        <YStack render="article">
           <Container position="relative">{children}</Container>
 
           <Container>
@@ -39,7 +39,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 {previous && (
                   <Link href={previous.route as Href} asChild>
                     <XStack
-                      tag="a"
+                      render="a"
                       group="card"
                       hoverStyle={{
                         borderColor: '$color11',
@@ -87,7 +87,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 {next && (
                   <Link href={next.route as Href} asChild>
                     <XStack
-                      tag="a"
+                      render="a"
                       group="card"
                       hoverStyle={{
                         borderColor: '$color11',

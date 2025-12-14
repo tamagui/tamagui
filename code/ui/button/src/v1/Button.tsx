@@ -78,7 +78,7 @@ const BUTTON_NAME = 'Button'
 
 const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
-  tag: 'button',
+  render: 'button',
   context: ButtonContext,
   role: 'button',
   focusable: true,
@@ -225,7 +225,7 @@ function useButton<Props extends ButtonProps>(
     fontWeight,
     fontStyle,
     letterSpacing,
-    tag,
+    render: tag,
     ellipsis,
     maxFontSizeMultiplier,
 
@@ -299,7 +299,7 @@ function useButton<Props extends ButtonProps>(
       },
     }),
     // fixes SSR issue + DOM nesting issue of not allowing button in button
-    tag:
+    render:
       tag ??
       (isNested
         ? 'span'

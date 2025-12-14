@@ -22,6 +22,7 @@ import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
+import { evaluateRenderProp, type RenderProp } from './helpers/useRenderElement'
 import { themeable } from './helpers/themeable'
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
@@ -460,9 +461,20 @@ export function createComponent<
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
 
     const isTaggable = !Component || typeof Component === 'string'
-    const tagProp = props.tag
-    // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? tagProp || Component : Component) : Component
+    // Extract render prop - can be string, JSX element, or function
+    const renderProp = props.render as
+      | string
+      | React.ReactElement
+      | ((props: any, state: any) => React.ReactElement)
+      | undefined
+    // For string render props, use as element type. For JSX/function, handle at render time
+    const renderPropTag = typeof renderProp === 'string' ? renderProp : undefined
+    // default to render prop tag, fallback to component (when both strings)
+    const element = isWeb
+      ? isTaggable
+        ? renderPropTag || Component
+        : Component
+      : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -872,8 +884,9 @@ export function createComponent<
       }
     }
 
-    if (tagProp && elementType['acceptTagProp']) {
-      viewProps.tag = tagProp
+    // Pass render prop to child components that accept it (for animation drivers, etc)
+    if (renderPropTag && elementType['acceptTagProp']) {
+      viewProps.render = renderPropTag
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -1328,7 +1341,18 @@ export function createComponent<
     if (useChildrenResult) {
       content = useChildrenResult
     } else {
-      content = React.createElement(elementType, viewProps, content)
+      // Handle JSX element or render function for render prop
+      if (renderProp && typeof renderProp !== 'string') {
+        const defaultElement = React.createElement(elementType, viewProps, content)
+        content = evaluateRenderProp(
+          renderProp as RenderProp,
+          viewProps,
+          state,
+          defaultElement
+        )
+      } else {
+        content = React.createElement(elementType, viewProps, content)
+      }
     }
 
     // needs to reset the presence state for nested children

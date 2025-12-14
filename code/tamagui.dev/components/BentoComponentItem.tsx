@@ -44,7 +44,7 @@ export function ComponentItem({
   return (
     <Link href={href as any} asChild>
       <YStack
-        tag="a"
+        render="a"
         width={210}
         cursor="pointer"
         position="relative"
