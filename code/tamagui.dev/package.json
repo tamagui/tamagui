@@ -49,7 +49,6 @@
     "@tamagui/image": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
-    "@tamagui/mdx-2": "workspace:*",
     "@tamagui/tamagui-dev-config": "workspace:*",
     "@tamagui/use-store": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
