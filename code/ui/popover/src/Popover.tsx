@@ -239,12 +239,18 @@ export const PopoverContent = PopoverContentFrame.extractable(
       const isRightClickOutsideRef = React.useRef(false)
       const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
-      if (context.open && isFullyHidden) {
-        setIsFullyHidden(false)
-      }
+      // Reset isFullyHidden when popover opens (useEffect avoids render-phase timing issues)
+      // there was a hard to isolate bug in tamagui.dev where moving between /ui docs pages quickly
+      // caused it to infinite loop, the setState in render (and useLayoutEffect) made it too prone
+      // to bug, useEffect maybe fine here because its hidden, ok to be slightly delayed while hidden
+      React.useEffect(() => {
+        if (context.open && isFullyHidden) {
+          setIsFullyHidden(false)
+        }
+      }, [context.open, isFullyHidden])
 
       if (!context.keepChildrenMounted) {
-        if (isFullyHidden) {
+        if (isFullyHidden && !context.open) {
           return null
         }
       }
