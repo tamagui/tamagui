@@ -378,7 +378,7 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
         ref,
       }) || null
 
-      // Wrap setReference in startTransition to avoid React #185 (setState during render)
+    // Wrap setReference in startTransition to avoid React #185 (setState during render)
     const safeSetReference = React.useCallback(
       (node: any) => {
         startTransition(() => {
@@ -393,7 +393,7 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
       forwardedRef,
       ref,
       // web handles this onMouseEnter below so it can support multiple targets + hovering
-     shouldHandleInHover ? undefined : safeSetReference
+      shouldHandleInHover ? undefined : safeSetReference
     )
 
     return (
@@ -475,7 +475,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     const { strategy, placement, refs, x, y, getFloatingProps, size, isPositioned } =
       context
 
-    
     // Wrap setFloating in startTransition to avoid React #185 (setState during render)
     // This can happen during rapid navigation when refs are set during render phase
     const safeSetFloating = React.useCallback(
