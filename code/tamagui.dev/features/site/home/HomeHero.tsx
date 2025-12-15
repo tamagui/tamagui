@@ -265,7 +265,7 @@ const HeroContents = memo(function HeroContents() {
           <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
             <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
               <YStack
-                tag="a"
+                render="a"
                 p="$5"
                 $sm={{ p: '$3' }}
                 opacity={0.65}
@@ -327,7 +327,7 @@ const Subtitle = styled(Paragraph, {
 })
 
 const Tag = styled(Text, {
-  tag: 'a',
+  render: 'a',
   className: 'hero-tag text-decoration-none',
   fontFamily: '$silkscreen',
   fontSize: 'inherit' as any,

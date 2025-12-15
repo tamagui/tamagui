@@ -271,10 +271,19 @@ export type TamaguiComponentPropsBaseBase = {
   id?: string
 
   /**
-   * Controls the output tag on web
-   * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
+   * Controls the rendered element. Can be a tag string, JSX element, or render function.
+   * - String: `render="button"` renders as that HTML element
+   * - JSX: `render={<a href="/" />}` clones element with merged props
+   * - Function: `render={(props, state) => <Custom {...props} />}` for full control
    */
-  tag?: keyof HTMLElementTagNameMap | (string & {})
+  render?:
+    | keyof HTMLElementTagNameMap
+    | (string & {})
+    | React.ReactElement
+    | ((
+        props: Record<string, any> & { ref?: React.Ref<any> },
+        state: TamaguiComponentState
+      ) => React.ReactElement)
 
   /**
    * Applies a theme to this element
@@ -2519,6 +2528,11 @@ export type StaticConfigPublic = {
    * memoizes component, rarely useful except mostly style components that don't take children
    */
   memo?: boolean
+
+  /**
+   * Default element to render. Can be a tag string like 'button' or 'input'.
+   */
+  render?: string
 }
 
 type StaticConfigBase = StaticConfigPublic & {

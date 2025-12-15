@@ -36,7 +36,7 @@ const Frame = styled(View, {
   group: 'Button' as any,
   containerType: 'normal',
   role: 'button',
-  tag: 'button',
+  render: 'button',
   focusable: true,
 
   variants: {
@@ -253,7 +253,7 @@ const ButtonComponent = Frame.styleable<{
       <Frame
         ref={ref}
         {...props}
-        {...(isNested && { tag: 'span' })}
+        {...(isNested && { render: 'span' })}
         // Pass resolved size to circular variant when no explicit size provided
         {...(props.circular && !propsIn.size && { size })}
         tabIndex={0}

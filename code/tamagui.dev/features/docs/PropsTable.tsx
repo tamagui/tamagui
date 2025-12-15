@@ -82,13 +82,13 @@ export function PropsTable({
                     {name}
                     {required ? (
                       <Paragraph
-                        tag="span"
+                        render="span"
                         // @ts-ignore
                         fontSize="inherit"
                         opacity={0.5}
                       >
                         {' '}
-                        <Paragraph tag="span" fontWeight="300">
+                        <Paragraph render="span" fontWeight="300">
                           (required)
                         </Paragraph>
                       </Paragraph>
@@ -146,7 +146,7 @@ export function PropsTable({
                             borderWidth={1}
                             rounded="$2"
                           >
-                            <Paragraph tag="span" size="$2" fontWeight="300">
+                            <Paragraph render="span" size="$2" fontWeight="300">
                               deprecated
                             </Paragraph>
                           </View>

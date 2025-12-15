@@ -2,7 +2,7 @@ import { SizableText, styled } from 'tamagui'
 
 const MyText = styled(SizableText, {
   name: 'H1',
-  tag: 'h1',
+  render: 'h1',
   size: '$4',
 })
 

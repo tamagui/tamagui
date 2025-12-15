@@ -16,7 +16,7 @@ describe('static-worker error handling', () => {
       export function CodeInline({ children }: { children: any }) {
         return (
           <SizableText
-            tag="code"
+            render="code"
             fontFamily="$mono"
             fontSize="$3"
             bg="$color3"

@@ -32,7 +32,7 @@ import { Badge } from './Badge'
 const IntroParagraph = ({ children, disableUnwrapText, ...props }: any) => {
   return (
     <Paragraph
-      tag="p"
+      render="p"
       size="$8"
       lh={39}
       mt="$2"
@@ -51,13 +51,13 @@ const IntroParagraph = ({ children, disableUnwrapText, ...props }: any) => {
 
 const LI = styled(Paragraph, {
   display: 'list-item' as any,
-  tag: 'li',
+  render: 'li',
   size: '$5',
   pb: '$1',
 })
 
 const UL = styled(YStack, {
-  tag: 'ul',
+  render: 'ul',
   my: '$1',
   ml: '$4',
   mr: '$2',
@@ -121,7 +121,7 @@ const componentsIn = {
   Card: ({ category, title, href }) => {
     const content = (
       <YStack
-        tag="a"
+        render="a"
         animation="quickest"
         className="text-underline-none"
         f={1}
@@ -225,7 +225,7 @@ const componentsIn = {
     )
   },
 
-  ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
+  ol: (props) => <YStack {...props} render="ol" mb="$3" />,
 
   li: (props) => {
     return (
@@ -240,7 +240,7 @@ const componentsIn = {
       <Link className="link" href={href} asChild>
         {/* @ts-ignore */}
         <Paragraph
-          tag="a"
+          render="a"
           // @ts-ignore
           fontSize="inherit"
           display="inline"
@@ -277,7 +277,7 @@ const componentsIn = {
   //   )
   // },
 
-  // ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
+  // ol: (props) => <YStack {...props} render="ol" mb="$3" />,
 
   // li: (props) => {
   //   return (
@@ -288,13 +288,13 @@ const componentsIn = {
   // },
 
   strong: (props) => (
-    <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />
+    <Paragraph render="strong" fontSize="inherit" {...props} fontWeight="700" />
   ),
 
   img: ({ ...props }) => (
-    <View tag="span" my="$6">
+    <View render="span" my="$6">
       {/* TODO make this a proper <Image /> component */}
-      <View tag="img" {...props} maxWidth="100%" />
+      <View render="img" {...props} maxWidth="100%" />
     </View>
   ),
 

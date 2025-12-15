@@ -113,7 +113,7 @@ const CLOSE_NAME = 'ToastClose'
 
 const ToastCloseFrame = styled(YStack, {
   name: CLOSE_NAME,
-  tag: 'button',
+  render: 'button',
 })
 
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>

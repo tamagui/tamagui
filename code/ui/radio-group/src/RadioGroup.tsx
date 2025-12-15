@@ -6,7 +6,7 @@ const RADIO_GROUP_ITEM_NAME = 'RadioGroupItem'
 
 export const RadioGroupItemFrame = styled(YStack, {
   name: RADIO_GROUP_ITEM_NAME,
-  tag: 'button',
+  render: 'button',
 
   variants: {
     unstyled: {

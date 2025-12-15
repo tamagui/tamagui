@@ -17,7 +17,7 @@ const NAME = 'Toggle'
 
 export const ToggleFrame = styled(ThemeableStack, {
   name: NAME,
-  tag: 'button',
+  render: 'button',
   context,
 
   variants: {

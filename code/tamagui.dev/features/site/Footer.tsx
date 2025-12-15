@@ -8,7 +8,7 @@ import { ExternalIcon } from '../icons/ExternalIcon'
 
 export const Footer = memo(() => {
   return (
-    <YStack tag="footer" position="relative" mb="$10">
+    <YStack render="footer" position="relative" mb="$10">
       <ContainerLarge>
         <XStack py="$7" $sm={{ flexDirection: 'column', items: 'center' }}>
           <YStack

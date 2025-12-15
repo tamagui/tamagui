@@ -83,7 +83,7 @@ type CollapsibleTriggerProps = GetProps<typeof Stack>
 
 const CollapsibleTriggerFrame = styled(Stack, {
   name: TRIGGER_NAME,
-  tag: 'button',
+  render: 'button',
 })
 
 const CollapsibleTrigger = CollapsibleTriggerFrame.styleable(

@@ -224,7 +224,7 @@ export function createSwitch<
         <SwitchContext.Provider value={value}>
           <Frame
             ref={switchRef}
-            tag="button"
+            render="button"
             {...(isWeb && { type: 'button' })}
             {...(!unstyled && {
               size: styledContext.size ?? props.size ?? '$true',

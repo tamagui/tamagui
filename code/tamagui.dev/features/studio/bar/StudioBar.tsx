@@ -92,7 +92,7 @@ export const ThemeSwitch = memo(() => {
             <XStack fullscreen z={100} x={2} y={0.5}>
               {isLight && (
                 <Button
-                  tag="span"
+                  render="span"
                   disabled
                   chromeless
                   size="$1"
@@ -108,7 +108,7 @@ export const ThemeSwitch = memo(() => {
             <XStack position="absolute" t={0} r={0} z={100} x={1} y={0}>
               {!isLight && (
                 <Button
-                  tag="span"
+                  render="span"
                   disabled
                   chromeless
                   size="$1"
@@ -125,7 +125,7 @@ export const ThemeSwitch = memo(() => {
               <YStack items="center">
                 {isLight && (
                   <Button
-                    tag="span"
+                    render="span"
                     disabled
                     chromeless
                     size="$1"
@@ -137,7 +137,7 @@ export const ThemeSwitch = memo(() => {
                 )}
                 {!isLight && (
                   <Button
-                    tag="span"
+                    render="span"
                     disabled
                     chromeless
                     size="$1"

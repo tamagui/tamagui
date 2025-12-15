@@ -41,7 +41,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
       <Separator />
 
       <SidebarPanel title={`Accent of ${scale.name}.${index}`}>
-        <YStack tag="ul" gap="$1">
+        <YStack render="ul" gap="$1">
           {[
             {
               name: 'bg',

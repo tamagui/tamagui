@@ -28,7 +28,7 @@ export const FieldsetWithLabel = ({
 
   return (
     <YStack
-      tag="fieldset"
+      render="fieldset"
       rounded="$4"
       borderColor={isActive ? '$color9' : '$color6'}
       borderWidth={0}
@@ -74,7 +74,7 @@ export const FieldsetWithLabel = ({
         ) : (
           <Heading
             select="none"
-            tag="label"
+            render="label"
             size="$5"
             color="$color11"
             text="center"

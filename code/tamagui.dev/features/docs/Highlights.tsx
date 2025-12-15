@@ -39,7 +39,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           </H2>
         )}
 
-        <YStack tag="ul" p={0} m={0} gap="$4">
+        <YStack render="ul" p={0} m={0} gap="$4">
           <Features large={large} items={features} />
         </YStack>
       </YStack>
@@ -47,7 +47,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
       {!disableLinks && (
         <YStack
           gap="$3"
-          tag="nav"
+          render="nav"
           aria-labelledby="site-component-info-header"
           minW={140}
         >

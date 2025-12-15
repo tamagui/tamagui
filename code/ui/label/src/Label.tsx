@@ -24,7 +24,7 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
 
 export const LabelFrame = styled(SizableText, {
   name: 'Label',
-  tag: 'label',
+  render: 'label',
 
   variants: {
     unstyled: {

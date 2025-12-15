@@ -29,7 +29,7 @@ export const ProLicense = () => {
       </Paragraph>
       <H3>License Terms</H3>
       <Paragraph>You can:</Paragraph>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>
             Use all Pro features including Theme Builder, Bento, and Takeout, in your
@@ -42,7 +42,7 @@ export const ProLicense = () => {
         </Ul>
       </Paragraph>
       <Paragraph>You cannot:</Paragraph>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>Share your Pro account credentials with any other individual.</Li>
           <Li>
@@ -55,7 +55,7 @@ export const ProLicense = () => {
         </Ul>
       </Paragraph>
       <H3>License Definitions</H3>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>
             Licensee is a person or a business entity who has purchased a Pro
@@ -92,13 +92,13 @@ export const ProLicense = () => {
 
 const Ul = styled(YStack, {
   name: 'ul',
-  tag: 'ul',
+  render: 'ul',
   pl: 20,
 })
 
 const Li = styled(Paragraph, {
   name: 'li',
-  tag: 'li',
+  render: 'li',
   // @ts-ignore
   display: 'list-item',
 })

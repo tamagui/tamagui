@@ -238,9 +238,13 @@ export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>
     const isRightClickOutsideRef = React.useRef(false)
     const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
-    if (context.open && isFullyHidden) {
-      setIsFullyHidden(false)
-    }
+    // Move setState to useEffect to avoid potential infinite re-render loops
+    // during rapid navigation/unmounting scenarios
+    React.useEffect(() => {
+      if (context.open && isFullyHidden) {
+        setIsFullyHidden(false)
+      }
+    }, [context.open, isFullyHidden])
 
     if (!context.keepChildrenMounted) {
       if (isFullyHidden) {

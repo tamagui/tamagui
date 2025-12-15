@@ -9,7 +9,7 @@ export const Root = () => {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       <View fd="column" f={1} ai="center" jc="center">
-        <Text tag="h1">Hello world</Text>
+        <Text render="h1">Hello world</Text>
         <LinearGradient zIndex={-1} fullscreen colors={['red', 'blue']} />
       </View>
     </TamaguiProvider>

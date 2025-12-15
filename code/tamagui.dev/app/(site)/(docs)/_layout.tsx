@@ -129,7 +129,7 @@ export default function DocsLayout() {
           }}
         >
           <>
-            <YStack tag="article">
+            <YStack render="article">
               <Container position="relative">
                 <Slot />
               </Container>
@@ -145,7 +145,7 @@ export default function DocsLayout() {
                     {previous && (
                       <Link href={previous.route as Href} asChild>
                         <XStack
-                          tag="a"
+                          render="a"
                           group="card"
                           hoverStyle={{
                             borderColor: '$color5',
@@ -188,7 +188,7 @@ export default function DocsLayout() {
                     {next && (
                       <Link href={next.route as Href} asChild>
                         <XStack
-                          tag="a"
+                          render="a"
                           group="card"
                           hoverStyle={{
                             borderColor: '$color5',

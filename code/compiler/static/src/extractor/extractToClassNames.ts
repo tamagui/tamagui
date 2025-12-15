@@ -107,7 +107,7 @@ export async function extractToClassNames({
       }
       cssMap.set(`.${identifier}`, { css, commentTexts: [] })
     },
-    getFlattenedNode: ({ tag }) => {
+    getFlattenedNode: ({ render: tag }) => {
       return tag
     },
     onExtractTag: ({

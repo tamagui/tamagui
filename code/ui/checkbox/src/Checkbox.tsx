@@ -34,7 +34,7 @@ const CHECKBOX_NAME = 'Checkbox'
 
 export const CheckboxFrame = styled(YStack, {
   name: CHECKBOX_NAME,
-  tag: 'button',
+  render: 'button',
 
   context: CheckboxStyledContext,
   variants: {

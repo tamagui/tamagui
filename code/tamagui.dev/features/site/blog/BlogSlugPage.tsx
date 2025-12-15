@@ -75,7 +75,13 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
 
           <Separator vertical mx="$2" />
 
-          <Paragraph opacity={0.4} tag="time" size="$3" theme="alt1" whiteSpace="nowrap">
+          <Paragraph
+            opacity={0.4}
+            render="time"
+            size="$3"
+            theme="alt1"
+            whiteSpace="nowrap"
+          >
             {Intl.DateTimeFormat('en-US', {
               month: 'short',
               year: 'numeric',
@@ -126,7 +132,7 @@ export function BlogSlugPage(props: BlogPost) {
       <BlogArticleHeader {...props} />
 
       <Container>
-        <YStack tag="article" px="$2">
+        <YStack render="article" px="$2">
           <Component components={components as any} />
         </YStack>
 
@@ -158,7 +164,7 @@ export function BlogSlugPage(props: BlogPost) {
               {relatedPosts.map((frontmatter) => {
                 return (
                   <Paragraph
-                    tag="a"
+                    render="a"
                     key={frontmatter.slug}
                     // @ts-ignore
                     href={`/blog/${frontmatter.slug}`}

@@ -13,7 +13,7 @@ export const meta: MetaFunction = () => {
 }
 
 const Section = styled(View, {
-  tag: 'section',
+  render: 'section',
   p: '$6',
   gap: '$6',
   $sm: {
@@ -29,7 +29,7 @@ const Section = styled(View, {
 })
 
 const ButtonOuter = styled(View, {
-  tag: 'button',
+  render: 'button',
   bg: '$background',
   rounded: '$4',
   cursor: 'pointer',
@@ -47,7 +47,7 @@ const ButtonOuter = styled(View, {
 const ButtonText = styled(Text, {
   fontWeight: 'bold',
   textAlign: 'center',
-  tag: 'span',
+  render: 'span',
 })
 
 export default function Index() {
@@ -64,13 +64,13 @@ export default function Index() {
       minHeight="100vh"
     >
       <View
-        tag="header"
+        render="header"
         padding="$6"
         borderBottomWidth={1}
         borderBottomColor="$borderColor"
       >
         <Text
-          tag="h1"
+          render="h1"
           fontSize={24}
           $lg={{
             fontSize: 32,
@@ -81,7 +81,7 @@ export default function Index() {
       </View>
       <Section>
         <Text
-          tag="h2"
+          render="h2"
           fontSize={24}
           $lg={{
             fontSize: 32,
@@ -95,7 +95,7 @@ export default function Index() {
       </Section>
       <Section>
         <Text
-          tag="h2"
+          render="h2"
           fontSize={24}
           $lg={{
             fontSize: 32,
@@ -113,7 +113,7 @@ export default function Index() {
       </Section>
       <Section>
         <Text
-          tag="h2"
+          render="h2"
           fontSize={24}
           $lg={{
             fontSize: 32,
@@ -131,7 +131,7 @@ export default function Index() {
       </Section>
       <Section>
         <Text
-          tag="h2"
+          render="h2"
           fontSize={24}
           $lg={{
             fontSize: 32,
@@ -148,14 +148,14 @@ export default function Index() {
         </Text>
       </Section>
       <View
-        tag="footer"
+        render="footer"
         padding="$6"
         justifyContent="center"
         marginTop="auto"
         paddingTop={100}
       >
         <Text
-          tag="p"
+          render="p"
           fontSize={16}
           $lg={{
             fontSize: '$3',

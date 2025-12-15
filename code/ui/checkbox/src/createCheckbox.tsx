@@ -186,7 +186,7 @@ export function createCheckbox<
                 width: size,
                 height: size,
               })}
-              tag="button"
+              render="button"
               ref={checkboxRef}
               unstyled={unstyled}
               {...(unstyled === false && {

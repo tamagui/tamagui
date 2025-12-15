@@ -12,7 +12,7 @@ import { useState } from 'react'
 
 const YStack = styled(Stack, { flexDirection: 'column' })
 const Button = styled(Stack, {
-  tag: 'button',
+  render: 'button',
   padding: '$3',
   backgroundColor: '$blue10',
   borderRadius: '$4',

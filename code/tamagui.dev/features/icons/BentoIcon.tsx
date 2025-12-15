@@ -3,7 +3,7 @@ import { forwardRef } from 'react'
 
 export const BentoIcon = forwardRef(
   ({ bright, scale = 1 }: { bright?: boolean; scale?: number }, ref) => (
-    <YStack tag="span" ref={ref as any} p="$4" m="$-4">
+    <YStack render="span" ref={ref as any} p="$4" m="$-4">
       <svg width={25 * scale} height={25 * scale} viewBox="0 0 590 590">
         <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <path

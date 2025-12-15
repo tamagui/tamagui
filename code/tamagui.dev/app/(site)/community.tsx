@@ -83,7 +83,7 @@ export default function Community() {
                       <XStack ai="center" space="$2">
                         <Paragraph
                           cursor="inherit"
-                          tag="time"
+                          render="time"
                           size="$5"
                           theme="alt2"
                           fow="300"
@@ -236,7 +236,7 @@ const StarterRepoCard = ({
       flexBasis={0}
       maxW={300}
       gap="$2"
-      tag="a"
+      render="a"
       href={url as string}
       target="_blank"
       p="$5"

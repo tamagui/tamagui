@@ -220,7 +220,7 @@ function Content({
       overflow="hidden"
       p={0}
       bg="$background"
-      tag="pre"
+      render="pre"
       minH={500}
       data-line-numbers={true}
     >

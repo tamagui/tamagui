@@ -85,7 +85,7 @@ const App = (props) => (
 )
 
 const Heading = styled(Text, {
-  tag: 'h1',
+  render: 'h1',
   color: 'green',
   backgroundColor: '$background',
 

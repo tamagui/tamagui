@@ -343,7 +343,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // we never change this, after first render on
         style: firstRenderStyle,
         ref: scope,
-        tag: 'div',
+        render: 'div',
       }
     },
 

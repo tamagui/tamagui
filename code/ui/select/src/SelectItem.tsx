@@ -171,7 +171,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
           <option value={value}>{props.children}</option>
         ) : (
           <ListItem.Frame
-            tag="div"
+            render="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
             aria-labelledby={textId}
