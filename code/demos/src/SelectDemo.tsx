@@ -87,7 +87,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
         >
           <Select.Group>
             <Select.Label fontWeight="bold">Fruits</Select.Label>
-             {/* for longer lists memoizing these is useful */}
+            {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
                 items.map((item, i) => {
