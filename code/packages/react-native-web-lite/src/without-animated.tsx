@@ -80,3 +80,35 @@ export function requireNativeComponent(name: string) {
     return null
   }
 }
+
+// minimal stub for Animated - satisfies imports but does nothing
+export const Animated = {
+  View: 'div',
+  Text: 'span',
+  Image: 'img',
+  ScrollView: 'div',
+  FlatList: 'div',
+  SectionList: 'div',
+  Value: class {
+    constructor() {}
+  },
+  ValueXY: class {
+    constructor() {}
+  },
+  timing: () => ({ start: () => {} }),
+  spring: () => ({ start: () => {} }),
+  decay: () => ({ start: () => {} }),
+  sequence: () => ({ start: () => {} }),
+  parallel: () => ({ start: () => {} }),
+  stagger: () => ({ start: () => {} }),
+  loop: () => ({ start: () => {} }),
+  event: () => () => {},
+  add: () => new (class {})(),
+  subtract: () => new (class {})(),
+  multiply: () => new (class {})(),
+  divide: () => new (class {})(),
+  modulo: () => new (class {})(),
+  diffClamp: () => new (class {})(),
+  delay: () => ({ start: () => {} }),
+  createAnimatedComponent: (c: any) => c,
+}
