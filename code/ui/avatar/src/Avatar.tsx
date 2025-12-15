@@ -39,7 +39,13 @@ type AvatarImageProps = Partial<ImageProps> & {
 
 const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
   (props: ScopedProps<AvatarImageProps>, forwardedRef) => {
-    const { __scopeAvatar, src, onLoadingStatusChange = () => {}, ...imageProps } = props
+    const {
+      __scopeAvatar,
+      src,
+      source,
+      onLoadingStatusChange = () => {},
+      ...imageProps
+    } = props
     const context = useAvatarContext(IMAGE_NAME, __scopeAvatar)
     const [status, setStatus] = React.useState<ImageLoadingStatus>('idle')
     const shapeSize = getVariableValue(
@@ -50,14 +56,19 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
       )?.width
     ) as number
 
+    // Support both `src` (web) and `source` (RN) props
+    const resolvedSrc =
+      src ||
+      (source && typeof source === 'object' && 'uri' in source ? source.uri : source)
+
     React.useEffect(() => {
       // If src is falsy, immediately set error status so fallback renders
-      if (!src) {
+      if (!resolvedSrc) {
         setStatus('error')
       } else {
         setStatus('idle')
       }
-    }, [JSON.stringify(src)])
+    }, [resolvedSrc])
 
     React.useEffect(() => {
       onLoadingStatusChange(status)
@@ -65,7 +76,7 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     }, [status])
 
     // Don't render Image if src is falsy to avoid Android warning
-    if (!src) {
+    if (!resolvedSrc) {
       return null
     }
 
@@ -82,7 +93,7 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
           // @ts-ignore
           ref={forwardedRef}
           // @ts-ignore
-          src={src}
+          src={resolvedSrc}
           // onLoadStart={() => {
           //   // setStatus('loading')
           // }}
