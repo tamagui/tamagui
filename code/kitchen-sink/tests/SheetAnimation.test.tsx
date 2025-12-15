@@ -21,7 +21,9 @@ async function measureSheetAnimationDuration(
   const duration = await page.evaluate(
     async ({ triggerId, frameId }: { triggerId: string; frameId: string }) => {
       return new Promise<number>((resolve) => {
-        const trigger = document.querySelector(`[data-testid="${triggerId}"]`) as HTMLElement
+        const trigger = document.querySelector(
+          `[data-testid="${triggerId}"]`
+        ) as HTMLElement
         if (!trigger) {
           resolve(-1)
           return
@@ -37,7 +39,9 @@ async function measureSheetAnimationDuration(
 
         const checkAnimation = () => {
           checkCount++
-          const frame = document.querySelector(`[data-testid="${frameId}"]`) as HTMLElement
+          const frame = document.querySelector(
+            `[data-testid="${frameId}"]`
+          ) as HTMLElement
           if (!frame) {
             if (checkCount < maxChecks) {
               requestAnimationFrame(checkAnimation)
@@ -133,7 +137,8 @@ test.describe('Sheet Animation - CSS Driver', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      const frame = page.getByTestId(`${testId}-frame`)
+      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
       await trigger.click()
@@ -146,7 +151,8 @@ test.describe('Sheet Animation - CSS Driver', () => {
   })
 
   test('animationConfig prop works without animation prop', async ({ page }) => {
-    const frame = page.getByTestId('animationConfig-only-frame')
+    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    const frame = page.getByTestId('animationConfig-only-frame').first()
     const trigger = page.getByTestId('animationConfig-only-trigger')
     const closeButton = page.getByTestId('animationConfig-only-close')
 
@@ -184,7 +190,8 @@ test.describe('Sheet Animation - Motion Driver', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      const frame = page.getByTestId(`${testId}-frame`)
+      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
       await trigger.click()
@@ -211,7 +218,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
       'animation-lazy-close'
     )
 
-    console.log(`Motion Driver - quick: ${quickDuration}ms, lazy: ${lazyDuration}ms`)
+    console.info(`Motion Driver - quick: ${quickDuration}ms, lazy: ${lazyDuration}ms`)
 
     // Motion driver uses spring physics
     // quick: stiffness 250, lazy: stiffness 50
@@ -220,7 +227,8 @@ test.describe('Sheet Animation - Motion Driver', () => {
   })
 
   test('animationConfig prop works without animation prop', async ({ page }) => {
-    const frame = page.getByTestId('animationConfig-only-frame')
+    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    const frame = page.getByTestId('animationConfig-only-frame').first()
     const trigger = page.getByTestId('animationConfig-only-trigger')
     const closeButton = page.getByTestId('animationConfig-only-close')
 
@@ -250,7 +258,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
       'animation-lazy-close'
     )
 
-    console.log(
+    console.info(
       `Motion Driver - lazy: ${lazyDuration}ms, lazy+fastConfig: ${overrideDuration}ms`
     )
 
@@ -283,7 +291,8 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      const frame = page.getByTestId(`${testId}-frame`)
+      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
       await trigger.click()
@@ -310,13 +319,14 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
       'animation-lazy-close'
     )
 
-    console.log(`Moti Driver - quick: ${quickDuration}ms, lazy: ${lazyDuration}ms`)
+    console.info(`Moti Driver - quick: ${quickDuration}ms, lazy: ${lazyDuration}ms`)
 
     expect(lazyDuration).toBeGreaterThan(quickDuration)
   })
 
   test('animationConfig prop works', async ({ page }) => {
-    const frame = page.getByTestId('animationConfig-only-frame')
+    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    const frame = page.getByTestId('animationConfig-only-frame').first()
     const trigger = page.getByTestId('animationConfig-only-trigger')
     const closeButton = page.getByTestId('animationConfig-only-close')
 
@@ -343,7 +353,7 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
       'animation-lazy-close'
     )
 
-    console.log(
+    console.info(
       `Moti Driver - lazy: ${lazyDuration}ms, lazy+fastConfig: ${overrideDuration}ms`
     )
 
