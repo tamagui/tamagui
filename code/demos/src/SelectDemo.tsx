@@ -129,7 +129,7 @@ export function SelectDemoContents(
               [items]
             )}
           </Select.Group>
-          {/* Native gets an extra icon */}
+           {/* Native gets an extra icon */}
           {props.native && (
             <YStack
               position="absolute"
