@@ -78,7 +78,6 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
             rounded="$4"
           />
         </Select.ScrollUpButton>
-
         <Select.Viewport
           minW={200}
           backgroundColor="$background"
@@ -88,7 +87,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
         >
           <Select.Group>
             <Select.Label fontWeight="bold">Fruits</Select.Label>
-            {/* for longer lists memoizing these is useful */}
+             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
                 items.map((item, i) => {
@@ -115,23 +114,6 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
               [items]
             )}
           </Select.Group>
-          {/* Native gets an extra icon */}
-          {props.native && (
-            <YStack
-              position="absolute"
-              r={0}
-              t={0}
-              b={0}
-              items="center"
-              justify="center"
-              width={'$4'}
-              pointerEvents="none"
-            >
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
-              />
-            </YStack>
-          )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
