@@ -81,7 +81,6 @@ export function SelectDemoContents(
             rounded="$4"
           />
         </Select.ScrollUpButton>
-
         <Select.Viewport
           minW={200}
           backgroundColor="$background"
@@ -118,13 +117,12 @@ export function SelectDemoContents(
               [items]
             )}
           </Select.Group>
-          {/* Native gets an extra icon */}
+           {/* Native gets an extra icon */}
           {props.native && (
             <YStack
               position="absolute"
               r={0}
-              t={0}
-              b={0}
+              t={16}
               items="center"
               justify="center"
               width={'$4'}
