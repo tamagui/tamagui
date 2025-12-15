@@ -114,6 +114,22 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
               [items]
             )}
           </Select.Group>
+           {/* Native gets an extra icon */}
+          {props.native && (
+            <YStack
+              position="absolute"
+              r={0}
+              t={16}
+              items="center"
+              justify="center"
+              width={'$4'}
+              pointerEvents="none"
+            >
+              <ChevronDown
+                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
+              />
+            </YStack>
+          )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
