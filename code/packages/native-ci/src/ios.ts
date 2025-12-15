@@ -5,6 +5,7 @@
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { $ } from 'bun'
+import { isCI } from './runner'
 
 /**
  * Ensure the ios/ folder has full prebuild structure for Metro.
@@ -35,4 +36,43 @@ export async function ensureIOSFolder(): Promise<void> {
   } else {
     console.info('iOS folder already exists (Podfile found)')
   }
+}
+
+/**
+ * Ensure the iOS app binary exists, building it if necessary.
+ * On CI, this is a no-op since CI builds the app in a separate job.
+ * Locally, this will build the app if the binary is missing.
+ */
+export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<void> {
+  // On CI, the app is built separately - don't build here
+  if (isCI()) {
+    console.info('CI detected - skipping local build check')
+    return
+  }
+
+  // Check if app binary exists (use the path from detoxrc)
+  const appPath = process.env.DETOX_IOS_APP_PATH ||
+    'ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app'
+  const fullAppPath = join(process.cwd(), appPath)
+
+  if (existsSync(fullAppPath)) {
+    console.info(`iOS app found at ${appPath}`)
+    return
+  }
+
+  console.info(`\n--- iOS app not found at ${appPath}, building... ---`)
+
+  // Ensure pods are installed first
+  const podsPath = join(process.cwd(), 'ios', 'Pods')
+  if (!existsSync(podsPath)) {
+    console.info('Installing CocoaPods dependencies...')
+    await $`pod install --project-directory=ios`
+  }
+
+  // Build the app using detox build
+  console.info(`Building iOS app (config: ${config})...`)
+  console.info('This may take a few minutes on first run.')
+  await $`npx detox build -c ${config}`
+
+  console.info('iOS app built successfully!')
 }

@@ -14,7 +14,7 @@ import { setGitHubOutput, isGitHubActions, isCI } from './runner'
 import { checkDeps, ensureIosDeps, ensureAndroidDeps, ensureMaestro, printDepsStatus } from './deps'
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { ensureIOSFolder } from './ios'
+import { ensureIOSFolder, ensureIOSApp } from './ios'
 import { setupAndroidDevice, ensureAndroidFolder } from './android'
 import type { Platform } from './constants'
 
@@ -194,6 +194,7 @@ try {
 
         process.chdir(options.projectRoot)
         await ensureIOSFolder()
+        await ensureIOSApp(config)
 
         const exitCode = await withMetro('ios', async () => {
           return runDetoxTests({
@@ -258,6 +259,7 @@ try {
         console.info('\n--- iOS Tests ---\n')
         process.chdir(options.projectRoot)
         await ensureIOSFolder()
+        await ensureIOSApp(options.config || 'ios.sim.debug')
 
         let iosExit = 0
         try {
