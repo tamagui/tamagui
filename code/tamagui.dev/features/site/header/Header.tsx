@@ -521,9 +521,14 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const [active, setActive] = React.useState<ID>(
     props.active === '' ? 'menu' : props.active
   )
-  if (active !== props.active && props.active !== '') {
-    setActive(props.active)
-  }
+
+  // Fix: Move setState to useEffect to avoid React #185 error (setState during render)
+  React.useEffect(() => {
+    if (props.active !== '' && active !== props.active) {
+      setActive(props.active)
+    }
+  }, [props.active])
+
   const pathname = usePathname()
 
   const context = React.useContext(SlidingPopoverContext)

@@ -58,196 +58,193 @@ export default function DocsLayout() {
 
       <YStack z={-1} fullscreen bg="$accent12" />
 
-      <YStack y={-54} pt={54}>
+      {/* Sidebar container - no transform wrapper to preserve position:fixed */}
+      <YStack
+        overflow="hidden"
+        mx="auto"
+        $gtSm={{
+          flexDirection: 'row',
+        }}
+        $gtLg={{
+          l: -50,
+        }}
+        maxW={1250}
+        z={100}
+        position="relative"
+      >
+        <EnsureFlexed />
         <YStack
           overflow="hidden"
-          mx="auto"
+          $md={{
+            display: 'none',
+          }}
           $gtSm={{
-            flexDirection: 'row',
-          }}
-          $gtLg={{
-            l: -60,
-            maxW: 1250,
-          }}
-          maxW={1200}
-          z={100}
-          position="relative"
-        >
-          <EnsureFlexed />
-          <YStack
-            overflow="hidden"
-            $md={{
-              display: 'none',
-            }}
-            $gtSm={{
-              position: 'fixed' as any,
-              t: 0,
-              b: 0,
-              width: 245,
-            }}
-          >
-            <LinearGradient
-              position="absolute"
-              t={0}
-              l={0}
-              r={0}
-              height={100}
-              width={300}
-              z={100}
-              colors={['$background', '$background', '$background0']}
-            />
-            <ScrollView>
-              <YStack
-                display="none"
-                contain="paint layout"
-                $gtMd={{
-                  display: 'block',
-                  p: '$0.5',
-                  pr: '$3',
-                  mt: 110,
-                  pb: '$18',
-                }}
-              >
-                <DocsMenuContents />
-              </YStack>
-            </ScrollView>
-          </YStack>
-        </YStack>
-
-        <YStack
-          maxW="100%"
-          flex={1}
-          py="$8"
-          $gtLg={{
-            position: 'relative',
-            l: -50,
-          }}
-          $gtMd={{
-            pb: '$9',
-            pl: 250,
-            pr: 100,
+            position: 'fixed' as any,
+            top: 0,
+            bottom: 0,
+            width: 245,
           }}
         >
-          <>
-            <YStack tag="article">
-              <Container position="relative">
-                <Slot />
-              </Container>
-
-              <Container>
-                {(previous || next) && (
-                  <XStack
-                    aria-label="Pagination navigation"
-                    my="$9"
-                    justify="space-between"
-                    gap="$4"
-                  >
-                    {previous && (
-                      <Link href={previous.route as Href} asChild>
-                        <XStack
-                          tag="a"
-                          group="card"
-                          hoverStyle={{
-                            borderColor: '$color5',
-                          }}
-                          flex={1}
-                          width="50%"
-                          p="$5"
-                          rounded="$2"
-                          borderWidth={1}
-                          borderColor="$borderColor"
-                          aria-label={`Previous page: ${previous.title}`}
-                          items="center"
-                          gap="$4"
-                          animation="100ms"
-                        >
-                          <View
-                            opacity={0}
-                            l="$-2"
-                            $group-card-hover={{ opacity: 1, l: '$0' }}
-                            animation="quickest"
-                          >
-                            <ChevronLeft color="$color11" />
-                          </View>
-
-                          <YStack
-                            l="$-4"
-                            $group-card-hover={{ l: '$0' }}
-                            animation="quicker"
-                          >
-                            <Paragraph select="none" theme="alt1" size="$5">
-                              Previous
-                            </Paragraph>
-                            <Paragraph select="none" size="$3" color="$gray10">
-                              {previous.title}
-                            </Paragraph>
-                          </YStack>
-                        </XStack>
-                      </Link>
-                    )}
-                    {next && (
-                      <Link href={next.route as Href} asChild>
-                        <XStack
-                          tag="a"
-                          group="card"
-                          hoverStyle={{
-                            borderColor: '$color5',
-                          }}
-                          flex={1}
-                          width="50%"
-                          p="$5"
-                          rounded="$2"
-                          borderWidth={1}
-                          borderColor="$borderColor"
-                          aria-label={`Previous page: ${next.title}`}
-                          items="center"
-                          justify="flex-end"
-                          gap="$4"
-                          animation="100ms"
-                        >
-                          <YStack
-                            r="$-4"
-                            $group-card-hover={{ r: '$0' }}
-                            animation="quicker"
-                          >
-                            <Paragraph select="none" theme="alt1" size="$5">
-                              Next
-                            </Paragraph>
-                            <Paragraph select="none" size="$3" color="$gray10">
-                              {next.title}
-                            </Paragraph>
-                          </YStack>
-
-                          <View
-                            opacity={0}
-                            r="$-2"
-                            $group-card-hover={{ opacity: 1, r: '$0' }}
-                            animation="quickest"
-                          >
-                            <ChevronRight color="$color11" />
-                          </View>
-                        </XStack>
-                      </Link>
-                    )}
-                  </XStack>
-                )}
-              </Container>
-
-              <Container my="$3">
-                <Link
-                  href={editUrl as any}
-                  // @ts-ignore
-                  title="Edit this page on GitHub."
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  o={0.4}
-                >
-                  Edit this page on GitHub.
-                </Link>
-              </Container>
+          <LinearGradient
+            position="absolute"
+            t={0}
+            l={0}
+            r={0}
+            height={100}
+            width={300}
+            z={100}
+            colors={['$background', '$background', '$background0']}
+          />
+          <ScrollView>
+            <YStack
+              display="none"
+              contain="paint layout"
+              $gtMd={{
+                display: 'block',
+                p: '$0.5',
+                pr: '$3',
+                mt: 108,
+                pb: '$18',
+              }}
+            >
+              <DocsMenuContents />
             </YStack>
-          </>
+          </ScrollView>
         </YStack>
+      </YStack>
+
+      <YStack
+        maxW="100%"
+        flex={1}
+        py="$8"
+        $gtLg={{
+          l: -50,
+        }}
+        $gtMd={{
+          pb: '$9',
+          pl: 250,
+          pr: 100,
+        }}
+      >
+        <>
+          <YStack tag="article">
+            <Container position="relative">
+              <Slot />
+            </Container>
+
+            <Container>
+              {(previous || next) && (
+                <XStack
+                  aria-label="Pagination navigation"
+                  my="$9"
+                  justify="space-between"
+                  gap="$4"
+                >
+                  {previous && (
+                    <Link href={previous.route as Href} asChild>
+                      <XStack
+                        tag="a"
+                        group="card"
+                        hoverStyle={{
+                          borderColor: '$color5',
+                        }}
+                        flex={1}
+                        width="50%"
+                        p="$5"
+                        rounded="$2"
+                        borderWidth={1}
+                        borderColor="$borderColor"
+                        aria-label={`Previous page: ${previous.title}`}
+                        items="center"
+                        gap="$4"
+                        animation="100ms"
+                      >
+                        <View
+                          opacity={0}
+                          l="$-2"
+                          $group-card-hover={{ opacity: 1, l: '$0' }}
+                          animation="quickest"
+                        >
+                          <ChevronLeft color="$color11" />
+                        </View>
+
+                        <YStack
+                          l="$-4"
+                          $group-card-hover={{ l: '$0' }}
+                          animation="quicker"
+                        >
+                          <Paragraph select="none" theme="alt1" size="$5">
+                            Previous
+                          </Paragraph>
+                          <Paragraph select="none" size="$3" color="$gray10">
+                            {previous.title}
+                          </Paragraph>
+                        </YStack>
+                      </XStack>
+                    </Link>
+                  )}
+                  {next && (
+                    <Link href={next.route as Href} asChild>
+                      <XStack
+                        tag="a"
+                        group="card"
+                        hoverStyle={{
+                          borderColor: '$color5',
+                        }}
+                        flex={1}
+                        width="50%"
+                        p="$5"
+                        rounded="$2"
+                        borderWidth={1}
+                        borderColor="$borderColor"
+                        aria-label={`Previous page: ${next.title}`}
+                        items="center"
+                        justify="flex-end"
+                        gap="$4"
+                        animation="100ms"
+                      >
+                        <YStack
+                          r="$-4"
+                          $group-card-hover={{ r: '$0' }}
+                          animation="quicker"
+                        >
+                          <Paragraph select="none" theme="alt1" size="$5">
+                            Next
+                          </Paragraph>
+                          <Paragraph select="none" size="$3" color="$gray10">
+                            {next.title}
+                          </Paragraph>
+                        </YStack>
+
+                        <View
+                          opacity={0}
+                          r="$-2"
+                          $group-card-hover={{ opacity: 1, r: '$0' }}
+                          animation="quickest"
+                        >
+                          <ChevronRight color="$color11" />
+                        </View>
+                      </XStack>
+                    </Link>
+                  )}
+                </XStack>
+              )}
+            </Container>
+
+            <Container my="$3">
+              <Link
+                href={editUrl as any}
+                // @ts-ignore
+                title="Edit this page on GitHub."
+                rel="noopener noreferrer"
+                target="_blank"
+                o={0.4}
+              >
+                Edit this page on GitHub.
+              </Link>
+            </Container>
+          </YStack>
+        </>
       </YStack>
     </ThemeNameEffect>
   )

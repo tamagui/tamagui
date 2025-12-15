@@ -1,6 +1,6 @@
 import { createAnimations } from '@tamagui/animations-motion'
 
-export const animationsMotion = createAnimations({
+export const animations = createAnimations({
   '75ms': {
     duration: 75,
   },

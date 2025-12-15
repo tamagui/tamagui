@@ -3,11 +3,15 @@ import React from 'react'
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Select, Sheet, YStack, getFontSize } from 'tamagui'
 
+// Helper to get item label from value - used by renderValue for SSR
+const getItemLabel = (value: string) =>
+  items.find((item) => item.name.toLowerCase() === value)?.name
+
 export default function TestSelectAdapt(props: SelectProps) {
   const [val, setVal] = React.useState('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+    <Select value={val} onValueChange={setVal} disablePreventBodyScroll renderValue={getItemLabel} {...props}>
       <Select.Trigger width={220} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>

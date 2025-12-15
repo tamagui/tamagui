@@ -65,8 +65,12 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
 
     // @ts-ignore TODO react 19 type needs fix
     const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
-    const children = childrenProp ?? context.selectedItem
     const isEmptyValue = context.value == null || context.value === ''
+
+    // Use renderValue for SSR support - called synchronously during render
+    // Falls back to the portal-based selectedItem for backward compatibility
+    const renderedValue = context.renderValue?.(context.value)
+    const children = childrenProp ?? renderedValue ?? context.selectedItem
     const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
@@ -413,6 +417,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
     onActiveChange,
     dir,
     id,
+    renderValue,
   } = props
 
   const isAdapted = useAdaptIsActive(adaptScope)
@@ -540,6 +545,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         value={value}
         open={open}
         native={native}
+        renderValue={renderValue}
       >
         <SelectSheetController onOpenChange={setOpen} scope={scope}>
           {shouldRenderWebNative ? (
