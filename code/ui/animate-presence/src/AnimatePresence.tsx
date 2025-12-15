@@ -1,7 +1,8 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useConstant } from '@tamagui/use-constant'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import type { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from 'react'
-import { Children, cloneElement, isValidElement, useContext, useRef } from 'react'
+import { Children, isValidElement, useContext, useMemo, useRef, useState } from 'react'
 import { LayoutGroupContext } from './LayoutGroupContext'
 import { PresenceChild } from './PresenceChild'
 import type { AnimatePresenceProps } from './types'
@@ -24,16 +25,6 @@ const getChildKey = (child: ReactElement<any>): ComponentKey => {
   )
 }
 
-function updateChildLookup(
-  children: ReactElement<any>[],
-  allChildren: Map<ComponentKey, ReactElement<any>>
-) {
-  children.forEach((child) => {
-    const key = getChildKey(child)
-    allChildren.set(key, child)
-  })
-}
-
 function onlyElements(children: ReactNode): ReactElement<any>[] {
   const filtered: ReactElement<any>[] = []
   // We use forEach here instead of map as map mutates the component key by preprending `.$`
@@ -53,158 +44,160 @@ export const AnimatePresence: FunctionComponent<
   initial = true,
   onExitComplete,
   exitBeforeEnter,
+  mode,
   presenceAffectsLayout = true,
   custom,
   passThrough,
 }) => {
-  // We want to force a re-render once all exiting animations have finished. We
-  // either use a local forceRender function, or one from a parent context if it exists.
-  let forceRender = useContext(LayoutGroupContext).forceRender ?? useForceUpdate()
+  // Determine effective mode: mode prop takes precedence, then exitBeforeEnter for backwards compatibility
+  const effectiveMode = mode ?? (exitBeforeEnter ? 'wait' : 'sync')
 
-  // Filter out any children that aren't ReactElements. We can only track ReactElements with a props.key
-  const filteredChildren = onlyElements(children)
+  /**
+   * Filter any children that aren't ReactElements. We can only track components
+   * between renders with a props.key.
+   * IMPORTANT: useMemo ensures reference stability for the comparison below
+   */
+  const presentChildren = useMemo(() => onlyElements(children), [children])
 
-  // Keep a living record of the children we're actually rendering so we
-  // can diff to figure out which are entering and exiting
-  const presentChildren = useRef(filteredChildren)
+  /**
+   * Track the keys of the currently rendered children.
+   */
+  const presentKeys = presentChildren.map(getChildKey)
 
-  // A lookup table to quickly reference components by key
-  const allChildren = useRef(new Map<ComponentKey, ReactElement<any>>()).current
-
-  const exiting = useRef(new Set<ComponentKey>()).current
-  updateChildLookup(filteredChildren, allChildren)
-
-  // If this is the initial component render, just deal with logic surrounding whether
-  // we play onMount animations or not.
+  /**
+   * If `initial={false}` we only want to pass this to components in the first render.
+   */
   const isInitialRender = useRef(true)
 
+  /**
+   * A ref containing the currently present children. When all exit animations
+   * are complete, we use this to re-render with the latest children *committed*
+   * rather than the latest children *rendered*.
+   */
+  const pendingPresentChildren = useRef(presentChildren)
+
+  /**
+   * Track which exiting children have finished animating out.
+   */
+  const exitComplete = useConstant(() => new Map<ComponentKey, boolean>())
+
+  /**
+   * Save children to render as React state. To ensure this component is concurrent-safe,
+   * we check for exiting children via an effect.
+   */
+  const [diffedChildren, setDiffedChildren] = useState(presentChildren)
+  const [renderedChildren, setRenderedChildren] = useState(presentChildren)
+
+  /**
+   * If we've been provided a forceRender function by the LayoutGroupContext,
+   * we can use it to force a re-render amongst all surrounding components once
+   * all components have finished animating out.
+   */
+  const forceRender = useContext(LayoutGroupContext).forceRender ?? useForceUpdate()
+
   if (passThrough) {
-    // match structure returned below
     return <>{children}</>
   }
 
   useIsomorphicLayoutEffect(() => {
     isInitialRender.current = false
-  }, [])
+    pendingPresentChildren.current = presentChildren
 
-  if (isInitialRender.current) {
-    return (
-      <>
-        {filteredChildren.map((child) => (
-          <PresenceChild
-            key={getChildKey(child)}
-            isPresent
-            enterExitVariant={enterExitVariant}
-            exitVariant={exitVariant}
-            enterVariant={enterVariant}
-            initial={initial ? undefined : false}
-            presenceAffectsLayout={presenceAffectsLayout}
-            custom={custom}
-          >
-            {child}
-          </PresenceChild>
-        ))}
-      </>
-    )
-  }
+    /**
+     * Update complete status of exiting children.
+     */
+    for (let i = 0; i < renderedChildren.length; i++) {
+      const key = getChildKey(renderedChildren[i])
 
-  let childrenToRender = [...filteredChildren]
-
-  // Diff the keys of the currently-present and target children to update our
-  // exiting list.
-  const presentKeys = presentChildren.current.map(getChildKey)
-  const targetKeys = filteredChildren.map(getChildKey)
-
-  // Diff the present children with our target children and mark those that are exiting
-  const numPresent = presentKeys.length
-  for (let i = 0; i < numPresent; i++) {
-    const key = presentKeys[i]
-    if (targetKeys.indexOf(key) === -1) {
-      exiting.add(key)
-    } else {
-      // In case this key has re-entered, remove from the exiting list
-      exiting.delete(key)
+      if (!presentKeys.includes(key)) {
+        if (exitComplete.get(key) !== true) {
+          exitComplete.set(key, false)
+        }
+      } else {
+        exitComplete.delete(key)
+      }
     }
-  }
+  }, [renderedChildren, presentKeys.length, presentKeys.join('-')])
 
-  // If we currently have exiting children, and we're deferring rendering incoming children
-  // until after all current children have exiting, empty the childrenToRender array
-  if (exitBeforeEnter && exiting.size) {
-    childrenToRender = []
-  }
+  if (presentChildren !== diffedChildren) {
+    let nextChildren = [...presentChildren]
 
-  // Loop through all currently exiting components and clone them to overwrite `animate`
-  // with any `exit` prop they might have defined.
-  exiting.forEach((key) => {
-    // If this component is actually entering again, early return
-    if (targetKeys.indexOf(key) !== -1) return
+    /**
+     * Loop through all the currently rendered components and decide which
+     * are exiting.
+     */
+    for (let i = 0; i < renderedChildren.length; i++) {
+      const child = renderedChildren[i]
+      const key = getChildKey(child)
 
-    const child = allChildren.get(key)
-    if (!child) return
-
-    const insertionIndex = presentKeys.indexOf(key)
-
-    const onExit = () => {
-      allChildren.delete(key)
-      exiting.delete(key)
-      const removeIndex = presentChildren.current.findIndex(
-        (presentChild) => presentChild.key === key
-      )
-      presentChildren.current.splice(removeIndex, 1)
-
-      if (!exiting.size) {
-        presentChildren.current = filteredChildren
-        forceRender()
-        onExitComplete?.()
+      if (!presentKeys.includes(key)) {
+        nextChildren.splice(i, 0, child)
       }
     }
 
-    const exitingComponent = (
-      <PresenceChild
-        key={getChildKey(child)}
-        isPresent={false}
-        onExitComplete={onExit}
-        presenceAffectsLayout={presenceAffectsLayout}
-        enterExitVariant={enterExitVariant}
-        enterVariant={enterVariant}
-        exitVariant={exitVariant}
-        custom={custom}
-      >
-        {child}
-      </PresenceChild>
+    /**
+     * If we're in "wait" mode, and we have exiting children, we want to
+     * only render these until they've all exited.
+     */
+    const exitingChildren = renderedChildren.filter(
+      (child) => !presentKeys.includes(getChildKey(child))
     )
+    if (effectiveMode === 'wait' && exitingChildren.length) {
+      nextChildren = exitingChildren
+    }
 
-    childrenToRender.splice(insertionIndex, 0, exitingComponent)
-  })
+    setRenderedChildren(onlyElements(nextChildren))
+    setDiffedChildren(presentChildren)
 
-  // Add `MotionContext` even to children that don't need it to ensure we're rendering
-  // the same tree between renders
-  childrenToRender = childrenToRender.map((child) => {
-    const key = child.key as ComponentKey
-    return exiting.has(key) ? (
-      child
-    ) : (
-      <PresenceChild
-        key={getChildKey(child)}
-        isPresent
-        exitVariant={exitVariant}
-        enterVariant={enterVariant}
-        enterExitVariant={enterExitVariant}
-        presenceAffectsLayout={presenceAffectsLayout}
-        custom={custom}
-      >
-        {child}
-      </PresenceChild>
-    )
-  })
-
-  presentChildren.current = childrenToRender
+    /**
+     * Early return to ensure once we've set state with the latest diffed
+     * children, we can immediately re-render.
+     */
+    return null
+  }
 
   return (
     <>
-      {exiting.size
-        ? childrenToRender
-        : childrenToRender.map((child) => cloneElement(child))}
+      {renderedChildren.map((child) => {
+        const key = getChildKey(child)
+        const isPresent =
+          presentChildren === renderedChildren || presentKeys.includes(key)
+
+        const onExit = () => {
+          if (exitComplete.has(key)) {
+            exitComplete.set(key, true)
+          } else {
+            return
+          }
+
+          let isEveryExitComplete = true
+          exitComplete.forEach((isExitComplete) => {
+            if (!isExitComplete) isEveryExitComplete = false
+          })
+
+          if (isEveryExitComplete) {
+            forceRender?.()
+            setRenderedChildren(pendingPresentChildren.current)
+            onExitComplete?.()
+          }
+        }
+
+        return (
+          <PresenceChild
+            key={key}
+            isPresent={isPresent}
+            initial={!isInitialRender.current || initial ? undefined : false}
+            custom={custom}
+            presenceAffectsLayout={presenceAffectsLayout}
+            enterExitVariant={enterExitVariant}
+            enterVariant={enterVariant}
+            exitVariant={exitVariant}
+            onExitComplete={isPresent ? undefined : onExit}
+          >
+            {child}
+          </PresenceChild>
+        )
+      })}
     </>
   )
 }
