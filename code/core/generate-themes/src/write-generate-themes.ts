@@ -15,5 +15,13 @@ export async function writeGeneratedThemes(
     console.info(`Generated themes:`, JSON.stringify(generatedOutput, null, 2))
   }
 
-  await Promise.all([fs.writeFile(outPath, `// @ts-nocheck\n` + generated)])
+  const newContent = `// @ts-nocheck\n` + generated
+
+  // Skip writing if contents are unchanged
+  const existingContent = await fs.readFile(outPath, 'utf-8').catch(() => null)
+  if (existingContent === newContent) {
+    return
+  }
+
+  await fs.writeFile(outPath, newContent)
 }
