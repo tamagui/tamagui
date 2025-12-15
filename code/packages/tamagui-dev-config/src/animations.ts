@@ -1,1 +1,1 @@
-export * from './animations.motion'
+export * from './animations.reanimated'
