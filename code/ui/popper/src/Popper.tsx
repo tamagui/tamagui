@@ -374,13 +374,23 @@ export const PopperAnchor = YStack.extractable(
 
       const stackProps = anchorProps
 
+      // Wrap setReference in startTransition to avoid React #185 (setState during render)
+      const safeSetReference = React.useCallback(
+        (node: any) => {
+          startTransition(() => {
+            refs.setReference(node)
+          })
+        },
+        [refs.setReference]
+      )
+
       const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
       const shouldHandleInHover = isWeb && scope
       const composedRefs = useComposedRefs(
         forwardedRef,
         ref,
         // web handles this onMouseEnter below so it can support multiple targets + hovering
-        shouldHandleInHover ? undefined : (refs.setReference as any)
+        shouldHandleInHover ? undefined : safeSetReference
       )
 
       return (
@@ -458,7 +468,18 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     const { strategy, placement, refs, x, y, getFloatingProps, size, isPositioned } =
       context
 
-    const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
+    // Wrap setFloating in startTransition to avoid React #185 (setState during render)
+    // This can happen during rapid navigation when refs are set during render phase
+    const safeSetFloating = React.useCallback(
+      (node: any) => {
+        startTransition(() => {
+          refs.setFloating(node)
+        })
+      },
+      [refs.setFloating]
+    )
+
+    const contentRefs = useComposedRefs<any>(safeSetFloating, forwardedRef)
 
     const [needsMeasure, setNeedsMeasure] = React.useState(
       enableAnimationForPositionChange
