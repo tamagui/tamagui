@@ -1,16 +1,30 @@
+import { createContext } from 'react'
+
 export { createElement as unstable_createElement } from './createElement/index'
 export {
-  processColor,
-  Platform,
-  UIManager,
+  AccessibilityUtil,
   canUseDOM,
+  clickProps,
+  createDOMProps,
   dismissKeyboard,
+  flattenStyle,
+  ImageLoader,
+  InteractionManager,
   isWebColor,
+  LocaleProvider,
   mergeRefs,
-  useMergeRefs,
+  normalizeColor,
+  Platform,
+  processColor,
+  processStyle,
+  StyleSheet,
+  TextAncestorContext,
+  UIManager,
   useEvent,
   useHover,
-  ImageLoader,
+  useLayoutEffect,
+  useMergeRefs,
+  usePlatformMethods,
 } from '@tamagui/react-native-web-internals'
 export { render } from './render/index'
 export { NativeModules } from './NativeModules/index'
@@ -48,7 +62,7 @@ export { UnimplementedView as TouchableHighlight } from './UnimplementedView'
 export { UnimplementedView as TouchableNativeFeedback } from './UnimplementedView'
 export { UnimplementedView as SectionList } from './UnimplementedView'
 
-export { TouchableOpacity } from './TouchableOpacity'
+export { TouchableOpacity as Touchable, TouchableOpacity } from './TouchableOpacity'
 export { TouchableWithoutFeedback } from './TouchableWithoutFeedback'
 
 // components
@@ -112,3 +126,33 @@ export const Animated = {
   delay: () => ({ start: () => {} }),
   createAnimatedComponent: (c: any) => c,
 }
+
+// minimal stub for Easing - satisfies imports but does nothing
+export const Easing = {
+  step0: () => 0,
+  step1: () => 1,
+  linear: (t: number) => t,
+  ease: (t: number) => t,
+  quad: (t: number) => t * t,
+  cubic: (t: number) => t * t * t,
+  poly: () => (t: number) => t,
+  sin: (t: number) => t,
+  circle: (t: number) => t,
+  exp: (t: number) => t,
+  elastic: () => (t: number) => t,
+  back: () => (t: number) => t,
+  bounce: (t: number) => t,
+  bezier: () => (t: number) => t,
+  in: (fn: any) => fn,
+  out: (fn: any) => fn,
+  inOut: (fn: any) => fn,
+}
+
+export const findNodeHandle = (component: any) => {
+  throw new Error('not supported - use ref instead')
+}
+
+// compat with rn:
+export { unstable_batchedUpdates } from 'react-dom'
+
+export const RootTagContext = createContext(null)
