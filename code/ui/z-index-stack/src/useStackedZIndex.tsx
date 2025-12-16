@@ -57,16 +57,21 @@ export const useStackedZIndex = (props: {
           return hardcoded + 1
         }
 
-        const highest = Object.values(stackContext).reduce(
-          (acc, cur) => Math.max(acc, cur),
-          0
-        )
+        const entries = Object.values(stackContext)
+        const baseForLayer = stackLayer * 5000
+        const nextLayerBase = (stackLayer + 1) * 5000
 
-        // each context level elevates 5k
-        const found = stackLayer * 5000 + highest + 1
+        // Filter out values that belong to higher layers
+        // Any value >= next layer's base is definitely not from this layer
+        const validEntries = entries.filter((z) => z < nextLayerBase)
+
+        const highest = validEntries.length > 0 ? Math.max(...validEntries) : baseForLayer
+
+        // If we only have the base value or nothing, start fresh
+        const nextZIndex = highest === baseForLayer ? baseForLayer + 1 : highest + 1
 
         // setting stackZIndex to a number lets you increase it further
-        return typeof stackZIndex === 'number' ? stackZIndex + found : found
+        return typeof stackZIndex === 'number' ? stackZIndex + nextZIndex : nextZIndex
       }
 
       return 1
