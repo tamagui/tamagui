@@ -80,8 +80,8 @@ export default function DocsLayout() {
           }}
           $gtSm={{
             position: 'fixed' as any,
-            top: 0,
-            bottom: 0,
+            t: 0,
+            b: 0,
             width: 245,
           }}
         >
@@ -118,6 +118,7 @@ export default function DocsLayout() {
         flex={1}
         py="$8"
         $gtLg={{
+          position: 'relative',
           l: -50,
         }}
         $gtMd={{
