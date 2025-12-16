@@ -178,6 +178,7 @@ export function createSheet<
                     : frameSize
               }
               pointerEvents={open ? 'auto' : 'none'}
+              data-state={open ? 'open' : 'closed'}
               {...props}
             >
               <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>

@@ -209,14 +209,12 @@ test.describe('Popover Focus Scope', () => {
 
     // Press escape to close
     await page.keyboard.press('Escape')
-    
-    // Wait for animation
-    await page.waitForTimeout(500)
-    
-    await expect(popoverContent).not.toBeVisible()
+
+    // Wait for popover to close (Playwright auto-retries until timeout)
+    await expect(popoverContent).not.toBeVisible({ timeout: 5000 })
 
     // Focus should return to trigger
-    await expect(trigger).toBeFocused()
+    await expect(trigger).toBeFocused({ timeout: 5000 })
   })
 
   test('closes when clicking outside', async ({ page }) => {
@@ -230,10 +228,8 @@ test.describe('Popover Focus Scope', () => {
 
     // Click outside to close
     await page.click('body', { position: { x: 10, y: 10 } })
-    
-    // Wait for animation
-    await page.waitForTimeout(500)
-    
-    await expect(popoverContent).not.toBeVisible()
+
+    // Wait for popover to close (Playwright auto-retries until timeout)
+    await expect(popoverContent).not.toBeVisible({ timeout: 5000 })
   })
 })
