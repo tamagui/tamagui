@@ -3,12 +3,6 @@ import type { SizeTokens } from 'tamagui'
 import { Button, Paragraph, Progress, Slider, XStack, YStack } from 'tamagui'
 import { Play, RotateCcw } from '@tamagui/lucide-icons'
 
-
-/**
- * Note: If you're going to use the vertical slider behavior on iOS, make sure to pass insets to TamaguiProvider:
- * <TamaguiProvider insets={useSafeAreaInsets()}>
- */
-
 export function ProgressDemo() {
   const [key, setKey] = React.useState(0)
   const [size, setSize] = React.useState(4)
