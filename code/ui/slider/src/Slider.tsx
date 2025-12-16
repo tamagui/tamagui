@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb } from '@tamagui/constants'
+import { isClient, isWeb, isIos } from '@tamagui/constants'
 import type {
   GestureReponderEvent,
   GetProps,
@@ -13,6 +13,7 @@ import {
   getTokens,
   getVariableValue,
   styled,
+  useConfiguration,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -227,6 +228,10 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
     const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
     const setState = useCreateShallowSetState(setState_)
     const sliderRef = React.useRef<View>(null)
+    const configuration = useConfiguration()
+    // these insets are insets passed from TamaguiProvider by useSafeAreaInsets()
+    const insets =
+      isIos && configuration.insets ? configuration.insets : { top: 0, bottom: 0 }
 
     function getValueFromPointer(pointerPosition: number) {
       const input: [number, number] = [0, state.size]
@@ -239,7 +244,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
       sliderRef.current?.measure((_x, _y, _width, height, _pageX, pageY) => {
         setState({
           size: height,
-          offset: pageY,
+          offset: pageY + (isIos ? insets.top : 0),
         })
       })
     }

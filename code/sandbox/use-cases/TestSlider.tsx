@@ -1,31 +1,17 @@
 import type { SliderProps } from 'tamagui'
-import { Slider, XStack, YStack, Label } from 'tamagui'
+import { Slider, XStack } from 'tamagui'
+
+/**
+ * Note: For proper vertical slider behavior on iOS, make sure to pass insets to TamaguiProvider:
+ * <TamaguiProvider insets={useSafeAreaInsets()}>
+ */
 
 export function SliderDemo() {
   return (
-    <YStack gap="$8" style={{ alignItems: 'center' }}>
-      <XStack height={200} style={{ alignItems: 'center' }} gap="$8">
-        <YStack style={{ alignItems: 'center' }} gap="$4">
-          <Label>Vertical (LTR)</Label>
-          <SimpleSlider height={200} orientation="vertical" />
-        </YStack>
-
-        <YStack style={{ alignItems: 'center' }} gap="$4">
-          <Label>Vertical (RTL)</Label>
-          <SimpleSlider height={200} orientation="vertical" dir="rtl" />
-        </YStack>
-
-        <YStack style={{ alignItems: 'center' }} gap="$4">
-          <Label>Horizontal (LTR)</Label>
-          <SimpleSlider width={200} />
-        </YStack>
-      </XStack>
-
-      <YStack style={{ alignItems: 'center' }} gap="$4">
-        <Label>Horizontal (RTL)</Label>
-        <SimpleSlider width={200} dir="rtl" />
-      </YStack>
-    </YStack>
+    <XStack height={200} items="center" gap="$8">
+      <SimpleSlider height={200} orientation="vertical" />
+      <SimpleSlider width={200} />
+    </XStack>
   )
 }
 

@@ -5,6 +5,7 @@ import './tamagui.css'
 import { Toast, ToastProvider, ToastViewport, useToastState } from '@tamagui/toast'
 import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'
 import { LoadProgressBar, SafeAreaView, Slot } from 'one'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import config from '~/config/tamagui/tamagui.config'
@@ -84,6 +85,7 @@ export const CustomToast = () => {
 
 const TamaguiRootProvider = ({ children }: { children: React.ReactNode }) => {
   const userScheme = useUserScheme()
+  const insets = useSafeAreaInsets()
 
   return (
     <TamaguiProvider
@@ -91,6 +93,7 @@ const TamaguiRootProvider = ({ children }: { children: React.ReactNode }) => {
       config={config}
       defaultTheme={userScheme.value}
       disableRootThemeClass
+      insets={insets}
     >
       {children}
     </TamaguiProvider>
