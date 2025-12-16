@@ -396,6 +396,9 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
+export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
+    onlyAllowShorthands: infer X;
+} ? X : false;
 export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
@@ -583,6 +586,11 @@ export interface GenericTamaguiSettings {
      * default uses `container-type: inline-size`.
      */
     webContainerType?: 'normal' | 'size' | 'inline-size' | 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
+    /**
+     * Only allow shorthands when enabled. Recommended to be true to avoid having
+     * two ways to style the same property.
+     */
+    onlyAllowShorthands?: boolean | undefined;
     /**
      * Define a default font, for better types and default font on Text
      */
@@ -880,6 +888,7 @@ export type WithThemeValues<T extends object> = {
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
+type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands'];
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
@@ -905,7 +914,7 @@ export type PseudoStyles = {
     exitStyle?: ViewStyle;
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
-export type WithThemeAndShorthands<A extends Object, Variants = {}> = WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>;
+export type WithThemeAndShorthands<A extends Object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends Object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
 export type WithThemeShorthandsPseudosMedia<A extends Object, Variants = {}> = WithThemeShorthandsAndPseudos<A, Variants> & WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>;
 /**

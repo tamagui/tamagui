@@ -708,70 +708,94 @@ export declare function useInputProps(props: InputProps, ref: any): {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-    hoverStyle?: import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").TextStylePropsBase & {
+    hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    }, {
+    }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> | null | undefined;
-    pressStyle?: import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").TextStylePropsBase & {
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    }, {
+    }>>) | null | undefined;
+    pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> | null | undefined;
-    focusStyle?: import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").TextStylePropsBase & {
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    }, {
+    }>>) | null | undefined;
+    focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> | null | undefined;
-    focusWithinStyle?: import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").TextStylePropsBase & {
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    }, {
+    }>>) | null | undefined;
+    focusWithinStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> | null | undefined;
-    focusVisibleStyle?: import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").TextStylePropsBase & {
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    }, {
+    }>>) | null | undefined;
+    focusVisibleStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> | null | undefined;
-    disabledStyle?: import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").TextStylePropsBase & {
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    }, {
+    }>>) | null | undefined;
+    disabledStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> | null | undefined;
-    exitStyle?: import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").TextStylePropsBase & {
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    }, {
+    }>>) | null | undefined;
+    exitStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> | null | undefined;
-    enterStyle?: import("@tamagui/core").WithThemeAndShorthands<import("@tamagui/core").TextStylePropsBase & {
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    }, {
+    }>>) | null | undefined;
+    enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }> | null | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
+        readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+        readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    }>>) | null | undefined;
     rows?: number;
     ref: (node: any) => void;
 };
