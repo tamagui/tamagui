@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb } from '@tamagui/constants'
+import { isClient, isWeb, isIos } from '@tamagui/constants'
 import type {
   GestureReponderEvent,
   GetProps,
@@ -22,6 +22,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
 import type { View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import {
   ARROW_KEYS,
@@ -226,6 +227,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
     const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
     const setState = useCreateShallowSetState(setState_)
     const sliderRef = React.useRef<View>(null)
+    const insets = isIos ? useSafeAreaInsets() : { top: 0, bottom: 0 }
 
     function getValueFromPointer(pointerPosition: number) {
       const input: [number, number] = [0, state.size]
@@ -238,7 +240,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
       sliderRef.current?.measure((_x, _y, _width, height, _pageX, pageY) => {
         setState({
           size: height,
-          offset: pageY,
+          offset: pageY + (isIos ? insets.top : 0),
         })
       })
     }
