@@ -222,6 +222,8 @@ export type TamaguiThemes = typeof generatedThemes
  * So long as you server render your Tamagui CSS, this will save you bundle size:
  */
 export const themes: TamaguiThemes =
+  // we define this in our bundler plugins, but you can also use your framework/bundlers
+  // built in environment variables to ensure this is shaken away on client js bundles
   process.env.TAMAGUI_ENVIRONMENT === 'client' &&
   process.env.NODE_ENV === 'production'
     ? {}
