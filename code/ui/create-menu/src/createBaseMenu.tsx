@@ -530,26 +530,22 @@ export function createBaseMenu({
     ) : (
       children
     )
-    return (
-      <Animate type="presence" present={forceMount || menuContext.open}>
-        <PortalPrimitive>
-          <>
-            <PortalProvider scope={scope} forceMount={forceMount}>
-              <View zIndex={zIndex || 100} inset={0} position="absolute">
-                {!!menuContext.open && !isWeb && (
-                  <View
-                    inset={0}
-                    position="absolute"
-                    onPress={() => menuContext.onOpenChange(!menuContext.open)}
-                  />
-                )}
-                {content}
-              </View>
-            </PortalProvider>
-          </>
-        </PortalPrimitive>
-      </Animate>
-    )
+    return forceMount || menuContext.open ? (
+      <PortalPrimitive>
+        <PortalProvider scope={scope} forceMount={forceMount}>
+          <View zIndex={zIndex || 100} inset={0} position="absolute">
+            {!!menuContext.open && !isWeb && (
+              <View
+                inset={0}
+                position="absolute"
+                onPress={() => menuContext.onOpenChange(!menuContext.open)}
+              />
+            )}
+            {content}
+          </View>
+        </PortalProvider>
+      </PortalPrimitive>
+    ) : null
   }
 
   MenuPortal.displayName = PORTAL_NAME
