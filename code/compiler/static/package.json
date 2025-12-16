@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.141.2",
+  "version": "1.141.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
