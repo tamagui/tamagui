@@ -20,6 +20,7 @@ export function TamaguiProvider({
   className,
   defaultTheme,
   reset,
+  insets,
 }: TamaguiProviderProps) {
   if (!IS_REACT_19) {
     if (isClient) {
@@ -43,9 +44,11 @@ export function TamaguiProvider({
     updateMediaListeners()
   }, [])
 
+  const memoizedInsets = React.useMemo(() => insets, [JSON.stringify(insets)])
+
   let contents = (
     <UnmountedClassName>
-      <ComponentContext.Provider animationDriver={config?.animations}>
+      <ComponentContext.Provider animationDriver={config?.animations} insets={memoizedInsets}>
         <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
           {children}
         </ThemeProvider>

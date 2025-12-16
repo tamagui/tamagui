@@ -13,6 +13,7 @@ import {
   getTokens,
   getVariableValue,
   styled,
+  useConfiguration,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -22,7 +23,6 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
 import type { View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import {
   ARROW_KEYS,
@@ -227,7 +227,10 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
     const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
     const setState = useCreateShallowSetState(setState_)
     const sliderRef = React.useRef<View>(null)
-    const insets = isIos ? useSafeAreaInsets() : { top: 0, bottom: 0 }
+    const configuration = useConfiguration()
+    // these insets are insets passed from TamaguiProvider by useSafeAreaInsets()
+    const insets =
+      isIos && configuration.insets ? configuration.insets : { top: 0, bottom: 0 }
 
     function getValueFromPointer(pointerPosition: number) {
       const input: [number, number] = [0, state.size]
