@@ -161,7 +161,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             displayName: string;
         };
         Portal: {
-            (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element;
+            (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element | null;
             displayName: string;
         };
         Content: React.ForwardRefExoticComponent<MenuContentProps & {

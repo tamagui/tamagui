@@ -175,8 +175,12 @@ export const createNativeMenu = (
    * - Flatten Portal wrappers
    * - Recurse into containers (Content, Sub, Group, SubContent)
    * - Convert styled Items to Zeego Items
+   * - Reverse children on iOS only for DropdownMenu at Content/SubContent level
    */
-  const transformForZeego = (children: React.ReactNode): React.ReactNode => {
+  const transformForZeego = (
+    children: React.ReactNode,
+    shouldReverseOnIos = false
+  ): React.ReactNode => {
     const result: React.ReactNode[] = []
 
     React.Children.forEach(children, (child) => {
@@ -190,7 +194,7 @@ export const createNativeMenu = (
 
       // Flatten Portal
       if (isPortal(displayName)) {
-        const portalChildren = transformForZeego(props.children)
+        const portalChildren = transformForZeego(props.children, false)
         React.Children.forEach(portalChildren, (c) => result.push(c))
         return
       }
@@ -237,11 +241,16 @@ export const createNativeMenu = (
       if (componentType) {
         const { children: childChildren, ...restProps } = props
         const isContainer = CONTAINER_TYPES.includes(componentType)
+        // Only reverse children of Content and SubContent (not Group or Sub)
+        const shouldReverseChildren =
+          componentType === 'Content' || componentType === 'SubContent'
         result.push(
           React.createElement(
             COMPONENT_MAP[componentType],
             { ...restProps, key: child.key },
-            isContainer ? transformForZeego(childChildren) : childChildren
+            isContainer
+              ? transformForZeego(childChildren, shouldReverseChildren)
+              : childChildren
           )
         )
         return
@@ -263,9 +272,11 @@ export const createNativeMenu = (
       // Pass through everything else
       result.push(child)
     })
-    // this is needed to fix iOS menu item order being reversed
-    if (isIos) {
-      return result.reverse()
+
+    // iOS DropdownMenu (not ContextMenu) displays menu items in reverse order
+    // Only reverse for Menu component, not ContextMenu
+    if (isIos && shouldReverseOnIos && !isContextMenu) {
+      result.reverse()
     }
 
     return result
