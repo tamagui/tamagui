@@ -3,6 +3,9 @@
   "version": "1.141.3",
   "module": "dist/esm",
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "private": true,
   "license": "MIT",
   "scripts": {

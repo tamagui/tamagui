@@ -2,7 +2,9 @@
   "name": "@tamagui/elements",
   "version": "1.141.3",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

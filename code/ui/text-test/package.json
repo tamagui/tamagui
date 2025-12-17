@@ -3,6 +3,9 @@
   "version": "1.141.3",
   "main": "dist/cjs",
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "private": true,
   "module": "dist/esm",
   "scripts": {

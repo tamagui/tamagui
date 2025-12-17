@@ -2,6 +2,7 @@
   "name": "@tamagui/generate-themes",
   "version": "1.141.3",
   "type": "module",
+  "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

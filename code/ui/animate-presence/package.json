@@ -3,7 +3,9 @@
   "version": "1.141.3",
   "type": "module",
   "source": "src/index.ts",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
