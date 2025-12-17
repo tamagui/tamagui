@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui",
-  "version": "1.141.3",
+  "version": "1.141.4",
   "sideEffects": false,
   "bin": "./run.js",
   "main": "dist/index.cjs",
