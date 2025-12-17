@@ -57,18 +57,20 @@ export function MenuDemo() {
           <Menu.Content
             paddingHorizontal={0}
             borderWidth={1}
+            debug="verbose"
             ai="flex-start"
+            onLayout={() => console.log("Menu Content layout")}
             borderColor="$borderColor"
-            enterStyle={{ y: -10, opacity: 0 }}
-            exitStyle={{ y: -10, opacity: 0 }}
-            animation={[
-              'quickest',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
+             enterStyle={{ y: -10, opacity: 0 }}
+             exitStyle={{ y: -10, opacity: 0 }}
+             animation={[
+               'quickest',
+               {
+                 opacity: {
+                   overshootClamping: true,
+                 },
+               },
+             ]}
           >
             <Menu.Item onSelect={onSelect} key="about-notes">
               <Menu.ItemTitle>About Notes</Menu.ItemTitle>
