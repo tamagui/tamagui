@@ -347,6 +347,12 @@ export default function App() {
       type: 'boolean',
       description: `By default Tamagui inserts CSS with a useInsertionEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
     },
+    {
+      name: 'insets',
+      required: false,
+      type: '{ top?: number; bottom?: number; left?: number; right?: number }',
+      description: `Safe area insets for iOS. Required for proper vertical Slider behavior on iOS. Pass the value from useSafeAreaInsets() hook.`,
+    },
   ]}
 />
 
