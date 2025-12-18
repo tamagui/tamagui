@@ -5,7 +5,7 @@
  * On Native: Uses Zeego for native menus (Credit to nandorojo/Zeego)
  */
 
-import { isWeb, withStaticProperties } from '@tamagui/web'
+import { isWeb, withStaticProperties, isIos } from '@tamagui/web'
 import type { FC } from 'react'
 import React from 'react'
 import type {
@@ -127,7 +127,6 @@ export const createNativeMenu = (
     Sub: ZeegoMenu.Sub,
     Group: ZeegoMenu.Group,
     SubTrigger: ZeegoMenu.SubTrigger,
-    CheckboxItem: ZeegoMenu.CheckboxItem,
   }
 
   // Components that need children transformation (containers)
@@ -176,8 +175,12 @@ export const createNativeMenu = (
    * - Flatten Portal wrappers
    * - Recurse into containers (Content, Sub, Group, SubContent)
    * - Convert styled Items to Zeego Items
+   * - Reverse children on iOS only for DropdownMenu at Content/SubContent level
    */
-  const transformForZeego = (children: React.ReactNode): React.ReactNode => {
+  const transformForZeego = (
+    children: React.ReactNode,
+    shouldReverseOnIos = false
+  ): React.ReactNode => {
     const result: React.ReactNode[] = []
 
     React.Children.forEach(children, (child) => {
@@ -191,21 +194,63 @@ export const createNativeMenu = (
 
       // Flatten Portal
       if (isPortal(displayName)) {
-        const portalChildren = transformForZeego(props.children)
+        const portalChildren = transformForZeego(props.children, false)
         React.Children.forEach(portalChildren, (c) => result.push(c))
         return
       }
 
       // Handle known component types (containers, SubTrigger, CheckboxItem)
       const componentType = getComponentType(displayName)
+
+      // normalizing checked/value props
+      if (componentType === 'CheckboxItem') {
+        const { checked, onCheckedChange, value, onValueChange, children, ...rest } =
+          props
+
+        const finalValue = value ?? (checked ? 'on' : 'off')
+        const finalOnValueChange =
+          onValueChange ??
+          (onCheckedChange && ((v: string) => onCheckedChange(v === 'on')))
+
+        const cleanChildren = React.Children.map(children, (child) => {
+          if (!React.isValidElement(child)) return child
+
+          const childDisplayName = (child.type as any)?.displayName || ''
+          // If it's an ItemIndicator, remove it (return null) so we don't double render the checkmark
+          if (childDisplayName.includes('ItemIndicator')) {
+            return null
+          }
+          return child
+        })
+
+        result.push(
+          React.createElement(
+            ZeegoMenu.CheckboxItem,
+            {
+              ...rest,
+              key: child.key,
+              value: finalValue,
+              onValueChange: finalOnValueChange,
+            },
+            cleanChildren
+          )
+        )
+        return
+      }
+
       if (componentType) {
         const { children: childChildren, ...restProps } = props
         const isContainer = CONTAINER_TYPES.includes(componentType)
+        // Only reverse children of Content and SubContent (not Group or Sub)
+        const shouldReverseChildren =
+          componentType === 'Content' || componentType === 'SubContent'
         result.push(
           React.createElement(
             COMPONENT_MAP[componentType],
             { ...restProps, key: child.key },
-            isContainer ? transformForZeego(childChildren) : childChildren
+            isContainer
+              ? transformForZeego(childChildren, shouldReverseChildren)
+              : childChildren
           )
         )
         return
@@ -227,6 +272,12 @@ export const createNativeMenu = (
       // Pass through everything else
       result.push(child)
     })
+
+    // iOS DropdownMenu (not ContextMenu) displays menu items in reverse order
+    // Only reverse for Menu component, not ContextMenu
+    if (isIos && shouldReverseOnIos && !isContextMenu) {
+      result.reverse()
+    }
 
     return result
   }
@@ -263,21 +314,8 @@ export const createNativeMenu = (
 
   const RadioItem: FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
   RadioItem.displayName = `${MenuType}RadioItem`
-
   // CheckboxItem wrapper to normalize checked/value props
-  const CheckboxItem: FC<MenuCheckboxItemProps> = (props) => {
-    const { checked, onCheckedChange, value, onValueChange, ...rest } = props
-    const finalValue = value ?? (checked ? 'on' : 'off')
-    const finalOnValueChange =
-      onValueChange ?? (onCheckedChange && ((v: string) => onCheckedChange(v === 'on')))
-    return (
-      <ZeegoMenu.CheckboxItem
-        value={finalValue}
-        onValueChange={finalOnValueChange}
-        {...rest}
-      />
-    )
-  }
+  const CheckboxItem: FC<MenuCheckboxItemProps> = (props) => null
   CheckboxItem.displayName = 'CheckboxItem'
 
   // Context menu specific

@@ -530,6 +530,7 @@ export function createBaseMenu({
     ) : (
       children
     )
+
     return (
       <Animate type="presence" present={forceMount || menuContext.open}>
         <PortalPrimitive>

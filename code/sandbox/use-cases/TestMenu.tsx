@@ -59,16 +59,16 @@ export function MenuDemo() {
             borderWidth={1}
             ai="flex-start"
             borderColor="$borderColor"
-            enterStyle={{ y: -10, opacity: 0 }}
-            exitStyle={{ y: -10, opacity: 0 }}
-            animation={[
-              'quicker',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
+             enterStyle={{ y: -10, opacity: 0 }}
+             exitStyle={{ y: -10, opacity: 0 }}
+             animation={[
+               'quicker',
+               {
+                 opacity: {
+                   overshootClamping: true,
+                 },
+               },
+             ]}
           >
             <Menu.Item onSelect={onSelect} key="about-notes">
               <Menu.ItemTitle>About Notes</Menu.ItemTitle>
