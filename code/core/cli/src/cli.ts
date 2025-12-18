@@ -166,6 +166,51 @@ const COMMAND_MAP = {
     },
   },
 
+  upgrade: {
+    shorthands: ['up'],
+    description: `Upgrade all tamagui packages in your workspace to the latest version`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--from': String,
+      '--to': String,
+      '--changelog-only': Boolean,
+      '--dry-run': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { upgrade } = require('./upgrade')
+      await upgrade({
+        from: flags['--from'],
+        to: flags['--to'],
+        changelogOnly: flags['--changelog-only'],
+        dryRun: flags['--dry-run'],
+        debug: flags['--debug'],
+      })
+    },
+  },
+
+  'update-template': {
+    shorthands: ['ut'],
+    description: `Used to update your git repo with the source template. (e.g. Takeout)`,
+    flags: {
+      '--help': Boolean,
+      '--template-repo': String,
+      '--ignored-patterns': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { updateTemplate } = require('./update-template')
+      if (!flags['--template-repo']) {
+        throw new Error('--template-repo is required')
+      }
+      await updateTemplate(
+        flags['--template-repo'],
+        flags['--ignored-patterns']?.split(' ')
+      )
+    },
+  },
+
   'generate-prompt': {
     shorthands: [],
     description: `Generate an LLM-friendly markdown file from your Tamagui config`,

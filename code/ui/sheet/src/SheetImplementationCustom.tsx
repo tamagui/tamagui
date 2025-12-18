@@ -86,9 +86,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     }
 
     const animationConfig = (() => {
-      if (animationDriver.supportsCSS) {
-        // for now this detects css driver only, which has no "config"
-        return {}
+      // explicit animationConfig prop always takes precedence
+      if (animationConfigProp) {
+        return animationConfigProp
       }
 
       const [animationProp, animationPropConfig] = !animation
@@ -96,15 +96,16 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         : Array.isArray(animation)
           ? animation
           : ([animation] as const)
-      return (
-        animationConfigProp ??
-        (animationProp
-          ? {
-              ...(animationDriver.animations[animationProp as string] as Object),
-              ...animationPropConfig,
-            }
-          : null)
-      )
+
+      // look up named animation config from driver if available
+      if (animationProp && animationDriver.animations?.[animationProp as string]) {
+        return {
+          ...(animationDriver.animations[animationProp as string] as Object),
+          ...animationPropConfig,
+        }
+      }
+
+      return null
     })()
 
     /**

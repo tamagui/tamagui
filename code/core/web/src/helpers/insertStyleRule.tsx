@@ -17,7 +17,11 @@ const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
 
 export const getAllSelectors = () => allSelectors
-export const getAllRules = () => Object.values(allRules)
+export const getAllRules = () => {
+  // Sort by identifier to ensure deterministic CSS output order
+  const sortedKeys = Object.keys(allRules).sort()
+  return sortedKeys.map((key) => allRules[key])
+}
 
 // once react 19 onyl supported we can remove most of this
 // gets existing ones (client side)

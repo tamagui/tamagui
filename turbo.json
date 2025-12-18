@@ -25,8 +25,8 @@
     "test": {
       "dependsOn": ["^build:js"],
       "outputs": [],
-      "env": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE"],
-      "passThroughEnv": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE"]
+      "env": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE", "SKIP_NATIVE_TESTS"],
+      "passThroughEnv": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE", "SKIP_NATIVE_TESTS"]
     },
     "clean": {
       "outputs": ["dist/**"],

@@ -1,5 +1,5 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { useColorScheme } from '@vxrn/color-scheme'
+import { useUserScheme } from '@vxrn/color-scheme'
 import { Link, useRouter } from 'one'
 import { memo, useEffect } from 'react'
 import type { HeadingProps } from 'tamagui'
@@ -154,8 +154,8 @@ export default function StudioSplashPage() {
 }
 
 const StudioScreen1 = memo(() => {
-  const [resolvedTheme] = useColorScheme()
-  const isLight = resolvedTheme === 'light'
+  const userScheme = useUserScheme()
+  const isLight = userScheme.value === 'light'
 
   const glow = useHoverGlow({
     resist: 85,

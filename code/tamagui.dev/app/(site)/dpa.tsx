@@ -10,7 +10,7 @@ import { MDXTabs } from '~/features/docs/MDXTabs'
 import { components } from '~/features/mdx/MDXComponents'
 
 export async function loader() {
-  const { getMDXBySlug } = await import('@tamagui/mdx-2')
+  const { getMDXBySlug } = await import('~/features/mdx/getMDXBySlug')
   const { frontmatter, code } = await getMDXBySlug('data/etc', 'dpa')
   return {
     frontmatter,

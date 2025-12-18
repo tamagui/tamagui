@@ -85,7 +85,7 @@ const ToggleGroupItem = ToggleFrame.styleable<
     if (props.disablePassStyles || !React.isValidElement(child)) {
       return child
     }
-    return getThemedIcon(child)
+    return React.cloneElement(getThemedIcon(child), { active: pressed } as any)
   })
 
   const commonProps = { pressed, disabled, ...sizeProps, ...rest, children }

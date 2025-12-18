@@ -2,19 +2,19 @@
  * Native-only props that should be skipped on web (both dev and prod)
  */
 export declare const nativeOnlyProps: {
-    ellipsizeMode: number;
     accessibilityElementsHidden: number;
     accessibilityIgnoresInvertColors: number;
     accessibilityLanguage: number;
     adjustsFontSizeToFit: number;
     allowFontScaling: number;
+    android_hyphenationFrequency: number;
     dataDetectorType: number;
     dynamicTypeRamp: number;
     elevationAndroid: number;
+    ellipsizeMode: number;
     hapticFeedback: number;
     hapticStyle: number;
     hitSlop: number;
-    onAccessibilityAction: number;
     importantForAccessibility: number;
     lineBreakStrategyIOS: number;
     maxFontSizeMultiplier: number;
@@ -25,7 +25,12 @@ export declare const nativeOnlyProps: {
     nextFocusLeft: number;
     nextFocusRight: number;
     nextFocusUp: number;
+    onAccessibilityAction: number;
+    onAccessibilityEscape: number;
+    onAccessibilityTap: number;
     onMagicTap: number;
+    onTextLayout: number;
+    pressRetentionOffset: number;
     selectionColor: number;
     shouldRasterizeIOS: number;
     suppressHighlighting: number;

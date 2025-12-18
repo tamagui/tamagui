@@ -25,11 +25,26 @@ export function SelectDemo() {
   )
 }
 
-export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactNode }) {
-  const [val, setVal] = React.useState('apple')
+type SelectValue = Lowercase<(typeof items)[number]['name']>
+
+// Helper to get item label from value - used by renderValue for SSR
+const getItemLabel = (value: string) =>
+  items.find((item) => item.name.toLowerCase() === value)?.name
+
+export function SelectDemoContents(
+  props: SelectProps<SelectValue> & { trigger?: React.ReactNode }
+) {
+  const [val, setVal] = React.useState<SelectValue>('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      {...props}
+      // renderValue enables SSR support by providing the label synchronously
+      renderValue={getItemLabel}
+    >
       {props?.trigger || (
         <Select.Trigger
           maxWidth={220}
@@ -78,7 +93,6 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
             rounded="$4"
           />
         </Select.ScrollUpButton>
-
         <Select.Viewport
           minW={200}
           backgroundColor="$background"
@@ -120,8 +134,7 @@ export function SelectDemoContents(props: SelectProps & { trigger?: React.ReactN
             <YStack
               position="absolute"
               r={0}
-              t={0}
-              b={0}
+              t={16}
               items="center"
               justify="center"
               width={'$4'}
@@ -180,4 +193,4 @@ const items = [
   { name: 'Grape' },
   { name: 'Jackfruit' },
   { name: 'Durian' },
-]
+] as const

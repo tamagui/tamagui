@@ -59,14 +59,15 @@ const HeroSubTitle = memo(() => {
         <Tag theme="blue" onMouseEnter={() => setHovered(4)} active={hovered === 4}>
           UI&nbsp;kit
         </Tag>
-      </Link>{' '}
+      </Link>
+      <br />
       for&nbsp;React&nbsp;and&nbsp;React&nbsp;Native
     </Subtitle>
   )
 })
 
 const HeroContents = memo(function HeroContents() {
-  const { name, tint, tintAlt } = useTint()
+  const { name, tint } = useTint()
 
   return (
     <ContainerLarge position="relative">
@@ -193,6 +194,8 @@ const HeroContents = memo(function HeroContents() {
           <YStack
             px={0}
             maxW={420}
+            // safari fix width
+            width="100%"
             // prevent layout shift
             height={70}
             $gtSm={{
@@ -200,7 +203,6 @@ const HeroContents = memo(function HeroContents() {
             }}
             $gtMd={{
               height: 90,
-              px: 90,
               maxW: 700,
             }}
             $gtLg={{

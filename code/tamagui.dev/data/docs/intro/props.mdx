@@ -13,6 +13,188 @@ object.
 
 Finally, there are a few non-style props Tamagui adds:
 
+## Event Props
+
+All Tamagui View-based components have Pressable-like functionality built in. You don't need to wrap in `Pressable` or `TouchableOpacity` - add event handlers directly:
+
+```tsx
+<View
+  onPress={() => console.log('pressed')}
+  onHoverIn={() => console.log('hovered')}
+  pressStyle={{ opacity: 0.8 }}
+  hoverStyle={{ backgroundColor: '$backgroundHover' }}
+/>
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'onPress',
+      required: false,
+      type: '(e: GestureResponderEvent) => void',
+      description: (
+        <span>
+          Called when a press is released. Works on both web and native.
+        </span>
+      ),
+    },
+    {
+      name: 'onPressIn',
+      required: false,
+      type: '(e: GestureResponderEvent) => void',
+      description: (
+        <span>
+          Called immediately when a press starts.
+        </span>
+      ),
+    },
+    {
+      name: 'onPressOut',
+      required: false,
+      type: '(e: GestureResponderEvent) => void',
+      description: (
+        <span>
+          Called when a press is released or cancelled.
+        </span>
+      ),
+    },
+    {
+      name: 'onLongPress',
+      required: false,
+      type: '(e: GestureResponderEvent) => void',
+      description: (
+        <span>
+          Called when a press is held for longer than <code>delayLongPress</code> (default 500ms).
+        </span>
+      ),
+    },
+    {
+      name: 'onHoverIn',
+      required: false,
+      type: '(e: MouseEvent) => void',
+      description: (
+        <span>
+          <strong>Web Only</strong>: Called when the mouse enters the element. Maps to <code>onMouseEnter</code>.
+        </span>
+      ),
+    },
+    {
+      name: 'onHoverOut',
+      required: false,
+      type: '(e: MouseEvent) => void',
+      description: (
+        <span>
+          <strong>Web Only</strong>: Called when the mouse leaves the element. Maps to <code>onMouseLeave</code>.
+        </span>
+      ),
+    },
+    {
+      name: 'onFocus',
+      required: false,
+      type: '(e: FocusEvent) => void',
+      description: (
+        <span>
+          Called when the element receives focus.
+        </span>
+      ),
+    },
+    {
+      name: 'onBlur',
+      required: false,
+      type: '(e: FocusEvent) => void',
+      description: (
+        <span>
+          Called when the element loses focus.
+        </span>
+      ),
+    },
+    {
+      name: 'delayPressIn',
+      required: false,
+      type: 'number',
+      description: (
+        <span>
+          Duration in ms to wait before calling <code>onPressIn</code>.
+        </span>
+      ),
+    },
+    {
+      name: 'delayPressOut',
+      required: false,
+      type: 'number',
+      description: (
+        <span>
+          Duration in ms to wait before calling <code>onPressOut</code> after press is released.
+        </span>
+      ),
+    },
+    {
+      name: 'delayLongPress',
+      required: false,
+      type: 'number',
+      description: (
+        <span>
+          Duration in ms to wait before calling <code>onLongPress</code>. Default is 500ms.
+        </span>
+      ),
+    },
+    {
+      name: 'minPressDuration',
+      required: false,
+      type: 'number',
+      description: (
+        <span>
+          Minimum duration in ms that a press must be held before <code>onPressOut</code> is called.
+        </span>
+      ),
+    },
+    {
+      name: 'cancelable',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          When true, allows the press to be cancelled by scrolling or other gestures.
+        </span>
+      ),
+    },
+    {
+      name: 'disabled',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Disables all press and hover interactions on the element.
+        </span>
+      ),
+    },
+    {
+      name: 'focusable',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Whether the element can receive focus. On web, controls <code>tabIndex</code>.
+        </span>
+      ),
+    },
+    {
+      name: 'hitSlop',
+      required: false,
+      type: `number | Insets`,
+      description: (
+        <span>
+          Extends the pressable area beyond the element bounds. Accepts a number (applies to all sides) or an object with <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>.
+        </span>
+      ),
+    },
+  ]}
+/>
+
+Use these events alongside style states like `pressStyle`, `hoverStyle`, and `focusStyle` to create interactive components. See the [Style API](/docs/intro/styles) for styling on interaction states.
+
+## Other Props
+
 <PropsTable
   data={[
     {
@@ -79,17 +261,6 @@ Finally, there are a few non-style props Tamagui adds:
       description: (
         <span>
           Forces the pseudo style state to be on.
-        </span>
-      ),
-    },
-
-    {
-      name: 'hitSlop',
-      required: false,
-      type: `number | Insets['top'| 'bottom'| 'left'| 'right']`,
-      description: (
-        <span>
-          Adds some area outside the typical bounds of the component for touch actions to register. Tamagui uses Pressable internally so it supports number | Insets rather than just Insets.
         </span>
       ),
     },

@@ -13,7 +13,7 @@
 
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { ensureIOSFolder } from './ios'
+import { ensureIOSFolder, ensureIOSApp } from './ios'
 
 const options = parseDetoxArgs('ios')
 
@@ -26,6 +26,9 @@ process.chdir(options.projectRoot)
 
 // Ensure ios folder exists (in case build artifacts were separated)
 await ensureIOSFolder()
+
+// Ensure iOS app is built (skipped on CI where app is pre-built)
+await ensureIOSApp(options.config)
 
 // Run tests with Metro
 const exitCode = await withMetro('ios', async () => {

@@ -15,12 +15,12 @@ export type SelectImplProps = SelectScopedProps<SelectProps> & {
   listContentRef: any
 }
 
-export interface SelectProps {
+export interface SelectProps<Value extends string = string> {
   id?: string
   children?: ReactNode
-  value?: string
-  defaultValue?: string
-  onValueChange?(value: string): void
+  value?: Value
+  defaultValue?: Value
+  onValueChange?(value: Value): void
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?(open: boolean): void
@@ -42,6 +42,21 @@ export interface SelectProps {
    * Called when an item is hovered by mouse or navigated to by keyboard.
    */
   onActiveChange?(value: string, index: number): void
+
+  /**
+   * Render function for the selected value. Use this for SSR support.
+   * When provided, this is called synchronously during render to display
+   * the selected value, avoiding hydration mismatches.
+   *
+   * @example
+   * ```tsx
+   * <Select
+   *   defaultValue="apple"
+   *   renderValue={(value) => ({ apple: 'Apple', orange: 'Orange' }[value])}
+   * >
+   * ```
+   */
+  renderValue?(value: Value): ReactNode
 }
 
 type DisposeFn = () => void
@@ -104,6 +119,8 @@ export interface SelectContextValue {
   disablePreventBodyScroll?: boolean
   /** update floating-ui to recalculate */
   update?: () => void
+  /** Render function for the selected value (SSR support) */
+  renderValue?: (value: any) => ReactNode
 }
 
 export type SelectViewportExtraProps = SelectScopedProps<{
