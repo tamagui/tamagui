@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -26,6 +26,7 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "react-native": "./dist/cjs/index.native.js",

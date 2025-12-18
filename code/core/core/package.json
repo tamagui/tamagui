@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "type": "module",
   "source": "src/index.tsx",
   "main": "dist/cjs",
@@ -61,32 +61,38 @@
     "./reset.css": "./reset.css",
     ".": {
       "react-native": {
+        "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./native": {
       "types": "./types/index.d.ts",
+      "module": "./dist/native.cjs",
       "import": "./dist/native.cjs",
       "require": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
+      "module": "./dist/test.native.cjs",
       "import": "./dist/test.native.cjs",
       "require": "./dist/test.native.cjs"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
+      "module": "./dist/esm/inject-styles.mjs",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs",
       "default": "./dist/cjs/inject-styles.cjs"
     },
     "./reactNativeTypes": {
       "types": "./types/reactNativeTypes.d.ts",
+      "module": "./dist/esm/reactNativeTypes.mjs",
       "import": "./dist/esm/reactNativeTypes.mjs",
       "require": "./dist/cjs/reactNativeTypes.cjs",
       "react-native": "./dist/cjs/reactNativeTypes.native.js"

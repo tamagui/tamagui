@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-node",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",

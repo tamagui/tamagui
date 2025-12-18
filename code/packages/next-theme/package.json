@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -23,6 +23,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.js"

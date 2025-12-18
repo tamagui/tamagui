@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "private": true,
   "main": "./dist/cjs/vite.config.js",
   "module": "./dist/esm/vite.config.js",
@@ -9,9 +9,11 @@
     "./package.json": "./package.json",
     ".": {
       "react-native": {
+        "module": "./dist/esm/vite.config.native.js",
         "import": "./dist/esm/vite.config.native.js",
         "require": "./dist/cjs/vite.config.native.js"
       },
+      "module": "./dist/esm/vite.config.mjs",
       "import": "./dist/esm/vite.config.mjs",
       "require": "./dist/cjs/vite.config.cjs",
       "default": "./dist/cjs/vite.config.native.js"

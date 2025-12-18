@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -27,65 +27,79 @@
     "./src/themes-new.ts": "./src/themes-new.ts",
     ".": {
       "react-native": {
+        "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./v2": {
       "react-native": {
+        "module": "./dist/esm/v2.native.js",
         "import": "./dist/esm/v2.native.js",
         "require": "./dist/cjs/v2.native.js"
       },
       "types": "./types/v2.d.ts",
+      "module": "./dist/esm/v2.mjs",
       "import": "./dist/esm/v2.mjs",
       "require": "./dist/cjs/v2.cjs"
     },
     "./v2-themes": {
       "react-native": {
+        "module": "./dist/esm/v2-themes.native.js",
         "import": "./dist/esm/v2-themes.native.js",
         "require": "./dist/cjs/v2-themes.native.js"
       },
       "types": "./types/v2-themes.d.ts",
+      "module": "./dist/esm/v2-themes.mjs",
       "import": "./dist/esm/v2-themes.mjs",
       "require": "./dist/cjs/v2-themes.cjs"
     },
     "./v3": {
       "react-native": {
+        "module": "./dist/esm/v3.native.js",
         "import": "./dist/esm/v3.native.js",
         "require": "./dist/cjs/v3.native.js"
       },
       "types": "./types/v3.d.ts",
+      "module": "./dist/esm/v3.mjs",
       "import": "./dist/esm/v3.mjs",
       "require": "./dist/cjs/v3.cjs"
     },
     "./v3-themes": {
       "react-native": {
+        "module": "./dist/esm/v3-themes.native.js",
         "import": "./dist/esm/v3-themes.native.js",
         "require": "./dist/cjs/v3-themes.native.js"
       },
       "types": "./types/v3-themes.d.ts",
+      "module": "./dist/esm/v3-themes.mjs",
       "import": "./dist/esm/v3-themes.mjs",
       "require": "./dist/cjs/v3-themes.cjs"
     },
     "./v4": {
       "react-native": {
+        "module": "./dist/esm/v4.native.js",
         "import": "./dist/esm/v4.native.js",
         "require": "./dist/cjs/v4.native.js"
       },
       "types": "./types/v4.d.ts",
+      "module": "./dist/esm/v4.mjs",
       "import": "./dist/esm/v4.mjs",
       "require": "./dist/cjs/v4.cjs"
     },
     "./v5": {
       "react-native": {
+        "module": "./dist/esm/v5.native.js",
         "import": "./dist/esm/v5.native.js",
         "require": "./dist/cjs/v5.native.js"
       },
       "types": "./types/v5.d.ts",
+      "module": "./dist/esm/v5.mjs",
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs"
     }

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin-fully-specified",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "source": "src/index.ts",
   "main": "permanent/cjs/index.js",
   "module": "permanent/esm/index.mjs",
@@ -21,12 +21,14 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
+      "module": "./permanent/esm/index.mjs",
       "import": "./permanent/esm/index.mjs",
       "require": "./permanent/cjs/index.js",
       "default": "./permanent/cjs/index.js"
     },
     "./commonjs": {
       "types": "./types/commonjs.d.ts",
+      "module": "./permanent/esm/commonjs.mjs",
       "import": "./permanent/esm/commonjs.mjs",
       "require": "./permanent/cjs/commonjs.js"
     }

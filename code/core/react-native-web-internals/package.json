@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-internals",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "type": "module",
   "description": "React Native for Web",
   "sideEffects": false,
@@ -22,6 +22,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
     }

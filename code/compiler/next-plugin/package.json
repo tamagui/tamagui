@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-plugin",
-  "version": "1.141.4",
+  "version": "1.141.5",
   "type": "module",
   "source": "src/index.ts",
   "license": "MIT",
@@ -25,6 +25,7 @@
     "./reset.css": "./reset.css",
     ".": {
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.cjs"
