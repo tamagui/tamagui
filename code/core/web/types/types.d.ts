@@ -656,6 +656,12 @@ export interface GenericTamaguiSettings {
      * @default 'static'
      */
     defaultPosition?: 'static' | 'relative';
+    /**
+     * Sets the base font size for rem calculations on native platforms.
+     * On web, browsers use the root font size (typically 16px).
+     * @default 16
+     */
+    remBaseFontSize?: number;
 }
 export type TamaguiSettings = TamaguiConfig['settings'];
 export type BaseStyleProps = {
@@ -804,8 +810,9 @@ export type AnimationProp = AnimationKeys | {
  * Tokens
  */
 type PercentString = `${string}%` & {};
-type SomewhatSpecificSizeValue = 'auto' | PercentString | UnionableNumber;
-type SomewhatSpecificSpaceValue = 'auto' | PercentString | UnionableNumber;
+type RemString = `${number}rem`;
+type SomewhatSpecificSizeValue = 'auto' | PercentString | RemString | UnionableNumber;
+type SomewhatSpecificSpaceValue = 'auto' | PercentString | RemString | UnionableNumber;
 type VariableString = `var(${string})`;
 export type SomewhatSpecificColorValue = CSSColorNames | 'transparent' | (`rgba(${string})` & {}) | (`rgb(${string})` & {}) | (`hsl(${string})` & {}) | (`hsla(${string})` & {}) | (`#${string}` & {});
 type WebOnlySizeValue = `${number}vw` | `${number}dvw` | `${number}lvw` | `${number}svw` | `${number}vh` | `${number}dvh` | `${number}lvh` | `${number}svh` | `calc(${string})` | `min(${string})` | `max(${string})` | 'max-content' | 'min-content';
@@ -836,7 +843,7 @@ export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTok
 export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace;
 export type ColorTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
 export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | number;
-export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | number;
+export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | number | RemString;
 export type NonSpecificTokens = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
 export type Token = NonSpecificTokens | (TamaguiSettings extends {
     autocompleteSpecificTokens: false;
@@ -848,12 +855,12 @@ export type Font = ParseFont<Fonts>;
 export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
-export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
-export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
+export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString;
+export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number | RemString;
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
 export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
-export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
+export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number | RemString;
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | RNTextStyle['fontStyle'];
 export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | RNTextStyle['textTransform'];
 export type ParseFont<A extends GenericFont> = {

@@ -17,6 +17,7 @@ import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { normalizeStyle } from './normalizeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { isRemValue, resolveRem } from './resolveRem'
 import { skipProps } from './skipProps'
 
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
@@ -70,6 +71,8 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
       value = getTokenForKey(key, value, styleProps, styleState)
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
+    } else if (isRemValue(value)) {
+      value = resolveRem(value)
     }
   }
 
@@ -290,9 +293,13 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     if (typeof val === 'string') {
+      // SYNC WITH *1
       const fVal =
-        // SYNC WITH *1
-        val[0] === '$' ? getTokenForKey(subKey, val, styleProps, styleState) : val
+        val[0] === '$'
+          ? getTokenForKey(subKey, val, styleProps, styleState)
+          : isRemValue(val)
+            ? resolveRem(val)
+            : val
 
       res[subKey] = fVal
       continue
