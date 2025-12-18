@@ -64,7 +64,6 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
     paddingHorizontal,
     // Android fixes: reset padding and center text vertically
     ...(!isWeb && {
-      textAlignVertical: 'center',
       paddingVertical: 0,
       paddingTop: 0,
       paddingBottom: 0,
@@ -90,6 +89,11 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
     shift: -1,
     bounds: [2],
   })
+  // lineHeight messes up input on native
+  if (!isWeb && fontStyle) {
+    delete fontStyle['lineHeight']
+  }
+
   return {
     ...buttonStyles,
     ...fontStyle,
