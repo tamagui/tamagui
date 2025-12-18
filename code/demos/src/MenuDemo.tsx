@@ -1,3 +1,4 @@
+
 import { styled } from '@tamagui/core'
 import { Backpack, Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
 import { Menu } from '@tamagui/menu'
@@ -62,7 +63,7 @@ export function MenuDemo() {
             enterStyle={{ y: -10, opacity: 0 }}
             exitStyle={{ y: -10, opacity: 0 }}
             animation={[
-              'quickest',
+              'quicker',
               {
                 opacity: {
                   overshootClamping: true,
@@ -132,7 +133,7 @@ export function MenuDemo() {
                   enterStyle={{ y: -10, opacity: 0 }}
                   exitStyle={{ y: -10, opacity: 0 }}
                   animation={[
-                    'quickest',
+                    'quicker',
                     {
                       opacity: {
                         overshootClamping: true,

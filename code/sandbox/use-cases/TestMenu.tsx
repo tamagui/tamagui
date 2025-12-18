@@ -57,14 +57,12 @@ export function MenuDemo() {
           <Menu.Content
             paddingHorizontal={0}
             borderWidth={1}
-            debug="verbose"
             ai="flex-start"
-            onLayout={() => console.log("Menu Content layout")}
             borderColor="$borderColor"
              enterStyle={{ y: -10, opacity: 0 }}
              exitStyle={{ y: -10, opacity: 0 }}
              animation={[
-               'quickest',
+               'quicker',
                {
                  opacity: {
                    overshootClamping: true,
@@ -134,7 +132,7 @@ export function MenuDemo() {
                   enterStyle={{ y: -10, opacity: 0 }}
                   exitStyle={{ y: -10, opacity: 0 }}
                   animation={[
-                    'quickest',
+                    'quicker',
                     {
                       opacity: {
                         overshootClamping: true,

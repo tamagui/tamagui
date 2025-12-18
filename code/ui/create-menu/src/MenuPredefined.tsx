@@ -75,7 +75,10 @@ const MenuSeparator = styled(View, {
   },
 })
 
-const MenuIcon = styled(View, { name: 'MenuIcon' })
+const MenuIcon = styled(View, {
+  name: 'MenuIcon',
+  marginLeft: 'auto',
+})
 
 const MenuImage = styled(Image, { name: 'MenuImage' })
 
