@@ -1,4 +1,3 @@
-
 import { styled } from '@tamagui/core'
 import { Backpack, Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
 import { Menu } from '@tamagui/menu'
