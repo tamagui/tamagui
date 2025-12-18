@@ -25,6 +25,13 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
     ...fontStyle,
     ...buttonStyles,
     paddingHorizontal,
+    // Android fixes: reset padding and center text vertically
+    ...(!isWeb && {
+      textAlignVertical: 'center',
+      paddingVertical: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+    }),
   }
 }
 
