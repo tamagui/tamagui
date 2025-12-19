@@ -107,8 +107,9 @@ test('scoped dialogs adapt to sheets', async ({ page: pageIn }) => {
     // Click trigger to open sheet
     await trigger.click()
 
-    // Wait for sheet to be visible
+    // Wait for sheet to be visible and open
     await expect(sheetContents).toBeVisible({ timeout: 5000 })
+    await expect(sheetContents).toHaveAttribute('data-state', 'open', { timeout: 5000 })
 
     // Check that dialog content is inside sheet
     await expect(sheetContents.locator(dialogContent)).toBeVisible()
@@ -122,10 +123,10 @@ test('scoped dialogs adapt to sheets', async ({ page: pageIn }) => {
     await expect(overlay).toBeVisible()
     await overlay.click()
 
-    // await animation
-    await new Promise((res) => setTimeout(res, 1000))
+    // Wait for sheet to close by checking data-state attribute
+    await expect(sheetContents).toHaveAttribute('data-state', 'closed', { timeout: 5000 })
 
-    // Verify sheet is closed
+    // Verify sheet is visually off-screen
     await expect(sheetContents).not.toBeInViewport()
   }
 

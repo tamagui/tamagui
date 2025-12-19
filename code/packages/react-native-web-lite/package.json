@@ -1,9 +1,8 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "type": "module",
   "description": "React Native for Web",
-  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [
@@ -20,35 +19,43 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./without-animated": {
+      "module": "./dist/esm/without-animated.mjs",
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.cjs"
     },
     "./Libraries/Utilities/codegenNativeComponent": {
+      "module": "./dist/esm/codegenNativeComponent.mjs",
       "import": "./dist/esm/codegenNativeComponent.mjs",
       "require": "./dist/cjs/codegenNativeComponent.cjs"
     },
     "./Libraries/Utilities/codegenNativeCommand": {
+      "module": "./dist/esm/codegenNativeCommand.mjs",
       "import": "./dist/esm/codegenNativeCommand.mjs",
       "require": "./dist/cjs/codegenNativeCommand.cjs"
     },
     "./dist/exports/StyleSheet/compiler/createReactDOMStyle": {
+      "module": "./dist/esm/createReactDOMStyle.mjs",
       "import": "./dist/esm/createReactDOMStyle.mjs",
       "require": "./dist/cjs/createReactDOMStyle.cjs"
     },
     "./dist/modules/*": {
+      "module": "./dist/esm/modules/*/index.mjs",
       "import": "./dist/esm/modules/*/index.mjs",
       "require": "./dist/cjs/modules/*/index.cjs"
     },
     "./dist/exports/*": {
+      "module": "./dist/esm/exports/*/index.mjs",
       "import": "./dist/esm/exports/*/index.mjs",
       "require": "./dist/cjs/exports/*/index.cjs"
     },
     "./dist/*": {
+      "module": "./dist/esm/*/index.mjs",
       "import": "./dist/esm/*/index.mjs",
       "require": "./dist/cjs/*/index.cjs"
     }

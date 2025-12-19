@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/native-ci",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "description": "Native CI/CD helpers for React Native apps with Expo - fingerprinting, caching, and build optimization",
   "license": "MIT",
   "type": "module",
@@ -31,6 +31,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
+      "module": "./dist/index.mjs",
       "import": "./dist/index.mjs"
     }
   },
