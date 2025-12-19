@@ -161,6 +161,7 @@ export function createSheet<
           <Frame
             ref={composedContentRef}
             flex={hasFit && open ? 0 : 1}
+            flexBasis={hasFit ? 'auto' : undefined}
             height={
               shouldUseFixedHeight
                 ? stableFrameSize.current
