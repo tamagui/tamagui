@@ -20,7 +20,7 @@ import {
 import React from 'react'
 
 import type { ToggleProps } from './Toggle'
-import { Toggle, ToggleFrame } from './Toggle'
+import { Toggle, ToggleFrame, context as ToggleContext } from './Toggle'
 
 const TOGGLE_GROUP_NAME = 'ToggleGroup'
 
@@ -49,16 +49,23 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
    * Used to disable passing styles down to children.
    */
   disablePassStyles?: boolean
+  toggledStyle?: GetProps<typeof ToggleFrame>
 }
 const ToggleGroupItem = ToggleFrame.styleable<
   TamaguiElement,
   ScopedProps<ToggleGroupItemProps>
 >((props, forwardedRef) => {
-  const [_, { color }] = usePropsAndStyle(props)
-  const { disablePassStyles, ...rest } = props
   const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
   const context = useToggleGroupContext(props.__scopeToggleGroup)
+  const toggleContext = ToggleContext.useStyledContext(props.__scopeToggleGroup)
   const pressed = valueContext?.value.includes(props.value)
+  const toggledStyle = props.toggledStyle || toggleContext.toggledStyle
+
+  const [__, { color }] = usePropsAndStyle(
+    { ...props, toggledStyle, active: pressed },
+    { forComponent: ToggleFrame }
+  )
+  const { disablePassStyles, toggledStyle: _, ...rest } = props
   const disabled = context.disabled || props.disabled || false
   const groupItemProps = useGroupItem({ disabled })
   const size = props.size ?? context.size
@@ -103,18 +110,20 @@ const ToggleGroupItem = ToggleFrame.styleable<
 
   return (
     <ToggleGroupItemProvider scope={props.__scopeToggleGroup}>
-      {context.rovingFocus ? (
-        <RovingFocusGroup.Item
-          asChild="except-style"
-          __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
-          focusable={!disabled}
-          active={pressed}
-        >
-          {inner}
-        </RovingFocusGroup.Item>
-      ) : (
-        inner
-      )}
+      <ToggleContext.Provider toggledStyle={toggledStyle}>
+        {context.rovingFocus ? (
+          <RovingFocusGroup.Item
+            asChild="except-style"
+            __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
+            focusable={!disabled}
+            active={pressed}
+          >
+            {inner}
+          </RovingFocusGroup.Item>
+        ) : (
+          inner
+        )}
+      </ToggleContext.Provider>
     </ToggleGroupItemProvider>
   )
 })
@@ -390,6 +399,7 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
     dir?: RovingFocusGroupProps['dir']
     loop?: RovingFocusGroupProps['loop']
     sizeAdjust?: number
+    toggledStyle?: any
   }
 
 const ToggleGroupImpl = ToggleGroupImplElementFrame.styleable<
@@ -406,6 +416,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.styleable<
     unstyled = false,
     size: sizeProp = '$true',
     sizeAdjust = 0,
+    toggledStyle,
     ...toggleGroupProps
   } = props
   const direction = useDirection(dir)
@@ -428,34 +439,36 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.styleable<
       disabled={disabled}
       size={size}
     >
-      {rovingFocus ? (
-        <RovingFocusGroup
-          asChild="except-style"
-          __scopeRovingFocusGroup={__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
-          orientation={orientation}
-          dir={direction}
-          loop={loop}
-        >
+      <ToggleContext.Provider toggledStyle={toggledStyle}>
+        {rovingFocus ? (
+          <RovingFocusGroup
+            asChild="except-style"
+            __scopeRovingFocusGroup={__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
+            orientation={orientation}
+            dir={direction}
+            loop={loop}
+          >
+            <ToggleGroupImplElementFrame
+              aria-orientation={orientation}
+              orientation={orientation}
+              // axis={orientation}
+              ref={forwardedRef}
+              data-disabled={disabled ? '' : undefined}
+              unstyled={unstyled}
+              {...commonProps}
+            />
+          </RovingFocusGroup>
+        ) : (
           <ToggleGroupImplElementFrame
             aria-orientation={orientation}
-            orientation={orientation}
-            // axis={orientation}
             ref={forwardedRef}
+            orientation={orientation}
             data-disabled={disabled ? '' : undefined}
             unstyled={unstyled}
             {...commonProps}
           />
-        </RovingFocusGroup>
-      ) : (
-        <ToggleGroupImplElementFrame
-          aria-orientation={orientation}
-          ref={forwardedRef}
-          orientation={orientation}
-          data-disabled={disabled ? '' : undefined}
-          unstyled={unstyled}
-          {...commonProps}
-        />
-      )}
+        )}
+      </ToggleContext.Provider>
     </ToggleGroupContext>
   )
 })

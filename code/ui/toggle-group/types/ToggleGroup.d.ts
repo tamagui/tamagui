@@ -12,6 +12,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
      * Used to disable passing styles down to children.
      */
     disablePassStyles?: boolean;
+    toggledStyle?: GetProps<typeof ToggleFrame>;
 };
 type ScopedProps<P> = P & {
     __scopeToggleGroup?: string;
@@ -39,8 +40,9 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        unstyled?: boolean | undefined;
+        toggledStyle?: `$${string}` | `$${number}` | undefined;
         active?: boolean | undefined;
+        unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };
@@ -101,6 +103,7 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & Group
     dir?: RovingFocusGroupProps['dir'];
     loop?: RovingFocusGroupProps['loop'];
     sizeAdjust?: number;
+    toggledStyle?: any;
 };
 export { ToggleGroup };
 export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupProps, ToggleGroupSingleProps, };

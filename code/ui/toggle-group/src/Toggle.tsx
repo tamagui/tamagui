@@ -4,9 +4,13 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps, TamaguiElement } from '@tamagui/web'
 import { createStyledContext, styled, Text } from '@tamagui/web'
 import * as React from 'react'
+import type { ViewProps } from 'react-native'
 
 export const context = createStyledContext({
   color: '',
+  toggledStyle: 
+  
+  null as any as Record<string, any> | ViewProps | null,
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -48,24 +52,31 @@ export const ToggleFrame = styled(ThemeableStack, {
       },
     },
 
+    toggledStyle: {
+      '...style': () => ({}),
+    },
+
     color: {
-      '...color': () => {
-        return {}
-      },
+      '...color': () => ({}),
     },
 
     active: {
-      true: {
-        zIndex: 1,
-
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-
-        focusStyle: {
-          borderColor: '$borderColor',
-          backgroundColor: '$background',
-        },
+      true: (_, { props, context }: any) => {
+        const toggledStyle = context?.toggledStyle
+        return {
+          zIndex: 1,
+          ...(!props.unstyled && {
+            backgroundColor: '$background',
+            hoverStyle: {
+              backgroundColor: '$background',
+            },
+            focusStyle: {
+              backgroundColor: '$background',
+              borderColor: '$borderColor',
+            },
+          }),
+          ...toggledStyle,
+        }
       },
     },
 
@@ -127,7 +138,7 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
           if (!props.disabled) {
-            setPressed(!pressed)
+            setPressed((prev) => !prev)
           }
         })}
       />
