@@ -1,32 +1,31 @@
-# Deprecated: ⚠️
+# react-native-web-lite
 
-Just use react-native-web, it's evolved enough to fix a few things and this has been left behind a bit.
+A tree-shakeable fork of react-native-web that replaces the style engine with simple inline styles.
 
-## Experiment!
+## What is this?
 
-Use at your own risk.
+This package keeps **all** the API surfaces of react-native-web, but makes them fully tree-shakeable by replacing the style engine with a simple inline style system.
 
-Slimming down react-native-web, this does the following:
+This is ideal if you're using an alternative style engine (like Tamagui, StyleX, etc.) and just want react-native API compatibility for non-style concerns.
 
-- Flow => Typescript
+## Trade-offs
+
+Because the style engine is replaced with inline styles, **descendant-based styles are not supported**. This means things like `pointerEvents="box-none"` won't work as expected since they rely on react-native-web's CSS-based styling system.
+
+If you need full react-native-web style support, use react-native-web directly.
+
+## Features
+
 - Full ESModule support
 - Vite compatibility
-- `sideEffects: false` + tree shaking support changes
-- merges [concurrent mode fixes](https://github.com/necolas/react-native-web/pull/2330)
-- merges the [experimental fully concurrent safe / functional `Animated`](https://github.com/facebook/react-native/blob/main/Libraries/Animated/createAnimatedComponent_EXPERIMENTAL.js)
-- Removes:
-  - ❌ VirtualList, FlatList, SectionList
-  - ❌ Switch (going to be split out, in Tamagui already)
-  - ❌ Touchable* views (prefer Pressable)
-  - ❌ normalize-css-color
-  - ❌ inline-style-prefixer
-  - ❌ create-react-class
+- `sideEffects: false` + full tree shaking support
+- TypeScript (converted from Flow)
 
-`@tamagui/next-plugin` and `@tamagui/vite-plugin` have an option `useReactNativeWebLite` to help automatically setting this up.
+## Setup
 
-With webpack:
+`@tamagui/next-plugin` and `@tamagui/vite-plugin` have an option `useReactNativeWebLite` to help automatically set this up.
 
-Alias the following
+With webpack, alias the following:
 
-- react-native-web$ => react-native-web-lite
-- react-native-svg => @tamagui/react-native-svg
+- `react-native-web$` => `react-native-web-lite`
+- `react-native-svg` => `@tamagui/react-native-svg`
