@@ -385,6 +385,13 @@ export const getTokenForKey = (
 
   const themeValue = theme ? theme[value] || theme[value.slice(1)] : undefined
 
+  // Ensure theme key tracking happens early for dynamic theme updates (fixes iOS)
+  // Accessing .val triggers the proxy getter which calls track(key)
+  if (themeValue) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    themeValue.val
+  }
+
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
   let hasSet = false
