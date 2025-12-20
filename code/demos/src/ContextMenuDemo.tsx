@@ -65,9 +65,7 @@ export function ContextMenuDemo() {
               },
             ]}
           >
-            <ContextMenu.Preview>
-              {() => null}
-            </ContextMenu.Preview>
+            <ContextMenu.Preview>{() => null}</ContextMenu.Preview>
 
             <ContextMenu.Item onSelect={onSelect} key="about-notes">
               <ContextMenu.ItemTitle>About Notes</ContextMenu.ItemTitle>
