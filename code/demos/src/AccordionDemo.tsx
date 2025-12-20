@@ -6,14 +6,14 @@ export function AccordionDemo() {
     <Accordion overflow="hidden" width="$20" type="multiple">
       <Accordion.Item value="a1">
         <Accordion.Trigger flexDirection="row" justify="space-between">
-          {({
-            open,
-          }: {
-            open: boolean
-          }) => (
+          {({ open }: { open: boolean }) => (
             <>
               <Paragraph>1. Take a cold shower</Paragraph>
-              <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
+              <Square
+                animation="quick"
+                rotate={open ? '180deg' : '0deg'}
+                bg="transparent"
+              >
                 <ChevronDown size="$1" />
               </Square>
             </>
@@ -31,14 +31,14 @@ export function AccordionDemo() {
 
       <Accordion.Item value="a2">
         <Accordion.Trigger flexDirection="row" justify="space-between">
-          {({
-            open,
-          }: {
-            open: boolean
-          }) => (
+          {({ open }: { open: boolean }) => (
             <>
               <Paragraph>2. Eat 4 eggs</Paragraph>
-              <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
+              <Square
+                animation="quick"
+                rotate={open ? '180deg' : '0deg'}
+                bg="transparent"
+              >
                 <ChevronDown size="$1" />
               </Square>
             </>
