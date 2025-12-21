@@ -1,66 +1,88 @@
-import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
-import type { SizeTokens } from 'tamagui'
-import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
+import { AlignCenter, AlignLeft, AlignRight } from "@tamagui/lucide-icons";
+import type { SizeTokens } from "tamagui";
+import { Label, styled, ToggleGroup, XStack, YStack } from "tamagui";
 
-const Item = styled(ToggleGroup.Item, {
-  color: '$color10',
+const GreenItem = styled(ToggleGroup.Item, {
+  color: "$green8",
+  toggledStyle: { backgroundColor: "$green9", color: "$yellow3" },
+});
 
-  focusStyle: {
-    color: '$color1',
-    backgroundColor: '$color12',
-  },
-})
+const PurpleItem = styled(ToggleGroup.Item, {
+  color: "$purple8",
+  toggledStyle: { backgroundColor: "$purple9", color: "$green9" },
+});
+
+const RedItem = styled(ToggleGroup.Item, {
+  color: "$red8",
+  toggledStyle: { backgroundColor: "$red9", color: "$blue9" },
+});
 
 export function ToggleGroupDemo() {
   return (
     <YStack px="$4">
       <XStack items="center" gap="$10">
         <YStack items="center" gap="$6">
-          <ToggleGroupComponent type="single" size="$3" orientation="horizontal" />
-          <ToggleGroupComponent type="multiple" size="$4" orientation="horizontal" />
+          <ToggleGroupComponent
+            type="single"
+            size="$3"
+            orientation="horizontal"
+          />
+          <ToggleGroupComponent
+            type="multiple"
+            size="$4"
+            orientation="horizontal"
+          />
         </YStack>
         <XStack items="center" gap="$6">
-          <ToggleGroupComponent type="single" size="$3" orientation="vertical" />
-          <ToggleGroupComponent type="multiple" size="$4" orientation="vertical" />
+          <ToggleGroupComponent
+            type="single"
+            size="$3"
+            orientation="vertical"
+          />
+          <ToggleGroupComponent
+            type="multiple"
+            size="$4"
+            orientation="vertical"
+          />
         </XStack>
       </XStack>
     </YStack>
-  )
+  );
 }
 
 function ToggleGroupComponent(props: {
-  size: SizeTokens
-  type: 'single' | 'multiple'
-  orientation: 'vertical' | 'horizontal'
+  size: SizeTokens;
+  type: "single" | "multiple";
+  orientation: "vertical" | "horizontal";
 }) {
-  const id = `switch-${props.size.toString().slice(1)}-${props.type}`
+  const id = `switch-${props.size.toString().slice(1)}-${props.type}`;
   return (
     <XStack
-      flexDirection={props.orientation === 'horizontal' ? 'row' : 'column'}
+      flexDirection={props.orientation === "horizontal" ? "row" : "column"}
       items="center"
       justify="center"
       gap="$4"
     >
       <Label pr="$0" justify="flex-end" size={props.size} htmlFor={id}>
-        {props.type === 'single' ? 'Single' : 'Multiple'}
+        {props.type === "single" ? "Single" : "Multiple"}
       </Label>
       <ToggleGroup
         orientation={props.orientation}
         id={id}
-        type={props.type as any} // since this demo switches between loosen types
+        type={props.type as any}
         size={props.size}
-        disableDeactivation={props.type === 'single' ? true : undefined}
+        disableDeactivation={props.type === "single" ? true : undefined}
       >
-        <Item value="left" aria-label="Left aligned">
+        <GreenItem value="left" aria-label="Left aligned">
           <AlignLeft />
-        </Item>
-        <Item value="center" aria-label="Center aligned">
+        </GreenItem>
+        <PurpleItem value="center" aria-label="Center aligned">
           <AlignCenter />
-        </Item>
-        <Item value="right" aria-label="Right aligned">
+        </PurpleItem>
+        <RedItem value="right" aria-label="Right aligned">
           <AlignRight />
-        </Item>
+        </RedItem>
       </ToggleGroup>
     </XStack>
-  )
+  );
 }
