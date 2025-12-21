@@ -339,7 +339,7 @@ const PaletteView = memo((props: Props) => {
 
       <XLabeledItem label="">
         <YStack gap="$4">
-          <XStack gap="$4" separator={<Separator vertical />}>
+          <XStack gap="$4">
             <DataItem
               width={50}
               labelTop=""
@@ -667,7 +667,7 @@ const PaletteColor = memo(
         position="relative"
         {...(hoveredColor === index && {
           z: 10000,
-          outlineColor: '$accent10',
+          outlineColor: '$color11',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
           shadowColor: '$blue10',
@@ -676,12 +676,12 @@ const PaletteColor = memo(
         })}
         {...((isAnchor || selectedColor === index) && {
           z: 10000,
-          outlineColor: '$accent10',
+          outlineColor: '$color11',
           outlineStyle: 'solid',
           outlineWidth: 2,
         })}
         {...(selectedColor === index && {
-          outlineColor: '$accent1',
+          outlineColor: '$color12',
         })}
         {...(selectedColor === hoveredColor &&
           hoveredColor === index && {

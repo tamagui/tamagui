@@ -1,34 +1,37 @@
-import { Button, H5, Theme, XStack, YStack, useThemeName } from 'tamagui'
+import { Button, H5, Theme, XStack, YStack } from 'tamagui'
 
 export function ThemeInverseDemo() {
-  const themeName = useThemeName()
-  const opposite = themeName.includes('dark') ? 'light' : 'dark'
-
   return (
-    <XStack gap="$4">
-      <Buttons title="Normal" name={themeName} />
-      <Theme inverse>
-        <Buttons
-          title="Inversed"
-          name={themeName.replace(themeName.split('_')[0], opposite)}
-        />
+    <XStack gap="$4" flexWrap="wrap">
+      <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
+        <H5>Base Theme</H5>
+        <Button>Normal</Button>
+        <Button theme="accent">Accent</Button>
+      </YStack>
+
+      <Theme name="red">
+        <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
+          <H5>Red Theme</H5>
+          <Button>Normal</Button>
+          <Button theme="accent">Accent</Button>
+        </YStack>
+      </Theme>
+
+      <Theme name="blue">
+        <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
+          <H5>Blue Theme</H5>
+          <Button>Normal</Button>
+          <Button theme="accent">Accent</Button>
+        </YStack>
+      </Theme>
+
+      <Theme name="green">
+        <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
+          <H5>Green Theme</H5>
+          <Button>Normal</Button>
+          <Button theme="accent">Accent</Button>
+        </YStack>
       </Theme>
     </XStack>
-  )
-}
-
-function Buttons(props: { name: string; title: string }) {
-  return (
-    <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
-      <H5>{props.title}</H5>
-      <Button>{props.name}</Button>
-
-      <Button theme="accent">inversed</Button>
-
-      <Button theme="alt1">{props.name}_alt1</Button>
-      <Theme name="yellow">
-        <Button>{props.name.split('_')[0] + '_yellow'}</Button>
-      </Theme>
-    </YStack>
   )
 }

@@ -66,7 +66,6 @@ export function ThemeDebug({
                   name: themeProps.name,
                   componentName: themeProps.componentName,
                   reset: themeProps.reset,
-                  inverse: themeProps.inverse,
                 },
                 parentState: {
                   name: parentState?.name,

@@ -157,7 +157,7 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
 
         <XStack justify="flex-end" gap="$4">
           <DialogClose>
-            <Button themeInverse aria-label="Ok">
+            <Button theme="accent" aria-label="Ok">
               Ok
             </Button>
           </DialogClose>

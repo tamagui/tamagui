@@ -316,7 +316,7 @@ const ComponentPreview = {
   Buttons: () => {
     return (
       <ZStack>
-        <Button mb="$-6" mr="$-6" self="center" icon={User} size="$4" themeInverse>
+        <Button mb="$-6" mr="$-6" self="center" icon={User} size="$4" theme="accent">
           Follow
         </Button>
         <Button mt="$-6" ml="$-6" self="center" icon={Share} size="$4">

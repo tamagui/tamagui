@@ -50,18 +50,6 @@ type Theme = {
     blue10: string;
     blue11: string;
     blue12: string;
-    green1: string;
-    green2: string;
-    green3: string;
-    green4: string;
-    green5: string;
-    green6: string;
-    green7: string;
-    green8: string;
-    green9: string;
-    green10: string;
-    green11: string;
-    green12: string;
     red1: string;
     red2: string;
     red3: string;
@@ -86,6 +74,18 @@ type Theme = {
     yellow10: string;
     yellow11: string;
     yellow12: string;
+    green1: string;
+    green2: string;
+    green3: string;
+    green4: string;
+    green5: string;
+    green6: string;
+    green7: string;
+    green8: string;
+    green9: string;
+    green10: string;
+    green11: string;
+    green12: string;
     shadow1: string;
     shadow2: string;
     shadow3: string;
@@ -131,7 +131,7 @@ type Theme = {
     accent12: string;
 };
 export declare const colors: string[];
-type ThemeNames = 'light' | 'dark' | 'light_accent' | 'dark_accent' | 'light_black' | 'light_white' | 'light_blue' | 'light_red' | 'light_yellow' | 'light_green' | 'dark_black' | 'dark_white' | 'dark_blue' | 'dark_red' | 'dark_yellow' | 'dark_green';
+type ThemeNames = 'light' | 'dark' | 'light_accent' | 'light_white_accent' | 'dark_accent' | 'dark_black_accent' | 'light_black' | 'light_white' | 'light_blue' | 'light_red' | 'light_yellow' | 'light_green' | 'dark_black' | 'dark_white' | 'dark_blue' | 'dark_red' | 'dark_yellow' | 'dark_green' | 'light_black_accent' | 'light_blue_accent' | 'light_red_accent' | 'light_yellow_accent' | 'light_green_accent' | 'dark_white_accent' | 'dark_blue_accent' | 'dark_red_accent' | 'dark_yellow_accent' | 'dark_green_accent';
 export declare const themes: Record<ThemeNames, Theme>;
 export {};
 //# sourceMappingURL=generated-v4.d.ts.map

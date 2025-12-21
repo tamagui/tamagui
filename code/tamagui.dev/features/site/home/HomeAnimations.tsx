@@ -101,7 +101,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
                 y={200}
                 iconAfter={ArrowDown}
                 size="$4"
-                themeInverse
+                theme="accent"
                 z={10}
                 onPress={() => setDisableScrollPane(false)}
               >
@@ -124,8 +124,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
         <XStack self="center" gap="$3">
           <Link href="/docs/core/animations">
-            <Button aria-label="Animation docs" fontFamily="$silkscreen">
-              Docs &raquo;
+            <Button aria-label="Animation docs">
+              <Button.Text fontFamily="$silkscreen">Docs &raquo;</Button.Text>
             </Button>
           </Link>
         </XStack>

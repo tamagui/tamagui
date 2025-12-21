@@ -69,7 +69,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
         <XGroup>
           {Object.entries(visibleCurves).map(([type, isVisible], i) => {
             return (
-              <Theme key={`${type}${i}`} inverse={isVisible}>
+              <Theme key={`${type}${i}`} name={isVisible ? 'accent' : undefined}>
                 <Button
                   size="$2"
                   px="$3"

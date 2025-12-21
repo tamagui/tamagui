@@ -53,10 +53,10 @@ export default function DocsLayout() {
         height="100%"
         maxH={1000}
         z={0}
-        colors={['$color1', '$accent12']}
+        colors={['$color1', '$color1']}
       />
 
-      <YStack z={-1} fullscreen bg="$accent12" />
+      <YStack z={-1} fullscreen bg="$color1" />
 
       {/* Sidebar container - no transform wrapper to preserve position:fixed */}
       <YStack

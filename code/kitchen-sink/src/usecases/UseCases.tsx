@@ -69,7 +69,12 @@ function AnimationChangeTest() {
   const [animation, setanimation] = React.useState('lazy' as any)
   return (
     <>
-      <Square animation={animation} size={100} bc="red" hoverStyle={{ scale: 2 }} />
+      <Square
+        animation={animation}
+        size={100}
+        borderColor="red"
+        hoverStyle={{ scale: 2 }}
+      />
       <Button onPress={() => setanimation(animation === 'lazy' ? 'quick' : 'lazy')}>
         {animation}
       </Button>
@@ -401,21 +406,4 @@ function UseThemeNameChildTest() {
   const name = useThemeName()
 
   return <H1>{name}</H1>
-}
-
-function ThemeInverseReverseTest() {
-  return (
-    <>
-      {/* Theme reset + invert */}
-      <Theme name="dark">
-        <Theme reset>
-          {/* should be light */}
-          <Theme inverse>
-            {/* should be dark */}
-            <Square bg="$background" size={100} />
-          </Theme>
-        </Theme>
-      </Theme>
-    </>
-  )
 }

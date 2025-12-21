@@ -121,7 +121,7 @@ export declare const defaultConfig: {
         t: "top";
         z: "zIndex";
     };
-    themes: Record<"light" | "dark" | "light_orange" | "light_yellow" | "light_green" | "light_blue" | "light_purple" | "light_pink" | "light_red" | "dark_orange" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_purple" | "dark_pink" | "dark_red" | "light_gray" | "dark_gray" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_teal" | "dark_teal", {
+    themes: Record<"light" | "dark" | "light_orange" | "light_yellow" | "light_green" | "light_blue" | "light_purple" | "light_pink" | "light_red" | "dark_orange" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_purple" | "dark_pink" | "dark_red" | "light_gray" | "dark_gray" | "light_accent" | "light_white_accent" | "dark_accent" | "dark_black_accent" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_black_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent" | "light_teal" | "dark_teal" | "light_gray_accent" | "light_teal_accent" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "dark_gray_accent" | "dark_teal_accent" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent", {
         accentBackground: string;
         accentColor: string;
         background0: string;
@@ -322,18 +322,6 @@ export declare const defaultConfig: {
         background0075: string;
         background005: string;
         background0025: string;
-        accent1: string;
-        accent2: string;
-        accent3: string;
-        accent4: string;
-        accent5: string;
-        accent6: string;
-        accent7: string;
-        accent8: string;
-        accent9: string;
-        accent10: string;
-        accent11: string;
-        accent12: string;
     }>;
     tokens: {
         readonly radius: {

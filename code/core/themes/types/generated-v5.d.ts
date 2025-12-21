@@ -92,6 +92,18 @@ type Theme = {
     shadow4: string;
     shadow5: string;
     shadow6: string;
+    neutral1: string;
+    neutral2: string;
+    neutral3: string;
+    neutral4: string;
+    neutral5: string;
+    neutral6: string;
+    neutral7: string;
+    neutral8: string;
+    neutral9: string;
+    neutral10: string;
+    neutral11: string;
+    neutral12: string;
     orange1: string;
     orange2: string;
     orange3: string;
@@ -213,7 +225,7 @@ type Theme = {
     accent12: string;
 };
 export declare const colors: string[];
-type ThemeNames = 'light' | 'dark' | 'light_accent' | 'dark_accent' | 'light_black' | 'light_white' | 'light_gray' | 'light_blue' | 'light_red' | 'light_yellow' | 'light_green' | 'light_teal' | 'light_orange' | 'light_pink' | 'light_purple' | 'dark_black' | 'dark_white' | 'dark_gray' | 'dark_blue' | 'dark_red' | 'dark_yellow' | 'dark_green' | 'dark_teal' | 'dark_orange' | 'dark_pink' | 'dark_purple';
+type ThemeNames = 'light' | 'dark' | 'light_accent' | 'light_white_accent' | 'dark_accent' | 'dark_black_accent' | 'light_black' | 'light_white' | 'light_gray' | 'light_blue' | 'light_red' | 'light_yellow' | 'light_green' | 'light_teal' | 'light_orange' | 'light_pink' | 'light_purple' | 'light_neutral' | 'dark_black' | 'dark_white' | 'dark_gray' | 'dark_blue' | 'dark_red' | 'dark_yellow' | 'dark_green' | 'dark_teal' | 'dark_orange' | 'dark_pink' | 'dark_purple' | 'dark_neutral' | 'light_black_accent' | 'light_gray_accent' | 'light_blue_accent' | 'light_red_accent' | 'light_yellow_accent' | 'light_green_accent' | 'light_teal_accent' | 'light_orange_accent' | 'light_pink_accent' | 'light_purple_accent' | 'light_neutral_accent' | 'dark_white_accent' | 'dark_gray_accent' | 'dark_blue_accent' | 'dark_red_accent' | 'dark_yellow_accent' | 'dark_green_accent' | 'dark_teal_accent' | 'dark_orange_accent' | 'dark_pink_accent' | 'dark_purple_accent' | 'dark_neutral_accent';
 export declare const themes: Record<ThemeNames, Theme>;
 export {};
 //# sourceMappingURL=generated-v5.d.ts.map

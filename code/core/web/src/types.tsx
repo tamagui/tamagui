@@ -263,8 +263,6 @@ export type TamaguiComponentPropsBaseBase = {
    */
   themeShallow?: boolean
 
-  themeInverse?: boolean
-
   /**
    * Same as the web id property for setting a uid on an element
    */
@@ -870,7 +868,6 @@ export interface ThemeProps {
   children?: any
   reset?: boolean
   debug?: DebugProp
-  inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean
 
@@ -993,8 +990,7 @@ export interface GenericTamaguiSettings {
    * So - as long as you:
    *
    *   1. Only use light/dark changes of themes at the root of your app
-   *   2. Don't use <Theme inverse> or themeInverse
-   *   3. Always change light/dark alongside the Appearance.colorScheme
+   *   2. Always change light/dark alongside the Appearance.colorScheme
    *
    * Then this feature is safe to turn on and will significantly speed up
    * dark/light re-renders.

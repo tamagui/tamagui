@@ -14,11 +14,11 @@ export const ThemedListItem = () => (
       borderRadius="$3"
     />
 
-    <Theme inverse>
+    <Theme name="accent">
       <ListItem
-        id="themed-list-item-inverse"
-        title="Inverse"
-        subTitle="Inverse list item"
+        id="themed-list-item-accent"
+        title="Accent"
+        subTitle="Accent (contrasting) list item"
         icon={ChevronRight}
         size="$3"
         borderRadius="$3"
@@ -54,29 +54,29 @@ export const ThemedListItem = () => (
     </Theme>
 
     <Theme name="light">
-      <Theme inverse>
+      <Theme name="accent">
         <ListItem
-          id="themed-list-item-light-inverse"
-          title="<Theme inverse>"
-          subTitle="Forcing dark theme - light + inverse"
+          id="themed-list-item-light-accent"
+          title='<Theme name="accent">'
+          subTitle="light + accent = light_accent (contrasting)"
           icon={ChevronRight}
           size="$3"
           borderRadius="$3"
-          onPress={() => console.info('Light theme inverse list item pressed')}
+          onPress={() => console.info('Light theme accent list item pressed')}
         />
       </Theme>
     </Theme>
 
     <Theme name="dark">
-      <Theme inverse>
+      <Theme name="accent">
         <ListItem
-          id="themed-list-item-dark-inverse"
-          title="<Theme inverse>"
-          subTitle="Forcing light theme - dark + inverse"
+          id="themed-list-item-dark-accent"
+          title='<Theme name="accent">'
+          subTitle="dark + accent = dark_accent (contrasting)"
           icon={ChevronRight}
           size="$3"
           borderRadius="$3"
-          onPress={() => console.info('Dark theme inverse list item pressed')}
+          onPress={() => console.info('Dark theme accent list item pressed')}
         />
       </Theme>
     </Theme>

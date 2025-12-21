@@ -163,7 +163,7 @@ function CopyCodeButton({ onCopy, hasCopied, oneTabLayout = false }) {
   return (
     <Button
       rounded="$4"
-      themeInverse
+      theme="accent"
       position="absolute"
       t={oneTabLayout ? 16 : 48}
       r={0}
