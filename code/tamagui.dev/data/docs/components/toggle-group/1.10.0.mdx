@@ -159,12 +159,9 @@ import { ToggleGroup } from '@tamagui/toggle-group'
 import { styled } from 'tamagui'
 
 const MyToggleGroupItem = styled(ToggleGroup.Item, {
-  variants: {
-    active: {
-      true: {
-        backgroundColor: 'red'
-      },
-    },
+  toggledStyle: {
+    backgroundColor: '$green9',
+    color: '$yellow9',
   },
 })
 ```

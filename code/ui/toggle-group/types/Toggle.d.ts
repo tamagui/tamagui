@@ -1,5 +1,5 @@
-import type { GetProps, TamaguiElement } from "@tamagui/web";
-import * as React from "react";
+import type { GetProps, TamaguiElement } from '@tamagui/web';
+import * as React from 'react';
 export declare const context: import("@tamagui/web").StyledContext<{
     color: string;
     toggledStyle: null | Record<string, any>;

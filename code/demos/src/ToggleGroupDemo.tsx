@@ -4,7 +4,7 @@ import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
 
 const GreenItem = styled(ToggleGroup.Item, {
   color: '$green8',
-  toggledStyle: { backgroundColor: '$green9', color: '$yellow3' },
+  toggledStyle: { backgroundColor: '$green9', color: '$yellow9' },
 })
 
 const PurpleItem = styled(ToggleGroup.Item, {
