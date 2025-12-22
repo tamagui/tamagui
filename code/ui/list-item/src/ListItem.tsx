@@ -181,7 +181,6 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
       children,
       icon,
       iconAfter,
-      theme: themeName,
       scaleIcon = 1,
       unstyled = false,
       subTitle,
@@ -200,9 +199,7 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
       const isBefore = i === 0
       return getIcon(icon, {
         size: iconSizeNumber,
-        ...{
-          [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
-        },
+        [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
       })
     })
 

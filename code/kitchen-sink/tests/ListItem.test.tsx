@@ -59,7 +59,7 @@ test('ListItem with accent theme renders correctly in light theme', async ({ pag
 
   // Accent theme inverts colors - light + accent = dark background
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(23, 23, 23)')
+  expect(styles.backgroundColor).toBe('rgb(5, 5, 5)')
 })
 
 test('ListItem with accent theme renders correctly in dark theme', async ({ page }) => {

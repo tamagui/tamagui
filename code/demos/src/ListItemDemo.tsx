@@ -16,7 +16,7 @@ function ListItemDemo1() {
       self="center"
       borderWidth={1}
       borderColor="$borderColor"
-      borderRadius="$4"
+      rounded="$4"
       width={240}
       size="$4"
     >
@@ -47,7 +47,7 @@ function ListItemDemo2() {
       self="center"
       borderWidth={1}
       borderColor="$borderColor"
-      borderRadius="$4"
+      rounded="$4"
       width={240}
       size="$5"
       separator={<Separator />}
