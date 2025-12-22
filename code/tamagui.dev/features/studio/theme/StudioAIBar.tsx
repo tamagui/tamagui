@@ -371,7 +371,7 @@ const ThemeToggle = () => {
       <Configuration animationDriver={animationsCSS}>
         <Switch
           checked={checked}
-          outlineColor="$color12"
+          outlineColor="$accent11"
           outlineWidth={0}
           outlineStyle="solid"
           pressStyle={{

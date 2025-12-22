@@ -24,14 +24,13 @@ export const LogoWords: React.MemoExoticComponent<
   const { tintIndex: index, tint } = Tint
   const hoveredTints = Tint.tints.map((x) => `${x}9`).map((t) => `var(--${t})`)
 
-  // Use theme.color12 (text color) instead of accent1 to avoid CSS cascade issues with grandChildrenThemes
-  const textColor = theme.color12?.val || theme.color?.val || 'var(--color12)'
+  const textColor = theme.color12?.val || theme.color?.val || 'var(--accent1)'
 
   const tints = [textColor, textColor, textColor, textColor, ...rgb]
 
   const circleTints = hovered
     ? Tint.tints.map((x) => `$${x}9`)
-    : ['$color12', '$color12', '$color12', '$color12', ...rgb]
+    : ['$accent1', '$accent1', '$accent1', '$accent1', ...rgb]
 
   useEffect(() => {
     const idle = window.requestIdleCallback || setTimeout

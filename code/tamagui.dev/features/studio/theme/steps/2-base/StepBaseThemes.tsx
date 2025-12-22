@@ -667,7 +667,7 @@ const PaletteColor = memo(
         position="relative"
         {...(hoveredColor === index && {
           z: 10000,
-          outlineColor: '$color11',
+          outlineColor: '$accent10',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
           shadowColor: '$blue10',
@@ -676,12 +676,12 @@ const PaletteColor = memo(
         })}
         {...((isAnchor || selectedColor === index) && {
           z: 10000,
-          outlineColor: '$color11',
+          outlineColor: '$accent10',
           outlineStyle: 'solid',
           outlineWidth: 2,
         })}
         {...(selectedColor === index && {
-          outlineColor: '$color12',
+          outlineColor: '$accent1',
         })}
         {...(selectedColor === hoveredColor &&
           hoveredColor === index && {

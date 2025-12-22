@@ -359,6 +359,15 @@ function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
     )
   }
 
+  // Only include grandChildrenThemes with custom palettes to avoid overwriting accent palette
+  const grandChildrenWithPalettes = props.grandChildrenThemes
+    ? Object.fromEntries(
+        Object.entries(props.grandChildrenThemes).filter(
+          ([_, v]) => (v as SimpleThemeDefinition).palette
+        )
+      )
+    : undefined
+
   return {
     base: {
       name: 'base',
@@ -371,7 +380,9 @@ function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
       },
     }),
     ...(props.childrenThemes && getSubThemesPalettes(props.childrenThemes)),
-    ...(props.grandChildrenThemes && getSubThemesPalettes(props.grandChildrenThemes)),
+    ...(grandChildrenWithPalettes &&
+      Object.keys(grandChildrenWithPalettes).length > 0 &&
+      getSubThemesPalettes(grandChildrenWithPalettes as SimpleThemesDefinition)),
   }
 }
 

@@ -1,13 +1,3 @@
-import { opacify } from './opacify';
-/**
- * Apply alpha transparency to a color.
- * Works with hex colors (#fff, #ffffff) and hsl/hsla colors.
- *
- * @example
- * alpha('#ff0000', 0.5) // '#ff000080'
- * alpha('hsl(0, 100%, 50%)', 0.5) // 'hsla(0, 100%, 50%, 0.5)'
- */
-export declare const alpha: typeof opacify;
 declare const darkPalette: string[];
 declare const lightPalette: string[];
 export { darkPalette, lightPalette };
