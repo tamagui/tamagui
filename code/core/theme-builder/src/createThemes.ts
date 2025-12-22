@@ -6,11 +6,10 @@ import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
 import type { BuildPalettes, BuildTemplates, GetThemeFn } from './types'
 
 /**
- * TODO
- *
- *  - we avoidNestingWithin accent, but sometimes want it eg v4-tamagui grandChildren
- *    a good default would be to IF palette is set, dont nest, IF only template, nest
- *    needs to update both runtime logic and types
+ * GrandChildren theme nesting logic implementation:
+ *  - IF palette is set: treat as palette theme (don't nest into accent family)
+ *  - IF only template: nest into color children, but avoid base themes (light, dark)
+ *    to prevent conflicts with top-level accent theme
  */
 
 type ExtraThemeValues = Record<string, string>
@@ -104,10 +103,13 @@ export const getLastBuilder = () => lastBuilder
 function normalizeSubThemes<A extends SimpleThemesDefinition>(defs?: A) {
   return Object.fromEntries(
     Object.entries(defs || {}).map(([name, value]) => {
+      const hasPalette = value.palette !== undefined
+
       return [
         name,
         {
-          palette: name,
+          // Only add palette if the definition has one, otherwise theme is template-only
+          ...(hasPalette ? { palette: name } : {}),
           template: value.template || 'base',
         },
       ]

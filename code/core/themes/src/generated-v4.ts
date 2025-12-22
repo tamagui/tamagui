@@ -692,21 +692,7 @@ type ThemeNames =
  | 'dark_yellow'
  | 'dark_green'
  | 'light_accent'
- | 'light_accent_accent'
- | 'light_black_accent_accent'
- | 'light_white_accent_accent'
- | 'light_blue_accent_accent'
- | 'light_red_accent_accent'
- | 'light_yellow_accent_accent'
- | 'light_green_accent_accent'
  | 'dark_accent'
- | 'dark_accent_accent'
- | 'dark_black_accent_accent'
- | 'dark_white_accent_accent'
- | 'dark_blue_accent_accent'
- | 'dark_red_accent_accent'
- | 'dark_yellow_accent_accent'
- | 'dark_green_accent_accent'
  | 'light_black_accent'
  | 'light_white_accent'
  | 'light_blue_accent'
@@ -736,21 +722,7 @@ export const themes: Record<ThemeNames, Theme> = {
   dark_yellow: n13,
   dark_green: n14,
   light_accent: n15,
-  light_accent_accent: n15,
-  light_black_accent_accent: n15,
-  light_white_accent_accent: n15,
-  light_blue_accent_accent: n15,
-  light_red_accent_accent: n15,
-  light_yellow_accent_accent: n15,
-  light_green_accent_accent: n15,
   dark_accent: n16,
-  dark_accent_accent: n16,
-  dark_black_accent_accent: n16,
-  dark_white_accent_accent: n16,
-  dark_blue_accent_accent: n16,
-  dark_red_accent_accent: n16,
-  dark_yellow_accent_accent: n16,
-  dark_green_accent_accent: n16,
   light_black_accent: n17,
   light_black_SwitchThumb: n17,
   light_black_SliderThumb: n17,
