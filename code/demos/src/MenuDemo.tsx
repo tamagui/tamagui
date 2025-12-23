@@ -76,7 +76,7 @@ export function MenuDemo() {
 
             <Menu.Separator />
 
-            <Menu.Group>
+            <Menu.Group backgroundColor="transparent">
               <Menu.Item onSelect={onSelect} key="settings">
                 <Menu.ItemTitle>Settings</Menu.ItemTitle>
               </Menu.Item>
@@ -103,7 +103,7 @@ export function MenuDemo() {
 
             <Menu.Separator />
 
-            <Menu.Group>
+            <Menu.Group backgroundColor="transparent">
               <Menu.Item onSelect={onSelect} key="close-notes" disabled>
                 <Menu.ItemTitle color="gray">locked notes</Menu.ItemTitle>
               </Menu.Item>
