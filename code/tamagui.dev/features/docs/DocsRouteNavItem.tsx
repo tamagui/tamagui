@@ -69,7 +69,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           cursor="pointer"
           select="none"
           opacity={active ? 1 : 0.65}
-          text={inMenu ? 'left' : 'right'}
+          style={{ textAlign: inMenu ? 'left' : 'right' }}
           width="100%"
           hoverStyle={{
             opacity: 0.85,
