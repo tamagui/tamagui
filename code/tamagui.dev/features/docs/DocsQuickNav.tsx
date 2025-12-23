@@ -266,19 +266,17 @@ export function DocsQuickNav() {
           display={headings.length === 0 ? 'none' : 'flex'}
           gap="$2"
         >
-          <XStack items="center" gap="$2" mb="$2">
-            <H4
-              fontFamily="$mono"
-              size="$5"
-              mb="$2"
-              theme="alt1"
-              id="site-quick-nav-heading"
-            >
-              Contents
-            </H4>
-          </XStack>
+          <H4
+            fontFamily="$mono"
+            size="$5"
+            mb="$2"
+            theme="alt1"
+            id="site-quick-nav-heading"
+          >
+            Contents
+          </H4>
 
-          <ScrollView maxH="calc(100vh - var(--space-25))">
+          <ScrollView maxH="calc(100vh - 300px)">
             <YStack ref={containerRef as any} py="$2" pl={24} position="relative">
               <NavLineIndicator
                 items={itemData}
