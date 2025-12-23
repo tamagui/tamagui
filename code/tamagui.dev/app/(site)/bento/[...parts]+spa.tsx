@@ -58,7 +58,7 @@ export default function BentoPage() {
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
         </ContainerBento>
 
-        <YStack py="$8" pb="$16">
+        <YStack py="$8" pb="$16" position="relative">
           <YStack pointerEvents="none" fullscreen className="bg-grid" opacity={0.033} />
           <ContainerBento>
             <XStack position="relative" t={0}>
@@ -198,7 +198,7 @@ export const DetailHeader = (props: { children: string }) => {
             </Anchor>
           </Link>
 
-          <SizableText theme="alt1" tag="span" userSelect="none" size="$2">
+          <SizableText theme="alt1" tag="span" select="none" size="$2">
             &raquo;
           </SizableText>
 
@@ -208,7 +208,7 @@ export const DetailHeader = (props: { children: string }) => {
             </Anchor>
           </Link>
 
-          <SizableText theme="alt1" tag="span" userSelect="none" size="$2">
+          <SizableText theme="alt1" tag="span" select="none" size="$2">
             &raquo;
           </SizableText>
 
