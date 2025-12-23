@@ -1,7 +1,7 @@
 import type { ListItemProps } from 'tamagui'
 import { ListItem, SizableText, View, XStack } from 'tamagui'
 import { Pressable } from 'react-native'
-import { useThemeControl, ThemeMode } from '../../useKitchenSinkTheme'
+import { useThemeControl, type ThemeMode } from '../../useKitchenSinkTheme'
 
 const modes: ThemeMode[] = ['system', 'light', 'dark']
 const modeLabels: Record<ThemeMode, string> = {
