@@ -237,6 +237,7 @@ const StarterRepoCard = ({
       maxW={300}
       gap="$2"
       tag="a"
+      // @ts-ignore
       href={url as string}
       target="_blank"
       p="$5"

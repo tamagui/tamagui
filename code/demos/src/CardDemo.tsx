@@ -21,11 +21,11 @@ export function CardDemo() {
 export function DemoCard(props: CardProps) {
   return (
     <Card size="$4" borderWidth={1} borderColor="$borderColor" {...props}>
-      <Card.Header padding="$4">
+      <Card.Header p="$4">
         <H2>Sony A7IV</H2>
         <Paragraph theme="alt2">Now available</Paragraph>
       </Card.Header>
-      <Card.Footer padding="$4">
+      <Card.Footer p="$4">
         <XStack flex={1} />
         <Button rounded="$10">Purchase</Button>
       </Card.Footer>

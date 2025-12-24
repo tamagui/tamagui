@@ -364,7 +364,7 @@ export function Demo() {
     >
       <AnimatePresence initial={false} custom={{ going }}>
         <GalleryItem key={page} animation="slowest" going={going}>
-          <Image source={{ uri: photos[imageIndex], width: 500, height: 300 }} />
+          <Image src={photos[imageIndex]} width={500} height={300} />
         </GalleryItem>
       </AnimatePresence>
 

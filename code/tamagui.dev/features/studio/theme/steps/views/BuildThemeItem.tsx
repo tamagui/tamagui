@@ -19,17 +19,17 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
   return (
     <Button
       size="$4"
-      theme={isActive ? 'active' : undefined}
+      theme={isActive ? 'accent' : undefined}
       onPress={onPress}
       borderWidth={1}
       borderColor={isActive ? '$color8' : '$color5'}
-      backgroundColor={isActive ? '$color3' : '$color1'}
+      bg={isActive ? '$color3' : '$color1'}
       pressStyle={{
-        backgroundColor: '$color2',
+        bg: '$color2',
       }}
     >
-      <XStack f={1} ai="center" jc="space-between" gap="$3">
-        <YStack f={1} ai="flex-start">
+      <XStack flex={1} items="center" justify="space-between" gap="$3">
+        <YStack flex={1} items="flex-start">
           <SizableText size="$3" fontWeight="600">
             {label}
           </SizableText>

@@ -19,8 +19,8 @@ import {
 
 export default function Sandbox() {
   return (
-    <Configuration animationDriver={animationsMotion}>
-      <YStack p="$10" ai="center" jc="center">
+    <Configuration>
+      <YStack p="$10" items="center" justify="center">
         <SandboxContent />
         {/* <LogoWords animated /> */}
       </YStack>
@@ -49,8 +49,8 @@ function SandboxContent() {
     <View>
       <YStack
         animation="lazy"
-        w={500}
-        h={500}
+        width={500}
+        height={500}
         bg="red"
         hoverStyle={{
           y: 100,
@@ -128,9 +128,9 @@ export function MergeStylesTests() {
       {/* test case: ensure hoverStyle animates because it gets default aniamtable styles */}
       <Square
         animation="bouncy"
-        backgroundColor="$color9"
+        bg="$color9"
         size={104}
-        borderRadius="$9"
+        rounded="$9"
         hoverStyle={{
           scale: 1.2,
         }}
