@@ -797,10 +797,11 @@ export type AnimationProp = AnimationKeys | {
 } | [
     AnimationKeys,
     {
+        delay?: number;
         [key: string]: AnimationKeys | {
             type?: AnimationKeys;
             [key: string]: any;
-        };
+        } | number | undefined;
     }
 ];
 /**
