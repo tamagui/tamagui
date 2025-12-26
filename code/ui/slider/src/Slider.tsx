@@ -495,7 +495,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
           }
         : {
             x: -size / 2,
-            y: size / 2 - thumbInBoundsOffset,
+            y: size / 2,
             left: '50%',
             ...(size === 0 && {
               left: 'auto',
