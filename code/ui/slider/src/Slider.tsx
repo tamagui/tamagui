@@ -519,7 +519,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
     const positionalStyles =
       context.orientation === 'horizontal'
         ? {
-            x: thumbInBoundsOffset - size / 2,
+            x: thumbInBoundsOffset - (size / 2) * orientation.direction,
             y: -size / 2,
             top: '50%',
             ...(size === 0 && {
@@ -529,7 +529,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
           }
         : {
             x: -size / 2,
-            y: size / 2,
+            y: size / 2 - thumbInBoundsOffset,
             left: '50%',
             ...(size === 0 && {
               left: 'auto',
