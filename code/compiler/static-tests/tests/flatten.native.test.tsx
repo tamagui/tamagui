@@ -132,6 +132,19 @@ describe('flatten-tests', () => {
     expect(output?.code).toMatchSnapshot()
   })
 
+  test(`allow invaild identifier`, async () => {
+    const output = await extractForNative(`
+        import { View } from 'tamagui'
+        export function Test() {
+          return (
+            <View backgroundColor='$invaild-identifier' />
+          )
+        }
+      `)
+
+    expect(output?.code).contains('theme["invaild-identifier"].get()')
+  })
+
   // TODO make this work:
   // test.skip(`keeps style object a single object case 2`, async () => {
   //   const output = await extractForNative(`
