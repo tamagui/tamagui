@@ -2,13 +2,19 @@ import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
 import type { SizeTokens } from 'tamagui'
 import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
 
-const Item = styled(ToggleGroup.Item, {
-  color: '$color10',
+const GreenItem = styled(ToggleGroup.Item, {
+  color: '$green8',
+  toggledStyle: { backgroundColor: '$green9', color: '$yellow9' },
+})
 
-  focusStyle: {
-    color: '$color1',
-    backgroundColor: '$color12',
-  },
+const PurpleItem = styled(ToggleGroup.Item, {
+  color: '$purple8',
+  toggledStyle: { backgroundColor: '$purple9', color: '$green9' },
+})
+
+const RedItem = styled(ToggleGroup.Item, {
+  color: '$red8',
+  toggledStyle: { backgroundColor: '$red9', color: '$blue9' },
 })
 
 export function ToggleGroupDemo() {
@@ -47,19 +53,19 @@ function ToggleGroupComponent(props: {
       <ToggleGroup
         orientation={props.orientation}
         id={id}
-        type={props.type as any} // since this demo switches between loosen types
+        type={props.type as any}
         size={props.size}
         disableDeactivation={props.type === 'single' ? true : undefined}
       >
-        <Item value="left" aria-label="Left aligned">
+        <GreenItem value="left" aria-label="Left aligned">
           <AlignLeft />
-        </Item>
-        <Item value="center" aria-label="Center aligned">
+        </GreenItem>
+        <PurpleItem value="center" aria-label="Center aligned">
           <AlignCenter />
-        </Item>
-        <Item value="right" aria-label="Right aligned">
+        </PurpleItem>
+        <RedItem value="right" aria-label="Right aligned">
           <AlignRight />
-        </Item>
+        </RedItem>
       </ToggleGroup>
     </XStack>
   )
