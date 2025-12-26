@@ -230,10 +230,19 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   themedStylesAst.properties.forEach((_) => {
                     const prop = _ as t.ObjectProperty
                     if (prop.value.type === 'StringLiteral') {
-                      prop.value = t.memberExpression(
-                        t.identifier('theme'),
-                        t.identifier(prop.value.value.slice(1) + '.get()')
-                      )
+                      const propVal = prop.value.value.slice(1)
+                      const isComputed = !t.isValidIdentifier(propVal)
+                      prop.value = t.callExpression(
+                        t.memberExpression(
+                          t.memberExpression(
+                            t.identifier('theme'),
+                            isComputed ? t.stringLiteral(propVal) : t.identifier(propVal),
+                            isComputed
+                          ),
+                          t.identifier('get'),
+                        ),
+                        [],
+                      );
                     }
                   })
                   return themedStylesAst
