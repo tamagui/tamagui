@@ -244,9 +244,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                     case 'style': {
                       let styleExpr = getStyleExpression(attr.value)
                       addStyleExpression(styleExpr)
-                      // if (options.experimentalFlattenThemesOnNative) {
                       addStyleExpression(styleExpr, true)
-                      // }
                       break
                     }
 
@@ -255,7 +253,6 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                       const consExpr = getStyleExpression(consequent)
                       const altExpr = getStyleExpression(alternate)
 
-                      // if (options.experimentalFlattenThemesOnNative) {
                       expressions.push(attr.value.test)
                       addStyleExpression(
                         t.conditionalExpression(
@@ -265,7 +262,6 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                         ),
                         true
                       )
-                      // }
 
                       const styleExpr = t.conditionalExpression(
                         attr.value.test,
@@ -282,11 +278,9 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                           stylesExpr.elements.push(
                             t.memberExpression(attr.value.argument, t.identifier('style'))
                           )
-                          // if (options.experimentalFlattenThemesOnNative) {
                           hocStylesExpr.elements.push(
                             t.memberExpression(attr.value.argument, t.identifier('style'))
                           )
-                          // }
                         }
                       }
                       finalAttrs.push(attr.value)
