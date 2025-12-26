@@ -31,7 +31,7 @@ export const ColorSchemeToggle = () => {
 
   return (
     <Pressable onPress={cycleMode}>
-      <XStack items="center" px="$2" py="$1" rounded="$2" bg="$color3">
+      <XStack items="center" px="$2" py="$1" rounded="$2">
         <SizableText size="$3" fontWeight="600">
           {modeLabels[mode]}
         </SizableText>
