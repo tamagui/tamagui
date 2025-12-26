@@ -6,10 +6,15 @@ export function SliderDemo() {
     <YStack gap="$8" style={{ alignItems: 'center' }}>
       <XStack height={200} style={{ alignItems: 'center' }} gap="$8">
         <YStack style={{ alignItems: 'center' }} gap="$4">
-          <Label>Vertical</Label>
+          <Label>Vertical (LTR)</Label>
           <SimpleSlider height={200} orientation="vertical" />
         </YStack>
-        
+
+        <YStack style={{ alignItems: 'center' }} gap="$4">
+          <Label>Vertical (RTL)</Label>
+          <SimpleSlider height={200} orientation="vertical" dir="rtl" />
+        </YStack>
+
         <YStack style={{ alignItems: 'center' }} gap="$4">
           <Label>Horizontal (LTR)</Label>
           <SimpleSlider width={200} />
