@@ -81,6 +81,16 @@ Motion animations support both spring and tween (timing) animations:
 }
 ```
 
+### Delay
+
+You can add animation delays using the array syntax:
+
+```tsx
+<Square animation={['bouncy', { delay: 200 }]} />
+```
+
+The delay is specified in milliseconds and is converted to seconds for Motion internally.
+
 ## Key Features
 
 ### Hybrid Engine
