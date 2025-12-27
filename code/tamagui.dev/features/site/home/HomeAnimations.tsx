@@ -69,7 +69,6 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             flex={2}
             minW="55%"
             self="flex-start"
-            self="center"
             z={100}
             elevation="$4"
             rounded="$4"
