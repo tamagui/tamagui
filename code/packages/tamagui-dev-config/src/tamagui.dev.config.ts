@@ -17,7 +17,7 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-// Use v5 config as base and override with our customizations
+// Use v5 config as base
 export const config = {
   ...defaultConfig,
   fonts,

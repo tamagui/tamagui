@@ -60,6 +60,9 @@ export type ColorTheme = {
         light: ColorPalette;
     };
 };
+export type GrandChildrenThemeDefinition = {
+    template: string;
+};
 export type CreateV5ThemeOptions = {
     /** Override the dark base palette (12 colors from darkest to lightest) */
     darkPalette?: ColorPalette;
@@ -72,6 +75,8 @@ export type CreateV5ThemeOptions = {
     }>;
     /** Whether to include default color themes (blue, red, green, etc.). Defaults to true */
     includeDefaultColors?: boolean;
+    /** Add or override grandChildrenThemes (e.g., { alt1: { template: 'alt1' } }) */
+    grandChildrenThemes?: Record<string, GrandChildrenThemeDefinition>;
 };
 /**
  * Creates v5 themes with optional customizations.
