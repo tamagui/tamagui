@@ -149,6 +149,9 @@ export function DocsQuickNav() {
     return Number(nodeName.replace('H', ''))
   }
 
+  // Track all currently intersecting headings to pick the best one
+  const intersectingHeadings = useRef<Set<string>>(new Set())
+
   useEffect(() => {
     const headingElements: HTMLHeadingElement[] = Array.from(
       document.querySelectorAll('[data-heading]')
@@ -156,6 +159,7 @@ export function DocsQuickNav() {
     setHeadings(headingElements)
     setActiveIndex(0)
     setItemData([])
+    intersectingHeadings.current.clear()
   }, [pathname])
 
   // Track active heading with Intersection Observer
@@ -164,17 +168,36 @@ export function DocsQuickNav() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = headings.findIndex((h) => h.id === entry.target.id)
-            if (index !== -1) {
-              setActiveIndex(index)
-            }
+            intersectingHeadings.current.add(entry.target.id)
+          } else {
+            intersectingHeadings.current.delete(entry.target.id)
           }
+        })
+
+        // Pick the heading that has most recently passed the "reading line"
+        // (the highest index among all headings currently above the 70% mark)
+        if (intersectingHeadings.current.size > 0) {
+          let maxIndex = -1
+          intersectingHeadings.current.forEach((id) => {
+            const index = headings.findIndex((h) => h.id === id)
+            if (index > maxIndex) {
+              maxIndex = index
+            }
+          })
+          if (maxIndex !== -1) {
+            setActiveIndex(maxIndex)
+          }
+        } else if (window.scrollY < 100) {
+          setActiveIndex(0)
         }
       },
       {
-        rootMargin: '-80px 0px -70% 0px',
+        // rootMargin: [top] [right] [bottom] [left]
+        // 100% top margin ensures headings stay in the 'set' even after scrolling past them
+        // -30% bottom margin puts the "reading line" 70% down the screen
+        rootMargin: '100% 0px -30% 0px',
         threshold: 0,
       }
     )
