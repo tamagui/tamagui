@@ -1,6 +1,11 @@
 import type { SliderProps } from 'tamagui'
 import { Slider, XStack } from 'tamagui'
 
+/**
+ * Note: For proper vertical slider behavior on iOS, make sure to pass insets to TamaguiProvider:
+ * <TamaguiProvider insets={useSafeAreaInsets()}>
+ */
+
 export function SliderDemo() {
   return (
     <XStack height={200} items="center" gap="$8">
