@@ -68,7 +68,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           <YStack
             flex={2}
             minW="55%"
-            self="center"
+            self="flex-start"
             z={100}
             elevation="$4"
             rounded="$4"
@@ -109,8 +109,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
             <CodeDemoPreParsed
               pointerEvents={disableScrollPane ? 'none' : 'auto'}
-              maxH={500}
-              height={500}
+              height={disableScrollPane ? 500 : 1250}
+              animation="quick"
               maxW={530}
               minW={530}
               rounded="$8"
