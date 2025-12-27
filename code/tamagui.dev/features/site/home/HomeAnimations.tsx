@@ -111,8 +111,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
             <CodeDemoPreParsed
               pointerEvents={disableScrollPane ? 'none' : 'auto'}
-              maxH={500}
-              height={500}
+              height={disableScrollPane ? 500 : 1250}
+              animation="quick"
               maxW={530}
               minW={530}
               rounded="$8"
