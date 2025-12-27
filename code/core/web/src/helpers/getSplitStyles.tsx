@@ -17,12 +17,6 @@ import {
   validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
-import {
-  extractValueFromDynamic,
-  getDynamicVal,
-  getOppositeScheme,
-} from './getDynamicVal'
-
 import { getConfig, getFont, getSetting } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
@@ -56,6 +50,11 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
+import {
+  extractValueFromDynamic,
+  getDynamicVal,
+  getOppositeScheme,
+} from './getDynamicVal'
 import { getGroupPropParts } from './getGroupPropParts'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isActivePlatform } from './isActivePlatform'
@@ -312,12 +311,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      // otherwise things just keep nesting - careful don't leave these around
-      // they cause big performance dips in Chrome, only use them when debug prop set
-      // console.groupEnd()
-    }
-
     // normalize shorthands up front
     if (!disableExpandShorthands) {
       if (keyInit in shorthands) {
@@ -386,14 +379,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // TODO deprecate dataSet be sure we map on native from data-
-    if (keyInit === 'dataSet') {
-      for (const keyInit in valInit) {
-        viewProps[`data-${hyphenate(keyInit)}`] = valInit[keyInit]
-      }
-      continue
-    }
-
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (!noExpand) {
         /**
@@ -420,12 +405,6 @@ export const getSplitStyles: StyleSplitter = (
 
         if (keyInit === 'testID') {
           viewProps[isReactNative ? keyInit : 'data-testid'] = valInit
-          continue
-        }
-
-        if (keyInit === 'id' || keyInit === 'nativeID') {
-          // nativeId now deprecated for RN
-          viewProps.id = valInit
           continue
         }
 
@@ -817,10 +796,10 @@ export const getSplitStyles: StyleSplitter = (
 
         // for some reason 'space' in val upsetting next ssr during prod build
         // technically i guess this also will not apply if 0 space which makes sense?
-        const hasSpace = val['space']
         const mediaKeyShort = key.slice(isMedia == 'theme' ? 7 : 1)
 
         hasMedia ||= true
+        const hasSpace = val['space']
 
         if (hasSpace || !shouldDoClasses || styleProps.willBeAnimated) {
           if (!hasMedia || typeof hasMedia === 'boolean') {
@@ -853,29 +832,6 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldDoClasses) {
           const mediaStyle = getSubStyle(styleState, key, val, false)
-
-          if (hasSpace) {
-            delete mediaStyle['space']
-            // TODO group/theme/platform + space support (or just make it official not supported in favor of gap)
-            if (mediaState[mediaKeyShort]) {
-              const importance = getMediaImportanceIfMoreImportant(
-                mediaKeyShort,
-                'space',
-                styleState,
-                true
-              )
-              if (importance) {
-                space = val['space']
-                styleState.usedKeys['space'] = importance
-                if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                  log(
-                    `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
-                  )
-                }
-              }
-            }
-          }
-
           const mediaStyles = getCSSStylesAtomic(mediaStyle)
 
           for (const style of mediaStyles) {
@@ -1076,7 +1032,6 @@ export const getSplitStyles: StyleSplitter = (
 
           for (const subKey in mediaStyle) {
             if (subKey === 'space') {
-              space = valInit.space
               continue
             }
             if (subKey[0] === '$') {
@@ -1247,55 +1202,6 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
-
-    if (isReactNative) {
-      if (viewProps.tabIndex === 0) {
-        viewProps.accessible ??= true
-      }
-    } else {
-      if (viewProps.tabIndex == null) {
-        const isFocusable = viewProps.focusable ?? viewProps.accessible
-
-        if (viewProps.focusable) {
-          delete viewProps.focusable
-        }
-
-        const role = viewProps.role
-        if (isFocusable === false) {
-          viewProps.tabIndex = '-1'
-        }
-        if (
-          // These native elements are focusable by default
-          elementType === 'a' ||
-          elementType === 'button' ||
-          elementType === 'input' ||
-          elementType === 'select' ||
-          elementType === 'textarea'
-        ) {
-          if (isFocusable === false || props.accessibilityDisabled === true) {
-            viewProps.tabIndex = '-1'
-          }
-        } else if (
-          // These roles are made focusable by default
-          role === 'button' ||
-          role === 'checkbox' ||
-          role === 'link' ||
-          role === 'radio' ||
-          // @ts-expect-error (consistent with RNW)
-          role === 'textbox' ||
-          role === 'switch'
-        ) {
-          if (isFocusable !== false) {
-            viewProps.tabIndex = '0'
-          }
-        }
-        // Everything else must explicitly set the prop
-        if (isFocusable) {
-          viewProps.tabIndex = '0'
-          delete viewProps.focusable
-        }
-      }
-    }
   }
 
   // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
@@ -1354,7 +1260,6 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const result: GetStyleResult = {
-    space,
     hasMedia,
     fontFamily: styleState.fontFamily,
     viewProps,

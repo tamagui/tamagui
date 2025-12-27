@@ -1,65 +1,55 @@
-import type {
-  ColorTokens,
-  StackProps,
-  TamaguiComponentPropsBase,
-  TextProps,
-} from '@tamagui/web'
-import type { TextInputProps, InputModeOptions } from 'react-native'
+import type { ColorTokens, StackProps, TextProps } from '@tamagui/web'
 
-type DetailedInputProps = React.DetailedHTMLProps<
-  React.HTMLProps<HTMLInputElement>,
-  HTMLInputElement
->
+/**
+ * Web-aligned Input props
+ * Follows standard HTML input API as primary, with minimal RN compatibility
+ */
+
+type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
 
 export type InputProps = StackProps &
-  Omit<
-    DetailedInputProps,
-    'className' | 'children' | 'value' | 'size' | keyof StackProps
-  > &
-  Pick<TextProps, 'color'> &
-  Omit<DetailedInputProps['style'], 'color'> &
-  Omit<
-    TextInputProps,
-    | 'inputMode'
-    | 'secureTextEntry'
-    | 'onChangeText'
-    | 'editable'
-    | 'enterKeyHint'
-    | 'keyboardType'
-    | 'placeholderTextColor'
-    | 'selectionColor'
-    | 'numberOfLines'
-  > & {
+  Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className'> &
+  Pick<TextProps, 'color'> & {
+    // Core HTML input props are inherited from HTMLInputProps:
+    // type, value, defaultValue, placeholder, disabled, readOnly,
+    // onChange, onFocus, onBlur, onInput, autoComplete, autoFocus,
+    // maxLength, minLength, pattern, required, name, id, etc.
+
     /**
-     * @deprecated - use `type="password"` instead
+     * Rows for textarea (when tag="textarea")
      */
-    secureTextEntry?: TextInputProps['secureTextEntry']
+    rows?: number
+
     /**
-     * @deprecated - use `onChange` instead
+     * Placeholder text color - accepts Tamagui color tokens
      */
-    onChangeText?: TextInputProps['onChange']
-    /**
-     * @deprecated - use `readOnly` instead
-     */
-    editable?: TextInputProps['editable']
-    enterKeyHint?: 'done' | 'go' | 'next' | 'search' | 'send' | 'enter' | 'previous'
-    /**
-     * @deprecated - use `type` instead
-     */
-    keyboardType?: TextInputProps['keyboardType']
-    /**
-     * use `type` instead of inputMode for most cases, use `inputMode="none"` to disable the soft keyboard
-     */
-    inputMode?: InputModeOptions
     placeholderTextColor?: ColorTokens
+
+    /**
+     * Text selection color - accepts Tamagui color tokens
+     */
     selectionColor?: ColorTokens
-    tag?: TamaguiComponentPropsBase['tag']
+
     /**
-     * @deprecated - use `tag='textarea'` instead
+     * Callback when text changes - provides just the string value
+     * @deprecated Use onChange instead for web alignment
      */
-    multiline?: boolean
+    onChangeText?: (text: string) => void
+
     /**
-     * @deprecated - use `rows` instead
+     * Callback when Enter/Return is pressed
      */
-    numberOfLines?: number
+    onSubmitEditing?: (e: { nativeEvent: { text: string } }) => void
+
+    /**
+     * Selection range
+     */
+    selection?: { start: number; end?: number }
+
+    /**
+     * Callback when selection changes
+     */
+    onSelectionChange?: (e: {
+      nativeEvent: { selection: { start: number; end: number } }
+    }) => void
   }

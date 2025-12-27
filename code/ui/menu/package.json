@@ -5,11 +5,9 @@
   "sideEffects": [
     "*.css"
   ],
-  "source": "src/index.tsx",
-  "types": "./types/index.d.ts",
+  "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -33,16 +31,18 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "workspace:*",
-    "@tamagui/helpers": "workspace:*",
-    "@tamagui/popover": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/create-menu": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/web": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
@@ -51,8 +51,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
-  "peerDependencies": {
-    "react": "*"
-  }
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

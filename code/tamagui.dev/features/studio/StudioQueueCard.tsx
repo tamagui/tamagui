@@ -139,7 +139,7 @@ const QueueCardFrame = ({
         </Paragraph>
       </YStack>
 
-      <Spacer flex />
+      <Spacer flex={1} />
 
       <Paragraph
         position="absolute"
@@ -164,7 +164,7 @@ const QueueCardFrame = ({
           in the {tierName ?? 'non-sponsor'} tier
         </Paragraph>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <YStack pb="$2">
           <LogoIcon />

@@ -1,7 +1,10 @@
+import { Button } from '@tamagui/button'
 import { Activity, Airplay } from '@tamagui/lucide-icons'
-import { Button, XGroup, XStack, YStack } from 'tamagui'
+import { Theme, XGroup, XStack, YStack } from 'tamagui'
 
 export function ButtonDemo(props) {
+  console.info('hi')
+
   return (
     <YStack p="$3" gap="$3" {...props}>
       <Button>Plain</Button>
@@ -16,10 +19,17 @@ export function ButtonDemo(props) {
           Outlined
         </Button>
       </XStack>
-      <XStack gap="$2">
-        <Button themeInverse size="$3">
-          Inverse
-        </Button>
+      <XStack gap="$2" justify="center">
+        <Theme name="accent">
+          <Button size="$3">
+            <Button.Icon>
+              <Activity />
+            </Button.Icon>
+            <Button.Text key={0} debug="verbose">
+              Inverse
+            </Button.Text>
+          </Button>
+        </Theme>
         <Button iconAfter={Activity} size="$3">
           iconAfter
         </Button>
@@ -32,8 +42,8 @@ export function ButtonDemo(props) {
         </XGroup.Item>
 
         <XGroup.Item>
-          <Button width="50%" size="$2" chromeless>
-            chromeless
+          <Button width="50%" size="$2">
+            plain
           </Button>
         </XGroup.Item>
       </XGroup>

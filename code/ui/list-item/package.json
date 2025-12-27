@@ -44,6 +44,7 @@
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
+    "@tamagui/spacer": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/web": "workspace:*"

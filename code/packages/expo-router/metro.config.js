@@ -41,12 +41,12 @@ if (process.env.IS_TAMAGUI_DEV && __dirname.includes('tamagui')) {
       force: true,
     })
   } catch {}
-  try {
-    fs.rmSync(path.join(projectRoot, 'node_modules', 'tamagui'), {
-      recursive: true,
-      force: true,
-    })
-  } catch {}
+  // try {
+  //   fs.rmSync(path.join(projectRoot, 'node_modules', 'tamagui'), {
+  //     recursive: true,
+  //     force: true,
+  //   })
+  // } catch {}
   try {
     fs.rmSync(path.join(projectRoot, 'node_modules', 'react'), {
       recursive: true,

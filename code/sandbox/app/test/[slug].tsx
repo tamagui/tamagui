@@ -15,7 +15,7 @@ export function TestPage() {
   }
 
   return (
-    <YStack f={1}>
+    <YStack flex={1}>
       <Component />
     </YStack>
   )

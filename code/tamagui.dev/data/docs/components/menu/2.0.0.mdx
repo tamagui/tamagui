@@ -1,0 +1,498 @@
+---
+title: Menu
+description: A selectable list in a popover with nesting sub-menus.
+name: dropdown menu
+component: Menu
+package: menu
+---
+
+<HeroContainer>
+  <MenuDemo />
+</HeroContainer>
+
+```tsx hero template=Menu
+
+```
+
+<Highlights
+  features={[
+    'Full keyboard navigation.',
+    'Submenus, items, icons, images, checkboxes, groups, and more.',
+    'Modal and non-modal modes.',
+    'Native menus on native platforms.',
+  ]}
+/>
+
+## Installation
+
+Menu is already installed in `tamagui`, or you can install it independently:
+
+```bash
+yarn add @tamagui/menu
+```
+
+If you want to use native menus, make sure to install these dependencies in your
+Expo project:
+
+```bash
+yarn add @react-native-menu/menu
+```
+
+```bash
+yarn add react-native-ios-context-menu
+```
+
+```bash
+yarn add react-native-ios-utilities
+```
+
+```bash
+yarn add zeego
+```
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```jsx
+import { Menu } from 'tamagui' // or '@tamagui/menu'
+
+export default () => (
+  <Menu>
+    <Menu.Trigger asChild>
+      <Button />
+    </Menu.Trigger>
+
+    <Menu.Portal zIndex={100}>
+      <Menu.Content>
+        <Menu.Item>
+          <Menu.ItemTitle>About Notes</Menu.ItemTitle>
+        </Menu.Item>
+        <Menu.Item>
+          <Menu.ItemTitle>Settings</Menu.ItemTitle>
+        </Menu.Item>
+        {/* when title is nested inside a React element then you need to use `textValue` */}
+        <Menu.Item textValue="Calendar">
+          <Menu.ItemTitle>
+            <Text>Calendar</Text>
+          </Menu.ItemTitle>
+          <Menu.ItemIcon>
+            <Calendar color="gray" size="$1" />
+          </Menu.ItemIcon>
+        </Menu.Item>
+        <Menu.Separator />
+        <Menu.Sub>
+          <Menu.SubTrigger>
+            <Menu.ItemTitle>Actions</Menu.ItemTitle>
+          </Menu.SubTrigger>
+          <Menu.Portal zIndex={200}>
+            <Menu.SubContent>
+              <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
+              <Menu.Item onSelect={onSelect} key="create-note">
+                <Menu.ItemTitle>Create note</Menu.ItemTitle>
+              </Menu.Item>
+              <Menu.Item onSelect={onSelect} key="delete-all">
+                <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
+              </Menu.Item>
+              <Menu.Item onSelect={onSelect} key="sync-all">
+                <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
+              </Menu.Item>
+            </Menu.SubContent>
+          </Menu.Portal>
+        </Menu.Sub>
+      </Menu.Content>
+    </Menu.Portal>
+  </Menu>
+)
+```
+
+## API Reference
+
+### Menu
+
+Contains every component for the Menu.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'placement',
+      type: 'Placement',
+      required: false,
+      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: ``,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'onOpenWillChange',
+      type: '(open: boolean) => void',
+      required: false,
+      platform: 'ios',
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: `Renders into root of app instead of inline.`,
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps | boolean',
+      required: false,
+      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps | boolean',
+      required: false,
+      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+    },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Portal
+
+This is necessary for the Menu.
+
+<PropsTable
+  data={[
+    {
+      name: 'zIndex',
+      required: false,
+      type: 'number',
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Trigger
+
+The Menu will only be triggered when the user right-clicks or long-presses
+within the Trigger area.
+
+<PropsTable
+  data={[
+    {
+      name: 'action',
+      required: false,
+      type: 'press|longPress',
+      default: 'longPress',
+      platform: 'android/ios',
+      description:
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for Menu.",
+    },
+  ]}
+/>
+
+### Content
+
+Contains the content of the Menu
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Item
+
+Menu Item
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'React.ReactNode',
+      required: true,
+    },
+
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: false
+    },
+    {
+      name: 'destructive',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false
+    },
+    {
+      name: 'onSelect',
+      type: 'function',
+      required: true
+    },
+    {
+      name: 'onFocus',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'onBlur',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description: 'This value is necessary when the content of ItemTitle is not a string.'
+    },
+
+]} />
+
+### ItemTitle
+
+Renders the title of the menu item.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+<Notice>
+  You can directly pass a text node to the ItemTitle. However, if you use a nested
+  React node like `<Text>`, you need to pass `textValue` to the `<Item>` so that it
+  works with native menus.
+</Notice>
+
+### ItemIcon
+
+A component to render an icon. For non-native menus, you can pass an icon
+component. For native menus, you can pass platform-specific icons to the
+`android`/`ios` props.
+
+On iOS, it renders the native
+[SF Symbols](https://github.com/andrewtavis/sf-symbols-online) icons.
+
+<PropsTable
+  data={[
+    {
+      name: 'ios',
+      type: 'object',
+      required: false,
+    },
+    {
+      name: 'android',
+      type: 'object',
+      required: false,
+    },
+  ]}
+/>
+
+```jsx line=1
+<Menu.ItemIcon
+  ios={{
+    name: '0.circle.fill', // required
+    pointSize: 5,
+    weight: 'semibold',
+    scale: 'medium',
+    // can also be a color string. Requires iOS 15+
+    hierarchicalColor: {
+      dark: 'blue',
+      light: 'green',
+    },
+    // alternative to hierarchical color. Requires iOS 15+
+    paletteColors: [
+      {
+        dark: 'blue',
+        light: 'green',
+      },
+    ],
+  }}
+>
+  <CircleIcon />
+</Menu.ItemIcon>
+```
+
+### ItemImage
+
+A component to render an item image. For native menus, it only works on iOS. It
+takes the same properties as `@tamagui/image`.
+
+### ItemSubtitle
+
+A component to render a subtitle for the menu item. For native menus, it only
+works on iOS.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ]}
+/>
+
+### Group
+
+A component that groups multiple items.
+
+### CheckboxItem
+
+Usage is similar to Item, with added checkbox features.
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: false,
+    },
+    {
+      name: 'destructive',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onFocus',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'onBlur',
+      type: 'function',
+      required: false,
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description:
+        'This value is necessary when the content of ItemTitle is not a string.',
+    },
+    {
+      name: 'value',
+      type: 'on|off|mixed',
+      required: true,
+      platform: 'ios|android',
+    },
+    {
+      name: 'onValueChange',
+      type: 'function',
+      required: true,
+      platform: 'ios|android',
+    },
+    {
+      name: 'checked',
+      type: 'boolean',
+      required: true,
+      description: 'This value is necessary for non-native menus.',
+    },
+    {
+      name: 'onCheckedChange',
+      type: 'function',
+      required: true,
+      description: 'This value is necessary for non-native menus.',
+    },
+  ]}
+/>
+
+### ItemIndicator
+
+Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
+This allows you to conditionally render a checkmark.
+
+```jsx line=1
+<Menu.ItemIndicator>
+  <CheckmarkIcon /> {/* This does not work with the native prop. */}
+</Menu.ItemIndicator>
+```
+
+### Label
+
+Renders a non-focusable label.
+
+On native menus, only one label is supported per menu and submenu.
+
+### Arrow
+
+Renders an arrow component.
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'number|SizeToken',
+      required: true,
+    },
+  ]}
+/>
+
+### Separator
+
+Renders a content separator component. This only works with non-native menus.
+
+### Sub
+
+A component that holds sub-menu parts.
+
+### SubContent
+
+Renders the content of a `SubMenu`.
+
+### SubTrigger
+
+Same as `Trigger`, but for `SubMenu`.

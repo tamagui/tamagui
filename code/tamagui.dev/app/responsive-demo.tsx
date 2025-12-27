@@ -154,10 +154,10 @@ export default function ResponsiveDemo() {
 const Overlay = (props) => {
   return (
     <LinearGradient
-      w={800}
-      h="100%"
+      width={800}
+      height="100%"
       fullscreen
-      zi={10}
+      z={10}
       colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.85)']}
       {...props}
     />

@@ -21,8 +21,6 @@ const getBarColor = (name: string) => {
       return '$green9'
     case 'Dripsy':
       return '$blue9'
-    case 'NativeBase':
-      return '$orange9'
     default:
       return 'gray'
   }

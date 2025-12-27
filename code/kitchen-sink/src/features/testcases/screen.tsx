@@ -3,23 +3,22 @@ import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { H2, ListItem, Separator, YGroup, YStack } from 'tamagui'
+import { H2, ListItem, YGroup, YStack } from 'tamagui'
 
 import * as TestCases from '../../usecases'
 
 export function TestCasesScreen() {
   return (
     <ScrollView testID="test-cases-scroll-view">
-      <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$background" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
         <H2>All Test Cases</H2>
-        <YStack gap="$4" maw={600}>
-          <YGroup size="$4" separator={<Separator />}>
+        <YStack gap="$4" maxW={600}>
+          <YGroup size="$4">
             {Object.keys(TestCases).map((page) => {
               return (
                 <YGroup.Item key={page}>
                   <LinkListItem
                     href={`/test/${page}`}
-                    pressTheme
                     size="$4"
                     testID={`test-case-${page}`}
                   >

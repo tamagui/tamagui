@@ -15,8 +15,7 @@ import {
   styled,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { withStaticProperties } from '@tamagui/helpers'
-import { clamp, composeEventHandlers } from '@tamagui/helpers'
+import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -246,6 +245,43 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
 
     if (isClient) {
       useOnDebouncedWindowResize(measure)
+
+      // intersection change
+      React.useEffect(() => {
+        const node = sliderRef.current as any as HTMLDivElement
+        if (!node) return
+
+        let measureTm
+        const debouncedMeasure = () => {
+          clearTimeout(measureTm)
+          measureTm = setTimeout(() => {
+            measure()
+          }, 200)
+        }
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            debouncedMeasure()
+            if (entries?.[0].isIntersecting) {
+              activeSliderMeasureListeners.add(debouncedMeasure)
+            } else {
+              activeSliderMeasureListeners.delete(debouncedMeasure)
+            }
+          },
+          {
+            root: null, // Use the viewport as the container.
+            rootMargin: '0px',
+            threshold: [0, 0.5, 1.0],
+          }
+        )
+
+        io.observe(node)
+
+        return () => {
+          activeSliderMeasureListeners.delete(debouncedMeasure)
+          io.disconnect()
+        }
+      }, [])
     }
 
     return (
@@ -396,8 +432,6 @@ SliderTrackActive.displayName = RANGE_NAME
 /* -------------------------------------------------------------------------------------------------
  * SliderThumb
  * -----------------------------------------------------------------------------------------------*/
-
-const THUMB_NAME = 'SliderThumb'
 
 // TODO make this customizable through tamagui
 // so we can accurately use it for estimatedSize below
@@ -749,14 +783,14 @@ const Range = SliderTrackActive
 const Thumb = SliderThumb
 
 export {
+  Range,
   Slider,
+  SliderThumb,
   SliderTrack,
   SliderTrackActive,
-  SliderThumb,
+  Thumb,
   //
   Track,
-  Range,
-  Thumb,
 }
 
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps }
+export type { SliderProps, SliderTrackActiveProps, SliderTrackProps }

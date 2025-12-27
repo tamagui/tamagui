@@ -1,5 +1,5 @@
 import { Button, TamaguiProvider, YStack } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 
 import config from './tamagui.config'
 

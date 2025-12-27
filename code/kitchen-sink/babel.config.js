@@ -12,7 +12,6 @@ module.exports = (api) => {
         {
           components: ['tamagui', '@tamagui/sandbox-ui'],
           config: './src/tamagui.config.ts',
-          experimentalFlattenThemesOnNative: true,
         },
       ],
       'react-native-reanimated/plugin',

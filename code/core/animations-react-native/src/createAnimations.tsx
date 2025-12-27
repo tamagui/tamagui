@@ -431,12 +431,15 @@ function getAnimationConfig(
   if (typeof animation === 'string') {
     return animations[animation]
   }
+
   let type = ''
   let extraConf: any
   const shortKey = transformShorthands[key]
+
   if (Array.isArray(animation)) {
     type = animation[0] as string
-    const conf = animation[1]?.[key] ?? animation[1]?.[shortKey]
+    const animationOptions = animation[1]
+    const conf = animationOptions?.[key] ?? animationOptions?.[shortKey]
     if (conf) {
       if (typeof conf === 'string') {
         type = conf
@@ -445,11 +448,17 @@ function getAnimationConfig(
         extraConf = conf
       }
     }
+    // e.g., animation={['bouncy', { delay: 100 }]}
+    const delay = animationOptions?.delay
+    if (typeof delay === 'number' && !extraConf?.delay) {
+      extraConf = { ...extraConf, delay }
+    }
   } else {
     const val = animation?.[key] ?? animation?.[shortKey]
     type = val?.type
     extraConf = val
   }
+
   const found = animations[type]
   return {
     ...found,

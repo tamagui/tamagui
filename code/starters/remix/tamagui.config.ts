@@ -11,7 +11,7 @@ const tamaguiConfig = createTamagui({
 
 export type TamaguiConfig = typeof tamaguiConfig
 
-declare module '@tamagui/web' {
+declare module 'tamagui' {
   // overrides TamaguiCustomConfig so your custom types
   interface TamaguiCustomConfig extends TamaguiConfig {}
 }
