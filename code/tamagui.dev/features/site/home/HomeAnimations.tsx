@@ -68,7 +68,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           <YStack
             flex={2}
             minW="55%"
-            self="center"
+            self="flex-start"
             z={100}
             elevation="$4"
             mr="$-2"
