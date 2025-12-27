@@ -874,12 +874,12 @@ const DiscordMember = ({
 
   return (
     <XStack gap="$2" items="center" flexWrap="wrap">
-      <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
+      <Button minW={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
         <Button.Text>{isMutating ? 'Inviting...' : 'Add'}</Button.Text>
       </Button>
       <Avatar circular size="$2">
         <Avatar.Image aria-label={`avatar for ${username}`} src={avatarSrc!} />
-        <Avatar.Fallback backgroundColor="$blue10" />
+        <Avatar.Fallback bg="$blue10" />
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
       {data && (

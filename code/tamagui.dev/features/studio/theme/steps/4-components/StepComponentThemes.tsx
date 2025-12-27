@@ -52,7 +52,7 @@ export const StepComponentThemes = memo(() => {
     <YStack mx="$-5" flex={1}>
       <XStack
         pointerEvents="auto"
-        zIndex={100}
+        z={100}
         px="$4"
         py="$2"
         items="center"
@@ -264,7 +264,7 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
           parts.length === 1 ? '' : 's'
         }:`}</SizableText>
 
-        <XStack maxWidth="100%" overflow="hidden">
+        <XStack maxW="100%" overflow="hidden">
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack items="center" justify="center" gap="$2" px="$4" py="$2">
               {parts.map((part: any) => {
