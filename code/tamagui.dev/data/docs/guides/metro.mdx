@@ -3,72 +3,81 @@ title: Metro Guide
 description: How to set up Tamagui with Metro
 ---
 
-If you're using a monorepo, you probably want to use this Metro configuration in your `metro.config.js`:
+## Basic Setup
+
+The default Expo Metro configuration works out of the box:
 
 ```ts fileName="metro.config.js"
-// Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config')
 
-/** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname, {
-  // [Web-only]: Enables CSS support in Metro.
-  isCSSEnabled: true,
-})
-
-// Expo 49 issue: default metro config needs to include "mjs"
-// https://github.com/expo/expo/issues/23180
-config.resolver.sourceExts.push('mjs')
-
-module.exports = config
+module.exports = getDefaultConfig(__dirname)
 ```
 
-## Web support
+## With Metro Plugin (Recommended)
 
-Early support for Metro web support is here.
-
-First install `@tamagui/metro-plugin`:
+For better dev experience, use `@tamagui/metro-plugin` which loads your Tamagui config and watches for changes:
 
 ```bash
-yarn add tamagui @tamagui/config @tamagui/metro-plugin
+yarn add @tamagui/metro-plugin
 ```
-
-Then adjust your `metro.config.js`:
 
 ```tsx fileName="metro.config.js"
-// Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config')
-
-/** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname, {
-  // [Web-only]: Enables CSS support in Metro.
-  isCSSEnabled: true,
-})
-
-// add nice web support with optimizing compiler + CSS extraction
 const { withTamagui } = require('@tamagui/metro-plugin')
+
+const config = getDefaultConfig(__dirname)
+
 module.exports = withTamagui(config, {
   components: ['tamagui'],
   config: './tamagui.config.ts',
-  outputCSS: './tamagui-web.css',
-  cssInterop: true,
 })
 ```
 
-## Options
+## CSS Generation
 
-### cssInterop
+For web, Tamagui outputs CSS containing your themes and tokens. Create a `tamagui.build.ts` in your project root:
 
-When `cssInterop: true` is set, the compiler writes CSS to `.tamagui/css/` files and imports them via `require()`, letting Metro handle CSS bundling natively. This enables component flattening (View → div) for better performance.
+```ts fileName="tamagui.build.ts"
+import type { TamaguiBuildOptions } from 'tamagui'
 
-When `cssInterop: false` (default), CSS is injected inline via JavaScript at runtime. This is simpler but doesn't support flattening.
-
-```tsx
-module.exports = withTamagui(config, {
+export default {
   components: ['tamagui'],
   config: './tamagui.config.ts',
   outputCSS: './tamagui-web.css',
-  cssInterop: true, // enables CSS file output + flattening
-})
+} satisfies TamaguiBuildOptions
+```
+
+Then import the CSS in your app's layout:
+
+```tsx fileName="app/_layout.tsx"
+import '../tamagui-web.css'
+// ... rest of your layout
+```
+
+In development, the CSS is generated automatically when Tamagui loads your config. For production builds, run:
+
+```bash
+tamagui generate
+```
+
+## Optimized Production Builds
+
+For maximum optimization, use the `tamagui build` command which pre-compiles your components:
+
+```bash
+# Optimize and build, then restore source files
+tamagui build --target web ./app -- expo export --platform web
+```
+
+The `--` syntax runs the command after optimization, then automatically restores your source files. Add this to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "build:web": "expo export --platform web",
+    "build:web:optimized": "tamagui build --target web ./app -- expo export --platform web"
+  }
+}
 ```
 
 ## Debugging
@@ -91,7 +100,3 @@ This will print detailed compiler output showing what optimizations are happenin
 ```
 
 Use `// debug-verbose` for even more detailed output.
-
-<Notice>
-  If you're using Metro as your web bundler, you have to turn `isCSSEnabled` on. See [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).
-</Notice>
