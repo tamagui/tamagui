@@ -12,7 +12,7 @@ const outlined = {
     bg: 'transparent',
     borderColor: '$backgroundPress',
   },
-} satisfies ButtonProps
+}
 
 export function BuildAButtonDemo() {
   return (
@@ -32,36 +32,34 @@ export function BuildAButtonDemo() {
   )
 }
 
-function ButtonCol(
-  props: ButtonProps & {
-    subTheme?: any
-  }
-) {
-  const subTheme = props.subTheme ? `_${props.subTheme}` : ''
+function ButtonCol(props: any) {
+  const { subTheme, ...buttonProps } = props
+  const subThemeSuffix = subTheme ? `_${subTheme}` : ''
+
   return (
     <YStack p="$2" gap="$3">
       <Button theme={props.subTheme} {...props}>
         Hello
       </Button>
-      <Button theme={('orange' + subTheme) as ThemeName} {...props}>
+      <Button theme={('orange' + subThemeSuffix) as ThemeName} {...buttonProps}>
         Hello
       </Button>
-      <Button theme={('yellow' + subTheme) as ThemeName} {...props}>
+      <Button theme={('yellow' + subThemeSuffix) as ThemeName} {...buttonProps}>
         Hello
       </Button>
-      <Button theme={('green' + subTheme) as ThemeName} {...props}>
+      <Button theme={('green' + subThemeSuffix) as ThemeName} {...buttonProps}>
         Hello
       </Button>
-      <Button theme={('blue' + subTheme) as ThemeName} {...props}>
+      <Button theme={('blue' + subThemeSuffix) as ThemeName} {...buttonProps}>
         Hello
       </Button>
-      <Button theme={('purple' + subTheme) as ThemeName} {...props}>
+      <Button theme={('purple' + subThemeSuffix) as ThemeName} {...buttonProps}>
         Hello
       </Button>
-      <Button theme={('pink' + subTheme) as ThemeName} {...props}>
+      <Button theme={('pink' + subThemeSuffix) as ThemeName} {...buttonProps}>
         Hello
       </Button>
-      <Button theme={('red' + subTheme) as ThemeName} {...props}>
+      <Button theme={('red' + subThemeSuffix) as ThemeName} {...buttonProps}>
         Hello
       </Button>
     </YStack>
