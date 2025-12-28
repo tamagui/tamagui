@@ -9,7 +9,7 @@ export const createNativeToast: CreateNativeToastsFn = (
     return false
   }
 
-  if (Notification.permission === 'denied') false
+  if (Notification.permission === 'denied') return false
   const showNotification = () => {
     const notification = new Notification(title, {
       body: message,
