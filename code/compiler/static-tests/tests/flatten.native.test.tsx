@@ -132,17 +132,17 @@ describe('flatten-tests', () => {
     expect(output?.code).toMatchSnapshot()
   })
 
-  test(`allow invaild identifier`, async () => {
+  test(`allow invalid identifier`, async () => {
     const output = await extractForNative(`
         import { View } from 'tamagui'
         export function Test() {
           return (
-            <View backgroundColor='$invaild-identifier' />
+            <View backgroundColor='$invalid-identifier' />
           )
         }
       `)
 
-    expect(output?.code).contains('theme["invaild-identifier"].get()')
+    expect(output?.code).contains('theme["invalid-identifier"].get()')
   })
 
   // TODO make this work:

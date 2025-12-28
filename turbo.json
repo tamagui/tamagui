@@ -27,6 +27,10 @@
       "outputs": [],
       "env": ["SKIP_NATIVE_TESTS"]
     },
+    "test:web": {
+      "dependsOn": ["^build:js"],
+      "outputs": []
+    },
     "clean": {
       "outputs": ["dist/**"],
       "cache": false

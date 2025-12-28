@@ -100,7 +100,7 @@
     "test:docker:run": "docker run --rm tamagui-test",
     "test:docker": "yarn test:docker:build && yarn test:docker:run",
     "test": "CLEANUP=1 turbo run --concurrency=1 test",
-    "test:web": "yarn workspace @tamagui/kitchen-sink test:web",
+    "test:web": "turbo run test:web --concurrency=1",
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
     "typecheck": "./scripts/typecheck.sh",
     "upgrade:one:canary": "yarn up 'one'@canary '@vxrn/*'@canary",
