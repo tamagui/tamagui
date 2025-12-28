@@ -487,7 +487,7 @@ export default () => {
       <Toast
         onOpenChange={setOpen}
         open={open}
-        transition="100ms"
+        animation="100ms"
         enterStyle={{ x: -20, opacity: 0 }}
         exitStyle={{ x: -20, opacity: 0 }}
         opacity={1}
@@ -524,7 +524,7 @@ export default () => {
       {[...Array(savedCount)].map((_, index) => (
         <Toast
           key={index}
-          transition="100ms"
+          animation="100ms"
           enterStyle={{ x: -20, opacity: 0 }}
           exitStyle={{ x: -20, opacity: 0 }}
           opacity={1}

@@ -3,10 +3,6 @@ title: CSS Driver
 description: Lightweight CSS transition-based animations
 ---
 
-<Notice theme="green">
-  **Recommended for load-time sensitive pages.** CSS animations have zero JavaScript overhead, making them ideal for landing pages and marketing sites where Lighthouse scores matter. By avoiding the JS bundle of Motion/Reanimated on static pages, you get faster load times. For richer, spring-based animations in your app, consider [Motion](/docs/core/animations-motion), or [combine both drivers](/docs/core/animations#combining-drivers).
-</Notice>
-
 The `@tamagui/animations-css` package works with the tamagui compiler and
 runtime to give you simple ways to share typed animations across all your
 components.
@@ -60,7 +56,7 @@ The format is: `<easing-function> <duration>`
 You can add animation delays using the array syntax:
 
 ```tsx
-<Square transition={['quick', { delay: 200 }]} />
+<Square animation={['quick', { delay: 200 }]} />
 ```
 
 The delay (in milliseconds) is applied as CSS `transition-delay`.
@@ -75,13 +71,6 @@ The delay (in milliseconds) is applied as CSS `transition-delay`.
 - `cubic-bezier(x1, y1, x2, y2)` - Custom cubic bezier curve
 
 ## When to Use
-
-CSS animations are perfect for:
-
-- **Landing pages and marketing sites** - Zero JS overhead means better Lighthouse scores
-- **Load-time sensitive pages** - Avoiding Motion/Reanimated JS bundles speeds up initial load
-- **Static content** - Simple hover effects, fade-ins, and transitions
-- **Outer layouts** - Use CSS for the shell, then swap to [Motion](/docs/core/animations-motion) for app content using [Configuration](/docs/core/animations#combining-drivers)
 
 **Advantages:**
 - **Smallest bundle size** - Minimal JavaScript overhead
@@ -113,7 +102,7 @@ export default createTamagui({
 // Usage in components
 export const MyComponent = () => (
   <YStack
-    transition="quick"
+    animation="quick"
     hoverStyle={{
       scale: 1.1,
     }}

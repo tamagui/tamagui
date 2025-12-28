@@ -25,7 +25,7 @@ export function StepBaseThemesSidebar() {
   themeBuilder.themeSuiteVersion
 
   return (
-    <YStack flex={1} flexBasis="auto">
+    <YStack flex={1}>
       {/* fixes some bug in updating first time */}
       <Contents key={themeBuilder.themeSuiteVersion} themeNameBase={themeNameBase} />
     </YStack>
@@ -66,13 +66,13 @@ const Contents = ({
             onCheckedChange={setShowAccent}
             size="$1"
           >
-            <Switch.Thumb transition="quickest" />
+            <Switch.Thumb animation="quickest" />
           </Switch>
         </XStack>
       </XStack>
 
       {/* offset a bit to cover the overlap edge */}
-      <YStack items="center" flex={1} flexBasis="auto" x={-20} width="calc(100% + 20px)">
+      <YStack items="center" flex={1} x={-20} width="calc(100% + 20px)">
         {schemes.light && (
           <Theme name="light">
             <Theme name={themeName}>
@@ -86,7 +86,7 @@ const Contents = ({
               >
                 <XStack items="center" gap="$4">
                   <Separator />
-                  <SizableText size="$2" theme="alt1" select="none">
+                  <SizableText size="$2" theme="alt1" userSelect="none">
                     {showAccent ? 'Accent' : 'Base'} Light Theme
                   </SizableText>
                   <Separator />
@@ -114,7 +114,7 @@ const Contents = ({
               >
                 <XStack items="center" gap="$4">
                   <Separator />
-                  <SizableText size="$2" theme="alt1" select="none">
+                  <SizableText size="$2" theme="alt1" userSelect="none">
                     {showAccent ? 'Accent' : 'Base'} Dark Theme
                   </SizableText>
                   <Separator />

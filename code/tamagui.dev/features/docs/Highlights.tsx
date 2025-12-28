@@ -15,7 +15,6 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
     <YStack
       mb="$2"
       flex={1}
-      flexBasis="auto"
       $gtSm={{
         fd: 'row',
         justifyContent: 'space-between',
@@ -54,7 +53,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
-          <YStack my="$3" gap="$3">
+          <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
             {frontmatter.versions && frontmatter.versions.length > 1 && (
               <SourceVersionSwitcher
                 versions={frontmatter.versions}

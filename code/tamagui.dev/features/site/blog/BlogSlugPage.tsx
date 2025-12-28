@@ -1,22 +1,18 @@
 import { ThemeTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons'
 import type { Frontmatter } from '@vxrn/mdx'
-import type { ReactNode } from 'react'
 import {
   Button,
   H1,
   H2,
   H3,
   H6,
-  Image,
   Paragraph,
   Separator,
   Spacer,
-  Theme,
   XStack,
   YStack,
 } from 'tamagui'
-import { useIsDocsTinted } from '~/features/docs/docsTint'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
@@ -36,19 +32,19 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const isDraft = pathname.startsWith('/draft')
   return (
     <YStack mt="$-10" pt="$12" mb="$4" position="relative">
-      <BlogThemeTint>
+      <ThemeTint>
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
-      </BlogThemeTint>
+      </ThemeTint>
 
       <Container>
         <YStack mt="$2" items="flex-start">
-          <BlogThemeTint>
+          <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
               <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
                 <Button.Text>{isDraft ? 'Drafts' : 'Blog'}</Button.Text>
               </Button>
             </Link>
-          </BlogThemeTint>
+          </ThemeTint>
         </YStack>
 
         <H1 letterSpacing={-1} mt="$5" mb="$2">
@@ -105,20 +101,6 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           </YStack>
         </XStack>
       </Container>
-
-      {frontmatter.poster && (
-        <YStack mt="$4" mx="auto" maxWidth={900} width="100%" px="$4">
-          <Image
-            src={`/${frontmatter.poster}`}
-            alt={frontmatter.title || ''}
-            width={900}
-            height={400}
-            resizeMode="cover"
-            borderRadius="$4"
-            maxWidth="100%"
-          />
-        </YStack>
-      )}
 
       <Spacer />
 
@@ -194,12 +176,4 @@ export function BlogSlugPage(props: BlogPost) {
       </Container>
     </>
   )
-}
-
-const BlogThemeTint = ({ children }: { children: ReactNode }) => {
-  const isTinted = useIsDocsTinted()
-  if (!isTinted) {
-    return <Theme name="gray">{children}</Theme>
-  }
-  return <ThemeTint>{children}</ThemeTint>
 }

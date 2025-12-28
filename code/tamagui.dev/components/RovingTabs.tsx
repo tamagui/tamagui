@@ -184,12 +184,12 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
   return (
     <YStack
       position="absolute"
-      t={0}
-      l={0}
+      top={0}
+      left={0}
       bg="$color5"
       opacity={0.7}
       rounded="$4"
-      transition="quickest"
+      animation="quickest"
       enterStyle={{
         opacity: 0,
       }}

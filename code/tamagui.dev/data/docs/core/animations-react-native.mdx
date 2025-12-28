@@ -71,7 +71,7 @@ createAnimations({
 You can add animation delays using the array syntax:
 
 ```tsx
-<Square transition={['bouncy', { delay: 200 }]} />
+<Square animation={['bouncy', { delay: 200 }]} />
 ```
 
 The delay is specified in milliseconds and uses `Animated.delay()` internally to sequence animations.
@@ -149,7 +149,7 @@ export default createTamagui({
 // Usage in components
 export const MyComponent = () => (
   <YStack
-    transition="bouncy"
+    animation="bouncy"
     enterStyle={{
       opacity: 0,
       scale: 0.9,

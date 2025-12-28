@@ -48,7 +48,7 @@ function SandboxContent() {
   return (
     <View>
       <YStack
-        transition="lazy"
+        animation="lazy"
         width={500}
         height={500}
         bg="red"
@@ -127,7 +127,7 @@ export function MergeStylesTests() {
 
       {/* test case: ensure hoverStyle animates because it gets default aniamtable styles */}
       <Square
-        transition="bouncy"
+        animation="bouncy"
         bg="$color9"
         size={104}
         rounded="$9"
@@ -145,7 +145,7 @@ export function MergeStylesTests() {
           <Circle
             bg="$shadow4"
             size={100}
-            transition="lazy"
+            animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -156,7 +156,7 @@ export function MergeStylesTests() {
         <Circle
           bg="$shadow4"
           size={100}
-          transition="lazy"
+          animation="lazy"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -172,7 +172,7 @@ export function MergeStylesTests() {
 //     <YStack gap="$2">
 //       {/* <Theme name="blue">
 //         <Switch>
-//           <Switch.Thumb transition="quicker" />
+//           <Switch.Thumb animation="quicker" />
 //         </Switch>
 //       </Theme> */}
 

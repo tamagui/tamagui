@@ -44,7 +44,7 @@ export function SourceVersionSwitcher({
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet modal dismissOnSnapToBottom transition="medium">
+        <Sheet modal dismissOnSnapToBottom animation="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -52,7 +52,7 @@ export function SourceVersionSwitcher({
           </Sheet.Frame>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
-            transition="lazy"
+            animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -61,13 +61,13 @@ export function SourceVersionSwitcher({
 
       <Select.Content zIndex={200000}>
         <Select.ScrollUpButton
-          items="center"
-          justify="center"
+          alignItems="center"
+          justifyContent="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack z={10}>
+          <YStack zIndex={10}>
             <ChevronUp size={20} />
           </YStack>
           <LinearGradient
@@ -75,11 +75,11 @@ export function SourceVersionSwitcher({
             end={[0, 1]}
             fullscreen
             colors={['$background', 'transparent']}
-            rounded="$4"
+            borderRadius="$4"
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport minW={150}>
+        <Select.Viewport minWidth={150}>
           <Select.Group>
             <Select.Label>Source Version</Select.Label>
             {React.useMemo(
@@ -100,13 +100,13 @@ export function SourceVersionSwitcher({
         </Select.Viewport>
 
         <Select.ScrollDownButton
-          items="center"
-          justify="center"
+          alignItems="center"
+          justifyContent="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack z={10}>
+          <YStack zIndex={10}>
             <ChevronDown size={20} />
           </YStack>
           <LinearGradient
@@ -114,7 +114,7 @@ export function SourceVersionSwitcher({
             end={[0, 1]}
             fullscreen
             colors={['transparent', '$background']}
-            rounded="$4"
+            borderRadius="$4"
           />
         </Select.ScrollDownButton>
       </Select.Content>

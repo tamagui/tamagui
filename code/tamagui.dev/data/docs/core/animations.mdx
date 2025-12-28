@@ -63,30 +63,17 @@ export default createTamagui({
 
 Tamagui supports four animation drivers, each with different strengths. The animation keys match between all drivers, so you can swap them out based on your platform needs.
 
-<SimpleTable
-  headers={['Driver', 'Platform', 'Bundle Impact', 'Performance', 'Spring Physics']}
-  rows={[
-    ['**[CSS](/docs/core/animations-css)**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'No (easing only)'],
-    ['**[React Native](/docs/core/animations-react-native)**', 'Web + Native', 'No extra hit beyond RNW', 'On-thread', 'Yes (basic)'],
-    ['**[Reanimated](/docs/core/animations-reanimated)**', 'Web + Native', 'Larger', 'Off-thread (native), slower (web)', 'Yes (advanced)'],
-    ['**[Motion](/docs/core/animations-motion)**', 'Web only', 'Medium', 'Off-thread (WAAPI)', 'Yes (excellent)'],
-  ]}
-/>
+| Driver | Platform | Bundle Impact | Performance | Spring Physics |
+|--------|----------|---------------|-------------|----------------|
+| **[CSS](/docs/core/animations-css)** | Web only | Lightest | Fast (CSS transitions) | No (easing only) |
+| **[React Native](/docs/core/animations-react-native)** | Web + Native | No extra hit beyond RNW | On-thread | Yes (basic) |
+| **[Reanimated](/docs/core/animations-reanimated)** | Web + Native | Larger | Off-thread (native), slower (web) | Yes (advanced) |
+| **[Motion](/docs/core/animations-motion)** | Web only | Medium | Off-thread (WAAPI) | Yes (excellent) |
 
-### Our Recommendations
-
-For **web-only** applications, we recommend a hybrid approach:
-
-- **[CSS](/docs/core/animations-css)** - Use for load-time sensitive pages like landing pages and marketing sites. By avoiding the JavaScript bundle of Motion/Reanimated on static pages, you can significantly improve your Lighthouse scores.
-- **[Motion](/docs/core/animations-motion)** - Use for dynamic, playful animations in your app. Motion provides buttery smooth spring animations that run off-thread via WAAPI, making it ideal for interactive components like sheets, popovers, and page transitions.
-
-For **cross-platform** apps:
-
-- **[Reanimated](/docs/core/animations-reanimated)** - Our recommendation for native. It provides off-thread performance with advanced spring physics.
-- **[Moti](/docs/core/animations-reanimated)** (Reanimated driver) - If you're using Reanimated on native, use the Moti driver on web too. This avoids shipping both Reanimated and Motion, which would add significant bundle size.
-- **[Motion](/docs/core/animations-motion)** - Only use on web if you're NOT using Reanimated elsewhere in your app. If you need Reanimated for native, stick with Moti on web to avoid duplicate animation libraries.
-
-The best part? You can switch between CSS, Motion, Reanimated, and Moti using the `Configuration` component (see [Combining Drivers](#combining-drivers) below).
+- **[CSS](/docs/core/animations-css)** - Lightest bundle size, but lacks spring physics (easing curves only). Best for simple web-only apps.
+- **[React Native](/docs/core/animations-react-native)** - No extra bundle hit beyond React Native Web, but runs on-thread. Good for basic cross-platform animations.
+- **[Reanimated](/docs/core/animations-reanimated)** - Wide support for both native and web with advanced features, but larger bundle size and slower web performance (though better than React Native driver).
+- **[Motion](/docs/core/animations-motion)** - Off-thread performance via WAAPI with excellent spring physics, medium bundle hit. Note: if you're also using Reanimated, this creates duplicate bundle weight.
 
 ## Platform-Specific Configuration
 
@@ -132,82 +119,6 @@ export default createTamagui({
 
 Your bundler (Metro, Webpack, Vite) will automatically select the correct file based on the platform.
 
-## Combining Drivers
-
-You can use multiple animation drivers in the same app using the `Configuration` component. This is perfect for optimizing performance - use lightweight CSS animations for your marketing pages and outer layout, then swap to Motion for richer animations once users are in your app.
-
-Here's the pattern we use in production:
-
-### 1. Create Two Animation Configs
-
-```tsx
-// animationsRoot.ts - CSS for outer layout
-import { createAnimations } from '@tamagui/animations-css'
-
-export const animationsRoot = createAnimations({
-  quick: 'ease-out 100ms',
-  medium: 'ease-out 300ms',
-  bouncy: 'cubic-bezier(0.175, 0.885, 0.32, 1.275) 350ms',
-})
-```
-
-```tsx
-// animationsApp.ts - Motion for in-app experience
-import { createAnimations } from '@tamagui/animations-motion'
-
-export const animationsApp = createAnimations({
-  quick: {
-    type: 'spring',
-    damping: 20,
-    stiffness: 250,
-  },
-  medium: {
-    type: 'spring',
-    damping: 15,
-    stiffness: 120,
-  },
-  bouncy: {
-    type: 'spring',
-    damping: 9,
-    stiffness: 150,
-  },
-})
-```
-
-### 2. Use CSS as Default in Your Config
-
-```tsx
-// tamagui.config.ts
-import { animationsRoot } from './animationsRoot'
-
-export const config = createTamagui({
-  animations: animationsRoot, // CSS animations as default
-  // ...
-})
-```
-
-### 3. Swap to Motion with Configuration
-
-```tsx
-// app/(app)/_layout.tsx - Your authenticated app layout
-import { Configuration } from 'tamagui'
-import { animationsApp } from './animationsApp'
-
-export function AppLayout({ children }) {
-  return (
-    <Configuration animationDriver={animationsApp}>
-      {children}
-    </Configuration>
-  )
-}
-```
-
-Now your marketing pages load with lightweight CSS animations, while your logged-in app experience gets the full power of Motion's spring physics.
-
-<Notice theme="green">
-  The `Configuration` component only affects its children, so you can have different animation drivers for different parts of your app tree.
-</Notice>
-
 ### Optimizing Bundle Size
 
 <Notice theme="green">
@@ -249,7 +160,7 @@ The spring-based animation drivers have expensive hooks that would degrade runti
 performance if present on every component. As a workaround, the animation hooks
 are called conditionally on whether the animation key is present in the props object.
 
-So, `<Square transition={isActive ? 'bouncy' : null} />` rather than
+So, `<Square animation={isActive ? 'bouncy' : null} />` rather than
 `<Square {...isActive && { animation: 'bouncy' }} />`.
 
 If you'd like to remove or add an animation prop after a component has already rendered, you'd have
@@ -280,7 +191,7 @@ import { YStack } from 'tamagui'
 
 export default () => (
   <YStack
-    transition={{
+    animation={{
       // only x and y will apply animations
       x: 'bouncy',
       y: {
@@ -303,7 +214,7 @@ import { YStack } from 'tamagui'
 
 export default () => (
   <YStack
-    transition={[
+    animation={[
       // all attributes get "bouncy"
       'bouncy',
       // these are customized
@@ -331,7 +242,7 @@ export default () => (
     {[0, 1, 2, 3].map((i) => (
       <Square
         key={i}
-        transition={['bouncy', { delay: i * 100 }]}
+        animation={['bouncy', { delay: i * 100 }]}
         enterStyle={{ opacity: 0, scale: 0.5, y: 20 }}
         size={50}
         bg="$color10"
@@ -369,7 +280,7 @@ export const MyComponent = ({ isVisible }) => (
     {isVisible && (
       <View
         key="my-square"
-        transition="bouncy"
+        animation="bouncy"
         backgroundColor="green"
         size={50}
         enterStyle={{
@@ -413,7 +324,7 @@ animate on enter and exit.
 ```
 
 AnimatePresence also takes a `custom` property that allows you to update a
-variant of the animated child before it runs its exit animation. This is useful
+variant of the animated child before it runs it's exit animation. This is useful
 for animating a child out of the screen before it unmounts in a different
 direction, like the example above:
 
@@ -476,7 +387,7 @@ export function Demo() {
       alignItems="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
-        <GalleryItem key={page} transition="slowest" going={going}>
+        <GalleryItem key={page} animation="slowest" going={going}>
           <Image src={photos[imageIndex]} width={500} height={300} />
         </GalleryItem>
       </AnimatePresence>
@@ -521,7 +432,7 @@ should keep `animation` always set on the component props. You can disable it
 like so:
 
 ```tsx
-<View transition={condition ? 'animation-name' : null} />
+<View animation={condition ? 'animation-name' : null} />
 ```
 
 Note that because of this constraint, you also will see an error if you add the

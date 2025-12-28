@@ -1,5 +1,5 @@
 import { LogoIcon, useTint } from '@tamagui/logo'
-import { ArrowDown, ArrowUp, Play } from '@tamagui/lucide-icons'
+import { ArrowDown, Play } from '@tamagui/lucide-icons'
 import { animations } from '@tamagui/tamagui-dev-config'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
@@ -28,19 +28,19 @@ const animationDescriptions = [
   {
     name: 'Bouncy',
     description: 'A bouncy spring',
-    transition: 'bouncy',
+    animation: 'bouncy',
     settings: animations.animations.bouncy,
   },
   {
     name: 'Lazy',
     description: 'A lazy, straightforward spring',
-    transition: 'lazy',
+    animation: 'lazy',
     settings: animations.animations.lazy,
   },
   {
     name: 'Quick',
     description: 'A super fast spring',
-    transition: 'quick',
+    animation: 'quick',
     settings: animations.animations.quick,
   },
 ] as const
@@ -71,10 +71,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             self="flex-start"
             z={100}
             elevation="$4"
-            mr="$-2"
             rounded="$4"
             theme={tint as any}
-            justify="center"
           >
             <ExampleAnimations />
           </YStack>
@@ -103,7 +101,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
                 size="$4"
                 theme="accent"
                 z={10}
-                onPress={() => setDisableScrollPane((prev) => !prev)}
+                onPress={() => setDisableScrollPane(false)}
               >
                 View more
               </Button>
@@ -112,7 +110,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             <CodeDemoPreParsed
               pointerEvents={disableScrollPane ? 'none' : 'auto'}
               height={disableScrollPane ? 500 : 1250}
-              transition="quick"
+              animation="quick"
               maxW={530}
               minW={530}
               rounded="$8"
@@ -195,7 +193,7 @@ export const ExampleAnimations = memo(() => {
       >
         <YStack fullscreen z={-1} bg="$background" opacity={0.5} />
         {isIntersecting ? (
-          <AnimationsDemo position={positionI} transition={animation.animation} />
+          <AnimationsDemo position={positionI} animation={animation.animation} />
         ) : null}
       </YStack>
 
@@ -264,8 +262,8 @@ export function AnimationsDemoBase(props) {
   return (
     <>
       <Square
-        transition={(props.animation || 'bouncy') as any}
-        transitionOnly={['transform']}
+        animation={(props.animation || 'bouncy') as any}
+        animateOnly={['transform']}
         onPress={onPress}
         size={104}
         borderColor="$borderColor"

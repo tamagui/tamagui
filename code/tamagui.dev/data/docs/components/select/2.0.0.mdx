@@ -271,19 +271,18 @@ Provides access to the underlying FocusScope component used by Select for focus 
   ]}
 />
 
-### Using Sheet with Adapt
+### Select.Sheet
 
-When used alongside `<Adapt />`, Select can render as a sheet when that breakpoint is active.
+When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
 
 This is the only way to render a Select on Native for now, as mobile apps tend to show Select very differently from web and Tamagui wants to present the right abstractions for each platform.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Adapt.Contents` inside the `Sheet.Frame` to insert the contents given to `Select.Content`
+Must use `Select.Adapt.Contents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
 import { Select } from 'tamagui' // or '@tamagui/select'
-import { Sheet } from '@tamagui/sheet'
 
 export default () => (
   <Select defaultValue="">
@@ -292,6 +291,7 @@ export default () => (
     </Select.Trigger>
 
     <Adapt when="maxMd" platform="touch">
+      {/* or <Select.Sheet> */}
       <Sheet>
         <Sheet.Frame>
           <Adapt.Contents />

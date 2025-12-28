@@ -20,7 +20,6 @@ demoName: Popover
     `Optional arrow to point to content.`,
     `Keeps within bounds of page.`,
     `Can be placed into 12 anchor positions.`,
-    `Automatic transform-origin for scale animations.`,
   ]}
 />
 
@@ -100,16 +99,16 @@ export default () => (
     </Popover.FocusScope>
 
     {/* optionally change to sheet when small screen */}
-    {/* Import Sheet from @tamagui/sheet */}
+    {/* you can also use <Popover.Adapt /> */}
     <Adapt when="maxMd">
-      <Sheet>
-        <Sheet.Overlay />
-        <Sheet.Frame>
-          <Sheet.ScrollView>
+      <Popover.Sheet>
+        <Popover.Sheet.Overlay />
+        <Popover.Sheet.Frame>
+          <Popover.Sheet.ScrollView>
             <Adapt.Contents />
-          </Sheet.ScrollView>
-        </Sheet.Frame>
-      </Sheet>
+          </Popover.Sheet.ScrollView>
+        </Popover.Sheet.Frame>
+      </Popover.Sheet>
     </Adapt>
   </Popover>
 )
@@ -324,45 +323,6 @@ Used to display the content of the popover.
   ]}
 />
 
-#### Transform Origin
-
-Popover.Content automatically calculates the correct CSS `transform-origin` based
-on the current placement and arrow position. This means scale animations will
-naturally "grow" from the anchor point:
-
-```tsx
-<Popover.Content
-  transition="quick"
-  enterStyle={{ scale: 0.9, opacity: 0 }}
-  exitStyle={{ scale: 0.9, opacity: 0 }}
->
-  {/* Content scales from the arrow/anchor point */}
-</Popover.Content>
-```
-
-The transform origin updates automatically if the popover flips to a different
-placement due to viewport constraints.
-
-#### CSS Custom Properties
-
-Popover.Content exposes several CSS custom properties on web for advanced styling:
-
-| Property | Description |
-|----------|-------------|
-| `--tamagui-popper-available-width` | Available width within viewport |
-| `--tamagui-popper-available-height` | Available height within viewport |
-| `--tamagui-popper-anchor-width` | Width of the trigger/anchor element |
-| `--tamagui-popper-anchor-height` | Height of the trigger/anchor element |
-
-These can be used to create content that matches the anchor size or responds to
-available space:
-
-```tsx
-<Popover.Content style={{ width: 'var(--tamagui-popper-anchor-width)' }}>
-  {/* Content matches trigger width */}
-</Popover.Content>
-```
-
 ### Popover.Anchor
 
 Renders as YStack, see [Stacks](/docs/components/stacks).
@@ -370,6 +330,16 @@ Renders as YStack, see [Stacks](/docs/components/stacks).
 When you want the Trigger to be in another location from where the Popover
 attaches, use Anchor. When used, Anchor is where the Popover will attach, while
 Trigger will open it.
+
+### Popover.Sheet
+
+When used with `Adapt`, Popover will render as a sheet when that breakpoint is
+active.
+
+See [Sheet](/docs/components/sheet) for more props.
+
+Must use `Adapt.Contents` inside the `Popover.Sheet.Frame` to insert the
+contents given to `Popover.Content`
 
 ### Popover.FocusScope
 

@@ -13,7 +13,7 @@ import {
 
 const Item = ({ children, ...props }: ListItemProps) => (
   <ListItem minW={190} size="$5" iconAfter={Plus} {...props}>
-    <Paragraph select="none">{children}</Paragraph>
+    <Paragraph userSelect="none">{children}</Paragraph>
   </ListItem>
 )
 
@@ -47,7 +47,7 @@ export const AddDropdown = withStaticProperties(
           elevate
           maxW={400}
           items="flex-start"
-          transition={[
+          animation={[
             'quickest',
             {
               opacity: {

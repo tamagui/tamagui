@@ -48,7 +48,7 @@ export function VersionSwitcherItem({
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet modal dismissOnSnapToBottom transition="medium">
+        <Sheet modal dismissOnSnapToBottom animation="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -56,7 +56,7 @@ export function VersionSwitcherItem({
           </Sheet.Frame>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
-            transition="lazy"
+            animation="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -85,8 +85,8 @@ export function VersionSwitcherItem({
 
         <Select.Viewport
           // to do animations:
-          // transition="quick"
-          // transitionOnly={['transform', 'opacity']}
+          // animation="quick"
+          // animateOnly={['transform', 'opacity']}
           // enterStyle={{ o: 0, y: -10 }}
           // exitStyle={{ o: 0, y: 10 }}
           minW={200}

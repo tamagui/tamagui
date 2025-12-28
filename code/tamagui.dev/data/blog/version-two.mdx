@@ -1,296 +1,94 @@
 ---
-title: Tamagui 2.0
+title: Tamagui 2
 publishedAt: '2025-12-29'
-description: Stability, refinement, documentation, and more.
+description: More stable, easier to use, better documented.
 by: nate
+poster: banner-two.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui is a comprehensive solution to cross-platform UI on React and React
-  Native with an unmatched combination of performance, features, type-safety,
-  and depth.
+  Tamagui lets you build apps that share UI across React web and React Native
+  without sacrificing quality, simplicity, or performance.
 </IntroParagraph>
 
-Tamagui's strength lies in its maturity and depth: at about 200 packages, it
-covers everything: performant and feature-rich styling, a large suite of
-headless and composable UI components, powerful design system and theme
-generation, a rich copy-paste component suite, and a ton of first-class starter
-kits.
+<IntroParagraph>
+  Tamagui is three things: a style library, an optimizing compiler, and a suite
+  of UI components. It avoids the usual sacrifices in sharing code by simply
+  going quite deep to make that possible. Some examples:
+</IntroParagraph>
 
-The core style library is the star: no other system brings as many style
-features from CSS to native, and yet it also:
-
-- Supports all features across native and web.
-- Supports all features server-side and client-side.
-- Supports all features at both runtime and compile-time.
-- Requires zero bundler setup on any platform.
-
-The result of this is your team can count on Tamagui to just work, work fast,
-and be easy to adapt to any use case on web and native.
+Tamagui brings many style features from CSS to native, yet all style primitives
+work native and web, runtime and compile-time, server-side and client-side. You
+get server-side rendering without flickering, even when using spring-based
+animation drivers, or with media queries, or themes, and the optimizing compiler
+means you can write natural inline styles without the typical performance cost.
 
 In comparison to other solutions, Tamagui is especially strong at:
 
 - _Able to share 100% between web and native._ Many other solutions focus on one
   platform more than others, or implement their features in sub-par ways on web.
 - _Great performance and platform feeling on both web and native._ As a small
-  example - you can choose from 4 [animation drivers](/docs/2.0/core/animations) (CSS, Reanimated, Motion,
+  example - you can choose from 4 animations drivers (CSS, Reanimated, Motion,
   React Native), per-platform, yet no matter which you choose proper SSR with
-  [media queries](/docs/2.0/core/use-media) and dark mode properly renders and hydrates.
+  media queries and dark mode properly renders and hydrates.
 - _Fast, type-safe, properly mergeable inline styling._ Inline styles are a leap
   forward, but the lack of type safety or easy ability to merge and group your
-  styles is their biggest drawback. Tamagui is fully type safe, lets you
-  perfectly control how you merge styles per-component, optimizing it all nearly
-  perfectly even in the face of complicated logic.
-- _Inline styles, shared styles that are fast_: The optimizing compiler outputs
-  perfect platform-specific code, even with logic-filled inline styles. That
-  means your team can write intuitive, easy to maintain, typed styles that merge
-  perfectly down the tree without worrying about the typical performance
-  penalty.
-- _A first-class, composable components based UI kit._ Our UI kit is great at
-  both native and web, has a first-class composable component API, and can
-  easily adapt from one type of component to another based on the device or
-  media query.
-- _Zero configuration._ We invested heavily into a custom build pipeline that
-  outputs entirely separate files for native and web, with each having multiple
-  custom transforms such that **Tamagui doesn't need any setup at all, on any
-  platform**. No bundler plugin, no babel transform, no matter if it's Vite,
-  Metro, Webpack, Turbopack, you name it.
+  styles is their biggest drawback. Tamagui is fully type safe, lets you control
+  how you merge styles, and optimizes it all nearly perfectly even in the face
+  of complicated logic.
+- _A first-class, composable components based UI kit._ Our UI kit doesn't just
+  target one platform, uses composable components, and can even adapt based on
+  the device.
 
-We're proud to be used by companies like [Uniswap](https://uniswap.org), who
-leveraged Tamagui to unify their feature set across platforms and greatly
-simplify their codebase.
+The result is that Tamagui is the only library that lets you ship world class
+experiences on all platforms, with a lot less code. We're proud to be used by
+companies like [Uniswap](https://uniswap.org), who leveraged Tamagui to unify
+their featureset across platforms and greatly simplify their codebase.
 
-## Improvements during Version 1
+### Improvements during v1
 
-Tamagui improved continuously:
+Tamagui improved continuously during version one:
 
-- Over 500 new tests, stricter lints, dependency checks and a stricter release
-  process to improve stability.
-- Refined
+- Added hundreds of tests, stricter lints, dependency checks and a stricter
+  release process to improve stability.
+- Created
   [`@tamagui/build`](https://github.com/tamagui/tamagui/blob/v2/code/packages/build/README.md),
-  the only way to publish npm packages that support both CommonJS and ESModules
-  as well as native and web, all without requiring any configuration at all for
-  end users.
-- Added many styling features like [container queries](/docs/2.0/core/use-media#container-queries), container and media
+  the only way to publish npm packages that support CommonJS and ESModules and
+  native and web without requiring any configuration at all when importing -
+  whether it's Metro, Node, Vite, or otherwise.
+- Added many styling features like container queries, container and media
   queries combined, and platform/theme selectors.
-- New compound components like [Tabs](/docs/2.0/components/tabs), [Accordion](/docs/2.0/components/accordion), and [ToggleGroup](/docs/2.0/components/toggle-group).
-- [Unstyled](/docs/2.0/guides/unstyled) versions of every component.
-- Improved [theme generation](/docs/2.0/core/themes) packages, and released a free visual Theme builder.
+- New compound components like Tabs, Accordion, and ToggleGroup.
+- Unstyled versions of every component.
+- Improved theme generation packages, and released a free visual Theme builder.
 - The Takeout starter kit, and Bento copy-paste components and patterns.
-- Greatly improved documentation, especially in the last year.
-- In-place optimization via CLI, so no need for specific bundler integration.
+- A lot of low level work on performance, documentation, our CLI, and more.
 
-### Breaking Changes
+### New in v2
+
+Version two is mostly a cleanup release - it has few breaking changes. It mostly
+removes deprecated APIs, while adding a couple new components and refactoring a
+couple slow ones.
 
 The breaking changes outside of deprecations are:
 
-- **`animation` prop renamed to `transition`** to align with web:
-
-```tsx
-// Before
-<View animation="bouncy" />
-<View animation={['bouncy', { delay: 200 }]} />
-
-// After
-<View transition="bouncy" />
-<View transition={['bouncy', { delay: 200 }]} />
-```
-
-Similarly, `animateOnly` is now `transitionOnly`, and `animatePresence` is now
-`transitionPresence`.
-
-- Default `position` changed from `relative` to `static` to align with CSS
-  defaults. Use `settings.defaultPosition: 'relative'` to restore old behavior.
-- Default `flexBasis` changed from `auto` to `0` for flex items. Use
-  `settings.styleCompat: 'legacy'` to restore old behavior.
-- [Button](/docs/2.0/components/button) and [ListItem](/docs/2.0/components/list-item) use composition pattern instead of direct text/icon props.
-- [`useTheme()`](/docs/2.0/core/use-theme) no longer accepts props - use [`<Theme>`](/docs/2.0/core/themes) component instead.
-- Removed `themeInverse` prop and `<Theme inverse>` - use explicit theme names.
-- Removed `onHoverIn`/`onHoverOut` - use `onMouseEnter`/`onMouseLeave`.
-- Removed `createTheme` export - just use plain objects.
-- Removed `setupReactNative` - auto-detection now handles this.
-- Added 30+ web event handlers (keyboard, pointer, drag/drop, clipboard,
-  scroll).
-- Moved from ThemeableStack to View for most UI component bases.
-
-### Deprecations Removed
+- Default flex and position styles align with the latest React Native versions,
+  but you can change settings to keep the legacy behavior.
+- Button and ListItem lose direct text style props, to gain performance.
+- useTheme no longer takes props, must be changed using a component.
+- Removed web-only `onHoverIn` and `onHoverOut` in favor of standard web events
+  (`onMouseEnter` or `onPointerEnter`).
+- Added comprehensive web event handler support including keyboard, pointer,
+  drag and drop, clipboard, and scroll events.
+- Move from ThemeableStack to View for most base components used in UI
 
 Things deprecated in version one that are now gone:
 
-- `space`, `spaceDirection`, and `separator` props - use [`gap`](/docs/2.0/core/stack-and-text) instead.
-- [`<Spacer />`](/docs/2.0/components/spacer) moved from core to `@tamagui/spacer`.
-- `themeClassNameOnRoot` replaced with [`settings.addThemeClassName`](/docs/2.0/core/configuration).
-- `extractable()` method - use [`styleable()`](/docs/2.0/core/styled) instead.
-- `selectable` prop on Text - use `userSelect` instead.
-- `ellipse` prop on SizableText - renamed to `ellipsis`.
-- `textAlignVertical` - use `verticalAlign` instead.
-- `focusable` prop - use `tabIndex={0}` instead.
-- `dataSet` prop - use `data-*` attributes directly.
-- All root-level [`createTamagui`](/docs/2.0/core/configuration) settings moved to `settings` object.
+- Removed `space` and `spaceDirection` props in favor of gap.
+- Moved the `<Spacer />` component from core into `@tamagui/spacer`.
+- Moved all settings on `createTamagui` onto the `settings` object.
 
-## Changes
-
-Version 2 aligns to the web, supports new style props, adds a few small style
-features, refines the default configuration, and adds two new Menu components.
-It's not a hard upgrade, most of the breaking changes have been deprecated for a
-long time.
-
-### Config v5
-
-Our recommended default config, Config v4, evolves into a more mature setup with
-v5. The good news is that v5 is very iterative and easy to move to.
-
-What v5 does add makes styling a lot easier - many more opacity values, shadow
-values, a bit more refined colors, and much easier customization of sub-themes.
-
-The new [`createV5Theme()`](/docs/2.0/core/themes) factory makes for easier custom theme creation:
-
-```tsx
-import { createV5Theme } from '@tamagui/themes/v5'
-
-const customThemes = createV5Theme({
-  colors: {
-    brand: { light: [...], dark: [...] }
-  }
-})
-```
-
-The v5 theme system also by default adds `alt1`, `alt2`, `surface1`, `surface2`,
-`surface3`, and `accent` variants for all color themes.
-
-### REM Units on Native
-
-You can now use rem units in your styles on native platforms:
-
-```tsx
-<View padding="1.5rem" fontSize="1rem" />
-```
-
-Rem values are calculated using `PixelRatio.getFontScale()`, so they
-automatically respect the user's accessibility font size settings. Configure the
-base size with `settings.remBaseFontSize` (defaults to 16).
-
-### Motion Animation Driver
-
-We've added a new [animation driver](/docs/2.0/core/animations) powered by [Motion](https://motion.dev), and
-it's our recommended choice for web. The `@tamagui/animations-motion` package
-brings excellent performance through some key architectural decisions.
-
-The Motion driver avoids React re-renders entirely during animations. When
-styles change, instead of triggering a re-render cycle, it directly mutates the
-DOM through Motion's `useAnimate` hook. This is enabled by setting
-`avoidReRenders: true` internally, which tells Tamagui's core to emit style
-changes via a callback rather than through state updates.
-
-Under the hood, Motion leverages the
-[Web Animations API (WAAPI)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
-which runs animations off the main thread. This means your spring animations run
-at 60fps even when JavaScript is busy. The driver also implements intelligent
-diffing - it tracks the previous animated styles and only sends changed
-properties to Motion, minimizing work on each frame.
-
-```tsx
-import { createAnimations } from '@tamagui/animations-motion'
-
-const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
-  lazy: {
-    type: 'spring',
-    damping: 20,
-    stiffness: 60,
-  },
-})
-```
-
-The result is buttery smooth animations that don't block your UI, making it
-ideal for complex interactive components like sheets, popovers, and page
-transitions on web.
-
-### Transition Delay
-
-All animation drivers now support delays:
-
-```tsx
-<View transition={['bouncy', { delay: 200 }]} />
-```
-
-This works with CSS, React Native Animated, Reanimated, and Motion drivers.
-
-### Popover Transform Origin
-
-[Popover](/docs/2.0/components/popover) and [Tooltip](/docs/2.0/components/tooltip) now automatically calculate the correct CSS
-`transform-origin` based on placement and arrow position. This means scale
-animations naturally "grow" from the anchor point where the content connects to
-the trigger.
-
-```tsx
-<Popover placement="bottom">
-  <Popover.Trigger asChild>
-    <Button>Open</Button>
-  </Popover.Trigger>
-  <Popover.Content
-    transition="quick"
-    enterStyle={{ scale: 0.9, opacity: 0 }}
-    exitStyle={{ scale: 0.9, opacity: 0 }}
-  >
-    {/* Content scales from top center, near the trigger */}
-    <Popover.Arrow />
-    {/* ... */}
-  </Popover.Content>
-</Popover>
-```
-
-The transform origin adjusts automatically based on the final placement - if the
-popover flips from `bottom` to `top`, the origin updates accordingly. This
-creates polished, native-feeling animations without any manual configuration.
-
-### Web-aligned Image and Input Components
-
-[Input](/docs/2.0/components/input) and [Image](/docs/2.0/components/image) now follow web-aligned APIs, with some old props supported but
-deprecated.
-
-The v1 versions of both components are still available via:
-
-```tsx
-import { Input } from '@tamagui/input/v1'
-import { Image } from '@tamagui/image/v1'
-import { Input, Image } from 'tamagui/v1'
-```
-
-### Button and List Component Simplification
-
-[Button](/docs/2.0/components/button) and [ListItem](/docs/2.0/components/list-item) remove direct text style props on the outer frame, and now only
-support composition for better performance and flexibility:
-
-```tsx
-<Button>
-  <Button.Icon icon={Plus} />
-  <Button.Text>Add Item</Button.Text>
-</Button>
-```
-
-This replaces the old approach of passing `icon` and text style props directly,
-though you can still use the simple `<Button>Hello</Button>` pattern for simple
-cases.
-
-### @tamagui/react-native-web-lite
-
-React Native Web has slowed down development quite dramatically, and has a
-variety of issues when used on the web or in modern JS projects. We built this
-package by translating `react-native-web` first to TypeScript, then moving to a
-modern esmodule setup, and finally enabling tree shaking. It's not perfectly
-compatible with `react-native-web`, it strips out the style system to share a
-bit of Tamagui internals, and so breaks one thing at least -
-`pointer-events: box-none`, for now. But for the most part, if you're using
-Tamagui for most styling, you can save a huge amount of bundled JS on the web by
-aliasing to this package.
-
-### Headless and Unstyled Components
+#### Headless and Unstyled Components
 
 During v2 we're expanding headless components. Many components now have three
 variants:
@@ -301,7 +99,7 @@ variants:
 
 The headless packages (`@tamagui/switch-headless`, `@tamagui/checkbox-headless`,
 `@tamagui/radio-headless`, `@tamagui/tabs-headless`) provide hooks like
-[`useSwitch`](/docs/2.0/components/switch), [`useCheckbox`](/docs/2.0/components/checkbox), [`useRadioGroup`](/docs/2.0/components/radio-group), and [`useTabs`](/docs/2.0/components/tabs) that handle all the
+`useSwitch`, `useCheckbox`, `useRadioGroup`, and `useTabs` that handle all the
 state management, accessibility, and keyboard navigation - letting you bring
 your own styling solution.
 
@@ -309,24 +107,17 @@ This makes Tamagui components usable even if you're not using Tamagui for
 styling. For now it's a subset, but we plan to continue expanding headless
 exports throughout v2.
 
-### Other Minor Improvements
-
-- **Insets support**: Pass `insets` to [`TamaguiProvider`](/docs/2.0/core/configuration) for safe area handling.
-- **FocusGuard**: New [`@tamagui/focus-guard`](/docs/2.0/components/focus-guard) package for focus trapping.
-- **Component classes**: All components now output `is_ComponentName` classes
-  for easier debugging and CSS targeting.
-
-### New Components
+#### New Components
 
 We've added two new menu components that automatically adapt to each platform:
 
-#### Menu
+##### Menu
 
-[Menu](/docs/2.0/components/menu) provides dropdown menus with full keyboard
+[Menu](/docs/components/menu) provides dropdown menus with full keyboard
 navigation, submenus, checkbox items, and animations. On iOS and Android, it
 automatically renders using native platform menus.
 
-<HeroContainer tinted>
+<HeroContainer>
   <MenuDemo />
 </HeroContainer>
 
@@ -334,98 +125,58 @@ automatically renders using native platform menus.
 
 ```
 
-#### ContextMenu
+##### ContextMenu
 
-[ContextMenu](/docs/2.0/components/context-menu) works like Menu but activates on
+[ContextMenu](/docs/components/context-menu) works like Menu but activates on
 right-click (web) or long-press (native). It includes support for preview
 content on iOS.
 
-<HeroContainer tinted>
+<HeroContainer>
   <ContextMenuDemo />
 </HeroContainer>
+
 ```tsx hero template=ContextMenu
 
 ```
 
-### Matured Components
-
-Several components that were in beta during v1 are now fully stable and
-production-ready:
-
-#### Tabs
-
-[Tabs](/docs/2.0/components/tabs) provides keyboard-navigable tabbed interfaces with
-smooth animations and full accessibility support.
-
-<HeroContainer tinted>
-  <TabsDemo />
-</HeroContainer>
-
-```tsx hero template=Tabs
-
-```
-
-#### Accordion
-
-[Accordion](/docs/2.0/components/accordion) provides collapsible content sections
-with customizable animations and single or multiple expansion modes.
-
-<HeroContainer tinted>
-  <AccordionDemo />
-</HeroContainer>
-
-```tsx hero template=Accordion
-
-```
-
-#### Tooltip
-
-[Tooltip](/docs/2.0/components/tooltip) now uses floating positioning for smarter
-placement that automatically adjusts to viewport boundaries.
-
-<HeroContainer tinted>
-  <TooltipDemo />
-</HeroContainer>
-
-```tsx hero template=Tooltip
-
-```
-
-#### Image
-
-[Image](/docs/2.0/components/image) provides cross-platform image handling with
-consistent APIs across web and native.
-
-<HeroContainer tinted>
-  <ImageDemo />
-</HeroContainer>
-
-```tsx hero template=Image
-
-```
-
-## Goals
+### Goals
 
 Our main goal with version two is **stability**. Tamagui started as a side
 project with incredible scope and maintained an ambitious stance towards landing
-large features and internal improvements, but that led to too many regressions
-during version one. I'd like to personally apologize for that.
+large features and internal improvements.
 
-For v2, we want to ensure that won't happen anymore. It's why we delayed the
-release for nearly a year to polish and improve everything - tests, internals,
-performance, repo tooling, checks, release safeguards, and documentation.
+Speaking for myself now: I personally pushed releases too fast, and as a result
+burned too many of our users with regressions. We generally fast-followed with
+fixes, but that isn't a good thing.
 
-We considered bigger changes for v2, but realized with AI getting good at
-Tamagui and everything now working quite well, we're happier for now to keep
-things iterative - we're already full-featured and fast, from now on, stability
-is a feature.
+I'd like to sincerely apologize for the lack of rigor in our releases. We had a
+version two nearly ready over a year ago and I felt we'd finally reached
+maturity in terms of API, internals, performance, and general repo tooling, but
+honestly, I just wanted to slow down, fix as many issues as possible, and find a
+better balance.
 
-Our goal is to get v3 out much more quickly than v2 took - we will deprecate a
-few things soon after v2, and aim to release v3 in 6-12 months.
+I love Tamagui, it's always been something I do for the love of the game and not
+profit. The company to date has made nearly half a million dollars and
+re-invested all of it entirely to paying our team. We get amazing support, and I
+really appreciate our community.
 
-## Thanks
+We've changed a lot over the last couple years to improve stability:
 
-A huge thanks is owed to our amazing team, which has persisted amazingly at this
-giant release and throughout the last two years fixing issues.
+- Added over 500 tests, especially improving our native test suite.
+- Slowed down releases and added a variety of new checks to releases.
+- Fixed nearly 1,000 issues, and increased test coverage dramatically.
+- Improved our canary release process, and now use it much more often.
+- Completed all the major re-writes we wanted to do, which let us finally focus
+  on the above.
 
-Special thanks to [Quan Nguyen](https://github.com/anhquan291) ([@LionelNguyen19](https://x.com/LionelNguyen19)) for extensive work on Takeout documentation, Radix v3 color updates, and theme improvements. And to [Dave Mkpa-Eke](https://github.com/DaveyEke) ([@1804davey](https://x.com/1804davey)) for numerous bug fixes across Progress, Input, ContextMenu, and other components, as well as the new Select.Indicator feature and blog improvements.
+### What's next
+
+Tamagui is quite mature in terms of features, foundation, and performance. We
+likely won't add much for a while, instead I'd like to continue focusing on
+refinement, and also move much more quickly towards a version three. That will
+probably involve a version 2.X sometime soon that deprecates a variety more
+things we want to, in order to clear the way.
+
+Our broad goals for the future include better alignment to the web, simpler
+onboarding, and potentially more familiar style APIs for people who aren't
+Tamagui-pilled.

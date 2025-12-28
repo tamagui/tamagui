@@ -19,9 +19,7 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
       className="t_Link"
       cursor="pointer"
       color="inherit"
-      // @ts-ignore
       fontSize="inherit"
-      // @ts-ignore
       lineHeight="inherit"
       {...props}
       {...linkProps}
