@@ -1,5 +1,5 @@
 import { ContextMenu } from '@tamagui/context-menu'
-import { Calendar, Check } from '@tamagui/lucide-icons'
+import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
 import { styled, Text, YStack } from 'tamagui'
 
@@ -77,7 +77,7 @@ export function ContextMenuDemo() {
             <ContextMenu.ItemTitle>About Notes</ContextMenu.ItemTitle>
           </ContextMenu.Item>
           <ContextMenu.Separator />
-          <ContextMenu.Group>
+          <ContextMenu.Group backgroundColor="transparent">
             <ContextMenu.Item onSelect={onSelect} key="settings">
               <ContextMenu.ItemTitle>Settings</ContextMenu.ItemTitle>
             </ContextMenu.Item>
@@ -102,7 +102,7 @@ export function ContextMenuDemo() {
             </ContextMenu.Item>
           </ContextMenu.Group>
           <ContextMenu.Separator />
-          <ContextMenu.Group>
+          <ContextMenu.Group backgroundColor="transparent">
             <ContextMenu.Item
               onSelect={onSelect}
               key="close-notes"
@@ -114,7 +114,7 @@ export function ContextMenuDemo() {
               </ContextMenu.ItemTitle>
             </ContextMenu.Item>
             <ContextMenu.Item destructive onSelect={onSelect} key="delete-all">
-              <ContextMenu.ItemTitle>Delete all</ContextMenu.ItemTitle>
+              <ContextMenu.ItemTitle color="red">Delete all</ContextMenu.ItemTitle>
             </ContextMenu.Item>
           </ContextMenu.Group>
           <ContextMenu.Separator />
@@ -125,7 +125,8 @@ export function ContextMenuDemo() {
               justify="space-between"
               textValue="Actions"
             >
-              <ContextMenu.ItemTitle>Actions →</ContextMenu.ItemTitle>
+              <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
+              <ChevronRight size="$1" />
             </ContextMenu.SubTrigger>
             <ContextMenu.Portal zIndex={200}>
               <ContextMenu.SubContent
@@ -159,22 +160,24 @@ export function ContextMenuDemo() {
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
             gap={'$2'}
+            jc="space-between"
           >
+            <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
               <Check size="$1" />
             </ContextMenu.ItemIndicator>
-            <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
           </ContextMenu.CheckboxItem>
           <ContextMenu.CheckboxItem
             key="show-other-notes"
             checked={native}
             onCheckedChange={setNative}
             gap={'$2'}
+            jc="space-between"
           >
+            <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
               <Check size="$1" />
             </ContextMenu.ItemIndicator>
-            <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
           </ContextMenu.CheckboxItem>
 
           <ContextMenu.Arrow size={'$2'} />
