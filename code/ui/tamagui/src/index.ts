@@ -52,9 +52,8 @@ export * from './views/TamaguiProvider'
 export * from './views/Anchor'
 export * from './views/EnsureFlexed'
 export * from './views/Fieldset'
-export * from './views/Input'
+export * from '@tamagui/input'
 export * from './views/Spinner'
-export * from './views/TextArea'
 export * from './views/Text'
 
 // since we overlap with StackProps and potentially others

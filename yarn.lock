@@ -8005,7 +8005,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/input@workspace:code/ui/input":
+"@tamagui/input@workspace:*, @tamagui/input@workspace:code/ui/input":
   version: 0.0.0-use.local
   resolution: "@tamagui/input@workspace:code/ui/input"
   dependencies:
@@ -28687,6 +28687,7 @@ __metadata:
     "@tamagui/group": "workspace:*"
     "@tamagui/helpers-tamagui": "workspace:*"
     "@tamagui/image": "workspace:*"
+    "@tamagui/input": "workspace:*"
     "@tamagui/label": "workspace:*"
     "@tamagui/linear-gradient": "workspace:*"
     "@tamagui/list-item": "workspace:*"
