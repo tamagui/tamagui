@@ -2,7 +2,7 @@ import { Platform } from 'react-native'
 import { Input as TamaguiInput, styled, useThemeName } from 'tamagui'
 
 export function StyledRNW() {
-  return <Input id="styled-rnw-input" accessibilityLabel="ok" placeholder="search" />
+  return <Input id="styled-rnw-input" aria-label="ok" placeholder="search" />
 }
 
 // Input accepts text styles at runtime via validStyles but TS doesn't know

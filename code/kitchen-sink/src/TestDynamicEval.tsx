@@ -15,13 +15,13 @@
 
 //   return (
 //     <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.val }}>
-//       <Box flex={1} bg="$background" space="$0">
+//       <Box flex={1} bg="$background" gap="$0">
 //         <Box py="$xs" fd="row" ai="center" px="$0" jc="space-between">
 //           <Heading size="h1">Weather app</Heading>
 //           <ThemeSwitcher onSwitch={onSwitchTheme} />
 //         </Box>
 //         <ScrollView showsVerticalScrollIndicator={false}>
-//           <Box space="$3" px="$0">
+//           <Box gap="$3" px="$0">
 //             <Button title="Hello" type="primary" centered />
 //           </Box>
 //         </ScrollView>

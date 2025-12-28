@@ -4,7 +4,10 @@ import { TamaguiProvider } from 'tamagui'
 
 import config from '../tamagui.config'
 
-export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, 'config'>) {
+export function Provider({
+  children,
+  ...rest
+}: Omit<Partial<TamaguiProviderProps>, 'config'>) {
   return (
     <TamaguiProvider config={config} defaultTheme="light" {...rest}>
       <ToastProvider swipeDirection="horizontal">{children}</ToastProvider>

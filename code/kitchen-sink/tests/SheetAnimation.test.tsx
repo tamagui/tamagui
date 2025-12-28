@@ -137,7 +137,8 @@ test.describe('Sheet Animation - CSS Driver', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      const frame = page.getByTestId(`${testId}-frame`)
+      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
       await trigger.click()
@@ -150,7 +151,8 @@ test.describe('Sheet Animation - CSS Driver', () => {
   })
 
   test('animationConfig prop works without animation prop', async ({ page }) => {
-    const frame = page.getByTestId('animationConfig-only-frame')
+    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    const frame = page.getByTestId('animationConfig-only-frame').first()
     const trigger = page.getByTestId('animationConfig-only-trigger')
     const closeButton = page.getByTestId('animationConfig-only-close')
 
@@ -188,7 +190,8 @@ test.describe('Sheet Animation - Motion Driver', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      const frame = page.getByTestId(`${testId}-frame`)
+      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
       await trigger.click()
@@ -225,7 +228,8 @@ test.describe('Sheet Animation - Motion Driver', () => {
   })
 
   test('animationConfig prop works without animation prop', async ({ page }) => {
-    const frame = page.getByTestId('animationConfig-only-frame')
+    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    const frame = page.getByTestId('animationConfig-only-frame').first()
     const trigger = page.getByTestId('animationConfig-only-trigger')
     const closeButton = page.getByTestId('animationConfig-only-close')
 
@@ -289,7 +293,8 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      const frame = page.getByTestId(`${testId}-frame`)
+      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
       await trigger.click()
@@ -323,7 +328,8 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
   })
 
   test('animationConfig prop works', async ({ page }) => {
-    const frame = page.getByTestId('animationConfig-only-frame')
+    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    const frame = page.getByTestId('animationConfig-only-frame').first()
     const trigger = page.getByTestId('animationConfig-only-trigger')
     const closeButton = page.getByTestId('animationConfig-only-close')
 

@@ -23,7 +23,12 @@ function SelectComponent({ id }: { id: string }) {
   const [val, setVal] = React.useState('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll renderValue={getItemLabel}>
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      renderValue={getItemLabel}
+    >
       <Select.Trigger
         testID={`${id}-trigger`}
         aria-label={`${id}-trigger`}
@@ -50,7 +55,7 @@ function SelectComponent({ id }: { id: string }) {
       </Adapt>
 
       <Select.Content zIndex={200000}>
-        <Select.Viewport miw={200}>
+        <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {items.map((item, i) => (
