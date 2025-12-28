@@ -46,7 +46,10 @@ export function TamaguiProvider({
     updateMediaListeners()
   }, [])
 
-  const memoizedInsets = React.useMemo(() => insets, [JSON.stringify(insets)])
+  const memoizedInsets = React.useMemo(
+    () => insets,
+    [insets?.top, insets?.right, insets?.bottom, insets?.left]
+  )
 
   let contents = (
     <UnmountedClassName>
