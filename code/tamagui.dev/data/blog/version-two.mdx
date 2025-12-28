@@ -1,0 +1,182 @@
+---
+title: Tamagui 2
+publishedAt: '2025-12-29'
+description: More stable, easier to use, better documented.
+by: nate
+poster: banner-two.jpg
+---
+
+<IntroParagraph large>
+  Tamagui lets you build apps that share UI across React web and React Native
+  without sacrificing quality, simplicity, or performance.
+</IntroParagraph>
+
+<IntroParagraph>
+  Tamagui is three things: a style library, an optimizing compiler, and a suite
+  of UI components. It avoids the usual sacrifices in sharing code by simply
+  going quite deep to make that possible. Some examples:
+</IntroParagraph>
+
+Tamagui brings many style features from CSS to native, yet all style primitives
+work native and web, runtime and compile-time, server-side and client-side. You
+get server-side rendering without flickering, even when using spring-based
+animation drivers, or with media queries, or themes, and the optimizing compiler
+means you can write natural inline styles without the typical performance cost.
+
+In comparison to other solutions, Tamagui is especially strong at:
+
+- _Able to share 100% between web and native._ Many other solutions focus on one
+  platform more than others, or implement their features in sub-par ways on web.
+- _Great performance and platform feeling on both web and native._ As a small
+  example - you can choose from 4 animations drivers (CSS, Reanimated, Motion,
+  React Native), per-platform, yet no matter which you choose proper SSR with
+  media queries and dark mode properly renders and hydrates.
+- _Fast, type-safe, properly mergeable inline styling._ Inline styles are a leap
+  forward, but the lack of type safety or easy ability to merge and group your
+  styles is their biggest drawback. Tamagui is fully type safe, lets you control
+  how you merge styles, and optimizes it all nearly perfectly even in the face
+  of complicated logic.
+- _A first-class, composable components based UI kit._ Our UI kit doesn't just
+  target one platform, uses composable components, and can even adapt based on
+  the device.
+
+The result is that Tamagui is the only library that lets you ship world class
+experiences on all platforms, with a lot less code. We're proud to be used by
+companies like [Uniswap](https://uniswap.org), who leveraged Tamagui to unify
+their featureset across platforms and greatly simplify their codebase.
+
+### Improvements during v1
+
+Tamagui improved continuously during version one:
+
+- Added hundreds of tests, stricter lints, dependency checks and a stricter
+  release process to improve stability.
+- Created
+  [`@tamagui/build`](https://github.com/tamagui/tamagui/blob/v2/code/packages/build/README.md),
+  the only way to publish npm packages that support CommonJS and ESModules and
+  native and web without requiring any configuration at all when importing -
+  whether it's Metro, Node, Vite, or otherwise.
+- Added many styling features like container queries, container and media
+  queries combined, and platform/theme selectors.
+- New compound components like Tabs, Accordion, and ToggleGroup.
+- Unstyled versions of every component.
+- Improved theme generation packages, and released a free visual Theme builder.
+- The Takeout starter kit, and Bento copy-paste components and patterns.
+- A lot of low level work on performance, documentation, our CLI, and more.
+
+### New in v2
+
+Version two is mostly a cleanup release - it has few breaking changes. It mostly
+removes deprecated APIs, while adding a couple new components and refactoring a
+couple slow ones.
+
+The breaking changes outside of deprecations are:
+
+- Default flex and position styles align with the latest React Native versions,
+  but you can change settings to keep the legacy behavior.
+- Button and ListItem lose direct text style props, to gain performance.
+- useTheme no longer takes props, must be changed using a component.
+- Removed web-only `onHoverIn` and `onHoverOut` in favor of standard web events
+  (`onMouseEnter` or `onPointerEnter`).
+- Added comprehensive web event handler support including keyboard, pointer,
+  drag and drop, clipboard, and scroll events.
+- Move from ThemeableStack to View for most base components used in UI
+
+Things deprecated in version one that are now gone:
+
+- Removed `space` and `spaceDirection` props in favor of gap.
+- Moved the `<Spacer />` component from core into `@tamagui/spacer`.
+- Moved all settings on `createTamagui` onto the `settings` object.
+
+#### Headless and Unstyled Components
+
+During v2 we're expanding headless components. Many components now have three
+variants:
+
+- **Styled** - Full Tamagui components with default styles
+- **Unstyled** - Uses a `createX` factory allowing fully custom styling
+- **Headless** - Zero dependency on `@tamagui/core`, just hooks
+
+The headless packages (`@tamagui/switch-headless`, `@tamagui/checkbox-headless`,
+`@tamagui/radio-headless`, `@tamagui/tabs-headless`) provide hooks like
+`useSwitch`, `useCheckbox`, `useRadioGroup`, and `useTabs` that handle all the
+state management, accessibility, and keyboard navigation - letting you bring
+your own styling solution.
+
+This makes Tamagui components usable even if you're not using Tamagui for
+styling. For now it's a subset, but we plan to continue expanding headless
+exports throughout v2.
+
+#### New Components
+
+We've added two new menu components that automatically adapt to each platform:
+
+##### Menu
+
+[Menu](/docs/components/menu) provides dropdown menus with full keyboard
+navigation, submenus, checkbox items, and animations. On iOS and Android, it
+automatically renders using native platform menus.
+
+<HeroContainer>
+  <MenuDemo />
+</HeroContainer>
+
+```tsx hero template=Menu
+
+```
+
+##### ContextMenu
+
+[ContextMenu](/docs/components/context-menu) works like Menu but activates on
+right-click (web) or long-press (native). It includes support for preview
+content on iOS.
+
+<HeroContainer>
+  <ContextMenuDemo />
+</HeroContainer>
+
+```tsx hero template=ContextMenu
+
+```
+
+### Goals
+
+Our main goal with version two is **stability**. Tamagui started as a side
+project with incredible scope and maintained an ambitious stance towards landing
+large features and internal improvements.
+
+Speaking for myself now: I personally pushed releases too fast, and as a result
+burned too many of our users with regressions. We generally fast-followed with
+fixes, but that isn't a good thing.
+
+I'd like to sincerely apologize for the lack of rigor in our releases. We had a
+version two nearly ready over a year ago and I felt we'd finally reached
+maturity in terms of API, internals, performance, and general repo tooling, but
+honestly, I just wanted to slow down, fix as many issues as possible, and find a
+better balance.
+
+I love Tamagui, it's always been something I do for the love of the game and not
+profit. The company to date has made nearly half a million dollars and
+re-invested all of it entirely to paying our team. We get amazing support, and I
+really appreciate our community.
+
+We've changed a lot over the last couple years to improve stability:
+
+- Added over 500 tests, especially improving our native test suite.
+- Slowed down releases and added a variety of new checks to releases.
+- Fixed nearly 1,000 issues, and increased test coverage dramatically.
+- Improved our canary release process, and now use it much more often.
+- Completed all the major re-writes we wanted to do, which let us finally focus
+  on the above.
+
+### What's next
+
+Tamagui is quite mature in terms of features, foundation, and performance. We
+likely won't add much for a while, instead I'd like to continue focusing on
+refinement, and also move much more quickly towards a version three. That will
+probably involve a version 2.X sometime soon that deprecates a variety more
+things we want to, in order to clear the way.
+
+Our broad goals for the future include better alignment to the web, simpler
+onboarding, and potentially more familiar style APIs for people who aren't
+Tamagui-pilled.

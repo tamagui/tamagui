@@ -117,11 +117,6 @@ export default () => {
       type: 'number',
       description: `Adjust the component's size scaling by this number.`,
     },
-    {
-      name: 'toggledStyle',
-      type: 'object',
-      description: `Styles to apply to all items when they are in the pressed/active state. This is passed down via context to all ToggleGroup.Item children.`,
-    },
   ]}
 />
 
@@ -154,53 +149,10 @@ export default () => {
       default: 'false',
       description: `When true, remove all default tamagui styling.`,
     },
-    {
-      name: 'toggledStyle',
-      type: 'object',
-      description: `Styles to apply when the item is in the pressed/active state. Overrides any toggledStyle set on the parent ToggleGroup.`,
-    },
   ]}
 />
 
-When it is active, it will receive an `active` prop set to true. You can customize active styles in two ways:
-
-### Using toggledStyle prop
-
-The simplest way to customize the active state is with the `toggledStyle` prop:
-
-```tsx
-import { ToggleGroup } from '@tamagui/toggle-group'
-
-// Apply to all items via the parent
-<ToggleGroup type="single" toggledStyle={{ backgroundColor: '$green9', color: '$white' }}>
-  <ToggleGroup.Item value="a">A</ToggleGroup.Item>
-  <ToggleGroup.Item value="b">B</ToggleGroup.Item>
-</ToggleGroup>
-
-// Or apply to individual items
-<ToggleGroup type="single">
-  <ToggleGroup.Item value="a" toggledStyle={{ backgroundColor: '$red9' }}>A</ToggleGroup.Item>
-  <ToggleGroup.Item value="b" toggledStyle={{ backgroundColor: '$blue9' }}>B</ToggleGroup.Item>
-</ToggleGroup>
-```
-
-You can also use `toggledStyle` when creating styled components:
-
-```tsx
-import { ToggleGroup } from '@tamagui/toggle-group'
-import { styled } from 'tamagui'
-
-const MyToggleGroupItem = styled(ToggleGroup.Item, {
-  toggledStyle: {
-    backgroundColor: '$green9',
-    color: '$yellow9',
-  },
-})
-```
-
-### Using the active variant
-
-For more complex styling needs, you can use the `active` variant:
+When it is active, it will receive an `active` prop set to true. This means you can customize the active styles like so:
 
 ```tsx
 import { ToggleGroup } from '@tamagui/toggle-group'

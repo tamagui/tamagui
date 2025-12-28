@@ -1,5 +1,5 @@
 import { getSize } from '@tamagui/get-token'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Dot } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'

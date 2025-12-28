@@ -1,0 +1,54 @@
+---
+title: ScrollView
+description: React Native ScrollView with Tamagui props.
+name: scrollView
+component: ScrollView
+package: scroll-view
+demoName: ScrollView
+---
+
+<HeroContainer>
+  <ScrollViewDemo />
+</HeroContainer>
+
+```tsx hero template=ScrollView
+
+```
+
+<Highlights
+  features={[
+    `All the features of React Native ScrollView.`,
+    `Adds all the style properties of Tamagui.`,
+  ]}
+/>
+
+## Installation
+
+ScrollView is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/scroll-view
+```
+
+## Usage
+
+```tsx
+import { ScrollView, YStack, ListItem } from 'tamagui'
+
+export default () => (
+  <ScrollView>
+    <YStack>
+      <ListItem>1</ListItem>
+      <ListItem>2</ListItem>
+      <ListItem>3</ListItem>
+      <ListItem>4</ListItem>
+    </YStack>
+  </ScrollView>
+)
+```
+
+## API Reference
+
+### ScrollView
+
+See [React Native ScrollView](https://reactnative.dev/docs/scrollview) and [Tamagui style props](https://tamagui.dev/docs/intro/props).

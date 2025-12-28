@@ -1,5 +1,5 @@
-import { Check, CheckCircle, XCircle } from '@tamagui/lucide-icons'
-import type { ButtonProps, CheckboxProps, RadioGroupItemProps } from 'tamagui'
+import { Check, CheckCircle } from '@tamagui/lucide-icons'
+import type { CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
   Button,
   Checkbox,
@@ -29,11 +29,11 @@ export const isSafariMobile = (() => {
   return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
 })()
 
-export function PurchaseButton(props: ButtonProps) {
+export function PurchaseButton({ children, ...props }) {
   return (
     <Button size="$4" $gtXs={{ size: '$5' }} rounded="$10" {...props}>
       <Button.Text size="$5" fontFamily="$mono">
-        {props.children}
+        {children}
       </Button.Text>
     </Button>
   )
@@ -47,7 +47,7 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
   return (
     <Label
       flex={1}
-      htmlFor={props.id as string}
+      {...(props.id && { htmlFor: props.id })}
       p="$4"
       className="3d"
       height="unset"
@@ -74,9 +74,9 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
           bg: '$color4',
           borderColor: '$color6',
         }}
-        checked={props.checked || false}
-        size="$6"
         {...props}
+        checked={props.checked ?? false}
+        size="$6"
       >
         <Checkbox.Indicator>
           <Check />
@@ -98,7 +98,7 @@ export const RadioGroupItem = ({
   return (
     <Label
       flex={1}
-      htmlFor={props.id as string}
+      {...(props.id && { htmlFor: props.id })}
       p="$4"
       height="unset"
       display="flex"
@@ -150,18 +150,13 @@ export function BentoTable({
   const priceInfo = price ? bentoDefaults[price.id] : null
 
   return (
-    <YStack
-      separator={<Separator borderColor="$color5" />}
-      borderWidth="$0.5"
-      rounded="$4"
-      borderColor="$color5"
-    >
+    <YStack borderWidth="$0.5" rounded="$4" borderColor="$color5">
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fontWeight="bold">
             Lifetime access
           </Paragraph>
-          <Paragraph flex={1} ellipse size="$3" theme="alt1">
+          <Paragraph flex={1} ellipsis size="$3" theme="alt1">
             You own and can use the code forever.
           </Paragraph>
         </YStack>
@@ -198,12 +193,7 @@ export const TakeoutTable = ({
   const price = product?.prices.find((price) => price.id === selectedPriceId)
   const takeoutPriceInfo = getTakeoutPriceInfo(price?.description ?? '')
   return (
-    <YStack
-      separator={<Separator opacity={0.35} />}
-      borderWidth="$0.5"
-      rounded="$4"
-      borderColor="$borderColor"
-    >
+    <YStack borderWidth="$0.5" borderRadius="$4" borderColor="$borderColor">
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fontWeight="bold">
@@ -257,4 +247,3 @@ export const TakeoutTable = ({
 }
 
 const checkCircle = <CheckCircle color="$green9" />
-const xCircle = <XCircle size={28} color="$red9" />
