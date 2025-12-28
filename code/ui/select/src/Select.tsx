@@ -562,7 +562,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         return prev
       })
     },
-    1,
+    0,
     {},
     []
   )
