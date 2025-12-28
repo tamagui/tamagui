@@ -46,7 +46,14 @@ export function SelectDemoContents(
       renderValue={getItemLabel}
     >
       {props?.trigger || (
-        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+        <Select.Trigger
+          maxWidth={220}
+          iconAfter={ChevronDown}
+          borderRadius="$4"
+          backgroundColor="$background"
+          hoverStyle={{ backgroundColor: '$backgroundHover' }}
+          pressStyle={{ backgroundColor: '$backgroundPress' }}
+        >
           <Select.Value placeholder="Something" />
         </Select.Trigger>
       )}
@@ -86,10 +93,15 @@ export function SelectDemoContents(
             rounded="$4"
           />
         </Select.ScrollUpButton>
-
-        <Select.Viewport minW={200}>
+        <Select.Viewport
+          minW={200}
+          bg="$background"
+          rounded="$4"
+          borderWidth={1}
+          borderColor="$borderColor"
+        >
           <Select.Group>
-            <Select.Label>Fruits</Select.Label>
+            <Select.Label fontWeight="bold">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
@@ -99,6 +111,13 @@ export function SelectDemoContents(
                       index={i}
                       key={item.name}
                       value={item.name.toLowerCase()}
+                      bg="transparent"
+                      pressStyle={{
+                        bg: '$backgroundPress',
+                      }}
+                      hoverStyle={{
+                        bg: '$color2',
+                      }}
                     >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
@@ -115,8 +134,7 @@ export function SelectDemoContents(
             <YStack
               position="absolute"
               r={0}
-              t={0}
-              b={0}
+              t={16}
               items="center"
               justify="center"
               width={'$4'}

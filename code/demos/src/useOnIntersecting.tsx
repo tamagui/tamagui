@@ -46,6 +46,7 @@ export function useOnIntersecting<Ref extends HTMLRef | HTMLRef[]>(
   const onIntersectEvent = useEvent(incomingCbRaw)
 
   useEffect(() => {
+    if (!isWeb) return
     const refs = (Array.isArray(refsIn) ? refsIn : [refsIn]) as HTMLRef[]
     if (!refs.length) return
 
