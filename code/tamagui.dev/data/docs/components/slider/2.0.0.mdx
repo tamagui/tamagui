@@ -68,6 +68,47 @@ export default () => (
 )
 ```
 
+## Vertical Slider on iOS
+
+When using a vertical slider on iOS, you need to pass safe area insets to `TamaguiProvider` for proper pointer position calculation. Without this, the slider thumb may not track your finger correctly due to iOS safe area offsets.
+
+```tsx
+import { TamaguiProvider } from 'tamagui'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { config } from './tamagui.config'
+
+function App() {
+  const insets = useSafeAreaInsets()
+
+  return (
+    <TamaguiProvider config={config} insets={insets}>
+      {/* Your app content */}
+    </TamaguiProvider>
+  )
+}
+```
+
+Then you can use vertical sliders normally:
+
+```tsx
+import { Slider, XStack } from 'tamagui'
+
+export default () => (
+  <XStack height={200} alignItems="center" gap="$8">
+    <Slider height={200} orientation="vertical" defaultValue={[50]} max={100} step={1}>
+      <Slider.Track>
+        <Slider.TrackActive />
+      </Slider.Track>
+      <Slider.Thumb size="$2" index={0} circular />
+    </Slider>
+  </XStack>
+)
+```
+
+<Notice theme="blue">
+  This is only required on iOS. On Android and web, the slider works correctly without passing insets.
+</Notice>
+
 ## API Reference
 
 ### Slider

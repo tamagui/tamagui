@@ -500,6 +500,7 @@ export type ComponentContextI = {
   animationDriver: AnimationDriver | null
   setParentFocusState: ComponentSetStateShallow | null
   mediaEmit?: (state: UseMediaState) => void
+  insets?: { top: number; right: number; bottom: number; left: number } | null
 }
 
 export type TamaguiComponentStateRef = {
@@ -2436,6 +2437,7 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
   config?: TamaguiInternalConfig
   disableInjectCSS?: boolean
   children?: ReactNode
+  insets?: { top: number; right: number; bottom: number; left: number }
 }
 
 export type PropMappedValue = [string, any][] | undefined
