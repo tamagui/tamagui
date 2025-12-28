@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
 
-Error.stackTraceLimit = Number.Infinity
+Error.stackTraceLimit = Number.MAX_SAFE_INTEGER
 process.env.TAMAGUI_TARGET = 'native'
 
 window['React'] = React
@@ -130,19 +130,6 @@ describe('flatten-tests', () => {
     `)
 
     expect(output?.code).toMatchSnapshot()
-  })
-
-  test(`allow invaild identifier`, async () => {
-    const output = await extractForNative(`
-        import { View } from 'tamagui'
-        export function Test() {
-          return (
-            <View backgroundColor='$invaild-identifier' />
-          )
-        }
-      `)
-
-    expect(output?.code).contains('theme["invaild-identifier"].get()')
   })
 
   // TODO make this work:

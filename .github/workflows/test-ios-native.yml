@@ -49,6 +49,11 @@ jobs:
           mv maestro "$HOME/.maestro"
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
+      # Install dependencies BEFORE booting simulator to avoid simulator timeout
+      # during potentially long yarn install + build:js steps
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
       - name: Boot iOS Simulator
         working-directory: ${{ github.workspace }}
         run: |
@@ -81,9 +86,6 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           xcrun simctl install booted "${{ needs.build.outputs.built-app-path }}"
-
-      - name: Install Dependencies
-        uses: ./.github/actions/install
 
       - name: Start Metro Bundler
         run: |

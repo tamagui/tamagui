@@ -1,0 +1,393 @@
+---
+title: Popover
+description: Show content with a trigger in a floating pane.
+name: popover
+component: Popover
+package: popover
+demoName: Popover
+---
+
+<HeroContainer showAnimationDriverControl>
+  <PopoverDemo />
+</HeroContainer>
+
+```tsx hero template=Popover
+
+```
+
+<Highlights
+  features={[
+    `Optional arrow to point to content.`,
+    `Keeps within bounds of page.`,
+    `Can be placed into 12 anchor positions.`,
+  ]}
+/>
+
+Popovers are a great way to show content that's only visible when trigger is
+pressed, floating above the current content. Be sure to open the code example
+above for a copy-paste implementation.
+
+<Notice>
+  Note: Popovers are not a recommended pattern for mobile apps. Instead you can
+  use Adapt and render them as a Sheet, or just conditionally render them to
+  some native UI.
+</Notice>
+
+## Installation
+
+Popover is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/popover
+```
+
+### PortalProvider
+
+_Only_ if you are not using `tamagui` and installing popover independently -
+you'll need to set up the portal for it with the `@tamagui/portal` package:
+
+```bash
+npm install @tamagui/portal
+```
+
+Then add `PortalProvider` to the root of your app:
+
+```tsx fileName="App.tsx"
+import { PortalProvider } from '@tamagui/portal'
+import YourApp from './components/YourApp'
+
+function App() {
+  return (
+    <PortalProvider shouldAddRootHost>
+      <YourApp />
+    </PortalProvider>
+  )
+}
+
+export default App
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'shouldAddRootHost',
+      type: 'boolean',
+      required: false,
+      description: `Defines whether to add a default root host or not.`,
+    },
+  ]}
+/>
+
+## Anatomy
+
+```tsx
+import { Popover, Adapt } from 'tamagui' // or '@tamagui/popover'
+
+export default () => (
+  <Popover>
+    <Popover.Trigger />
+
+    {/* Optional: Control focus behavior */}
+    <Popover.FocusScope loop trapped focusOnIdle={true}>
+      <Popover.Content>
+        <Popover.Arrow />
+        <Popover.Close />
+        {/* ScrollView is optional, can just put any contents inside if not scrollable */}
+        <Popover.ScrollView>{/* ... */}</Popover.ScrollView>
+        {/* ... */}
+      </Popover.Content>
+    </Popover.FocusScope>
+
+    {/* optionally change to sheet when small screen */}
+    {/* you can also use <Popover.Adapt /> */}
+    <Adapt when="maxMd">
+      <Popover.Sheet>
+        <Popover.Sheet.Overlay />
+        <Popover.Sheet.Frame>
+          <Popover.Sheet.ScrollView>
+            <Adapt.Contents />
+          </Popover.Sheet.ScrollView>
+        </Popover.Sheet.Frame>
+      </Popover.Sheet>
+    </Adapt>
+  </Popover>
+)
+```
+
+## Scoping
+
+Popover supports scoping which lets you mount one or more Popover instances at
+the root of your app, while having a deeply nested child Trigger or Content
+attach to the proper parent Popover instance.
+
+In performance sensitive areas you may want to take advantage of this as it allows
+you to only render the Popover.Trigger inside the sensitive area.
+Popover isn't the cheapest component - it has a lot of functionality
+inside of it like scroll management, focus management, and tracking position.
+
+Here's the basic anatomy of using `scope` and placing your Popover higher up
+for performance:
+
+```tsx fileName=_layout.tsx
+import { Popover } from 'tamagui'
+
+// in your root layout:
+export default ({ children }) => (
+  <Popover scope="user-avatar">
+    <Popover.Content>
+      <Popover.Arrow />
+      <Popover.Close />
+      <Popover.ScrollView>{/* ... */}</Popover.ScrollView>
+    </Popover.Content>
+
+    {/* the rest of your app, note that it's inside of Popover */}
+    {children}
+  </Popover>
+)
+```
+
+```tsx fileName=UserAvatar.tsx
+export default () => (
+  <Popover.Trigger scope="user-avatar">
+    <Avatar />
+  </Popover.Trigger>
+)
+```
+
+Note that the `Trigger` scope ties to the `Popover` scope.
+
+## API Reference
+
+### Popover
+
+Contains every component for the popover.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: `Must contain Popover.Content`,
+    },
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      required: false,
+      description: `Passes size down to all sub-components when set for padding, arrow, borderRadius.`,
+    },
+    {
+      name: 'placement',
+      type: 'Placement',
+      required: false,
+      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: ``,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'keepChildrenMounted',
+      type: 'boolean | "lazy"',
+      required: false,
+      description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render. The "lazy" value will only initially mount the children after a React startTransition, and then keep them mounted thereafter.`,
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps | boolean',
+      required: false,
+      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps | boolean',
+      required: false,
+      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+    },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+    },
+    {
+      name: 'hoverable',
+      type: 'boolean | UseFloatingProps',
+      required: false,
+      description: `Allows hovering on the trigger to open the popover. See UseFloatingProps from floating-ui: accepts boolean or object of { delay: number, restMs: number, handleClose: Function, mouseOnly: boolean, move: boolean }`,
+    },
+    {
+      name: 'resize',
+      type: 'SizeProps | boolean',
+      required: false,
+      description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
+    },
+  ]}
+/>
+
+For most of these properties, you'll want to reference the
+[floating-ui docs](https://floating-ui.com/docs/getting-started).
+
+<Notice>
+  If using `modal={true}` (which is `true` by default), refer to the
+  [PortalProvider installation](#portalprovider) for more
+  information.
+</Notice>
+
+### Popover.Arrow
+
+Popover.Arrow can be used to show an arrow that points at the Trigger element.
+In order for the Arrow to show you must have a Trigger element within your
+Popover. Arrows extend YStack, see [Stacks](/docs/components/stacks).
+
+### Popover.Trigger
+
+Used to trigger opening of the popover when uncontrolled, just renders a YStack,
+see [Stacks](/docs/components/stacks).
+
+### Popover.Content
+
+Extends PopperContent which extends SizableStack which extends a YStack (see
+[Stacks](/docs/components/stacks)).
+
+Also extends
+
+Used to display the content of the popover.
+
+<PropsTable
+  data={[
+    {
+      name: 'enableAnimationForPositionChange',
+      type: 'boolean',
+      description:
+        'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.',
+    },
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      required: false,
+      description:
+        'Controls default padding/borderRadius when unstyled is false.',
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      default: false,
+      description: `Removes all default Tamagui styles.`,
+    },
+    {
+      name: 'trapFocus',
+      type: 'boolean',
+      default: false,
+      description: 'Whether focus should be trapped within the `Popover`',
+    },
+    {
+      name: 'disableFocusScope',
+      type: 'boolean',
+      default: false,
+      description: 'Whether popover should not focus contents on open',
+    },
+    {
+      name: 'onOpenAutoFocus',
+      type: `FocusScopeProps['onMountAutoFocus']`,
+      default: false,
+      description:
+        'Event handler called when auto-focusing on open. Can be prevented.',
+    },
+    {
+      name: 'onCloseAutoFocus',
+      type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
+      default: false,
+      description:
+        'Event handler called when auto-focusing on close. Can be prevented.',
+    },
+    {
+      name: 'lazyMount',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Popover.Anchor
+
+Renders as YStack, see [Stacks](/docs/components/stacks).
+
+When you want the Trigger to be in another location from where the Popover
+attaches, use Anchor. When used, Anchor is where the Popover will attach, while
+Trigger will open it.
+
+### Popover.Sheet
+
+When used with `Adapt`, Popover will render as a sheet when that breakpoint is
+active.
+
+See [Sheet](/docs/components/sheet) for more props.
+
+Must use `Adapt.Contents` inside the `Popover.Sheet.Frame` to insert the
+contents given to `Popover.Content`
+
+### Popover.FocusScope
+
+Provides access to the underlying FocusScope component used by Popover for focus
+management. Can be used to control focus behavior from a parent component.
+
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      default: 'true',
+      description: `Whether focus management is enabled`,
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number',
+      default: 'false',
+      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on mount. Can be prevented`,
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+    },
+  ]}
+/>
+
+### Popover.ScrollView
+
+Must be nested inside Content. Renders as a plain React Native ScrollView. If
+used alongside `<Adapt />` and Sheet, Tamagui will automatically know to remove
+this ScrollView when swapping into the Sheet, as the Sheet must use its own
+ScrollView that handles special logic for interactions with dragging.

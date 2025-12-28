@@ -93,7 +93,6 @@ export const ThemeSwitch = memo(() => {
               {isLight && (
                 <Button
                   tag="span"
-                  color="$color"
                   disabled
                   chromeless
                   size="$1"
@@ -101,7 +100,7 @@ export const ThemeSwitch = memo(() => {
                   opacity={0.44}
                   x={-1.5}
                   y={-1.5}
-                  icon={Moon}
+                  icon={<Moon color="$color" />}
                 />
               )}
             </XStack>
@@ -110,7 +109,6 @@ export const ThemeSwitch = memo(() => {
               {!isLight && (
                 <Button
                   tag="span"
-                  color="$color"
                   disabled
                   chromeless
                   size="$1"
@@ -118,7 +116,7 @@ export const ThemeSwitch = memo(() => {
                   opacity={0.25}
                   x={-1.5}
                   y={-1.5}
-                  icon={Sun}
+                  icon={<Sun color="$color" />}
                 />
               )}
             </XStack>
@@ -128,27 +126,25 @@ export const ThemeSwitch = memo(() => {
                 {isLight && (
                   <Button
                     tag="span"
-                    color="$background"
                     disabled
                     chromeless
                     size="$1"
                     scaleIcon={1.2}
                     opacity={0.8}
                     y={-0.75}
-                    icon={Sun}
+                    icon={<Sun color="$background" />}
                   />
                 )}
                 {!isLight && (
                   <Button
                     tag="span"
-                    color="$background"
                     disabled
                     chromeless
                     size="$1"
                     scaleIcon={1.2}
                     opacity={0.5}
                     y={-0.75}
-                    icon={Moon}
+                    icon={<Moon color="$background" />}
                   />
                 )}
               </YStack>

@@ -17,6 +17,7 @@ export const Stack = createComponent<
   StackNonStyleProps,
   StackStyleBase
 >({
+  componentName: 'Stack',
   acceptsClassName: true,
   defaultProps: stackDefaultStyles,
   validStyles,

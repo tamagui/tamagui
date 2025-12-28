@@ -1,13 +1,99 @@
-import type React from 'react';
-type MenuProps = {
-    children?: React.ReactNode;
-    open?: boolean;
-    defaultOpen?: boolean;
-    trigger?: any;
-    onOpenChange?: (next: boolean) => void;
+import { type CreateBaseMenuProps } from '@tamagui/create-menu';
+import React from 'react';
+export declare function createMenu(params: CreateBaseMenuProps): React.FC<import("./createNonNativeMenu").MenuProps & {
+    scope?: string;
+} & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuProps> & {
+    readonly Trigger: React.FC<Omit<import("@tamagui/web").StackProps, "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps> & import("./createNonNativeMenu").MenuTriggerProps & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuTriggerProps>;
+    readonly Portal: React.FC<import("@tamagui/create-menu").MenuPortalProps & {
+        scope?: string;
+    } & {
+        scope?: string;
+    } & React.FragmentProps>;
+    readonly Content: React.FC<import("./createNonNativeMenu").MenuContentProps & {
+        scope?: string;
+    } & React.RefAttributes<HTMLElement | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuContentProps>;
+    readonly Group: React.FC<any>;
+    readonly Label: React.FC<any>;
+    readonly Item: React.FC<Omit<import("@tamagui/create-menu").MenuItemProps & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & {
+        children: React.ReactNode;
+        textValue?: string;
+        onSelect?: (event?: Event) => void;
+    } & {
+        disabled?: boolean;
+        hidden?: boolean;
+        destructive?: boolean;
+        key: string;
+    }>;
+    readonly CheckboxItem: React.FC<Omit<import("@tamagui/create-menu").MenuCheckboxItemProps & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Omit<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemProps, "onSelect"> & {
+        checked?: boolean;
+        onCheckedChange?: (checked: boolean) => void;
+        value?: "mixed" | "on" | "off" | boolean;
+        onValueChange?: (state: "mixed" | "on" | "off", prevState: "mixed" | "on" | "off") => void;
+        key: string;
+    }>;
+    readonly RadioGroup: React.FC<any>;
+    readonly RadioItem: React.FC<any>;
+    readonly ItemIndicator: React.FC<Omit<Omit<any, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
+        scope?: string;
+    }, string | number | symbol> & Omit<Omit<any, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
+        scope?: string;
+    } & React.RefAttributes<any>, "ref"> & {
+        scope?: string;
+    } & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemIndicatorProps>;
+    readonly Separator: React.FC<any>;
+    readonly Arrow: React.FC<Omit<import("@tamagui/create-menu").MenuArrowProps & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>>;
+    readonly Sub: React.FC<import("@tamagui/create-menu").MenuSubProps & {
+        children?: React.ReactNode;
+        open?: boolean;
+        defaultOpen?: boolean;
+        onOpenChange?(open: boolean): void;
+    } & {
+        scope?: string;
+    } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubProps>;
+    readonly SubTrigger: React.FC<Omit<import("@tamagui/web").StackProps, "scope" | "key" | keyof import("@tamagui/create-menu").MenuSubTriggerProps> & Omit<import("@tamagui/create-menu").MenuSubTriggerProps & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
+        scope?: string;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & {
+        children: React.ReactNode;
+        textValue?: string;
+        onSelect?: (event?: Event) => void;
+    } & {
+        disabled?: boolean;
+        hidden?: boolean;
+        destructive?: boolean;
+        key: string;
+    } & {
+        key: string;
+    }>;
+    readonly SubContent: React.FC<Omit<import("@tamagui/create-menu").MenuSubContentProps & {
+        scope?: string;
+    } & React.RefAttributes<HTMLElement | import("react-native").View>, "ref"> & {
+        scope?: string;
+    } & React.RefAttributes<HTMLElement | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubContentProps>;
+    readonly ItemTitle: React.FC<any>;
+    readonly ItemSubtitle: React.FC<any>;
+    readonly ItemIcon: React.FC<any>;
+    readonly ItemImage: React.FC<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
+        source: import("react-native").ImageProps["source"];
+        ios?: {
+            style?: {
+                tint?: string;
+            };
+            lazy?: boolean;
+        };
+    }>;
 };
-export declare const Menu: (({ children, open: openProp, defaultOpen, trigger, onOpenChange }: MenuProps) => null) & {
-    Item: (props: any) => any;
-};
-export {};
 //# sourceMappingURL=Menu.d.ts.map

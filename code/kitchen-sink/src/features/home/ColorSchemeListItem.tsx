@@ -1,7 +1,7 @@
 import type { ListItemProps } from 'tamagui'
-import { ListItem, Spacer, SizableText, XStack } from 'tamagui'
+import { ListItem, SizableText, View, XStack } from 'tamagui'
 import { Pressable } from 'react-native'
-import { useThemeControl, ThemeMode } from '../../useKitchenSinkTheme'
+import { useThemeControl, type ThemeMode } from '../../useKitchenSinkTheme'
 
 const modes: ThemeMode[] = ['system', 'light', 'dark']
 const modeLabels: Record<ThemeMode, string> = {
@@ -12,9 +12,9 @@ const modeLabels: Record<ThemeMode, string> = {
 
 export const ColorSchemeListItem = (props: ListItemProps) => {
   return (
-    <ListItem {...props} bg="$color1" pressTheme paddingVertical={0}>
+    <ListItem {...props} bg="$color1" paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
-      <Spacer flex />
+      <View flex={1} />
       <ColorSchemeToggle />
     </ListItem>
   )
@@ -31,7 +31,7 @@ export const ColorSchemeToggle = () => {
 
   return (
     <Pressable onPress={cycleMode}>
-      <XStack ai="center" px="$2" py="$1" br="$2" bg="$color3">
+      <XStack items="center" px="$2" py="$1" rounded="$2">
         <SizableText size="$3" fontWeight="600">
           {modeLabels[mode]}
         </SizableText>

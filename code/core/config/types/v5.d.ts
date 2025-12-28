@@ -1,6 +1,6 @@
 export { shorthands } from '@tamagui/shorthands/v5';
 export { createThemes } from '@tamagui/theme-builder';
-export { tokens, defaultThemes as themes } from '@tamagui/themes/v5';
+export { themes, tokens, createV5Theme } from '@tamagui/themes/v5';
 export { animations } from './v5-animations';
 export { createSystemFont, fonts } from './v5-fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media';
@@ -22,9 +22,10 @@ export declare const settings: {
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
-    themeClassNameOnRoot: true;
+    addThemeClassName: "html";
     onlyAllowShorthands: true;
     maxDarkLightNesting: number;
+    styleCompat: "react-native";
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
@@ -120,7 +121,7 @@ export declare const defaultConfig: {
         t: "top";
         z: "zIndex";
     };
-    themes: Record<"light" | "dark" | "light_orange" | "light_yellow" | "light_green" | "light_blue" | "light_purple" | "light_pink" | "light_red" | "dark_orange" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_purple" | "dark_pink" | "dark_red" | "light_gray" | "dark_gray" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_teal" | "dark_teal", {
+    themes: Record<"light" | "dark" | "light_orange" | "light_yellow" | "light_green" | "light_blue" | "light_purple" | "light_pink" | "light_red" | "dark_orange" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_purple" | "dark_pink" | "dark_red" | "light_alt1" | "light_alt2" | "dark_alt1" | "dark_alt2" | "light_orange_alt1" | "light_orange_alt2" | "light_yellow_alt1" | "light_yellow_alt2" | "light_green_alt1" | "light_green_alt2" | "light_blue_alt1" | "light_blue_alt2" | "light_purple_alt1" | "light_purple_alt2" | "light_pink_alt1" | "light_pink_alt2" | "light_red_alt1" | "light_red_alt2" | "dark_orange_alt1" | "dark_orange_alt2" | "dark_yellow_alt1" | "dark_yellow_alt2" | "dark_green_alt1" | "dark_green_alt2" | "dark_blue_alt1" | "dark_blue_alt2" | "dark_purple_alt1" | "dark_purple_alt2" | "dark_pink_alt1" | "dark_pink_alt2" | "dark_red_alt1" | "dark_red_alt2" | "light_gray" | "dark_gray" | "light_gray_alt1" | "light_gray_alt2" | "dark_gray_alt1" | "dark_gray_alt2" | "light_surface1" | "light_surface2" | "light_surface3" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "light_blue_surface1" | "light_blue_surface2" | "light_blue_surface3" | "light_gray_surface1" | "light_gray_surface2" | "light_gray_surface3" | "light_green_surface1" | "light_green_surface2" | "light_green_surface3" | "light_orange_surface1" | "light_orange_surface2" | "light_orange_surface3" | "light_pink_surface1" | "light_pink_surface2" | "light_pink_surface3" | "light_purple_surface1" | "light_purple_surface2" | "light_purple_surface3" | "light_red_surface1" | "light_red_surface2" | "light_red_surface3" | "light_yellow_surface1" | "light_yellow_surface2" | "light_yellow_surface3" | "dark_blue_surface1" | "dark_blue_surface2" | "dark_blue_surface3" | "dark_gray_surface1" | "dark_gray_surface2" | "dark_gray_surface3" | "dark_green_surface1" | "dark_green_surface2" | "dark_green_surface3" | "dark_orange_surface1" | "dark_orange_surface2" | "dark_orange_surface3" | "dark_pink_surface1" | "dark_pink_surface2" | "dark_pink_surface3" | "dark_purple_surface1" | "dark_purple_surface2" | "dark_purple_surface3" | "dark_red_surface1" | "dark_red_surface2" | "dark_red_surface3" | "dark_yellow_surface1" | "dark_yellow_surface2" | "dark_yellow_surface3" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_accent" | "dark_accent" | "light_black_accent" | "light_white_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_black_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent" | "light_teal" | "light_neutral" | "dark_teal" | "dark_neutral" | "light_alt1_accent" | "light_alt2_accent" | "light_surface1_accent" | "light_surface2_accent" | "light_surface3_accent" | "light_black_alt1_accent" | "light_black_alt2_accent" | "light_black_surface1_accent" | "light_black_surface2_accent" | "light_black_surface3_accent" | "light_white_alt1_accent" | "light_white_alt2_accent" | "light_white_surface1_accent" | "light_white_surface2_accent" | "light_white_surface3_accent" | "light_gray_alt1_accent" | "light_gray_alt2_accent" | "light_gray_surface1_accent" | "light_gray_surface2_accent" | "light_gray_surface3_accent" | "light_blue_alt1_accent" | "light_blue_alt2_accent" | "light_blue_surface1_accent" | "light_blue_surface2_accent" | "light_blue_surface3_accent" | "light_red_alt1_accent" | "light_red_alt2_accent" | "light_red_surface1_accent" | "light_red_surface2_accent" | "light_red_surface3_accent" | "light_yellow_alt1_accent" | "light_yellow_alt2_accent" | "light_yellow_surface1_accent" | "light_yellow_surface2_accent" | "light_yellow_surface3_accent" | "light_green_alt1_accent" | "light_green_alt2_accent" | "light_green_surface1_accent" | "light_green_surface2_accent" | "light_green_surface3_accent" | "light_teal_alt1_accent" | "light_teal_alt2_accent" | "light_teal_surface1_accent" | "light_teal_surface2_accent" | "light_teal_surface3_accent" | "light_orange_alt1_accent" | "light_orange_alt2_accent" | "light_orange_surface1_accent" | "light_orange_surface2_accent" | "light_orange_surface3_accent" | "light_pink_alt1_accent" | "light_pink_alt2_accent" | "light_pink_surface1_accent" | "light_pink_surface2_accent" | "light_pink_surface3_accent" | "light_purple_alt1_accent" | "light_purple_alt2_accent" | "light_purple_surface1_accent" | "light_purple_surface2_accent" | "light_purple_surface3_accent" | "light_neutral_alt1_accent" | "light_neutral_alt2_accent" | "light_neutral_surface1_accent" | "light_neutral_surface2_accent" | "light_neutral_surface3_accent" | "light_white_alt1" | "dark_white_alt1" | "light_white_alt2" | "dark_white_alt2" | "light_white_surface1" | "light_white_surface2" | "light_white_surface3" | "dark_alt1_accent" | "dark_alt2_accent" | "dark_surface1_accent" | "dark_surface2_accent" | "dark_surface3_accent" | "dark_black_alt1_accent" | "dark_black_alt2_accent" | "dark_black_surface1_accent" | "dark_black_surface2_accent" | "dark_black_surface3_accent" | "dark_white_alt1_accent" | "dark_white_alt2_accent" | "dark_white_surface1_accent" | "dark_white_surface2_accent" | "dark_white_surface3_accent" | "dark_gray_alt1_accent" | "dark_gray_alt2_accent" | "dark_gray_surface1_accent" | "dark_gray_surface2_accent" | "dark_gray_surface3_accent" | "dark_blue_alt1_accent" | "dark_blue_alt2_accent" | "dark_blue_surface1_accent" | "dark_blue_surface2_accent" | "dark_blue_surface3_accent" | "dark_red_alt1_accent" | "dark_red_alt2_accent" | "dark_red_surface1_accent" | "dark_red_surface2_accent" | "dark_red_surface3_accent" | "dark_yellow_alt1_accent" | "dark_yellow_alt2_accent" | "dark_yellow_surface1_accent" | "dark_yellow_surface2_accent" | "dark_yellow_surface3_accent" | "dark_green_alt1_accent" | "dark_green_alt2_accent" | "dark_green_surface1_accent" | "dark_green_surface2_accent" | "dark_green_surface3_accent" | "dark_teal_alt1_accent" | "dark_teal_alt2_accent" | "dark_teal_surface1_accent" | "dark_teal_surface2_accent" | "dark_teal_surface3_accent" | "dark_orange_alt1_accent" | "dark_orange_alt2_accent" | "dark_orange_surface1_accent" | "dark_orange_surface2_accent" | "dark_orange_surface3_accent" | "dark_pink_alt1_accent" | "dark_pink_alt2_accent" | "dark_pink_surface1_accent" | "dark_pink_surface2_accent" | "dark_pink_surface3_accent" | "dark_purple_alt1_accent" | "dark_purple_alt2_accent" | "dark_purple_surface1_accent" | "dark_purple_surface2_accent" | "dark_purple_surface3_accent" | "dark_neutral_alt1_accent" | "dark_neutral_alt2_accent" | "dark_neutral_surface1_accent" | "dark_neutral_surface2_accent" | "dark_neutral_surface3_accent" | "light_black_alt1" | "dark_black_alt1" | "light_black_alt2" | "dark_black_alt2" | "dark_black_surface1" | "dark_black_surface2" | "dark_black_surface3" | "light_black_surface1" | "light_black_surface2" | "light_black_surface3" | "light_gray_accent" | "light_teal_accent" | "light_teal_alt1" | "light_teal_alt2" | "light_teal_surface1" | "light_teal_surface2" | "light_teal_surface3" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "light_neutral_accent" | "light_neutral_alt1" | "dark_neutral_alt1" | "light_neutral_alt2" | "dark_neutral_alt2" | "light_neutral_surface1" | "light_neutral_surface2" | "light_neutral_surface3" | "dark_white_surface1" | "dark_white_surface2" | "dark_white_surface3" | "dark_gray_accent" | "dark_teal_accent" | "dark_teal_alt1" | "dark_teal_alt2" | "dark_teal_surface1" | "dark_teal_surface2" | "dark_teal_surface3" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent" | "dark_neutral_accent" | "dark_neutral_surface1" | "dark_neutral_surface2" | "dark_neutral_surface3", {
         accentBackground: string;
         accentColor: string;
         background0: string;
@@ -214,6 +215,18 @@ export declare const defaultConfig: {
         shadow4: string;
         shadow5: string;
         shadow6: string;
+        neutral1: string;
+        neutral2: string;
+        neutral3: string;
+        neutral4: string;
+        neutral5: string;
+        neutral6: string;
+        neutral7: string;
+        neutral8: string;
+        neutral9: string;
+        neutral10: string;
+        neutral11: string;
+        neutral12: string;
         orange1: string;
         orange2: string;
         orange3: string;
@@ -472,9 +485,10 @@ export declare const defaultConfig: {
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
-        themeClassNameOnRoot: true;
+        addThemeClassName: "html";
         onlyAllowShorthands: true;
         maxDarkLightNesting: number;
+        styleCompat: "react-native";
     };
 };
 //# sourceMappingURL=v5.d.ts.map

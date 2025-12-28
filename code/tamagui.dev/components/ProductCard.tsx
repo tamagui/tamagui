@@ -29,21 +29,22 @@ export function ProductCard({ product, children, ...props }) {
   return (
     <Link asChild href={link as Href}>
       <Stack
+        position="relative"
         group="card"
         tag="a"
         theme="surface3"
         animation="quickest"
         bg="$background"
-        f={1}
-        ai="center"
-        jc="center"
-        w="55%"
-        miw="$20"
-        h="$17"
+        flex={1}
+        items="center"
+        justify="center"
+        width="55%"
+        minW="$20"
+        height="$17"
         mx="auto"
-        padding={0}
-        br="$4"
-        ov="hidden"
+        p={0}
+        rounded="$4"
+        overflow="hidden"
         cursor="pointer"
         hoverStyle={{ y: -2, bg: '$color7' }}
         pressStyle={{ y: 2, bg: '$color5' }}
@@ -51,8 +52,8 @@ export function ProductCard({ product, children, ...props }) {
         <ThemeTintAlt offset={colorOffset}>
           <YStack
             fullscreen
-            zi={0}
-            br="$4"
+            z={0}
+            rounded="$4"
             style={{
               background: `linear-gradient(transparent, var(--color04))`,
               mixBlendMode: 'color',
@@ -60,10 +61,10 @@ export function ProductCard({ product, children, ...props }) {
           />
         </ThemeTintAlt>
 
-        <Card tag="a" bg="transparent" {...props}>
+        <Card position="relative" tag="a" bg="transparent" {...props}>
           <View
-            pos="absolute"
-            als="flex-end"
+            position="absolute"
+            self="flex-end"
             animation="quicker"
             y="$-10"
             $lg={{ y: '$-6' }}
@@ -75,7 +76,7 @@ export function ProductCard({ product, children, ...props }) {
             {Icon}
           </View>
           <Card.Header>
-            <YStack ai="center" gap="$5" px="$5">
+            <YStack items="center" gap="$5" p="$5">
               <H3>{title}</H3>
               <Paragraph size="$5" theme="alt1">
                 {childText}
@@ -86,7 +87,7 @@ export function ProductCard({ product, children, ...props }) {
           <Card.Footer animation="quicker" x={0} $group-card-hover={{ x: 5 }}>
             <ChevronRight
               size="$1"
-              pos="absolute"
+              position="absolute"
               mb="$-5"
               b="$4"
               r="$4"

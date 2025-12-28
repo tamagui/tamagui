@@ -23,6 +23,7 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
         lineHeight="$6"
         color="$color"
         cursor="inherit"
+        className="font-smooth-none"
         letterSpacing={0}
       >
         {title}

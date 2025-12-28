@@ -34,7 +34,7 @@ function TabsComponent(props: TabsProps) {
       borderWidth={0}
       position="unset"
       {...props}
-      value={value}
+      value={value ?? ''}
     />
   )
 }

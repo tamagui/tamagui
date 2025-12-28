@@ -61,7 +61,7 @@ export function AnimationsPresenceDemo() {
     >
       <AnimatePresence initial={false} custom={{ going }}>
         <GalleryItem key={page} animation="slow" going={going}>
-          <Image source={{ uri: images[imageIndex], width: 820, height: 300 }} />
+          <Image src={images[imageIndex]} width={820} height={300} objectFit="cover" />
         </GalleryItem>
       </AnimatePresence>
 
@@ -72,7 +72,7 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         l="$4"
         circular
-        elevate
+        elevation="$4"
         onPress={() => paginate(-1)}
         z={100}
       />
@@ -84,7 +84,7 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         r="$4"
         circular
-        elevate
+        elevation="$4"
         onPress={() => paginate(1)}
         z={100}
       />
