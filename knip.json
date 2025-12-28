@@ -36,6 +36,7 @@
     "**/node_modules/**",
     "**/.next/**",
     "**/build/**",
-    "**/.expo/**"
+    "**/.expo/**",
+    "**/starters/**"
   ]
 }
