@@ -3,10 +3,7 @@ import type { SizeTokens } from 'tamagui'
 import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
 
 const Item = styled(ToggleGroup.Item, {
-  color: '$color10',
-
   focusStyle: {
-    color: '$color1',
     backgroundColor: '$color12',
   },
 })
