@@ -1,13 +1,4 @@
-import {
-  Adapt,
-  Button,
-  Paragraph,
-  Popover,
-  Sheet,
-  useMedia,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Adapt, Button, Paragraph, Popover, Sheet, XStack, YStack } from 'tamagui'
 
 export function PopoverScopedCase() {
   const shouldAdapt = window.location.search.includes('adapt=true')

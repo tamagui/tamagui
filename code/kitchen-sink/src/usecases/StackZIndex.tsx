@@ -18,7 +18,7 @@ export function StackZIndex() {
 
       <Dialog modal open>
         <Dialog.Portal zIndex={300_000}>
-          <Dialog.Content id="hardcoded-dialog" w={200} h={200} bg="black">
+          <Dialog.Content id="hardcoded-dialog" width={200} height={200} bg="black">
             <Dialog.Title>hi</Dialog.Title>
             <Dialog.Description>ok</Dialog.Description>
 
@@ -61,7 +61,7 @@ export function StackZIndex() {
 
       <Dialog modal open>
         <Dialog.Portal>
-          <Dialog.Content id="middle-dialog" w={500} h={500} bg="yellow">
+          <Dialog.Content id="middle-dialog" width={500} height={500} bg="yellow">
             <Dialog.Title>hi</Dialog.Title>
             <Dialog.Description>ok</Dialog.Description>
 

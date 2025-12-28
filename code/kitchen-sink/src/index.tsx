@@ -5,9 +5,5 @@ import App from './App'
 AppRegistry.registerComponent('main', () => Root)
 
 function Root() {
-  return (
-    <>
-      <App />
-    </>
-  )
+  return <App />
 }

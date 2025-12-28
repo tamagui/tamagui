@@ -1,5 +1,5 @@
 import { H5, ListItem, Separator, Stack, Theme } from 'tamagui'
-import { ChevronRight } from '@tamagui/lucide-icons'
+import { ChevronRight, Star, Trash } from '@tamagui/lucide-icons'
 
 export const ThemedListItem = () => (
   <Stack gap="$4">
@@ -14,15 +14,16 @@ export const ThemedListItem = () => (
       borderRadius="$3"
     />
 
-    <ListItem
-      id="themed-list-item-inverse"
-      title="Inverse"
-      subTitle="Inverse list item"
-      icon={ChevronRight}
-      size="$3"
-      themeInverse
-      borderRadius="$3"
-    />
+    <Theme name="accent">
+      <ListItem
+        id="themed-list-item-accent"
+        title="Accent"
+        subTitle="Accent (contrasting) list item"
+        icon={ChevronRight}
+        size="$3"
+        borderRadius="$3"
+      />
+    </Theme>
 
     <Separator />
 
@@ -53,29 +54,70 @@ export const ThemedListItem = () => (
     </Theme>
 
     <Theme name="light">
-      <ListItem
-        id="themed-list-item-light-inverse"
-        title="<ListItem themeInverse/>"
-        subTitle="Forcing dark theme - light + inverse"
-        icon={ChevronRight}
-        size="$3"
-        borderRadius="$3"
-        themeInverse
-        onPress={() => console.info('Light theme inverse list item pressed')}
-      />
+      <Theme name="accent">
+        <ListItem
+          id="themed-list-item-light-accent"
+          title='<Theme name="accent">'
+          subTitle="light + accent = light_accent (contrasting)"
+          icon={ChevronRight}
+          size="$3"
+          borderRadius="$3"
+          onPress={() => console.info('Light theme accent list item pressed')}
+        />
+      </Theme>
     </Theme>
 
     <Theme name="dark">
+      <Theme name="accent">
+        <ListItem
+          id="themed-list-item-dark-accent"
+          title='<Theme name="accent">'
+          subTitle="dark + accent = dark_accent (contrasting)"
+          icon={ChevronRight}
+          size="$3"
+          borderRadius="$3"
+          onPress={() => console.info('Dark theme accent list item pressed')}
+        />
+      </Theme>
+    </Theme>
+
+    <Separator />
+
+    <H5>Variant (outlined):</H5>
+
+    <ListItem
+      id="themed-list-item-outlined"
+      variant="outlined"
+      title="Outlined"
+      subTitle="Using variant prop"
+      icon={Star}
+      size="$3"
+      borderRadius="$3"
+    />
+
+    <Separator />
+
+    <H5>Apply (context):</H5>
+
+    <ListItem.Apply color="$red10">
       <ListItem
-        id="themed-list-item-dark-inverse"
-        title="<ListItem themeInverse/>"
-        subTitle="Forcing light theme - dark + inverse"
-        icon={ChevronRight}
+        id="themed-list-item-apply-color"
+        title="With Apply color"
+        subTitle="Icon inherits color from context"
+        icon={Trash}
         size="$3"
         borderRadius="$3"
-        themeInverse
-        onPress={() => console.info('Dark theme inverse list item pressed')}
       />
-    </Theme>
+    </ListItem.Apply>
+
+    <ListItem.Apply variant="outlined" size="$2">
+      <ListItem
+        id="themed-list-item-apply-variant"
+        title="With Apply variant"
+        subTitle="Outlined via context"
+        icon={Star}
+        borderRadius="$3"
+      />
+    </ListItem.Apply>
   </Stack>
 )

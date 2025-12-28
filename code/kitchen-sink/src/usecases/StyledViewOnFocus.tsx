@@ -1,31 +1,32 @@
-import React from "react";
-import { View, styled } from 'tamagui';
+import React from 'react'
+import { View, styled } from 'tamagui'
 
 const StyledView = styled(View, {
   borderColor: 'red',
   borderWidth: 5,
 
-  variants: ({
-    test: {
+  variants: {
+    testVariant: {
       true: {
         focusStyle: {
           borderWidth: 10,
-          borderColor: 'blue'
-        }
-      }
-    }
-  } as const)
-});
+          borderColor: 'blue',
+        },
+      },
+    },
+  } as const,
+})
 
 export function StyledViewOnFocus() {
-  const [onFocus, setOnFocus] = React.useState(false);
+  const [onFocus, setOnFocus] = React.useState(false)
   return (
     <StyledView
       focusable
-      test
+      testVariant
       data-onfocus={onFocus}
       id="onFocus"
-      onFocus={() => setOnFocus(true)} />);
-
-
+      onFocus={() => setOnFocus(true)}
+      tabIndex={0}
+    />
+  )
 }
