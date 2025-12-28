@@ -5,13 +5,10 @@
   },
   "references": [
     {
-      "path": "../../core/core"
+      "path": "../../core/web"
     },
     {
-      "path": "../../core/helpers"
-    },
-    {
-      "path": "../popover"
+      "path": "../create-menu"
     }
   ],
   "exclude": [
