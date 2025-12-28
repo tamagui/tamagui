@@ -6,11 +6,10 @@ import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
 import type { BuildPalettes, BuildTemplates, GetThemeFn } from './types'
 
 /**
- * TODO
- *
- *  - we avoidNestingWithin accent, but sometimes want it eg v4-tamagui grandChildren
- *    a good default would be to IF palette is set, dont nest, IF only template, nest
- *    needs to update both runtime logic and types
+ * GrandChildren theme nesting logic implementation:
+ *  - IF palette is set: treat as palette theme (don't nest into accent family)
+ *  - IF only template: nest into color children, but avoid base themes (light, dark)
+ *    to prevent conflicts with top-level accent theme
  */
 
 type ExtraThemeValues = Record<string, string>
@@ -104,10 +103,13 @@ export const getLastBuilder = () => lastBuilder
 function normalizeSubThemes<A extends SimpleThemesDefinition>(defs?: A) {
   return Object.fromEntries(
     Object.entries(defs || {}).map(([name, value]) => {
+      const hasPalette = value.palette !== undefined
+
       return [
         name,
         {
-          palette: name,
+          // Only add palette if the definition has one, otherwise theme is template-only
+          ...(hasPalette ? { palette: name } : {}),
           template: value.template || 'base',
         },
       ]
@@ -249,25 +251,6 @@ export function createSimpleThemeBuilder<
       },
     })
 
-  if (palettes.light_accent) {
-    themeBuilder = themeBuilder.addChildThemes({
-      accent: [
-        {
-          parent: 'light',
-          template: 'base',
-          palette: 'light_accent',
-          nonInheritedValues: accentExtra?.light,
-        },
-        {
-          parent: 'dark',
-          template: 'base',
-          palette: 'dark_accent',
-          nonInheritedValues: accentExtra?.dark,
-        },
-      ],
-    }) as any
-  }
-
   if (childrenThemes) {
     themeBuilder = themeBuilder.addChildThemes(childrenThemes, {
       avoidNestingWithin: ['accent'],
@@ -278,6 +261,32 @@ export function createSimpleThemeBuilder<
     themeBuilder = themeBuilder.addChildThemes(grandChildrenThemes, {
       avoidNestingWithin: ['accent'],
     }) as any
+  }
+
+  // Add top-level accent AFTER grandChildren
+  // Avoid nesting within color children (blue, red, etc.) so grandChildren accent can handle those
+  if (palettes.light_accent) {
+    themeBuilder = themeBuilder.addChildThemes(
+      {
+        accent: [
+          {
+            parent: 'light',
+            template: 'base',
+            palette: 'light_accent',
+            nonInheritedValues: accentExtra?.light,
+          },
+          {
+            parent: 'dark',
+            template: 'base',
+            palette: 'dark_accent',
+            nonInheritedValues: accentExtra?.dark,
+          },
+        ],
+      },
+      {
+        avoidNestingWithin: Object.keys(childrenThemes || {}),
+      }
+    ) as any
   }
 
   if (componentThemes) {
@@ -343,19 +352,27 @@ function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
 
   const baseAnchors = getAnchors(base)
 
-  function getSubThemesPalettes(defs: SimpleThemesDefinition) {
+  function getSubThemesPalettes(defs: SimpleThemesDefinition, isGrandChildren = false) {
     return Object.fromEntries(
-      Object.entries(defs).map(([key, value]) => {
-        return [
-          key,
-          {
-            name: key,
-            anchors: value.palette
-              ? getAnchors(coerceSimplePaletteToSchemePalette(value.palette))
-              : baseAnchors,
-          },
-        ]
-      })
+      Object.entries(defs)
+        .map(([key, value]) => {
+          // For grandChildren accent without custom palette: skip it entirely
+          // It will inherit from parent in the theme builder
+          if (isGrandChildren && key === 'accent' && !value.palette) {
+            return null
+          }
+
+          return [
+            key,
+            {
+              name: key,
+              anchors: value.palette
+                ? getAnchors(coerceSimplePaletteToSchemePalette(value.palette))
+                : baseAnchors,
+            },
+          ]
+        })
+        .filter(Boolean) as [string, any][]
     )
   }
 
@@ -370,8 +387,9 @@ function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
         anchors: getAnchors(accent),
       },
     }),
-    ...(props.childrenThemes && getSubThemesPalettes(props.childrenThemes)),
-    ...(props.grandChildrenThemes && getSubThemesPalettes(props.grandChildrenThemes)),
+    ...(props.childrenThemes && getSubThemesPalettes(props.childrenThemes, false)),
+    ...(props.grandChildrenThemes &&
+      getSubThemesPalettes(props.grandChildrenThemes, true)),
   }
 }
 

@@ -1,15 +1,12 @@
 import { useRef } from 'react'
-import type {
-  ThemeParsed,
-  ThemeProps,
-  ThemeState,
-  UseThemeWithStateProps,
-} from '../types'
+import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
 import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
 import { useThemeState } from './useThemeState'
 
-export const useTheme = (props: ThemeProps = {}) => {
-  const [theme] = useThemeWithState(props)
+const EMPTY = {}
+
+export const useTheme = () => {
+  const [theme] = useThemeWithState(EMPTY)
   const res = theme
   return res as ThemeProxied
 }

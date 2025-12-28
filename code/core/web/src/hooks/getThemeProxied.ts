@@ -108,7 +108,7 @@ export function getThemeProxied(
           if (!curState) return
 
           const outVal = getVariable(value)
-          const { name, scheme, inverses } = curState
+          const { name, scheme } = curState
 
           if (process.env.TAMAGUI_TARGET === 'native') {
             // ios can avoid re-rendering in some cases when we are using a root light/dark
@@ -119,7 +119,6 @@ export function getThemeProxied(
               isIos &&
               !curProps.deopt &&
               getSetting('fastSchemeChange') &&
-              inverses === 0 &&
               doesRootSchemeMatchSystem()
 
             if (shouldOptimize) {

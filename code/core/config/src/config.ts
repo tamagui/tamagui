@@ -22,7 +22,6 @@ export const configWithoutAnimations = {
   settings: {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    themeClassNameOnRoot: true,
     mediaQueryDefaultActive,
   },
 } satisfies CreateTamaguiProps

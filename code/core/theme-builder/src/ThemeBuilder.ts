@@ -242,10 +242,22 @@ export class ThemeBuilder<
           if ('avoidNestingWithin' in definition) {
             const avoidNest = definition.avoidNestingWithin as string[]
             if (
-              avoidNest.some((name) => prefix.startsWith(name) || prefix.endsWith(name))
+              avoidNest.some((name) => {
+                // For base scheme names (light/dark), use exact match to avoid matching derivatives
+                if ((name === 'light' || name === 'dark') && prefix.includes('_')) {
+                  return false
+                }
+                return prefix.startsWith(name) || prefix.endsWith(name)
+              })
             ) {
               return null as never
             }
+          }
+
+          // Avoid double-nesting: don't add a child theme to a parent that already ends with that child
+          // e.g., don't create light_blue_accent_accent from light_blue_accent + accent
+          if (prefix.endsWith(`_${subName}`)) {
+            return null as never
           }
 
           return [fullName, definition] as const
