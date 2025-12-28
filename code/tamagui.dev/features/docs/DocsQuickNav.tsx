@@ -1,4 +1,3 @@
-// @tamagui-ignore
 import { href, usePathname } from 'one'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -103,17 +102,6 @@ const NavLineIndicator = ({
 
   const { path, itemDistances, totalLength } = buildPathAndDistances()
   const activeDistance = itemDistances[activeIndex] || 0
-  const strokeOffset = -(activeDistance - segmentHalf)
-
-  // Calculate start and end dot positions (at the very top/bottom of the line)
-  const firstItem = items[0]
-  const lastItem = items[items.length - 1]
-  const startDot = firstItem
-    ? { x: getX(firstItem.level), y: getY(firstItem) - segmentHalf - 4 }
-    : null
-  const endDot = lastItem
-    ? { x: getX(lastItem.level), y: getY(lastItem) + segmentHalf + 4 }
-    : null
 
   return (
     <svg
@@ -137,17 +125,11 @@ const NavLineIndicator = ({
         strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray={`${segmentHalf * 2} ${totalLength}`}
-        strokeDashoffset={strokeOffset}
+        strokeDashoffset={-(activeDistance - segmentHalf)}
         style={{
           transition: 'stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       />
-
-      {/* Start dot */}
-      {startDot && <circle cx={startDot.x} cy={startDot.y} r="3" fill="var(--color6)" />}
-
-      {/* End dot */}
-      {endDot && <circle cx={endDot.x} cy={endDot.y} r="3" fill="var(--color6)" />}
     </svg>
   )
 }
@@ -155,7 +137,6 @@ const NavLineIndicator = ({
 export function DocsQuickNav() {
   const [headings, setHeadings] = useState<HTMLHeadingElement[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
-
   const [itemData, setItemData] = useState<
     Array<{ top: number; height: number; level: number }>
   >([])
@@ -197,8 +178,6 @@ export function DocsQuickNav() {
 
         // Pick the heading that has most recently passed the "reading line"
         // (the highest index among all headings currently above the 70% mark)
-        // Only update if we have intersecting headings - don't reset to 0 automatically
-        // as this causes jumping issues with v5 config
         if (intersectingHeadings.current.size > 0) {
           let maxIndex = -1
           intersectingHeadings.current.forEach((id) => {
@@ -210,6 +189,8 @@ export function DocsQuickNav() {
           if (maxIndex !== -1) {
             setActiveIndex(maxIndex)
           }
+        } else if (window.scrollY < 100) {
+          setActiveIndex(0)
         }
       },
       {
@@ -328,8 +309,7 @@ export function DocsQuickNav() {
 
               {headings.map(({ id, nodeName, innerText }, index) => {
                 const level = getLevel(nodeName)
-                const isActive = index === activeIndex
-                const isLevel2 = level === 2
+
                 return (
                   <XStack
                     key={`${id}-${index}`}
@@ -348,13 +328,16 @@ export function DocsQuickNav() {
                       <Paragraph
                         tag="span"
                         size={level === 2 ? '$3' : '$2'}
-                        color={isActive ? '$color12' : '$color11'}
+                        color={
+                          index === activeIndex
+                            ? '$color12'
+                            : level === 2
+                              ? '$color11'
+                              : '$color10'
+                        }
                         cursor="pointer"
-                        fontWeight={isLevel2 ? '500' : '400'}
+                        fontWeight={level === 2 ? '500' : '400'}
                         hoverStyle={{ color: '$color12' }}
-                        style={{
-                          fontFamily: 'Inter',
-                        }}
                       >
                         {innerText}
                       </Paragraph>
@@ -367,7 +350,7 @@ export function DocsQuickNav() {
         </YStack>
 
         <YStack gap="$2">
-          <Theme name="yellow_alt1">
+          <Theme name="tan">
             <Link width="100%" href="/bento">
               <BentoButton bg="transparent" />
             </Link>
