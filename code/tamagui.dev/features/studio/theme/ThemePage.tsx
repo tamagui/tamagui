@@ -182,7 +182,6 @@ const ThemeBuilderModal = memo(() => {
           animation={['medium', { opacity: { overshootClamping: true } }]}
           opacity={hide ? 0 : 1}
           gap="$4"
-          separator={<Separator borderWidth={1} />}
           flex={1}
         >
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
@@ -234,7 +233,7 @@ const StudioThemeBuilderBottomBar = memo(() => {
   return (
     <XStack p="$4" py="$3" items="center" z={100} bg="$background02">
       <CurrentStepActionBar />
-      <Spacer flex />
+      <Spacer flex={1} />
       <ThemeStudioStepButtonsBar />
     </XStack>
   )
@@ -312,17 +311,18 @@ const ThemeStudioStepButtonsBar = () => {
       )}
 
       {canGoForward && (
-        <Button
-          themeInverse={!disableForward}
-          size="$3"
-          disabled={disableForward}
-          opacity={disableForward ? 0.5 : 1}
-          cursor={disableForward ? 'not-allowed' : undefined}
-          iconAfter={canGoForward ? ChevronRight : null}
-          onPress={forwardOrFinish}
-        >
-          {currentSection.nextTitle || 'Next'}
-        </Button>
+        <Theme name={!disableForward ? 'accent' : undefined}>
+          <Button
+            size="$3"
+            disabled={disableForward}
+            opacity={disableForward ? 0.5 : 1}
+            cursor={disableForward ? 'not-allowed' : undefined}
+            iconAfter={canGoForward ? ChevronRight : null}
+            onPress={forwardOrFinish}
+          >
+            {currentSection.nextTitle || 'Next'}
+          </Button>
+        </Theme>
       )}
     </XStack>
   )

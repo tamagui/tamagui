@@ -62,8 +62,8 @@ export function Panel({
       flex={1}
       group="card"
       containerType="normal"
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       {...props}
     >
       <PanelContext.Provider
@@ -96,10 +96,10 @@ export function Panel({
           <Popover size="$5" allowFlip placement="bottom">
             <Popover.Trigger asChild>
               <Button
+                theme="accent"
                 onPress={(event) => {
                   event.stopPropagation()
                 }}
-                themeInverse
                 elevation="$2"
                 size="$2"
                 circular

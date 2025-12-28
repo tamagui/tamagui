@@ -214,7 +214,6 @@ export const HomeThemes = memo(function HomeThemes() {
           <XStack
             className="scroll-horizontal no-scrollbar"
             ref={scrollView}
-            // @ts-expect-error it does pass through to web
             onScroll={(e: any) => {
               if (scrollLock === 'animate' || scrollLock === 'shouldAnimate') {
                 return

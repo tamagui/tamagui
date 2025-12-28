@@ -1,0 +1,373 @@
+---
+title: Checkbox
+description: Toggle state in forms.
+name: checkbox
+component: Checkbox
+package: checkbox
+demoName: Checkbox
+---
+
+<YStack className="is-sticky" />
+
+<Tabs id="type" defaultValue="styled">
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No default styles, easy to customize">
+    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
+
+<HeroContainer showAnimationDriverControl>
+  <Tabs.Content
+    value="styled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <CheckboxDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="unstyled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <CheckboxUnstyledDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="headless"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <CheckboxHeadlessDemo />
+  </Tabs.Content>
+</HeroContainer>
+
+<Tabs.Content value="styled">
+  ```tsx hero template=Checkbox
+
+````
+</Tabs.Content>
+<Tabs.Content value="unstyled">
+```tsx hero template=CheckboxUnstyled
+
+````
+
+</Tabs.Content>
+  <Tabs.Content value="headless">
+  ```tsx hero template=CheckboxHeadless
+
+````
+</Tabs.Content>
+
+<Highlights
+features={[
+  `Supports indeterminate state.`,
+  `Accessible, easy to compose and customize.`,
+  `Sizable & works controlled or uncontrolled.`,
+  `Ability to opt-out to native checkbox on web.`,
+]}
+/>
+
+## Installation
+
+<Tabs.Content value="styled">
+Checkbox is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/checkbox
+````
+
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+Checkbox is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/checkbox
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+To use the headless checkbox, you want to import it from the
+`@tamagui/checkbox-headless` package. This package has no dependency on
+`@tamagui/core`, but still works off the react-native APIs.
+This means you can bring your own style library.
+
+```bash
+npm install @tamagui/checkbox-headless
+```
+
+</Tabs.Content>
+
+## Usage
+
+<Tabs.Content value="styled">
+
+```tsx
+import { Check } from '@tamagui/lucide-icons'
+import { Checkbox } from 'tamagui'
+
+export default () => (
+  <Checkbox size="$4">
+    <Checkbox.Indicator>
+      <Check />
+    </Checkbox.Indicator>
+  </Checkbox>
+)
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+
+Use the `createCheckbox` export to create a fully custom checkbox that still
+uses the Tamagui styling system. This is similar to setting `unstyled`, but goes
+a bit further. It doesn't add any types for `size` or `unstyled`, and it won't
+automatically apply the `active` theme. It does pass the `checked` prop down as
+indicated in the types of `createCheckbox`.
+
+```tsx template=CheckboxUnstyled
+
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+The `useCheckbox` hook provides all the state and accessibility props needed to build a custom checkbox with any styling solution.
+
+```tsx template=CheckboxHeadless
+
+```
+
+### Basic Usage
+
+```tsx
+import { useCheckbox } from '@tamagui/checkbox-headless'
+import { useState } from 'react'
+import { Pressable, View } from 'react-native'
+
+function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
+  const [checked, setChecked] = useState(defaultChecked || false)
+
+  const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
+    props,
+    [checked, setChecked],
+    null
+  )
+
+  return (
+    <>
+      <Pressable
+        ref={checkboxRef}
+        {...checkboxProps}
+        style={{
+          width: 24,
+          height: 24,
+          borderRadius: 4,
+          borderWidth: 2,
+          borderColor: checked ? '#3b82f6' : '#d1d5db',
+          backgroundColor: checked ? '#3b82f6' : 'transparent',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {checked && (
+          <View style={{ width: 12, height: 12, backgroundColor: 'white' }} />
+        )}
+      </Pressable>
+      {bubbleInput}
+    </>
+  )
+}
+```
+
+</Tabs.Content>
+
+## API Reference
+
+### Checkbox
+
+`Checkbox` extend ThemeableStack inheriting all the
+[props](/docs/components/stacks#themeablestack), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'labeledBy',
+      type: 'string',
+      description: `Set aria-labeled-by.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Equivalent to input name.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Give it a value (for use in HTML forms).`,
+    },
+    {
+      name: 'checked',
+      type: 'boolean',
+      description: `Control the input.`,
+    },
+    {
+      name: 'defaultChecked',
+      type: 'boolean',
+      description: `Uncontrolled default value.`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Sets aria-required.`,
+    },
+    {
+      name: 'native',
+      type: 'boolean',
+      description: `Renders native checkbox input on web.`,
+      default: false,
+    },
+    {
+      name: 'onCheckedChange',
+      type: '(checked: boolean | "indeterminate") => void',
+      description: 'Callback that fires when the checkbox state is changed.',
+    },
+    {
+      name: 'sizeAdjust',
+      type: 'number',
+      description: `Adjust the checkbox size scaling by this number.`,
+    },
+    {
+      name: 'scaleIcon',
+      type: 'number',
+      description: `Scale the indicator icon more than usual by this number.`,
+    },
+    {
+      name: 'scaleSize',
+      type: 'number',
+      default: '0.5',
+      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Checkbox.Indicator
+
+`Checkbox.Indicator` extend ThemeableStack inheriting all the
+[props](/docs/components/stacks#themeablestack), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'forceMount',
+      required: false,
+      type: `boolean`,
+      description: `Used to force mounting when more control is needed.`,
+    },
+    {
+      name: 'disablePassStyles',
+      required: false,
+      type: 'boolean',
+      description: `Used to disable passing styles down to children.`,
+    },
+  ]}
+/>
+
+<Tabs.Content value="headless">
+
+### useCheckbox
+
+The `useCheckbox` hook accepts three arguments:
+
+```tsx
+const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
+  props,        // CheckboxProps
+  state,        // [checked: CheckedState, setChecked: (checked: CheckedState) => void]
+  ref           // React.Ref
+)
+```
+
+#### CheckedState
+
+The checkbox supports three states:
+- `true` - checked
+- `false` - unchecked
+- `'indeterminate'` - indeterminate/mixed state (useful for "select all" patterns)
+
+#### Props (first argument)
+
+<PropsTable
+  data={[
+    {
+      name: 'labelledBy',
+      type: 'string',
+      description: `Set aria-labelledby for accessibility.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Whether the checkbox is disabled.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Form input name for the hidden input.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      default: '"on"',
+      description: `Form input value.`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Whether the checkbox is required in a form.`,
+    },
+    {
+      name: 'onCheckedChange',
+      type: '(checked: CheckedState) => void',
+      description: `Called when checked state changes.`,
+    },
+    {
+      name: 'onPress',
+      type: '(event) => void',
+      description: `Called when checkbox is pressed (composed with internal handler).`,
+    },
+  ]}
+/>
+
+#### State (second argument)
+
+A tuple of `[checked, setChecked]` where:
+- `checked`: Current state (`boolean | 'indeterminate'`)
+- `setChecked`: React state setter function
+
+#### Return Value
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `checkboxProps` | `object` | Props to spread on your checkbox element (role, aria-checked, onPress, etc.) |
+| `checkboxRef` | `Ref` | Composed ref to attach to your checkbox element |
+| `bubbleInput` | `ReactNode \| null` | Hidden input for form compatibility (render as sibling, web only) |
+
+</Tabs.Content>
+
+</Tabs>

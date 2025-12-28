@@ -218,10 +218,8 @@ const Hero = () => {
                     <Button
                       className="box-3d all ease-in-out ms100"
                       size="$3"
-                      scaleSpace={0.75}
                       self="flex-end"
                       mr="$4"
-                      color="$color1"
                       bg="$color9"
                       outlineColor="$background02"
                       outlineOffset={2}
@@ -240,7 +238,7 @@ const Hero = () => {
                         showAppropriateModal()
                       }}
                     >
-                      <Button.Text fontFamily="$mono" size="$4">
+                      <Button.Text fontFamily="$mono" size="$4" color="$color1">
                         Pro
                       </Button.Text>
                     </Button>

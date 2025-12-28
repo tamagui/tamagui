@@ -28,7 +28,6 @@
     "noImplicitReturns": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "exactOptionalPropertyTypes": true,
     "preserveConstEnums": true,
     "removeComments": false,
     "skipLibCheck": true,
@@ -70,12 +69,6 @@
     },
     {
       "path": "../packages/use-store"
-    },
-    {
-      "path": "../ui/image-next"
-    },
-    {
-      "path": "../ui/tamagui"
     }
   ]
 }
