@@ -30,7 +30,7 @@ import {
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import { Keyboard, type View, useWindowDimensions } from 'react-native'
@@ -353,70 +353,78 @@ export function Popper(props: PopperProps) {
 
 type PopperAnchorRef = HTMLElement | View
 
-export type PopperAnchorProps = YStackProps & {
+export type PopperAnchorExtraProps = {
   virtualRef?: React.RefObject<any>
   scope?: string
 }
+export type PopperAnchorProps = YStackProps
 
-export const PopperAnchor = YStack.extractable(
-  React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
-    function PopperAnchor(props, forwardedRef) {
-      const { virtualRef, scope, ...anchorProps } = props
-      const context = usePopperContextSlow(scope)
-      const { getReferenceProps, refs, update } = context
-      const ref = React.useRef<PopperAnchorRef>(null)
+export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
+  function PopperAnchor(props, forwardedRef) {
+    const { virtualRef, scope, ...rest } = props
+    const context = usePopperContextSlow(scope)
+    const { getReferenceProps, refs, update } = context
+    const ref = React.useRef<PopperAnchorRef>(null)
 
-      React.useEffect(() => {
-        if (virtualRef) {
-          refs.setReference(virtualRef.current)
-        }
-      }, [virtualRef])
+    React.useEffect(() => {
+      if (virtualRef) {
+        refs.setReference(virtualRef.current)
+      }
+    }, [virtualRef])
 
-      const stackProps = anchorProps
-
-      // Wrap setReference in startTransition to avoid React #185 (setState during render)
-      const safeSetReference = React.useCallback(
-        (node: any) => {
-          startTransition(() => {
-            refs.setReference(node)
-          })
-        },
-        [refs.setReference]
-      )
-
-      const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
-      const shouldHandleInHover = isWeb && scope
-      const composedRefs = useComposedRefs(
-        forwardedRef,
+    const refProps =
+      getReferenceProps?.({
+        ...rest,
         ref,
-        // web handles this onMouseEnter below so it can support multiple targets + hovering
-        shouldHandleInHover ? undefined : safeSetReference
-      )
+      }) || null
 
-      return (
-        <TamaguiView
-          {...stackProps}
-          {...refProps}
-          ref={composedRefs}
-          {...(shouldHandleInHover && {
-            // this helps us with handling scoped poppers with many different targets
-            // basically we wait for mouseEnter to ever set a reference and remove it on leave
-            // otherwise floating ui gets confused by having >1 reference
-            onMouseEnter: (e) => {
-              if (ref.current instanceof HTMLElement) {
-                refs.setReference(ref.current)
-                refProps.onPointerEnter?.(e)
-                update()
+    // Wrap setReference in startTransition to avoid React #185 (setState during render)
+    const safeSetReference = React.useCallback(
+      (node: any) => {
+        startTransition(() => {
+          refs.setReference(node)
+        })
+      },
+      [refs.setReference]
+    )
+
+    const shouldHandleInHover = isWeb && scope
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      ref,
+      // web handles this onMouseEnter below so it can support multiple targets + hovering
+      shouldHandleInHover ? undefined : safeSetReference
+    )
+
+    return (
+      <TamaguiView
+        {...rest}
+        {...refProps}
+        ref={composedRefs}
+        {...(shouldHandleInHover && {
+          // this helps us with handling scoped poppers with many different targets
+          // basically we wait for mouseEnter to ever set a reference and remove it on leave
+          // otherwise floating ui gets confused by having >1 reference
+          onMouseEnter: (e) => {
+            if (ref.current instanceof HTMLElement) {
+              refs.setReference(ref.current)
+
+              if (!refProps) {
+                console.info('wwut', context, refProps, props)
+                return
               }
-            },
-            onMouseLeave: (e) => {
-              refProps?.onMouseLeave?.(e)
-            },
-          })}
-        />
-      )
-    }
-  )
+
+              refProps.onPointerEnter?.(e)
+              update()
+            }
+          },
+          onMouseLeave: (e) => {
+            refProps?.onMouseLeave?.(e)
+          },
+        })}
+      />
+    )
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -431,7 +439,7 @@ export type PopperContentProps = SizableStackProps & {
   passThrough?: boolean
 }
 
-export const PopperContentFrame = styled(ThemeableStack, {
+export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
 
   variants: {
@@ -440,7 +448,6 @@ export const PopperContentFrame = styled(ThemeableStack, {
         size: '$true',
         backgroundColor: '$background',
         alignItems: 'center',
-        radiused: true,
       },
     },
 
