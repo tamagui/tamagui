@@ -32,7 +32,7 @@ const PopoverStyledContent = styled(Popover.Content, {
   x: 0,
   y: 0,
   opacity: 1,
-  transition: [
+  animation: [
     'quick',
     {
       opacity: {

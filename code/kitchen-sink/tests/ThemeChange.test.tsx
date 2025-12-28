@@ -8,8 +8,8 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('Initial theme (yellow) renders with correct colors', async ({ page }) => {
-  // The expected yellow theme color in RGB format (Radix v3 yellow9)
-  const expectedYellowColor = 'rgb(255, 221, 0)'
+  // The expected yellow theme color in RGB format (themeDev palette)
+  const expectedYellowColor = 'rgb(245, 204, 0)'
 
   // Get the theme info text to verify we're on yellow theme
   const themeInfo0 = await page.locator(`#${TEST_IDS.themeInfo}-0`).textContent()
@@ -37,8 +37,8 @@ test('Initial theme (yellow) renders with correct colors', async ({ page }) => {
 })
 
 test('Inner theme change does not affect outer theme', async ({ page }) => {
-  // Initial colors (Radix v3 yellow9)
-  const initialYellowColor = 'rgb(255, 221, 0)'
+  // Initial colors (themeDev palette)
+  const initialYellowColor = 'rgb(245, 204, 0)'
 
   // Get initial styles for both levels
   const outerSquareInitial = await getStyles(page.locator(`#${TEST_IDS.staticSquare}-0`))

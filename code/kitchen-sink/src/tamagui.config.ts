@@ -2,7 +2,6 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
-import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
 import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
 import { tamaguiThemes } from '@tamagui/themes/v4'
@@ -163,55 +162,6 @@ export const animationsNative = createAnimationsNative({
   },
 })
 
-// New Reanimated driver (no Moti dependency)
-export const animationsReanimated = createAnimationsReanimated({
-  '75ms': {
-    type: 'timing',
-    duration: 75,
-  },
-  '100ms': {
-    type: 'timing',
-    duration: 100,
-  },
-  '200ms': {
-    type: 'timing',
-    duration: 200,
-  },
-  bouncy: {
-    type: 'spring',
-    damping: 9,
-    mass: 0.9,
-    stiffness: 150,
-  },
-  lazy: {
-    type: 'spring',
-    damping: 18,
-    stiffness: 50,
-  },
-  slow: {
-    type: 'spring',
-    damping: 15,
-    stiffness: 40,
-  },
-  quick: {
-    type: 'spring',
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-  },
-  medium: {
-    damping: 15,
-    stiffness: 120,
-    mass: 1,
-  },
-  tooltip: {
-    type: 'spring',
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
-})
-
 // this is used by the button test...
 config.themes = {
   ...config.themes,
@@ -282,9 +232,7 @@ const tamaConf = createTamagui({
       ? animationsNative
       : search.includes('animationDriver=motion')
         ? animationsMotion
-        : search.includes('animationDriver=reanimated')
-          ? animationsReanimated
-          : animationsMoti, // default moti
+        : animationsMoti, // default moti
   themeClassNameOnRoot: false,
 
   defaultProps: {

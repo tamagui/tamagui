@@ -31,7 +31,7 @@ export const Tooltip = withStaticProperties(StyledTooltip, {
     x: 0,
     y: 0,
     opacity: 1,
-    transition: [
+    animation: [
       'quick',
       {
         opacity: {

@@ -70,7 +70,7 @@ function AnimationChangeTest() {
   return (
     <>
       <Square
-        transition={animation}
+        animation={animation}
         size={100}
         borderColor="red"
         hoverStyle={{ scale: 2 }}
@@ -189,7 +189,7 @@ export const Sandbox = () => {
             <Square
              size={100}
              bc="red"
-             transition="bouncy"
+             animation="bouncy"
              
              // scale={1}
              enterStyle={{
@@ -197,7 +197,7 @@ export const Sandbox = () => {
              }}
             /> */}
           {/* <AnimationsPresenceDemo /> */}
-          {/* <Square size={100} bc="red" transition="bouncy" /> */}
+          {/* <Square size={100} bc="red" animation="bouncy" /> */}
           {/* <AnimationsPresenceDemo /> */}
           {/* <SandboxExample /> */}
           {/* <SelectDemo /> */}
