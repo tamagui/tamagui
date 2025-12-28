@@ -28,8 +28,7 @@ export const config = {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
     maxDarkLightNesting: 2,
-    styleCompat: 'legacy',
-    defaultPosition: 'relative',
+    styleCompat: 'react-native',
     addThemeClassName: 'html',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
