@@ -44,7 +44,7 @@ COPY . .
 # init git
 RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
 
-# Clone bento repository as sibling directory (required for production build)
+# Clone bento repository as sibling directory (optional)
 WORKDIR /root
 RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
       echo "Cloning bento repository..."; \
@@ -52,16 +52,17 @@ RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
       gh repo clone tamagui/bento && \
       gh auth logout --hostname github.com && \
-      echo "✅ Bento repository cloned"; \
+      echo "✅ Bento repository cloned" && \
+      echo "REQUIRE_BENTO=true" > /tmp/bento_status; \
     else \
-      echo "❌ ERROR: BENTO_GITHUB_TOKEN not provided - required for production build"; \
-      exit 1; \
+      echo "⚠️ BENTO_GITHUB_TOKEN not provided - bento features will not be available" && \
+      echo "REQUIRE_BENTO=false" > /tmp/bento_status; \
     fi
 
 WORKDIR /root/tamagui
 
-# Set REQUIRE_BENTO for the build process
-ENV REQUIRE_BENTO=true
+# Set REQUIRE_BENTO based on whether bento was cloned
+RUN export $(cat /tmp/bento_status)
 
 RUN corepack enable
 RUN corepack prepare yarn@4.5.0 --activate

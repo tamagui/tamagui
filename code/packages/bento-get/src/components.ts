@@ -706,7 +706,7 @@ export const componentsList: ComponentSchema[] = [
       'react-native-reanimated',
       'react-native-svg',
       '@tamagui/lucide-icons',
-      'tamagui/linear-gradient',
+      '@tamagui/linear-gradient',
     ],
     moveFilesToFolder: [{ file: 'ScrollProgress', to: '' }],
   },
