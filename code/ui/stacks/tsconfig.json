@@ -8,6 +8,9 @@
       "path": "../../core/core"
     },
     {
+      "path": "../../core/web"
+    },
+    {
       "path": "../../core/get-button-sized"
     }
   ],
