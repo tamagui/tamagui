@@ -15,6 +15,11 @@ export type BuildResult = {
     stats: BuildStats;
     trackedFiles: TrackedFile[];
 };
+/**
+ * Inserts a CSS import statement into JS code, placing it after any
+ * 'use client' or 'use server' directives at the top of the file.
+ */
+export declare function insertCssImport(jsContent: string, cssImport: string): string;
 export declare const build: (options: CLIResolvedOptions & {
     target?: "web" | "native" | "both";
     dir?: string;

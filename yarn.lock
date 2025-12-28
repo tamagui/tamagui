@@ -7249,6 +7249,7 @@ __metadata:
     ts-morph: "npm:^15.1.0"
     typescript: "npm:~5.9.2"
     url: "npm:^0.11.0"
+    vitest: "npm:^4.0.4"
   bin:
     tama: ./dist/index.cjs
     tamagui: ./dist/index.cjs

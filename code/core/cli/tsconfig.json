@@ -23,6 +23,7 @@
   "exclude": [
     "types",
     "dist",
-    "**/__tests__"
+    "**/__tests__",
+    "tests"
   ]
 }

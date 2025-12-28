@@ -33,6 +33,23 @@ export type BuildResult = {
   trackedFiles: TrackedFile[]
 }
 
+/**
+ * Inserts a CSS import statement into JS code, placing it after any
+ * 'use client' or 'use server' directives at the top of the file.
+ */
+export function insertCssImport(jsContent: string, cssImport: string): string {
+  // Match 'use client' or 'use server' directives at the start of the file
+  // Only consume one optional semicolon and one optional newline to preserve formatting
+  const directiveMatch = jsContent.match(/^(['"])use (client|server)\1;?\n?/)
+  if (directiveMatch) {
+    // Directive found at start - insert CSS import after it
+    const directive = directiveMatch[0]
+    const rest = jsContent.slice(directive.length)
+    return `${directive}${cssImport}\n${rest}`
+  }
+  return `${cssImport}\n${jsContent}`
+}
+
 export const build = async (
   options: CLIResolvedOptions & {
     target?: 'web' | 'native' | 'both'
@@ -213,7 +230,9 @@ export const build = async (
 
             const cssName = '_' + basename(sourcePath, extname(sourcePath))
             const stylePath = join(dirname(sourcePath), cssName + '.css')
-            const code = `import "./${cssName}.css"\n${out.js}`
+            const cssImport = `import "./${cssName}.css"`
+            const jsContent = typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
+            const code = insertCssImport(jsContent, cssImport)
 
             // Track original file before modifying
             await trackFile(sourcePath)
