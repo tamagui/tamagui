@@ -13,7 +13,7 @@ export interface DismissableProps {
    * Event handler called when the escape key is down.
    * Can be prevented.
    */
-  onEscapeKeyDown?: (event: KeyboardEvent) => void
+  onEscapeKeyDown?: React.KeyboardEventHandler
   /**
    * Event handler called when the a `pointerdown` event happens outside of the `Dismissable`.
    * Can be prevented.

@@ -1,4 +1,4 @@
-import type { StackProps } from '@tamagui/web';
+import type { ViewProps } from '@tamagui/web';
 import type { ReactElement } from 'react';
 import type { GestureResponderEvent } from 'react-native';
 interface UseRadioGroupParams {
@@ -40,9 +40,9 @@ interface UseRadioItemParams {
     labelledBy?: string;
     disabled?: boolean;
     ref?: any;
-    onPress?: StackProps['onPress'];
-    onKeyDown?: React.HTMLProps<React.ReactElement>['onKeyDown'];
-    onFocus?: StackProps['onFocus'];
+    onPress?: ViewProps['onPress'];
+    onKeyDown?: ViewProps['onKeyDown'];
+    onFocus?: ViewProps['onFocus'];
 }
 export type RadioGroupContextValue = {
     value?: string;
@@ -62,7 +62,7 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
     bubbleInput: import("react/jsx-runtime").JSX.Element;
     native: boolean | undefined;
     frameAttrs: {
-        onKeyDown?: ((event: KeyboardEvent) => void) | undefined;
+        onKeyDown?: import("@tamagui/helpers").EventHandler<import("react").KeyboardEvent<HTMLDivElement>> | undefined;
         onFocus?: import("@tamagui/helpers").EventHandler<import("react").FocusEvent<HTMLDivElement, Element>> | undefined;
         id: string | undefined;
         onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;

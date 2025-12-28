@@ -51,7 +51,7 @@ interface AccordionImplMultipleProps extends AccordionImplProps {
     onValueChange?(value: string[]): void;
 }
 type AccordionImplElement = TamaguiElement;
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>;
+type PrimitiveDivProps = GetProps<typeof Stack>;
 interface AccordionImplProps extends PrimitiveDivProps {
     /**
      * Whether or not an accordion is disabled from user interaction.

@@ -13,6 +13,9 @@ interface RovingFocusItemProps extends PrimitiveSpanProps {
     focusable?: boolean;
     active?: boolean;
 }
+declare const RovingFocusGroupItem: React.ForwardRefExoticComponent<RovingFocusItemProps & {
+    __scopeRovingFocusGroup?: string;
+} & React.RefAttributes<HTMLElement | import("react-native").View>>;
 type Orientation = React.AriaAttributes['aria-orientation'];
 type Direction = 'ltr' | 'rtl';
 interface RovingFocusGroupOptions {
@@ -40,6 +43,6 @@ declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroup
         __scopeRovingFocusGroup?: string;
     } & React.RefAttributes<HTMLElement | import("react-native").View>>;
 };
-export { RovingFocusGroup };
+export { RovingFocusGroup, RovingFocusGroupItem };
 export type { RovingFocusGroupProps, RovingFocusItemProps };
 //# sourceMappingURL=RovingFocusGroup.d.ts.map

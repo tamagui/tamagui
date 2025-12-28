@@ -84,6 +84,7 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
       <YStack fullscreen zIndex={1}>
         <Image
           fullscreen
+          objectFit="cover"
           {...(typeof shapeSize === 'number' &&
             !Number.isNaN(shapeSize) && {
               width: shapeSize,
@@ -124,30 +125,29 @@ export const AvatarFallbackFrame = styled(YStack, {
   zIndex: 0,
 })
 
-type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
+type AvatarFallbackExtraProps = {
   delayMs?: number
 }
+type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps
 
-const AvatarFallback = AvatarFallbackFrame.extractable(
-  React.forwardRef<TamaguiElement, AvatarFallbackProps>(
-    (props: ScopedProps<AvatarFallbackProps>, forwardedRef) => {
-      const { __scopeAvatar, delayMs, ...fallbackProps } = props
-      const context = useAvatarContext(FALLBACK_NAME, __scopeAvatar)
-      const [canRender, setCanRender] = React.useState(delayMs === undefined)
+const AvatarFallback = AvatarFallbackFrame.styleable<
+  ScopedProps<AvatarFallbackExtraProps>
+>((props, forwardedRef) => {
+  const { __scopeAvatar, delayMs, ...fallbackProps } = props
+  const context = useAvatarContext(FALLBACK_NAME, __scopeAvatar)
+  const [canRender, setCanRender] = React.useState(delayMs === undefined)
 
-      React.useEffect(() => {
-        if (delayMs !== undefined) {
-          const timerId = setTimeout(() => setCanRender(true), delayMs)
-          return () => clearTimeout(timerId)
-        }
-      }, [delayMs])
-
-      return canRender && context.imageLoadingStatus !== 'loaded' ? (
-        <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
-      ) : null
+  React.useEffect(() => {
+    if (delayMs !== undefined) {
+      const timerId = setTimeout(() => setCanRender(true), delayMs)
+      return () => clearTimeout(timerId)
     }
-  )
-)
+  }, [delayMs])
+
+  return canRender && context.imageLoadingStatus !== 'loaded' ? (
+    <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
+  ) : null
+})
 
 AvatarFallback.displayName = FALLBACK_NAME
 
@@ -171,7 +171,7 @@ type AvatarProps = GetProps<typeof AvatarFrame>
  * ```tsx
  * <Avatar circular size="$10">
  *  <Avatar.Image
- *    accessibilityLabel="Cam"
+ *    aria-label="Cam"
  *    src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
  *  />
  *  <Avatar.Fallback backgroundColor="$blue10" />
