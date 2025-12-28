@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
 
-Error.stackTraceLimit = Number.Infinity
+Error.stackTraceLimit = Number.MAX_SAFE_INTEGER
 process.env.TAMAGUI_TARGET = 'native'
 
 window['React'] = React
@@ -13,10 +13,10 @@ describe('flatten-tests', () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui'
       import { useMedia } from 'tamagui'
-  
+
       export function Test(isLoading) {
         const media = useMedia()
-        
+
         return (
           <YStack
             y={10}
@@ -34,10 +34,10 @@ describe('flatten-tests', () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui'
       import { useMedia } from 'tamagui'
-  
+
       export function Test(isLoading) {
         const media = useMedia()
-        
+
         return (
           <YStack
             y={10}
@@ -102,7 +102,7 @@ describe('flatten-tests', () => {
   test(`work with experimentalFlattenThemesOnNative`, async () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui'
-  
+
       export function Test(isLoading) {
         return (
           <YStack
@@ -121,7 +121,7 @@ describe('flatten-tests', () => {
   test(`work with experimentalFlattenThemesOnNative + ternary`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
-  
+
       export function Test() {
         return (
           <View backgroundColor={showBackground ? '$color1' : '$color2'} />
