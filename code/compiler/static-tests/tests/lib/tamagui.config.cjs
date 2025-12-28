@@ -1,12 +1,8 @@
-const { createTamagui, createTokens } = require('@tamagui/core')
-const merge = require('lodash.merge')
+const { createTamagui } = require('@tamagui/core')
 
 const conf = require('@tamagui/config/v3').config
 
-const tokens = createTokens({
-  color: {
-    'invaild-identifier': '#fff',
-  },
-})
+// Add an invalid identifier color token (with hyphen) to test the fix for #3737
+conf.tokens.color['invaild-identifier'] = conf.tokens.color.white
 
-module.exports = createTamagui(merge(conf, { tokens }))
+module.exports = createTamagui(conf)
