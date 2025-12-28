@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate-presence",
-  "version": "1.141.5",
+  "version": "1.142.0",
   "type": "module",
   "source": "src/index.ts",
   "sideEffects": [

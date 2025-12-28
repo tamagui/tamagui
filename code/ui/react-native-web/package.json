@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web",
-  "version": "1.141.5",
+  "version": "1.142.0",
   "type": "module",
   "sideEffects": [
     "*.css"

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-event",
-  "version": "1.141.5",
+  "version": "1.142.0",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
