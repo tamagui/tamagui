@@ -17,53 +17,17 @@ export interface SelectItemExtraProps {
 }
 export interface SelectItemProps extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {
 }
-export declare const SelectItem: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+export declare const SelectItem: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: import("@tamagui/core").SizeTokens | undefined;
+    disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    variant?: "outlined" | undefined;
     active?: boolean | undefined;
-}>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemExtraProps, import("@tamagui/core").StackStyleBase, {
-    disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+}>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").StackNonStyleProps & SelectItemExtraProps, import("@tamagui/core").StackStyleBase, {
     size?: import("@tamagui/core").SizeTokens | undefined;
+    disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    variant?: "outlined" | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export {};
