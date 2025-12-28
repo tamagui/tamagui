@@ -53,7 +53,7 @@ export const animationsMotion = createAnimations({
     mass: 0.2,
     stiffness: 300,
   },
-  snappy: {
+  select: {
     damping: 45,
     mass: 0.5,
     stiffness: 1000,
