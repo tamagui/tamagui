@@ -18,7 +18,7 @@ const StyledInput = styled(Input, {
 });
 
 const MyComponent = StyledInput.styleable((props, ref) =>
-<StyledInput ref={ref} {...props} />
+<StyledInput ref={ref as any} {...props} />
 );
 
 export function StyledStyleableInputOnFocus() {

@@ -6,16 +6,16 @@ const TextInput2 = styled(TamaguiInput, {
   height: '$5',
   borderRadius: '$1',
   borderWidth: 1,
-  fontSize: '$1',
+  fontSize: '$1' as any,
   keyboardAppearance: 'dark',
   paddingHorizontal: '$2',
-  placeholderTextColor: 'rgba(255,255,255,0.3)',
+  placeholderTextColor: 'rgba(255,255,255,0.3)' as any,
   color: 'green',
 
   variants: {
     gameplay: {
       true: {
-        fontSize: 100,
+        fontSize: 100 as any,
         lineHeight: '$5',
         letterSpacing: '$5',
         color: 'red',
@@ -31,7 +31,7 @@ const TextInput2 = styled(TamaguiInput, {
     },
     gameplayMobile: {
       true: {
-        fontSize: '$3',
+        fontSize: '$3' as any,
         letterSpacing: '$3',
         marginTop: -2.35,
         marginBottom: -5.9,

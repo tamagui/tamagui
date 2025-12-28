@@ -20,7 +20,7 @@ const StyledInput = styled(Input, {
 const AnotherStyled = styled(StyledInput);
 
 const MyComponent = AnotherStyled.styleable((props, ref) =>
-<StyledInput ref={ref} {...props} />
+<StyledInput ref={ref as any} {...props} />
 );
 
 export function StyledStyledStyleableInputOnFocus() {

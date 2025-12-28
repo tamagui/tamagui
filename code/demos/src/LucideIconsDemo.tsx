@@ -47,7 +47,7 @@ export function LucideIconsDemo() {
 
   return (
     <YStack minW="100%" p="$4" pb="$0" gap="$4">
-      <Input value={searchRaw} onChangeText={(text) => setSearch(text)} placeholder="Search..." />
+      <Input value={searchRaw} onChangeText={setSearch as any} placeholder="Search..." />
 
       <YStack height={420}>
         <ScrollView>

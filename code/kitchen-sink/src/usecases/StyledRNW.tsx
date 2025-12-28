@@ -5,10 +5,10 @@ export function StyledRNW() {
   return <Input id="styled-rnw-input" accessibilityLabel="ok" placeholder="search" />
 }
 
-            const TextInput = styled(
+const TextInput = styled(
   TamaguiInput,
   {
-    fontSize: 16,
+    fontSize: 16 as any,
     fontFamily: '$silkscreen',
     color: '$color5',
     minWidth: 0,
@@ -53,7 +53,7 @@ export const Input = TamaguiInput.styleable(function MyInput({ ...props }, ref) 
         // on native, this leads to duplicates?
         web: props.id,
       })}
-      ref={ref}
+      ref={ref as any}
     />
   )
 })
