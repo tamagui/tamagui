@@ -20,7 +20,10 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
     const rnwStyle = StyleSheet.getSheet()
     return (
       <>
-        <style dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }} id={rnwStyle.id} />
+        <style
+          dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
+          id={rnwStyle.id}
+        />
         <style
           dangerouslySetInnerHTML={{
             // the first time this runs you'll get the full CSS including all themes
@@ -55,9 +58,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
         setTheme(next as any)
       }}
     >
-      <Provider disableRootThemeClass defaultTheme={theme || 'light'}>
-        {children}
-      </Provider>
+      <Provider defaultTheme={theme || 'light'}>{children}</Provider>
     </NextThemeProvider>
   )
 }

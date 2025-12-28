@@ -9,7 +9,7 @@ export default function ModalScreen() {
           @natebirdman,
         </Anchor>
         <Anchor
-          color="$accent10"
+          color="$color12"
           href="https://github.com/tamagui/tamagui"
           target="_blank"
           rel="noreferrer"

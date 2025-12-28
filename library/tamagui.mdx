@@ -1,6 +1,10 @@
-Tamagui is a style library `@tamagui/core`, and a separate UI kit `tamagui`. It also has an optional optimizing compiler `@tamagui/static` that generally you only use through it's bundler plugins like `@tamagui/vite-plugin` or `@tamagui/babel-plugin` for Metro.
+Tamagui is a style library `@tamagui/core`, and a separate UI kit `tamagui`. It
+also has an optional optimizing compiler `@tamagui/static` that generally you
+only use through it's bundler plugins like `@tamagui/vite-plugin` or
+`@tamagui/babel-plugin` for Metro.
 
-Note `tamagui` is a superset of `@tamagui/core`, so you can use that in general for code generation.
+Note `tamagui` is a superset of `@tamagui/core`, so you can use that in general
+for code generation.
 
 For the core style library you can do inline styles:
 
@@ -26,14 +30,15 @@ const CustomView = styled(View, {
   variants: {
     spaced: {
       true: {
-        margin: 20
-      }
-    }
-  } as const
+        margin: 20,
+      },
+    },
+  } as const,
 })
 ```
 
-For more on styled, there's a doc `styled.mdx` you can look up. Variants generally can do a lot:
+For more on styled, there's a doc `styled.mdx` you can look up. Variants
+generally can do a lot:
 
 ```tsx
 import { View, styled } from '@tamagui/core'
@@ -57,8 +62,8 @@ export const RoundedSquare = styled(View, {
         justifyContent: 'center',
       },
       false: {
-        alignItems: 'flex-start'
-      }
+        alignItems: 'flex-start',
+      },
     },
 
     size: {
@@ -74,7 +79,9 @@ export const RoundedSquare = styled(View, {
 })
 ```
 
-You can define your configuration for Tamagui using `createTamagui`, and it lets you define things, there's a readme in the docs called `configuration.mdx` you can look up for more on this:
+You can define your configuration for Tamagui using `createTamagui`, and it lets
+you define things, there's a readme in the docs called `configuration.mdx` you
+can look up for more on this:
 
 ```tsx
 import { createTamagui, getConfig } from '@tamagui/core'
@@ -133,7 +140,9 @@ declare module '@tamagui/core' {
 }
 ```
 
-Note that Tamagui maps tokens to style props using some logic, so if you use `<View margin="$sm />` it looks for `createTamagui({ tokens: { space: { sm: 10 } } })`:
+Note that Tamagui maps tokens to style props using some logic, so if you use
+`<View margin="$sm />` it looks for
+`createTamagui({ tokens: { space: { sm: 10 } } })`:
 
 ```ts
 // if not specified it defaults to `space`
@@ -191,12 +200,13 @@ export const tokenCategories = {
 }
 ```
 
-Tamagui themes are special and can do a lot, just know that you can generate them a few ways.
+Tamagui themes are special and can do a lot, just know that you can generate
+them a few ways.
 
-Simply just like above, or using our new `createThemes` from `@tamagui/config/v4`.
+Simply just like above, or using our new `createThemes` from
+`@tamagui/config/v4`.
 
 It's done like this:
-
 
 ```tsx fileName=themes.ts
 import * as Colors from '@tamagui/colors'
@@ -279,7 +289,7 @@ const extraColors = {
 
 const generatedThemes = createThemes({
   componentThemes: defaultComponentThemes,
-  
+
   base: {
     palette: {
       dark: darkPalette,

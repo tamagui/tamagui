@@ -56,7 +56,7 @@ const CustomSheet = ({ open, setOpen }) => {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle bg="$gray8" />
-        <Sheet.Frame ai="center" jc="center" gap="$10" bg="rgba(255,0,0,0.5)">
+        <Sheet.Frame items="center" justify="center" gap="$10" bg="rgba(255,0,0,0.5)">
           <Button
             size="$6"
             onPress={() => {
