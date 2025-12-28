@@ -50,7 +50,8 @@ export const ColorPaletteListItem = ({
         p={0}
         flexDirection="column"
         items="flex-start"
-        hoverTheme={hoverTheme ?? !isActive}
+        // Todo: fix hoverTheme
+        // hoverTheme={hoverTheme ?? !isActive}
         borderColor={isActive ? '$borderColor' : 'transparent'}
         bg={isActive ? '$background' : 'transparent'}
       >

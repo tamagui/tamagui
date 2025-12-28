@@ -1,4 +1,4 @@
-import { Image, type ImageProps } from '@tamagui/image-next'
+import { Image, type ImageProps } from '@tamagui/image'
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
@@ -249,7 +249,8 @@ const ImageGallery = () => {
         />
 
         <Dialog.Content
-          bordered
+          borderWidth={1}
+          borderColor="$borderColor"
           elevate
           key="content"
           animation={[
@@ -360,7 +361,7 @@ const ImagesCarousel = () => {
         position="absolute"
         l="$4"
         circular
-        elevate
+        elevation="$2"
         onPress={() => store.paginateGallery(-1)}
       />
       <Button
@@ -370,7 +371,7 @@ const ImagesCarousel = () => {
         position="absolute"
         r="$4"
         circular
-        elevate
+        elevation="$2"
         onPress={() => store.paginateGallery(1)}
       />
     </XStack>

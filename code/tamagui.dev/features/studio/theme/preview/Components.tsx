@@ -31,7 +31,7 @@ export const Components = () => {
           </Button>
         </XStack>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <XStack {...demoProps.gapPropsLg} flex={1} flexWrap="wrap">
           <SelectDemoContents size="$3" />

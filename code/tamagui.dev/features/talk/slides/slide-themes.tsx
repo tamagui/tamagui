@@ -129,12 +129,12 @@ const snippetUsageComplex = highlightCode(
   'tsx'
 )
 
-const snippetUsageInverse = highlightCode(
+const snippetUsageAccent = highlightCode(
   `export default () => (
   <Theme name="light">
     <MyWidget />
 
-    <Theme inverse>
+    <Theme name="accent">
       <MyWidget />
     </Theme>
   </Theme>
@@ -155,14 +155,14 @@ const snippetUsageSub = highlightCode(
   'tsx'
 )
 
-const snippetUsageInverseSub = highlightCode(
+const snippetUsageAccentSub = highlightCode(
   `export default () => (
   <Theme name="light">
     <Theme name="red">
       <MyWidget />
 
-      {/* Now make it dark_red */}
-      <Theme inverse>
+      {/* Now make it dark_red with accent */}
+      <Theme name="accent">
         <MyWidget />
       </Theme>
     </Theme>
@@ -185,7 +185,7 @@ const Container = styled(Stack, {
   minH: 400,
   items: 'center',
   justify: 'center',
-  space: true,
+  gap: '$4',
 })
 
 export default memo(() => {
@@ -310,7 +310,7 @@ export default memo(() => {
             content: [
               {
                 type: 'code',
-                content: snippetUsageInverse,
+                content: snippetUsageAccent,
               },
               {
                 type: 'content',
@@ -379,7 +379,7 @@ export default memo(() => {
             content: [
               {
                 type: 'code',
-                content: snippetUsageInverseSub,
+                content: snippetUsageAccentSub,
               },
               {
                 type: 'content',
