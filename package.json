@@ -119,14 +119,10 @@
   "manypkg": {
     "workspaceProtocol": "require"
   },
-  "profile": {
-    "//": "run 'yarn profile x' to toggle it on/off",
-    "react-18": {
-      "applied": false,
-      "resolutions": {
-        "react": "18.3.1",
-        "react-dom": "18.3.1"
-      }
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
     }
   },
   "packageManager": "yarn@4.5.0",

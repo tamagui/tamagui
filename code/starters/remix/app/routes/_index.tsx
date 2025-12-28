@@ -30,7 +30,6 @@ const Section = styled(View, {
 
 const ButtonOuter = styled(View, {
   tag: 'button',
-  themeInverse: true,
   bg: '$background',
   rounded: '$4',
   cursor: 'pointer',
@@ -126,7 +125,7 @@ export default function Index() {
           Tamagui&apos;s styling system is designed to work with Remix out of the box.
           Server-render initial styles and themes.
         </Text>
-        <ButtonOuter onPress={toggleTheme}>
+        <ButtonOuter onPress={toggleTheme} theme="accent">
           <ButtonText>Toggle Theme</ButtonText>
         </ButtonOuter>
       </Section>
