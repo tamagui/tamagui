@@ -464,14 +464,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     animationProp: AnimationProp | null
   ): AnimationOptions {
     let defaultAnimationKey = ''
-    let specificAnimations = {}
+    let specificAnimations: Record<string, any> = {}
 
     if (typeof animationProp === 'string') {
       defaultAnimationKey = animationProp
     } else if (Array.isArray(animationProp)) {
       if (typeof animationProp[0] === 'string') {
         defaultAnimationKey = animationProp[0]
-        specificAnimations = animationProp[1]
+        specificAnimations = animationProp[1] || {}
       } else {
         specificAnimations = animationProp
       }
@@ -483,8 +483,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
     const defaultConfig = animations[defaultAnimationKey]
 
+    // e.g., animation={['bouncy', { delay: 100 }]}
+    // Framer Motion uses seconds, so convert from ms
+    const delay =
+      typeof specificAnimations.delay === 'number'
+        ? specificAnimations.delay / 1000
+        : undefined
+
     return {
-      default: defaultConfig,
+      default: delay ? { ...defaultConfig, delay } : defaultConfig,
       ...Object.fromEntries(
         Object.entries(specificAnimations).flatMap(
           ([propName, animationNameOrConfig]) => {
