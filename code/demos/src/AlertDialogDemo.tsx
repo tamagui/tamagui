@@ -12,6 +12,7 @@ export function AlertDialogDemo() {
           key="overlay"
           animation="quick"
           opacity={0.5}
+          backgroundColor="$background"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />

@@ -1,6 +1,16 @@
 import React from 'react'
 import type { TabsContentProps } from 'tamagui'
-import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb } from 'tamagui'
+import {
+  Button,
+  H5,
+  Separator,
+  SizableText,
+  Tabs,
+  XStack,
+  YStack,
+  isWeb,
+  useWindowDimensions,
+} from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -39,12 +49,13 @@ export function TabsDemo() {
 }
 
 const HorizontalTabs = () => {
+  const { width } = useWindowDimensions()
   return (
     <Tabs
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
-      $maxMd={{ width: 300 }}
+      $maxMd={{ width: width - 32 }}
       width={400}
       height={150}
       rounded="$4"
@@ -52,11 +63,7 @@ const HorizontalTabs = () => {
       overflow="hidden"
       borderColor="$borderColor"
     >
-      <Tabs.List
-        separator={<Separator vertical />}
-        disablePassBorderRadius="bottom"
-        aria-label="Manage your account"
-      >
+      <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
         <Tabs.Tab
           focusStyle={{
             backgroundColor: '$color3',
@@ -64,7 +71,7 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab1"
         >
-          <SizableText fontFamily="$body" text="center">
+          <SizableText fontFamily="$body" text="center" ellipsis>
             Profile
           </SizableText>
         </Tabs.Tab>
@@ -75,7 +82,7 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab2"
         >
-          <SizableText fontFamily="$body" text="center">
+          <SizableText fontFamily="$body" text="center" ellipsis>
             Connections
           </SizableText>
         </Tabs.Tab>
@@ -86,7 +93,7 @@ const HorizontalTabs = () => {
           flex={1}
           value="tab3"
         >
-          <SizableText fontFamily="$body" text="center">
+          <SizableText fontFamily="$body" text="center" ellipsis>
             Notifications
           </SizableText>
         </Tabs.Tab>
@@ -119,11 +126,7 @@ const VerticalTabs = () => {
       overflow="hidden"
       borderColor="$borderColor"
     >
-      <Tabs.List
-        disablePassBorderRadius="end"
-        aria-label="Manage your account"
-        separator={<Separator />}
-      >
+      <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
         <Tabs.Tab value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>

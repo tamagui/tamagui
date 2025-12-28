@@ -47,7 +47,8 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
-              bg="$shadow6"
+              bg="$background"
+              opacity={0.5}
               animation="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
@@ -59,7 +60,8 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          bg="$shadow6"
+          bg="$background"
+          opacity={0.5}
           animateOnly={['transform', 'opacity']}
           animation={[
             'quicker',
