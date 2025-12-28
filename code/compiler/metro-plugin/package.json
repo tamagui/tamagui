@@ -25,16 +25,7 @@
   "dependencies": {
     "@tamagui/static": "workspace:*"
   },
-  "peerDependencies": {
-    "metro-transform-worker": "*"
-  },
-  "peerDependenciesMeta": {
-    "metro-transform-worker": {
-      "optional": true
-    }
-  },
   "devDependencies": {
-    "@tamagui/build": "workspace:*",
-    "metro-transform-worker": "^0.82.0"
+    "@tamagui/build": "workspace:*"
   }
 }
