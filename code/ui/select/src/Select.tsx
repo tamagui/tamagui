@@ -150,13 +150,24 @@ const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicator
 
 const SelectIndicatorFrame = styled(YStack, {
   name: 'SelectIndicator',
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  backgroundColor: '$color2',
-  borderRadius: 0,
-  zIndex: 10,
-  pointerEvents: 'none',
+
+  variants: {
+    unstyled: {
+      false: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        pointerEvents: 'none',
+        zIndex: 10,
+        backgroundColor: '$backgroundHover',
+        borderRadius: 0,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 export type SelectIndicatorProps = GetProps<typeof SelectIndicatorFrame>
