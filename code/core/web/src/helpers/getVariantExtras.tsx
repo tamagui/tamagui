@@ -1,3 +1,4 @@
+import { getSetting } from '../config'
 import { getVariableValue } from '../createVariable'
 import type { GenericFonts, GetStyleState, LanguageContextType } from '../types'
 
@@ -8,7 +9,7 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     return cache.get(styleState)
   }
 
-  const { props, conf, context, theme } = styleState
+  const { props, conf, context, theme, styleProps } = styleState
   let fonts = conf.fontsParsed
   if (context?.language) {
     fonts = getFontsForLanguage(conf.fontsParsed, context.language)
@@ -18,18 +19,19 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     fonts,
     tokens: conf.tokensParsed,
     theme,
+    context: styleProps?.styledContext,
     get fontFamily() {
       return (
         getVariableValue(styleState.fontFamily || styleState.props.fontFamily) ||
         props.fontFamily ||
-        getVariableValue(styleState.conf.defaultFont)
+        getVariableValue(getSetting('defaultFont'))
       )
     },
     get font() {
       return (
         fonts[this.fontFamily] ||
         (!props.fontFamily || props.fontFamily[0] === '$'
-          ? fonts[styleState.conf.defaultFont!]
+          ? fonts[getSetting('defaultFont') || '']
           : undefined)
       )
     },
