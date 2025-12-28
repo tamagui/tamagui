@@ -2,69 +2,50 @@ import { getFontSize } from '@tamagui/font-size'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
-import type { TextParentStyles } from '@tamagui/text'
-import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type {
-  FontSizeTokens,
-  GetProps,
-  PropsWithoutMediaStyles,
-  SizeTokens,
-  ThemeableProps,
-} from '@tamagui/web'
-import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
+import { useGetIcon } from '@tamagui/helpers-tamagui'
+import { themeableVariants, YStack } from '@tamagui/stacks'
+import { type SizableTextProps, SizableText, wrapChildrenInText } from '@tamagui/text'
+import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
+import { createStyledContext, styled, View } from '@tamagui/web'
 import type { FunctionComponent, ReactNode, JSX } from 'react'
 
 type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
-export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
-  ThemeableProps & {
-    /**
-     * add icon before, passes color and size automatically if Component
-     */
-    icon?: IconProp
-    /**
-     * add icon after, passes color and size automatically if Component
-     */
-    iconAfter?: IconProp
-    /**
-     * adjust icon relative to size
-     */
-    /**
-     * default: -1
-     */
-    scaleIcon?: number
-    /**
-     * make the spacing elements flex
-     */
-    spaceFlex?: number | boolean
-    /**
-     * adjust internal space relative to icon size
-     */
-    scaleSpace?: number
-    /**
-     * title
-     */
-    title?: ReactNode
-    /**
-     * subtitle
-     */
-    subTitle?: ReactNode
-    /**
-     * will not wrap text around `children` only, "all" will not wrap title or subTitle
-     */
-    noTextWrap?: boolean | 'all'
-  }
+type ListItemVariant = 'outlined'
+
+export type ListItemExtraProps = {
+  icon?: IconProp
+  iconAfter?: IconProp
+  scaleIcon?: number
+  title?: ReactNode
+  subTitle?: ReactNode
+  iconSize?: SizeTokens
+  fontWeight?: SizableTextProps['fontWeight']
+}
 
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
 
 const NAME = 'ListItem'
 
-export const ListItemFrame = styled(ThemeableStack, {
+const context = createStyledContext<{
+  size?: SizeTokens
+  variant?: ListItemVariant
+  color?: ColorTokens | string
+}>({
+  size: undefined,
+  variant: undefined,
+  color: undefined,
+})
+
+const ListItemFrame = styled(View, {
+  context,
   name: NAME,
   tag: 'li',
+  role: 'listitem',
+
+  ...themeableVariants.pressTheme.true,
+  ...themeableVariants.hoverTheme.true,
 
   variants: {
     unstyled: {
@@ -73,14 +54,43 @@ export const ListItemFrame = styled(ThemeableStack, {
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'nowrap',
-        width: '100%',
         borderColor: '$borderColor',
+        width: '100%',
         maxWidth: '100%',
         overflow: 'hidden',
         flexDirection: 'row',
         backgroundColor: '$background',
         cursor: 'default',
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
       },
+    },
+
+    variant: {
+      outlined:
+        process.env.TAMAGUI_HEADLESS === '1'
+          ? {}
+          : {
+              backgroundColor: 'transparent',
+              borderWidth: 1,
+              borderColor: '$borderColor',
+
+              hoverStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorHover',
+              },
+
+              pressStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorPress',
+              },
+            },
     },
 
     size: {
@@ -106,8 +116,7 @@ export const ListItemFrame = styled(ThemeableStack, {
     disabled: {
       true: {
         opacity: 0.5,
-        // TODO breaking types
-        pointerEvents: 'none' as any,
+        pointerEvents: 'none',
       },
     },
   } as const,
@@ -117,7 +126,8 @@ export const ListItemFrame = styled(ThemeableStack, {
   },
 })
 
-export const ListItemText = styled(SizableText, {
+const ListItemText = styled(SizableText, {
+  context,
   name: 'ListItemText',
 
   variants: {
@@ -127,7 +137,7 @@ export const ListItemText = styled(SizableText, {
         size: '$true',
         flexGrow: 1,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         cursor: 'inherit',
       },
     },
@@ -138,9 +148,9 @@ export const ListItemText = styled(SizableText, {
   },
 })
 
-export const ListItemSubtitle = styled(ListItemText, {
+const ListItemSubtitle = styled(ListItemText, {
   name: 'ListItemSubtitle',
-
+  context,
   variants: {
     unstyled: {
       false: {
@@ -167,128 +177,125 @@ export const ListItemSubtitle = styled(ListItemText, {
   },
 })
 
-export const ListItemTitle = styled(ListItemText, {
+const ListItemTitle = styled(ListItemText, {
   name: 'ListItemTitle',
+  context,
+  variants: {
+    unstyled: {
+      false: {},
+    },
+  } as const,
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
-export const useListItem = (
-  propsIn: ListItemProps,
-  {
-    Text = ListItemText,
-    Subtitle = ListItemSubtitle,
-    Title = ListItemTitle,
-  }: {
-    Title?: any
-    Subtitle?: any
-    Text?: any
-  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
-): { props: PropsWithoutMediaStyles<ListItemProps> } => {
-  // careful not to destructure and re-order props, order is important
-  const props = useProps(propsIn, {
-    resolveValues: 'none',
+const ListItemIcon = (props: {
+  children: React.ReactNode
+  size?: SizeTokens
+  scaleIcon?: number
+}) => {
+  const { children, size, scaleIcon = 1 } = props
+  const styledContext = context.useStyledContext()
+  if (!styledContext) {
+    throw new Error('ListItem.Icon must be used within a ListItem')
+  }
+
+  const sizeToken = size ?? styledContext.size ?? '$true'
+
+  const iconSize = getFontSize(sizeToken as any) * scaleIcon
+
+  const getIcon = useGetIcon()
+
+  return getIcon(children, {
+    size: iconSize,
+    color: styledContext.color,
   })
-
-  const {
-    children,
-    icon,
-    iconAfter,
-    noTextWrap,
-    theme: themeName,
-    space,
-    spaceFlex,
-    scaleIcon = 1,
-    scaleSpace = 1,
-    unstyled = false,
-    subTitle,
-    title,
-
-    // text props
-    color,
-    fontWeight,
-    fontSize,
-    fontFamily,
-    letterSpacing,
-    textAlign,
-    ellipse,
-
-    ...rest
-  } = props
-
-  const textProps = {
-    color,
-    fontWeight,
-    fontSize,
-    fontFamily,
-    letterSpacing,
-    textAlign,
-    ellipse,
-    children,
-  }
-
-  const size = props.size || '$true'
-  const iconSize = getFontSize(size as any) * scaleIcon
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
-  const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const sizeToken = getTokens().space[props.space as any] ?? iconSize
-  const spaceSize = getVariableValue(sizeToken) * scaleSpace
-
-  const contents = wrapChildrenInText(Text, textProps)
-
-  return {
-    props: {
-      ...rest,
-      children: (
-        <>
-          {themedIcon ? (
-            <>
-              {themedIcon}
-              <Spacer size={spaceSize} />
-            </>
-          ) : null}
-          {/* helper for common title/subtitle pttern */}
-          {/* biome-ignore lint/complexity/noExtraBooleanCast: <explanation> */}
-          {Boolean(title || subTitle) ? (
-            <YStack flex={1}>
-              {noTextWrap === 'all' ? title : <Title size={size}>{title}</Title>}
-              {subTitle ? (
-                <>
-                  {typeof subTitle === 'string' && noTextWrap !== 'all' ? (
-                    // TODO can use theme but we need to standardize to alt themes
-                    // or standardize on subtle colors in themes
-                    <Subtitle unstyled={unstyled} size={size}>
-                      {subTitle}
-                    </Subtitle>
-                  ) : (
-                    subTitle
-                  )}
-                </>
-              ) : null}
-              {contents}
-            </YStack>
-          ) : (
-            contents
-          )}
-          {themedIconAfter ? (
-            <>
-              <Spacer size={spaceSize} />
-              {themedIconAfter}
-            </>
-          ) : null}
-        </>
-      ),
-    },
-  }
 }
 
 const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
-  function ListItem(props, ref) {
-    const { props: listItemProps } = useListItem(props)
-    return <ListItemFrame ref={ref} {...listItemProps} />
+  function ListItem(propsIn, ref) {
+    const {
+      children,
+      icon,
+      iconAfter,
+      scaleIcon = 1,
+      unstyled = false,
+      subTitle,
+      title,
+      iconSize,
+      fontWeight,
+      ...rest
+    } = propsIn
+
+    const size = propsIn.size || '$true'
+    const styledContext = context.useStyledContext()
+    const getIcon = useGetIcon()
+    const iconSizeNumber = getFontSize(iconSize || (size as any)) * scaleIcon
+
+    const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon, i) => {
+      if (!icon) return null
+      const isBefore = i === 0
+      return getIcon(icon, {
+        size: iconSizeNumber,
+        color: styledContext?.color,
+        [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
+      })
+    })
+
+    const wrappedChildren = wrapChildrenInText(
+      ListItemText,
+      { children },
+      propsIn.unstyled !== true
+        ? {
+            unstyled: process.env.TAMAGUI_HEADLESS === '1',
+            fontSize: propsIn.size,
+            fontWeight,
+          }
+        : undefined
+    )
+
+    return (
+      <ListItemFrame ref={ref} {...rest}>
+        {themedIcon}
+        {title || subTitle ? (
+          <YStack flex={1}>
+            {title ? (
+              typeof title === 'string' ? (
+                <ListItemTitle unstyled={unstyled} size={size as any}>
+                  {title}
+                </ListItemTitle>
+              ) : (
+                title
+              )
+            ) : null}
+            {subTitle ? (
+              <>
+                {typeof subTitle === 'string' ? (
+                  <ListItemSubtitle unstyled={unstyled} size={size}>
+                    {subTitle}
+                  </ListItemSubtitle>
+                ) : (
+                  subTitle
+                )}
+              </>
+            ) : null}
+            {wrappedChildren}
+          </YStack>
+        ) : (
+          wrappedChildren
+        )}
+        {themedIconAfter}
+      </ListItemFrame>
+    )
   }
 )
 
 export const ListItem = withStaticProperties(ListItemComponent, {
+  Apply: context.Provider,
+  Frame: ListItemFrame,
   Text: ListItemText,
   Subtitle: ListItemSubtitle,
+  Icon: ListItemIcon,
   Title: ListItemTitle,
 })
