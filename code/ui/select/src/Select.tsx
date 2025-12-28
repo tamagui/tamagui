@@ -13,11 +13,10 @@ import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import type { ListItemProps } from '@tamagui/list-item'
-import { ListItem } from '@tamagui/list-item'
+import { ListItem, type ListItemProps } from '@tamagui/list-item'
 import { Separator } from '@tamagui/separator'
 import { Sheet, SheetController } from '@tamagui/sheet'
-import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
+import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDebounce } from '@tamagui/use-debounce'
@@ -78,7 +77,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
       <SelectValueFrame
         {...(!props.unstyled && {
           size: itemParentContext.size as any,
-          ellipse: true,
+          ellipsis: true,
           // we don't want events from the portalled `SelectValue` children to bubble
           // through the item they came from
           pointerEvents: 'none',
@@ -170,13 +169,8 @@ const NativeSelectTextFrame = styled(SizableText, {
   },
 })
 
-const NativeSelectFrame = styled(ThemeableStack, {
+const NativeSelectFrame = styled(YStack, {
   name: 'NativeSelect',
-
-  bordered: true,
-  userSelect: 'none',
-  outlineWidth: 0,
-  paddingRight: 10,
 
   variants: {
     size: {
@@ -195,10 +189,21 @@ const NativeSelectFrame = styled(ThemeableStack, {
         }
       },
     },
+
+    unstyled: {
+      false: {
+        borderWidth: 1,
+        borderColor: '$borderColor',
+        userSelect: 'none',
+        outlineWidth: 0,
+        paddingRight: 10,
+      },
+    },
   } as const,
 
   defaultVariants: {
     size: '$2',
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -271,8 +276,12 @@ const LABEL_NAME = 'SelectLabel'
 
 export type SelectLabelProps = SelectScopedProps<ListItemProps>
 
-const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
-  (props, forwardedRef) => {
+const SelectLabelText = styled(ListItem.Text, {
+  fontWeight: '800',
+})
+
+const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
+  (props: SelectScopedProps<SelectLabelProps>, forwardedRef) => {
     const { scope, ...labelProps } = props
     const context = useSelectItemParentContext(scope)
     const groupContext = useSelectGroupContext(scope)
@@ -294,6 +303,10 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
     )
   }
 )
+
+const SelectLabel = withStaticProperties(SelectLabelFrame, {
+  Text: SelectLabelText,
+})
 
 SelectLabel.displayName = LABEL_NAME
 
@@ -352,7 +365,7 @@ export const Select = withStaticProperties(
     )
   },
   {
-    Adapt,
+    Adapt: Adapt,
     Content: SelectContent,
     Group: SelectGroup,
     Icon: SelectIcon,
