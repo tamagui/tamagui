@@ -108,7 +108,10 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
          */
 
         // Use timeout as primary, transition events as backup for reliable exit handling
-        const fallbackTimeout = animation ? extractDuration(animation) : 200
+        const animationDuration = animation ? extractDuration(animation) : 200
+        const delay =
+          typeof animationConfig?.delay === 'number' ? animationConfig.delay : 0
+        const fallbackTimeout = animationDuration + delay
 
         const timeoutId = setTimeout(() => {
           sendExitComplete?.()
@@ -138,10 +141,12 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         // add css transition
         // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
         // for non layout transform properties either use animate function or find a workaround to do it with css
+        const delay =
+          typeof animationConfig?.delay === 'number' ? ` ${animationConfig.delay}ms` : ''
         style.transition = keys
           .map((key) => {
             const override = animations[animationConfig?.[key]] ?? animation
-            return `${key} ${override}`
+            return `${key} ${override}${delay}`
           })
           .join(', ')
       }
