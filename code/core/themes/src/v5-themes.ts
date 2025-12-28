@@ -21,8 +21,6 @@ import {
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { opacify } from './opacify'
 
-// TODO we need grey which is neutral on both white and black
-
 const blue = adjustPaletteLight('blue', blueIn)
 const blueDark = adjustPaletteDark('blueDark', blueDarkIn)
 const green = adjustPaletteLight('green', greenIn)
@@ -71,6 +69,42 @@ const lightPalette = [
   'hsl(0, 0%, 20%)',
   'hsl(0, 0%, 2%)',
 ]
+
+/**
+ * Neutral grey palette that has sufficient contrast on both white and black backgrounds.
+ * All values are in the 32-68% lightness range, making them visible in any context.
+ * Uses the same values for both light and dark themes.
+ */
+
+const neutralPalette = [
+  'hsl(0, 0%, 68%)',
+  'hsl(0, 0%, 65%)',
+  'hsl(0, 0%, 62%)',
+  'hsl(0, 0%, 59%)',
+  'hsl(0, 0%, 56%)',
+  'hsl(0, 0%, 53%)',
+  'hsl(0, 0%, 50%)',
+  'hsl(0, 0%, 47%)',
+  'hsl(0, 0%, 44%)',
+  'hsl(0, 0%, 41%)',
+  'hsl(0, 0%, 38%)',
+  'hsl(0, 0%, 32%)',
+]
+
+const neutral = {
+  neutral1: neutralPalette[0]!,
+  neutral2: neutralPalette[1]!,
+  neutral3: neutralPalette[2]!,
+  neutral4: neutralPalette[3]!,
+  neutral5: neutralPalette[4]!,
+  neutral6: neutralPalette[5]!,
+  neutral7: neutralPalette[6]!,
+  neutral8: neutralPalette[7]!,
+  neutral9: neutralPalette[8]!,
+  neutral10: neutralPalette[9]!,
+  neutral11: neutralPalette[10]!,
+  neutral12: neutralPalette[11]!,
+}
 
 // the same on both light and dark, useful for forcing white/black:
 const whiteBlack = {
@@ -175,64 +209,99 @@ const whiteColors = {
   white12: lightPalette[11]!,
 }
 
-export const themes = createThemes({
-  // ‼️ we can probably get rid of this since we have mostly moved off the default component themes
-  componentThemes: defaultComponentThemes,
+// Default color palettes exported for customization
+export { darkPalette, lightPalette }
 
-  base: {
-    palette: {
-      dark: darkPalette,
-      light: lightPalette,
-    },
-
-    // for values we don't want being inherited onto sub-themes
-    extra: {
-      light: {
-        ...blackColors,
-        ...blue,
-        ...gray,
-        ...green,
-        ...lightShadows,
-        ...orange,
-        ...pink,
-        ...purple,
-        ...red,
-        ...teal,
-        ...whiteColors,
-        ...yellow,
-        shadowColor: lightShadows.shadow1,
-        ...whiteBlack,
-        ...extraColorsLight,
-      },
-      dark: {
-        ...blackColors,
-        ...blueDark,
-        ...darkShadows,
-        ...grayDark,
-        ...greenDark,
-        ...orangeDark,
-        ...pinkDark,
-        ...purpleDark,
-        ...redDark,
-        ...tealDark,
-        ...whiteColors,
-        ...yellowDark,
-        shadowColor: darkShadows.shadow1,
-        ...whiteBlack,
-        ...extraColorsDark,
-      },
-    },
+// Default color sets exported for customization
+export const defaultColors = {
+  light: {
+    blue,
+    gray,
+    green,
+    neutral,
+    orange,
+    pink,
+    purple,
+    red,
+    teal,
+    yellow,
   },
-
-  // inverse accent theme
-  accent: {
-    palette: {
-      dark: lightPalette,
-      light: darkPalette,
-    },
+  dark: {
+    blue: blueDark,
+    gray: grayDark,
+    green: greenDark,
+    neutral, // same for both light and dark - that's the point!
+    orange: orangeDark,
+    pink: pinkDark,
+    purple: purpleDark,
+    red: redDark,
+    teal: tealDark,
+    yellow: yellowDark,
   },
+}
 
-  childrenThemes: {
+export type ColorPalette = string[]
+
+export type ColorTheme = {
+  palette: {
+    dark: ColorPalette
+    light: ColorPalette
+  }
+}
+
+export type GrandChildrenThemeDefinition = {
+  template: string
+}
+
+export type CreateV5ThemeOptions = {
+  /** Override the dark base palette (12 colors from darkest to lightest) */
+  darkPalette?: ColorPalette
+  /** Override the light base palette (12 colors from lightest to darkest) */
+  lightPalette?: ColorPalette
+  /** Add or override color themes (e.g., { brand: { dark: [...], light: [...] } }) */
+  colors?: Record<string, { dark: ColorPalette; light: ColorPalette }>
+  /** Whether to include default color themes (blue, red, green, etc.). Defaults to true */
+  includeDefaultColors?: boolean
+  /** Add or override grandChildrenThemes (e.g., { alt1: { template: 'alt1' } }) */
+  grandChildrenThemes?: Record<string, GrandChildrenThemeDefinition>
+}
+
+/**
+ * Creates v5 themes with optional customizations.
+ *
+ * @example
+ * Use default themes
+ * const themes = createV5Theme()
+ *
+ * @example
+ * Add a custom brand color
+ * const themes = createV5Theme({
+ *   colors: {
+ *     brand: {
+ *       light: ['#fff', '#fef', '#fdf', '#fcf', '#fbf', '#faf', '#f9f', '#f8f', '#f7f', '#f6f', '#f5f', '#f0f'],
+ *       dark: ['#101', '#202', '#303', '#404', '#505', '#606', '#707', '#808', '#909', '#a0a', '#b0b', '#c0c'],
+ *     },
+ *   },
+ * })
+ *
+ * @example
+ * Override base palettes
+ * const themes = createV5Theme({
+ *   lightPalette: ['#fff', '#fafafa', ...],
+ *   darkPalette: ['#000', '#111', ...],
+ * })
+ */
+export function createV5Theme(options: CreateV5ThemeOptions = {}) {
+  const {
+    darkPalette: customDarkPalette = darkPalette,
+    lightPalette: customLightPalette = lightPalette,
+    colors = {},
+    includeDefaultColors = true,
+    grandChildrenThemes: customGrandChildrenThemes = {},
+  } = options
+
+  // Build childrenThemes from default colors + custom colors
+  const childrenThemes: Record<string, ColorTheme> = {
     black: {
       palette: {
         dark: Object.values(blackColors),
@@ -245,62 +314,157 @@ export const themes = createThemes({
         light: Object.values(whiteColors),
       },
     },
-    gray: {
+  }
+
+  if (includeDefaultColors) {
+    Object.assign(childrenThemes, {
+      gray: {
+        palette: {
+          dark: Object.values(grayDark),
+          light: Object.values(gray),
+        },
+      },
+      blue: {
+        palette: {
+          dark: Object.values(blueDark),
+          light: Object.values(blue),
+        },
+      },
+      red: {
+        palette: {
+          dark: Object.values(redDark),
+          light: Object.values(red),
+        },
+      },
+      yellow: {
+        palette: {
+          dark: Object.values(yellowDark),
+          light: Object.values(yellow),
+        },
+      },
+      green: {
+        palette: {
+          dark: Object.values(greenDark),
+          light: Object.values(green),
+        },
+      },
+      teal: {
+        palette: {
+          dark: Object.values(tealDark),
+          light: Object.values(teal),
+        },
+      },
+      orange: {
+        palette: {
+          dark: Object.values(orangeDark),
+          light: Object.values(orange),
+        },
+      },
+      pink: {
+        palette: {
+          dark: Object.values(pinkDark),
+          light: Object.values(pink),
+        },
+      },
+      purple: {
+        palette: {
+          dark: Object.values(purpleDark),
+          light: Object.values(purple),
+        },
+      },
+      neutral: {
+        palette: {
+          dark: neutralPalette,
+          light: neutralPalette,
+        },
+      },
+    })
+  }
+
+  // Add custom colors (can override default ones)
+  for (const [name, palette] of Object.entries(colors)) {
+    childrenThemes[name] = {
       palette: {
-        dark: Object.values(grayDark),
-        light: Object.values(gray),
+        dark: palette.dark,
+        light: palette.light,
+      },
+    }
+  }
+
+  return createThemes({
+    componentThemes: defaultComponentThemes,
+
+    base: {
+      palette: {
+        dark: customDarkPalette,
+        light: customLightPalette,
+      },
+
+      extra: {
+        light: {
+          ...blackColors,
+          ...blue,
+          ...gray,
+          ...green,
+          ...lightShadows,
+          ...neutral,
+          ...orange,
+          ...pink,
+          ...purple,
+          ...red,
+          ...teal,
+          ...whiteColors,
+          ...yellow,
+          shadowColor: lightShadows.shadow1,
+          ...whiteBlack,
+          ...extraColorsLight,
+        },
+        dark: {
+          ...blackColors,
+          ...blueDark,
+          ...darkShadows,
+          ...grayDark,
+          ...greenDark,
+          ...neutral, // same for both light and dark
+          ...orangeDark,
+          ...pinkDark,
+          ...purpleDark,
+          ...redDark,
+          ...tealDark,
+          ...whiteColors,
+          ...yellowDark,
+          shadowColor: darkShadows.shadow1,
+          ...whiteBlack,
+          ...extraColorsDark,
+        },
       },
     },
-    blue: {
+
+    accent: {
       palette: {
-        dark: Object.values(blueDark),
-        light: Object.values(blue),
+        dark: customLightPalette,
+        light: customDarkPalette,
       },
     },
-    red: {
-      palette: {
-        dark: Object.values(redDark),
-        light: Object.values(red),
+
+    childrenThemes,
+
+    grandChildrenThemes: {
+      accent: {
+        template: 'inverse',
       },
+      alt1: { template: 'alt1' },
+      alt2: { template: 'alt2' },
+      surface1: { template: 'surface1' },
+      surface2: { template: 'surface2' },
+      surface3: { template: 'surface3' },
+      ...customGrandChildrenThemes,
     },
-    yellow: {
-      palette: {
-        dark: Object.values(yellowDark),
-        light: Object.values(yellow),
-      },
-    },
-    green: {
-      palette: {
-        dark: Object.values(greenDark),
-        light: Object.values(green),
-      },
-    },
-    teal: {
-      palette: {
-        dark: Object.values(tealDark),
-        light: Object.values(teal),
-      },
-    },
-    orange: {
-      palette: {
-        dark: Object.values(orangeDark),
-        light: Object.values(orange),
-      },
-    },
-    pink: {
-      palette: {
-        dark: Object.values(pinkDark),
-        light: Object.values(pink),
-      },
-    },
-    purple: {
-      palette: {
-        dark: Object.values(purpleDark),
-        light: Object.values(purple),
-      },
-    },
-  },
-})
+  })
+}
+
+// Default themes using the createV5Theme function
+export const themes = createV5Theme()
 
 function parseHSL(hslString: string): { h: number; s: number; l: number } {
   const match = hslString.match(

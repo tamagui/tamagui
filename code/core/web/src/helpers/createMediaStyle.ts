@@ -31,7 +31,7 @@ function getThemeOrGroupSelector(
   const selectorStart = styleInner.lastIndexOf(':root') + 5
   const selectorEnd = styleInner.lastIndexOf('{')
   const selector = styleInner.slice(selectorStart, selectorEnd)
-  const precedenceSpace = getSetting('themeClassNameOnRoot') && isTheme ? '' : ' '
+  const precedenceSpace = getSetting('addThemeClassName') !== false && isTheme ? '' : ' '
   const pseudoSelectorName = groupParts.pseudo
     ? groupPseudoToPseudoCSSMap[groupParts.pseudo] || groupParts.pseudo
     : undefined
@@ -53,9 +53,7 @@ export const createMediaStyle = (
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
-  const [propertyIn, , identifier, pseudoIn, rules] = styleObject
-  let property = propertyIn
-  const enableMediaPropOrder = getSetting('mediaPropOrder')
+  const [property, , identifier, pseudoIn, rules] = styleObject
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'
   const isGroup = type === 'group'
@@ -112,24 +110,16 @@ export const createMediaStyle = (
       selectors = Object.fromEntries(
         mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
       )
-      if (!enableMediaPropOrder) {
-        prefixes = Object.fromEntries(
-          mediaKeys.map((k, index) => [k, new Array(index + 1).fill(':root').join('')])
-        )
-      }
+      prefixes = Object.fromEntries(
+        mediaKeys.map((k, index) => [k, new Array(index + 1).fill(':root').join('')])
+      )
     }
 
     const mediaKey = groupMediaKey || mediaKeyIn
     const mediaSelector = selectors[mediaKey]
     const screenStr = negate ? 'not all and ' : ''
     const mediaQuery = `${screenStr}${mediaSelector}`
-    const precedenceImportancePrefix = groupMediaKey
-      ? groupPriority
-      : enableMediaPropOrder && priority
-        ? // this new array should be cached
-          specificities[priority]
-        : // @ts-ignore
-          prefixes[mediaKey]
+    const precedenceImportancePrefix = groupMediaKey ? groupPriority : prefixes![mediaKey]
     const prefix = groupMediaKey ? `@container ${containerName}` : '@media'
 
     if (groupMediaKey) {

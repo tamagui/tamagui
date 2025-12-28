@@ -1,4 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
+import { webOnlyStylePropsText, webOnlyStylePropsView } from './webOnlyStyleProps'
 
 // generally organizing this so we don't duplicate things so its a bit weird
 
@@ -213,10 +214,10 @@ export const stylePropsView = {
   ...tokenCategories.radius,
   ...stylePropsTransform,
   ...stylePropsUnitless,
+  ...(isAndroid ? { elevationAndroid: true } : {}),
 
   boxShadow: true,
   filter: true,
-
   // RN 0.77+ style props (set REACT_NATIVE_PRE_77=1 for older RN)
   ...(!process.env.REACT_NATIVE_PRE_77 && {
     boxSizing: true,
@@ -227,69 +228,8 @@ export const stylePropsView = {
     outlineWidth: true,
   }),
 
-  // allow a few web only ones
-
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    // RN doesn't support specific border styles per-edge
-    transition: true,
-    textWrap: true,
-    backdropFilter: true,
-    WebkitBackdropFilter: true,
-    background: true,
-    backgroundAttachment: true,
-    backgroundBlendMode: true,
-    backgroundClip: true,
-    backgroundColor: true,
-    backgroundImage: true,
-    backgroundOrigin: true,
-    backgroundPosition: true,
-    backgroundRepeat: true,
-    backgroundSize: true,
-    borderBottomStyle: true,
-    borderImage: true,
-    borderLeftStyle: true,
-    borderRightStyle: true,
-    borderTopStyle: true,
-    caretColor: true,
-    clipPath: true,
-    contain: true,
-    containerType: true,
-    content: true,
-    cursor: true,
-    float: true,
-    mask: true,
-    maskBorder: true,
-    maskBorderMode: true,
-    maskBorderOutset: true,
-    maskBorderRepeat: true,
-    maskBorderSlice: true,
-    maskBorderSource: true,
-    maskBorderWidth: true,
-    maskClip: true,
-    maskComposite: true,
-    maskImage: true,
-    maskMode: true,
-    maskOrigin: true,
-    maskPosition: true,
-    maskRepeat: true,
-    maskSize: true,
-    maskType: true,
-    objectFit: true,
-    objectPosition: true,
-    outlineOffset: true,
-    overflowBlock: true,
-    overflowInline: true,
-    overflowX: true,
-    overflowY: true,
-    pointerEvents: true,
-    scrollbarWidth: true,
-    textEmphasis: true,
-    touchAction: true,
-    transformStyle: true,
-    userSelect: true,
-    willChange: true,
-  }),
-  ...(isAndroid ? { elevationAndroid: true } : {}),
+  // web-only for convenience - tree-shaken on native
+  ...(process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : {}),
 }
 
 const stylePropsFont = {
@@ -312,19 +252,10 @@ export const stylePropsTextOnly = {
   textShadowOffset: true,
   textShadowRadius: true,
   userSelect: true,
-  selectable: true,
   verticalAlign: true,
 
-  // allow some web only ones
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    whiteSpace: true,
-    wordWrap: true,
-    textOverflow: true,
-    textDecorationDistance: true,
-    cursor: true,
-    WebkitLineClamp: true,
-    WebkitBoxOrient: true,
-  }),
+  // web-only text props - tree-shaken on native
+  ...(process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsText : {}),
 }
 
 export const stylePropsText = {

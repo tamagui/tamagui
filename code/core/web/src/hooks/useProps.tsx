@@ -83,7 +83,6 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   const [theme, themeState] = useThemeWithState({
     componentName: staticConfig.componentName,
     name: 'theme' in props ? props.theme : undefined,
-    inverse: 'themeInverse' in props ? props.themeInverse : undefined,
     needsUpdate() {
       return true
     },

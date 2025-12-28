@@ -13,7 +13,6 @@ export declare const skipProps: {
     tag: number;
     style: number;
     group: number;
-    themeInverse: number;
     animatePresence: number;
 };
 //# sourceMappingURL=skipProps.d.ts.map
