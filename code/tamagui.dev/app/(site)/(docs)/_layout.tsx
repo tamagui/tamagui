@@ -53,10 +53,10 @@ export default function DocsLayout() {
         height="100%"
         maxH={1000}
         z={0}
-        colors={['$color1', '$accent12']}
+        colors={['$color1', '$color1']}
       />
 
-      <YStack z={-1} fullscreen bg="$accent12" />
+      <YStack z={-1} fullscreen bg="$color1" />
 
       {/* Sidebar container - no transform wrapper to preserve position:fixed */}
       <YStack
@@ -80,8 +80,8 @@ export default function DocsLayout() {
           }}
           $gtSm={{
             position: 'fixed' as any,
-            top: 0,
-            bottom: 0,
+            t: 0,
+            b: 0,
             width: 245,
           }}
         >
@@ -118,6 +118,7 @@ export default function DocsLayout() {
         flex={1}
         py="$8"
         $gtLg={{
+          position: 'relative',
           l: -50,
         }}
         $gtMd={{

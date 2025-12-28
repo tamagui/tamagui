@@ -100,9 +100,9 @@ const generatedThemes = createThemes({
     extra: {
       light: {
         ...Colors.blue,
-        ...Colors.green,
         ...Colors.red,
         ...Colors.yellow,
+        ...Colors.green,
         ...lightShadows,
         ...blackColors,
         ...whiteColors,
@@ -110,9 +110,9 @@ const generatedThemes = createThemes({
       },
       dark: {
         ...Colors.blueDark,
-        ...Colors.greenDark,
         ...Colors.redDark,
         ...Colors.yellowDark,
+        ...Colors.greenDark,
         ...darkShadows,
         ...blackColors,
         ...whiteColors,
@@ -166,6 +166,12 @@ const generatedThemes = createThemes({
         dark: Object.values(Colors.greenDark),
         light: Object.values(Colors.green),
       },
+    },
+  },
+
+  grandChildrenThemes: {
+    accent: {
+      template: 'inverse',
     },
   },
 })

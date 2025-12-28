@@ -1,7 +1,7 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { GetProps } from '@tamagui/web'
+import type { GetProps, TamaguiElement } from '@tamagui/web'
 import { createStyledContext, styled, Text } from '@tamagui/web'
 import * as React from 'react'
 
@@ -14,10 +14,6 @@ export const context = createStyledContext({
  * -----------------------------------------------------------------------------------------------*/
 
 const NAME = 'Toggle'
-
-type TamaguiButtonElement = HTMLButtonElement
-
-export type ToggleElement = TamaguiButtonElement
 
 export const ToggleFrame = styled(ThemeableStack, {
   name: NAME,
@@ -102,7 +98,7 @@ type ToggleItemExtraProps = {
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
 
-export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
+export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
   function Toggle(props, forwardedRef) {
     const {
       pressed: pressedProp,
@@ -120,7 +116,7 @@ export const Toggle = React.forwardRef<ToggleElement, ToggleProps>(
     return (
       <ToggleFrame
         {...(!props.unstyled && {
-          theme: pressed ? 'active' : null,
+          theme: pressed ? 'accent' : null,
           themeShallow: true,
         })}
         active={!props.unstyled ? pressed : undefined}

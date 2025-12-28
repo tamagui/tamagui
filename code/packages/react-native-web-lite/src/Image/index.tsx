@@ -298,7 +298,7 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
   return (
     <View
       {...rest}
-      accessibilityLabel={accessibilityLabel}
+      aria-label={accessibilityLabel}
       onLayout={handleLayout}
       pointerEvents={pointerEvents}
       ref={ref as any}

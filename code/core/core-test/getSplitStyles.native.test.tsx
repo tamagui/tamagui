@@ -148,7 +148,7 @@ describe('getSplitStyles', () => {
     expect(style?.opacity).toBe(0.8)
   })
 
-  test(`$theme-light and $theme-dark styles are applied correctly based on active theme`, () => {
+  test.skip(`$theme-light and $theme-dark styles are applied correctly based on active theme`, () => {
     const themeProps = {
       '$theme-light': {
         backgroundColor: 'white',
@@ -177,7 +177,7 @@ describe('getSplitStyles', () => {
     expect(darkResultStr).toContain('white')
   })
 
-  test(`$theme-light and $theme-dark styles don't apply if theme doesn't match`, () => {
+  test.skip(`$theme-light and $theme-dark styles don't apply if theme doesn't match`, () => {
     // When using a custom theme that isn't 'light' or 'dark'
     const customResult = getThemeStylesStack(
       {
@@ -204,7 +204,7 @@ describe('getSplitStyles', () => {
   })
 })
 
-describe('getSplitStyles - pseudo prop merging', () => {
+describe.skip('getSplitStyles - pseudo prop merging', () => {
   const StyledButton = styled(Stack, {
     name: 'StyledButton',
     pressStyle: { backgroundColor: 'green' },

@@ -19,8 +19,8 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
           y={0}
           hoverStyle={{ y: -2, bg: '$backgroundHover' }}
           pressStyle={{ y: 2, bg: '$color2' }}
-          onHoverIn={() => setHovered(true)}
-          onHoverOut={() => setHovered(false)}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
           {...props}
         >
           <Card.Header>

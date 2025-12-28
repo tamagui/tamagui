@@ -1,4 +1,4 @@
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.css'
 
@@ -86,12 +86,7 @@ const TamaguiRootProvider = ({ children }: { children: React.ReactNode }) => {
   const userScheme = useUserScheme()
 
   return (
-    <TamaguiProvider
-      disableInjectCSS
-      config={config}
-      defaultTheme={userScheme.value}
-      disableRootThemeClass
-    >
+    <TamaguiProvider disableInjectCSS config={config} defaultTheme={userScheme.value}>
       {children}
     </TamaguiProvider>
   )

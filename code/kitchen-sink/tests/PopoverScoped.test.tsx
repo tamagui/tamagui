@@ -102,7 +102,7 @@ test('scoped popovers adapt to sheets', async ({ page }) => {
     // Click trigger to open sheet
     await trigger.click()
 
-    const sheetContents = page.getByTestId(`${name}-sheet-contents`)
+    const sheetContents = page.getByTestId(`${name}-sheet-contents`).first()
 
     // Wait for sheet to be visible and open
     await expect(sheetContents).toBeVisible({ timeout: 5000 })

@@ -148,6 +148,7 @@ export function getThemedChildren(
     }
   }
 
+  // this has to be after a few of the above items so it properly sets context (even if shallow set)
   if (forceClassName === false) {
     return children
   }
@@ -170,23 +171,12 @@ export function getThemedChildren(
     // to prevent tree structure changes always render this if inverse is true or false
     if (state.hasEverThemed === 'wrapped') {
       // but still calculate if we need the classnames
-      const className =
-        !passThrough && requiresExtraWrapper
-          ? `${
-              isInverse
-                ? name.startsWith('light')
-                  ? 't_light is_inversed'
-                  : name.startsWith('dark')
-                    ? 't_dark is_inversed'
-                    : ''
-                : ''
-            } `
-          : ``
-      children = (
-        <span style={baseStyle} className={className}>
-          {children}
-        </span>
-      )
+      const className = requiresExtraWrapper
+        ? `${
+            name.startsWith('light') ? 't_light' : name.startsWith('dark') ? 't_dark' : ''
+          } _dsp_contents`
+        : `_dsp_contents`
+      children = <span className={className}>{children}</span>
     }
 
     return children
@@ -219,11 +209,19 @@ function getThemeClassNameAndColor(
   const themeColor =
     themeState?.theme && themeState.isNew ? variableToString(themeState.theme.color) : ''
 
-  const maxInverses = getSetting('maxDarkLightNesting') || 3
-  const themeClassName =
-    themeState.inverses >= maxInverses
-      ? themeState.name
-      : themeState.name.replace(schemePrefix, '')
+  const style = themeColor
+    ? {
+        color: themeColor,
+      }
+    : undefined
+
+  // const maxInverses = getSetting('maxDarkLightNesting') || 3
+  // const themeClassName =
+  //   themeState.inverses >= maxInverses
+  //     ? themeState.name
+  //     : themeState.name.replace(schemePrefix, '')
+
+  const themeClassName = themeState.name.replace(schemePrefix, '')
 
   // Build full hierarchy of theme classes for CSS variable inheritance
   // Examples:

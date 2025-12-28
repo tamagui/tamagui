@@ -12,24 +12,30 @@ export function ListItemDemo() {
 
 function ListItemDemo1() {
   return (
-    <YGroup self="center" bordered width={240} size="$4">
+    <YGroup
+      self="center"
+      borderWidth={1}
+      borderColor="$borderColor"
+      rounded="$4"
+      width={240}
+      size="$4"
+    >
       <YGroup.Item>
-        <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
+        <ListItem
+          icon={Star}
+          title="Star"
+          subTitle={<ListItem.Subtitle>Twinkles</ListItem.Subtitle>}
+          iconAfter={ChevronRight}
+        />
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Moon}>
-          Moon
-        </ListItem>
+        <ListItem icon={Moon}>Moon</ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Sun}>
-          Sun
-        </ListItem>
+        <ListItem icon={Sun}>Sun</ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Cloud}>
-          Cloud
-        </ListItem>
+        <ListItem icon={Cloud}>Cloud</ListItem>
       </YGroup.Item>
     </YGroup>
   )
@@ -37,26 +43,20 @@ function ListItemDemo1() {
 
 function ListItemDemo2() {
   return (
-    <YGroup self="center" bordered width={240} size="$5" separator={<Separator />}>
+    <YGroup
+      self="center"
+      borderWidth={1}
+      borderColor="$borderColor"
+      rounded="$4"
+      width={240}
+      size="$5"
+      separator={<Separator />}
+    >
       <YGroup.Item>
-        <ListItem
-          hoverTheme
-          pressTheme
-          title="Star"
-          subTitle="Subtitle"
-          icon={Star}
-          iconAfter={ChevronRight}
-        />
+        <ListItem title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem
-          hoverTheme
-          pressTheme
-          title="Moon"
-          subTitle="Subtitle"
-          icon={Moon}
-          iconAfter={ChevronRight}
-        />
+        <ListItem title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
       </YGroup.Item>
     </YGroup>
   )

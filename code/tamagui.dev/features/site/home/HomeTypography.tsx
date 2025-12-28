@@ -179,13 +179,8 @@ const OverlayCard = () => {
         </Paragraph>
 
         <Link asChild href="/docs/core/configuration">
-          <Button
-            aria-label="Fonts docs"
-            fontFamily="$silkscreen"
-            self="flex-end"
-            theme={tint as any}
-          >
-            Fonts &raquo;
+          <Button aria-label="Fonts docs" self="flex-end" theme={tint as any}>
+            <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
           </Button>
         </Link>
       </YStack>
@@ -226,7 +221,7 @@ const AnimatedHeading = memo(
           textShadowColor="$shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
-          ellipse
+          ellipsis
           {...rest}
         >
           {children}

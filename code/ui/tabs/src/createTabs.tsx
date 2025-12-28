@@ -146,12 +146,12 @@ export function createTabs<
                   setLayout(event.nativeEvent.layout)
                 }
               }}
-              onHoverIn={composeEventHandlers(props.onHoverIn, () => {
+              onMouseEnter={composeEventHandlers(props.onMouseEnter, () => {
                 if (layout) {
                   onInteraction?.('hover', layout)
                 }
               })}
-              onHoverOut={composeEventHandlers(props.onHoverOut, () => {
+              onMouseLeave={composeEventHandlers(props.onMouseLeave, () => {
                 onInteraction?.('hover', null)
               })}
               role="tab"
@@ -187,15 +187,12 @@ export function createTabs<
               })}
               {...(isWeb && {
                 type: 'button',
-                onKeyDown: composeEventHandlers(
-                  (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-                  (event) => {
-                    if ([' ', 'Enter'].includes(event.key)) {
-                      context.onChange(value)
-                      event.preventDefault()
-                    }
+                onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                  if ([' ', 'Enter'].includes(event.key)) {
+                    context.onChange(value)
+                    event.preventDefault()
                   }
-                ),
+                }),
                 onFocus: composeEventHandlers(props.onFocus, (event) => {
                   if (layout) {
                     onInteraction?.('focus', layout)

@@ -48,5 +48,6 @@ export interface FocusScopeProps {
         tabIndex?: number;
         ref: React.ForwardedRef<any>;
     }) => React.ReactNode);
+    asChild?: boolean;
 }
 //# sourceMappingURL=types.d.ts.map
