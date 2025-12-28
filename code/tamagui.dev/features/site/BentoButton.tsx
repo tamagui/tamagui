@@ -5,11 +5,12 @@ export const BentoButton = (props: ButtonProps) => {
   return (
     <Button.Frame
       borderWidth={0.5}
-      borderColor="$color6"
+      borderColor="$color4"
       size="$3"
       rounded="$10"
+      bg="$background01"
       hoverStyle={{
-        borderColor: '$color7',
+        borderColor: '$color5',
         bg: '$color5',
       }}
       {...props}

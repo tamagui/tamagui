@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-plugin",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "type": "module",
   "source": "src/index.ts",
   "license": "MIT",
@@ -25,6 +25,7 @@
     "./reset.css": "./reset.css",
     ".": {
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.cjs"
@@ -46,7 +47,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "next": "^15.3.1",
+    "next": "^15.3.8",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {

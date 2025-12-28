@@ -1,8 +1,11 @@
 {
   "name": "@tamagui/components-test",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "module": "dist/esm",
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "private": true,
   "license": "MIT",
   "scripts": {

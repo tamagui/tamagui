@@ -339,7 +339,7 @@ const PaletteView = memo((props: Props) => {
 
       <XLabeledItem label="">
         <YStack gap="$4">
-          <XStack gap="$4" separator={<Separator vertical />}>
+          <XStack gap="$4">
             <DataItem
               width={50}
               labelTop=""

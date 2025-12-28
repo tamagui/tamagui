@@ -95,8 +95,8 @@ export function SelectDemoContents(
         </Select.ScrollUpButton>
         <Select.Viewport
           minW={200}
-          backgroundColor="$background"
-          borderRadius="$4"
+          bg="$background"
+          rounded="$4"
           borderWidth={1}
           borderColor="$borderColor"
         >
@@ -111,12 +111,12 @@ export function SelectDemoContents(
                       index={i}
                       key={item.name}
                       value={item.name.toLowerCase()}
-                      backgroundColor="transparent"
+                      bg="transparent"
                       pressStyle={{
-                        backgroundColor: '$backgroundPress',
+                        bg: '$backgroundPress',
                       }}
                       hoverStyle={{
-                        backgroundColor: '$color2',
+                        bg: '$color2',
                       }}
                     >
                       <Select.ItemText>{item.name}</Select.ItemText>

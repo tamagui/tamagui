@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "type": "module",
   "source": "src/index.ts",
   "main": "dist/cjs",
@@ -59,16 +59,19 @@
     "./reset.css": "./reset.css",
     ".": {
       "react-native": {
+        "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
+      "module": "./dist/esm/inject-styles.mjs",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs",
       "default": "./dist/cjs/inject-styles.cjs"

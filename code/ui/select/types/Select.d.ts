@@ -52,11 +52,13 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     }>, keyof import("./SelectItem").SelectItemExtraProps> & import("./SelectItem").SelectItemExtraProps, TamaguiElement, import("@tamagui/core").StackNonStyleProps & import("./SelectItem").SelectItemExtraProps, import("@tamagui/core").StackStyleBase, {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     ItemIndicator: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -82,20 +84,23 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Label: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase | "active" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    Label: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase | "active" | "unstyled" | "variant"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     }>> & import("@tamagui/list-item").ListItemExtraProps & {
         scope?: import("./types").SelectScopes;
@@ -107,20 +112,23 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
     };
     ScrollDownButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
     ScrollUpButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
-    Trigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase | "active" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    Trigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase | "active" | "unstyled" | "variant"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
         size?: import("@tamagui/core").SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     }>> & import("@tamagui/list-item").ListItemExtraProps & {
         scope?: import("./types").SelectScopes;

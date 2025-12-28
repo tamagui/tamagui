@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-sync",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
@@ -23,6 +23,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "require": "./dist/index.cjs",
+      "module": "./dist/index.cjs",
       "import": "./dist/index.cjs"
     }
   },

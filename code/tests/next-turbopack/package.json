@@ -12,7 +12,7 @@
   "dependencies": {
     "@tamagui/config": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "next": "^15.3.1",
+    "next": "^15.3.8",
     "react": "*",
     "react-dom": "*"
   },
@@ -22,5 +22,5 @@
     "@types/react": "~19.1.10",
     "vitest": "^4.0.4"
   },
-  "version": "1.141.0"
+  "version": "1.141.5"
 }

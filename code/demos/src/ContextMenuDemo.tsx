@@ -8,12 +8,12 @@ import { styled, Text, YStack } from 'tamagui'
  */
 
 const Item = styled(ContextMenu.Item, {
-  paddingVertical: 4,
+  py: 4,
   hoverStyle: {
-    backgroundColor: '$color2',
+    bg: '$color2',
   },
   pressStyle: {
-    backgroundColor: '$color3',
+    bg: '$color3',
   },
 })
 
@@ -35,16 +35,16 @@ export function ContextMenuDemo() {
   return (
     <ContextMenu allowFlip native={native} placement="right-start">
       <ContextMenu.Trigger asChild>
-        <Text textAlign="center" selectable={false}>
+        <Text text="center" select={null}>
           Right Click or longPress
         </Text>
       </ContextMenu.Trigger>
 
       <ContextMenu.Portal zIndex={100}>
         <ContextMenu.Content
-          paddingHorizontal={0}
+          px={0}
           borderWidth={1}
-          ai="flex-start"
+          items="flex-start"
           borderColor="$borderColor"
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
@@ -62,8 +62,8 @@ export function ContextMenuDemo() {
             {() => {
               return (
                 <YStack
-                  alignItems="center"
-                  justifyContent="center"
+                  items="center"
+                  justify="center"
                   height={100}
                   width={250}
                   style={{ backgroundColor: 'pink' }}
@@ -83,7 +83,7 @@ export function ContextMenuDemo() {
             </ContextMenu.Item>
             <ContextMenu.Item
               onSelect={onSelect}
-              jc="space-between"
+              justify="space-between"
               // when title is nested inside a React element then you need to use `textValue`
               textValue="Calender"
               key="accounts"
@@ -122,7 +122,7 @@ export function ContextMenuDemo() {
           <ContextMenu.Sub placement="right-start">
             <ContextMenu.SubTrigger
               key="actions-trigger"
-              jc="space-between"
+              justify="space-between"
               textValue="Actions"
             >
               <ContextMenu.ItemTitle>Actions →</ContextMenu.ItemTitle>
@@ -139,7 +139,7 @@ export function ContextMenuDemo() {
                     },
                   },
                 ]}
-                paddingHorizontal={0}
+                px={0}
               >
                 <Item onSelect={onSelect} key="create-note" textValue="Create note">
                   <ItemTitle>Create note</ItemTitle>

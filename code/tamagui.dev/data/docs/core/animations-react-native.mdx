@@ -66,6 +66,16 @@ createAnimations({
 })
 ```
 
+### Delay
+
+You can add animation delays using the array syntax:
+
+```tsx
+<Square animation={['bouncy', { delay: 200 }]} />
+```
+
+The delay is specified in milliseconds and uses `Animated.delay()` internally to sequence animations.
+
 ## When to Use
 
 **Advantages:**

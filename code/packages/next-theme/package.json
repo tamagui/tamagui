@@ -1,8 +1,7 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "type": "module",
-  "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -24,6 +23,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.js"
@@ -32,7 +32,7 @@
   "dependencies": {
     "@tamagui/constants": "workspace:*",
     "@tamagui/use-event": "workspace:*",
-    "next": "^15.3.1"
+    "next": "^15.3.8"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

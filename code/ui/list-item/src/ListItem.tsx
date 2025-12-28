@@ -5,12 +5,14 @@ import { withStaticProperties } from '@tamagui/helpers'
 import { useGetIcon } from '@tamagui/helpers-tamagui'
 import { themeableVariants, YStack } from '@tamagui/stacks'
 import { type SizableTextProps, SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
+import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledContext, styled, View } from '@tamagui/web'
 import type { FunctionComponent, ReactNode, JSX } from 'react'
 
 type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
+
+type ListItemVariant = 'outlined'
 
 export type ListItemExtraProps = {
   icon?: IconProp
@@ -26,8 +28,14 @@ export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
 
 const NAME = 'ListItem'
 
-const context = createStyledContext({
+const context = createStyledContext<{
+  size?: SizeTokens
+  variant?: ListItemVariant
+  color?: ColorTokens | string
+}>({
   size: undefined,
+  variant: undefined,
+  color: undefined,
 })
 
 const ListItemFrame = styled(View, {
@@ -53,7 +61,36 @@ const ListItemFrame = styled(View, {
         flexDirection: 'row',
         backgroundColor: '$background',
         cursor: 'default',
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
       },
+    },
+
+    variant: {
+      outlined:
+        process.env.TAMAGUI_HEADLESS === '1'
+          ? {}
+          : {
+              backgroundColor: 'transparent',
+              borderWidth: 1,
+              borderColor: '$borderColor',
+
+              hoverStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorHover',
+              },
+
+              pressStyle: {
+                backgroundColor: 'transparent',
+                borderColor: '$borderColorPress',
+              },
+            },
     },
 
     size: {
@@ -172,6 +209,7 @@ const ListItemIcon = (props: {
 
   return getIcon(children, {
     size: iconSize,
+    color: styledContext.color,
   })
 }
 
@@ -181,7 +219,6 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
       children,
       icon,
       iconAfter,
-      theme: themeName,
       scaleIcon = 1,
       unstyled = false,
       subTitle,
@@ -192,6 +229,7 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
     } = propsIn
 
     const size = propsIn.size || '$true'
+    const styledContext = context.useStyledContext()
     const getIcon = useGetIcon()
     const iconSizeNumber = getFontSize(iconSize || (size as any)) * scaleIcon
 
@@ -200,9 +238,8 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
       const isBefore = i === 0
       return getIcon(icon, {
         size: iconSizeNumber,
-        ...{
-          [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
-        },
+        color: styledContext?.color,
+        [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
       })
     })
 
@@ -255,6 +292,7 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
 )
 
 export const ListItem = withStaticProperties(ListItemComponent, {
+  Apply: context.Provider,
   Frame: ListItemFrame,
   Text: ListItemText,
   Subtitle: ListItemSubtitle,

@@ -1,8 +1,11 @@
 {
   "name": "@tamagui/text-test",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "main": "dist/cjs",
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "private": true,
   "module": "dist/esm",
   "scripts": {

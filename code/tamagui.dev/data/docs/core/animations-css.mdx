@@ -51,6 +51,16 @@ createAnimations({
 
 The format is: `<easing-function> <duration>`
 
+### Delay
+
+You can add animation delays using the array syntax:
+
+```tsx
+<Square animation={['quick', { delay: 200 }]} />
+```
+
+The delay (in milliseconds) is applied as CSS `transition-delay`.
+
 ### Supported Easing Functions
 
 - `ease` - Default easing (equivalent to `cubic-bezier(0.25, 0.1, 0.25, 1)`)

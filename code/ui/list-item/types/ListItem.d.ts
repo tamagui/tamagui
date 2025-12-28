@@ -1,11 +1,12 @@
 import { type SizableTextProps } from '@tamagui/text';
-import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web';
+import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web';
 import type { FunctionComponent, ReactNode, JSX } from 'react';
 type ListItemIconProps = {
     color?: any;
     size?: any;
 };
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null;
+type ListItemVariant = 'outlined';
 export type ListItemExtraProps = {
     icon?: IconProp;
     iconAfter?: IconProp;
@@ -20,40 +21,59 @@ declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@ta
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    variant?: "outlined" | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    variant?: "outlined" | undefined;
     active?: boolean | undefined;
 }>, keyof ListItemExtraProps> & ListItemExtraProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    variant?: "outlined" | undefined;
     active?: boolean | undefined;
 }>, keyof ListItemExtraProps> & ListItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    variant?: "outlined" | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     }>, keyof ListItemExtraProps> & ListItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
+    Apply: import("react").Provider<{
+        size?: SizeTokens;
+        variant?: ListItemVariant;
+        color?: ColorTokens | string;
+    }> & import("react").ProviderExoticComponent<Partial<{
+        size?: SizeTokens;
+        variant?: ListItemVariant;
+        color?: ColorTokens | string;
+    }> & {
+        children?: ReactNode;
+        scope?: string;
+    }>;
     Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        variant?: "outlined" | undefined;
         active?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {

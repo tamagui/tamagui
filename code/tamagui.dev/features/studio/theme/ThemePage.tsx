@@ -311,7 +311,7 @@ const ThemeStudioStepButtonsBar = () => {
       )}
 
       {canGoForward && (
-        <Theme inverse={!disableForward}>
+        <Theme name={!disableForward ? 'accent' : undefined}>
           <Button
             size="$3"
             disabled={disableForward}

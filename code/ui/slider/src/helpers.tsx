@@ -50,7 +50,7 @@ export function getThumbInBoundsOffset(width: number, left: number, direction: n
   const quarterWidth = width / 4 // changed to quarter width to allow some overlap but not so much
   const halfPercent = 50
   const offset = linearScale([0, halfPercent], [0, quarterWidth])
-  return (quarterWidth - offset(left) * direction) * direction
+  return (quarterWidth - offset(left)) * direction
 }
 
 /**

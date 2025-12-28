@@ -25,8 +25,8 @@ const Frame = styled(Stack, {
   justifyContent: 'center',
   flexDirection: 'row',
   gap: '$1',
-  w: 100,
-  h: 100,
+  width: 100,
+  height: 100,
   bg: '$blue10',
 
   paddingVertical: '$2',
@@ -36,7 +36,6 @@ const Frame = styled(Stack, {
 
   // this fixes a flex bug where it overflows container
   minWidth: 0,
-  height: '$10',
 
   borderWidth: 5,
   borderRadius: '$10',
@@ -106,13 +105,17 @@ export function ComplexVariants() {
         <YStack mt="$8" key={index}>
           <Separator />
           <XStack gap="$4">
-            <Paragraph col="#fff" fow="800" bg={isFocus ? '$green10' : '$red10'}>
+            <Paragraph color="#fff" fontWeight="800" bg={isFocus ? '$green10' : '$red10'}>
               isFocus
             </Paragraph>
-            <Paragraph col="#fff" fow="800" bg={isInvalid ? '$green10' : '$red10'}>
+            <Paragraph
+              color="#fff"
+              fontWeight="800"
+              bg={isInvalid ? '$green10' : '$red10'}
+            >
               isInvalid
             </Paragraph>
-            <Paragraph col="#fff" fow="800" bg={isError ? '$green10' : '$red10'}>
+            <Paragraph color="#fff" fontWeight="800" bg={isError ? '$green10' : '$red10'}>
               isError
             </Paragraph>
           </XStack>

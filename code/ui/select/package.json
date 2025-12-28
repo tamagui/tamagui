@@ -1,8 +1,11 @@
 {
   "name": "@tamagui/select",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "type": "module",
   "removeSideEffects": "true",
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -25,10 +28,12 @@
     "./package.json": "./package.json",
     ".": {
       "react-native": {
+        "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
       "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"

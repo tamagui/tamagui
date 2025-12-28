@@ -1,6 +1,6 @@
 {
   "name": "next-app",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "private": true,
   "packageManager": "yarn@4.5.0",
   "scripts": {
@@ -13,7 +13,7 @@
     "@tamagui/config": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
     "app": "workspace:^",
-    "next": "^15.3.1",
+    "next": "^15.3.8",
     "react": "*",
     "react-dom": "*",
     "react-native": "0.81.5",

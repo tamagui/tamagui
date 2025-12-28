@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/tamagui-dev-config",
-  "version": "1.141.0",
-  "sideEffects": false,
+  "version": "1.141.5",
   "source": "src/index.ts",
   "types": "./src/index.ts",
   "type": "module",
@@ -16,6 +15,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./src/index.ts",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"

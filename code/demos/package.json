@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -27,20 +27,24 @@
     "./photo/*": "./public/*.jpg",
     ".": {
       "react-native": {
+        "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
       "types": "./src/index.tsx",
+      "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./demo/*": {
       "react-native": {
+        "module": "./dist/esm/*.native.js",
         "import": "./dist/esm/*.native.js",
         "require": "./dist/cjs/*.native.js"
       },
       "types": "./types/*.d.ts",
+      "module": "./dist/esm/*.mjs",
       "import": "./dist/esm/*.mjs",
       "require": "./dist/cjs/*.cjs"
     }

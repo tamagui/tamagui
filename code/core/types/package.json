@@ -1,7 +1,8 @@
 {
   "name": "@tamagui/types",
-  "version": "1.141.0",
+  "version": "1.141.5",
   "type": "module",
+  "sideEffects": false,
   "types": "./types.ts",
   "files": [
     "types.ts"

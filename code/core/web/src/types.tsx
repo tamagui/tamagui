@@ -263,8 +263,6 @@ export type TamaguiComponentPropsBaseBase = {
    */
   themeShallow?: boolean
 
-  themeInverse?: boolean
-
   /**
    * Same as the web id property for setting a uid on an element
    */
@@ -870,7 +868,6 @@ export interface ThemeProps {
   children?: any
   reset?: boolean
   debug?: DebugProp
-  inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean
 
@@ -993,8 +990,7 @@ export interface GenericTamaguiSettings {
    * So - as long as you:
    *
    *   1. Only use light/dark changes of themes at the root of your app
-   *   2. Don't use <Theme inverse> or themeInverse
-   *   3. Always change light/dark alongside the Appearance.colorScheme
+   *   2. Always change light/dark alongside the Appearance.colorScheme
    *
    * Then this feature is safe to turn on and will significantly speed up
    * dark/light re-renders.
@@ -1094,6 +1090,13 @@ export interface GenericTamaguiSettings {
    * @default 'static'
    */
   defaultPosition?: 'static' | 'relative'
+
+  /**
+   * Sets the base font size for rem calculations on native platforms.
+   * On web, browsers use the root font size (typically 16px).
+   * @default 16
+   */
+  remBaseFontSize?: number
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -1292,12 +1295,15 @@ export type AnimationProp =
   | [
       AnimationKeys,
       {
+        delay?: number
         [key: string]:
           | AnimationKeys
           | {
               type?: AnimationKeys
               [key: string]: any
             }
+          | number
+          | undefined
       },
     ]
 
@@ -1306,9 +1312,10 @@ export type AnimationProp =
  */
 
 type PercentString = `${string}%` & {}
+type RemString = `${number}rem`
 
-type SomewhatSpecificSizeValue = 'auto' | PercentString | UnionableNumber
-type SomewhatSpecificSpaceValue = 'auto' | PercentString | UnionableNumber
+type SomewhatSpecificSizeValue = 'auto' | PercentString | RemString | UnionableNumber
+type SomewhatSpecificSpaceValue = 'auto' | PercentString | RemString | UnionableNumber
 
 type VariableString = `var(${string})`
 
@@ -1482,6 +1489,7 @@ export type RadiusTokens =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['radius']>
   | number
+  | RemString
 
 export type NonSpecificTokens =
   | GetTokenString<keyof Tokens['radius']>
@@ -1521,15 +1529,24 @@ export type GetTokenFontKeysFor<
 
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>
-export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
-export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number
+export type FontSizeTokens =
+  | GetTokenString<GetTokenFontKeysFor<'size'>>
+  | number
+  | RemString
+export type FontLineHeightTokens =
+  | `$${GetTokenFontKeysFor<'lineHeight'>}`
+  | number
+  | RemString
 export type FontWeightValues =
   | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
   | 'bold'
   | 'normal'
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues
 export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number
-export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number
+export type FontLetterSpacingTokens =
+  | `$${GetTokenFontKeysFor<'letterSpacing'>}`
+  | number
+  | RemString
 export type FontStyleTokens =
   | `$${GetTokenFontKeysFor<'style'>}`
   | RNTextStyle['fontStyle']

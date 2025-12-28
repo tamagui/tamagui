@@ -1,11 +1,10 @@
 import {
   Button,
-  GetProps,
+  type GetProps,
   SizableText,
   ThemeableStack,
   createStyledContext,
   styled,
-  useProps,
 } from 'tamagui'
 
 // Reproduce GitHub issue #3676 - Context Values Not Accessible in Children Styles
@@ -200,8 +199,8 @@ export function StyledContextColor() {
   return (
     <>
       {/* Test 1: Using the standard Button with color prop */}
-      <Button testID="standard-button-green" color="green">
-        Standard Button Green
+      <Button testID="standard-button-green">
+        <Button.Text color="green">Standard Button Green</Button.Text>
       </Button>
 
       {/* Test 2: Custom button with color variant - should propagate to text */}

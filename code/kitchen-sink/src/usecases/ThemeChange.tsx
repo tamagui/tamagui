@@ -62,8 +62,8 @@ export function Inner({
         <SandboxThemeChildStatic level={level} />
         <SandboxThemeChildDynamic level={level} />
         <YStack gap="$2">
-          <Theme inverse>
-            <Button>Inverse</Button>
+          <Theme name="accent">
+            <Button>Accent</Button>
           </Theme>
           <Button>Normal</Button>
         </YStack>

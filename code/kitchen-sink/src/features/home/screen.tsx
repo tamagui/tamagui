@@ -96,6 +96,7 @@ const demos = [
       { title: 'Paragraph', route: '/demo/text' },
       { title: 'Animations', route: '/demo/animations' },
       { title: 'Animate Presence', route: '/demo/animate-presence' },
+      { title: 'Animations Delay', route: '/demo/animations-delay' },
       { title: 'Themes', route: '/demo/themes' },
     ],
   },

@@ -7,7 +7,7 @@ import { media, mediaQueryDefaultActive } from './v5-media'
 
 export { shorthands } from '@tamagui/shorthands/v5'
 export { createThemes } from '@tamagui/theme-builder'
-export { themes, tokens } from '@tamagui/themes/v5'
+export { themes, tokens, createV5Theme } from '@tamagui/themes/v5'
 export { animations } from './v5-animations'
 export { createSystemFont, fonts } from './v5-fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media'
