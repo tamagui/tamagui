@@ -9,7 +9,7 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     return cache.get(styleState)
   }
 
-  const { props, conf, context, theme, styleProps } = styleState
+  const { props, conf, context, theme } = styleState
   let fonts = conf.fontsParsed
   if (context?.language) {
     fonts = getFontsForLanguage(conf.fontsParsed, context.language)
@@ -19,7 +19,6 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     fonts,
     tokens: conf.tokensParsed,
     theme,
-    context: styleProps?.styledContext,
     get fontFamily() {
       return (
         getVariableValue(styleState.fontFamily || styleState.props.fontFamily) ||

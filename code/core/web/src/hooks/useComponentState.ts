@@ -2,6 +2,7 @@ import { isServer, isWeb } from '@tamagui/constants'
 import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
+import { getSetting } from '../config'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
@@ -197,7 +198,7 @@ export const useComponentState = (
       const isAnimatedAndHydrated = isAnimated && isHydrated
 
       const isClassNameDisabled =
-        !staticConfig.acceptsClassName && (config.disableSSR || !state.unmounted)
+        !staticConfig.acceptsClassName && (getSetting('disableSSR') || !state.unmounted)
 
       const isDisabledManually = disableClassName && !state.unmounted
 

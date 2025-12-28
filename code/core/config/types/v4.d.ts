@@ -23,9 +23,11 @@ export declare const settings: {
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
-    themeClassNameOnRoot: true;
+    addThemeClassName: "html";
     onlyAllowShorthands: true;
     maxDarkLightNesting: number;
+    styleCompat: "legacy";
+    defaultPosition: "relative";
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
@@ -121,7 +123,7 @@ export declare const defaultConfig: {
         t: "top";
         z: "zIndex";
     };
-    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "dark_black" | "dark_white", {
+    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_accent" | "dark_accent" | "light_black_accent" | "light_white_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_black_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent", {
         accentBackground: string;
         accentColor: string;
         background0: string;
@@ -173,18 +175,6 @@ export declare const defaultConfig: {
         blue10: string;
         blue11: string;
         blue12: string;
-        green1: string;
-        green2: string;
-        green3: string;
-        green4: string;
-        green5: string;
-        green6: string;
-        green7: string;
-        green8: string;
-        green9: string;
-        green10: string;
-        green11: string;
-        green12: string;
         red1: string;
         red2: string;
         red3: string;
@@ -209,6 +199,18 @@ export declare const defaultConfig: {
         yellow10: string;
         yellow11: string;
         yellow12: string;
+        green1: string;
+        green2: string;
+        green3: string;
+        green4: string;
+        green5: string;
+        green6: string;
+        green7: string;
+        green8: string;
+        green9: string;
+        green10: string;
+        green11: string;
+        green12: string;
         shadow1: string;
         shadow2: string;
         shadow3: string;
@@ -391,9 +393,11 @@ export declare const defaultConfig: {
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
-        themeClassNameOnRoot: true;
+        addThemeClassName: "html";
         onlyAllowShorthands: true;
         maxDarkLightNesting: number;
+        styleCompat: "legacy";
+        defaultPosition: "relative";
     };
 };
 //# sourceMappingURL=v4.d.ts.map

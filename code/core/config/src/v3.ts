@@ -40,6 +40,5 @@ export const config = {
     defaultFont: 'body',
     fastSchemeChange: true,
     shouldAddPrefersColorThemes: true,
-    themeClassNameOnRoot: true,
   },
 } satisfies CreateTamaguiProps
