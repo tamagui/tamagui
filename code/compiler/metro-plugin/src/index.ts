@@ -1,15 +1,8 @@
-import {
-  createExtractor,
-  loadTamaguiBuildConfigSync,
-  type TamaguiOptions,
-} from '@tamagui/static'
+import { loadTamaguiBuildConfigSync, type TamaguiOptions } from '@tamagui/static'
 
 export type MetroTamaguiOptions = TamaguiOptions & {
   /**
-   * When true, writes CSS to .tamagui/css/ files and imports them,
-   * letting Metro handle CSS bundling. When false (default), CSS is
-   * injected inline via JS at runtime.
-   * @default false
+   * @deprecated CSS interop is no longer supported. Use `tamagui generate` instead.
    */
   cssInterop?: boolean
 }
@@ -22,45 +15,56 @@ type MetroConfigInput = {
   [key: string]: any
 }
 
+/**
+ * Configure Metro for Tamagui.
+ *
+ * This is now a simplified wrapper that just ensures CSS is enabled and
+ * loads your Tamagui config. For CSS generation, use the CLI:
+ *
+ * 1. Create a `tamagui.build.ts` with `outputCSS` option
+ * 2. Run `tamagui generate` before your build
+ * 3. Import the generated CSS in your app's layout
+ *
+ * @example
+ * ```js
+ * // metro.config.js
+ * const { getDefaultConfig } = require('expo/metro-config')
+ * const { withTamagui } = require('@tamagui/metro-plugin')
+ *
+ * const config = getDefaultConfig(__dirname, { isCSSEnabled: true })
+ * module.exports = withTamagui(config, {
+ *   components: ['tamagui'],
+ *   config: './tamagui.config.ts',
+ * })
+ * ```
+ */
 export function withTamagui(
   metroConfig: MetroConfigInput,
   optionsIn?: MetroTamaguiOptions
 ): MetroConfigInput {
   const { cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
 
+  if (cssInterop) {
+    console.warn(
+      '[@tamagui/metro-plugin] cssInterop option is deprecated. Use `tamagui generate` to pre-generate CSS instead.'
+    )
+  }
+
   const options = {
     ...tamaguiOptionsIn,
     ...loadTamaguiBuildConfigSync(tamaguiOptionsIn),
   }
 
-  // run one build up front
-  const extractor = createExtractor()
-
-  // need to await this somehow.. but generally this starts like 10 seconds before any request
-  if (!options.disable) {
-    void extractor.loadTamagui(options)
-  }
-
-  // done in css interop
+  // Ensure CSS files can be resolved
   metroConfig.resolver = {
     ...(metroConfig.resolver as any),
-    sourceExts: [...(metroConfig.resolver?.sourceExts || []), 'css'],
+    sourceExts: [...new Set([...(metroConfig.resolver?.sourceExts || []), 'css'])],
   }
 
-  const ogTransformPath = metroConfig.transformerPath
-  metroConfig.transformerPath = require.resolve('./transformer')
+  // Store tamagui options for potential use by other tools
   metroConfig.transformer = {
     ...metroConfig.transformer,
-    ...(ogTransformPath && {
-      ogTransformPath,
-    }),
-    // @ts-ignore
-    tamagui: {
-      ...options,
-      disableInitialBuild: true,
-    },
-    // @ts-ignore - metro-plugin specific option
-    tamaguiCssInterop: cssInterop,
+    tamagui: options,
   }
 
   return metroConfig

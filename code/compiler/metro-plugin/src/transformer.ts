@@ -1,134 +1,38 @@
-import { outputFile, pathExists } from 'fs-extra'
-import { join, posix, sep } from 'node:path'
+/**
+ * Simple passthrough transformer for Metro.
+ *
+ * This transformer delegates to the original Metro transformer without any
+ * CSS extraction. For CSS, use `tamagui generate` to pre-generate your CSS
+ * and import it directly in your app.
+ *
+ * @deprecated The metro-plugin CSS extraction is deprecated. Use the CLI instead:
+ *   1. Add `outputCSS` to your tamagui.build.ts
+ *   2. Run `tamagui generate` before your build
+ *   3. Import the generated CSS file in your app
+ */
 
-import type { TamaguiOptions } from '@tamagui/static'
-import { createExtractor, extractToClassNames } from '@tamagui/static'
-
-interface TamaguiJsTransformerConfig {
+interface TransformerConfig {
   transformerPath?: string
-  tamagui: TamaguiOptions
-  tamaguiCssInterop?: boolean
+  ogTransformPath?: string
   [key: string]: any
 }
 
-interface JsTransformOptions {
-  platform?: string
-  type?: string
+interface TransformOptions {
   [key: string]: any
 }
-
-const extractor = createExtractor()
 
 export async function transform(
-  config: TamaguiJsTransformerConfig,
+  config: TransformerConfig,
   projectRoot: string,
   filename: string,
   data: Buffer,
-  options: JsTransformOptions
+  options: TransformOptions
 ): Promise<any> {
-  const ogPath = config['ogTransformPath'] || config.transformerPath
+  const ogPath = config.ogTransformPath || config.transformerPath
   // Dynamically require to avoid version-locking to a specific metro version
   const transformer = ogPath
     ? require(ogPath).transform
     : require('metro-transform-worker').transform
 
-  if (
-    config.tamagui.disable ||
-    options.platform !== 'web' ||
-    options.type === 'asset' ||
-    filename.includes('node_modules')
-  ) {
-    return transformer(config, projectRoot, filename, data, options)
-  }
-
-  if (
-    // could by a styled() call:
-    filename.endsWith('.ts') ||
-    filename.endsWith('.tsx') ||
-    filename.endsWith('.jsx')
-  ) {
-    const sourcePath = toPosixPath(join(projectRoot, filename))
-
-    // extract css
-    const source = `${data}`
-    const out = await extractToClassNames({
-      extractor,
-      options: {
-        // @ts-ignore
-        platform: 'web',
-        ...config.tamagui,
-      },
-      shouldPrintDebug: source.startsWith('// debug-verbose')
-        ? 'verbose'
-        : source.startsWith('// debug'),
-      source,
-      sourcePath,
-    })
-
-    // just write it out to our tmp dir and require it for metro to do the rest of the css work
-    if (out?.styles) {
-      const tmpDir = join(projectRoot, '.tamagui', 'css')
-      const outStylePath = toPosixPath(
-        join(tmpDir, `${filename}`.replace(/[^a-zA-Z0-9]/gi, '') + '.css')
-      )
-      if (process.env.DEBUG?.includes('tamagui')) {
-        console.info(' Outputting CSS file:', outStylePath)
-      }
-
-      const shouldOutputCSS =
-        config.tamaguiCssInterop ?? process.env.TAMAGUI_METRO_INLINE_CSS === '0'
-
-      if (!shouldOutputCSS) {
-        const cssInjectionCode = `
-          (function() {
-            if (typeof document !== 'undefined') {
-              var css = ${JSON.stringify(out.styles)};
-              var style = document.createElement('style');
-              style.type = 'text/css';
-              style.appendChild(document.createTextNode(css));
-              document.head.appendChild(style);
-            }
-          })();
-          `
-
-        return transformer(
-          config,
-          projectRoot,
-          filename,
-          Buffer.from(`${out.js}\n${cssInjectionCode}`, 'utf-8'),
-          options
-        )
-      }
-
-      const existsAlready = await pathExists(outStylePath)
-
-      await outputFile(outStylePath, out.styles, 'utf-8')
-
-      if (!existsAlready) {
-        // metro has some sort of bug, expo starter wont build properly first time without this... :(
-        await new Promise((res) =>
-          setTimeout(
-            res,
-            process.env.TAMAGUI_METRO_CSS_EMIT_DELAY
-              ? +process.env.TAMAGUI_METRO_CSS_EMIT_DELAY
-              : 1000
-          )
-        )
-      }
-
-      return transformer(
-        config,
-        projectRoot,
-        filename,
-        Buffer.from(`${out.js}\nrequire("${outStylePath}")`, 'utf-8'),
-        options
-      )
-    }
-  }
-
   return transformer(config, projectRoot, filename, data, options)
-}
-
-function toPosixPath(path: string) {
-  return path.split(sep).join(posix.sep)
 }

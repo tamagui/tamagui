@@ -12,9 +12,9 @@ const config = getDefaultConfig(__dirname, {
 
 config.resolver.sourceExts.push('mjs')
 
+// withTamagui just ensures CSS is resolvable and loads your config
+// For CSS, run `tamagui generate` which outputs to tamagui-web.css
 module.exports = withTamagui(config, {
   components: ['tamagui'],
   config: './tamagui.config.ts',
-  outputCSS: './tamagui-web.css',
-  cssInterop: true,
 })

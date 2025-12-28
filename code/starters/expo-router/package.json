@@ -8,10 +8,13 @@
     "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest",
     "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary",
     "check:tamagui": "tamagui check",
+    "generate": "tamagui generate",
     "start": "expo start -c",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
+    "build:web": "expo export --platform web",
+    "build:web:optimized": "tamagui build --target web ./app -- expo export --platform web",
     "test": "jest --watchAll"
   },
   "jest": {
