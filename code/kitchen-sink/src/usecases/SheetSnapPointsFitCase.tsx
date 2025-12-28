@@ -49,6 +49,8 @@ function AdaptedDialogSheet() {
           <Sheet.Overlay
             data-testid="adapted-sheet-overlay"
             animation="lazy"
+            bg="$color"
+            opacity={0.5}
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -59,6 +61,7 @@ function AdaptedDialogSheet() {
         <Dialog.Overlay
           key="overlay"
           animation="quick"
+          bg="$color"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -81,9 +84,7 @@ function AdaptedDialogSheet() {
               This dialog adapts to a sheet on small screens with snapPointsMode="fit".
               The sheet should close smoothly without a white flash.
             </Dialog.Description>
-            <Paragraph>
-              Some content to give the sheet height when in fit mode.
-            </Paragraph>
+            <Paragraph>Some content to give the sheet height when in fit mode.</Paragraph>
             <Dialog.Close asChild>
               <Button data-testid="adapted-dialog-close">Close</Button>
             </Dialog.Close>
@@ -118,6 +119,8 @@ function StandaloneSheetFit() {
         <Sheet.Overlay
           data-testid="standalone-fit-overlay"
           animation="lazy"
+          bg="$color"
+          opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -130,10 +133,7 @@ function StandaloneSheetFit() {
           gap="$5"
         >
           <Paragraph>Standalone sheet with snapPointsMode="fit"</Paragraph>
-          <Button
-            data-testid="standalone-fit-close"
-            onPress={() => setOpen(false)}
-          >
+          <Button data-testid="standalone-fit-close" onPress={() => setOpen(false)}>
             Close
           </Button>
         </Sheet.Frame>
@@ -167,6 +167,8 @@ function StandaloneSheetPercent() {
         <Sheet.Overlay
           data-testid="standalone-percent-overlay"
           animation="lazy"
+          bg="$color"
+          opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -179,10 +181,7 @@ function StandaloneSheetPercent() {
           gap="$5"
         >
           <Paragraph>Standalone sheet with snapPointsMode="percent" (50%, 25%)</Paragraph>
-          <Button
-            data-testid="standalone-percent-close"
-            onPress={() => setOpen(false)}
-          >
+          <Button data-testid="standalone-percent-close" onPress={() => setOpen(false)}>
             Close
           </Button>
         </Sheet.Frame>
@@ -216,6 +215,8 @@ function StandaloneSheetConstant() {
         <Sheet.Overlay
           data-testid="standalone-constant-overlay"
           animation="lazy"
+          bg="$color"
+          opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -227,11 +228,10 @@ function StandaloneSheetConstant() {
           alignItems="center"
           gap="$5"
         >
-          <Paragraph>Standalone sheet with snapPointsMode="constant" (300px, 200px)</Paragraph>
-          <Button
-            data-testid="standalone-constant-close"
-            onPress={() => setOpen(false)}
-          >
+          <Paragraph>
+            Standalone sheet with snapPointsMode="constant" (300px, 200px)
+          </Paragraph>
+          <Button data-testid="standalone-constant-close" onPress={() => setOpen(false)}>
             Close
           </Button>
         </Sheet.Frame>
@@ -269,6 +269,8 @@ function RapidOpenCloseSheet() {
         <Sheet.Overlay
           data-testid="rapid-overlay"
           animation="lazy"
+          bg="$color"
+          opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -314,6 +316,8 @@ function DynamicContentSheet() {
         <Sheet.Overlay
           data-testid="dynamic-content-overlay"
           animation="lazy"
+          bg="$color"
+          opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -325,7 +329,9 @@ function DynamicContentSheet() {
           alignItems="center"
           gap="$4"
         >
-          <Paragraph data-testid="dynamic-content-size">Current size: {contentSize}</Paragraph>
+          <Paragraph data-testid="dynamic-content-size">
+            Current size: {contentSize}
+          </Paragraph>
 
           {contentSize === 'small' && (
             <Paragraph>Small content - just a little text.</Paragraph>

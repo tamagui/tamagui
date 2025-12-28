@@ -27,11 +27,12 @@ export function DialogFocusScopeCase() {
         />
       </Dialog>
 
-
       {/* Nested Dialogs */}
       <Dialog modal>
         <Dialog.Trigger asChild>
-          <Button data-testid="parent-dialog-trigger">Open Dialog with Nested Dialog</Button>
+          <Button data-testid="parent-dialog-trigger">
+            Open Dialog with Nested Dialog
+          </Button>
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay

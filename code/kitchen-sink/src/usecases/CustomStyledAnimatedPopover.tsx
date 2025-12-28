@@ -21,14 +21,14 @@ export const Content = styled(Popover.Content, {
 
 export function CustomStyledAnimatedPopover() {
   return (
-    <Stack f={1} ai="center" jc="center" gap="$5">
+    <Stack flex={1} items="center" justify="center" gap="$5">
       <Stack theme="red">
         <Popover>
           <Popover.Trigger>
             <Text>No animation with styled()</Text>
           </Popover.Trigger>
 
-          <Theme inverse>
+          <Theme name="accent">
             <Content>
               <Text theme="red" color="$color11">
                 Hey there!
