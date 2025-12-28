@@ -5,10 +5,11 @@ export function StyledRNW() {
   return <Input id="styled-rnw-input" accessibilityLabel="ok" placeholder="search" />
 }
 
+// Input accepts text styles at runtime via validStyles but TS doesn't know
 const TextInput = styled(
   TamaguiInput,
   {
-    fontSize: 16 as any,
+    fontSize: 16,
     fontFamily: '$silkscreen',
     color: '$color5',
     minWidth: 0,
@@ -34,7 +35,7 @@ const TextInput = styled(
     defaultVariants: {
       unset: false,
     },
-  },
+  } as any,
   {
     inlineProps: new Set(['id', 'testID']),
   }
