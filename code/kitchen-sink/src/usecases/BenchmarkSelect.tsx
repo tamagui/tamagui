@@ -12,7 +12,7 @@ export const BenchmarkSelect = () => {
   return (
     <>
       <Button onPress={() => setX(Math.random())}>Go</Button>
-      <YStack ov="hidden">
+      <YStack overflow="hidden">
         <XStack>
           <BenchSelect key={x} />
         </XStack>
@@ -24,7 +24,7 @@ export const BenchmarkSelect = () => {
 const BenchSelect = () => {
   return (
     <TimedRender>
-      <YStack w="100%">
+      <YStack width="100%">
         {new Array(100).fill(0).map((_, i) => (
           <ListItem key={i} title="Test" subTitle="test2"></ListItem>
         ))}

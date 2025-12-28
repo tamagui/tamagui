@@ -26,7 +26,7 @@ export const TakeoutFaqModal = () => {
     >
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" gap="$4">
+          <Sheet.Frame p="$4" gap="$4">
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
@@ -63,16 +63,16 @@ export const TakeoutFaqModal = () => {
           ]}
           enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
           exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-          w="90%"
-          maw={900}
+          width="90%"
+          maxW={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }}>
+            <YStack $gtSm={{ maxH: '90vh' }}>
               <H1 px="$4" $sm={{ size: '$8' }}>
                 Frequently Asked Questions
               </H1>
               <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>How difficult is Takeout to develop on?</H5>
 
                   <Paragraph>
@@ -91,7 +91,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>What development platforms do you support?</H5>
 
                   <Paragraph>
@@ -101,7 +101,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>Can I still use the starter after my subscription has ended?</H5>
                   <Paragraph>
                     Of course! the subscription is only for the bot updates. If you cancel
@@ -110,7 +110,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>Can I suggest a feature for the upcoming updates?</H5>
                   <Paragraph>
                     Yes. You will have access to an exclusive Discord channel in which you
@@ -119,7 +119,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>Is there a refund policy?</H5>
                   <Paragraph>
                     No, to prevent abuse we have a no refund policy, but reach out to us
@@ -128,7 +128,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>
                     Can I use some of the features? What about merge conflicts with the
                     bot?
@@ -140,7 +140,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>How does the GitHub bot work?</H5>
                   <Paragraph>
                     Whenever we make changes to the starter, we may trigger the bot to
@@ -150,7 +150,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>How often does the bot trigger updates?</H5>
                   <Paragraph>
                     We do this manually to avoid constant PRs and try to schedule them at
@@ -159,7 +159,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>What are the next steps after I purchase the starter?</H5>
                   <Paragraph>
                     You will see the full instructions after purchase. You can gain access
@@ -169,7 +169,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>
                     What are the next steps after I purchase the font/icon packages?
                   </H5>
@@ -182,7 +182,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>Can I use the Takeout starter for an open-source project?</H5>
                   <Paragraph>
                     You aren't allowed to publish the source-code to the public. So no,
@@ -190,7 +190,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>How many projects can I use this for?</H5>
                   <Paragraph
                     cursor="pointer"
@@ -202,32 +202,12 @@ export const TakeoutFaqModal = () => {
                     See License
                   </Paragraph>
                 </YStack>
-
-                {/*
-            <YStack gap="$4" f={1} fb={0} minWidth={300}>
-              <H5 >
-                Can I get auto-updates if I have my repository on a git server that
-                doesn't support GitHub bots?
-              </H5>
-              <Paragraph>
-                You can't use the bot outside of GitHub but you can write a custom
-                script / workflow to look for new changes on the repository source and
-                create PRs.
-              </Paragraph>
-            </YStack> */}
               </XStack>
             </YStack>
           </ScrollView>
           <Unspaced>
             <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$2"
-                right="$2"
-                size="$2"
-                circular
-                icon={X}
-              />
+              <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

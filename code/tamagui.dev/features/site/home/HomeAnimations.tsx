@@ -64,12 +64,11 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           </HomeH3>
         </YStack>
 
-        <XStack>
+        <XStack gap="$4">
           <YStack
             flex={2}
             minW="55%"
-            self="center"
-            mr="$-2"
+            self="flex-start"
             z={100}
             elevation="$4"
             rounded="$4"
@@ -81,7 +80,6 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           <YStack
             perspective={1000}
             rotateY="-5deg"
-            x={-10}
             $sm={{ display: 'none' }}
             position="relative"
             rounded="$8"
@@ -111,8 +109,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
             <CodeDemoPreParsed
               pointerEvents={disableScrollPane ? 'none' : 'auto'}
-              maxH={500}
-              height={500}
+              height={disableScrollPane ? 500 : 1250}
+              animation="quick"
               maxW={530}
               minW={530}
               rounded="$8"

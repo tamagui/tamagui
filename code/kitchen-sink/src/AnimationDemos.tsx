@@ -112,7 +112,7 @@ export function Demo3() {
         circular
         elevation="$4"
         onPress={() => paginate(-1)}
-        zi={100}
+        z={100}
       />
 
       <Button
@@ -124,7 +124,7 @@ export function Demo3() {
         circular
         elevation="$4"
         onPress={() => paginate(1)}
-        zi={100}
+        z={100}
       />
     </XStack>
   )

@@ -14,7 +14,6 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
   return (
     <YStack
       mb="$2"
-      f={1}
       flex={1}
       $gtSm={{
         fd: 'row',

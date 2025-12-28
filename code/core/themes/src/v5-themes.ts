@@ -249,6 +249,10 @@ export type ColorTheme = {
   }
 }
 
+export type GrandChildrenThemeDefinition = {
+  template: string
+}
+
 export type CreateV5ThemeOptions = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: ColorPalette
@@ -258,6 +262,8 @@ export type CreateV5ThemeOptions = {
   colors?: Record<string, { dark: ColorPalette; light: ColorPalette }>
   /** Whether to include default color themes (blue, red, green, etc.). Defaults to true */
   includeDefaultColors?: boolean
+  /** Add or override grandChildrenThemes (e.g., { alt1: { template: 'alt1' } }) */
+  grandChildrenThemes?: Record<string, GrandChildrenThemeDefinition>
 }
 
 /**
@@ -291,6 +297,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
     lightPalette: customLightPalette = lightPalette,
     colors = {},
     includeDefaultColors = true,
+    grandChildrenThemes: customGrandChildrenThemes = {},
   } = options
 
   // Build childrenThemes from default colors + custom colors
@@ -446,6 +453,12 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
       accent: {
         template: 'inverse',
       },
+      alt1: { template: 'alt1' },
+      alt2: { template: 'alt2' },
+      surface1: { template: 'surface1' },
+      surface2: { template: 'surface2' },
+      surface3: { template: 'surface3' },
+      ...customGrandChildrenThemes,
     },
   })
 }

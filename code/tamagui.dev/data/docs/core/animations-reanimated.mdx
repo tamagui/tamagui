@@ -79,6 +79,16 @@ Reanimated animations support both spring and timing (tween) animations:
 }
 ```
 
+### Delay
+
+You can add animation delays using the array syntax:
+
+```tsx
+<Square animation={['bouncy', { delay: 200 }]} />
+```
+
+The delay is specified in milliseconds and is passed directly to Moti's animation configuration.
+
 ## When to Use
 
 **Advantages:**

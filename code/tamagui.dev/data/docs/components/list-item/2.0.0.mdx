@@ -20,6 +20,8 @@ demoName: ListItem
     'Accepts size prop that works on all styles.',
     'Place an icon before or after.',
     'Works with themes, animations, Group.',
+    'Supports variant prop (e.g., outlined).',
+    'Use Apply to pass color/size/variant to children.',
   ]}
 />
 
@@ -41,7 +43,14 @@ import { ListItem, Separator, YGroup } from 'tamagui'
 import { ChevronRight } from '@tamagui/lucide-icons' // Example icon
 
 export default () => (
-  <YGroup als="center" bordered width={240} size="$4">
+  <YGroup 
+    self="center"
+    borderWidth={1}
+    borderColor="$borderColor"
+    rounded="$4"
+    width={240}
+    size="$4"
+  >
     <YGroup.Item>
       <ListItem title="Star" icon={ChevronRight} />
     </YGroup.Item>
@@ -140,6 +149,42 @@ export default () => (
 )
 ```
 
+## Variant
+
+ListItem supports a `variant` prop for different visual styles:
+
+```tsx
+import { ListItem } from 'tamagui'
+
+export default () => <ListItem variant="outlined" title="Outlined Style" />
+```
+
+Currently supports: `outlined` (transparent background with border).
+
+## Apply (Context)
+
+Use `ListItem.Apply` to pass `color`, `size`, and `variant` to multiple children via context:
+
+```tsx
+import { ListItem, YGroup } from 'tamagui'
+import { Trash } from '@tamagui/lucide-icons'
+
+export default () => (
+  <YGroup>
+    <ListItem.Apply color="$red10">
+      <YGroup.Item>
+        <ListItem icon={Trash} title="Delete item" />
+      </YGroup.Item>
+      <YGroup.Item>
+        <ListItem icon={Trash} title="Remove all" />
+      </YGroup.Item>
+    </ListItem.Apply>
+  </YGroup>
+)
+```
+
+The `color` prop passed to `Apply` will be inherited by icons within children.
+
 ## Customization
 
 For customization, Tamagui exports the building blocks: `ListItem.Frame`,
@@ -175,7 +220,7 @@ export const MyAdvancedListItem = ({
   return (
     <CustomFrame {...frameProps}>
       {icon && <TamaguiListItem.Icon>{icon}</TamaguiListItem.Icon>}
-      <YStack f={1} jc="center">
+      <YStack flex={1} justify="center">
         {title && <CustomTitle>{title}</CustomTitle>}
         {subTitle && <CustomSubtitle>{subTitle}</CustomSubtitle>}
         {children && <TamaguiListItem.Text>{children}</TamaguiListItem.Text>}
@@ -215,6 +260,13 @@ ListItems extend Stack views inheriting all the
       type: 'SizeTokens',
       description:
         'Adjusts padding, min-height, and default font/icon sizes. Uses theme size tokens (e.g., "$3", "$4").',
+    },
+    {
+      name: 'variant',
+      required: false,
+      type: "'outlined'",
+      description:
+        'Visual variant style. Currently supports "outlined" (transparent background with border).',
     },
     {
       name: 'icon',
@@ -269,6 +321,33 @@ ListItems extend Stack views inheriting all the
       type: '---',
       description:
         'To style the `title`, `subTitle`, or general `children` text, use `styled(ListItem, { ... })` to target nested `ListItem.Title`, `ListItem.Subtitle`, or `ListItem.Text` components, or compose your own with these parts. Direct text styling props are not passed for simplicity and performance.',
+    },
+  ]}
+/>
+
+### ListItem.Apply
+
+A context provider that passes `color`, `size`, and `variant` to all ListItem children.
+
+<PropsTable
+  data={[
+    {
+      name: 'color',
+      required: false,
+      type: 'ColorTokens | string',
+      description: 'Color token to pass to icons in children ListItems.',
+    },
+    {
+      name: 'size',
+      required: false,
+      type: 'SizeTokens',
+      description: 'Size token to apply to children ListItems.',
+    },
+    {
+      name: 'variant',
+      required: false,
+      type: "'outlined'",
+      description: 'Variant to apply to children ListItems.',
     },
   ]}
 />

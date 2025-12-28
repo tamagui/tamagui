@@ -230,6 +230,30 @@ export default () => (
 )
 ```
 
+### Delay
+
+You can add a delay before animations start using the array syntax with a `delay` property (in milliseconds):
+
+```tsx
+import { Square, XStack } from 'tamagui'
+
+export default () => (
+  <XStack gap="$2">
+    {[0, 1, 2, 3].map((i) => (
+      <Square
+        key={i}
+        animation={['bouncy', { delay: i * 100 }]}
+        enterStyle={{ opacity: 0, scale: 0.5, y: 20 }}
+        size={50}
+        bg="$color10"
+      />
+    ))}
+  </XStack>
+)
+```
+
+This creates a staggered animation effect where each square animates 100ms after the previous one. The delay works with all animation drivers and applies to enter, exit, and style change animations.
+
 ### animateOnly
 
 The `animateOnly` prop will limit your animation config to certain keys. It
@@ -364,7 +388,7 @@ export function Demo() {
     >
       <AnimatePresence initial={false} custom={{ going }}>
         <GalleryItem key={page} animation="slowest" going={going}>
-          <Image source={{ uri: photos[imageIndex], width: 500, height: 300 }} />
+          <Image src={photos[imageIndex]} width={500} height={300} />
         </GalleryItem>
       </AnimatePresence>
 

@@ -1,6 +1,7 @@
 export * from './AccordionDemo'
 export * from './AddThemeDemo'
 export * from './AlertDialogDemo'
+export * from './AnimationsDelayDemo'
 export * from './AnimationsDemo'
 export * from './AnimationsEnterDemo'
 export * from './AnimationsHoverDemo'

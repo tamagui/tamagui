@@ -63,7 +63,7 @@ export default function DemoPage() {
         justify="center"
         p="$6"
         bg="$background"
-        minHeight="100vh"
+        minH="100vh"
       >
         <YStack width="100%" maxW={1200}>
           <H2 mb="$4">{componentName}</H2>

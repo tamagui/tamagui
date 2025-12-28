@@ -116,7 +116,7 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
     return (
       <ToggleFrame
         {...(!props.unstyled && {
-          theme: pressed ? 'active' : null,
+          theme: pressed ? 'accent' : null,
           themeShallow: true,
         })}
         active={!props.unstyled ? pressed : undefined}

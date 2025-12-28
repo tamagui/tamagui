@@ -65,13 +65,13 @@ export function VersionSwitcherItem({
 
       <Select.Content zIndex={200000}>
         <Select.ScrollUpButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
           <LinearGradient
@@ -79,7 +79,7 @@ export function VersionSwitcherItem({
             end={[0, 1]}
             fullscreen
             colors={['$background', 'transparent']}
-            borderRadius="$4"
+            rounded="$4"
           />
         </Select.ScrollUpButton>
 
@@ -89,7 +89,7 @@ export function VersionSwitcherItem({
           // animateOnly={['transform', 'opacity']}
           // enterStyle={{ o: 0, y: -10 }}
           // exitStyle={{ o: 0, y: 10 }}
-          minWidth={200}
+          minW={200}
         >
           <Select.Group>
             <Select.Label>Versions</Select.Label>
@@ -116,13 +116,13 @@ export function VersionSwitcherItem({
         </Select.Viewport>
 
         <Select.ScrollDownButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>
           <LinearGradient
@@ -130,7 +130,7 @@ export function VersionSwitcherItem({
             end={[0, 1]}
             fullscreen
             colors={['transparent', '$background']}
-            borderRadius="$4"
+            rounded="$4"
           />
         </Select.ScrollDownButton>
       </Select.Content>

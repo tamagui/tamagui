@@ -4,12 +4,13 @@ import { TakeoutIcon } from '../icons/TakeoutIcon'
 export const TakeoutButton = (props: ButtonProps) => {
   return (
     <Button.Frame
-      borderColor="$color6"
+      borderColor="$color4"
       size="$3"
       rounded="$10"
       borderRightWidth={0.5}
+      bg="$background02"
       hoverStyle={{
-        borderColor: '$color8',
+        borderColor: '$color6',
         bg: '$color5',
       }}
       {...props}

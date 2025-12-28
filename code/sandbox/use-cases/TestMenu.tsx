@@ -50,25 +50,25 @@ export function MenuDemo() {
         placement="bottom-start"
       >
         <Menu.Trigger asChild>
-          <Button borderRadius="$10" icon={Backpack} scaleIcon={1.2} />
+          <Button rounded="$10" icon={Backpack} scaleIcon={1.2} />
         </Menu.Trigger>
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
             paddingHorizontal={0}
             borderWidth={1}
-            ai="flex-start"
+            items="flex-start"
             borderColor="$borderColor"
-             enterStyle={{ y: -10, opacity: 0 }}
-             exitStyle={{ y: -10, opacity: 0 }}
-             animation={[
-               'quicker',
-               {
-                 opacity: {
-                   overshootClamping: true,
-                 },
-               },
-             ]}
+            enterStyle={{ y: -10, opacity: 0 }}
+            exitStyle={{ y: -10, opacity: 0 }}
+            animation={[
+              'quicker',
+              {
+                opacity: {
+                  overshootClamping: true,
+                },
+              },
+            ]}
           >
             <Menu.Item onSelect={onSelect} key="about-notes">
               <Menu.ItemTitle>About Notes</Menu.ItemTitle>
@@ -83,7 +83,7 @@ export function MenuDemo() {
               <Menu.Item
                 onSelect={onSelect}
                 key="accounts"
-                jc="space-between"
+                justify="space-between"
                 // when title is nested inside a React element then you need to use `textValue`
                 textValue="Calendar"
               >
@@ -117,7 +117,7 @@ export function MenuDemo() {
             {/* Submenu */}
             <Menu.Sub placement="right-start">
               <Menu.SubTrigger
-                jc="space-between"
+                justify="space-between"
                 key="actions-trigger"
                 textValue="Actions"
               >

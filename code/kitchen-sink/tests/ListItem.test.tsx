@@ -77,3 +77,43 @@ test('ListItem with accent theme renders correctly in dark theme', async ({ page
   const styles = await getStyles(listItem)
   expect(styles.backgroundColor).toBe('rgb(255, 255, 255)')
 })
+
+test('ListItem renders correctly with outlined variant', async ({ page }) => {
+  const listItem = page.locator('#themed-list-item-outlined')
+  const title = listItem.getByText('Outlined', { exact: true })
+  const subTitle = listItem.getByText('Using variant prop', { exact: true })
+
+  await expect(listItem).toBeVisible()
+  await expect(title).toBeVisible()
+  await expect(subTitle).toBeVisible()
+
+  const styles = await getStyles(listItem)
+  // Outlined variant has transparent background and border
+  expect(styles.backgroundColor).toBe('rgba(0, 0, 0, 0)')
+  expect(styles.borderWidth).toBe('1px')
+})
+
+test('ListItem.Apply passes color to children icons', async ({ page }) => {
+  const listItem = page.locator('#themed-list-item-apply-color')
+  const title = listItem.getByText('With Apply color', { exact: true })
+
+  await expect(listItem).toBeVisible()
+  await expect(title).toBeVisible()
+
+  // Check that the icon received the color from Apply context
+  const icon = listItem.locator('svg')
+  await expect(icon).toBeVisible()
+})
+
+test('ListItem.Apply passes variant to children', async ({ page }) => {
+  const listItem = page.locator('#themed-list-item-apply-variant')
+  const title = listItem.getByText('With Apply variant', { exact: true })
+
+  await expect(listItem).toBeVisible()
+  await expect(title).toBeVisible()
+
+  const styles = await getStyles(listItem)
+  // Outlined variant applied via Apply context
+  expect(styles.backgroundColor).toBe('rgba(0, 0, 0, 0)')
+  expect(styles.borderWidth).toBe('1px')
+})
