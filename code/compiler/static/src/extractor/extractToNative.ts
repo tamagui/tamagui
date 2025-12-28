@@ -239,10 +239,10 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                             isComputed ? t.stringLiteral(propVal) : t.identifier(propVal),
                             isComputed
                           ),
-                          t.identifier('get'),
+                          t.identifier('get')
                         ),
-                        [],
-                      );
+                        []
+                      )
                     }
                   })
                   return themedStylesAst
