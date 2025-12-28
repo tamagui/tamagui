@@ -58,7 +58,7 @@ const TooltipContent = PopperContentFrame.styleable((props: TooltipContentProps,
       ref={ref}
       {...props}
       {...(preventAnimation && {
-        transition: null,
+        animation: null,
       })}
     />
   )
