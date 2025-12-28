@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
-Error.stackTraceLimit = Number.POSITIVE_INFINITY
+Error.stackTraceLimit = Number.MAX_SAFE_INTEGER
 process.env.TAMAGUI_TARGET = 'web'
 window['React'] = React
 

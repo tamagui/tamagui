@@ -406,7 +406,6 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
     settings: {
         shouldAddPrefersColorThemes: boolean;
         defaultFont: string;
-        themeClassNameOnRoot: boolean;
     };
 };
 //# sourceMappingURL=index.d.ts.map

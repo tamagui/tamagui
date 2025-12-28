@@ -13,6 +13,7 @@ import {
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'
 
+// biome-ignore lint/security/noGlobalEval: intentionally non-static for compiler testing
 const nonStaticInt = eval(`10`)
 
 type TestProps = {
@@ -35,8 +36,8 @@ export function Test1() {
     <YStack
       className="test1"
       flex={1}
-      borderRadius={100}
-      backgroundColor="red"
+      rounded={100}
+      bg="red"
       shadowRadius={10}
       shadowColor="#000"
       hoverStyle={{
@@ -89,7 +90,7 @@ export function TestMediaQuery() {
           backgroundColor: nonStaticInt ? 'red' : 'blue',
         })}
         hoverStyle={{
-          backgroundColor: 'yellow',
+          bg: 'yellow',
         }}
       >
         {child}
@@ -100,7 +101,7 @@ export function TestMediaQuery() {
       >
         {media3.lg && <div />}
       </YStack>
-      <YStack p="$2" $lg={{ backgroundColor: '$background', p: '$2' }} />
+      <YStack p="$2" $lg={{ bg: '$background', p: '$2' }} />
     </>
   )
 }
@@ -110,9 +111,9 @@ export function TestMediaQueryInline() {
     <>
       <YStack
         $sm={{
-          backgroundColor: '$background',
+          bg: '$background',
           hoverStyle: {
-            backgroundColor: 'red',
+            bg: 'red',
           },
         }}
       >
@@ -130,7 +131,7 @@ export function Test2(props: TestProps) {
       <XStack
         className="ease-in-out-top"
         backgroundColor="#000"
-        paddingVertical={2}
+        py={2}
         top={0}
         {...(props.conditional && {
           top: -14,
@@ -211,11 +212,11 @@ export function Test7() {
   const pad = 5
   return (
     <YStack
-      paddingHorizontal={pad + 6}
-      paddingBottom={verticalPad}
+      px={pad + 6}
+      pb={verticalPad}
       width={isSmall ? '50vw' : '66%'}
-      minWidth={isSmall ? '50%' : 500}
-      maxWidth={isSmall ? '80vw' : '30%'}
+      minW={isSmall ? '50%' : 500}
+      maxW={isSmall ? '80vw' : '30%'}
     >
       <YStack width={nonStaticInt ? 10 : 0} height={nonStaticInt ? 10 : 0} />
     </YStack>
@@ -235,14 +236,14 @@ export function Test8() {
 
 // combines with classname
 export function Test9() {
-  return <YStack paddingVertical={15} className="home-top-dish" />
+  return <YStack py={15} className="home-top-dish" />
 }
 
 // Text
 export function Test10({ textStyle }) {
   return (
     <Text fontSize={10}>
-      <Text userSelect="auto">
+      <Text select="auto">
         <Text
           color={nonStaticInt ? '#000' : '#fff'}
           fontSize={15}
@@ -262,15 +263,15 @@ export function Test11({ conditional, altConditional, ...rest }: TestProps) {
   return (
     <YStack
       height={(conditional ? 1 : 0) * 31}
-      borderRadius={8 * (conditional ? 1 : 0)}
+      rounded={8 * (conditional ? 1 : 0)}
       borderWidth={1}
       borderColor={altConditional ? 'red' : 'rgba(0,0,0,0.15)'}
       overflow="hidden"
-      alignItems="center"
+      items="center"
       position="relative"
-      minHeight={lineHeight}
+      minH={lineHeight}
       {...rest}
-      backgroundColor="blue"
+      bg="blue"
     >
       {child}
     </YStack>
@@ -298,8 +299,8 @@ export function Test13(props: TestProps) {
       width={36 * scale}
       height={36 * scale}
       fontWeight="400"
-      textAlign="center"
-      marginTop={(props.conditional ? -4 : 0) * scale}
+      text="center"
+      mt={(props.conditional ? -4 : 0) * scale}
     />
   )
 }
@@ -309,10 +310,10 @@ export function Test14() {
   return (
     <YStack
       hoverStyle={{
-        backgroundColor: 'red',
+        bg: 'red',
       }}
       pressStyle={{
-        backgroundColor: testColor,
+        bg: testColor,
       }}
     />
   )
@@ -345,11 +346,7 @@ export function Test16(props: TestProps) {
 // flexWrap and other flex properties
 export function TestFlexWrap() {
   return (
-    <XStack
-      flexWrap="wrap"
-      flexDirection="row"
-      gap="$2"
-    >
+    <XStack flexWrap="wrap" flexDirection="row" gap="$2">
       {child}
     </XStack>
   )
@@ -361,8 +358,8 @@ export function TestFlexWrapConditional(props: TestProps) {
     <XStack
       flexWrap={props.conditional ? 'wrap' : 'nowrap'}
       flexDirection="row"
-      alignItems="center"
-      justifyContent="space-between"
+      items="center"
+      justify="space-between"
     >
       {child}
     </XStack>
@@ -375,12 +372,12 @@ export function TestFlexProperties() {
     <YStack
       flexDirection="column"
       flexWrap="wrap"
-      flexGrow={1}
-      flexShrink={0}
+      grow={1}
+      shrink={0}
       flexBasis="auto"
-      alignItems="stretch"
-      justifyContent="flex-start"
-      alignContent="flex-start"
+      items="stretch"
+      justify="flex-start"
+      content="flex-start"
     >
       {child}
     </YStack>
@@ -392,25 +389,25 @@ export function TestComplexFlexWithConditionals(props: TestProps) {
   const { sm } = useMedia()
   return (
     <YStack
-      borderRadius={sm ? "$0" : "$8"}
-      flexDirection={sm ? "row" : "column"}
-      flexBasis={props.conditional ? "100%" : "auto"}
-      maxWidth="100%"
+      rounded={sm ? '$0' : '$8'}
+      flexDirection={sm ? 'row' : 'column'}
+      flexBasis={props.conditional ? '100%' : 'auto'}
+      maxW="100%"
       overflow="hidden"
-      padding="$sm"
-      $sm={{ paddingHorizontal: "$0" }}
-      width={sm ? "100%" : 260}
-      backgroundColor={props.altConditional ? "$backgroundHover" : "$background"}
+      p={4}
+      $sm={{ px: '$0' }}
+      width={sm ? '100%' : 260}
+      bg={props.altConditional ? '$backgroundHover' : '$background'}
       hoverStyle={{
-        cursor: "pointer",
-        backgroundColor: "$backgroundHover",
+        cursor: 'pointer',
+        bg: '$backgroundHover',
       }}
     >
       <XStack
-        flexDirection={sm ? "column" : "row"}
+        flexDirection={sm ? 'column' : 'row'}
         flexWrap="wrap"
-        gap={sm ? "$0" : "$xs"}
-        justifyContent={props.conditional ? "flex-start" : "center"}
+        gap={sm ? 0 : 4}
+        justify={props.conditional ? 'flex-start' : 'center'}
       >
         {child}
       </XStack>
@@ -423,12 +420,12 @@ export function TestFlexWrapWithMediaQuery() {
   const media = useMedia()
   return (
     <XStack
-      flexWrap={media.sm ? "wrap" : "nowrap"}
-      flexDirection={media.sm ? "row" : "column"}
+      flexWrap={media.sm ? 'wrap' : 'nowrap'}
+      flexDirection={media.sm ? 'row' : 'column'}
       gap="$2"
       $sm={{
-        flexWrap: "wrap",
-        padding: "$4",
+        flexWrap: 'wrap',
+        p: '$4',
       }}
     >
       {child}
