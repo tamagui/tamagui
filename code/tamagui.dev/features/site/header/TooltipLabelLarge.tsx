@@ -10,7 +10,14 @@ export const TooltipLabelLarge = ({
   href,
 }: { href?: string; icon: any; title: string; subtitle: string }) => {
   const content = (
-    <YStack cursor={href ? 'pointer' : 'default'} flex={1} p="$3.5" rounded="$4" gap="$1">
+    <YStack
+      cursor={href ? 'pointer' : 'default'}
+      flex={1}
+      flexBasis="auto"
+      p="$3.5"
+      rounded="$4"
+      gap="$1"
+    >
       <XStack $gtXs={{ justify: 'center' }} items="center" gap="$2">
         <H2 fontFamily="$mono" fontWeight="600" size="$4" letterSpacing={1}>
           {title}
