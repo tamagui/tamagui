@@ -14,12 +14,12 @@ export default function Auth() {
   return (
     <YStack
       flex={1}
-      justifyContent="center"
-      alignItems="center"
+      justify="center"
+      items="center"
       gap="$8"
-      w="100%"
-      h="100%"
-      mih={400}
+      width="100%"
+      height="100%"
+      minH={400}
     >
       <Text>Authenticating...</Text>
       <Spinner size="large" />
