@@ -78,7 +78,9 @@ export const HomeExamples = memo(
                       rounded={0}
                       size="$3"
                     >
-                      <Button.Text fontFamily="$silkscreen">{example.name}</Button.Text>
+                      <Button.Text fontFamily="$silkscreen" size="$3" fontWeight="600">
+                        {example.name}
+                      </Button.Text>
                     </Button>
                   </XGroup.Item>
                 )
@@ -168,7 +170,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
   const { tint } = useTint()
 
   return (
-    <YStack overflow="hidden" flex={1}>
+    <YStack overflow="hidden" flex={1} flexBasis="auto">
       <>
         <ScrollView
           self="center"
@@ -203,7 +205,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                     size="$2"
                     rounded={0}
                   >
-                    <Button.Text>{example.name}</Button.Text>
+                    <Button.Text size="$2">{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}
@@ -211,9 +213,10 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           </XStack>
         </ScrollView>
       </>
-      <XStack maxW="100%" flex={1}>
+      <XStack maxW="100%" flex={1} flexBasis="auto">
         <YStack flex={1} maxW="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemoPreParsed
+            flexBasis="auto"
             height={325}
             maxH={325}
             flex={1}

@@ -6,7 +6,6 @@ import { Link } from '~/components/Link'
 
 import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
-import { useHeroHovered } from './useHeroHovered'
 import { IconStack } from './IconStack'
 
 export const HomeHeroBelow = memo(() => {
@@ -20,13 +19,12 @@ export const HomeHeroBelow = memo(() => {
 })
 
 export const HeroBelowContent = memo(() => {
-  const [hovered, setHovered] = useHeroHovered()
-
   return (
     <ContainerLarge>
       <XStack
         flex={1}
         overflow="hidden"
+        flexBasis="auto"
         maxW="100%"
         gap="$8"
         flexWrap="nowrap"
@@ -38,7 +36,7 @@ export const HeroBelowContent = memo(() => {
           px: '$6',
         }}
       >
-        <Section theme="pink" onHoverIn={() => setHovered(0)}>
+        <Section theme="pink">
           <XStack items="center" gap="$4">
             <IconStack>
               <Code size={12} color="var(--color9)" />
@@ -51,7 +49,7 @@ export const HeroBelowContent = memo(() => {
           </Paragraph>
         </Section>
 
-        <Section theme="gray" onHoverIn={() => setHovered(1)}>
+        <Section theme="gray">
           <XStack items="center" gap="$4">
             <IconStack>
               <Cpu size={16} color="var(--color9)" />
@@ -64,7 +62,7 @@ export const HeroBelowContent = memo(() => {
           </Paragraph>
         </Section>
 
-        <Section theme="red" onHoverIn={() => setHovered(2)}>
+        <Section theme="red">
           <XStack items="center" gap="$4">
             <IconStack>
               <Layers size={16} color="var(--color9)" />

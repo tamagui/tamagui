@@ -271,7 +271,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
     <YStack
       className="unselectable"
       theme={active ? 'pink' : null}
-      pos="absolute"
+      position="absolute"
       {...props}
     >
       <XStack y={-60} items="flex-start">
@@ -299,7 +299,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
 
 const ResponsiveHeader = memo(() => {
   return (
-    <YStack flex={1} gap="$3">
+    <YStack flex={1} gap="$3" flexBasis="auto">
       <XStack>
         <HomeH2 text="left" self="flex-start">
           Easily responsive
@@ -322,6 +322,7 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
       contain="paint layout"
       elevation="$6"
       flex={1}
+      flexBasis="auto"
       overflow="hidden"
       rounded="$4"
       borderColor="$borderColor"

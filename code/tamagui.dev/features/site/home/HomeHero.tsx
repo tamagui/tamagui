@@ -95,6 +95,7 @@ const HeroContents = memo(function HeroContents() {
         overflow="hidden"
         gap="$3"
         position="relative"
+        flexBasis="auto"
         pt="$16"
         mb="$4"
         $sm={{
@@ -111,7 +112,7 @@ const HeroContents = memo(function HeroContents() {
               </XGroup.Item>
             </Link>
 
-            <Theme name="tan">
+            <Theme>
               <Link href="/bento">
                 <XGroup.Item>
                   <BentoButton />
@@ -128,7 +129,6 @@ const HeroContents = memo(function HeroContents() {
             lineHeight={61}
             maxW={500}
             maxH={400}
-            position="relative"
             $gtSm={{
               scale: 1.5,
               m: '5%',
@@ -194,6 +194,7 @@ const HeroContents = memo(function HeroContents() {
           <YStack
             px={0}
             maxW={420}
+            flexBasis="auto"
             // safari fix width
             width="100%"
             // prevent layout shift
@@ -255,9 +256,6 @@ const HeroContents = memo(function HeroContents() {
                 <Button.Text fontFamily="$silkscreen" fontSize="$2">
                   Start
                 </Button.Text>
-                {/* <YStack $group-item-press={{ scaleX: -1 }}>
-                  <LogoIcon downscale={3} />
-                </YStack> */}
               </Button>
             </Link>
           </Theme>
