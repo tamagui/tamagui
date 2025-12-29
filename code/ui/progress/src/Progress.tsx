@@ -13,7 +13,11 @@ import * as React from 'react'
 const PROGRESS_NAME = 'Progress'
 
 const [createProgressContext, createProgressScope] = createContextScope(PROGRESS_NAME)
-type ProgressContextValue = { value: number | null; max: number; width: number }
+type ProgressContextValue = {
+  value: number | null
+  max: number
+  width: number
+}
 const [ProgressProvider, useProgressContext] =
   createProgressContext<ProgressContextValue>(PROGRESS_NAME)
 
@@ -157,7 +161,7 @@ const Progress = withStaticProperties(
     } = props
 
     const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
-    const value = isValidValueNumber(valueProp, max) ? valueProp : null
+    const value = isValidValueNumber(valueProp, max) ? Math.round(valueProp) : null // Math.round() so the component doesn't crash with decimal values such as 16.666
     const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
     const [width, setWidth] = React.useState(0)
 
