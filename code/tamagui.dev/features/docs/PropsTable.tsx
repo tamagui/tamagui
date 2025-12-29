@@ -38,6 +38,7 @@ export function PropsTable({
       borderWidth={1}
       borderColor="$borderColor"
       flex={1}
+      flexBasis="auto"
       aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
       aria-labelledby={ariaLabelledBy}
       my="$4"

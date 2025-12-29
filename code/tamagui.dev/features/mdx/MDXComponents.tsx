@@ -581,6 +581,7 @@ const componentsIn = {
         size={size}
         tag="figure"
         flex={1}
+        flexBasis="auto"
         mx={0}
         mb="$3"
         items="center"
@@ -706,7 +707,7 @@ const componentsIn = {
           <H4 color="$color10" fontFamily="$silkscreen">
             👋 Hey! Listen!
           </H4>
-          <YStack overflow="hidden" flex={1} opacity={0.85} gap="$4">
+          <YStack overflow="hidden" flex={1} flexBasis="auto" opacity={0.85} gap="$4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
               <a href="https://x.com/natebirdman" target="_blank" rel="noreferrer">
@@ -811,7 +812,7 @@ const componentsIn = {
     const clipBoard = useClipboard(`npm create tamagui@latest`)
 
     return (
-      <XStack gap="$4" flex={1} flexWrap="wrap" pt="$3" my="$5">
+      <XStack gap="$4" flex={1} flexBasis="auto" flexWrap="wrap" pt="$3" my="$5">
         <>
           <ThemeTint>
             <Link asChild href="/docs/intro/installation">
@@ -820,6 +821,7 @@ const componentsIn = {
                 animation="quickest"
                 animateOnly={['transform']}
                 flex={1}
+                flexBasis="auto"
                 y={0}
                 hoverStyle={{ y: -2, bg: '$backgroundHover' }}
                 pressStyle={{ y: 2, bg: '$color2' }}
@@ -839,7 +841,7 @@ const componentsIn = {
               </Card>
             </Link>
 
-            <Card flex={1}>
+            <Card flex={1} flexBasis="auto">
               <Card.Header gap="$2">
                 <H4 size="$4" color="$color9">
                   Quick start

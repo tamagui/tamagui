@@ -70,10 +70,10 @@ export default function DocsLayout() {
         }}
         maxW={1250}
         z={100}
+        position="relative"
       >
         <EnsureFlexed />
         <YStack
-          // position="relative"
           overflow="hidden"
           $md={{
             display: 'none',
@@ -162,16 +162,16 @@ export default function DocsLayout() {
                       >
                         <View
                           opacity={0}
-                          l="$-2"
-                          $group-card-hover={{ opacity: 1, l: '$0' }}
+                          x="$-2"
+                          $group-card-hover={{ opacity: 1, x: '$0' }}
                           animation="quickest"
                         >
                           <ChevronLeft color="$color11" />
                         </View>
 
                         <YStack
-                          l="$-4"
-                          $group-card-hover={{ l: '$0' }}
+                          x="$-4"
+                          $group-card-hover={{ x: '$0' }}
                           animation="quicker"
                         >
                           <Paragraph select="none" theme="alt1" size="$5">
@@ -205,8 +205,8 @@ export default function DocsLayout() {
                         animation="100ms"
                       >
                         <YStack
-                          r="$-4"
-                          $group-card-hover={{ r: '$0' }}
+                          x="$-4"
+                          $group-card-hover={{ x: '$0' }}
                           animation="quicker"
                         >
                           <Paragraph select="none" theme="alt1" size="$5">
@@ -219,8 +219,8 @@ export default function DocsLayout() {
 
                         <View
                           opacity={0}
-                          r="$-2"
-                          $group-card-hover={{ opacity: 1, r: '$0' }}
+                          x="$-2"
+                          $group-card-hover={{ opacity: 1, x: '$0' }}
                           animation="quickest"
                         >
                           <ChevronRight color="$color11" />
