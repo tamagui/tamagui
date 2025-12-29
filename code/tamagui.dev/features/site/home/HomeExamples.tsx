@@ -100,6 +100,7 @@ export const HomeExamples = memo(
             <YStack
               key={`input${activeIndex}`}
               flex={1}
+              flexBasis="auto"
               maxW="50%"
               {...(onlyDemo && { maxW: '100%' })}
               $sm={{ maxW: '100%' }}
@@ -139,6 +140,7 @@ export const HomeExamples = memo(
             <YStack
               key={`output${activeIndex}`}
               flex={1}
+              flexBasis="auto"
               maxW="50%"
               {...(onlyDemo && { maxW: '100%', mt: '$6' })}
               $sm={{ maxW: '100%', mt: '$6' }}
@@ -170,7 +172,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
   const { tint } = useTint()
 
   return (
-    <YStack overflow="hidden" flex={1} flexBasis="auto">
+    <YStack overflow="hidden" flexBasis="auto">
       <>
         <ScrollView
           self="center"
@@ -184,8 +186,8 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           <XStack px="$4" shrink={0} gap="$4">
             <Theme name="accent">
               <Heading
-                bg="$color1"
-                color="$color12"
+                bg="$background"
+                color="$color"
                 py="$1"
                 size="$5"
                 px="$4"
@@ -195,6 +197,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                 {title}
               </Heading>
             </Theme>
+
             <XGroup size="$2" borderWidth={1} borderColor="$borderColor">
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>

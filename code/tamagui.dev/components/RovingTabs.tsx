@@ -184,8 +184,8 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
   return (
     <YStack
       position="absolute"
-      top={0}
-      left={0}
+      t={0}
+      l={0}
       bg="$color5"
       opacity={0.7}
       rounded="$4"

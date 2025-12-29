@@ -135,7 +135,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
         {isPreVisible && (
           <YStack
-            position="relative"
             {...(isCutoff && {
               maxHeight: 400,
               ov: 'hidden',
@@ -153,7 +152,12 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 z={1000}
               >
                 <Spacer flex={1} />
-                <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} self="center">
+                <Button
+                  z={10}
+                  size="$3"
+                  onPress={() => setIsCutoff(!isCutoff)}
+                  self="center"
+                >
                   Show more
                 </Button>
                 <Spacer size="$4" />
