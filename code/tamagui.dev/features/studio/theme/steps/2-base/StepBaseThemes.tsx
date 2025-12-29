@@ -313,7 +313,7 @@ const PaletteView = memo((props: Props) => {
   )
 
   return (
-    <YStack contain="paint" p="$4" mx="$-4" mb="$0" flex={1} gap="$4">
+    <YStack contain="paint" p="$4" mx="$-4" mb="$0" flex={1} flexBasis="auto" gap="$4">
       <YStack group="content" containerType="normal" gap="$4">
         <ColorPickerContents
           disabled={!anchor}
@@ -566,7 +566,13 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
 
   return (
     <TooltipGroup delay={0}>
-      <XStack flex={1} rounded={borderRadius} borderWidth={1} borderColor="$color7">
+      <XStack
+        flex={1}
+        flexBasis="auto"
+        rounded={borderRadius}
+        borderWidth={1}
+        borderColor="$color7"
+      >
         {colors.map((color, i) => {
           return <PaletteColor {...props} color={color} index={i} key={i} />
         })}
@@ -718,7 +724,7 @@ const PaletteColor = memo(
 const PaletteIndices = () => (
   <YStack my="$-3">
     <XLabeledItem label="">
-      <XStack flex={1}>
+      <XStack flex={1} flexBasis="auto">
         {new Array(12).fill(0).map((_, i) => {
           return (
             <SizableText

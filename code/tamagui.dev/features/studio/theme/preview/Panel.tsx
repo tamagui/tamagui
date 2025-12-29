@@ -60,6 +60,7 @@ export function Panel({
       width="100%"
       maxH={600}
       flex={1}
+      flexBasis="auto"
       group="card"
       containerType="normal"
       onMouseEnter={() => setHovered(true)}
@@ -74,12 +75,7 @@ export function Panel({
           [inverse]
         )}
       >
-        <Theme
-          name={accent ? accentThemeName : null}
-          // TODO shouldn't need this
-          key={`${accent}`}
-          inverse={inverse}
-        >
+        <Theme name={accent ? accentThemeName : null} key={`${accent}`}>
           {children}
         </Theme>
       </PanelContext.Provider>
@@ -142,36 +138,6 @@ export function Panel({
               <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
               <YGroup>
-                <ListItem
-                  bg="transparent"
-                  gap="$3"
-                  onPress={() => setInverse((val) => !val)}
-                >
-                  <Paragraph size="$3" mr="$2" text="left" select="none">
-                    Inverse
-                  </Paragraph>
-
-                  <Switch
-                    size="$1"
-                    checked={inverse}
-                    onPress={(e) => e.stopPropagation()}
-                    onCheckedChange={(val) => {
-                      setInverse(val)
-                    }}
-                  >
-                    <Switch.Thumb
-                      animation={[
-                        'quickest',
-                        {
-                          transform: {
-                            overshootClamping: true,
-                          },
-                        },
-                      ]}
-                    />
-                  </Switch>
-                </ListItem>
-
                 {hasAccent && (
                   <ListItem
                     bg="transparent"

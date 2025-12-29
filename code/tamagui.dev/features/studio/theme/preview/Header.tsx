@@ -10,7 +10,7 @@ export const Header = () => {
 
   return (
     <XStack mt={-20} maxW="100%" gap="$6" flex={1} justify="space-between" items="center">
-      <YStack flex={1} maxW={700} gap="$5">
+      <YStack flex={1} flexBasis="auto" maxW={700} gap="$5">
         <H1 mb="-2%" {...demoProps.headingFontFamilyProps} size="$12" lineHeight="$11">
           {store.themeSuite?.name || 'Design System'}
         </H1>

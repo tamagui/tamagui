@@ -30,7 +30,7 @@ export const CurrentTask = () => {
 
       <Separator mb="$2" />
 
-      <YStack flex={1} gap="$4">
+      <YStack flex={1} flexBasis="auto" gap="$4">
         <YStack gap="$6">
           <XStack {...demoProps.gapPropsLg}>
             <XStack {...demoProps.gapPropsMd}>

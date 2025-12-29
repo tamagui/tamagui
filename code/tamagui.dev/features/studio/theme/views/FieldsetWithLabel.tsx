@@ -50,10 +50,10 @@ export const FieldsetWithLabel = ({
           <Input
             size="$3"
             autoFocus
-            selectTextOnFocus
-            onEndEditing={() => {
+            onBlur={() => {
               setIsEditing(false)
             }}
+            onFocus={(e) => e.currentTarget.select()}
             defaultValue={label}
             onChangeText={(t) => {
               text.current = t
