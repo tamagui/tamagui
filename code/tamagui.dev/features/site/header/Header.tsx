@@ -675,7 +675,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
     if (props.id === 'theme') {
       return (
-        <YStack flex={1} gap="$2">
+        <YStack flex={1} gap="$2" flexBasis="auto">
           {!isOnBentoPage || !themeHistories.length ? (
             <>
               <PromoCardTheme />
@@ -819,7 +819,7 @@ const HeaderMenuMoreContents = () => {
         <Separator bg="$color02" opacity={0.25} my="$2" />
       </YStack>
 
-      <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
+      <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="$2" width="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
             Core
@@ -876,7 +876,7 @@ const HeaderMenuMoreContents = () => {
 
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
+      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$2" width="100%">
         <Link asChild href="/takeout">
           <HeadAnchor grid half tag="a">
             <XStack items="center">
@@ -986,6 +986,7 @@ const HeadAnchor = styled(Paragraph, {
         textTransform: 'unset',
         width: '100%',
         flex: 1,
+        flexBasis: 'auto',
         p: '$2',
         px: '$4',
 
