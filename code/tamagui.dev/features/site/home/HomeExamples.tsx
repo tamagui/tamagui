@@ -41,7 +41,7 @@ export const HomeExamples = memo(
     }
 
     return (
-      <ContainerLarge position="relative">
+      <ContainerLarge position="relative" flexBasis="auto">
         <YStack z={1} gap="$6" mb="$4">
           {!onlyDemo && (
             <YStack items="center" gap="$3">
