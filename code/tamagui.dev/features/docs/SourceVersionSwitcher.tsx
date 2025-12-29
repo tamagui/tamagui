@@ -61,13 +61,13 @@ export function SourceVersionSwitcher({
 
       <Select.Content zIndex={200000}>
         <Select.ScrollUpButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
           <LinearGradient
@@ -75,11 +75,11 @@ export function SourceVersionSwitcher({
             end={[0, 1]}
             fullscreen
             colors={['$background', 'transparent']}
-            borderRadius="$4"
+            rounded="$4"
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport minWidth={150}>
+        <Select.Viewport minW={150}>
           <Select.Group>
             <Select.Label>Source Version</Select.Label>
             {React.useMemo(
@@ -100,13 +100,13 @@ export function SourceVersionSwitcher({
         </Select.Viewport>
 
         <Select.ScrollDownButton
-          alignItems="center"
-          justifyContent="center"
+          items="center"
+          justify="center"
           position="relative"
           width="100%"
           height="$3"
         >
-          <YStack zIndex={10}>
+          <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>
           <LinearGradient
@@ -114,7 +114,7 @@ export function SourceVersionSwitcher({
             end={[0, 1]}
             fullscreen
             colors={['transparent', '$background']}
-            borderRadius="$4"
+            rounded="$4"
           />
         </Select.ScrollDownButton>
       </Select.Content>
