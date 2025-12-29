@@ -102,6 +102,7 @@ const NavLineIndicator = ({
 
   const { path, itemDistances, totalLength } = buildPathAndDistances()
   const activeDistance = itemDistances[activeIndex] || 0
+  const strokeOffset = -(activeDistance - segmentHalf)
 
   return (
     <svg
@@ -125,7 +126,7 @@ const NavLineIndicator = ({
         strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray={`${segmentHalf * 2} ${totalLength}`}
-        strokeDashoffset={-(activeDistance - segmentHalf)}
+        strokeDashoffset={strokeOffset}
         style={{
           transition: 'stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
@@ -137,6 +138,7 @@ const NavLineIndicator = ({
 export function DocsQuickNav() {
   const [headings, setHeadings] = useState<HTMLHeadingElement[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
+
   const [itemData, setItemData] = useState<
     Array<{ top: number; height: number; level: number }>
   >([])
@@ -178,6 +180,8 @@ export function DocsQuickNav() {
 
         // Pick the heading that has most recently passed the "reading line"
         // (the highest index among all headings currently above the 70% mark)
+        // Only update if we have intersecting headings - don't reset to 0 automatically
+        // as this causes jumping issues with v5 config
         if (intersectingHeadings.current.size > 0) {
           let maxIndex = -1
           intersectingHeadings.current.forEach((id) => {
@@ -189,8 +193,6 @@ export function DocsQuickNav() {
           if (maxIndex !== -1) {
             setActiveIndex(maxIndex)
           }
-        } else if (window.scrollY < 100) {
-          setActiveIndex(0)
         }
       },
       {
@@ -328,13 +330,7 @@ export function DocsQuickNav() {
                       <Paragraph
                         tag="span"
                         size={level === 2 ? '$3' : '$2'}
-                        color={
-                          index === activeIndex
-                            ? '$color12'
-                            : level === 2
-                              ? '$color11'
-                              : '$color10'
-                        }
+                        color={index === activeIndex ? '$color12' : '$color11'}
                         cursor="pointer"
                         fontWeight={level === 2 ? '500' : '400'}
                         hoverStyle={{ color: '$color12' }}
@@ -350,7 +346,7 @@ export function DocsQuickNav() {
         </YStack>
 
         <YStack gap="$2">
-          <Theme name="tan">
+          <Theme name="yellow_alt1">
             <Link width="100%" href="/bento">
               <BentoButton bg="transparent" />
             </Link>

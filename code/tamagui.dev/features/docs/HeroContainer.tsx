@@ -49,6 +49,7 @@ export function HeroContainer({
       mt="$4"
       mb="$4"
       position="relative"
+      flexBasis="auto"
       display="flex"
       items={alignItems || 'center'}
       justify="center"
