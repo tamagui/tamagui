@@ -108,7 +108,9 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
     <>
       <Theme name={baseStepThemeName}>
         <ThemeNameEffectNoTheme />
-        <YStack flex={1}>{props.children}</YStack>
+        <YStack flex={1} flexBasis="auto">
+          {props.children}
+        </YStack>
       </Theme>
     </>
   )
@@ -195,7 +197,6 @@ const ThemeBuilderModal = memo(() => {
                 return (
                   <ScrollView flex={1} contentContainerStyle={{ flex: 1 }}>
                     <YStack flex={1}>
-                      {/* @ts-ignore */}
                       <StepComponent />
                     </YStack>
                   </ScrollView>

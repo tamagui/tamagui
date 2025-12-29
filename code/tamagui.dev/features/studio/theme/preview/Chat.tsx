@@ -33,54 +33,12 @@ const initialMessages = [
     content: 'Magna cillum',
     createdAt: new Date(2023, 1, 1, 0, 0, 3),
   },
-  // {
-  //   id: 5,
-  //   userId: 3,
-  //   content: 'adipisicing amet officia.',
-  //   createdAt: new Date(2023, 1, 1, 0, 0, 3),
-  // },
   {
-    id: 6,
+    id: 5,
     userId: 1,
     content: 'Latin?',
     createdAt: new Date(2023, 1, 1, 0, 0, 4),
   },
-  // {
-  //   id: 7,
-  //   userId: 2,
-  //   content: 'Exercitation!',
-  //   createdAt: new Date(2023, 1, 1, 0, 0, 5),
-  // },
-  // {
-  //   id: 8,
-  //   userId: 1,
-  //   content: 'What?',
-  //   createdAt: new Date(2023, 1, 1, 0, 0, 6),
-  // },
-  // {
-  //   id: 9,
-  //   userId: 3,
-  //   content: 'Esse irure laboris deserunt.',
-  //   createdAt: new Date(2023, 1, 1, 0, 0, 7),
-  // },
-  // {
-  //   id: 10,
-  //   userId: 2,
-  //   content: 'Lorem ipsum',
-  //   createdAt: new Date(2023, 1, 1, 0, 0, 10),
-  // },
-  // {
-  //   id: 11,
-  //   userId: 3,
-  //   content: '+1',
-  //   createdAt: new Date(2023, 1, 1, 0, 0, 11),
-  // },
-  // {
-  //   id: 12,
-  //   userId: 3,
-  //   content: 'Magna anim occaecat...',
-  //   createdAt: new Date(2023, 1, 1, 0, 0, 11),
-  // },
 ]
 
 export const ChatScreen = () => {
@@ -143,7 +101,7 @@ export const ChatScreen = () => {
         </XStack>
       </YStack>
 
-      <YStack flex={1}>
+      <YStack flex={1} flexBasis="auto">
         <ScrollView m="$-4" p="$6">
           <YStack {...demoProps.gapPropsMd}>
             {messages.map((message, idx) => {

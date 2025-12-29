@@ -80,7 +80,6 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
         justify="flex-start"
         size="$4"
         title={item.title}
-        hoverTheme
         onPress={item.onPress as any}
         {...(!item.title && {
           p: 0,
