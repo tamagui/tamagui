@@ -47,7 +47,9 @@ const TableCellText = styled(Paragraph, {
 
 type CellContent = ReactNode
 
-const MARKDOWN_PATTERN = /(\*\*\[([^\]]+)\]\(([^)]+)\)\*\*)|(\[([^\]]+)\]\(([^)]+)\))|(\*\*([^*]+)\*\*)/g
+// Patterns: bold link, link, bold, inline code
+const MARKDOWN_PATTERN =
+  /(\*\*\[([^\]]+)\]\(([^)]+)\)\*\*)|(\[([^\]]+)\]\(([^)]+)\))|(\*\*([^*]+)\*\*)|(`([^`]+)`)/g
 
 function parseCell(content: CellContent): ReactNode {
   if (typeof content !== 'string') return content
@@ -85,6 +87,14 @@ function parseCell(content: CellContent): ReactNode {
       parts.push(
         <Text key={i} fontWeight="700">
           {match[8]}
+        </Text>
+      )
+    }
+    // Inline code: `text`
+    else if (match[9]) {
+      parts.push(
+        <Text key={i} fontFamily="$mono" bg="$color4" px="$1.5" py="$0.5" rounded="$2">
+          {match[10]}
         </Text>
       )
     }

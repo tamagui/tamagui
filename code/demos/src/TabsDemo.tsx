@@ -23,7 +23,6 @@ export function TabsDemo() {
   const demo = demos[demoIndex]
 
   return (
-    // web only fix for position relative
     <YStack
       px="$4"
       {...(isWeb && {
