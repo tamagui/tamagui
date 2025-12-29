@@ -1,5 +1,5 @@
 import { LogoIcon, useTint } from '@tamagui/logo'
-import { ArrowDown, Play } from '@tamagui/lucide-icons'
+import { ArrowDown, ArrowUp, Play } from '@tamagui/lucide-icons'
 import { animations } from '@tamagui/tamagui-dev-config'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
@@ -64,15 +64,17 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           </HomeH3>
         </YStack>
 
-        <XStack gap="$4">
+        <XStack>
           <YStack
             flex={2}
             minW="55%"
-            self="flex-start"
+            self="center"
             z={100}
             elevation="$4"
+            mr="$-2"
             rounded="$4"
             theme={tint as any}
+            justify="center"
           >
             <ExampleAnimations />
           </YStack>
@@ -80,6 +82,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           <YStack
             perspective={1000}
             rotateY="-5deg"
+            x={-10}
             $sm={{ display: 'none' }}
             position="relative"
             rounded="$8"
@@ -101,7 +104,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
                 size="$4"
                 theme="accent"
                 z={10}
-                onPress={() => setDisableScrollPane(false)}
+                onPress={() => setDisableScrollPane((prev) => !prev)}
               >
                 View more
               </Button>

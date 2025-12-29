@@ -1,4 +1,4 @@
-import { Button, type ButtonProps, Text, YStack } from 'tamagui'
+import { Button, type ButtonProps, YStack } from 'tamagui'
 import { TakeoutIcon } from '../icons/TakeoutIcon'
 
 export const TakeoutButton = (props: ButtonProps) => {
@@ -10,8 +10,8 @@ export const TakeoutButton = (props: ButtonProps) => {
       borderRightWidth={0.5}
       bg="$background02"
       hoverStyle={{
-        borderColor: '$color6',
-        bg: '$color5',
+        borderColor: '$color5',
+        bg: '$color4',
       }}
       {...props}
     >

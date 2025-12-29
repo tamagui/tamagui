@@ -70,10 +70,10 @@ export default function DocsLayout() {
         }}
         maxW={1250}
         z={100}
-        position="relative"
       >
         <EnsureFlexed />
         <YStack
+          // position="relative"
           overflow="hidden"
           $md={{
             display: 'none',

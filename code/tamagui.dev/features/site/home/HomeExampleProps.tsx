@@ -40,7 +40,7 @@ export const HomeExampleProps = () => {
       <XStack px="$6" pt="$8" gap="$4" $sm={{ flexDirection: 'column', px: 0 }}>
         <YStack width="50%" $sm={{ width: '100%' }}>
           <Features
-            space="$4"
+            gap="$8"
             items={[
               <FeatureItem key="" label="Press & hover events">
                 onHoverIn, onHoverOut, onPressIn, and onPressOut.
@@ -56,7 +56,7 @@ export const HomeExampleProps = () => {
         </YStack>
         <YStack width="50%" $sm={{ width: '100%' }}>
           <Features
-            space="$4"
+            gap="$8"
             items={[
               <FeatureItem key="" label="Themes">
                 Change theme on any component.

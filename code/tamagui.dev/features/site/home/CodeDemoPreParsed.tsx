@@ -22,6 +22,7 @@ export function CodeDemoPreParsed({
       overflow="hidden"
       borderWidth={1}
       flex={1}
+      flexBasis="auto"
       {...props}
     >
       <ScrollView

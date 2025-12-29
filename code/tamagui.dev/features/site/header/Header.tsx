@@ -81,6 +81,7 @@ export function Header(props: HeaderProps) {
       >
         <XStack pointerEvents="auto" width="100%" maxW={1200} position="relative">
           <XStack
+            position="relative"
             className={`ease-out all ms300`}
             py="$1.5"
             y={bannerHeight}
@@ -598,7 +599,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
           width="100%"
           animation="200ms"
           height={heights[active]}
-          maxHeight="90vh"
+          maxH="90vh"
           overflow="hidden"
           rounded="$6"
         >
