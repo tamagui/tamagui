@@ -168,7 +168,14 @@ export const HomeThemes = memo(function HomeThemes() {
       <YStack my="$8" items="center" justify="center">
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" gap="$2">
-            <XGroup disablePassBorderRadius bordered p="$2" rounded="$10" self="center">
+            <XGroup
+              disablePassBorderRadius
+              borderWidth={1}
+              borderColor="$borderColor"
+              p="$2"
+              rounded="$10"
+              self="center"
+            >
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = userScheme.value === name
                 return (
@@ -183,7 +190,14 @@ export const HomeThemes = memo(function HomeThemes() {
               })}
             </XGroup>
 
-            <XGroup disablePassBorderRadius bordered p="$2" rounded="$10" self="center">
+            <XGroup
+              disablePassBorderRadius
+              borderWidth={1}
+              borderColor="$borderColor"
+              p="$2"
+              rounded="$10"
+              self="center"
+            >
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
