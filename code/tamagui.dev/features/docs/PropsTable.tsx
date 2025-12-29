@@ -1,14 +1,4 @@
-import {
-  H3,
-  H4,
-  ListItem,
-  Paragraph,
-  Separator,
-  View,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { H3, H4, ListItem, Paragraph, Separator, View, XStack, YStack } from 'tamagui'
 
 import { Code } from '~/components/Code'
 

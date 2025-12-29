@@ -580,7 +580,7 @@ const HeightAnimator = View.styleable((props, ref) => {
   const [height, setHeight] = React.useState(0)
 
   return (
-    <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
+    <View ref={ref} height={itemContext.open ? height : 0} position="relative" {...rest}>
       <View
         position="absolute"
         width="100%"
