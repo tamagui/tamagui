@@ -31,8 +31,6 @@ export function StudioCurrentStepTip() {
   const button = (
     <Button
       cursor="default"
-      pressTheme={false}
-      hoverTheme={!Tip}
       size="$2"
       chromeless
       scaleIcon={1.2}

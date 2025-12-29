@@ -13,7 +13,7 @@ import {
 
 const Item = ({ children, ...props }: ListItemProps) => (
   <ListItem minW={190} size="$5" iconAfter={Plus} {...props}>
-    <Paragraph userSelect="none">{children}</Paragraph>
+    <Paragraph select="none">{children}</Paragraph>
   </ListItem>
 )
 

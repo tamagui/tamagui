@@ -43,9 +43,16 @@ export const Calendar = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack flex={1} items="center">
+      <YStack flex={1} flexBasis="auto" items="center">
         <YStack>
-          <XStack justify="space-between" items="center" flex={1} width="100%" px="$4">
+          <XStack
+            justify="space-between"
+            items="center"
+            flex={1}
+            flexBasis="auto"
+            width="100%"
+            px="$4"
+          >
             <Button
               size="$2"
               icon={ChevronLeft}
@@ -83,12 +90,11 @@ export const Calendar = () => {
       <YStack mt="$4">
         <>
           <Button
-            fontWeight="600"
             size="$5"
             {...demoProps.borderRadiusProps}
             {...demoProps.buttonOutlineProps}
           >
-            Select Date
+            <SizableText fontWeight="600">Select Date</SizableText>
           </Button>
         </>
       </YStack>

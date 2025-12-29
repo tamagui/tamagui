@@ -249,7 +249,9 @@ const componentsIn = {
   UL,
   LI,
   Link,
-  Strong: (props) => <Paragraph tag="strong" fontSize="inherit" fontWeight="700" {...props} />,
+  Strong: (props) => (
+    <Paragraph tag="strong" fontSize="inherit" fontWeight="700" {...props} />
+  ),
 
   TamaguiExamplesCode,
 
