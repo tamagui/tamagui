@@ -15,6 +15,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
     <YStack
       mb="$2"
       flex={1}
+      flexBasis="auto"
       $gtSm={{
         fd: 'row',
         justifyContent: 'space-between',
