@@ -63,12 +63,15 @@ export default createTamagui({
 
 Tamagui supports four animation drivers, each with different strengths. The animation keys match between all drivers, so you can swap them out based on your platform needs.
 
-| Driver | Platform | Bundle Impact | Performance | Spring Physics |
-|--------|----------|---------------|-------------|----------------|
-| **[CSS](/docs/core/animations-css)** | Web only | Lightest | Fast (CSS transitions) | No (easing only) |
-| **[React Native](/docs/core/animations-react-native)** | Web + Native | No extra hit beyond RNW | On-thread | Yes (basic) |
-| **[Reanimated](/docs/core/animations-reanimated)** | Web + Native | Larger | Off-thread (native), slower (web) | Yes (advanced) |
-| **[Motion](/docs/core/animations-motion)** | Web only | Medium | Off-thread (WAAPI) | Yes (excellent) |
+<SimpleTable
+  headers={['Driver', 'Platform', 'Bundle Impact', 'Performance', 'Spring Physics']}
+  rows={[
+    ['**[CSS](/docs/core/animations-css)**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'No (easing only)'],
+    ['**[React Native](/docs/core/animations-react-native)**', 'Web + Native', 'No extra hit beyond RNW', 'On-thread', 'Yes (basic)'],
+    ['**[Reanimated](/docs/core/animations-reanimated)**', 'Web + Native', 'Larger', 'Off-thread (native), slower (web)', 'Yes (advanced)'],
+    ['**[Motion](/docs/core/animations-motion)**', 'Web only', 'Medium', 'Off-thread (WAAPI)', 'Yes (excellent)'],
+  ]}
+/>
 
 - **[CSS](/docs/core/animations-css)** - Lightest bundle size, but lacks spring physics (easing curves only). Best for simple web-only apps.
 - **[React Native](/docs/core/animations-react-native)** - No extra bundle hit beyond React Native Web, but runs on-thread. Good for basic cross-platform animations.

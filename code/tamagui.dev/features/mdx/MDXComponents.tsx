@@ -73,6 +73,7 @@ import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
 import { TabsTabProps } from 'tamagui'
 import { Tab } from '~/components/RovingTabs'
+import { SimpleTable } from './SimpleTable'
 
 if (!React.version.startsWith('19')) {
   console.error(`\n\n\n\Not on React 19 ❌\n\n\n\n`)
@@ -248,6 +249,7 @@ const componentsIn = {
   UL,
   LI,
   Link,
+  Strong: (props) => <Paragraph tag="strong" fontSize="inherit" fontWeight="700" {...props} />,
 
   TamaguiExamplesCode,
 
@@ -935,6 +937,7 @@ const componentsIn = {
       </YStack>
     )
   },
+  SimpleTable,
 }
 
 export class ErrorBoundary extends React.Component<{ children: any; name: string }> {
