@@ -86,7 +86,7 @@ export function ComponentItem({
           />
         </YStack>
 
-        <YStack flex={1} p="$4" position="relative">
+        <YStack flex={1} flexBasis="auto" p="$4" position="relative">
           <H4 fontFamily="$mono" size="$5" color="$color12">
             {name}
           </H4>

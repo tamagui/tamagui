@@ -431,7 +431,15 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
     })
 
     return (
-      <XStack flex={1} ref={ref} items="stretch" select="none" gap="$2" {...rest}>
+      <XStack
+        flex={1}
+        flexBasis="auto"
+        ref={ref}
+        items="stretch"
+        select="none"
+        gap="$2"
+        {...rest}
+      >
         <XStack
           items="center"
           // @ts-expect-error - window group name
