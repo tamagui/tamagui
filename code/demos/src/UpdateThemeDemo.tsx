@@ -9,7 +9,6 @@ import {
   XStack,
   YStack,
   getVariableValue,
-  useForceUpdate,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
 
@@ -18,7 +17,6 @@ const colorKeys = Object.keys(colors)
 
 export function UpdateThemeDemo() {
   const [theme, setTheme] = React.useState<any>()
-  const update = useForceUpdate()
 
   useIsomorphicLayoutEffect(() => {
     addTheme({
@@ -50,7 +48,6 @@ export function UpdateThemeDemo() {
               color: randomColor,
             },
           })
-          update()
         }}
       >
         Set to random color

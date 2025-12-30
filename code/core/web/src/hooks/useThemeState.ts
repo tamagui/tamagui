@@ -207,7 +207,8 @@ const getNextState = (
         )
   const isSameAsParent = parentState && (!name || name === parentState.name)
   const shouldRerender = Boolean(
-    needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name)
+    pendingUpdate === 'force' ||
+      (needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name))
   )
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
