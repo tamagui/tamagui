@@ -120,7 +120,7 @@ export function getConfig(tamaguiPlugin: any) {
         join(__dirname, 'test-setup.ts'),
         ...(isNative
           ? [join(__dirname, 'test-setup-native.cjs')]
-          : [requireResolve('vitest-react-native/setup')]),
+          : []),
       ],
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
