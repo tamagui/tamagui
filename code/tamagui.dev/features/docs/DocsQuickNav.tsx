@@ -1,3 +1,4 @@
+// @tamagui-ignore
 import { href, usePathname } from 'one'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -104,6 +105,16 @@ const NavLineIndicator = ({
   const activeDistance = itemDistances[activeIndex] || 0
   const strokeOffset = -(activeDistance - segmentHalf)
 
+  // Calculate start and end dot positions (at the very top/bottom of the line)
+  const firstItem = items[0]
+  const lastItem = items[items.length - 1]
+  const startDot = firstItem
+    ? { x: getX(firstItem.level), y: getY(firstItem) - segmentHalf - 4 }
+    : null
+  const endDot = lastItem
+    ? { x: getX(lastItem.level), y: getY(lastItem) + segmentHalf + 4 }
+    : null
+
   return (
     <svg
       style={{
@@ -131,6 +142,12 @@ const NavLineIndicator = ({
           transition: 'stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       />
+
+      {/* Start dot */}
+      {startDot && <circle cx={startDot.x} cy={startDot.y} r="3" fill="var(--color6)" />}
+
+      {/* End dot */}
+      {endDot && <circle cx={endDot.x} cy={endDot.y} r="3" fill="var(--color6)" />}
     </svg>
   )
 }
@@ -311,7 +328,8 @@ export function DocsQuickNav() {
 
               {headings.map(({ id, nodeName, innerText }, index) => {
                 const level = getLevel(nodeName)
-
+                const isActive = index === activeIndex
+                const isLevel2 = level === 2
                 return (
                   <XStack
                     key={`${id}-${index}`}
@@ -330,10 +348,13 @@ export function DocsQuickNav() {
                       <Paragraph
                         tag="span"
                         size={level === 2 ? '$3' : '$2'}
-                        color={index === activeIndex ? '$color12' : '$color11'}
+                        color={isActive ? '$color12' : '$color11'}
                         cursor="pointer"
-                        fontWeight={level === 2 ? '500' : '400'}
+                        fontWeight={isLevel2 ? '500' : '400'}
                         hoverStyle={{ color: '$color12' }}
+                        style={{
+                          fontFamily: 'Inter',
+                        }}
                       >
                         {innerText}
                       </Paragraph>
