@@ -4,6 +4,8 @@ export type { InputProps as TextAreaProps } from './types';
  * @see — Docs https://tamagui.dev/ui/inputs#textarea
  */
 export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "color" | "size" | "children" | "style" | "className"> & Pick<import("@tamagui/web").TextProps, "color"> & {
+    fontSize?: import("@tamagui/web").FontSizeTokens | number;
+    fontFamily?: import("@tamagui/web").FontTokens;
     rows?: number;
     placeholderTextColor?: import("@tamagui/web").ColorTokens;
     selectionColor?: import("@tamagui/web").ColorTokens;
@@ -25,6 +27,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
             };
         };
     }) => void;
+    keyboardAppearance?: "default" | "light" | "dark";
 }, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;

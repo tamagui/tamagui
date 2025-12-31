@@ -1,4 +1,4 @@
-import type { ColorTokens, StackProps, TextProps } from '@tamagui/web'
+import type { ColorTokens, FontTokens, FontSizeTokens, StackProps, TextProps } from '@tamagui/web'
 
 /**
  * Web-aligned Input props
@@ -10,6 +10,16 @@ type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
 export type InputProps = StackProps &
   Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className'> &
   Pick<TextProps, 'color'> & {
+    /**
+     * Font size - accepts Tamagui size tokens or number
+     */
+    fontSize?: FontSizeTokens | number
+
+    /**
+     * Font family - accepts Tamagui font tokens
+     */
+    fontFamily?: FontTokens
+
     // Core HTML input props are inherited from HTMLInputProps:
     // type, value, defaultValue, placeholder, disabled, readOnly,
     // onChange, onFocus, onBlur, onInput, autoComplete, autoFocus,
@@ -52,4 +62,9 @@ export type InputProps = StackProps &
     onSelectionChange?: (e: {
       nativeEvent: { selection: { start: number; end: number } }
     }) => void
+
+    /**
+     * Keyboard appearance (native only, ignored on web)
+     */
+    keyboardAppearance?: 'default' | 'light' | 'dark'
   }
