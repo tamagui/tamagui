@@ -27,7 +27,7 @@ yarn watch
 
 ### Linking tamagui into your existing project
 
-Most package managers have a `link` command that lets you link in the local tamagui to your project, we've build a package we found useful that works with `bun` or `yarn` depending on your configuration:
+Most package managers have a `link` command that lets you link in the local tamagui to your project, we've built a package we found useful that works with `bun` or `yarn` depending on your configuration:
 
 ```bash
 npm i -g lllink
