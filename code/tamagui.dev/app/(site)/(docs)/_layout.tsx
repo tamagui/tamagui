@@ -116,6 +116,7 @@ export default function DocsLayout() {
       <YStack
         maxW="100%"
         flex={1}
+        flexBasis="auto"
         py="$8"
         $gtLg={{
           position: 'relative',
