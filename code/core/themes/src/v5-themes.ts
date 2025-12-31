@@ -496,7 +496,8 @@ function adjustPaletteLight(
   if (color11Key && palette[color11Key]?.startsWith('hsl(')) {
     const { h, s, l } = parseHSL(palette[color11Key]!)
     const newL = Math.min(100, l * 0.9)
-    const newS = 65
+    const isGray = name === 'gray'
+    const newS = isGray ? 0 : 65
     adjusted[color11Key] = buildHSL(h, newS, newL)
   }
 
@@ -526,10 +527,11 @@ function adjustPaletteDark(
     if (value?.startsWith('hsl(')) {
       const { h, s, l } = parseHSL(value)
 
-      // we need to strongly de-saturate 11
+      // we need to strongly de-saturate 11, but skip for gray (keep neutral)
       if (number === 11) {
         const newL = Math.round(Math.min(100, l * 1.1))
-        const newS = name === 'yellowDark' ? 45 : 65
+        const isGray = name === 'grayDark'
+        const newS = isGray ? 0 : name === 'yellowDark' ? 45 : 65
         adjusted[key] = buildHSL(h, newS, newL)
         continue
       }
