@@ -55,7 +55,7 @@ export function ThemePage() {
     <>
       <Dialogs />
 
-      <YStack shrink={0} mb="$10">
+      <YStack shrink={0} flexBasis="auto" mb="$10">
         <Suspense fallback={null}>
           <ThemeBuilderModal />
         </Suspense>
@@ -72,6 +72,7 @@ export function ThemePage() {
           <YStack
             p="$4"
             flex={1}
+            flexBasis="auto"
             maxW="calc(min(100vw, 1300px))"
             group="content"
             $md={{

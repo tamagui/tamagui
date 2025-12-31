@@ -10,7 +10,7 @@ export default function Layout() {
   return (
     <Theme name={themeName}>
       <ThemeNameEffect colorKey={bgColor as any} />
-      <YStack t={-54} pt={54} z={0} bg={bgColor as any}>
+      <YStack flexBasis="auto" t={-54} pt={54} z={0} bg={bgColor as any}>
         <Slot />
       </YStack>
       <Footer />
