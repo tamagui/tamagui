@@ -1,10 +1,18 @@
-import type { ColorTokens, StackProps, TextProps } from '@tamagui/web';
+import type { ColorTokens, FontTokens, FontSizeTokens, StackProps, TextProps } from '@tamagui/web';
 /**
  * Web-aligned Input props
  * Follows standard HTML input API as primary, with minimal RN compatibility
  */
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 export type InputProps = StackProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className'> & Pick<TextProps, 'color'> & {
+    /**
+     * Font size - accepts Tamagui size tokens or number
+     */
+    fontSize?: FontSizeTokens | number;
+    /**
+     * Font family - accepts Tamagui font tokens
+     */
+    fontFamily?: FontTokens;
     /**
      * Rows for textarea (when tag="textarea")
      */
@@ -48,6 +56,10 @@ export type InputProps = StackProps & Omit<HTMLInputProps, 'size' | 'color' | 's
             };
         };
     }) => void;
+    /**
+     * Keyboard appearance (native only, ignored on web)
+     */
+    keyboardAppearance?: 'default' | 'light' | 'dark';
 };
 export {};
 //# sourceMappingURL=types.d.ts.map
