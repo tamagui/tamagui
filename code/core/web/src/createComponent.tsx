@@ -505,9 +505,10 @@ export function createComponent<
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }
-    if (typeof stateRef.current.isListeningToTheme === 'boolean') {
-      themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
-    }
+    // Always set needsUpdate callback so it can check the ref's latest value
+    // This ensures components with $theme-dark/$theme-light re-render on theme change
+    // even when using raw colors (not tokens) since isListeningToTheme is set after useSplitStyles
+    themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {
       themeStateProps.deopt = willBeAnimated

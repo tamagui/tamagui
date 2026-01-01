@@ -8,9 +8,18 @@ import type {
   UseAnimatedNumberReaction,
   UseAnimatedNumberStyle,
 } from '@tamagui/web'
-import { useEvent } from '@tamagui/web'
+import { useEvent, useThemeWithState } from '@tamagui/web'
 import React from 'react'
 import { Animated, type Text, type View } from 'react-native'
+
+// Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
+const resolveDynamicValue = (value: any, isDark: boolean): any => {
+  if (value && typeof value === 'object' && 'dynamic' in value) {
+    const dynamicValue = isDark ? value.dynamic.dark : value.dynamic.light
+    return dynamicValue
+  }
+  return value
+}
 
 type AnimationsConfig<A extends Object = any> = { [Key in keyof A]: AnimationConfig }
 
@@ -171,6 +180,9 @@ export function createAnimations<A extends AnimationsConfig>(
       const isDisabled = isWeb && componentState.unmounted === true
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+      const [, themeState] = useThemeWithState({})
+      // Check scheme first, then fall back to checking theme name for 'dark'
+      const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
 
       /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = React.useRef<Record<string, Animated.Value>>({})
@@ -190,7 +202,7 @@ export function createAnimations<A extends AnimationsConfig>(
       const animateOnly = (props.animateOnly as string[]) || []
       const hasAnimateOnly = !!props.animateOnly
 
-      const args = [JSON.stringify(style), componentState, isExiting, !!onDidAnimate]
+      const args = [JSON.stringify(style), componentState, isExiting, !!onDidAnimate, isDark]
 
       // check if there is any style that is not supported by native driver
       const isThereNoNativeStyleKeys = React.useMemo(() => {
@@ -210,7 +222,10 @@ export function createAnimations<A extends AnimationsConfig>(
         const nonAnimatedStyle = {}
 
         for (const key in style) {
-          const val = style[key]
+          const rawVal = style[key]
+          // Resolve dynamic theme values (like $theme-dark)
+          const val = resolveDynamicValue(rawVal, isDark)
+          if (val === undefined) continue
 
           if (isDisabled) {
             continue
