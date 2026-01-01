@@ -11,6 +11,15 @@ import {
   type AnimationDriver,
   type UniversalAnimatedNumber,
 } from '@tamagui/core'
+
+// Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
+const resolveDynamicValue = (value: any, isDark: boolean): any => {
+  if (value && typeof value === 'object' && 'dynamic' in value) {
+    const dynamicValue = isDark ? value.dynamic.dark : value.dynamic.light
+    return dynamicValue
+  }
+  return value
+}
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import type { CSSProperties } from 'react'
@@ -241,6 +250,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
       const presenceContext = React.useContext(PresenceContext)
+      const [, themeState] = useThemeWithState({})
+      // Check scheme first, then fall back to checking theme name for 'dark'
+      const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
 
       // this memo is very important for performance, there's a big cost to
       // updating these values every render
@@ -249,11 +261,20 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         let dontAnimate = {}
 
         if (disableAnimation) {
-          dontAnimate = style
+          // Resolve dynamic objects based on current theme
+          for (const key in style) {
+            const rawValue = style[key]
+            const value = resolveDynamicValue(rawValue, isDark)
+            if (value === undefined) continue
+            dontAnimate[key] = value
+          }
         } else {
           const animateOnly = props.animateOnly as string[]
           for (const key in style) {
-            const value = style[key]
+            const rawValue = style[key]
+            // Resolve dynamic theme values (like $theme-dark)
+            const value = resolveDynamicValue(rawValue, isDark)
+            if (value === undefined) continue
             if (
               !onlyAnimateKeys[key] ||
               value === 'auto' ||
@@ -269,7 +290,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         // if we don't do this moti seems to flicker a frame before applying animation
         if (componentState.unmounted === 'should-enter') {
-          dontAnimate = style
+          // Resolve dynamic objects based on current theme
+          for (const key in style) {
+            const rawValue = style[key]
+            const value = resolveDynamicValue(rawValue, isDark)
+            if (value === undefined) continue
+            dontAnimate[key] = value
+          }
         }
 
         const styles = animate
@@ -325,6 +352,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         componentState.unmounted,
         JSON.stringify(style),
         presenceContext,
+        isDark,
       ])
 
       const moti = useMotify(motiProps)
