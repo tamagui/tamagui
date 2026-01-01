@@ -905,25 +905,30 @@ export const getSplitStyles: StyleSplitter = (
               const themeOriginalValues = styleOriginalValues.get(mediaStyle)
 
               for (const subKey in mediaStyle) {
-                let val = extractValueFromDynamic(mediaStyle[subKey], scheme)
-                const oppositeVal = extractValueFromDynamic(
-                  styleState.style[subKey],
-                  oppositeScheme
-                )
+                const val = extractValueFromDynamic(mediaStyle[subKey], scheme)
+                const existing = styleState.style[subKey]
 
-                mediaStyle[subKey] = getDynamicVal({
-                  scheme,
-                  val,
-                  oppositeVal,
-                })
-                mergeStyle(
-                  styleState,
-                  subKey,
-                  mediaStyle[subKey],
-                  priority,
-                  false,
-                  themeOriginalValues?.[subKey]
-                )
+                // If there's already a dynamic object from the other theme pseudo prop,
+                // merge directly to avoid importance conflicts between $theme-dark and $theme-light
+                if (existing?.dynamic) {
+                  existing.dynamic[scheme] = val
+                  mediaStyle[subKey] = existing
+                } else {
+                  const oppositeVal = extractValueFromDynamic(existing, oppositeScheme)
+                  mediaStyle[subKey] = getDynamicVal({
+                    scheme,
+                    val,
+                    oppositeVal,
+                  })
+                  mergeStyle(
+                    styleState,
+                    subKey,
+                    mediaStyle[subKey],
+                    priority,
+                    false,
+                    themeOriginalValues?.[subKey]
+                  )
+                }
               }
             } else if (
               !(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))
