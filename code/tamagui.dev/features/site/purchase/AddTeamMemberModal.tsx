@@ -291,7 +291,7 @@ export const AddTeamMemberModalComponent = () => {
                     const num = Number(text.replace(/^0+/, '')) || 1
                     setAdditionalSeats(num)
                   }}
-                  keyboardType="numeric"
+                  type="number-pad"
                   width={200}
                 />
                 <YStack items="flex-end">
