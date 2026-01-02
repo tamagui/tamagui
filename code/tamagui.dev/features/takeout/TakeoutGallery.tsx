@@ -117,6 +117,7 @@ export default function TakeoutGallery() {
         justify="center"
         gap="$6"
         px="$4"
+        width="100%"
         $md={{
           flexDirection: 'column',
         }}
@@ -131,6 +132,7 @@ export default function TakeoutGallery() {
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
           wrapperProps={{
             flex: 1,
+            flexBasis: 'auto',
             position: 'relative',
             height: 300,
 
@@ -152,6 +154,7 @@ export default function TakeoutGallery() {
           height="100%"
           wrapperProps={{
             flex: 2,
+            flexBasis: 'auto',
             position: 'relative',
             height: 300,
 
@@ -173,6 +176,7 @@ export default function TakeoutGallery() {
           height="100%"
           wrapperProps={{
             flex: 1,
+            flexBasis: 'auto',
             position: 'relative',
             height: 300,
 

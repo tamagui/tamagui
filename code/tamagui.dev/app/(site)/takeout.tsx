@@ -175,6 +175,7 @@ export default function TakeoutPage() {
         >
           <XStack
             flex={1}
+            flexBasis="auto"
             p="$5"
             $md={{
               flexDirection: 'column-reverse',
@@ -190,7 +191,14 @@ export default function TakeoutPage() {
               <StarterCard />
             </YStack>
 
-            <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" flex={1} gap="$5">
+            <YStack
+              mt={-580}
+              $md={{ mt: -520 }}
+              group="takeoutBody"
+              flex={1}
+              flexBasis="auto"
+              gap="$5"
+            >
               <ThemeTintAlt>
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
                   Takeout is a production-ready base stack that includes everything you
@@ -710,7 +718,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
       <TakeoutCard2Frame {...props} ref={composeRefs(innerGlow.parentRef) as any}>
         {isHydrated && <innerGlow.Component />}
 
-        <YStack flex={1} gap="$4" z={100}>
+        <YStack flex={1} flexBasis="auto" gap="$4" z={100} position="relative">
           <H2
             fontFamily="$mono"
             size="$8"
@@ -827,6 +835,7 @@ function FeaturesIconRow() {
       my={21}
       gap={20}
       flex={1}
+      flexBasis="auto"
       justify="space-between"
       pointerEvents="auto"
       $gtSm={{
@@ -883,7 +892,15 @@ const Point = ({
   size?: FontSizeTokens
 }) => {
   return (
-    <XStack tag="li" items="flex-start" gap="$4" flex={1} overflow="hidden" {...props}>
+    <XStack
+      tag="li"
+      items="flex-start"
+      gap="$4"
+      flex={1}
+      flexBasis="auto"
+      overflow="hidden"
+      {...props}
+    >
       <YStack mr={-12} py="$1.5">
         <Dot size={16} color="$color10" />
       </YStack>
@@ -975,12 +992,14 @@ const StarterCard = memo(() => {
         shadowRadius={30}
         shadowOffset={{ height: 20, width: 0 }}
         shadowColor="$shadowColor"
-        x={-50}
-        y={50}
         maxH="calc(min(85vh, 800px))"
         rounded="$8"
+        $gtMd={{
+          x: -50,
+          y: 50,
+        }}
         $md={{
-          x: -20,
+          x: 0,
           y: 0,
           maxH: 'auto',
           width: '100%',
@@ -1111,7 +1130,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
         },
       }}
     >
-      <YStack flex={1} py="$3" gap="$1">
+      <YStack flex={1} flexBasis="auto" py="$3" gap="$1">
         <Paragraph
           fontFamily="$mono"
           textTransform="uppercase"
