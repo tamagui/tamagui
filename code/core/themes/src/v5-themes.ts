@@ -253,13 +253,27 @@ export type GrandChildrenThemeDefinition = {
   template: string
 }
 
+/** Default color names available in v5 themes */
+export type DefaultColorName =
+  | 'blue'
+  | 'gray'
+  | 'green'
+  | 'orange'
+  | 'pink'
+  | 'purple'
+  | 'red'
+  | 'teal'
+  | 'yellow'
+
+export type ColorDefinition = { dark: ColorPalette; light: ColorPalette }
+
 export type CreateV5ThemeOptions = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: ColorPalette
   /** Override the light base palette (12 colors from lightest to darkest) */
   lightPalette?: ColorPalette
   /** Add or override color themes (e.g., { brand: { dark: [...], light: [...] } }) */
-  colors?: Record<string, { dark: ColorPalette; light: ColorPalette }>
+  colors?: Partial<Record<DefaultColorName, ColorDefinition>> & Record<string, ColorDefinition>
   /** Whether to include default color themes (blue, red, green, etc.). Defaults to true */
   includeDefaultColors?: boolean
   /** Add or override grandChildrenThemes (e.g., { alt1: { template: 'alt1' } }) */
