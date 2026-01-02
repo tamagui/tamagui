@@ -793,7 +793,7 @@ const TeamSeatsInput = ({
           id="team-seats"
           value={value.toString()}
           onChange={(e) => {
-            const val = e.nativeEvent.text
+            const val = e.target?.value
             onChange(Math.max(0, Number.parseInt(val) || 0))
           }}
           keyboardType="number-pad"

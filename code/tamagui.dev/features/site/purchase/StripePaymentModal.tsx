@@ -740,7 +740,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   borderWidth={1}
                   placeholder="Enter code"
                   value={couponCode}
-                  onChangeText={setCouponCode}
+                  onChange={(e) => {
+                    const text = e.target?.value
+                    setCouponCode(text)
+                  }}
                 />
                 <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
                   Apply
