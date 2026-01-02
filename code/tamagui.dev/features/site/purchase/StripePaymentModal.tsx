@@ -777,6 +777,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           p: '$6',
         }}
         flex={1}
+        flexBasis="auto"
         gap="$6"
       >
         <YStack flex={1}>

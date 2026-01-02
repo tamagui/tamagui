@@ -481,6 +481,7 @@ const ServiceCard = ({
       gap="$2"
       width={300}
       flex={1}
+      flexBasis="auto"
     >
       <H3 fontFamily="$mono" size="$6">
         {title}
