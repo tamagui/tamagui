@@ -35,6 +35,7 @@ export const Footer = memo(() => {
             px="$4"
             py="$5"
             flex={1.5}
+            flexBasis="auto"
             gap="$3"
           >
             <H4 mb="$3" fontFamily="$mono" size="$4" letterSpacing={0.5} opacity={0.5}>
@@ -55,6 +56,7 @@ export const Footer = memo(() => {
             px="$4"
             py="$5"
             flex={1.5}
+            flexBasis="auto"
             gap="$3"
           >
             <H4 mb="$3" fontFamily="$mono" size="$4" letterSpacing={0.5} opacity={0.5}>
