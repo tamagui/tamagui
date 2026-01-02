@@ -741,7 +741,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   borderWidth={1}
                   placeholder="Enter code"
                   value={couponCode}
-                  onChangeText={setCouponCode}
+                  onChange={(e) => setCouponCode(e.target?.value ?? '')}
                 />
                 <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
                   <Button.Text>Apply</Button.Text>
@@ -774,6 +774,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           p: '$6',
         }}
         flex={1}
+        flexBasis="auto"
         gap="$6"
       >
         <YStack flex={1}>

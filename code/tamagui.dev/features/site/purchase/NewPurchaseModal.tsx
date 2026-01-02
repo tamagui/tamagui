@@ -669,14 +669,15 @@ const SupportTabContent = ({
 
         <YStack gap="$3">
           <XStack overflow="hidden" items="center">
-            <Label flex={1} htmlFor="support-tier">
-              <P>Extra Support Level</P>
+            <Label flex={1} htmlFor="support-tier" rounded="$4">
+              <P>Extra Support Level </P>
             </Label>
 
             <XStack flex={1} maxW={200}>
               <Select
                 id="support-tier"
                 size="$4"
+                rounded="$4"
                 value={supportTier}
                 onValueChange={handleSupportTierChange}
                 disabled={chatSupport} // Disable if chat support is enabled
@@ -708,6 +709,7 @@ const SupportTabContent = ({
 
 const AnimatedYStack = styled(YStack, {
   flex: 1,
+  flexBasis: 'auto',
   x: 0,
   opacity: 1,
 
@@ -801,10 +803,10 @@ const TeamSeatsInput = ({
           id="team-seats"
           value={value.toString()}
           onChange={(e) => {
-            const val = e.nativeEvent.text
+            const val = e.target.value
             onChange(Math.max(0, Number.parseInt(val) || 0))
           }}
-          keyboardType="number-pad"
+          type="number-pad"
           width={100}
         />
       </XStack>
