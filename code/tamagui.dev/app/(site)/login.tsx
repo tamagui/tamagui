@@ -45,7 +45,7 @@ function SignIn() {
 
   if (!supabase) {
     return (
-      <YStack items="center" flex={1} justify="center">
+      <YStack flex={1} flexBasis="auto" items="center" justify="center">
         <Spinner size="small" />
       </YStack>
     )
@@ -176,7 +176,7 @@ function SignIn() {
                       />
                       <Input
                         autoComplete="password"
-                        secureTextEntry
+                        type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.nativeEvent.text)}
