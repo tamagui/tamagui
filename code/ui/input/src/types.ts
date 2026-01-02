@@ -1,4 +1,10 @@
-import type { ColorTokens, FontTokens, FontSizeTokens, StackProps, TextProps } from '@tamagui/web'
+import type {
+  ColorTokens,
+  FontTokens,
+  FontSizeTokens,
+  StackProps,
+  TextProps,
+} from '@tamagui/web'
 
 /**
  * Web-aligned Input props

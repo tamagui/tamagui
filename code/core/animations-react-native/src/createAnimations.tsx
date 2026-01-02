@@ -202,7 +202,13 @@ export function createAnimations<A extends AnimationsConfig>(
       const animateOnly = (props.animateOnly as string[]) || []
       const hasAnimateOnly = !!props.animateOnly
 
-      const args = [JSON.stringify(style), componentState, isExiting, !!onDidAnimate, isDark]
+      const args = [
+        JSON.stringify(style),
+        componentState,
+        isExiting,
+        !!onDidAnimate,
+        isDark,
+      ]
 
       // check if there is any style that is not supported by native driver
       const isThereNoNativeStyleKeys = React.useMemo(() => {
