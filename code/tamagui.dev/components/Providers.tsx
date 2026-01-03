@@ -1,6 +1,7 @@
 import { getDocsSection, InitialPathContext } from '@tamagui/logo'
 import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'
 import { usePathname } from 'one'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { TamaguiProvider } from 'tamagui'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
@@ -27,9 +28,15 @@ export const Providers = (props: { children: any }) => {
 
 function WebsiteTamaguiProvider(props: { children: any }) {
   const { value } = useUserScheme()
+  const insets = useSafeAreaInsets()
 
   return (
-    <TamaguiProvider disableInjectCSS defaultTheme={value} config={tamaConf}>
+    <TamaguiProvider
+      disableInjectCSS
+      defaultTheme={value}
+      config={tamaConf}
+      insets={insets}
+    >
       <ToastProvider>{props.children}</ToastProvider>
     </TamaguiProvider>
   )

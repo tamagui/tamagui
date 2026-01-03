@@ -22,6 +22,7 @@ export function TamaguiProvider({
   disableRootThemeClass,
   reset,
   themeClassNameOnRoot,
+  insets,
 }: TamaguiProviderProps) {
   if (!IS_REACT_19) {
     if (isClient) {
@@ -45,9 +46,17 @@ export function TamaguiProvider({
     updateMediaListeners()
   }, [])
 
+  const memoizedInsets = React.useMemo(
+    () => insets,
+    [insets?.top, insets?.right, insets?.bottom, insets?.left]
+  )
+
   let contents = (
     <UnmountedClassName>
-      <ComponentContext.Provider animationDriver={config?.animations}>
+      <ComponentContext.Provider
+        animationDriver={config?.animations}
+        insets={memoizedInsets}
+      >
         <ThemeProvider
           themeClassNameOnRoot={
             themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
