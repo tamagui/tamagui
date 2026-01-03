@@ -184,6 +184,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
               cursor: 'default',
               size,
               outlineOffset: -0.5,
+              zIndex: 100,
 
               focusVisibleStyle: {
                 outlineColor: '$outlineColor',
