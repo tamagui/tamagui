@@ -7,7 +7,7 @@ import {
   TerminalSquare,
 } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useId, useRef, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -29,8 +29,8 @@ import { toggleDocsTinted } from './docsTint'
 class CollapseStore {
   isCollapsed: boolean
 
-  constructor(initialState: { isCollapsed: boolean } = { isCollapsed: true }) {
-    this.isCollapsed = initialState.isCollapsed
+  constructor(props: { id: string; isCollapsed: boolean }) {
+    this.isCollapsed = props.isCollapsed
   }
 
   setIsCollapsed(val: boolean) {
@@ -58,7 +58,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
-  const store = useStore(CollapseStore, { isCollapsed: showMore })
+  const storeId = useId()
+  const store = useStore(CollapseStore, { id: storeId, isCollapsed: showMore })
   const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
   const [isCutoff, setIsCutoff] = useState(isLong && !showMore)

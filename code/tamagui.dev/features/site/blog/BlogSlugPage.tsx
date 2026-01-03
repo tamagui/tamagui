@@ -1,6 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons'
 import type { Frontmatter } from '@vxrn/mdx'
+import type { ReactNode } from 'react'
 import {
   Button,
   H1,
@@ -10,9 +11,11 @@ import {
   Paragraph,
   Separator,
   Spacer,
+  Theme,
   XStack,
   YStack,
 } from 'tamagui'
+import { useIsDocsTinted } from '~/features/docs/docsTint'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
@@ -32,19 +35,19 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const isDraft = pathname.startsWith('/draft')
   return (
     <YStack mt="$-10" pt="$12" mb="$4" position="relative">
-      <ThemeTint>
+      <BlogThemeTint>
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
-      </ThemeTint>
+      </BlogThemeTint>
 
       <Container>
         <YStack mt="$2" items="flex-start">
-          <ThemeTint>
+          <BlogThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
               <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
                 <Button.Text>{isDraft ? 'Drafts' : 'Blog'}</Button.Text>
               </Button>
             </Link>
-          </ThemeTint>
+          </BlogThemeTint>
         </YStack>
 
         <H1 letterSpacing={-1} mt="$5" mb="$2">
@@ -176,4 +179,12 @@ export function BlogSlugPage(props: BlogPost) {
       </Container>
     </>
   )
+}
+
+const BlogThemeTint = ({ children }: { children: ReactNode }) => {
+  const isTinted = useIsDocsTinted()
+  if (!isTinted) {
+    return <Theme name="gray">{children}</Theme>
+  }
+  return <ThemeTint>{children}</ThemeTint>
 }
