@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
 
-Error.stackTraceLimit = Number.MAX_SAFE_INTEGER
+Error.stackTraceLimit = Number.Infinity
 process.env.TAMAGUI_TARGET = 'native'
 
 window['React'] = React
