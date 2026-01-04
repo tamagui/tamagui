@@ -16,7 +16,10 @@ export function useForwardToDashboard() {
       if (user && !isLoading) {
         // If we're in a popup window opened by the login link, notify the opener and close
         if (window.opener && window.opener !== window) {
-          window.opener.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
+          window.opener.postMessage(
+            { type: 'SUPABASE_AUTH_SUCCESS' },
+            window.location.origin
+          )
           window.close()
           return
         }
