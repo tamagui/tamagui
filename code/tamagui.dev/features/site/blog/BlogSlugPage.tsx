@@ -102,6 +102,21 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
         </XStack>
       </Container>
 
+      {frontmatter.poster && (
+        <YStack mt="$4" mx="auto" maxWidth={900} width="100%" px="$4">
+          <YStack
+            tag="img"
+            // @ts-ignore
+            src={`/${frontmatter.poster}`}
+            alt={frontmatter.title || ''}
+            width="100%"
+            height={400}
+            objectFit="cover"
+            borderRadius="$4"
+          />
+        </YStack>
+      )}
+
       <Spacer />
 
       <Separator />
