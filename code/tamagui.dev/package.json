@@ -46,7 +46,6 @@
     "@tamagui/assert": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/get-token": "workspace:*",
-    "@tamagui/image-next": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/tamagui-dev-config": "workspace:*",

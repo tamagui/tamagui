@@ -15,12 +15,13 @@ import { Button } from 'tamagui'
  */
 
 const Item = styled(Menu.Item, {
-  paddingVertical: 4,
+  py: 4,
+
   hoverStyle: {
-    backgroundColor: '$color2',
+    bg: '$color2',
   },
   pressStyle: {
-    backgroundColor: '$color3',
+    bg: '$color3',
   },
 })
 
@@ -55,7 +56,7 @@ export function MenuDemo() {
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
-            paddingHorizontal={0}
+            px={0}
             borderWidth={1}
             items="flex-start"
             borderColor="$borderColor"
@@ -139,7 +140,7 @@ export function MenuDemo() {
                       },
                     },
                   ]}
-                  paddingHorizontal={0}
+                  px={0}
                 >
                   <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
                   <Item onSelect={onSelect} key="create-note" textValue="Create note">
