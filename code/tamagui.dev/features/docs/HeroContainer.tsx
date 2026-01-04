@@ -1,4 +1,6 @@
+import type { ReactNode } from 'react'
 import { ThemeTint } from '@tamagui/logo'
+import { useIsDocsTinted } from './docsTint'
 import { Timer, Waves } from '@tamagui/lucide-icons'
 import {
   Configuration,
@@ -101,10 +103,18 @@ export function HeroContainer({
   )
 
   if (tinted) {
-    return <ThemeTint>{contents}</ThemeTint>
+    return <ThemeTintWithToggle>{contents}</ThemeTintWithToggle>
   }
 
   return contents
+}
+
+const ThemeTintWithToggle = ({ children }: { children: ReactNode }) => {
+  const isTinted = useIsDocsTinted()
+  if (!isTinted) {
+    return <Theme name="gray">{children}</Theme>
+  }
+  return <ThemeTint>{children}</ThemeTint>
 }
 
 const Card = styled(YStack, {
