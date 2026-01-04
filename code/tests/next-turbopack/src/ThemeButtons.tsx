@@ -2,6 +2,7 @@
 
 import { Stack, Text, styled } from '@tamagui/core'
 import { useThemeSetting } from '@tamagui/next-theme'
+import { useEffect, useState } from 'react'
 
 const XStack = styled(Stack, { flexDirection: 'row' })
 const Button = styled(Stack, {
@@ -15,6 +16,11 @@ const Button = styled(Stack, {
 
 export function ThemeButtons() {
   const themeSetting = useThemeSetting()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <>
@@ -32,7 +38,7 @@ export function ThemeButtons() {
           <Text color="white">Toggle Theme</Text>
         </Button>
       </XStack>
-      <Text color="$color10">Current theme: {themeSetting.current}</Text>
+      <Text color="$color10">Current theme: {mounted ? themeSetting.current : ''}</Text>
     </>
   )
 }

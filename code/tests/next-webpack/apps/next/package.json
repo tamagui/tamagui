@@ -3,8 +3,8 @@
   "version": "1.142.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3457",
-    "build": "next build",
+    "dev": "next dev --webpack --port 3457",
+    "next-build": "next build --webpack",
     "start": "next start --port 3457",
     "test:e2e": "playwright test"
   },
@@ -13,13 +13,13 @@
     "@tamagui/next-theme": "workspace:*",
     "app": "workspace:^",
     "next": "16.1.1",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "react-native-web": "^0.21.2",
+    "react": "*",
+    "react-dom": "*",
+    "react-native-web": "^0.21.0",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
-    "@playwright/test": "^1.57.0",
+    "@playwright/test": "^1.49.1",
     "@tamagui/next-plugin": "workspace:*",
     "@types/node": "^22.1.0"
   }

@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "next": "^15.3.8",
+    "next": "16.1.1",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {

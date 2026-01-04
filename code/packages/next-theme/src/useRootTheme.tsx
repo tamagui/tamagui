@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 import { isClient } from '@tamagui/constants'
 
 import type { ColorScheme } from './types'
@@ -7,19 +7,18 @@ export const useRootTheme = ({
   fallback = 'light',
 }: { fallback?: ColorScheme } = {}): [
   ColorScheme,
-  React.Dispatch<React.SetStateAction<ColorScheme>>,
+  Dispatch<SetStateAction<ColorScheme>>,
 ] => {
   let initialVal = fallback
 
   if (isClient) {
-    // @ts-ignore
-    const classes = [...document.documentElement.classList]
-    initialVal = classes.includes(`t_dark`)
+    const classes = document.documentElement.classList
+    initialVal = classes.contains('t_dark')
       ? 'dark'
-      : classes.includes(`t_light`)
+      : classes.contains('t_light')
         ? 'light'
         : fallback
   }
 
-  return React.useState<ColorScheme>(initialVal)
+  return useState<ColorScheme>(initialVal)
 }
