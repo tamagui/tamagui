@@ -17,57 +17,86 @@ function InputTest(props: React.ComponentProps<typeof Input>) {
   )
 }
 
-describe('Input web keyboard type conversion', () => {
-  it('should convert number-pad to number type and numeric inputmode', () => {
-    const { container } = render(<InputTest keyboardType="number-pad" />)
+describe('Input web type prop', () => {
+  it('should render with type="number"', () => {
+    const { container } = render(<InputTest type="number" />)
     const input = container.querySelector('input')
     expect(input).toHaveAttribute('type', 'number')
+  })
+
+  it('should render with type="email"', () => {
+    const { container } = render(<InputTest type="email" />)
+    const input = container.querySelector('input')
+    expect(input).toHaveAttribute('type', 'email')
+  })
+
+  it('should render with type="tel"', () => {
+    const { container } = render(<InputTest type="tel" />)
+    const input = container.querySelector('input')
+    expect(input).toHaveAttribute('type', 'tel')
+  })
+
+  it('should render with type="password"', () => {
+    const { container } = render(<InputTest type="password" />)
+    const input = container.querySelector('input')
+    expect(input).toHaveAttribute('type', 'password')
+  })
+
+  it('should render with type="url"', () => {
+    const { container } = render(<InputTest type="url" />)
+    const input = container.querySelector('input')
+    expect(input).toHaveAttribute('type', 'url')
+  })
+
+  it('should render with type="search"', () => {
+    const { container } = render(<InputTest type="search" />)
+    const input = container.querySelector('input')
+    expect(input).toHaveAttribute('type', 'search')
+  })
+})
+
+describe('Input web inputMode prop', () => {
+  it('should render with inputMode="numeric"', () => {
+    const { container } = render(<InputTest inputMode="numeric" />)
+    const input = container.querySelector('input')
     expect(input).toHaveAttribute('inputmode', 'numeric')
   })
 
-  it('should convert email-address to email type and email inputmode', () => {
-    const { container } = render(<InputTest keyboardType="email-address" />)
+  it('should render with inputMode="decimal"', () => {
+    const { container } = render(<InputTest inputMode="decimal" />)
     const input = container.querySelector('input')
-    expect(input).toHaveAttribute('type', 'email')
+    expect(input).toHaveAttribute('inputmode', 'decimal')
+  })
+
+  it('should render with inputMode="email"', () => {
+    const { container } = render(<InputTest inputMode="email" />)
+    const input = container.querySelector('input')
     expect(input).toHaveAttribute('inputmode', 'email')
   })
 
-  it('should convert phone-pad to tel type and tel inputmode', () => {
-    const { container } = render(<InputTest keyboardType="phone-pad" />)
+  it('should render with inputMode="tel"', () => {
+    const { container } = render(<InputTest inputMode="tel" />)
     const input = container.querySelector('input')
-    expect(input).toHaveAttribute('type', 'tel')
     expect(input).toHaveAttribute('inputmode', 'tel')
   })
-
-  it('should convert decimal-pad to text type with decimal inputmode', () => {
-    const { container } = render(<InputTest keyboardType="decimal-pad" />)
-    const input = container.querySelector('input')
-    expect(input).toHaveAttribute('type', 'text')
-    expect(input).toHaveAttribute('inputmode', 'decimal')
-  })
 })
 
-describe('Input web secure text entry', () => {
-  it('should convert secureTextEntry to password type', () => {
-    const { container } = render(<InputTest secureTextEntry={true} />)
-    const input = container.querySelector('input')
-    expect(input).toHaveAttribute('type', 'password')
-  })
-
-  it('should prioritize secureTextEntry over keyboardType', () => {
-    const { container } = render(
-      <InputTest secureTextEntry={true} keyboardType="number-pad" />
-    )
-    const input = container.querySelector('input')
-    expect(input).toHaveAttribute('type', 'password')
-  })
-})
-
-describe('Input web default type', () => {
-  it('should use text type and no inputmode when no props specified', () => {
+describe('Input web default behavior', () => {
+  it('should render an input element', () => {
     const { container } = render(<InputTest />)
     const input = container.querySelector('input')
-    expect(input).toHaveAttribute('type', 'text')
-    expect(input).not.toHaveAttribute('inputmode')
+    expect(input).toBeTruthy()
+  })
+
+  it('should support placeholder', () => {
+    const { container } = render(<InputTest placeholder="Enter text" />)
+    const input = container.querySelector('input')
+    expect(input).toHaveAttribute('placeholder', 'Enter text')
+  })
+
+  it('should support disabled', () => {
+    const { container } = render(<InputTest disabled />)
+    const input = container.querySelector('input')
+    expect(input).toBeDisabled()
   })
 })
