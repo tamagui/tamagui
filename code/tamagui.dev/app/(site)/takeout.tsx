@@ -965,7 +965,6 @@ const StarterCard = memo(() => {
           {seasons[name]}
         </SizableText>
       )}
-      \
       <TakeoutCardFrame
         bg="$color1"
         className="blur-medium"
