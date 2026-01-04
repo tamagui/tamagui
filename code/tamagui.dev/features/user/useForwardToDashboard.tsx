@@ -14,6 +14,13 @@ export function useForwardToDashboard() {
   useEffect(() => {
     const main = async () => {
       if (user && !isLoading) {
+        // If we're in a popup window opened by the login link, notify the opener and close
+        if (window.opener && window.opener !== window) {
+          window.opener.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
+          window.close()
+          return
+        }
+
         if (typeof query.redirect_to === 'string') {
           const decodedUrl = decodeURIComponent(query.redirect_to)
           if (decodedUrl.startsWith('/')) {
