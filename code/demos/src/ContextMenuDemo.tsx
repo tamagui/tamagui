@@ -159,8 +159,8 @@ export function ContextMenuDemo() {
             key="show-hidden"
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
-            gap={'$2'}
-            jc="space-between"
+            gap="$2"
+            justify="space-between"
           >
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
@@ -171,8 +171,8 @@ export function ContextMenuDemo() {
             key="show-other-notes"
             checked={native}
             onCheckedChange={setNative}
-            gap={'$2'}
-            jc="space-between"
+            gap="$2"
+            justify="space-between"
           >
             <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>

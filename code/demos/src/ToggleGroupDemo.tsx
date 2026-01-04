@@ -1,12 +1,6 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
 import type { SizeTokens } from 'tamagui'
-import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
-
-const Item = styled(ToggleGroup.Item, {
-  focusStyle: {
-    backgroundColor: '$color12',
-  },
-})
+import { Label, ToggleGroup, XStack, YStack } from 'tamagui'
 
 export function ToggleGroupDemo() {
   return (
@@ -48,15 +42,15 @@ function ToggleGroupComponent(props: {
         size={props.size}
         disableDeactivation={props.type === 'single' ? true : undefined}
       >
-        <Item value="left" aria-label="Left aligned">
+        <ToggleGroup.Item value="left" aria-label="Left aligned" focusStyle={{ background: '$color12' }}>
           <AlignLeft />
-        </Item>
-        <Item value="center" aria-label="Center aligned">
+        </ToggleGroup.Item>
+        <ToggleGroup.Item value="center" aria-label="Center aligned" focusStyle={{ background: '$color12' }}>
           <AlignCenter />
-        </Item>
-        <Item value="right" aria-label="Right aligned">
+        </ToggleGroup.Item>
+        <ToggleGroup.Item value="right" aria-label="Right aligned" focusStyle={{ background: '$color12' }}>
           <AlignRight />
-        </Item>
+        </ToggleGroup.Item>
       </ToggleGroup>
     </XStack>
   )
