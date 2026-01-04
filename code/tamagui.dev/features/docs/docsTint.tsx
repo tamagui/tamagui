@@ -19,8 +19,8 @@ export const useIsDocsTinted = () => {
   const [isTinted, setIsTinted] = useState(true)
 
   useEffect(() => {
-    const fn = () => {
-      setIsTinted((x) => !x)
+    const fn = (next: boolean) => {
+      setIsTinted(next)
     }
     listeners.add(fn)
     return () => {

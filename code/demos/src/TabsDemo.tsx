@@ -126,13 +126,13 @@ const VerticalTabs = () => {
       borderColor="$borderColor"
     >
       <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
-        <Tabs.Tab value="tab1">
+        <Tabs.Tab focusStyle={{ backgroundColor: '$color3' }} value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab value="tab2">
+        <Tabs.Tab focusStyle={{ backgroundColor: '$color3' }} value="tab2">
           <SizableText>Connections</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab value="tab3">
+        <Tabs.Tab focusStyle={{ backgroundColor: '$color3' }} value="tab3">
           <SizableText>Notifications</SizableText>
         </Tabs.Tab>
       </Tabs.List>
