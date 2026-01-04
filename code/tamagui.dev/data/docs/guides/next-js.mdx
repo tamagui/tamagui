@@ -705,11 +705,27 @@ export default {
 } satisfies TamaguiBuildOptions
 ```
 
-Your `next.config.js` can be empty:
+Your `next.config.js` needs some configuration for Turbopack:
 
 ```js fileName="next.config.js"
-module.exports = {}
+module.exports = {
+  // Some Tamagui packages may need transpiling
+  transpilePackages: ['@tamagui/next-theme', '@tamagui/lucide-icons'],
+
+  turbopack: {
+    resolveAlias: {
+      'react-native': 'react-native-web',
+      'react-native-svg': '@tamagui/react-native-svg',
+    },
+  },
+}
 ```
+
+<Notice theme="blue">
+  The `transpilePackages` array may need additional packages depending on which
+  Tamagui packages you use. If you see module resolution errors, try adding the
+  problematic package to this array.
+</Notice>
 
 ### Build Scripts
 
