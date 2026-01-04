@@ -4,11 +4,7 @@ on:
   push:
     branches:
       - main
-      - appium
-  pull_request:
-    branches:
-      - main
-      - appium
+      - 'native-*'
   workflow_dispatch:
 
 # Cancel in-progress runs when a new run is triggered
@@ -126,8 +122,7 @@ jobs:
 
   build-android:
     name: Build Android App
-    # Use WarpBuild 8x runner for faster builds
-    runs-on: warp-ubuntu-latest-x64-8x
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     outputs:
       android-cache-key: ${{ steps.final-cache-key.outputs.cache_key }}
@@ -377,7 +372,7 @@ jobs:
   test-android:
     name: Android Detox Tests
     needs: build-android
-    runs-on: warp-ubuntu-latest-x64-8x
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     # Android emulator in CI is flaky with window focus issues - don't block on failures
     continue-on-error: true
