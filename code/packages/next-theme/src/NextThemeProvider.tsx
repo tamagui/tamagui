@@ -1,6 +1,6 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent } from '@tamagui/use-event'
-import NextHead from 'next/head'
+import Script from 'next/script'
 import * as React from 'react'
 import { memo, useEffect, useMemo, useState } from 'react'
 
@@ -197,8 +197,7 @@ export const NextThemeProvider: React.FunctionComponent<ThemeProviderProps> = me
             skipNextHead,
           }}
         />
-        {/* because on SSR we re-run and can avoid whole tree re-render */}
-        {useMemo(() => children, [children])}
+        {children}
       </ThemeSettingContext.Provider>
     )
   }
@@ -246,50 +245,39 @@ const ThemeScript = memo(
 
     const defaultSystem = defaultTheme === 'system'
 
-    const contents = (
-      <>
-        {forcedTheme ? (
-          <script
-            // nonce={nonce}
-            key="next-themes-script"
-            dangerouslySetInnerHTML={{
-              // These are minified via Terser and then updated by hand, don't recommend
-              __html: `!function(){${optimization}${updateDOM(forcedTheme)}}()`,
-            }}
-          />
-        ) : enableSystem ? (
-          <script
-            // nonce={nonce}
-            key="next-themes-script"
-            dangerouslySetInnerHTML={{
-              __html: `!function(){try {${optimization}var e=localStorage.getItem('${storageKey}');${
-                !defaultSystem ? updateDOM(defaultTheme) + ';' : ''
-              }if("system"===e||(!e&&${defaultSystem})){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM(
-                'dark'
-              )}:${updateDOM('light')}}else if(e) ${
-                value ? `var x=${JSON.stringify(value)};` : ''
-              }${updateDOM(value ? 'x[e]' : 'e', true)}}catch(e){}}()`,
-            }}
-          />
-        ) : (
-          <script
-            // nonce={nonce}
-            key="next-themes-script"
-            dangerouslySetInnerHTML={{
-              __html: `!function(){try{${optimization}var e=localStorage.getItem("${storageKey}");if(e){${
-                value ? `var x=${JSON.stringify(value)};` : ''
-              }${updateDOM(value ? 'x[e]' : 'e', true)}}else{${updateDOM(
-                defaultTheme
-              )};}}catch(t){}}();`,
-            }}
-          />
-        )}
-      </>
+    const scriptContent = forcedTheme
+      ? `!function(){${optimization}${updateDOM(forcedTheme)}}()`
+      : enableSystem
+        ? `!function(){try {${optimization}var e=localStorage.getItem('${storageKey}');if("system"===e||(!e&&${defaultSystem})){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM(
+            'dark'
+          )}:${updateDOM('light')}}else if(e){${
+            value ? `var x=${JSON.stringify(value)};` : ''
+          }${updateDOM(value ? 'x[e]' : 'e', true)}}${
+            !defaultSystem ? `else{${updateDOM(defaultTheme)}}` : ''
+          }}catch(e){}}()`
+        : `!function(){try{${optimization}var e=localStorage.getItem("${storageKey}");if(e){${
+            value ? `var x=${JSON.stringify(value)};` : ''
+          }${updateDOM(value ? 'x[e]' : 'e', true)}}else{${updateDOM(
+            defaultTheme
+          )};}}catch(t){}}();`
+
+    // skipNextHead returns raw script for useServerInsertedHTML usage
+    if (skipNextHead) {
+      return (
+        <script
+          key="next-themes-script"
+          dangerouslySetInnerHTML={{ __html: scriptContent }}
+        />
+      )
+    }
+
+    return (
+      <Script
+        id="next-themes-script"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: scriptContent }}
+      />
     )
-
-    if (skipNextHead) return contents
-
-    return <NextHead>{contents}</NextHead>
   },
   (prevProps, nextProps) => {
     // Only re-render when forcedTheme changes

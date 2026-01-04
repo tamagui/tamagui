@@ -3749,9 +3749,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@my/config@workspace:^, @my/config@workspace:code/tests/next15-plus-cli-optimize/packages/config":
+"@my/config@workspace:^, @my/config@workspace:code/tests/next-webpack/packages/config":
   version: 0.0.0-use.local
-  resolution: "@my/config@workspace:code/tests/next15-plus-cli-optimize/packages/config"
+  resolution: "@my/config@workspace:code/tests/next-webpack/packages/config"
   dependencies:
     "@tamagui/animations-react-native": "workspace:*"
     "@tamagui/build": "workspace:*"
@@ -3763,9 +3763,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@my/ui@workspace:^, @my/ui@workspace:code/tests/next15-plus-cli-optimize/packages/ui":
+"@my/ui@workspace:^, @my/ui@workspace:code/tests/next-webpack/packages/ui":
   version: 0.0.0-use.local
-  resolution: "@my/ui@workspace:code/tests/next15-plus-cli-optimize/packages/ui"
+  resolution: "@my/ui@workspace:code/tests/next-webpack/packages/ui"
   dependencies:
     "@my/config": "workspace:^"
     "@tamagui/build": "workspace:*"
@@ -3987,9 +3987,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/env@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/env@npm:16.1.1"
+  checksum: 10/1cf4c558fded01504ed3ba16c8a11961204e4546d12e02926b037748a9bcbb9a192ca66575402a1e8726e55a658036c0c9eeb4067232b5bccb0b9b4946e7899f
+  languageName: node
+  linkType: hard
+
 "@next/swc-darwin-arm64@npm:15.5.7":
   version: 15.5.7
   resolution: "@next/swc-darwin-arm64@npm:15.5.7"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@next/swc-darwin-arm64@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/swc-darwin-arm64@npm:16.1.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
@@ -4001,9 +4015,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/swc-darwin-x64@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/swc-darwin-x64@npm:16.1.1"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@next/swc-linux-arm64-gnu@npm:15.5.7":
   version: 15.5.7
   resolution: "@next/swc-linux-arm64-gnu@npm:15.5.7"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@next/swc-linux-arm64-gnu@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/swc-linux-arm64-gnu@npm:16.1.1"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -4015,9 +4043,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/swc-linux-arm64-musl@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/swc-linux-arm64-musl@npm:16.1.1"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "@next/swc-linux-x64-gnu@npm:15.5.7":
   version: 15.5.7
   resolution: "@next/swc-linux-x64-gnu@npm:15.5.7"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@next/swc-linux-x64-gnu@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/swc-linux-x64-gnu@npm:16.1.1"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -4029,6 +4071,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/swc-linux-x64-musl@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/swc-linux-x64-musl@npm:16.1.1"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "@next/swc-win32-arm64-msvc@npm:15.5.7":
   version: 15.5.7
   resolution: "@next/swc-win32-arm64-msvc@npm:15.5.7"
@@ -4036,9 +4085,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/swc-win32-arm64-msvc@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/swc-win32-arm64-msvc@npm:16.1.1"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@next/swc-win32-x64-msvc@npm:15.5.7":
   version: 15.5.7
   resolution: "@next/swc-win32-x64-msvc@npm:15.5.7"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@next/swc-win32-x64-msvc@npm:16.1.1":
+  version: 16.1.1
+  resolution: "@next/swc-win32-x64-msvc@npm:16.1.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4740,6 +4803,17 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: 10/e18a4eb626c7bc6cba212ff2e197cf9ae2e4da1c91bfdf08a744d62e27222751173e4b220fa27da72286a89a3b4dea7c09daf384d23708f284b64f98e9a63a88
+  languageName: node
+  linkType: hard
+
+"@playwright/test@npm:^1.57.0":
+  version: 1.57.0
+  resolution: "@playwright/test@npm:1.57.0"
+  dependencies:
+    playwright: "npm:1.57.0"
+  bin:
+    playwright: cli.js
+  checksum: 10/07f5ba4841b2db1dea70d821004c5156b692488e13523c096ce3487d30f95f34ccf30ba6467ece60c86faac27ae382213b7eacab48a695550981b2e811e5e579
   languageName: node
   linkType: hard
 
@@ -11095,9 +11169,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app@workspace:^, app@workspace:code/tests/next15-plus-cli-optimize/packages/app":
+"app@workspace:^, app@workspace:code/tests/next-webpack/packages/app":
   version: 0.0.0-use.local
-  resolution: "app@workspace:code/tests/next15-plus-cli-optimize/packages/app"
+  resolution: "app@workspace:code/tests/next-webpack/packages/app"
   dependencies:
     "@my/ui": "workspace:^"
     "@react-navigation/native": "npm:^7.0.14"
@@ -11784,6 +11858,15 @@ __metadata:
   bin:
     baseline-browser-mapping: dist/cli.js
   checksum: 10/453355786f3449390c4555016a0af061e1078b2425a151105ea69f12e1dbc4c753d2d866cbe8dd409cb42ffcf174fc75d3f937af6b3d75a79a826fc9c059b8f3
+  languageName: node
+  linkType: hard
+
+"baseline-browser-mapping@npm:^2.8.3":
+  version: 2.9.11
+  resolution: "baseline-browser-mapping@npm:2.9.11"
+  bin:
+    baseline-browser-mapping: dist/cli.js
+  checksum: 10/d71fe6693f999ee0bf1fcd72b31c01390f2bfac40d179175817f24cdb11b19d14a102227a8fa28e0a4733a17c780458c17384c75f2227e45b0e8a0080caf6532
   languageName: node
   linkType: hard
 
@@ -22247,31 +22330,91 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-app@workspace:code/tests/next15-plus-cli-optimize/apps/next":
+"next-app@workspace:code/tests/next-webpack/apps/next":
   version: 0.0.0-use.local
-  resolution: "next-app@workspace:code/tests/next15-plus-cli-optimize/apps/next"
+  resolution: "next-app@workspace:code/tests/next-webpack/apps/next"
   dependencies:
+    "@playwright/test": "npm:^1.57.0"
     "@tamagui/config": "workspace:*"
     "@tamagui/next-plugin": "workspace:*"
     "@tamagui/next-theme": "workspace:*"
     "@types/node": "npm:^22.1.0"
     app: "workspace:^"
-    next: "npm:^15.3.8"
-    react: "npm:*"
-    react-dom: "npm:*"
-    react-native: "npm:0.81.5"
-    react-native-web: "npm:^0.21.0"
+    next: "npm:16.1.1"
+    react: "npm:19.0.0"
+    react-dom: "npm:19.0.0"
+    react-native-web: "npm:^0.21.2"
     tamagui: "workspace:*"
   languageName: unknown
   linkType: soft
 
-"next15-plus-cli-optimize@workspace:code/tests/next15-plus-cli-optimize":
+"next15-plus-cli-optimize@workspace:code/tests/next-webpack":
   version: 0.0.0-use.local
-  resolution: "next15-plus-cli-optimize@workspace:code/tests/next15-plus-cli-optimize"
+  resolution: "next15-plus-cli-optimize@workspace:code/tests/next-webpack"
   dependencies:
     "@tamagui/cli": "workspace:*"
   languageName: unknown
   linkType: soft
+
+"next@npm:16.1.1":
+  version: 16.1.1
+  resolution: "next@npm:16.1.1"
+  dependencies:
+    "@next/env": "npm:16.1.1"
+    "@next/swc-darwin-arm64": "npm:16.1.1"
+    "@next/swc-darwin-x64": "npm:16.1.1"
+    "@next/swc-linux-arm64-gnu": "npm:16.1.1"
+    "@next/swc-linux-arm64-musl": "npm:16.1.1"
+    "@next/swc-linux-x64-gnu": "npm:16.1.1"
+    "@next/swc-linux-x64-musl": "npm:16.1.1"
+    "@next/swc-win32-arm64-msvc": "npm:16.1.1"
+    "@next/swc-win32-x64-msvc": "npm:16.1.1"
+    "@swc/helpers": "npm:0.5.15"
+    baseline-browser-mapping: "npm:^2.8.3"
+    caniuse-lite: "npm:^1.0.30001579"
+    postcss: "npm:8.4.31"
+    sharp: "npm:^0.34.4"
+    styled-jsx: "npm:5.1.6"
+  peerDependencies:
+    "@opentelemetry/api": ^1.1.0
+    "@playwright/test": ^1.51.1
+    babel-plugin-react-compiler: "*"
+    react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
+    react-dom: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
+    sass: ^1.3.0
+  dependenciesMeta:
+    "@next/swc-darwin-arm64":
+      optional: true
+    "@next/swc-darwin-x64":
+      optional: true
+    "@next/swc-linux-arm64-gnu":
+      optional: true
+    "@next/swc-linux-arm64-musl":
+      optional: true
+    "@next/swc-linux-x64-gnu":
+      optional: true
+    "@next/swc-linux-x64-musl":
+      optional: true
+    "@next/swc-win32-arm64-msvc":
+      optional: true
+    "@next/swc-win32-x64-msvc":
+      optional: true
+    sharp:
+      optional: true
+  peerDependenciesMeta:
+    "@opentelemetry/api":
+      optional: true
+    "@playwright/test":
+      optional: true
+    babel-plugin-react-compiler:
+      optional: true
+    sass:
+      optional: true
+  bin:
+    next: dist/bin/next
+  checksum: 10/a722076d0d081a204c8cb73ff27f568a5e3b6470c936208f59589e7bf55be89eb5061c7ccb77fde1f427f8b90589c145ad5f07d2901b26b4295e27d130732346
+  languageName: node
+  linkType: hard
 
 "next@npm:^15.3.8":
   version: 15.5.9
@@ -23750,6 +23893,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.57.0":
+  version: 1.57.0
+  resolution: "playwright-core@npm:1.57.0"
+  bin:
+    playwright-core: cli.js
+  checksum: 10/ec066602f0196f036006caee14a30d0a57533a76673bb9a0c609ef56e21decf018f0e8d402ba2fb18251393be6a1c9e193c83266f1670fe50838c5340e220de0
+  languageName: node
+  linkType: hard
+
 "playwright@npm:1.52.0":
   version: 1.52.0
   resolution: "playwright@npm:1.52.0"
@@ -23762,6 +23914,21 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: 10/214175446089000c2ac997b925063b95f7d86d129c5d7c74caa5ddcb05bcad598dfd569d2133a10dc82d288bf67e7858877dcd099274b0b928b9c63db7d6ecec
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.57.0":
+  version: 1.57.0
+  resolution: "playwright@npm:1.57.0"
+  dependencies:
+    fsevents: "npm:2.3.2"
+    playwright-core: "npm:1.57.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 10/241559210f98ef11b6bd6413f2d29da7ef67c7865b72053192f0d164fab9e0d3bd47913b3351d5de6433a8aff2d8424d4b8bd668df420bf4dda7ae9fcd37b942
   languageName: node
   linkType: hard
 
@@ -24455,6 +24622,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:19.0.0":
+  version: 19.0.0
+  resolution: "react-dom@npm:19.0.0"
+  dependencies:
+    scheduler: "npm:^0.25.0"
+  peerDependencies:
+    react: ^19.0.0
+  checksum: 10/aa64a2f1991042f516260e8b0eca0ae777b6c8f1aa2b5ae096e80bbb6ac9b005aef2bca697969841d34f7e1819556263476bdfea36c35092e8d9aefde3de2d9a
+  languageName: node
+  linkType: hard
+
 "react-dropzone@npm:^14.2.3":
   version: 14.3.8
   resolution: "react-dropzone@npm:14.3.8"
@@ -24682,7 +24860,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:^0.21.0":
+"react-native-web@npm:^0.21.0, react-native-web@npm:^0.21.2":
   version: 0.21.2
   resolution: "react-native-web@npm:0.21.2"
   dependencies:
@@ -24870,6 +25048,13 @@ __metadata:
   version: 19.1.0
   resolution: "react@npm:19.1.0"
   checksum: 10/d0180689826fd9de87e839c365f6f361c561daea397d61d724687cae88f432a307d1c0f53a0ee95ddbe3352c10dac41d7ff1ad85530fb24951b27a39e5398db4
+  languageName: node
+  linkType: hard
+
+"react@npm:19.0.0":
+  version: 19.0.0
+  resolution: "react@npm:19.0.0"
+  checksum: 10/2490969c503f644703c88990d20e4011fa6119ddeca451e9de48f6d7ab058d670d2852a5fcd3aa3cd90a923ab2815d532637bd4a814add402ae5c0d4f129ee71
   languageName: node
   linkType: hard
 
@@ -25946,6 +26131,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"scheduler@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "scheduler@npm:0.25.0"
+  checksum: 10/e661e38503ab29a153429a99203fefa764f28b35c079719eb5efdd2c1c1086522f6653d8ffce388209682c23891a6d1d32fa6badf53c35fb5b9cd0c55ace42de
+  languageName: node
+  linkType: hard
+
 "schema-utils@npm:^3.0.0":
   version: 3.3.0
   resolution: "schema-utils@npm:3.3.0"
@@ -26284,7 +26476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:^0.34.3":
+"sharp@npm:^0.34.3, sharp@npm:^0.34.4":
   version: 0.34.5
   resolution: "sharp@npm:0.34.5"
   dependencies:
@@ -27791,14 +27983,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "test-next-turbopack@workspace:code/tests/next-turbopack"
   dependencies:
+    "@playwright/test": "npm:^1.57.0"
     "@tamagui/cli": "workspace:*"
     "@tamagui/config": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/next-theme": "workspace:*"
     "@types/node": "npm:^22.1.0"
     "@types/react": "npm:~19.1.10"
-    next: "npm:^15.3.8"
-    react: "npm:*"
-    react-dom: "npm:*"
+    next: "npm:16.1.1"
+    react: "npm:19.0.0"
+    react-dom: "npm:19.0.0"
+    react-native-web: "npm:^0.21.2"
     vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
