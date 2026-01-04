@@ -7,6 +7,7 @@ import {
   H2,
   H3,
   H6,
+  Image,
   Paragraph,
   Separator,
   Spacer,
@@ -101,6 +102,20 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           </YStack>
         </XStack>
       </Container>
+
+      {frontmatter.poster && (
+        <YStack mt="$4" mx="auto" maxWidth={900} width="100%" px="$4">
+          <Image
+            src={`/${frontmatter.poster}`}
+            alt={frontmatter.title || ''}
+            width={900}
+            height={400}
+            resizeMode="cover"
+            borderRadius="$4"
+            maxWidth="100%"
+          />
+        </YStack>
+      )}
 
       <Spacer />
 
