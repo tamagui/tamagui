@@ -1,5 +1,8 @@
+'use client'
+
 import { Stack, Text, styled } from '@tamagui/core'
 import { useState } from 'react'
+import { ThemeButtons } from './ThemeButtons'
 
 const YStack = styled(Stack, { flexDirection: 'column' })
 const Button = styled(Stack, {
@@ -17,6 +20,9 @@ export function TestComponent() {
   return (
     <YStack flex={1} justifyContent="center" alignItems="center" gap="$4" padding="$4" backgroundColor="$background">
       <Text color="$color12" fontSize="$8" fontWeight="bold">Tamagui + Turbopack</Text>
+
+      <ThemeButtons />
+
       <Text color="$color10">Count: {count}</Text>
       <Button onPress={() => setCount(c => c + 1)}>
         <Text color="white">Increment</Text>

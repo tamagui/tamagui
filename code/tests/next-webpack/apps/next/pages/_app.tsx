@@ -1,12 +1,7 @@
-import '@tamagui/core/reset.css'
-import '@tamagui/font-inter/css/400.css'
-import '@tamagui/font-inter/css/700.css'
-import 'raf/polyfill'
-
 import type React from 'react'
 import Head from 'next/head'
 import type { SolitoAppProps } from 'solito'
-import { NextTamaguiProvider } from 'app/provider/NextTamaguiProvider'
+import { PagesTamaguiProvider } from 'app/provider/PagesTamaguiProvider'
 import { config } from '@my/ui'
 
 if (process.env.NODE_ENV === 'production') {
@@ -45,9 +40,9 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
           }}
         />
       </Head>
-      <NextTamaguiProvider>
+      <PagesTamaguiProvider>
         <Component {...pageProps} />
-      </NextTamaguiProvider>
+      </PagesTamaguiProvider>
     </>
   )
 }

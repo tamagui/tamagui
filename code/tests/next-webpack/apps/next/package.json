@@ -1,26 +1,25 @@
 {
-  "name": "next-app",
+  "name": "test-next-webpack",
   "version": "1.142.0",
   "private": true,
-  "packageManager": "yarn@4.5.0",
   "scripts": {
-    "dev": "next dev",
-    "prod-build": "next build",
-    "start": "next start",
-    "serve": "NODE_ENV=production next start --port 8151"
+    "dev": "next dev --port 3457",
+    "build": "next build",
+    "start": "next start --port 3457",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
     "app": "workspace:^",
-    "next": "^15.3.8",
-    "react": "*",
-    "react-dom": "*",
-    "react-native": "0.81.5",
-    "react-native-web": "^0.21.0",
+    "next": "16.1.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native-web": "^0.21.2",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@tamagui/next-plugin": "workspace:*",
     "@types/node": "^22.1.0"
   }
