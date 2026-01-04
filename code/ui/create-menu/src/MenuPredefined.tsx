@@ -22,6 +22,7 @@ const MenuGroup = styled(View, {
       },
     },
   } as const,
+
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
@@ -35,11 +36,22 @@ const LABEL_NAME = 'MenuLabel'
 
 const MenuLabel = styled(Text, {
   name: LABEL_NAME,
-  cursor: 'default',
-  fontSize: 18,
-  fontWeight: '600',
-  paddingHorizontal: 16,
-  paddingVertical: 18,
+
+  variants: {
+    unstyled: {
+      false: {
+        cursor: 'default',
+        fontSize: 18,
+        fontWeight: '600',
+        paddingHorizontal: 16,
+        paddingVertical: 18,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -77,42 +89,97 @@ const MenuSeparator = styled(View, {
 
 const MenuIcon = styled(View, {
   name: 'MenuIcon',
-  marginLeft: 'auto',
+
+  variants: {
+    unstyled: {
+      false: {
+        marginLeft: 'auto',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 const MenuImage = styled(Image, { name: 'MenuImage' })
 
 const MenuIndicator = styled(View, {
   name: 'MenuIndicator',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginLeft: 'auto',
+
+  variants: {
+    unstyled: {
+      false: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 'auto',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 const MenuItem = styled(View, {
   name: 'MenuItem',
-  flexDirection: 'row',
-  maxWidth: '100%',
-  justifyContent: 'space-between',
-  paddingVertical: 20,
-  alignItems: 'center',
-  gap: 12,
-  cursor: 'pointer',
+
+  variants: {
+    unstyled: {
+      false: {
+        flexDirection: 'row',
+        maxWidth: '100%',
+        justifyContent: 'space-between',
+        paddingVertical: 20,
+        alignItems: 'center',
+        gap: 12,
+        cursor: 'pointer',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 const Title = styled(Text, {
   name: 'MenuTitle',
-  cursor: 'default',
-  fontSize: 16,
-  fontWeight: '500',
-  color: '$color',
+
+  variants: {
+    unstyled: {
+      false: {
+        cursor: 'default',
+        fontSize: 16,
+        fontWeight: '500',
+        color: '$color',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 const SubTitle = styled(Text, {
   name: 'MenuSubTitle',
-  cursor: 'default',
-  fontSize: 14,
-  color: '$colorFaint',
+
+  variants: {
+    unstyled: {
+      false: {
+        cursor: 'default',
+        fontSize: 14,
+        color: '$colorFaint',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 export const MenuPredefined = {
