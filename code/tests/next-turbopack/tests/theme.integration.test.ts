@@ -17,7 +17,7 @@ test.describe('Next Theme Provider (Turbopack)', () => {
     })
 
     expect(themeClass).toBeTruthy()
-    console.log('Initial theme class:', themeClass)
+    console.info('Initial theme class:', themeClass)
   })
 
   test('theme switching works', async ({ page }) => {
@@ -28,7 +28,7 @@ test.describe('Next Theme Provider (Turbopack)', () => {
     const initialTheme = await page.evaluate(() => {
       return document.documentElement.classList.contains('t_dark') ? 'dark' : 'light'
     })
-    console.log('Initial theme:', initialTheme)
+    console.info('Initial theme:', initialTheme)
 
     // Click dark button
     await page.locator('button:has-text("Dark")').click()
@@ -37,7 +37,7 @@ test.describe('Next Theme Provider (Turbopack)', () => {
     const afterDarkClick = await page.evaluate(() => {
       return document.documentElement.classList.contains('t_dark') ? 'dark' : 'light'
     })
-    console.log('After Dark click:', afterDarkClick)
+    console.info('After Dark click:', afterDarkClick)
     expect(afterDarkClick).toBe('dark')
 
     // Click light button
@@ -47,7 +47,7 @@ test.describe('Next Theme Provider (Turbopack)', () => {
     const afterLightClick = await page.evaluate(() => {
       return document.documentElement.classList.contains('t_dark') ? 'dark' : 'light'
     })
-    console.log('After Light click:', afterLightClick)
+    console.info('After Light click:', afterLightClick)
     expect(afterLightClick).toBe('light')
   })
 
@@ -60,7 +60,7 @@ test.describe('Next Theme Provider (Turbopack)', () => {
     await page.waitForTimeout(300)
 
     const storedTheme = await page.evaluate(() => localStorage.getItem('theme'))
-    console.log('Stored theme:', storedTheme)
+    console.info('Stored theme:', storedTheme)
     expect(storedTheme).toBe('dark')
   })
 
@@ -79,7 +79,7 @@ test.describe('Next Theme Provider (Turbopack)', () => {
       }
     })
 
-    console.log('Theme class after reload:', themeClass)
+    console.info('Theme class after reload:', themeClass)
     expect(themeClass.hasDark).toBe(true)
     expect(themeClass.hasLight).toBe(false)
   })
@@ -97,10 +97,11 @@ test.describe('Next Theme Provider (Turbopack)', () => {
     await page.waitForLoadState('networkidle')
 
     const hydrationErrors = errors.filter(
-      (err) => err.toLowerCase().includes('hydration') || err.toLowerCase().includes('mismatch')
+      (err) =>
+        err.toLowerCase().includes('hydration') || err.toLowerCase().includes('mismatch')
     )
 
-    console.log('All errors:', errors)
+    console.info('All errors:', errors)
     expect(hydrationErrors).toHaveLength(0)
   })
 })

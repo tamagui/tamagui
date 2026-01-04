@@ -6,7 +6,7 @@
     "dev": "next dev --webpack --port 3457",
     "next-build": "next build --webpack",
     "start": "next start --port 3457",
-    "test:e2e": "playwright test"
+    "test:integration": "playwright test"
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",

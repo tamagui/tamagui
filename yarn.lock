@@ -22279,6 +22279,7 @@ __metadata:
   resolution: "next15-plus-cli-optimize@workspace:code/tests/next-webpack"
   dependencies:
     "@tamagui/cli": "workspace:*"
+    vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
 

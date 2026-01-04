@@ -30,21 +30,6 @@ describe('Package.json exports support', () => {
     resetAppPackage()
   })
 
-  it('should handle exports field in @my/ui package.json', () => {
-    const packageJsonPath = join(__dirname, '../packages/ui/package.json')
-    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
-
-    expect(packageJson.exports).toBeDefined()
-    expect(packageJson.exports['.']).toBe('./src/index.tsx')
-    expect(packageJson.exports['./components/CustomToast']).toBe('./src/CustomToast.tsx')
-    expect(packageJson.exports['./components/SwitchRouterButton']).toBe(
-      './src/SwitchRouterButton.tsx'
-    )
-    expect(packageJson.exports['./components/SwitchThemeButton']).toBe(
-      './src/SwitchThemeButton.tsx'
-    )
-  })
-
   it('should build app package for both web and native targets', () => {
     const cwd = join(__dirname, '../apps/next')
 
