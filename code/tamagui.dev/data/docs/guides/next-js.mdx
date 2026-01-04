@@ -728,6 +728,16 @@ them after:
 The `--` separator tells the CLI to run `next build` after optimization, then
 restore your source files automatically.
 
+You can also target specific files or use `--include`/`--exclude` patterns:
+
+```bash
+# Target specific files
+tamagui build --target web ./src/components/Button.tsx ./src/components/Card.tsx -- next build
+
+# Use glob patterns
+tamagui build --target web --include "src/components/**/*.tsx" --exclude "src/components/**/*.test.tsx" ./src -- next build
+```
+
 ### CSS Setup
 
 The CLI generates theme CSS to `outputCSS`. Commit this file to git and import
