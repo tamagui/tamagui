@@ -151,10 +151,20 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
       const virtualRef = React.useMemo(
         () => ({
           current: {
-            getBoundingClientRect: () =>
-              isWeb
-                ? DOMRect.fromRect({ width: 0, height: 0, ...pointRef.current })
-                : { width: 0, height: 0, top: 0, left: 0, ...pointRef.current },
+            getBoundingClientRect: () => {
+              if (isWeb) {
+                // Subtract scroll offset because floating-ui adds it back for absolute positioning
+                const scrollX = window.scrollX || document.documentElement.scrollLeft
+                const scrollY = window.scrollY || document.documentElement.scrollTop
+                return DOMRect.fromRect({
+                  width: 0,
+                  height: 0,
+                  x: pointRef.current.x - scrollX,
+                  y: pointRef.current.y - scrollY,
+                })
+              }
+              return { width: 0, height: 0, top: 0, left: 0, ...pointRef.current }
+            },
             ...(!isWeb && {
               measure: (c: any) => c(pointRef.current.x, pointRef.current.y, 0, 0),
               measureInWindow: (c: any) =>

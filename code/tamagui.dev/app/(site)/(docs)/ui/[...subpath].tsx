@@ -1,4 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
+import { Theme } from 'tamagui'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React, { memo } from 'react'
 import type { LoaderProps } from 'one'
@@ -103,5 +104,8 @@ export function DocComponentsPage() {
 
 const DocsThemeTint = memo(({ children }: { children: any }) => {
   const isTinted = useIsDocsTinted()
-  return <ThemeTint disable={!isTinted}>{children}</ThemeTint>
+  if (!isTinted) {
+    return <Theme name="gray">{children}</Theme>
+  }
+  return <ThemeTint>{children}</ThemeTint>
 })
