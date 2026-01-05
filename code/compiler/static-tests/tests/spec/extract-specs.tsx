@@ -372,12 +372,12 @@ export function TestFlexProperties() {
     <YStack
       flexDirection="column"
       flexWrap="wrap"
-      grow={1}
-      shrink={0}
+      flexGrow={1}
+      flexShrink={0}
       flexBasis="auto"
-      items="stretch"
-      justify="flex-start"
-      content="flex-start"
+      alignItems="stretch"
+      justifyContent="flex-start"
+      alignContent="flex-start"
     >
       {child}
     </YStack>
@@ -420,12 +420,12 @@ export function TestFlexWrapWithMediaQuery() {
   const media = useMedia()
   return (
     <XStack
-      flexWrap={media.sm ? 'wrap' : 'nowrap'}
+      flexWrap="wrap"
       flexDirection={media.sm ? 'row' : 'column'}
       gap="$2"
       $sm={{
-        flexWrap: 'wrap',
-        p: '$4',
+        flexWrap: 'nowrap',
+        padding: '$4',
       }}
     >
       {child}
