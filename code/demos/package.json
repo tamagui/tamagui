@@ -58,7 +58,6 @@
     "@tamagui/config": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
-    "@tamagui/image-next": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
