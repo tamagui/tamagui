@@ -11,12 +11,12 @@ import {
   type SelectProps,
   Separator,
   Sheet,
-  SwitchRouterButton,
-  SwitchThemeButton,
   useToastController,
   XStack,
   YStack,
 } from '@my/ui'
+import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
+import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
