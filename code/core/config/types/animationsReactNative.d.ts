@@ -66,5 +66,10 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         mass: number;
         stiffness: number;
     };
+    select: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
 }>;
 //# sourceMappingURL=animationsReactNative.d.ts.map
