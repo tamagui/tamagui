@@ -76,8 +76,8 @@ describe('Platform-specific file optimization', () => {
       expect(nativeContent).toContain('__ReactNativeView')
       expect(nativeContent).toContain('__ReactNativeText')
 
-      // Should still use YStack (not flattened)
-      expect(nativeContent).toContain('<YStack')
+      // v2: YStack is now flattened to __ReactNativeView on native
+      expect(nativeContent).toContain('<__ReactNativeView')
       expect(nativeContent).not.toContain('.css')
       expect(nativeContent).not.toContain('className')
     })
