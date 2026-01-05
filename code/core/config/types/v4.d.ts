@@ -43,6 +43,7 @@ export declare const defaultConfig: {
         quicker: string;
         quickest: string;
         tooltip: string;
+        select: string;
     }>;
     media: {
         readonly maxXs: {

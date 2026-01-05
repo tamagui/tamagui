@@ -32,6 +32,11 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             mass: number;
             stiffness: number;
         };
+        select: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
     }> | import("@tamagui/web").AnimationDriver<{
         '75ms': string;
         '100ms': string;
@@ -45,6 +50,7 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
         quicker: string;
         quickest: string;
         tooltip: string;
+        select: string;
     }>;
     shorthands: {
         readonly ussel: "userSelect";
@@ -238,11 +244,11 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             1: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
             10: import("@tamagui/web").Variable<number>;
+            0.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
             8: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
-            0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -330,11 +336,11 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             1: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
             10: import("@tamagui/web").Variable<number>;
+            0.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
             8: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
-            0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
