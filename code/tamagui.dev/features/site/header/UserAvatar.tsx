@@ -7,8 +7,7 @@ export const UserAvatar = ({ size = 28 }: { size?: number }) => {
 
   // Try userDetails first, then fall back to user metadata from auth
   const avatarUrl =
-    userSwr.data?.userDetails?.avatar_url ||
-    userSwr.data?.user?.user_metadata?.avatar_url
+    userSwr.data?.userDetails?.avatar_url || userSwr.data?.user?.user_metadata?.avatar_url
 
   return (
     <Avatar circular size={size}>
