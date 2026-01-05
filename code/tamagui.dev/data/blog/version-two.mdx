@@ -1,27 +1,32 @@
 ---
-title: Tamagui 2.0 🤩
+title: Tamagui 2.0
 publishedAt: '2025-12-29'
-description: More stable, easier to use, better documented.
+description: Stability, refinement, documentation, and more.
 by: nate
-poster: banner-two.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui lets you build apps that share UI across React web and React Native
-  without sacrificing quality, simplicity, or performance.
+  Tamagui is the best way to build UI shared between React web and React Native
+  without sacrificing quality, simplicity, types, or performance.
 </IntroParagraph>
 
-<IntroParagraph>
-  Tamagui is three things: a style library, an optimizing compiler, and a suite
-  of UI components. It avoids the usual sacrifices in sharing code by simply
-  going quite deep to make that possible. Some examples:
-</IntroParagraph>
+Tamagui's strength lies in it's maturity and depth: at about 200 packages, it
+covers everything: performant and feature-rich styling, a large suite of
+headless and composable UI components, powerful design system and theme
+generation, a rich copy-paste component suite, and a ton of first-class starter
+kits.
 
-Tamagui brings many style features from CSS to native, yet all style primitives
-work native and web, runtime and compile-time, server-side and client-side. You
-get server-side rendering without flickering, even when using spring-based
-animation drivers, or with media queries, or themes, and the optimizing compiler
-means you can write natural inline styles without the typical performance cost.
+The core style library is the star: no other system brings as many style
+features from CSS to native, and yet it also supports all features across:
+native and web, server-side and client-side, and at both runtime and
+compile-time. This results in incredible flexibility and performance.
+
+It's the only universal style system that supports perfect SSR rendering with
+light and dark mode without jumping or flickers, even when using spring-based
+animation drivers and advanced media queries. Add in the optimizing compiler
+that outputs near perfect platform-specific code, and your team can intuitive,
+easy to maintain typed inline styles that merge perfectly and run fast
+everywhere without worrying about the typical performance penalty.
 
 In comparison to other solutions, Tamagui is especially strong at:
 
@@ -33,12 +38,18 @@ In comparison to other solutions, Tamagui is especially strong at:
   media queries and dark mode properly renders and hydrates.
 - _Fast, type-safe, properly mergeable inline styling._ Inline styles are a leap
   forward, but the lack of type safety or easy ability to merge and group your
-  styles is their biggest drawback. Tamagui is fully type safe, lets you control
-  how you merge styles, and optimizes it all nearly perfectly even in the face
-  of complicated logic.
-- _A first-class, composable components based UI kit._ Our UI kit doesn't just
-  target one platform, uses composable components, and can even adapt based on
-  the device.
+  styles is their biggest drawback. Tamagui is fully type safe, lets you
+  perfectly control how you merge styles per-component, optimizing it all nearly
+  perfectly even in the face of complicated logic.
+- _A first-class, composable components based UI kit._ Our UI kit is great at
+  both native and web, has a first-class composable component API, and can
+  easily adapt from one type of compoennt to another based on the device or
+  media query.
+- _Zero configuration._ We invested heavily into a custom build pipeline that
+  outputs entirely separate files for native and web, with each having multiple
+  custom transforms such that you **Tamagui doesn't need any setup at all, on
+  any platform**. No bundler plugin, no babel transform, no matter if it's Vite,
+  Metro, Webpack, Turbopack, you name it.
 
 The result is that Tamagui is the only library that lets you ship world class
 experiences on all platforms, with a lot less code. We're proud to be used by
@@ -53,9 +64,9 @@ Tamagui improved continuously during version one:
   release process to improve stability.
 - Created
   [`@tamagui/build`](https://github.com/tamagui/tamagui/blob/v2/code/packages/build/README.md),
-  the only way to publish npm packages that support CommonJS and ESModules and
-  native and web without requiring any configuration at all when importing -
-  whether it's Metro, Node, Vite, or otherwise.
+  the only way to publish npm packages that support both CommonJS and ESModules
+  as well as native and web, all without requiring any configuration at all for
+  end users.
 - Added many styling features like container queries, container and media
   queries combined, and platform/theme selectors.
 - New compound components like Tabs, Accordion, and ToggleGroup.
@@ -66,8 +77,9 @@ Tamagui improved continuously during version one:
 
 ### New in v2
 
-Version two is mostly a cleanup release - it removes deprecated APIs, adds some
-useful new features, and refactors a couple slow components.
+Version two adds some new Menu components, but beyond that is mostly a cleanup
+release - it removes deprecated APIs, cleans up code and improves testing, and
+refactors a couple slow components.
 
 #### Rem Units on Native
 
@@ -91,22 +103,23 @@ All animation drivers now support delays:
 
 This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
-#### Input Component
+#### Web-aligned Image and Input Components
 
-Input now follows a web-aligned API, with the old props deprecated:
+Input and Image now follows a web-aligned APIs, with some old props supported
+but deprecated.
 
-| Old (deprecated)   | New               |
-| ------------------ | ----------------- |
-| `secureTextEntry`  | `type="password"` |
-| `editable={false}` | `readOnly`        |
-| `keyboardType`     | `type`            |
-| `numberOfLines`    | `rows`            |
+The v1 versions of both components are is still available via:
 
-The v1 Input API is still available via `import { Input } from 'tamagui/v1'`.
+```tsx
+import { Input } from '@tamagui/input/v1'
+import { Image } from '@tamagui/image/v1'
+import { Input, Image } from 'tamagui/v1'
+```
 
-#### Button Composition
+#### Button and List Component simplification
 
-Button now uses a composition pattern for better performance and flexibility:
+Button and List remove direct text style proper on the outer frame, and now only
+support composition for better performance and flexibility:
 
 ```tsx
 <Button>
@@ -115,7 +128,9 @@ Button now uses a composition pattern for better performance and flexibility:
 </Button>
 ```
 
-This replaces the old approach of passing `icon` and text style props directly.
+This replaces the old approach of passing `icon` and text style props directly,
+though you can still use the simple `<Button>Hello</Button>` pattern for simple
+cases.
 
 #### Breaking Changes
 
@@ -143,18 +158,24 @@ Things deprecated in version one that are now gone:
 - `<Spacer />` moved from core to `@tamagui/spacer`.
 - `themeClassNameOnRoot` replaced with `settings.addThemeClassName`.
 - `extractable()` method - use `styleable()` instead.
-- `ellipse` prop on Text - renamed to `ellipsis`.
 - `selectable` prop on Text - use `userSelect` instead.
+- `ellipse` prop on SizableText - renamed to `ellipsis`.
 - `textAlignVertical` - use `verticalAlign` instead.
 - `focusable` prop - use `tabIndex={0}` instead.
 - `dataSet` prop - use `data-*` attributes directly.
 - All root-level `createTamagui` settings moved to `settings` object.
 
-#### Theme Improvements
+#### Config v5
 
-The v5 theme configuration adds a new `createV5Theme()` factory for easier
-custom theme creation, along with a new neutral color palette - 12 grays
-designed to have sufficient contrast on both light and dark backgrounds.
+Our recommended default config, Config v4, evolves into a more mature setup with
+v5. The good news is that v5 doesn't change any of the fundamentals - the
+shorthands and media queries stay the same, though we've added a few more media
+queries.
+
+What v5 does add makes styling a lot easier - many more opacity values, shadow
+values, a bit more refined colors, and much easier customization of sub-themes.
+
+The new `createV5Theme()` factory makes for easier custom theme creation:
 
 ```tsx
 import { createV5Theme } from '@tamagui/themes/v5'
@@ -166,8 +187,8 @@ const customThemes = createV5Theme({
 })
 ```
 
-The theme system also adds `alt1`, `alt2`, `surface1`, `surface2`, `surface3`,
-and `accent` variants for all color themes.
+The v5 theme system also by default adds `alt1`, `alt2`, `surface1`, `surface2`,
+`surface3`, and `accent` variants for all color themes.
 
 #### Other Improvements
 
@@ -224,7 +245,7 @@ content on iOS.
 </HeroContainer>
 ```tsx hero template=ContextMenu
 
-```
+````
 
 #### Matured Components
 
@@ -242,7 +263,7 @@ smooth animations and full accessibility support.
 
 ```tsx hero template=Tabs
 
-```
+````
 
 ##### Accordion
 
