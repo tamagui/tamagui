@@ -3,7 +3,7 @@
  */
 
 import '@expo/match-media'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import React from 'react'
 import { describe, expect, test } from 'vitest'
 
@@ -12,10 +12,6 @@ import { describe, expect, test } from 'vitest'
 if (typeof window !== 'undefined') {
   ;(window as any).React = React
 }
-
-/**
- * disabled for now but we really need to bring this back
- */
 
 function getTest(name: string) {
   const app = require('./spec/out/out-webpack')
@@ -190,8 +186,7 @@ describe('webpack-tests', () => {
     expect(container).toMatchSnapshot()
   })
 
-  // TODO: This test is flaky due to media query evaluation differences between environments
-  test.skip('21. complex real-world case - flexWrap with many conditionals and media queries', () => {
+  test('21. complex real-world case - flexWrap with many conditionals and media queries', () => {
     const { renderTrue, renderFalse } = getTest('TestComplexFlexWithConditionals')
 
     const { container: containerTrue } = renderTrue()
@@ -214,8 +209,7 @@ describe('webpack-tests', () => {
     expect(containerFalse).toMatchSnapshot()
   })
 
-  // TODO: This test is flaky due to media query evaluation differences between environments
-  test.skip('22. flexWrap with media query conditionals', () => {
+  test('22. flexWrap with media query conditionals', () => {
     const { renderTrue } = getTest('TestFlexWrapWithMediaQuery')
     const { container } = renderTrue()
 
