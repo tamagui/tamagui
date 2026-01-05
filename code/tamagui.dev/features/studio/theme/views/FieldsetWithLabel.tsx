@@ -54,8 +54,8 @@ export const FieldsetWithLabel = ({
               setIsEditing(false)
             }}
             defaultValue={label}
-            onChangeText={(t) => {
-              text.current = t
+            onChange={(e) => {
+              text.current = e.target?.value ?? ''
             }}
             onSubmitEditing={() => {
               onChangeLabel?.(text.current)

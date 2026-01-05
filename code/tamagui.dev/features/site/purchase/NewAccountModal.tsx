@@ -1618,7 +1618,7 @@ const TeamTab = ({
                   id="github-username"
                   placeholder="Search GitHub users by name, email, or id"
                   value={searchQuery}
-                  onChangeText={setSearchQuery}
+                  onChange={(e) => setSearchQuery(e.target?.value ?? '')}
                 />
               </Fieldset>
             </XStack>

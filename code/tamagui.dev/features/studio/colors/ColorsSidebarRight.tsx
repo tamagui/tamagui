@@ -129,7 +129,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
               id="scale-name"
               aria-label="Scale name"
               value={scale.name}
-              onChangeText={colorsStore.changeScaleName}
+              onChange={(e) => colorsStore.changeScaleName(e.target?.value ?? '')}
             />
           </YStack>
           <Button

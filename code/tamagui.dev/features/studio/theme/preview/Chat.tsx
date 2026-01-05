@@ -170,7 +170,7 @@ export const ChatScreen = () => {
         <Form flexDirection="row" onSubmit={() => sendMessage(input)} gap="$2">
           <Input
             value={input}
-            onChangeText={setInput}
+            onChange={(e) => setInput(e.target?.value ?? '')}
             placeholder="Message"
             flex={1}
             bg="transparent"
