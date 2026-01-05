@@ -675,7 +675,7 @@ const DiscordPanel = ({
             placeholder="Your username..."
             id="discord-username"
             value={draftQuery}
-            onChangeText={setDraftQuery}
+            onChange={(e) => setDraftQuery(e.target?.value ?? '')}
           />
         </Fieldset>
 
