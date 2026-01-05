@@ -4,6 +4,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { Spinner, YStack } from 'tamagui'
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
+import { getAccessToken } from '../auth/useSupabaseClient'
 import { userSubscriptionStatus } from './userSubscriptionStatus'
 
 export let currentUser: UserContextType | null = null
@@ -16,7 +17,12 @@ export const useUser = () => {
       if (typeof window === 'undefined') {
         return null
       }
-      const res = await fetch('/api/user')
+      const accessToken = await getAccessToken()
+      const headers: HeadersInit = {}
+      if (accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`
+      }
+      const res = await fetch('/api/user', { headers })
       if (res.ok) {
         return (await res.json()) as UserContextType
       }

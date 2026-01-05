@@ -27,7 +27,8 @@ function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPasswordInput, setShowPasswordInput] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [oauthLoading, setOauthLoading] = useState(false)
+  const [emailLoading, setEmailLoading] = useState(false)
   const [message, setMessage] = useState<{ type?: string; content?: string }>({
     type: '',
     content: '',
@@ -43,18 +44,11 @@ function SignIn() {
 
   useForwardToDashboard()
 
-  if (!supabase) {
-    return (
-      <YStack items="center" flex={1} justify="center">
-        <Spinner size="small" />
-      </YStack>
-    )
-  }
-
   const handleSignin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (!supabase) return
 
-    setLoading(true)
+    setEmailLoading(true)
     setMessage({})
 
     try {
@@ -81,26 +75,33 @@ function SignIn() {
     } catch (error) {
       setMessage({ type: 'error', content: `${error}` })
     } finally {
-      setLoading(false)
+      setEmailLoading(false)
     }
   }
 
   const handleOAuthSignIn = async (provider: Provider) => {
+    if (!supabase) return
     const redirectTo = `${window.location.origin}/api/auth/callback`
-    setLoading(true)
+    setOauthLoading(true)
 
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo,
+        skipBrowserRedirect: false,
       },
     })
 
     if (error) {
       setMessage({ type: 'error', content: error.message })
+      setOauthLoading(false)
+      return
     }
 
-    setLoading(false)
+    // AuthClient doesn't auto-redirect like full SupabaseClient, so we need to do it manually
+    if (data?.url) {
+      window.location.href = data.url
+    }
   }
 
   if (!user)
@@ -120,10 +121,10 @@ function SignIn() {
           <Button
             // @ts-ignore
             type="submit"
-            disabled={loading}
+            disabled={oauthLoading || !supabase}
             onClick={() => handleOAuthSignIn('github')}
             size="$4"
-            icon={GithubIcon}
+            icon={oauthLoading ? <Spinner size="small" /> : GithubIcon}
           >
             Continue with GitHub
           </Button>
@@ -153,8 +154,8 @@ function SignIn() {
                       <Button
                         // @ts-expect-error
                         type="submit"
-                        icon={loading ? <Spinner size="small" /> : null}
-                        disabled={!email.length || emailAuthDisabledFlag}
+                        icon={emailLoading ? <Spinner size="small" /> : null}
+                        disabled={!email.length || emailAuthDisabledFlag || emailLoading}
                       >
                         Send magic link
                       </Button>
@@ -187,9 +188,12 @@ function SignIn() {
                       <Button
                         // @ts-ignore
                         type="submit"
-                        loading={loading}
+                        loading={emailLoading}
                         disabled={
-                          !password.length || !email.length || emailAuthDisabledFlag
+                          !password.length ||
+                          !email.length ||
+                          emailAuthDisabledFlag ||
+                          emailLoading
                         }
                       >
                         Sign in

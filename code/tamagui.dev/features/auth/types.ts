@@ -1,4 +1,4 @@
-import type { User } from '@supabase/supabase-js'
+import type { User } from '@supabase/auth-js'
 import type { Database } from '../supabase/types'
 import type {
   getSubscriptions,

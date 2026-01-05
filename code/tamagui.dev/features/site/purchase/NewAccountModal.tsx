@@ -337,6 +337,7 @@ export const AccountView = () => {
 
 const AccountHeader = () => {
   const { isLoading, data } = useUser()
+  const supabase = useSupabaseClient()
 
   if (isLoading || !data) {
     return null
@@ -345,15 +346,18 @@ const AccountHeader = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/logout', {
+      // Sign out on the client side (clears localStorage token)
+      if (supabase) {
+        await supabase.auth.signOut()
+      }
+      // Also call server to clear any cookies
+      await fetch('/api/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      if (response.ok) {
-        window.location.href = '/'
-      }
+      window.location.href = '/'
     } catch (error) {
       console.error('Logout failed:', error)
     }

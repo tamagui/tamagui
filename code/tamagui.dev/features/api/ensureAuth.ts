@@ -1,3 +1,4 @@
+import type { User } from '@supabase/supabase-js'
 import { redirect } from 'one'
 import { setupCors } from './cors'
 import { getSupabaseServerClient } from './getSupabaseServerClient'
@@ -16,9 +17,23 @@ export const ensureAuth = async ({
 
   const supabase = getSupabaseServerClient(req)
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // Check for Authorization header first (localStorage-based auth)
+  const authHeader = req.headers.get('Authorization')
+  let user: User | null = null
+
+  if (authHeader?.startsWith('Bearer ')) {
+    const token = authHeader.slice(7)
+    const { data, error } = await supabase.auth.getUser(token)
+    if (!error && data.user) {
+      user = data.user
+    }
+  }
+
+  // Fall back to cookie-based auth if no valid token
+  if (!user) {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  }
 
   if (!user) {
     if (shouldRedirect) {
@@ -45,7 +60,7 @@ export const ensureAuth = async ({
     .from('users_private')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if (!userPrivate.data?.email || !userPrivate.data.github_user_name) {
     const updateData = {
