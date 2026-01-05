@@ -43,7 +43,8 @@
     "@tamagui/create-menu": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/popover": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

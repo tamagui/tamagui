@@ -7136,6 +7136,7 @@ __metadata:
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/helpers-tamagui": "workspace:*"
+    "@tamagui/spacer": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
@@ -7418,7 +7419,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/context-menu@workspace:code/ui/context-menu":
+"@tamagui/context-menu@workspace:*, @tamagui/context-menu@workspace:code/ui/context-menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/context-menu@workspace:code/ui/context-menu"
   dependencies:
@@ -7563,8 +7564,12 @@ __metadata:
     "@tamagui/checkbox": "workspace:*"
     "@tamagui/checkbox-headless": "workspace:*"
     "@tamagui/config": "workspace:*"
+    "@tamagui/context-menu": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
+    "@tamagui/image": "workspace:*"
+    "@tamagui/input": "workspace:*"
+    "@tamagui/linear-gradient": "workspace:*"
     "@tamagui/list-item": "workspace:*"
     "@tamagui/logo": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
@@ -7995,6 +8000,7 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/create-context": "workspace:*"
     "@tamagui/helpers": "workspace:*"
+    "@tamagui/spacer": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     react: "npm:*"
@@ -8065,6 +8071,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
     react-native: "npm:0.81.5"
   peerDependencies:
@@ -8134,6 +8141,7 @@ __metadata:
     "@tamagui/demos": "workspace:*"
     "@tamagui/font-inter": "workspace:*"
     "@tamagui/get-token": "workspace:*"
+    "@tamagui/input": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/sandbox-ui": "workspace:*"
     "@tamagui/sheet": "workspace:*"
@@ -8281,6 +8289,7 @@ __metadata:
     "@tamagui/helpers": "workspace:*"
     "@tamagui/popover": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -8846,7 +8855,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/spacer@workspace:code/ui/spacer":
+"@tamagui/spacer@workspace:*, @tamagui/spacer@workspace:code/ui/spacer":
   version: 0.0.0-use.local
   resolution: "@tamagui/spacer@workspace:code/ui/spacer"
   dependencies:
@@ -8867,6 +8876,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
+    "@tamagui/web": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -28261,6 +28271,7 @@ __metadata:
     "@tamagui/shapes": "workspace:*"
     "@tamagui/sheet": "workspace:*"
     "@tamagui/slider": "workspace:*"
+    "@tamagui/spacer": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/switch": "workspace:*"
     "@tamagui/tabs": "workspace:*"

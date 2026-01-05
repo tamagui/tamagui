@@ -40,7 +40,8 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*"
+    "@tamagui/core": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",
