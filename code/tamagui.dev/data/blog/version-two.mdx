@@ -95,12 +95,12 @@ This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
 Input now follows a web-aligned API, with the old props deprecated:
 
-| Old (deprecated)   | New              |
-| ------------------ | ---------------- |
-| `secureTextEntry`  | `type="password"`|
-| `editable={false}` | `readOnly`       |
-| `keyboardType`     | `type`           |
-| `numberOfLines`    | `rows`           |
+| Old (deprecated)   | New               |
+| ------------------ | ----------------- |
+| `secureTextEntry`  | `type="password"` |
+| `editable={false}` | `readOnly`        |
+| `keyboardType`     | `type`            |
+| `numberOfLines`    | `rows`            |
 
 The v1 Input API is still available via `import { Input } from 'tamagui/v1'`.
 
@@ -131,7 +131,8 @@ The breaking changes outside of deprecations are:
 - Removed `onHoverIn`/`onHoverOut` - use `onMouseEnter`/`onMouseLeave`.
 - Removed `createTheme` export - just use plain objects.
 - Removed `setupReactNative` - auto-detection now handles this.
-- Added 30+ web event handlers (keyboard, pointer, drag/drop, clipboard, scroll).
+- Added 30+ web event handlers (keyboard, pointer, drag/drop, clipboard,
+  scroll).
 - Move from ThemeableStack to View for most UI component bases.
 
 #### Deprecated APIs Removed
@@ -226,44 +227,18 @@ content on iOS.
 
 ```
 
-### Goals
+### What's Next
 
 Our main goal with version two is **stability**. Tamagui started as a side
 project with incredible scope and maintained an ambitious stance towards landing
-large features and internal improvements.
+large features and internal improvements, but that led to too many regression
+during version one. I'd like to personally apologize for that.
 
-Speaking for myself now: I personally pushed releases too fast, and as a result
-burned too many of our users with regressions. We generally fast-followed with
-fixes, but that isn't a good thing.
+For v2, we want to ensure that won't happen anymore. It's why we delayed the
+release for nearly a year to polish and improve everything - tests, internals,
+performance, repo tooling, checks, release safeguards, and documentation.
 
-I'd like to sincerely apologize for the lack of rigor in our releases. We had a
-version two nearly ready over a year ago and I felt we'd finally reached
-maturity in terms of API, internals, performance, and general repo tooling, but
-honestly, I just wanted to slow down, fix as many issues as possible, and find a
-better balance.
-
-I love Tamagui, it's always been something I do for the love of the game and not
-profit. The company to date has made nearly half a million dollars and
-re-invested all of it entirely to paying our team. We get amazing support, and I
-really appreciate our community.
-
-We've changed a lot over the last couple years to improve stability:
-
-- Added over 500 tests, especially improving our native test suite.
-- Slowed down releases and added a variety of new checks to releases.
-- Fixed nearly 1,000 issues, and increased test coverage dramatically.
-- Improved our canary release process, and now use it much more often.
-- Completed all the major re-writes we wanted to do, which let us finally focus
-  on the above.
-
-### What's next
-
-Tamagui is quite mature in terms of features, foundation, and performance. We
-likely won't add much for a while, instead I'd like to continue focusing on
-refinement, and also move much more quickly towards a version three. That will
-probably involve a version 2.X sometime soon that deprecates a variety more
-things we want to, in order to clear the way.
-
-Our broad goals for the future include better alignment to the web, simpler
-onboarding, and potentially more familiar style APIs for people who aren't
-Tamagui-pilled.
+We considered bigger changes for v2, but realized with AI getting good at
+Tamagui and everything now working quite well, we're happier for now to keep
+things iterative - we're already full-featured and fast, from now on, stability
+is a feature.
