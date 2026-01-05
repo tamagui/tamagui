@@ -1,5 +1,5 @@
 ---
-title: Tamagui 2
+title: Tamagui 2.0 🤩
 publishedAt: '2025-12-29'
 description: More stable, easier to use, better documented.
 by: nate
@@ -205,7 +205,7 @@ We've added two new menu components that automatically adapt to each platform:
 navigation, submenus, checkbox items, and animations. On iOS and Android, it
 automatically renders using native platform menus.
 
-<HeroContainer>
+<HeroContainer tinted>
   <MenuDemo />
 </HeroContainer>
 
@@ -219,15 +219,71 @@ automatically renders using native platform menus.
 right-click (web) or long-press (native). It includes support for preview
 content on iOS.
 
-<HeroContainer>
+<HeroContainer tinted>
   <ContextMenuDemo />
 </HeroContainer>
-
 ```tsx hero template=ContextMenu
 
 ```
 
-### What's Next
+#### Matured Components
+
+Several components that were in beta during v1 are now fully stable and
+production-ready:
+
+##### Tabs
+
+[Tabs](/docs/components/tabs) provides keyboard-navigable tabbed interfaces with
+smooth animations and full accessibility support.
+
+<HeroContainer tinted>
+  <TabsDemo />
+</HeroContainer>
+
+```tsx hero template=Tabs
+
+```
+
+##### Accordion
+
+[Accordion](/docs/components/accordion) provides collapsible content sections
+with customizable animations and single or multiple expansion modes.
+
+<HeroContainer tinted>
+  <AccordionDemo />
+</HeroContainer>
+
+```tsx hero template=Accordion
+
+```
+
+##### Tooltip
+
+[Tooltip](/docs/components/tooltip) now uses floating positioning for smarter
+placement that automatically adjusts to viewport boundaries.
+
+<HeroContainer tinted>
+  <TooltipDemo />
+</HeroContainer>
+
+```tsx hero template=Tooltip
+
+```
+
+##### Image
+
+[Image](/docs/components/image) provides cross-platform image handling with
+consistent APIs across web and native.
+
+<HeroContainer tinted>
+  <ImageDemo />
+</HeroContainer>
+
+```tsx hero template=Image
+
+```
+
+### Goals
 
 Our main goal with version two is **stability**. Tamagui started as a side
 project with incredible scope and maintained an ambitious stance towards landing
