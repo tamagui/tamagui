@@ -174,7 +174,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             <>
               <Separator vertical />
               <Input
-                disabled={props.disabled}
+                disabled={props.disabled as boolean}
                 placeholder="Hex"
                 borderWidth={0}
                 size="$3"
@@ -185,8 +185,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                   fontFamily: '$mono',
                 }}
                 value={hex}
-                onChangeText={(newText) => {
-                  updateHexInput(newText)
+                onChange={(e) => {
+                  updateHexInput(e.target?.value ?? '')
                 }}
                 onBlur={() => {
                   sendUpdateHexDelayed(hex)

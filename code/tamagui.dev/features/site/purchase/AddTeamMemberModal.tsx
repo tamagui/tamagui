@@ -287,7 +287,8 @@ export const AddTeamMemberModalComponent = () => {
                 <Input
                   id="seats"
                   value={String(additionalSeats)}
-                  onChangeText={(text) => {
+                  onChange={(e) => {
+                    const text = e.target?.value ?? ''
                     const num = Number(text.replace(/^0+/, '')) || 1
                     setAdditionalSeats(num)
                   }}

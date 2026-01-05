@@ -55,8 +55,8 @@ export const FieldsetWithLabel = ({
             }}
             onFocus={(e) => e.currentTarget.select()}
             defaultValue={label}
-            onChangeText={(t) => {
-              text.current = t
+            onChange={(e) => {
+              text.current = e.target?.value ?? ''
             }}
             onSubmitEditing={() => {
               onChangeLabel?.(text.current)
