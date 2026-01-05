@@ -8277,6 +8277,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/create-menu": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/popover": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
