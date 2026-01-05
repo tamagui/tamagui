@@ -155,8 +155,12 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
   missingDeps = missingDeps.filter((dep) => {
     const isViteOrTest = dep.includes('vite') || dep.includes('test')
     // bun is a runtime environment like node, not a package dependency
-    const isBlacklisted = dep === 'expo-linear-gradient' || dep === 'bun'
-    return !isViteOrTest && !isBlacklisted
+    // expo-image is an optional dependency
+    // expo-linear-gradient is handled by expo
+    const isBlacklisted = dep === 'expo-linear-gradient' || dep === 'bun' || dep === 'expo-image'
+    // Filter out self-references (package importing itself, often from JSDoc comments)
+    const isSelfReference = dep === pkg.name
+    return !isViteOrTest && !isBlacklisted && !isSelfReference
   })
 
   if (missingDeps.length === 0) {
