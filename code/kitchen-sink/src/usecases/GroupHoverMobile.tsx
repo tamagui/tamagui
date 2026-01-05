@@ -2,7 +2,7 @@ import { Stack, Text, XStack, styled } from 'tamagui'
 import { Star } from '@tamagui/lucide-icons'
 
 const GroupContainer = styled(Stack, {
-  group: 'hovertest',
+  group: 'testy',
   padding: '$4',
   backgroundColor: '$background',
   borderRadius: '$4',
@@ -12,7 +12,7 @@ const GroupContainer = styled(Stack, {
 const GroupText = styled(Text, {
   color: 'rgb(0, 0, 0)',
 
-  '$group-hovertest-hover': {
+  '$group-testy-hover': {
     color: 'rgb(255, 0, 0)',
   },
 })
@@ -20,7 +20,7 @@ const GroupText = styled(Text, {
 const GroupIcon = styled(Star, {
   color: 'rgb(0, 0, 0)',
 
-  '$group-hovertest-hover': {
+  '$group-testy-hover': {
     color: 'rgb(255, 0, 0)',
   },
 })
