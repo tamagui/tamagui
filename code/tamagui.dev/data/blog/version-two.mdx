@@ -103,6 +103,47 @@ All animation drivers now support delays:
 
 This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
+#### Motion Animation Driver
+
+We've added a new animation driver powered by [Motion](https://motion.dev), and
+it's our recommended choice for web. The `@tamagui/animations-motion` package
+brings excellent performance through some key architectural decisions.
+
+The Motion driver avoids React re-renders entirely during animations. When
+styles change, instead of triggering a re-render cycle, it directly mutates the
+DOM through Motion's `useAnimate` hook. This is enabled by setting
+`avoidReRenders: true` internally, which tells Tamagui's core to emit style
+changes via a callback rather than through state updates.
+
+Under the hood, Motion leverages the
+[Web Animations API (WAAPI)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
+which runs animations off the main thread. This means your spring animations run
+at 60fps even when JavaScript is busy. The driver also implements intelligent
+diffing - it tracks the previous animated styles and only sends changed
+properties to Motion, minimizing work on each frame.
+
+```tsx
+import { createAnimations } from '@tamagui/animations-motion'
+
+const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
+  lazy: {
+    type: 'spring',
+    damping: 20,
+    stiffness: 60,
+  },
+})
+```
+
+The result is buttery smooth animations that don't block your UI, making it
+ideal for complex interactive components like sheets, popovers, and page
+transitions on web.
+
 #### Web-aligned Image and Input Components
 
 Input and Image now follows a web-aligned APIs, with some old props supported
