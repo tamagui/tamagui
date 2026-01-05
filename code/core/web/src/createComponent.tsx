@@ -77,7 +77,7 @@ const avoidReRenderKeys = new Set([
 ])
 
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
-  const cancelTouches = () => {
+  const cancelPresses = () => {
     // clear all press downs
     componentSetStates.forEach((setState) =>
       setState((prev) => {
@@ -93,7 +93,25 @@ if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
     )
     componentSetStates.clear()
   }
-  addEventListener('mouseup', cancelTouches)
+  const cancelTouches = () => {
+    // clear press and hover on touch end - hover may have been set
+    // via synthetic mouseenter event triggered by touch
+    componentSetStates.forEach((setState) =>
+      setState((prev) => {
+        if (prev.press || prev.pressIn || prev.hover) {
+          return {
+            ...prev,
+            press: false,
+            pressIn: false,
+            hover: false,
+          }
+        }
+        return prev
+      })
+    )
+    componentSetStates.clear()
+  }
+  addEventListener('mouseup', cancelPresses)
   addEventListener('touchend', cancelTouches)
   addEventListener('touchcancel', cancelTouches)
 
@@ -177,6 +195,7 @@ let BaseView: any
 let hasSetupBaseViews = false
 
 const lastInteractionWasKeyboard = { value: false }
+const lastInteractionWasTouch = { value: false }
 if (isWeb && typeof document !== 'undefined') {
   document.addEventListener('keydown', () => {
     if (!lastInteractionWasKeyboard.value) {
@@ -192,7 +211,15 @@ if (isWeb && typeof document !== 'undefined') {
     if (lastInteractionWasKeyboard.value) {
       lastInteractionWasKeyboard.value = false
     }
+    // Real mouse movement clears touch flag
+    lastInteractionWasTouch.value = false
   })
+  document.addEventListener('touchstart', () => {
+    lastInteractionWasTouch.value = true
+  })
+  // Don't reset on touchend - mouseenter fires after touchend
+  // and we need to still detect it as a touch interaction.
+  // Mouse move will reset it when there's real mouse activity.
 }
 
 export function createComponent<
@@ -1159,7 +1186,9 @@ export function createComponent<
           ...((attachHover || attachPress) && {
             onMouseEnter: (e) => {
               const next: Partial<typeof state> = {}
-              if (needsHoverState) {
+              // Don't set hover on touch devices - touch triggers mouseenter
+              // but there's no corresponding mouseleave on touch end
+              if (needsHoverState && !lastInteractionWasTouch.value) {
                 next.hover = true
               }
               if (needsPressState) {

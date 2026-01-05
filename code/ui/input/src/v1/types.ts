@@ -37,7 +37,7 @@ export type InputProps = StackProps &
     /**
      * @deprecated - use `onChange` instead
      */
-    onChangeText?: TextInputProps['onChange']
+    onChangeText?: TextInputProps['onChangeText']
     /**
      * @deprecated - use `readOnly` instead
      */
