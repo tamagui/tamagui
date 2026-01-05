@@ -66,27 +66,114 @@ Tamagui improved continuously during version one:
 
 ### New in v2
 
-Version two is mostly a cleanup release - it has few breaking changes. It mostly
-removes deprecated APIs, while adding a couple new components and refactoring a
-couple slow ones.
+Version two is mostly a cleanup release - it removes deprecated APIs, adds some
+useful new features, and refactors a couple slow components.
+
+#### Rem Units on Native
+
+You can now use rem units in your styles on native platforms:
+
+```tsx
+<View padding="1.5rem" fontSize="1rem" />
+```
+
+Rem values are calculated using `PixelRatio.getFontScale()`, so they
+automatically respect the user's accessibility font size settings. Configure the
+base size with `settings.remBaseFontSize` (defaults to 16).
+
+#### Animation Delays
+
+All animation drivers now support delays:
+
+```tsx
+<View animation={['bouncy', { delay: 200 }]} />
+```
+
+This works with CSS, React Native Animated, Reanimated, and Motion drivers.
+
+#### Input Component
+
+Input now follows a web-aligned API, with the old props deprecated:
+
+| Old (deprecated)   | New              |
+| ------------------ | ---------------- |
+| `secureTextEntry`  | `type="password"`|
+| `editable={false}` | `readOnly`       |
+| `keyboardType`     | `type`           |
+| `numberOfLines`    | `rows`           |
+
+The v1 Input API is still available via `import { Input } from 'tamagui/v1'`.
+
+#### Button Composition
+
+Button now uses a composition pattern for better performance and flexibility:
+
+```tsx
+<Button>
+  <Button.Icon icon={Plus} />
+  <Button.Text>Add Item</Button.Text>
+</Button>
+```
+
+This replaces the old approach of passing `icon` and text style props directly.
+
+#### Breaking Changes
 
 The breaking changes outside of deprecations are:
 
-- Default flex and position styles align with the latest React Native versions,
-  but you can change settings to keep the legacy behavior.
-- Button and ListItem lose direct text style props, to gain performance.
-- useTheme no longer takes props, must be changed using a component.
-- Removed web-only `onHoverIn` and `onHoverOut` in favor of standard web events
-  (`onMouseEnter` or `onPointerEnter`).
-- Added comprehensive web event handler support including keyboard, pointer,
-  drag and drop, clipboard, and scroll events.
-- Move from ThemeableStack to View for most base components used in UI
+- Default `position` changed from `relative` to `static` to align with CSS
+  defaults. Use `settings.defaultPosition: 'relative'` to restore old behavior.
+- Default `flexBasis` changed from `auto` to `0` for flex items. Use
+  `settings.styleCompat: 'legacy'` to restore old behavior.
+- Button and ListItem use composition pattern instead of direct text/icon props.
+- `useTheme()` no longer accepts props - use `<Theme>` component instead.
+- Removed `themeInverse` prop and `<Theme inverse>` - use explicit theme names.
+- Removed `onHoverIn`/`onHoverOut` - use `onMouseEnter`/`onMouseLeave`.
+- Removed `createTheme` export - just use plain objects.
+- Removed `setupReactNative` - auto-detection now handles this.
+- Added 30+ web event handlers (keyboard, pointer, drag/drop, clipboard, scroll).
+- Move from ThemeableStack to View for most UI component bases.
+
+#### Deprecated APIs Removed
 
 Things deprecated in version one that are now gone:
 
-- Removed `space` and `spaceDirection` props in favor of gap.
-- Moved the `<Spacer />` component from core into `@tamagui/spacer`.
-- Moved all settings on `createTamagui` onto the `settings` object.
+- `space`, `spaceDirection`, and `separator` props - use `gap` instead.
+- `<Spacer />` moved from core to `@tamagui/spacer`.
+- `themeClassNameOnRoot` replaced with `settings.addThemeClassName`.
+- `extractable()` method - use `styleable()` instead.
+- `ellipse` prop on Text - renamed to `ellipsis`.
+- `selectable` prop on Text - use `userSelect` instead.
+- `textAlignVertical` - use `verticalAlign` instead.
+- `focusable` prop - use `tabIndex={0}` instead.
+- `dataSet` prop - use `data-*` attributes directly.
+- All root-level `createTamagui` settings moved to `settings` object.
+
+#### Theme Improvements
+
+The v5 theme configuration adds a new `createV5Theme()` factory for easier
+custom theme creation, along with a new neutral color palette - 12 grays
+designed to have sufficient contrast on both light and dark backgrounds.
+
+```tsx
+import { createV5Theme } from '@tamagui/themes/v5'
+
+const customThemes = createV5Theme({
+  colors: {
+    brand: { light: [...], dark: [...] }
+  }
+})
+```
+
+The theme system also adds `alt1`, `alt2`, `surface1`, `surface2`, `surface3`,
+and `accent` variants for all color themes.
+
+#### Other Improvements
+
+- **Insets support**: Pass `insets` to TamaguiProvider for safe area handling.
+- **FocusGuard**: New `@tamagui/focus-guard` package for focus trapping.
+- **Component classes**: All components now output `is_ComponentName` classes
+  for easier debugging and CSS targeting.
 
 #### Headless and Unstyled Components
 
