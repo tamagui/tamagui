@@ -145,6 +145,81 @@ const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicator
 )
 
 /* -------------------------------------------------------------------------------------------------
+ * SelectIndicator
+ * -----------------------------------------------------------------------------------------------*/
+
+const SelectIndicatorFrame = styled(YStack, {
+  name: 'SelectIndicator',
+
+  variants: {
+    unstyled: {
+      false: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        pointerEvents: 'none',
+        zIndex: 10,
+        backgroundColor: '$backgroundHover',
+        borderRadius: 0,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
+})
+
+export type SelectIndicatorProps = GetProps<typeof SelectIndicatorFrame>
+
+const SelectIndicator = SelectIndicatorFrame.styleable<
+  SelectScopedProps<SelectIndicatorProps>
+>(function SelectIndicator({ scope, ...props }, forwardedRef) {
+  const itemContext = useSelectItemParentContext(scope)
+  const context = useSelectContext(scope)
+  const [layout, setLayout] = React.useState<any>(null)
+
+  const rafRef = React.useRef<any>(0)
+
+  React.useLayoutEffect(() => {
+    const update = (index: number | null) => {
+      if (typeof index !== 'number') return
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(() => {
+        const node = itemContext.listRef?.current?.[index]
+        if (node) {
+          setLayout({
+            width: Math.round(node.offsetWidth),
+            height: Math.round(node.offsetHeight),
+            x: Math.round(node.offsetLeft),
+            y: Math.round(node.offsetTop),
+          })
+        }
+      })
+    }
+
+    if (context.open && context.activeIndex !== null) {
+      update(context.activeIndex)
+    }
+
+    return itemContext.activeIndexSubscribe(update)
+  }, [context.open, itemContext.listRef])
+
+  if (!layout) return null
+
+  return (
+    <SelectIndicatorFrame
+      ref={forwardedRef}
+      {...props}
+      width={layout.width}
+      height={layout.height}
+      x={layout.x}
+      y={layout.y}
+    />
+  )
+})
+
+/* -------------------------------------------------------------------------------------------------
  * SelectGroup
  * -----------------------------------------------------------------------------------------------*/
 
@@ -378,6 +453,7 @@ export const Select = withStaticProperties(
     Trigger: SelectTrigger,
     Value: SelectValue,
     Viewport: SelectViewport,
+    Indicator: SelectIndicator,
     Sheet: Sheet.Controlled,
     FocusScope: FocusScopeController,
   }
@@ -497,7 +573,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         return prev
       })
     },
-    1,
+    0,
     {},
     []
   )
