@@ -1,4 +1,4 @@
-import type { Provider } from '@supabase/supabase-js'
+import type { Provider } from '@supabase/auth-js'
 import { LogoIcon } from '@tamagui/logo'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -89,7 +89,7 @@ function SignIn() {
     const redirectTo = `${window.location.origin}/api/auth/callback`
     setLoading(true)
 
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo,
@@ -98,9 +98,14 @@ function SignIn() {
 
     if (error) {
       setMessage({ type: 'error', content: error.message })
+      setLoading(false)
+      return
     }
 
-    setLoading(false)
+    // AuthClient doesn't auto-redirect, we need to do it manually
+    if (data?.url) {
+      window.location.href = data.url
+    }
   }
 
   if (!user)

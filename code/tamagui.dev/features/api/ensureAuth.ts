@@ -16,9 +16,24 @@ export const ensureAuth = async ({
 
   const supabase = getSupabaseServerClient(req)
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // Check Authorization header first (localStorage-based auth from client)
+  const authHeader = req.headers.get('Authorization')
+  let user = null
+
+  if (authHeader?.startsWith('Bearer ')) {
+    const token = authHeader.slice(7)
+    // Verify the JWT with Supabase
+    const { data, error } = await supabase.auth.getUser(token)
+    if (!error && data.user) {
+      user = data.user
+    }
+  }
+
+  // Fall back to cookies (traditional flow)
+  if (!user) {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  }
 
   if (!user) {
     if (shouldRedirect) {
@@ -45,7 +60,7 @@ export const ensureAuth = async ({
     .from('users_private')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if (!userPrivate.data?.email || !userPrivate.data.github_user_name) {
     const updateData = {

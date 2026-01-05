@@ -5,6 +5,7 @@ import { Spinner, YStack } from 'tamagui'
 import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
 import { userSubscriptionStatus } from './userSubscriptionStatus'
+import { getAccessToken } from '../auth/useSupabaseClient'
 
 export let currentUser: UserContextType | null = null
 
@@ -16,7 +17,16 @@ export const useUser = () => {
       if (typeof window === 'undefined') {
         return null
       }
-      const res = await fetch('/api/user')
+
+      // Get access token from localStorage-based auth
+      const accessToken = await getAccessToken()
+
+      const headers: HeadersInit = {}
+      if (accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`
+      }
+
+      const res = await fetch('/api/user', { headers })
       if (res.ok) {
         return (await res.json()) as UserContextType
       }
