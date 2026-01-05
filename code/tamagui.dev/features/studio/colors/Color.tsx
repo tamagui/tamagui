@@ -50,7 +50,8 @@ export function Color({
               id="color-hue"
               // type="number" // min={0} // max={360}
               value={color.hue as any}
-              onChangeText={(text) => {
+              onChange={(e) => {
+                const text = e.target?.value ?? ''
                 state.colors.changeColorValue({
                   index: indexAsNumber,
                   value: {
@@ -70,7 +71,8 @@ export function Color({
               id="color-saturation"
               // type="number" // min={0} // max={360}
               value={color.saturation as any}
-              onChangeText={(text) => {
+              onChange={(e) => {
+                const text = e.target?.value ?? ''
                 state.colors.changeColorValue({
                   index: indexAsNumber,
                   value: {
