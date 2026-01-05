@@ -122,7 +122,9 @@ jobs:
 
   build-android:
     name: Build Android App
-    runs-on: ubuntu-latest
+    # Only run on main branch (not PRs) - uses WarpBuild for faster builds
+    if: github.ref == 'refs/heads/main'
+    runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 30
     outputs:
       android-cache-key: ${{ steps.final-cache-key.outputs.cache_key }}
@@ -372,7 +374,9 @@ jobs:
   test-android:
     name: Android Detox Tests
     needs: build-android
-    runs-on: ubuntu-latest
+    # Only run on main branch (not PRs) - uses WarpBuild for reliable emulator
+    if: github.ref == 'refs/heads/main'
+    runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 45
     # Android emulator in CI is flaky with window focus issues - don't block on failures
     continue-on-error: true
