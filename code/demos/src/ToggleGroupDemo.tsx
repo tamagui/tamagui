@@ -42,13 +42,25 @@ function ToggleGroupComponent(props: {
         size={props.size}
         disableDeactivation={props.type === 'single' ? true : undefined}
       >
-        <ToggleGroup.Item value="left" aria-label="Left aligned" focusStyle={{ background: '$color12' }}>
+        <ToggleGroup.Item
+          value="left"
+          aria-label="Left aligned"
+          focusStyle={{ background: '$color12' }}
+        >
           <AlignLeft />
         </ToggleGroup.Item>
-        <ToggleGroup.Item value="center" aria-label="Center aligned" focusStyle={{ background: '$color12' }}>
+        <ToggleGroup.Item
+          value="center"
+          aria-label="Center aligned"
+          focusStyle={{ background: '$color12' }}
+        >
           <AlignCenter />
         </ToggleGroup.Item>
-        <ToggleGroup.Item value="right" aria-label="Right aligned" focusStyle={{ background: '$color12' }}>
+        <ToggleGroup.Item
+          value="right"
+          aria-label="Right aligned"
+          focusStyle={{ background: '$color12' }}
+        >
           <AlignRight />
         </ToggleGroup.Item>
       </ToggleGroup>
