@@ -1,10 +1,12 @@
-import { expect, test, devices } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 import { setupPage } from './test-utils'
 
-// Use iPhone device profile for mobile emulation with touch
+// Use mobile viewport with touch support (chromium-based to avoid webkit deps in CI)
 test.use({
-  ...devices['iPhone 13'],
+  viewport: { width: 390, height: 844 },
+  hasTouch: true,
+  isMobile: true,
 })
 
 test.beforeEach(async ({ page }) => {
