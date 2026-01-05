@@ -1,6 +1,6 @@
 {
   "name": "next-app",
-  "version": "1.143.0",
+  "version": "1.143.1",
   "private": true,
   "scripts": {
     "dev": "next dev --webpack --port 3457",
