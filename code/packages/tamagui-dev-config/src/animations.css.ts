@@ -15,5 +15,5 @@ export const animationsCSS = createAnimations({
   quick: `${smoothBezier} 240ms`,
   quicker: `${smoothBezier} 180ms`,
   quickest: `${smoothBezier} 90ms`,
-  tooltip: 'ease-in 400ms',
+  tooltip: `${smoothBezier} 150ms`,
 })

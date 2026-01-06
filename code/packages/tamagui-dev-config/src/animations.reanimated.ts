@@ -65,9 +65,9 @@ export const animations = createAnimations({
   },
   tooltip: {
     type: 'spring',
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
+    damping: 25,
+    mass: 0.45,
+    stiffness: 500,
   },
   quicker: {
     type: 'spring',
