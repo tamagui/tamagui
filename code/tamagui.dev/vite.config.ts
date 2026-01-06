@@ -14,7 +14,10 @@ if (!import.meta.dirname) {
 }
 
 // Check if required build artifacts exist, auto-build if missing
-const vitePluginDist = pathResolve(import.meta.dirname, '../compiler/vite-plugin/dist/esm/index.mjs')
+const vitePluginDist = pathResolve(
+  import.meta.dirname,
+  '../compiler/vite-plugin/dist/esm/index.mjs'
+)
 const staticDist = pathResolve(import.meta.dirname, '../compiler/static/dist/index.cjs')
 
 if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {

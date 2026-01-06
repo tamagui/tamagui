@@ -62,7 +62,9 @@ export function CurrentRouteProvider({ children }: { children: React.ReactNode; 
     )
 
     if (!silent) {
-      console.info('Bento not found - /bento pages will not work (optional, pro users only)')
+      console.info(
+        'Bento not found - /bento pages will not work (optional, pro users only)'
+      )
     }
   } else {
     // Generate bento-proxy.ts using alias that works in both dev and build
@@ -89,8 +91,9 @@ export * as Sections from '../../components/bento-showcase/sections'
 }
 
 // Run if called directly (postinstall script)
-const isMain = import.meta.url.endsWith(process.argv[1]?.replace(/\\/g, '/') || '')
-  || process.argv[1]?.endsWith('generate-bento-proxy.mjs')
+const isMain =
+  import.meta.url.endsWith(process.argv[1]?.replace(/\\/g, '/') || '') ||
+  process.argv[1]?.endsWith('generate-bento-proxy.mjs')
 if (isMain) {
   generateBentoProxy()
 }
