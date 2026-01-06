@@ -7,10 +7,23 @@ import {
 } from '@tamagui/lucide-icons'
 import { createContext, useContext, useState, type ReactNode } from 'react'
 import type { TooltipProps } from 'tamagui'
-import { Button, Label, Paragraph, Switch, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Label,
+  Paragraph,
+  Switch,
+  Tooltip,
+  TooltipGroup,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 // Non-animated: individual tooltips with enter/exit animations
-function IndividualTooltip({ placement, Icon, groupId }: {
+function IndividualTooltip({
+  placement,
+  Icon,
+  groupId,
+}: {
   placement: TooltipProps['placement']
   Icon: any
   groupId: string
@@ -31,23 +44,35 @@ function IndividualTooltip({ placement, Icon, groupId }: {
         animation={['tooltip', { opacity: '200ms', backgroundColor: '200ms' }]}
       >
         <Tooltip.Arrow />
-        <Paragraph size="$2" lineHeight="$1">{placement}</Paragraph>
+        <Paragraph size="$2" lineHeight="$1">
+          {placement}
+        </Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
 }
 
 // Animated position: global tooltip that glides between triggers
-const TooltipContext = createContext<(label: string, placement?: TooltipProps['placement']) => void>(() => {})
+const TooltipContext = createContext<
+  (label: string, placement?: TooltipProps['placement']) => void
+>(() => {})
 
-function GlobalTrigger({ label, placement, Icon }: {
+function GlobalTrigger({
+  label,
+  placement,
+  Icon,
+}: {
   label: string
   placement: TooltipProps['placement']
   Icon: any
 }) {
   const setTooltip = useContext(TooltipContext)
   return (
-    <Tooltip.Trigger scope="global" asChild="except-style" onMouseEnter={() => setTooltip(label, placement)}>
+    <Tooltip.Trigger
+      scope="global"
+      asChild="except-style"
+      onMouseEnter={() => setTooltip(label, placement)}
+    >
       <Button icon={Icon} circular />
     </Tooltip.Trigger>
   )
@@ -103,9 +128,11 @@ export function TooltipDemo() {
   const [animatePosition, setAnimatePosition] = useState(true)
 
   const Trigger = animatePosition ? GlobalTrigger : IndividualTooltip
-  const Wrapper = animatePosition ? GlobalProvider : ({ children }: { children: ReactNode }) => (
-    <TooltipGroup delay={{ open: 3000, close: 100 }}>{children}</TooltipGroup>
-  )
+  const Wrapper = animatePosition
+    ? GlobalProvider
+    : ({ children }: { children: ReactNode }) => (
+        <TooltipGroup delay={{ open: 3000, close: 100 }}>{children}</TooltipGroup>
+      )
 
   return (
     <YStack gap="$4">
@@ -122,18 +149,35 @@ export function TooltipDemo() {
             <Trigger label="right" placement="right" Icon={ChevronRight} groupId="4" />
           </XStack>
           <XStack gap="$2">
-            <Trigger label="bottom-end" placement="bottom-end" Icon={Circle} groupId="5" />
+            <Trigger
+              label="bottom-end"
+              placement="bottom-end"
+              Icon={Circle}
+              groupId="5"
+            />
             <Trigger label="bottom" placement="bottom" Icon={ChevronDown} groupId="6" />
-            <Trigger label="bottom-start" placement="bottom-start" Icon={Circle} groupId="7" />
+            <Trigger
+              label="bottom-start"
+              placement="bottom-start"
+              Icon={Circle}
+              groupId="7"
+            />
           </XStack>
         </YStack>
       </Wrapper>
 
       <XStack gap="$2" style={{ alignItems: 'center', justifyContent: 'flex-start' }}>
-        <Switch id="animate-position" size="$2" checked={animatePosition} onCheckedChange={setAnimatePosition}>
+        <Switch
+          id="animate-position"
+          size="$2"
+          checked={animatePosition}
+          onCheckedChange={setAnimatePosition}
+        >
           <Switch.Thumb animation="quick" />
         </Switch>
-        <Label htmlFor="animate-position" size="$2">Animate position</Label>
+        <Label htmlFor="animate-position" size="$2">
+          Animate position
+        </Label>
       </XStack>
     </YStack>
   )
