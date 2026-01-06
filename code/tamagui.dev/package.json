@@ -6,7 +6,6 @@
   "sideEffects": false,
   "main": "index.jsx",
   "scripts": {
-    "postinstall": "node scripts/generate-bento-proxy.mjs",
     "dev": "one dev",
     "dev:clean": "one dev --clean",
     "clean": "one clean",
