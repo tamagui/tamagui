@@ -462,12 +462,17 @@ const ServiceCard = ({
   actionLabel,
   onAction,
   secondAction,
+  thirdAction,
 }: {
   title: string
   description: string
   actionLabel: string
   onAction: () => void
   secondAction?: null | {
+    label: string
+    onPress: () => void
+  }
+  thirdAction?: null | {
     label: string
     onPress: () => void
   }
@@ -509,6 +514,19 @@ const ServiceCard = ({
             onPress={secondAction.onPress}
           >
             {secondAction.label}
+          </Button>
+        )}
+
+        {!!thirdAction && (
+          <Button
+            rounded="$10"
+            self="flex-end"
+            mt="$4"
+            size="$3"
+            theme="accent"
+            onPress={thirdAction.onPress}
+          >
+            {thirdAction.label}
           </Button>
         )}
       </XStack>
@@ -913,7 +931,7 @@ const PlanTab = ({
   const isOneTimePlan =
     subscription?.subscription_items?.[0]?.price?.type === Pricing.OneTime
 
-  const handleTakeoutAccess = async () => {
+  const handleTakeoutAccess = async (repoUrl = 'https://github.com/tamagui/takeout') => {
     if (!subscription || !products) return
 
     const takeoutProduct = products.pro
@@ -940,12 +958,8 @@ const PlanTab = ({
       if (!res.ok) {
         alert(data?.error || `Error: ${res.status} ${res.statusText}`)
       } else {
-        if (data.url) {
-          // Open URL in new tab
-          window.open(data.url, '_blank', 'noopener,noreferrer')
-        } else if (data.message) {
-          alert(data.message)
-        }
+        // Open the specified repo URL in new tab
+        window.open(repoUrl, '_blank', 'noopener,noreferrer')
       }
     } finally {
       setIsGrantingAccess(false)
@@ -1003,17 +1017,26 @@ const PlanTab = ({
               subscription
                 ? isGrantingAccess
                   ? 'Granting Access...'
-                  : 'View Repository'
+                  : 'Takeout 1'
                 : 'Purchase'
             }
             onAction={() => {
               if (!subscription) {
                 paymentModal.show = true
               } else {
-                handleTakeoutAccess()
+                handleTakeoutAccess('https://github.com/tamagui/takeout')
               }
             }}
             secondAction={
+              subscription
+                ? {
+                    label: 'Takeout 2',
+                    onPress: () =>
+                      handleTakeoutAccess('https://github.com/tamagui/takeout3'),
+                  }
+                : null
+            }
+            thirdAction={
               subscription
                 ? {
                     label: isResendingInvite ? 'Resending...' : 'Resend Invite',
