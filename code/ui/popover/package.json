@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "2.0.0-001",
+  "version": "2.0.0-1767740890268",
   "type": "module",
   "sideEffects": [
     "*.css"
