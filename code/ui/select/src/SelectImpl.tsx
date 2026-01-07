@@ -34,7 +34,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   const selectContext = useSelectContext(scope)
   const selectItemParentContext = useSelectItemParentContext(scope)
-  const { setActiveIndex, selectedIndex, activeIndex } = selectContext
+  const { setActiveIndex, selectedIndex, activeIndex, dir } = selectContext
 
   const { setOpen, setSelectedIndex } = selectItemParentContext
 
@@ -58,6 +58,39 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const [innerOffset, setInnerOffset] = React.useState(0)
   const [blockSelection, setBlockSelection] = React.useState(false)
   const floatingStyle = React.useRef({})
+
+  // Track DOM direction changes for RTL support
+  // This handles dynamic changes to document.documentElement.dir
+  const [domDirection, setDomDirection] = React.useState<string>(() =>
+    isClient ? document.documentElement.dir || 'ltr' : 'ltr'
+  )
+
+  if (isWeb && isClient) {
+    useIsomorphicLayoutEffect(() => {
+      // Check direction on mount and when opening
+      const checkDirection = () => {
+        const currentDir = document.documentElement.dir || 'ltr'
+        setDomDirection(currentDir)
+      }
+      checkDirection()
+
+      // Observe changes to the html element's dir attribute
+      const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.attributeName === 'dir') {
+            checkDirection()
+          }
+        }
+      })
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['dir'],
+      })
+
+      return () => observer.disconnect()
+    }, [])
+  }
 
   // Wait for scroll position to settle before showing arrows to prevent
   // interference with pointer events.
@@ -88,7 +121,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }, [open])
   }
 
-  const { x, y, strategy, context, refs, update } = useFloating({
+  const { x, y, strategy, context, refs, update, floatingStyles } = useFloating({
     open,
     onOpenChange: setOpen,
     placement: 'bottom-start',
@@ -158,13 +191,58 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   const isScrollable = showDownArrow || showUpArrow
 
+  // Use the effective direction - prefer explicit prop over DOM direction
+  const effectiveDir = dir || domDirection
+  const isRTL = effectiveDir === 'rtl'
+
+  // State to hold RTL-adjusted x coordinate
+  const [rtlAdjustedX, setRtlAdjustedX] = React.useState<number | null>(null)
+
+  // Apply RTL adjustment after the floating element is rendered
+  // floating-ui doesn't correctly adjust x coordinate for RTL alignment
+  useIsomorphicLayoutEffect(() => {
+    if (!isRTL || !open || !refs.reference.current || !refs.floating.current) {
+      setRtlAdjustedX(null)
+      return
+    }
+
+    // Wait a frame for the floating element to be fully rendered
+    const rafId = requestAnimationFrame(() => {
+      if (!refs.reference.current || !refs.floating.current) return
+
+      const refRect = refs.reference.current.getBoundingClientRect()
+      const floatingRect = refs.floating.current.getBoundingClientRect()
+
+      // In RTL with bottom-start placement, align right edges
+      const correctX = refRect.right - floatingRect.width
+
+      // Only adjust if significantly different from current position
+      if (Math.abs(correctX - floatingRect.x) > 10) {
+        setRtlAdjustedX(correctX)
+      }
+    })
+
+    return () => cancelAnimationFrame(rafId)
+  }, [isRTL, open, x, y])
+
+  // Create adjusted floating styles for RTL support
+  const adjustedFloatingStyles = React.useMemo(() => {
+    if (rtlAdjustedX !== null) {
+      return {
+        ...floatingStyles,
+        transform: `translate(${rtlAdjustedX}px, ${y ?? 0}px)`,
+      }
+    }
+    return floatingStyles
+  }, [floatingStyles, rtlAdjustedX, y])
+
   useIsomorphicLayoutEffect(() => {
     window.addEventListener('resize', update)
     if (open) {
       update()
     }
     return () => window.removeEventListener('resize', update)
-  }, [update, open])
+  }, [update, open, effectiveDir])
 
   const onMatch = useEvent((index: number) => {
     const fn = open ? setActiveIndex : setSelectedIndex
@@ -231,9 +309,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
           className: 'Select',
           ...props,
           style: {
-            position: strategy,
-            top: y ?? '',
-            left: x ?? '',
+            // Use adjusted floating styles for proper RTL support
+            ...adjustedFloatingStyles,
+            // Fix for RTL positioning: unset inset to prevent browser RTL interference
+            // See: https://github.com/floating-ui/floating-ui/issues/3221
+            inset: 'unset',
             outline: 0,
             scrollbarWidth: 'none',
             ...floatingStyle.current,
@@ -264,7 +344,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         })
       },
     }
-  }, [refs.reference.current, x, y, refs.floating.current, interactions])
+  }, [refs.reference.current, adjustedFloatingStyles, refs.floating.current, interactions])
 
   // effects
 
