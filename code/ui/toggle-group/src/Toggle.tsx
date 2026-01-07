@@ -7,6 +7,7 @@ import * as React from 'react'
 
 export const context = createStyledContext({
   color: '',
+  toggledStyle: null as null | Record<string, any>,
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -48,24 +49,24 @@ export const ToggleFrame = styled(ThemeableStack, {
       },
     },
 
-    color: {
-      '...color': () => {
-        return {}
-      },
-    },
-
     active: {
-      true: {
-        zIndex: 1,
-
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-
-        focusStyle: {
-          borderColor: '$borderColor',
-          backgroundColor: '$background',
-        },
+      true: (_, { props, context }: any) => {
+        const toggledStyle = context?.toggledStyle
+        return {
+          zIndex: 1,
+          ...(!props.unstyled &&
+            !toggledStyle && {
+              backgroundColor: '$background',
+              hoverStyle: {
+                backgroundColor: '$background',
+              },
+              focusStyle: {
+                backgroundColor: '$background',
+                borderColor: '$borderColor',
+              },
+            }),
+          ...toggledStyle,
+        }
       },
     },
 
@@ -94,6 +95,7 @@ type ToggleItemExtraProps = {
   pressed?: boolean
   defaultPressed?: boolean
   onPressedChange?(pressed: boolean): void
+  toggledStyle?: Record<string, any> | null
 }
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
@@ -119,7 +121,7 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
           theme: pressed ? 'accent' : null,
           themeShallow: true,
         })}
-        active={!props.unstyled ? pressed : undefined}
+        active={pressed}
         aria-pressed={pressed}
         data-state={pressed ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
@@ -127,7 +129,7 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
           if (!props.disabled) {
-            setPressed(!pressed)
+            setPressed((prev) => !prev)
           }
         })}
       />

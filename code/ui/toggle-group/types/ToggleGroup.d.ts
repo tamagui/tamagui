@@ -12,6 +12,8 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
      * Used to disable passing styles down to children.
      */
     disablePassStyles?: boolean;
+    toggledStyle?: Record<string, any> | null;
+    color?: string;
 };
 type ScopedProps<P> = P & {
     __scopeToggleGroup?: string;
@@ -24,8 +26,7 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
 declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGroupProps> & React.RefAttributes<TamaguiElement>> & {
-    Item: import("@tamagui/web").TamaguiComponent<ScopedProps<ToggleGroupItemProps>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/web").StackStyleBase, {
-        color?: import("@tamagui/web").ColorTokens | undefined;
+    Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -39,8 +40,170 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        unstyled?: boolean | undefined;
         active?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    }>, "color" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "active" | "size" | "unstyled" | "orientation" | "toggledStyle" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "value" | "disablePassStyles" | "__scopeToggleGroup"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "active" | "unstyled" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    }>> & {
+        value: string;
+        id?: string;
+        disabled?: boolean;
+        size?: SizeTokens;
+        /**
+         * Used to disable passing styles down to children.
+         */
+        disablePassStyles?: boolean;
+        toggledStyle?: Record<string, any> | null;
+        color?: string;
+    } & {
+        __scopeToggleGroup?: string;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "active" | "unstyled" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    }>> & {
+        value: string;
+        id?: string;
+        disabled?: boolean;
+        size?: SizeTokens;
+        /**
+         * Used to disable passing styles down to children.
+         */
+        disablePassStyles?: boolean;
+        toggledStyle?: Record<string, any> | null;
+        color?: string;
+    } & {
+        __scopeToggleGroup?: string;
+    }, import("@tamagui/web").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+        active?: boolean | undefined;
+        unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };
@@ -101,6 +264,8 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & Group
     dir?: RovingFocusGroupProps['dir'];
     loop?: RovingFocusGroupProps['loop'];
     sizeAdjust?: number;
+    toggledStyle?: Record<string, any> | null;
+    color?: string;
 };
 export { ToggleGroup };
 export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupProps, ToggleGroupSingleProps, };
