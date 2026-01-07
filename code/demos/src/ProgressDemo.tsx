@@ -23,7 +23,7 @@ export function ProgressDemo() {
           Size: {size}
         </Paragraph>
         <Progress key={key} size={sizeProp} value={progress} bg="$color5">
-          <Progress.Indicator animation="bouncy" bg="$background" />
+          <Progress.Indicator bg="$background" />
         </Progress>
       </YStack>
 
@@ -38,12 +38,12 @@ export function ProgressDemo() {
         <Slider
           size="$2"
           width={130}
-          defaultValue={[4]}
-          min={2}
-          max={6}
+          defaultValue={[0]}
+          min={0}
+          max={100}
           step={1}
           onValueChange={([val]) => {
-            setSize(val)
+            setProgress(val)
           }}
         >
           <Slider.Track borderWidth={1} borderColor="$color5">
