@@ -32,4 +32,8 @@ export const TEST_IDS = {
   // Goal 2: Component-only preserves sub-theme (no backtracking)
   themeAlt1Direct: 'theme-alt1-direct',
   themeAlt1WithComponent: 'theme-alt1-with-component',
+  // Theme Mutation test IDs (DynamicColorIOS force update fix)
+  themeMutationSquare: 'theme-mutation-square',
+  themeMutationButton: 'theme-mutation-button',
+  themeMutationColorText: 'theme-mutation-color-text',
 } as const
