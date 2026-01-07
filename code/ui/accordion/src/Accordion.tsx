@@ -370,7 +370,11 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
 
 const ITEM_NAME = 'AccordionItem'
 
-type AccordionItemContextValue = { open?: boolean; disabled?: boolean; triggerId: string }
+type AccordionItemContextValue = {
+  open?: boolean
+  disabled?: boolean
+  triggerId: string
+}
 const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemContext } =
   createStyledContext<AccordionItemContextValue>()
 type AccordionItemElement = React.ElementRef<typeof Collapsible>
@@ -539,7 +543,7 @@ const AccordionContentFrame = styled(Collapsible.Content, {
     unstyled: {
       false: {
         padding: '$true',
-        backgroundColor: isWeb ? '$background' : undefined, // '$background' causes a Reanimated error on native so it's undefined for now
+        backgroundColor: '$background',
       },
     },
   } as const,
