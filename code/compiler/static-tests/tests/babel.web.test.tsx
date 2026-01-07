@@ -459,3 +459,148 @@ test('$platform-web styles are flattened on web', async () => {
   expect(output?.js).not.toContain('$platform-web')
   expect(output?.styles).toContain('background-color')
 })
+
+// Verifies that conditional spread with runtime variable from hook inside map is correctly extracted
+test('conditional spread with runtime variable preserves ternary', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    function usePathname() {
+      return '/blog'
+    }
+
+    const navLinks = [{ name: 'Blog', href: '/blog' }]
+
+    export function Header() {
+      const pathname = usePathname()
+      return (
+        <>
+          {navLinks.map((link) => {
+            const isActive = pathname.startsWith(link.href)
+            return (
+              <View
+                key={link.name}
+                backgroundColor="red"
+                {...(isActive && {
+                  backgroundColor: 'blue',
+                })}
+              />
+            )
+          })}
+        </>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The ternary should be preserved in the output - the className should depend on isActive
+  expect(output?.js).toContain('isActive')
+  // The hook call should NOT be removed
+  expect(output?.js).toContain('usePathname')
+  // The pathname variable should be preserved
+  expect(output?.js).toContain('pathname')
+  expect(output?.js).toMatchSnapshot()
+})
+
+// Verifies that conditional spread with prop variable preserves the ternary in className
+test('conditional spread with local variable preserves ternary', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <View
+          backgroundColor="red"
+          {...(isActive && {
+            backgroundColor: 'blue',
+          })}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The ternary should be preserved - className should depend on isActive
+  expect(output?.js).toContain('isActive')
+  expect(output?.js).toMatchSnapshot()
+})
+
+// Verifies conditional spread + hoverStyle works correctly
+test('conditional spread with hoverStyle preserves ternary', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <Stack
+          backgroundColor="red"
+          cursor="pointer"
+          hoverStyle={{ backgroundColor: 'green' }}
+          {...(isActive && {
+            backgroundColor: 'blue',
+          })}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The ternary should be preserved - className should depend on isActive
+  expect(output?.js).toContain('isActive')
+  expect(output?.js).toMatchSnapshot()
+})
+
+// Verifies Text with hoverStyle and conditional spread preserves ternary
+test('Text with hoverStyle and conditional spread preserves ternary', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <Text
+          cursor="pointer"
+          hoverStyle={{ color: '$color12' }}
+          {...(isActive && {
+            color: '$color12',
+            fontWeight: '800',
+          })}
+        >
+          hello
+        </Text>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The ternary should be preserved - className should depend on isActive
+  expect(output?.js).toContain('isActive')
+  expect(output?.js).toMatchSnapshot()
+})
