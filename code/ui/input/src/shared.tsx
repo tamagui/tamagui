@@ -89,6 +89,10 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
   const lines = props.rows ?? props.numberOfLines
   const height =
     typeof lines === 'number' ? lines * getVariableValue(fontStyle.lineHeight) : 'auto'
+  // lineHeight messes up input on native
+  if (!isWeb && fontStyle) {
+    delete fontStyle['lineHeight']
+  }
   const paddingVertical = getSpace(val, {
     shift: -2,
     bounds: [2],
