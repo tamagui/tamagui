@@ -55,7 +55,7 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
   const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
   const pct = context.max - (context.value ?? 0)
   // default somewhat far off
-  const x = -(context.width === 0 ? 300 : context.width) * (pct / 100)
+  const x = -(context.width === 0 ? 300 : context.width) * (pct / context.max)
 
   return (
     <ProgressIndicatorFrame
@@ -182,7 +182,11 @@ const Progress = withStaticProperties(
           })}
           {...progressProps}
           onLayout={(e) => {
-            setWidth(e.nativeEvent.layout.width)
+            // prevent unnecessary re-renders
+            const newWidth = Math.round(e.nativeEvent.layout.width)
+            if (newWidth !== width) {
+              setWidth(newWidth)
+            }
             progressProps.onLayout?.(e)
           }}
           ref={forwardedRef}
