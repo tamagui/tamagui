@@ -84,6 +84,8 @@ const BUTTON_NAME = 'Button'
 const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
+  // @ts-ignore - type is valid HTML attribute for button elements
+  type: 'button',
   context: ButtonContext,
   role: 'button',
   focusable: true,
