@@ -119,12 +119,18 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
     const selectItemProps = React.useMemo(() => {
       return interactions
         ? interactions.getItemProps({
+            onTouchStart() {
+              // Reset selection flag on touch start to allow selecting the same item again
+              // This fixes issue #3628 where tapping the same selected item wouldn't close the dropdown
+              allowSelectRef!.current = true
+            },
             onTouchMove() {
               allowSelectRef!.current = true
               allowMouseUpRef!.current = false
             },
             onTouchEnd() {
-              allowSelectRef!.current = false
+              // Don't disable selection on touchEnd - we need onClick to be able to call handleSelect
+              // The 300ms delay in SelectImpl handles the initial open prevention
               allowMouseUpRef!.current = true
             },
             onKeyDown(event) {

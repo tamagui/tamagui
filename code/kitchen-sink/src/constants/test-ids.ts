@@ -19,4 +19,9 @@ export const TEST_IDS = {
   // Color Token Fallback test IDs (Issue #3620)
   colorTokenFallbackThemeValue: 'color-token-fallback-theme-value',
   colorTokenFallbackTokenValue: 'color-token-fallback-token-value',
+  // Select Same Item test IDs (Issue #3628)
+  selectSameItemTrigger: 'select-same-item-trigger',
+  selectSameItemApple: 'select-same-item-apple',
+  selectSameItemBanana: 'select-same-item-banana',
+  selectSameItemPeach: 'select-same-item-peach',
 } as const
