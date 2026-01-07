@@ -1,45 +1,8 @@
 import type { SizeVariantSpreadFunction } from '@tamagui/core'
-import { Text } from '@tamagui/core'
 import { getVariableValue, isWeb } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSpace } from '@tamagui/get-token'
-
-export const defaultStyles = {
-  size: '$true',
-  fontFamily: '$body',
-  borderWidth: 1,
-  outlineWidth: 0,
-  color: '$color',
-
-  ...(isWeb
-    ? {
-        tabIndex: 0 as const,
-      }
-    : {
-        focusable: true,
-      }),
-
-  borderColor: '$borderColor',
-  backgroundColor: '$background',
-
-  // this fixes a flex bug where it overflows container
-  minWidth: 0,
-
-  hoverStyle: {
-    borderColor: '$borderColorHover',
-  },
-
-  focusStyle: {
-    borderColor: '$borderColorFocus',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-  },
-} as const
 
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
   val = '$true',
@@ -91,38 +54,3 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
     height,
   }
 }
-export const INPUT_NAME = 'Input'
-
-export const styledBody = [
-  {
-    name: INPUT_NAME,
-    tag: 'input',
-    variants: {
-      unstyled: {
-        false: defaultStyles,
-      },
-
-      size: {
-        '...size': inputSizeVariant,
-      },
-
-      disabled: {
-        true: {},
-      },
-    } as const,
-
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1',
-    },
-  },
-
-  {
-    isInput: true,
-    accept: {
-      placeholderTextColor: 'color',
-      selectionColor: 'color',
-    } as const,
-
-    validStyles: Text.staticConfig.validStyles,
-  },
-]

@@ -112,7 +112,6 @@
     "@tamagui/group": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/image": "workspace:*",
-    "@tamagui/input": "workspace:*",
     "@tamagui/label": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
