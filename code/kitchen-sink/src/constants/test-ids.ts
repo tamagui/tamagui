@@ -19,4 +19,8 @@ export const TEST_IDS = {
   // Color Token Fallback test IDs (Issue #3620)
   colorTokenFallbackThemeValue: 'color-token-fallback-theme-value',
   colorTokenFallbackTokenValue: 'color-token-fallback-token-value',
+  // Theme Mutation test IDs (DynamicColorIOS force update fix)
+  themeMutationSquare: 'theme-mutation-square',
+  themeMutationButton: 'theme-mutation-button',
+  themeMutationColorText: 'theme-mutation-color-text',
 } as const
