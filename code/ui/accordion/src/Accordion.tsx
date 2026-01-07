@@ -370,11 +370,7 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
 
 const ITEM_NAME = 'AccordionItem'
 
-type AccordionItemContextValue = {
-  open?: boolean
-  disabled?: boolean
-  triggerId: string
-}
+type AccordionItemContextValue = { open?: boolean; disabled?: boolean; triggerId: string }
 const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemContext } =
   createStyledContext<AccordionItemContextValue>()
 type AccordionItemElement = React.ElementRef<typeof Collapsible>
