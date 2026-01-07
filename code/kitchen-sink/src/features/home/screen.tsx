@@ -141,6 +141,7 @@ const demos = [
   {
     label: 'Content',
     pages: [
+      { title: 'Accordion', route: '/demo/accordion' },
       { title: 'Avatar', route: '/demo/avatar' },
       { title: 'Card', route: '/demo/card' },
       { title: 'Group', route: '/demo/group' },
