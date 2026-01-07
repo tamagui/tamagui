@@ -108,7 +108,12 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
 
     useIsomorphicLayoutEffect(() => {
       setValueAtIndex(index, value)
-    }, [index, setValueAtIndex, value])
+      // If this item matches the initial value, update selectedIndex
+      // This ensures the viewport is scrolled to show the selected item on open
+      if (initialValue === value) {
+        setSelectedIndex(index)
+      }
+    }, [index, setValueAtIndex, value, initialValue, setSelectedIndex])
 
     function handleSelect() {
       setSelectedIndex(index)

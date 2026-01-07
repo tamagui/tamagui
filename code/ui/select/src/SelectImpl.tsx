@@ -164,7 +164,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       update()
     }
     return () => window.removeEventListener('resize', update)
-  }, [update, open])
+  }, [update, open, selectedIndex])
 
   const onMatch = useEvent((index: number) => {
     const fn = open ? setActiveIndex : setSelectedIndex

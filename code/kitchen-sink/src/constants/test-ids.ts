@@ -19,4 +19,7 @@ export const TEST_IDS = {
   // Color Token Fallback test IDs (Issue #3620)
   colorTokenFallbackThemeValue: 'color-token-fallback-theme-value',
   colorTokenFallbackTokenValue: 'color-token-fallback-token-value',
+  // Select Initial Scroll test IDs (Issue #3616)
+  selectInitialScrollTrigger: 'select-initial-scroll-trigger',
+  selectInitialScrollItem: 'select-initial-scroll-item',
 } as const
