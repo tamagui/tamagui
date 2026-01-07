@@ -180,10 +180,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 size="$3"
                 width={75}
                 self="center"
-                onFocus={(e) => e.currentTarget.select()}
-                style={{
-                  fontFamily: '$mono',
-                }}
+                selectTextOnFocus
+                fontFamily="$mono"
                 value={hex}
                 onChange={(e) => {
                   updateHexInput(e.target?.value ?? '')
