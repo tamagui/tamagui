@@ -10,7 +10,7 @@ by: nate
   without sacrificing quality, simplicity, types, or performance.
 </IntroParagraph>
 
-Tamagui's strength lies in it's maturity and depth: at about 200 packages, it
+Tamagui's strength lies in its maturity and depth: at about 200 packages, it
 covers everything: performant and feature-rich styling, a large suite of
 headless and composable UI components, powerful design system and theme
 generation, a rich copy-paste component suite, and a ton of first-class starter
@@ -24,7 +24,7 @@ compile-time. This results in incredible flexibility and performance.
 It's the only universal style system that supports perfect SSR rendering with
 light and dark mode without jumping or flickers, even when using spring-based
 animation drivers and advanced media queries. Add in the optimizing compiler
-that outputs near perfect platform-specific code, and your team can intuitive,
+that outputs near perfect platform-specific code, and your team can write intuitive,
 easy to maintain typed inline styles that merge perfectly and run fast
 everywhere without worrying about the typical performance penalty.
 
@@ -43,11 +43,11 @@ In comparison to other solutions, Tamagui is especially strong at:
   perfectly even in the face of complicated logic.
 - _A first-class, composable components based UI kit._ Our UI kit is great at
   both native and web, has a first-class composable component API, and can
-  easily adapt from one type of compoennt to another based on the device or
+  easily adapt from one type of component to another based on the device or
   media query.
 - _Zero configuration._ We invested heavily into a custom build pipeline that
   outputs entirely separate files for native and web, with each having multiple
-  custom transforms such that you **Tamagui doesn't need any setup at all, on
+  custom transforms such that **Tamagui doesn't need any setup at all, on
   any platform**. No bundler plugin, no babel transform, no matter if it's Vite,
   Metro, Webpack, Turbopack, you name it.
 
@@ -146,10 +146,10 @@ transitions on web.
 
 #### Web-aligned Image and Input Components
 
-Input and Image now follows a web-aligned APIs, with some old props supported
+Input and Image now follow web-aligned APIs, with some old props supported
 but deprecated.
 
-The v1 versions of both components are is still available via:
+The v1 versions of both components are still available via:
 
 ```tsx
 import { Input } from '@tamagui/input/v1'
@@ -159,7 +159,7 @@ import { Input, Image } from 'tamagui/v1'
 
 #### Button and List Component simplification
 
-Button and List remove direct text style proper on the outer frame, and now only
+Button and List remove direct text style props on the outer frame, and now only
 support composition for better performance and flexibility:
 
 ```tsx
@@ -189,7 +189,7 @@ The breaking changes outside of deprecations are:
 - Removed `setupReactNative` - auto-detection now handles this.
 - Added 30+ web event handlers (keyboard, pointer, drag/drop, clipboard,
   scroll).
-- Move from ThemeableStack to View for most UI component bases.
+- Moved from ThemeableStack to View for most UI component bases.
 
 #### Deprecated APIs Removed
 
@@ -349,7 +349,7 @@ consistent APIs across web and native.
 
 Our main goal with version two is **stability**. Tamagui started as a side
 project with incredible scope and maintained an ambitious stance towards landing
-large features and internal improvements, but that led to too many regression
+large features and internal improvements, but that led to too many regressions
 during version one. I'd like to personally apologize for that.
 
 For v2, we want to ensure that won't happen anymore. It's why we delayed the
