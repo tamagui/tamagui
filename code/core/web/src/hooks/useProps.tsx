@@ -28,7 +28,7 @@ type UsePropsOptions = Pick<
 
 export type PropsWithoutMediaStyles<A> = {
   // remove all media
-  [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
+  [Key in keyof A as Key extends `$${string}` ? never : Key]?: A[Key];
 }
 
 type PropsLikeObject = (ViewProps & Record<string, any>) | Object
