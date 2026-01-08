@@ -1022,7 +1022,7 @@ const StarterCard = memo(() => {
           mt: 100,
         }}
       >
-        <YStack z={-1} fullscreen bg="$color5" opacity={0.5} />
+        <YStack z={-1} fullscreen bg="$color5" opacity={0.6} />
         <YStack position="absolute" b="$4" l="$4" r="$4" z={100}>
           {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
           {/* subscription ? `/account/items#${subscription.id}` : '' */}
@@ -1121,7 +1121,12 @@ const Row = (props: { title: string; icon: string; description?: string }) => {
   const isDark = useThemeName().startsWith('dark')
 
   const content = (
-    <XStack py="$3" gap="$3" items="center" cursor={props.description ? 'pointer' : undefined}>
+    <XStack
+      py="$3"
+      gap="$3"
+      items="center"
+      cursor={props.description ? 'pointer' : undefined}
+    >
       <Image
         className="pixelate"
         src={props.icon}
