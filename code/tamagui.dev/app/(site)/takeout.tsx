@@ -1003,14 +1003,12 @@ const StarterCard = memo(() => {
         shadowRadius={30}
         shadowOffset={{ height: 20, width: 0 }}
         shadowColor="$shadowColor"
+        x={-50}
+        y={50}
         maxH="calc(min(85vh, 800px))"
         rounded="$8"
-        $gtMd={{
-          x: -50,
-          y: 50,
-        }}
         $md={{
-          x: 0,
+          x: -20,
           y: 0,
           maxH: 'auto',
           width: '100%',

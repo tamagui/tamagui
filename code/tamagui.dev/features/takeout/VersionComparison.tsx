@@ -52,9 +52,9 @@ const FeatureRow = ({
   }
 
   return (
-    <XStack py="$3" borderBottomWidth={1} borderBottomColor="$borderColor" items="center">
-      <YStack flex={2}>
-        <SizableText size="$4" fontWeight="500">
+    <XStack py="$2" borderBottomWidth={1} borderBottomColor="$borderColor" items="center">
+      <YStack width={120}>
+        <SizableText size="$3" fontWeight="500">
           {feature}
         </SizableText>
       </YStack>
@@ -73,9 +73,14 @@ const FeatureRow = ({
 
 const features = [
   { feature: 'Framework', v1: 'Next.js + Expo', v2: 'One', v2free: 'One' },
-  { feature: 'Real-time Sync', v1: false, v2: 'Zero', v2free: false },
-  { feature: 'Authentication', v1: 'Supabase', v2: 'Better Auth', v2free: false },
-  { feature: 'Database', v1: 'Supabase', v2: 'PostgreSQL + Drizzle', v2free: false },
+  { feature: 'Real-time Sync', v1: false, v2: 'Zero', v2free: 'Zero' },
+  { feature: 'Authentication', v1: 'Supabase', v2: 'Better Auth', v2free: 'Better Auth' },
+  {
+    feature: 'Database',
+    v1: 'Supabase',
+    v2: 'PostgreSQL + Drizzle',
+    v2free: 'PostgreSQL + Drizzle',
+  },
   { feature: 'Deployment', v1: 'Vercel + EAS', v2: 'SST / Uncloud', v2free: false },
   { feature: 'CLI Tools', v1: false, v2: 'bun tko', v2free: false },
   { feature: 'Private GitHub', v1: true, v2: true, v2free: false },
@@ -88,7 +93,7 @@ export function VersionComparison() {
   return (
     <YStack
       className="blur-medium"
-      bg="$color2"
+      bg="$color1"
       rounded="$6"
       p="$6"
       borderWidth={1}
@@ -105,26 +110,26 @@ export function VersionComparison() {
       </YStack>
 
       <YStack>
-        <XStack py="$3" borderBottomWidth={2} borderBottomColor="$borderColor">
-          <YStack flex={2}>
-            <SizableText size="$3" fontWeight="600" color="$color10">
+        <XStack py="$2" borderBottomWidth={2} borderBottomColor="$borderColor">
+          <YStack flex={1.5}>
+            <SizableText size="$2" fontWeight="600" color="$color10">
               Feature
             </SizableText>
           </YStack>
           <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$3" fontWeight="600">
+            <SizableText size="$2" fontWeight="600">
               v1
             </SizableText>
             <VersionBadge variant="legacy">Legacy</VersionBadge>
           </XStack>
           <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$3" fontWeight="600">
+            <SizableText size="$2" fontWeight="600">
               v2
             </SizableText>
             <VersionBadge variant="new">New</VersionBadge>
           </XStack>
           <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$3" fontWeight="600">
+            <SizableText size="$2" fontWeight="600">
               v2-free
             </SizableText>
             <VersionBadge variant="free">OSS</VersionBadge>
