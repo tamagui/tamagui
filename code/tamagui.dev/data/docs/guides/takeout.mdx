@@ -20,6 +20,12 @@ The latest version of Takeout built on modern technologies:
 - **Drizzle ORM** - Type-safe database schema
 - **SST / Uncloud** - Deployment options
 
+### v2-free (Open Source)
+
+A free, open-source starter template with limited features. Great for learning and prototyping.
+
+[View on GitHub](https://github.com/tamagui/starter-free)
+
 ### v1 (Legacy)
 
 The original Takeout stack, still supported:
@@ -29,11 +35,6 @@ The original Takeout stack, still supported:
 - **tRPC** - Type-safe APIs
 - **Tamagui** - Universal UI components
 
-### v2-free (Open Source)
-
-A free, open-source starter template with limited features. Great for learning and prototyping.
-
-[View on GitHub](https://github.com/tamagui/starter-free)
 
 ---
 
@@ -70,17 +71,20 @@ bun dev          # start web dev server at http://localhost:8081
 
 ## Development Commands
 
-| Command | Description |
-|---------|-------------|
-| `bun dev` | Start web dev server |
-| `bun backend` | Start Docker services |
-| `bun ios` | Run iOS simulator |
-| `bun android` | Run Android emulator |
-| `bun tko check` | Run all checks (lint, types, dependencies) |
-| `bun tko docs list` | View built-in documentation |
-| `bun lint:fix` | Auto-fix linting issues |
-| `bun test:unit` | Run unit tests |
-| `bun test:integration` | Run integration tests |
+<SimpleTable
+  headers={['Command', 'Description']}
+  rows={[
+    ['`bun dev`', 'Start web dev server'],
+    ['`bun backend`', 'Start Docker services'],
+    ['`bun ios`', 'Run iOS simulator'],
+    ['`bun android`', 'Run Android emulator'],
+    ['`bun tko check`', 'Run all checks (lint, types, dependencies)'],
+    ['`bun tko docs list`', 'View built-in documentation'],
+    ['`bun lint:fix`', 'Auto-fix linting issues'],
+    ['`bun test:unit`', 'Run unit tests'],
+    ['`bun test:integration`', 'Run integration tests'],
+  ]}
+/>
 
 ---
 
@@ -139,7 +143,7 @@ GitHub Actions is pre-configured. On every push to main:
 
 ## Project Structure
 
-```
+```text
 takeout/
 ├── app/                   # File-based routing (One router)
 │   ├── (tabs)/            # Tab navigation
@@ -201,12 +205,15 @@ bun db:migrate-add   # Create one-off migrations
 
 ## Environment Configuration
 
-| File | Purpose |
-|------|---------|
-| `.env.development` | Development defaults (committed) |
-| `.env` | Active environment (generated, gitignored) |
-| `.env.local` | Personal secrets/overrides (gitignored) |
-| `.env.production.example` | Production template (committed) |
+<SimpleTable
+  headers={['File', 'Purpose']}
+  rows={[
+    ['`.env.development`', 'Development defaults (committed)'],
+    ['`.env`', 'Active environment (generated, gitignored)'],
+    ['`.env.local`', 'Personal secrets/overrides (gitignored)'],
+    ['`.env.production.example`', 'Production template (committed)'],
+  ]}
+/>
 
 Key variables:
 
