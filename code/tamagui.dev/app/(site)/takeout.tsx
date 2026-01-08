@@ -9,6 +9,7 @@ import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from 'tamagui'
 import {
   H2,
   Paragraph,
+  Popover,
   ScrollView,
   SizableText,
   Spacer,
@@ -1056,36 +1057,55 @@ const StarterCard = memo(() => {
             </ThemeTintAlt>
 
             <YStack>
-              <Row title="Access" icon="retro-icons/coding-apps-websites-module-21.svg" />
+              <Row
+                title="Access"
+                icon="retro-icons/coding-apps-websites-module-21.svg"
+                description="Private GitHub repo and Discord access for Pro subscribers."
+              />
               <Row
                 title="CLI"
                 icon="retro-icons/coding-apps-websites-programming-browser-44.svg"
+                description="bun tko CLI with built-in docs, scripts, and onboarding wizard."
               />
               <Row
                 title="Real-time"
                 icon="retro-icons/coding-apps-websites-live-status-4.svg"
+                description="Zero sync for instant real-time updates across all clients."
               />
               <Row
                 title="Routing"
                 icon="retro-icons/computers-devices-electronics-desktop-53.svg"
+                description="One framework for universal file-based routing on web and native."
               />
               <Row
                 title="Auth"
                 icon="retro-icons/coding-apps-websites-shield-lock-40.svg"
+                description="Better Auth with OAuth providers and email authentication."
               />
               <Row
                 title="Deploy"
                 icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+                description="Deploy with Uncloud (self-hosted) or SST (AWS serverless)."
               />
-              <Row title="Icons" icon="retro-icons/coding-apps-websites-plugin-33.svg" />
+              <Row
+                title="Icons"
+                icon="retro-icons/coding-apps-websites-plugin-33.svg"
+                description="Phosphor icons library with theme integration."
+              />
               <Row
                 title="Testing"
                 icon="retro-icons/coding-apps-websites-programming-bug-61.svg"
+                description="Vitest for unit tests and Playwright for E2E testing."
               />
-              <Row title="Native" icon="retro-icons/coding-apps-websites-mobile-47.svg" />
+              <Row
+                title="Native"
+                icon="retro-icons/coding-apps-websites-mobile-47.svg"
+                description="iOS and Android with Expo, native bottom sheets, and OTA updates."
+              />
               <Row
                 title="Database"
                 icon="retro-icons/coding-apps-websites-database-60.svg"
+                description="PostgreSQL with Zero sync and type-safe queries."
               />
             </YStack>
 
@@ -1097,11 +1117,11 @@ const StarterCard = memo(() => {
   )
 })
 
-const Row = (props: { title: string; icon: string }) => {
+const Row = (props: { title: string; icon: string; description?: string }) => {
   const isDark = useThemeName().startsWith('dark')
 
-  return (
-    <XStack py="$3" gap="$3" items="center">
+  const content = (
+    <XStack py="$3" gap="$3" items="center" cursor={props.description ? 'pointer' : undefined}>
       <Image
         className="pixelate"
         src={props.icon}
@@ -1114,6 +1134,33 @@ const Row = (props: { title: string; icon: string }) => {
         {props.title}
       </Paragraph>
     </XStack>
+  )
+
+  if (!props.description) {
+    return content
+  }
+
+  return (
+    <Popover hoverable placement="right">
+      <Popover.Trigger>{content}</Popover.Trigger>
+      <Popover.Content
+        bg="$color2"
+        borderWidth={1}
+        borderColor="$borderColor"
+        rounded="$4"
+        p="$3"
+        maxW={250}
+        elevation="$2"
+        enterStyle={{ opacity: 0, x: -5 }}
+        exitStyle={{ opacity: 0, x: -5 }}
+        animation="quick"
+      >
+        <Popover.Arrow bg="$color2" borderColor="$borderColor" />
+        <Paragraph size="$3" color="$color11">
+          {props.description}
+        </Paragraph>
+      </Popover.Content>
+    </Popover>
   )
 }
 
