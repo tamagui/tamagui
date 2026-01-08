@@ -9,6 +9,7 @@ import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from 'tamagui'
 import {
   H2,
   Paragraph,
+  Popover,
   ScrollView,
   SizableText,
   Spacer,
@@ -34,6 +35,7 @@ import type { ProductsResponse } from '~/features/site/purchase/useProducts'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
+import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
@@ -201,36 +203,38 @@ export default function TakeoutPage() {
             >
               <ThemeTintAlt>
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout is a production-ready base stack that includes everything you
-                  need for apps with a user-system. It funds the OSS development of
+                  Takeout is a full-stack, cross-platform starter kit for building modern
+                  web and mobile apps with React Native. It funds the OSS development of
                   Tamagui.
                 </Paragraph>
 
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout shares a high % of code between native and web, while
-                  maintaining a high bar for UX and performance. Building off our OSS
-                  starter (<CodeInline>npm create tamagui</CodeInline>), we add Supabase,
-                  tRPC, Zod, custom themes, screens, a user system and common flows, and
-                  typed, themeable fonts and icons via{' '}
-                  <Link href="https://fonts.google.com" target="_blank">
-                    Google Fonts
+                  Built on{' '}
+                  <Link href="https://onestack.dev" target="_blank">
+                    One
                   </Link>{' '}
-                  and{' '}
-                  <Link href="https://icones.js.org" target="_blank">
-                    icones.js.org
+                  for universal routing,{' '}
+                  <Link href="https://zero.rocicorp.dev" target="_blank">
+                    Zero
                   </Link>{' '}
-                  with <CodeInline>yarn&nbsp;add:icon|font</CodeInline>.
+                  for real-time sync, and{' '}
+                  <Link href="https://better-auth.com" target="_blank">
+                    Better Auth
+                  </Link>{' '}
+                  for authentication. Deploy with a single command using Uncloud or SST.
+                  Includes <CodeInline>bun tko</CodeInline> CLI with built-in docs and
+                  scripts.
                 </Paragraph>
               </ThemeTintAlt>
 
               <XStack flexWrap="wrap" gap="$3" mx="$-10" items="center" justify="center">
                 <TakeoutCard
                   theme="orange"
-                  title="Monorepo"
+                  title="Stack"
                   icon="retro-icons/coding-apps-websites-module-21.svg"
                 >
                   <YStack gap="$2">
-                    {points.monorepo.map((point, idx, arr) => (
+                    {points.stack.map((point, idx, arr) => (
                       <Point
                         key={point}
                         size="$4"
@@ -243,11 +247,11 @@ export default function TakeoutPage() {
                 </TakeoutCard>
                 <TakeoutCard
                   theme="yellow"
-                  title="Design"
-                  icon="retro-icons/design-color-painting-palette-25.svg"
+                  title="Scripts"
+                  icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
                 >
                   <YStack gap="$2">
-                    {points.design.map((point, idx, arr) => (
+                    {points.scripts.map((point, idx, arr) => (
                       <Point
                         key={point}
                         size="$4"
@@ -294,11 +298,11 @@ export default function TakeoutPage() {
                 </TakeoutCard>
                 <TakeoutCard
                   theme="purple"
-                  title="Assets"
+                  title="Native"
                   icon="retro-icons/coding-apps-websites-plugin-33.svg"
                 >
                   <YStack gap="$2">
-                    {points.assets.map((point, idx, arr) => (
+                    {points.native.map((point, idx, arr) => (
                       <Point
                         key={point}
                         size="$4"
@@ -312,7 +316,7 @@ export default function TakeoutPage() {
                 <TakeoutCard
                   theme="pink"
                   title="& More"
-                  icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+                  icon="retro-icons/design-color-painting-palette-25.svg"
                 >
                   <YStack gap="$2">
                     {points.more.map((point, idx, arr) => (
@@ -332,8 +336,8 @@ export default function TakeoutPage() {
 
               <YStack mt={-430} mb={-330} x={800} z={-1}>
                 <div
+                  className="takeout-phone"
                   style={{
-                    transform: 'rotateX(41deg) rotateZ(33deg)',
                     transformStyle: 'preserve-3d',
                     width: 715 * 0.5,
                     borderRadius: 78,
@@ -589,6 +593,9 @@ export default function TakeoutPage() {
                   </svg>
                 </div>
               </YStack>
+              <Spacer />
+
+              <VersionComparison />
 
               <Spacer />
 
@@ -625,35 +632,35 @@ const CodeInline = styled(Paragraph, {
 })
 
 const points = {
-  // this one's only shown on modal
-  monorepo: [
-    'Builds off our free and OSS starter kit.',
-    'Nearly all code shared between web and native.',
-    'Guided setup script, easily generate common patterns.',
+  stack: [
+    'One framework - universal React routing.',
+    'Zero real-time sync - instant updates.',
+    'Better Auth - OAuth & email auth.',
   ],
-  design: [
-    'Complete design system with the new ThemeBuilder for easy customization.',
-    'Two new theme packs - Neon and Pastel.',
+  scripts: [
+    'bun tko CLI with built-in docs.',
+    'Onboarding wizard for easy setup.',
+    'Check, lint, and type commands.',
   ],
   deploy: [
-    'Vercel + Preview Deploys.',
-    'Expo EAS + Expo Router.',
-    'Script that sets up both local and remote dev environments.',
+    'Uncloud for self-hosted (single command).',
+    'SST for AWS serverless.',
+    'GitHub Actions CI/CD ready.',
   ],
   screens: [
-    'Variety of screen types adapted to each platform.',
-    'Onboarding, auth, account, settings, profile, feed, edit profile.',
-    'Universal forms + zod validation.',
+    'Auth, onboarding, feed, profile.',
+    'Settings and account management.',
+    'Universal forms with validation.',
   ],
-  assets: [
-    '+150 icon packs, adapted to use themes, sizing, and tree shaking.',
-    'All of Google fonts, over +1500 packs.',
+  native: [
+    'iOS and Android with Expo.',
+    'Native bottom sheets, haptics.',
+    'Hot updates with OTA.',
   ],
   more: [
-    'Image upload and Supabase utils.',
-    'Reanimated, Solito, React Query, Zod & more',
-    'TakeoutBot ongoing updates.',
-    'Private Discord.',
+    'Phosphor icons library.',
+    'Vitest + Playwright tests.',
+    'Private Discord + GitHub access.',
   ],
 }
 
@@ -736,7 +743,14 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 
           {!!icon && (
             <YStack position="absolute" b={0} r={0}>
-              <Image className="pixelate" src={icon} alt="Icon" width={32} height={32} />
+              <Image
+                className="pixelate"
+                src={icon}
+                alt="Icon"
+                width={32}
+                height={32}
+                filter={isDark ? 'none' : 'invert(1)'}
+              />
             </YStack>
           )}
         </YStack>
@@ -982,11 +996,13 @@ const StarterCard = memo(() => {
           {seasons[name]}
         </SizableText>
       )}
+
       <TakeoutCardFrame
         bg="$color1"
         className="blur-medium"
         z={100_000}
         maxW={310}
+        mt="$4"
         self="center"
         shadowRadius={30}
         shadowOffset={{ height: 20, width: 0 }}
@@ -1006,7 +1022,7 @@ const StarterCard = memo(() => {
           mt: 100,
         }}
       >
-        <YStack z={-1} fullscreen bg="$color5" opacity={0.5} />
+        <YStack z={-1} fullscreen bg="$color5" opacity={0.6} />
         <YStack position="absolute" b="$4" l="$4" r="$4" z={100}>
           {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
           {/* subscription ? `/account/items#${subscription.id}` : '' */}
@@ -1025,79 +1041,71 @@ const StarterCard = memo(() => {
               <MunroP color="$color11" size="$7" letterSpacing={2}>
                 The Stack
               </MunroP>
+              <YStack
+                position="absolute"
+                t="$-3"
+                r="$-5"
+                bg="$green9"
+                px="$2"
+                py="$1"
+                rounded="$2"
+              >
+                <Paragraph size="$1" fontWeight="700" color="white">
+                  v2
+                </Paragraph>
+              </YStack>
             </ThemeTintAlt>
 
             <YStack>
               <Row
                 title="Access"
-                description="Access to the private Github repo and Discord chat room."
-                after="01"
+                icon="retro-icons/coding-apps-websites-module-21.svg"
+                description="Private GitHub repo and Discord access for Pro subscribers."
               />
-
               <Row
-                title="Monorepo"
-                description="More refined monorepo with Next.js, Vercel deploy, Expo and EAS."
-                after="01"
+                title="CLI"
+                icon="retro-icons/coding-apps-websites-programming-browser-44.svg"
+                description="bun tko CLI with built-in docs, scripts, and onboarding wizard."
               />
-
               <Row
-                title="Screens"
-                description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed + more, well crafted layouts to adapt to web/native."
-                after="08"
+                title="Real-time"
+                icon="retro-icons/coding-apps-websites-live-status-4.svg"
+                description="Zero sync for instant real-time updates across all clients."
               />
-
               <Row
-                title="Data & Auth"
-                description="Supabase pre-configured with migrations, email and OAuth (Google + Apple) authentication, utilities, automatic setup and everything to get rolling immediately."
-                after="01"
+                title="Routing"
+                icon="retro-icons/computers-devices-electronics-desktop-53.svg"
+                description="One framework for universal file-based routing on web and native."
               />
-
               <Row
-                title="RPC"
-                description="We've set up tRPC, which you can optionally use, that works alongside Zod to provide easy, type-safe APIs."
-                after="01"
+                title="Auth"
+                icon="retro-icons/coding-apps-websites-shield-lock-40.svg"
+                description="Better Auth with OAuth providers and email authentication."
               />
-
-              <Row
-                title="Icons"
-                description="~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
-                after="+150"
-              />
-
-              <Row
-                title="Fonts"
-                description="All of Google fonts, more than +1500 font packages."
-                after="+1500"
-              />
-
-              <Row
-                title="Themes"
-                description="Two all new themes - Pastel and Neon - that bring a muted or more bright feel."
-                after="03"
-              />
-
               <Row
                 title="Deploy"
-                description="Vercel and Expo EAS configured for you to ship as fast as possible."
-                after="05"
+                icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+                description="Deploy with Uncloud (self-hosted) or SST (AWS serverless)."
               />
-
+              <Row
+                title="Icons"
+                icon="retro-icons/coding-apps-websites-plugin-33.svg"
+                description="Phosphor icons library with theme integration."
+              />
+              <Row
+                title="Testing"
+                icon="retro-icons/coding-apps-websites-programming-bug-61.svg"
+                description="Vitest for unit tests and Playwright for E2E testing."
+              />
               <Row
                 title="Native"
-                description="Tamagui native components like Sheet and Toast pre-configured, saving you setup and build."
-                after="03"
+                icon="retro-icons/coding-apps-websites-mobile-47.svg"
+                description="iOS and Android with Expo, native bottom sheets, and OTA updates."
               />
-
               <Row
-                title="Form"
-                description="Universal forms with react-hook-form, ts-form and zod, adaptable components for the most native look on web and native."
-                after="01"
-              />
-
-              <Row
-                title="Image Upload"
-                description="Component and utilities for uploading images that adapt to the native image picker. Avatar upload with Supabase Storage + RLS included."
-                after="01"
+                title="Database"
+                icon="retro-icons/coding-apps-websites-database-60.svg"
+                description="PostgreSQL with Zero sync and type-safe queries."
               />
             </YStack>
 
@@ -1109,48 +1117,55 @@ const StarterCard = memo(() => {
   )
 })
 
-const Row = (props: { title: any; description: any; after: any }) => {
-  const media = useMedia()
-  const [showDetail, setShowDetail] = useState(false)
+const Row = (props: { title: string; icon: string; description?: string }) => {
+  const isDark = useThemeName().startsWith('dark')
+
+  const content = (
+    <XStack
+      py="$3"
+      gap="$3"
+      items="center"
+      cursor={props.description ? 'pointer' : undefined}
+    >
+      <Image
+        className="pixelate"
+        src={props.icon}
+        alt="Icon"
+        height={14}
+        width={14}
+        filter={isDark ? 'none' : 'invert(1)'}
+      />
+      <Paragraph fontFamily="$mono" textTransform="uppercase" letterSpacing={4} size="$4">
+        {props.title}
+      </Paragraph>
+    </XStack>
+  )
+
+  if (!props.description) {
+    return content
+  }
 
   return (
-    <XStack
-      px="$8"
-      mx="$-8"
-      onPress={() => {
-        if (media.md) {
-          setShowDetail((x) => !x)
-        }
-      }}
-      $md={{
-        cursor: 'pointer',
-        hoverStyle: {
-          bg: 'var(--color4)',
-        },
-      }}
-    >
-      <YStack flex={1} flexBasis="auto" py="$3" gap="$1">
-        <Paragraph
-          fontFamily="$mono"
-          textTransform="uppercase"
-          letterSpacing={4}
-          size="$4"
-        >
-          {props.title}
-        </Paragraph>
-        <Paragraph
-          size="$3"
-          color="$color10"
-          $md={{
-            display: showDetail ? 'flex' : 'none',
-          }}
-        >
+    <Popover hoverable placement="right">
+      <Popover.Trigger>{content}</Popover.Trigger>
+      <Popover.Content
+        bg="$color2"
+        borderWidth={1}
+        borderColor="$borderColor"
+        rounded="$4"
+        p="$3"
+        maxW={250}
+        elevation="$2"
+        enterStyle={{ opacity: 0, x: -5 }}
+        exitStyle={{ opacity: 0, x: -5 }}
+        animation="quick"
+      >
+        <Popover.Arrow bg="$color2" borderColor="$borderColor" />
+        <Paragraph size="$3" color="$color11">
           {props.description}
         </Paragraph>
-      </YStack>
-
-      <MunroP my="$4">{props.after}</MunroP>
-    </XStack>
+      </Popover.Content>
+    </Popover>
   )
 }
 
@@ -1173,6 +1188,7 @@ const FeatureIcon = ({
 }) => {
   const Tint = useTint()
   const store = useTakeoutStore()
+  const isDark = useThemeName().startsWith('dark')
 
   useEffect(() => {
     if (store.showPurchase) return
@@ -1203,7 +1219,14 @@ const FeatureIcon = ({
           }}
           bg={active ? '$color9' : '$color10'}
         >
-          <Image className="pixelate" src={icon} alt="Icon" height={14} width={14} />
+          <Image
+            className="pixelate"
+            src={icon}
+            alt="Icon"
+            height={14}
+            width={14}
+            filter={isDark ? 'none' : 'invert(1)'}
+          />
         </IconFrame>
       </PixelTooltip>
     </Theme>
