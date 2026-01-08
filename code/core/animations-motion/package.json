@@ -34,7 +34,7 @@
   "dependencies": {
     "@tamagui/core": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
-    "motion": "^12.23.26"
+    "motion": "^12.24.12"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
