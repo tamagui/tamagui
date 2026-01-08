@@ -53,7 +53,7 @@ const FeatureRow = ({
 
   return (
     <XStack py="$2" borderBottomWidth={1} borderBottomColor="$borderColor" items="center">
-      <YStack width={120}>
+      <YStack flex={1.5}>
         <SizableText size="$3" fontWeight="500">
           {feature}
         </SizableText>
@@ -99,7 +99,10 @@ export function VersionComparison() {
       borderWidth={1}
       borderColor="$borderColor"
       gap="$4"
+      overflow="hidden"
+      $sm={{ display: 'none' }}
     >
+      <YStack z={-1} fullscreen bg="$color5" opacity={0.5} />
       <YStack gap="$2">
         <H3 fontFamily="$mono" letterSpacing={2}>
           Version Comparison

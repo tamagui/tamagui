@@ -335,8 +335,8 @@ export default function TakeoutPage() {
 
               <YStack mt={-430} mb={-330} x={800} z={-1}>
                 <div
+                  className="takeout-phone"
                   style={{
-                    transform: 'rotateX(41deg) rotateZ(33deg)',
                     transformStyle: 'preserve-3d',
                     width: 715 * 0.5,
                     borderRadius: 78,
@@ -592,12 +592,11 @@ export default function TakeoutPage() {
                   </svg>
                 </div>
               </YStack>
-
               <Spacer />
 
               <VersionComparison />
 
-              <Spacer size="$8" />
+              <Spacer />
 
               <YStack rounded="$12" p="$7" gap="$3">
                 <YStack minH={530}>
@@ -606,6 +605,8 @@ export default function TakeoutPage() {
                   </Lazy>
                 </YStack>
               </YStack>
+
+              <Spacer />
 
               <Spacer size="$10" />
             </YStack>
@@ -747,7 +748,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
                 alt="Icon"
                 width={32}
                 height={32}
-                style={{ filter: isDark ? 'none' : 'invert(1)' }}
+                filter={isDark ? 'none' : 'invert(1)'}
               />
             </YStack>
           )}
@@ -994,21 +995,25 @@ const StarterCard = memo(() => {
           {seasons[name]}
         </SizableText>
       )}
+
       <TakeoutCardFrame
         bg="$color1"
         className="blur-medium"
         z={100_000}
         maxW={310}
+        mt="$4"
         self="center"
         shadowRadius={30}
         shadowOffset={{ height: 20, width: 0 }}
         shadowColor="$shadowColor"
-        x={-50}
-        y={50}
         maxH="calc(min(85vh, 800px))"
         rounded="$8"
+        $gtMd={{
+          x: -50,
+          y: 50,
+        }}
         $md={{
-          x: -20,
+          x: 0,
           y: 0,
           maxH: 'auto',
           width: '100%',
@@ -1016,6 +1021,7 @@ const StarterCard = memo(() => {
           mt: 100,
         }}
       >
+        <YStack z={-1} fullscreen bg="$color5" opacity={0.5} />
         <YStack position="absolute" b="$4" l="$4" r="$4" z={100}>
           {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
           {/* subscription ? `/account/items#${subscription.id}` : '' */}
@@ -1031,16 +1037,22 @@ const StarterCard = memo(() => {
         <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
           <YStack gap="$2">
             <ThemeTintAlt>
-              <XStack items="center" gap="$2">
-                <MunroP color="$color11" size="$7" letterSpacing={2}>
-                  The Stack
-                </MunroP>
-                <YStack bg="$green9" px="$2" py="$1" rounded="$2">
-                  <Paragraph size="$1" fontWeight="700" color="white">
-                    v2
-                  </Paragraph>
-                </YStack>
-              </XStack>
+              <MunroP color="$color11" size="$7" letterSpacing={2}>
+                The Stack
+              </MunroP>
+              <YStack
+                position="absolute"
+                t="$-3"
+                r="$-5"
+                bg="$green9"
+                px="$2"
+                py="$1"
+                rounded="$2"
+              >
+                <Paragraph size="$1" fontWeight="700" color="white">
+                  v2
+                </Paragraph>
+              </YStack>
             </ThemeTintAlt>
 
             <YStack>
@@ -1161,7 +1173,7 @@ const FeatureIcon = ({
             alt="Icon"
             height={14}
             width={14}
-            style={{ filter: isDark ? 'none' : 'invert(1)' }}
+            filter={isDark ? 'none' : 'invert(1)'}
           />
         </IconFrame>
       </PixelTooltip>

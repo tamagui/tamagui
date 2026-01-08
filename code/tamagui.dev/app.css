@@ -814,3 +814,30 @@ p {
   background-color: rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(50px) !important;
 }
+
+/* Takeout phone scroll animation */
+@keyframes takeout-phone-scroll {
+  from {
+    transform: rotateX(41deg) rotateZ(33deg) translateX(0) translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: rotateX(15deg) rotateY(-20deg) rotateZ(10deg) translateX(-400px) translateY(-200px) scale(0.7);
+    opacity: 0.3;
+  }
+}
+
+.takeout-phone {
+  transform: rotateX(41deg) rotateZ(33deg);
+  animation: takeout-phone-scroll linear both;
+  animation-timeline: scroll(root);
+  animation-range: 0% 60%;
+}
+
+/* Fallback for browsers without scroll-driven animation support */
+@supports not (animation-timeline: scroll()) {
+  .takeout-phone {
+    transform: rotateX(41deg) rotateZ(33deg);
+    animation: none;
+  }
+}
