@@ -2,6 +2,7 @@ import type { GroupProps } from '@tamagui/group';
 import { RovingFocusGroup } from '@tamagui/roving-focus';
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web';
 import React from 'react';
+import type { ToggleStylesBase } from './Toggle';
 import { ToggleFrame } from './Toggle';
 type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
     value: string;
@@ -12,7 +13,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
      * Used to disable passing styles down to children.
      */
     disablePassStyles?: boolean;
-    toggledStyle?: Record<string, any> | null;
+    toggledStyle?: ToggleStylesBase | null;
     color?: string;
 };
 type ScopedProps<P> = P & {
@@ -40,10 +41,11 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
-    }>, "color" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "active" | "size" | "unstyled" | "orientation" | "toggledStyle" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    }>, "color" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "toggledStyle" | "active" | "size" | "unstyled" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -57,10 +59,11 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "value" | "disablePassStyles" | "__scopeToggleGroup"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "active" | "unstyled" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "value" | "disablePassStyles" | "__scopeToggleGroup"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "toggledStyle" | "active" | "unstyled" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -74,6 +77,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -91,6 +95,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -108,6 +113,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -120,11 +126,11 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
          * Used to disable passing styles down to children.
          */
         disablePassStyles?: boolean;
-        toggledStyle?: Record<string, any> | null;
+        toggledStyle?: ToggleStylesBase | null;
         color?: string;
     } & {
         __scopeToggleGroup?: string;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "active" | "unstyled" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "toggledStyle" | "active" | "unstyled" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -138,6 +144,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -155,6 +162,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -172,6 +180,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -184,7 +193,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
          * Used to disable passing styles down to children.
          */
         disablePassStyles?: boolean;
-        toggledStyle?: Record<string, any> | null;
+        toggledStyle?: ToggleStylesBase | null;
         color?: string;
     } & {
         __scopeToggleGroup?: string;
@@ -202,6 +211,7 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        toggledStyle?: ToggleStylesBase | null | undefined;
         active?: boolean | undefined;
         unstyled?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -264,7 +274,7 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & Group
     dir?: RovingFocusGroupProps['dir'];
     loop?: RovingFocusGroupProps['loop'];
     sizeAdjust?: number;
-    toggledStyle?: Record<string, any> | null;
+    toggledStyle?: ToggleStylesBase | null;
     color?: string;
 };
 export { ToggleGroup };

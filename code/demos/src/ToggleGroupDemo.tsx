@@ -2,19 +2,13 @@ import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
 import type { SizeTokens } from 'tamagui'
 import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
 
+// Example using styled() to define toggledStyle
 const GreenItem = styled(ToggleGroup.Item, {
   color: '$green8',
-  toggledStyle: { backgroundColor: '$green9', color: '$yellow9' },
-})
-
-const BlueItem = styled(ToggleGroup.Item, {
-  color: '$blue8',
-  toggledStyle: { backgroundColor: '$blue9', color: '$green9' },
-})
-
-const RedItem = styled(ToggleGroup.Item, {
-  color: '$red8',
-  toggledStyle: { backgroundColor: '$red9', color: '$blue9' },
+  toggledStyle: {
+    backgroundColor: '$green9',
+    color: '$yellow9',
+  },
 })
 
 export function ToggleGroupDemo() {
@@ -53,10 +47,11 @@ function ToggleGroupComponent(props: {
       <ToggleGroup
         orientation={props.orientation}
         id={id}
-        type={props.type as any}
+        type={props.type as any} // since this demo switches between loosen types
         size={props.size}
         disableDeactivation={props.type === 'single' ? true : undefined}
       >
+        {/* Using styled() component */}
         <GreenItem
           value="left"
           aria-label="Left aligned"
@@ -64,20 +59,28 @@ function ToggleGroupComponent(props: {
         >
           <AlignLeft />
         </GreenItem>
-        <BlueItem
+
+        {/* Using inline toggledStyle prop */}
+        <ToggleGroup.Item
           value="center"
           aria-label="Center aligned"
+          color="$blue8"
+          toggledStyle={{ backgroundColor: '$blue9', color: '$green9' }}
           focusStyle={{ background: '$color12' }}
         >
           <AlignCenter />
-        </BlueItem>
-        <RedItem
+        </ToggleGroup.Item>
+
+        {/* Using inline toggledStyle prop */}
+        <ToggleGroup.Item
           value="right"
           aria-label="Right aligned"
+          color="$red8"
+          toggledStyle={{ backgroundColor: '$red9', color: '$blue9' }}
           focusStyle={{ background: '$color12' }}
         >
           <AlignRight />
-        </RedItem>
+        </ToggleGroup.Item>
       </ToggleGroup>
     </XStack>
   )

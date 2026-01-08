@@ -262,7 +262,7 @@ Which you can use:
 
 The Spread variant function will receive two arguments: the first is the value
 given to the property (`"$lg"`), and the second is an object with
-`{ theme, tokens, props, font }`.
+`{ theme, tokens, props, font, context }`.
 
 <PropsTable
   data={[
@@ -295,6 +295,11 @@ given to the property (`"$lg"`), and the second is an object with
       name: 'fonts',
       type: 'string',
       description: `All your fonts passed to createTamagui.`,
+    },
+    {
+      name: 'context',
+      type: 'StyledContext',
+      description: `The styledContext values from the parent component, useful for compound components.`,
     },
   ]}
 />

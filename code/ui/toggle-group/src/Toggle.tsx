@@ -1,13 +1,15 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { GetProps, TamaguiElement } from '@tamagui/web'
+import type { GetProps, StackStyleBase, TamaguiElement } from '@tamagui/web'
 import { createStyledContext, styled, Text } from '@tamagui/web'
 import * as React from 'react'
 
+export type ToggleStylesBase = StackStyleBase & { color?: string }
+
 export const context = createStyledContext({
   color: '',
-  toggledStyle: null as null | Record<string, any>,
+  toggledStyle: null as null | ToggleStylesBase,
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -49,9 +51,11 @@ export const ToggleFrame = styled(ThemeableStack, {
       },
     },
 
+    toggledStyle: (val: ToggleStylesBase | null) => ({}),
+
     active: {
       true: (_, { props, context }: any) => {
-        const toggledStyle = context?.toggledStyle
+        const toggledStyle = props.toggledStyle || context?.toggledStyle
         return {
           zIndex: 1,
           ...(!props.unstyled &&
@@ -95,7 +99,7 @@ type ToggleItemExtraProps = {
   pressed?: boolean
   defaultPressed?: boolean
   onPressedChange?(pressed: boolean): void
-  toggledStyle?: Record<string, any> | null
+  toggledStyle?: ToggleStylesBase | null
 }
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
