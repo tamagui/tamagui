@@ -29,10 +29,10 @@ export const isSafariMobile = (() => {
   return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
 })()
 
-export function PurchaseButton({ children, ...props }) {
+export function PurchaseButton({ children, fontFamily = '$mono', ...props }) {
   return (
     <Button size="$4" $gtXs={{ size: '$5' }} rounded="$10" {...props}>
-      <Button.Text size="$5" fontFamily="$mono">
+      <Button.Text size="$5" fontFamily={fontFamily as any}>
         {children}
       </Button.Text>
     </Button>
@@ -193,7 +193,7 @@ export const TakeoutTable = ({
   const price = product?.prices.find((price) => price.id === selectedPriceId)
   const takeoutPriceInfo = getTakeoutPriceInfo(price?.description ?? '')
   return (
-    <YStack borderWidth="$0.5" borderRadius="$4" borderColor="$borderColor">
+    <YStack borderWidth="$0.5" rounded="$4" borderColor="$borderColor">
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fontWeight="bold">
