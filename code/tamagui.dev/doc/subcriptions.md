@@ -148,7 +148,7 @@ if (teamSeatCount > 0) {
 **➕ Add Member Flow**:
 1. **🔌 API**: `team-seat+api.ts` POST endpoint
 2. **🗄️ Database**: Insert into `team_members` table
-3. **🐙 GitHub**: Invite to repository via `claim-product.ts`
+3. **🐙 GitHub**: Invite to repository via `resend-github-invite+api.ts`
 4. **💬 Discord**: Manual invitation through Discord panel
 
 **➖ Remove Member Flow**:
@@ -257,41 +257,18 @@ const seats = seatsMatch ? parseInt(seatsMatch[1]) : 1
 
 **💻 Usage**: When users lose access after system migration, manually add records to restore their benefits.
 
-## 4. 🐙 Repository Access & Claims System
+## 4. 🐙 Repository Access System
 
 ### 🐙 GitHub Integration
 **🗄️ Database Table**: `claims`
 
 **🔄 Flow**:
-1. **👆 User Action**: Click "View Repository" in account modal
-2. **🔌 API**: `claim+api.ts` processes request
-3. **🔍 GitHub Check**: `checkIfUserIsCollaborator()` in `github/helpers.ts`
+1. **👆 User Action**: Click "Takeout 1" or "Takeout 2" to open repos directly, or "Resend Invite" to send/resend GitHub team invite
+2. **🔌 API**: `resend-github-invite+api.ts` handles invite requests
+3. **🔍 GitHub Check**: `checkIfUserIsTeamMember()` in `github/helpers.ts`
 4. **📤 Response Handling**:
-   - **✅ Already Collaborator**: Returns URL + message, opens in new tab
-   - **📧 New Invitation**: Sends GitHub invite, shows success message
-
-**🔑 Key Code Points**:
-```typescript
-// claim-product.ts
-if (collaboratorCheck.isCollaborator) {
-  return {
-    data: { /* claim data */ },
-    message: `You are already a collaborator...`,
-    ...(collaboratorCheck.repoUrl && { url: collaboratorCheck.repoUrl }),
-  }
-}
-```
-
-**🖥️ Frontend Handling**:
-```typescript
-// NewAccountModal.tsx
-if (data.url) {
-  window.open(data.url, '_blank', 'noopener,noreferrer')
-}
-if (data.message) {
-  alert(data.message)
-}
-```
+   - **✅ Already Member**: Returns success message
+   - **📧 New Invitation**: Sends GitHub team invite, shows success message
 
 ## 5. 🗄️ Database Schema Summary
 
@@ -388,9 +365,6 @@ This tool allows developers to impersonate any user for testing subscription flo
 
 ### 👥 Team Management
 - **`/api/team-seat`**: GET (list), POST (invite), DELETE (remove) team members
-
-### 🎫 Access Claims
-- **`/api/claim`**: Claim repository access and other benefits
 
 ### 💬 Discord Integration
 - **`/api/discord/channel`**: Manage general Discord channel access
