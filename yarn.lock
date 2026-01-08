@@ -6641,6 +6641,11 @@ __metadata:
     oxc-transform: "npm:^0.95.0"
     typescript: "npm:~5.9.2"
     vitest: "npm:^4.0.4"
+  peerDependencies:
+    typescript: ">=4.7"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
   bin:
     tamagui-build: tamagui-build.js
     teesx: ./teesx.sh

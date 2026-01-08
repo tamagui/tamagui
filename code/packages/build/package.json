@@ -25,11 +25,19 @@
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",
     "lodash.debounce": "^4.0.8",
-    "oxc-transform": "^0.95.0",
-    "typescript": "~5.9.2"
+    "oxc-transform": "^0.95.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=4.7"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "devDependencies": {
+    "typescript": "~5.9.2",
     "vitest": "^4.0.4"
   }
 }
