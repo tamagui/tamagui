@@ -3,6 +3,14 @@ title: Motion Driver
 description: High-performance web animations with WAAPI
 ---
 
+<Notice theme="green">
+  **Recommended for dynamic web animations.** Motion is our recommended choice for web-only apps that want buttery smooth, playful animations. For load-time sensitive pages like landing pages, consider using [CSS animations](/docs/core/animations-css) to avoid the JS bundle, or [combine both drivers](/docs/core/animations#combining-drivers).
+</Notice>
+
+<Notice theme="blue">
+  **Cross-platform note:** If you're using Reanimated on native, use the [Moti driver](/docs/core/animations-reanimated) on web instead of Motion. Otherwise you'll ship both animation libraries, adding significant bundle size.
+</Notice>
+
 [Motion](https://motion.dev) is a modern animation library built on the Web Animations API (WAAPI). It features a unique hybrid engine that combines JavaScript animations with native browser APIs to deliver high-performance, GPU-accelerated animations.
 
 ## Installation
@@ -54,9 +62,19 @@ export default createTamagui({
 
 ## How it Works
 
-At runtime, the Motion driver uses the `useAnimate()` hook from the Motion library to create animation scopes and orchestrate animations. It intelligently batches style changes and only animates properties that have changed, optimizing performance.
+The Motion driver achieves excellent performance through several key architectural decisions:
 
-The driver leverages the Web Animations API (WAAPI) which runs animations on the compositor thread when possible, keeping animations smooth even when the main thread is busy.
+### Avoiding React Re-renders
+
+Motion directly mutates the DOM during animations through Motion's `useAnimate` hook, bypassing React's render cycle entirely. This means your animations run at 60fps even while React is busy with other updates.
+
+### Intelligent Diffing
+
+The driver tracks previous animated styles and only sends changed properties to Motion. This minimizes work on each animation frame and reduces overhead.
+
+### Off-Thread Animations
+
+The driver leverages the Web Animations API (WAAPI) which runs animations on the compositor thread when possible. This keeps animations smooth even when the main JavaScript thread is busy - making it ideal for complex interactive components like sheets, popovers, and page transitions.
 
 ## Animation Configuration
 
