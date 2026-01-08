@@ -93,8 +93,8 @@ exports[`conditional specific after generic style overrides 2`] = `
 `;
 
 exports[`conditional spread with hoverStyle preserves ternary 1`] = `
-"const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-red _cur-pointer _bg-0hover-green ";
-const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _cur-pointer _bg-blue ";
+"const _cn2 = "is_Stack _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-red _cur-pointer _bg-0hover-green ";
+const _cn = "is_Stack _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _cur-pointer _bg-blue ";
 import { Stack } from '@tamagui/core';
 export function Test({
   isActive
@@ -104,8 +104,8 @@ export function Test({
 `;
 
 exports[`conditional spread with local variable preserves ternary 1`] = `
-"const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-red ";
-const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-blue ";
+"const _cn2 = "is_View _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-red ";
+const _cn = "is_View _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-blue ";
 import { View } from '@tamagui/core';
 export function Test({
   isActive
@@ -115,8 +115,8 @@ export function Test({
 `;
 
 exports[`conditional spread with runtime variable preserves ternary 1`] = `
-"const _cn2 = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-red ";
-const _cn = "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-blue ";
+"const _cn2 = "is_View _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-red ";
+const _cn = "is_View _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-blue ";
 import { View } from '@tamagui/core';
 function usePathname() {
   return '/blog';
