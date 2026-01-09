@@ -1,29 +1,43 @@
 import { Check, X } from '@tamagui/lucide-icons'
-import { Button, H3, Paragraph, SizableText, XStack, YStack, styled } from 'tamagui'
+import {
+  Button,
+  H3,
+  Paragraph,
+  SizableText,
+  Theme,
+  XStack,
+  YStack,
+  styled,
+  useThemeName,
+} from 'tamagui'
 import { Link } from '~/components/Link'
 
 const VersionBadge = styled(SizableText, {
   px: '$2',
   py: '$1',
-  rounded: '$2',
+  rounded: '$3',
   fontSize: '$2',
-  fontWeight: '600',
+  fontWeight: '800',
   textTransform: 'uppercase',
   letterSpacing: 1,
+  borderWidth: 2,
 
   variants: {
     variant: {
       new: {
-        backgroundColor: '$green5',
+        backgroundColor: '$green4',
         color: '$green11',
+        borderColor: '$green7',
       },
       free: {
-        backgroundColor: '$blue5',
+        backgroundColor: '$blue4',
         color: '$blue11',
+        borderColor: '$blue7',
       },
       legacy: {
-        backgroundColor: '$gray5',
-        color: '$gray11',
+        backgroundColor: '$orange4',
+        color: '$orange11',
+        borderColor: '$orange7',
       },
     },
   } as const,
@@ -42,19 +56,30 @@ const FeatureRow = ({
 }) => {
   const renderCell = (value: string | boolean) => {
     if (typeof value === 'boolean') {
-      return value ? <Check size={16} color="$green10" /> : <X size={16} color="$gray8" />
+      return value ? (
+        <Check size={18} color="var(--green10)" strokeWidth={3} />
+      ) : (
+        <X size={18} color="var(--color8)" strokeWidth={2} />
+      )
     }
     return (
-      <SizableText size="$3" color="$color11">
+      <SizableText size="$3" color="$color11" fontFamily="$mono" fontWeight="600">
         {value}
       </SizableText>
     )
   }
 
   return (
-    <XStack py="$2" borderBottomWidth={1} borderBottomColor="$borderColor" items="center">
+    <XStack
+      py="$3"
+      px="$3"
+      borderBottomWidth={1}
+      borderBottomColor="$borderColor"
+      items="center"
+      bg="transparent"
+    >
       <YStack flex={1.5}>
-        <SizableText size="$3" fontWeight="500">
+        <SizableText size="$3" fontWeight="700" color="$color12" fontFamily="$mono">
           {feature}
         </SizableText>
       </YStack>
@@ -78,8 +103,8 @@ const features = [
   {
     feature: 'Database',
     v1: 'Supabase',
-    v2: 'PostgreSQL + Drizzle',
-    v2free: 'PostgreSQL + Drizzle',
+    v2: 'Postgres + Drizzle',
+    v2free: 'Postgres + Drizzle',
   },
   { feature: 'Deployment', v1: 'Vercel + EAS', v2: 'SST / Uncloud', v2free: false },
   { feature: 'CLI Tools', v1: false, v2: 'bun tko', v2free: false },
@@ -90,52 +115,85 @@ const features = [
 ]
 
 export function VersionComparison() {
+  const isDark = useThemeName().startsWith('dark')
+
   return (
     <YStack
       className="blur-medium"
-      bg="$color1"
+      bg={isDark ? '$color2' : '$color3'}
       rounded="$6"
       p="$6"
-      borderWidth={1}
+      borderWidth={2}
       borderColor="$borderColor"
       gap="$4"
       overflow="hidden"
       $sm={{ display: 'none' }}
+      style={{
+        boxShadow: '0 0 50px var(--color4)',
+      }}
     >
-      <YStack z={-1} fullscreen bg="$color5" opacity={0.5} />
       <YStack gap="$2">
-        <H3 fontFamily="$mono" letterSpacing={2}>
+        <H3
+          fontFamily="$mono"
+          letterSpacing={3}
+          color="$color11"
+          textTransform="uppercase"
+          style={{
+            textShadow: '0 0 30px var(--color8)',
+          }}
+        >
           Version Comparison
         </H3>
-        <Paragraph color="$color10" size="$4">
+        <Paragraph color="$color11" size="$4" fontFamily="$mono">
           Pro subscribers get access to both v1 and v2 repositories.
         </Paragraph>
       </YStack>
 
-      <YStack>
-        <XStack py="$2" borderBottomWidth={2} borderBottomColor="$borderColor">
-          <YStack flex={1.5}>
-            <SizableText size="$2" fontWeight="600" color="$color10">
+      <YStack
+        rounded="$4"
+        borderWidth={1}
+        borderColor="$color6"
+        overflow="hidden"
+        bg="$background02"
+        style={{
+          boxShadow: '0 0 30px var(--color4)',
+        }}
+      >
+        <XStack py="$3" px="$3" borderBottomWidth={2} borderBottomColor="$color6">
+          <YStack flex={1.5} justify="center">
+            <SizableText
+              size="$2"
+              fontWeight="800"
+              color="$color11"
+              fontFamily="$mono"
+              textTransform="uppercase"
+            >
               Feature
             </SizableText>
           </YStack>
           <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$2" fontWeight="600">
+            <SizableText size="$2" fontWeight="800" color="$orange10" fontFamily="$mono">
               v1
             </SizableText>
-            <VersionBadge variant="legacy">Legacy</VersionBadge>
+            <Theme name="orange">
+              <VersionBadge variant="legacy">Legacy</VersionBadge>
+            </Theme>
           </XStack>
           <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$2" fontWeight="600">
+            <SizableText size="$2" fontWeight="800" color="$green10" fontFamily="$mono">
               v2
             </SizableText>
-            <VersionBadge variant="new">New</VersionBadge>
+            <Theme name="green">
+              <VersionBadge variant="new">New</VersionBadge>
+            </Theme>
           </XStack>
           <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$2" fontWeight="600">
+            <SizableText size="$2" fontWeight="800" color="$blue10" fontFamily="$mono">
               v2-free
             </SizableText>
-            <VersionBadge variant="free">OSS</VersionBadge>
+            <Theme name="blue">
+              <VersionBadge variant="free">OSS</VersionBadge>
+            </Theme>
           </XStack>
         </XStack>
 
@@ -145,15 +203,39 @@ export function VersionComparison() {
       </YStack>
 
       <XStack gap="$4" flexWrap="wrap" justify="center" pt="$4">
-        <Link href="/docs/guides/takeout" target="_blank">
-          <Button size="$2" rounded="$10" theme="alt1">
-            <Button.Text fontFamily="$mono">Read the Docs</Button.Text>
-          </Button>
+        <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
+          <Theme name="green">
+            <Button
+              size="$3"
+              rounded="$4"
+              bg="$color9"
+              borderWidth={2}
+              borderColor="$color10"
+              hoverStyle={{ bg: '$color10' }}
+              pressStyle={{ bg: '$color8' }}
+            >
+              <Button.Text fontFamily="$mono" fontWeight="800" color="white">
+                Read the Docs
+              </Button.Text>
+            </Button>
+          </Theme>
         </Link>
         <Link href="https://github.com/tamagui/starter-free" target="_blank">
-          <Button size="$2" rounded="$10" theme="blue">
-            <Button.Text fontFamily="$mono">Try v2-free (OSS)</Button.Text>
-          </Button>
+          <Theme name="blue">
+            <Button
+              size="$3"
+              rounded="$4"
+              bg="$color9"
+              borderWidth={2}
+              borderColor="$color10"
+              hoverStyle={{ bg: '$color10' }}
+              pressStyle={{ bg: '$color8' }}
+            >
+              <Button.Text fontFamily="$mono" fontWeight="800" color="white">
+                Try v2-free (OSS)
+              </Button.Text>
+            </Button>
+          </Theme>
         </Link>
       </XStack>
     </YStack>
