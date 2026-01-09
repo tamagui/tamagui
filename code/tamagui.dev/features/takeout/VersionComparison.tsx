@@ -145,7 +145,7 @@ export function VersionComparison() {
       </YStack>
 
       <XStack gap="$4" flexWrap="wrap" justify="center" pt="$4">
-        <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
+        <Link href="/docs/guides/takeout" target="_blank">
           <Button size="$4" rounded="$10" theme="alt1">
             <Button.Text fontFamily="$mono">Read the Docs</Button.Text>
           </Button>
