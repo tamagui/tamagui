@@ -822,7 +822,8 @@ p {
     opacity: 1;
   }
   to {
-    transform: rotateX(15deg) rotateY(-20deg) rotateZ(10deg) translateX(-400px) translateY(-200px) scale(0.7);
+    transform: rotateX(15deg) rotateY(-20deg) rotateZ(10deg) translateX(-400px)
+      translateY(-200px) scale(0.7);
     opacity: 0.3;
   }
 }

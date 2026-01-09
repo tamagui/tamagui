@@ -1,46 +1,34 @@
-import { getSize } from '@tamagui/get-token'
 import { Image } from '@tamagui/image'
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Dot } from '@tamagui/lucide-icons'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import type React from 'react'
-import { Suspense, lazy, memo, useEffect, useState } from 'react'
-import type { FontSizeTokens, GetProps, ThemeName, XStackProps } from 'tamagui'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import {
   H2,
   Paragraph,
-  Popover,
-  ScrollView,
   SizableText,
-  Spacer,
-  Stack,
   Theme,
   XStack,
   YStack,
   composeRefs,
   isClient,
   styled,
-  useMedia,
   useThemeName,
 } from 'tamagui'
+import { useHoverGlow } from '~/components/HoverGlow'
 import { ContainerLarge } from '~/components/Containers'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'
-import { useHoverGlow } from '~/components/HoverGlow'
-import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
-import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
-import type { ProductsResponse } from '~/features/site/purchase/useProducts'
-import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
-import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
+import { PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
-import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 
-const whenIdle = globalThis['requestIdleCallback'] || setTimeout
+const TakeoutBox3D = lazy(() => import('../../features/takeout/TakeoutBox3D'))
+
+const heroHeight = 1050
 
 export default function TakeoutPage() {
   const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
@@ -122,6 +110,24 @@ export default function TakeoutPage() {
         />
       </ThemeTintAlt>
 
+      {/* Light mode banding effect with darker background */}
+      <YStack
+        position="absolute"
+        l={0}
+        r={0}
+        t={-100}
+        b={0}
+        z={-2}
+        opacity={0}
+        $theme-light={{
+          opacity: 0.4,
+        }}
+        style={{
+          background:
+            'linear-gradient(180deg, var(--color5) 0%, var(--color3) 50%, var(--color5) 100%)',
+        }}
+      />
+
       <YStack
         pointerEvents="none"
         position="absolute"
@@ -168,594 +174,12 @@ export default function TakeoutPage() {
           <TakeoutHero />
         </YStack>
 
-        <XStack
-          mt={heroHeight}
-          $sm={{ mt: heroHeight - 100 }}
-          $xs={{ mt: heroHeight - 150 }}
-          gap="$10"
-          $md={{ flexDirection: 'column' }}
-        >
-          <XStack
-            flex={1}
-            flexBasis="auto"
-            p="$5"
-            $md={{
-              flexDirection: 'column-reverse',
-            }}
-            $sm={{
-              px: '$4',
-            }}
-            $xxs={{
-              px: '$2',
-            }}
-          >
-            <YStack mt={-700} $md={{ mt: 0 }} ml={20} mr={0}>
-              <StarterCard />
-            </YStack>
+        {/* Content area */}
+        <YStack mt={heroHeight} minH={200} />
 
-            <YStack
-              mt={-580}
-              $md={{ mt: -520 }}
-              group="takeoutBody"
-              flex={1}
-              flexBasis="auto"
-              gap="$5"
-            >
-              <ThemeTintAlt>
-                <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout is a full-stack, cross-platform starter kit for building modern
-                  web and mobile apps with React Native. It funds the OSS development of
-                  Tamagui.
-                </Paragraph>
-
-                <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Built on{' '}
-                  <Link href="https://onestack.dev" target="_blank">
-                    One
-                  </Link>{' '}
-                  for universal routing,{' '}
-                  <Link href="https://zero.rocicorp.dev" target="_blank">
-                    Zero
-                  </Link>{' '}
-                  for real-time sync, and{' '}
-                  <Link href="https://better-auth.com" target="_blank">
-                    Better Auth
-                  </Link>{' '}
-                  for authentication. Deploy with a single command using Uncloud or SST.
-                  Includes <CodeInline>bun tko</CodeInline> CLI with built-in docs and
-                  scripts.
-                </Paragraph>
-              </ThemeTintAlt>
-
-              <XStack flexWrap="wrap" gap="$3" mx="$-10" items="center" justify="center">
-                <TakeoutCard
-                  theme="orange"
-                  title="Stack"
-                  icon="retro-icons/coding-apps-websites-module-21.svg"
-                >
-                  <YStack gap="$2">
-                    {points.stack.map((point, idx, arr) => (
-                      <Point
-                        key={point}
-                        size="$4"
-                        mr={arr.length === idx + 1 ? '$10' : undefined}
-                      >
-                        {point}
-                      </Point>
-                    ))}
-                  </YStack>
-                </TakeoutCard>
-                <TakeoutCard
-                  theme="yellow"
-                  title="Scripts"
-                  icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
-                >
-                  <YStack gap="$2">
-                    {points.scripts.map((point, idx, arr) => (
-                      <Point
-                        key={point}
-                        size="$4"
-                        mr={arr.length === idx + 1 ? '$10' : undefined}
-                      >
-                        {point}
-                      </Point>
-                    ))}
-                  </YStack>
-                </TakeoutCard>
-                <TakeoutCard
-                  theme="green"
-                  title="Deploy"
-                  icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
-                >
-                  <YStack gap="$2">
-                    {points.deploy.map((point, idx, arr) => (
-                      <Point
-                        key={point}
-                        size="$4"
-                        mr={arr.length === idx + 1 ? '$10' : undefined}
-                      >
-                        {point}
-                      </Point>
-                    ))}
-                  </YStack>
-                </TakeoutCard>
-                <TakeoutCard
-                  theme="blue"
-                  title="Screens"
-                  icon="retro-icons/coding-app-website-ui-62.svg"
-                >
-                  <YStack gap="$2">
-                    {points.screens.map((point, idx, arr) => (
-                      <Point
-                        key={point}
-                        size="$4"
-                        mr={arr.length === idx + 1 ? '$10' : undefined}
-                      >
-                        {point}
-                      </Point>
-                    ))}
-                  </YStack>
-                </TakeoutCard>
-                <TakeoutCard
-                  theme="purple"
-                  title="Native"
-                  icon="retro-icons/coding-apps-websites-plugin-33.svg"
-                >
-                  <YStack gap="$2">
-                    {points.native.map((point, idx, arr) => (
-                      <Point
-                        key={point}
-                        size="$4"
-                        mr={arr.length === idx + 1 ? '$10' : undefined}
-                      >
-                        {point}
-                      </Point>
-                    ))}
-                  </YStack>
-                </TakeoutCard>
-                <TakeoutCard
-                  theme="pink"
-                  title="& More"
-                  icon="retro-icons/design-color-painting-palette-25.svg"
-                >
-                  <YStack gap="$2">
-                    {points.more.map((point, idx, arr) => (
-                      <Point
-                        key={point}
-                        size="$4"
-                        mr={arr.length === idx + 1 ? '$10' : undefined}
-                      >
-                        {point}
-                      </Point>
-                    ))}
-                  </YStack>
-                </TakeoutCard>
-              </XStack>
-
-              <Spacer />
-
-              <YStack mt={-430} mb={-330} x={800} z={-1}>
-                <div
-                  className="takeout-phone"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    width: 715 * 0.5,
-                    borderRadius: 78,
-                    boxShadow: '0 50px 50px 0px var(--shadowColor)',
-                  }}
-                >
-                  {/* phone */}
-                  <svg width={715 * 0.5} height={1467 * 0.5} viewBox="0 0 715 1467">
-                    <path
-                      d="M0 166.4C0 108.155 0 79.0318 11.3353 56.785C21.3062 37.2161 37.2161 21.3062 56.785 11.3353C79.0318 0 108.155 0 166.4 0H548.6C606.845 0 635.968 0 658.215 11.3353C677.784 21.3062 693.694 37.2161 703.665 56.785C715 79.0318 715 108.155 715 166.4V1300.6C715 1358.85 715 1387.97 703.665 1410.21C693.694 1429.78 677.784 1445.69 658.215 1455.66C635.968 1467 606.845 1467 548.6 1467H166.4C108.155 1467 79.0318 1467 56.785 1455.66C37.2161 1445.69 21.3062 1429.78 11.3353 1410.21C0 1387.97 0 1358.85 0 1300.6V166.4Z"
-                      fill="var(--color2)"
-                      style={{
-                        outline: `0 0 10px #000`,
-                      }}
-                    />
-                    <mask
-                      id="mask0_2_131"
-                      style={{ maskType: 'alpha' }}
-                      maskUnits="userSpaceOnUse"
-                      x="35"
-                      y="36"
-                      width="645"
-                      height="1395"
-                    >
-                      <path
-                        d="M42.4116 73.1286C35 87.6746 35 106.716 35 144.8V1322.2C35 1360.28 35 1379.33 42.4116 1393.87C48.9309 1406.67 59.3336 1417.07 72.1286 1423.59C86.6746 1431 105.716 1431 143.8 1431H571.2C609.284 1431 628.325 1431 642.871 1423.59C655.666 1417.07 666.069 1406.67 672.588 1393.87C680 1379.33 680 1360.28 680 1322.2V144.8C680 106.716 680 87.6746 672.588 73.1286C666.069 60.3336 655.666 49.9309 642.871 43.4116C628.325 36 609.284 36 571.2 36H537.778C536.122 36 535.295 36 534.632 36.2412C533.521 36.6456 532.646 37.5209 532.241 38.6319C532 39.2947 532 40.1224 532 41.7778C532 55.0209 532 61.6425 530.07 66.9446C526.835 75.8332 519.833 82.835 510.945 86.0702C505.642 88 499.021 88 485.778 88H229.222C215.979 88 209.358 88 204.055 86.0702C195.167 82.835 188.165 75.8332 184.93 66.9446C183 61.6425 183 55.0209 183 41.7778C183 40.1224 183 39.2947 182.759 38.6319C182.354 37.5209 181.479 36.6456 180.368 36.2412C179.705 36 178.878 36 177.222 36H143.8C105.716 36 86.6746 36 72.1286 43.4116C59.3336 49.9309 48.9309 60.3336 42.4116 73.1286Z"
-                        fill="var(--color)"
-                      />
-                    </mask>
-                    <g mask="url(#mask0_2_131)">
-                      <path d="M25 22H702V1489H25V22Z" fill="var(--background)" />
-                      <g clipPath="url(#clip0_2_131)">
-                        <path
-                          d="M379.351 710.63H385.629V716.909H379.351V710.63Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M370.311 710.63H376.589V716.909H370.311V710.63Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M361.271 710.63H367.549V716.909H361.271V710.63Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M352.231 710.63H358.509V716.909H352.231V710.63Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M343.191 710.63H349.469V716.909H343.191V710.63Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M334.151 710.63H340.429V716.909H334.151V710.63Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M325.111 719.644H331.389V725.923H325.111V719.644Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M316.071 728.658H322.349V734.937H316.071V728.658Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M307.031 737.673H313.309V743.951H307.031V737.673Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M307.031 746.687H313.309V752.965H307.031V746.687Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M307.031 755.701H313.309V761.979H307.031V755.701Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M307.031 764.715H313.309V770.993H307.031V764.715Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M297.991 773.729H304.269V780.007H297.991V773.729Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M297.991 782.743H304.269V789.022H297.991V782.743Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M297.991 791.757H304.269V798.036H297.991V791.757Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M307.031 800.771H313.309V807.05H307.031V800.771Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M316.071 809.785H322.349V816.064H316.071V809.785Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M325.111 818.799H331.389V825.078H325.111V818.799Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M334.151 827.814H340.429V834.092H334.151V827.814Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M343.191 827.814H349.469V834.092H343.191V827.814Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M352.231 818.799H358.509V825.078H352.231V818.799Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M361.271 818.799H367.549V825.078H361.271V818.799Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M361.271 827.814H367.549V834.092H361.271V827.814Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M370.311 827.814H376.589V834.092H370.311V827.814Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M379.351 818.799H385.629V825.078H379.351V818.799Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M379.351 809.785H385.629V816.064H379.351V809.785Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M388.391 800.771H394.669V807.05H388.391V800.771Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M397.431 782.743H403.709V789.022H397.431V782.743Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M397.431 791.757H403.709V798.036H397.431V791.757Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M397.431 773.729H403.709V780.007H397.431V773.729Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M406.471 764.715H412.749V770.993H406.471V764.715Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M415.511 764.715H421.789V770.993H415.511V764.715Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M424.551 755.701H430.829V761.979H424.551V755.701Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M415.511 746.687H421.789V752.965H415.511V746.687Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M406.471 746.687H412.749V752.965H406.471V746.687Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M397.431 746.687H403.709V752.965H397.431V746.687Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M424.551 737.673H430.829V743.951H424.551V737.673Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M424.551 746.687H430.829V752.965H424.551V746.687Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M415.511 728.658H421.789V734.937H415.511V728.658Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M415.511 728.658H421.789V734.937H415.511V728.658Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M406.471 728.658H412.749V734.937H406.471V728.658Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M388.391 719.644H394.669V725.923H388.391V719.644Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M379.351 728.658H385.629V734.937H379.351V728.658Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M352.231 737.673H358.509V743.951H352.231V737.673Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M352.231 773.729H358.509V780.007H352.231V773.729Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M352.231 782.743H358.509V789.022H352.231V782.743Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M343.191 791.757H349.469V798.036H343.191V791.757Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M334.151 782.743H340.429V789.022H334.151V782.743Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M334.151 773.729H340.429V780.007H334.151V773.729Z"
-                          fill="var(--color)"
-                        />
-                        <path
-                          d="M397.431 728.658H403.709V734.937H397.431V728.658Z"
-                          fill="var(--color)"
-                        />
-                      </g>
-                    </g>
-                    <path
-                      d="M319 55C319 51.134 322.134 48 326 48H390C393.866 48 397 51.134 397 55C397 58.866 393.866 62 390 62H326C322.134 62 319 58.866 319 55Z"
-                      fill="var(--color6)"
-                    />
-                    <path
-                      d="M413 55C413 47.268 419.268 41 427 41C434.732 41 441 47.268 441 55C441 62.732 434.732 69 427 69C419.268 69 413 62.732 413 55Z"
-                      fill="var(--color6)"
-                    />
-                    <defs>
-                      <clipPath id="clip0_2_131">
-                        <rect
-                          width="133.664"
-                          height="124.999"
-                          fill="var(--color)"
-                          transform="translate(297.536 709.493)"
-                        />
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </div>
-              </YStack>
-              <Spacer />
-
-              <VersionComparison />
-
-              <Spacer />
-
-              <YStack rounded="$12" p="$7" gap="$3">
-                <YStack minH={530}>
-                  <Lazy>
-                    <TakeoutGallery />
-                  </Lazy>
-                </YStack>
-              </YStack>
-
-              <Spacer />
-
-              <Spacer size="$10" />
-            </YStack>
-          </XStack>
-        </XStack>
         <Footer />
       </ContainerLarge>
     </YStack>
-  )
-}
-
-const CodeInline = styled(Paragraph, {
-  tag: 'code',
-  fontFamily: '$mono',
-  color: '$color12',
-  backgroundColor: 'color-mix(in srgb, var(--color8) 50%, transparent 50%)' as any,
-  cursor: 'inherit',
-  rounded: '$3',
-  // @ts-ignore
-  fontSize: '85%',
-  p: '$1.5',
-})
-
-const points = {
-  stack: [
-    'One framework - universal React routing.',
-    'Zero real-time sync - instant updates.',
-    'Better Auth - OAuth & email auth.',
-  ],
-  scripts: [
-    'bun tko CLI with built-in docs.',
-    'Onboarding wizard for easy setup.',
-    'Check, lint, and type commands.',
-  ],
-  deploy: [
-    'Uncloud for self-hosted (single command).',
-    'SST for AWS serverless.',
-    'GitHub Actions CI/CD ready.',
-  ],
-  screens: [
-    'Auth, onboarding, feed, profile.',
-    'Settings and account management.',
-    'Universal forms with validation.',
-  ],
-  native: [
-    'iOS and Android with Expo.',
-    'Native bottom sheets, haptics.',
-    'Hot updates with OTA.',
-  ],
-  more: [
-    'Phosphor icons library.',
-    'Vitest + Playwright tests.',
-    'Private Discord + GitHub access.',
-  ],
-}
-
-const TakeoutBox3D = lazy(() => import('../../features/takeout/TakeoutBox3D'))
-const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'))
-
-const heroHeight = 1050
-
-export type TakeoutPageProps = ProductsResponse
-
-const TakeoutCard2Frame = styled(YStack, {
-  minW: 282,
-  maxW: 282,
-  minH: 312,
-  maxH: 312,
-  elevation: '$0.5',
-  overflow: 'hidden',
-  rounded: '$4',
-
-  '$group-takeoutBody-gtXs': {
-    scale: 0.915,
-    m: -12,
-  },
-
-  variants: {
-    size: {
-      '...size': (val) => ({
-        p: val as any,
-        rounded: val as any,
-      }),
-    },
-  } as const,
-
-  defaultVariants: {
-    size: '$6',
-  },
-})
-
-type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
-  title: React.ReactNode
-  icon?: string
-}
-
-const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
-  const isDark = useThemeName().startsWith('dark')
-  const isHydrated = useDidFinishSSR()
-  const innerGlow = useHoverGlow({
-    resist: 30,
-    size: 300,
-    strategy: 'blur',
-    blurPct: 60,
-    color: isDark ? 'var(--color1)' : 'var(--color4)',
-    opacity: isDark ? 0.18 : 0.35,
-    background: 'transparent',
-    style: {
-      transition: `all ease-out 300ms`,
-    },
-  })
-
-  return (
-    <>
-      <TakeoutCard2Frame {...props} ref={composeRefs(innerGlow.parentRef) as any}>
-        {isHydrated && <innerGlow.Component />}
-
-        <YStack flex={1} flexBasis="auto" gap="$4" z={100} position="relative">
-          <H2
-            fontFamily="$mono"
-            size="$8"
-            letterSpacing={3}
-            self="center"
-            my={-8}
-            color="$color10"
-            $theme-light={{
-              color: '$color11',
-            }}
-          >
-            {title}
-          </H2>
-          {children}
-
-          {!!icon && (
-            <YStack position="absolute" b={0} r={0}>
-              <Image
-                className="pixelate"
-                src={icon}
-                alt="Icon"
-                width={32}
-                height={32}
-                filter={isDark ? 'none' : 'invert(1)'}
-              />
-            </YStack>
-          )}
-        </YStack>
-      </TakeoutCard2Frame>
-    </>
   )
 }
 
@@ -764,23 +188,22 @@ const TakeoutHero = () => {
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
 
-  // unfortunately costs too much perf
-  // const glow = useHoverGlow({
-  //   resist: 80,
-  //   size: 800,
-  //   strategy: 'blur',
-  //   blurPct: 100,
-  //   color: 'var(--color9)',
-  //   opacity: 0.09,
-  //   offset: {
-  //     y: -200,
-  //     x: -70,
-  //   },
-  //   style: {
-  //     zIndex: -1,
-  //   },
-  //   background: 'transparent',
-  // })
+  // Track scroll progress for floating icons animation
+  const [scrollProgress, setScrollProgress] = useState(0)
+
+  useEffect(() => {
+    if (!isClient) return
+
+    const handleScroll = () => {
+      // Calculate scroll progress (0 to 1) based on scroll position
+      // Icons should animate within the first 150px of scroll (faster)
+      const progress = Math.min(1, window.scrollY / 150)
+      setScrollProgress(progress)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <YStack
@@ -806,23 +229,31 @@ const TakeoutHero = () => {
         scale: 0.85,
         y: '20%',
       }}
-      // ref={glow.parentRef as any}
     >
-      {/* <ThemeTint>
-        <glow.Component />
-      </ThemeTint> */}
-
-      {/* animated borders shine */}
-      {/* super expensive chrome gpu :/ */}
-      {/* <YStack pos="absolute" y={0} zi={100}>
-        <ThemeTintAlt>
-          <TAKEOUT className="theme-shadow clip-slice" color="transparent" />
-        </ThemeTintAlt>
-      </YStack> */}
-
       <TakeoutLogo />
 
-      <YStack
+      {/* Tagline description */}
+      <ThemeTintAlt>
+        <Paragraph
+          color="$color11"
+          size="$6"
+          fontFamily="$mono"
+          fontWeight="bold"
+          letterSpacing={1}
+          text="center"
+          opacity={0.9}
+        >
+          Full-stack, cross-platform starter kit
+        </Paragraph>
+      </ThemeTintAlt>
+
+      {/* iPhone Frame right after description */}
+      <YStack mt="$6" pointerEvents="auto">
+        <IPhoneFrame scrollProgress={scrollProgress} />
+      </YStack>
+
+      {/* 3D Takeout Box - temporarily disabled */}
+      {/* <YStack
         position="absolute"
         pointerEvents="none"
         t={200}
@@ -837,442 +268,353 @@ const TakeoutHero = () => {
             </ErrorBoundary>
           </Suspense>
         )}
-      </YStack>
+      </YStack> */}
     </YStack>
   )
 }
 
-function FeaturesIconRow() {
-  return (
-    <XStack
-      z={1000}
-      my={21}
-      gap={20}
-      flex={1}
-      flexBasis="auto"
-      justify="space-between"
-      pointerEvents="auto"
-      $gtSm={{
-        maxW: '80%',
-      }}
-    >
-      <FeatureIcon
-        themeIndex={0}
-        title="Monorepo"
-        icon="retro-icons/coding-apps-websites-module-21.svg"
-      />
+// Feature cards data
+const featureCards = [
+  {
+    icon: 'retro-icons/coding-apps-websites-module-21.svg',
+    title: 'Cross-platform',
+    desc: 'Web, iOS, Android',
+    theme: 'orange',
+  },
+  {
+    icon: 'retro-icons/coding-apps-websites-mobile-47.svg',
+    title: 'Native feel',
+    desc: 'Real native components',
+    theme: 'green',
+  },
+  {
+    icon: 'retro-icons/coding-apps-websites-programming-hold-code-9.svg',
+    title: 'One codebase',
+    desc: 'Share 95% of code',
+    theme: 'blue',
+  },
+  {
+    icon: 'retro-icons/design-color-painting-palette-25.svg',
+    title: 'DRY & Simple',
+    desc: 'Less code, more power',
+    theme: 'purple',
+  },
+] as const
 
-      <FeatureIcon
-        themeIndex={2}
-        title="Screens"
-        icon="retro-icons/coding-app-website-ui-62.svg"
-      />
-
-      <FeatureIcon
-        themeIndex={3}
-        title="Themes"
-        icon="retro-icons/design-color-bucket-brush-63.svg"
-      />
-
-      <FeatureIcon
-        themeIndex={4}
-        title="Stack"
-        icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
-      />
-
-      <FeatureIcon
-        themeIndex={5}
-        title="Assets"
-        icon="retro-icons/coding-apps-websites-plugin-33.svg"
-      />
-
-      <FeatureIcon
-        themeIndex={6}
-        title="Profiles"
-        icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
-      />
-    </XStack>
-  )
-}
-
-const Point = ({
-  size = '$4',
-  children,
-  subtitle,
-  ...props
-}: XStackProps & {
-  children: any
-  subtitle?: any
-  size?: FontSizeTokens
-}) => {
-  return (
-    <XStack
-      tag="li"
-      items="flex-start"
-      gap="$4"
-      flex={1}
-      flexBasis="auto"
-      overflow="hidden"
-      {...props}
-    >
-      <YStack mr={-12} py="$1.5">
-        <Dot size={16} color="$color10" />
-      </YStack>
-      <YStack flex={1}>
-        <Paragraph color="$color" wordWrap="break-word" size={size}>
-          {children}
-        </Paragraph>
-        {!!subtitle && (
-          <Paragraph
-            size={
-              getSize(size, {
-                shift: -2,
-              }) as any
-            }
-            color="$color"
-            opacity={0.5}
-          >
-            {subtitle}
-          </Paragraph>
-        )}
-      </YStack>
-    </XStack>
-  )
-}
-
-const IconFrame = styled(Stack, {
-  rounded: 1000,
-  p: 9,
-  bg: 'rgba(255, 255, 255, 0.035)',
-})
-
-const StarterCard = memo(() => {
-  const [ref, setRef] = useState<any>()
-  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
-  const isProUser = subscriptionStatus?.pro
-
-  const media = useMedia()
-  useEffect(() => {
-    if (!ref) return
-    if (!isClient) return
-    if (media.md) return
-
-    let dispose: (() => void) | undefined = undefined
-    let disposed = false
-
-    import('../../helpers/sticksy').then(({ Sticksy }) => {
-      if (disposed) {
-        return
-      }
-
-      new Sticksy(ref as any)
-
-      dispose = () => {
-        Sticksy.disableAll()
-      }
-    })
-
-    return () => {
-      disposed = true
-      dispose?.()
-    }
-  }, [ref, media.gtMd])
-
-  const { name } = useTint()
-
-  return (
-    <div ref={setRef}>
-      {name !== 'tamagui' && (
-        <SizableText
-          size="$11"
-          height={200}
-          rotate="-8deg"
-          self="center"
-          z={100}
-          position="absolute"
-          t={-10}
-          pointerEvents="none"
-        >
-          {seasons[name]}
-        </SizableText>
-      )}
-
-      <TakeoutCardFrame
-        bg="$color1"
-        className="blur-medium"
-        z={100_000}
-        maxW={310}
-        mt="$4"
-        self="center"
-        shadowRadius={30}
-        shadowOffset={{ height: 20, width: 0 }}
-        shadowColor="$shadowColor"
-        maxH="calc(min(85vh, 800px))"
-        rounded="$8"
-        $gtMd={{
-          x: -50,
-          y: 50,
-        }}
-        $md={{
-          x: 0,
-          y: 0,
-          maxH: 'auto',
-          width: '100%',
-          maxW: '100%',
-          mt: 100,
-        }}
-      >
-        <YStack z={-1} fullscreen bg="$color5" opacity={0.6} />
-        <YStack position="absolute" b="$4" l="$4" r="$4" z={100}>
-          {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
-          {/* subscription ? `/account/items#${subscription.id}` : '' */}
-          <PurchaseButton
-            onPress={() => {
-              showAppropriateModal()
-            }}
-          >
-            {isProUser ? 'Manage Subscription' : 'Get Access'}
-          </PurchaseButton>
-        </YStack>
-
-        <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
-          <YStack gap="$2">
-            <ThemeTintAlt>
-              <MunroP color="$color11" size="$7" letterSpacing={2}>
-                The Stack
-              </MunroP>
-              <YStack
-                position="absolute"
-                t="$-3"
-                r="$-5"
-                bg="$green9"
-                px="$2"
-                py="$1"
-                rounded="$2"
-              >
-                <Paragraph size="$1" fontWeight="700" color="white">
-                  v2
-                </Paragraph>
-              </YStack>
-            </ThemeTintAlt>
-
-            <YStack>
-              <Row
-                title="Access"
-                icon="retro-icons/coding-apps-websites-module-21.svg"
-                description="Private GitHub repo and Discord access for Pro subscribers."
-              />
-              <Row
-                title="CLI"
-                icon="retro-icons/coding-apps-websites-programming-browser-44.svg"
-                description="bun tko CLI with built-in docs, scripts, and onboarding wizard."
-              />
-              <Row
-                title="Real-time"
-                icon="retro-icons/coding-apps-websites-live-status-4.svg"
-                description="Zero sync for instant real-time updates across all clients."
-              />
-              <Row
-                title="Routing"
-                icon="retro-icons/computers-devices-electronics-desktop-53.svg"
-                description="One framework for universal file-based routing on web and native."
-              />
-              <Row
-                title="Auth"
-                icon="retro-icons/coding-apps-websites-shield-lock-40.svg"
-                description="Better Auth with OAuth providers and email authentication."
-              />
-              <Row
-                title="Deploy"
-                icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
-                description="Deploy with Uncloud (self-hosted) or SST (AWS serverless)."
-              />
-              <Row
-                title="Icons"
-                icon="retro-icons/coding-apps-websites-plugin-33.svg"
-                description="Phosphor icons library with theme integration."
-              />
-              <Row
-                title="Testing"
-                icon="retro-icons/coding-apps-websites-programming-bug-61.svg"
-                description="Vitest for unit tests and Playwright for E2E testing."
-              />
-              <Row
-                title="Native"
-                icon="retro-icons/coding-apps-websites-mobile-47.svg"
-                description="iOS and Android with Expo, native bottom sheets, and OTA updates."
-              />
-              <Row
-                title="Database"
-                icon="retro-icons/coding-apps-websites-database-60.svg"
-                description="PostgreSQL with Zero sync and type-safe queries."
-              />
-            </YStack>
-
-            <Spacer flex={1} minH={120} />
-          </YStack>
-        </ScrollView>
-      </TakeoutCardFrame>
-    </div>
-  )
-})
-
-const Row = (props: { title: string; icon: string; description?: string }) => {
-  const isDark = useThemeName().startsWith('dark')
-
-  const content = (
-    <XStack
-      py="$3"
-      gap="$3"
-      items="center"
-      cursor={props.description ? 'pointer' : undefined}
-    >
-      <Image
-        className="pixelate"
-        src={props.icon}
-        alt="Icon"
-        height={14}
-        width={14}
-        filter={isDark ? 'none' : 'invert(1)'}
-      />
-      <Paragraph fontFamily="$mono" textTransform="uppercase" letterSpacing={4} size="$4">
-        {props.title}
-      </Paragraph>
-    </XStack>
-  )
-
-  if (!props.description) {
-    return content
-  }
-
-  return (
-    <Popover hoverable placement="right">
-      <Popover.Trigger>{content}</Popover.Trigger>
-      <Popover.Content
-        bg="$color2"
-        borderWidth={1}
-        borderColor="$borderColor"
-        rounded="$4"
-        p="$3"
-        maxW={250}
-        elevation="$2"
-        enterStyle={{ opacity: 0, x: -5 }}
-        exitStyle={{ opacity: 0, x: -5 }}
-        animation="quick"
-      >
-        <Popover.Arrow bg="$color2" borderColor="$borderColor" />
-        <Paragraph size="$3" color="$color11">
-          {props.description}
-        </Paragraph>
-      </Popover.Content>
-    </Popover>
-  )
-}
-
-const TakeoutCardFrame = styled(YStack, {
-  borderColor: '$color3',
-  rounded: '$4',
+const FeatureCardFrame = styled(YStack, {
+  width: '100%',
+  elevation: '$0.5',
   overflow: 'hidden',
+  rounded: '$4',
+  p: '$4',
+  position: 'relative',
 })
 
-let keepCycling = true
-
-const FeatureIcon = ({
-  themeIndex,
-  title,
+const FeatureCard = ({
   icon,
+  title,
+  desc,
+  theme,
 }: {
-  themeIndex: number
   icon: string
   title: string
+  desc: string
+  theme: string
 }) => {
-  const Tint = useTint()
-  const store = useTakeoutStore()
   const isDark = useThemeName().startsWith('dark')
-
-  useEffect(() => {
-    if (store.showPurchase) return
-    if (!keepCycling) return
-    ;(document.querySelector(`.logo-words`) as HTMLDivElement)?.addEventListener(
-      'mouseenter',
-      () => {
-        keepCycling = false
-      }
-    )
-
-    const id = setTimeout(() => {
-      Tint.setNextTint()
-    }, 10_000)
-
-    return () => clearTimeout(id)
-  }, [Tint.tint, store.showPurchase])
-  const theme = Tint.tints[themeIndex] as ThemeName
-  const active = Tint.tint === theme
+  const isHydrated = useDidFinishSSR()
+  const innerGlow = useHoverGlow({
+    resist: 30,
+    size: 200,
+    strategy: 'blur',
+    blurPct: 60,
+    color: isDark ? 'var(--color1)' : 'var(--color4)',
+    opacity: isDark ? 0.18 : 0.35,
+    background: 'transparent',
+    style: {
+      transition: `all ease-out 300ms`,
+    },
+  })
 
   return (
-    <Theme name={theme}>
-      <PixelTooltip active={active} label={title}>
-        <IconFrame
-          onMouseEnter={() => {
-            keepCycling = false
-            Tint.setTintIndex(themeIndex)
-          }}
-          bg={active ? '$color9' : '$color10'}
-        >
+    <Theme name={theme as any}>
+      <FeatureCardFrame ref={composeRefs(innerGlow.parentRef) as any}>
+        {isHydrated && <innerGlow.Component />}
+
+        <XStack gap="$3" items="center" z={100} position="relative">
           <Image
-            className="pixelate"
             src={icon}
-            alt="Icon"
-            height={14}
-            width={14}
+            alt={title}
+            width={28}
+            height={28}
+            className="pixelate"
             filter={isDark ? 'none' : 'invert(1)'}
           />
-        </IconFrame>
-      </PixelTooltip>
+          <YStack flex={1} gap="$1">
+            <H2
+              fontFamily="$mono"
+              size="$4"
+              letterSpacing={2}
+              color="$color10"
+              $theme-light={{
+                color: '$color11',
+              }}
+            >
+              {title}
+            </H2>
+            <SizableText size="$2" color="$color10">
+              {desc}
+            </SizableText>
+          </YStack>
+        </XStack>
+      </FeatureCardFrame>
     </Theme>
   )
 }
 
-const PixelTooltip = ({
-  children,
-  label,
-  active,
+// Bottom tab bar icons
+const tabBarItems = [
+  { icon: 'retro-icons/coding-app-website-ui-62.svg', label: 'Home' },
+  { icon: 'retro-icons/search-coding-49.svg', label: 'Search' },
+  { icon: 'retro-icons/coding-apps-websites-favorite-rate-5.svg', label: 'Favorites' },
+  { icon: 'retro-icons/coding-apps-websites-setting-computer-19.svg', label: 'Settings' },
+]
+
+// Floating icons data - randomly placed around the hero
+// toPhone icons will animate into a row under the phone header
+const floatingIcons = [
+  // Icons that animate INTO the phone (under header) - script, start-up, calendar, trophy
+  {
+    icon: '/takeout/pixel-icons/script.png',
+    x: -400,
+    y: -380,
+    toPhone: true,
+    targetX: -75,
+  },
+  {
+    icon: '/takeout/pixel-icons/start-up.png',
+    x: 400,
+    y: -320,
+    toPhone: true,
+    targetX: -25,
+  },
+  {
+    icon: '/takeout/pixel-icons/calendar.png',
+    x: -530,
+    y: -50,
+    toPhone: true,
+    targetX: 25,
+  },
+  { icon: '/takeout/pixel-icons/trophy.png', x: 450, y: 20, toPhone: true, targetX: 75 },
+  // Icons that float AWAY when scrolling
+  { icon: '/takeout/pixel-icons/lightning-bolt.png', x: -460, y: -220, toPhone: false },
+  { icon: '/takeout/pixel-icons/disco-ball.png', x: 370, y: -160, toPhone: false },
+  { icon: '/takeout/pixel-icons/crown.png', x: -360, y: 100, toPhone: false },
+  { icon: '/takeout/pixel-icons/heart-eyes.png', x: 240, y: 100, toPhone: false },
+]
+
+const FloatingIcon = ({
+  icon,
+  initialX,
+  initialY,
+  toPhone,
+  targetX,
+  scrollProgress,
 }: {
-  label: string
-  children?: any
-  active?: boolean
+  icon: string
+  initialX: number
+  initialY: number
+  toPhone: boolean
+  targetX?: number
+  scrollProgress: number
 }) => {
+  // Calculate animated position based on scroll
+  // toPhone icons move into a row under the phone header, others move up and away
+  const progress = Math.min(1, Math.max(0, scrollProgress))
+
+  let x = initialX
+  let y = initialY
+  let opacity = 1
+  let scale = 1
+
+  // Start bigger (1.5x), shrink to normal size (1x) for toPhone icons
+  // Start bigger (1.5x), shrink and fade for away icons
+  const startScale = 1.5
+
+  if (toPhone && targetX !== undefined) {
+    // Animate to target position in a row under phone header (y ~120 from phone center)
+    const targetY = 120
+    x = initialX + (targetX - initialX) * progress
+    y = initialY + (targetY - initialY) * progress
+    // Scale from 1.5 down to 1 (original size)
+    scale = startScale - progress * 0.5
+  } else {
+    // Move up and away (further up)
+    x = initialX * (1 + progress * 0.5)
+    y = initialY - progress * 400
+    opacity = 1 - progress * 0.8
+    // Scale from 1.5 down to smaller
+    scale = startScale - progress * 0.9
+  }
+
   return (
     <YStack
-      items="center"
-      justify="center"
-      {...(active && {
-        scale: 1.1,
-      })}
+      position="absolute"
+      x={x}
+      y={y}
+      opacity={opacity}
+      scale={scale}
+      className="ease-out ms500 all"
+      pointerEvents="none"
     >
-      <Paragraph color="$color12" fontFamily="$mono" size="$2">
-        {label}
-      </Paragraph>
-      {children}
+      <Image src={icon} alt="Feature icon" width={56} height={56} />
     </YStack>
   )
 }
 
-const useLazilyMounted = (extraTime?: number) => {
-  const [loaded, setLoaded] = useState(false)
-  useEffect(() => {
-    if (isClient) {
-      whenIdle(() => {
-        setTimeout(() => {
-          setLoaded(true)
-        }, extraTime)
-      })
-    }
-  }, [])
-  return loaded
+const FloatingIcons = ({ scrollProgress }: { scrollProgress: number }) => {
+  return (
+    <>
+      {floatingIcons.map((item, i) => (
+        <FloatingIcon
+          key={i}
+          icon={item.icon}
+          initialX={item.x}
+          initialY={item.y}
+          toPhone={item.toPhone}
+          targetX={item.targetX}
+          scrollProgress={scrollProgress}
+        />
+      ))}
+    </>
+  )
 }
 
-const Lazy = (props: { children: any }) => {
-  const loaded = useLazilyMounted(100)
-  return <Suspense fallback={null}>{loaded ? props.children : null}</Suspense>
+const IPhoneFrame = ({ scrollProgress }: { scrollProgress: number }) => {
+  const isDark = useThemeName().startsWith('dark')
+  // Move phone down when scrolling so icons under header are visible
+  const phoneY = scrollProgress * 80
+
+  return (
+    <YStack items="center" position="relative" y={phoneY} className="ease-out ms300 all">
+      {/* Floating retro icons around the phone */}
+      <FloatingIcons scrollProgress={scrollProgress} />
+
+      {/* Big orange circle highlight behind the phone */}
+      <Theme name="orange">
+        <YStack
+          position="absolute"
+          width={500}
+          height={500}
+          rounded={1000}
+          bg="$color5"
+          opacity={isDark ? 0.3 : 0.5}
+          t="50%"
+          l="50%"
+          x={-250}
+          y={-250}
+          z={0}
+          style={{
+            filter: 'blur(60px)',
+          }}
+        />
+      </Theme>
+
+      {/* Container for frame and content */}
+      <YStack position="relative" width={360} height={730}>
+        {/* Content inside the phone screen - behind the frame */}
+        <YStack
+          position="absolute"
+          t={10}
+          l={10}
+          r={10}
+          b={10}
+          rounded="$9"
+          overflow="hidden"
+          z={1}
+        >
+          {/* Screen content area */}
+          <YStack flex={1} p="$4" pt="$6" gap="$3">
+            {/* App header inside phone */}
+            <YStack gap="$1" items="center" z={100} mt="$2">
+              <SizableText
+                size="$6"
+                fontFamily="$mono"
+                fontWeight="800"
+                color="$color"
+                letterSpacing={2}
+              >
+                FEATURES
+              </SizableText>
+              <SizableText size="$2" color="$color10" fontFamily="$mono">
+                Your app, ready to ship
+              </SizableText>
+            </YStack>
+
+            {/* Feature cards */}
+            <YStack gap="$3" flex={1} justify="center" pointerEvents="auto">
+              {featureCards.map((card) => (
+                <FeatureCard key={card.title} {...card} />
+              ))}
+            </YStack>
+          </YStack>
+        </YStack>
+
+        {/* Bottom Tab Bar - floating with blur */}
+        <XStack
+          position="absolute"
+          b={28}
+          l={28}
+          r={28}
+          py="$2"
+          px="$3"
+          justify="space-around"
+          items="center"
+          rounded="$10"
+          className="blur-medium"
+          z={1}
+          borderWidth={1}
+          borderColor="$color5"
+        >
+          <YStack
+            position="absolute"
+            fullscreen
+            rounded="$10"
+            bg="$color3"
+            opacity={0.7}
+          />
+          {tabBarItems.map((tab, index) => (
+            <YStack
+              key={tab.label}
+              items="center"
+              opacity={index === 0 ? 1 : 0.5}
+              p="$1.5"
+            >
+              <Image
+                src={tab.icon}
+                alt={tab.label}
+                width={20}
+                height={20}
+                className="pixelate"
+                filter={isDark ? 'none' : 'invert(1)'}
+              />
+            </YStack>
+          ))}
+        </XStack>
+
+        {/* iPhone frame image on top */}
+        <Image
+          src="/takeout/iphone-frame.png"
+          alt="iPhone frame"
+          width={360}
+          height={730}
+          position="absolute"
+          t={0}
+          l={0}
+          z={2}
+          pointerEvents="none"
+        />
+      </YStack>
+    </YStack>
+  )
 }

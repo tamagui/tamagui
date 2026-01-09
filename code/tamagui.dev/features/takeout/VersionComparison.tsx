@@ -146,12 +146,12 @@ export function VersionComparison() {
 
       <XStack gap="$4" flexWrap="wrap" justify="center" pt="$4">
         <Link href="/docs/guides/takeout" target="_blank">
-          <Button size="$4" rounded="$10" theme="alt1">
+          <Button size="$2" rounded="$10" theme="alt1">
             <Button.Text fontFamily="$mono">Read the Docs</Button.Text>
           </Button>
         </Link>
         <Link href="https://github.com/tamagui/starter-free" target="_blank">
-          <Button size="$4" rounded="$10" theme="blue">
+          <Button size="$2" rounded="$10" theme="blue">
             <Button.Text fontFamily="$mono">Try v2-free (OSS)</Button.Text>
           </Button>
         </Link>
