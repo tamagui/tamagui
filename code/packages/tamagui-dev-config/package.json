@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tamagui-dev-config",
-  "version": "1.144.0",
+  "version": "1.144.1",
   "source": "src/index.ts",
   "types": "./src/index.ts",
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.144.0",
+  "version": "1.144.1",
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
