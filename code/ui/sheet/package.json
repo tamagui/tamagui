@@ -43,6 +43,13 @@
       "module": "./dist/esm/controller.mjs",
       "import": "./dist/esm/controller.mjs",
       "require": "./dist/cjs/controller.cjs"
+    },
+    "./src/controller": {
+      "types": "./src/controller.ts",
+      "module": "./src/controller.ts",
+      "import": "./src/controller.ts",
+      "require": "./src/controller.ts",
+      "default": "./src/controller.ts"
     }
   },
   "dependencies": {
