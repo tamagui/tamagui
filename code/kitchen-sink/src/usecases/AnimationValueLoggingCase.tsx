@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { Button, Paragraph, Square, XStack, YStack, View, styled } from 'tamagui'
+import { useRef, useState, useEffect } from 'react'
+import { Button, Paragraph, Square, XStack, YStack, View } from 'tamagui'
 
 /**
  * Test case for verifying animation values through console logging
@@ -8,17 +8,6 @@ import { Button, Paragraph, Square, XStack, YStack, View, styled } from 'tamagui
  *
  * Log format: [ANIM_LOG] id:<testId> prop:<property> value:<value> time:<timestamp>
  */
-
-// Styled component that logs animation values
-const AnimatedSquare = styled(Square, {
-  name: 'AnimatedSquare',
-  animation: 'quick',
-  enterStyle: {
-    opacity: 0,
-    scale: 0.5,
-    y: -20,
-  },
-})
 
 export function AnimationValueLoggingCase() {
   return (
@@ -144,12 +133,15 @@ function ScaleAnimationTest() {
       const style = getComputedStyle(element)
       const transform = style.transform
 
-      // Parse scale from transform matrix
+      // Parse scale from transform matrix: matrix(scaleX, ...)
       let scale = 1
       if (transform && transform !== 'none') {
         const match = transform.match(/matrix\(([^,]+),/)
-        if (match) {
-          scale = parseFloat(match[1])
+        if (match && match[1]) {
+          const parsed = parseFloat(match[1])
+          if (Number.isFinite(parsed)) {
+            scale = parsed
+          }
         }
       }
 
@@ -222,13 +214,15 @@ function TranslateAnimationTest() {
       const style = getComputedStyle(element)
       const transform = style.transform
 
-      // Parse translateY from transform matrix
+      // Parse translateY from transform matrix: matrix(a, b, c, d, tx, ty) - ty is the 6th value
       let y = 0
       if (transform && transform !== 'none') {
-        // matrix(a, b, c, d, tx, ty) - ty is the 6th value
         const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^\)]+)\)/)
-        if (match) {
-          y = parseFloat(match[1])
+        if (match && match[1]) {
+          const parsed = parseFloat(match[1])
+          if (Number.isFinite(parsed)) {
+            y = parsed
+          }
         }
       }
 
@@ -305,12 +299,15 @@ function EnterExitAnimationTest() {
       const transform = style.transform
       if (transform && transform !== 'none') {
         const match = transform.match(/matrix\(([^,]+),/)
-        if (match) {
-          scale = parseFloat(match[1])
+        if (match && match[1]) {
+          const parsed = parseFloat(match[1])
+          if (Number.isFinite(parsed)) {
+            scale = parsed
+          }
         }
       }
 
-      const current = { opacity, scale }
+      const current = { opacity: Number.isFinite(opacity) ? opacity : 1, scale }
       const last = lastValuesRef.current
 
       if (!last || last.opacity !== current.opacity || last.scale !== current.scale) {
