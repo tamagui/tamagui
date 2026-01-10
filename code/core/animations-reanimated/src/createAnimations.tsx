@@ -115,11 +115,18 @@ const applyAnimation = (
 /**
  * Estimate spring animation duration based on physics parameters
  * Uses underdamped harmonic oscillator settling time formula
+ *
+ * Adds 15% buffer to ensure animation visually completes before exit callback
  */
 const estimateSpringDuration = (config: SpringConfig): number => {
   const stiffness = config.stiffness ?? 100
   const damping = config.damping ?? 10
   const mass = config.mass ?? 1
+
+  // Guard against invalid parameters that would cause division by zero or NaN
+  if (mass <= 0 || stiffness <= 0) {
+    return 400 // sensible default
+  }
 
   // Natural frequency: ω₀ = √(k/m)
   const omega0 = Math.sqrt(stiffness / mass)
@@ -127,26 +134,35 @@ const estimateSpringDuration = (config: SpringConfig): number => {
   const zeta = damping / (2 * Math.sqrt(stiffness * mass))
 
   let duration: number
-  if (zeta < 1) {
+  if (zeta < 1 && zeta > 0 && omega0 > 0) {
     // Underdamped: oscillates, settling time ≈ 4 / (ζω₀)
     duration = (4 / (zeta * omega0)) * 1000
-  } else {
+  } else if (omega0 > 0) {
     // Overdamped or critically damped
     duration = (2 / omega0) * 1000
+  } else {
+    duration = 400 // fallback
   }
 
-  // Clamp and add buffer
+  // Guard against NaN/Infinity from edge cases
+  if (!Number.isFinite(duration)) {
+    return 400
+  }
+
+  // Clamp and add 15% buffer to prevent premature exit callbacks
   return Math.ceil(Math.min(2000, Math.max(200, duration)) * 1.15)
 }
 
 /**
  * Get total animation duration including delay
+ * Adds 50ms buffer for timing animations to ensure completion before callbacks
  */
 const getAnimationDuration = (config: TransitionConfig): number => {
-  const delay = config.delay ?? 0
+  const delay = Math.max(0, config.delay ?? 0)
 
   if (config.type === 'timing') {
-    return (config.duration ?? 300) + delay + 50
+    const duration = Math.max(0, (config as TimingConfig).duration ?? 300)
+    return duration + delay + 50
   }
 
   return estimateSpringDuration(config as SpringConfig) + delay
@@ -164,6 +180,10 @@ const ANIMATABLE_PROPERTIES: Record<string, boolean> = {
   // Dimensions
   height: true,
   width: true,
+  minWidth: true,
+  minHeight: true,
+  maxWidth: true,
+  maxHeight: true,
   // Background
   backgroundColor: true,
   // Border colors
@@ -179,6 +199,7 @@ const ANIMATABLE_PROPERTIES: Record<string, boolean> = {
   borderBottomLeftRadius: true,
   borderBottomRightRadius: true,
   // Border width
+  borderWidth: true,
   borderLeftWidth: true,
   borderRightWidth: true,
   borderTopWidth: true,
@@ -194,6 +215,29 @@ const ANIMATABLE_PROPERTIES: Record<string, boolean> = {
   right: true,
   top: true,
   bottom: true,
+  // Margin
+  margin: true,
+  marginTop: true,
+  marginBottom: true,
+  marginLeft: true,
+  marginRight: true,
+  marginHorizontal: true,
+  marginVertical: true,
+  // Padding
+  padding: true,
+  paddingTop: true,
+  paddingBottom: true,
+  paddingLeft: true,
+  paddingRight: true,
+  paddingHorizontal: true,
+  paddingVertical: true,
+  // Flex/Gap
+  gap: true,
+  rowGap: true,
+  columnGap: true,
+  flex: true,
+  flexGrow: true,
+  flexShrink: true,
 }
 
 /**
@@ -224,7 +268,7 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
 
   const Component = Animated.createAnimatedComponent(
     forwardRef((propsIn: any, ref) => {
-      const { forwardedRef, animation, tag = defaultTag, ...rest } = propsIn
+      const { forwardedRef, tag = defaultTag, ...rest } = propsIn
       const hostRef = useRef<HTMLElement>(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
 
@@ -247,12 +291,16 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
 
       const viewProps = result?.viewProps ?? {}
       const Element = tag
-      const transformedProps = hooks.usePropsTransform?.(tag, viewProps, stateRef, false)
+      const transformedProps = hooks.usePropsTransform?.(
+        tag,
+        viewProps,
+        stateRef as any,
+        false
+      )
 
       return <Element {...transformedProps} ref={composedRefs} />
     })
   )
-
   ;(Component as any).acceptTagProp = true
   return Component
 }
@@ -381,10 +429,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     useAnimatedNumberStyle(val, getStyle) {
       const instance = val.getInstance()
 
-      const derivedValue = useDerivedValue(
-        () => instance.value,
-        [instance, getStyle]
-      )
+      const derivedValue = useDerivedValue(() => instance.value, [instance, getStyle])
 
       return useAnimatedStyle(
         () => getStyle(derivedValue.value),
@@ -410,8 +455,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // Theme state for dynamic values
       const [, themeState] = useThemeWithState({})
-      const isDark =
-        themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
+      const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
 
       // Presence state for exit animations
       const isExiting = presence?.[0] === false
@@ -466,7 +510,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           ({ type: 'spring' } as TransitionConfig)
 
         // Handle per-property overrides from animation prop
-        const overrides: PropertyOverrides = {}
+        // All overrides are resolved to TransitionConfig (strings are looked up in animations)
+        const overrides: Record<string, TransitionConfig> = {}
         if (Array.isArray(props.animation)) {
           const [, configOverrides] = props.animation
           if (configOverrides && typeof configOverrides === 'object') {
@@ -530,16 +575,27 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           result[key] = applyAnimation(targetValue as number, config)
         }
 
-        // Animate transform properties
+        // Animate transform properties with validation
         if (animatedStyles.transform && Array.isArray(animatedStyles.transform)) {
-          result.transform = (animatedStyles.transform as Record<string, unknown>[]).map(
-            (t) => {
+          const validTransforms = (animatedStyles.transform as Record<string, unknown>[])
+            .filter((t) => {
+              // Validate transform object has at least one key with a numeric value
+              if (!t || typeof t !== 'object') return false
+              const keys = Object.keys(t)
+              if (keys.length === 0) return false
+              const value = t[keys[0]]
+              return typeof value === 'number' || typeof value === 'string'
+            })
+            .map((t) => {
               const transformKey = Object.keys(t)[0]
               const targetValue = t[transformKey]
               const config = propertyConfigs[transformKey] ?? baseConfig
               return { [transformKey]: applyAnimation(targetValue as number, config) }
-            }
-          )
+            })
+
+          if (validTransforms.length > 0) {
+            result.transform = validTransforms
+          }
         }
 
         return result
