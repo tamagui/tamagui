@@ -68,7 +68,7 @@ async function findImports(location: string): Promise<string[]> {
     let stdout = ''
     try {
       const result = await exec(
-        `rg 'from ['"'"'"][^'"'"'"]+['"'"'"]' ${searchPath} --glob "*.tsx" --glob "*.ts" --only-matching --no-filename --no-line-number`,
+        `rg 'from ['"'"'"][^'"'"'"]+['"'"'"]' ${searchPath} --glob "*.tsx" --glob "*.ts" --glob "!*.test.ts" --glob "!*.test.tsx" --only-matching --no-filename --no-line-number`,
         {
           cwd: process.cwd(),
         }
