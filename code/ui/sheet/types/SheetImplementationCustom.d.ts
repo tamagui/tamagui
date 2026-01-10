@@ -4,7 +4,7 @@ import type { SnapPointsMode } from './types';
 export declare const SheetImplementationCustom: React.ForwardRefExoticComponent<{
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
+    onOpenChange?: React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void);
     position?: number;
     defaultPosition?: number;
     snapPoints?: (string | number)[];
