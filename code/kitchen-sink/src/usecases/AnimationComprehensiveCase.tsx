@@ -381,7 +381,7 @@ function Scenario10_BorderRadius() {
         testID="scenario-10-trigger" data-testid="scenario-10-trigger">
         10: BorderRadius
       </Button>
-      <View ref={ref as any} animation="quick" size={40} bg="$orange10" borderRadius={active ? 20 : 0}
+      <View ref={ref as any} animation="quick" width={40} height={40} bg="$orange10" borderRadius={active ? 20 : 0}
         testID="scenario-10-target" data-testid="scenario-10-target" />
       <Paragraph size="$1">{active ? '20px' : '0'}</Paragraph>
     </XStack>
@@ -576,7 +576,7 @@ function Scenario19_Timing200ms() {
         testID="scenario-19-trigger" data-testid="scenario-19-trigger">
         19: 200ms
       </Button>
-      <Square ref={ref as any} animation="200ms" size={40} bg="$green10" opacity={active ? 0.3 : 1}
+      <Square ref={ref as any} animation="quick" size={40} bg="$green10" opacity={active ? 0.3 : 1}
         testID="scenario-19-target" data-testid="scenario-19-target" />
       <Paragraph size="$1">timing 200ms</Paragraph>
     </XStack>
@@ -801,7 +801,7 @@ function Scenario28_MultiProperty() {
         testID="scenario-28-trigger" data-testid="scenario-28-trigger">
         28: Multi
       </Button>
-      <View ref={ref as any} animation="bouncy" size={40} bg="$purple10"
+      <View ref={ref as any} animation="bouncy" width={40} height={40} bg="$purple10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         rotate={active ? '30deg' : '0deg'}
@@ -852,14 +852,15 @@ function Scenario30_HoverAnimation() {
   return (
     <XStack gap="$2" alignItems="center">
       <Paragraph size="$1">30: Hover →</Paragraph>
-      <Square
+      <View
         ref={ref as any}
         animation="quick"
-        size={40}
+        width={40}
+        height={40}
         bg="$blue10"
         hoverStyle={{ scale: 1.2, backgroundColor: '$green10' }}
-        onHoverIn={startLogging}
-        onHoverOut={() => setTimeout(stopLogging, 500)}
+        onMouseEnter={startLogging}
+        onMouseLeave={() => setTimeout(stopLogging, 500)}
         testID="scenario-30-target"
         data-testid="scenario-30-target"
         cursor="pointer"
@@ -955,8 +956,9 @@ function Scenario33_MixedSpringTiming() {
       </Button>
       <View
         ref={ref as any}
-        animation={['bouncy', { opacity: '200ms', borderRadius: 'lazy' }] as any}
-        size={40}
+        animation={['bouncy', { opacity: 'quick', borderRadius: 'lazy' }] as any}
+        width={40}
+        height={40}
         bg="$purple10"
         opacity={active ? 0.4 : 1}
         scale={active ? 1.4 : 1}
