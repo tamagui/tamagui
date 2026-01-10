@@ -1,5 +1,5 @@
 import { useWindowDimensions } from 'react-native'
-import { Button, H1, Dialog as TDialog, YStack } from 'tamagui'
+import { Button, H1, Dialog as TDialog, Sheet, YStack } from 'tamagui'
 
 /* Minimal test case for reproducing crashes */
 export function TestModal() {
@@ -12,8 +12,8 @@ export function TestModal() {
       </TDialog.Trigger>
 
       <TDialog.Adapt when="md">
-        <TDialog.Sheet modal snapPoints={[20, 40, 80]}>
-          <TDialog.Sheet.Handle
+        <Sheet modal snapPoints={[20, 40, 80]}>
+          <Sheet.Handle
             h={10}
             bg="$background"
             o={1} // Uncommenting this causes a rare crash on native iOS Safari
@@ -26,19 +26,19 @@ export function TestModal() {
             t={-40}
           />
 
-          <TDialog.Sheet.Overlay
+          <Sheet.Overlay
             height={windowHeight}
             width={windowWidth}
             bg="$background"
           />
 
           {/* Uncommenting this causes a rare crash on native iOS Safari */}
-          <TDialog.Sheet.Frame theme="red">
-            <TDialog.Sheet.ScrollView>
+          <Sheet.Frame theme="red">
+            <Sheet.ScrollView>
               <TDialog.Adapt.Contents />
-            </TDialog.Sheet.ScrollView>
-          </TDialog.Sheet.Frame>
-        </TDialog.Sheet>
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+        </Sheet>
       </TDialog.Adapt>
 
       <TDialog.Portal>

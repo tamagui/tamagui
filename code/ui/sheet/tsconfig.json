@@ -51,6 +51,7 @@
   "exclude": [
     "types",
     "dist",
+    "controller",
     "**/__tests__"
   ]
 }
