@@ -75,6 +75,7 @@ type MenuContextValue = {
 }
 
 type MenuRootContextValue = {
+  open: boolean
   onClose(): void
   isUsingKeyboardRef: React.RefObject<boolean>
   dir: Direction
@@ -440,6 +441,7 @@ export function createBaseMenu({
         >
           <MenuRootProvider
             scope={scope}
+            open={open}
             onClose={React.useCallback(() => handleOpenChange(false), [handleOpenChange])}
             isUsingKeyboardRef={isUsingKeyboardRef}
             dir={direction}
