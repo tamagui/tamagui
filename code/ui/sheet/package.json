@@ -40,6 +40,11 @@
       "default": "./dist/cjs/index.native.js"
     },
     "./controller": {
+      "react-native": {
+        "module": "./dist/esm/controller.native.js",
+        "import": "./dist/esm/controller.native.js",
+        "require": "./dist/cjs/controller.native.js"
+      },
       "types": "./types/controller.d.ts",
       "module": "./dist/esm/controller.mjs",
       "import": "./dist/esm/controller.mjs",
