@@ -8978,7 +8978,6 @@ __metadata:
     "@expo/match-media": "npm:^0.4.0"
     "@tamagui/build": "workspace:*"
     "@tamagui/cli-color": "workspace:*"
-    "@tamagui/config-default": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/fake-react-native": "workspace:*"
     "@tamagui/generate-themes": "workspace:*"
