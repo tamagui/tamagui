@@ -39,7 +39,6 @@
     }
   },
   "dependencies": {
-    "@tamagui/config-default": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
