@@ -47,11 +47,10 @@ export function MenuDemo() {
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
-            paddingHorizontal={0}
+            style={{ paddingHorizontal: 0, backgroundColor: '$color1' }}
             borderWidth={1}
             items="flex-start"
             borderColor="$borderColor"
-            backgroundColor="$color1"
             enterStyle={{ scale: 0.4, opacity: 0, y: -10 }}
             exitStyle={{ scale: 0.6, opacity: 0, y: -5 }}
             animation="menu"
