@@ -47,7 +47,7 @@ import {
 import { Portal, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
-import { Sheet, SheetController } from '@tamagui/sheet'
+import { SheetController } from '@tamagui/sheet/controller'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -668,7 +668,6 @@ export const Popover = withStaticProperties(
     Close: PopoverClose,
     Adapt,
     ScrollView: PopoverScrollView,
-    Sheet: Sheet.Controlled,
     FocusScope: FocusScopeController,
   }
 )
