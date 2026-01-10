@@ -211,8 +211,10 @@ export function VersionComparison() {
               bg="$color9"
               borderWidth={2}
               borderColor="$color10"
-              hoverStyle={{ bg: '$color10' }}
-              pressStyle={{ bg: '$color8' }}
+              cursor="pointer"
+              animation="quick"
+              hoverStyle={{ bg: '$color10', scale: 1.02 }}
+              pressStyle={{ bg: '$color8', scale: 0.98 }}
             >
               <Button.Text fontFamily="$mono" fontWeight="800" color="white">
                 Read the Docs
@@ -228,8 +230,10 @@ export function VersionComparison() {
               bg="$color9"
               borderWidth={2}
               borderColor="$color10"
-              hoverStyle={{ bg: '$color10' }}
-              pressStyle={{ bg: '$color8' }}
+              cursor="pointer"
+              animation="quick"
+              hoverStyle={{ bg: '$color10', scale: 1.02 }}
+              pressStyle={{ bg: '$color8', scale: 0.98 }}
             >
               <Button.Text fontFamily="$mono" fontWeight="800" color="white">
                 Try v2-free (OSS)

@@ -136,12 +136,13 @@ export default function TakeoutPage() {
         fullscreen
         t={-60}
         b={0}
-        opacity={0.5}
+        opacity={0.4}
         $theme-light={{
-          opacity: 0.8,
+          opacity: 0.6,
           filter: 'invert(1)',
         }}
         z={0}
+        pointerEvents="none"
         style={{
           imageRendering: 'pixelated',
         }}
@@ -257,12 +258,12 @@ export default function TakeoutPage() {
         </YStack>
 
         {/* Web Frame Section - contains all feature content */}
-        <YStack mt="$8" px="$4">
+        <YStack mt="$10" px="$4">
           <WebFrameSection />
         </YStack>
 
         {/* Version Comparison Section */}
-        <YStack mt="$10" px="$4" maxW={1000} mx="auto" width="100%" gap="$6">
+        <YStack mt="$12" px="$4" maxW={1000} mx="auto" width="100%" gap="$6">
           <ThemeTintAlt>
             <SizableText
               size="$8"
@@ -278,12 +279,12 @@ export default function TakeoutPage() {
         </YStack>
 
         {/* Video Demo Section */}
-        <YStack mt="$10" px="$4">
+        <YStack mt="$12" px="$4">
           <VideoSection />
         </YStack>
 
         {/* Screenshot Gallery */}
-        <YStack mt="$10" px="$4">
+        <YStack mt="$12" px="$4">
           <ScreenshotGallery />
         </YStack>
 
@@ -333,21 +334,18 @@ const PinnedNote = () => {
           py="$5"
           pt="$6"
           pb="$6"
-          elevation="$2"
+          elevation="$3"
           width={120}
           minH={100}
           justify="center"
-          style={{
-            boxShadow: '2px 3px 8px rgba(0,0,0,0.15)',
-          }}
+          rounded="$1"
         >
           <SizableText
             size="$3"
             fontFamily="$mono"
             color="$color12"
-            fontWeight="500"
+            fontWeight="600"
             text="center"
-            lineHeight="$4"
           >
             Buy ONE get TWO
           </SizableText>
@@ -409,10 +407,17 @@ const TakeoutHero = () => {
 
       <Link
         href="https://takeout.tamagui.dev/docs/introduction"
+        target="_blank"
         mt="$3"
         pointerEvents="auto"
       >
-        <Button aria-label="Documentations" cursor="pointer">
+        <Button
+          aria-label="View Documentation"
+          cursor="pointer"
+          animation="quick"
+          hoverStyle={{ scale: 1.05, opacity: 0.9 }}
+          pressStyle={{ scale: 0.98 }}
+        >
           <Button.Text fontFamily="$silkscreen">Docs &raquo;</Button.Text>
         </Button>
       </Link>
@@ -677,9 +682,10 @@ const tabBarItems = [
 // Floating icons data - randomly placed around the hero
 // toPhone icons will animate into a row under the phone header
 const floatingIcons = [
-  // Icons that animate INTO the phone (under header) - script, start-up, calendar, trophy
+  // Icons that animate INTO the phone (under header)
   {
     icon: '/takeout/pixel-icons/script.png',
+    alt: 'Scripts & CLI',
     x: -400,
     y: -380,
     toPhone: true,
@@ -687,6 +693,7 @@ const floatingIcons = [
   },
   {
     icon: '/takeout/pixel-icons/start-up.png',
+    alt: 'Quick startup',
     x: 400,
     y: -320,
     toPhone: true,
@@ -694,21 +701,54 @@ const floatingIcons = [
   },
   {
     icon: '/takeout/pixel-icons/calendar.png',
+    alt: 'Scheduling',
     x: -530,
     y: -50,
     toPhone: true,
     targetX: 25,
   },
-  { icon: '/takeout/pixel-icons/trophy.png', x: 450, y: 20, toPhone: true, targetX: 75 },
+  {
+    icon: '/takeout/pixel-icons/trophy.png',
+    alt: 'Achievement',
+    x: 450,
+    y: 20,
+    toPhone: true,
+    targetX: 75,
+  },
   // Icons that float AWAY when scrolling
-  { icon: '/takeout/pixel-icons/lightning-bolt.png', x: -460, y: -220, toPhone: false },
-  { icon: '/takeout/pixel-icons/disco-ball.png', x: 370, y: -160, toPhone: false },
-  { icon: '/takeout/pixel-icons/crown.png', x: -360, y: 100, toPhone: false },
-  { icon: '/takeout/pixel-icons/heart-eyes.png', x: 240, y: 100, toPhone: false },
+  {
+    icon: '/takeout/pixel-icons/lightning-bolt.png',
+    alt: 'Fast performance',
+    x: -460,
+    y: -220,
+    toPhone: false,
+  },
+  {
+    icon: '/takeout/pixel-icons/disco-ball.png',
+    alt: 'Modern stack',
+    x: 370,
+    y: -160,
+    toPhone: false,
+  },
+  {
+    icon: '/takeout/pixel-icons/crown.png',
+    alt: 'Premium',
+    x: -360,
+    y: 100,
+    toPhone: false,
+  },
+  {
+    icon: '/takeout/pixel-icons/heart-eyes.png',
+    alt: 'Developer experience',
+    x: 240,
+    y: 100,
+    toPhone: false,
+  },
 ]
 
 const FloatingIcon = ({
   icon,
+  alt,
   initialX,
   initialY,
   toPhone,
@@ -716,6 +756,7 @@ const FloatingIcon = ({
   scrollProgress,
 }: {
   icon: string
+  alt: string
   initialX: number
   initialY: number
   toPhone: boolean
@@ -761,7 +802,7 @@ const FloatingIcon = ({
       className="ease-out ms500 all"
       pointerEvents="none"
     >
-      <Image src={icon} alt="Feature icon" width={56} height={56} />
+      <Image src={icon} alt={alt} width={56} height={56} />
     </YStack>
   )
 }
@@ -773,6 +814,7 @@ const FloatingIcons = ({ scrollProgress }: { scrollProgress: number }) => {
         <FloatingIcon
           key={i}
           icon={item.icon}
+          alt={item.alt}
           initialX={item.x}
           initialY={item.y}
           toPhone={item.toPhone}
@@ -870,16 +912,16 @@ const IPhoneFrame = ({ scrollProgress }: { scrollProgress: number }) => {
           {/* Screen content area */}
           <YStack flex={1} p="$4" pt="$6" gap="$3">
             {/* App header inside phone */}
-            <YStack gap="$1" items="center" z={100} mt="$2">
+            <YStack gap="$1.5" items="center" z={100} mt="$2">
               <SizableText
-                size="$6"
+                size="$7"
                 fontFamily="$silkscreen"
                 color="$color"
                 letterSpacing={2}
               >
                 FEATURES
               </SizableText>
-              <SizableText size="$2" color="$color10" fontFamily="$mono">
+              <SizableText size="$2" color="$color10" fontFamily="$mono" opacity={0.8}>
                 Your app, ready to ship
               </SizableText>
             </YStack>
@@ -920,8 +962,12 @@ const IPhoneFrame = ({ scrollProgress }: { scrollProgress: number }) => {
             <YStack
               key={tab.label}
               items="center"
-              opacity={index === 0 ? 1 : 0.5}
+              opacity={index === 0 ? 1 : 0.6}
               p="$1.5"
+              cursor="pointer"
+              animation="quick"
+              hoverStyle={{ opacity: 1, scale: 1.1 }}
+              aria-label={tab.label}
             >
               <Image
                 src={tab.icon}
@@ -1079,13 +1125,12 @@ const WebFrameSection = () => {
           borderWidth={1}
           borderBottomWidth={0}
           borderColor="$borderColor"
-          opacity={0.95}
         >
           {/* Traffic light buttons */}
-          <XStack gap="$2">
-            <YStack width={12} height={12} rounded={100} bg="#ff5f57" />
-            <YStack width={12} height={12} rounded={100} bg="#febc2e" />
-            <YStack width={12} height={12} rounded={100} bg="#28c840" />
+          <XStack gap="$2" pointerEvents="none" aria-hidden={true}>
+            <YStack width={12} height={12} rounded={100} bg="#ff5f57" opacity={0.9} />
+            <YStack width={12} height={12} rounded={100} bg="#febc2e" opacity={0.9} />
+            <YStack width={12} height={12} rounded={100} bg="#28c840" opacity={0.9} />
           </XStack>
 
           {/* URL bar */}
@@ -1114,10 +1159,9 @@ const WebFrameSection = () => {
           borderColor="$borderColor"
           p="$6"
           gap="$8"
-          opacity={0.95}
         >
           {/* Intro section */}
-          <YStack gap="$4" maxW={800} mx="auto">
+          <YStack gap="$5" maxW={800} mx="auto">
             <ThemeTintAlt>
               <Paragraph
                 className="text-wrap-balance"
@@ -1273,7 +1317,7 @@ const VideoSection = () => {
   const isDark = useThemeName().startsWith('dark')
 
   return (
-    <YStack items="center" gap="$6" maxW={900} mx="auto" width="100%">
+    <YStack items="center" gap="$6" maxW={1000} mx="auto" width="100%">
       {/* Section title */}
       <ThemeTintAlt>
         <SizableText
@@ -1540,12 +1584,14 @@ const ScreenshotGallery = () => {
       </ThemeTintAlt>
 
       {/* Grid of screenshots */}
-      <XStack gap="$3" flexWrap="wrap" justify="center">
+      <XStack gap="$4" flexWrap="wrap" justify="center" $sm={{ gap: '$3' }}>
         {screenshotImages.map((img, i) => (
           <YStack
             key={i}
-            width={150}
-            height={150}
+            width={160}
+            height={160}
+            $md={{ width: 140, height: 140 }}
+            $sm={{ width: 100, height: 100 }}
             rounded="$4"
             overflow="hidden"
             bg="$color3"
@@ -1562,6 +1608,7 @@ const ScreenshotGallery = () => {
             }}
             position="relative"
             group
+            aria-label={`View ${img.label} screenshot`}
             onPress={() => {
               store.galleryImageIdx = img.galleryIdx
               store.galleryOpen = true
@@ -1570,10 +1617,12 @@ const ScreenshotGallery = () => {
             <Image
               src={img.src}
               alt={img.alt}
-              width={150}
-              height={150}
+              width="100%"
+              height="100%"
               style={{
                 objectFit: 'cover',
+                width: '100%',
+                height: '100%',
               }}
             />
             {/* Label overlay on hover */}
@@ -1583,7 +1632,7 @@ const ScreenshotGallery = () => {
               l={0}
               r={0}
               py="$2"
-              bg="rgba(0,0,0,0.6)"
+              bg="rgba(0,0,0,0.7)"
               opacity={0}
               className="group-hover:opacity-100"
               animation="quick"
