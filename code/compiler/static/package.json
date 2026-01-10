@@ -51,7 +51,6 @@
     "@babel/traverse": "^7.25.4",
     "@babel/types": "^7.25.4",
     "@tamagui/cli-color": "workspace:*",
-    "@tamagui/config-default": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/generate-themes": "workspace:*",
