@@ -15,7 +15,7 @@ import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ListItem, type ListItemProps } from '@tamagui/list-item'
 import { Separator } from '@tamagui/separator'
-import { Sheet, SheetController } from '@tamagui/sheet'
+import { SheetController } from '@tamagui/sheet/controller'
 import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -454,7 +454,6 @@ export const Select = withStaticProperties(
     Value: SelectValue,
     Viewport: SelectViewport,
     Indicator: SelectIndicator,
-    Sheet: Sheet.Controlled,
     FocusScope: FocusScopeController,
   }
 )
