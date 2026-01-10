@@ -355,18 +355,19 @@ management. Can be used to control focus behavior from a parent component.
   ]}
 />
 
-### Dialog.Sheet
+### Using Sheet with Adapt
 
-When used with `Adapt`, Dialog will render as a sheet when that breakpoint is
+When used with `Adapt`, Dialog can render as a sheet when that breakpoint is
 active.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents
+Must use `Adapt.Contents` inside the `Sheet.Frame` to insert the contents
 given to `Dialog.Content`
 
 ```tsx
 import { Dialog } from 'tamagui' // or '@tamagui/dialog'
+import { Sheet } from '@tamagui/sheet'
 
 export default () => (
   <Dialog>
@@ -384,19 +385,19 @@ export default () => (
 
     {/* optionally change to sheet when small screen */}
     <Dialog.Adapt when="maxMd">
-      <Dialog.Sheet>
-        <Dialog.Sheet.Frame>
+      <Sheet>
+        <Sheet.Frame>
           <Dialog.Adapt.Contents />
-        </Dialog.Sheet.Frame>
-        <Dialog.Sheet.Overlay />
-      </Dialog.Sheet>
+        </Sheet.Frame>
+        <Sheet.Overlay />
+      </Sheet>
     </Dialog.Adapt>
   </Dialog>
 )
 ```
 
 <Notice>
-  Note that Dialog.Sheet currently doesn't preserve state of the contents when
+  Note that Sheet currently doesn't preserve state of the contents when
   it transitions between Sheet and Portal. In the future, we can do this on the
   web using react-reparenting.
 </Notice>

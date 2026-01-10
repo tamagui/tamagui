@@ -99,16 +99,16 @@ export default () => (
     </Popover.FocusScope>
 
     {/* optionally change to sheet when small screen */}
-    {/* you can also use <Popover.Adapt /> */}
+    {/* Import Sheet from @tamagui/sheet */}
     <Adapt when="maxMd">
-      <Popover.Sheet>
-        <Popover.Sheet.Overlay />
-        <Popover.Sheet.Frame>
-          <Popover.Sheet.ScrollView>
+      <Sheet>
+        <Sheet.Overlay />
+        <Sheet.Frame>
+          <Sheet.ScrollView>
             <Adapt.Contents />
-          </Popover.Sheet.ScrollView>
-        </Popover.Sheet.Frame>
-      </Popover.Sheet>
+          </Sheet.ScrollView>
+        </Sheet.Frame>
+      </Sheet>
     </Adapt>
   </Popover>
 )
@@ -330,16 +330,6 @@ Renders as YStack, see [Stacks](/docs/components/stacks).
 When you want the Trigger to be in another location from where the Popover
 attaches, use Anchor. When used, Anchor is where the Popover will attach, while
 Trigger will open it.
-
-### Popover.Sheet
-
-When used with `Adapt`, Popover will render as a sheet when that breakpoint is
-active.
-
-See [Sheet](/docs/components/sheet) for more props.
-
-Must use `Adapt.Contents` inside the `Popover.Sheet.Frame` to insert the
-contents given to `Popover.Content`
 
 ### Popover.FocusScope
 
