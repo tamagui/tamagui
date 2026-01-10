@@ -37,6 +37,12 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./controller": {
+      "types": "./types/controller.d.ts",
+      "module": "./dist/esm/controller.mjs",
+      "import": "./dist/esm/controller.mjs",
+      "require": "./dist/cjs/controller.cjs"
     }
   },
   "dependencies": {
