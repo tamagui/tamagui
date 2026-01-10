@@ -578,7 +578,7 @@ function Scenario19_Timing200ms() {
       </Button>
       <Square ref={ref as any} animation="quick" size={40} bg="$green10" opacity={active ? 0.3 : 1}
         testID="scenario-19-target" data-testid="scenario-19-target" />
-      <Paragraph size="$1">timing 200ms</Paragraph>
+      <Paragraph size="$1">quick spring</Paragraph>
     </XStack>
   )
 }
@@ -965,7 +965,7 @@ function Scenario33_MixedSpringTiming() {
         borderRadius={active ? 20 : 4}
         testID="scenario-33-target" data-testid="scenario-33-target"
       />
-      <Paragraph size="$1">scale=bouncy, opacity=200ms, radius=lazy</Paragraph>
+      <Paragraph size="$1">scale=bouncy, opacity=quick, radius=lazy</Paragraph>
     </XStack>
   )
 }

@@ -263,7 +263,7 @@ const ALL_SCENARIOS = [
   { id: '16', name: 'spring-quick', waitTime: 800 },
   { id: '17', name: 'spring-custom', waitTime: 1500 },
   { id: '18', name: 'timing-100ms', waitTime: 500 },
-  { id: '19', name: 'timing-200ms', waitTime: 600 },
+  { id: '19', name: 'timing-quick', waitTime: 600 },
   { id: '20', name: 'timing-delay', waitTime: 1000 },
   { id: '21', name: 'enter-style', waitTime: 1000 },
   { id: '22', name: 'exit-style', waitTime: 1000 },
