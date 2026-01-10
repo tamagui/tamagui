@@ -928,46 +928,15 @@ const PlanTab = ({
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const [showSupportAccess, setShowSupportAccess] = useState(false)
   const { data: products } = useProducts()
-  const [isGrantingAccess, setIsGrantingAccess] = useState(false)
   const [isResendingInvite, setIsResendingInvite] = useState(false)
 
   // Check if this is a one-time payment plan
   const isOneTimePlan =
     subscription?.subscription_items?.[0]?.price?.type === Pricing.OneTime
 
-  const handleTakeoutAccess = async (repoUrl = 'https://github.com/tamagui/takeout') => {
-    if (!subscription || !products) return
-
-    const takeoutProduct = products.pro
-    if (!takeoutProduct) {
-      alert('Product information not found')
-      return
-    }
-
-    setIsGrantingAccess(true)
-
-    try {
-      const res = await fetch(`/api/claim`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          subscription_id: subscription.id,
-          product_id: takeoutProduct.id,
-        }),
-      })
-
-      const data = await res.json()
-      if (!res.ok) {
-        alert(data?.error || `Error: ${res.status} ${res.statusText}`)
-      } else {
-        // Open the specified repo URL in new tab
-        window.open(repoUrl, '_blank', 'noopener,noreferrer')
-      }
-    } finally {
-      setIsGrantingAccess(false)
-    }
+  const handleTakeoutAccess = (repoUrl = 'https://github.com/tamagui/takeout') => {
+    // Just open the repo URL directly - invite handling is done via "Resend Invite" button
+    window.open(repoUrl, '_blank', 'noopener,noreferrer')
   }
 
   const handleResendInvite = async () => {
@@ -1017,13 +986,7 @@ const PlanTab = ({
           <ServiceCard
             title="Takeout"
             description="Access to repository and updates."
-            actionLabel={
-              subscription
-                ? isGrantingAccess
-                  ? 'Granting Access...'
-                  : 'Takeout 1'
-                : 'Purchase'
-            }
+            actionLabel={subscription ? 'Takeout 1' : 'Purchase'}
             onAction={() => {
               if (!subscription) {
                 paymentModal.show = true

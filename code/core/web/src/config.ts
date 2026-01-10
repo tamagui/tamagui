@@ -10,6 +10,7 @@ import type {
 } from './types'
 
 let conf: TamaguiInternalConfig | null
+let setConfigCalledByThisInstance = false
 
 const haventCalledErrorMessage =
   process.env.NODE_ENV === 'development'
@@ -20,23 +21,33 @@ Haven't called createTamagui yet. ${MISSING_THEME_MESSAGE}
 
 // helper to get config from module-scoped variable or globalthis fallback
 // this handles vite ssr bundling where multiple copies of tamagui may exist
-let hasWarnedAboutGlobalFallback = false
-
 const getConfigFromGlobalOrLocal = (): TamaguiInternalConfig | null => {
-  // prefer local conf first
   if (conf) {
     return conf
   }
 
   // fall back to globalthis (for vite ssr bundling scenarios)
   if (globalThis.__tamaguiConfig) {
-    if (process.env.NODE_ENV === 'development' && !hasWarnedAboutGlobalFallback) {
-      hasWarnedAboutGlobalFallback = true
-      console.warn(
-        process.env.NODE_ENV === 'development'
-          ? `Tamagui: Using global config fallback. This may indicate duplicate tamagui instances (e.g., from Vite SSR bundling). This is handled automatically, but may cause issues.`
-          : `❌ Error 002`
-      )
+    // defer warning - if createTamagui runs in THIS instance, it's HMR (safe)
+    // if it never runs, it's a true duplicate (warn)
+    if (
+      process.env.NODE_ENV === 'development' &&
+      !globalThis.__tamaguiHasWarnedGlobalFallback &&
+      !globalThis.__tamaguiPendingCheck
+    ) {
+      globalThis.__tamaguiPendingCheck = true
+      setTimeout(() => {
+        if (
+          !setConfigCalledByThisInstance &&
+          !globalThis.__tamaguiHasWarnedGlobalFallback
+        ) {
+          globalThis.__tamaguiHasWarnedGlobalFallback = true
+          console.warn(
+            `Tamagui: Using global config fallback. This may indicate duplicate tamagui instances (e.g., from Vite SSR bundling). This is handled automatically, but may cause issues.`
+          )
+        }
+        globalThis.__tamaguiPendingCheck = false
+      }, 500)
     }
     return globalThis.__tamaguiConfig
   }
@@ -59,6 +70,7 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
 }
 
 export const setConfig = (next: TamaguiInternalConfig) => {
+  setConfigCalledByThisInstance = true
   conf = next
   globalThis.__tamaguiConfig = next
 }
