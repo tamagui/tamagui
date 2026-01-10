@@ -1,0 +1,56 @@
+{
+  "name": "@tamagui/animations-reanimated",
+  "version": "2.0.0-1767740890268",
+  "type": "module",
+  "source": "src/index.ts",
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "dependencies": {
+    "@tamagui/core": "workspace:*",
+    "@tamagui/use-presence": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": "*",
+    "react-native": "0.81.5",
+    "react-native-reanimated": "~4.1.1"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-reanimated": ">=3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
