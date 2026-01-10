@@ -7139,7 +7139,6 @@ __metadata:
   resolution: "@tamagui/button@workspace:code/ui/button"
   dependencies:
     "@tamagui/build": "workspace:*"
-    "@tamagui/config-default": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/font-size": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
