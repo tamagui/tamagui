@@ -698,7 +698,7 @@ const DiscordPanel = ({
             placeholder="Your username..."
             id="discord-username"
             value={draftQuery}
-            onChange={(e) => setDraftQuery(e.nativeEvent.text)}
+            onChangeText={setDraftQuery}
           />
         </Fieldset>
 
@@ -1615,7 +1615,7 @@ const TeamTab = ({
                   id="github-username"
                   placeholder="Search GitHub users by name, email, or id"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.nativeEvent.text)}
+                  onChangeText={setSearchQuery}
                 />
               </Fieldset>
             </XStack>
