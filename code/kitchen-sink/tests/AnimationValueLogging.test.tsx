@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page, type ConsoleMessage } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 /**
@@ -31,15 +31,15 @@ function parseAnimationLog(text: string): AnimationLog | null {
 }
 
 function collectAnimationLogs(
-  page: any,
+  page: Page,
   testId: string,
   prop: string
 ): Promise<AnimationLog[]> {
   return new Promise((resolve) => {
     const logs: AnimationLog[] = []
-    let timeout: NodeJS.Timeout
+    let timeout: ReturnType<typeof setTimeout>
 
-    const listener = (msg: any) => {
+    const listener = (msg: ConsoleMessage) => {
       const text = msg.text()
       if (text.includes('[ANIM_LOG]')) {
         const parsed = parseAnimationLog(text)

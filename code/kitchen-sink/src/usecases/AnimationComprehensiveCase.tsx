@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { Button, Paragraph, Square, XStack, YStack, View, Text, styled, Circle } from 'tamagui'
+import { Button, Paragraph, Square, XStack, YStack, View, Text } from 'tamagui'
 
 /**
  * COMPREHENSIVE ANIMATION TEST SUITE
@@ -9,16 +9,6 @@ import { Button, Paragraph, Square, XStack, YStack, View, Text, styled, Circle }
  *
  * Log format: [ANIM_FRAME] scenario:<id> frame:<n> prop:<property> value:<value> time:<ms> delta:<ms>
  */
-
-// Types for animation logging
-interface FrameLog {
-  scenario: string
-  frame: number
-  prop: string
-  value: string | number
-  time: number
-  delta: number
-}
 
 // Global frame logging system
 const useAnimationLogger = (scenarioId: string, elementRef: React.RefObject<HTMLElement | null>, properties: string[]) => {
@@ -87,7 +77,7 @@ const useAnimationLogger = (scenarioId: string, elementRef: React.RefObject<HTML
     }
 
     rafIdRef.current = requestAnimationFrame(logFrame)
-  }, [scenarioId, properties])
+  }, [scenarioId, elementRef, properties])
 
   const stopLogging = useCallback(() => {
     isLoggingRef.current = false
