@@ -122,10 +122,10 @@ export function MenuDemo() {
                   enterStyle={{ scale: 0.5, opacity: 0, y: -5 }}
                   exitStyle={{ scale: 0.7, opacity: 0, y: -3 }}
                   animation="menu"
-                  transformOrigin="top left"
+                  transformOrigin="left top"
                   elevation="$5"
                   scale={1.02}
-                  backgroundColor="$color1"
+                  background="$color1"
                 >
                   <Menu.Item
                     onSelect={onSelect}
