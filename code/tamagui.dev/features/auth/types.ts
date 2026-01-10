@@ -19,4 +19,5 @@ export type UserContextType = {
   }
   accessInfo: Awaited<ReturnType<typeof getUserAccessInfo>>
   themeHistories?: Awaited<ReturnType<typeof getUserThemeHistories>>
+  githubUsername?: string | null
 }

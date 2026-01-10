@@ -8,6 +8,7 @@ import {
   getSubscriptions,
   getUserAccessInfo,
   getUserDetails,
+  getUserPrivateInfo,
   getUserTeams,
   getUserThemeHistories,
 } from '~/features/user/helpers'
@@ -15,13 +16,14 @@ import {
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
-  const [userTeams, userDetails, subscriptions, accessInfo, themeHistories] =
+  const [userTeams, userDetails, subscriptions, accessInfo, themeHistories, userPrivate] =
     await Promise.all([
       getUserTeams(supabase),
       getUserDetails(supabase, user.id),
       getSubscriptions(user?.id),
       getUserAccessInfo(supabase, user),
       getUserThemeHistories(supabase, user),
+      getUserPrivateInfo(user.id),
     ])
 
   return Response.json({
@@ -36,5 +38,6 @@ export default apiRoute(async (req) => {
     },
     accessInfo,
     themeHistories,
+    githubUsername: userPrivate?.github_user_name ?? null,
   } satisfies UserContextType)
 })

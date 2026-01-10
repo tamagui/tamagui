@@ -1,3 +1,4 @@
+import type { User } from '@supabase/supabase-js'
 import { redirect } from 'one'
 import { setupCors } from './cors'
 import { getSupabaseServerClient } from './getSupabaseServerClient'
@@ -18,7 +19,7 @@ export const ensureAuth = async ({
 
   // Check Authorization header first (localStorage-based auth from client)
   const authHeader = req.headers.get('Authorization')
-  let user = null
+  let user: User | null = null
 
   if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.slice(7)

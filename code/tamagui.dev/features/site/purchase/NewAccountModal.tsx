@@ -341,7 +341,7 @@ const AccountHeader = () => {
   if (isLoading || !data) {
     return null
   }
-  const { userDetails, user } = data
+  const { userDetails, user, githubUsername } = data
 
   const handleLogout = async () => {
     try {
@@ -385,6 +385,11 @@ const AccountHeader = () => {
               {userDetails?.full_name}
             </H3>
             <Paragraph theme="alt1">{user?.email}</Paragraph>
+            {githubUsername && (
+              <Paragraph theme="alt2" size="$2">
+                GitHub: @{githubUsername}
+              </Paragraph>
+            )}
           </YStack>
         </XStack>
       </YStack>
@@ -693,7 +698,7 @@ const DiscordPanel = ({
             placeholder="Your username..."
             id="discord-username"
             value={draftQuery}
-            onChange={(e) => setDraftQuery(e.target?.value ?? '')}
+            onChange={(e) => setDraftQuery(e.nativeEvent.text)}
           />
         </Fieldset>
 
@@ -1610,7 +1615,7 @@ const TeamTab = ({
                   id="github-username"
                   placeholder="Search GitHub users by name, email, or id"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target?.value ?? '')}
+                  onChange={(e) => setSearchQuery(e.nativeEvent.text)}
                 />
               </Fieldset>
             </XStack>
