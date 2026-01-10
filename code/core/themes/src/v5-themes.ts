@@ -108,6 +108,66 @@ const neutral = {
   neutral12: neutralPalette[11]!,
 }
 
+const tanLightPalette = [
+  'hsla(40, 30%, 98%, 1)',
+  'hsla(40, 24%, 94%, 1)',
+  'hsla(38, 23%, 91%, 1)',
+  'hsla(36, 20%, 90%, 1)',
+  'hsla(36, 20%, 88%, 1)',
+  'hsla(35, 20%, 85%, 1)',
+  'hsla(35, 21%, 74%, 1)',
+  'hsla(34, 20%, 70%, 1)',
+  'hsla(35, 20%, 67%, 1)',
+  'hsla(34, 19%, 47%, 1)',
+  'hsla(35, 18%, 37%, 1)',
+  'hsla(35, 17%, 20%, 1)',
+]
+
+const tanDarkPalette = [
+  'hsla(30, 9%, 10%, 1)',
+  'hsla(30, 10%, 12%, 1)',
+  'hsla(31, 11%, 18%, 1)',
+  'hsla(30, 12%, 23%, 1)',
+  'hsla(30, 14%, 28%, 1)',
+  'hsla(30, 16%, 33%, 1)',
+  'hsla(30, 18%, 38%, 1)',
+  'hsla(30, 20%, 45%, 1)',
+  'hsla(30, 21%, 50%, 1)',
+  'hsla(29, 22%, 58%, 1)',
+  'hsla(34, 24%, 70%, 1)',
+  'hsla(11, 12%, 79%, 1)',
+]
+
+const tan = {
+  tan1: tanLightPalette[0]!,
+  tan2: tanLightPalette[1]!,
+  tan3: tanLightPalette[2]!,
+  tan4: tanLightPalette[3]!,
+  tan5: tanLightPalette[4]!,
+  tan6: tanLightPalette[5]!,
+  tan7: tanLightPalette[6]!,
+  tan8: tanLightPalette[7]!,
+  tan9: tanLightPalette[8]!,
+  tan10: tanLightPalette[9]!,
+  tan11: tanLightPalette[10]!,
+  tan12: tanLightPalette[11]!,
+}
+
+const tanDark = {
+  tan1: tanDarkPalette[0]!,
+  tan2: tanDarkPalette[1]!,
+  tan3: tanDarkPalette[2]!,
+  tan4: tanDarkPalette[3]!,
+  tan5: tanDarkPalette[4]!,
+  tan6: tanDarkPalette[5]!,
+  tan7: tanDarkPalette[6]!,
+  tan8: tanDarkPalette[7]!,
+  tan9: tanDarkPalette[8]!,
+  tan10: tanDarkPalette[9]!,
+  tan11: tanDarkPalette[10]!,
+  tan12: tanDarkPalette[11]!,
+}
+
 // the same on both light and dark, useful for forcing white/black:
 const whiteBlack = {
   white: 'rgba(255,255,255,1)',
@@ -225,6 +285,7 @@ export const defaultColors = {
     pink,
     purple,
     red,
+    tan,
     teal,
     yellow,
   },
@@ -237,6 +298,7 @@ export const defaultColors = {
     pink: pinkDark,
     purple: purpleDark,
     red: redDark,
+    tan: tanDark,
     teal: tealDark,
     yellow: yellowDark,
   },
@@ -264,6 +326,7 @@ export type DefaultColorName =
   | 'pink'
   | 'purple'
   | 'red'
+  | 'tan'
   | 'teal'
   | 'yellow'
 
@@ -395,6 +458,12 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
           light: neutralPalette,
         },
       },
+      tan: {
+        palette: {
+          dark: tanDarkPalette,
+          light: tanLightPalette,
+        },
+      },
     })
   }
 
@@ -429,6 +498,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
           ...pink,
           ...purple,
           ...red,
+          ...tan,
           ...teal,
           ...whiteColors,
           ...yellow,
@@ -447,6 +517,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
           ...pinkDark,
           ...purpleDark,
           ...redDark,
+          ...tanDark,
           ...tealDark,
           ...whiteColors,
           ...yellowDark,

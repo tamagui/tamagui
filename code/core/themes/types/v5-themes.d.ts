@@ -115,6 +115,20 @@ export declare const defaultColors: {
             red11: string;
             red12: string;
         };
+        tan: {
+            tan1: string;
+            tan2: string;
+            tan3: string;
+            tan4: string;
+            tan5: string;
+            tan6: string;
+            tan7: string;
+            tan8: string;
+            tan9: string;
+            tan10: string;
+            tan11: string;
+            tan12: string;
+        };
         teal: {
             teal1: string;
             teal2: string;
@@ -257,6 +271,20 @@ export declare const defaultColors: {
             red11: string;
             red12: string;
         };
+        tan: {
+            tan1: string;
+            tan2: string;
+            tan3: string;
+            tan4: string;
+            tan5: string;
+            tan6: string;
+            tan7: string;
+            tan8: string;
+            tan9: string;
+            tan10: string;
+            tan11: string;
+            tan12: string;
+        };
         teal: {
             teal1: string;
             teal2: string;
@@ -298,7 +326,7 @@ export type GrandChildrenThemeDefinition = {
     template: string;
 };
 /** Default color names available in v5 themes */
-export type DefaultColorName = 'blue' | 'gray' | 'green' | 'orange' | 'pink' | 'purple' | 'red' | 'teal' | 'yellow';
+export type DefaultColorName = 'blue' | 'gray' | 'green' | 'orange' | 'pink' | 'purple' | 'red' | 'tan' | 'teal' | 'yellow';
 export type ColorDefinition = {
     dark: ColorPalette;
     light: ColorPalette;
@@ -554,6 +582,18 @@ export declare function createV5Theme(options?: CreateV5ThemeOptions): Record<"l
     black04: string;
     black06: string;
     black08: string;
+    tan1: string;
+    tan2: string;
+    tan3: string;
+    tan4: string;
+    tan5: string;
+    tan6: string;
+    tan7: string;
+    tan8: string;
+    tan9: string;
+    tan10: string;
+    tan11: string;
+    tan12: string;
     neutral1: string;
     neutral2: string;
     neutral3: string;
@@ -781,6 +821,18 @@ export declare const themes: Record<"light" | "dark" | `light_${string}` | `dark
     black04: string;
     black06: string;
     black08: string;
+    tan1: string;
+    tan2: string;
+    tan3: string;
+    tan4: string;
+    tan5: string;
+    tan6: string;
+    tan7: string;
+    tan8: string;
+    tan9: string;
+    tan10: string;
+    tan11: string;
+    tan12: string;
     neutral1: string;
     neutral2: string;
     neutral3: string;
