@@ -504,25 +504,56 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           }
         }
 
-        // Get base animation config
-        const base =
+        // Get base animation config from named animation
+        let base =
           animations[animationKey as keyof typeof animations] ??
           ({ type: 'spring' } as TransitionConfig)
 
-        // Handle per-property overrides from animation prop
-        // All overrides are resolved to TransitionConfig (strings are looked up in animations)
+        // Handle config overrides from animation prop
+        // Format: animation={['quick', { delay: 300, opacity: 'lazy' }]}
+        // - Config keys (delay, type, duration, etc.) modify the base config
+        // - Property keys (opacity, scale, etc.) set per-property overrides
         const overrides: Record<string, TransitionConfig> = {}
+
+        // Known animation config keys that modify base config (not property overrides)
+        const configKeys = new Set([
+          'delay',
+          'type',
+          'duration',
+          'damping',
+          'stiffness',
+          'mass',
+          'overshootClamping',
+          'restDisplacementThreshold',
+          'restSpeedThreshold',
+          'velocity',
+          'easing',
+          'reduceMotion',
+        ])
+
         if (Array.isArray(props.animation)) {
           const [, configOverrides] = props.animation
           if (configOverrides && typeof configOverrides === 'object') {
+            const baseConfigUpdates: Partial<TransitionConfig> = {}
+
             for (const key in configOverrides) {
               const val = (configOverrides as Record<string, unknown>)[key]
-              if (typeof val === 'string') {
-                // Reference to named animation
+
+              if (configKeys.has(key)) {
+                // Config option (delay, type, etc.) - merge into base config
+                baseConfigUpdates[key as keyof TransitionConfig] = val as any
+              } else if (typeof val === 'string') {
+                // Property override referencing a named animation
                 overrides[key] = animations[val] ?? base
               } else if (val && typeof val === 'object') {
+                // Property override with inline config
                 overrides[key] = val as TransitionConfig
               }
+            }
+
+            // Apply base config updates
+            if (Object.keys(baseConfigUpdates).length > 0) {
+              base = { ...base, ...baseConfigUpdates }
             }
           }
         }

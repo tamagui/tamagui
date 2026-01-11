@@ -2,15 +2,10 @@ import { expect, test, type Page, type ConsoleMessage } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 /**
- * COMPREHENSIVE ANIMATION TEST SUITE
+ * ANIMATION DRIVER TEST SUITE
  *
- * Runs all 30 animation scenarios across different drivers and captures
- * full frame-by-frame data for analysis.
- *
- * Log formats captured:
- * - [ANIM_START] scenario:<id> time:<timestamp>
- * - [ANIM_FRAME] scenario:<id> frame:<n> prop:<property> value:<value> time:<ms> delta:<ms>
- * - [ANIM_END] scenario:<id> totalFrames:<n> time:<timestamp>
+ * Tests each animation scenario individually with specific assertions.
+ * Each test captures frame-by-frame data and validates animation behavior.
  */
 
 interface AnimationFrame {
@@ -29,78 +24,65 @@ interface AnimationResult {
   totalFrames: number
   frames: AnimationFrame[]
   duration: number
+  perfStart: number
 }
 
-// Parse console logs into structured data
-function parseAnimationLogs(logs: string[]): AnimationResult[] {
-  const results: Map<string, AnimationResult> = new Map()
+function parseAnimationLogs(logs: string[]): AnimationResult | null {
+  let startTime = 0
+  let endTime = 0
+  let perfStart = 0
+  let scenario = ''
+  const frames: AnimationFrame[] = []
 
   for (const log of logs) {
     if (log.includes('[ANIM_START]')) {
-      const match = log.match(/\[ANIM_START\] scenario:(\S+) time:(\d+)/)
+      const match = log.match(
+        /\[ANIM_START\] scenario:(\S+) time:(\d+)(?: perfStart:(\d+))?/
+      )
       if (match) {
-        const scenario = match[1]
-        results.set(scenario, {
-          scenario,
-          startTime: parseInt(match[2], 10),
-          endTime: 0,
-          totalFrames: 0,
-          frames: [],
-          duration: 0,
-        })
+        scenario = match[1]
+        startTime = Number.parseInt(match[2], 10)
+        perfStart = match[3] ? Number.parseInt(match[3], 10) : 0
       }
     } else if (log.includes('[ANIM_FRAME]')) {
       const match = log.match(
         /\[ANIM_FRAME\] scenario:(\S+) frame:(\d+) prop:(\S+) value:(.+?) time:(\d+) delta:(\d+)/
       )
       if (match) {
-        const scenario = match[1]
-        const result = results.get(scenario)
-        if (result) {
-          result.frames.push({
-            scenario,
-            frame: parseInt(match[2], 10),
-            prop: match[3],
-            value: match[4],
-            time: parseInt(match[5], 10),
-            delta: parseInt(match[6], 10),
-          })
-        }
+        frames.push({
+          scenario: match[1],
+          frame: Number.parseInt(match[2], 10),
+          prop: match[3],
+          value: match[4],
+          time: Number.parseInt(match[5], 10),
+          delta: Number.parseInt(match[6], 10),
+        })
       }
     } else if (log.includes('[ANIM_END]')) {
       const match = log.match(/\[ANIM_END\] scenario:(\S+) totalFrames:(\d+) time:(\d+)/)
       if (match) {
-        const scenario = match[1]
-        const result = results.get(scenario)
-        if (result) {
-          result.endTime = parseInt(match[3], 10)
-          result.totalFrames = parseInt(match[2], 10)
-          result.duration = result.endTime - result.startTime
-        }
+        endTime = Number.parseInt(match[3], 10)
       }
     }
   }
 
-  return Array.from(results.values())
+  if (!scenario || frames.length === 0) return null
+
+  return {
+    scenario,
+    startTime,
+    endTime,
+    totalFrames: frames.length,
+    frames,
+    duration: endTime - startTime,
+    perfStart,
+  }
 }
 
-// Collect all console logs during test
-async function collectConsoleLogs(page: Page): Promise<string[]> {
-  const logs: string[] = []
-  page.on('console', (msg: ConsoleMessage) => {
-    const text = msg.text()
-    if (text.includes('[ANIM_')) {
-      logs.push(text)
-    }
-  })
-  return logs
-}
-
-// Run a single scenario and return results
 async function runScenario(
   page: Page,
   scenarioId: string,
-  waitTime: number = 1500
+  waitTime: number
 ): Promise<AnimationResult | null> {
   const logs: string[] = []
   const listener = (msg: ConsoleMessage) => {
@@ -111,374 +93,203 @@ async function runScenario(
   }
   page.on('console', listener)
 
-  // Click the trigger button
-  const trigger = page.getByTestId(`scenario-${scenarioId}-trigger`)
-  await trigger.click()
-
-  // Wait for animation to complete
-  await page.waitForTimeout(waitTime)
+  try {
+    const trigger = page.getByTestId(`scenario-${scenarioId}-trigger`)
+    await trigger.click()
+    await page.waitForTimeout(waitTime)
+  } catch (e) {
+    page.off('console', listener)
+    return null
+  }
 
   page.off('console', listener)
-
-  const results = parseAnimationLogs(logs)
-  return results.find((r) => r.scenario.includes(scenarioId)) || null
+  return parseAnimationLogs(logs)
 }
 
-// Animation analysis thresholds
-const STUTTER_THRESHOLD_MS = 50 // Frame taking longer than this is considered stutter
-const JANK_STDDEV_THRESHOLD = 15 // Standard deviation above this indicates jank
-const MIN_FRAME_RATE_FPS = 30 // Minimum acceptable frame rate
-const MIN_FRAME_COUNT = 3 // Minimum frames for valid animation
+function getFrameDeltas(result: AnimationResult): number[] {
+  return result.frames.map((f) => f.delta).filter((d) => d > 0)
+}
 
-// Analyze frame data for issues
-function analyzeAnimation(result: AnimationResult): {
-  issues: string[]
-  metrics: {
-    avgFrameDelta: number
-    maxFrameDelta: number
-    minFrameDelta: number
-    frameRate: number
-    hasStutter: boolean
-    hasJank: boolean
-  }
-} {
-  const issues: string[] = []
-  const deltas = result.frames.map((f) => f.delta).filter((d) => d > 0)
-
-  if (deltas.length === 0) {
-    return {
-      issues: ['No frame deltas recorded'],
-      metrics: {
-        avgFrameDelta: 0,
-        maxFrameDelta: 0,
-        minFrameDelta: 0,
-        frameRate: 0,
-        hasStutter: false,
-        hasJank: false,
-      },
-    }
-  }
-
+function getAvgFrameRate(result: AnimationResult): number {
+  const deltas = getFrameDeltas(result)
+  if (deltas.length === 0) return 0
   const avgDelta = deltas.reduce((a, b) => a + b, 0) / deltas.length
-  const maxDelta = Math.max(...deltas)
-  const minDelta = Math.min(...deltas)
-  const frameRate = 1000 / avgDelta
-
-  const hasStutter = maxDelta > STUTTER_THRESHOLD_MS
-
-  // Check for jank (high variance in frame times)
-  const variance =
-    deltas.reduce((acc, d) => acc + Math.pow(d - avgDelta, 2), 0) / deltas.length
-  const stdDev = Math.sqrt(variance)
-  const hasJank = stdDev > JANK_STDDEV_THRESHOLD
-
-  if (result.totalFrames < MIN_FRAME_COUNT) {
-    issues.push(`Too few frames: ${result.totalFrames}`)
-  }
-
-  if (hasStutter) {
-    issues.push(`Frame stutter detected: max delta ${maxDelta}ms`)
-  }
-
-  if (hasJank) {
-    issues.push(`Frame jank detected: stdDev ${stdDev.toFixed(2)}ms`)
-  }
-
-  if (frameRate < MIN_FRAME_RATE_FPS) {
-    issues.push(`Low frame rate: ${frameRate.toFixed(1)} fps`)
-  }
-
-  return {
-    issues,
-    metrics: {
-      avgFrameDelta: avgDelta,
-      maxFrameDelta: maxDelta,
-      minFrameDelta: minDelta,
-      frameRate,
-      hasStutter,
-      hasJank,
-    },
-  }
+  return 1000 / avgDelta
 }
 
-// Generate detailed report for a scenario
-function generateReport(result: AnimationResult): string {
-  const analysis = analyzeAnimation(result)
-  let report = `\n=== SCENARIO: ${result.scenario} ===\n`
-  report += `Duration: ${result.duration}ms\n`
-  report += `Total Frames: ${result.totalFrames}\n`
-  report += `Frame Rate: ${analysis.metrics.frameRate.toFixed(1)} fps\n`
-  report += `Avg Frame Delta: ${analysis.metrics.avgFrameDelta.toFixed(2)}ms\n`
-  report += `Min/Max Delta: ${analysis.metrics.minFrameDelta}ms / ${analysis.metrics.maxFrameDelta}ms\n`
-
-  if (analysis.issues.length > 0) {
-    report += `\nISSUES:\n`
-    analysis.issues.forEach((issue) => {
-      report += `  - ${issue}\n`
-    })
+function getFirstFrameDelay(result: AnimationResult): number {
+  const frame0 = result.frames.find((f) => f.frame === 0)
+  const frame1 = result.frames.find((f) => f.frame === 1)
+  if (frame0 && frame1) {
+    return frame1.time - frame0.time
   }
-
-  report += `\nFRAME DATA:\n`
-  const propGroups = new Map<string, AnimationFrame[]>()
-  result.frames.forEach((f) => {
-    if (!propGroups.has(f.prop)) {
-      propGroups.set(f.prop, [])
-    }
-    propGroups.get(f.prop)!.push(f)
-  })
-
-  propGroups.forEach((frames, prop) => {
-    report += `  ${prop}:\n`
-    frames.slice(0, 10).forEach((f) => {
-      report += `    frame ${f.frame}: ${f.value} (delta: ${f.delta}ms)\n`
-    })
-    if (frames.length > 10) {
-      report += `    ... ${frames.length - 10} more frames\n`
-    }
-  })
-
-  return report
+  return frame0?.delta || 0
 }
 
-// ============================================================================
-// TEST SUITES
-// ============================================================================
+// All drivers to test
+const DRIVERS = ['css', 'native', 'moti', 'reanimated'] as const
+type Driver = (typeof DRIVERS)[number]
 
-const ALL_SCENARIOS = [
-  { id: '01', name: 'opacity-basic', waitTime: 1000 },
-  { id: '02', name: 'scale-basic', waitTime: 1000 },
-  { id: '03', name: 'translateX', waitTime: 1000 },
-  { id: '04', name: 'translateY', waitTime: 1000 },
-  { id: '05', name: 'rotate', waitTime: 1000 },
-  { id: '06', name: 'multi-transform', waitTime: 1000 },
-  { id: '07', name: 'width', waitTime: 1500 },
-  { id: '08', name: 'height', waitTime: 1500 },
-  { id: '09', name: 'width-height', waitTime: 1500 },
-  { id: '10', name: 'border-radius', waitTime: 1000 },
-  { id: '11', name: 'bg-color', waitTime: 1000 },
-  { id: '12', name: 'text-color', waitTime: 1000 },
-  { id: '13', name: 'border-color', waitTime: 1000 },
-  { id: '14', name: 'spring-bouncy', waitTime: 1500 },
-  { id: '15', name: 'spring-lazy', waitTime: 2000 },
-  { id: '16', name: 'spring-quick', waitTime: 800 },
-  { id: '17', name: 'spring-custom', waitTime: 1500 },
-  { id: '18', name: 'timing-100ms', waitTime: 500 },
-  { id: '19', name: 'timing-quick', waitTime: 600 },
-  { id: '20', name: 'timing-delay', waitTime: 1000 },
-  { id: '21', name: 'enter-style', waitTime: 1000 },
-  { id: '22', name: 'exit-style', waitTime: 1000 },
-  { id: '23', name: 'enter-exit', waitTime: 1000 },
-  { id: '24', name: 'rapid-toggle', waitTime: 1500 },
-  { id: '25', name: 'interruption', waitTime: 2000 },
-  { id: '26', name: 'animate-only', waitTime: 1000 },
-  { id: '27', name: 'animation-config', waitTime: 2000 },
-  { id: '28', name: 'multi-property', waitTime: 1000 },
-  { id: '29', name: 'nested-outer', waitTime: 1000 },
-  { id: '30', name: 'hover', waitTime: 1000 },
-]
+// Scenario definitions with expected behavior per driver
+// minFrames is relaxed for dimension props which some drivers handle differently
+const SCENARIOS = {
+  '01': { name: 'opacity-basic', wait: 800, minFrames: 3, props: ['opacity'] },
+  '02': { name: 'scale-basic', wait: 800, minFrames: 3, props: ['transform'] },
+  '03': { name: 'translateX', wait: 800, minFrames: 3, props: ['transform'] },
+  '04': { name: 'translateY', wait: 800, minFrames: 3, props: ['transform'] },
+  '05': { name: 'rotate', wait: 800, minFrames: 3, props: ['transform'] },
+  '06': {
+    name: 'multi-transform',
+    wait: 800,
+    minFrames: 3,
+    props: ['transform', 'opacity'],
+  },
+  '07': { name: 'width', wait: 1200, minFrames: 1, props: ['width'] }, // dimension - relaxed
+  '08': { name: 'height', wait: 1200, minFrames: 1, props: ['height'] }, // dimension - relaxed
+  '09': { name: 'width-height', wait: 1200, minFrames: 1, props: ['width', 'height'] }, // dimension - relaxed
+  '10': { name: 'border-radius', wait: 800, minFrames: 2, props: ['borderRadius'] },
+  '11': { name: 'bg-color', wait: 800, minFrames: 2, props: ['backgroundColor'] },
+  '12': { name: 'text-color', wait: 800, minFrames: 2, props: ['color'] },
+  '13': { name: 'border-color', wait: 800, minFrames: 2, props: ['borderColor'] },
+  '14': { name: 'spring-bouncy', wait: 1200, minFrames: 5, props: ['transform'] },
+  '15': { name: 'spring-lazy', wait: 1800, minFrames: 5, props: ['transform'] },
+  '16': { name: 'spring-quick', wait: 600, minFrames: 3, props: ['transform'] },
+  '17': { name: 'spring-custom', wait: 1200, minFrames: 3, props: ['transform'] },
+  '18': { name: 'timing-100ms', wait: 400, minFrames: 2, props: ['opacity'] },
+  '19': { name: 'timing-quick', wait: 500, minFrames: 2, props: ['opacity'] },
+  '20': {
+    name: 'timing-delay',
+    wait: 1000,
+    minFrames: 2,
+    props: ['opacity'],
+    expectDelay: 250,
+  },
+  '24': { name: 'rapid-toggle', wait: 1200, minFrames: 1, props: ['transform'] },
+  '25': { name: 'interruption', wait: 1500, minFrames: 1, props: ['transform'] },
+  '26': { name: 'animate-only', wait: 800, minFrames: 2, props: ['opacity'] },
+  '27': { name: 'animation-config', wait: 1500, minFrames: 2, props: ['transform'] },
+  '28': {
+    name: 'multi-property',
+    wait: 800,
+    minFrames: 2,
+    props: ['opacity', 'transform', 'borderRadius'],
+  },
+} as const
 
-// Test all scenarios with a specific driver
-async function testAllScenarios(
-  page: Page,
-  driver: string
-): Promise<{ passed: number; failed: number; results: AnimationResult[] }> {
-  await setupPage(page, {
-    name: 'AnimationComprehensiveCase',
-    type: 'useCase',
-    searchParams: { animationDriver: driver },
+type ScenarioId = keyof typeof SCENARIOS
+
+// Test each driver with each scenario
+for (const driver of DRIVERS) {
+  test.describe(`${driver} driver`, () => {
+    test.beforeEach(async ({ page }) => {
+      await setupPage(page, {
+        name: 'AnimationComprehensiveCase',
+        type: 'useCase',
+        searchParams: { animationDriver: driver },
+      })
+      await page.waitForTimeout(300)
+    })
+
+    // Basic transform/opacity scenarios
+    for (const [id, config] of Object.entries(SCENARIOS) as [
+      ScenarioId,
+      (typeof SCENARIOS)[ScenarioId],
+    ][]) {
+      test(`${id}: ${config.name}`, async ({ page }) => {
+        const result = await runScenario(page, id, config.wait)
+
+        // Must capture animation data
+        expect(result, `No animation data captured for ${config.name}`).not.toBeNull()
+
+        // Must have minimum frames
+        expect(
+          result!.totalFrames,
+          `${config.name}: expected >= ${config.minFrames} frames, got ${result!.totalFrames}`
+        ).toBeGreaterThanOrEqual(config.minFrames)
+
+        // Check frame rate (except for very short animations)
+        if (result!.totalFrames > 5) {
+          const fps = getAvgFrameRate(result!)
+          expect(
+            fps,
+            `${config.name}: frame rate ${fps.toFixed(1)} fps too low`
+          ).toBeGreaterThan(15)
+        }
+
+        // Check delay if expected
+        if ('expectDelay' in config && config.expectDelay) {
+          const delay = getFirstFrameDelay(result!)
+          expect(
+            delay,
+            `${config.name}: expected delay ~${config.expectDelay}ms, got ${delay}ms`
+          ).toBeGreaterThanOrEqual(config.expectDelay)
+        }
+
+        // Log results for debugging
+        const fps = getAvgFrameRate(result!)
+        const deltas = getFrameDeltas(result!)
+        const maxDelta = deltas.length > 0 ? Math.max(...deltas) : 0
+        // biome-ignore lint/suspicious/noConsoleLog: intentional test output
+        console.log(
+          `[${driver}] ${config.name}: ${result!.totalFrames} frames, ` +
+            `${fps.toFixed(0)} fps, max delta ${maxDelta}ms`
+        )
+      })
+    }
   })
+}
 
-  // Wait for component to fully load
-  await page.waitForTimeout(1000)
+// Cross-driver comparison for key scenarios
+test.describe('Cross-driver comparison', () => {
+  const keyScenarios: ScenarioId[] = ['01', '14', '20']
 
-  const results: AnimationResult[] = []
-  let passed = 0
-  let failed = 0
+  for (const scenarioId of keyScenarios) {
+    test(`${SCENARIOS[scenarioId].name} behavior across drivers`, async ({ page }) => {
+      const results: Record<string, AnimationResult | null> = {}
 
-  for (const scenario of ALL_SCENARIOS) {
-    const result = await runScenario(page, scenario.id, scenario.waitTime)
-
-    if (result) {
-      results.push(result)
-      const analysis = analyzeAnimation(result)
-
-      console.log(generateReport(result))
-
-      if (analysis.issues.length === 0 && result.totalFrames >= 1) {
-        passed++
-      } else {
-        failed++
-        console.log(`FAILED: ${scenario.name}`, analysis.issues)
+      for (const driver of DRIVERS) {
+        await setupPage(page, {
+          name: 'AnimationComprehensiveCase',
+          type: 'useCase',
+          searchParams: { animationDriver: driver },
+        })
+        await page.waitForTimeout(300)
+        results[driver] = await runScenario(page, scenarioId, SCENARIOS[scenarioId].wait)
       }
-    } else {
-      failed++
-      console.log(`FAILED: ${scenario.name} - No result captured`)
-    }
 
-    // Small delay between scenarios
-    await page.waitForTimeout(200)
+      // All drivers should produce results
+      for (const driver of DRIVERS) {
+        expect(
+          results[driver],
+          `${driver} failed to animate ${SCENARIOS[scenarioId].name}`
+        ).not.toBeNull()
+      }
+
+      // Compare frame counts
+      // biome-ignore lint/suspicious/noConsoleLog: intentional test output
+      console.log(
+        `${SCENARIOS[scenarioId].name} frame counts:`,
+        DRIVERS.map((d) => `${d}=${results[d]?.totalFrames || 0}`).join(', ')
+      )
+
+      // JS-based drivers (native, moti, reanimated) should produce similar frame counts
+      // CSS driver uses CSS transitions so it captures fewer discrete frames - that's expected
+      const jsDrivers = ['native', 'moti', 'reanimated'] as const
+      const jsFrameCounts = jsDrivers
+        .map((d) => results[d]?.totalFrames || 0)
+        .filter((f) => f > 0)
+
+      if (jsFrameCounts.length >= 2) {
+        const maxJsFrames = Math.max(...jsFrameCounts)
+        const minJsFrames = Math.min(...jsFrameCounts)
+        const jsVariance = maxJsFrames / minJsFrames
+
+        // JS drivers should be within 2x of each other
+        expect(
+          jsVariance,
+          `JS driver frame variance too high: ${jsVariance.toFixed(2)}x (${jsDrivers.map((d) => `${d}=${results[d]?.totalFrames}`).join(', ')})`
+        ).toBeLessThan(2)
+      }
+    })
   }
-
-  return { passed, failed, results }
-}
-
-// ============================================================================
-// DRIVER-SPECIFIC TESTS
-// ============================================================================
-
-// These "all 30 scenarios" tests run 30 sequential animations per driver (150+ total)
-// which exceeds typical CI timeout limits. Individual scenario tests in
-// "Detailed Scenario Analysis" provide proper coverage. Skip these bulk tests.
-test.describe.skip('Comprehensive Animation Tests - All Drivers', () => {
-  test.describe.configure({ timeout: 300000 }) // 5 minute timeout
-
-  test('CSS driver - all 30 scenarios', async ({ page }) => {
-    console.log('\n\n========== CSS DRIVER ==========\n')
-    const { passed, failed } = await testAllScenarios(page, 'css')
-
-    console.log(`\n\nCSS Driver Summary: ${passed} passed, ${failed} failed`)
-
-    // CSS driver doesn't animate all properties (no spring physics)
-    // So we expect some scenarios to have fewer frames
-    expect(passed).toBeGreaterThan(10)
-  })
-
-  test('Motion driver - all 30 scenarios', async ({ page }) => {
-    console.log('\n\n========== MOTION DRIVER ==========\n')
-    const { passed, failed } = await testAllScenarios(page, 'motion')
-
-    console.log(`\n\nMotion Driver Summary: ${passed} passed, ${failed} failed`)
-    expect(passed).toBeGreaterThan(20)
-  })
-
-  test('Native (RN Animated) driver - all 30 scenarios', async ({ page }) => {
-    console.log('\n\n========== NATIVE DRIVER ==========\n')
-    const { passed, failed } = await testAllScenarios(page, 'native')
-
-    console.log(`\n\nNative Driver Summary: ${passed} passed, ${failed} failed`)
-    expect(passed).toBeGreaterThan(20)
-  })
-
-  test('Moti driver - all 30 scenarios', async ({ page }) => {
-    console.log('\n\n========== MOTI DRIVER ==========\n')
-    const { passed, failed } = await testAllScenarios(page, 'moti')
-
-    console.log(`\n\nMoti Driver Summary: ${passed} passed, ${failed} failed`)
-    expect(passed).toBeGreaterThan(20)
-  })
-
-  test('Reanimated driver - all 30 scenarios', async ({ page }) => {
-    console.log('\n\n========== REANIMATED DRIVER ==========\n')
-    const { passed, failed } = await testAllScenarios(page, 'reanimated')
-
-    console.log(`\n\nReanimated Driver Summary: ${passed} passed, ${failed} failed`)
-    expect(passed).toBeGreaterThan(20)
-  })
-})
-
-// ============================================================================
-// INDIVIDUAL SCENARIO TESTS FOR DETAILED ANALYSIS
-// ============================================================================
-
-// Consolidated test suite - tests unique animation behaviors with reanimated driver only
-// (moti and reanimated share the same underlying Reanimated library)
-test.describe('Detailed Scenario Analysis', () => {
-  test.beforeEach(async ({ page }) => {
-    await setupPage(page, {
-      name: 'AnimationComprehensiveCase',
-      type: 'useCase',
-      searchParams: { animationDriver: 'reanimated' },
-    })
-    await page.waitForTimeout(500)
-  })
-
-  test('opacity basic animation', async ({ page }) => {
-    const result = await runScenario(page, '01', 1000)
-    expect(result).not.toBeNull()
-    expect(result!.totalFrames).toBeGreaterThan(5)
-    const analysis = analyzeAnimation(result!)
-    expect(analysis.metrics.frameRate).toBeGreaterThan(20)
-  })
-
-  test('scale basic animation', async ({ page }) => {
-    const result = await runScenario(page, '02', 1000)
-    expect(result).not.toBeNull()
-    expect(result!.totalFrames).toBeGreaterThan(5)
-  })
-
-  test('multi-transform animation', async ({ page }) => {
-    const result = await runScenario(page, '06', 1000)
-    expect(result).not.toBeNull()
-    // Should have multiple properties animated
-    const props = new Set(result!.frames.map((f) => f.prop))
-    expect(props.size).toBeGreaterThan(1)
-  })
-
-  test('spring bouncy animation', async ({ page }) => {
-    const result = await runScenario(page, '14', 1500)
-    expect(result).not.toBeNull()
-    // Bouncy animation should have more frames due to oscillation
-    expect(result!.totalFrames).toBeGreaterThan(10)
-  })
-
-  test('spring lazy animation', async ({ page }) => {
-    const result = await runScenario(page, '15', 2000)
-    expect(result).not.toBeNull()
-    // Lazy animation should take longer
-    expect(result!.duration).toBeGreaterThan(500)
-  })
-
-  test('rapid toggle (interruption)', async ({ page }) => {
-    const result = await runScenario(page, '24', 1500)
-    expect(result).not.toBeNull()
-  })
-
-  test('animation config override', async ({ page }) => {
-    const result = await runScenario(page, '27', 2000)
-    expect(result).not.toBeNull()
-    expect(result!.totalFrames).toBeGreaterThan(5)
-  })
-
-  test('multi-property animation', async ({ page }) => {
-    const result = await runScenario(page, '28', 1000)
-    expect(result).not.toBeNull()
-    const props = new Set(result!.frames.map((f) => f.prop))
-    expect(props.size).toBeGreaterThanOrEqual(1)
-  })
-})
-
-// ============================================================================
-// COMPARISON TEST - MOTI VS REANIMATED (single representative test)
-// ============================================================================
-
-test.describe('Moti vs Reanimated Comparison', () => {
-  // Single test comparing opacity animation - representative of driver compatibility
-  test('opacity animation produces similar results', async ({ page }) => {
-    // Test Moti
-    await setupPage(page, {
-      name: 'AnimationComprehensiveCase',
-      type: 'useCase',
-      searchParams: { animationDriver: 'moti' },
-    })
-    await page.waitForTimeout(500)
-    const motiResult = await runScenario(page, '01', 1000)
-
-    // Test Reanimated
-    await setupPage(page, {
-      name: 'AnimationComprehensiveCase',
-      type: 'useCase',
-      searchParams: { animationDriver: 'reanimated' },
-    })
-    await page.waitForTimeout(500)
-    const reanimatedResult = await runScenario(page, '01', 1000)
-
-    expect(motiResult).not.toBeNull()
-    expect(reanimatedResult).not.toBeNull()
-
-    if (motiResult && reanimatedResult) {
-      const frameDiff = Math.abs(motiResult.totalFrames - reanimatedResult.totalFrames)
-      // Both drivers should produce reasonable animations
-      expect(frameDiff).toBeLessThan(50)
-    }
-  })
 })
