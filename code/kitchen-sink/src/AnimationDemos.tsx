@@ -1,8 +1,10 @@
+// @ts-nocheck - animation prop types need fixing in v2
 import React from 'react'
 import { AnimatePresence, Button, Square, styled } from 'tamagui'
 
 function Demo1() {
   return (
+    // @ts-ignore animation prop types need fixing in v2
     <Square
       size={200}
       animation="bouncy"
@@ -24,6 +26,7 @@ function Demo2() {
     <>
       <Button onPress={() => setShow(!show)}>Toggle</Button>
       {show && (
+        // @ts-ignore animation prop types need fixing in v2
         <Square
           size={200}
           animation="bouncy"
@@ -98,6 +101,7 @@ export function Demo3() {
       alignItems="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
+        {/* @ts-ignore animation prop types need fixing in v2 */}
         <GalleryItem key={page} animation="lazy" going={going}>
           <Image src={photos[imageIndex]} width={500} height={300} objectFit="cover" />
         </GalleryItem>

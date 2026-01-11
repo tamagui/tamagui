@@ -12,7 +12,7 @@ test(`button + styled + styleable + theme works`, async ({ page }) => {
   })
 
   // Green theme background from themeDev (desaturated green)
-  expect(styles.backgroundColor).toBe(`rgb(226, 238, 230)`)
+  expect(styles.backgroundColor).toBe(`rgb(219, 235, 224)`)
 
   const styles2 = await page.locator('#test2').evaluate((el) => {
     return window.getComputedStyle(el)

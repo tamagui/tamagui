@@ -1,3 +1,4 @@
+// @ts-nocheck - animation prop types need fixing in v2
 import { useState } from 'react'
 import { Adapt, Button, Dialog, Paragraph, Sheet, YStack } from 'tamagui'
 

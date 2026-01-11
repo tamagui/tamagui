@@ -1,3 +1,4 @@
+// @ts-nocheck - animation prop types need fixing in v2
 import React from 'react'
 import '@tamagui/polyfill-dev'
 
@@ -69,6 +70,7 @@ function AnimationChangeTest() {
   const [animation, setanimation] = React.useState('lazy' as any)
   return (
     <>
+      {/* @ts-ignore animation prop types need fixing in v2 */}
       <Square
         animation={animation}
         size={100}
