@@ -36,4 +36,14 @@ export const TEST_IDS = {
   themeMutationSquare: 'theme-mutation-square',
   themeMutationButton: 'theme-mutation-button',
   themeMutationColorText: 'theme-mutation-color-text',
+  // Theme Component Resolution test IDs
+  themeExplicitSchemeDirect: 'theme-explicit-scheme-direct',
+  themeExplicitSchemeNested: 'theme-explicit-scheme-nested',
+  themeInheritSchemeDirect: 'theme-inherit-scheme-direct',
+  themeInheritSchemeNested: 'theme-inherit-scheme-nested',
+  themeAlt1Direct: 'theme-alt1-direct',
+  themeAlt1WithComponent: 'theme-alt1-with-component',
+  // Nested Surface test IDs
+  nestedSurface1To3Direct: 'nested-surface-1-to-3-direct',
+  nestedSurface1To3Nested: 'nested-surface-1-to-3-nested',
 } as const
