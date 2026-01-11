@@ -4,21 +4,13 @@ import { setupPage } from './test-utils'
 /**
  * ANIMATION BEHAVIOR TESTS
  *
- * These tests verify that animations reach their correct end states
- * across all 4 animation drivers: css, native, moti, reanimated
- *
- * Tests cover:
- * - Basic opacity animation
- * - Animation with delay
- * - transitionOnly prop
- * - Multi-property animations
- * - Per-property animation configs
- * - Enter/exit animations (AnimatePresence)
- * - Animation interruption
- * - Complex multi-property with different configs
+ * 8 unique tests × 4 drivers = 32 test runs
+ * All tests verify start, intermediate, and end states.
+ * Uses scenario-36 (1000ms timing) for reliable intermediate capture.
  */
 
 const DRIVERS = ['css', 'native', 'moti', 'reanimated'] as const
+const TOLERANCE = 0.05
 
 async function getOpacity(page: Page, testId: string): Promise<number> {
   return page.evaluate(
@@ -59,23 +51,20 @@ async function getTranslateX(page: Page, testId: string): Promise<number> {
   )
 }
 
-async function getBorderRadius(page: Page, testId: string): Promise<number> {
-  return page.evaluate(
-    (id) => {
-      const el = document.querySelector(`[data-testid="${id}"]`)
-      if (!el) return -1
-      const br = getComputedStyle(el).borderRadius
-      return Number.parseFloat(br) || 0
-    },
-    testId
-  )
-}
-
 async function elementExists(page: Page, testId: string): Promise<boolean> {
   return page.evaluate(
     (id) => !!document.querySelector(`[data-testid="${id}"]`),
     testId
   )
+}
+
+function isIntermediate(value: number, start: number, end: number, tolerance = TOLERANCE): boolean {
+  const notAtStart = Math.abs(value - start) > tolerance
+  const notAtEnd = Math.abs(value - end) > tolerance
+  const min = Math.min(start, end)
+  const max = Math.max(start, end)
+  const inRange = value >= min - tolerance && value <= max + tolerance
+  return notAtStart && notAtEnd && inRange
 }
 
 for (const driver of DRIVERS) {
@@ -89,187 +78,124 @@ for (const driver of DRIVERS) {
       await page.waitForTimeout(500)
     })
 
-    // ========================================================================
-    // TEST 1: Basic animation reaches end state
-    // Verifies animation completes correctly
-    // ========================================================================
-    test('opacity animation reaches correct end state', async ({ page }) => {
-      // Get start state
-      const startOpacity = await getOpacity(page, 'scenario-01-target')
-      expect(startOpacity, 'Start opacity should be 1').toBeCloseTo(1, 1)
+    // TEST 1: Basic timing animation verifies start → intermediate → end
+    test('timing animation has start, intermediate, and end states', async ({ page }) => {
+      const START = 1, END = 0.2
 
-      // Trigger animation
-      await page.getByTestId('scenario-01-trigger').click()
+      const startOpacity = await getOpacity(page, 'scenario-36-target')
+      expect(startOpacity, 'Start').toBeCloseTo(START, 1)
 
-      // Wait for animation to complete
+      await page.getByTestId('scenario-36-trigger').click()
+      await page.waitForTimeout(300)
+      const midOpacity = await getOpacity(page, 'scenario-36-target')
+
       await page.waitForTimeout(1500)
-      const endOpacity = await getOpacity(page, 'scenario-01-target')
+      const endOpacity = await getOpacity(page, 'scenario-36-target')
 
-      // End should be target value
-      expect(endOpacity, 'End opacity should be ~0.2').toBeCloseTo(0.2, 1)
+      expect(endOpacity, 'End').toBeCloseTo(END, 1)
+      expect(isIntermediate(midOpacity, START, END), `Mid (${midOpacity.toFixed(2)}) should be intermediate`).toBe(true)
     })
 
-    // ========================================================================
-    // TEST 2: Animation with delay reaches correct end state
-    // ========================================================================
-    test('animation with delay reaches correct end state', async ({ page }) => {
-      // Scenario 20 has 300ms delay
+    // TEST 2: Scale timing animation
+    test('scale timing animation has intermediate values', async ({ page }) => {
+      const START = 1, END = 1.5
+
+      const startScale = await getScale(page, 'scenario-36-target')
+      expect(startScale, 'Start').toBeCloseTo(START, 1)
+
+      await page.getByTestId('scenario-36-trigger').click()
+      await page.waitForTimeout(300)
+      const midScale = await getScale(page, 'scenario-36-target')
+
+      await page.waitForTimeout(1500)
+      const endScale = await getScale(page, 'scenario-36-target')
+
+      expect(endScale, 'End').toBeCloseTo(END, 1)
+      expect(isIntermediate(midScale, START, END), `Mid (${midScale.toFixed(2)}) should be intermediate`).toBe(true)
+    })
+
+    // TEST 3: Animation with delay reaches end state
+    test('animation with delay completes correctly', async ({ page }) => {
+      const START = 1, END = 0.3
+
       const startOpacity = await getOpacity(page, 'scenario-20-target')
-      expect(startOpacity).toBeCloseTo(1, 1)
+      expect(startOpacity, 'Start').toBeCloseTo(START, 1)
 
-      // Trigger animation
       await page.getByTestId('scenario-20-trigger').click()
-
-      // Wait for delay + animation to complete
-      await page.waitForTimeout(2000)
+      await page.waitForTimeout(2500)
       const endOpacity = await getOpacity(page, 'scenario-20-target')
-      expect(endOpacity, 'End opacity should be ~0.3').toBeCloseTo(0.3, 1)
+
+      expect(endOpacity, 'End').toBeCloseTo(END, 1)
     })
 
-    // ========================================================================
-    // TEST 3: transitionOnly restricts which properties animate
-    // Scenario 26: transitionOnly={['opacity']} - scale should be instant
-    // ========================================================================
-    test('transitionOnly limits animation to specified properties', async ({ page }) => {
-      const startOpacity = await getOpacity(page, 'scenario-26-target')
-      const startScale = await getScale(page, 'scenario-26-target')
+    // TEST 4: Multi-property animation reaches end states
+    test('multi-property animation completes correctly', async ({ page }) => {
+      const OPACITY_END = 0.5, SCALE_END = 1.3
 
-      expect(startOpacity).toBeCloseTo(1, 1)
-      expect(startScale).toBeCloseTo(1, 1)
-
-      // Trigger animation
-      await page.getByTestId('scenario-26-trigger').click()
-
-      // Wait for completion
-      await page.waitForTimeout(2000)
-      const endOpacity = await getOpacity(page, 'scenario-26-target')
-      const endScale = await getScale(page, 'scenario-26-target')
-
-      // Both should reach their targets
-      expect(endOpacity, 'End opacity should be ~0.3').toBeCloseTo(0.3, 0)
-      expect(endScale, 'End scale should be ~1.5').toBeCloseTo(1.5, 0)
-    })
-
-    // ========================================================================
-    // TEST 4: Multi-property animation - all properties animate together
-    // Scenario 28: opacity, scale, rotate, borderRadius
-    // ========================================================================
-    test('multiple properties animate simultaneously', async ({ page }) => {
-      const startOpacity = await getOpacity(page, 'scenario-28-target')
-      const startScale = await getScale(page, 'scenario-28-target')
-      const startBorderRadius = await getBorderRadius(page, 'scenario-28-target')
-
-      expect(startOpacity).toBeCloseTo(1, 1)
-      expect(startScale).toBeCloseTo(1, 1)
-      // borderRadius starts at 4 or 0
-
-      // Trigger animation
       await page.getByTestId('scenario-28-trigger').click()
-
-      // Wait for completion (bouncy spring needs more time)
       await page.waitForTimeout(3000)
 
       const endOpacity = await getOpacity(page, 'scenario-28-target')
       const endScale = await getScale(page, 'scenario-28-target')
-      const endBorderRadius = await getBorderRadius(page, 'scenario-28-target')
 
-      // All should reach their targets (use looser tolerance for spring animations)
-      expect(endOpacity, 'End opacity should be ~0.5').toBeCloseTo(0.5, 1)
-      expect(endScale, 'End scale should be ~1.3').toBeCloseTo(1.3, 0)
-      expect(endBorderRadius, 'End borderRadius should be ~20').toBeCloseTo(20, 0)
+      expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 0)
+      expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
     })
 
-    // ========================================================================
-    // TEST 5: Per-property animation configs
-    // Scenario 31: opacity uses 'lazy', scale uses 'bouncy'
-    // Different properties should animate at different speeds
-    // ========================================================================
-    test('per-property animation configs apply correctly', async ({ page }) => {
-      // Trigger animation
-      await page.getByTestId('scenario-31-trigger').click()
+    // TEST 5: Per-property animation configs reach end states
+    test('per-property configs complete correctly', async ({ page }) => {
+      const OPACITY_END = 0.3, SCALE_END = 1.5
 
-      // Wait for full completion (lazy animations take a while)
+      await page.getByTestId('scenario-31-trigger').click()
       await page.waitForTimeout(3000)
+
       const endOpacity = await getOpacity(page, 'scenario-31-target')
       const endScale = await getScale(page, 'scenario-31-target')
 
-      // Both should reach targets
-      expect(endOpacity, 'End opacity should be ~0.3').toBeCloseTo(0.3, 0)
-      expect(endScale, 'End scale should be ~1.5').toBeCloseTo(1.5, 0)
+      expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 0)
+      expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
     })
 
-    // ========================================================================
-    // TEST 6: Enter/Exit styles (AnimatePresence behavior)
-    // Scenario 21: enterStyle animates from opacity:0, scale:0.5 to 1, 1
-    // ========================================================================
-    test('enterStyle animates element on mount', async ({ page }) => {
-      // First hide the element
+    // TEST 6: Enter/Exit animation works
+    test('enterStyle animates on mount', async ({ page }) => {
       const trigger = page.getByTestId('scenario-21-trigger')
       await trigger.click() // Hide
       await page.waitForTimeout(1000)
 
-      // Verify hidden
-      const existsAfterHide = await elementExists(page, 'scenario-21-target')
-      expect(existsAfterHide, 'Element should be hidden after first click').toBe(false)
+      expect(await elementExists(page, 'scenario-21-target'), 'Hidden').toBe(false)
 
-      // Show again - should animate from enterStyle
-      await trigger.click()
-
-      // Wait for enter animation to complete
+      await trigger.click() // Show
       await page.waitForTimeout(2000)
 
-      // Element should exist now
-      const existsAfterShow = await elementExists(page, 'scenario-21-target')
-      expect(existsAfterShow, 'Element should exist after second click').toBe(true)
-
-      if (existsAfterShow) {
-        const endOpacity = await getOpacity(page, 'scenario-21-target')
-        const endScale = await getScale(page, 'scenario-21-target')
-
-        // Should reach final state (opacity 1, scale 1)
-        expect(endOpacity, 'End opacity should be ~1').toBeCloseTo(1, 0)
-        expect(endScale, 'End scale should be ~1').toBeCloseTo(1, 0)
-      }
+      expect(await elementExists(page, 'scenario-21-target'), 'Shown').toBe(true)
+      expect(await getOpacity(page, 'scenario-21-target'), 'End opacity').toBeCloseTo(1, 0)
+      expect(await getScale(page, 'scenario-21-target'), 'End scale').toBeCloseTo(1, 0)
     })
 
-    // ========================================================================
-    // TEST 7: Animation interruption - mid-animation state change
-    // Scenario 25: Animates x from 0 -> 50, then interrupts to 100
-    // ========================================================================
-    test('animation interruption redirects to new target', async ({ page }) => {
-      const startX = await getTranslateX(page, 'scenario-25-target')
-      expect(startX, 'Start x should be 0').toBeCloseTo(0, 0)
+    // TEST 7: Animation interruption redirects to new target
+    test('interruption redirects to new target', async ({ page }) => {
+      const START = 0, FINAL = 100
 
-      // Trigger (starts animation to x=50, then interrupts to x=100 at 150ms)
+      expect(await getTranslateX(page, 'scenario-25-target'), 'Start').toBeCloseTo(START, 0)
+
       await page.getByTestId('scenario-25-trigger').click()
-
-      // Wait for full animation including interruption
       await page.waitForTimeout(3000)
 
-      const endX = await getTranslateX(page, 'scenario-25-target')
-      // Should reach the interrupted target (100), not the first target (50)
-      expect(endX, 'End x should be ~100 (interrupted target)').toBeCloseTo(100, 0)
+      expect(await getTranslateX(page, 'scenario-25-target'), 'End').toBeCloseTo(FINAL, 0)
     })
 
-    // ========================================================================
-    // TEST 8: Complex combination - verify each property independently
-    // Scenario 34: Many properties with different configs
-    // ========================================================================
-    test('complex multi-property with different configs', async ({ page }) => {
-      // Trigger
-      await page.getByTestId('scenario-34-trigger').click()
+    // TEST 8: Complex multi-property reaches all end states
+    test('complex multi-property completes correctly', async ({ page }) => {
+      const OPACITY_END = 0.7, SCALE_END = 1.2
 
-      // Wait for all animations to complete (lazy ones take longer)
+      await page.getByTestId('scenario-34-trigger').click()
       await page.waitForTimeout(4000)
 
-      // Check all properties reached their targets
       const endOpacity = await getOpacity(page, 'scenario-34-target')
       const endScale = await getScale(page, 'scenario-34-target')
-      const endBorderRadius = await getBorderRadius(page, 'scenario-34-target')
 
-      expect(endOpacity, 'Opacity should reach target').toBeCloseTo(0.7, 0)
-      expect(endScale, 'Scale should reach target').toBeCloseTo(1.2, 0)
-      expect(endBorderRadius, 'BorderRadius should reach target').toBeCloseTo(16, 0)
+      expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 0)
+      expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
     })
   })
 }

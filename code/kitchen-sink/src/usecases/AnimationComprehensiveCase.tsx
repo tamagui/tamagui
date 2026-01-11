@@ -169,6 +169,10 @@ export function AnimationComprehensiveCase() {
       <Scenario33_MixedSpringTiming />
       <Scenario34_ComplexObjectManyProps />
       <Scenario35_RapidPerPropertyChanges />
+
+      {/* SECTION 10: Timing-based Tests */}
+      <SectionHeader>10. Timing-based Tests</SectionHeader>
+      <Scenario36_TimingTest />
     </YStack>
   )
 }
@@ -1051,6 +1055,35 @@ function Scenario35_RapidPerPropertyChanges() {
         testID="scenario-35-target" data-testid="scenario-35-target"
       />
       <Paragraph size="$1">8 toggles @ 150ms</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 36: 1000ms timing animation for reliable intermediate testing
+// Long duration ensures we can capture intermediate values
+// ============================================================================
+function Scenario36_TimingTest() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('36-timing-test', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1500); }}
+        testID="scenario-36-trigger" data-testid="scenario-36-trigger">
+        36: 1000ms
+      </Button>
+      <Square
+        ref={ref as any}
+        transition="1000ms"
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.2 : 1}
+        scale={active ? 1.5 : 1}
+        testID="scenario-36-target" data-testid="scenario-36-target"
+      />
+      <Paragraph size="$1">1000ms timing</Paragraph>
     </XStack>
   )
 }
