@@ -15,7 +15,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "controller"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -37,6 +38,18 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./controller": {
+      "react-native": {
+        "module": "./dist/esm/controller.native.js",
+        "import": "./dist/esm/controller.native.js",
+        "require": "./dist/cjs/controller.native.js"
+      },
+      "types": "./types/controller.d.ts",
+      "module": "./dist/esm/controller.mjs",
+      "import": "./dist/esm/controller.mjs",
+      "require": "./dist/cjs/controller.cjs",
+      "default": "./dist/cjs/controller.native.js"
     }
   },
   "dependencies": {
