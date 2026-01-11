@@ -1,4 +1,3 @@
-// @ts-nocheck - animation prop types need fixing in v2
 import {
   Stack,
   Tooltip as TamaguiTooltip,
@@ -20,7 +19,6 @@ const StyledTooltip = styled(TamaguiTooltip, {
 
 export const Tooltip = withStaticProperties(StyledTooltip, {
   ...TamaguiTooltip,
-  // @ts-ignore animation prop types need fixing in v2
   Content: styled(TamaguiTooltip.Content, {
     padding: 0,
     px: 8,
@@ -33,7 +31,7 @@ export const Tooltip = withStaticProperties(StyledTooltip, {
     x: 0,
     y: 0,
     opacity: 1,
-    animation: [
+    transition: [
       'quick',
       {
         opacity: {

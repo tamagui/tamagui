@@ -1,4 +1,3 @@
-// @ts-nocheck - animation prop types need fixing in v2
 import { Button, Popover, styled } from 'tamagui'
 
 export function PopoverContentStyledPlusAnimations() {
@@ -14,7 +13,7 @@ export function PopoverContentStyledPlusAnimations() {
     </Popover>
   )
 }
-// @ts-ignore animation prop types need fixing in v2
+
 const PopoverStyledContent = styled(Popover.Content, {
   name: 'PopoverContent2',
   elevate: true,
@@ -34,7 +33,7 @@ const PopoverStyledContent = styled(Popover.Content, {
   x: 0,
   y: 0,
   opacity: 1,
-  animation: [
+  transition: [
     'quick',
     {
       opacity: {

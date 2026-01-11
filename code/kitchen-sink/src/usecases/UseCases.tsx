@@ -1,4 +1,3 @@
-// @ts-nocheck - animation prop types need fixing in v2
 import React from 'react'
 import '@tamagui/polyfill-dev'
 
@@ -67,18 +66,17 @@ const CustomButtonFrame = styled(Button.Frame, {
   },
 })
 function AnimationChangeTest() {
-  const [animation, setanimation] = React.useState('lazy' as any)
+  const [transition, setTransition] = React.useState<'lazy' | 'quick'>('lazy')
   return (
     <>
-      {/* @ts-ignore animation prop types need fixing in v2 */}
       <Square
-        animation={animation}
+        transition={transition}
         size={100}
         borderColor="red"
         hoverStyle={{ scale: 2 }}
       />
-      <Button onPress={() => setanimation(animation === 'lazy' ? 'quick' : 'lazy')}>
-        {animation}
+      <Button onPress={() => setTransition(transition === 'lazy' ? 'quick' : 'lazy')}>
+        {transition}
       </Button>
     </>
   )
