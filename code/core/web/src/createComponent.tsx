@@ -305,6 +305,9 @@ export function createComponent<
       : undefined
     let overriddenContextProps: GenericProps | null = null
 
+    const componentContext = React.useContext(ComponentContext)
+    const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
+
     if (
       !process.env.TAMAGUI_IS_CORE_NODE &&
       process.env.NODE_ENV === 'development' &&
@@ -323,8 +326,27 @@ export function createComponent<
 
     // merge both default props and styled context props - ensure order is preserved
     if (styledContextValue || defaultProps) {
+      // For nested text, override base Text defaults to use CSS inheritance
+      // Only override if using base defaults, not styled component explicit values
+      let effectiveDefaults = defaultProps
+      if (
+        process.env.TAMAGUI_TARGET === 'web' &&
+        isText &&
+        hasTextAncestor &&
+        defaultProps
+      ) {
+        effectiveDefaults = { ...defaultProps }
+        if (effectiveDefaults.fontFamily === 'unset')
+          effectiveDefaults.fontFamily = 'inherit'
+        if (effectiveDefaults.whiteSpace === 'pre-wrap')
+          effectiveDefaults.whiteSpace = 'inherit'
+        if (!effectiveDefaults.color) effectiveDefaults.color = 'inherit'
+        if (!effectiveDefaults.letterSpacing) effectiveDefaults.letterSpacing = 'inherit'
+        if (!effectiveDefaults.textTransform) effectiveDefaults.textTransform = 'inherit'
+      }
+
       const [nextProps, overrides] = mergeComponentProps(
-        defaultProps,
+        effectiveDefaults,
         styledContextValue,
         propsIn
       )
@@ -399,7 +421,6 @@ export function createComponent<
       }, [componentName])
     }
 
-    const componentContext = React.useContext(ComponentContext)
     const groupContextParent = React.useContext(GroupContext)
     const animationDriver = componentContext.animationDriver
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
@@ -490,8 +511,6 @@ export function createComponent<
     let setStateShallow = componentState.setStateShallow
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
-
-    const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
 
     const isTaggable = !Component || typeof Component === 'string'
     const tagProp = props.tag
@@ -1421,6 +1440,15 @@ export function createComponent<
     if ('group' in props) {
       content = (
         <GroupContext.Provider value={allGroupContexts}>{content}</GroupContext.Provider>
+      )
+    }
+
+    // Text components set inText context for children so nested Text can inherit styles
+    if (process.env.TAMAGUI_TARGET === 'web' && isText && !hasTextAncestor) {
+      content = (
+        <ComponentContext.Provider {...componentContext} inText={true}>
+          {content}
+        </ComponentContext.Provider>
       )
     }
 
