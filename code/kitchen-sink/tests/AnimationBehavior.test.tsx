@@ -175,6 +175,38 @@ for (const driver of DRIVERS) {
       expect(await getScale(page, 'scenario-21-target'), 'End scale').toBeCloseTo(1, 0)
     })
 
+    // TEST 6b: exitStyle animates on unmount
+    test('exitStyle has intermediate values during exit animation', async ({ page }) => {
+      const START_OPACITY = 1, END_OPACITY = 0
+
+      // Element should be visible initially
+      expect(await elementExists(page, 'scenario-22-target'), 'Initially visible').toBe(true)
+      expect(await getOpacity(page, 'scenario-22-target'), 'Start opacity').toBeCloseTo(START_OPACITY, 1)
+
+      // Click to trigger exit animation
+      await page.getByTestId('scenario-22-trigger').click()
+
+      // Capture mid-animation values (after 150ms of a bouncy animation)
+      await page.waitForTimeout(150)
+
+      const midOpacity = await getOpacity(page, 'scenario-22-target')
+
+      // Element should still exist during exit animation (requires AnimatePresence)
+      expect(await elementExists(page, 'scenario-22-target'), 'Still exists during exit').toBe(true)
+
+      // Mid values should be intermediate (not at start, not at end)
+      expect(
+        isIntermediate(midOpacity, START_OPACITY, END_OPACITY) || midOpacity < START_OPACITY,
+        `Mid opacity (${midOpacity.toFixed(2)}) should be animating`
+      ).toBe(true)
+
+      // Wait for animation to complete (bouncy animations can be slow)
+      await page.waitForTimeout(2500)
+
+      // Element should be gone after exit animation completes
+      expect(await elementExists(page, 'scenario-22-target'), 'Hidden after exit').toBe(false)
+    })
+
     // TEST 7: Animation interruption redirects to new target
     test('interruption redirects to new target', async ({ page }) => {
       const START = 0, FINAL = 100

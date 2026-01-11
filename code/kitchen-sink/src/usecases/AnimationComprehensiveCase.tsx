@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
+import { AnimatePresence } from '@tamagui/animate-presence'
 import { Button, Paragraph, Square, XStack, YStack, View, Text } from 'tamagui'
 
 /**
@@ -646,11 +647,13 @@ function Scenario22_ExitStyle() {
         testID="scenario-22-trigger" data-testid="scenario-22-trigger">
         22: ExitStyle
       </Button>
-      {visible && (
-        <Square ref={ref as any} transition="bouncy" size={40} bg="$green10"
-          exitStyle={{ opacity: 0, scale: 0.5 }}
-          testID="scenario-22-target" data-testid="scenario-22-target" />
-      )}
+      <AnimatePresence>
+        {visible && (
+          <Square key="exit-square" ref={ref as any} transition="bouncy" size={40} bg="$green10"
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-22-target" data-testid="scenario-22-target" />
+        )}
+      </AnimatePresence>
       <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
@@ -670,12 +673,14 @@ function Scenario23_EnterExitCombined() {
         testID="scenario-23-trigger" data-testid="scenario-23-trigger">
         23: Enter+Exit
       </Button>
-      {visible && (
-        <Square ref={ref as any} transition="bouncy" size={40} bg="$purple10"
-          enterStyle={{ opacity: 0, scale: 0.5, y: -20 }}
-          exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
-          testID="scenario-23-target" data-testid="scenario-23-target" />
-      )}
+      <AnimatePresence>
+        {visible && (
+          <Square key="enter-exit-square" ref={ref as any} transition="bouncy" size={40} bg="$purple10"
+            enterStyle={{ opacity: 0, scale: 0.5, y: -20 }}
+            exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
+            testID="scenario-23-target" data-testid="scenario-23-target" />
+        )}
+      </AnimatePresence>
       <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )

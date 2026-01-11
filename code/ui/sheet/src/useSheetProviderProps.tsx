@@ -172,7 +172,7 @@ export function useSheetProviderProps(
   let removeScrollEnabled: boolean | undefined
   if (props.disableRemoveScroll !== undefined) {
     // New prop: disableRemoveScroll={true} means RemoveScroll is disabled
-    removeScrollEnabled = !props.disableRemoveScroll && (open && props.modal)
+    removeScrollEnabled = !props.disableRemoveScroll && open && props.modal
   } else if (props.forceRemoveScrollEnabled !== undefined) {
     // Deprecated prop: forceRemoveScrollEnabled can override the default
     if (process.env.NODE_ENV === 'development') {
