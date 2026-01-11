@@ -70,14 +70,14 @@ as part of this we should have a new animation-helpers package that is just used
 
 ---
 
+during v2 rc would be nice:
+
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
 - v2 useTheme({ name: '' }) should remove since .get() doesnt match
 
-pre v2:
-
-  - useTheme().x.val may have bug on light/dark switch
-  - react native 78 dialogs not working
-    - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
+- useTheme().x.val may have bug on light/dark switch
+- react native 78 dialogs not working
+  - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
   
   
 As an example, we have a Button that has a variant, default.
@@ -95,10 +95,6 @@ however, doing this
   }}
 >
 does not give the Button a red background when pressed
-
-- beef up tests:
-  - native integration
-  - $group $platform $theme styling
 
 uniswap:
 
@@ -122,12 +118,13 @@ uniswap:
 - AnimatePresence leaving things in DOM
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
 
----
-
 - perf: could avoid even creating style rules, easy / big win:
   - note that in addStyleToInsertRules it checks if shouldInsert
   - note that we create all the style rules before we actually check if should insert
   - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
+
+
+---
 
 - import `tamagui/styled` / `@tamagui/button/styled`
   - adds styles, sizing, unstyled prop
