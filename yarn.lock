@@ -7047,6 +7047,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/animations-reanimated@workspace:code/core/animations-reanimated":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animations-reanimated@workspace:code/core/animations-reanimated"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+    "@tamagui/core": "workspace:*"
+    "@tamagui/use-presence": "workspace:*"
+    react: "npm:*"
+    react-native: "npm:0.81.5"
+    react-native-reanimated: "npm:~4.1.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: ">=3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/assert@workspace:*, @tamagui/assert@workspace:code/core/assert":
   version: 0.0.0-use.local
   resolution: "@tamagui/assert@workspace:code/core/assert"
