@@ -20,7 +20,7 @@ export declare const Frame: import("@tamagui/core").TamaguiComponent<import("@ta
 export declare const Sheet: import("react").ForwardRefExoticComponent<{
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: ((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>;
+    onOpenChange?: import("react").Dispatch<import("react").SetStateAction<boolean>> | ((open: boolean) => void);
     position?: number;
     defaultPosition?: number;
     snapPoints?: (string | number)[];

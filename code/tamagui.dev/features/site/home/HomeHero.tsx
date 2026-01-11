@@ -112,7 +112,7 @@ const HeroContents = memo(function HeroContents() {
               </XGroup.Item>
             </Link>
 
-            <Theme name="yellow_alt1">
+            <Theme name="tan">
               <Link href="/bento">
                 <XGroup.Item>
                   <BentoButton />

@@ -23,7 +23,7 @@ v2:
 
 - seems css driver needs love and a bit of testing
   - heard reports animatepresence breaking
-  - in onejs/chat bug with transforms merging media queries: 
+  - in onejs/chat bug with transforms merging media queries:
     - see // TODO bug x should overwrite not be cumulative
   - css animation driver enter animations not working it seems, i used to have
     a fix for this where setState({ unmounted: true }) inside createComponent had a setTimeout() wrapped around it, but then removed it when i tested and found it didnt need it anymore, but seems it does need it again? or some other better fix ideally.
@@ -78,24 +78,21 @@ as part of this we should have a new animation-helpers package that is just used
 ---
 
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
+- v2 useTheme({ name: '' }) should remove since .get() doesnt match
+- release v5 config now
 
 potentially:
 
-- progress headless
-  - https://github.com/tamagui/tamagui/pull/2635
-  - demo https://github.com/tamagui/tamagui/pull/2717
-- accordion headless
-  - https://github.com/tamagui/tamagui/pull/2598
-- forgot we had headless menu
-  - https://github.com/tamagui/tamagui/pull/1978
 - popper origin/size
   - https://github.com/tamagui/tamagui/pull/2734/files
-  - older version https://github.com/tamagui/tamagui/pull/2723
 
 see if claude can get working well:
 
   - input adornment https://github.com/tamagui/tamagui/pull/1654
   - headless list item https://github.com/tamagui/tamagui/pull/2458
+
+- tooltip follow
+  - we did land scoped tooltip and better position support
 
 pre v2:
 
@@ -271,6 +268,9 @@ v3:
   <!-- - swap image-next => image -->
   - make sure webContainerType is "right" - probably not `normal` default
     - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
+  - we should fix "tag" and have it so you can pass typed props to the tag
+    - tag => as?
+    - tag={['a', { href: '' }]}
   - we may need to move the web-only valid style props to a webOnly const and filter it out on native? how does that work currently...
   - see various `@deprecated` jsdocs
   - need to copy/paste all the component docs to 2.0.0.mdx

@@ -24,9 +24,9 @@ compile-time. This results in incredible flexibility and performance.
 It's the only universal style system that supports perfect SSR rendering with
 light and dark mode without jumping or flickers, even when using spring-based
 animation drivers and advanced media queries. Add in the optimizing compiler
-that outputs near perfect platform-specific code, and your team can write intuitive,
-easy to maintain typed inline styles that merge perfectly and run fast
-everywhere without worrying about the typical performance penalty.
+that outputs near perfect platform-specific code, and your team can write
+intuitive, easy to maintain typed inline styles that merge perfectly and run
+fast everywhere without worrying about the typical performance penalty.
 
 In comparison to other solutions, Tamagui is especially strong at:
 
@@ -47,8 +47,8 @@ In comparison to other solutions, Tamagui is especially strong at:
   media query.
 - _Zero configuration._ We invested heavily into a custom build pipeline that
   outputs entirely separate files for native and web, with each having multiple
-  custom transforms such that **Tamagui doesn't need any setup at all, on
-  any platform**. No bundler plugin, no babel transform, no matter if it's Vite,
+  custom transforms such that **Tamagui doesn't need any setup at all, on any
+  platform**. No bundler plugin, no babel transform, no matter if it's Vite,
   Metro, Webpack, Turbopack, you name it.
 
 The result is that Tamagui is the only library that lets you ship world class
@@ -77,9 +77,9 @@ Tamagui improved continuously during version one:
 
 ### New in v2
 
-Version two adds some new Menu components, but beyond that is mostly a cleanup
-release - it removes deprecated APIs, cleans up code and improves testing, and
-refactors a couple slow components.
+Version two adds Menu components, a couple smaller features, and a variety of
+cleanup, optimization, and experiments. It's not a hard upgrade, most all
+breaking changes have been deprecated for a long time.
 
 #### Rem Units on Native
 
@@ -92,16 +92,6 @@ You can now use rem units in your styles on native platforms:
 Rem values are calculated using `PixelRatio.getFontScale()`, so they
 automatically respect the user's accessibility font size settings. Configure the
 base size with `settings.remBaseFontSize` (defaults to 16).
-
-#### Animation Delays
-
-All animation drivers now support delays:
-
-```tsx
-<View animation={['bouncy', { delay: 200 }]} />
-```
-
-This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
 #### Motion Animation Driver
 
@@ -144,10 +134,20 @@ The result is buttery smooth animations that don't block your UI, making it
 ideal for complex interactive components like sheets, popovers, and page
 transitions on web.
 
+#### Animation Delay
+
+All animation drivers now support delays:
+
+```tsx
+<View animation={['bouncy', { delay: 200 }]} />
+```
+
+This works with CSS, React Native Animated, Reanimated, and Motion drivers.
+
 #### Web-aligned Image and Input Components
 
-Input and Image now follow web-aligned APIs, with some old props supported
-but deprecated.
+Input and Image now follow web-aligned APIs, with some old props supported but
+deprecated.
 
 The v1 versions of both components are still available via:
 
@@ -172,6 +172,18 @@ support composition for better performance and flexibility:
 This replaces the old approach of passing `icon` and text style props directly,
 though you can still use the simple `<Button>Hello</Button>` pattern for simple
 cases.
+
+#### @tamagui/react-native-web-lite
+
+React Native Web has slowed down development quite dramatically, and has a
+variety of issues when used on the web, or in modern JS projects. We built this
+package by translating `react-native-web` first to TypeScript, then moving to a
+modern esmodule setup, and finally enabling tree shaking. It's not perfectly
+compatible with `react-native-web`, it strips out the style system to share a
+bit of Tamagui internals, and so breaks one thing at least -
+`pointer-events: box-none`, for now. But for the most part, if you're using
+Tamagui for most styling, you can save a huge amount of bundled JS on the web by
+aliasing to this package.
 
 #### Breaking Changes
 

@@ -10,6 +10,7 @@ import {
   Label,
   Paragraph,
   Popover,
+  Sheet,
   XStack,
   YStack,
 } from 'tamagui'
@@ -104,12 +105,12 @@ function Demo({
 
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
-          <Popover.Sheet modal dismissOnSnapToBottom>
-            <Popover.Sheet.Frame padding="$4">
+          <Sheet modal dismissOnSnapToBottom>
+            <Sheet.Frame padding="$4">
               <Adapt.Contents />
-            </Popover.Sheet.Frame>
-            <Popover.Sheet.Overlay backgroundColor="$shadowColor" />
-          </Popover.Sheet>
+            </Sheet.Frame>
+            <Sheet.Overlay backgroundColor="$shadowColor" />
+          </Sheet>
         </Adapt>
       )}
 
