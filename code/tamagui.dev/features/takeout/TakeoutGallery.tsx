@@ -105,6 +105,14 @@ class GalleryStore {
 
 const useGalleryStore = createUseStore(GalleryStore)
 
+// Export for external use
+export { useGalleryStore }
+
+// Export just the dialog for use in other pages
+export function TakeoutGalleryDialog() {
+  return <ImageGallery />
+}
+
 export default function TakeoutGallery() {
   const store = useGalleryStore()
 

@@ -2,14 +2,14 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
 import { H1, YStack } from 'tamagui'
 
-export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 1.1, ...props }) => (
+export const TAKEOUT = ({ fontSize = 260, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
     select="none"
     color="transparent"
-    fontFamily="$silkscreen"
+    fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
-    letterSpacing={-10}
+    letterSpacing={-18}
     whiteSpace="nowrap"
     minW={970}
     text="center"
@@ -69,7 +69,6 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 z={1002}
               />
             </ThemeTintAlt>
-            x
           </>
         )}
       </YStack>

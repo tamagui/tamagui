@@ -350,7 +350,7 @@ export function DocsQuickNav() {
         </YStack>
 
         <YStack gap="$2">
-          <Theme name="tan">
+          <Theme name="yellow_alt1">
             <Link width="100%" href="/bento">
               <BentoButton bg="transparent" />
             </Link>
