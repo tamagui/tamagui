@@ -32,7 +32,19 @@ export type SheetProps = ScopedProps<
     children?: ReactNode
     dismissOnOverlayPress?: boolean
     dismissOnSnapToBottom?: boolean
+
+    /**
+     * Disables the RemoveScroll behavior that prevents body scrolling while sheet is open.
+     * By default, RemoveScroll is enabled when the sheet is open and modal.
+     */
+    disableRemoveScroll?: boolean
+
+    /**
+     * @deprecated Use `disableRemoveScroll` instead. This prop will be removed in a future version.
+     * Note: `disableRemoveScroll={true}` is equivalent to `forceRemoveScrollEnabled={false}`
+     */
     forceRemoveScrollEnabled?: boolean
+
     animationConfig?: AnimatedNumberStrategy
 
     /**

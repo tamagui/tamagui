@@ -23,6 +23,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     children?: import("react").ReactNode;
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
+    disableRemoveScroll?: boolean;
     forceRemoveScrollEnabled?: boolean;
     animationConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;

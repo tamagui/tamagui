@@ -19,7 +19,6 @@ export const NativeSheetDemo = () => {
 
       <Sheet
         native
-        forceRemoveScrollEnabled={open}
         modal
         open={open}
         onOpenChange={setOpen}

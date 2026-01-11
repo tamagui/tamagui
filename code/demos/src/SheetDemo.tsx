@@ -65,7 +65,6 @@ export const SheetDemo = () => {
       </YStack>
 
       <Sheet
-        forceRemoveScrollEnabled={open}
         modal={modal}
         open={open}
         onOpenChange={setOpen}
