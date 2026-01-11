@@ -738,7 +738,7 @@ export function createComponent<
             group,
             hasDynGroupChildren,
             unmounted,
-            animation,
+            transition,
             ...childrenGroupState
           } = updatedState
           notifyGroupSubscribers(

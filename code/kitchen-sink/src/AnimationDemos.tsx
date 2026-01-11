@@ -5,7 +5,7 @@ function Demo1() {
   return (
     <Square
       size={200}
-      animation="bouncy"
+      transition="bouncy"
       bg="$red10"
       pressStyle={{
         bg: 'green',
@@ -26,7 +26,7 @@ function Demo2() {
       {show && (
         <Square
           size={200}
-          animation="bouncy"
+          transition="bouncy"
           bg="$red10"
           enterStyle={{
             opacity: 0,
@@ -98,7 +98,7 @@ export function Demo3() {
       alignItems="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
-        <GalleryItem key={page} animation="lazy" going={going}>
+        <GalleryItem key={page} transition="lazy" going={going}>
           <Image src={photos[imageIndex]} width={500} height={300} objectFit="cover" />
         </GalleryItem>
       </AnimatePresence>

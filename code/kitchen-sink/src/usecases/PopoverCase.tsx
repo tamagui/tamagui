@@ -117,7 +117,7 @@ function Demo({
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
-        animation="100ms"
+        transition="100ms"
         width={300}
         height={300}
         enterStyle={{

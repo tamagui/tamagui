@@ -484,7 +484,7 @@ export function InverseAccentInput() {
           }
         }}
       >
-        <Switch.Thumb animation="quickest" />
+        <Switch.Thumb transition="quickest" />
       </Switch>
     </XStack>
   )

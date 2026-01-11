@@ -257,7 +257,7 @@ export function PurchaseModalContents() {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal animation="medium">
+          <Sheet modal transition="medium">
             <Sheet.Frame bg="$color1" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
@@ -265,7 +265,7 @@ export function PurchaseModalContents() {
             </Sheet.Frame>
             <Sheet.Overlay
               bg="$shadow4"
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
@@ -276,7 +276,7 @@ export function PurchaseModalContents() {
           <Dialog.Overlay
             backdropFilter="blur(35px)"
             key="overlay"
-            animation="medium"
+            transition="medium"
             bg="$shadow2"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -288,7 +288,7 @@ export function PurchaseModalContents() {
             elevate
             key="content"
             bg="$color1"
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {
@@ -713,7 +713,7 @@ const AnimatedYStack = styled(YStack, {
   x: 0,
   opacity: 1,
 
-  animation: '100ms',
+  transition: '100ms',
   variants: {
     direction: {
       ':number': (direction) => ({

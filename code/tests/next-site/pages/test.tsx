@@ -6,7 +6,7 @@ export default () => {
   return (
     <>
       {/* <Circle
-        animation="medium"
+        transition="medium"
         size={200}
         bg="red"
         enterStyle={{
@@ -55,7 +55,7 @@ const AnimatedHeading = memo(
     return (
       <Delay by={50}>
         <Component
-          animation="lazy"
+          transition="lazy"
           enterStyle={{ o: 0, y: -100 }}
           exitStyle={{ o: 0, y: 100 }}
           o={1}

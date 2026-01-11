@@ -28,7 +28,7 @@ export const ToastDuplicateDemo = () => {
           y={0}
           opacity={1}
           scale={1}
-          animation="100ms"
+          transition="100ms"
         >
           <XStack gap="$4" items="center">
             <YStack>

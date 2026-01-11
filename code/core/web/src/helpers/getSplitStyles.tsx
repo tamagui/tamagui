@@ -1169,22 +1169,22 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const [key, value, identifier] = atomicStyle
-          const isAnimatedAndAnimateOnly =
+          const isAnimatedAndTransitionOnly =
             styleProps.isAnimated &&
             styleProps.noClass &&
-            props.animateOnly?.includes(key)
+            props.transitionOnly?.includes(key)
 
-          // or not animated but you have animateOnly
+          // or not animated but you have transitionOnly
           // (moves it to style={}, nice to avoid generating lots of classnames)
-          const nonAnimatedAnimateOnly =
-            !isAnimatedAndAnimateOnly &&
+          const nonAnimatedTransitionOnly =
+            !isAnimatedAndTransitionOnly &&
             !styleProps.isAnimated &&
-            props.animateOnly?.includes(key)
+            props.transitionOnly?.includes(key)
 
-          if (isAnimatedAndAnimateOnly) {
+          if (isAnimatedAndTransitionOnly) {
             retainedStyles ||= {}
             retainedStyles[key] = styleState.style[key]
-          } else if (nonAnimatedAnimateOnly) {
+          } else if (nonAnimatedTransitionOnly) {
             retainedStyles ||= {}
             retainedStyles[key] = value
             shouldRetain = true

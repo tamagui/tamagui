@@ -33,7 +33,7 @@ export const TakeoutFaqModal = () => {
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadow4"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -43,7 +43,7 @@ export const TakeoutFaqModal = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           className="blur-medium"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -53,7 +53,7 @@ export const TakeoutFaqModal = () => {
           bordered
           elevate
           key="content"
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {

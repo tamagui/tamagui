@@ -1,7 +1,7 @@
 import {
   type AnimatedNumberStrategy,
   type AnimationDriver,
-  type AnimationProp,
+  type TransitionProp,
   fixStyles,
   getSplitStyles,
   hooks,
@@ -81,9 +81,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const { props, style, componentState, stateRef, useStyleEmitter, presence } =
         animationProps
 
-      const animationKey = Array.isArray(props.animation)
-        ? props.animation[0]
-        : props.animation
+      const animationKey = Array.isArray(props.transition)
+        ? props.transition[0]
+        : props.transition
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
@@ -414,7 +414,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 
   function getMotionAnimatedProps(
-    props: { animation: AnimationProp | null; animateOnly?: string[] },
+    props: { transition: TransitionProp | null; transitionOnly?: string[] },
     style: Record<string, unknown>,
     disable: boolean
   ): AnimationProps {
@@ -424,15 +424,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = animationPropToAnimationConfig(props.animation)
+    const animationOptions = transitionPropToAnimationConfig(props.transition)
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
 
-    const animateOnly = props.animateOnly as string[] | undefined
+    const transitionOnly = props.transitionOnly as string[] | undefined
     for (const key in style) {
       const value = style[key]
-      if (disableAnimationProps.has(key) || (animateOnly && !animateOnly.includes(key))) {
+      if (
+        disableAnimationProps.has(key) ||
+        (transitionOnly && !transitionOnly.includes(key))
+      ) {
         dontAnimate ||= {}
         dontAnimate[key] = value
       } else {
@@ -460,20 +463,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
   }
 
-  function animationPropToAnimationConfig(
-    animationProp: AnimationProp | null
+  function transitionPropToAnimationConfig(
+    transitionProp: TransitionProp | null
   ): AnimationOptions {
     let defaultAnimationKey = ''
     let specificAnimations: Record<string, any> = {}
 
-    if (typeof animationProp === 'string') {
-      defaultAnimationKey = animationProp
-    } else if (Array.isArray(animationProp)) {
-      if (typeof animationProp[0] === 'string') {
-        defaultAnimationKey = animationProp[0]
-        specificAnimations = animationProp[1] || {}
+    if (typeof transitionProp === 'string') {
+      defaultAnimationKey = transitionProp
+    } else if (Array.isArray(transitionProp)) {
+      if (typeof transitionProp[0] === 'string') {
+        defaultAnimationKey = transitionProp[0]
+        specificAnimations = transitionProp[1] || {}
       } else {
-        specificAnimations = animationProp
+        specificAnimations = transitionProp
       }
     }
 
@@ -483,7 +486,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
     const defaultConfig = animations[defaultAnimationKey]
 
-    // e.g., animation={['bouncy', { delay: 100 }]}
+    // e.g., transition={['bouncy', { delay: 100 }]}
     // Framer Motion uses seconds, so convert from ms
     const delay =
       typeof specificAnimations.delay === 'number'

@@ -26,7 +26,7 @@ const delayColors = ['red', 'green', 'blue', 'purple'] as const
 
 /**
  * Reusable delay demo component that works with any animation driver
- * Tests: animation={['medium', { delay: i * 100 }]}
+ * Tests: transition={['medium', { delay: i * 100 }]}
  */
 function DelayDemoContent({
   show,
@@ -60,7 +60,7 @@ function DelayDemoContent({
             delayColors.map((color, i) => (
               <Square
                 key={color}
-                animation={['medium', { delay: i * 100 }]}
+                transition={['medium', { delay: i * 100 }]}
                 size={40}
                 bg={color}
                 enterStyle={{ opacity: 0, scale: 0.5, y: 10 }}
@@ -79,7 +79,7 @@ function DelayDemoContent({
 
 /**
  * Demo showing animation delay support across all 4 animation drivers
- * Pattern: animation={['medium', { delay: i * 100 }]}
+ * Pattern: transition={['medium', { delay: i * 100 }]}
  */
 function AnimationDelayDemo() {
   const [showCSS, setShowCSS] = useState(false)
@@ -93,7 +93,7 @@ function AnimationDelayDemo() {
         Animation Delay Test
       </Text>
       <Text fontSize="$2" opacity={0.7}>
-        {`animation={['medium', { delay: i * 100 }]}`}
+        {`transition={['medium', { delay: i * 100 }]}`}
       </Text>
 
       <XStack flexWrap="wrap" gap="$4">
@@ -693,7 +693,7 @@ const Motion = () => {
   const squares = (
     <>
       <Square
-        animation="lazy"
+        transition="lazy"
         size={50}
         bg="green"
         $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
@@ -702,7 +702,7 @@ const Motion = () => {
         $group-other-press={{ y: 20, bg: 'rgba(255,255,0,0.5)' }}
       />
       <Square
-        animation="lazy"
+        transition="lazy"
         size={50}
         bg="yellow"
         $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
@@ -710,7 +710,7 @@ const Motion = () => {
         $group-other-hover={{ bg: 'black', x: 10 }}
       />
       <Square
-        animation="lazy"
+        transition="lazy"
         size={50}
         bg="green"
         $group-card-hover={{ bg: 'magenta', scale: 1.1 }}
@@ -744,16 +744,16 @@ const Motion = () => {
         </XStack>
       </YStack>
 
-      {/* animateOnly */}
+      {/* transitionOnly */}
       <Square
-        animation={[
+        transition={[
           'superBouncy',
           {
             opacity: '100ms',
           },
         ]}
         // bg doesnt aniamte
-        animateOnly={['transform', 'opacity']}
+        transitionOnly={['transform', 'opacity']}
         bg="red"
         size={50}
         opacity={0.25}
@@ -770,7 +770,7 @@ const Motion = () => {
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
 
       <Square
-        animation={[
+        transition={[
           'superBouncy',
           {
             opacity: '100ms',
@@ -790,7 +790,7 @@ const Motion = () => {
       <YStack width="100%" bg="yellow" group="card">
         {/* render during animate update */}
         <Square
-          animation="lazy"
+          transition="lazy"
           // onMouseDown={() => {
           //   setPressed(true)
           // }}
@@ -810,7 +810,7 @@ const Motion = () => {
         <AnimatePresence>
           {show && (
             <Square
-              animation="lazy"
+              transition="lazy"
               $group-card-hover={{
                 scale: 2,
               }}
@@ -847,7 +847,7 @@ const Drivers = () => {
       <Configuration animationDriver={animationsMoti}>
         <YStack group="card">
           <XStack
-            animation="bouncy"
+            transition="bouncy"
             width={100}
             height={100}
             bg="red"
@@ -860,7 +860,7 @@ const Drivers = () => {
       <Configuration animationDriver={animationsCSS}>
         <YStack group="card">
           <XStack
-            animation="bouncy"
+            transition="bouncy"
             width={100}
             height={100}
             bg="red"

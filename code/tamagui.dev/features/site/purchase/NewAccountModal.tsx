@@ -75,14 +75,14 @@ export const NewAccountModal = () => {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal dismissOnSnapToBottom animation="medium">
+          <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Frame bg="$background" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
             <Sheet.Overlay
-              animation="lazy"
+              transition="lazy"
               bg="$shadow6"
               opacity={1}
               enterStyle={{ opacity: 0 }}
@@ -95,7 +95,7 @@ export const NewAccountModal = () => {
           <Configuration animationDriver={animationsCSS}>
             <Dialog.Overlay
               key="overlay"
-              animation="medium"
+              transition="medium"
               bg="$shadow3"
               backdropFilter="blur(20px)"
               enterStyle={{ opacity: 0 }}
@@ -107,7 +107,7 @@ export const NewAccountModal = () => {
             bordered
             elevate
             key="content"
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {
@@ -556,7 +556,7 @@ const DiscordAccessDialog = ({
       <Dialog.Portal zIndex={999999}>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -565,7 +565,7 @@ const DiscordAccessDialog = ({
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           width="90%"
           maxW={600}
           p="$6"

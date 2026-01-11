@@ -144,12 +144,12 @@ const ThemeBuilderModal = memo(() => {
       maxW="95vw"
       z={100_000}
       x={hide ? 500 : 0}
-      animation="medium"
+      transition="medium"
     >
       <YStack
         fullscreen
-        animation="medium"
-        animateOnly={['transform']}
+        transition="medium"
+        transitionOnly={['transform']}
         ref={ref}
         x={0}
         elevation="$5"
@@ -182,7 +182,7 @@ const ThemeBuilderModal = memo(() => {
         </XStack>
 
         <YStack
-          animation={['medium', { opacity: { overshootClamping: true } }]}
+          transition={['medium', { opacity: { overshootClamping: true } }]}
           opacity={hide ? 0 : 1}
           gap="$4"
           flex={1}
@@ -190,8 +190,8 @@ const ThemeBuilderModal = memo(() => {
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
               flex={1}
-              animation="75ms"
-              animateOnly={['transform', 'opacity']}
+              transition="75ms"
+              transitionOnly={['transform', 'opacity']}
               key={weakKey(StepComponent)}
             >
               {useMemo(() => {

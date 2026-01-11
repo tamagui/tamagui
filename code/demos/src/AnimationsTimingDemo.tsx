@@ -5,7 +5,7 @@ export function AnimationsTimingDemo() {
   return (
     <Square
       bg="$pink10"
-      animation="100ms"
+      transition="100ms"
       elevation="$4"
       size={110}
       rounded="$9"

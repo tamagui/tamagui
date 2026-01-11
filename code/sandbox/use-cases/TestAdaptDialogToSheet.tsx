@@ -23,7 +23,7 @@ export default function TestAdaptDialogToSheet() {
             snapPointsMode="fit"
             modal
             zIndex={100_000}
-            animation="quick"
+            transition="quick"
             open={open}
             onOpenChange={setOpen}
             dismissOnSnapToBottom
@@ -47,7 +47,7 @@ export default function TestAdaptDialogToSheet() {
         <Dialog.Portal>
           <Dialog.Overlay
             key="overlay"
-            animation="quick"
+            transition="quick"
             opacity={0.9}
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -61,8 +61,8 @@ export default function TestAdaptDialogToSheet() {
             height="100%"
             items="center"
             rounded={0}
-            animateOnly={['transform', 'opacity']}
-            animation="quick"
+            transitionOnly={['transform', 'opacity']}
+            transition="quick"
             enterStyle={{ x: '100%' }}
             exitStyle={{ x: '100%' }}
           >

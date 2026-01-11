@@ -59,7 +59,7 @@ export function SelectDemoContents(
       )}
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet native={!!props.native} modal dismissOnSnapToBottom animation="medium">
+        <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -67,7 +67,7 @@ export function SelectDemoContents(
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadowColor"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -100,7 +100,7 @@ export function SelectDemoContents(
           borderWidth={1}
           borderColor="$borderColor"
         >
-          <Select.Indicator animation="select" />
+          <Select.Indicator transition="select" />
           <Select.Group>
             <Select.Label fontWeight="bold">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}

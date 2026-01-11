@@ -61,7 +61,7 @@ export function MenuDemo() {
             borderColor="$borderColor"
             enterStyle={{ y: -10, opacity: 0 }}
             exitStyle={{ y: -10, opacity: 0 }}
-            animation={[
+            transition={[
               'quicker',
               {
                 opacity: {
@@ -131,7 +131,7 @@ export function MenuDemo() {
                 <Menu.SubContent
                   enterStyle={{ y: -10, opacity: 0 }}
                   exitStyle={{ y: -10, opacity: 0 }}
-                  animation={[
+                  transition={[
                     'quicker',
                     {
                       opacity: {

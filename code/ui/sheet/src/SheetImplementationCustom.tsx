@@ -44,7 +44,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const parentSheet = React.useContext(ParentSheetContext)
 
     const {
-      animation,
+      transition,
       animationConfig: animationConfigProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
@@ -91,11 +91,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         return animationConfigProp
       }
 
-      const [animationProp, animationPropConfig] = !animation
+      const [animationProp, animationPropConfig] = !transition
         ? []
-        : Array.isArray(animation)
-          ? animation
-          : ([animation] as const)
+        : Array.isArray(transition)
+          ? transition
+          : ([transition] as const)
 
       // look up named animation config from driver if available
       if (animationProp && animationDriver.animations?.[animationProp as string]) {
@@ -550,7 +550,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
               onLayout={handleAnimationViewLayout}
               // @ts-ignore for CSS driver this is necessary to attach the transition
               // also motion driver at least though i suspect all drivers?
-              animation={isDragging || disableAnimation ? null : animation}
+              transition={isDragging || disableAnimation ? null : transition}
               // @ts-ignore
               disableClassName
               style={[

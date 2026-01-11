@@ -18,8 +18,8 @@ export function AnimationsDemo(props) {
   return (
     <>
       <Square
-        animation={props.animation ?? 'bouncy'}
-        animateOnly={['transform']}
+        transition={props.animation ?? 'bouncy'}
+        transitionOnly={['transform']}
         onPress={onPress}
         size={104}
         borderColor="$borderColor"

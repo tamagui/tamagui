@@ -29,7 +29,7 @@ export const PageThemeCarousel = () => {
         >
           <View
             p="$3"
-            animation="lazy"
+            transition="lazy"
             pointerEvents="auto"
             opacity={0.2}
             hoverStyle={{
@@ -54,7 +54,7 @@ export const PageThemeCarousel = () => {
           </View>
           <View
             p="$3"
-            animation="lazy"
+            transition="lazy"
             pointerEvents="auto"
             opacity={0.2}
             hoverStyle={{

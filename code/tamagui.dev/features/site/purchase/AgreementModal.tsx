@@ -23,7 +23,7 @@ export const ProAgreementModal = () => {
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadow4"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -33,7 +33,7 @@ export const ProAgreementModal = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           className="blur-medium"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -43,7 +43,7 @@ export const ProAgreementModal = () => {
           bordered
           elevate
           key="content"
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {

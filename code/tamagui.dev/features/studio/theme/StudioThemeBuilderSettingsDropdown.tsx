@@ -38,7 +38,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
         maxW={400}
-        animation={[
+        transition={[
           'quickest',
           {
             opacity: {

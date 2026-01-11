@@ -11,22 +11,22 @@ export function SheetAnimationCase() {
       {/* Test 1: animation prop only - "quick" */}
       <SheetTest
         testId="animation-quick"
-        animation="quick"
-        label='animation="quick"'
+        transition="quick"
+        label='transition="quick"'
       />
 
       {/* Test 2: animation prop only - "lazy" */}
       <SheetTest
         testId="animation-lazy"
-        animation="lazy"
-        label='animation="lazy"'
+        transition="lazy"
+        label='transition="lazy"'
       />
 
       {/* Test 3: animation prop only - "slow" */}
       <SheetTest
         testId="animation-slow"
-        animation="slow"
-        label='animation="slow"'
+        transition="slow"
+        label='transition="slow"'
       />
 
       {/* Test 4: animationConfig prop only */}
@@ -54,13 +54,13 @@ export function SheetAnimationCase() {
       {/* Test 6: animation + animationConfig together */}
       <SheetTest
         testId="animation-plus-config"
-        animation="lazy"
+        transition="lazy"
         animationConfig={{
           type: 'spring',
           damping: 30,
           stiffness: 500,
         }}
-        label='animation="lazy" + animationConfig (override to fast)'
+        label='transition="lazy" + animationConfig (override to fast)'
       />
     </YStack>
   )
@@ -68,7 +68,7 @@ export function SheetAnimationCase() {
 
 interface SheetTestProps {
   testId: string
-  animation?: string
+  transition?: string
   animationConfig?: {
     type: 'spring' | 'timing' | 'decay'
     damping?: number
@@ -79,7 +79,7 @@ interface SheetTestProps {
   label: string
 }
 
-function SheetTest({ testId, animation, animationConfig, label }: SheetTestProps) {
+function SheetTest({ testId, transition, animationConfig, label }: SheetTestProps) {
   const [open, setOpen] = useState(false)
   const [lastDuration, setLastDuration] = useState<number | null>(null)
   const startTimeRef = useRef<number>(0)
@@ -128,14 +128,14 @@ function SheetTest({ testId, animation, animationConfig, label }: SheetTestProps
       <Sheet
         open={open}
         onOpenChange={handleOpenChange}
-        animation={animation as any}
+        transition={transition as any}
         animationConfig={animationConfig as any}
         modal
         dismissOnSnapToBottom
         snapPoints={[40]}
       >
         <Sheet.Overlay
-          animation={animation as any}
+          transition={transition as any}
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -152,7 +152,7 @@ function SheetTest({ testId, animation, animationConfig, label }: SheetTestProps
               {label}
             </Paragraph>
             <Paragraph size="$2" color="$color10">
-              Animation: {animation || 'none'}, Config:{' '}
+              Transition: {transition || 'none'}, Config:{' '}
               {animationConfig ? JSON.stringify(animationConfig) : 'none'}
             </Paragraph>
             <Button

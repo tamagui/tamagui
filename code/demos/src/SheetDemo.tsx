@@ -75,10 +75,10 @@ export const SheetDemo = () => {
         position={position}
         onPositionChange={setPosition}
         zIndex={100_000}
-        animation="medium"
+        transition="medium"
       >
         <Sheet.Overlay
-          animation="lazy"
+          transition="lazy"
           bg="$shadow6"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -118,9 +118,9 @@ const SheetContents = memo(
 
 function InnerSheet(props: SheetProps) {
   return (
-    <Sheet animation="medium" modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
+    <Sheet transition="medium" modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
       <Sheet.Overlay
-        animation="medium"
+        transition="medium"
         bg="$shadow2"
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}

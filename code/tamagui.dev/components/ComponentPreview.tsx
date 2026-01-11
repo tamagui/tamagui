@@ -195,7 +195,7 @@ const ComponentPreview = {
         height="auto"
         items="center"
         gap="$2.5"
-        animation="medium"
+        transition="medium"
       >
         <Label size="$1.5" htmlFor={'switch'}>
           Switch
@@ -211,7 +211,7 @@ const ComponentPreview = {
           size="$2"
           scale={1}
         >
-          <Switch.Thumb borderColor="$color1" bg="$white1" animation="200ms" />
+          <Switch.Thumb borderColor="$color1" bg="$white1" transition="200ms" />
         </Switch>
       </YStack>
     )
@@ -299,7 +299,7 @@ const ComponentPreview = {
             key={img}
             z={index}
             ml={index !== 0 ? -(getTokenValue('$2' as any) ?? 20) * 1.5 : undefined}
-            animation="bouncy"
+            transition="bouncy"
             position="relative"
             x={0}
           >
@@ -649,7 +649,7 @@ const ComponentPreview = {
                 height="$0.75"
                 rounded="$5"
                 bg={index === 1 ? '$accentColor' : '$color10'}
-                animation="200ms"
+                transition="200ms"
               />
             ))}
           </View>

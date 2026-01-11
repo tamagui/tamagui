@@ -123,7 +123,7 @@ export default function Community() {
                   borderColor="$borderColor"
                 >
                   <Image
-                    animation="quick"
+                    transition="quick"
                     cursor="pointer"
                     shadowColor="$shadowColor"
                     shadowRadius="$4"

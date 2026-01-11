@@ -94,7 +94,7 @@ function PopoverWithScale({
           borderColor="$borderColor"
           p="$4"
           elevate
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {

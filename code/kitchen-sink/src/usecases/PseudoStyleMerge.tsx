@@ -16,7 +16,7 @@ export function PseudoStyleMerge() {
         hoverStyle={{
           scale: 2,
         }}
-        animation="quick"
+        transition="quick"
       >
         <Text>hi</Text>
       </CustomYStack>

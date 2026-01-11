@@ -259,7 +259,7 @@ export const AddTeamMemberModalComponent = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -268,7 +268,7 @@ export const AddTeamMemberModalComponent = () => {
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           width="90%"
           maxW={600}
           p="$6"

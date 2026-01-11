@@ -39,7 +39,7 @@ function SelectComponent({ id }: { id: string }) {
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet modal dismissOnSnapToBottom animation="medium">
+        <Sheet modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -47,7 +47,7 @@ function SelectComponent({ id }: { id: string }) {
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadowColor"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />

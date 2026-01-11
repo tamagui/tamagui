@@ -101,7 +101,7 @@ test.describe('Animation Value Logging Tests', () => {
     const firstValue = parseFloat(logs[0].value)
     const lastValue = parseFloat(logs[logs.length - 1].value)
 
-    console.log(`Opacity animation: ${logs.length} frames, ${firstValue} -> ${lastValue}`)
+    console.log(`Opacity transition: ${logs.length} frames, ${firstValue} -> ${lastValue}`)
     console.log(
       'Sample values:',
       logs.slice(0, 5).map((l) => l.value)
@@ -129,7 +129,7 @@ test.describe('Animation Value Logging Tests', () => {
     const firstValue = parseFloat(logs[0].value)
     const lastValue = parseFloat(logs[logs.length - 1].value)
 
-    console.log(`Scale animation: ${logs.length} frames, ${firstValue} -> ${lastValue}`)
+    console.log(`Scale transition: ${logs.length} frames, ${firstValue} -> ${lastValue}`)
 
     // Final value should be close to 1.5 (scaled)
     expect(lastValue).toBeGreaterThan(1.3)
@@ -153,7 +153,7 @@ test.describe('Animation Value Logging Tests', () => {
     const firstValue = parseFloat(logs[0].value)
     const lastValue = parseFloat(logs[logs.length - 1].value)
 
-    console.log(`TranslateY animation: ${logs.length} frames, ${firstValue} -> ${lastValue}`)
+    console.log(`TranslateY transition: ${logs.length} frames, ${firstValue} -> ${lastValue}`)
 
     // Final value should be close to -30 (moved up)
     expect(lastValue).toBeLessThan(-20)
@@ -177,7 +177,7 @@ test.describe('Animation Value Logging Tests', () => {
 
     const logs = await logsPromise
 
-    console.log(`Enter animation: ${logs.length} frames`)
+    console.log(`Enter transition: ${logs.length} frames`)
     console.log(
       'Sample values:',
       logs.slice(0, 5).map((l) => l.value)
@@ -225,7 +225,7 @@ test.describe('Animation Value Logging Tests', () => {
 
     const logs = await logsPromise
 
-    console.log(`Color animation: ${logs.length} frames`)
+    console.log(`Color transition: ${logs.length} frames`)
     console.log(`Initial: ${initialColor}, Final: ${finalColor}`)
 
     // Color should have changed (even if not interpolated)
@@ -287,7 +287,7 @@ test.describe('Animation Driver Comparison', () => {
 
       const logs = await logsPromise
 
-      console.log(`[${driver}] Opacity animation: ${logs.length} frames`)
+      console.log(`[${driver}] Opacity transition: ${logs.length} frames`)
 
       // All drivers should produce at least some animation frames
       // CSS driver might have fewer frames than spring-based drivers

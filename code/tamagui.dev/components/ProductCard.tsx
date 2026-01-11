@@ -33,7 +33,7 @@ export function ProductCard({ product, children, ...props }) {
         group="card"
         tag="a"
         theme="surface3"
-        animation="quickest"
+        transition="quickest"
         bg="$background"
         flex={1}
         items="center"
@@ -65,7 +65,7 @@ export function ProductCard({ product, children, ...props }) {
           <View
             position="absolute"
             self="flex-end"
-            animation="quicker"
+            transition="quicker"
             y="$-10"
             $lg={{ y: '$-6' }}
             x="$-0.25"
@@ -84,7 +84,7 @@ export function ProductCard({ product, children, ...props }) {
             </YStack>
           </Card.Header>
 
-          <Card.Footer animation="quicker" x={0} $group-card-hover={{ x: 5 }}>
+          <Card.Footer transition="quicker" x={0} $group-card-hover={{ x: 5 }}>
             <ChevronRight
               size="$1"
               position="absolute"

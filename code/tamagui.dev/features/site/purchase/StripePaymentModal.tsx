@@ -841,7 +841,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       }}
     >
       <Dialog.Adapt when="maxMd">
-        <Sheet zIndex={1_000_001} modal dismissOnSnapToBottom animation="medium">
+        <Sheet zIndex={1_000_001} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame bg="$color1" p={0} gap="$4">
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Dialog.Adapt.Contents />
@@ -849,7 +849,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadow4"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -859,7 +859,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       <Dialog.Portal zIndex={1_000_001}>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           opacity={0.95}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -868,7 +868,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           width="90%"
           maxW={1000}
           $maxMd={{

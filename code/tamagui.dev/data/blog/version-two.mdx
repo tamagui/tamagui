@@ -134,12 +134,12 @@ The result is buttery smooth animations that don't block your UI, making it
 ideal for complex interactive components like sheets, popovers, and page
 transitions on web.
 
-#### Animation Delay
+#### Transition Delay
 
 All animation drivers now support delays:
 
 ```tsx
-<View animation={['bouncy', { delay: 200 }]} />
+<View transition={['bouncy', { delay: 200 }]} />
 ```
 
 This works with CSS, React Native Animated, Reanimated, and Motion drivers.
@@ -156,7 +156,7 @@ based on placement and arrow position. This means scale animations naturally
     <Button>Open</Button>
   </Popover.Trigger>
   <Popover.Content
-    animation="quick"
+    transition="quick"
     enterStyle={{ scale: 0.9, opacity: 0 }}
     exitStyle={{ scale: 0.9, opacity: 0 }}
   >
@@ -224,6 +224,20 @@ aliasing to this package.
 
 The breaking changes outside of deprecations are:
 
+- **`animation` prop renamed to `transition`**: The prop that controls animations
+  has been renamed from `animation` to `transition` to better reflect what it
+  does - it defines how styles transition between states. Update your code:
+  ```tsx
+  // Before
+  <View animation="bouncy" />
+  <View animation={['bouncy', { delay: 200 }]} />
+
+  // After
+  <View transition="bouncy" />
+  <View transition={['bouncy', { delay: 200 }]} />
+  ```
+  Similarly, `animateOnly` is now `transitionOnly`, and `animatePresence` is now
+  `transitionPresence`.
 - Default `position` changed from `relative` to `static` to align with CSS
   defaults. Use `settings.defaultPosition: 'relative'` to restore old behavior.
 - Default `flexBasis` changed from `auto` to `0` for flex items. Use

@@ -400,7 +400,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
           zIndex={100000000}
           modal
           dismissOnSnapToBottom
-          animation="bouncy"
+          transition="bouncy"
           animationConfig={{
             type: 'spring',
             damping: 25,
@@ -570,7 +570,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         isOnMenu = false
       }}
       enableAnimationForPositionChange
-      animation="medium"
+      transition="medium"
       bg="$color3"
       backdropFilter="blur(40px)"
       maxH="90vh"
@@ -597,7 +597,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       {pointerFine ? (
         <YStack
           width="100%"
-          animation="200ms"
+          transition="200ms"
           height={heights[active]}
           maxH="90vh"
           overflow="hidden"
@@ -1008,7 +1008,7 @@ const HeadAnchor = styled(Paragraph, {
 
 const Frame = styled(YStack, {
   className: 'header-popover-frame',
-  animation: 'medium',
+  transition: 'medium',
   flex: 1,
   rounded: '$5',
   overflow: 'hidden',

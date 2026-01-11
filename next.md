@@ -40,7 +40,6 @@ v2:
         </div>
 
 - react 19 migration:
-  - keep forwardRef for now at least
   - useEvent => useEffectEvent
 
 -  object style transform - we support arraay but object is nice

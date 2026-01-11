@@ -96,7 +96,7 @@ function OpacityAnimationTest() {
       </Button>
       <Square
         ref={squareRef as any}
-        animation="quick"
+        transition="quick"
         size={60}
         backgroundColor="$blue10"
         opacity={faded ? 0.2 : 1}
@@ -177,7 +177,7 @@ function ScaleAnimationTest() {
       </Button>
       <Square
         ref={squareRef as any}
-        animation="quick"
+        transition="quick"
         size={60}
         backgroundColor="$green10"
         scale={scaled ? 1.5 : 1}
@@ -258,7 +258,7 @@ function TranslateAnimationTest() {
       </Button>
       <Square
         ref={squareRef as any}
-        animation="quick"
+        transition="quick"
         size={60}
         backgroundColor="$purple10"
         y={moved ? -30 : 0}
@@ -344,7 +344,7 @@ function EnterExitAnimationTest() {
       {visible && (
         <Square
           ref={squareRef as any}
-          animation="bouncy"
+          transition="bouncy"
           size={60}
           backgroundColor="$orange10"
           enterStyle={{
@@ -421,7 +421,7 @@ function ColorAnimationTest() {
       </Button>
       <Square
         ref={squareRef as any}
-        animation="quick"
+        transition="quick"
         size={60}
         backgroundColor={active ? '$red10' : '$blue10'}
         testID={`${testId}-square`}
@@ -489,7 +489,7 @@ function AnimationConfigTest() {
       </Button>
       <View
         ref={squareRef as any}
-        animation="quick"
+        transition="quick"
         // @ts-ignore - animationConfig exists but may not be typed
         animationConfig={{
           type: 'spring',

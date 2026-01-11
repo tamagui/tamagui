@@ -70,7 +70,7 @@ export const CustomToast = () => {
       y={0}
       opacity={1}
       scale={1}
-      animation="quick"
+      transition="quick"
     >
       <YStack py="$1.5" px="$2">
         <Toast.Title lineHeight="$1">{currentToast.title}</Toast.Title>

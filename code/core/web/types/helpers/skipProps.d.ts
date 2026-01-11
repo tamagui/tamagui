@@ -3,9 +3,9 @@
  */
 export declare const skipProps: {
     untilMeasured: number;
-    animation: number;
+    transition: number;
     space: number;
-    animateOnly: number;
+    transitionOnly: number;
     disableClassName: number;
     debug: number;
     componentName: number;
@@ -13,6 +13,6 @@ export declare const skipProps: {
     tag: number;
     style: number;
     group: number;
-    animatePresence: number;
+    transitionPresence: number;
 };
 //# sourceMappingURL=skipProps.d.ts.map

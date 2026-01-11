@@ -34,7 +34,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
     native?: "ios"[] | boolean;
-    animation?: import("@tamagui/core").AnimationProp;
+    transition?: import("@tamagui/core").TransitionProp;
     handleDisableScroll?: boolean;
     disableDrag?: boolean;
     modal?: boolean;

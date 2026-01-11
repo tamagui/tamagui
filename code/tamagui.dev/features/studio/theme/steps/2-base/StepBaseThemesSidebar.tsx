@@ -66,7 +66,7 @@ const Contents = ({
             onCheckedChange={setShowAccent}
             size="$1"
           >
-            <Switch.Thumb animation="quickest" />
+            <Switch.Thumb transition="quickest" />
           </Switch>
         </XStack>
       </XStack>

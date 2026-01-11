@@ -87,11 +87,11 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       // const initialPositionRef = useRef<any>(null)
-      const [animationKey, animationConfig] = Array.isArray(props.animation)
-        ? props.animation
-        : [props.animation]
+      const [animationKey, animationConfig] = Array.isArray(props.transition)
+        ? props.transition
+        : [props.transition]
       const animation = animations[animationKey]
-      const keys = props.animateOnly ?? ['all']
+      const keys = props.transitionOnly ?? ['all']
 
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host

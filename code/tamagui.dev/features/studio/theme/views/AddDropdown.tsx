@@ -47,7 +47,7 @@ export const AddDropdown = withStaticProperties(
           elevate
           maxW={400}
           items="flex-start"
-          animation={[
+          transition={[
             'quickest',
             {
               opacity: {

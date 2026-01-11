@@ -49,7 +49,7 @@ export function ContextMenuDemo() {
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
           elevate
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {
@@ -132,7 +132,7 @@ export function ContextMenuDemo() {
               <ContextMenu.SubContent
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}
-                animation={[
+                transition={[
                   'quick',
                   {
                     opacity: {

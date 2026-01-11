@@ -16,7 +16,7 @@ import {
 import { TimedRender } from './components/TimedRender'
 
 const StyledButton = styled(Button, {
-  animation: 'quick',
+  transition: 'quick',
 })
 
 export const Sandbox = () => {
@@ -38,26 +38,26 @@ export const Sandbox = () => {
       </XStack>
 
       <Button onPress={() => setOpen(true)}>
-        Open Sheet (animation="{animationType}")
+        Open Sheet (transition="{animationType}")
       </Button>
 
       <Sheet
         open={open}
         onOpenChange={setOpen}
-        animation={animationType}
+        transition={animationType}
         modal
         dismissOnSnapToBottom
         snapPoints={[50]}
       >
         <Sheet.Overlay
-          animation={animationType}
+          transition={animationType}
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Frame padding="$4" bg="$background">
           <YStack gap="$4">
-            <Paragraph>Sheet with animation="{animationType}"</Paragraph>
+            <Paragraph>Sheet with transition="{animationType}"</Paragraph>
             <Button onPress={() => setOpen(false)}>Close</Button>
           </YStack>
         </Sheet.Frame>
@@ -250,7 +250,7 @@ const Switch = memo(
       <TamaguiSwitch
         width={100}
         alignItems="center"
-        animation={[
+        transition={[
           'bouncy',
           {
             backgroundColor: {
@@ -289,7 +289,7 @@ const Switch = memo(
       >
         <TamaguiSwitch.Thumb
           alignItems="center"
-          animation={[
+          transition={[
             'bouncy',
             {
               backgroundColor: {
@@ -305,7 +305,7 @@ const Switch = memo(
           <View
             $group-item-hover={frameActiveStyle}
             $group-item-press={frameActiveStyle}
-            animation="100ms"
+            transition="100ms"
             opacity={checked ? 1 : 0}
           >
             {/* <Check color={iconColor} size={14} /> */}
@@ -315,7 +315,7 @@ const Switch = memo(
           <View
             $group-item-hover={outerActiveStyle}
             $group-item-press={outerActiveStyle}
-            animation={[
+            transition={[
               'bouncy',
               {
                 backgroundColor: {

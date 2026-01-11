@@ -822,8 +822,8 @@ const componentsIn = {
             <Link asChild href="/docs/intro/installation">
               <Card
                 tag="a"
-                animation="quickest"
-                animateOnly={['transform']}
+                transition="quickest"
+                transitionOnly={['transform']}
                 flex={1}
                 flexBasis="auto"
                 y={0}

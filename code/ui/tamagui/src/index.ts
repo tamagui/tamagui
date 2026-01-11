@@ -61,7 +61,7 @@ export * from './views/Text'
 // since we overlap with StackProps and potentially others
 // lets be explicit on what gets exported
 export type {
-  AnimationKeys,
+  TransitionKeys,
   ColorTokens,
   CreateTamaguiConfig,
   CreateTamaguiProps,

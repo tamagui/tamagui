@@ -191,7 +191,7 @@ function Scenario01_OpacityBasic() {
         testID="scenario-01-trigger" data-testid="scenario-01-trigger">
         01: Opacity
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$blue10" opacity={active ? 0.2 : 1}
+      <Square ref={ref as any} transition="quick" size={40} bg="$blue10" opacity={active ? 0.2 : 1}
         testID="scenario-01-target" data-testid="scenario-01-target" />
       <Paragraph size="$1">{active ? '0.2' : '1'}</Paragraph>
     </XStack>
@@ -212,7 +212,7 @@ function Scenario02_ScaleBasic() {
         testID="scenario-02-trigger" data-testid="scenario-02-trigger">
         02: Scale
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$green10" scale={active ? 1.5 : 1}
+      <Square ref={ref as any} transition="quick" size={40} bg="$green10" scale={active ? 1.5 : 1}
         testID="scenario-02-target" data-testid="scenario-02-target" />
       <Paragraph size="$1">{active ? '1.5' : '1'}</Paragraph>
     </XStack>
@@ -233,7 +233,7 @@ function Scenario03_TranslateX() {
         testID="scenario-03-trigger" data-testid="scenario-03-trigger">
         03: TranslateX
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$purple10" x={active ? 50 : 0}
+      <Square ref={ref as any} transition="quick" size={40} bg="$purple10" x={active ? 50 : 0}
         testID="scenario-03-target" data-testid="scenario-03-target" />
       <Paragraph size="$1">{active ? '50px' : '0'}</Paragraph>
     </XStack>
@@ -254,7 +254,7 @@ function Scenario04_TranslateY() {
         testID="scenario-04-trigger" data-testid="scenario-04-trigger">
         04: TranslateY
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$orange10" y={active ? -30 : 0}
+      <Square ref={ref as any} transition="quick" size={40} bg="$orange10" y={active ? -30 : 0}
         testID="scenario-04-target" data-testid="scenario-04-target" />
       <Paragraph size="$1">{active ? '-30px' : '0'}</Paragraph>
     </XStack>
@@ -275,7 +275,7 @@ function Scenario05_Rotate() {
         testID="scenario-05-trigger" data-testid="scenario-05-trigger">
         05: Rotate
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$red10" rotate={active ? '45deg' : '0deg'}
+      <Square ref={ref as any} transition="quick" size={40} bg="$red10" rotate={active ? '45deg' : '0deg'}
         testID="scenario-05-target" data-testid="scenario-05-target" />
       <Paragraph size="$1">{active ? '45deg' : '0'}</Paragraph>
     </XStack>
@@ -296,7 +296,7 @@ function Scenario06_MultipleTransforms() {
         testID="scenario-06-trigger" data-testid="scenario-06-trigger">
         06: Multi-Transform
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$pink10"
+      <Square ref={ref as any} transition="quick" size={40} bg="$pink10"
         scale={active ? 1.2 : 1} x={active ? 20 : 0} rotate={active ? '15deg' : '0deg'} opacity={active ? 0.7 : 1}
         testID="scenario-06-target" data-testid="scenario-06-target" />
       <Paragraph size="$1">{active ? 'active' : 'default'}</Paragraph>
@@ -318,7 +318,7 @@ function Scenario07_Width() {
         testID="scenario-07-trigger" data-testid="scenario-07-trigger">
         07: Width
       </Button>
-      <View ref={ref as any} animation="quick" height={40} width={active ? 150 : 40} bg="$blue10"
+      <View ref={ref as any} transition="quick" height={40} width={active ? 150 : 40} bg="$blue10"
         testID="scenario-07-target" data-testid="scenario-07-target" />
       <Paragraph size="$1">{active ? '150px' : '40px'}</Paragraph>
     </XStack>
@@ -339,7 +339,7 @@ function Scenario08_Height() {
         testID="scenario-08-trigger" data-testid="scenario-08-trigger">
         08: Height
       </Button>
-      <View ref={ref as any} animation="quick" width={40} height={active ? 80 : 40} bg="$green10"
+      <View ref={ref as any} transition="quick" width={40} height={active ? 80 : 40} bg="$green10"
         testID="scenario-08-target" data-testid="scenario-08-target" />
       <Paragraph size="$1">{active ? '80px' : '40px'}</Paragraph>
     </XStack>
@@ -360,7 +360,7 @@ function Scenario09_WidthAndHeight() {
         testID="scenario-09-trigger" data-testid="scenario-09-trigger">
         09: W+H
       </Button>
-      <View ref={ref as any} animation="quick" width={active ? 100 : 40} height={active ? 60 : 40} bg="$purple10"
+      <View ref={ref as any} transition="quick" width={active ? 100 : 40} height={active ? 60 : 40} bg="$purple10"
         testID="scenario-09-target" data-testid="scenario-09-target" />
       <Paragraph size="$1">{active ? '100x60' : '40x40'}</Paragraph>
     </XStack>
@@ -381,7 +381,7 @@ function Scenario10_BorderRadius() {
         testID="scenario-10-trigger" data-testid="scenario-10-trigger">
         10: BorderRadius
       </Button>
-      <View ref={ref as any} animation="quick" width={40} height={40} bg="$orange10" borderRadius={active ? 20 : 0}
+      <View ref={ref as any} transition="quick" width={40} height={40} bg="$orange10" borderRadius={active ? 20 : 0}
         testID="scenario-10-target" data-testid="scenario-10-target" />
       <Paragraph size="$1">{active ? '20px' : '0'}</Paragraph>
     </XStack>
@@ -402,7 +402,7 @@ function Scenario11_BackgroundColor() {
         testID="scenario-11-trigger" data-testid="scenario-11-trigger">
         11: BgColor
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} backgroundColor={active ? '$red10' : '$blue10'}
+      <Square ref={ref as any} transition="quick" size={40} backgroundColor={active ? '$red10' : '$blue10'}
         testID="scenario-11-target" data-testid="scenario-11-target" />
       <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
@@ -423,7 +423,7 @@ function Scenario12_TextColor() {
         testID="scenario-12-trigger" data-testid="scenario-12-trigger">
         12: TextColor
       </Button>
-      <Text ref={ref as any} animation="quick" fontSize="$5" fontWeight="bold" color={active ? '$red10' : '$blue10'}
+      <Text ref={ref as any} transition="quick" fontSize="$5" fontWeight="bold" color={active ? '$red10' : '$blue10'}
         testID="scenario-12-target" data-testid="scenario-12-target">
         ABC
       </Text>
@@ -446,7 +446,7 @@ function Scenario13_BorderColor() {
         testID="scenario-13-trigger" data-testid="scenario-13-trigger">
         13: BorderColor
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="transparent" borderWidth={3}
+      <Square ref={ref as any} transition="quick" size={40} bg="transparent" borderWidth={3}
         borderColor={active ? '$red10' : '$blue10'}
         testID="scenario-13-target" data-testid="scenario-13-target" />
       <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
@@ -468,7 +468,7 @@ function Scenario14_SpringBouncy() {
         testID="scenario-14-trigger" data-testid="scenario-14-trigger">
         14: Bouncy
       </Button>
-      <Square ref={ref as any} animation="bouncy" size={40} bg="$blue10" scale={active ? 1.5 : 1}
+      <Square ref={ref as any} transition="bouncy" size={40} bg="$blue10" scale={active ? 1.5 : 1}
         testID="scenario-14-target" data-testid="scenario-14-target" />
       <Paragraph size="$1">bouncy spring</Paragraph>
     </XStack>
@@ -489,7 +489,7 @@ function Scenario15_SpringLazy() {
         testID="scenario-15-trigger" data-testid="scenario-15-trigger">
         15: Lazy
       </Button>
-      <Square ref={ref as any} animation="lazy" size={40} bg="$green10" scale={active ? 1.5 : 1}
+      <Square ref={ref as any} transition="lazy" size={40} bg="$green10" scale={active ? 1.5 : 1}
         testID="scenario-15-target" data-testid="scenario-15-target" />
       <Paragraph size="$1">lazy spring</Paragraph>
     </XStack>
@@ -510,7 +510,7 @@ function Scenario16_SpringQuick() {
         testID="scenario-16-trigger" data-testid="scenario-16-trigger">
         16: Quick
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$purple10" scale={active ? 1.5 : 1}
+      <Square ref={ref as any} transition="quick" size={40} bg="$purple10" scale={active ? 1.5 : 1}
         testID="scenario-16-target" data-testid="scenario-16-target" />
       <Paragraph size="$1">quick spring</Paragraph>
     </XStack>
@@ -531,7 +531,7 @@ function Scenario17_SpringCustom() {
         testID="scenario-17-trigger" data-testid="scenario-17-trigger">
         17: Custom
       </Button>
-      <Square ref={ref as any} animation="quick"
+      <Square ref={ref as any} transition="quick"
         // @ts-ignore
         animationConfig={{ type: 'spring', damping: 5, stiffness: 100, mass: 0.5 }}
         size={40} bg="$orange10" scale={active ? 1.5 : 1}
@@ -555,7 +555,7 @@ function Scenario18_Timing100ms() {
         testID="scenario-18-trigger" data-testid="scenario-18-trigger">
         18: 100ms
       </Button>
-      <Square ref={ref as any} animation="100ms" size={40} bg="$blue10" opacity={active ? 0.3 : 1}
+      <Square ref={ref as any} transition="100ms" size={40} bg="$blue10" opacity={active ? 0.3 : 1}
         testID="scenario-18-target" data-testid="scenario-18-target" />
       <Paragraph size="$1">timing 100ms</Paragraph>
     </XStack>
@@ -576,7 +576,7 @@ function Scenario19_Timing200ms() {
         testID="scenario-19-trigger" data-testid="scenario-19-trigger">
         19: 200ms
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$green10" opacity={active ? 0.3 : 1}
+      <Square ref={ref as any} transition="quick" size={40} bg="$green10" opacity={active ? 0.3 : 1}
         testID="scenario-19-target" data-testid="scenario-19-target" />
       <Paragraph size="$1">quick spring</Paragraph>
     </XStack>
@@ -597,7 +597,7 @@ function Scenario20_TimingWithDelay() {
         testID="scenario-20-trigger" data-testid="scenario-20-trigger">
         20: Delay
       </Button>
-      <Square ref={ref as any} animation={['quick', { delay: 300 }]} size={40} bg="$purple10" opacity={active ? 0.3 : 1}
+      <Square ref={ref as any} transition={['quick', { delay: 300 }]} size={40} bg="$purple10" opacity={active ? 0.3 : 1}
         testID="scenario-20-target" data-testid="scenario-20-target" />
       <Paragraph size="$1">300ms delay</Paragraph>
     </XStack>
@@ -619,7 +619,7 @@ function Scenario21_EnterStyle() {
         21: EnterStyle
       </Button>
       {visible && (
-        <Square ref={ref as any} animation="bouncy" size={40} bg="$blue10"
+        <Square ref={ref as any} transition="bouncy" size={40} bg="$blue10"
           enterStyle={{ opacity: 0, scale: 0.5 }}
           testID="scenario-21-target" data-testid="scenario-21-target" />
       )}
@@ -643,7 +643,7 @@ function Scenario22_ExitStyle() {
         22: ExitStyle
       </Button>
       {visible && (
-        <Square ref={ref as any} animation="bouncy" size={40} bg="$green10"
+        <Square ref={ref as any} transition="bouncy" size={40} bg="$green10"
           exitStyle={{ opacity: 0, scale: 0.5 }}
           testID="scenario-22-target" data-testid="scenario-22-target" />
       )}
@@ -667,7 +667,7 @@ function Scenario23_EnterExitCombined() {
         23: Enter+Exit
       </Button>
       {visible && (
-        <Square ref={ref as any} animation="bouncy" size={40} bg="$purple10"
+        <Square ref={ref as any} transition="bouncy" size={40} bg="$purple10"
           enterStyle={{ opacity: 0, scale: 0.5, y: -20 }}
           exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
           testID="scenario-23-target" data-testid="scenario-23-target" />
@@ -705,7 +705,7 @@ function Scenario24_RapidToggle() {
         testID="scenario-24-trigger" data-testid="scenario-24-trigger">
         24: Rapid
       </Button>
-      <Square ref={ref as any} animation="quick" size={40} bg="$orange10" scale={active ? 1.5 : 1}
+      <Square ref={ref as any} transition="quick" size={40} bg="$orange10" scale={active ? 1.5 : 1}
         testID="scenario-24-target" data-testid="scenario-24-target" />
       <Paragraph size="$1">6 toggles @ 100ms</Paragraph>
     </XStack>
@@ -733,7 +733,7 @@ function Scenario25_Interruption() {
         testID="scenario-25-trigger" data-testid="scenario-25-trigger">
         25: Interrupt
       </Button>
-      <Square ref={ref as any} animation="lazy" size={40} bg="$red10"
+      <Square ref={ref as any} transition="lazy" size={40} bg="$red10"
         x={position === 0 ? 0 : position === 1 ? 50 : 100}
         testID="scenario-25-target" data-testid="scenario-25-target" />
       <Button size="$2" onPress={() => setPosition(0)}>Reset</Button>
@@ -742,7 +742,7 @@ function Scenario25_Interruption() {
 }
 
 // ============================================================================
-// SCENARIO 26: animateOnly prop
+// SCENARIO 26: transitionOnly prop
 // ============================================================================
 function Scenario26_AnimateOnly() {
   const [active, setActive] = useState(false)
@@ -755,7 +755,7 @@ function Scenario26_AnimateOnly() {
         testID="scenario-26-trigger" data-testid="scenario-26-trigger">
         26: AnimateOnly
       </Button>
-      <Square ref={ref as any} animation="quick" animateOnly={['opacity']} size={40} bg="$blue10"
+      <Square ref={ref as any} transition="quick" transitionOnly={['opacity']} size={40} bg="$blue10"
         opacity={active ? 0.3 : 1} scale={active ? 1.5 : 1}
         testID="scenario-26-target" data-testid="scenario-26-target" />
       <Paragraph size="$1">only opacity</Paragraph>
@@ -777,7 +777,7 @@ function Scenario27_AnimationConfig() {
         testID="scenario-27-trigger" data-testid="scenario-27-trigger">
         27: Config
       </Button>
-      <Square ref={ref as any} animation="quick"
+      <Square ref={ref as any} transition="quick"
         // @ts-ignore
         animationConfig={{ type: 'spring', damping: 8, stiffness: 80 }}
         size={40} bg="$green10" scale={active ? 1.5 : 1}
@@ -801,7 +801,7 @@ function Scenario28_MultiProperty() {
         testID="scenario-28-trigger" data-testid="scenario-28-trigger">
         28: Multi
       </Button>
-      <View ref={ref as any} animation="bouncy" width={40} height={40} bg="$purple10"
+      <View ref={ref as any} transition="bouncy" width={40} height={40} bg="$purple10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         rotate={active ? '30deg' : '0deg'}
@@ -832,9 +832,9 @@ function Scenario29_NestedAnimations() {
         testID="scenario-29-trigger" data-testid="scenario-29-trigger">
         29: Nested
       </Button>
-      <View ref={outerRef as any} animation="quick" scale={active ? 1.2 : 1} padding="$1" bg="$blue5"
+      <View ref={outerRef as any} transition="quick" scale={active ? 1.2 : 1} padding="$1" bg="$blue5"
         testID="scenario-29-outer" data-testid="scenario-29-outer">
-        <Square ref={innerRef as any} animation="bouncy" size={30} bg="$blue10" opacity={active ? 0.5 : 1}
+        <Square ref={innerRef as any} transition="bouncy" size={30} bg="$blue10" opacity={active ? 0.5 : 1}
           testID="scenario-29-inner" data-testid="scenario-29-inner" />
       </View>
       <Paragraph size="$1">parent+child</Paragraph>
@@ -854,7 +854,7 @@ function Scenario30_HoverAnimation() {
       <Paragraph size="$1">30: Hover →</Paragraph>
       <View
         ref={ref as any}
-        animation="quick"
+        transition="quick"
         width={40}
         height={40}
         bg="$blue10"
@@ -872,7 +872,7 @@ function Scenario30_HoverAnimation() {
 
 // ============================================================================
 // SCENARIO 31: Per-Property Animation Configs
-// Tests: animation={['quick', { opacity: 'lazy', scale: 'bouncy' }]}
+// Tests: transition={['quick', { opacity: 'lazy', scale: 'bouncy' }]}
 // Each property should animate with its own timing/spring config
 // ============================================================================
 function Scenario31_PerPropertyConfigs() {
@@ -888,7 +888,7 @@ function Scenario31_PerPropertyConfigs() {
       </Button>
       <Square
         ref={ref as any}
-        animation={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
+        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
         size={40}
         bg="$blue10"
         opacity={active ? 0.3 : 1}
@@ -925,7 +925,7 @@ function Scenario32_PerPropertyWithInterruption() {
       </Button>
       <Square
         ref={ref as any}
-        animation={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
+        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
         size={40}
         bg="$green10"
         opacity={state === 0 ? 1 : state === 1 ? 0.5 : 0.2}
@@ -956,7 +956,7 @@ function Scenario33_MixedSpringTiming() {
       </Button>
       <View
         ref={ref as any}
-        animation={['bouncy', { opacity: 'quick', borderRadius: 'lazy' }] as any}
+        transition={['bouncy', { opacity: 'quick', borderRadius: 'lazy' }] as any}
         width={40}
         height={40}
         bg="$purple10"
@@ -988,7 +988,7 @@ function Scenario34_ComplexObjectManyProps() {
       </Button>
       <View
         ref={ref as any}
-        animation={['quick', {
+        transition={['quick', {
           opacity: 'lazy',
           scale: 'bouncy',
           width: 'lazy',
@@ -1042,7 +1042,7 @@ function Scenario35_RapidPerPropertyChanges() {
       </Button>
       <Square
         ref={ref as any}
-        animation={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
+        transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
         size={40}
         bg="$orange10"
         opacity={active ? 0.3 : 1}

@@ -28,19 +28,19 @@ const animationDescriptions = [
   {
     name: 'Bouncy',
     description: 'A bouncy spring',
-    animation: 'bouncy',
+    transition: 'bouncy',
     settings: animations.animations.bouncy,
   },
   {
     name: 'Lazy',
     description: 'A lazy, straightforward spring',
-    animation: 'lazy',
+    transition: 'lazy',
     settings: animations.animations.lazy,
   },
   {
     name: 'Quick',
     description: 'A super fast spring',
-    animation: 'quick',
+    transition: 'quick',
     settings: animations.animations.quick,
   },
 ] as const
@@ -112,7 +112,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             <CodeDemoPreParsed
               pointerEvents={disableScrollPane ? 'none' : 'auto'}
               height={disableScrollPane ? 500 : 1250}
-              animation="quick"
+              transition="quick"
               maxW={530}
               minW={530}
               rounded="$8"
@@ -195,7 +195,7 @@ export const ExampleAnimations = memo(() => {
       >
         <YStack fullscreen z={-1} bg="$background" opacity={0.5} />
         {isIntersecting ? (
-          <AnimationsDemo position={positionI} animation={animation.animation} />
+          <AnimationsDemo position={positionI} transition={animation.animation} />
         ) : null}
       </YStack>
 
@@ -264,8 +264,8 @@ export function AnimationsDemoBase(props) {
   return (
     <>
       <Square
-        animation={(props.animation || 'bouncy') as any}
-        animateOnly={['transform']}
+        transition={(props.animation || 'bouncy') as any}
+        transitionOnly={['transform']}
         onPress={onPress}
         size={104}
         borderColor="$borderColor"

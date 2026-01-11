@@ -65,7 +65,7 @@ export default function StudioSplashPage() {
                   <Link target="_blank" href="https://github.com/sponsors/natew">
                     <Button
                       mt={60}
-                      animation="quick"
+                      transition="quick"
                       bg="$color10"
                       size="$6"
                       rounded="$10"
@@ -239,7 +239,7 @@ const StudioScreen1 = memo(() => {
         <YStack key={letter} position="relative" scale={scale || 1} z={z || 0}>
           <Glow.Component>
             <YStack
-              animation={[
+              transition={[
                 'kindaBouncy',
                 {
                   opacity: {

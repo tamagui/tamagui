@@ -750,7 +750,7 @@ export function createBaseMenu({
         scope={scope || MENU_CONTEXT}
         {...contentProps}
         ref={composedRefs}
-        className={contentProps.animation ? undefined : contentProps.className}
+        className={contentProps.transition ? undefined : contentProps.className}
         {...(isWeb
           ? {
               onKeyDown: composeEventHandlers(contentProps.onKeyDown, (event) => {

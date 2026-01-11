@@ -41,7 +41,7 @@ const CustomSheet = ({ open, setOpen }) => {
 
       <Sheet
         modal
-        animation="medium"
+        transition="medium"
         open={open}
         onOpenChange={setOpen}
         snapPoints={[95]}
@@ -51,7 +51,7 @@ const CustomSheet = ({ open, setOpen }) => {
         zIndex={100_000_000}
       >
         <Sheet.Overlay
-          animation="lazy"
+          transition="lazy"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />

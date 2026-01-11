@@ -29,10 +29,10 @@ export const NativeSheetDemo = () => {
         position={position}
         onPositionChange={setPosition}
         zIndex={100_000}
-        animation="medium"
+        transition="medium"
       >
         <Sheet.Overlay
-          animation="lazy"
+          transition="lazy"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -58,14 +58,14 @@ function InnerSheet(props: SheetProps) {
   return (
     <Sheet
       native
-      animation="medium"
+      transition="medium"
       modal
       snapPoints={[90]}
       dismissOnSnapToBottom
       {...props}
     >
       <Sheet.Overlay
-        animation="medium"
+        transition="medium"
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       />

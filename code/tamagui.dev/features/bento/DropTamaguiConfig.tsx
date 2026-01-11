@@ -93,7 +93,7 @@ export const DropTamaguiConfig = () => {
         <Dialog.Portal>
           <Dialog.Overlay
             key="overlay"
-            animation="medium"
+            transition="medium"
             className="blur-medium"
             opacity={0.5}
             bg="$color1"
@@ -106,7 +106,7 @@ export const DropTamaguiConfig = () => {
             elevate
             bg="$color2"
             key="content"
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {

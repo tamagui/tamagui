@@ -69,13 +69,13 @@ export function Demo({
 
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
-          <Sheet animation="medium" modal dismissOnSnapToBottom>
+          <Sheet transition="medium" modal dismissOnSnapToBottom>
             <Sheet.Frame p="$4">
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
               bg="$shadowColor"
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
@@ -91,7 +91,7 @@ export function Demo({
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
-        animation={[
+        transition={[
           'quick',
           {
             opacity: {

@@ -12,7 +12,7 @@ describe('animation props', () => {
       <TamaguiProvider config={config} defaultTheme="light">
         <View
           nativeID="test-native-id"
-          animation="quick"
+          transition="quick"
           x={0}
           backgroundColor="red"
           margin={200}

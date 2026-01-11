@@ -46,6 +46,6 @@ export const ModalTitle = styled(H4, {
   fontFamily: '$mono',
   size: '$6',
   letterSpacing: 2,
-  animation: 'quick',
+  transition: 'quick',
   ellipsis: true,
 })

@@ -63,8 +63,8 @@ export const StudioThemesQuickPreviewSection = memo(
                 onCheckedChange={setChecked}
               >
                 <Switch.Thumb
-                  animateOnly={['transform']}
-                  animation={[
+                  transitionOnly={['transform']}
+                  transition={[
                     'quickest',
                     {
                       backgroundColor: {

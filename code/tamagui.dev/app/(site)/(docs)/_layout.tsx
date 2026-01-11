@@ -159,13 +159,13 @@ export default function DocsLayout() {
                         aria-label={`Previous page: ${previous.title}`}
                         items="center"
                         gap="$4"
-                        animation="100ms"
+                        transition="100ms"
                       >
                         <View
                           opacity={0}
                           x="$-2"
                           $group-card-hover={{ opacity: 1, x: '$0' }}
-                          animation="quickest"
+                          transition="quickest"
                         >
                           <ChevronLeft color="$color11" />
                         </View>
@@ -173,7 +173,7 @@ export default function DocsLayout() {
                         <YStack
                           x="$-4"
                           $group-card-hover={{ x: '$0' }}
-                          animation="quicker"
+                          transition="quicker"
                         >
                           <Paragraph select="none" theme="alt1" size="$5">
                             Previous
@@ -203,12 +203,12 @@ export default function DocsLayout() {
                         items="center"
                         justify="flex-end"
                         gap="$4"
-                        animation="100ms"
+                        transition="100ms"
                       >
                         <YStack
                           x="$-4"
                           $group-card-hover={{ x: '$0' }}
-                          animation="quicker"
+                          transition="quicker"
                         >
                           <Paragraph select="none" theme="alt1" size="$5">
                             Next
@@ -222,7 +222,7 @@ export default function DocsLayout() {
                           opacity={0}
                           x="$-2"
                           $group-card-hover={{ opacity: 1, x: '$0' }}
-                          animation="quickest"
+                          transition="quickest"
                         >
                           <ChevronRight color="$color11" />
                         </View>

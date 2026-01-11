@@ -149,7 +149,7 @@ export type TamaguiComponentState = {
   focus?: boolean
   focusVisible?: boolean
   focusWithin?: boolean
-  animation?: null | {
+  transition?: null | {
     style?: any
     avoidClasses?: boolean
   }
@@ -855,7 +855,7 @@ export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>
 export type ThemeTokens = `$${ThemeKeys}`
-export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<
+export type TransitionKeys = TamaguiConfig['animations'] extends AnimationDriver<
   infer Config
 >
   ? keyof Config
@@ -1276,31 +1276,31 @@ export type MatchMedia = (query: string) => MediaQueryList
 
 // createComponent props helpers
 
-// animation="bouncy"
-// animation={['bouncy', {  }]}
+// transition="bouncy"
+// transition={['bouncy', {  }]}
 // { all: 'name' }
 
 // TODO can override for better types
 export type AnimationConfigType = any
 
-export type AnimationProp =
-  | AnimationKeys
+export type TransitionProp =
+  | TransitionKeys
   | {
       [key: string]:
-        | AnimationKeys
+        | TransitionKeys
         | {
-            type: AnimationKeys
+            type: TransitionKeys
             [key: string]: any
           }
     }
   | [
-      AnimationKeys,
+      TransitionKeys,
       {
         delay?: number
         [key: string]:
-          | AnimationKeys
+          | TransitionKeys
           | {
-              type?: AnimationKeys
+              type?: TransitionKeys
               [key: string]: any
             }
           | number
@@ -2094,24 +2094,24 @@ export interface ExtendBaseTextProps {}
 
 interface ExtraBaseProps {
   /**
-   * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
-   * Pass a string animation here and it uses an animation driver to execute it.
+   * Transitions are defined using `createTamagui` typically in a tamagui.config.ts file.
+   * Pass a string transition name here and it uses an animation driver to execute it.
    *
    * See: https://tamagui.dev/docs/core/animations
    */
-  animation?: AnimationProp | null
+  transition?: TransitionProp | null
 
   /**
    * Pass an array of strings containing the long style property names
-   * which will be exclusively animated.
+   * which will be exclusively transitioned.
    */
-  animateOnly?: string[]
+  transitionOnly?: string[]
 
   /**
    * If you'd like this component to not attach to the nearest parent AnimatePresence,
    * set this to `false` and it will pass through to the next animated child.
    */
-  animatePresence?: boolean
+  transitionPresence?: boolean
 
   /**
    * Avoids as much work as possible and passes through the children with no changes.

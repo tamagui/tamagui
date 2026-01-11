@@ -49,7 +49,7 @@ export const useComponentState = (
 
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
-    (!isHOC && 'animation' in props) ||
+    (!isHOC && 'transition' in props) ||
       (props.style && hasAnimatedStyleValue(props.style))
   )
 
@@ -78,7 +78,7 @@ export const useComponentState = (
   const presence =
     (!isHOC &&
       willBeAnimated &&
-      props['animatePresence'] !== false &&
+      props['transitionPresence'] !== false &&
       animationDriver?.usePresence?.()) ||
     null
 
@@ -190,7 +190,7 @@ export const useComponentState = (
   } else {
     // on server for SSR and animation compat added the && isHydrated but perhaps we want
     // disableClassName="until-hydrated" to be more straightforward
-    // see issue if not, Button sets disableClassName to true <Button animation="" /> with
+    // see issue if not, Button sets disableClassName to true <Button transition="" /> with
     // the react-native driver errors because it tries to animate var(--color) to rbga(..)
     // no matter what if fully unmounted or on the server we use className
     // only once we hydrate do we switch to spring animation drivers or disableClassName etc

@@ -22,7 +22,7 @@ export function AnimationsDelayDemo() {
             colors.map((color, i) => (
               <Square
                 key={color}
-                animation={['200ms', { delay: i * 100 }]}
+                transition={['200ms', { delay: i * 100 }]}
                 enterStyle={{
                   opacity: 0,
                   scale: 0.5,

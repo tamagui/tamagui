@@ -13,14 +13,14 @@ export function AccordionDemo() {
           }) => (
             <>
               <Paragraph>1. Take a cold shower</Paragraph>
-              <Square transparent animation="quick" rotate={open ? '180deg' : '0deg'}>
+              <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
                 <ChevronDown size="$1" color="$color" />
               </Square>
             </>
           )}
         </Accordion.Trigger>
-        <Accordion.HeightAnimator animation="medium">
-          <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+        <Accordion.HeightAnimator transition="medium">
+          <Accordion.Content transition="medium" exitStyle={{ opacity: 0 }}>
             <Paragraph>
               Cold showers can help reduce inflammation, relieve pain, improve
               circulation, lower stress levels, and reduce muscle soreness and fatigue.
@@ -38,14 +38,14 @@ export function AccordionDemo() {
           }) => (
             <>
               <Paragraph>2. Eat 4 eggs</Paragraph>
-              <Square transparent animation="quick" rotate={open ? '180deg' : '0deg'}>
+              <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
                 <ChevronDown size="$1" color="$color" />
               </Square>
             </>
           )}
         </Accordion.Trigger>
-        <Accordion.HeightAnimator animation="medium">
-          <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+        <Accordion.HeightAnimator transition="medium">
+          <Accordion.Content transition="medium" exitStyle={{ opacity: 0 }}>
             <Paragraph>
               Eggs have been a dietary staple since time immemorial and there’s good
               reason for their continued presence in our menus and meals.

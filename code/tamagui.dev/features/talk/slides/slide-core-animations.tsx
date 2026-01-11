@@ -40,7 +40,7 @@ const animations = createAnimations({
 const snippetUsage = highlightCode(
   `export default (props) => (
   <Stack
-    animation="fast"
+    transition="fast"
     y={0}
     scale={1}
 

@@ -27,7 +27,7 @@ const CurrentToast = () => {
 
   return (
     <Toast
-      animation="200ms"
+      transition="200ms"
       key={currentToast.id}
       duration={currentToast.duration}
       enterStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
@@ -95,7 +95,7 @@ const NativeOptions = ({
         onCheckedChange={(val) => setNative(val)}
       >
         <Switch.Thumb
-          animation={[
+          transition={[
             'quick',
             {
               transform: {

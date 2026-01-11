@@ -204,7 +204,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
   })
 
   // Flaky in CI - Motion driver timing differences are too small to measure reliably
-  test.fixme('animation="quick" is faster than animation="lazy"', async ({ page }) => {
+  test.fixme('transition="quick" is faster than transition="lazy"', async ({ page }) => {
     const quickDuration = await measureSheetAnimationDuration(
       page,
       'animation-quick-trigger',
@@ -244,7 +244,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
   test.fixme(
     'animationConfig overrides animation prop (lazy+fastConfig faster than lazy)',
     async ({ page }) => {
-      // animation="lazy" + fast animationConfig should use the config
+      // transition="lazy" + fast animationConfig should use the config
       const overrideDuration = await measureSheetAnimationDuration(
         page,
         'animation-plus-config-trigger',
@@ -307,7 +307,7 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
   })
 
   // Flaky in CI - Moti driver timing differences are too small to measure reliably
-  test.fixme('animation="quick" is faster than animation="lazy"', async ({ page }) => {
+  test.fixme('transition="quick" is faster than transition="lazy"', async ({ page }) => {
     const quickDuration = await measureSheetAnimationDuration(
       page,
       'animation-quick-trigger',

@@ -412,7 +412,7 @@ const SliderTrackActive = React.forwardRef<View, SliderTrackActiveProps>(
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         size={context.size}
-        animateOnly={['left', 'top', 'right', 'bottom']}
+        transitionOnly={['left', 'top', 'right', 'bottom']}
         {...rangeProps}
         ref={composedRefs}
         {...{
@@ -554,7 +554,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         tabIndex={context.disabled ? undefined : 0}
-        animateOnly={['transform', 'left', 'top', 'right', 'bottom']}
+        transitionOnly={['transform', 'left', 'top', 'right', 'bottom']}
         {...positionalStyles}
         {...{
           [orientation.startEdge]: `${percent}%`,

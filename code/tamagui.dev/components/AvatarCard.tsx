@@ -12,7 +12,7 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
       <Link asChild href={link}>
         <Card
           tag="a"
-          animation="quickest"
+          transition="quickest"
           flex={1}
           width="$19"
           height="$11"
@@ -41,7 +41,7 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
             </XStack>
           </Card.Header>
 
-          <Card.Footer animation="quicker" x={isHovered ? 5 : 0}>
+          <Card.Footer transition="quicker" x={isHovered ? 5 : 0}>
             <ChevronRight size="$1" position="absolute" b="$4" r="$4" color="$color11" />
           </Card.Footer>
         </Card>

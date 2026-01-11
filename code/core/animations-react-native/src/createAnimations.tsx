@@ -3,7 +3,7 @@ import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
   AnimatedNumberStrategy,
   AnimationDriver,
-  AnimationProp,
+  TransitionProp,
   UniversalAnimatedNumber,
   UseAnimatedNumberReaction,
   UseAnimatedNumberStyle,
@@ -199,8 +199,8 @@ export function createAnimations<A extends AnimationsConfig>(
         >()
       )
 
-      const animateOnly = (props.animateOnly as string[]) || []
-      const hasAnimateOnly = !!props.animateOnly
+      const transitionOnly = (props.transitionOnly as string[]) || []
+      const hasTransitionOnly = !!props.transitionOnly
 
       const args = [
         JSON.stringify(style),
@@ -214,8 +214,8 @@ export function createAnimations<A extends AnimationsConfig>(
       const isThereNoNativeStyleKeys = React.useMemo(() => {
         if (isWeb) return true
         return Object.keys(style).some((key) => {
-          if (animateOnly) {
-            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
+          if (transitionOnly) {
+            return !animatedStyleKey[key] && transitionOnly.indexOf(key) === -1
           }
           return !animatedStyleKey[key]
         })
@@ -242,7 +242,7 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          if (hasAnimateOnly && !animateOnly.includes(key)) {
+          if (hasTransitionOnly && !transitionOnly.includes(key)) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -331,7 +331,7 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (value) {
-            const animationConfig = getAnimationConfig(key, animations, props.animation)
+            const animationConfig = getAnimationConfig(key, animations, props.transition)
 
             let resolve
             const promise = new Promise<void>((res) => {
@@ -447,20 +447,20 @@ function getInterpolated(current: number, next: number, postfix = 'deg') {
 function getAnimationConfig(
   key: string,
   animations: AnimationsConfig,
-  animation?: AnimationProp
+  transition?: TransitionProp
 ): AnimationConfig {
-  if (typeof animation === 'string') {
-    return animations[animation]
+  if (typeof transition === 'string') {
+    return animations[transition]
   }
 
   let type = ''
   let extraConf: any
   const shortKey = transformShorthands[key]
 
-  if (Array.isArray(animation)) {
-    type = animation[0] as string
-    const animationOptions = animation[1]
-    const conf = animationOptions?.[key] ?? animationOptions?.[shortKey]
+  if (Array.isArray(transition)) {
+    type = transition[0] as string
+    const transitionOptions = transition[1]
+    const conf = transitionOptions?.[key] ?? transitionOptions?.[shortKey]
     if (conf) {
       if (typeof conf === 'string') {
         type = conf
@@ -469,13 +469,13 @@ function getAnimationConfig(
         extraConf = conf
       }
     }
-    // e.g., animation={['bouncy', { delay: 100 }]}
-    const delay = animationOptions?.delay
+    // e.g., transition={['bouncy', { delay: 100 }]}
+    const delay = transitionOptions?.delay
     if (typeof delay === 'number' && !extraConf?.delay) {
       extraConf = { ...extraConf, delay }
     }
   } else {
-    const val = animation?.[key] ?? animation?.[shortKey]
+    const val = transition?.[key] ?? transition?.[shortKey]
     type = val?.type
     extraConf = val
   }

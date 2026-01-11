@@ -88,10 +88,10 @@ const SandboxThemeChildDynamic = React.memo(({ level }: { level: number }) => {
   return (
     <Square
       id={`${TEST_IDS.dynamicSquare}-${level}`}
-      animation="bouncy"
+      transition="bouncy"
       size={20}
       backgroundColor="$color10"
-      animateOnly={['backgroundColor']}
+      transitionOnly={['backgroundColor']}
     />
   )
 })

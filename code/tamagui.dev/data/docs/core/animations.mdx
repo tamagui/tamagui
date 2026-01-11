@@ -249,7 +249,7 @@ The spring-based animation drivers have expensive hooks that would degrade runti
 performance if present on every component. As a workaround, the animation hooks
 are called conditionally on whether the animation key is present in the props object.
 
-So, `<Square animation={isActive ? 'bouncy' : null} />` rather than
+So, `<Square transition={isActive ? 'bouncy' : null} />` rather than
 `<Square {...isActive && { animation: 'bouncy' }} />`.
 
 If you'd like to remove or add an animation prop after a component has already rendered, you'd have
@@ -280,7 +280,7 @@ import { YStack } from 'tamagui'
 
 export default () => (
   <YStack
-    animation={{
+    transition={{
       // only x and y will apply animations
       x: 'bouncy',
       y: {
@@ -303,7 +303,7 @@ import { YStack } from 'tamagui'
 
 export default () => (
   <YStack
-    animation={[
+    transition={[
       // all attributes get "bouncy"
       'bouncy',
       // these are customized
@@ -331,7 +331,7 @@ export default () => (
     {[0, 1, 2, 3].map((i) => (
       <Square
         key={i}
-        animation={['bouncy', { delay: i * 100 }]}
+        transition={['bouncy', { delay: i * 100 }]}
         enterStyle={{ opacity: 0, scale: 0.5, y: 20 }}
         size={50}
         bg="$color10"
@@ -369,7 +369,7 @@ export const MyComponent = ({ isVisible }) => (
     {isVisible && (
       <View
         key="my-square"
-        animation="bouncy"
+        transition="bouncy"
         backgroundColor="green"
         size={50}
         enterStyle={{
@@ -476,7 +476,7 @@ export function Demo() {
       alignItems="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
-        <GalleryItem key={page} animation="slowest" going={going}>
+        <GalleryItem key={page} transition="slowest" going={going}>
           <Image src={photos[imageIndex]} width={500} height={300} />
         </GalleryItem>
       </AnimatePresence>
@@ -521,7 +521,7 @@ should keep `animation` always set on the component props. You can disable it
 like so:
 
 ```tsx
-<View animation={condition ? 'animation-name' : null} />
+<View transition={condition ? 'animation-name' : null} />
 ```
 
 Note that because of this constraint, you also will see an error if you add the

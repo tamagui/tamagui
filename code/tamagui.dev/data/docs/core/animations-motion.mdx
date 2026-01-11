@@ -104,7 +104,7 @@ Motion animations support both spring and tween (timing) animations:
 You can add animation delays using the array syntax:
 
 ```tsx
-<Square animation={['bouncy', { delay: 200 }]} />
+<Square transition={['bouncy', { delay: 200 }]} />
 ```
 
 The delay is specified in milliseconds and is converted to seconds for Motion internally.
@@ -201,7 +201,7 @@ export default createTamagui({
 // Usage in components
 export const MyComponent = () => (
   <YStack
-    animation="bouncy"
+    transition="bouncy"
     hoverStyle={{
       scale: 1.05,
     }}
@@ -221,7 +221,7 @@ Motion allows you to animate transform properties independently:
 
 ```tsx
 <YStack
-  animation={{
+  transition={{
     x: 'quick',      // Animate x with quick spring
     y: 'bouncy',     // Animate y with bouncy spring
     scale: '100ms',  // Animate scale with 100ms tween
