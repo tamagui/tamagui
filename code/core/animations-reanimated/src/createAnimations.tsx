@@ -321,6 +321,7 @@ const AnimatedText = createWebAnimatedComponent('span')
  * - Exit animations with proper completion callbacks
  * - Dynamic theme value resolution
  * - Transform property animations
+ * - avoidReRenders optimization for hover/press/focus states
  *
  * @example
  * ```tsx
@@ -348,6 +349,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     Text: isWeb ? AnimatedText : Animated.Text,
     isReactNative: true,
     supportsCSS: false,
+    avoidReRenders: true,
     animations,
     usePresence,
     ResetPresence,
@@ -441,7 +443,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     // useAnimations - Main animation hook for components
     // =========================================================================
     useAnimations(animationProps) {
-      const { props, presence, style, componentState } = animationProps
+      const { props, presence, style, componentState, useStyleEmitter } = animationProps
 
       // Extract animation key
       const animationKey = Array.isArray(props.transition)
@@ -460,6 +462,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // Presence state for exit animations
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+
+      // =========================================================================
+      // avoidRerenders: SharedValues for style updates without re-renders
+      // =========================================================================
+      const animatedTargetsRef = useSharedValue<Record<string, unknown> | null>(null)
+      const staticTargetsRef = useSharedValue<Record<string, unknown> | null>(null)
+      const transformTargetsRef = useSharedValue<Array<Record<string, unknown>> | null>(null)
 
       // Separate styles into animated and static
       const { animatedStyles, staticStyles } = useMemo(() => {
@@ -576,6 +585,69 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         return { baseConfig: base, propertyConfigs: configs }
       }, [animationKey, isHydrating, props.transition, animatedStyles])
 
+      // Store config in ref for worklet access
+      const configRef = useRef({ baseConfig, propertyConfigs, disableAnimation, isHydrating })
+      configRef.current = { baseConfig, propertyConfigs, disableAnimation, isHydrating }
+
+      // =========================================================================
+      // avoidRerenders: Register style emitter callback
+      // When hover/press/etc state changes, this is called instead of re-rendering
+      // =========================================================================
+      useStyleEmitter?.((nextStyle: Record<string, unknown>) => {
+        const transitionOnly = props.transitionOnly as string[] | undefined
+        const animated: Record<string, unknown> = {}
+        const statics: Record<string, unknown> = {}
+        const transforms: Array<Record<string, unknown>> = []
+
+        for (const key in nextStyle) {
+          const rawValue = nextStyle[key]
+          const value = resolveDynamicValue(rawValue, isDark)
+
+          if (value === undefined) continue
+
+          if (configRef.current.disableAnimation) {
+            statics[key] = value
+            continue
+          }
+
+          if (key === 'transform' && Array.isArray(value)) {
+            for (const t of value as Record<string, unknown>[]) {
+              if (t && typeof t === 'object') {
+                const tKey = Object.keys(t)[0]
+                const tVal = t[tKey]
+                if (typeof tVal === 'number' || typeof tVal === 'string') {
+                  transforms.push(t)
+                }
+              }
+            }
+            continue
+          }
+
+          if (canAnimateProperty(key, value, transitionOnly)) {
+            animated[key] = value
+          } else {
+            statics[key] = value
+          }
+        }
+
+        // Update SharedValues - this triggers worklet without React re-render
+        animatedTargetsRef.value = animated
+        staticTargetsRef.value = statics
+        transformTargetsRef.value = transforms
+
+        if (
+          process.env.NODE_ENV === 'development' &&
+          props.debug &&
+          props.debug !== 'profile'
+        ) {
+          console.info('[animations-reanimated] useStyleEmitter update', {
+            animated,
+            statics,
+            transforms,
+          })
+        }
+      })
+
       // Handle exit animation completion
       // Use timeout based on calculated animation duration
       React.useEffect(() => {
@@ -596,19 +668,37 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         const result: Record<string, any> = {}
+        const config = configRef.current
 
-        // Animate regular properties
-        for (const key in animatedStyles) {
-          if (key === 'transform') continue
+        // Check if we have avoidRerenders updates
+        const hasEmitterUpdates = animatedTargetsRef.value !== null
 
-          const targetValue = animatedStyles[key]
-          const config = propertyConfigs[key] ?? baseConfig
-          result[key] = applyAnimation(targetValue as number, config)
+        // Use emitter values if available, otherwise use React state values
+        const animatedValues = hasEmitterUpdates ? animatedTargetsRef.value! : animatedStyles
+        const staticValues = hasEmitterUpdates ? staticTargetsRef.value! : {}
+
+        // Include static values from emitter (for hover/press style changes)
+        for (const key in staticValues) {
+          result[key] = staticValues[key]
         }
 
+        // Animate regular properties
+        for (const key in animatedValues) {
+          if (key === 'transform') continue
+
+          const targetValue = animatedValues[key]
+          const propConfig = config.propertyConfigs[key] ?? config.baseConfig
+          result[key] = applyAnimation(targetValue as number, propConfig)
+        }
+
+        // Handle transforms
+        const transforms = hasEmitterUpdates
+          ? transformTargetsRef.value
+          : animatedStyles.transform
+
         // Animate transform properties with validation
-        if (animatedStyles.transform && Array.isArray(animatedStyles.transform)) {
-          const validTransforms = (animatedStyles.transform as Record<string, unknown>[])
+        if (transforms && Array.isArray(transforms)) {
+          const validTransforms = (transforms as Record<string, unknown>[])
             .filter((t) => {
               // Validate transform object has at least one key with a numeric value
               if (!t || typeof t !== 'object') return false
@@ -620,8 +710,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             .map((t) => {
               const transformKey = Object.keys(t)[0]
               const targetValue = t[transformKey]
-              const config = propertyConfigs[transformKey] ?? baseConfig
-              return { [transformKey]: applyAnimation(targetValue as number, config) }
+              const propConfig = config.propertyConfigs[transformKey] ?? config.baseConfig
+              return { [transformKey]: applyAnimation(targetValue as number, propConfig) }
             })
 
           if (validTransforms.length > 0) {

@@ -21,6 +21,7 @@ export type TransitionConfig = SpringConfig | TimingConfig;
 * - Exit animations with proper completion callbacks
 * - Dynamic theme value resolution
 * - Transform property animations
+* - avoidReRenders optimization for hover/press/focus states
 *
 * @example
 * ```tsx
