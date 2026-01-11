@@ -20,6 +20,7 @@ demoName: Popover
     `Optional arrow to point to content.`,
     `Keeps within bounds of page.`,
     `Can be placed into 12 anchor positions.`,
+    `Automatic transform-origin for scale animations.`,
   ]}
 />
 
@@ -322,6 +323,45 @@ Used to display the content of the popover.
     },
   ]}
 />
+
+#### Transform Origin
+
+Popover.Content automatically calculates the correct CSS `transform-origin` based
+on the current placement and arrow position. This means scale animations will
+naturally "grow" from the anchor point:
+
+```tsx
+<Popover.Content
+  animation="quick"
+  enterStyle={{ scale: 0.9, opacity: 0 }}
+  exitStyle={{ scale: 0.9, opacity: 0 }}
+>
+  {/* Content scales from the arrow/anchor point */}
+</Popover.Content>
+```
+
+The transform origin updates automatically if the popover flips to a different
+placement due to viewport constraints.
+
+#### CSS Custom Properties
+
+Popover.Content exposes several CSS custom properties on web for advanced styling:
+
+| Property | Description |
+|----------|-------------|
+| `--tamagui-popper-available-width` | Available width within viewport |
+| `--tamagui-popper-available-height` | Available height within viewport |
+| `--tamagui-popper-anchor-width` | Width of the trigger/anchor element |
+| `--tamagui-popper-anchor-height` | Height of the trigger/anchor element |
+
+These can be used to create content that matches the anchor size or responds to
+available space:
+
+```tsx
+<Popover.Content style={{ width: 'var(--tamagui-popper-anchor-width)' }}>
+  {/* Content matches trigger width */}
+</Popover.Content>
+```
 
 ### Popover.Anchor
 

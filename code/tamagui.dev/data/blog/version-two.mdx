@@ -144,6 +144,41 @@ All animation drivers now support delays:
 
 This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
+#### Popover Transform Origin
+
+Popover and Tooltip now automatically calculate the correct CSS `transform-origin`
+based on placement and arrow position. This means scale animations naturally
+"grow" from the anchor point where the content connects to the trigger.
+
+```tsx
+<Popover placement="bottom">
+  <Popover.Trigger asChild>
+    <Button>Open</Button>
+  </Popover.Trigger>
+  <Popover.Content
+    animation="quick"
+    enterStyle={{ scale: 0.9, opacity: 0 }}
+    exitStyle={{ scale: 0.9, opacity: 0 }}
+  >
+    {/* Content scales from top center, near the trigger */}
+    <Popover.Arrow />
+    {/* ... */}
+  </Popover.Content>
+</Popover>
+```
+
+The transform origin adjusts automatically based on the final placement - if
+the popover flips from `bottom` to `top`, the origin updates accordingly. This
+creates polished, native-feeling animations without any manual configuration.
+
+Popover.Content also now exposes CSS custom properties for the available space
+and anchor dimensions, useful for advanced sizing:
+
+- `--tamagui-popper-available-width`
+- `--tamagui-popper-available-height`
+- `--tamagui-popper-anchor-width`
+- `--tamagui-popper-anchor-height`
+
 #### Web-aligned Image and Input Components
 
 Input and Image now follow web-aligned APIs, with some old props supported but
