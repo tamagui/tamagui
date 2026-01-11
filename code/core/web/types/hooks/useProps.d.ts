@@ -12,7 +12,7 @@ type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noCla
     noMedia?: boolean;
 };
 export type PropsWithoutMediaStyles<A> = {
-    [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
+    [Key in keyof A as Key extends `$${string}` ? never : Key]?: A[Key];
 };
 type PropsLikeObject = (ViewProps & Record<string, any>) | Object;
 type StyleLikeObject = (ViewStyle & Record<string, any>) | Object;

@@ -1,5 +1,5 @@
-import type { GetProps, StackStyleBase, TamaguiElement } from "@tamagui/web";
-import * as React from "react";
+import type { GetProps, StackStyleBase, TamaguiElement } from '@tamagui/web';
+import * as React from 'react';
 export type ToggleStylesBase = StackStyleBase & {
     color?: string;
 };
