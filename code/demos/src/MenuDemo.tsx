@@ -35,9 +35,6 @@ export function MenuDemo() {
   return (
     <>
       <Menu
-        offset={{
-          crossAxis: 25,
-        }}
         allowFlip
         placement="bottom"
       >
@@ -47,10 +44,11 @@ export function MenuDemo() {
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
-            style={{ paddingHorizontal: 0, backgroundColor: '$color1' }}
+            style={{ paddingHorizontal: 0 }}
             borderWidth={1}
             items="flex-start"
             borderColor="$borderColor"
+            transformOrigin="center top"
             enterStyle={{ scale: 0.4, opacity: 0, y: -10 }}
             exitStyle={{ scale: 0.6, opacity: 0, y: -5 }}
             animation="menu"
@@ -125,7 +123,7 @@ export function MenuDemo() {
                   transformOrigin="left top"
                   elevation="$5"
                   scale={1.02}
-                  background="$color1"
+                  bg="$color1"
                 >
                   <Menu.Item
                     onSelect={onSelect}
