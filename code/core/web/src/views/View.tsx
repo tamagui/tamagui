@@ -22,7 +22,6 @@ export const View = createComponent<
   ViewNonStyleProps,
   ViewStylePropsBase
 >({
-  componentName: 'View',
   acceptsClassName: true,
   defaultProps: stackDefaultStyles,
   validStyles,
