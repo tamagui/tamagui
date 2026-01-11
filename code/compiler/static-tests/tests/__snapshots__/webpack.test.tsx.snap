@@ -14,7 +14,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _tr-0hover-scale21281 _pos-static _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red _bxsh-0px0px10pxr538535358 test1"
+          class="_tr-0hover-scale21281 _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red _bxsh-0px0px10pxr538535358 test1"
           rounded="100"
         >
           <span
@@ -46,10 +46,10 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who "
         />
         <div
-          class="is_View ease-in-out-top _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px "
+          class="ease-in-out-top _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px "
         >
           <span
             class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -80,10 +80,10 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who "
         />
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top "
         >
           <span
             class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -114,10 +114,10 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
         >
           <div
-            class="is_View hello-world _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+            class="hello-world _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
           />
         </div>
         <div
@@ -143,7 +143,7 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
         >
           <span
             class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -174,7 +174,7 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-red "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-red "
         >
           <span
             class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -205,12 +205,12 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pr-11px _pl-11px _pb-10px _w-6637"
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pr-11px _pl-11px _pb-10px _w-6637"
           maxw="30%"
           minw="500"
         >
           <div
-            class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _h-10px _w-10px "
+            class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _h-10px _w-10px "
           />
         </div>
         <div
@@ -236,13 +236,13 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pos-relative _inset-0px "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pos-relative _inset-0px "
         >
           <div
-            class="is_View _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _bg-red"
+            class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _bg-red"
           >
             <div
-              class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pos-relative _inset-0px _bg-white _col-blue"
+              class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pos-relative _inset-0px _bg-white _col-blue"
             />
           </div>
         </div>
@@ -269,7 +269,7 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pt-15px _pb-15px home-top-dish "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pt-15px _pb-15px home-top-dish "
         />
         <div
           style="display: contents;"
@@ -330,7 +330,7 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _tr- _o-1 "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _tr- _o-1 "
         />
         <div
           style="display: contents;"
@@ -355,7 +355,7 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _bg-0hover-red _bg-0active-blue _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column"
+          class="_bg-0hover-red _bg-0active-blue _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column"
         />
         <div
           style="display: contents;"
@@ -408,7 +408,7 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _pos-static _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red"
+          class="_dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red"
         />
         <div
           style="display: contents;"
@@ -433,7 +433,7 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fw-wrap _fd-row _gap-t-space-2 "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fw-wrap _fd-row _gap-t-space-2 "
         >
           <span
             class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -464,7 +464,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fw-wrap _fd-row"
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fw-wrap _fd-row"
           items="center"
           justify="space-between"
         >
@@ -497,7 +497,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fw-nowrap _fd-row"
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fw-nowrap _fd-row"
           items="center"
           justify="space-between"
         >
@@ -530,7 +530,7 @@ exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _dsp-flex _bxs-border-box _mih-0px _miw-0px _fd-column _fw-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start "
+          class="_dsp-flex _bxs-border-box _mih-0px _miw-0px _fd-column _fw-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start "
         >
           <span
             class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
@@ -561,12 +561,12 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _pos-static _dsp-flex _ai-stretch _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _fb-10037 _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-10037 _bg-background"
+          class="_pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _dsp-flex _ai-stretch _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _fb-10037 _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-10037 _bg-background"
           maxw="100%"
           rounded="$0"
         >
           <div
-            class="is_View _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _fw-wrap _gap-0px"
+            class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _fw-wrap _gap-0px"
             justify="flex-start"
           >
             <span
@@ -599,12 +599,12 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _pos-static _dsp-flex _ai-stretch _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _fb-auto _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-10037 _bg-background"
+          class="_pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _dsp-flex _ai-stretch _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _fb-auto _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-10037 _bg-background"
           maxw="100%"
           rounded="$0"
         >
           <div
-            class="is_View _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _fw-wrap _gap-0px"
+            class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _fw-wrap _gap-0px"
             justify="center"
           >
             <span
@@ -637,7 +637,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="is_View _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fw-_sm_nowrap _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fw-wrap _gap-t-space-2 _fd-row "
+          class="_pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fw-_sm_nowrap _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fw-wrap _gap-t-space-2 _fd-row "
         >
           <span
             class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
