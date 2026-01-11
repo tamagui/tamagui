@@ -7,42 +7,25 @@ better polymorphism:
 
 - did we remove onlyAllowShorthands? seems a bit aggressive
 
-- remove group auto-index stuff, its not really doable with react
-  - https://github.com/tamagui/tamagui/pull/2163
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
 - v2 useTheme({ name: '' }) should remove since .get() doesnt match
 - release v5 config now
 
 - document single-instance + scope for tooltip/dialog/popove
 - animation => transition
-- rem => https://github.com/tamagui/tamagui/pull/3109
 - fix toggle / multiple https://github.com/tamagui/tamagui/pull/3362
 
 potentially:
 
-- progress headless
-  - https://github.com/tamagui/tamagui/pull/2635
-  - demo https://github.com/tamagui/tamagui/pull/2717
-- accordion headless
-  - https://github.com/tamagui/tamagui/pull/2598
-- forgot we had headless menu
-  - https://github.com/tamagui/tamagui/pull/1978
 - popper origin/size
   - https://github.com/tamagui/tamagui/pull/2734/files
-  - older version https://github.com/tamagui/tamagui/pull/2723
 
 - tooltip follow
   - we did land scoped tooltip and better position support
 
-see if claude can get working well:
-
-  - input adornment https://github.com/tamagui/tamagui/pull/1654
-  - headless list item https://github.com/tamagui/tamagui/pull/2458
-
 pre v2:
 
   - useTheme().x.val may have bug on light/dark switch
-  - https://github.com/tamagui/tamagui/issues/3322
   - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
   - react native 78 dialogs not working
     - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
@@ -271,7 +254,6 @@ v3:
     - keep it simple, align to web props as much as possible
   <!-- - swap image-next => image -->
   - make sure webContainerType is "right" - probably not `normal` default
-    - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
   - we should fix "tag" and have it so you can pass typed props to the tag
     - tag => as?
     - tag={['a', { href: '' }]}
