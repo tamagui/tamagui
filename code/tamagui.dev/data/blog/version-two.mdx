@@ -82,6 +82,20 @@ The breaking changes outside of deprecations are:
   drag and drop, clipboard, and scroll events.
 - Move from ThemeableStack to View for most base components used in UI
 
+#### Colors
+
+`@tamagui/colors` has been updated to Radix v3 colors (hex format). To preserve
+backwards compatibility, existing v1-v4 theme configurations now use
+`@tamagui/colors/legacy` which contains the original Radix v2 colors (HSL
+format). Only v5 themes use the new colors.
+
+If you have custom themes importing from `@tamagui/colors` and want to keep the
+original colors, change your import to:
+
+```tsx
+import { blue, blueDark, ... } from '@tamagui/colors/legacy'
+```
+
 Things deprecated in version one that are now gone:
 
 - Removed `space` and `spaceDirection` props in favor of gap.

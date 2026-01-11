@@ -5,6 +5,11 @@
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "legacy": ["./types/legacy.d.ts"]
+    }
+  },
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [
@@ -36,6 +41,18 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./legacy": {
+      "react-native": {
+        "module": "./dist/esm/legacy.native.js",
+        "import": "./dist/esm/legacy.native.js",
+        "require": "./dist/cjs/legacy.native.js"
+      },
+      "types": "./types/legacy.d.ts",
+      "module": "./dist/esm/legacy.mjs",
+      "import": "./dist/esm/legacy.mjs",
+      "require": "./dist/cjs/legacy.cjs",
+      "default": "./dist/cjs/legacy.native.js"
     }
   },
   "publishConfig": {
