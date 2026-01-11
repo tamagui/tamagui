@@ -16,6 +16,7 @@ import {
 
 import { PopoverDemo } from '../../demos/src/PopoverDemo'
 import { DialogDemo } from '../../demos/src/DialogDemo'
+import { TestPopoverTransformOrigin } from '../use-cases/TestPopoverTransformOrigin'
 import { animationsMotion } from '../config/tamagui/animationMotion'
 import { animations as animationsMoti } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
@@ -140,8 +141,9 @@ const ThemeDebug = () => {
 export function SandboxSandbox() {
   return (
     <>
-      {/* Test accent sub-theme pattern */}
-      <AnimationDelayDemo />
+      {/* Test transformOrigin for Popover */}
+      <TestPopoverTransformOrigin />
+      {/* <AnimationDelayDemo /> */}
       {/* <ThemeAccent /> */}
       {/* <Motion /> */}
       {/* <DialogDemo /> */}
