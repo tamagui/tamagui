@@ -1,3 +1,4 @@
+export { AnimationComprehensiveCase } from './AnimationComprehensiveCase'
 export { Benchmark } from './Benchmark'
 export { ButtonCircular } from './ButtonCircular'
 export { ButtonCustom } from './ButtonCustom'
