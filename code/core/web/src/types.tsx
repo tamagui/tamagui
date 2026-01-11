@@ -2403,6 +2403,12 @@ export type InferStyledProps<
   ? GetProps<A>
   : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>, {}>
 
+/** Like InferStyledProps but returns only style props (no non-styled props or variants). */
+export type InferStyleProps<
+  A extends StylableComponent,
+  B extends StaticConfigPublic,
+> = WithThemeShorthandsPseudosMedia<GetBaseStyles<A, B>, {}>
+
 export type GetProps<A extends StylableComponent> = A extends {
   __tama: [
     infer Props,
