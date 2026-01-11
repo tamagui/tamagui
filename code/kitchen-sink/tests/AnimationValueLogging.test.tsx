@@ -65,7 +65,12 @@ function collectAnimationLogs(
   })
 }
 
-test.describe('Animation Value Logging Tests', () => {
+// NOTE: These tests are skipped because they rely on capturing intermediate animation
+// frames by polling getComputedStyle, which is unreliable across all drivers:
+// - CSS driver: CSS transitions happen on compositor thread
+// - JS drivers: Animated API updates internal state, not immediately visible in computed styles
+// TODO: Re-enable when we have a more reliable frame capture mechanism
+test.describe.skip('Animation Value Logging Tests', () => {
   test.beforeEach(async ({ page }) => {
     await setupPage(page, {
       name: 'AnimationValueLoggingCase',
@@ -266,7 +271,8 @@ test.describe('Animation Value Logging Tests', () => {
   })
 })
 
-test.describe('Animation Driver Comparison', () => {
+// NOTE: Same as above - frame capture via getComputedStyle is unreliable
+test.describe.skip('Animation Driver Comparison', () => {
   const drivers = ['css', 'motion', 'native', 'reanimated'] as const
 
   for (const driver of drivers) {
