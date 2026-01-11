@@ -14,11 +14,6 @@ v2:
 
 - document single-instance + scope for tooltip/dialog/popover (takeout3 does this for tooltip for example)
 
-- remove group auto-index stuff, its not really doable with react
-  - https://github.com/tamagui/tamagui/pull/2163
-
-- make sure onlyAllowShorthands wasnt removed
-
 - <Button render={} /> i started a pr we should try and move from tag => render fully, but render can take string as a simple option
 
 - seems css driver needs love and a bit of testing
@@ -69,30 +64,14 @@ as part of this we should have a new animation-helpers package that is just used
       - https://github.com/gcoakleyjr/React19-Tamagui
   - ensure onlyAllowShorthands changes types properly
   - tooltip: expects zIndex but shorthand overrides and doesn't work
-  - https://github.com/tamagui/tamagui/issues/3322
   - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
   - fix toggle / multiple https://github.com/tamagui/tamagui/pull/3362
   - seems <Switch checked defaultChecked> isnt showing in the checked position
-  - <Theme name="dark"> with switch, the thumb is not picking up the right surface color, must be a multiple-nested theme issue
 
 ---
 
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
 - v2 useTheme({ name: '' }) should remove since .get() doesnt match
-- release v5 config now
-
-potentially:
-
-- popper origin/size
-  - https://github.com/tamagui/tamagui/pull/2734/files
-
-see if claude can get working well:
-
-  - input adornment https://github.com/tamagui/tamagui/pull/1654
-  - headless list item https://github.com/tamagui/tamagui/pull/2458
-
-- tooltip follow
-  - we did land scoped tooltip and better position support
 
 pre v2:
 
@@ -187,7 +166,6 @@ animations improvements:
     - we can: pass in scrollable node selector
     - do logic to determine if its actually scrollable
 
-- Dialog.Overlay shouldn't need to define key for animation
 - apply visibility hidden to fully hidden popover for perf gains
 
 - refresh site hero:
@@ -209,7 +187,6 @@ animations improvements:
 - escape on tamagui sheet doesn't close in general keyboard accessibility
   - check radix sheet and compare and improve
 
-- eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
 - announcement
 
 - group props require the prop key to be stable like animations
@@ -266,8 +243,7 @@ v3:
     - rather than wrapping react-native-web we implement our own
     - keep it simple, align to web props as much as possible
   <!-- - swap image-next => image -->
-  - make sure webContainerType is "right" - probably not `normal` default
-    - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
+  - make sure webContainerType is "right" - probably not `normal` default (currently `inline-size`)
   - we should fix "tag" and have it so you can pass typed props to the tag
     - tag => as?
     - tag={['a', { href: '' }]}
@@ -285,7 +261,6 @@ v3:
   - Cleanup Select/ListItem
     - v2-3 ListItem simplification esp for performance of Select
     - fix Select hover/type/performance
-  - AnimatePresence: remove deprecated props in favor of `custom`
 
 potential
 
@@ -293,11 +268,6 @@ potential
 
 is this a bug? the is_static conditional is odd, maybe backward
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
-
-- config v5
-
-  - aligned setting to react native layout mode
-  - tokens aligned to tailwind
 
 ---
 
@@ -336,20 +306,13 @@ createCore<CustomTypes>({
 
 - looks like our upgrade to 1.114 added virtualkeyboardpolicy="manual" which broke the auto keyboard appearance on android web, working on a quick fix but wanted to flag
 
-- deeply nested themeInverse needs a fix see kitchen sink squares
-
 - nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
 - button media queries break due to useStyle hook
 - algolia creds
-- can skip a ton of CSS by disabling prefers color theme setting
-  - so long as they use next-theme, or vxrn/color-scheme
 - uniswap/tamagui fixes, see uniswap section
   - the platform-web type issues should be relatively easy
   - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
-
-- can skip a ton of CSS by disabling prefers color theme setting
-  - so long as they use next-theme, or vxrn/color-scheme
 
 ---
 
@@ -367,8 +330,6 @@ const Context = createStyledContext({
   - we should try and redo FocusScope to not cloneElement at all and instead wrap with an element + display: contents
 
 ---
-
-- as long as you use the nextjs or other new color scheme helpers they always add t_dark/t_light on first render so as long as youre ok with dark mode not working for js-off users, you could turn default the tamagui/config v4 to shouldAddPrefersColorThemes: false
 
 - small win: `useTheme()` could take a theme name to use a diff theme than the current one
 
@@ -404,7 +365,7 @@ const Context = createStyledContext({
 - move from useMedia match.addListener to addEventListener
 - media query height taking into account the "safe height" is important
 - https://linear.app/uniswap/issue/EXT-925/tamagui-error-breaking-the-extension
-- document Popover.Anchor
+- document Popover.Anchor (implemented, needs docs)
 - Sometimes press getting stuck still on uniswap moonpay flow
 - Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
 
