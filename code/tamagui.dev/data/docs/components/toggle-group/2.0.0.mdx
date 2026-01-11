@@ -144,6 +144,11 @@ export default () => {
       default: `false`,
     },
     {
+      name: 'toggledStyle',
+      type: 'object',
+      description: `Style object applied when the item is in its active/pressed state. Accepts standard style properties like backgroundColor, color, etc.`,
+    },
+    {
       name: 'unstyled',
       type: 'boolean',
       default: 'false',
@@ -152,19 +157,24 @@ export default () => {
   ]}
 />
 
-When it is active, it will receive an `active` prop set to true. This means you can customize the active styles like so:
+### Styling Active State
+
+You can customize the active/pressed state using `toggledStyle`:
 
 ```tsx
-import { ToggleGroup } from '@tamagui/toggle-group'
-import { styled } from 'tamagui'
+// Inline usage
+<ToggleGroup.Item
+  value="left"
+  toggledStyle={{ backgroundColor: '$green9', color: '$yellow9' }}
+>
+  Left
+</ToggleGroup.Item>
 
-const MyToggleGroupItem = styled(ToggleGroup.Item, {
-  variants: {
-    active: {
-      true: {
-        backgroundColor: 'red'
-      },
-    },
+// Or via styled()
+const GreenItem = styled(ToggleGroup.Item, {
+  toggledStyle: {
+    backgroundColor: '$green9',
+    color: '$yellow9',
   },
 })
 ```
