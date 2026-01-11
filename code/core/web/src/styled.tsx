@@ -15,9 +15,11 @@ import type {
   StyledContext,
   TamaDefer,
   TamaguiComponent,
+  TextStylePropsBase,
   ThemeValueGet,
   VariantDefinitions,
   VariantSpreadFunction,
+  WithThemeShorthandsPseudosMedia,
 } from './types'
 import type { Text } from './views/Text'
 
@@ -76,9 +78,9 @@ export function styled<
         [Key in keyof Accepted]?:
           | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
           | (Accepted[Key] extends 'style'
-              ? Partial<InferStyledProps<ParentComponent, StyledConfig>>
+              ? Partial<WithThemeShorthandsPseudosMedia<ParentStylesBase, {}>>
               : Accepted[Key] extends 'textStyle'
-                ? Partial<InferStyledProps<typeof Text, StyledConfig>>
+                ? Partial<WithThemeShorthandsPseudosMedia<TextStylePropsBase, {}>>
                 : Omit<ThemeValueGet<Accepted[Key]>, 'unset'>)
       }
     : {}
