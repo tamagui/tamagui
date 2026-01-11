@@ -408,7 +408,9 @@ export function Popper(props: PopperProps) {
       arrowStyle: middlewareData.arrow,
       onArrowSize: setArrowSize,
       hasFloating: middlewareData.checkFloating?.hasFloating,
-      transformOrigin: middlewareData.transformOrigin as { x: string; y: string } | undefined,
+      transformOrigin: middlewareData.transformOrigin as
+        | { x: string; y: string }
+        | undefined,
       open: !!open,
       ...floating,
     } satisfies PopperContextValue
