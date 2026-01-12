@@ -29,6 +29,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/cubic-bezier-animator": "workspace:*",
     "@tamagui/use-presence": "workspace:*",

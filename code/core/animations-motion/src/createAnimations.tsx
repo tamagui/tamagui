@@ -1,3 +1,4 @@
+import { normalizeTransition } from '@tamagui/animation-helpers'
 import {
   type AnimatedNumberStrategy,
   type AnimationDriver,
@@ -39,6 +40,15 @@ type AnimationConfig = ValueTransition
 type MotionAnimatedNumberStyle = {
   getStyle: (cur: number) => Record<string, unknown>
   motionValue: MotionValue<number>
+}
+
+/**
+ * Animation options with optional default and per-property configs.
+ * This extends AnimationOptions to support the default key.
+ */
+type TransitionAnimationOptions = AnimationOptions & {
+  default?: ValueTransition
+  [propertyName: string]: ValueTransition | undefined
 }
 
 const minTimeBetweenAnimations = 1000 / 60
@@ -462,58 +472,44 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
   function transitionPropToAnimationConfig(
     transitionProp: TransitionProp | null
-  ): AnimationOptions {
-    let defaultAnimationKey = ''
-    let specificAnimations: Record<string, any> = {}
+  ): TransitionAnimationOptions {
+    const normalized = normalizeTransition(transitionProp)
 
-    if (typeof transitionProp === 'string') {
-      defaultAnimationKey = transitionProp
-    } else if (Array.isArray(transitionProp)) {
-      if (typeof transitionProp[0] === 'string') {
-        defaultAnimationKey = transitionProp[0]
-        specificAnimations = transitionProp[1] || {}
-      } else {
-        specificAnimations = transitionProp
-      }
-    }
-
-    if (!defaultAnimationKey) {
+    // If no animation defined, return empty config
+    if (!normalized.default && Object.keys(normalized.properties).length === 0) {
       return {}
     }
 
-    const defaultConfig = animations[defaultAnimationKey]
+    const defaultConfig = normalized.default ? animations[normalized.default] : null
 
-    // e.g., transition={['bouncy', { delay: 100 }]}
     // Framer Motion uses seconds, so convert from ms
     const delay =
-      typeof specificAnimations.delay === 'number'
-        ? specificAnimations.delay / 1000
-        : undefined
+      typeof normalized.delay === 'number' ? normalized.delay / 1000 : undefined
 
-    return {
-      default: delay ? { ...defaultConfig, delay } : defaultConfig,
-      ...Object.fromEntries(
-        Object.entries(specificAnimations).flatMap(
-          ([propName, animationNameOrConfig]) => {
-            if (typeof animationNameOrConfig === 'string') {
-              return [[propName, animations[animationNameOrConfig]]]
-            }
-            if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
-              return [
-                [
-                  propName,
-                  {
-                    ...defaultConfig,
-                    ...animationNameOrConfig,
-                  },
-                ],
-              ]
-            }
-            return []
-          }
-        )
-      ),
+    // Build the animation options
+    const result: TransitionAnimationOptions = {}
+
+    // Set default animation config
+    if (defaultConfig) {
+      result.default = delay ? { ...defaultConfig, delay } : defaultConfig
     }
+
+    // Add property-specific animations
+    for (const [propName, animationNameOrConfig] of Object.entries(normalized.properties)) {
+      if (typeof animationNameOrConfig === 'string') {
+        result[propName] = animations[animationNameOrConfig]
+      } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
+        const baseConfig = animationNameOrConfig.type
+          ? animations[animationNameOrConfig.type]
+          : defaultConfig
+        result[propName] = {
+          ...baseConfig,
+          ...animationNameOrConfig,
+        }
+      }
+    }
+
+    return result
   }
 }
 

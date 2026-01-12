@@ -28,6 +28,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/use-presence": "workspace:*"
   },
