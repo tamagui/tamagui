@@ -29,19 +29,66 @@ export declare const settings: {
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
-        '75ms': string;
-        '100ms': string;
-        '200ms': string;
-        bouncy: string;
-        superBouncy: string;
-        lazy: string;
-        medium: string;
-        slow: string;
-        quick: string;
-        quicker: string;
-        quickest: string;
-        tooltip: string;
-        select: string;
+        '75ms': {
+            type: "timing";
+            duration: number;
+        };
+        '100ms': {
+            type: "timing";
+            duration: number;
+        };
+        '200ms': {
+            type: "timing";
+            duration: number;
+        };
+        superBouncy: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        bouncy: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        medium: {
+            damping: number;
+            stiffness: number;
+            mass: number;
+        };
+        lazy: {
+            damping: number;
+            stiffness: number;
+        };
+        slow: {
+            damping: number;
+            stiffness: number;
+        };
+        quick: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        tooltip: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        quicker: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        quickest: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        select: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
     }>;
     media: {
         readonly maxXs: {
