@@ -76,7 +76,7 @@ export const HomeExamples = memo(
                       theme={i === activeIndex ? 'surface2' : null}
                       chromeless={i !== activeIndex}
                       rounded={0}
-                      size="$3"
+                      size="$2"
                     >
                       <Button.Text fontFamily="$silkscreen">{example.name}</Button.Text>
                     </Button>
