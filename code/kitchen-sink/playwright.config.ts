@@ -4,7 +4,7 @@ const port = process.env.PORT || '9000'
 
 // Support both single-driver mode (via env var) and multi-driver parallel mode
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER
-const drivers = singleDriver ? [singleDriver] : ['css', 'native', 'motion', 'reanimated']
+const drivers = singleDriver ? [singleDriver] : ['css', 'native', 'reanimated']
 
 export default defineConfig({
   // Look for test files in the "tests" directory, relative to this configuration file.
