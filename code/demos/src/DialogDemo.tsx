@@ -62,7 +62,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
           key="overlay"
           bg="$background"
           opacity={0.5}
-          transitionOnly={['transform', 'opacity']}
+          animateOnly={['transform', 'opacity']}
           transition={[
             'quicker',
             {
@@ -83,7 +83,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
             elevate
             rounded="$6"
             key="content"
-            transitionOnly={['transform', 'opacity']}
+            animateOnly={['transform', 'opacity']}
             transition={[
               'quicker',
               {

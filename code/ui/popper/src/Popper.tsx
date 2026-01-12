@@ -620,13 +620,13 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       opacity: 1,
       ...(enableAnimationForPositionChange && {
         transition: rest.transition,
-        transitionOnly: disableAnimation ? [] : rest.transitionOnly,
+        animateOnly: disableAnimation ? [] : rest.animateOnly,
         // apply animation but disable it on initial render to avoid animating from 0 to the first position
-        transitionPresence: false,
+        animatePresence: false,
       }),
       ...(hide && {
         opacity: 0,
-        transitionOnly: [],
+        animateOnly: [],
       }),
     }
 

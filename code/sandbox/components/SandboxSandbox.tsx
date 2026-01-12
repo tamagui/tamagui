@@ -744,7 +744,7 @@ const Motion = () => {
         </XStack>
       </YStack>
 
-      {/* transitionOnly */}
+      {/* animateOnly */}
       <Square
         transition={[
           'superBouncy',
@@ -753,7 +753,7 @@ const Motion = () => {
           },
         ]}
         // bg doesnt aniamte
-        transitionOnly={['transform', 'opacity']}
+        animateOnly={['transform', 'opacity']}
         bg="red"
         size={50}
         opacity={0.25}

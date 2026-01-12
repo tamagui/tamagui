@@ -149,7 +149,7 @@ const ThemeBuilderModal = memo(() => {
       <YStack
         fullscreen
         transition="medium"
-        transitionOnly={['transform']}
+        animateOnly={['transform']}
         ref={ref}
         x={0}
         elevation="$5"
@@ -191,7 +191,7 @@ const ThemeBuilderModal = memo(() => {
             <Section
               flex={1}
               transition="75ms"
-              transitionOnly={['transform', 'opacity']}
+              animateOnly={['transform', 'opacity']}
               key={weakKey(StepComponent)}
             >
               {useMemo(() => {

@@ -61,7 +61,7 @@ export default function TestAdaptDialogToSheet() {
             height="100%"
             items="center"
             rounded={0}
-            transitionOnly={['transform', 'opacity']}
+            animateOnly={['transform', 'opacity']}
             transition="quick"
             enterStyle={{ x: '100%' }}
             exitStyle={{ x: '100%' }}

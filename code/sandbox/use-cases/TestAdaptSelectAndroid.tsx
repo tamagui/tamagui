@@ -57,7 +57,7 @@ export default function TestSelectAdapt(props: SelectProps) {
         <Select.Viewport
           // to do animations:
           // transition="quick"
-          // transitionOnly={['transform', 'opacity']}
+          // animateOnly={['transform', 'opacity']}
           // enterStyle={{ o: 0, y: -10 }}
           // exitStyle={{ o: 0, y: 10 }}
           minW={200}

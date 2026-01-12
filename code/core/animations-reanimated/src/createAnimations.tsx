@@ -246,12 +246,12 @@ const ANIMATABLE_PROPERTIES: Record<string, boolean> = {
 const canAnimateProperty = (
   key: string,
   value: unknown,
-  transitionOnly?: string[]
+  animateOnly?: string[]
 ): boolean => {
   if (!ANIMATABLE_PROPERTIES[key]) return false
   if (value === 'auto') return false
   if (typeof value === 'string' && value.startsWith('calc')) return false
-  if (transitionOnly && !transitionOnly.includes(key)) return false
+  if (animateOnly && !animateOnly.includes(key)) return false
   return true
 }
 
@@ -476,7 +476,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const { animatedStyles, staticStyles } = useMemo(() => {
         const animated: Record<string, unknown> = {}
         const staticStyles: Record<string, unknown> = {}
-        const transitionOnly = props.transitionOnly as string[] | undefined
+        const animateOnly = props.animateOnly as string[] | undefined
 
         for (const key in style) {
           const rawValue = (style as Record<string, unknown>)[key]
@@ -489,7 +489,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             continue
           }
 
-          if (canAnimateProperty(key, value, transitionOnly)) {
+          if (canAnimateProperty(key, value, animateOnly)) {
             animated[key] = value
           } else {
             staticStyles[key] = value
@@ -504,7 +504,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         return { animatedStyles: animated, staticStyles }
-      }, [disableAnimation, style, isDark, isMounting, props.transitionOnly])
+      }, [disableAnimation, style, isDark, isMounting, props.animateOnly])
 
       // Build animation config with per-property overrides
       const { baseConfig, propertyConfigs } = useMemo(() => {
@@ -601,7 +601,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // When hover/press/etc state changes, this is called instead of re-rendering
       // =========================================================================
       useStyleEmitter?.((nextStyle: Record<string, unknown>) => {
-        const transitionOnly = props.transitionOnly as string[] | undefined
+        const animateOnly = props.animateOnly as string[] | undefined
         const animated: Record<string, unknown> = {}
         const statics: Record<string, unknown> = {}
         const transforms: Array<Record<string, unknown>> = []
@@ -630,7 +630,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             continue
           }
 
-          if (canAnimateProperty(key, value, transitionOnly)) {
+          if (canAnimateProperty(key, value, animateOnly)) {
             animated[key] = value
           } else {
             statics[key] = value

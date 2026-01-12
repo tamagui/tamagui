@@ -65,7 +65,7 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
       x={x}
       width={context.width}
       {...(!props.unstyled && {
-        transitionOnly: ['transform'],
+        animateOnly: ['transform'],
         opacity: context.width === 0 ? 0 : 1,
       })}
       {...indicatorProps}

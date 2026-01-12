@@ -823,7 +823,7 @@ const componentsIn = {
               <Card
                 tag="a"
                 transition="quickest"
-                transitionOnly={['transform']}
+                animateOnly={['transform']}
                 flex={1}
                 flexBasis="auto"
                 y={0}

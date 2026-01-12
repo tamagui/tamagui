@@ -78,7 +78,7 @@ export const useComponentState = (
   const presence =
     (!isHOC &&
       willBeAnimated &&
-      props['transitionPresence'] !== false &&
+      props['animatePresence'] !== false &&
       animationDriver?.usePresence?.()) ||
     null
 

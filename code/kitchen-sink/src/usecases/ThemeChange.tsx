@@ -91,7 +91,7 @@ const SandboxThemeChildDynamic = React.memo(({ level }: { level: number }) => {
       transition="bouncy"
       size={20}
       backgroundColor="$color10"
-      transitionOnly={['backgroundColor']}
+      animateOnly={['backgroundColor']}
     />
   )
 })

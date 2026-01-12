@@ -751,7 +751,7 @@ function Scenario25_Interruption() {
 }
 
 // ============================================================================
-// SCENARIO 26: transitionOnly prop
+// SCENARIO 26: animateOnly prop
 // ============================================================================
 function Scenario26_AnimateOnly() {
   const [active, setActive] = useState(false)
@@ -764,7 +764,7 @@ function Scenario26_AnimateOnly() {
         testID="scenario-26-trigger" data-testid="scenario-26-trigger">
         26: AnimateOnly
       </Button>
-      <Square ref={ref as any} transition="quick" transitionOnly={['opacity']} size={40} bg="$blue10"
+      <Square ref={ref as any} transition="quick" animateOnly={['opacity']} size={40} bg="$blue10"
         opacity={active ? 0.3 : 1} scale={active ? 1.5 : 1}
         testID="scenario-26-target" data-testid="scenario-26-target" />
       <Paragraph size="$1">only opacity</Paragraph>

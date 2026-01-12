@@ -2105,13 +2105,13 @@ interface ExtraBaseProps {
    * Pass an array of strings containing the long style property names
    * which will be exclusively transitioned.
    */
-  transitionOnly?: string[]
+  animateOnly?: string[]
 
   /**
    * If you'd like this component to not attach to the nearest parent AnimatePresence,
    * set this to `false` and it will pass through to the next animated child.
    */
-  transitionPresence?: boolean
+  animatePresence?: boolean
 
   /**
    * Avoids as much work as possible and passes through the children with no changes.

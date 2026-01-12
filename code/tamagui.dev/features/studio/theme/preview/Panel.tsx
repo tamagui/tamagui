@@ -125,7 +125,7 @@ export function Panel({
               opacity={1}
               elevate
               p={0}
-              transitionOnly={['transform', 'opacity']}
+              animateOnly={['transform', 'opacity']}
               transition={[
                 'quicker',
                 {

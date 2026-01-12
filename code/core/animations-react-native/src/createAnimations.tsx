@@ -199,8 +199,8 @@ export function createAnimations<A extends AnimationsConfig>(
         >()
       )
 
-      const transitionOnly = (props.transitionOnly as string[]) || []
-      const hasTransitionOnly = !!props.transitionOnly
+      const animateOnly = (props.animateOnly as string[]) || []
+      const hasTransitionOnly = !!props.animateOnly
 
       const args = [
         JSON.stringify(style),
@@ -214,8 +214,8 @@ export function createAnimations<A extends AnimationsConfig>(
       const isThereNoNativeStyleKeys = React.useMemo(() => {
         if (isWeb) return true
         return Object.keys(style).some((key) => {
-          if (transitionOnly) {
-            return !animatedStyleKey[key] && transitionOnly.indexOf(key) === -1
+          if (animateOnly) {
+            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
           }
           return !animatedStyleKey[key]
         })
@@ -242,7 +242,7 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          if (hasTransitionOnly && !transitionOnly.includes(key)) {
+          if (hasTransitionOnly && !animateOnly.includes(key)) {
             nonAnimatedStyle[key] = val
             continue
           }

@@ -91,7 +91,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         ? props.transition
         : [props.transition]
       const animation = animations[animationKey]
-      const keys = props.transitionOnly ?? ['all']
+      const keys = props.animateOnly ?? ['all']
 
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host

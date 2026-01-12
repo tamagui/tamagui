@@ -81,7 +81,7 @@ export const ColorPaletteListItem = ({
                     key={index}
                     items="center"
                     transition="bouncy"
-                    transitionOnly={['transform']}
+                    animateOnly={['transform']}
                     overflow="hidden"
                     scale={1}
                     borderWidth={1}
@@ -117,7 +117,7 @@ export const ColorPaletteListItem = ({
               <YStack
                 position="absolute"
                 transition="quick"
-                transitionOnly={['transform']}
+                animateOnly={['transform']}
                 z={0}
                 width={23}
                 t={12}

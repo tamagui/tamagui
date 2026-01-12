@@ -52,7 +52,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           paddingVertical={getSpace(tooltipProps.size || '$true', {
             shift: -4,
           })}
-          transitionOnly={['transform', 'opacity']}
+          animateOnly={['transform', 'opacity']}
           // not working how i expect at least
           // enableAnimationForPositionChange
           transition={[

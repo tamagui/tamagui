@@ -269,7 +269,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             dontAnimate[key] = value
           }
         } else {
-          const transitionOnly = props.transitionOnly as string[]
+          const animateOnly = props.animateOnly as string[]
           for (const key in style) {
             const rawValue = style[key]
             // Resolve dynamic theme values (like $theme-dark)
@@ -279,7 +279,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               !onlyAnimateKeys[key] ||
               value === 'auto' ||
               (typeof value === 'string' && value.startsWith('calc')) ||
-              (transitionOnly && !transitionOnly.includes(key))
+              (animateOnly && !animateOnly.includes(key))
             ) {
               dontAnimate[key] = value
             } else {

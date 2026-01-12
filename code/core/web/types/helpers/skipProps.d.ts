@@ -5,7 +5,7 @@ export declare const skipProps: {
     untilMeasured: number;
     transition: number;
     space: number;
-    transitionOnly: number;
+    animateOnly: number;
     disableClassName: number;
     debug: number;
     componentName: number;
@@ -13,6 +13,6 @@ export declare const skipProps: {
     tag: number;
     style: number;
     group: number;
-    transitionPresence: number;
+    animatePresence: number;
 };
 //# sourceMappingURL=skipProps.d.ts.map

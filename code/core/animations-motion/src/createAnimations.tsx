@@ -414,7 +414,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 
   function getMotionAnimatedProps(
-    props: { transition: TransitionProp | null; transitionOnly?: string[] },
+    props: { transition: TransitionProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
     disable: boolean
   ): AnimationProps {
@@ -429,12 +429,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
 
-    const transitionOnly = props.transitionOnly as string[] | undefined
+    const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {
       const value = style[key]
       if (
         disableAnimationProps.has(key) ||
-        (transitionOnly && !transitionOnly.includes(key))
+        (animateOnly && !animateOnly.includes(key))
       ) {
         dontAnimate ||= {}
         dontAnimate[key] = value
