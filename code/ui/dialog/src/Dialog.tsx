@@ -618,6 +618,8 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       <DialogContentFrame
         ref={composedRefs}
         id={context.contentId}
+        role="dialog"
+        aria-modal={context.modal}
         aria-describedby={context.descriptionId}
         aria-labelledby={context.titleId}
         data-state={getState(context.open)}
