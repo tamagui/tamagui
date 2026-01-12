@@ -79,11 +79,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
 
   if (value != null) {
     // Handle CSS shorthand strings with embedded $variables (e.g., boxShadow="0 0 10px $red")
-    if (
-      typeof value === 'string' &&
-      value.includes('$') &&
-      key in shorthandStringProps
-    ) {
+    if (typeof value === 'string' && value.includes('$') && key in shorthandStringProps) {
       value = value.replace(/\$[\w.-]+/g, (token) => {
         const resolved = getTokenForKey('color', token, styleProps, styleState)
         return resolved != null ? String(resolved) : token
