@@ -78,14 +78,18 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   const originalValue = value
 
   if (value != null) {
-    // Handle CSS shorthand strings with embedded $variables (e.g., boxShadow="0 0 10px $red")
-    if (typeof value === 'string' && value.includes('$') && key in shorthandStringProps) {
+    if (value[0] === '$') {
+      value = getTokenForKey(key, value, styleProps, styleState)
+    } else if (
+      // Handle CSS shorthand strings with embedded $variables (e.g., boxShadow="0 0 10px $red")
+      key in shorthandStringProps &&
+      typeof value === 'string' &&
+      value.includes('$')
+    ) {
       value = value.replace(/\$[\w.-]+/g, (token) => {
         const resolved = getTokenForKey('color', token, styleProps, styleState)
         return resolved != null ? String(resolved) : token
       })
-    } else if (value[0] === '$') {
-      value = getTokenForKey(key, value, styleProps, styleState)
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
     } else if (isRemValue(value)) {
