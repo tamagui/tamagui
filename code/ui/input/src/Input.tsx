@@ -21,6 +21,8 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     placeholderTextColor,
     selectionColor,
     rows,
+    // Native-only props (ignored on web)
+    keyboardAppearance,
     ...rest
   } = props
 

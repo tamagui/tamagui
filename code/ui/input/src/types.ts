@@ -52,4 +52,9 @@ export type InputProps = StackProps &
     onSelectionChange?: (e: {
       nativeEvent: { selection: { start: number; end: number } }
     }) => void
+
+    /**
+     * Keyboard appearance (native only, ignored on web)
+     */
+    keyboardAppearance?: 'default' | 'light' | 'dark'
   }

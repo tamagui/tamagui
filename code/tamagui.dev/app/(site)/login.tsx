@@ -151,7 +151,7 @@ function SignIn() {
                         // @ts-ignore
                         onSubmitEditing={handleSignin}
                         value={email}
-                        onChange={(e) => setEmail(e.nativeEvent.text)}
+                        onChange={(e) => setEmail(e.target.value)}
                         ref={emailRef}
                         disabled={emailAuthDisabledFlag}
                       />
@@ -174,8 +174,7 @@ function SignIn() {
                         autoComplete="email"
                         placeholder="Email"
                         value={email}
-                        onChange={(e) => setEmail(e.nativeEvent.text)}
-                        // @ts-ignore
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                         disabled={emailAuthDisabledFlag}
                       />
@@ -184,8 +183,7 @@ function SignIn() {
                         type="password"
                         placeholder="Password"
                         value={password}
-                        onChange={(e) => setPassword(e.nativeEvent.text)}
-                        // @ts-ignore
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                         disabled={emailAuthDisabledFlag}
                       />

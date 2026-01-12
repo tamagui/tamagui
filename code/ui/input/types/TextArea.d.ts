@@ -25,6 +25,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
             };
         };
     }) => void;
+    keyboardAppearance?: "default" | "light" | "dark";
 }, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;

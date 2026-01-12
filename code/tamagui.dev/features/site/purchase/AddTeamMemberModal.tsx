@@ -328,7 +328,7 @@ export const AddTeamMemberModalComponent = () => {
                       borderWidth={1}
                       placeholder="Enter code"
                       value={couponCode}
-                      onChangeText={setCouponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
                     />
                     <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
                       <Button.Text>Apply</Button.Text>

@@ -35,6 +35,9 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     onSelectionChange,
     selection,
 
+    // Native props
+    keyboardAppearance,
+
     // Web-only props to filter out
     // @ts-ignore
     dirname,
@@ -166,6 +169,7 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     editable: !disabled && !readOnly,
     secureTextEntry,
     keyboardType,
+    keyboardAppearance,
     inputMode,
     returnKeyType,
     multiline: tag === 'textarea' || (rows && rows > 1),

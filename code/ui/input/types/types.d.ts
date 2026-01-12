@@ -48,6 +48,10 @@ export type InputProps = StackProps & Omit<HTMLInputProps, 'size' | 'color' | 's
             };
         };
     }) => void;
+    /**
+     * Keyboard appearance (native only, ignored on web)
+     */
+    keyboardAppearance?: 'default' | 'light' | 'dark';
 };
 export {};
 //# sourceMappingURL=types.d.ts.map
