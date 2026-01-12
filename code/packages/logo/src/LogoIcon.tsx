@@ -5,7 +5,7 @@ import type { JSX } from 'react/jsx-runtime'
 export const LogoIcon = ({ downscale = 2 }: { downscale?: number }): JSX.Element => {
   return (
     <YStack
-      tag="span"
+      render="span"
       className="unselectable"
       alignSelf="center"
       marginVertical={-10}

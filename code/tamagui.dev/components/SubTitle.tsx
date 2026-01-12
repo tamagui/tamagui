@@ -37,7 +37,7 @@ export const SubTitle = ({ children, ...props }) => {
       fontFamily="$mono"
       size="$7"
       letterSpacing={-0.25}
-      tag="p"
+      render="p"
       mb="$3"
       {...props}
     >

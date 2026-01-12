@@ -1,4 +1,3 @@
-import { LinearGradient } from '@tamagui/linear-gradient'
 import { TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   Asterisk,
@@ -31,11 +30,13 @@ import {
   Text,
   Theme,
   TooltipSimple,
+  View,
   XGroup,
   XStack,
   YStack,
   styled,
 } from 'tamagui'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
@@ -60,7 +61,7 @@ import { BenchmarkChartWeb } from '~/features/site/benchmarks/BenchmarkChartWeb'
 import { MediaPlayer } from '~/features/site/home/MediaPlayer'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { unwrapText } from '~/helpers/unwrapText'
-import { pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
+import { PACKAGE_MANAGERS, pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
 import { HeroContainer } from '../docs/HeroContainer'
@@ -70,6 +71,8 @@ import { PropsTable } from '../docs/PropsTable'
 import { VersionSwitcher } from '../docs/VersionSwitcher'
 import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
+import { TabsTabProps } from 'tamagui'
+import { Tab } from '~/components/RovingTabs'
 import { SimpleTable } from './SimpleTable'
 
 if (!React.version.startsWith('19')) {
@@ -79,7 +82,7 @@ if (!React.version.startsWith('19')) {
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
     <Paragraph
-      tag="p"
+      render="p"
       ff="$mono"
       size={large ? '$9' : '$8'}
       mb="$4"
@@ -247,7 +250,7 @@ const componentsIn = {
   LI,
   Link,
   Strong: (props) => (
-    <Paragraph tag="strong" fontSize="inherit" fontWeight="700" {...props} />
+    <Paragraph render="strong" fontSize="inherit" fontWeight="700" {...props} />
   ),
 
   TamaguiExamplesCode,
@@ -433,7 +436,7 @@ const componentsIn = {
     )
   },
 
-  Note: (props) => <YStack tag="aside" mt="$5" mb="$5" borderRadius="$3" {...props} />,
+  Note: (props) => <YStack render="aside" mt="$5" mb="$5" borderRadius="$3" {...props} />,
 
   Notice,
 
@@ -500,7 +503,7 @@ const componentsIn = {
     return (
       <Link className="link" href={href as Href} asChild>
         <Paragraph
-          tag="a"
+          render="a"
           // @ts-ignore
           fontSize="inherit"
           display="inline"
@@ -531,18 +534,18 @@ const componentsIn = {
 
   ul: ({ children }) => {
     return (
-      <UL tag="ul" my="$4">
+      <UL render="ul" my="$4">
         {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
       </UL>
     )
   },
 
-  ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
+  ol: (props) => <YStack {...props} render="ol" mb="$3" />,
 
   li: (props) => {
     return (
       <LI
-        tag="li"
+        render="li"
         size="$6"
         my="$1.5"
         className="docs-paragraph"
@@ -556,13 +559,13 @@ const componentsIn = {
   },
 
   strong: (props) => (
-    <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />
+    <Paragraph render="strong" fontSize="inherit" {...props} fontWeight="700" />
   ),
 
   img: ({ ...props }) => (
-    <YStack tag="span" my="$6">
+    <YStack render="span" my="$6">
       {/* TODO make this a proper <Image /> component */}
-      <YStack tag="img" {...props} maxW="100%" />
+      <YStack render="img" {...props} maxW="100%" />
     </YStack>
   ),
 
@@ -580,7 +583,7 @@ const componentsIn = {
     const content = (
       <OffsetBox
         size={size}
-        tag="figure"
+        render="figure"
         flex={1}
         flexBasis="auto"
         mx={0}
@@ -594,7 +597,7 @@ const componentsIn = {
       >
         <Image maxW="100%" {...props} />
         {!!children && (
-          <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
+          <Text render="figcaption" lineHeight={23} color="$colorPress" mt="$2">
             {children}
           </Text>
         )}
@@ -623,7 +626,7 @@ const componentsIn = {
     size,
     ...props
   }) => (
-    <YStack tag="figure" mx={0} my="$6">
+    <YStack render="figure" mx={0} my="$6">
       <OffsetBox size={size}>
         <video
           src={src}
@@ -635,7 +638,7 @@ const componentsIn = {
           style={{ width: '100%', display: 'block' }}
         ></video>
       </OffsetBox>
-      <Text tag="figcaption" lineHeight={23} mt="$2" color="$colorPress">
+      <Text render="figcaption" lineHeight={23} mt="$2" color="$colorPress">
         {children}
       </Text>
     </YStack>
@@ -818,7 +821,7 @@ const componentsIn = {
           <ThemeTint>
             <Link asChild href="/docs/intro/installation">
               <Card
-                tag="a"
+                render="a"
                 transition="quickest"
                 animateOnly={['transform']}
                 flex={1}
@@ -889,7 +892,7 @@ const componentsIn = {
 
     return (
       <YStack
-        tag="aside"
+        render="aside"
         gap="$2"
         rounded="$4"
         p="$5"
@@ -988,7 +991,7 @@ export const components = Object.fromEntries(
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
-    tag="a"
+    render="a"
     // @ts-expect-error
     href={`#${id}`}
     id={id}
@@ -999,7 +1002,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
     {...props}
   >
     {children}
-    <YStack tag="span" opacity={0.3}>
+    <YStack render="span" opacity={0.3}>
       <LinkIcon size={12} color="var(--color)" aria-hidden />
     </YStack>
   </XStack>

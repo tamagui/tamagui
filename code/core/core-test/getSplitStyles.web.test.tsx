@@ -44,7 +44,7 @@ describe('getSplitStyles', () => {
         accessibilityRequired: false,
       },
       {
-        tag: 'input',
+        render: 'input',
       }
     )
 
@@ -60,7 +60,7 @@ describe('getSplitStyles', () => {
         paddingStart: 10,
       },
       {
-        tag: 'input',
+        render: 'input',
       }
     )
     expect(Object.values(out.rulesToInsert)[0]?.[StyleObjectValue]).toEqual('10px')

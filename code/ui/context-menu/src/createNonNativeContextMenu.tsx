@@ -203,7 +203,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
         <>
           <Menu.Anchor scope={scope || CONTEXTMENU_CONTEXT} virtualRef={virtualRef} />
           <Comp
-            tag="span"
+            render="span"
             componentName={TRIGGER_NAME}
             id={context.triggerId}
             data-state={context.open ? 'open' : 'closed'}

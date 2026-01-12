@@ -222,7 +222,7 @@ function SignIn() {
           )}
           {/* <YStack gap="$2" >
             <Paragraph
-              tag="button"
+              render="button"
               ta="center"
               size="$2"
               cursor="pointer"
