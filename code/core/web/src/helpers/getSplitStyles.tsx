@@ -1481,35 +1481,47 @@ export const getSubStyle = (
   }
 
   if (!avoidMergeTransform) {
-    // Get keys of transforms in styleOut that should override parent/base
-    const overrideKeys = Array.isArray(styleOut.transform)
-      ? new Set(styleOut.transform.map((t: any) => Object.keys(t)[0]))
-      : new Set<string>()
+    const parentTransform = styleState.style?.transform
+    const flatTransforms = styleState.flatTransforms
+    const styleOutTransform = styleOut.transform
 
-    if (Array.isArray(styleOut.transform)) {
-      const parentTransform = styleState.style?.transform
-      if (parentTransform && Array.isArray(parentTransform)) {
-        // Filter parent transforms to remove any that are being overridden by substyle
-        const filteredParent = parentTransform.filter(
-          (t: any) => !overrideKeys.has(Object.keys(t)[0])
-        )
-        styleOut.transform = [...filteredParent, ...styleOut.transform]
+    if (Array.isArray(styleOutTransform) && styleOutTransform.length) {
+      // Inline conflict check - faster than building lookup object for small arrays
+      const len = styleOutTransform.length
+
+      if (Array.isArray(parentTransform)) {
+        const merged: any[] = []
+        outer: for (let i = 0; i < parentTransform.length; i++) {
+          const pt = parentTransform[i]
+          for (const pk in pt) {
+            for (let j = 0; j < len; j++) {
+              for (const sk in styleOutTransform[j]) {
+                if (pk === sk) continue outer
+                break
+              }
+            }
+            merged.push(pt)
+            break
+          }
+        }
+        for (let i = 0; i < len; i++) merged.push(styleOutTransform[i])
+        styleOut.transform = merged
       }
-    }
-    if (styleState.flatTransforms) {
-      // Filter base flatTransforms to remove any that are being overridden by substyle
-      // Map x->translateX, y->translateY for comparison
-      const keyMap: Record<string, string> = { x: 'translateX', y: 'translateY' }
-      const filteredFlatTransforms: Record<string, any> = {}
-      for (const key in styleState.flatTransforms) {
-        const cssKey = keyMap[key] || key
-        if (!overrideKeys.has(cssKey)) {
-          filteredFlatTransforms[key] = styleState.flatTransforms[key]
+
+      if (flatTransforms) {
+        outer: for (const fk in flatTransforms) {
+          const ck = fk === 'x' ? 'translateX' : fk === 'y' ? 'translateY' : fk
+          for (let j = 0; j < len; j++) {
+            for (const sk in styleOutTransform[j]) {
+              if (ck === sk) continue outer
+              break
+            }
+          }
+          mergeTransform(styleOut, fk, flatTransforms[fk])
         }
       }
-      if (Object.keys(filteredFlatTransforms).length > 0) {
-        mergeFlatTransforms(styleOut, filteredFlatTransforms)
-      }
+    } else if (flatTransforms) {
+      mergeFlatTransforms(styleOut, flatTransforms)
     }
   }
 
