@@ -20,6 +20,17 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 import { isRemValue, resolveRem } from './resolveRem'
 import { skipProps } from './skipProps'
 
+// CSS shorthand props that can contain embedded $variables in string values
+const shorthandStringProps: Record<string, 1> = {
+  boxShadow: 1,
+  border: 1,
+  borderTop: 1,
+  borderRight: 1,
+  borderBottom: 1,
+  borderLeft: 1,
+  background: 1,
+}
+
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
   if (disabled) {
     return map(key, value)
@@ -67,7 +78,17 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   const originalValue = value
 
   if (value != null) {
-    if (value[0] === '$') {
+    // Handle CSS shorthand strings with embedded $variables (e.g., boxShadow="0 0 10px $red")
+    if (
+      typeof value === 'string' &&
+      value.includes('$') &&
+      key in shorthandStringProps
+    ) {
+      value = value.replace(/\$[\w.-]+/g, (token) => {
+        const resolved = getTokenForKey('color', token, styleProps, styleState)
+        return resolved != null ? String(resolved) : token
+      })
+    } else if (value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)

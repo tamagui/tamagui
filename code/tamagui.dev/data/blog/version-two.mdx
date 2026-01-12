@@ -83,6 +83,25 @@ The breaking changes outside of deprecations are:
 - Move from ThemeableStack to View for most base components used in UI
 - Renamed the `animation` prop to `transition` for clarity and consistency
 
+#### CSS Shorthand with Variables
+
+You can now use Tamagui `$variables` directly inside CSS shorthand string values
+like `boxShadow`. On web, variables resolve to CSS custom properties; on native
+(React Native 0.76+), they resolve to raw values:
+
+```tsx
+// Works on both web and native!
+<View boxShadow="0 0 10px $shadowColor" />
+
+// Multiple variables work too
+<View boxShadow="0 0 5px $shadowColor, 0 0 15px $color" />
+```
+
+The `border` shorthand with variables (`border="1px solid $borderColor"`) is
+web-only since React Native doesn't support CSS border shorthand syntax. On
+native, continue using the individual props (`borderWidth`, `borderColor`,
+`borderStyle`).
+
 #### Colors
 
 `@tamagui/colors` has been updated to Radix v3 colors (hex format). To preserve

@@ -110,6 +110,11 @@ export declare const stylePropsView: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
+    border?: boolean | undefined;
+    borderTop?: boolean | undefined;
+    borderRight?: boolean | undefined;
+    borderBottom?: boolean | undefined;
+    borderLeft?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
@@ -400,6 +405,11 @@ export declare const stylePropsText: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
+    border?: boolean | undefined;
+    borderTop?: boolean | undefined;
+    borderRight?: boolean | undefined;
+    borderBottom?: boolean | undefined;
+    borderLeft?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
@@ -656,6 +666,11 @@ export declare const stylePropsAll: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
+    border?: boolean | undefined;
+    borderTop?: boolean | undefined;
+    borderRight?: boolean | undefined;
+    borderBottom?: boolean | undefined;
+    borderLeft?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
@@ -897,6 +912,11 @@ export declare const validStyles: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
+    border?: boolean | undefined;
+    borderTop?: boolean | undefined;
+    borderRight?: boolean | undefined;
+    borderBottom?: boolean | undefined;
+    borderLeft?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;

@@ -7,6 +7,12 @@ export const webOnlyStylePropsView = {
   WebkitBackdropFilter: true,
   // These background-* props are web-only CSS, but NOT backgroundColor
   background: true,
+  // CSS border shorthand (e.g., "1px solid red") - RN only supports individual props
+  border: true,
+  borderTop: true,
+  borderRight: true,
+  borderBottom: true,
+  borderLeft: true,
   backgroundAttachment: true,
   backgroundBlendMode: true,
   backgroundClip: true,

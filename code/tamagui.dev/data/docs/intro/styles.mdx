@@ -178,6 +178,42 @@ type TextStyleBase = BaseViewStyle & {
 }
 ```
 
+## CSS Shorthand with Variables
+
+Tamagui supports using `$variables` directly inside CSS shorthand string values.
+This is particularly useful for `boxShadow` where you want to reference theme
+colors:
+
+```tsx
+// Single variable
+<View boxShadow="0 0 10px $shadowColor" />
+
+// Multiple variables
+<View boxShadow="0 0 5px $shadowColor, 0 0 15px $color" />
+
+// On web: resolves to CSS custom properties
+// boxShadow: "0 0 10px var(--t-shadow-shadowColor)"
+
+// On native (RN 0.76+): resolves to raw values
+// boxShadow: "0 0 10px rgba(0,0,0,0.2)"
+```
+
+Supported shorthand properties with variable resolution:
+
+- `boxShadow` - Works on both web and native (RN 0.76+)
+- `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
+- `background` - Web only
+
+For native border styling, use individual props:
+
+```tsx
+// Web
+<View border="1px solid $borderColor" />
+
+// Native (or cross-platform)
+<View borderWidth={1} borderStyle="solid" borderColor="$borderColor" />
+```
+
 ## Parent based styling
 
 Tamagui has a variety of ways to style a child based on the "parent", a parent

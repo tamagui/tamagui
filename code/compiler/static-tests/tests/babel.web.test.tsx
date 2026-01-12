@@ -669,3 +669,71 @@ test('accessibilityRole converts to role attribute', async () => {
   expect(output?.js).toContain('button')
 })
 
+// CSS shorthand properties with embedded $variables
+test('boxShadow with $variable extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+
+    export function Test() {
+      return <Stack boxShadow="0 0 10px $background" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // Should extract to CSS with box-shadow and var()
+  expect(output?.styles).toContain('box-shadow')
+  expect(output?.styles).toContain('var(--')
+})
+
+test('border with $variable extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+
+    export function Test() {
+      return <Stack border="1px solid $background" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // border expands to individual border props, check for color with var()
+  expect(output?.styles).toContain('border')
+  expect(output?.styles).toContain('var(--')
+})
+
+test('boxShadow with multiple $variables extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+
+    export function Test() {
+      return <Stack boxShadow="0 0 10px $background, 0 0 20px $color" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // Should contain multiple var() references
+  expect(output?.styles).toContain('box-shadow')
+  const varMatches = output?.styles?.match(/var\(--/g)
+  expect(varMatches?.length).toBeGreaterThanOrEqual(2)
+})
+
