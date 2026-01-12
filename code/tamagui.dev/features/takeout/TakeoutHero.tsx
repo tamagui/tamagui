@@ -506,7 +506,7 @@ const IPhoneFrame = ({ scrollProgress }: { scrollProgress: number }) => {
               opacity={index === 0 ? 1 : 0.6}
               p="$1.5"
               cursor="pointer"
-              animation="quick"
+              transition="quick"
               hoverStyle={{ opacity: 1, scale: 1.1 }}
               aria-label={tab.label}
             >
@@ -597,7 +597,7 @@ export const TakeoutHero = () => {
         <Button
           aria-label="View Documentation"
           cursor="pointer"
-          animation="quick"
+          transition="quick"
           hoverStyle={{ scale: 1.05, opacity: 0.9 }}
           pressStyle={{ scale: 0.98 }}
         >

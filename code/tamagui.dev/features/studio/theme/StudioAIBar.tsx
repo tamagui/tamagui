@@ -386,9 +386,9 @@ const ThemeToggle = () => {
           }}
           size="$3"
         >
-          <Switch.Thumb checked={checked} animation="75ms" size="$3">
+          <Switch.Thumb checked={checked} transition="75ms" size="$3">
             <YStack
-              animation="bouncy"
+              transition="bouncy"
               fullscreen
               items="center"
               justify="center"
@@ -399,7 +399,7 @@ const ThemeToggle = () => {
               <Moon size={14} />
             </YStack>
             <YStack
-              animation="bouncy"
+              transition="bouncy"
               fullscreen
               items="center"
               justify="center"

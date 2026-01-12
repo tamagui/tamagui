@@ -44,7 +44,7 @@ export function SourceVersionSwitcher({
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet modal dismissOnSnapToBottom animation="medium">
+        <Sheet modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -52,7 +52,7 @@ export function SourceVersionSwitcher({
           </Sheet.Frame>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />

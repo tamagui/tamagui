@@ -64,7 +64,7 @@ export const TakeoutGlow = memo(() => {
       return (
         <YStack
           key={`${i}${tint}${tintAlt}`}
-          animation="superLazy"
+          transition="superLazy"
           enterStyle={{
             opacity: 0,
           }}

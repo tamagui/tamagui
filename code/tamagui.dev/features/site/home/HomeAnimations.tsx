@@ -110,7 +110,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             <CodeDemoPreParsed
               pointerEvents={disableScrollPane ? 'none' : 'auto'}
               height={disableScrollPane ? 500 : 1250}
-              animation="quick"
+              transition="quick"
               maxW={530}
               minW={530}
               rounded="$8"
@@ -193,7 +193,7 @@ export const ExampleAnimations = memo(() => {
       >
         <YStack fullscreen z={-1} bg="$background" opacity={0.5} />
         {isIntersecting ? (
-          <AnimationsDemo position={positionI} animation={animation.animation} />
+          <AnimationsDemo position={positionI} transition={animation.animation} />
         ) : null}
       </YStack>
 
@@ -262,7 +262,7 @@ export function AnimationsDemoBase(props) {
   return (
     <>
       <Square
-        animation={(props.animation || 'bouncy') as any}
+        transition={(props.animation || 'bouncy') as any}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}

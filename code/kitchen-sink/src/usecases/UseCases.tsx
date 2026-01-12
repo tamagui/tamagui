@@ -189,7 +189,7 @@ export const Sandbox = () => {
             <Square
              size={100}
              bc="red"
-             animation="bouncy"
+             transition="bouncy"
              
              // scale={1}
              enterStyle={{
@@ -197,7 +197,7 @@ export const Sandbox = () => {
              }}
             /> */}
           {/* <AnimationsPresenceDemo /> */}
-          {/* <Square size={100} bc="red" animation="bouncy" /> */}
+          {/* <Square size={100} bc="red" transition="bouncy" /> */}
           {/* <AnimationsPresenceDemo /> */}
           {/* <SandboxExample /> */}
           {/* <SelectDemo /> */}

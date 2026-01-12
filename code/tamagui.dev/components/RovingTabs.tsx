@@ -189,7 +189,7 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
       bg="$color5"
       opacity={0.7}
       rounded="$4"
-      animation="quickest"
+      transition="quickest"
       enterStyle={{
         opacity: 0,
       }}

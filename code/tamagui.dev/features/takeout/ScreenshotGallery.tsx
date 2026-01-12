@@ -79,7 +79,7 @@ const PolaroidCard = ({
   return (
     <YStack
       cursor="pointer"
-      animation="quick"
+      transition="quick"
       hoverStyle={{
         scale: 1.08,
         rotate: '0deg',

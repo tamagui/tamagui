@@ -212,7 +212,7 @@ export function VersionComparison() {
               borderWidth={2}
               borderColor="$color10"
               cursor="pointer"
-              animation="quick"
+              transition="quick"
               hoverStyle={{ bg: '$color10', scale: 1.02 }}
               pressStyle={{ bg: '$color8', scale: 0.98 }}
             >
@@ -231,7 +231,7 @@ export function VersionComparison() {
               borderWidth={2}
               borderColor="$color10"
               cursor="pointer"
-              animation="quick"
+              transition="quick"
               hoverStyle={{ bg: '$color10', scale: 1.02 }}
               pressStyle={{ bg: '$color8', scale: 0.98 }}
             >
