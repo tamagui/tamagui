@@ -51,7 +51,13 @@ export default () => {
 
 ### ToggleGroup
 
-`ToggleGroup` extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
+`ToggleGroup` extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`.
+
+<Notice>
+  Since ToggleGroup extends Group, automatic border radius detection only works when `ToggleGroup.Item` is a **direct child**. If you wrap items in custom components, see the [Group docs on nested items](/docs/components/group#custom-components--nested-items) for workarounds.
+</Notice>
+
+Props:
 
 <PropsTable
   data={[

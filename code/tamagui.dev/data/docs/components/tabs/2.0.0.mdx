@@ -340,6 +340,10 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
   ]}
 />
 
+<Notice>
+  Since Tabs.List extends Group, the same limitation applies: automatic border radius detection only works when `Tabs.Tab` is a **direct child** of `Tabs.List`. If you wrap tabs in custom components, see the [Group docs on nested items](/docs/components/group#custom-components--nested-items) for workarounds.
+</Notice>
+
 ### Tabs.Tab
 
 Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:

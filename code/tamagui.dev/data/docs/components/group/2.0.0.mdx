@@ -103,6 +103,75 @@ The `disabled` property will pass to children
   <GroupDisabledDemo />
 </HeroContainer>
 
+## Custom Components & Nested Items
+
+Automatic index detection only works when `Group.Item` is a **direct child** of `Group`. If you wrap `Group.Item` inside a custom component, the automatic first/last detection won't work.
+
+You have a few options:
+
+### Option 1: Use `forcePlacement`
+
+If you know the position ahead of time, use the `forcePlacement` prop:
+
+```tsx
+function MyFirstItem({ children }) {
+  return (
+    <XGroup.Item forcePlacement="first">
+      {children}
+    </XGroup.Item>
+  )
+}
+
+export default () => (
+  <XGroup>
+    <MyFirstItem>
+      <Button>First</Button>
+    </MyFirstItem>
+    <XGroup.Item>
+      <Button>Second</Button>
+    </XGroup.Item>
+  </XGroup>
+)
+```
+
+### Option 2: Use `useGroupItem` hook
+
+For full control, use the `useGroupItem` hook directly in your custom component:
+
+```tsx
+import { useGroupItem } from '@tamagui/group'
+
+function MyItem({ children, forcePlacement }) {
+  const groupItemProps = useGroupItem(
+    { disabled: false },
+    forcePlacement
+  )
+
+  return React.cloneElement(children, groupItemProps)
+}
+```
+
+### Option 3: Pass placement from parent
+
+Calculate positions in the parent and pass them down:
+
+```tsx
+const items = ['First', 'Second', 'Third']
+
+export default () => (
+  <XGroup>
+    {items.map((item, i) => (
+      <XGroup.Item
+        key={item}
+        forcePlacement={i === 0 ? 'first' : i === items.length - 1 ? 'last' : 'center'}
+      >
+        <Button>{item}</Button>
+      </XGroup.Item>
+    ))}
+  </XGroup>
+)
+```
+
 ## API Reference
 
 ### Group
