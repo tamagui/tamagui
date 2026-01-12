@@ -101,7 +101,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const keys =
         animatedProperties.length > 0
           ? animatedProperties
-          : props.animateOnly ?? ['all']
+          : (props.animateOnly ?? ['all'])
 
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host
@@ -118,7 +118,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
          */
 
         // Use timeout as primary, transition events as backup for reliable exit handling
-        const animationDuration = defaultAnimation ? extractDuration(defaultAnimation) : 200
+        const animationDuration = defaultAnimation
+          ? extractDuration(defaultAnimation)
+          : 200
         const delay = normalized.delay ?? 0
         const fallbackTimeout = animationDuration + delay
 
@@ -163,7 +165,11 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
           if (typeof propAnimation === 'string') {
             animationValue = animations[propAnimation]
-          } else if (propAnimation && typeof propAnimation === 'object' && propAnimation.type) {
+          } else if (
+            propAnimation &&
+            typeof propAnimation === 'object' &&
+            propAnimation.type
+          ) {
             animationValue = animations[propAnimation.type]
           } else if (defaultAnimation) {
             animationValue = defaultAnimation

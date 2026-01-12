@@ -1,8 +1,4 @@
-import type {
-  AnimationConfig,
-  NormalizedTransition,
-  TransitionPropInput,
-} from './types'
+import type { AnimationConfig, NormalizedTransition, TransitionPropInput } from './types'
 
 /**
  * Normalizes the various transition prop formats into a consistent structure.
@@ -115,18 +111,13 @@ export function getAnimationForProperty(
  * Checks if the normalized transition has any animations defined.
  */
 export function hasAnimation(normalized: NormalizedTransition): boolean {
-  return (
-    normalized.default !== null ||
-    Object.keys(normalized.properties).length > 0
-  )
+  return normalized.default !== null || Object.keys(normalized.properties).length > 0
 }
 
 /**
  * Gets all property names that have specific animations defined.
  * Does not include 'default' in the list.
  */
-export function getAnimatedProperties(
-  normalized: NormalizedTransition
-): string[] {
+export function getAnimatedProperties(normalized: NormalizedTransition): string[] {
   return Object.keys(normalized.properties)
 }

@@ -17,7 +17,6 @@ export type AnimationConfig = {
  * Note: Uses `any` to be compatible with the TransitionProp type from @tamagui/web
  * which has more complex union types.
  */
-// biome-ignore lint/suspicious/noExplicitAny: Compatible with TransitionProp from @tamagui/web
 export type TransitionPropInput = any
 
 /**
