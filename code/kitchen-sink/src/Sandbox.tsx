@@ -87,7 +87,7 @@ export const Sandbox = () => {
           <Button size="$2" onPress={() => setMode('sheet')}>
             Sheet Test
           </Button>
-          <Button size="$2" theme="active" onPress={() => setMode('renderCount')}>
+          <Button size="$2" onPress={() => setMode('renderCount')}>
             Render Count Test
           </Button>
         </XStack>

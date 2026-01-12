@@ -274,11 +274,12 @@ const tokens = {
 const tamaConf = createTamagui({
   ...config,
   // Use v4 themes when ?v4theme=true is in the URL
-  ...(useV4Themes && { themes: tamaguiThemes }),
-  themes: {
-    ...config.themes,
-    ...themeDev,
-  },
+  themes: useV4Themes
+    ? tamaguiThemes
+    : {
+        ...config.themes,
+        ...themeDev,
+      },
   shorthands: shorthands,
   defaultFont: undefined,
   settings: {

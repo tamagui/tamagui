@@ -468,7 +468,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // =========================================================================
       const animatedTargetsRef = useSharedValue<Record<string, unknown> | null>(null)
       const staticTargetsRef = useSharedValue<Record<string, unknown> | null>(null)
-      const transformTargetsRef = useSharedValue<Array<Record<string, unknown>> | null>(null)
+      const transformTargetsRef = useSharedValue<Array<Record<string, unknown>> | null>(
+        null
+      )
 
       // Separate styles into animated and static
       const { animatedStyles, staticStyles } = useMemo(() => {
@@ -586,7 +588,12 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }, [animationKey, isHydrating, props.transition, animatedStyles])
 
       // Store config in ref for worklet access
-      const configRef = useRef({ baseConfig, propertyConfigs, disableAnimation, isHydrating })
+      const configRef = useRef({
+        baseConfig,
+        propertyConfigs,
+        disableAnimation,
+        isHydrating,
+      })
       configRef.current = { baseConfig, propertyConfigs, disableAnimation, isHydrating }
 
       // =========================================================================
@@ -674,7 +681,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         const hasEmitterUpdates = animatedTargetsRef.value !== null
 
         // Use emitter values if available, otherwise use React state values
-        const animatedValues = hasEmitterUpdates ? animatedTargetsRef.value! : animatedStyles
+        const animatedValues = hasEmitterUpdates
+          ? animatedTargetsRef.value!
+          : animatedStyles
         const staticValues = hasEmitterUpdates ? staticTargetsRef.value! : {}
 
         // Include static values from emitter (for hover/press style changes)

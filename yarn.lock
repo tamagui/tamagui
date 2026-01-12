@@ -7047,7 +7047,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-reanimated@workspace:code/core/animations-reanimated":
+"@tamagui/animations-reanimated@workspace:*, @tamagui/animations-reanimated@workspace:code/core/animations-reanimated":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:code/core/animations-reanimated"
   dependencies:
@@ -8146,10 +8146,12 @@ __metadata:
     "@react-navigation/native": "npm:^7.0.14"
     "@react-navigation/native-stack": "npm:^7.2.0"
     "@shopify/restyle": "npm:^2.4.4"
+    "@tamagui/animate-presence": "workspace:*"
     "@tamagui/animations-css": "workspace:*"
     "@tamagui/animations-moti": "workspace:*"
     "@tamagui/animations-motion": "workspace:*"
     "@tamagui/animations-react-native": "workspace:*"
+    "@tamagui/animations-reanimated": "workspace:*"
     "@tamagui/babel-plugin": "workspace:*"
     "@tamagui/cli": "workspace:*"
     "@tamagui/colors": "workspace:*"
@@ -8163,6 +8165,7 @@ __metadata:
     "@tamagui/sandbox-ui": "workspace:*"
     "@tamagui/sheet": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
+    "@tamagui/theme": "workspace:*"
     "@tamagui/themes": "workspace:*"
     "@tamagui/toast": "workspace:*"
     "@tamagui/web": "workspace:*"
