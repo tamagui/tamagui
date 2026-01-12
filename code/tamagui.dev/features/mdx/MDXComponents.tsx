@@ -1,3 +1,4 @@
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   Asterisk,
@@ -30,13 +31,11 @@ import {
   Text,
   Theme,
   TooltipSimple,
-  View,
   XGroup,
   XStack,
   YStack,
   styled,
 } from 'tamagui'
-import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
@@ -61,7 +60,7 @@ import { BenchmarkChartWeb } from '~/features/site/benchmarks/BenchmarkChartWeb'
 import { MediaPlayer } from '~/features/site/home/MediaPlayer'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { unwrapText } from '~/helpers/unwrapText'
-import { PACKAGE_MANAGERS, pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
+import { pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
 import { HeroContainer } from '../docs/HeroContainer'
@@ -71,8 +70,6 @@ import { PropsTable } from '../docs/PropsTable'
 import { VersionSwitcher } from '../docs/VersionSwitcher'
 import * as Demos from '../docs/demos'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
-import { TabsTabProps } from 'tamagui'
-import { Tab } from '~/components/RovingTabs'
 import { SimpleTable } from './SimpleTable'
 
 if (!React.version.startsWith('19')) {

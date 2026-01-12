@@ -86,7 +86,7 @@ export const ComponentSection = () => {
                   <ContainerLarge>
                     <XStack
                       gap="$4"
-                      flex={4}
+                      flex={1}
                       flexBasis="auto"
                       shrink={1}
                       $gtMd={{
