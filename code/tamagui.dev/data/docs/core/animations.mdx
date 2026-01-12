@@ -147,10 +147,29 @@ Driver names are inferred automatically for TypeScript.
 
 ### Lazy Loading Animation Drivers
 
-For apps that start static (like a marketing site) but need richer animations after login, you can lazy load drivers to reduce initial bundle size:
+For apps that start static (like a marketing site) but need richer animations after login, you can lazy load drivers to reduce initial bundle size.
+
+**Swap the default driver** with `Configuration`:
 
 ```tsx
-// Layout for authenticated users
+// Inner layout for authenticated users
+import { Configuration } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-moti'
+
+const springDriver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
+
+export function AuthenticatedLayout({ children }) {
+  return (
+    <Configuration animationDriver={springDriver}>
+      {children}
+    </Configuration>
+  )
+}
+```
+
+**Add multiple drivers** with `loadAnimationDriver`:
+
+```tsx
 import { loadAnimationDriver } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-moti'
 
@@ -160,7 +179,7 @@ loadAnimationDriver('spring', driver)
 // Now components can use animatedBy="spring"
 ```
 
-When lazy loading, add type hints for autocomplete:
+When using `loadAnimationDriver`, add type hints for autocomplete:
 
 ```tsx
 declare module 'tamagui' {
