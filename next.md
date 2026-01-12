@@ -3,16 +3,10 @@ v2:
 - css driver can noRerender
   - reanimated too but requires testing native + worklets
 
-- removeScrollEnabled => disableRemoveScroll
-
 - boxShadow, border, background, boxShadow props with web style
     - deprecate shadow props separated?
     - for exmaple boxShadow="0 0 10px $red" should work web and native and compiler
     - research rn shorthand supported and update jsdoc/types etc
-
-- animation => transition
-
-- document single-instance + scope for tooltip/dialog/popover (takeout3 does this for tooltip for example)
 
 - <Button render={} /> i started a pr we should try and move from tag => render fully, but render can take string as a simple option
 

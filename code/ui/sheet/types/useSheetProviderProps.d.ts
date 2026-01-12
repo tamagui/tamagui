@@ -10,7 +10,7 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
 }): {
     screenSize: number;
     maxSnapPoint: string | number;
-    removeScrollEnabled: boolean | undefined;
+    disableRemoveScroll: boolean;
     scrollBridge: ScrollBridge;
     modal: boolean;
     open: boolean;

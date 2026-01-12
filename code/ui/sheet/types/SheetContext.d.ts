@@ -9,7 +9,7 @@ export declare const createSheetContext: <ContextValueType extends object | null
 export declare const SheetProvider: (props: {
     screenSize: number;
     maxSnapPoint: string | number;
-    removeScrollEnabled: boolean | undefined;
+    disableRemoveScroll: boolean;
     scrollBridge: import("./types").ScrollBridge;
     modal: boolean;
     open: boolean;
