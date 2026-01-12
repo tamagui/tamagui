@@ -140,6 +140,7 @@ const CONTENT_NAME = 'AlertDialogContent'
 
 type AlertDialogContentContextValue = {
   cancelRef?: React.RefObject<TamaguiElement | null>
+  destructiveRef?: React.RefObject<TamaguiElement | null>
 }
 
 const {
@@ -158,6 +159,7 @@ const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentPr
     const contentRef = React.useRef<TamaguiElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const cancelRef = React.useRef<TamaguiElement | null>(null)
+    const destructiveRef = React.useRef<TamaguiElement | null>(null)
 
     return (
       <DialogWarningProvider
@@ -165,7 +167,7 @@ const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentPr
         titleName={TITLE_NAME}
         docsSlug="alert-dialog"
       >
-        <AlertDialogContextProvider scope={scope} cancelRef={cancelRef}>
+        <AlertDialogContextProvider scope={scope} cancelRef={cancelRef} destructiveRef={destructiveRef}>
           <DialogContent
             role="alertdialog"
             aria-modal={true}
@@ -298,6 +300,27 @@ const AlertDialogCancel = AlertDialogCancelFrame.styleable<AlertDialogCancelProp
   }
 )
 
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogDestructive
+ * -----------------------------------------------------------------------------------------------*/
+
+const DESTRUCTIVE_NAME = 'AlertDialogDestructive'
+
+type AlertDialogDestructiveProps = ScopedProps<DialogCloseProps>
+
+const AlertDialogDestructiveFrame = styled(View, {
+  name: DESTRUCTIVE_NAME,
+})
+
+const AlertDialogDestructive = AlertDialogDestructiveFrame.styleable<AlertDialogDestructiveProps>(
+  function AlertDialogDestructive(props, forwardedRef) {
+    const { scope, ...destructiveProps } = props
+    const { destructiveRef } = useAlertDialogContentContext(scope)
+    const ref = useComposedRefs(forwardedRef, destructiveRef)
+    return <DialogClose scope={getAlertDialogScope(scope)} {...destructiveProps} ref={ref} />
+  }
+)
+
 /* ---------------------------------------------------------------------------------------------- */
 
 type DescriptionWarningProps = {
@@ -369,8 +392,10 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (props) => {
           return false
         }
         case ACTION_NAME:
+        case DESTRUCTIVE_NAME:
         case CANCEL_NAME: {
-          const style = name === ACTION_NAME ? 'default' : 'cancel'
+          const style =
+            name === ACTION_NAME ? 'default' : name === DESTRUCTIVE_NAME ? 'destructive' : 'cancel'
           const text = getStringChildren(child)
           const onPress = () => {
             const childProps = child.props as any
@@ -444,6 +469,7 @@ const AlertDialog = withStaticProperties(AlertDialogInner, {
   Content: AlertDialogContent,
   Action: AlertDialogAction,
   Cancel: AlertDialogCancel,
+  Destructive: AlertDialogDestructive,
   Title: AlertDialogTitle,
   Description: AlertDialogDescription,
 })
@@ -455,6 +481,7 @@ export {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogDestructive,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogOverlay,
@@ -466,6 +493,7 @@ export {
 export type {
   AlertDialogActionProps,
   AlertDialogCancelProps,
+  AlertDialogDestructiveProps,
   AlertDialogContentProps,
   AlertDialogDescriptionProps,
   AlertDialogOverlayProps,
