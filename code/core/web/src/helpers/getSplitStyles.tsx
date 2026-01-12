@@ -1481,14 +1481,35 @@ export const getSubStyle = (
   }
 
   if (!avoidMergeTransform) {
+    // Get keys of transforms in styleOut that should override parent/base
+    const overrideKeys = Array.isArray(styleOut.transform)
+      ? new Set(styleOut.transform.map((t: any) => Object.keys(t)[0]))
+      : new Set<string>()
+
     if (Array.isArray(styleOut.transform)) {
       const parentTransform = styleState.style?.transform
-      if (parentTransform) {
-        styleOut.transform = [...parentTransform, ...styleOut.transform]
+      if (parentTransform && Array.isArray(parentTransform)) {
+        // Filter parent transforms to remove any that are being overridden by substyle
+        const filteredParent = parentTransform.filter(
+          (t: any) => !overrideKeys.has(Object.keys(t)[0])
+        )
+        styleOut.transform = [...filteredParent, ...styleOut.transform]
       }
     }
     if (styleState.flatTransforms) {
-      mergeFlatTransforms(styleOut, styleState.flatTransforms)
+      // Filter base flatTransforms to remove any that are being overridden by substyle
+      // Map x->translateX, y->translateY for comparison
+      const keyMap: Record<string, string> = { x: 'translateX', y: 'translateY' }
+      const filteredFlatTransforms: Record<string, any> = {}
+      for (const key in styleState.flatTransforms) {
+        const cssKey = keyMap[key] || key
+        if (!overrideKeys.has(cssKey)) {
+          filteredFlatTransforms[key] = styleState.flatTransforms[key]
+        }
+      }
+      if (Object.keys(filteredFlatTransforms).length > 0) {
+        mergeFlatTransforms(styleOut, filteredFlatTransforms)
+      }
     }
   }
 
