@@ -122,6 +122,54 @@ export default createTamagui({
 
 Your bundler (Metro, Webpack, Vite) will automatically select the correct file based on the platform.
 
+### Multiple Animation Drivers
+
+Configure multiple drivers at the root and select per-component with `animatedBy`:
+
+```tsx
+import { createAnimations as createCSS } from '@tamagui/animations-css'
+import { createAnimations as createSpring } from '@tamagui/animations-moti'
+
+export default createTamagui({
+  animations: {
+    default: createCSS({ bouncy: 'ease-in 200ms' }),
+    spring: createSpring({ bouncy: { type: 'spring', damping: 10 } }),
+  },
+})
+```
+
+```tsx
+<Square transition="bouncy" />                    {/* uses default */}
+<Square animatedBy="spring" transition="bouncy" /> {/* uses spring */}
+```
+
+Driver names are inferred automatically for TypeScript.
+
+### Lazy Loading Animation Drivers
+
+For apps that start static (like a marketing site) but need richer animations after login, you can lazy load drivers to reduce initial bundle size:
+
+```tsx
+// Layout for authenticated users
+import { loadAnimationDriver } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-moti'
+
+const driver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
+loadAnimationDriver('spring', driver)
+
+// Now components can use animatedBy="spring"
+```
+
+When lazy loading, add type hints for autocomplete:
+
+```tsx
+declare module 'tamagui' {
+  interface TypeOverride {
+    animationDrivers(): 'spring'
+  }
+}
+```
+
 ### Optimizing Bundle Size
 
 <Notice theme="green">
@@ -184,10 +232,33 @@ and after mount animate to their flat styles:
 
 ### Granular animations
 
-The `transition` prop accepts a string or a two-arity array to customize
+The `transition` prop accepts a string or a more complex object to customize
 animations per-property.
 
-You can set a default animation with overrides for specific properties using the array syntax:
+You can specify animations for specific properties using an object:
+
+```tsx
+import { YStack } from 'tamagui'
+
+export default () => (
+  <YStack
+    transition={{
+      // only x and y will apply animations
+      x: 'bouncy',
+      y: {
+        type: 'bouncy',
+        overshootClamping: true,
+      },
+    }}
+  />
+)
+```
+
+Note that values can either map to `AnimationKey` as a string, or to
+`{ type: AnimationKey, ...configuration }`
+
+You can set a default value using a two-arity array with the default in the
+first position:
 
 ```tsx
 import { YStack } from 'tamagui'
@@ -209,9 +280,6 @@ export default () => (
   />
 )
 ```
-
-Note that values can either map to `AnimationKey` as a string, or to
-`{ type: AnimationKey, ...configuration }`
 
 ### Delay
 
