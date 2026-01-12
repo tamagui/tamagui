@@ -432,10 +432,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     const animateOnly = props.animateOnly as string[] | undefined
     for (const key in style) {
       const value = style[key]
-      if (
-        disableAnimationProps.has(key) ||
-        (animateOnly && !animateOnly.includes(key))
-      ) {
+      if (disableAnimationProps.has(key) || (animateOnly && !animateOnly.includes(key))) {
         dontAnimate ||= {}
         dontAnimate[key] = value
       } else {
