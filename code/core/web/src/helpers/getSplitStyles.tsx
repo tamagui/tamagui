@@ -408,6 +408,11 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
 
+        if (keyInit === 'id' || keyInit === 'nativeID') {
+          viewProps.id = valInit
+          continue
+        }
+
         let didUseKeyInit = false
 
         if (isReactNative) {
