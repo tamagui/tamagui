@@ -1,5 +1,5 @@
 ---
-title: Input & Textarea
+title: Input & TextArea
 name: inputs
 component: Input
 demoName: Inputs
@@ -13,7 +13,7 @@ demoName: Inputs
 
 ```
 
-Using Web APIs and relying on bare Tamagui with no `react-native-web` dependency on web compared to old Input component, support scaling all the styles up or down using the `size` property, and full `theme` support.
+The v2 Input uses web-standard HTML APIs as the primary interface, with automatic conversion to React Native equivalents on native platforms. This means you write web-first code that works everywhere.
 
 ## Installation
 
@@ -23,28 +23,292 @@ Input is already installed in `tamagui`, or you can install it independently:
 npm install @tamagui/input
 ```
 
-## Input
+## Usage
 
-A one-line input field:
+### Input
+
+A single-line text input:
 
 ```tsx
 import { Input } from 'tamagui'
 
-export const App = () => (
-  // Accepts size and style properties directly
-  <Input gap="$4" borderWidth={2} />
+export default () => (
+  <Input
+    placeholder="Enter text..."
+    size="$4"
+  />
 )
 ```
 
-## TextArea
+### TextArea
 
-For multi-line inputs:
+For multi-line text input:
 
 ```tsx
 import { TextArea } from 'tamagui'
 
-export const App = () => (
-  // Accepts size and style properties directly
-  <TextArea gap="$4" borderWidth={2} />
+export default () => (
+  <TextArea
+    placeholder="Enter long text..."
+    rows={4}
+  />
 )
 ```
+
+## Web-First API
+
+The v2 Input uses standard HTML input attributes. Here are the key props:
+
+### Input Types
+
+Use the standard HTML `type` attribute. On native, these automatically map to the appropriate keyboard and behavior:
+
+```tsx
+// Password input
+<Input type="password" />
+
+// Email input (shows email keyboard on native)
+<Input type="email" />
+
+// Phone number (shows phone pad on native)
+<Input type="tel" />
+
+// Number input (shows numeric keyboard on native)
+<Input type="number" />
+
+// URL input
+<Input type="url" />
+
+// Search input
+<Input type="search" />
+```
+
+**Cross-platform mapping:**
+
+| Web `type`     | Native behavior                    |
+|----------------|-----------------------------------|
+| `password`     | `secureTextEntry={true}`          |
+| `email`        | `keyboardType="email-address"`    |
+| `tel`          | `keyboardType="phone-pad"`        |
+| `number`       | `keyboardType="numeric"`          |
+| `url`          | `keyboardType="url"`              |
+| `search`       | `inputMode="search"`              |
+
+### Enter Key Behavior
+
+Use `enterKeyHint` to control the enter/return key label on virtual keyboards:
+
+```tsx
+<Input enterKeyHint="search" />
+<Input enterKeyHint="send" />
+<Input enterKeyHint="done" />
+<Input enterKeyHint="go" />
+<Input enterKeyHint="next" />
+```
+
+On native, this automatically maps to `returnKeyType`.
+
+### Form Attributes
+
+Standard HTML form attributes work as expected:
+
+```tsx
+<Input
+  name="email"
+  placeholder="Enter email"
+  required
+  maxLength={100}
+  minLength={3}
+  pattern="[a-z@.]+"
+  autoComplete="email"
+  autoFocus
+  readOnly={false}
+  disabled={false}
+/>
+```
+
+### Events
+
+Use standard web events:
+
+```tsx
+<Input
+  onChange={(e) => console.log(e.target.value)}
+  onFocus={(e) => console.log('focused')}
+  onBlur={(e) => console.log('blurred')}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      // handle enter
+    }
+  }}
+/>
+```
+
+For convenience, `onChangeText` is still supported but deprecated:
+
+```tsx
+// Deprecated - use onChange instead
+<Input onChangeText={(text) => setText(text)} />
+
+// Preferred
+<Input onChange={(e) => setText(e.target.value)} />
+```
+
+### Submit Handling
+
+For handling form submission on enter:
+
+```tsx
+<Input
+  onSubmitEditing={(e) => {
+    console.log('Submitted:', e.nativeEvent.text)
+  }}
+/>
+```
+
+## Styling
+
+Input accepts all Tamagui style props and supports the `size` prop for consistent scaling:
+
+```tsx
+<Input
+  size="$4"
+  borderWidth={2}
+  borderColor="$borderColor"
+  borderRadius="$4"
+  backgroundColor="$background"
+  color="$color"
+  placeholderTextColor="$placeholderColor"
+  selectionColor="$accentColor"
+
+  hoverStyle={{
+    borderColor: '$borderColorHover',
+  }}
+
+  focusStyle={{
+    borderColor: '$borderColorFocus',
+  }}
+/>
+```
+
+## Native-Only Props
+
+Some props only apply on native platforms and have no web equivalent:
+
+### keyboardAppearance (iOS)
+
+Controls the keyboard color scheme on iOS:
+
+```tsx
+<Input keyboardAppearance="dark" />
+<Input keyboardAppearance="light" />
+<Input keyboardAppearance="default" />
+```
+
+### textContentType (iOS)
+
+Provides hints for iOS autofill:
+
+```tsx
+<Input textContentType="emailAddress" />
+<Input textContentType="password" />
+<Input textContentType="newPassword" />
+<Input textContentType="oneTimeCode" />
+<Input textContentType="telephoneNumber" />
+<Input textContentType="username" />
+```
+
+For web autofill, use the standard `autoComplete` attribute instead.
+
+## Migration from v1
+
+If you're migrating from v1 Input, here are the key changes:
+
+| v1 (React Native style)        | v2 (Web style)                    |
+|-------------------------------|-----------------------------------|
+| `secureTextEntry`             | `type="password"`                 |
+| `keyboardType="email-address"`| `type="email"`                    |
+| `keyboardType="phone-pad"`    | `type="tel"`                      |
+| `keyboardType="numeric"`      | `type="number"`                   |
+| `keyboardType="url"`          | `type="url"`                      |
+| `returnKeyType="search"`      | `enterKeyHint="search"`           |
+| `editable={false}`            | `readOnly` or `disabled`          |
+| `onChangeText`                | `onChange`                        |
+| `multiline`                   | Use `TextArea` or `rows > 1`      |
+| `numberOfLines`               | `rows`                            |
+
+The v1 props still work but are deprecated. We recommend updating to the web-standard props for better cross-platform consistency.
+
+## API Reference
+
+### Input Props
+
+Accepts all HTML `<input>` attributes plus Tamagui style props.
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'SizeTokens',
+      description: 'Scale the input size consistently.',
+    },
+    {
+      name: 'type',
+      required: false,
+      type: '"text" | "password" | "email" | "tel" | "number" | "url" | "search"',
+      description: 'HTML input type. Automatically maps to native keyboard types.',
+    },
+    {
+      name: 'enterKeyHint',
+      required: false,
+      type: '"enter" | "done" | "go" | "next" | "previous" | "search" | "send"',
+      description: 'Hint for the enter key label. Maps to returnKeyType on native.',
+    },
+    {
+      name: 'placeholderTextColor',
+      required: false,
+      type: 'ColorTokens',
+      description: 'Color of placeholder text. Accepts Tamagui color tokens.',
+    },
+    {
+      name: 'selectionColor',
+      required: false,
+      type: 'ColorTokens',
+      description: 'Color of text selection. Accepts Tamagui color tokens.',
+    },
+    {
+      name: 'onSubmitEditing',
+      required: false,
+      type: '(e: { nativeEvent: { text: string } }) => void',
+      description: 'Called when enter/return is pressed.',
+    },
+    {
+      name: 'keyboardAppearance',
+      required: false,
+      type: '"default" | "light" | "dark"',
+      description: 'iOS only. Controls keyboard color scheme.',
+    },
+    {
+      name: 'textContentType',
+      required: false,
+      type: 'string',
+      description: 'iOS only. Hints for autofill. Use autoComplete for web.',
+    },
+  ]}
+/>
+
+### TextArea Props
+
+Accepts all Input props plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'rows',
+      required: false,
+      type: 'number',
+      description: 'Number of visible text lines.',
+    },
+  ]}
+/>
