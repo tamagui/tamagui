@@ -7,6 +7,7 @@ import {
   ListItem,
   Paragraph,
   Popover,
+  Sheet,
   Switch,
   Theme,
   YGroup,
@@ -104,16 +105,16 @@ export function Panel({
             </Popover.Trigger>
 
             <Adapt when="maxMd" platform="touch">
-              <Popover.Sheet modal dismissOnSnapToBottom>
-                <Popover.Sheet.Frame p="$4">
+              <Sheet modal dismissOnSnapToBottom>
+                <Sheet.Frame p="$4">
                   <Adapt.Contents />
-                </Popover.Sheet.Frame>
-                <Popover.Sheet.Overlay
+                </Sheet.Frame>
+                <Sheet.Overlay
                   transition="quickest"
                   enterStyle={{ opacity: 0 }}
                   exitStyle={{ opacity: 0 }}
                 />
-              </Popover.Sheet>
+              </Sheet>
             </Adapt>
 
             <Popover.Content
