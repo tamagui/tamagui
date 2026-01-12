@@ -102,6 +102,13 @@ Things deprecated in version one that are now gone:
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
 - Moved all settings on `createTamagui` onto the `settings` object.
 
+#### Animation Drivers
+
+The Reanimated animation driver now supports `noRerender` mode, matching the
+Motion driver. This means animations run entirely on the UI thread without
+triggering React re-renders, giving you better performance for complex
+animations.
+
 #### Headless and Unstyled Components
 
 During v2 we're expanding headless components. Many components now have three
@@ -151,6 +158,28 @@ content on iOS.
 
 ```tsx hero template=ContextMenu
 
+```
+
+#### Component Scoping
+
+Dialog, Popover, and Tooltip now support a `scope` prop that lets you mount a
+single instance at your app's root while placing triggers anywhere in your tree.
+This improves performance in lists or other sensitive areas since only the
+lightweight Trigger renders inline.
+
+```tsx
+// _layout.tsx - mount once at root
+<Tooltip scope="app">
+  <Tooltip.Content>
+    <Tooltip.Arrow />
+  </Tooltip.Content>
+  {children}
+</Tooltip>
+
+// anywhere else - just the trigger
+<Tooltip.Trigger scope="app" aria-label="Settings">
+  <Button icon={Settings} />
+</Tooltip.Trigger>
 ```
 
 ### Goals
