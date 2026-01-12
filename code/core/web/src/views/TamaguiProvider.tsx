@@ -49,10 +49,21 @@ export function TamaguiProvider({
     [insets?.top, insets?.right, insets?.bottom, insets?.left]
   )
 
+  // Get the default animation driver from config
+  // animations can be a single driver or { default: driver, ...others }
+  const defaultAnimationDriver = React.useMemo(() => {
+    const animations = config?.animations
+    if (!animations) return null
+    if ('default' in animations) {
+      return (animations as { default: any }).default
+    }
+    return animations
+  }, [config?.animations])
+
   let contents = (
     <UnmountedClassName>
       <ComponentContext.Provider
-        animationDriver={config?.animations}
+        animationDriver={defaultAnimationDriver}
         insets={memoizedInsets}
       >
         <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>

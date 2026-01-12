@@ -44,7 +44,7 @@ export type * from './interfaces/RNExclusiveTypes';
 export type * from './interfaces/TamaguiComponentEvents';
 export type * from './types';
 export * from './interfaces/GetRef';
-export { getConfig, getSetting, getThemes, getToken, getTokens, getTokenValue, setConfig, setupDev, updateConfig, } from './config';
+export { getConfig, getSetting, getThemes, getToken, getTokens, getTokenValue, loadAnimationDriver, setConfig, setupDev, updateConfig, } from './config';
 export { setNonce } from './helpers/insertStyleRule';
 export * from './constants/constants';
 export * from './hooks/useIsTouchDevice';

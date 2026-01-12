@@ -237,6 +237,30 @@ The transform origin adjusts automatically based on the final placement - if the
 popover flips from `bottom` to `top`, the origin updates accordingly. This
 creates polished, native-feeling animations without any manual configuration.
 
+You can now configure multiple animation drivers and select per-component using
+the new `animatedBy` prop:
+
+```tsx
+// Config with multiple drivers
+createTamagui({
+  animations: {
+    default: cssDriver,
+    spring: motiDriver,
+  },
+})
+
+// Select per-component
+<View animatedBy="spring" transition="bouncy" />
+```
+
+For lazy loading drivers (e.g., load a heavier driver only after login), use the
+new `loadAnimationDriver` function:
+
+```tsx
+import { loadAnimationDriver } from 'tamagui'
+loadAnimationDriver('spring', motiDriver)
+```
+
 #### Headless and Unstyled Components
 
 We're expanding headless components in v2. Many components now have three
