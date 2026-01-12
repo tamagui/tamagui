@@ -67,18 +67,18 @@ export function ThemeMutation() {
 
   return (
     <YStack padding="$4" alignItems="center" gap="$4">
-      <Text id={TEST_IDS.themeMutationColorText}>Expected color: {currentColor}</Text>
+      <Text testID={TEST_IDS.themeMutationColorText}>Expected color: {currentColor}</Text>
 
       <Theme name={themeName as any}>
         <Square
-          id={TEST_IDS.themeMutationSquare}
+          testID={TEST_IDS.themeMutationSquare}
           size={100}
           backgroundColor="$background"
           borderRadius="$4"
         />
       </Theme>
 
-      <Button id={TEST_IDS.themeMutationButton} onPress={cycleColor}>
+      <Button testID={TEST_IDS.themeMutationButton} onPress={cycleColor}>
         Change Theme Color
       </Button>
     </YStack>

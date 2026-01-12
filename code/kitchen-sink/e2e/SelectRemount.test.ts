@@ -75,36 +75,44 @@ describe('SelectRemount', () => {
       .toBeVisible()
       .withTimeout(5000)
 
-    // Test first Select - wait for it to be ready after remount
-    await waitFor(element(by.id('select-remount-test-trigger')))
-      .toBeVisible()
-      .withTimeout(5000)
-    await element(by.id('select-remount-test-trigger')).tap()
+    // Disable synchronization during sheet animations - spring animations can be slow to settle
+    await device.disableSynchronization()
 
-    // Wait for Select sheet/content to animate in
-    await waitFor(element(by.id('select-remount-test-option-apple')))
-      .toBeVisible()
-      .withTimeout(10000)
+    try {
+      // Test first Select - wait for it to be ready after remount
+      await waitFor(element(by.id('select-remount-test-trigger')))
+        .toBeVisible()
+        .withTimeout(5000)
+      await element(by.id('select-remount-test-trigger')).tap()
 
-    // Select an option to close the Select instead of pressing back
-    await element(by.id('select-remount-test-option-apple')).tap()
+      // Wait for Select sheet/content to animate in
+      await waitFor(element(by.id('select-remount-test-option-apple')))
+        .toBeVisible()
+        .withTimeout(10000)
 
-    // Wait for sheet to close
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+      // Select an option to close the Select instead of pressing back
+      await element(by.id('select-remount-test-option-apple')).tap()
 
-    // Verify we're still on the SelectRemount screen
-    await waitFor(element(by.id('remount-button')))
-      .toBeVisible()
-      .withTimeout(5000)
+      // Wait for sheet to close - give spring animation time to settle
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
-    // Test second Select - wait for it to be visible
-    await waitFor(element(by.id('select-remount-test-2-trigger')))
-      .toBeVisible()
-      .withTimeout(5000)
-    await element(by.id('select-remount-test-2-trigger')).tap()
-    await waitFor(element(by.id('select-remount-test-2-option-apple')))
-      .toBeVisible()
-      .withTimeout(10000)
+      // Verify we're still on the SelectRemount screen
+      await waitFor(element(by.id('remount-button')))
+        .toBeVisible()
+        .withTimeout(5000)
+
+      // Test second Select - wait for it to be visible
+      await waitFor(element(by.id('select-remount-test-2-trigger')))
+        .toBeVisible()
+        .withTimeout(5000)
+      await element(by.id('select-remount-test-2-trigger')).tap()
+      await waitFor(element(by.id('select-remount-test-2-option-apple')))
+        .toBeVisible()
+        .withTimeout(10000)
+    } finally {
+      // Re-enable synchronization
+      await device.enableSynchronization()
+    }
   })
 })
 
