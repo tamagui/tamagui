@@ -33,10 +33,6 @@ v2:
           </span>
         </div>
 
-- react 19 migration:
-  - keep forwardRef for now at least
-  - useEvent => useEffectEvent
-
 -  object style transform - we support arraay but object is nice
 
   <YStack
@@ -49,9 +45,6 @@ v2:
   />
 
 as part of this we should have a new animation-helpers package that is just used to normalize the prop so its a consistent output format always from the various input options, then we always use the normalized value.
-
-- tamagui.dev the right side quick nav on docs isnt updating on page nav
-    - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
 
 - smaller bugfixes/things to check work:
   - fix react 19 + nextjs 15
