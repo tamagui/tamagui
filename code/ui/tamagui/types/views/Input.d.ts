@@ -700,8 +700,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     insetInlineStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInlineEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     transition?: (import("@tamagui/core").TransitionProp | null) | undefined;
-    transitionOnly?: string[] | undefined;
-    transitionPresence?: boolean | undefined;
+    animateOnly?: string[] | undefined;
+    animatePresence?: boolean | undefined;
     passThrough?: boolean | undefined;
     selectionColor?: "unset" | Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
