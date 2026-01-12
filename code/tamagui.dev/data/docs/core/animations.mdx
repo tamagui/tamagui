@@ -138,7 +138,7 @@ module.exports = withTamagui({
 
 ## Usage
 
-The `animation` prop accepts the name of an animation you've configured. By default, animations will
+The `transition` prop accepts the name of an animation you've configured. By default, animations will
 apply to all animatable styles, similar to setting `all` in a CSS `transition`.
 
 Here's an example animating `hoverStyle`:
@@ -151,19 +151,19 @@ Here's an example animating `hoverStyle`:
 
 ```
 
-### The animation props rules
+### The transition prop rules
 
-If you add an `animation` prop, you must always keep the prop. If you need the animation to be disabled,
+If you add a `transition` prop, you must always keep the prop. If you need the animation to be disabled,
 pass false, null or even undefined if it suits you.
 
 The spring-based animation drivers have expensive hooks that would degrade runtime
 performance if present on every component. As a workaround, the animation hooks
-are called conditionally on whether the animation key is present in the props object.
+are called conditionally on whether the transition key is present in the props object.
 
-So, `<Square animation={isActive ? 'bouncy' : null} />` rather than
-`<Square {...isActive && { animation: 'bouncy' }} />`.
+So, `<Square transition={isActive ? 'bouncy' : null} />` rather than
+`<Square {...isActive && { transition: 'bouncy' }} />`.
 
-If you'd like to remove or add an animation prop after a component has already rendered, you'd have
+If you'd like to remove or add a transition prop after a component has already rendered, you'd have
 to change the key.
 
 ### enterStyle
@@ -181,40 +181,17 @@ and after mount animate to their flat styles:
 
 ### Granular animations
 
-The `animation` prop accepts a string or a more complex object to customize
+The `transition` prop accepts a string or a two-arity array to customize
 animations per-property.
 
-The basic object we'll call an `AnimationConfig`, looks like this:
+You can set a default animation with overrides for specific properties using the array syntax:
 
 ```tsx
 import { YStack } from 'tamagui'
 
 export default () => (
   <YStack
-    animation={{
-      // only x and y will apply animations
-      x: 'bouncy',
-      y: {
-        type: 'bouncy',
-        overshootClamping: true,
-      },
-    }}
-  />
-)
-```
-
-Note that values can either map to `AnimationKey` as a string, or to
-`{ type: AnimationKey, ...configuration }`
-
-You can set a default value using a two-arity array with the default in the
-first position:
-
-```tsx
-import { YStack } from 'tamagui'
-
-export default () => (
-  <YStack
-    animation={[
+    transition={[
       // all attributes get "bouncy"
       'bouncy',
       // these are customized
@@ -230,6 +207,9 @@ export default () => (
 )
 ```
 
+Note that values can either map to `AnimationKey` as a string, or to
+`{ type: AnimationKey, ...configuration }`
+
 ### Delay
 
 You can add a delay before animations start using the array syntax with a `delay` property (in milliseconds):
@@ -242,7 +222,7 @@ export default () => (
     {[0, 1, 2, 3].map((i) => (
       <Square
         key={i}
-        animation={['bouncy', { delay: i * 100 }]}
+        transition={['bouncy', { delay: i * 100 }]}
         enterStyle={{ opacity: 0, scale: 0.5, y: 20 }}
         size={50}
         bg="$color10"
@@ -280,7 +260,7 @@ export const MyComponent = ({ isVisible }) => (
     {isVisible && (
       <View
         key="my-square"
-        animation="bouncy"
+        transition="bouncy"
         backgroundColor="green"
         size={50}
         enterStyle={{
@@ -387,7 +367,7 @@ export function Demo() {
       alignItems="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
-        <GalleryItem key={page} animation="slowest" going={going}>
+        <GalleryItem key={page} transition="slowest" going={going}>
           <Image src={photos[imageIndex]} width={500} height={300} />
         </GalleryItem>
       </AnimatePresence>
@@ -425,15 +405,15 @@ export function Demo() {
 
 The animation hooks are heavy, which initially meant we either had to choose
 great performance or animations. We've settled on a trade-off. We track if the
-`animation` prop is set, and if so, we enable the hook. If it _is ever set, even
+`transition` prop is set, and if so, we enable the hook. If it _is ever set, even
 just once_, then the hooks will continue to run for the remainder of the
 component lifecycle. This means if you ever plan to animate a component you
-should keep `animation` always set on the component props. You can disable it
+should keep `transition` always set on the component props. You can disable it
 like so:
 
 ```tsx
-<View animation={condition ? 'animation-name' : null} />
+<View transition={condition ? 'animation-name' : null} />
 ```
 
 Note that because of this constraint, you also will see an error if you add the
-`animation` prop to a component in dev mode during an HMR. Often just saving once more will remove the error, or reloading at worst.
+`transition` prop to a component in dev mode during an HMR. Often just saving once more will remove the error, or reloading at worst.

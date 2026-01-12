@@ -56,7 +56,7 @@ The format is: `<easing-function> <duration>`
 You can add animation delays using the array syntax:
 
 ```tsx
-<Square animation={['quick', { delay: 200 }]} />
+<Square transition={['quick', { delay: 200 }]} />
 ```
 
 The delay (in milliseconds) is applied as CSS `transition-delay`.
@@ -102,7 +102,7 @@ export default createTamagui({
 // Usage in components
 export const MyComponent = () => (
   <YStack
-    animation="quick"
+    transition="quick"
     hoverStyle={{
       scale: 1.1,
     }}
