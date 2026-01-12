@@ -94,13 +94,16 @@ export default () => (
 
 ### createImage Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `Component` | `ComponentType` | - | The underlying image component (expo-image, react-native-fast-image, etc.) |
-| `resizeModePropName` | `string` | `'resizeMode'` | The prop name for resize mode. expo-image uses `'contentFit'` |
-| `objectPositionPropName` | `string` | `undefined` | The prop name for object position. expo-image uses `'contentPosition'` |
-| `mapObjectFitToResizeMode` | `function` | Default mapper | Custom function to map `objectFit` values to the component's resize mode |
-| `transformSource` | `function` | Default transformer | Custom function to transform source props |
+<SimpleTable
+  headers={['Option', 'Type', 'Default', 'Description']}
+  rows={[
+    ['Component', '`ComponentType`', '-', 'The underlying image component (expo-image, react-native-fast-image, etc.)'],
+    ['resizeModePropName', '`string`', "`'resizeMode'`", "The prop name for resize mode. expo-image uses `'contentFit'`"],
+    ['objectPositionPropName', '`string`', '`undefined`', "The prop name for object position. expo-image uses `'contentPosition'`"],
+    ['mapObjectFitToResizeMode', '`function`', 'Default mapper', 'Custom function to map `objectFit` values to the component\'s resize mode'],
+    ['transformSource', '`function`', 'Default transformer', 'Custom function to transform source props'],
+  ]}
+/>
 
 ## API Reference
 
