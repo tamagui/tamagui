@@ -45,7 +45,13 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
   val = '$true',
   extras
 ) => {
-  if (extras.props.multiline || extras.props.numberOfLines > 1) {
+  // Check for textarea mode via tag, rows, multiline, or numberOfLines
+  if (
+    extras.props.tag === 'textarea' ||
+    extras.props.rows > 1 ||
+    extras.props.multiline ||
+    extras.props.numberOfLines > 1
+  ) {
     return textAreaSizeVariant(val, extras)
   }
   const buttonStyles = getButtonSized(val, extras)
