@@ -19,6 +19,12 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./motion": {
+      "types": "./src/animations.motion.ts",
+      "module": "./dist/esm/animations.motion.mjs",
+      "import": "./dist/esm/animations.motion.mjs",
+      "require": "./dist/cjs/animations.motion.cjs"
     }
   },
   "scripts": {
