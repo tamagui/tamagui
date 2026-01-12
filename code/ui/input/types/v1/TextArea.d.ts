@@ -12,7 +12,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     inputMode?: import("react-native").InputModeOptions;
     placeholderTextColor?: import("@tamagui/web").ColorTokens;
     selectionColor?: import("@tamagui/web").ColorTokens;
-    tag?: import("@tamagui/web").TamaguiComponentPropsBase["tag"];
+    render?: import("@tamagui/web").TamaguiComponentPropsBase["render"];
     multiline?: boolean;
     numberOfLines?: number;
 }, import("@tamagui/web").StackStyleBase, {
@@ -21,7 +21,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     unstyled?: boolean | undefined;
 }, ({
     name: string;
-    tag: string;
+    render: string;
     variants: {
         readonly unstyled: {
             readonly false: {
@@ -91,7 +91,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         [key: string]: boolean;
     } | undefined;
     name?: undefined;
-    tag?: undefined;
+    render?: undefined;
     variants?: undefined;
     defaultVariants?: undefined;
 }) & import("@tamagui/web").StaticConfigPublic>;

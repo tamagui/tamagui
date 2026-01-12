@@ -16,7 +16,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     inputMode?: import("react-native").InputModeOptions;
     placeholderTextColor?: import("@tamagui/core").ColorTokens;
     selectionColor?: import("@tamagui/core").ColorTokens;
-    tag?: import("@tamagui/core").TamaguiComponentPropsBase["tag"];
+    render?: import("@tamagui/core").TamaguiComponentPropsBase["render"];
     multiline?: boolean;
     numberOfLines?: number;
 }, TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & Omit<React.ClassAttributes<HTMLInputElement> & React.HTMLProps<HTMLInputElement>, "size" | `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | keyof import("@tamagui/core").StackNonStyleProps> & Pick<import("@tamagui/core").TextProps, "color"> & Omit<React.CSSProperties | undefined, "color"> & Omit<import("react-native").TextInputProps, "numberOfLines" | "selectionColor" | "enterKeyHint" | "inputMode" | "placeholderTextColor" | "editable" | "keyboardType" | "onChangeText" | "secureTextEntry"> & {
@@ -28,7 +28,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     inputMode?: import("react-native").InputModeOptions;
     placeholderTextColor?: import("@tamagui/core").ColorTokens;
     selectionColor?: import("@tamagui/core").ColorTokens;
-    tag?: import("@tamagui/core").TamaguiComponentPropsBase["tag"];
+    render?: import("@tamagui/core").TamaguiComponentPropsBase["render"];
     multiline?: boolean;
     numberOfLines?: number;
 }, import("@tamagui/core").StackStyleBase, {
@@ -37,7 +37,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     unstyled?: boolean | undefined;
 }, {
     name: string;
-    tag: string;
+    render: string;
     variants: {
         readonly unstyled: {
             readonly false: {
@@ -107,7 +107,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
         [key: string]: boolean;
     } | undefined;
     name?: undefined;
-    tag?: undefined;
+    render?: undefined;
     variants?: undefined;
     defaultVariants?: undefined;
 }>;

@@ -88,7 +88,7 @@ const Point = ({
   size = '$4',
 }: { children: React.ReactNode; size?: string }) => {
   return (
-    <XStack tag="li" items="flex-start" gap="$3">
+    <XStack render="li" items="flex-start" gap="$3">
       <YStack py="$1">
         <Dot size={14} color="$color10" />
       </YStack>
@@ -166,7 +166,7 @@ const PointsCard = ({
             </H3>
           </XStack>
 
-          <YStack gap="$2" tag="ul" p={0} m={0}>
+          <YStack gap="$2" render="ul" p={0} m={0}>
             {cardPoints.map((point) => (
               <Point key={point} size="$3">
                 {point}

@@ -47,7 +47,7 @@ export declare const textAreaSizeVariant: SizeVariantSpreadFunction<any>;
 export declare const INPUT_NAME = "Input";
 export declare const styledBody: ({
     name: string;
-    tag: string;
+    render: string;
     variants: {
         readonly unstyled: {
             readonly false: {
@@ -117,7 +117,7 @@ export declare const styledBody: ({
         [key: string]: boolean;
     } | undefined;
     name?: undefined;
-    tag?: undefined;
+    render?: undefined;
     variants?: undefined;
     defaultVariants?: undefined;
 })[];

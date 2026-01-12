@@ -106,7 +106,7 @@ export const INPUT_NAME = 'Input'
 export const styledBody = [
   {
     name: INPUT_NAME,
-    tag: 'input',
+    render: 'input',
     variants: {
       unstyled: {
         false: defaultStyles,

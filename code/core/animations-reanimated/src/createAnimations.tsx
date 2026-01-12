@@ -269,7 +269,7 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
 
   const Component = Animated.createAnimatedComponent(
     forwardRef((propsIn: any, ref) => {
-      const { forwardedRef, tag = defaultTag, ...rest } = propsIn
+      const { forwardedRef, render = defaultTag, ...rest } = propsIn
       const hostRef = useRef<HTMLElement>(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
 
@@ -291,9 +291,9 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
       )
 
       const viewProps = result?.viewProps ?? {}
-      const Element = tag
+      const Element = render
       const transformedProps = hooks.usePropsTransform?.(
-        tag,
+        render,
         viewProps,
         stateRef as any,
         false

@@ -18,6 +18,7 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
+import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
@@ -505,9 +506,9 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     const isTaggable = !Component || typeof Component === 'string'
-    const tagProp = props.tag
-    // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? tagProp || Component : Component) : Component
+    const renderProp = props.render
+    // default to render prop, fallback to component (when both strings)
+    const element = isWeb ? (isTaggable ? renderProp || Component : Component) : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -918,8 +919,8 @@ export function createComponent<
       }
     }
 
-    if (tagProp && elementType['acceptTagProp']) {
-      viewProps.tag = tagProp
+    if (renderProp && elementType['acceptTagProp']) {
+      viewProps.render = renderProp
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -1384,7 +1385,23 @@ export function createComponent<
     if (useChildrenResult) {
       content = useChildrenResult
     } else {
-      content = React.createElement(elementType, viewProps, content)
+      // Handle render prop variants: function, JSX element, or string
+      if (typeof renderProp === 'function') {
+        // Render function: full control with props and state
+        const renderProps = { ...viewProps, children: content }
+        content = renderProp(renderProps, state)
+      } else if (
+        renderProp &&
+        typeof renderProp === 'object' &&
+        React.isValidElement(renderProp)
+      ) {
+        // JSX element: clone with merged props
+        const elementProps = (renderProp as React.ReactElement).props || {}
+        const mergedProps = mergeRenderElementProps(elementProps, viewProps, content)
+        content = React.cloneElement(renderProp as React.ReactElement, mergedProps)
+      } else {
+        content = React.createElement(elementType, viewProps, content)
+      }
     }
 
     // needs to reset the presence state for nested children

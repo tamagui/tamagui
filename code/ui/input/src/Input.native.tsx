@@ -49,7 +49,7 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     pattern,
     required,
     step,
-    tag,
+    render,
 
     ...rest
   } = props
@@ -172,7 +172,7 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     keyboardAppearance,
     inputMode,
     returnKeyType,
-    multiline: tag === 'textarea' || (rows && rows > 1),
+    multiline: render === 'textarea' || (rows && rows > 1),
     numberOfLines: rows,
     selection,
     placeholderTextColor: resolvedPlaceholderColor,

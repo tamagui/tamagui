@@ -36,7 +36,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     returnKeyType,
     onKeyDown,
     inputMode,
-    tag,
+    render,
     ...rest
   } = inProps
 
@@ -91,7 +91,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     numberOfLines: rows || rest.numberOfLines,
   } as any
 
-  if (tag === 'textarea') {
+  if (render === 'textarea') {
     finalProps.multiline = true
   }
 
@@ -100,7 +100,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
       const { key } = e.nativeEvent
       if (
         key === 'Backspace' ||
-        (tag === 'textarea' && key === 'Enter') ||
+        (render === 'textarea' && key === 'Enter') ||
         key.length === 1
       ) {
         onKeyDown({

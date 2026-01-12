@@ -14,7 +14,7 @@ const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
 export const Spacer = styled(View, {
   name: 'Spacer',
   pointerEvents: 'none',
-  tag: 'span',
+  render: 'span',
 
   variants: {
     size: {

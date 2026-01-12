@@ -79,7 +79,7 @@ export const ProLicense = () => {
 
       <H3>License Terms</H3>
       <Paragraph>You can:</Paragraph>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>
             Use all Pro features including Theme Builder, Bento, and Takeout for your
@@ -93,7 +93,7 @@ export const ProLicense = () => {
         </Ul>
       </Paragraph>
       <Paragraph>You cannot:</Paragraph>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>Use the license for projects other than the one specified at purchase.</Li>
           <Li>
@@ -105,9 +105,8 @@ export const ProLicense = () => {
           <Li>Redistribute Takeout source code publicly.</Li>
         </Ul>
       </Paragraph>
-
-      <H3>Definitions</H3>
-      <Paragraph tag="span">
+      <H3>License Definitions</H3>
+      <Paragraph render="span">
         <Ul>
           <Li>
             Licensee is a person or business entity who has purchased a Tamagui Pro V2
@@ -146,13 +145,13 @@ export const ProLicense = () => {
 
 const Ul = styled(YStack, {
   name: 'ul',
-  tag: 'ul',
+  render: 'ul',
   pl: 20,
 })
 
 const Li = styled(Paragraph, {
   name: 'li',
-  tag: 'li',
+  render: 'li',
   // @ts-ignore
   display: 'list-item',
 })
