@@ -2,7 +2,7 @@ import type { ColorTokens, StackProps, TextProps } from '@tamagui/web'
 
 /**
  * Web-aligned Input props
- * Follows standard HTML input API as primary, with minimal RN compatibility
+ * Follows standard HTML input API as primary, with RN compatibility for native
  */
 
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
@@ -53,8 +53,43 @@ export type InputProps = StackProps &
       nativeEvent: { selection: { start: number; end: number } }
     }) => void
 
+    // Native-only props (no web equivalent)
+
     /**
-     * Keyboard appearance (native only, ignored on web)
+     * Keyboard appearance for iOS (native only, no web equivalent)
      */
     keyboardAppearance?: 'default' | 'light' | 'dark'
+
+    /**
+     * Text content type for iOS autofill (native only, use `autoComplete` on web)
+     */
+    textContentType?:
+      | 'none'
+      | 'URL'
+      | 'addressCity'
+      | 'addressCityAndState'
+      | 'addressState'
+      | 'countryName'
+      | 'creditCardNumber'
+      | 'emailAddress'
+      | 'familyName'
+      | 'fullStreetAddress'
+      | 'givenName'
+      | 'jobTitle'
+      | 'location'
+      | 'middleName'
+      | 'name'
+      | 'namePrefix'
+      | 'nameSuffix'
+      | 'nickname'
+      | 'organizationName'
+      | 'postalCode'
+      | 'streetAddressLine1'
+      | 'streetAddressLine2'
+      | 'sublocality'
+      | 'telephoneNumber'
+      | 'username'
+      | 'password'
+      | 'newPassword'
+      | 'oneTimeCode'
   }

@@ -8156,6 +8156,7 @@ __metadata:
     "@tamagui/cli": "workspace:*"
     "@tamagui/colors": "workspace:*"
     "@tamagui/config": "workspace:*"
+    "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/demos": "workspace:*"
     "@tamagui/font-inter": "workspace:*"

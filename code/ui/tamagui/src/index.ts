@@ -61,6 +61,7 @@ export * from './views/Text'
 // lets be explicit on what gets exported
 export type {
   TransitionKeys,
+  TransitionProp,
   ColorTokens,
   CreateTamaguiConfig,
   CreateTamaguiProps,
