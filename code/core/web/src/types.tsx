@@ -327,6 +327,13 @@ export type TamaguiComponentPropsBaseBase = {
    * Tamagui uses Pressable internally so it supports `number | Insets` rather than just `Insets`
    */
   hitSlop?: number | Insets | null
+
+  /**
+   * Select which animation driver to use for this component.
+   * Pass a string key matching a driver registered in the `animations` config.
+   * Example: `<View animatedBy="spring">` when config has `animations: { default: css, spring: moti }`
+   */
+  animatedBy?: AnimationDriverKeys | null
 }
 
 export interface Insets {
@@ -760,7 +767,9 @@ type ConfProps<A, B, C, D, E, F, I> = {
   themes?: B
   shorthands?: C
   media?: D
-  animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined
+  animations?: E extends AnimationConfig
+    ? AnimationDriver<E> | ({ default: AnimationDriver<E> } & { [key: string]: AnimationDriver<any> })
+    : undefined
   fonts?: F
   settings?: I
 }
@@ -855,11 +864,27 @@ export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>
 export type ThemeTokens = `$${ThemeKeys}`
-export type TransitionKeys = TamaguiConfig['animations'] extends AnimationDriver<
+// Animation names (slow, fast, bouncy) for the `transition` prop
+type InferredTransitionKeys = TamaguiConfig['animations'] extends AnimationDriver<
   infer Config
 >
   ? keyof Config
-  : string
+  : TamaguiConfig['animations'] extends { default: AnimationDriver<infer Config> }
+    ? keyof Config
+    : string
+
+export type TransitionKeys = InferredTransitionKeys
+
+// Driver keys (default, css, spring) for the `animatedBy` prop
+type InferredAnimationDriverKeys = TamaguiConfig['animations'] extends AnimationDriver<any>
+  ? 'default'
+  : TamaguiConfig['animations'] extends Record<string, AnimationDriver<any>>
+    ? keyof TamaguiConfig['animations']
+    : 'default'
+
+export type AnimationDriverKeys = ReturnType<TypeOverride['animationDrivers']> extends 1
+  ? InferredAnimationDriverKeys
+  : 'default' | ReturnType<TypeOverride['animationDrivers']>
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
 
 export interface ThemeProps {
@@ -1093,12 +1118,32 @@ export type BaseStyleProps = {
   [Key in keyof StackStyleBase]?: StackStyle[Key] | GetThemeValueForKey<Key>
 }
 
+/**
+ * Animation drivers config - can be a single driver or named drivers object.
+ * If object, must include a 'default' key.
+ */
+export type AnimationsConfig = AnimationDriver<any> | AnimationsConfigObject
+
+export type AnimationsConfigObject = {
+  default: AnimationDriver<any>
+  [key: string]: AnimationDriver<any>
+}
+
 export type CreateTamaguiProps = {
   unset?: BaseStyleProps
   reactNative?: any
   shorthands?: CreateShorthands
   media?: GenericTamaguiConfig['media']
-  animations?: AnimationDriver<any>
+  /**
+   * Animation driver(s) configuration.
+   * Can be a single driver or an object of named drivers (must include 'default').
+   * @example
+   * // Single driver
+   * animations: createAnimations({ slow: '...', fast: '...' })
+   * // Multiple named drivers
+   * animations: { default: cssDriver, spring: motiDriver }
+   */
+  animations?: AnimationsConfig
   fonts?: GenericTamaguiConfig['fonts']
   tokens?: GenericTamaguiConfig['tokens']
   themes?: {
@@ -1200,6 +1245,7 @@ export type PlatformMediaKeys = `$platform-${AllPlatforms}`
 
 export interface TypeOverride {
   groupNames(): 1
+  animationDrivers(): 1
 }
 
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1
