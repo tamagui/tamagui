@@ -818,7 +818,7 @@ const HeaderMenuMoreContents = () => {
         <Separator bg="$color02" opacity={0.25} my="$2" />
       </YStack>
 
-      <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
+      <XStack flexWrap="wrap" flexBasis="auto" gap="$2" width="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
             Core
@@ -875,7 +875,7 @@ const HeaderMenuMoreContents = () => {
 
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
+      <XStack flexWrap="wrap" flexBasis="auto" gap="$2" width="100%">
         <Link asChild href="/takeout">
           <HeadAnchor grid half tag="a">
             <XStack items="center">
@@ -984,7 +984,9 @@ const HeadAnchor = styled(Paragraph, {
         letterSpacing: 1,
         textTransform: 'unset',
         width: '100%',
-        flex: 1,
+        flexGrow: 1,
+        flexShrink: 0,
+        flexBasis: 'auto',
         p: '$2',
         px: '$4',
 
