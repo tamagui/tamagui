@@ -10,7 +10,7 @@ export declare const skipProps: {
     debug: number;
     componentName: number;
     disableOptimization: number;
-    tag: number;
+    render: number;
     style: number;
     group: number;
     animatePresence: number;

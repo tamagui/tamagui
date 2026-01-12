@@ -8,7 +8,7 @@ const FORM_NAME = 'Form'
 
 export const FormFrame = styled(Stack, {
   name: FORM_NAME,
-  tag: 'form',
+  render: 'form',
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ export const FormTrigger = FormTriggerFrame.styleable<ScopedProps<FormTriggerPro
 
     return (
       <FormTriggerFrame
-        tag="button"
+        render="button"
         {...(triggerProps as any)}
         ref={forwardedRef}
         onPress={composeEventHandlers(onPress as any, context.onSubmit)}

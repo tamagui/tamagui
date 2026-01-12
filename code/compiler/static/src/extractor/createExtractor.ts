@@ -829,15 +829,15 @@ export function createExtractor(
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
 
-          // find tag="a" tag="main" etc dom indicators
-          let tagName = defaultProps.tag ?? (isTextView ? 'span' : 'div')
+          // find render="a" render="main" etc dom indicators
+          let tagName = defaultProps.render ?? (isTextView ? 'span' : 'div')
           traversePath
             .get('openingElement')
             .get('attributes')
             .forEach((path) => {
               const attr = path.node
               if (t.isJSXSpreadAttribute(attr)) return
-              if (attr.name.name !== 'tag') return
+              if (attr.name.name !== 'render') return
               const val = attr.value
               if (!t.isStringLiteral(val)) return
               tagName = val.value
@@ -1154,7 +1154,15 @@ export function createExtractor(
               return attr
             }
 
-            if (name === 'tag') {
+            if (name === 'render') {
+              // Only optimize string literal render props
+              // JSX elements and functions should deopt
+              if (!value || value.type !== 'StringLiteral') {
+                if (shouldPrintDebug) {
+                  logger.info(`  ! deopt on render prop (not a string literal)`)
+                }
+                shouldDeopt = true
+              }
               return {
                 type: 'attr',
                 value: path.node,
@@ -1477,7 +1485,7 @@ export function createExtractor(
                   return false
                 }
                 const propName = prop.key['name']
-                if (!isValidStyleKey(propName, staticConfig) && propName !== 'tag') {
+                if (!isValidStyleKey(propName, staticConfig) && propName !== 'render') {
                   if (shouldPrintDebug) {
                     logger.info(['  not a valid style prop!', propName].join(' '))
                   }
@@ -1873,8 +1881,8 @@ export function createExtractor(
               if (shouldFlatten) {
                 const name = cur.value.name.name
                 if (typeof name === 'string') {
-                  if (name === 'tag') {
-                    // remove tag=""
+                  if (name === 'render') {
+                    // remove render=""
                     return acc
                   }
 
@@ -2206,7 +2214,7 @@ export function createExtractor(
                     const key = attr.value.name.name as string
 
                     // dont process style/className can just stay attrs
-                    if (key === 'style' || key === 'className' || key === 'tag') {
+                    if (key === 'style' || key === 'className' || key === 'render') {
                       continue
                     }
 

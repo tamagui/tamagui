@@ -1255,7 +1255,7 @@ export function createBaseMenu({
           indicatorContext.checked === true ? (
             <_Indicator
               componentName={ITEM_INDICATOR_NAME}
-              tag="span"
+              render="span"
               {...itemIndicatorProps}
               ref={forwardedRef}
               data-state={getCheckedState(indicatorContext.checked)}

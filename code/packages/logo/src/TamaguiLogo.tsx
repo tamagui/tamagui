@@ -20,7 +20,7 @@ export const TamaguiLogo = ({
 }: LogoProps): JSX.Element => {
   return (
     <XStack
-      tag="span"
+      render="span"
       ref={ref}
       alignItems="center"
       justifyContent="center"
@@ -29,7 +29,7 @@ export const TamaguiLogo = ({
     >
       <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} />
       {showWords && (
-        <YStack tag="span" marginBottom={-4}>
+        <YStack render="span" marginBottom={-4}>
           <LogoWords animated={animated} downscale={downscale ?? 2} />
         </YStack>
       )}
