@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "2.0.0-001",
+  "version": "2.0.0-1768247234371",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
