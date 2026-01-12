@@ -1,8 +1,5 @@
 v2:
 
-- css driver can noRerender
-  - reanimated too but requires testing native + worklets
-
 - boxShadow, border, background, boxShadow props with web style
     - deprecate shadow props separated?
     - for exmaple boxShadow="0 0 10px $red" should work web and native and compiler
@@ -10,17 +7,12 @@ v2:
 
 - <Button render={} /> i started a pr we should try and move from tag => render fully, but render can take string as a simple option
 
-- seems css driver needs love and a bit of testing
-  - heard reports animatepresence breaking
-  - in onejs/chat bug with transforms merging media queries:
-    - see // TODO bug x should overwrite not be cumulative
-  - css animation driver enter animations not working it seems, i used to have
-    a fix for this where setState({ unmounted: true }) inside createComponent had a setTimeout() wrapped around it, but then removed it when i tested and found it didnt need it anymore, but seems it does need it again? or some other better fix ideally.
+---
 
-- two fixes for animation drivers
-  - remove <Configuration animationDriver (breaks compiler)
-    - instead `animationDriver` prop on any component
-  - accept multiple animationDrivers at root for proper types
+AFTER v2 RC (nice to haves):
+
+- css driver can noRerender
+  - reanimated too but requires testing native + worklets
 
 - Text weirdness fixes (explore)
     - remove suppressHighlighting / margin 0 default from Text
@@ -33,19 +25,6 @@ v2:
           </span>
         </div>
 
--  object style transform - we support arraay but object is nice
-
-  <YStack
-    animation={{
-      x: 'quick',      // Animate x with quick spring
-      y: 'bouncy',     // Animate y with bouncy spring
-      scale: '100ms',  // Animate scale with 100ms tween
-      default: '200ms' // if you want a default
-    }}
-  />
-
-as part of this we should have a new animation-helpers package that is just used to normalize the prop so its a consistent output format always from the various input options, then we always use the normalized value.
-
 - smaller bugfixes/things to check work:
   - fix react 19 + nextjs 15
       - https://github.com/gcoakleyjr/React19-Tamagui
@@ -55,12 +34,8 @@ as part of this we should have a new animation-helpers package that is just used
   - fix toggle / multiple https://github.com/tamagui/tamagui/pull/3362
   - seems <Switch checked defaultChecked> isnt showing in the checked position
 
----
-
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
 - v2 useTheme({ name: '' }) should remove since .get() doesnt match
-
-pre v2:
 
   - useTheme().x.val may have bug on light/dark switch
   - react native 78 dialogs not working
