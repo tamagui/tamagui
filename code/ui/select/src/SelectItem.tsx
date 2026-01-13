@@ -68,6 +68,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
     } = context
 
     const [isSelected, setSelected] = React.useState(initialValue === value)
+    const [isBlinking, setIsBlinking] = React.useState(false)
 
     React.useEffect(() => {
       return activeIndexSubscribe((i) => {
@@ -104,9 +105,24 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
     }, [index, setValueAtIndex, value])
 
     function handleSelect() {
-      setSelectedIndex(index)
+      if (isBlinking) return
+
+      // Update value immediately so check icon appears
       onChange(value)
-      setOpen(false)
+
+      // macOS-style blink effect before closing
+      setIsBlinking(true)
+      setTimeout(() => {
+        setIsBlinking(false)
+        setTimeout(() => {
+          // Close first, then update selectedIndex in next tick
+          // to prevent floating-ui from repositioning during close
+          setOpen(false)
+          setTimeout(() => {
+            setSelectedIndex(index)
+          }, 0)
+        }, 80)
+      }, 80)
     }
 
     const selectItemProps = React.useMemo(() => {
@@ -202,6 +218,9 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
             })}
             {...restProps}
             {...selectItemProps}
+            {...(isBlinking && {
+              backgroundColor: 'transparent',
+            })}
           />
         )}
       </SelectItemContextProvider>
