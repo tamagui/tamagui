@@ -1,6 +1,6 @@
 import { Image } from '@tamagui/image'
 import { ThemeTintAlt } from '@tamagui/logo'
-import { SizableText, Theme, XStack, YStack, useThemeName } from 'tamagui'
+import { SizableText, XStack, YStack, useThemeName } from 'tamagui'
 import { useGalleryStore, TakeoutGalleryDialog } from './TakeoutGallery'
 
 const screenshotImages = [
