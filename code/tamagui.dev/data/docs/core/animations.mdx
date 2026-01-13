@@ -16,13 +16,13 @@ description: Swap out animation drivers per-platform or at runtime
   features={[
     `Animate any style prop with animation config per-prop.`,
     `Can animate across all states (media queries, hover, etc).`,
-    `Four drivers you can swap out with type safety.`,
+    `Multiple drivers you can swap out with type safety.`,
     `SSR safe mount animations.`,
     `Enter and exit animations with AnimatePresence.`,
   ]}
 />
 
-Add animations to Tamagui with an animation driver. Animation drivers are designed to be swappable, so you can use lightweight CSS animations or other web-focused animation libraries on the web, while using larger but more advanced libraries like `reanimated` on native - all without having to change a line outside of configuration.
+Add animations to Tamagui with an animation driver. Animation drivers are designed to be swappable, so you can use lightweight CSS animations or other web-focused animation libraries on the web, while using larger but more advanced libraries like Reanimated on native - all without having to change a line outside of configuration.
 
 For this guide, we'll use the React Native driver as an example, but you can choose different animation drivers: [CSS](/docs/core/animations-css), [React Native](/docs/core/animations-react-native), [Reanimated](/docs/core/animations-reanimated), or [Motion](/docs/core/animations-motion). See the [Choosing a Driver](#choosing-a-driver) section below for a comparison.
 
@@ -97,7 +97,7 @@ export const animations = createAnimations({
 
 ```tsx
 // animations.native.ts
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-reanimated'
 
 export const animations = createAnimations({
   bouncy: {

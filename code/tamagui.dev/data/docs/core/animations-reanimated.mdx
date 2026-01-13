@@ -1,19 +1,17 @@
 ---
 title: Reanimated Driver
-description: Advanced off-thread animations with Reanimated and Moti
+description: Advanced off-thread animations with Reanimated
 ---
 
 [Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an
 animation library that targets React Native and React Native Web. It runs
-off-thread animations, and provides simple syntax and hooks.
+off-thread animations and provides smooth spring and timing animations.
 
 ## Installation
 
 ```bash
-yarn add @tamagui/animations-moti moti react-native-reanimated
+yarn add @tamagui/animations-reanimated react-native-reanimated
 ```
-
-Tamagui leverages and appreciates the popular open source library [Moti](https://moti.fyi) for the Reanimated driver as it saved us many lines of complex code.
 
 Follow the [Reanimated installation guide](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/) to complete setup for your platform.
 
@@ -22,7 +20,7 @@ Follow the [Reanimated installation guide](https://docs.swmansion.com/react-nati
 Add your animations to your [Tamagui config](/docs/core/configuration):
 
 ```tsx
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-reanimated'
 import { createTamagui } from 'tamagui'
 
 export default createTamagui({
@@ -51,9 +49,8 @@ export default createTamagui({
 
 ## How it Works
 
-At runtime, this plugin parses animatable style properties and hands them over
-to reanimated off-thread, using worklets. It doesn't do anything at compile
-time - reanimated must run via JS.
+At runtime, this driver parses animatable style properties and hands them over
+to Reanimated using worklets. Animations run on the UI thread for smooth 60fps performance.
 
 ## Animation Configuration
 
@@ -87,7 +84,7 @@ You can add animation delays using the array syntax:
 <Square transition={['bouncy', { delay: 200 }]} />
 ```
 
-The delay is specified in milliseconds and is passed directly to Moti's animation configuration.
+The delay is specified in milliseconds.
 
 ## When to Use
 
@@ -110,7 +107,7 @@ You can use Reanimated on native and a lighter driver on web:
 
 ```tsx
 // animations.native.ts
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-reanimated'
 
 export const animations = createAnimations({
   bouncy: {
@@ -143,7 +140,7 @@ import { animations } from './animations'
 ## Example
 
 ```tsx
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-reanimated'
 import { YStack, createTamagui } from 'tamagui'
 
 const animations = createAnimations({
@@ -180,14 +177,14 @@ export const MyComponent = () => (
 
 ## Advanced Features
 
-Reanimated provides advanced features through Moti:
+Reanimated provides advanced features:
 
 - **Gesture integration** - Animate based on gesture values
 - **Shared values** - Share animated values between components
 - **Worklets** - JavaScript functions that run on the UI thread
 - **Custom animations** - Full control over animation curves
 
-See the [Moti documentation](https://moti.fyi) and [Reanimated documentation](https://docs.swmansion.com/react-native-reanimated/) for more details.
+See the [Reanimated documentation](https://docs.swmansion.com/react-native-reanimated/) for more details.
 
 ## See Also
 
@@ -195,5 +192,4 @@ See the [Moti documentation](https://moti.fyi) and [Reanimated documentation](ht
 - [CSS Driver](/docs/core/animations-css)
 - [React Native Driver](/docs/core/animations-react-native)
 - [Motion Driver](/docs/core/animations-motion)
-- [Moti Documentation](https://moti.fyi)
 - [Reanimated Documentation](https://docs.swmansion.com/react-native-reanimated/)
