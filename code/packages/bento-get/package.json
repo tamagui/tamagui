@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "2.0.0-1768247234371",
+  "version": "2.0.0-1768262338096",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
