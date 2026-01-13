@@ -198,8 +198,7 @@ test.describe('Popover Focus Scope', () => {
     await expect(nameInput).toBeFocused()
   })
 
-  // TODO: Escape key dismissal not working - investigate Popover component
-  // This is a component bug, not a test issue
+  // TODO: Escape key dismissal not working reliably - investigate Popover component
   test.skip('closes on escape key and returns focus', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
