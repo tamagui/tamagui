@@ -1,4 +1,7 @@
 export function opacify(color: string, opacity = 0.1): string {
+  // Handle dynamic color objects (from $theme-dark/$theme-light)
+  if (typeof color !== 'string') return color
+
   // handle hsl/hsla
   if (color.startsWith('hsl')) {
     const match = color.match(/hsla?\((\d+),\s*(\d+)%,\s*(\d+)%(?:,\s*([\d.]+))?\)/)
