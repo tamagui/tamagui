@@ -181,13 +181,7 @@ export const ScreenshotGallery = () => {
             backgroundSize: '20px 20px, 25px 25px, 15px 15px',
           }}
         >
-          <XStack
-            gap="$4"
-            justify="center"
-            flexWrap="wrap"
-            $sm={{ gap: '$2' }}
-            z={1}
-          >
+          <XStack gap="$4" justify="center" flexWrap="wrap" $sm={{ gap: '$2' }} z={1}>
             {screenshotImages.map((img, i) => (
               <PolaroidCard
                 key={i}
