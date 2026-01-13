@@ -27,22 +27,29 @@ const CurrentToast = () => {
 
   return (
     <Toast
-      transition="200ms"
       key={currentToast.id}
       duration={currentToast.duration}
-      enterStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
-      exitStyle={{ opacity: 0, transform: [{ translateY: 100 }] }}
-      transform={[{ translateY: 0 }]}
+      viewportName={currentToast.viewportName}
+      enterStyle={{ opacity: 0, scale: 0.95, y: -80 }}
+      exitStyle={{ opacity: 0, scale: 0.95, y: -80 }}
       opacity={1}
       scale={1}
-      viewportName={currentToast.viewportName}
+      y={-50}
+      transition="quicker"
+      bg="$color2"
+      boxShadow="0px 2px 4px rgba(0,0,0,0.12), 0px 8px 24px rgba(0,0,0,0.08)"
     >
-      <YStack>
-        <Toast.Title>{currentToast.title}</Toast.Title>
-        {!!currentToast.message && (
-          <Toast.Description>{currentToast.message}</Toast.Description>
-        )}
-      </YStack>
+      <XStack gap="$5" items="center" justify="space-between">
+        <YStack gap="$0.5" flex={1}>
+          <Toast.Title>{currentToast.title}</Toast.Title>
+          {!!currentToast.message && (
+            <Toast.Description>{currentToast.message}</Toast.Description>
+          )}
+        </YStack>
+        <Toast.Action asChild altText="Dismiss toast">
+          <Button size="$2">Dismiss</Button>
+        </Toast.Action>
+      </XStack>
     </Toast>
   )
 }
