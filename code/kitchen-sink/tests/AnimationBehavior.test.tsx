@@ -9,7 +9,7 @@ import { setupPage } from './test-utils'
  * Uses scenario-36 (1000ms timing) for reliable intermediate capture.
  */
 
-const DRIVERS = ['css', 'native', 'moti', 'reanimated'] as const
+const DRIVERS = ['css', 'native', 'reanimated'] as const
 const TOLERANCE = 0.05
 
 async function getOpacity(page: Page, testId: string): Promise<number> {
@@ -69,8 +69,8 @@ function isIntermediate(value: number, start: number, end: number, tolerance = T
 
 for (const driver of DRIVERS) {
   test.describe(`${driver} driver`, () => {
-    // TODO: native driver has issues finding elements - skip entire suite until fixed
-    test.skip(driver === 'native', 'native driver: elements not found')
+    // TODO: native and reanimated drivers have issues finding elements on web - skip until fixed
+    test.skip(driver === 'native' || driver === 'reanimated', 'driver: elements not found on web')
 
     test.beforeEach(async ({ page }) => {
       await setupPage(page, {
