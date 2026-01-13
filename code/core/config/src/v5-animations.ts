@@ -1,1 +1,1 @@
-export { animationsCSS as animations } from './animationsCSS'
+export { animationsReanimated as animations } from './animationsReanimated'
