@@ -31,9 +31,9 @@ export declare const size: {
 };
 type SizeKeysIn = keyof typeof size;
 type Sizes = {
-    [Key in SizeKeysIn extends `$${infer Key}` ? Key : SizeKeysIn]: number;
+    [Key in SizeKeysIn as Key extends `$${infer K}` ? K : Key]: number;
 };
-type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`;
+type SizeKeys = keyof Sizes;
 export declare const spaces: (readonly [string, number])[];
 export declare const spacesNegative: (string | number)[][];
 type SizeKeysWithNegatives = Exclude<`-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`, '-0'> | SizeKeys;
