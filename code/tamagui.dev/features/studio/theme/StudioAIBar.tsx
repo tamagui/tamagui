@@ -386,7 +386,7 @@ const ThemeToggle = () => {
           }}
           size="$3"
         >
-          <Switch.Thumb checked={checked} transition="75ms" size="$3">
+          <Switch.Thumb checked={checked} transition="quickest" size="$3">
             <YStack
               transition="bouncy"
               fullscreen

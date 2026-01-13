@@ -211,7 +211,7 @@ const ComponentPreview = {
           size="$2"
           scale={1}
         >
-          <Switch.Thumb borderColor="$color1" bg="$white1" transition="200ms" />
+          <Switch.Thumb borderColor="$color1" bg="$white1" transition="quickest" />
         </Switch>
       </YStack>
     )
