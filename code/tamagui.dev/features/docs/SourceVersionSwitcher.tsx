@@ -40,7 +40,7 @@ export function SourceVersionSwitcher({
   return (
     <Select value={currentVersion} onValueChange={switchVersion} disablePreventBodyScroll>
       <Select.Trigger size="$2" iconAfter={ChevronDown} borderRadius={8}>
-        <Select.Value placeholder={versions[0]} />
+        <Select.Value placeholder={versions[0]} fontFamily="$mono" />
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
@@ -79,7 +79,8 @@ export function SourceVersionSwitcher({
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport minW={150}>
+        <Select.Viewport minW={200} borderWidth={1} borderColor="$borderColor" elevation="$3" br="$4">
+          <Select.Indicator transition="quicker" />
           <Select.Group>
             <Select.Label>Source Version</Select.Label>
             {React.useMemo(
@@ -87,7 +88,7 @@ export function SourceVersionSwitcher({
                 versions.map((version, i) => {
                   return (
                     <Select.Item index={i} key={version} value={version}>
-                      <Select.ItemText>{version}</Select.ItemText>
+                      <Select.ItemText fontFamily="$mono">{version}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
