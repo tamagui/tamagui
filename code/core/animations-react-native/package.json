@@ -32,6 +32,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
     "@tamagui/web": "workspace:*"

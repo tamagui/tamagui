@@ -7171,10 +7171,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/animation-helpers@workspace:*, @tamagui/animation-helpers@workspace:code/core/animation-helpers":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animation-helpers@workspace:code/core/animation-helpers"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/animations-css@workspace:*, @tamagui/animations-css@workspace:code/core/animations-css":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-css@workspace:code/core/animations-css"
   dependencies:
+    "@tamagui/animation-helpers": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/cubic-bezier-animator": "workspace:*"
@@ -7209,6 +7218,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-motion@workspace:code/core/animations-motion"
   dependencies:
+    "@tamagui/animation-helpers": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/use-presence": "workspace:*"
@@ -7223,6 +7233,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-react-native@workspace:code/core/animations-react-native"
   dependencies:
+    "@tamagui/animation-helpers": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/use-presence": "workspace:*"
@@ -7239,6 +7250,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:code/core/animations-reanimated"
   dependencies:
+    "@tamagui/animation-helpers": "workspace:*"
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/use-presence": "workspace:*"

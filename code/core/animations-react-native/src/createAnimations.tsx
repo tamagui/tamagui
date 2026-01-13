@@ -1,3 +1,4 @@
+import { normalizeTransition } from '@tamagui/animation-helpers'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
@@ -449,38 +450,33 @@ function getAnimationConfig(
   animations: AnimationsConfig,
   transition?: TransitionProp
 ): AnimationConfig {
-  if (typeof transition === 'string') {
-    return animations[transition]
-  }
-
-  let type = ''
-  let extraConf: any
+  const normalized = normalizeTransition(transition)
   const shortKey = transformShorthands[key]
 
-  if (Array.isArray(transition)) {
-    type = transition[0] as string
-    const transitionOptions = transition[1]
-    const conf = transitionOptions?.[key] ?? transitionOptions?.[shortKey]
-    if (conf) {
-      if (typeof conf === 'string') {
-        type = conf
-      } else {
-        type = (conf as any).type || type
-        extraConf = conf
-      }
-    }
-    // e.g., transition={['bouncy', { delay: 100 }]}
-    const delay = transitionOptions?.delay
-    if (typeof delay === 'number' && !extraConf?.delay) {
-      extraConf = { ...extraConf, delay }
-    }
-  } else {
-    const val = transition?.[key] ?? transition?.[shortKey]
-    type = val?.type
-    extraConf = val
+  // Check for property-specific animation
+  const propAnimation = normalized.properties[key] ?? normalized.properties[shortKey]
+
+  let animationType: string | null = null
+  let extraConf: any = {}
+
+  if (typeof propAnimation === 'string') {
+    // Direct animation name: { x: 'quick' }
+    animationType = propAnimation
+  } else if (propAnimation && typeof propAnimation === 'object') {
+    // Config object: { x: { type: 'quick', delay: 100 } }
+    animationType = propAnimation.type || normalized.default
+    extraConf = propAnimation
+  } else if (normalized.default) {
+    // Fall back to default
+    animationType = normalized.default
   }
 
-  const found = animations[type]
+  // Apply global delay if no property-specific delay
+  if (normalized.delay && !extraConf.delay) {
+    extraConf = { ...extraConf, delay: normalized.delay }
+  }
+
+  const found = animationType ? animations[animationType] : {}
   return {
     ...found,
     ...extraConf,

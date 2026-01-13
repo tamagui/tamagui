@@ -1,3 +1,4 @@
+import { normalizeTransition } from '@tamagui/animation-helpers'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   getSplitStyles,
@@ -506,7 +507,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         return { animatedStyles: animated, staticStyles }
       }, [disableAnimation, style, isDark, isMounting, props.animateOnly])
 
-      // Build animation config with per-property overrides
+      // Build animation config with per-property overrides using normalized transition
       const { baseConfig, propertyConfigs } = useMemo(() => {
         if (isHydrating) {
           return {
@@ -515,57 +516,41 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           }
         }
 
-        // Get base animation config from named animation
-        let base =
-          animations[animationKey as keyof typeof animations] ??
-          ({ type: 'spring' } as TransitionConfig)
+        // Normalize the transition prop to a consistent format
+        const normalized = normalizeTransition(props.transition)
 
-        // Handle config overrides from animation prop
-        // Format: animation={['quick', { delay: 300, opacity: 'lazy' }]}
-        // - Config keys (delay, type, duration, etc.) modify the base config
-        // - Property keys (opacity, scale, etc.) set per-property overrides
+        // Get base animation config from default animation key
+        let base = normalized.default
+          ? (animations[normalized.default as keyof typeof animations] ??
+            ({ type: 'spring' } as TransitionConfig))
+          : ({ type: 'spring' } as TransitionConfig)
+
+        // Apply global delay to base config if present
+        if (normalized.delay) {
+          base = { ...base, delay: normalized.delay }
+        }
+
+        // Build per-property overrides from normalized properties
         const overrides: Record<string, TransitionConfig> = {}
 
-        // Known animation config keys that modify base config (not property overrides)
-        const configKeys = new Set([
-          'delay',
-          'type',
-          'duration',
-          'damping',
-          'stiffness',
-          'mass',
-          'overshootClamping',
-          'restDisplacementThreshold',
-          'restSpeedThreshold',
-          'velocity',
-          'easing',
-          'reduceMotion',
-        ])
-
-        if (Array.isArray(props.transition)) {
-          const [, configOverrides] = props.transition
-          if (configOverrides && typeof configOverrides === 'object') {
-            const baseConfigUpdates: Partial<TransitionConfig> = {}
-
-            for (const key in configOverrides) {
-              const val = (configOverrides as Record<string, unknown>)[key]
-
-              if (configKeys.has(key)) {
-                // Config option (delay, type, etc.) - merge into base config
-                baseConfigUpdates[key as keyof TransitionConfig] = val as any
-              } else if (typeof val === 'string') {
-                // Property override referencing a named animation
-                overrides[key] = animations[val] ?? base
-              } else if (val && typeof val === 'object') {
-                // Property override with inline config
-                overrides[key] = val as TransitionConfig
-              }
-            }
-
-            // Apply base config updates
-            if (Object.keys(baseConfigUpdates).length > 0) {
-              base = { ...base, ...baseConfigUpdates }
-            }
+        for (const [key, animationNameOrConfig] of Object.entries(
+          normalized.properties
+        )) {
+          if (typeof animationNameOrConfig === 'string') {
+            // Property override referencing a named animation: { x: 'quick' }
+            overrides[key] =
+              animations[animationNameOrConfig as keyof typeof animations] ?? base
+          } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
+            // Property override with inline config: { x: { type: 'quick', delay: 100 } }
+            const configType = animationNameOrConfig.type
+            const baseForProp = configType
+              ? (animations[configType as keyof typeof animations] ?? base)
+              : base
+            // Cast to TransitionConfig since we're merging compatible animation configs
+            overrides[key] = {
+              ...baseForProp,
+              ...animationNameOrConfig,
+            } as TransitionConfig
           }
         }
 
@@ -585,7 +570,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         return { baseConfig: base, propertyConfigs: configs }
-      }, [animationKey, isHydrating, props.transition, animatedStyles])
+      }, [isHydrating, props.transition, animatedStyles])
 
       // Store config in ref for worklet access
       const configRef = useRef({
