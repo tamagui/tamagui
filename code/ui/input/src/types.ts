@@ -7,9 +7,25 @@ import type { ColorTokens, StackProps, TextProps } from '@tamagui/web'
 
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
 
+// Text style props supported by RN TextInput
+type InputTextStyleProps = Pick<
+  TextProps,
+  | 'color'
+  | 'fontFamily'
+  | 'fontSize'
+  | 'fontStyle'
+  | 'fontWeight'
+  | 'letterSpacing'
+  | 'textAlign'
+  | 'textTransform'
+>
+
 export type InputProps = StackProps &
-  Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className'> &
-  Pick<TextProps, 'color'> & {
+  Omit<
+    HTMLInputProps,
+    'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps
+  > &
+  InputTextStyleProps & {
     // Core HTML input props are inherited from HTMLInputProps:
     // type, value, defaultValue, placeholder, disabled, readOnly,
     // onChange, onFocus, onBlur, onInput, autoComplete, autoFocus,
