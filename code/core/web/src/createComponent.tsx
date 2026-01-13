@@ -1402,7 +1402,8 @@ export function createComponent<
     }
 
     // needs to reset the presence state for nested children
-    const ResetPresence = config?.animations?.ResetPresence
+    // Use the resolved animationDriver (handles multi-driver config)
+    const ResetPresence = animationDriver?.ResetPresence
     const needsReset = Boolean(
       // not when passing down to child
       !asChild &&

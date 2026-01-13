@@ -734,7 +734,10 @@ export type CreateTamaguiConfig<
   }
   shorthands: C
   media: D
-  animations: AnimationDriver<E>
+  // Support both single driver and multi-driver config
+  // Multi-driver: { default: cssDriver, spring: motiDriver }
+  // Single: AnimationDriver<E>
+  animations: AnimationDriver<E> | AnimationsConfigObject
   settings: H
 }
 
@@ -882,9 +885,14 @@ type InferredAnimationDriverKeys = TamaguiConfig['animations'] extends Animation
     ? keyof TamaguiConfig['animations']
     : 'default'
 
-export type AnimationDriverKeys = ReturnType<TypeOverride['animationDrivers']> extends 1
-  ? InferredAnimationDriverKeys
-  : 'default' | ReturnType<TypeOverride['animationDrivers']>
+// Combine inferred keys from config with TypeOverride keys
+// This ensures both config-defined drivers AND lazy-loaded drivers are available
+export type AnimationDriverKeys =
+  | 'default'
+  | InferredAnimationDriverKeys
+  | (ReturnType<TypeOverride['animationDrivers']> extends 1
+      ? never
+      : ReturnType<TypeOverride['animationDrivers']>)
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
 
 export interface ThemeProps {
