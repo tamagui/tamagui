@@ -1,4 +1,4 @@
-import type { ColorTokens, StackProps, TextProps } from '@tamagui/web'
+import type { ColorTokens, StackProps, TextStylePropsBase } from '@tamagui/web'
 
 /**
  * Web-aligned Input props
@@ -8,8 +8,9 @@ import type { ColorTokens, StackProps, TextProps } from '@tamagui/web'
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
 
 // Text style props supported by RN TextInput
+// Using TextStylePropsBase (not TextProps) to avoid Pick issues with mapped types
 type InputTextStyleProps = Pick<
-  TextProps,
+  TextStylePropsBase,
   | 'color'
   | 'fontFamily'
   | 'fontSize'

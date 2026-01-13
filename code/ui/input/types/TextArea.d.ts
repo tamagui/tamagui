@@ -4,14 +4,14 @@ export type { InputProps as TextAreaProps } from './types';
  * @see — Docs https://tamagui.dev/ui/inputs#textarea
  */
 export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "color" | "size" | "children" | "style" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "textAlign" | "textTransform" | "className"> & {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/web").GetThemeValueForKey<"color"> | undefined;
-    fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
-    fontStyle?: "unset" | "normal" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
-    letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
-    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
-    textTransform?: "unset" | "none" | "capitalize" | "uppercase" | "lowercase" | undefined;
+    color?: import("react-native").ColorValue | undefined;
+    fontFamily?: string | undefined | undefined;
+    fontSize?: number | undefined | undefined;
+    fontStyle?: "normal" | "italic" | undefined | undefined;
+    fontWeight?: "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | "ultralight" | "thin" | "light" | "medium" | "regular" | "semibold" | "condensedBold" | "condensed" | "heavy" | "black" | undefined | undefined;
+    letterSpacing?: number | undefined | undefined;
+    textAlign?: "auto" | "left" | "right" | "center" | "justify" | undefined | undefined;
+    textTransform?: "none" | "capitalize" | "uppercase" | "lowercase" | undefined | undefined;
 } & {
     rows?: number;
     placeholderTextColor?: import("@tamagui/web").ColorTokens;
