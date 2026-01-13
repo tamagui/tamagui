@@ -520,11 +520,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         const normalized = normalizeTransition(props.transition)
 
         // Get base animation config from default animation key
-        let base =
-          normalized.default
-            ? (animations[normalized.default as keyof typeof animations] ??
-               ({ type: 'spring' } as TransitionConfig))
-            : ({ type: 'spring' } as TransitionConfig)
+        let base = normalized.default
+          ? (animations[normalized.default as keyof typeof animations] ??
+            ({ type: 'spring' } as TransitionConfig))
+          : ({ type: 'spring' } as TransitionConfig)
 
         // Apply global delay to base config if present
         if (normalized.delay) {
@@ -534,10 +533,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // Build per-property overrides from normalized properties
         const overrides: Record<string, TransitionConfig> = {}
 
-        for (const [key, animationNameOrConfig] of Object.entries(normalized.properties)) {
+        for (const [key, animationNameOrConfig] of Object.entries(
+          normalized.properties
+        )) {
           if (typeof animationNameOrConfig === 'string') {
             // Property override referencing a named animation: { x: 'quick' }
-            overrides[key] = animations[animationNameOrConfig as keyof typeof animations] ?? base
+            overrides[key] =
+              animations[animationNameOrConfig as keyof typeof animations] ?? base
           } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
             // Property override with inline config: { x: { type: 'quick', delay: 100 } }
             const configType = animationNameOrConfig.type
@@ -545,7 +547,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               ? (animations[configType as keyof typeof animations] ?? base)
               : base
             // Cast to TransitionConfig since we're merging compatible animation configs
-            overrides[key] = { ...baseForProp, ...animationNameOrConfig } as TransitionConfig
+            overrides[key] = {
+              ...baseForProp,
+              ...animationNameOrConfig,
+            } as TransitionConfig
           }
         }
 

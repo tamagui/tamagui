@@ -495,7 +495,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
 
     // Add property-specific animations
-    for (const [propName, animationNameOrConfig] of Object.entries(normalized.properties)) {
+    for (const [propName, animationNameOrConfig] of Object.entries(
+      normalized.properties
+    )) {
       if (typeof animationNameOrConfig === 'string') {
         result[propName] = animations[animationNameOrConfig]
       } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
