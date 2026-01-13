@@ -96,7 +96,7 @@ const NativeOptions = ({
       >
         <Switch.Thumb
           transition={[
-            'quick',
+            'quickest',
             {
               transform: {
                 overshootClamping: true,

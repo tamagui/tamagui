@@ -21,7 +21,7 @@ export const Switch = memo((props: SwitchProps) => {
       >
         <TamaguiSwitch.Thumb
           transition={[
-            'quicker',
+            'quickest',
             {
               opacity: {
                 overshootClamping: true,

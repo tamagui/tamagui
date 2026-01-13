@@ -50,7 +50,7 @@ export function SwitchUnstyledDemo() {
       <XStack gap="$3" items="center">
         <Label htmlFor="unstyled-switch">Unstyled</Label>
         <Switch defaultChecked id="unstyled-switch">
-          <Switch.Thumb transition="quick" />
+          <Switch.Thumb transition="quickest" />
         </Switch>
       </XStack>
     </YStack>
