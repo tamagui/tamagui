@@ -4,7 +4,8 @@ import { Accordion, Paragraph, Square } from 'tamagui'
 export function AccordionDemo() {
   return (
     <Accordion overflow="hidden" width="$20" type="multiple">
-      <Accordion.Item value="a1">
+      {/* negative margin prevents double border between items */}
+      <Accordion.Item value="a1" mb={-1}>
         <Accordion.Trigger flexDirection="row" justify="space-between">
           {({
             open,
