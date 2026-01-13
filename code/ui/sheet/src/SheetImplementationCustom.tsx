@@ -510,8 +510,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const forcedContentHeight = hasFit
       ? undefined
       : snapPointsMode === 'percent'
-        // Use dvh for modal (viewport-relative), % for inline (container-relative)
-        ? `${maxSnapPoint}${isWeb ? (modal ? 'dvh' : '%') : '%'}`
+        ? // Use dvh for modal (viewport-relative), % for inline (container-relative)
+          `${maxSnapPoint}${isWeb ? (modal ? 'dvh' : '%') : '%'}`
         : maxSnapPoint
 
     const setHasScrollView = React.useCallback((val: boolean) => {
