@@ -335,9 +335,9 @@ export function PurchaseModalContents() {
                       value={currentTab}
                       forceMount
                       flex={1}
-                      minH={400}
+                      minH={550}
                       $gtMd={{
-                        height: 'calc(min(100vh - 280px, 620px))',
+                        height: 'calc(min(100vh - 200px, 900px))',
                       }}
                     >
                       <YStack
