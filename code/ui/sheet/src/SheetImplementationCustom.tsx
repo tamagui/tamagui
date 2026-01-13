@@ -426,14 +426,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
 
         // avoid bugs where it grows forever for whatever reason
-        const next = Math.min(
-          e.nativeEvent?.layout.height,
-          Dimensions.get(relativeDimensionTo).height
-        )
+        // For inline mode (non-modal), don't cap at window height - use actual layout
+        const layoutHeight = e.nativeEvent?.layout.height
+        const next = modal
+          ? Math.min(layoutHeight, Dimensions.get(relativeDimensionTo).height)
+          : layoutHeight
         if (!next) return
         setFrameSize(next)
       },
-      [open]
+      [open, modal]
     )
 
     const handleMaxContentViewLayout = React.useCallback((e: LayoutChangeEvent) => {
@@ -509,7 +510,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const forcedContentHeight = hasFit
       ? undefined
       : snapPointsMode === 'percent'
-        ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
+        // Use dvh for modal (viewport-relative), % for inline (container-relative)
+        ? `${maxSnapPoint}${isWeb ? (modal ? 'dvh' : '%') : '%'}`
         : maxSnapPoint
 
     const setHasScrollView = React.useCallback((val: boolean) => {
