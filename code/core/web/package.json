@@ -19,7 +19,9 @@
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "test": "vitest run",
+    "test:types": "vitest typecheck"
   },
   "files": [
     "types",
