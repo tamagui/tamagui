@@ -556,20 +556,9 @@ export const TakeoutHero = () => {
       pointerEvents="none"
       position="relative"
       scale={1}
-      $xxs={{
-        scale: 0.35,
-      }}
-      $xs={{
-        scale: 0.45,
-        y: 0,
-      }}
       $sm={{
         scale: 0.65,
-        y: 0,
-      }}
-      $md={{
-        scale: 0.85,
-        y: '20%',
+        y: -150,
       }}
     >
       <TakeoutLogo />

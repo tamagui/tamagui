@@ -166,7 +166,15 @@ export default function TakeoutPage() {
 
         <AnimatedClouds />
 
-        <YStack mt="$12" px="$4" maxW={1000} mx="auto" width="100%" gap="$6">
+        <YStack
+          mt="$12"
+          px="$4"
+          maxW={1000}
+          mx="auto"
+          width="100%"
+          gap="$6"
+          $sm={{ display: 'none' }}
+        >
           <ThemeTintAlt>
             <SizableText
               size="$8"

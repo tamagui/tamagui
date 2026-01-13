@@ -8,6 +8,7 @@ export const SectionTitleWithRocket = () => {
   return (
     <YStack
       mt={heroHeight + 350}
+      $sm={{ mt: heroHeight + 50 }}
       items="center"
       px="$4"
       position="relative"
