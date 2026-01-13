@@ -40,7 +40,7 @@ const CurrentToast = () => {
       boxShadow="0px 2px 4px rgba(0,0,0,0.12), 0px 8px 24px rgba(0,0,0,0.08)"
     >
       <XStack gap="$5" items="center" justify="space-between">
-        <YStack gap="$0.5" f={1}>
+        <YStack gap="$0.5" flex={1}>
           <Toast.Title>{currentToast.title}</Toast.Title>
           {!!currentToast.message && (
             <Toast.Description>{currentToast.message}</Toast.Description>
