@@ -79,8 +79,13 @@ export function SourceVersionSwitcher({
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport minW={200} borderWidth={1} borderColor="$borderColor" elevation="$3" br="$4">
-          <Select.Indicator transition="quicker" />
+        <Select.Viewport
+          minW={200}
+          borderWidth={1}
+          borderColor="$borderColor"
+          elevation="$3"
+          br="$4"
+        >
           <Select.Group>
             <Select.Label>Source Version</Select.Label>
             {React.useMemo(
