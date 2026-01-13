@@ -10906,14 +10906,14 @@ __metadata:
   linkType: hard
 
 "@vxrn/color-scheme@npm:^1.2.43":
-  version: 1.2.48
-  resolution: "@vxrn/color-scheme@npm:1.2.48"
+  version: 1.2.58
+  resolution: "@vxrn/color-scheme@npm:1.2.58"
   dependencies:
-    "@vxrn/use-isomorphic-layout-effect": "npm:1.2.48"
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.2.58"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/a59921e105e39842677ff18601354e0f5d669bd3c7ab3a731777826fe8d1257b8c6a3ab8f99d939d77fa1e471fddbe60d31daf5f6bf88bb51092eb46b6bf8296
+  checksum: 10/440d30b2cf619c22f73995928eaa6f388cb85100d9fc3a6d651827331ea55380d5f5a85c2f6508aaaad2e7cbffeb5126ccbe0b5dbf98ac9e36045c4e8bb53d03
   languageName: node
   linkType: hard
 
@@ -10947,8 +10947,8 @@ __metadata:
   linkType: hard
 
 "@vxrn/mdx@npm:^1.2.43":
-  version: 1.2.48
-  resolution: "@vxrn/mdx@npm:1.2.48"
+  version: 1.2.58
+  resolution: "@vxrn/mdx@npm:1.2.58"
   dependencies:
     compare-versions: "npm:^4.1.3"
     esbuild-wasm: "npm:^0.25.11"
@@ -10965,10 +10965,14 @@ __metadata:
     rehype-parse: "npm:^8.0.4"
     rehype-slug: "npm:^5.0.1"
     remark-gfm: "npm:^4.0.1"
+    sharp: "npm:>=0.33.0"
     shiki: "npm:1.3.0"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
-  checksum: 10/edbd10cd945a6278a5e1a50b6ff8c29e495314bbc5e40ad334bd17ea176f7b81a82518b6cf62b2e62ca9c92ec4ae55cf57d8def888006edb9ad366a56371404d
+  dependenciesMeta:
+    sharp:
+      optional: true
+  checksum: 10/98d910fb1458426a920386e629f061e66338c78d363b621015255f7de14365d3241f3ecf9962b39ee3940d1f5415ae9ec416b8ef7e15c728f5f624752dbba6c6
   languageName: node
   linkType: hard
 
@@ -11038,12 +11042,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/use-isomorphic-layout-effect@npm:1.2.48":
-  version: 1.2.48
-  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.2.48"
+"@vxrn/use-isomorphic-layout-effect@npm:1.2.58":
+  version: 1.2.58
+  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.2.58"
   dependencies:
     react: "npm:19.1.0"
-  checksum: 10/15f72464533ad7e4ce9a9f2be14b5a9dbd768007dd9f9dc46760293dde0995d7231a345c3fe023b63f0839a8daa8a6ca30acb77f655636cd70681561e268a617
+  checksum: 10/a8c960c16aa8edd186241ba41b7825a3a853eec2722a673684f949c816b4c95c1f491ce39919604b67f777ca4192bef580922059899ea352a2faed16a922ac2a
   languageName: node
   linkType: hard
 
@@ -17105,11 +17109,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.24.12":
-  version: 12.24.12
-  resolution: "framer-motion@npm:12.24.12"
+"framer-motion@npm:^12.26.2":
+  version: 12.26.2
+  resolution: "framer-motion@npm:12.26.2"
   dependencies:
-    motion-dom: "npm:^12.24.11"
+    motion-dom: "npm:^12.26.2"
     motion-utils: "npm:^12.24.10"
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -17123,7 +17127,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10/f724d462c6febfb9e150b624f6acb9b351c3b7cfa081923b442ab833b0cfd555c9aac70f754f2cdb5e06c3168b56203124cb6100b2d41fb74752580a5d52429c
+  checksum: 10/80d43806c4d3b1208b3ef4766e332f738fcf1fdd1c2b90f1601ff78072865a20fb41f67a495702be95c5d41b4ca54657e94dc81d02f97fdc4bee6271ef39cf14
   languageName: node
   linkType: hard
 
@@ -22849,12 +22853,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:^12.24.11":
-  version: 12.24.11
-  resolution: "motion-dom@npm:12.24.11"
+"motion-dom@npm:^12.26.2":
+  version: 12.26.2
+  resolution: "motion-dom@npm:12.26.2"
   dependencies:
     motion-utils: "npm:^12.24.10"
-  checksum: 10/08a56090ddf5dfc295649073b6a9f90bd71ca3f4608c60d224d561a403a02dc22dd07c4a212980a59437f65e0381ddc05238593cc282ce0c98e4a88b3f0cc458
+  checksum: 10/a24f7df17673433ab32820e508a475d681830b2edbd1a92f9ca64604a02a5ffb53e8bfec317344c34c65a601f2332d0486f038eed0c7db13b8dbc5c750f0063f
   languageName: node
   linkType: hard
 
@@ -22866,10 +22870,10 @@ __metadata:
   linkType: hard
 
 "motion@npm:^12.23.26":
-  version: 12.24.12
-  resolution: "motion@npm:12.24.12"
+  version: 12.26.2
+  resolution: "motion@npm:12.26.2"
   dependencies:
-    framer-motion: "npm:^12.24.12"
+    framer-motion: "npm:^12.26.2"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -22882,7 +22886,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10/427e1b1042f1edeb74ba86894bc0f8da22f51db6eab38475b93d48f7b88ab4cb99f7f7d7a6133eaa98c12fc08d9395dc88d5481edade95af1a37d37ea6a338a4
+  checksum: 10/9ea26346549334b3356d75f11464c12de0b35c3f7fc121eb8edc57f0b8315206695bcdf94c176aea3bff44d90035c1c3e9bf9446ada04a682120915ff524cd20
   languageName: node
   linkType: hard
 
@@ -27204,7 +27208,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:^0.34.4":
+"sharp@npm:>=0.33.0, sharp@npm:^0.34.4":
   version: 0.34.5
   resolution: "sharp@npm:0.34.5"
   dependencies:
