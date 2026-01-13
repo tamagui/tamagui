@@ -421,7 +421,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     };
     shorthands: C;
     media: D;
-    animations: AnimationDriver<E>;
+    animations: AnimationDriver<E> | AnimationsConfigObject;
     settings: H;
 };
 type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
@@ -490,7 +490,7 @@ type InferredTransitionKeys = TamaguiConfig['animations'] extends AnimationDrive
 } ? keyof Config : string;
 export type TransitionKeys = InferredTransitionKeys;
 type InferredAnimationDriverKeys = TamaguiConfig['animations'] extends AnimationDriver<any> ? 'default' : TamaguiConfig['animations'] extends Record<string, AnimationDriver<any>> ? keyof TamaguiConfig['animations'] : 'default';
-export type AnimationDriverKeys = ReturnType<TypeOverride['animationDrivers']> extends 1 ? InferredAnimationDriverKeys : 'default' | ReturnType<TypeOverride['animationDrivers']>;
+export type AnimationDriverKeys = 'default' | InferredAnimationDriverKeys | (ReturnType<TypeOverride['animationDrivers']> extends 1 ? never : ReturnType<TypeOverride['animationDrivers']>);
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 export interface ThemeProps {
     className?: string;
