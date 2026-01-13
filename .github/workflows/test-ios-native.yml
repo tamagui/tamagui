@@ -2,9 +2,9 @@ name: Test iOS Native (Maestro)
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'v*']
   pull_request:
-    branches: [main]
+    branches: [main, 'v*']
   workflow_dispatch:
 
 env:
