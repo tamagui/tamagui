@@ -9,7 +9,7 @@
     "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary",
     "check:tamagui": "tamagui check",
     "generate": "tamagui generate",
-    "start": "expo start -c",
+    "start": "bunx expo start -c",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",

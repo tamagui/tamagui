@@ -89,7 +89,7 @@ jobs:
 
       - name: Start Metro Bundler
         run: |
-          EXPO_NO_TELEMETRY=true yarn expo start --dev-client --offline &
+          EXPO_NO_TELEMETRY=true bunx expo start --dev-client --offline &
           # Wait for Metro to be ready
           echo "Waiting for Metro to start..."
           for i in {1..30}; do

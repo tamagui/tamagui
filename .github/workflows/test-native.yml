@@ -139,7 +139,7 @@ jobs:
         id: calculate-pre-fingerprint
         env:
           # Include cache version to allow manual cache busting
-          PRE_FINGERPRINT_HASH: ${{ hashFiles('yarn.lock', 'code/kitchen-sink/app.json', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', 'code/kitchen-sink/app.json', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
         run: |
           echo "Pre-fingerprint hash: $PRE_FINGERPRINT_HASH"
           echo "pre_fingerprint_hash=$PRE_FINGERPRINT_HASH" >> $GITHUB_OUTPUT

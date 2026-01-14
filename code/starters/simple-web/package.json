@@ -3,10 +3,10 @@
   "private": true,
   "packageManager": "yarn@4.5.0",
   "scripts": {
-    "web": "yarn dev",
+    "web": "bun run dev",
     "dev:vite": "NODE_ENV=development vite --host --clearScreen false",
-    "dev:vite:extract": "EXTRACT=1 yarn dev",
-    "dev": "yarn dev:webpack",
+    "dev:vite:extract": "EXTRACT=1 bun run dev",
+    "dev": "bun run dev:webpack",
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
