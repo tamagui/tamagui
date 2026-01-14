@@ -5,23 +5,23 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { PurchaseButton } from '~/features/site/purchase/helpers'
+import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
-import { VersionComparison } from '~/features/takeout/VersionComparison'
 
-import { TakeoutHero, heroHeight } from '~/features/takeout/TakeoutHero'
-import {
-  SectionTitleWithRocket,
-  RocketOrbit,
-} from '~/features/takeout/SectionTitleWithRocket'
 import { AnimatedClouds } from '~/features/takeout/AnimatedClouds'
-import { RetroRainbow } from '~/features/takeout/RetroRainbow'
-import { WebFrameSection } from '~/features/takeout/WebFrameSection'
-import { VideoSection } from '~/features/takeout/VideoSection'
-import { ScreenshotGallery } from '~/features/takeout/ScreenshotGallery'
 import { PinnedNote } from '~/features/takeout/PinnedNote'
+import { RetroRainbow } from '~/features/takeout/RetroRainbow'
+import { ScreenshotGallery } from '~/features/takeout/ScreenshotGallery'
+import {
+  RocketOrbit,
+  SectionTitleWithRocket,
+} from '~/features/takeout/SectionTitleWithRocket'
 import { TakeoutGlow } from '~/features/takeout/TakeoutGlow'
+import { TakeoutHero } from '~/features/takeout/TakeoutHero'
+import { VideoSection } from '~/features/takeout/VideoSection'
+import { WebFrameSection } from '~/features/takeout/WebFrameSection'
 
 export default function TakeoutPage() {
   const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
@@ -147,7 +147,7 @@ export default function TakeoutPage() {
                 showAppropriateModal()
               }}
               size="$4"
-              theme={tint as any}
+              theme="accent"
             >
               {isProUser ? 'Plus | Free' : 'Buy Now'}
             </PurchaseButton>

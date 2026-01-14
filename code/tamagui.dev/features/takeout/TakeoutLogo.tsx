@@ -1,6 +1,6 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
-import { H1, YStack } from 'tamagui'
+import { H1, Theme, YStack } from 'tamagui'
 
 export const TAKEOUT = ({ fontSize = 260, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
@@ -9,9 +9,8 @@ export const TAKEOUT = ({ fontSize = 260, lineHeight = fontSize * 0.73, ...props
     fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
-    letterSpacing={-18}
     whiteSpace="nowrap"
-    minW={970}
+    minW={900}
     text="center"
     {...props}
   >
@@ -32,22 +31,22 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         margin: -(1 - props.scale) * 295,
       })}
     >
-      <YStack
+      {/* <YStack
         position="absolute"
         style={{
           clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <TAKEOUT className="text-3d" zi={1000} color="$color10" />
-      </YStack>
+        <TAKEOUT className="text-3d" zi={1000} color="$color5" />
+      </YStack> */}
 
       <YStack
         mt={0}
         z={0}
         className="mix-blend"
-        style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
-        }}
+        // style={{
+        //   clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
+        // }}
       >
         <ThemeTintAlt>
           <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
@@ -58,7 +57,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
             {/* main color slices */}
             <ThemeTint>
               <TAKEOUT
-                color="$color7"
+                color="$color1"
                 className="clip-slice mix-blend"
                 position="absolute"
                 opacity={1}

@@ -336,7 +336,7 @@ const FloatingIcon = ({
   let y = initialY
   let opacity = 1
   let scale = 1
-  const startScale = 1.05
+  const startScale = 0.65
 
   if (toPhone && targetX !== undefined) {
     const targetY = 120
@@ -598,7 +598,7 @@ export const TakeoutHero = () => {
       <ThemeTintAlt>
         <Paragraph
           color="$color11"
-          size="$6"
+          size="$7"
           fontFamily="$mono"
           fontWeight="bold"
           letterSpacing={1}
@@ -609,22 +609,35 @@ export const TakeoutHero = () => {
         </Paragraph>
       </ThemeTintAlt>
 
-      <Link
-        href="https://takeout.tamagui.dev/docs/introduction"
-        target="_blank"
-        mt="$3"
-        pointerEvents="auto"
-      >
-        <Button
-          aria-label="View Documentation"
-          cursor="pointer"
-          transition="quick"
-          hoverStyle={{ scale: 1.05, opacity: 0.9 }}
-          pressStyle={{ scale: 0.98 }}
+      <XStack gap="$2" mt="$6" mb="$4">
+        <Link
+          href="https://takeout.tamagui.dev/docs/introduction"
+          target="_blank"
+          pointerEvents="auto"
         >
-          <Button.Text fontFamily="$silkscreen">Docs &raquo;</Button.Text>
-        </Button>
-      </Link>
+          <Button
+            aria-label="View Documentation"
+            cursor="pointer"
+            transition="quick"
+            hoverStyle={{ scale: 1.05, opacity: 0.9 }}
+            pressStyle={{ scale: 0.98 }}
+          >
+            <Button.Text fontFamily="$silkscreen">Docs</Button.Text>
+          </Button>
+        </Link>
+
+        <Link href="https://takeout.tamagui.dev" target="_blank" pointerEvents="auto">
+          <Button
+            aria-label="View Documentation"
+            cursor="pointer"
+            transition="quick"
+            hoverStyle={{ scale: 1.05, opacity: 0.9 }}
+            pressStyle={{ scale: 0.98 }}
+          >
+            <Button.Text fontFamily="$silkscreen">Demo Website</Button.Text>
+          </Button>
+        </Link>
+      </XStack>
 
       <YStack mt="$6" pointerEvents="auto">
         <IPhoneFrame scrollProgress={scrollProgress} />

@@ -14,18 +14,15 @@ export const SectionTitleWithRocket = () => {
       position="relative"
       overflow="visible"
     >
-      <ThemeTintAlt>
-        <SizableText
-          size="$10"
-          fontFamily="$silkscreen"
-          color="$color11"
-          letterSpacing={2}
-          text="center"
-          $sm={{ size: '$8' }}
-        >
-          FROM IDEA TO PRODUCTION
-        </SizableText>
-      </ThemeTintAlt>
+      <SizableText
+        size="$5"
+        fontFamily="$silkscreen"
+        color="$color11"
+        letterSpacing={2}
+        text="center"
+      >
+        the best full-stack production starter
+      </SizableText>
     </YStack>
   )
 }
