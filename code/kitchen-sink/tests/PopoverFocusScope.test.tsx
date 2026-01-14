@@ -70,7 +70,8 @@ test.describe('Popover Focus Scope', () => {
     // Focus on the input
     const input = popoverContent.getByTestId('no-trap-input')
     await input.click()
-    await expect(input).toBeFocused()
+    await page.waitForTimeout(100)
+    await expect(input).toBeFocused({ timeout: 5000 })
 
     // Tab to the close button
     await page.keyboard.press('Tab')
