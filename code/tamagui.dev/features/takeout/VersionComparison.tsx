@@ -176,7 +176,7 @@ export function VersionComparison() {
               v1
             </SizableText>
             <Theme name="orange">
-              <VersionBadge variant="legacy">Legacy</VersionBadge>
+              <VersionBadge variant="legacy">Conservative</VersionBadge>
             </Theme>
           </XStack>
           <XStack flex={1} justify="center" items="center" gap="$2">

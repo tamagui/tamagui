@@ -38,11 +38,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <>
-          <ThemeTintAlt offset={-7}>
-            <TAKEOUT className="text-3d" zi={1000} color="$color8" />
-          </ThemeTintAlt>
-        </>
+        <TAKEOUT className="text-3d" zi={1000} color="$color10" />
       </YStack>
 
       <YStack
@@ -53,20 +49,42 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <ThemeTintAlt offset={-0}>
-          <TAKEOUT className="font-outlined" zi={1000} color="var(--color10)" />
+        <ThemeTintAlt>
+          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
         </ThemeTintAlt>
 
         {!disableMotion && (
           <>
-            {/* alt color slices */}
-            <ThemeTintAlt offset={7}>
+            {/* main color slices */}
+            <ThemeTint>
               <TAKEOUT
-                color="$color9"
-                className="clip-slice slice-alt"
+                color="$color7"
+                className="clip-slice mix-blend"
+                position="absolute"
+                opacity={1}
+                z={1001}
+              />
+            </ThemeTint>
+
+            {/* alt color slices */}
+            <ThemeTintAlt>
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice mix-blend slice-alt"
                 position="absolute"
                 opacity={1}
                 z={1002}
+              />
+            </ThemeTintAlt>
+
+            {/* secondary slice layer */}
+            <ThemeTintAlt offset={-2}>
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice-2 mix-blend"
+                position="absolute"
+                opacity={1}
+                z={1001}
               />
             </ThemeTintAlt>
           </>

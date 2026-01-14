@@ -1,13 +1,16 @@
 import { YStack } from 'tamagui'
+import { isSafari } from './helpers'
 import { useScrollProgress } from './useScrollProgress'
 
 export const RetroRainbow = () => {
   const RAINBOW_SCROLL_START = 3500
   const RAINBOW_SCROLL_END = RAINBOW_SCROLL_START + 400
-  const scrollProgress = useScrollProgress(RAINBOW_SCROLL_START, RAINBOW_SCROLL_END)
+  const scrollProgress = isSafari()
+    ? 1
+    : useScrollProgress(RAINBOW_SCROLL_START, RAINBOW_SCROLL_END)
 
   const easeOutCubic = (t: number) => 1 - (1 - t) ** 3
-  const easedProgress = easeOutCubic(scrollProgress)
+  const easedProgress = isSafari() ? 1 : easeOutCubic(scrollProgress)
 
   const bands = [
     { color: '#C94A4A', size: 448 },

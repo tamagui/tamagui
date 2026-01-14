@@ -1,6 +1,7 @@
 import { Image } from '@tamagui/image'
 import { ThemeTintAlt } from '@tamagui/logo'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { Suspense, lazy } from 'react'
 import {
   Button,
   H2,
@@ -13,11 +14,16 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
+import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { isSafariMobile } from '~/features/site/purchase/helpers'
+import { isSafari } from './helpers'
+import { SafariFloatingIcons } from './SafariStaticLayout'
 import { TakeoutLogo } from './TakeoutLogo'
 import { useScrollProgress, HERO_SCROLL_END } from './useScrollProgress'
+
+const TakeoutBox3D = lazy(() => import('./TakeoutBox3D'))
 
 const featureCards = [
   {
@@ -126,7 +132,7 @@ const floatingIcons = [
   {
     icon: '/takeout/pixel-icons/disco-ball.svg',
     alt: 'Modern stack',
-    x: 370,
+    x: 550,
     y: -160,
     toPhone: false,
   },
@@ -360,6 +366,11 @@ const FloatingIcon = ({
 }
 
 const FloatingIcons = ({ scrollProgress }: { scrollProgress: number }) => {
+  // Use static layout for Safari
+  if (isSafari()) {
+    return <SafariFloatingIcons />
+  }
+
   return (
     <>
       {floatingIcons.map((item, i) => (
@@ -380,7 +391,9 @@ const FloatingIcons = ({ scrollProgress }: { scrollProgress: number }) => {
 
 const IPhoneFrame = ({ scrollProgress }: { scrollProgress: number }) => {
   const isDark = useThemeName().startsWith('dark')
-  const phoneY = scrollProgress * 80
+
+  // Disable scroll animation for Safari
+  const phoneY = isSafari() ? 0 : scrollProgress * 80
 
   return (
     <YStack items="center" position="relative" y={phoneY} className="ease-out ms300 all">
@@ -562,6 +575,25 @@ export const TakeoutHero = () => {
       }}
     >
       <TakeoutLogo />
+
+      {/* 3D Rotating Takeout Box */}
+      <YStack
+        position="absolute"
+        pointerEvents="none"
+        t={200}
+        r={0}
+        $md={{ r: -150 }}
+        $sm={{ display: 'none' }}
+        z={-1}
+      >
+        {enable3d && (
+          <Suspense fallback={null}>
+            <ErrorBoundary noMessage>
+              <TakeoutBox3D />
+            </ErrorBoundary>
+          </Suspense>
+        )}
+      </YStack>
 
       <ThemeTintAlt>
         <Paragraph

@@ -1,8 +1,14 @@
 import { Image } from '@tamagui/image'
 import { YStack } from 'tamagui'
+import { isSafari } from './helpers'
+import { SafariStaticClouds } from './SafariStaticLayout'
 import { useScrollProgress, WEB_FRAME_SCROLL_END } from './useScrollProgress'
 
 export const AnimatedClouds = () => {
+  // Use static clouds for Safari
+  if (isSafari()) {
+    return <SafariStaticClouds />
+  }
   const CLOUDS_SCROLL_START = WEB_FRAME_SCROLL_END
   const CLOUDS_SCROLL_END = CLOUDS_SCROLL_START + 800
   const scrollProgress = useScrollProgress(CLOUDS_SCROLL_START, CLOUDS_SCROLL_END)
