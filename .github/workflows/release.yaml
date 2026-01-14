@@ -21,14 +21,14 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Install playwright
-        run: npx playwright install
-        
+        run: bunx playwright install
+
       - name: Test
-        run: yarn test
+        run: bun run test
 
       - name: Publish
         # just testing for now so --skip-publish
-        run: yarn release:beta:dirty --ci --tamagui-git-user --skip-publish
+        run: bun run release:beta:dirty --ci --tamagui-git-user --skip-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
