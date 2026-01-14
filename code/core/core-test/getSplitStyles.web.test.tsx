@@ -37,20 +37,19 @@ describe('getSplitStyles', () => {
     expect(styles.classNames).toEqual({ color: '_col-red' })
   })
 
-  test(`prop "accessibilityRequired" becomes "aria-required" and "required"`, () => {
+  // v2: accessibilityRequired is deprecated - use aria-required instead
+  test(`prop "aria-required" is passed through correctly`, () => {
     const { viewProps } = simplifiedGetSplitStyles(
       Stack,
       {
-        accessibilityRequired: false,
+        'aria-required': true,
       },
       {
         tag: 'input',
       }
     )
 
-    expect(viewProps['aria-required']).toEqual(false)
-    expect(viewProps.required).toEqual(false)
-    expect(viewProps.accessibilityRequired).toEqual(undefined)
+    expect(viewProps['aria-required']).toEqual(true)
   })
 
   test(`prop "paddingStart" value 10 becomes "10px"`, () => {

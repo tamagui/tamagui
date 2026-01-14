@@ -31,7 +31,7 @@ describe('getSplitStyles', () => {
     expect(styles.style).toEqual({ color: 'red' })
   })
 
-  test(`prop "accessibilityRequired" becomes "aria-required" and "required"`, () => {
+  test(`gap props are correctly applied`, () => {
     const { style } = getSplitStylesFor({
       columnGap: 10,
       rowGap: 10,
