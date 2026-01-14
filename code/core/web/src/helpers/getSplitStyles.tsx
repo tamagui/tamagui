@@ -1542,6 +1542,7 @@ const deprecatedProps: Record<string, string> = {
   nativeID: 'id',
   accessible: 'tabIndex={0}',
   focusable: 'tabIndex',
+  selectable: 'userSelect',
   accessibilityLabel: 'aria-label',
   accessibilityRole: 'role',
   accessibilityHint: 'aria-describedby',
