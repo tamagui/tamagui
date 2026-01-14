@@ -306,7 +306,6 @@ function PortalHostNonNative(props: PortalHostProps) {
   const { registerHost, deregisterHost } = usePortal(props.name)
 
   useIsomorphicLayoutEffect(() => {
-    if (typeof window === 'undefined') return
     registerHost()
     return () => {
       deregisterHost()

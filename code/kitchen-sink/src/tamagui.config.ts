@@ -16,6 +16,7 @@ export const animationsCSS = createAnimationsCSS({
   lazy: 'ease-in 600ms',
   slow: 'ease-in 500ms',
   quick: 'ease-in 100ms',
+  quicker: 'cubic-bezier(0.215, 0.610, 0.355, 1.000) 300ms',
   tooltip: 'ease-in 400ms',
   medium: 'ease-in 400ms',
 })
@@ -58,6 +59,12 @@ export const animationsMoti = createAnimationsMoti({
     damping: 20,
     mass: 1.2,
     stiffness: 250,
+  },
+  quicker: {
+    type: 'spring',
+    damping: 20,
+    mass: 1,
+    stiffness: 300,
   },
   medium: {
     damping: 15,
@@ -111,6 +118,12 @@ export const animationsMotion = createAnimationsMotion({
     mass: 1.2,
     stiffness: 250,
   },
+  quicker: {
+    type: 'spring',
+    damping: 20,
+    mass: 1,
+    stiffness: 300,
+  },
   medium: {
     damping: 15,
     stiffness: 120,
@@ -163,6 +176,12 @@ export const animationsNative = createAnimationsNative({
     mass: 1.2,
     stiffness: 250,
   },
+  quicker: {
+    type: 'spring',
+    damping: 20,
+    mass: 1,
+    stiffness: 300,
+  },
   medium: {
     damping: 15,
     stiffness: 120,
@@ -214,6 +233,12 @@ export const animationsReanimated = createAnimationsReanimated({
     damping: 20,
     mass: 1.2,
     stiffness: 250,
+  },
+  quicker: {
+    type: 'spring',
+    damping: 20,
+    mass: 1,
+    stiffness: 300,
   },
   medium: {
     damping: 15,
