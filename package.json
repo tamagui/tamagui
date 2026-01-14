@@ -23,10 +23,6 @@
     "@react-navigation/native-stack": "7.6.2",
     "@react-navigation/routers": "7.4.0",
     "@react-navigation/elements": "2.8.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
-  },
-  "overrides": {
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
@@ -124,9 +120,6 @@
   "manypkg": {
     "workspaceProtocol": "require"
   },
-<<<<<<< HEAD
-  "packageManager": "yarn@4.5.0",
-=======
   "profile": {
     "//": "bun run profile [name] to toggle package resolutions",
     "react-18": {
@@ -142,7 +135,6 @@
     "@swc/core",
     "sharp"
   ],
->>>>>>> 3756bbdbb0 (chore: migrate from yarn to bun)
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@manypkg/cli": "^0.23.0",
@@ -156,8 +148,8 @@
     "npm-run-all": "^4.1.5",
     "p-map": "^7.0.3",
     "prompts": "2.1.0",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "*",
+    "react-dom": "*",
     "react-native-screens": "~4.16.0",
     "tsx": "^4.20.6",
     "turbo": "^2.1.3",
