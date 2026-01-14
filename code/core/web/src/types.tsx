@@ -771,7 +771,9 @@ type ConfProps<A, B, C, D, E, F, I> = {
   shorthands?: C
   media?: D
   animations?: E extends AnimationConfig
-    ? AnimationDriver<E> | ({ default: AnimationDriver<E> } & { [key: string]: AnimationDriver<any> })
+    ?
+        | AnimationDriver<E>
+        | ({ default: AnimationDriver<E> } & { [key: string]: AnimationDriver<any> })
     : undefined
   fonts?: F
   settings?: I
@@ -879,11 +881,12 @@ type InferredTransitionKeys = TamaguiConfig['animations'] extends AnimationDrive
 export type TransitionKeys = InferredTransitionKeys
 
 // Driver keys (default, css, spring) for the `animatedBy` prop
-type InferredAnimationDriverKeys = TamaguiConfig['animations'] extends AnimationDriver<any>
-  ? 'default'
-  : TamaguiConfig['animations'] extends Record<string, AnimationDriver<any>>
-    ? keyof TamaguiConfig['animations']
-    : 'default'
+type InferredAnimationDriverKeys =
+  TamaguiConfig['animations'] extends AnimationDriver<any>
+    ? 'default'
+    : TamaguiConfig['animations'] extends Record<string, AnimationDriver<any>>
+      ? keyof TamaguiConfig['animations']
+      : 'default'
 
 // Combine inferred keys from config with TypeOverride keys
 // This ensures both config-defined drivers AND lazy-loaded drivers are available
