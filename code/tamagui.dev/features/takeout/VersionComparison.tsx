@@ -1,3 +1,4 @@
+import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import {
   Button,
@@ -119,129 +120,155 @@ export function VersionComparison() {
 
   return (
     <YStack
-      className="blur-medium"
-      bg={isDark ? '$color2' : '$color3'}
-      rounded="$6"
-      p="$6"
-      borderWidth={2}
-      borderColor="$borderColor"
-      gap="$4"
-      overflow="hidden"
+      items="center"
+      gap="$6"
+      maxW={1000}
+      mx="auto"
+      width="100%"
       $sm={{ display: 'none' }}
-      style={{
-        boxShadow: '0 0 50px var(--color4)',
-      }}
     >
-      <YStack gap="$2">
-        <H3
-          fontFamily="$mono"
-          letterSpacing={3}
+      <ThemeTintAlt>
+        <SizableText
+          size="$8"
+          fontFamily="$silkscreen"
           color="$color11"
-          textTransform="uppercase"
-          style={{
-            textShadow: '0 0 30px var(--color8)',
-          }}
+          letterSpacing={3}
+          text="center"
         >
-          Version Comparison
-        </H3>
-        <Paragraph color="$color11" size="$4" fontFamily="$mono">
-          Pro subscribers get access to both v1 and v2 repositories.
-        </Paragraph>
-      </YStack>
+          PICK YOUR VERSION
+        </SizableText>
+      </ThemeTintAlt>
 
       <YStack
-        rounded="$4"
-        borderWidth={1}
-        borderColor="$color6"
+        className="blur-medium"
+        bg={isDark ? '$color2' : '$color3'}
+        rounded="$6"
+        p="$6"
+        borderWidth={2}
+        borderColor="$borderColor"
+        gap="$4"
         overflow="hidden"
-        bg="$background02"
+        width="100%"
         style={{
-          boxShadow: '0 0 30px var(--color4)',
+          boxShadow: '0 0 50px var(--color4)',
         }}
       >
-        <XStack py="$3" px="$3" borderBottomWidth={2} borderBottomColor="$color6">
-          <YStack flex={1.5} justify="center">
-            <SizableText
-              size="$2"
-              fontWeight="800"
-              color="$color11"
-              fontFamily="$mono"
-              textTransform="uppercase"
-            >
-              Feature
-            </SizableText>
-          </YStack>
-          <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$2" fontWeight="800" color="$orange10" fontFamily="$mono">
-              v1
-            </SizableText>
-            <Theme name="orange">
-              <VersionBadge variant="legacy">Conservative</VersionBadge>
-            </Theme>
+        <YStack gap="$2">
+          <H3
+            fontFamily="$mono"
+            letterSpacing={3}
+            color="$color11"
+            textTransform="uppercase"
+            style={{
+              textShadow: '0 0 30px var(--color8)',
+            }}
+          >
+            Version Comparison
+          </H3>
+          <Paragraph color="$color11" size="$4" fontFamily="$mono">
+            Pro subscribers get access to both v1 and v2 repositories.
+          </Paragraph>
+        </YStack>
+
+        <YStack
+          rounded="$4"
+          borderWidth={1}
+          borderColor="$color6"
+          overflow="hidden"
+          bg="$background02"
+          style={{
+            boxShadow: '0 0 30px var(--color4)',
+          }}
+        >
+          <XStack py="$3" px="$3" borderBottomWidth={2} borderBottomColor="$color6">
+            <YStack flex={1.5} justify="center">
+              <SizableText
+                size="$2"
+                fontWeight="800"
+                color="$color11"
+                fontFamily="$mono"
+                textTransform="uppercase"
+              >
+                Feature
+              </SizableText>
+            </YStack>
+            <XStack flex={1} justify="center" items="center" gap="$2">
+              <SizableText
+                size="$2"
+                fontWeight="800"
+                color="$orange10"
+                fontFamily="$mono"
+              >
+                v1
+              </SizableText>
+              <Theme name="orange">
+                <VersionBadge variant="legacy">Conservative</VersionBadge>
+              </Theme>
+            </XStack>
+            <XStack flex={1} justify="center" items="center" gap="$2">
+              <SizableText size="$2" fontWeight="800" color="$green10" fontFamily="$mono">
+                v2
+              </SizableText>
+              <Theme name="green">
+                <VersionBadge variant="new">New</VersionBadge>
+              </Theme>
+            </XStack>
+            <XStack flex={1} justify="center" items="center" gap="$2">
+              <SizableText size="$2" fontWeight="800" color="$blue10" fontFamily="$mono">
+                v2-free
+              </SizableText>
+              <Theme name="blue">
+                <VersionBadge variant="free">OSS</VersionBadge>
+              </Theme>
+            </XStack>
           </XStack>
-          <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$2" fontWeight="800" color="$green10" fontFamily="$mono">
-              v2
-            </SizableText>
+
+          {features.map((row) => (
+            <FeatureRow key={row.feature} {...row} />
+          ))}
+        </YStack>
+
+        <XStack gap="$4" flexWrap="wrap" justify="center" pt="$4">
+          <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
             <Theme name="green">
-              <VersionBadge variant="new">New</VersionBadge>
+              <Button
+                size="$3"
+                rounded="$4"
+                bg="$color9"
+                borderWidth={2}
+                borderColor="$color10"
+                cursor="pointer"
+                transition="quick"
+                hoverStyle={{ bg: '$color10', scale: 1.02 }}
+                pressStyle={{ bg: '$color8', scale: 0.98 }}
+              >
+                <Button.Text fontFamily="$mono" fontWeight="800" color="white">
+                  Read the Docs
+                </Button.Text>
+              </Button>
             </Theme>
-          </XStack>
-          <XStack flex={1} justify="center" items="center" gap="$2">
-            <SizableText size="$2" fontWeight="800" color="$blue10" fontFamily="$mono">
-              v2-free
-            </SizableText>
+          </Link>
+          <Link href="https://github.com/tamagui/starter-free" target="_blank">
             <Theme name="blue">
-              <VersionBadge variant="free">OSS</VersionBadge>
+              <Button
+                size="$3"
+                rounded="$4"
+                bg="$color9"
+                borderWidth={2}
+                borderColor="$color10"
+                cursor="pointer"
+                transition="quick"
+                hoverStyle={{ bg: '$color10', scale: 1.02 }}
+                pressStyle={{ bg: '$color8', scale: 0.98 }}
+              >
+                <Button.Text fontFamily="$mono" fontWeight="800" color="white">
+                  Try v2-free (OSS)
+                </Button.Text>
+              </Button>
             </Theme>
-          </XStack>
+          </Link>
         </XStack>
-
-        {features.map((row) => (
-          <FeatureRow key={row.feature} {...row} />
-        ))}
       </YStack>
-
-      <XStack gap="$4" flexWrap="wrap" justify="center" pt="$4">
-        <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
-          <Theme name="green">
-            <Button
-              size="$3"
-              rounded="$4"
-              bg="$color9"
-              borderWidth={2}
-              borderColor="$color10"
-              cursor="pointer"
-              transition="quick"
-              hoverStyle={{ bg: '$color10', scale: 1.02 }}
-              pressStyle={{ bg: '$color8', scale: 0.98 }}
-            >
-              <Button.Text fontFamily="$mono" fontWeight="800" color="white">
-                Read the Docs
-              </Button.Text>
-            </Button>
-          </Theme>
-        </Link>
-        <Link href="https://github.com/tamagui/starter-free" target="_blank">
-          <Theme name="blue">
-            <Button
-              size="$3"
-              rounded="$4"
-              bg="$color9"
-              borderWidth={2}
-              borderColor="$color10"
-              cursor="pointer"
-              transition="quick"
-              hoverStyle={{ bg: '$color10', scale: 1.02 }}
-              pressStyle={{ bg: '$color8', scale: 0.98 }}
-            >
-              <Button.Text fontFamily="$mono" fontWeight="800" color="white">
-                Try v2-free (OSS)
-              </Button.Text>
-            </Button>
-          </Theme>
-        </Link>
-      </XStack>
     </YStack>
   )
 }

@@ -1,9 +1,10 @@
+import { Image } from '@tamagui/image'
 import { ThemeTint, useTint } from '@tamagui/logo'
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
-import { XStack, View } from 'tamagui'
+import { XStack, YStack, useThemeName } from 'tamagui'
 
 export const PageThemeCarousel = () => {
   const tint = useTint()
+  const isDark = useThemeName().startsWith('dark')
 
   return (
     <ThemeTint>
@@ -27,48 +28,63 @@ export const PageThemeCarousel = () => {
           height="100%"
           maxW={1250}
         >
-          <View
+          <YStack
             p="$3"
-            transition="lazy"
+            cursor="pointer"
             pointerEvents="auto"
-            opacity={0.2}
+            opacity={0.4}
             hoverStyle={{
               opacity: 1,
+              scale: 1.1,
             }}
             pressStyle={{
-              opacity: 0.5,
+              opacity: 0.6,
+              scale: 0.95,
             }}
             onPress={() => {
               tint.setTintIndex(
-                tint.tintIndex - 1 < 0 ? tint.tint.length - 1 : tint.tintIndex - 1
+                tint.tintIndex - 1 < 0 ? tint.tints.length - 1 : tint.tintIndex - 1
               )
             }}
+            className="ease-out ms200 all"
           >
-            <ChevronLeft
-              size={22}
-              color="$color08"
-              hoverStyle={{
-                color: '$color12',
-              }}
+            <Image
+              src="/takeout/pixel-icons/next.svg"
+              alt="Previous theme"
+              width={24}
+              height={24}
+              className="pixelate"
+              filter={isDark ? 'invert(1)' : 'none'}
+              style={{ transform: 'scaleX(-1)' }}
             />
-          </View>
-          <View
+          </YStack>
+          <YStack
             p="$3"
-            transition="lazy"
+            cursor="pointer"
             pointerEvents="auto"
-            opacity={0.2}
+            opacity={0.4}
             hoverStyle={{
               opacity: 1,
+              scale: 1.1,
             }}
             pressStyle={{
-              opacity: 0.5,
+              opacity: 0.6,
+              scale: 0.95,
             }}
             onPress={() => {
               tint.setTintIndex((tint.tintIndex + 1) % tint.tints.length)
             }}
+            className="ease-out ms200 all"
           >
-            <ChevronRight size={22} color="$color08" />
-          </View>
+            <Image
+              src="/takeout/pixel-icons/next.svg"
+              alt="Next theme"
+              width={24}
+              height={24}
+              className="pixelate"
+              filter={isDark ? 'invert(1)' : 'none'}
+            />
+          </YStack>
         </XStack>
       </XStack>
     </ThemeTint>

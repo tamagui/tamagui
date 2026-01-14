@@ -21,7 +21,11 @@ import { isSafariMobile } from '~/features/site/purchase/helpers'
 import { isSafari } from './helpers'
 import { SafariFloatingIcons } from './SafariStaticLayout'
 import { TakeoutLogo } from './TakeoutLogo'
-import { useScrollProgress, HERO_SCROLL_END } from './useScrollProgress'
+import {
+  PHONE_FRAME_SCROLL_END,
+  PHONE_FRAME_SCROLL_START,
+  useScrollProgress,
+} from './useScrollProgress'
 
 const TakeoutBox3D = lazy(() => import('./TakeoutBox3D'))
 
@@ -171,6 +175,17 @@ const SideFeatureCardFrame = styled(YStack, {
   bg: '$background02',
   borderWidth: 1,
   borderColor: '$borderColor',
+})
+
+const CodeInline = styled(Paragraph, {
+  tag: 'code',
+  fontFamily: '$mono',
+  color: '$color12',
+  bg: 'color-mix(in srgb, var(--color8) 50%, transparent 50%)' as any,
+  cursor: 'inherit',
+  rounded: '$3',
+  fontSize: '85%' as any,
+  p: '$1.5',
 })
 
 const FeatureCard = ({
@@ -389,164 +404,193 @@ const FloatingIcons = ({ scrollProgress }: { scrollProgress: number }) => {
   )
 }
 
-const IPhoneFrame = ({ scrollProgress }: { scrollProgress: number }) => {
+export const IPhoneFrame = () => {
   const isDark = useThemeName().startsWith('dark')
-
-  // Disable scroll animation for Safari
-  const phoneY = isSafari() ? 0 : scrollProgress * 80
+  const scrollProgress = isSafari()
+    ? 1
+    : useScrollProgress(PHONE_FRAME_SCROLL_START, PHONE_FRAME_SCROLL_END)
 
   return (
-    <YStack items="center" position="relative" y={phoneY} className="ease-out ms300 all">
-      <FloatingIcons scrollProgress={scrollProgress} />
-
-      <YStack
-        position="absolute"
-        l={-280}
-        t={280}
-        gap="$4"
-        pointerEvents="auto"
-        $md={{ display: 'none' }}
-      >
-        {leftSideCards.map((card, i) => (
-          <SideFeatureCard
-            key={card.title}
-            {...card}
-            rotate={-6}
-            scrollProgress={scrollProgress}
-            delay={i * 0.1}
-          />
-        ))}
-      </YStack>
-
-      <YStack
-        position="absolute"
-        r={-280}
-        t={280}
-        gap="$4"
-        pointerEvents="auto"
-        $md={{ display: 'none' }}
-      >
-        {rightSideCards.map((card, i) => (
-          <SideFeatureCard
-            key={card.title}
-            {...card}
-            rotate={6}
-            scrollProgress={scrollProgress}
-            delay={i * 0.1}
-          />
-        ))}
-      </YStack>
-
-      <Theme name="orange">
-        <YStack
-          position="absolute"
-          width={500}
-          height={500}
-          rounded={1000}
-          bg="$color5"
-          opacity={isDark ? 0.3 : 0.5}
-          t="50%"
-          l="50%"
-          x={-250}
-          y={-250}
-          z={0}
-          style={{
-            filter: 'blur(60px)',
-          }}
-        />
-      </Theme>
-
-      <YStack position="relative" width={360} height={730}>
-        <YStack
-          position="absolute"
-          t={10}
-          l={10}
-          r={10}
-          b={10}
-          rounded="$9"
-          overflow="hidden"
-          z={1}
+    <YStack items="center" gap="$6" maxW={1000} mx="auto" width="100%">
+      <ThemeTintAlt>
+        <SizableText
+          size="$8"
+          fontFamily="$silkscreen"
+          color="$color11"
+          letterSpacing={3}
+          text="center"
         >
-          <YStack flex={1} p="$4" pt="$6" gap="$3">
-            <YStack gap="$1.5" items="center" z={100} mt="$2">
-              <SizableText
-                size="$7"
-                fontFamily="$silkscreen"
-                color="$color"
-                letterSpacing={2}
-              >
-                FEATURES
-              </SizableText>
-              <SizableText size="$2" color="$color10" fontFamily="$mono" opacity={0.8}>
-                Your app, ready to ship
-              </SizableText>
+          the best full-stack production starter
+        </SizableText>
+      </ThemeTintAlt>
+
+      <XStack items="center" justify="center" position="relative" gap="$6">
+        {/* Left side cards */}
+        <YStack
+          gap="$4"
+          position="absolute"
+          l={-320}
+          t={100}
+          $lg={{ l: -280 }}
+          $md={{ display: 'none' }}
+        >
+          {leftSideCards.map((card, i) => (
+            <SideFeatureCard
+              key={card.title}
+              {...card}
+              rotate={-3}
+              scrollProgress={scrollProgress}
+              delay={i * 0.1}
+            />
+          ))}
+        </YStack>
+
+        {/* Phone frame */}
+        <YStack items="center" position="relative">
+          <Theme name="orange">
+            <YStack
+              position="absolute"
+              width={500}
+              height={500}
+              rounded={1000}
+              bg="$color5"
+              opacity={isDark ? 0.3 : 0.5}
+              t="50%"
+              l="50%"
+              x={-250}
+              y={-250}
+              z={0}
+              style={{
+                filter: 'blur(60px)',
+              }}
+            />
+          </Theme>
+
+          <YStack position="relative" width={360} height={730}>
+            <YStack
+              position="absolute"
+              t={10}
+              l={10}
+              r={10}
+              b={10}
+              rounded="$9"
+              overflow="hidden"
+              z={1}
+            >
+              <YStack flex={1} p="$4" pt="$6" gap="$3">
+                <YStack gap="$1.5" items="center" z={100} mt="$2">
+                  <Image
+                    src="/takeout-custom.svg"
+                    alt="Takeout"
+                    width={48}
+                    height={48}
+                    mb="$2"
+                  />
+                  <SizableText
+                    size="$7"
+                    fontFamily="$silkscreen"
+                    color="$color"
+                    letterSpacing={2}
+                  >
+                    FEATURES
+                  </SizableText>
+                  <SizableText
+                    size="$2"
+                    color="$color10"
+                    fontFamily="$mono"
+                    opacity={0.8}
+                  >
+                    Your app, ready to ship
+                  </SizableText>
+                </YStack>
+
+                <YStack gap="$3" flex={1} justify="center" pointerEvents="auto">
+                  {featureCards.map((card) => (
+                    <FeatureCard key={card.title} {...card} />
+                  ))}
+                </YStack>
+              </YStack>
             </YStack>
 
-            <YStack gap="$3" flex={1} justify="center" pointerEvents="auto">
-              {featureCards.map((card) => (
-                <FeatureCard key={card.title} {...card} />
+            <XStack
+              position="absolute"
+              b={28}
+              l={36}
+              r={36}
+              py="$2"
+              px="$3"
+              justify="space-around"
+              items="center"
+              rounded="$10"
+              className="blur-medium"
+              z={1}
+              borderWidth={1}
+              borderColor="$borderColor"
+            >
+              <YStack
+                position="absolute"
+                fullscreen
+                rounded="$10"
+                bg="$color2"
+                opacity={0.7}
+              />
+              {tabBarItems.map((tab, index) => (
+                <YStack
+                  key={tab.label}
+                  items="center"
+                  opacity={index === 0 ? 1 : 0.6}
+                  p="$1.5"
+                  cursor="pointer"
+                  transition="quick"
+                  hoverStyle={{ opacity: 1, scale: 1.1 }}
+                  aria-label={tab.label}
+                >
+                  <Image
+                    src={tab.icon}
+                    alt={tab.label}
+                    width={20}
+                    height={20}
+                    className="pixelate"
+                    filter={isDark ? 'none' : 'invert(1)'}
+                  />
+                </YStack>
               ))}
-            </YStack>
+            </XStack>
+
+            <Image
+              src="/takeout/iphone-frame.png"
+              alt="iPhone frame"
+              width={360}
+              height={730}
+              position="absolute"
+              t={0}
+              l={0}
+              z={2}
+              pointerEvents="none"
+            />
           </YStack>
         </YStack>
 
-        <XStack
+        {/* Right side cards */}
+        <YStack
+          gap="$4"
           position="absolute"
-          b={28}
-          l={36}
-          r={36}
-          py="$2"
-          px="$3"
-          justify="space-around"
-          items="center"
-          rounded="$10"
-          className="blur-medium"
-          z={1}
-          borderWidth={1}
-          borderColor="$borderColor"
+          r={-320}
+          t={100}
+          $lg={{ r: -280 }}
+          $md={{ display: 'none' }}
         >
-          <YStack
-            position="absolute"
-            fullscreen
-            rounded="$10"
-            bg="$color2"
-            opacity={0.7}
-          />
-          {tabBarItems.map((tab, index) => (
-            <YStack
-              key={tab.label}
-              items="center"
-              opacity={index === 0 ? 1 : 0.6}
-              p="$1.5"
-              cursor="pointer"
-              transition="quick"
-              hoverStyle={{ opacity: 1, scale: 1.1 }}
-              aria-label={tab.label}
-            >
-              <Image
-                src={tab.icon}
-                alt={tab.label}
-                width={20}
-                height={20}
-                className="pixelate"
-                filter={isDark ? 'none' : 'invert(1)'}
-              />
-            </YStack>
+          {rightSideCards.map((card, i) => (
+            <SideFeatureCard
+              key={card.title}
+              {...card}
+              rotate={3}
+              scrollProgress={scrollProgress}
+              delay={i * 0.1}
+            />
           ))}
-        </XStack>
-
-        <Image
-          src="/takeout/iphone-frame.png"
-          alt="iPhone frame"
-          width={360}
-          height={730}
-          position="absolute"
-          t={0}
-          l={0}
-          z={2}
-          pointerEvents="none"
-        />
-      </YStack>
+        </YStack>
+      </XStack>
     </YStack>
   )
 }
@@ -557,8 +601,6 @@ export const TakeoutHero = () => {
   const enable3d = useClientValue(
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
-
-  const scrollProgress = useScrollProgress(0, HERO_SCROLL_END)
 
   return (
     <YStack
@@ -575,6 +617,43 @@ export const TakeoutHero = () => {
       }}
     >
       <TakeoutLogo />
+
+      {/* Description under logo */}
+      <ThemeTintAlt>
+        <YStack gap="$3" maxW={700} mt="$4">
+          <Paragraph
+            className="text-wrap-balance"
+            size="$6"
+            $sm={{ size: '$5' }}
+            text="center"
+          >
+            Takeout is a full-stack, cross-platform starter kit for building modern web
+            and mobile apps with React Native. It funds the OSS development of Tamagui.
+          </Paragraph>
+          <Paragraph
+            className="text-wrap-balance"
+            size="$5"
+            $sm={{ size: '$4' }}
+            text="center"
+            color="$color11"
+          >
+            Built on{' '}
+            <Link href="https://onestack.dev" target="_blank" pointerEvents="auto">
+              One
+            </Link>{' '}
+            for universal routing,{' '}
+            <Link href="https://zero.rocicorp.dev" target="_blank" pointerEvents="auto">
+              Zero
+            </Link>{' '}
+            for real-time sync, and{' '}
+            <Link href="https://better-auth.com" target="_blank" pointerEvents="auto">
+              Better Auth
+            </Link>{' '}
+            for authentication. Deploy with a single command using Uncloud or SST.
+            Includes <CodeInline>bun tko</CodeInline> CLI with built-in docs and scripts.
+          </Paragraph>
+        </YStack>
+      </ThemeTintAlt>
 
       {/* 3D Rotating Takeout Box */}
       <YStack
@@ -595,20 +674,6 @@ export const TakeoutHero = () => {
         )}
       </YStack>
 
-      <ThemeTintAlt>
-        <Paragraph
-          color="$color11"
-          size="$7"
-          fontFamily="$mono"
-          fontWeight="bold"
-          letterSpacing={1}
-          text="center"
-          opacity={0.9}
-        >
-          Full-stack, cross-platform starter kit
-        </Paragraph>
-      </ThemeTintAlt>
-
       <XStack gap="$2" mt="$6" mb="$4">
         <Link
           href="https://takeout.tamagui.dev/docs/introduction"
@@ -626,10 +691,6 @@ export const TakeoutHero = () => {
           </Button>
         </Link>
       </XStack>
-
-      <YStack mt="$6" pointerEvents="auto">
-        <IPhoneFrame scrollProgress={scrollProgress} />
-      </YStack>
     </YStack>
   )
 }

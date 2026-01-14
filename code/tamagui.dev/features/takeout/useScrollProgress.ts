@@ -6,8 +6,12 @@ export const heroHeight = 1050
 export const HERO_SCROLL_END = 150
 export const SECTION_TITLE_SCROLL_START = heroHeight - 100
 export const SECTION_TITLE_SCROLL_END = heroHeight + 600
-export const WEB_FRAME_SCROLL_START = heroHeight - 200
-export const WEB_FRAME_SCROLL_END = heroHeight + 50
+export const WEB_FRAME_SCROLL_START = 100
+export const WEB_FRAME_SCROLL_END = 300
+export const PHONE_FRAME_SCROLL_START = 400
+export const PHONE_FRAME_SCROLL_END = 600
+export const VERSION_SCROLL_START = 700
+export const VERSION_SCROLL_END = 900
 
 export const useScrollProgress = (start = 0, end = 150) => {
   const [progress, setProgress] = useState(0)

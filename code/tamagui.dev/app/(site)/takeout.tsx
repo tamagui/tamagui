@@ -1,5 +1,5 @@
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { SizableText, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Footer } from '~/features/site/Footer'
@@ -10,16 +10,11 @@ import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 
-import { AnimatedClouds } from '~/features/takeout/AnimatedClouds'
 import { PinnedNote } from '~/features/takeout/PinnedNote'
 import { RetroRainbow } from '~/features/takeout/RetroRainbow'
 import { ScreenshotGallery } from '~/features/takeout/ScreenshotGallery'
-import {
-  RocketOrbit,
-  SectionTitleWithRocket,
-} from '~/features/takeout/SectionTitleWithRocket'
 import { TakeoutGlow } from '~/features/takeout/TakeoutGlow'
-import { TakeoutHero } from '~/features/takeout/TakeoutHero'
+import { TakeoutHero, IPhoneFrame } from '~/features/takeout/TakeoutHero'
 import { VideoSection } from '~/features/takeout/VideoSection'
 import { WebFrameSection } from '~/features/takeout/WebFrameSection'
 
@@ -29,7 +24,7 @@ export default function TakeoutPage() {
   const { tint } = useTint()
 
   return (
-    <YStack maxW="100%" overflow="hidden">
+    <YStack maxW="100%">
       <ThemeNameEffect colorKey="$color5" />
       <LoadCherryBomb />
       <PinnedNote />
@@ -140,7 +135,7 @@ export default function TakeoutPage() {
       </ThemeTint>
 
       <ContainerLarge px={0}>
-        <YStack height={0} maxH={0}>
+        <YStack height={0} maxH={0} overflow="visible">
           <YStack position="absolute" t={30} r="2%">
             <PurchaseButton
               onPress={() => {
@@ -156,36 +151,18 @@ export default function TakeoutPage() {
           <TakeoutHero />
         </YStack>
 
-        <SectionTitleWithRocket />
-
-        <YStack mt="$10" px="$4" position="relative">
-          <RocketOrbit>
-            <WebFrameSection />
-          </RocketOrbit>
+        {/* Web frame section */}
+        <YStack mt={700} $sm={{ mt: 500 }} px="$4" position="relative">
+          <WebFrameSection />
         </YStack>
 
-        <AnimatedClouds />
+        {/* Phone frame */}
+        <YStack mt="$12" px="$4">
+          <IPhoneFrame />
+        </YStack>
 
-        <YStack
-          mt="$12"
-          px="$4"
-          maxW={1000}
-          mx="auto"
-          width="100%"
-          gap="$6"
-          $sm={{ display: 'none' }}
-        >
-          <ThemeTintAlt>
-            <SizableText
-              size="$8"
-              fontFamily="$silkscreen"
-              color="$color11"
-              letterSpacing={3}
-              text="center"
-            >
-              PICK YOUR VERSION
-            </SizableText>
-          </ThemeTintAlt>
+        {/* Version comparison */}
+        <YStack mt="$12" px="$4">
           <VersionComparison />
         </YStack>
 

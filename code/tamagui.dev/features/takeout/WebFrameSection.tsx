@@ -1,25 +1,23 @@
-import type React from 'react'
 import { Image } from '@tamagui/image'
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Dot } from '@tamagui/lucide-icons'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import type React from 'react'
 import {
+  composeRefs,
   H3,
   Paragraph,
   SizableText,
   Theme,
+  useThemeName,
   XStack,
   YStack,
-  composeRefs,
-  styled,
-  useThemeName,
 } from 'tamagui'
 import { useHoverGlow } from '~/components/HoverGlow'
-import { Link } from '~/components/Link'
 import {
   useScrollProgress,
-  WEB_FRAME_SCROLL_START,
   WEB_FRAME_SCROLL_END,
+  WEB_FRAME_SCROLL_START,
 } from './useScrollProgress'
 
 const pointsCards = [
@@ -84,17 +82,6 @@ const pointsCards = [
     ],
   },
 ]
-
-const CodeInline = styled(Paragraph, {
-  tag: 'code',
-  fontFamily: '$mono',
-  color: '$color12',
-  bg: 'color-mix(in srgb, var(--color8) 50%, transparent 50%)' as any,
-  cursor: 'inherit',
-  rounded: '$3',
-  fontSize: '85%' as any,
-  p: '$1.5',
-})
 
 const Point = ({
   children,
@@ -196,9 +183,8 @@ export const WebFrameSection = () => {
   const isDark = useThemeName().startsWith('dark')
   const scrollProgress = useScrollProgress(WEB_FRAME_SCROLL_START, WEB_FRAME_SCROLL_END)
 
+  // Simplified animation - only opacity for better performance
   const opacity = scrollProgress
-  const y = 40 * (1 - scrollProgress)
-  const scale = 0.97 + 0.03 * scrollProgress
 
   return (
     <YStack
@@ -207,9 +193,7 @@ export const WebFrameSection = () => {
       maxW={1200}
       mx="auto"
       opacity={opacity}
-      y={y}
-      scale={scale}
-      className="ease-out ms500 all"
+      className="ease-out ms300 opacity"
     >
       <YStack position="relative" width="100%">
         <XStack
@@ -255,49 +239,6 @@ export const WebFrameSection = () => {
           p="$6"
           gap="$8"
         >
-          <YStack gap="$5" maxW={800} mx="auto">
-            <ThemeTintAlt>
-              <Paragraph
-                className="text-wrap-balance"
-                size="$6"
-                $sm={{ size: '$5' }}
-                text="center"
-              >
-                Takeout is a full-stack, cross-platform starter kit for building modern
-                web and mobile apps with React Native. It funds the OSS development of
-                Tamagui.
-              </Paragraph>
-
-              <Paragraph
-                className="text-wrap-balance"
-                size="$5"
-                $sm={{ size: '$4' }}
-                text="center"
-                color="$color11"
-              >
-                Built on{' '}
-                <Link href="https://onestack.dev" target="_blank">
-                  One
-                </Link>{' '}
-                for universal routing,{' '}
-                <Link href="https://zero.rocicorp.dev" target="_blank">
-                  Zero
-                </Link>{' '}
-                for real-time sync, and{' '}
-                <Link href="https://better-auth.com" target="_blank">
-                  Better Auth
-                </Link>{' '}
-                for authentication. Deploy with a single command using Uncloud or SST.
-                Includes <CodeInline>bun tko</CodeInline> CLI with built-in docs and
-                scripts.
-              </Paragraph>
-            </ThemeTintAlt>
-          </YStack>
-
-          <ThemeTintAlt>
-            <YStack height={1} bg="$color5" opacity={0.3} mx="$4" />
-          </ThemeTintAlt>
-
           <YStack items="center" gap="$6">
             <ThemeTintAlt>
               <SizableText

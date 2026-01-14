@@ -1,6 +1,7 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { H1, YStack } from 'tamagui'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
-import { H1, Theme, YStack } from 'tamagui'
+import { isSafari } from './helpers'
 
 export const TAKEOUT = ({ fontSize = 260, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
@@ -52,7 +53,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
         </ThemeTintAlt>
 
-        {!disableMotion && (
+        {!disableMotion && !isSafari() && (
           <>
             {/* main color slices */}
             <ThemeTint>
@@ -69,7 +70,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
             <ThemeTintAlt>
               <TAKEOUT
                 color="$color7"
-                className="clip-slice mix-blend slice-alt"
+                className="clip-slice mix-blend"
                 position="absolute"
                 opacity={1}
                 z={1002}
