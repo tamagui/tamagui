@@ -49,3 +49,4 @@ code/studio/types/**
 
 .expo
 .vite-inspect
+.claude/
