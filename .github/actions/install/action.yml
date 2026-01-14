@@ -53,3 +53,8 @@ runs:
     - name: Build JS
       shell: bash
       run: ${{ inputs.workspace-focus && format('bunx turbo run build --filter={0}... -- --skip-types', inputs.workspace-focus) || 'bun run build:js'}}
+
+    - name: Re-link workspace bins
+      shell: bash
+      # Re-run install to ensure bin symlinks are created for workspace packages after build
+      run: bun install
