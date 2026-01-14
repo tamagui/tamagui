@@ -1535,53 +1535,33 @@ const animatableDefaults = {
 
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
 
-// v2: RN-specific props that are removed - use web-standard props instead
-const removedProps = {
-  nativeID: 1,
-  accessible: 1,
-  focusable: 1,
-  selectable: 1,
-  accessibilityLabel: 1,
-  accessibilityRole: 1,
-  accessibilityHint: 1,
-  accessibilityState: 1,
-  accessibilityValue: 1,
-  accessibilityElementsHidden: 1,
-  accessibilityViewIsModal: 1,
-  accessibilityLiveRegion: 1,
-  accessibilityLabelledBy: 1,
-  accessibilityDescribedBy: 1,
-  accessibilityActions: 1,
-  accessibilityLanguage: 1,
+// v2: RN-specific props removed - use web-standard props instead
+const removedProps: Record<string, string> = {
+  nativeID: 'id',
+  accessible: 'tabIndex={0}',
+  focusable: 'tabIndex',
+  selectable: 'userSelect',
+  accessibilityLabel: 'aria-label',
+  accessibilityRole: 'role',
+  accessibilityHint: 'aria-describedby',
+  accessibilityState: 'aria-disabled, aria-checked, etc',
+  accessibilityValue: 'aria-valuemin, aria-valuemax, etc',
+  accessibilityElementsHidden: 'aria-hidden',
+  accessibilityViewIsModal: 'aria-modal',
+  accessibilityLiveRegion: 'aria-live',
+  accessibilityLabelledBy: 'aria-labelledby',
+  accessibilityDescribedBy: 'aria-describedby',
+  accessibilityActions: 'onClick handlers',
+  accessibilityLanguage: 'lang',
 }
 
-// Dev-only: warning for removed props (tree-shaken in production)
-let warnRemovedProp = (_prop: string) => {}
-if (process.env.NODE_ENV === 'development') {
-  const removedPropsReplacements: Record<string, string> = {
-    nativeID: 'id',
-    accessible: 'tabIndex={0}',
-    focusable: 'tabIndex',
-    selectable: 'userSelect',
-    accessibilityLabel: 'aria-label',
-    accessibilityRole: 'role',
-    accessibilityHint: 'aria-describedby',
-    accessibilityState: 'aria-disabled, aria-checked, etc',
-    accessibilityValue: 'aria-valuemin, aria-valuemax, etc',
-    accessibilityElementsHidden: 'aria-hidden',
-    accessibilityViewIsModal: 'aria-modal',
-    accessibilityLiveRegion: 'aria-live',
-    accessibilityLabelledBy: 'aria-labelledby',
-    accessibilityDescribedBy: 'aria-describedby',
-    accessibilityActions: 'onClick handlers',
-    accessibilityLanguage: 'lang',
-  }
-  const warnedProps = new Set<string>()
-  warnRemovedProp = (prop: string) => {
-    if (warnedProps.has(prop)) return
-    warnedProps.add(prop)
+const warnedRemovedProps = new Set<string>()
+function warnRemovedProp(prop: string) {
+  if (process.env.NODE_ENV === 'development') {
+    if (warnedRemovedProps.has(prop)) return
+    warnedRemovedProps.add(prop)
     console.warn(
-      `[tamagui] "${prop}" was removed in v2. Use "${removedPropsReplacements[prop]}" instead. See https://tamagui.dev/docs/intro/version-two`
+      `[tamagui] "${prop}" was removed in v2. Use "${removedProps[prop]}" instead. See https://tamagui.dev/docs/intro/version-two`
     )
   }
 }
