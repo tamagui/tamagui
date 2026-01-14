@@ -211,8 +211,12 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
       }),
       ...(isWeb && {
         onKeyDown: composeEventHandlers(onKeyDown, (event) => {
-          // According to WAI ARIA, Checkboxes don't activate on enter keypress
-          if (event.key === 'Enter') event.preventDefault()
+          // Allow Enter and Space to select the radio item
+          if (event.key === 'Enter' || event.key === ' ') {
+            if (!checked) {
+              onChange?.(value)
+            }
+          }
         }),
         onFocus: composeEventHandlers(onFocus, () => {
           /**
