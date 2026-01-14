@@ -31,7 +31,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     dismissOnSnapToBottom?: boolean;
     disableRemoveScroll?: boolean;
     forceRemoveScrollEnabled?: boolean;
-    animationConfig?: import("@tamagui/core").AnimatedNumberStrategy;
+    transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
     native?: "ios"[] | boolean;

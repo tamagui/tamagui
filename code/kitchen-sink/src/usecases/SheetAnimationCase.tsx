@@ -29,38 +29,38 @@ export function SheetAnimationCase() {
         label='transition="slow"'
       />
 
-      {/* Test 4: animationConfig prop only */}
+      {/* Test 4: transitionConfig prop only */}
       <SheetTest
-        testId="animationConfig-only"
-        animationConfig={{
+        testId="transitionConfig-only"
+        transitionConfig={{
           type: 'spring',
           damping: 30,
           stiffness: 400,
         }}
-        label="animationConfig only (fast spring)"
+        label="transitionConfig only (fast spring)"
       />
 
-      {/* Test 5: animationConfig prop only - slow */}
+      {/* Test 5: transitionConfig prop only - slow */}
       <SheetTest
-        testId="animationConfig-slow"
-        animationConfig={{
+        testId="transitionConfig-slow"
+        transitionConfig={{
           type: 'spring',
           damping: 20,
           stiffness: 30,
         }}
-        label="animationConfig only (slow spring)"
+        label="transitionConfig only (slow spring)"
       />
 
-      {/* Test 6: animation + animationConfig together */}
+      {/* Test 6: animation + transitionConfig together */}
       <SheetTest
         testId="animation-plus-config"
         transition="lazy"
-        animationConfig={{
+        transitionConfig={{
           type: 'spring',
           damping: 30,
           stiffness: 500,
         }}
-        label='transition="lazy" + animationConfig (override to fast)'
+        label='transition="lazy" + transitionConfig (override to fast)'
       />
     </YStack>
   )
@@ -69,7 +69,7 @@ export function SheetAnimationCase() {
 interface SheetTestProps {
   testId: string
   transition?: string
-  animationConfig?: {
+  transitionConfig?: {
     type: 'spring' | 'timing' | 'decay'
     damping?: number
     stiffness?: number
@@ -79,7 +79,7 @@ interface SheetTestProps {
   label: string
 }
 
-function SheetTest({ testId, transition, animationConfig, label }: SheetTestProps) {
+function SheetTest({ testId, transition, transitionConfig, label }: SheetTestProps) {
   const [open, setOpen] = useState(false)
   const [lastDuration, setLastDuration] = useState<number | null>(null)
   const startTimeRef = useRef<number>(0)
@@ -129,7 +129,7 @@ function SheetTest({ testId, transition, animationConfig, label }: SheetTestProp
         open={open}
         onOpenChange={handleOpenChange}
         transition={transition as any}
-        animationConfig={animationConfig as any}
+        transitionConfig={transitionConfig as any}
         modal
         dismissOnSnapToBottom
         snapPoints={[40]}
@@ -153,7 +153,7 @@ function SheetTest({ testId, transition, animationConfig, label }: SheetTestProp
             </Paragraph>
             <Paragraph size="$2" color="$color10">
               Transition: {transition || 'none'}, Config:{' '}
-              {animationConfig ? JSON.stringify(animationConfig) : 'none'}
+              {transitionConfig ? JSON.stringify(transitionConfig) : 'none'}
             </Paragraph>
             <Button
               onPress={() => setOpen(false)}

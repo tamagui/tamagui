@@ -25,7 +25,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     dismissOnSnapToBottom?: boolean;
     disableRemoveScroll?: boolean;
     forceRemoveScrollEnabled?: boolean;
-    animationConfig?: import("@tamagui/core").AnimatedNumberStrategy;
+    transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
     native?: "ios"[] | boolean;

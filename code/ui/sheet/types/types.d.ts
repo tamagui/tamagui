@@ -36,7 +36,7 @@ export type SheetProps = ScopedProps<{
      * Note: `disableRemoveScroll={true}` is equivalent to `forceRemoveScrollEnabled={false}`
      */
     forceRemoveScrollEnabled?: boolean;
-    animationConfig?: AnimatedNumberStrategy;
+    transitionConfig?: AnimatedNumberStrategy;
     /**
      * By default Sheet will prefer the open prop over a parent component that is
      * controlling it via Adapt. In general if you want to Adapt to a sheet, you'd

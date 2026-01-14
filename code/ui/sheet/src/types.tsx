@@ -45,7 +45,7 @@ export type SheetProps = ScopedProps<
      */
     forceRemoveScrollEnabled?: boolean
 
-    animationConfig?: AnimatedNumberStrategy
+    transitionConfig?: AnimatedNumberStrategy
 
     /**
      * By default Sheet will prefer the open prop over a parent component that is

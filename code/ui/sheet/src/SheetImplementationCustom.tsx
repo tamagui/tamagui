@@ -45,7 +45,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const {
       transition,
-      animationConfig: animationConfigProp,
+      transitionConfig: transitionConfigProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
@@ -85,10 +85,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       throw new Error(`Sheet reqiures an animation driver to be set`)
     }
 
-    const animationConfig = (() => {
-      // explicit animationConfig prop always takes precedence
-      if (animationConfigProp) {
-        return animationConfigProp
+    const transitionConfig = (() => {
+      // explicit transitionConfig prop always takes precedence
+      if (transitionConfigProp) {
+        return transitionConfigProp
       }
 
       const [animationProp, animationPropConfig] = !transition
@@ -209,7 +209,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       stopSpring()
       animatedNumber.setValue(toValue, {
         type: 'spring',
-        ...animationConfig,
+        ...transitionConfig,
       })
     })
 
