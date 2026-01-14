@@ -1,6 +1,6 @@
 import { Toast, useToastController, useToastState } from '@tamagui/toast'
 import React from 'react'
-import { Button, isWeb, Label, Switch, XStack, YStack } from 'tamagui'
+import { Button, Label, Switch, XStack, YStack } from 'tamagui'
 
 /**
  *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add:
@@ -30,11 +30,11 @@ const CurrentToast = () => {
       key={currentToast.id}
       duration={currentToast.duration}
       viewportName={currentToast.viewportName}
-      enterStyle={{ opacity: 0, scale: 0.95, y: -80 }}
-      exitStyle={{ opacity: 0, scale: 0.95, y: -80 }}
+      enterStyle={{ opacity: 0, scale: 0.95, y: 50 }}
+      exitStyle={{ opacity: 0, scale: 0.95, y: 50 }}
       opacity={1}
       scale={1}
-      y={-50}
+      y={0}
       transition="quicker"
       bg="$color2"
       boxShadow="0px 2px 4px rgba(0,0,0,0.12), 0px 8px 24px rgba(0,0,0,0.08)"
