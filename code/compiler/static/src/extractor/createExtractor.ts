@@ -1093,7 +1093,11 @@ export function createExtractor(
               return attr
             }
 
-            if (name.startsWith('data-')) {
+            if (
+              name.startsWith('data-') ||
+              name.startsWith('aria-') ||
+              validHTMLAttributes[name]
+            ) {
               return attr
             }
 
