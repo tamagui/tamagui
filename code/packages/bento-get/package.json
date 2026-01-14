@@ -57,7 +57,7 @@
     "octokit": "^4.0.2",
     "open": "^10.1.0",
     "pastel": "3.0.0",
-    "react": "npm:react@18.3.1",
+    "react": "*",
     "react-router-dom": "7.3.0",
     "swr": "^2.2.5",
     "type-fest": "4.37.0",
