@@ -141,33 +141,45 @@ describe('Web Alignment - Native Accessibility Mapping', () => {
     })
   })
 
-  describe('RN accessibility props should NOT work after migration', () => {
-    // These tests verify that after migration, passing RN-specific props
-    // will NOT work - users must use web props
+  describe('RN accessibility props are removed in v2', () => {
+    test('accessibilityLabel is ignored on native (removed in v2)', () => {
+      const result = getSplitStylesFor({
+        accessibilityLabel: 'Test label',
+      })
 
-    test.fails(
-      'accessibilityLabel should be ignored on native after migration',
-      () => {
-        const result = getSplitStylesFor({
-          accessibilityLabel: 'Test label',
-        })
+      // v2: accessibilityLabel is ignored - use aria-label instead
+      expect(result.viewProps.accessibilityLabel).toBeUndefined()
+      // aria-label should NOT be set from accessibilityLabel
+      expect(result.viewProps['aria-label']).toBeUndefined()
+    })
 
-        // After migration, accessibilityLabel should be ignored
-        // Users must use aria-label instead
-        expect(result.viewProps.accessibilityLabel).toBeUndefined()
-        expect(result.viewProps['aria-label']).toBeUndefined()
-      }
-    )
-
-    test.fails('accessibilityRole should be ignored on native after migration', () => {
+    test('accessibilityRole is ignored on native (removed in v2)', () => {
       const result = getSplitStylesFor({
         accessibilityRole: 'button',
       })
 
-      // After migration, accessibilityRole should be ignored
-      // Users must use role instead
+      // v2: accessibilityRole is ignored - use role instead
       expect(result.viewProps.accessibilityRole).toBeUndefined()
+      // role should NOT be set from accessibilityRole
       expect(result.viewProps.role).toBeUndefined()
+    })
+
+    test('accessibilityHint is ignored on native (removed in v2)', () => {
+      const result = getSplitStylesFor({
+        accessibilityHint: 'Test hint',
+      })
+
+      // v2: accessibilityHint is ignored - use aria-describedby instead
+      expect(result.viewProps.accessibilityHint).toBeUndefined()
+    })
+
+    test('accessibilityState is ignored on native (removed in v2)', () => {
+      const result = getSplitStylesFor({
+        accessibilityState: { checked: true },
+      })
+
+      // v2: accessibilityState is ignored - use aria-checked instead
+      expect(result.viewProps.accessibilityState).toBeUndefined()
     })
   })
 })
@@ -192,14 +204,13 @@ describe('Web Alignment - Native Focus Mapping', () => {
     })
   })
 
-  describe('RN focusable prop should NOT work after migration', () => {
-    test.fails('focusable should be ignored on native after migration', () => {
+  describe('RN focusable prop is removed in v2', () => {
+    test('focusable is ignored on native (removed in v2, use tabIndex)', () => {
       const result = getSplitStylesFor({
         focusable: true,
       })
 
-      // After migration, focusable should be ignored
-      // Users must use tabIndex instead
+      // v2: focusable is ignored - use tabIndex instead
       expect(result.viewProps.focusable).toBeUndefined()
       expect(result.viewProps.tabIndex).toBeUndefined()
     })

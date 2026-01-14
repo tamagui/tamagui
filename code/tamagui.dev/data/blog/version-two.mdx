@@ -72,6 +72,11 @@ couple slow ones.
 
 The breaking changes outside of deprecations are:
 
+- **React Native 0.83+ required** for native apps. This enables full support for
+  web-standard accessibility props.
+- Removed React Native-specific accessibility props (`accessibilityLabel`,
+  `accessibilityRole`, etc). Use web-standard `aria-*` and `role` props instead.
+- Removed `focusable` prop. Use `tabIndex` instead.
 - Default flex and position styles align with the latest React Native versions,
   but you can change settings to keep the legacy behavior.
 - Button and ListItem lose direct text style props, to gain performance.

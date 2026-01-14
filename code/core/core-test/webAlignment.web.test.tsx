@@ -140,80 +140,108 @@ describe('Web Alignment - Accessibility Props', () => {
     })
   })
 
-  describe('RN accessibility props should NOT work after migration', () => {
-    // These tests should FAIL now (RN props still work) and PASS after migration
+  describe('RN accessibility props are removed in v2', () => {
+    test('accessibilityLabel is NOT converted to aria-label (removed in v2)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityLabel: 'Test label',
+      })
 
-    test.fails(
-      'accessibilityLabel should NOT be converted to aria-label (removed in v2)',
-      () => {
-        const { viewProps } = simplifiedGetSplitStyles(Stack, {
-          accessibilityLabel: 'Test label',
-        })
+      // v2: This prop is ignored entirely - use aria-label instead
+      expect(viewProps['aria-label']).toBeUndefined()
+      expect(viewProps.accessibilityLabel).toBeUndefined()
+    })
 
-        // After migration, this prop should be ignored entirely
-        // viewProps should NOT have aria-label from accessibilityLabel
-        expect(viewProps['aria-label']).toBeUndefined()
-        expect(viewProps.accessibilityLabel).toBeUndefined()
-      }
-    )
-
-    test.fails('accessibilityRole should NOT be converted to role (removed in v2)', () => {
+    test('accessibilityRole is NOT converted to role (removed in v2)', () => {
       const { viewProps } = simplifiedGetSplitStyles(Stack, {
         accessibilityRole: 'button',
       })
 
-      // After migration, this prop should be ignored entirely
+      // v2: This prop is ignored entirely - use role instead
       expect(viewProps.role).toBeUndefined()
       expect(viewProps.accessibilityRole).toBeUndefined()
     })
 
-    test.fails(
-      'accessibilityLabelledBy should NOT be converted to aria-labelledby (removed in v2)',
-      () => {
-        const { viewProps } = simplifiedGetSplitStyles(Stack, {
-          accessibilityLabelledBy: 'label-id',
-        })
+    test('accessibilityLabelledBy is NOT converted to aria-labelledby (removed in v2)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityLabelledBy: 'label-id',
+      })
 
-        expect(viewProps['aria-labelledby']).toBeUndefined()
-        expect(viewProps.accessibilityLabelledBy).toBeUndefined()
-      }
-    )
+      // v2: This prop is ignored entirely - use aria-labelledby instead
+      expect(viewProps['aria-labelledby']).toBeUndefined()
+      expect(viewProps.accessibilityLabelledBy).toBeUndefined()
+    })
 
-    test.fails(
-      'accessibilityHint should NOT be converted to aria-describedby (removed in v2)',
-      () => {
-        const { viewProps } = simplifiedGetSplitStyles(Stack, {
-          accessibilityHint: 'Test hint',
-        })
+    test('accessibilityHint is NOT converted (removed in v2)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityHint: 'Test hint',
+      })
 
-        expect(viewProps['aria-describedby']).toBeUndefined()
-        expect(viewProps.accessibilityHint).toBeUndefined()
-      }
-    )
+      // v2: This prop is ignored entirely - use aria-describedby instead
+      expect(viewProps['aria-describedby']).toBeUndefined()
+      expect(viewProps.accessibilityHint).toBeUndefined()
+    })
 
-    // Note: accessibilityElementsHidden is iOS-only and not currently mapped to aria-hidden
-    // This is different from the other accessibility props
-    test(
-      'accessibilityElementsHidden is already not converted (iOS-only prop)',
-      () => {
-        const { viewProps } = simplifiedGetSplitStyles(Stack, {
-          accessibilityElementsHidden: true,
-        })
+    test('accessibilityElementsHidden is NOT converted (removed in v2)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityElementsHidden: true,
+      })
 
-        // This prop is already not converted because it's iOS-specific
-        // After migration, we want to ensure it stays that way (users should use aria-hidden)
-        expect(viewProps['aria-hidden']).toBeUndefined()
-      }
-    )
+      // v2: This prop is ignored entirely - use aria-hidden instead
+      expect(viewProps['aria-hidden']).toBeUndefined()
+      expect(viewProps.accessibilityElementsHidden).toBeUndefined()
+    })
 
-    test.fails('nativeID should NOT work (removed in v2, use id instead)', () => {
+    test('accessibilityLiveRegion is NOT converted (removed in v2)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityLiveRegion: 'polite',
+      })
+
+      // v2: This prop is ignored entirely - use aria-live instead
+      expect(viewProps['aria-live']).toBeUndefined()
+      expect(viewProps.accessibilityLiveRegion).toBeUndefined()
+    })
+
+    test('accessibilityState is NOT converted (removed in v2)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityState: { checked: true, disabled: true },
+      })
+
+      // v2: This prop is ignored entirely - use aria-checked, aria-disabled instead
+      expect(viewProps['aria-checked']).toBeUndefined()
+      expect(viewProps['aria-disabled']).toBeUndefined()
+      expect(viewProps.accessibilityState).toBeUndefined()
+    })
+
+    test('accessibilityValue is NOT converted (removed in v2)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityValue: { min: 0, max: 100, now: 50 },
+      })
+
+      // v2: This prop is ignored entirely - use aria-valuemin, aria-valuemax, aria-valuenow instead
+      expect(viewProps['aria-valuemin']).toBeUndefined()
+      expect(viewProps['aria-valuemax']).toBeUndefined()
+      expect(viewProps['aria-valuenow']).toBeUndefined()
+      expect(viewProps.accessibilityValue).toBeUndefined()
+    })
+
+    test('nativeID is NOT converted (removed in v2, use id instead)', () => {
       const { viewProps } = simplifiedGetSplitStyles(Stack, {
         nativeID: 'my-element',
       })
 
-      // nativeID should be ignored, use id instead
+      // v2: nativeID is ignored entirely - use id instead
       expect(viewProps.id).toBeUndefined()
       expect(viewProps.nativeID).toBeUndefined()
+    })
+
+    test('accessible is NOT converted (removed in v2, use tabIndex instead)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessible: true,
+      })
+
+      // v2: accessible is ignored entirely - use tabIndex={0} instead
+      expect(viewProps.tabIndex).toBeUndefined()
+      expect(viewProps.accessible).toBeUndefined()
     })
   })
 })
@@ -245,8 +273,8 @@ describe('Web Alignment - Focus Props', () => {
     })
   })
 
-  describe('RN focus props should NOT work after migration', () => {
-    test.fails('focusable should NOT work (removed in v2, use tabIndex instead)', () => {
+  describe('RN focus props are removed in v2', () => {
+    test('focusable is NOT converted (removed in v2, use tabIndex instead)', () => {
       const { viewProps } = simplifiedGetSplitStyles(
         Stack,
         {
@@ -255,7 +283,7 @@ describe('Web Alignment - Focus Props', () => {
         { tag: 'div' }
       )
 
-      // focusable should be ignored entirely
+      // v2: focusable is ignored entirely - use tabIndex instead
       expect(viewProps.tabIndex).toBeUndefined()
       expect(viewProps.focusable).toBeUndefined()
     })
