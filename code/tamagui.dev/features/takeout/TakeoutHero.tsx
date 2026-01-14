@@ -615,25 +615,13 @@ export const TakeoutHero = () => {
           target="_blank"
           pointerEvents="auto"
         >
-          <Button
-            aria-label="View Documentation"
-            cursor="pointer"
-            transition="quick"
-            hoverStyle={{ scale: 1.05, opacity: 0.9 }}
-            pressStyle={{ scale: 0.98 }}
-          >
+          <Button aria-label="View Documentation" cursor="pointer">
             <Button.Text fontFamily="$silkscreen">Docs</Button.Text>
           </Button>
         </Link>
 
         <Link href="https://takeout.tamagui.dev" target="_blank" pointerEvents="auto">
-          <Button
-            aria-label="View Documentation"
-            cursor="pointer"
-            transition="quick"
-            hoverStyle={{ scale: 1.05, opacity: 0.9 }}
-            pressStyle={{ scale: 0.98 }}
-          >
+          <Button aria-label="View Documentation" cursor="pointer">
             <Button.Text fontFamily="$silkscreen">Demo Website</Button.Text>
           </Button>
         </Link>
