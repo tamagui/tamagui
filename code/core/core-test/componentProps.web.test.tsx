@@ -11,7 +11,7 @@ describe('animation props', () => {
     const tree = render(
       <TamaguiProvider config={config} defaultTheme="light">
         <View
-          nativeID="test-native-id"
+          id="test-native-id"
           transition="quick"
           x={0}
           backgroundColor="red"
