@@ -219,6 +219,7 @@ export const stylePropsView = {
   ...(isAndroid ? { elevationAndroid: true } : {}),
 
   boxShadow: true,
+  border: true,
   filter: true,
   // RN 0.76/0.77+ style props (New Architecture)
   boxSizing: true,
