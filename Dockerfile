@@ -1,4 +1,4 @@
-FROM node:24.3
+FROM oven/bun:1.2.22
 
 ARG CF_API_KEY
 ARG CF_EMAIL
@@ -64,17 +64,14 @@ WORKDIR /root/tamagui
 # Set REQUIRE_BENTO based on whether bento was cloned
 RUN export $(cat /tmp/bento_status)
 
-RUN corepack enable
-RUN corepack prepare yarn@4.5.0 --activate
-
 # First install without bento deps
-RUN yarn install --immutable
+RUN bun install
 
 # Merge bento dependencies into root package.json and reinstall
 RUN node scripts/with-bento.mjs
-RUN yarn build:js
-RUN yarn build:app
+RUN bun run build:js
+RUN bun run build:app
 
 EXPOSE 3000
 
-CMD ["yarn", "docker:serve"]
+CMD ["bun", "run", "docker:serve"]

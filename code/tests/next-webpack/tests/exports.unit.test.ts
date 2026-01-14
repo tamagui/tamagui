@@ -8,7 +8,7 @@ const APP_SCREEN_PATH = join(ROOT_DIR, 'packages/app/features/home/screen.tsx')
 
 function resetAppPackage() {
   try {
-    execSync(`yarn test:clean`, {
+    execSync(`bun run test:clean`, {
       cwd: ROOT_DIR,
       stdio: 'pipe',
     })

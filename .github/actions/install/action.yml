@@ -1,6 +1,11 @@
 name: 'Install'
 description: 'Install and pre-build'
 
+inputs:
+  workspace-focus:
+    description: 'Package name to focus build on (optional)'
+    required: false
+
 runs:
   using: composite
   steps:
@@ -10,14 +15,41 @@ runs:
         node-version-file: '.node-version'
         registry-url: 'https://registry.npmjs.org'
 
-    - name: install yarn
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version-file: 'package.json'
+
+    - name: Get Home Dir Path
+      id: get-home-dir-path
       shell: bash
-      run: npm i yarn -g
+      run: |
+        echo "Home dir path: $HOME"
+        echo "path=$HOME" >> $GITHUB_OUTPUT
+
+    - name: Cache Bun
+      uses: actions/cache@v4
+      env:
+        cache-name: bun_cache
+      with:
+        path: ~/.bun/install/cache
+        key: ${{ runner.os }}-${{ env.cache-name }}${{ inputs.workspace-focus && format('-{0}', inputs.workspace-focus) || '' }}-${{ hashFiles('bun.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ env.cache-name }}${{ inputs.workspace-focus && format('-{0}', inputs.workspace-focus) || '' }}-
 
     - name: Install Dependencies
       shell: bash
-      run: yarn install
+      # Always do full install to ensure devDependencies of workspace packages are available for builds
+      run: bun install
+
+    - name: Install Playwright
+      shell: bash
+      run: bunx playwright install --with-deps
+
+    - name: Clean Build
+      shell: bash
+      run: ${{ inputs.workspace-focus && format('bunx turbo run clean:build --filter={0}...', inputs.workspace-focus) || 'bun run clean:build'}}
 
     - name: Build JS
       shell: bash
-      run: yarn build:js
+      run: ${{ inputs.workspace-focus && format('bunx turbo run build --filter={0}... -- --skip-types', inputs.workspace-focus) || 'bun run build:js'}}

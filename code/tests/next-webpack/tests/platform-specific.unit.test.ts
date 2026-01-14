@@ -12,7 +12,7 @@ process.on('beforeExit', () => {
 
 function resetFixtures() {
   try {
-    execSync(`yarn test:clean`, {
+    execSync(`bun run test:clean`, {
       cwd: ROOT_DIR,
       stdio: 'inherit',
     })

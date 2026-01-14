@@ -66,10 +66,10 @@ jobs:
       - name: Calculate Pre-Fingerprint Hash
         id: calculate-pre-fingerprint
         env:
-          # A hash that represents yarn.lock + app.json - if these haven't changed,
-          # the fingerprint likely hasn't changed either. This lets us skip yarn install
+          # A hash that represents bun.lock + app.json - if these haven't changed,
+          # the fingerprint likely hasn't changed either. This lets us skip bun install
           # and prebuild if we have a cached fingerprint for this pre-fingerprint hash.
-          PRE_FINGERPRINT_HASH: ${{ hashFiles('yarn.lock', format('{0}/app.json', env.test_container_app_path), 'packages/vxrn/expo-plugin.cjs') }}
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', format('{0}/app.json', env.test_container_app_path), 'packages/vxrn/expo-plugin.cjs') }}
         run: |
           if [ -z "$PRE_FINGERPRINT_HASH" ]; then
             echo '[ERROR] Failed to calculate pre-fingerprint hash.'

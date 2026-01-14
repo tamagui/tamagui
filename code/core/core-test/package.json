@@ -10,11 +10,11 @@
   },
   "scripts": {
     "test:run": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts",
-    "test:web": "TAMAGUI_TARGET=web yarn test:run **/*.web.test.tsx",
-    "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native yarn test:run **/*.ios.test.tsx",
-    "test:native": "TAMAGUI_TARGET=native yarn test:run **/*.native.test.tsx",
-    "test": "yarn test:native && yarn test:web",
-    "test:update": "yarn test:native --update && yarn test:web --update"
+    "test:web": "TAMAGUI_TARGET=web bun run test:run **/*.web.test.tsx",
+    "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native bun run test:run **/*.ios.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native bun run test:run **/*.native.test.tsx",
+    "test": "bun run test:native && bun run test:web",
+    "test:update": "bun run test:native --update && bun run test:web --update"
   },
   "devDependencies": {
     "@tamagui/core": "workspace:*",
