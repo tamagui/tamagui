@@ -1,6 +1,5 @@
 export declare const validHTMLAttributes: {
     autocomplete: boolean;
-    border: boolean;
     style: boolean;
     tabIndex: boolean;
     contenteditable: boolean;
