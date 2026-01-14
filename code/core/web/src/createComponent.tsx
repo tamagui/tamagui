@@ -421,7 +421,9 @@ export function createComponent<
         const animations = config.animations
         // If animations is an object with named drivers (has 'default' key)
         if ('default' in animations) {
-          return (animations as Record<string, any>)[props.animatedBy] ?? animations.default
+          return (
+            (animations as Record<string, any>)[props.animatedBy] ?? animations.default
+          )
         }
         // Single driver config - only 'default' makes sense
         return props.animatedBy === 'default' ? animations : null
