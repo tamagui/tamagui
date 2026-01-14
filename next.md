@@ -1,9 +1,22 @@
 v2:
 
-- boxShadow, border, background, boxShadow props with web style
-    - deprecate shadow props separated?
-    - for exmaple boxShadow="0 0 10px $red" should work web and native and compiler
-    - research rn shorthand supported and update jsdoc/types etc
+See `docs/web-alignment-plan.md` for the full web props migration plan.
+
+**DONE (already in v2):**
+- ✅ `transition` prop (not `animation`)
+- ✅ `defaultPosition: 'static'`
+- ✅ `box-sizing: border-box` default
+
+**Web Alignment (breaking changes):**
+- Remove RN accessibility props entirely, use only `aria-*` and `role`
+- Remove `focusable`, use only `tabIndex`
+- Remove `onPress/onPressIn/onPressOut`, use only `onClick/onPointerDown/onPointerUp`
+- Remove `source`/`resizeMode` from Image, use only `src`/`objectFit`
+- Remove `onChangeText` from Input, use only `onChange`
+- boxShadow, border, background props with web style
+    - remove shadow* props (shadowColor, shadowOffset, etc)
+    - boxShadow="0 0 10px $red" should work web and native and compiler
+    - native runtime parses boxShadow string to individual props
 
 - <Button render={} /> i started a pr we should try and move from tag => render fully, but render can take string as a simple option
 
@@ -163,9 +176,6 @@ animations improvements:
 
 v3:
   - aim for fast follow
-  - if not in 2, animation => transition
-  - default box-sizing to border-box
-  - default position: static
   - remove component themes, instead theme="surface2" etc
   - remove `name` from styled()
   - remove inverse in favor of sub-themes that can inverse already ssr safe
@@ -181,7 +191,6 @@ v3:
 - todo:
   - remove $true tokens and concept
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
-  - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
   - remove componentName, just allow setting default theme: ""
