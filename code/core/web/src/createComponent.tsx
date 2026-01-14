@@ -1309,7 +1309,8 @@ export function createComponent<
         delayLongPress: viewProps.delayLongPress,
         delayPressIn: viewProps.delayPressIn,
         delayPressOut: viewProps.delayPressOut,
-        focusable: viewProps.focusable ?? true,
+        // v2: derive focusable from tabIndex (RN 0.83+ supports tabIndex natively)
+        focusable: viewProps.tabIndex !== -1,
         minPressDuration: 0,
       })
     }

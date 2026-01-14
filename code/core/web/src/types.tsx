@@ -1782,7 +1782,7 @@ interface ExtraStyleProps {
    */
   outlineWidth?: SpaceValue
   /**
-   * On native, maps to the `selectable` prop on Text (userSelect !== 'none')
+   * Controls text selection. On native, internally converts to selectable={userSelect !== 'none'}
    */
   userSelect?: Properties['userSelect']
   /**
