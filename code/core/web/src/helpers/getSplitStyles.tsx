@@ -348,10 +348,9 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // v2: RN-specific props are removed - use web-standard props instead
-    // This check runs for both web and native
-    if (keyInit in deprecatedProps) {
+    if (keyInit in removedProps) {
       if (process.env.NODE_ENV === 'development') {
-        warnDeprecatedProp(keyInit)
+        warnRemovedProp(keyInit)
       }
       continue
     }
@@ -1538,7 +1537,7 @@ const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
 
 // v2: RN-specific props that are removed - use web-standard props instead
 // Using object for O(1) lookup instead of Set for smaller bundle
-const deprecatedProps: Record<string, string> = {
+const removedProps: Record<string, string> = {
   nativeID: 'id',
   accessible: 'tabIndex={0}',
   focusable: 'tabIndex',
@@ -1557,13 +1556,13 @@ const deprecatedProps: Record<string, string> = {
   accessibilityLanguage: 'lang',
 }
 
-const warnedProps = new Set<string>()
-function warnDeprecatedProp(prop: string) {
-  if (warnedProps.has(prop)) return
-  warnedProps.add(prop)
-  const replacement = deprecatedProps[prop]
+const warnedRemovedProps = new Set<string>()
+function warnRemovedProp(prop: string) {
+  if (warnedRemovedProps.has(prop)) return
+  warnedRemovedProps.add(prop)
+  const replacement = removedProps[prop]
   console.warn(
-    `[tamagui] "${prop}" is deprecated in v2. Use "${replacement}" instead. See https://tamagui.dev/docs/intro/version-two`
+    `[tamagui] "${prop}" was removed in v2. Use "${replacement}" instead. See https://tamagui.dev/docs/intro/version-two`
   )
 }
 
