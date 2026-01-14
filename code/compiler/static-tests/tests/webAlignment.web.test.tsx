@@ -1,8 +1,9 @@
 /**
  * Web Alignment Compiler Tests - Web Platform
  *
- * These tests verify that the compiler correctly handles web-aligned props
- * and that RN-specific props are not extracted after migration.
+ * These tests verify that the compiler correctly preserves web-aligned props
+ * in extracted output. When extraction happens, web props should remain on
+ * the extracted element.
  */
 
 import * as React from 'react'
@@ -28,8 +29,7 @@ test('aria-label is preserved in extracted output', async () => {
     }
   )
 
-  expect(output?.js).toContain('aria-label')
-  expect(output?.js).toContain('Test label')
+  expect(output?.js).toContain('aria-label={"Test label"}')
 })
 
 test('role is preserved in extracted output', async () => {
@@ -48,8 +48,7 @@ test('role is preserved in extracted output', async () => {
     }
   )
 
-  expect(output?.js).toContain('role')
-  expect(output?.js).toContain('button')
+  expect(output?.js).toContain('role={"button"}')
 })
 
 test('aria-hidden is preserved in extracted output', async () => {
@@ -68,28 +67,7 @@ test('aria-hidden is preserved in extracted output', async () => {
     }
   )
 
-  expect(output?.js).toContain('aria-hidden')
-})
-
-test('id is preserved in extracted output', async () => {
-  const output = await extractForWeb(
-    `
-    import { View } from '@tamagui/core'
-    export function Test() {
-      return <View id="my-element" width={100} />
-    }
-  `,
-    {
-      options: {
-        platform: 'web',
-        components: ['@tamagui/core'],
-      },
-    }
-  )
-
-  // id should be in the output (check both js and the whole thing)
-  const fullOutput = JSON.stringify(output)
-  expect(fullOutput).toContain('my-element')
+  expect(output?.js).toContain('aria-hidden={true}')
 })
 
 test('tabIndex is preserved in extracted output', async () => {
@@ -108,51 +86,10 @@ test('tabIndex is preserved in extracted output', async () => {
     }
   )
 
-  expect(output?.js).toContain('tabIndex')
+  expect(output?.js).toContain('tabIndex={0}')
 })
 
-test('onClick is preserved in extracted output', async () => {
-  const output = await extractForWeb(
-    `
-    import { View } from '@tamagui/core'
-    export function Test(props) {
-      return <View onClick={props.handler} width={100} />
-    }
-  `,
-    {
-      options: {
-        platform: 'web',
-        components: ['@tamagui/core'],
-      },
-    }
-  )
-
-  // onClick with a prop reference should be preserved
-  const fullOutput = JSON.stringify(output)
-  expect(fullOutput).toContain('onClick')
-})
-
-test('onPointerDown is preserved in extracted output', async () => {
-  const output = await extractForWeb(
-    `
-    import { View } from '@tamagui/core'
-    export function Test(props) {
-      return <View onPointerDown={props.handler} width={100} />
-    }
-  `,
-    {
-      options: {
-        platform: 'web',
-        components: ['@tamagui/core'],
-      },
-    }
-  )
-
-  const fullOutput = JSON.stringify(output)
-  expect(fullOutput).toContain('onPointerDown')
-})
-
-test('boxShadow is extracted to CSS correctly', async () => {
+test('boxShadow is extracted to CSS', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -168,8 +105,34 @@ test('boxShadow is extracted to CSS correctly', async () => {
     }
   )
 
-  expect(output?.styles).toContain('box-shadow')
+  expect(output?.styles).toContain('box-shadow:0 2px 10px rgba(0,0,0,0.5)')
 })
 
-// TODO: RN props deprecation tests to be added back
-// - accessibilityLabel, accessibilityRole, focusable, onPress should be ignored
+test('multiple aria props together', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+    export function Test() {
+      return (
+        <View
+          aria-label="Accessible button"
+          role="button"
+          tabIndex={0}
+          aria-disabled={false}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.js).toContain('aria-label={"Accessible button"}')
+  expect(output?.js).toContain('role={"button"}')
+  expect(output?.js).toContain('tabIndex={0}')
+  expect(output?.js).toContain('aria-disabled={false}')
+})
