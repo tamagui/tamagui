@@ -26,10 +26,6 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
-  "overrides": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
-  },
   "scripts": {
     "build:app": "./scripts/ci-build-app.sh",
     "build:force": "bun run clean:build && bun run build -- --force",
@@ -150,9 +146,6 @@
     "@playwright/test": "^1.49.1",
     "@take-out/cli": "^0.0.40",
     "@testing-library/dom": "^10.4.0",
-    "@types/node": "^22.15.21",
-    "@types/react": "^19.1.4",
-    "@types/react-dom": "^19.1.5",
     "dotenv-cli": "^7.4.2",
     "esbuild": "^0.25.11",
     "esbuild-register": "^3.6.0",
@@ -162,8 +155,6 @@
     "npm-run-all": "^4.1.5",
     "p-map": "^7.0.3",
     "prompts": "2.1.0",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
     "react-native-screens": "~4.16.0",
     "tsx": "^4.20.6",
     "turbo": "^2.1.3",
