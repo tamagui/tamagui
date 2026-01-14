@@ -14,6 +14,8 @@
     "name": "Nate Wienert"
   },
   "dependencies": {
+    "@tamagui/fake-react-native": "workspace:*",
+    "@tamagui/react-native-web-lite": "workspace:*",
     "vite": "^7.1.12"
   },
   "devDependencies": {
