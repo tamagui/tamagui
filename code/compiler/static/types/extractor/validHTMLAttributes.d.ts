@@ -1,4 +1,6 @@
 export declare const validHTMLAttributes: {
+    fill: boolean;
+    stroke: boolean;
     autocomplete: boolean;
     style: boolean;
     tabIndex: boolean;
