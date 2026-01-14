@@ -6,17 +6,18 @@ See `docs/web-alignment-plan.md` for the full web props migration plan.
 - ✅ `transition` prop (not `animation`)
 - ✅ `defaultPosition: 'static'`
 - ✅ `box-sizing: border-box` default
+- ✅ Image component (new web-aligned with `src`, `objectFit`)
+- ✅ `inputMode`, `enterKeyHint` for Input
 
 **Web Alignment (breaking changes):**
 - Remove RN accessibility props entirely, use only `aria-*` and `role`
 - Remove `focusable`, use only `tabIndex`
 - Remove `onPress/onPressIn/onPressOut`, use only `onClick/onPointerDown/onPointerUp`
-- Remove `source`/`resizeMode` from Image, use only `src`/`objectFit`
-- Remove `onChangeText` from Input, use only `onChange`
-- boxShadow, border, background props with web style
-    - remove shadow* props (shadowColor, shadowOffset, etc)
-    - boxShadow="0 0 10px $red" should work web and native and compiler
-    - native runtime parses boxShadow string to individual props
+- Remove legacy shadow props (`shadowColor`, `shadowOffset`, etc), use `boxShadow`
+  - RN 0.76+ natively supports `boxShadow` (New Architecture)
+  - Supports string, object, and array (multiple shadows) syntax
+  - Add $token support in boxShadow strings: `boxShadow="0 2px 10px $shadowColor"`
+- Keep `onChangeText` as exception (ergonomic for RN devs)
 
 - <Button render={} /> i started a pr we should try and move from tag => render fully, but render can take string as a simple option
 

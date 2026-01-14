@@ -10,15 +10,14 @@ This aligns with:
 - [React Native RFC #496](https://github.com/react-native-community/discussions-and-proposals/pull/496) - Reduce API fragmentation
 - [React Strict DOM](https://facebook.github.io/react-strict-dom/) - Meta's future direction for cross-platform React
 - React Native 0.71+ which added web-aligned props (`aria-*`, `role`, `id`, etc.)
+- React Native 0.76+ which added `boxShadow` and `filter` style props
 
 ## Already Complete in v2
 
 - ✅ `transition` prop (not `animation`)
 - ✅ `defaultPosition: 'static'` (web standard)
 - ✅ `box-sizing: border-box` default
-- ✅ `src` for Image (with `source` deprecated)
-- ✅ `objectFit` for Image (with `resizeMode` deprecated)
-- ✅ `onChange` for Input (with `onChangeText` deprecated)
+- ✅ Image component (new web-aligned component with `src`, `objectFit`)
 - ✅ `inputMode` for Input
 - ✅ `enterKeyHint` for Input
 
@@ -78,50 +77,60 @@ This aligns with:
 - Web runtime passes through directly
 - `onLongPress` may need a custom hook/helper for web since `onContextMenu` isn't equivalent
 
-### 4. Image Props
+### 4. Input Props
 
 | Removed (RN) | Use Instead (Web) |
 |--------------|-------------------|
-| `source` | `src` |
-| `resizeMode` | `objectFit` |
-
-**Already deprecated, now remove entirely.**
-
-### 5. Input Props
-
-| Removed (RN) | Use Instead (Web) |
-|--------------|-------------------|
-| `onChangeText` | `onChange` |
 | `keyboardType` | `inputMode` / `type` |
 | `returnKeyType` | `enterKeyHint` |
 | `editable` | `readOnly` (inverted) |
 
-**Already deprecated, now remove entirely.**
+**Exception:** `onChangeText` is kept for convenience (common RN pattern).
 
-### 6. Shadow Props → boxShadow
+### 5. Shadow Props → boxShadow
 
-| Removed (RN) | Use Instead (Web) |
-|--------------|-------------------|
+React Native 0.76+ natively supports `boxShadow` with New Architecture. This is not a custom Tamagui feature - it's native RN.
+
+| Removed (RN) | Use Instead (Web/RN 0.76+) |
+|--------------|----------------------------|
 | `shadowColor` | `boxShadow` |
 | `shadowOffset` | `boxShadow` |
 | `shadowOpacity` | `boxShadow` |
 | `shadowRadius` | `boxShadow` |
 | `elevation` (Android) | `boxShadow` |
 
-**New syntax:**
+**Native RN 0.76+ syntax:**
 ```tsx
-// Web-style string with token support
-<View boxShadow="0 2px 10px $shadowColor" />
+// String format (CSS-like)
+boxShadow: '5 5 5 0 rgba(255, 0, 0, 0.5)'
 
-// Or object style (parsed to string)
-<View boxShadow={{ x: 0, y: 2, blur: 10, color: '$shadowColor' }} />
+// Object format
+boxShadow: {
+  offsetX: 5,
+  offsetY: 5,
+  blurRadius: 5,
+  spreadDistance: 0,
+  color: 'rgba(255, 0, 0, 0.5)'
+}
+
+// Multiple shadows (array)
+boxShadow: [
+  { offsetX: 0, offsetY: 1, blurRadius: 2, color: 'rgba(0, 0, 0, 0.22)' },
+  { offsetX: 0, offsetY: 6, blurRadius: 16, color: 'rgba(0, 0, 0, 0.22)' }
+]
 ```
 
-**Implementation:**
-- Native runtime parses `boxShadow` string → individual shadow props
-- Already have `boxShadow` support, need to add native parsing
+**Platform requirements:**
+- New Architecture required (default in RN 0.76+)
+- Android 9+ for normal shadows
+- Android 10+ for inset shadows
 
-### 7. Text Props
+**Tamagui addition:** Support `$token` colors in boxShadow strings:
+```tsx
+<View boxShadow="0 2px 10px $shadowColor" />
+```
+
+### 6. Text Props
 
 | Removed (RN) | Use Instead (Web) |
 |--------------|-------------------|
@@ -133,8 +142,6 @@ This aligns with:
 ### Types (remove RN props)
 - `code/core/web/src/types.tsx` - Remove deprecated accessibility props (lines 2152-2209)
 - `code/core/web/src/interfaces/TamaguiComponentPropsBaseBase.tsx` - Remove `focusable`, add event mappings
-- `code/ui/image/src/types.ts` - Remove `source`, `resizeMode`
-- `code/ui/input/src/types.ts` - Remove `onChangeText`, `keyboardType`, `returnKeyType`
 
 ### Runtime (native mappings)
 - `code/core/core/src/createOptimizedView.native.tsx` - Already maps aria→accessibility, add event mappings
@@ -159,7 +166,7 @@ Transforms:
 - `accessibilityRole="button"` → `role="button"`
 - `onPress={fn}` → `onClick={fn}`
 - `focusable={true}` → `tabIndex={0}`
-- `source={{ uri: x }}` → `src={x}`
+- `shadowColor/shadowOffset/etc` → `boxShadow`
 - etc.
 
 ## Timeline
@@ -172,6 +179,8 @@ Transforms:
 ## Notes
 
 - React Native 0.71+ supports both old and new prop names, so native mapping is safe
+- React Native 0.76+ supports `boxShadow` natively (New Architecture)
 - React Strict DOM uses web props exclusively, this aligns Tamagui with that future
 - Breaking changes are acceptable in v2 major release
 - Codemod makes migration mechanical for users
+- `onChangeText` kept as exception (common pattern, ergonomic for RN devs)
