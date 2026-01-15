@@ -1,22 +1,25 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { SizableText, XStack, YStack, useThemeName } from 'tamagui'
+import { H2, SizableText, XStack, YStack, useThemeName } from 'tamagui'
+import { HighlightText } from './HighlightText'
 
 export const VideoSection = () => {
   const isDark = useThemeName().startsWith('dark')
 
   return (
     <YStack items="center" gap="$6" maxW={1000} mx="auto" width="100%">
-      <ThemeTintAlt>
-        <SizableText
-          size="$8"
-          fontFamily="$silkscreen"
-          color="$color11"
-          letterSpacing={3}
-          text="center"
-        >
-          SEE IT IN ACTION
-        </SizableText>
-      </ThemeTintAlt>
+      <H2
+        fontSize={32}
+        fontWeight="700"
+        text="center"
+        color="$color12"
+        style={{ lineHeight: '1.2' }}
+        $sm={{ fontSize: 40 }}
+      >
+        See it{' '}
+        <ThemeTintAlt>
+          <HighlightText tag="span">in action.</HighlightText>
+        </ThemeTintAlt>
+      </H2>
 
       <YStack position="relative" width="100%" maxW={800}>
         <YStack

@@ -1,7 +1,8 @@
 import { Image } from '@tamagui/image'
 import { ThemeTintAlt } from '@tamagui/logo'
-import { SizableText, XStack, YStack, useThemeName } from 'tamagui'
+import { H2, SizableText, XStack, YStack, useThemeName } from 'tamagui'
 import { useGalleryStore, TakeoutGalleryDialog } from './TakeoutGallery'
+import { HighlightText } from './HighlightText'
 
 const screenshotImages = [
   {
@@ -137,64 +138,78 @@ const PolaroidCard = ({
 
 export const ScreenshotGallery = () => {
   const store = useGalleryStore()
-  const isDark = useThemeName().startsWith('dark')
-  const frameColor = isDark ? '#B8894A' : '#E8C896'
 
   return (
-    <YStack items="center" gap="$6" maxW={1100} mx="auto" width="100%">
+    <YStack
+      items="center"
+      gap="$6"
+      maxW={1100}
+      mx="auto"
+      width="100%"
+      position="relative"
+    >
       <TakeoutGalleryDialog />
 
+      {/* Large ambient glow behind the section */}
       <ThemeTintAlt>
-        <SizableText
-          size="$8"
-          fontFamily="$silkscreen"
-          color="$color11"
-          letterSpacing={3}
-          text="center"
-        >
-          SCREENSHOTS
-        </SizableText>
+        <YStack
+          position="absolute"
+          t="30%"
+          l="50%"
+          x={-300}
+          width={600}
+          height={400}
+          rounded={999}
+          bg="$color8"
+          opacity={0.1}
+          pointerEvents="none"
+          style={{
+            filter: 'blur(100px)',
+          }}
+        />
       </ThemeTintAlt>
+
+      <H2
+        fontSize={32}
+        fontWeight="700"
+        text="center"
+        color="$color12"
+        style={{ lineHeight: '1.2' }}
+        $sm={{ fontSize: 40 }}
+        z={1}
+      >
+        Explore the{' '}
+        <ThemeTintAlt>
+          <HighlightText tag="span">screenshots.</HighlightText>
+        </ThemeTintAlt>
+      </H2>
 
       <YStack
         position="relative"
-        bg="$orange1"
-        rounded="$4"
-        p="$3"
+        bg="$background04"
+        rounded="$6"
+        p="$6"
+        $sm={{ p: '$4' }}
+        overflow="hidden"
+        z={1}
         style={{
-          boxShadow: isDark
-            ? 'inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.4)'
-            : 'inset 0 2px 4px rgba(255,255,255,0.3), 0 4px 12px rgba(0,0,0,0.2)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
         }}
       >
-        <YStack
-          bg={frameColor}
-          rounded="$3"
-          p="$6"
-          $sm={{ p: '$4' }}
-          position="relative"
-          overflow="hidden"
-          style={{
-            backgroundImage: isDark
-              ? 'radial-gradient(circle at 20% 30%, #B8894A 1px, transparent 1px), radial-gradient(circle at 80% 70%, #9A7030 1px, transparent 1px), radial-gradient(circle at 50% 50%, #A67B3C 1px, transparent 1px)'
-              : 'radial-gradient(circle at 20% 30%, #E8C896 1px, transparent 1px), radial-gradient(circle at 80% 70%, #C49A5A 1px, transparent 1px), radial-gradient(circle at 50% 50%, #D4A85A 1px, transparent 1px)',
-            backgroundSize: '20px 20px, 25px 25px, 15px 15px',
-          }}
-        >
-          <XStack gap="$4" justify="center" flexWrap="wrap" $sm={{ gap: '$2' }} z={1}>
-            {screenshotImages.map((img, i) => (
-              <PolaroidCard
-                key={i}
-                img={img}
-                index={i}
-                onPress={() => {
-                  store.galleryImageIdx = img.galleryIdx
-                  store.galleryOpen = true
-                }}
-              />
-            ))}
-          </XStack>
-        </YStack>
+        <XStack gap="$4" justify="center" flexWrap="wrap" $sm={{ gap: '$2' }}>
+          {screenshotImages.map((img, i) => (
+            <PolaroidCard
+              key={i}
+              img={img}
+              index={i}
+              onPress={() => {
+                store.galleryImageIdx = img.galleryIdx
+                store.galleryOpen = true
+              }}
+            />
+          ))}
+        </XStack>
       </YStack>
     </YStack>
   )

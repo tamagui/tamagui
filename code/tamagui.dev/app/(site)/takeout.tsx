@@ -1,36 +1,32 @@
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Footer } from '~/features/site/Footer'
-import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
-import { PurchaseButton } from '~/features/site/purchase/helpers'
-import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 
-import { PinnedNote } from '~/features/takeout/PinnedNote'
-import { RetroRainbow } from '~/features/takeout/RetroRainbow'
+import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { ScreenshotGallery } from '~/features/takeout/ScreenshotGallery'
-import { TakeoutGlow } from '~/features/takeout/TakeoutGlow'
-import { TakeoutHero, IPhoneFrame } from '~/features/takeout/TakeoutHero'
+import { TakeoutBentoFeatures } from '~/features/takeout/TakeoutBentoFeatures'
+import { TakeoutHeroNew } from '~/features/takeout/TakeoutHeroNew'
+import { TakeoutMenuShowcase } from '~/features/takeout/TakeoutMenuShowcase'
+import { TakeoutTechStack } from '~/features/takeout/TakeoutTechStack'
+import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { VideoSection } from '~/features/takeout/VideoSection'
-import { WebFrameSection } from '~/features/takeout/WebFrameSection'
 
-export default function TakeoutPage() {
+export default function TakeoutPageNew() {
   const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
   const isProUser = subscriptionStatus?.pro
-  const { tint } = useTint()
 
   return (
     <YStack maxW="100%">
       <ThemeNameEffect colorKey="$color5" />
       <LoadCherryBomb />
-      <PinnedNote />
       <HeadInfo
-        title="🥡 Tamagui Takeout"
-        description="Tamagui Takeout React Native Bootstrap Starter Kit"
+        title="Tamagui Takeout"
+        description="Ship apps everywhere - iOS, Android, and web with one codebase"
         openGraph={{
           url: 'https://tamagui.dev/takeout',
           images: [
@@ -43,39 +39,40 @@ export default function TakeoutPage() {
 
       <PageThemeCarousel />
 
-      <TakeoutGlow />
-
+      {/* Glassmorphism background layers */}
       <ThemeTintAlt>
         <YStack
           position="absolute"
           l={0}
           r={0}
-          t={-100}
+          t={0}
           b={0}
           style={{
             background:
-              'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
+              'linear-gradient(180deg, var(--color1) 0%, var(--color2) 50%, var(--color1) 100%)',
           }}
           z={-3}
         />
       </ThemeTintAlt>
 
-      <YStack
-        className="grain"
-        fullscreen
-        t={-60}
-        b={0}
-        opacity={0.4}
-        $theme-light={{
-          opacity: 0.6,
-          filter: 'invert(1)',
-        }}
-        z={0}
-        pointerEvents="none"
-        style={{
-          imageRendering: 'pixelated',
-        }}
-      />
+      {/* Subtle ambient glow */}
+      <ThemeTintAlt offset={2}>
+        <YStack
+          position="absolute"
+          l="10%"
+          t={100}
+          width={500}
+          height={500}
+          rounded={999}
+          opacity={0.15}
+          style={{
+            background: 'var(--color8)',
+            filter: 'blur(120px)',
+          }}
+          z={-2}
+          pointerEvents="none"
+        />
+      </ThemeTintAlt>
 
       <ThemeTintAlt offset={0}>
         <YStack
@@ -107,23 +104,7 @@ export default function TakeoutPage() {
         />
       </ThemeTintAlt>
 
-      <YStack
-        position="absolute"
-        l={0}
-        r={0}
-        t={-100}
-        b={0}
-        z={-2}
-        opacity={0}
-        $theme-light={{
-          opacity: 1,
-        }}
-        style={{
-          background:
-            'linear-gradient(180deg, var(--color6) 0%, var(--color4) 30%, var(--color5) 50%, var(--color4) 70%, var(--color6) 100%)',
-        }}
-      />
-
+      {/* Gradient fade at bottom */}
       <ThemeTint>
         <YStack
           z={-1}
@@ -135,44 +116,30 @@ export default function TakeoutPage() {
       </ThemeTint>
 
       <ContainerLarge px={0}>
-        <YStack height={0} maxH={0} overflow="visible">
-          <YStack position="absolute" t={30} r="2%">
-            <PurchaseButton
-              onPress={() => {
-                showAppropriateModal()
-              }}
-              size="$4"
-              theme="accent"
-            >
-              {isProUser ? 'Plus | Free' : 'Buy Now'}
-            </PurchaseButton>
-          </YStack>
+        {/* Hero Section */}
+        <TakeoutHeroNew onBuyPress={() => showAppropriateModal()} isProUser={isProUser} />
 
-          <TakeoutHero />
-        </YStack>
+        {/* Features Section */}
+        <TakeoutBentoFeatures />
 
-        {/* Web frame section */}
-        <YStack mt={700} $sm={{ mt: 500 }} px="$4" position="relative">
-          <WebFrameSection />
-        </YStack>
+        {/* Tech Stack Section */}
+        <TakeoutTechStack />
 
-        {/* Phone frame */}
-        <YStack mt="$12" px="$4">
-          <IPhoneFrame />
-        </YStack>
+        {/* Menu Showcase Section */}
+        <TakeoutMenuShowcase />
 
-        {/* Version comparison */}
-        <YStack mt="$12" px="$4">
+        {/* Version Comparison Section */}
+        <YStack py="$8" px="$4">
           <VersionComparison />
         </YStack>
 
-        <YStack mt="$12" px="$4">
+        {/* Video Section */}
+        <YStack py="$8" px="$4">
           <VideoSection />
         </YStack>
 
-        <RetroRainbow />
-
-        <YStack mt="$12" px="$4">
+        {/* Screenshot Gallery Section */}
+        <YStack py="$8" px="$4">
           <ScreenshotGallery />
         </YStack>
 
