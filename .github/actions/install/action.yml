@@ -39,13 +39,7 @@ runs:
 
     - name: Install Dependencies
       shell: bash
-      # Always do full install to ensure devDependencies of workspace packages are available for builds
       run: bun install
-
-    - name: Clean Build Artifacts
-      shell: bash
-      # Clean stale build artifacts to avoid type conflicts in CI
-      run: ${{ inputs.workspace-focus && format('bunx turbo run clean:build --filter={0}...', inputs.workspace-focus) || 'bun run clean:build'}}
 
     - name: Build JS
       shell: bash
