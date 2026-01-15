@@ -1,12 +1,13 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, Copy } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
-import { Suspense, lazy, useState } from 'react'
+import { Suspense, lazy } from 'react'
 import { Button, Paragraph, XStack, YStack, styled } from 'tamagui'
 
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Link } from '~/components/Link'
 import { PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
+import { useClipboard } from '~/hooks/useClipboard'
 import { TakeoutLogo } from './TakeoutLogo'
 
 const TakeoutBox3D = lazy(() => import('./TakeoutBox3D'))
@@ -38,34 +39,17 @@ const INSTALL_COMMAND = 'bunx create-takeout@latest'
 
 // Prominent centered install command (like in reference image)
 function InstallCommand() {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(INSTALL_COMMAND)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      const textArea = document.createElement('textarea')
-      textArea.value = INSTALL_COMMAND
-      document.body.appendChild(textArea)
-      textArea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textArea)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }
-  }
+  const { onCopy, hasCopied } = useClipboard(INSTALL_COMMAND, { timeout: 2000 })
 
   return (
-    <CommandBoxLarge onPress={handleCopy}>
+    <CommandBoxLarge onPress={onCopy}>
       <Paragraph fontFamily="$mono" fontSize={14} color="$color10">
         $
       </Paragraph>
       <Paragraph fontFamily="$mono" fontSize={14} color="$color12">
         {INSTALL_COMMAND}
       </Paragraph>
-      {copied ? (
+      {hasCopied ? (
         <Check size={18} color="var(--color10)" />
       ) : (
         <Copy size={18} color="var(--color10)" />
