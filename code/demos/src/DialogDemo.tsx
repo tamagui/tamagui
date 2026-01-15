@@ -115,7 +115,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               <XStack flex={1}>
                 <SelectDemoContents
                   trigger={
-                    <Select.Trigger flex={1} iconAfter={ChevronDown}>
+                    <Select.Trigger flex={1} iconAfter={ChevronDown} borderRadius="$4">
                       <Select.Value placeholder="Something" />
                     </Select.Trigger>
                   }
