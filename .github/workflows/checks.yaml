@@ -23,6 +23,9 @@ jobs:
       - name: Check
         run: bun run check
 
+      - name: Clean TypeScript Build Info
+        run: bun run clean:ts
+
       - name: Typecheck
         run: bun run typecheck
 
