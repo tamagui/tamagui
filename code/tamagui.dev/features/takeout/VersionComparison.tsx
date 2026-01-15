@@ -18,10 +18,10 @@ const VersionBadge = styled(SizableText, {
   py: '$1',
   rounded: '$3',
   fontSize: '$2',
-  fontWeight: '800',
+  fontWeight: '600',
   textTransform: 'uppercase',
   letterSpacing: 1,
-  borderWidth: 2,
+  borderWidth: 1,
 
   variants: {
     variant: {
@@ -127,49 +127,50 @@ export function VersionComparison() {
       width="100%"
       $sm={{ display: 'none' }}
     >
-      <ThemeTintAlt>
-        <SizableText
-          size="$8"
-          fontFamily="$silkscreen"
-          color="$color11"
-          letterSpacing={3}
+      <YStack items="center" gap="$4">
+        <H3
+          fontSize={32}
+          fontWeight="700"
           text="center"
+          color="$color12"
+          style={{ lineHeight: '1.2' }}
+          $sm={{ fontSize: 40 }}
         >
-          PICK YOUR VERSION
-        </SizableText>
-      </ThemeTintAlt>
+          Pick Your{' '}
+          <ThemeTintAlt>
+            <SizableText
+              fontSize={32}
+              fontWeight="700"
+              color="$color10"
+              $sm={{ fontSize: 40 }}
+            >
+              Version
+            </SizableText>
+          </ThemeTintAlt>
+        </H3>
+        <Paragraph
+          fontSize={16}
+          color="$color11"
+          text="center"
+          style={{ lineHeight: '1.6' }}
+        >
+          Pro subscribers get access to both v1 and v2 repositories.
+        </Paragraph>
+      </YStack>
 
       <YStack
-        className="blur-medium"
-        bg={isDark ? '$color2' : '$color3'}
+        bg={isDark ? 'rgba(255,255,255,0.03)' : '$color2'}
         rounded="$6"
         p="$6"
-        borderWidth={2}
-        borderColor="$borderColor"
+        borderWidth={1}
+        borderColor={isDark ? 'rgba(255,255,255,0.08)' : '$color4'}
         gap="$4"
         overflow="hidden"
         width="100%"
         style={{
-          boxShadow: '0 0 50px var(--color4)',
+          backdropFilter: 'blur(12px)',
         }}
       >
-        <YStack gap="$2">
-          <H3
-            fontFamily="$mono"
-            letterSpacing={3}
-            color="$color11"
-            textTransform="uppercase"
-            style={{
-              textShadow: '0 0 30px var(--color8)',
-            }}
-          >
-            Version Comparison
-          </H3>
-          <Paragraph color="$color11" size="$4" fontFamily="$mono">
-            Pro subscribers get access to both v1 and v2 repositories.
-          </Paragraph>
-        </YStack>
-
         <YStack
           rounded="$4"
           borderWidth={1}
@@ -180,11 +181,11 @@ export function VersionComparison() {
             boxShadow: '0 0 30px var(--color4)',
           }}
         >
-          <XStack py="$3" px="$3" borderBottomWidth={2} borderBottomColor="$color6">
+          <XStack py="$3" px="$3" borderBottomWidth={1} borderBottomColor="$color6">
             <YStack flex={1.5} justify="center">
               <SizableText
                 size="$2"
-                fontWeight="800"
+                fontWeight="600"
                 color="$color11"
                 fontFamily="$mono"
                 textTransform="uppercase"
@@ -195,7 +196,7 @@ export function VersionComparison() {
             <XStack flex={1} justify="center" items="center" gap="$2">
               <SizableText
                 size="$2"
-                fontWeight="800"
+                fontWeight="600"
                 color="$orange10"
                 fontFamily="$mono"
               >
@@ -206,7 +207,7 @@ export function VersionComparison() {
               </Theme>
             </XStack>
             <XStack flex={1} justify="center" items="center" gap="$2">
-              <SizableText size="$2" fontWeight="800" color="$green10" fontFamily="$mono">
+              <SizableText size="$2" fontWeight="600" color="$green10" fontFamily="$mono">
                 v2
               </SizableText>
               <Theme name="green">
@@ -214,7 +215,7 @@ export function VersionComparison() {
               </Theme>
             </XStack>
             <XStack flex={1} justify="center" items="center" gap="$2">
-              <SizableText size="$2" fontWeight="800" color="$blue10" fontFamily="$mono">
+              <SizableText size="$2" fontWeight="600" color="$blue10" fontFamily="$mono">
                 v2-free
               </SizableText>
               <Theme name="blue">
@@ -228,44 +229,38 @@ export function VersionComparison() {
           ))}
         </YStack>
 
-        <XStack gap="$4" flexWrap="wrap" justify="center" pt="$4">
+        <XStack gap="$3" flexWrap="wrap" justify="center" pt="$4">
           <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
-            <Theme name="green">
+            <ThemeTintAlt>
               <Button
-                size="$3"
-                rounded="$4"
-                bg="$color9"
-                borderWidth={2}
-                borderColor="$color10"
+                size="$4"
+                bg="$color5"
+                borderWidth={1}
+                borderColor="$color7"
                 cursor="pointer"
-                transition="quick"
-                hoverStyle={{ bg: '$color10', scale: 1.02 }}
-                pressStyle={{ bg: '$color8', scale: 0.98 }}
+                hoverStyle={{ bg: '$color6', borderColor: '$color8' }}
+                pressStyle={{ bg: '$color7' }}
               >
-                <Button.Text fontFamily="$mono" fontWeight="800" color="white">
-                  Read the Docs
+                <Button.Text fontFamily="$mono" color="$color12">
+                  Docs
                 </Button.Text>
               </Button>
-            </Theme>
+            </ThemeTintAlt>
           </Link>
           <Link href="https://github.com/tamagui/starter-free" target="_blank">
-            <Theme name="blue">
-              <Button
-                size="$3"
-                rounded="$4"
-                bg="$color9"
-                borderWidth={2}
-                borderColor="$color10"
-                cursor="pointer"
-                transition="quick"
-                hoverStyle={{ bg: '$color10', scale: 1.02 }}
-                pressStyle={{ bg: '$color8', scale: 0.98 }}
-              >
-                <Button.Text fontFamily="$mono" fontWeight="800" color="white">
-                  Try v2-free (OSS)
-                </Button.Text>
-              </Button>
-            </Theme>
+            <Button
+              size="$4"
+              bg="$color3"
+              borderWidth={1}
+              borderColor="$color6"
+              cursor="pointer"
+              hoverStyle={{ bg: '$color4', borderColor: '$color8' }}
+              pressStyle={{ bg: '$color5' }}
+            >
+              <Button.Text fontFamily="$mono" color="$color12">
+                Try v2-free (OSS)
+              </Button.Text>
+            </Button>
           </Link>
         </XStack>
       </YStack>

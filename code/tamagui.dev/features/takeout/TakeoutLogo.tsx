@@ -3,7 +3,7 @@ import { H1, YStack } from 'tamagui'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
 import { isSafari } from './helpers'
 
-export const TAKEOUT = ({ fontSize = 260, lineHeight = fontSize * 0.73, ...props }) => (
+export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
     select="none"
     color="transparent"

@@ -57,6 +57,26 @@ export default function Layout() {
           precedence="default"
         />
 
+        <link crossOrigin="anonymous" href="/fonts/inter-600.css" rel="stylesheet" />
+        <link
+          rel="stylesheet preload prefetch"
+          href="/fonts/Inter-SemiBold.woff2"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/woff2"
+          precedence="default"
+        />
+
+        <link crossOrigin="anonymous" href="/fonts/inter-500.css" rel="stylesheet" />
+        <link
+          rel="stylesheet preload prefetch"
+          href="/fonts/Inter-Medium.woff2"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/woff2"
+          precedence="default"
+        />
+
         <link
           crossOrigin="anonymous"
           href="/fonts/inter-400.css"

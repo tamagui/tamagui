@@ -1,5 +1,5 @@
-import { Image } from '@tamagui/image'
 import { ThemeTint, useTint } from '@tamagui/logo'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import { XStack, YStack, useThemeName } from 'tamagui'
 
 export const PageThemeCarousel = () => {
@@ -48,15 +48,7 @@ export const PageThemeCarousel = () => {
             }}
             className="ease-out ms200 all"
           >
-            <Image
-              src="/takeout/pixel-icons/next.svg"
-              alt="Previous theme"
-              width={24}
-              height={24}
-              className="pixelate"
-              filter={isDark ? 'invert(1)' : 'none'}
-              style={{ transform: 'scaleX(-1)' }}
-            />
+            <ChevronLeft size={24} color="$color12" />
           </YStack>
           <YStack
             p="$3"
@@ -76,14 +68,7 @@ export const PageThemeCarousel = () => {
             }}
             className="ease-out ms200 all"
           >
-            <Image
-              src="/takeout/pixel-icons/next.svg"
-              alt="Next theme"
-              width={24}
-              height={24}
-              className="pixelate"
-              filter={isDark ? 'invert(1)' : 'none'}
-            />
+            <ChevronRight size={24} color="$color12" />
           </YStack>
         </XStack>
       </XStack>
