@@ -70,7 +70,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     }, [isAdapted])
 
     if (itemContext.shouldRenderWebNative) {
-      return <>{children}</>
+      return <YStack position="relative">{children}</YStack>
     }
 
     if (isAdapted || !isWeb) {

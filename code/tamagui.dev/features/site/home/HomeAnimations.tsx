@@ -64,14 +64,13 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           </HomeH3>
         </YStack>
 
-        <XStack>
+        <XStack gap="$4">
           <YStack
             flex={2}
             minW="55%"
-            self="center"
+            self="flex-start"
             z={100}
             elevation="$4"
-            mr="$-2"
             rounded="$4"
             theme={tint as any}
             justify="center"
@@ -82,7 +81,6 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           <YStack
             perspective={1000}
             rotateY="-5deg"
-            x={-10}
             $sm={{ display: 'none' }}
             position="relative"
             rounded="$8"
