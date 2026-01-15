@@ -3,6 +3,7 @@ import { promisify } from 'node:util'
 import * as proc from 'node:child_process'
 import { readFile, writeFile } from 'fs-extra'
 import pMap from 'p-map'
+import { glob } from 'fast-glob'
 
 const exec = promisify(proc.exec)
 
@@ -12,9 +13,11 @@ interface Package {
 }
 
 interface PackageJson {
+  name?: string
   dependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
   devDependencies?: Record<string, string>
+  optionalDependencies?: Record<string, string>
 }
 
 interface MissingDepReport {
@@ -25,8 +28,51 @@ interface MissingDepReport {
 }
 
 async function findAllPackages(): Promise<Package[]> {
-  const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
-  return workspaces.map((p) => JSON.parse(p)) as Package[]
+  // Read workspace patterns from package.json
+  const rootPkgJson = JSON.parse(
+    await readFile(join(process.cwd(), 'package.json'), { encoding: 'utf-8' })
+  )
+  const workspacePatterns: string[] = rootPkgJson.workspaces || []
+
+  // Use glob to find all workspace package.json files
+  const patterns = workspacePatterns.map((p) => {
+    // Normalize pattern - remove leading ./ and add /package.json
+    const normalized = p.replace(/^\.\//, '')
+    return `${normalized}/package.json`
+  })
+
+  const packageJsonPaths = await glob(patterns, {
+    cwd: process.cwd(),
+    absolute: false,
+    onlyFiles: true,
+  })
+
+  // Read each package.json and extract name and location
+  const packages: Package[] = []
+  for (const pkgPath of packageJsonPaths) {
+    try {
+      const location = pkgPath.replace('/package.json', '')
+      const pkgJson: PackageJson = JSON.parse(
+        await readFile(join(process.cwd(), pkgPath), { encoding: 'utf-8' })
+      )
+      if (pkgJson.name) {
+        packages.push({
+          name: pkgJson.name,
+          location,
+        })
+      }
+    } catch {
+      // Skip packages that can't be read
+    }
+  }
+
+  // Add root package
+  packages.unshift({
+    name: rootPkgJson.name || 'root',
+    location: '.',
+  })
+
+  return packages
 }
 
 async function getPackageJson(location: string): Promise<PackageJson | null> {
