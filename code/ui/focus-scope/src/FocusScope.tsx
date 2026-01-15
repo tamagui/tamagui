@@ -115,7 +115,8 @@ export function useFocusScope(
         target?.addEventListener('blur', handleBlur, { signal: controller.signal })
         lastFocusedElementRef.current = target
       } else {
-        focus(lastFocusedElementRef.current, { select: true })
+        // Don't select text when refocusing for focus trap - only refocus
+        focus(lastFocusedElementRef.current)
       }
     }
 
@@ -123,7 +124,8 @@ export function useFocusScope(
       controller.abort()
       if (focusScope.paused || !container) return
       if (!container.contains(event.relatedTarget as HTMLElement | null)) {
-        focus(lastFocusedElementRef.current, { select: true })
+        // Don't select text when refocusing for focus trap - only refocus
+        focus(lastFocusedElementRef.current)
       }
     }
 
