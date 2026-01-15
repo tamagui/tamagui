@@ -1,5 +1,82 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`$gtMd only should NOT apply on small screens 1`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  "0": {
+    "flexDirection": "column",
+    "height": 100,
+    "width": 100,
+    "borderTopColor": "red",
+    "borderRightColor": "red",
+    "borderBottomColor": "red",
+    "borderLeftColor": "red"
+  },
+  "1": {
+    "borderTopColor": "green",
+    "borderRightColor": "green",
+    "borderBottomColor": "green",
+    "borderLeftColor": "green"
+  },
+  "2": {}
+});
+const __ReactUseMemo = require('react').useMemo;
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui';
+export function Test() {
+  return <_ReactNativeViewStyled0 _expressions={["gtMd"]} />;
+}
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
+  }, _expressions);
+});"
+`;
+
+exports[`$md and $gtMd media queries should respect breakpoint boundaries 1`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  "0": {
+    "flexDirection": "column",
+    "height": 100,
+    "width": 100,
+    "borderTopColor": "red",
+    "borderRightColor": "red",
+    "borderBottomColor": "red",
+    "borderLeftColor": "red"
+  },
+  "1": {
+    "borderTopColor": "yellow",
+    "borderRightColor": "yellow",
+    "borderBottomColor": "yellow",
+    "borderLeftColor": "yellow"
+  },
+  "2": {},
+  "3": {
+    "borderTopColor": "green",
+    "borderRightColor": "green",
+    "borderBottomColor": "green",
+    "borderLeftColor": "green"
+  },
+  "4": {}
+});
+const __ReactUseMemo = require('react').useMemo;
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui';
+export function Test() {
+  return <_ReactNativeViewStyled0 _expressions={["md", "gtMd"]} />;
+}
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : _sheet["4"]];
+  }, _expressions);
+});"
+`;
+
 exports[`basic conditional extraction 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
@@ -28,19 +105,19 @@ import { YStack } from 'tamagui';
 let x = true;
 export function Test() {
   return <>
-          <__ReactNativeView expressions={[x]} />
-          <__ReactNativeView expressions={[x]} />
+          <_ReactNativeViewStyled0 _expressions={[x]} />
+          <_ReactNativeViewStyled1 _expressions={[x]} />
         </>;
 }
-const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
-  }, [..._expressions]);
+  }, _expressions);
 });
-const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const _ReactNativeViewStyled1 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]];
-  }, [..._expressions]);
+  }, _expressions);
 });"
 `;
 
@@ -117,12 +194,12 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(isLoading) {
-  return <__ReactNativeView expressions={[isLoading]} />;
+  return <_ReactNativeViewStyled0 _expressions={[isLoading]} />;
 }
-const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
-  }, [..._expressions]);
+  }, _expressions);
 });"
 `;
 
@@ -133,6 +210,81 @@ import { YStack } from 'tamagui';
 export function Test(props) {
   return <YStack scale={props.isLoading ? 1 : 2} x={10} {...props} rotate="10deg" />;
 }"
+`;
+
+exports[`multiple media query components should not conflict 1`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  "0": {
+    "flexDirection": "column",
+    "borderTopColor": "red",
+    "borderRightColor": "red",
+    "borderBottomColor": "red",
+    "borderLeftColor": "red"
+  },
+  "1": {
+    "borderTopColor": "yellow",
+    "borderRightColor": "yellow",
+    "borderBottomColor": "yellow",
+    "borderLeftColor": "yellow"
+  },
+  "2": {},
+  "3": {
+    "flexDirection": "row",
+    "borderTopColor": "blue",
+    "borderRightColor": "blue",
+    "borderBottomColor": "blue",
+    "borderLeftColor": "blue"
+  },
+  "4": {
+    "borderTopColor": "green",
+    "borderRightColor": "green",
+    "borderBottomColor": "green",
+    "borderLeftColor": "green"
+  },
+  "5": {},
+  "6": {
+    "flexDirection": "column",
+    "borderTopColor": "purple",
+    "borderRightColor": "purple",
+    "borderBottomColor": "purple",
+    "borderLeftColor": "purple"
+  },
+  "7": {
+    "borderTopColor": "pink",
+    "borderRightColor": "pink",
+    "borderBottomColor": "pink",
+    "borderLeftColor": "pink"
+  },
+  "8": {}
+});
+const __ReactUseMemo = require('react').useMemo;
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack, XStack } from 'tamagui';
+export function Test() {
+  return <>
+          <_ReactNativeViewStyled0 _expressions={["md"]} />
+          <_ReactNativeViewStyled1 _expressions={["gtMd"]} />
+          <_ReactNativeViewStyled2 _expressions={["sm"]} />
+        </>;
+}
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
+  }, _expressions);
+});
+const _ReactNativeViewStyled1 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]];
+  }, _expressions);
+});
+const _ReactNativeViewStyled2 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return __ReactUseMemo(() => {
+    return [_sheet["6"], _expressions[0] ? _sheet["7"] : _sheet["8"]];
+  }, _expressions);
+});"
 `;
 
 exports[`normalize dynamic values with no theme access 1`] = `
@@ -158,14 +310,14 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(props) {
-  return <__ReactNativeView />;
+  return <_ReactNativeViewStyled0 />;
 }
-const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "backgroundColor": theme.color.get()
     }];
-  }, [..._expressions]);
+  }, _expressions);
 });"
 `;
 
@@ -233,13 +385,13 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';
 export function Test() {
-  return <__ReactNativeText>hello world</__ReactNativeText>;
+  return <_ReactNativeTextStyled0>hello world</_ReactNativeTextStyled0>;
 }
-const __ReactNativeText = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
+const _ReactNativeTextStyled0 = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "color": theme.color.get()
     }];
-  }, [..._expressions]);
+  }, _expressions);
 });"
 `;
