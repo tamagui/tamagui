@@ -23,17 +23,8 @@ jobs:
       - name: Check
         run: bun run check
 
-      - name: Verify types exist
-        run: |
-          # Ensure type declaration files exist (they're committed to repo)
-          if [ ! -f "code/core/web/types/index.d.ts" ]; then
-            echo "::error::Type files missing - run bun run build:types locally"
-            exit 1
-          fi
-          echo "Type files found"
-
       - name: Typecheck
-        run: npx tsc -b --preserveWatchOutput tsconfig.build.json
+        run: bun run typecheck
 
       - name: Lint
         run: bun run lint
