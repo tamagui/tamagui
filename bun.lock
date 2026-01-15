@@ -1,6 +1,5 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 1,
   "workspaces": {
     "": {
       "name": "tamagui-monorepo",
@@ -11,6 +10,7 @@
         "@take-out/cli": "^0.0.40",
         "@testing-library/dom": "^10.4.0",
         "dotenv-cli": "^7.4.2",
+        "fast-glob": "^3.3.3",
         "fs-extra": "^11.2.0",
         "knip": "^5.70.2",
         "lllink": "^1.1.430",
