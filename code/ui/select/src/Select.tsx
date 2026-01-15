@@ -63,8 +63,11 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
 
-    // @ts-ignore TODO react 19 type needs fix
-    const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+    const composedRefs = useComposedRefs(
+      // @ts-ignore TODO react 19 type needs fix
+      forwardedRef,
+      context.onValueNodeChange
+    )
     const isEmptyValue = context.value == null || context.value === ''
 
     // Use renderValue for SSR support - called synchronously during render

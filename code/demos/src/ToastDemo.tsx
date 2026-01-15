@@ -30,11 +30,11 @@ const CurrentToast = () => {
       key={currentToast.id}
       duration={currentToast.duration}
       viewportName={currentToast.viewportName}
-      enterStyle={{ opacity: 0, scale: 0.95, y: 50 }}
-      exitStyle={{ opacity: 0, scale: 0.95, y: 50 }}
+      enterStyle={{ opacity: 0, scale: 0.95, y: -80 }}
+      exitStyle={{ opacity: 0, scale: 0.95, y: -80 }}
       opacity={1}
       scale={1}
-      y={0}
+      y={-50}
       transition="quicker"
       bg="$color2"
       boxShadow="0px 2px 4px rgba(0,0,0,0.12), 0px 8px 24px rgba(0,0,0,0.08)"

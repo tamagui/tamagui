@@ -1,8 +1,16 @@
-import { styled } from '@tamagui/core'
-import { Backpack, Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
+import {
+  Backpack,
+  Calendar,
+  Check,
+  ChevronRight,
+  FilePlus,
+  Trash2,
+  RefreshCw,
+} from '@tamagui/lucide-icons'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button } from 'tamagui'
+import { Button, View } from 'tamagui'
+import { isTouchable } from '@tamagui/constants'
 
 /**
  * Menu Demo using Tamagui Menu component.
@@ -14,32 +22,18 @@ import { Button } from 'tamagui'
  * Note: you'll want to use createMenu() to customize further.
  */
 
-const Item = styled(Menu.Item, {
-  paddingVertical: 4,
-  hoverStyle: {
-    backgroundColor: '$color2',
-  },
-  pressStyle: {
-    backgroundColor: '$color3',
-  },
-})
-
-const ItemTitle = styled(Menu.ItemTitle, {
-  color: '$color11',
-})
-
-Item.displayName = 'Item'
-ItemTitle.displayName = 'ItemTitle'
 
 export function MenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [native, setNative] = React.useState(true)
+  const [subMenuOpen, setSubMenuOpen] = React.useState(false)
 
   // Note: `item` is the Event on web, undefined on native
   const onSelect = (item) => {
     console.info(`selected`, item)
   }
 
+  console.log("isTouchable: ", isTouchable)
   return (
     <>
       <Menu
@@ -50,7 +44,7 @@ export function MenuDemo() {
         placement="bottom-start"
       >
         <Menu.Trigger asChild>
-          <Button rounded="$10" icon={Backpack} scaleIcon={1.2} />
+          <Button size="$3" circular icon={Backpack} scaleIcon={1.2} marginLeft="$20" />
         </Menu.Trigger>
 
         <Menu.Portal zIndex={100}>
@@ -59,16 +53,11 @@ export function MenuDemo() {
             borderWidth={1}
             items="flex-start"
             borderColor="$borderColor"
-            enterStyle={{ y: -10, opacity: 0 }}
-            exitStyle={{ y: -10, opacity: 0 }}
-            transition={[
-              'quicker',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
+            backgroundColor="$color1"
+            enterStyle={{ scale: 0.4, opacity: 0, y: -10 }}
+            exitStyle={{ scale: 0.6, opacity: 0, y: -5 }}
+            animation="menu"
+            transformOrigin="top"
           >
             <Menu.Item onSelect={onSelect} key="about-notes">
               <Menu.ItemTitle>About Notes</Menu.ItemTitle>
@@ -105,7 +94,7 @@ export function MenuDemo() {
 
             <Menu.Group>
               <Menu.Item onSelect={onSelect} key="close-notes" disabled>
-                <Menu.ItemTitle color="gray">locked notes</Menu.ItemTitle>
+                <Menu.ItemTitle color="gray">Locked Notes</Menu.ItemTitle>
               </Menu.Item>
               <Menu.Item onSelect={onSelect} destructive key="delete-all">
                 <Menu.ItemTitle color="red">Delete all</Menu.ItemTitle>
@@ -114,8 +103,8 @@ export function MenuDemo() {
 
             <Menu.Separator />
 
-            {/* Submenu */}
-            <Menu.Sub placement="right-start">
+            {/* Submenu - placement auto-adapts based on Menu.Adapt */}
+            <Menu.Sub open={subMenuOpen} onOpenChange={setSubMenuOpen}>
               <Menu.SubTrigger
                 justify="space-between"
                 key="actions-trigger"
@@ -123,34 +112,43 @@ export function MenuDemo() {
               >
                 <>
                   <Menu.ItemTitle>Actions</Menu.ItemTitle>
-                  <ChevronRight size="$1" />
+                  <View
+                    rotate={subMenuOpen ? '90deg' : '0deg'}
+                    animation="quicker"
+                  >
+                    <ChevronRight size="$1" />
+                  </View>
                 </>
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
                 <Menu.SubContent
-                  enterStyle={{ y: -10, opacity: 0 }}
-                  exitStyle={{ y: -10, opacity: 0 }}
-                  transition={[
-                    'quicker',
-                    {
-                      opacity: {
-                        overshootClamping: true,
-                      },
-                    },
-                  ]}
-                  paddingHorizontal={0}
+                  enterStyle={{ scale: 0.5, opacity: 0, y: -5 }}
+                  exitStyle={{ scale: 0.7, opacity: 0, y: -3 }}
+                  animation="menu"
+                  transformOrigin="top left"
+                  elevation="$5"
+                  scale={1.02}
+                  backgroundColor="$color1"
                 >
-                  <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
-                  <Item onSelect={onSelect} key="create-note" textValue="Create note">
-                    <ItemTitle>Create note</ItemTitle>
-                  </Item>
-                  <Item onSelect={onSelect} key="delete-all" textValue="Create note">
-                    <ItemTitle>Delete all notes</ItemTitle>
-                  </Item>
-                  <Item onSelect={onSelect} key="sync-all" textValue="Sync notes">
-                    <ItemTitle>Sync notes</ItemTitle>
-                  </Item>
+                  <Menu.Item onSelect={onSelect} key="create-note" textValue="Create note">
+                    <Menu.ItemTitle>Create note</Menu.ItemTitle>
+                    <Menu.ItemIcon>
+                      <FilePlus size={18} color="$color10" />
+                    </Menu.ItemIcon>
+                  </Menu.Item>
+                  <Menu.Item onSelect={onSelect} key="delete-all" textValue="Delete all notes">
+                    <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
+                    <Menu.ItemIcon>
+                      <Trash2 size={18} color="$color10" />
+                    </Menu.ItemIcon>
+                  </Menu.Item>
+                  <Menu.Item onSelect={onSelect} key="sync-all" textValue="Sync notes">
+                    <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
+                    <Menu.ItemIcon>
+                      <RefreshCw size={18} color="$color10" />
+                    </Menu.ItemIcon>
+                  </Menu.Item>
                 </Menu.SubContent>
               </Menu.Portal>
             </Menu.Sub>
@@ -165,7 +163,7 @@ export function MenuDemo() {
             >
               <Menu.ItemTitle>Mark as read</Menu.ItemTitle>
               <Menu.ItemIndicator>
-                <Check size="$1" />
+                <Check size={16} color="$color10" />
               </Menu.ItemIndicator>
             </Menu.CheckboxItem>
             <Menu.CheckboxItem
@@ -176,7 +174,7 @@ export function MenuDemo() {
             >
               <Menu.ItemTitle>Enable Native</Menu.ItemTitle>
               <Menu.ItemIndicator>
-                <Check size="$1" />
+                <Check size={16} color="$color10" />
               </Menu.ItemIndicator>
             </Menu.CheckboxItem>
 
