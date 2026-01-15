@@ -41,10 +41,9 @@ runs:
       shell: bash
       run: bun install
 
-    - name: Build
+    - name: Build JS
       shell: bash
-      # Run full build (including types) to ensure type definitions are available for typecheck
-      run: ${{ inputs.workspace-focus && format('bunx turbo run build --filter={0}...', inputs.workspace-focus) || 'bun run build'}}
+      run: ${{ inputs.workspace-focus && format('bunx turbo run build --filter={0}... -- --skip-types', inputs.workspace-focus) || 'bun run build:js'}}
 
     - name: Re-link workspace bins
       shell: bash
