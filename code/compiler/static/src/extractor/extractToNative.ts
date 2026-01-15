@@ -91,6 +91,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
 
           let hasImportedView = false
           let hasImportedViewWrapper = false
+          let wrapperCount = 0
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
 
@@ -324,9 +325,11 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   }
 
                   const name = props.flatNodeName || props.node.name['name']
-                  const WrapperIdentifier = root.scope.generateUidIdentifier(
-                    name + 'Wrapper'
-                  )
+                  // Use a unique name that won't conflict with the base component
+                  const wrapperName = `_${name.replace(/^_+/, '')}Styled${wrapperCount++}`
+                  // Use regular identifier for variable declarations, JSX identifier for JSX elements
+                  const WrapperIdentifier = t.identifier(wrapperName)
+                  const WrapperJSXIdentifier = t.jsxIdentifier(wrapperName)
 
                   root.pushContainer(
                     'body',
@@ -348,9 +351,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                                       ),
                                     ])
                                   ),
-                                  t.arrayExpression([
-                                    t.spreadElement(t.identifier('_expressions')),
-                                  ]),
+                                  t.identifier('_expressions'),
                                 ])
                               ),
                             ])
@@ -360,17 +361,19 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                     ])
                   )
 
-                  // @ts-ignore
-                  props.node.name = WrapperIdentifier
+                  // @ts-ignore - use JSX identifier for JSX elements
+                  props.node.name = WrapperJSXIdentifier
+                  // Also set the opening element directly via the path
+                  props.jsxPath.node.openingElement.name = WrapperJSXIdentifier
                   if (props.jsxPath.node.closingElement) {
                     // @ts-ignore
-                    props.jsxPath.node.closingElement.name = WrapperIdentifier
+                    props.jsxPath.node.closingElement.name = t.jsxIdentifier(wrapperName)
                   }
 
                   if (expressions.length) {
                     props.node.attributes.push(
                       t.jsxAttribute(
-                        t.jsxIdentifier('expressions'),
+                        t.jsxIdentifier('_expressions'),
                         t.jsxExpressionContainer(t.arrayExpression(expressions))
                       )
                     )

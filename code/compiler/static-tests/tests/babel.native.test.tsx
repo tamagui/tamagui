@@ -199,3 +199,67 @@ test('do NOT flatten multiple dynamic values with theme access and conditional',
   const code = output?.code ?? ''
   expect(code).toMatchSnapshot()
 })
+
+test('$md and $gtMd media queries should respect breakpoint boundaries', async () => {
+  // Regression test for bug starting in 1.132.17
+  // On small screens (iPhone), $md should apply, NOT $gtMd
+  // The bug was that $gtMd was incorrectly applying on mobile
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack
+          h={100}
+          w={100}
+          bc="red"
+          $md={{ bc: 'yellow' }}
+          $gtMd={{ bc: 'green' }}
+        />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // Verify the output includes both media query conditions
+  // and they are structured correctly for runtime evaluation
+  expect(code).toMatchSnapshot()
+})
+
+test('$gtMd only should NOT apply on small screens', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack
+          h={100}
+          w={100}
+          bc="red"
+          $gtMd={{ bc: 'green' }}
+        />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toMatchSnapshot()
+})
+
+test('multiple media query components should not conflict', async () => {
+  const output = await extractForNative(`
+    import { YStack, XStack } from 'tamagui'
+    export function Test() {
+      return (
+        <>
+          <YStack bc="red" $md={{ bc: 'yellow' }} />
+          <XStack bc="blue" $gtMd={{ bc: 'green' }} />
+          <YStack bc="purple" $sm={{ bc: 'pink' }} />
+        </>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // Verify each wrapper has a unique name
+  expect(code).toMatchSnapshot()
+  // Make sure we don't have duplicate const declarations
+  const styledMatches = code.match(/const _\w+Styled\d+/g) || []
+  const uniqueNames = new Set(styledMatches)
+  expect(styledMatches.length).toBe(uniqueNames.size)
+})

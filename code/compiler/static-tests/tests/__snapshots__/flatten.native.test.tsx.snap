@@ -40,12 +40,12 @@ import { YStack } from 'tamagui';
 import { useMedia } from 'tamagui';
 export function Test(isLoading) {
   const media = useMedia();
-  return <__ReactNativeView expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
+  return <_ReactNativeViewStyled0 _expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
 }
-const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : _sheet["4"], _expressions[2] ? _sheet["5"] : _sheet["6"]];
-  }, [..._expressions]);
+  }, _expressions);
 });"
 `;
 
@@ -61,16 +61,16 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { View } from 'tamagui';
 export function Test() {
-  return <__ReactNativeView expressions={[showBackground]} />;
+  return <_ReactNativeViewStyled0 _expressions={[showBackground]} />;
 }
-const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], _sheet["1"], _expressions[0] ? {
       "backgroundColor": theme.color1.get()
     } : {
       "backgroundColor": theme.color2.get()
     }];
-  }, [..._expressions]);
+  }, _expressions);
 });"
 `;
 
@@ -94,13 +94,13 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(isLoading) {
-  return <__ReactNativeView />;
+  return <_ReactNativeViewStyled0 />;
 }
-const __ReactNativeView = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return __ReactUseMemo(() => {
     return [_sheet["0"], {
       "backgroundColor": theme.background.get()
     }];
-  }, [..._expressions]);
+  }, _expressions);
 });"
 `;
