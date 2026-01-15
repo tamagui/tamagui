@@ -627,7 +627,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    elementType = Component || elementType
+    elementType = element || elementType
     const isStringElement = typeof elementType === 'string'
 
     const mediaState = useMedia(componentContext, debugProp)
