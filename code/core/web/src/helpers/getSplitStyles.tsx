@@ -52,7 +52,7 @@ import type {
   TamaguiInternalConfig,
   TextStyle,
   ThemeParsed,
-  ViewStyleWithPseudos
+  ViewStyleWithPseudos,
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
