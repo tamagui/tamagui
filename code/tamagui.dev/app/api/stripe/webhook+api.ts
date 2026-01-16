@@ -15,7 +15,7 @@ import {
   upsertProductRecord,
   createTeamInvoice,
 } from '~/features/auth/supabaseAdmin'
-import { sendProductRenewalEmail } from '~/features/email/helpers'
+import { sendProductRenewalEmail, sendV1ExpirationEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
@@ -84,10 +84,25 @@ export default apiRoute(async (req) => {
           return
         }
 
-        await sendProductRenewalEmail(info.customer_email, {
-          name: 'friend',
-          product_name: 'Takeout',
-        })
+        // Check if this is a V1 subscription that's expiring
+        const isV1Subscription = info.lines.data.some(
+          (line) =>
+            line.price?.product === STRIPE_PRODUCTS.PRO_SUBSCRIPTION.productId ||
+            line.price?.product === STRIPE_PRODUCTS.PRO_TEAM_SEATS.productId
+        )
+
+        if (isV1Subscription) {
+          // Send V1 expiration email with upgrade info
+          await sendV1ExpirationEmail(info.customer_email, {
+            name: 'friend',
+          })
+        } else {
+          // Regular renewal email for V2 upgrades
+          await sendProductRenewalEmail(info.customer_email, {
+            name: 'friend',
+            product_name: 'Takeout',
+          })
+        }
         break
       }
 
@@ -211,6 +226,57 @@ async function manageOneTimePayment(invoice: Stripe.Invoice) {
   if (subscriptionItems.length > 0) {
     await supabaseAdmin.from('subscription_items').insert(subscriptionItems)
   }
+
+  // Handle V2 Pro License purchase - create project
+  if (invoice.metadata?.type === 'pro_v2_license' && invoice.metadata?.version === 'v2') {
+    await createProjectFromV2Purchase(invoice, uuid)
+  }
+}
+
+/**
+ * Create a project from a V2 Pro License purchase
+ */
+async function createProjectFromV2Purchase(invoice: Stripe.Invoice, userId: string) {
+  const projectName = invoice.metadata?.project_name
+  const projectDomain = invoice.metadata?.project_domain
+
+  if (!projectName || !projectDomain) {
+    console.error(
+      'V2 invoice missing project_name or project_domain metadata',
+      invoice.id
+    )
+    return
+  }
+
+  const oneYearFromNow = new Date()
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1)
+
+  // Create the project
+  const { data: project, error: projectError } = await supabaseAdmin
+    .from('projects')
+    .insert({
+      user_id: userId,
+      name: projectName,
+      domain: projectDomain,
+      license_purchased_at: new Date().toISOString(),
+      updates_expire_at: oneYearFromNow.toISOString(),
+    })
+    .select()
+    .single()
+
+  if (projectError) {
+    console.error('Error creating project from V2 purchase:', projectError)
+    return
+  }
+
+  // Add owner as team member
+  await supabaseAdmin.from('project_team_members').insert({
+    project_id: project.id,
+    user_id: userId,
+    role: 'owner',
+  })
+
+  console.info(`Created V2 project: ${projectName} (${projectDomain}) for user ${userId}`)
 }
 
 // async function handleCreateSubscription(
