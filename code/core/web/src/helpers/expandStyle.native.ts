@@ -12,70 +12,47 @@ import {
 import type { PropMappedValue } from '../types'
 
 // Parse CSS boxShadow string to RN object array (for native RN 0.76+)
+const num = (v: string) => Number.parseFloat(v) || 0
 const parseBoxShadowStr = (s: string) =>
-  s.split(/,(?![^(]*\))/).map((shadow) => {
-    const p = shadow.trim().split(/\s+/)
-    let i = 0
-    const o: any = { offsetX: 0, offsetY: 0 }
-    if (p[0] === 'inset') {
-      o.inset = true
-      i++
-    }
-    const n = (v: string) => Number.parseFloat(v) || 0
-    if (p[i]) o.offsetX = n(p[i++])
-    if (p[i]) o.offsetY = n(p[i++])
-    if (p[i] && /^-?[\d.]/.test(p[i])) o.blurRadius = n(p[i++])
-    if (p[i] && /^-?[\d.]/.test(p[i])) o.spreadDistance = n(p[i++])
+  s.split(/,(?![^(]*\))/).map((sh) => {
+    const p = sh.trim().split(/\s+/)
+    let i = p[0] === 'inset' ? 1 : 0
+    const o: any = { offsetX: num(p[i++]), offsetY: num(p[i++]) }
+    if (p[0] === 'inset') o.inset = true
+    if (p[i] && /^-?[\d.]/.test(p[i])) o.blurRadius = num(p[i++])
+    if (p[i] && /^-?[\d.]/.test(p[i])) o.spreadDistance = num(p[i++])
     if (p[i]) o.color = p.slice(i).join(' ')
     return o
   })
 
 // Parse CSS filter string to RN object array (for native RN 0.76+)
+const simpleFilters = new Set([
+  'brightness',
+  'opacity',
+  'contrast',
+  'grayscale',
+  'invert',
+  'saturate',
+  'sepia',
+  'blur',
+])
 const parseFilterStr = (s: string): any[] => {
-  const result: any[] = []
-  // Match filter functions like "brightness(1.2)" or "blur(5px)"
-  const regex = /(\w+)\(([^)]+)\)/g
-  let match
-  while ((match = regex.exec(s)) !== null) {
-    const [, fn, val] = match
-    const numVal = Number.parseFloat(val) || 0
-    switch (fn) {
-      case 'brightness':
-      case 'opacity':
-      case 'contrast':
-      case 'grayscale':
-      case 'invert':
-      case 'saturate':
-      case 'sepia':
-        result.push({ [fn]: numVal })
-        break
-      case 'blur':
-        result.push({ blur: numVal })
-        break
-      case 'hueRotate':
-      case 'hue-rotate':
-        result.push({ hueRotate: val })
-        break
-      case 'dropShadow':
-      case 'drop-shadow': {
-        // Parse drop-shadow(offsetX offsetY [blur] [color])
-        const parts = val.trim().split(/\s+/)
-        const ds: any = {
-          offsetX: Number.parseFloat(parts[0]) || 0,
-          offsetY: Number.parseFloat(parts[1]) || 0,
-        }
-        if (parts[2] && /^-?[\d.]/.test(parts[2])) {
-          ds.blurRadius = Number.parseFloat(parts[2]) || 0
-          if (parts[3]) ds.color = parts.slice(3).join(' ')
-        } else if (parts[2]) {
-          ds.color = parts.slice(2).join(' ')
-        }
-        result.push({ dropShadow: ds })
-        break
-      }
+  const r: any[] = []
+  for (const [, fn, val] of s.matchAll(/(\w+)\(([^)]+)\)/g)) {
+    const n = +val || 0
+    if (simpleFilters.has(fn)) r.push({ [fn]: n })
+    else if (fn === 'hueRotate' || fn === 'hue-rotate') r.push({ hueRotate: val })
+    else if (fn === 'dropShadow' || fn === 'drop-shadow') {
+      const p = val.trim().split(/\s+/)
+      const ds: any = { offsetX: num(p[0]), offsetY: num(p[1]) }
+      if (p[2] && /^-?[\d.]/.test(p[2])) {
+        ds.blurRadius = num(p[2])
+        if (p[3]) ds.color = p.slice(3).join(' ')
+      } else if (p[2]) ds.color = p.slice(2).join(' ')
+      r.push({ dropShadow: ds })
     }
   }
-  return result
+  return r
 }
 
 export function expandStyle(key: string, value: any): PropMappedValue {
