@@ -1021,7 +1021,7 @@ interface ExtraStyleProps {
     /**
      * Outline style. Supported on web and RN 0.77+ (New Architecture).
      */
-    outlineStyle?: 'none' | 'solid' | 'dotted' | 'dashed';
+    outlineStyle?: 'solid' | 'dotted' | 'dashed' | (string & {});
     /**
      * Outline width. Supported on web and RN 0.77+ (New Architecture).
      */
@@ -1062,7 +1062,7 @@ interface ExtraStyleProps {
      * Box sizing model. Supported on web and RN 0.77+ (New Architecture).
      * Default is 'border-box'.
      */
-    boxSizing?: 'border-box' | 'content-box';
+    boxSizing?: 'border-box' | 'content-box' | (string & {});
     /**
      * CSS box-shadow. Supports tokens: "$2 $4 $8 $shadowColor"
      * Also accepts object/array format. Supported on web and RN 0.76+ (New Architecture).
@@ -1090,12 +1090,12 @@ interface ExtraStyleProps {
      * Blend mode for color mixing with stacking context.
      * Supported on web and RN 0.77+ (New Architecture).
      */
-    mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity';
+    mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity' | (string & {});
     /**
      * Forces element to form a new stacking context for mixBlendMode.
      * Supported on web and RN 0.77+ (New Architecture).
      */
-    isolation?: 'auto' | 'isolate';
+    isolation?: 'auto' | 'isolate' | (string & {});
     /**
      * Web-only style property. Will be omitted on native.
      */
