@@ -1,9 +1,9 @@
-import { YStack, Button } from '@my/ui'
+import { View } from '@tamagui/core'
 
-export function WithWeb() {
+export function Web() {
   return (
-    <YStack flex={1} gap="$8" bg="$blue5">
-      <Button>Web Specific</Button>
-    </YStack>
+    <View flex={1} gap="$6" bg="$green5">
+      <>Web</>
+    </View>
   )
 }

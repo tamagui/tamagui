@@ -11,7 +11,7 @@ import {
 } from '../constants/webToNativeProps'
 import type { PropMappedValue } from '../types'
 
-// Parse CSS boxShadow string to RN object array (for native RN 0.76+)
+// Parse CSS boxShadow string to RN object array
 const num = (v: string) => Number.parseFloat(v) || 0
 const parseBoxShadowStr = (s: string) =>
   s.split(/,(?![^(]*\))/).map((sh) => {
@@ -25,7 +25,7 @@ const parseBoxShadowStr = (s: string) =>
     return o
   })
 
-// Parse CSS filter string to RN object array (for native RN 0.76+)
+// Parse CSS filter string to RN object array
 const simpleFilters = new Set([
   'brightness',
   'opacity',
@@ -60,7 +60,7 @@ export function expandStyle(key: string, value: any): PropMappedValue {
     return [['elevation', value]]
   }
 
-  // Native: convert boxShadow string to object array for RN 0.76+
+  // Native: convert boxShadow string to object array
   if (key === 'boxShadow') {
     if (typeof value === 'string') {
       return [['boxShadow', parseBoxShadowStr(value)]]
@@ -70,7 +70,7 @@ export function expandStyle(key: string, value: any): PropMappedValue {
     }
   }
 
-  // Native: convert filter string to object array for RN 0.76+
+  // Native: convert filter string to object array
   if (key === 'filter') {
     if (typeof value === 'string') {
       return [['filter', parseFilterStr(value)]]

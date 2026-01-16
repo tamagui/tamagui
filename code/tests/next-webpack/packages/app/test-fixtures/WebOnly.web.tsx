@@ -1,9 +1,9 @@
-import { YStack, Button } from '@my/ui'
+import { View } from '@tamagui/core'
 
 export function WebOnly() {
   return (
-    <YStack flex={1} gap="$6" bg="$green5">
-      <Button>Web Only File</Button>
-    </YStack>
+    <View flex={1} gap="$6" bg="$green5">
+      <>Web Only File</>
+    </View>
   )
 }

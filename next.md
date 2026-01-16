@@ -14,7 +14,7 @@ See `docs/web-alignment-plan.md` for the full web props migration plan.
 - Remove `focusable`, use only `tabIndex`
 - Remove `onPress/onPressIn/onPressOut`, use only `onClick/onPointerDown/onPointerUp`
 - Remove legacy shadow props (`shadowColor`, `shadowOffset`, etc), use `boxShadow`
-  - RN 0.76+ natively supports `boxShadow` (New Architecture)
+  - RN 0.82+ natively supports `boxShadow` (New Architecture)
   - Supports string, object, and array (multiple shadows) syntax
   - Add $token support in boxShadow strings: `boxShadow="0 2px 10px $shadowColor"`
 - Keep `onChangeText` as exception (ergonomic for RN devs)
@@ -40,8 +40,6 @@ AFTER v2 RC (nice to haves):
         </div>
 
 - smaller bugfixes/things to check work:
-  - fix react 19 + nextjs 15
-      - https://github.com/gcoakleyjr/React19-Tamagui
   - ensure onlyAllowShorthands changes types properly
   - tooltip: expects zIndex but shorthand overrides and doesn't work
   - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748

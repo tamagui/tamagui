@@ -1,9 +1,9 @@
-import { YStack, Button } from '@my/ui'
+import { View } from '@tamagui/core'
 
 export function BaseOnly() {
   return (
-    <YStack flex={1} gap="$4" bg="$background">
-      <Button>Test</Button>
-    </YStack>
+    <View flex={1} gap="$4" bg="$background">
+      <>Test</>
+    </View>
   )
 }

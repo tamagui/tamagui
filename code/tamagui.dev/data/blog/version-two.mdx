@@ -72,8 +72,9 @@ couple slow ones.
 
 The breaking changes outside of deprecations are:
 
-- **React Native 0.76+ required.** Tamagui 2 targets React Native 0.76 and above
-  with New Architecture support. This enables significant new style features.
+- **React Native 0.82+ and React 19+ required.** Tamagui 2 targets React Native
+  0.82 and React 19 and above with New Architecture support. This enables
+  significant new style features and simplifies internals.
 - Default flex and position styles align with the latest React Native versions,
   but you can change settings to keep the legacy behavior.
 - Button and ListItem lose direct text style props, to gain performance.
@@ -88,8 +89,8 @@ The breaking changes outside of deprecations are:
 #### CSS Shorthand with Variables
 
 You can now use Tamagui `$variables` directly inside CSS shorthand string values
-like `boxShadow`. On web, variables resolve to CSS custom properties; on native
-(React Native 0.76+), they resolve to raw values:
+like `boxShadow`. On web, variables resolve to CSS custom properties; on native,
+they resolve to raw values:
 
 ```tsx
 // Works on both web and native!
@@ -104,10 +105,10 @@ web-only since React Native doesn't support CSS border shorthand syntax. On
 native, continue using the individual props (`borderWidth`, `borderColor`,
 `borderStyle`).
 
-#### Cross-Platform Style Props (RN 0.76+)
+#### Cross-Platform Style Props
 
 Many style properties that were previously web-only now work on React Native
-0.76+ with the New Architecture:
+with the New Architecture:
 
 - **`boxShadow`** - Full CSS box-shadow support including multiple shadows,
   spread, and inset. Accepts strings, objects, or arrays.
@@ -115,9 +116,6 @@ Many style properties that were previously web-only now work on React Native
   `contrast`, `grayscale`, `hueRotate`, `invert`, `saturate`, `sepia`, and
   `dropShadow`. Cross-platform for `brightness` and `opacity`; Android 12+ for
   others.
-
-RN 0.77+ adds even more:
-
 - **`mixBlendMode`** - Blend modes like `multiply`, `screen`, `overlay`, etc.
 - **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
 - **`boxSizing`** - Box model (`border-box` | `content-box`)
