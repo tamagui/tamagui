@@ -5,10 +5,10 @@ import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
 // Example using styled() to define toggledStyle and hoverStyle
 const StyledItem = styled(ToggleGroup.Item, {
   hoverStyle: {
-    backgroundColor: '$color5',
+    backgroundColor: '$backgroundFocus',
   },
   toggledStyle: {
-    backgroundColor: '$color6',
+    backgroundColor: '$backgroundFocus',
   },
 })
 
@@ -61,8 +61,8 @@ function ToggleGroupComponent(props: {
         <ToggleGroup.Item
           value="center"
           aria-label="Center aligned"
-          hoverStyle={{ backgroundColor: '$color5' }}
-          toggledStyle={{ backgroundColor: '$color6' }}
+          hoverStyle={{ backgroundColor: '$backgroundFocus' }}
+          toggledStyle={{ backgroundColor: '$backgroundFocus' }}
         >
           <AlignCenter />
         </ToggleGroup.Item>
@@ -71,8 +71,8 @@ function ToggleGroupComponent(props: {
         <ToggleGroup.Item
           value="right"
           aria-label="Right aligned"
-          hoverStyle={{ backgroundColor: '$color5' }}
-          toggledStyle={{ backgroundColor: '$color6' }}
+          hoverStyle={{ backgroundColor: '$backgroundFocus' }}
+          toggledStyle={{ backgroundColor: '$backgroundFocus' }}
         >
           <AlignRight />
         </ToggleGroup.Item>
