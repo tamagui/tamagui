@@ -151,7 +151,7 @@ const AnimationControl = () => {
             animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
           }
         >
-          <Switch.Thumb animation="quick" />
+          <Switch.Thumb transition="quickest" />
         </Switch>
         <Waves size={14} opacity={0.6} />
       </XStack>

@@ -60,7 +60,7 @@ export function AnimationsPresenceDemo() {
       items="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
-        <GalleryItem key={page} animation="slow" going={going}>
+        <GalleryItem key={page} transition="slow" going={going}>
           <Image src={images[imageIndex]} width={820} height={300} objectFit="cover" />
         </GalleryItem>
       </AnimatePresence>

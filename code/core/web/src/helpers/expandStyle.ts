@@ -3,7 +3,7 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import { isAndroid, isWeb } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 
 import { getSetting } from '../config'
 import {
@@ -44,14 +44,6 @@ export function expandStyle(key: string, value: any): PropMappedValue {
         ]
       }
     }
-  }
-
-  if (
-    process.env.TAMAGUI_TARGET === 'native' &&
-    isAndroid &&
-    key === 'elevationAndroid'
-  ) {
-    return [['elevation', value]]
   }
 
   if (key in EXPANSIONS) {

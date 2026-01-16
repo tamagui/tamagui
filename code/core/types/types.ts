@@ -139,6 +139,11 @@ export interface TamaguiBuildOptions {
    */
   useReactNativeWebLite?: boolean | 'without-animated'
   disableWatchTamaguiConfig?: boolean
+
+  /**
+   * (Experimental) Flatten theme access on native for better performance
+   */
+  experimentalFlattenThemesOnNative?: boolean
 }
 
 export interface TamaguiOptions extends TamaguiBuildOptions {

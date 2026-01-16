@@ -1,0 +1,46 @@
+{
+  "name": "@tamagui/animation-helpers",
+  "version": "2.0.0-1768530912818",
+  "type": "module",
+  "source": "src/index.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+}

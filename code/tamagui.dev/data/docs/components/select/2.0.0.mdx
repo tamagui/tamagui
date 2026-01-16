@@ -228,6 +228,23 @@ Extends [ListItem](/docs/components/list-item). Used to add selectable values to
 
 Extends [Paragraph](/docs/components/text). Used inside Item to provide unselectable text that will show above once selected in the parent Select.
 
+### Select.Indicator
+
+An animated indicator that highlights the currently focused item. Place it inside `Select.Viewport` to enable the sliding indicator animation.
+
+```tsx
+<Select.Viewport>
+  <Select.Indicator />
+  <Select.Group>
+    {/* items */}
+  </Select.Group>
+</Select.Viewport>
+```
+
+<Notice>
+  To disable the indicator animation and use the default hover/press styles instead, simply remove `Select.Indicator`. The `Select.Item` component has `hoverStyle` and `pressStyle` with `$backgroundHover` and `$backgroundPress` by default.
+</Notice>
+
 ### Select.FocusScope
 
 Provides access to the underlying FocusScope component used by Select for focus management. Can be used to control focus behavior from a parent component.

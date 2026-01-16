@@ -186,6 +186,14 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
               outlineOffset: -0.5,
               zIndex: 100,
 
+              hoverStyle: {
+                backgroundColor: '$backgroundHover',
+              },
+
+              pressStyle: {
+                backgroundColor: '$backgroundPress',
+              },
+
               focusVisibleStyle: {
                 outlineColor: '$outlineColor',
                 outlineWidth: 1,

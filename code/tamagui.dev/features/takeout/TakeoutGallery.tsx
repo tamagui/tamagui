@@ -105,6 +105,14 @@ class GalleryStore {
 
 const useGalleryStore = createUseStore(GalleryStore)
 
+// Export for external use
+export { useGalleryStore }
+
+// Export just the dialog for use in other pages
+export function TakeoutGalleryDialog() {
+  return <ImageGallery />
+}
+
 export default function TakeoutGallery() {
   const store = useGalleryStore()
 
@@ -246,7 +254,7 @@ const ImageGallery = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="lazy"
+          transition="lazy"
           opacity={0.1}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -257,7 +265,7 @@ const ImageGallery = () => {
           borderColor="$borderColor"
           elevate
           key="content"
-          animation={[
+          transition={[
             'medium',
             {
               opacity: {
@@ -338,7 +346,7 @@ const ImagesCarousel = () => {
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable
           key={store.galleryImageIdx}
-          animation="medium"
+          transition="medium"
           x={0}
           opacity={1}
           width="100vw"
@@ -411,7 +419,7 @@ const TakeoutImage = ({
       overflow="hidden"
       elevation="$3"
       cursor="pointer"
-      animation="100ms"
+      transition="100ms"
       hoverStyle={{ scale: 1.015 }}
       pressStyle={{ scale: 0.975 }}
       {...wrapperProps}

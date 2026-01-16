@@ -3,7 +3,7 @@
  */
 export declare const skipProps: {
     untilMeasured: number;
-    animation: number;
+    transition: number;
     space: number;
     animateOnly: number;
     disableClassName: number;

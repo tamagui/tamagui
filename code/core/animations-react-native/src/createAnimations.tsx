@@ -1,9 +1,10 @@
+import { normalizeTransition } from '@tamagui/animation-helpers'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
   AnimatedNumberStrategy,
   AnimationDriver,
-  AnimationProp,
+  TransitionProp,
   UniversalAnimatedNumber,
   UseAnimatedNumberReaction,
   UseAnimatedNumberStyle,
@@ -200,7 +201,7 @@ export function createAnimations<A extends AnimationsConfig>(
       )
 
       const animateOnly = (props.animateOnly as string[]) || []
-      const hasAnimateOnly = !!props.animateOnly
+      const hasTransitionOnly = !!props.animateOnly
 
       const args = [
         JSON.stringify(style),
@@ -242,7 +243,7 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          if (hasAnimateOnly && !animateOnly.includes(key)) {
+          if (hasTransitionOnly && !animateOnly.includes(key)) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -331,7 +332,7 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (value) {
-            const animationConfig = getAnimationConfig(key, animations, props.animation)
+            const animationConfig = getAnimationConfig(key, animations, props.transition)
 
             let resolve
             const promise = new Promise<void>((res) => {
@@ -447,40 +448,35 @@ function getInterpolated(current: number, next: number, postfix = 'deg') {
 function getAnimationConfig(
   key: string,
   animations: AnimationsConfig,
-  animation?: AnimationProp
+  transition?: TransitionProp
 ): AnimationConfig {
-  if (typeof animation === 'string') {
-    return animations[animation]
-  }
-
-  let type = ''
-  let extraConf: any
+  const normalized = normalizeTransition(transition)
   const shortKey = transformShorthands[key]
 
-  if (Array.isArray(animation)) {
-    type = animation[0] as string
-    const animationOptions = animation[1]
-    const conf = animationOptions?.[key] ?? animationOptions?.[shortKey]
-    if (conf) {
-      if (typeof conf === 'string') {
-        type = conf
-      } else {
-        type = (conf as any).type || type
-        extraConf = conf
-      }
-    }
-    // e.g., animation={['bouncy', { delay: 100 }]}
-    const delay = animationOptions?.delay
-    if (typeof delay === 'number' && !extraConf?.delay) {
-      extraConf = { ...extraConf, delay }
-    }
-  } else {
-    const val = animation?.[key] ?? animation?.[shortKey]
-    type = val?.type
-    extraConf = val
+  // Check for property-specific animation
+  const propAnimation = normalized.properties[key] ?? normalized.properties[shortKey]
+
+  let animationType: string | null = null
+  let extraConf: any = {}
+
+  if (typeof propAnimation === 'string') {
+    // Direct animation name: { x: 'quick' }
+    animationType = propAnimation
+  } else if (propAnimation && typeof propAnimation === 'object') {
+    // Config object: { x: { type: 'quick', delay: 100 } }
+    animationType = propAnimation.type || normalized.default
+    extraConf = propAnimation
+  } else if (normalized.default) {
+    // Fall back to default
+    animationType = normalized.default
   }
 
-  const found = animations[type]
+  // Apply global delay if no property-specific delay
+  if (normalized.delay && !extraConf.delay) {
+    extraConf = { ...extraConf, delay: normalized.delay }
+  }
+
+  const found = animationType ? animations[animationType] : {}
   return {
     ...found,
     ...extraConf,

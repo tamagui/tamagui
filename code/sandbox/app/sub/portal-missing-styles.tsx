@@ -19,14 +19,14 @@ export const DialogTest = () => {
       </Dialog.Trigger>
 
       <Dialog.Adapt when="maxMd">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame bg="$color2" padding={0} gap="$4">
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />

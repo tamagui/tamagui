@@ -8,6 +8,7 @@ import type {
   GetStaticConfig,
   GetStyledVariants,
   GetVariantValues,
+  InferStyleProps,
   InferStyledProps,
   StaticConfig,
   StaticConfigPublic,
@@ -76,9 +77,9 @@ export function styled<
         [Key in keyof Accepted]?:
           | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
           | (Accepted[Key] extends 'style'
-              ? Partial<InferStyledProps<ParentComponent, StyledConfig>>
+              ? Partial<InferStyleProps<ParentComponent, StyledConfig>>
               : Accepted[Key] extends 'textStyle'
-                ? Partial<InferStyledProps<typeof Text, StyledConfig>>
+                ? Partial<InferStyleProps<typeof Text, StyledConfig>>
                 : Omit<ThemeValueGet<Accepted[Key]>, 'unset'>)
       }
     : {}

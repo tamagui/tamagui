@@ -63,7 +63,7 @@ export function BenchmarkChart({
                 justify="center"
                 scaleX={1}
                 {...(animateEnter && {
-                  animation: 'lazy',
+                  transition: 'lazy',
                   enterStyle: {
                     opacity: 0,
                     scaleX: 0,

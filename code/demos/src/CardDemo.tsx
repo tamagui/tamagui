@@ -5,7 +5,7 @@ export function CardDemo() {
   return (
     <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
       <DemoCard
-        animation="bouncy"
+        transition="bouncy"
         size="$4"
         width={250}
         height={300}

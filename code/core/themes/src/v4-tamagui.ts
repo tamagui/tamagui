@@ -1,4 +1,4 @@
-import * as Colors from '@tamagui/colors'
+import * as Colors from '@tamagui/colors/legacy'
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { desaturate } from 'color2k'
 

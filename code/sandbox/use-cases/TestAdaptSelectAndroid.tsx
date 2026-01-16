@@ -34,7 +34,7 @@ export default function TestSelectAdapt(props: SelectProps) {
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
-            animation="quick"
+            transition="quick"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -56,7 +56,7 @@ export default function TestSelectAdapt(props: SelectProps) {
 
         <Select.Viewport
           // to do animations:
-          // animation="quick"
+          // transition="quick"
           // animateOnly={['transform', 'opacity']}
           // enterStyle={{ o: 0, y: -10 }}
           // exitStyle={{ o: 0, y: 10 }}

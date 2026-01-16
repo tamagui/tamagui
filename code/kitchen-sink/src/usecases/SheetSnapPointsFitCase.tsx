@@ -31,7 +31,7 @@ function AdaptedDialogSheet() {
 
       <Adapt when="sm" platform="web">
         <Sheet
-          animation="medium"
+          transition="medium"
           zIndex={200000}
           modal
           dismissOnSnapToBottom
@@ -48,7 +48,7 @@ function AdaptedDialogSheet() {
           </Sheet.Frame>
           <Sheet.Overlay
             data-testid="adapted-sheet-overlay"
-            animation="lazy"
+            transition="lazy"
             bg="$color"
             opacity={0.5}
             enterStyle={{ opacity: 0 }}
@@ -60,7 +60,7 @@ function AdaptedDialogSheet() {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          transition="quick"
           bg="$color"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
@@ -71,7 +71,7 @@ function AdaptedDialogSheet() {
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           width={400}
@@ -114,11 +114,11 @@ function StandaloneSheetFit() {
         snapPointsMode="fit"
         dismissOnSnapToBottom
         zIndex={100000}
-        animation="medium"
+        transition="medium"
       >
         <Sheet.Overlay
           data-testid="standalone-fit-overlay"
-          animation="lazy"
+          transition="lazy"
           bg="$color"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
@@ -162,11 +162,11 @@ function StandaloneSheetPercent() {
         snapPointsMode="percent"
         dismissOnSnapToBottom
         zIndex={100000}
-        animation="medium"
+        transition="medium"
       >
         <Sheet.Overlay
           data-testid="standalone-percent-overlay"
-          animation="lazy"
+          transition="lazy"
           bg="$color"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
@@ -210,11 +210,11 @@ function StandaloneSheetConstant() {
         snapPointsMode="constant"
         dismissOnSnapToBottom
         zIndex={100000}
-        animation="medium"
+        transition="medium"
       >
         <Sheet.Overlay
           data-testid="standalone-constant-overlay"
-          animation="lazy"
+          transition="lazy"
           bg="$color"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
@@ -264,11 +264,11 @@ function RapidOpenCloseSheet() {
         snapPointsMode="fit"
         dismissOnSnapToBottom
         zIndex={100000}
-        animation="medium"
+        transition="medium"
       >
         <Sheet.Overlay
           data-testid="rapid-overlay"
-          animation="lazy"
+          transition="lazy"
           bg="$color"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
@@ -311,11 +311,11 @@ function DynamicContentSheet() {
         snapPointsMode="fit"
         dismissOnSnapToBottom
         zIndex={100000}
-        animation="medium"
+        transition="medium"
       >
         <Sheet.Overlay
           data-testid="dynamic-content-overlay"
-          animation="lazy"
+          transition="lazy"
           bg="$color"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}

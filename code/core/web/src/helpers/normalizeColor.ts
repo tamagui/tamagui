@@ -4,6 +4,8 @@ export { rgba } from '@tamagui/normalize-css-color'
 
 export const normalizeColor = (color?: string | null, opacity?: number) => {
   if (!color) return
+  // Handle dynamic color objects (from $theme-dark/$theme-light)
+  if (typeof color !== 'string') return color
   if (color[0] === '$') return color
   if (color.startsWith('var(')) {
     if (typeof opacity === 'number' && opacity < 1) {
@@ -22,6 +24,8 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
 }
 
 export const getRgba = (color: string) => {
+  // Handle dynamic color objects (from $theme-dark/$theme-light)
+  if (typeof color !== 'string') return
   const colorNum = normalizeCSSColor(color)
   if (colorNum != null) {
     return rgba(colorNum)

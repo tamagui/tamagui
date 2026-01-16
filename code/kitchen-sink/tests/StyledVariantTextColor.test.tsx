@@ -12,13 +12,13 @@ test(`sets text colors with variants + theme`, async ({ page }) => {
   const defaultStylesFlat = await getStyles(page.getByTestId('default-flat').first())
 
   // $color - updated for themeDev
-  expect(defaultStyles.color).toBe('rgb(0, 37, 77)')
+  expect(defaultStyles.color).toBe('rgb(17, 50, 100)')
   expect(defaultStylesFlat.color).toBe(defaultStyles.color)
 
   const activeStyles = await getStyles(page.getByTestId('active').first())
   const activeStylesFlat = await getStyles(page.getByTestId('active-flat').first())
 
   // $color10 - updated for themeDev
-  expect(activeStyles.color).toBe('rgb(0, 128, 240)')
+  expect(activeStyles.color).toBe('rgb(5, 134, 240)')
   expect(activeStylesFlat.color).toBe(activeStyles.color)
 })

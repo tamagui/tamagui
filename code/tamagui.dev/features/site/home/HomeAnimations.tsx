@@ -1,5 +1,5 @@
 import { LogoIcon, useTint } from '@tamagui/logo'
-import { ArrowDown, ArrowUp, Play } from '@tamagui/lucide-icons'
+import { ArrowDown, Play } from '@tamagui/lucide-icons'
 import { animations } from '@tamagui/tamagui-dev-config'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
@@ -71,7 +71,6 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             self="flex-start"
             z={100}
             elevation="$4"
-            mr="$-2"
             rounded="$4"
             theme={tint as any}
             justify="center"
@@ -112,7 +111,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             <CodeDemoPreParsed
               pointerEvents={disableScrollPane ? 'none' : 'auto'}
               height={disableScrollPane ? 500 : 1250}
-              animation="quick"
+              transition="quick"
               maxW={530}
               minW={530}
               rounded="$8"
@@ -264,7 +263,7 @@ export function AnimationsDemoBase(props) {
   return (
     <>
       <Square
-        animation={(props.animation || 'bouncy') as any}
+        transition={props.animation || 'bouncy'}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}

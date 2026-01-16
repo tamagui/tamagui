@@ -75,14 +75,14 @@ export const NewAccountModal = () => {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal dismissOnSnapToBottom animation="medium">
+          <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Frame bg="$background" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
             <Sheet.Overlay
-              animation="lazy"
+              transition="lazy"
               bg="$shadow6"
               opacity={1}
               enterStyle={{ opacity: 0 }}
@@ -95,7 +95,7 @@ export const NewAccountModal = () => {
           <Configuration animationDriver={animationsCSS}>
             <Dialog.Overlay
               key="overlay"
-              animation="medium"
+              transition="medium"
               bg="$shadow3"
               backdropFilter="blur(20px)"
               enterStyle={{ opacity: 0 }}
@@ -107,7 +107,7 @@ export const NewAccountModal = () => {
             bordered
             elevate
             key="content"
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {
@@ -341,7 +341,7 @@ const AccountHeader = () => {
   if (isLoading || !data) {
     return null
   }
-  const { userDetails, user } = data
+  const { userDetails, user, githubUsername } = data
 
   const handleLogout = async () => {
     try {
@@ -385,6 +385,11 @@ const AccountHeader = () => {
               {userDetails?.full_name}
             </H3>
             <Paragraph theme="alt1">{user?.email}</Paragraph>
+            {githubUsername && (
+              <Paragraph theme="alt2" size="$2">
+                GitHub: @{githubUsername}
+              </Paragraph>
+            )}
           </YStack>
         </XStack>
       </YStack>
@@ -462,12 +467,17 @@ const ServiceCard = ({
   actionLabel,
   onAction,
   secondAction,
+  thirdAction,
 }: {
   title: string
   description: string
   actionLabel: string
   onAction: () => void
   secondAction?: null | {
+    label: string
+    onPress: () => void
+  }
+  thirdAction?: null | {
     label: string
     onPress: () => void
   }
@@ -512,6 +522,19 @@ const ServiceCard = ({
             <Button.Text>{secondAction.label}</Button.Text>
           </Button>
         )}
+
+        {!!thirdAction && (
+          <Button
+            rounded="$10"
+            self="flex-end"
+            mt="$4"
+            size="$3"
+            theme="accent"
+            onPress={thirdAction.onPress}
+          >
+            {thirdAction.label}
+          </Button>
+        )}
       </XStack>
     </YStack>
   )
@@ -533,7 +556,7 @@ const DiscordAccessDialog = ({
       <Dialog.Portal zIndex={999999}>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -542,7 +565,7 @@ const DiscordAccessDialog = ({
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           width="90%"
           maxW={600}
           p="$6"
@@ -675,7 +698,7 @@ const DiscordPanel = ({
             placeholder="Your username..."
             id="discord-username"
             value={draftQuery}
-            onChange={(e) => setDraftQuery(e.target?.value ?? '')}
+            onChange={(e) => setDraftQuery(e.target.value)}
           />
         </Fieldset>
 
@@ -910,50 +933,15 @@ const PlanTab = ({
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const [showSupportAccess, setShowSupportAccess] = useState(false)
   const { data: products } = useProducts()
-  const [isGrantingAccess, setIsGrantingAccess] = useState(false)
   const [isResendingInvite, setIsResendingInvite] = useState(false)
 
   // Check if this is a one-time payment plan
   const isOneTimePlan =
     subscription?.subscription_items?.[0]?.price?.type === Pricing.OneTime
 
-  const handleTakeoutAccess = async () => {
-    if (!subscription || !products) return
-
-    const takeoutProduct = products.pro
-    if (!takeoutProduct) {
-      alert('Product information not found')
-      return
-    }
-
-    setIsGrantingAccess(true)
-
-    try {
-      const res = await fetch(`/api/claim`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          subscription_id: subscription.id,
-          product_id: takeoutProduct.id,
-        }),
-      })
-
-      const data = await res.json()
-      if (!res.ok) {
-        alert(data?.error || `Error: ${res.status} ${res.statusText}`)
-      } else {
-        if (data.url) {
-          // Open URL in new tab
-          window.open(data.url, '_blank', 'noopener,noreferrer')
-        } else if (data.message) {
-          alert(data.message)
-        }
-      }
-    } finally {
-      setIsGrantingAccess(false)
-    }
+  const handleTakeoutAccess = (repoUrl = 'https://github.com/tamagui/takeout') => {
+    // Just open the repo URL directly - invite handling is done via "Resend Invite" button
+    window.open(repoUrl, '_blank', 'noopener,noreferrer')
   }
 
   const handleResendInvite = async () => {
@@ -1003,21 +991,24 @@ const PlanTab = ({
           <ServiceCard
             title="Takeout"
             description="Access to repository and updates."
-            actionLabel={
-              subscription
-                ? isGrantingAccess
-                  ? 'Granting Access...'
-                  : 'View Repository'
-                : 'Purchase'
-            }
+            actionLabel={subscription ? 'Takeout 1' : 'Purchase'}
             onAction={() => {
               if (!subscription) {
                 paymentModal.show = true
               } else {
-                handleTakeoutAccess()
+                handleTakeoutAccess('https://github.com/tamagui/takeout')
               }
             }}
             secondAction={
+              subscription
+                ? {
+                    label: 'Takeout 2',
+                    onPress: () =>
+                      handleTakeoutAccess('https://github.com/tamagui/takeout3'),
+                  }
+                : null
+            }
+            thirdAction={
               subscription
                 ? {
                     label: isResendingInvite ? 'Resending...' : 'Resend Invite',
@@ -1624,7 +1615,7 @@ const TeamTab = ({
                   id="github-username"
                   placeholder="Search GitHub users by name, email, or id"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target?.value ?? '')}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </Fieldset>
             </XStack>

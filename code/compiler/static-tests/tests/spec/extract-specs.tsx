@@ -432,3 +432,30 @@ export function TestFlexWrapWithMediaQuery() {
     </XStack>
   )
 }
+
+// Test aria props - should NOT produce duplicate keys
+export function TestAriaProps() {
+  return (
+    <YStack
+      tag="nav"
+      aria-labelledby="test-heading"
+      aria-label="Navigation menu"
+      p="$4"
+    >
+      <Text id="test-heading">Navigation</Text>
+      {child}
+    </YStack>
+  )
+}
+
+// Test aria props with conditional
+export function TestAriaPropsConditional(props: TestProps) {
+  return (
+    <YStack
+      aria-hidden={props.conditional}
+      aria-expanded={props.conditional ? true : false}
+    >
+      {child}
+    </YStack>
+  )
+}

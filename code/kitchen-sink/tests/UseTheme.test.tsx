@@ -11,5 +11,6 @@ test(`useTheme() returns right values`, async ({ page }) => {
   // themeDev uses hsla format
   expect(await page.locator('#theme-val').innerText()).toBe(`hsla(0, 0%, 100%, 1)`)
   expect(await page.locator('#token-get').innerText()).toBe(`var(--blue1)`)
-  expect(await page.locator('#token-val').innerText()).toBe(`hsl(206, 100%, 99.2%)`)
+  // Updated for Radix v3 hex format
+  expect(await page.locator('#token-val').innerText()).toBe(`#fbfdff`)
 })

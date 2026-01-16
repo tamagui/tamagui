@@ -1,7 +1,8 @@
+import { normalizeTransition } from '@tamagui/animation-helpers'
 import {
   type AnimatedNumberStrategy,
   type AnimationDriver,
-  type AnimationProp,
+  type TransitionProp,
   fixStyles,
   getSplitStyles,
   hooks,
@@ -39,6 +40,15 @@ type AnimationConfig = ValueTransition
 type MotionAnimatedNumberStyle = {
   getStyle: (cur: number) => Record<string, unknown>
   motionValue: MotionValue<number>
+}
+
+/**
+ * Animation options with optional default and per-property configs.
+ * This extends AnimationOptions to support the default key.
+ */
+type TransitionAnimationOptions = AnimationOptions & {
+  default?: ValueTransition
+  [propertyName: string]: ValueTransition | undefined
 }
 
 const minTimeBetweenAnimations = 1000 / 60
@@ -81,9 +91,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const { props, style, componentState, stateRef, useStyleEmitter, presence } =
         animationProps
 
-      const animationKey = Array.isArray(props.animation)
-        ? props.animation[0]
-        : props.animation
+      const animationKey = Array.isArray(props.transition)
+        ? props.transition[0]
+        : props.transition
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
@@ -414,7 +424,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 
   function getMotionAnimatedProps(
-    props: { animation: AnimationProp | null; animateOnly?: string[] },
+    props: { transition: TransitionProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
     disable: boolean
   ): AnimationProps {
@@ -424,7 +434,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = animationPropToAnimationConfig(props.animation)
+    const animationOptions = transitionPropToAnimationConfig(props.transition)
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
@@ -460,60 +470,48 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
   }
 
-  function animationPropToAnimationConfig(
-    animationProp: AnimationProp | null
-  ): AnimationOptions {
-    let defaultAnimationKey = ''
-    let specificAnimations: Record<string, any> = {}
+  function transitionPropToAnimationConfig(
+    transitionProp: TransitionProp | null
+  ): TransitionAnimationOptions {
+    const normalized = normalizeTransition(transitionProp)
 
-    if (typeof animationProp === 'string') {
-      defaultAnimationKey = animationProp
-    } else if (Array.isArray(animationProp)) {
-      if (typeof animationProp[0] === 'string') {
-        defaultAnimationKey = animationProp[0]
-        specificAnimations = animationProp[1] || {}
-      } else {
-        specificAnimations = animationProp
-      }
-    }
-
-    if (!defaultAnimationKey) {
+    // If no animation defined, return empty config
+    if (!normalized.default && Object.keys(normalized.properties).length === 0) {
       return {}
     }
 
-    const defaultConfig = animations[defaultAnimationKey]
+    const defaultConfig = normalized.default ? animations[normalized.default] : null
 
-    // e.g., animation={['bouncy', { delay: 100 }]}
     // Framer Motion uses seconds, so convert from ms
     const delay =
-      typeof specificAnimations.delay === 'number'
-        ? specificAnimations.delay / 1000
-        : undefined
+      typeof normalized.delay === 'number' ? normalized.delay / 1000 : undefined
 
-    return {
-      default: delay ? { ...defaultConfig, delay } : defaultConfig,
-      ...Object.fromEntries(
-        Object.entries(specificAnimations).flatMap(
-          ([propName, animationNameOrConfig]) => {
-            if (typeof animationNameOrConfig === 'string') {
-              return [[propName, animations[animationNameOrConfig]]]
-            }
-            if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
-              return [
-                [
-                  propName,
-                  {
-                    ...defaultConfig,
-                    ...animationNameOrConfig,
-                  },
-                ],
-              ]
-            }
-            return []
-          }
-        )
-      ),
+    // Build the animation options
+    const result: TransitionAnimationOptions = {}
+
+    // Set default animation config
+    if (defaultConfig) {
+      result.default = delay ? { ...defaultConfig, delay } : defaultConfig
     }
+
+    // Add property-specific animations
+    for (const [propName, animationNameOrConfig] of Object.entries(
+      normalized.properties
+    )) {
+      if (typeof animationNameOrConfig === 'string') {
+        result[propName] = animations[animationNameOrConfig]
+      } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
+        const baseConfig = animationNameOrConfig.type
+          ? animations[animationNameOrConfig.type]
+          : defaultConfig
+        result[propName] = {
+          ...baseConfig,
+          ...animationNameOrConfig,
+        }
+      }
+    }
+
+    return result
   }
 }
 

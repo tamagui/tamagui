@@ -42,7 +42,7 @@ export const Dialogs = memo(() => {
     >
       <Dialog.Portal zIndex={10000000000}>
         <Dialog.Overlay
-          animation="quick"
+          transition="quick"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -54,7 +54,7 @@ export const Dialogs = memo(() => {
           bordered
           elevate
           key="content"
-          animation={[
+          transition={[
             'quickest',
             {
               opacity: {

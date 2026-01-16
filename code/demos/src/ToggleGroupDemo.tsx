@@ -1,6 +1,15 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
 import type { SizeTokens } from 'tamagui'
-import { Label, ToggleGroup, XStack, YStack } from 'tamagui'
+import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
+
+// Example using styled() to define toggledStyle
+const GreenItem = styled(ToggleGroup.Item, {
+  color: '$green8',
+  toggledStyle: {
+    backgroundColor: '$green9',
+    color: '$yellow9',
+  },
+})
 
 export function ToggleGroupDemo() {
   return (
@@ -42,23 +51,32 @@ function ToggleGroupComponent(props: {
         size={props.size}
         disableDeactivation={props.type === 'single' ? true : undefined}
       >
-        <ToggleGroup.Item
+        {/* Using styled() component */}
+        <GreenItem
           value="left"
           aria-label="Left aligned"
           focusStyle={{ background: '$color12' }}
         >
           <AlignLeft />
-        </ToggleGroup.Item>
+        </GreenItem>
+
+        {/* Using inline toggledStyle prop */}
         <ToggleGroup.Item
           value="center"
           aria-label="Center aligned"
+          color="$blue8"
+          toggledStyle={{ backgroundColor: '$blue9', color: '$green9' }}
           focusStyle={{ background: '$color12' }}
         >
           <AlignCenter />
         </ToggleGroup.Item>
+
+        {/* Using inline toggledStyle prop */}
         <ToggleGroup.Item
           value="right"
           aria-label="Right aligned"
+          color="$red8"
+          toggledStyle={{ backgroundColor: '$red9', color: '$blue9' }}
           focusStyle={{ background: '$color12' }}
         >
           <AlignRight />

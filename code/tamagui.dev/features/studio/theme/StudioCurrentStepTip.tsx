@@ -62,7 +62,7 @@ export function StudioCurrentStepTip() {
           elevate
           maxW={500}
           theme="surface2"
-          animation={[
+          transition={[
             'quickest',
             {
               opacity: {

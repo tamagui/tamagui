@@ -1,57 +1,60 @@
-better polymorphism:
+v2:
 
-- https://beta.cva.style/getting-started/polymorphism#alternative-approaches
-  - seems we could move add render alongside tag?
-    - <Button render={} />
-    - deprecate asChild?
+See `docs/web-alignment-plan.md` for the full web props migration plan.
 
-- did we remove onlyAllowShorthands? seems a bit aggressive
+**DONE (already in v2):**
+- ✅ `transition` prop (not `animation`)
+- ✅ `defaultPosition: 'static'`
+- ✅ `box-sizing: border-box` default
+- ✅ Image component (new web-aligned with `src`, `objectFit`)
+- ✅ `inputMode`, `enterKeyHint` for Input
 
-- remove group auto-index stuff, its not really doable with react
-  - https://github.com/tamagui/tamagui/pull/2163
-- option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
-- v2 useTheme({ name: '' }) should remove since .get() doesnt match
-- release v5 config now
+**Web Alignment (breaking changes):**
+- Remove RN accessibility props entirely, use only `aria-*` and `role`
+- Remove `focusable`, use only `tabIndex`
+- Remove `onPress/onPressIn/onPressOut`, use only `onClick/onPointerDown/onPointerUp`
+- Remove legacy shadow props (`shadowColor`, `shadowOffset`, etc), use `boxShadow`
+  - RN 0.76+ natively supports `boxShadow` (New Architecture)
+  - Supports string, object, and array (multiple shadows) syntax
+  - Add $token support in boxShadow strings: `boxShadow="0 2px 10px $shadowColor"`
+- Keep `onChangeText` as exception (ergonomic for RN devs)
 
-- document single-instance + scope for tooltip/dialog/popove
-- animation => transition
-- rem => https://github.com/tamagui/tamagui/pull/3109
-- fix toggle / multiple https://github.com/tamagui/tamagui/pull/3362
+- <Button render={} /> i started a pr we should try and move from tag => render fully, but render can take string as a simple option
 
-potentially:
+---
 
-- progress headless
-  - https://github.com/tamagui/tamagui/pull/2635
-  - demo https://github.com/tamagui/tamagui/pull/2717
-- accordion headless
-  - https://github.com/tamagui/tamagui/pull/2598
-- forgot we had headless menu
-  - https://github.com/tamagui/tamagui/pull/1978
-- popper origin/size
-  - https://github.com/tamagui/tamagui/pull/2734/files
-  - older version https://github.com/tamagui/tamagui/pull/2723
+AFTER v2 RC (nice to haves):
 
-- tooltip follow
-  - we did land scoped tooltip and better position support
+- css driver can noRerender
+  - reanimated too but requires testing native + worklets
 
-see if claude can get working well:
+- Text weirdness fixes (explore)
+    - remove suppressHighlighting / margin 0 default from Text
+    - fix display: inline issue
+    - see what react-strict-dom is doing
+    - move it to <div><span> where div is flex, span is text only props
+        <div {...nonTextStyleProps}>
+          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
 
-  - input adornment https://github.com/tamagui/tamagui/pull/1654
-  - headless list item https://github.com/tamagui/tamagui/pull/2458
+          </span>
+        </div>
 
-pre v2:
-
-  - useTheme().x.val may have bug on light/dark switch
-  - https://github.com/tamagui/tamagui/issues/3322
-  - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
-  - react native 78 dialogs not working
-    - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
-  - tamagui.dev the right side quick nav on docs isnt updating on page nav
-    - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
+- smaller bugfixes/things to check work:
   - fix react 19 + nextjs 15
-    - https://github.com/gcoakleyjr/React19-Tamagui
+      - https://github.com/gcoakleyjr/React19-Tamagui
   - ensure onlyAllowShorthands changes types properly
   - tooltip: expects zIndex but shorthand overrides and doesn't work
+  - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
+  - fix toggle / multiple https://github.com/tamagui/tamagui/pull/3362
+  - seems <Switch checked defaultChecked> isnt showing in the checked position
+
+- option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
+- v2 useTheme({ name: '' }) should remove since .get() doesnt match
+
+  - useTheme().x.val may have bug on light/dark switch
+  - react native 78 dialogs not working
+    - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
+  
   
 As an example, we have a Button that has a variant, default.
 its pressStyle is
@@ -91,26 +94,21 @@ uniswap:
 
 - When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
-  
+
 - AnimatePresence leaving things in DOM
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
 
 ---
 
-blog post:
-
-  - headless versions of most components
-
----
-
-- Dialog.Portal and <Dialog modal /> redundant
-
-- boxShadow, border, background, boxShadow props with web style
-    - deprecate shadow props separated?
+- perf: could avoid even creating style rules, easy / big win:
+  - note that in addStyleToInsertRules it checks if shouldInsert
+  - note that we create all the style rules before we actually check if should insert
+  - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
 
 - import `tamagui/styled` / `@tamagui/button/styled`
   - adds styles, sizing, unstyled prop
     - removing default size based styling, look at this in tooltip!:
+
 ```
 const padding = !props.unstyled
         ? (props.padding ??
@@ -123,48 +121,10 @@ const padding = !props.unstyled
 ```
 
 
-- seems css driver needs love and a bit of testing
-  - heard reports animatepresence breaking
-  - in onejs/chat bug with transforms merging media queries: 
-    - see // TODO bug x should overwrite not be cumulative
-  - css animation driver enter animations not working it seems, i used to have
-    a fix for this where setState({ unmounted: true }) inside createComponent had a setTimeout() wrapped around it, but then removed it when i tested and found it didnt need it anymore, but seems it does need it again? or some other better fix ideally.
-
-- two fixes for animation drivers
-  - remove <Configuration animationDriver (breaks compiler)
-    - instead `animationDriver` prop on any component
-  - accept multiple animationDrivers at root for proper types
-
-- Text weirdness fixes (explore)
-    - remove suppressHighlighting / margin 0 default from Text
-    - fix display: inline issue
-    - see what react-strict-dom is doing
-    - move it to <div><span> where div is flex, span is text only props
-        <div {...nonTextStyleProps}>
-          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
-
-          </span>
-        </div>
-
-- react 19 migration:
-  - keep forwardRef for now at least
-  - useEvent => useEffectEvent
-
 - checkbox disableActiveTheme not workign
 - ssr fix i think select not showing value until after load?
 
 animations improvements:
-
-> Independent Transforms
-  Motion allows you to animate transform properties independently:
-
-  <YStack
-    animation={{
-      x: 'quick',      // Animate x with quick spring
-      y: 'bouncy',     // Animate y with bouncy spring
-      scale: '100ms',  // Animate scale with 100ms tween
-    }}
-  />
 
 - make tamagui package work in some simple way
   - probably making tamagui + tamagui/ui both work is fine
@@ -182,7 +142,6 @@ animations improvements:
     - we can: pass in scrollable node selector
     - do logic to determine if its actually scrollable
 
-- Dialog.Overlay shouldn't need to define key for animation
 - apply visibility hidden to fully hidden popover for perf gains
 
 - refresh site hero:
@@ -195,25 +154,15 @@ animations improvements:
   - super-powerful: themes, animations
 
 - sync AnimatePresence with latest changes from framer-motion
+  - BUT needs careful checking - the aniamted gallery thing for example is realyl fussy and i saw regressions before when i tried syncing it
 
 ---
-
-- css driver can noRerender
-  - reanimated too but requires testing native + worklets
-
-- removeScrollEnabled => disableRemoveScroll
 
 - popover bring back dismissable - document dismissable etc
 
 - escape on tamagui sheet doesn't close in general keyboard accessibility
   - check radix sheet and compare and improve
 
-- perf: could avoid even creating style rules, easy / big win:
-  - note that in addStyleToInsertRules it checks if shouldInsert
-  - note that we create all the style rules before we actually check if should insert
-  - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
-
-- eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
 - announcement
 
 - group props require the prop key to be stable like animations
@@ -228,9 +177,6 @@ animations improvements:
 
 v3:
   - aim for fast follow
-  - if not in 2, animation => transition
-  - default box-sizing to border-box
-  - default position: static
   - remove component themes, instead theme="surface2" etc
   - remove `name` from styled()
   - remove inverse in favor of sub-themes that can inverse already ssr safe
@@ -246,7 +192,6 @@ v3:
 - todo:
   - remove $true tokens and concept
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
-  - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
   - remove componentName, just allow setting default theme: ""
@@ -270,8 +215,7 @@ v3:
     - rather than wrapping react-native-web we implement our own
     - keep it simple, align to web props as much as possible
   <!-- - swap image-next => image -->
-  - make sure webContainerType is "right" - probably not `normal` default
-    - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
+  - make sure webContainerType is "right" - probably not `normal` default (currently `inline-size`)
   - we should fix "tag" and have it so you can pass typed props to the tag
     - tag => as?
     - tag={['a', { href: '' }]}
@@ -289,7 +233,6 @@ v3:
   - Cleanup Select/ListItem
     - v2-3 ListItem simplification esp for performance of Select
     - fix Select hover/type/performance
-  - AnimatePresence: remove deprecated props in favor of `custom`
 
 potential
 
@@ -297,11 +240,6 @@ potential
 
 is this a bug? the is_static conditional is odd, maybe backward
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
-
-- config v5
-
-  - aligned setting to react native layout mode
-  - tokens aligned to tailwind
 
 ---
 
@@ -340,20 +278,13 @@ createCore<CustomTypes>({
 
 - looks like our upgrade to 1.114 added virtualkeyboardpolicy="manual" which broke the auto keyboard appearance on android web, working on a quick fix but wanted to flag
 
-- deeply nested themeInverse needs a fix see kitchen sink squares
-
 - nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
 - button media queries break due to useStyle hook
 - algolia creds
-- can skip a ton of CSS by disabling prefers color theme setting
-  - so long as they use next-theme, or vxrn/color-scheme
 - uniswap/tamagui fixes, see uniswap section
   - the platform-web type issues should be relatively easy
   - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
-
-- can skip a ton of CSS by disabling prefers color theme setting
-  - so long as they use next-theme, or vxrn/color-scheme
 
 ---
 
@@ -371,12 +302,6 @@ const Context = createStyledContext({
   - we should try and redo FocusScope to not cloneElement at all and instead wrap with an element + display: contents
 
 ---
-
-- as long as you use the nextjs or other new color scheme helpers they always add t_dark/t_light on first render so as long as youre ok with dark mode not working for js-off users, you could turn default the tamagui/config v4 to shouldAddPrefersColorThemes: false
-
-- lower priority uniswap:
-  - seems <Switch checked defaultChecked> isnt showing in the checked position
-  - <Theme name="dark"> with switch, the thumb is not picking up the right surface color, must be a multiple-nested theme issue
 
 - small win: `useTheme()` could take a theme name to use a diff theme than the current one
 
@@ -412,7 +337,7 @@ const Context = createStyledContext({
 - move from useMedia match.addListener to addEventListener
 - media query height taking into account the "safe height" is important
 - https://linear.app/uniswap/issue/EXT-925/tamagui-error-breaking-the-extension
-- document Popover.Anchor
+- document Popover.Anchor (implemented, needs docs)
 - Sometimes press getting stuck still on uniswap moonpay flow
 - Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
 

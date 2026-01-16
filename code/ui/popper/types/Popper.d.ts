@@ -16,6 +16,10 @@ export type PopperContextShared = {
     placement?: Placement;
     arrowRef: any;
     onArrowSize?: (val: number) => void;
+    transformOrigin?: {
+        x: string;
+        y: string;
+    };
 };
 export type PopperContextValue = UseFloatingReturn & PopperContextShared;
 export declare const PopperContextFast: import("@tamagui/core").StyledContext<PopperContextValue>;

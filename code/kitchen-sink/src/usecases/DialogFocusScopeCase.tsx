@@ -37,7 +37,7 @@ export function DialogFocusScopeCase() {
         <Dialog.Portal>
           <Dialog.Overlay
             key="parent-overlay"
-            animation="quick"
+            transition="quick"
             opacity={0.5}
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -46,7 +46,7 @@ export function DialogFocusScopeCase() {
             key="parent-content"
             bordered
             elevate
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {
@@ -79,7 +79,7 @@ export function DialogFocusScopeCase() {
                 <Dialog.Portal>
                   <Dialog.Overlay
                     key="nested-overlay"
-                    animation="quick"
+                    transition="quick"
                     opacity={0.5}
                     enterStyle={{ opacity: 0 }}
                     exitStyle={{ opacity: 0 }}
@@ -88,7 +88,7 @@ export function DialogFocusScopeCase() {
                     key="nested-content"
                     bordered
                     elevate
-                    animation="quick"
+                    transition="quick"
                     enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
                     exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
                     width={400}
@@ -150,7 +150,7 @@ function DialogContent({
     <Dialog.Portal>
       <Dialog.Overlay
         key="overlay"
-        animation="quick"
+        transition="quick"
         opacity={0.5}
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
@@ -160,7 +160,7 @@ function DialogContent({
         bordered
         elevate
         disableOutsidePointerEvents={disableOutsidePointerEvents}
-        animation={[
+        transition={[
           'quick',
           {
             opacity: {

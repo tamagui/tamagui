@@ -121,7 +121,7 @@ export const ThemeSwitch = memo(() => {
               )}
             </XStack>
 
-            <Switch.Thumb animation="quickest">
+            <Switch.Thumb transition="quickest">
               <YStack items="center">
                 {isLight && (
                   <Button
@@ -161,7 +161,7 @@ export const ThemeSwitch = memo(() => {
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
-        animation={[
+        transition={[
           'quickest',
           {
             opacity: {

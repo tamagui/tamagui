@@ -66,17 +66,17 @@ const CustomButtonFrame = styled(Button.Frame, {
   },
 })
 function AnimationChangeTest() {
-  const [animation, setanimation] = React.useState('lazy' as any)
+  const [transition, setTransition] = React.useState<'lazy' | 'quick'>('lazy')
   return (
     <>
       <Square
-        animation={animation}
+        transition={transition}
         size={100}
         borderColor="red"
         hoverStyle={{ scale: 2 }}
       />
-      <Button onPress={() => setanimation(animation === 'lazy' ? 'quick' : 'lazy')}>
-        {animation}
+      <Button onPress={() => setTransition(transition === 'lazy' ? 'quick' : 'lazy')}>
+        {transition}
       </Button>
     </>
   )
@@ -189,7 +189,7 @@ export const Sandbox = () => {
             <Square
              size={100}
              bc="red"
-             animation="bouncy"
+             transition="bouncy"
              
              // scale={1}
              enterStyle={{
@@ -197,7 +197,7 @@ export const Sandbox = () => {
              }}
             /> */}
           {/* <AnimationsPresenceDemo /> */}
-          {/* <Square size={100} bc="red" animation="bouncy" /> */}
+          {/* <Square size={100} bc="red" transition="bouncy" /> */}
           {/* <AnimationsPresenceDemo /> */}
           {/* <SandboxExample /> */}
           {/* <SelectDemo /> */}

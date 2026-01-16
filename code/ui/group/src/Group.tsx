@@ -96,10 +96,8 @@ function createGroup(verticalDefault: boolean) {
 
       const isUsingItems = itemChildrenCount > 0
 
-      // 1 off given border to adjust for border radius? This should be user controllable
       const radius =
-        borderRadius ??
-        (size ? getVariableValue(getTokens().radius[size]) - 1 : undefined)
+        borderRadius ?? (size ? getVariableValue(getTokens().radius[size]) : undefined)
 
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius

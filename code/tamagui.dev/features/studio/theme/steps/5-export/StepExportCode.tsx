@@ -171,7 +171,7 @@ export const StepExportCodeSidebar = () => {
                   }
                   size="$2"
                 >
-                  <Switch.Thumb animation="quickest" />
+                  <Switch.Thumb transition="quickest" />
                 </Switch>
               </YStack>
               <Label size="$3" htmlFor="include-component-themes-switch">

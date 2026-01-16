@@ -155,7 +155,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
         </Popover.Trigger>
 
         <Popover.Content
-          animation="quick"
+          transition="quick"
           elevation="$8"
           borderWidth={1}
           borderColor="$color10"

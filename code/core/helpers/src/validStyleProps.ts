@@ -59,8 +59,10 @@ export const tokenCategories = {
     borderStartColor: true,
     shadowColor: true,
     ...textColors,
+    // outlineColor is supported on RN 0.77+ (New Architecture)
+    outlineColor: true,
+    // caretColor is web-only
     ...(process.env.TAMAGUI_TARGET === 'web' && {
-      outlineColor: true,
       caretColor: true,
     }),
   },
@@ -218,15 +220,14 @@ export const stylePropsView = {
 
   boxShadow: true,
   filter: true,
-  // RN 0.77+ style props (set REACT_NATIVE_PRE_77=1 for older RN)
-  ...(!process.env.REACT_NATIVE_PRE_77 && {
-    boxSizing: true,
-    mixBlendMode: true,
-    outlineColor: true,
-    outlineSpread: true,
-    outlineStyle: true,
-    outlineWidth: true,
-  }),
+  // RN 0.76/0.77+ style props (New Architecture)
+  boxSizing: true,
+  mixBlendMode: true,
+  isolation: true,
+  outlineColor: true,
+  outlineOffset: true,
+  outlineStyle: true,
+  outlineWidth: true,
 
   // web-only for convenience - tree-shaken on native
   ...(process.env.TAMAGUI_TARGET === 'web' ? webOnlyStylePropsView : {}),

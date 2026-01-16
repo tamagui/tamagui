@@ -6,7 +6,7 @@ import { webPropsToSkip } from './webPropsToSkip'
  */
 export const skipProps = {
   untilMeasured: 1,
-  animation: 1,
+  transition: 1,
   space: 1,
   animateOnly: 1,
   disableClassName: 1,

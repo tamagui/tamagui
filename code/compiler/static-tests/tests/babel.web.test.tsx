@@ -459,3 +459,281 @@ test('$platform-web styles are flattened on web', async () => {
   expect(output?.js).not.toContain('$platform-web')
   expect(output?.styles).toContain('background-color')
 })
+
+// Verifies that conditional spread with runtime variable from hook inside map is correctly extracted
+test('conditional spread with runtime variable preserves ternary', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    function usePathname() {
+      return '/blog'
+    }
+
+    const navLinks = [{ name: 'Blog', href: '/blog' }]
+
+    export function Header() {
+      const pathname = usePathname()
+      return (
+        <>
+          {navLinks.map((link) => {
+            const isActive = pathname.startsWith(link.href)
+            return (
+              <View
+                key={link.name}
+                backgroundColor="red"
+                {...(isActive && {
+                  backgroundColor: 'blue',
+                })}
+              />
+            )
+          })}
+        </>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The ternary should be preserved in the output - the className should depend on isActive
+  expect(output?.js).toContain('isActive')
+  // The hook call should NOT be removed
+  expect(output?.js).toContain('usePathname')
+  // The pathname variable should be preserved
+  expect(output?.js).toContain('pathname')
+  expect(output?.js).toMatchSnapshot()
+})
+
+// Verifies that conditional spread with prop variable preserves the ternary in className
+test('conditional spread with local variable preserves ternary', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <View
+          backgroundColor="red"
+          {...(isActive && {
+            backgroundColor: 'blue',
+          })}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The ternary should be preserved - className should depend on isActive
+  expect(output?.js).toContain('isActive')
+  expect(output?.js).toMatchSnapshot()
+})
+
+// Verifies conditional spread + hoverStyle works correctly
+test('conditional spread with hoverStyle preserves ternary', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <Stack
+          backgroundColor="red"
+          cursor="pointer"
+          hoverStyle={{ backgroundColor: 'green' }}
+          {...(isActive && {
+            backgroundColor: 'blue',
+          })}
+        />
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The ternary should be preserved - className should depend on isActive
+  expect(output?.js).toContain('isActive')
+  expect(output?.js).toMatchSnapshot()
+})
+
+// Verifies Text with hoverStyle and conditional spread preserves ternary
+test('Text with hoverStyle and conditional spread preserves ternary', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <Text
+          cursor="pointer"
+          hoverStyle={{ color: '$color12' }}
+          {...(isActive && {
+            color: '$color12',
+            fontWeight: '800',
+          })}
+        >
+          hello
+        </Text>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The ternary should be preserved - className should depend on isActive
+  expect(output?.js).toContain('isActive')
+  expect(output?.js).toMatchSnapshot()
+})
+
+// BUG FIX: font_body was only being added to the "true" branch, not the "false" branch
+// This tests that baseFontFamily (from fontFamily="$body" or equivalent) is added to BOTH branches
+test('font_body class is present in BOTH ternary branches', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <Text
+          fontFamily="$body"
+          {...(isActive && {
+            fontWeight: '800',
+          })}
+        >
+          hello
+        </Text>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // Both className strings should have font_body
+  // Match _cn2 = "..." and _cn = "..."
+  const matches = output?.js?.match(/const _cn\d? = "([^"]+)"/g) || []
+
+  // Every className constant should include font_body
+  for (const match of matches) {
+    expect(match).toContain('font_body')
+  }
+
+  expect(output?.js).toMatchSnapshot()
+})
+
+// BUG FIX: accessibilityRole: 'header' from Heading component was being stripped during extraction
+// This caused hydration mismatch - SSR has role="heading" but client doesn't
+test('accessibilityRole converts to role attribute', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return <View accessibilityRole="button" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The output should have role="button" on the div
+  expect(output?.js).toContain('role=')
+  expect(output?.js).toContain('button')
+})
+
+// CSS shorthand properties with embedded $variables
+test('boxShadow with $variable extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+
+    export function Test() {
+      return <Stack boxShadow="0 0 10px $background" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // Should extract to CSS with box-shadow and var()
+  expect(output?.styles).toContain('box-shadow')
+  expect(output?.styles).toContain('var(--')
+})
+
+test('border with $variable extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+
+    export function Test() {
+      return <Stack border="1px solid $background" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // border expands to individual border props, check for color with var()
+  expect(output?.styles).toContain('border')
+  expect(output?.styles).toContain('var(--')
+})
+
+test('boxShadow with multiple $variables extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { Stack } from '@tamagui/core'
+
+    export function Test() {
+      return <Stack boxShadow="0 0 10px $background, 0 0 20px $color" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // Should contain multiple var() references
+  expect(output?.styles).toContain('box-shadow')
+  const varMatches = output?.styles?.match(/var\(--/g)
+  expect(varMatches?.length).toBeGreaterThanOrEqual(2)
+})
+

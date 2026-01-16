@@ -350,7 +350,7 @@ export const createDOMProps = (elementType, props, options?) => {
     className += ` ${props.className}`
   }
 
-  const stylesAtomic = getCSSStylesAtomic(flat)
+  const stylesAtomic = flat ? getCSSStylesAtomic(flat) : []
 
   stylesFromProps.set(domProps, stylesAtomic)
 

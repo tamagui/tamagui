@@ -21,38 +21,40 @@ import {
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { opacify } from './opacify'
 
-const blue = adjustPaletteLight('blue', blueIn)
-const blueDark = adjustPaletteDark('blueDark', blueDarkIn)
-const green = adjustPaletteLight('green', greenIn)
-const greenDark = adjustPaletteDark('greenDark', greenDarkIn)
-const purple = adjustPaletteLight('purple', purpleIn)
-const purpleDark = adjustPaletteDark('purpleDark', purpleDarkIn)
-const red = adjustPaletteLight('red', redIn)
-const redDark = adjustPaletteDark('redDark', redDarkIn)
-const yellow = adjustPaletteLight('yellow', yellowIn)
-const yellowDark = adjustPaletteDark('yellowDark', yellowDarkIn)
-const pink = adjustPaletteLight('pink', pinkIn)
-const pinkDark = adjustPaletteDark('pinkDark', pinkDarkIn)
-const orange = adjustPaletteLight('orange', orangeIn)
-const orangeDark = adjustPaletteDark('orangeDark', orangeDarkIn)
-const teal = adjustPaletteLight('teal', tealIn)
-const tealDark = adjustPaletteDark('tealDark', tealDarkIn)
-const gray = adjustPaletteLight('gray', grayIn)
-const grayDark = adjustPaletteDark('grayDark', grayDarkIn)
+// Use Radix colors directly without saturation/lightness adjustments
+const blue = blueIn
+const blueDark = blueDarkIn
+const green = greenIn
+const greenDark = greenDarkIn
+const purple = purpleIn
+const purpleDark = purpleDarkIn
+const red = redIn
+const redDark = redDarkIn
+const yellow = yellowIn
+const yellowDark = yellowDarkIn
+const pink = pinkIn
+const pinkDark = pinkDarkIn
+const orange = orangeIn
+const orangeDark = orangeDarkIn
+const teal = tealIn
+const tealDark = tealDarkIn
+const gray = grayIn
+const grayDark = grayDarkIn
 
+// Aligned with v4 - darker grays for dark mode
 const darkPalette = [
-  '#080808',
+  '#050505',
+  '#151515',
   '#191919',
+  '#232323',
   '#282828',
-  '#353535',
-  '#444',
-  '#484848',
-  '#525252',
-  '#686868',
-  '#757575',
-  '#9a9a9a',
-  '#ccc',
-  '#fefefe',
+  '#323232',
+  '#424242',
+  '#494949',
+  '#545454',
+  '#626262',
+  '#a5a5a5',
+  '#fff',
 ]
 
 const lightPalette = [
@@ -104,6 +106,66 @@ const neutral = {
   neutral10: neutralPalette[9]!,
   neutral11: neutralPalette[10]!,
   neutral12: neutralPalette[11]!,
+}
+
+const tanLightPalette = [
+  'hsla(40, 30%, 98%, 1)',
+  'hsla(40, 24%, 94%, 1)',
+  'hsla(38, 23%, 91%, 1)',
+  'hsla(36, 20%, 90%, 1)',
+  'hsla(36, 20%, 88%, 1)',
+  'hsla(35, 20%, 85%, 1)',
+  'hsla(35, 21%, 74%, 1)',
+  'hsla(34, 20%, 70%, 1)',
+  'hsla(35, 20%, 67%, 1)',
+  'hsla(34, 19%, 47%, 1)',
+  'hsla(35, 18%, 37%, 1)',
+  'hsla(35, 17%, 20%, 1)',
+]
+
+const tanDarkPalette = [
+  'hsla(30, 9%, 10%, 1)',
+  'hsla(30, 10%, 12%, 1)',
+  'hsla(31, 11%, 18%, 1)',
+  'hsla(30, 12%, 23%, 1)',
+  'hsla(30, 14%, 28%, 1)',
+  'hsla(30, 16%, 33%, 1)',
+  'hsla(30, 18%, 38%, 1)',
+  'hsla(30, 20%, 45%, 1)',
+  'hsla(30, 21%, 50%, 1)',
+  'hsla(29, 22%, 58%, 1)',
+  'hsla(34, 24%, 70%, 1)',
+  'hsla(11, 12%, 79%, 1)',
+]
+
+const tan = {
+  tan1: tanLightPalette[0]!,
+  tan2: tanLightPalette[1]!,
+  tan3: tanLightPalette[2]!,
+  tan4: tanLightPalette[3]!,
+  tan5: tanLightPalette[4]!,
+  tan6: tanLightPalette[5]!,
+  tan7: tanLightPalette[6]!,
+  tan8: tanLightPalette[7]!,
+  tan9: tanLightPalette[8]!,
+  tan10: tanLightPalette[9]!,
+  tan11: tanLightPalette[10]!,
+  tan12: tanLightPalette[11]!,
+}
+
+const tanDark = {
+  tan1: tanDarkPalette[0]!,
+  tan2: tanDarkPalette[1]!,
+  tan3: tanDarkPalette[2]!,
+  tan4: tanDarkPalette[3]!,
+  tan5: tanDarkPalette[4]!,
+  tan6: tanDarkPalette[5]!,
+  tan7: tanDarkPalette[6]!,
+  tan8: tanDarkPalette[7]!,
+  tan9: tanDarkPalette[8]!,
+  tan10: tanDarkPalette[9]!,
+  tan11: tanDarkPalette[10]!,
+  tan12: tanDarkPalette[11]!,
 }
 
 // the same on both light and dark, useful for forcing white/black:
@@ -223,6 +285,7 @@ export const defaultColors = {
     pink,
     purple,
     red,
+    tan,
     teal,
     yellow,
   },
@@ -235,6 +298,7 @@ export const defaultColors = {
     pink: pinkDark,
     purple: purpleDark,
     red: redDark,
+    tan: tanDark,
     teal: tealDark,
     yellow: yellowDark,
   },
@@ -262,6 +326,7 @@ export type DefaultColorName =
   | 'pink'
   | 'purple'
   | 'red'
+  | 'tan'
   | 'teal'
   | 'yellow'
 
@@ -393,6 +458,12 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
           light: neutralPalette,
         },
       },
+      tan: {
+        palette: {
+          dark: tanDarkPalette,
+          light: tanLightPalette,
+        },
+      },
     })
   }
 
@@ -427,6 +498,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
           ...pink,
           ...purple,
           ...red,
+          ...tan,
           ...teal,
           ...whiteColors,
           ...yellow,
@@ -445,6 +517,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
           ...pinkDark,
           ...purpleDark,
           ...redDark,
+          ...tanDark,
           ...tealDark,
           ...whiteColors,
           ...yellowDark,
@@ -480,99 +553,3 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
 
 // Default themes using the createV5Theme function
 export const themes = createV5Theme()
-
-function parseHSL(hslString: string): { h: number; s: number; l: number } {
-  const match = hslString.match(
-    /hsl\((\d+(?:\.\d+)?),\s*(\d+(?:\.\d+)?)%,\s*(\d+(?:\.\d+)?)%\)/
-  )
-  if (!match) throw new Error(`Invalid HSL string: ${hslString}`)
-  return {
-    h: Number.parseFloat(match[1]!),
-    s: Number.parseFloat(match[2]!),
-    l: Number.parseFloat(match[3]!),
-  }
-}
-
-function buildHSL(h: number, s: number, l: number): string {
-  return `hsl(${h}, ${s}%, ${Math.round(l)}%)`
-}
-
-/**
- * I found the 11th color far too different, we smooth it out here
- */
-
-function adjustPaletteLight(
-  name: string,
-  palette: Record<string, string>
-): Record<string, string> {
-  const adjusted: Record<string, string> = { ...palette }
-
-  const color11Key = Object.keys(palette).find((key) => key.endsWith('11'))
-  if (color11Key && palette[color11Key]?.startsWith('hsl(')) {
-    const { h, s, l } = parseHSL(palette[color11Key]!)
-    const newL = Math.min(100, l * 0.9)
-    const isGray = name === 'gray'
-    const newS = isGray ? 0 : 65
-    adjusted[color11Key] = buildHSL(h, newS, newL)
-  }
-
-  const isYellow = name === 'yellow'
-  // de-saturate
-  for (const key in adjusted) {
-    const color = adjusted[key]!
-    const { h, s, l } = parseHSL(color)
-    const newS = s * (isYellow ? 0.65 : 0.9)
-    const newL = Math.round(l * 0.982) // matches dark a bit better
-    adjusted[key] = buildHSL(h, newS, newL)
-  }
-
-  return adjusted
-}
-
-function adjustPaletteDark(
-  name: string,
-  palette: Record<string, string>
-): Record<string, string> {
-  const adjusted: Record<string, string> = { ...palette }
-  const isYellow = name === 'yellowDark'
-
-  for (const [index, key] of Object.keys(palette).entries()) {
-    const number = index + 1
-    const value = palette[key]
-    if (value?.startsWith('hsl(')) {
-      const { h, s, l } = parseHSL(value)
-
-      // we need to strongly de-saturate 11, but skip for gray (keep neutral)
-      if (number === 11) {
-        const newL = Math.round(Math.min(100, l * 1.1))
-        const isGray = name === 'grayDark'
-        const newS = isGray ? 0 : name === 'yellowDark' ? 45 : 65
-        adjusted[key] = buildHSL(h, newS, newL)
-        continue
-      }
-
-      // keep our 8-10 saturation high its meant as the bright value
-      const newS = Math.round(
-        s *
-          (number >= 8 && number <= 10
-            ? 1
-            : isYellow
-              ? 0.24
-              : // for lower index dark numbers they are used for backgrounds, more de-saturated looks better
-                number < 5
-                ? 0.5
-                : 0.9)
-      )
-
-      // to match our themes we darken number < 4
-      const newL =
-        number < 4
-          ? Math.round(Math.min(100, l * 0.65))
-          : Math.round(l * (isYellow ? 1.1 : 0.88))
-
-      adjusted[key] = buildHSL(h, newS, newL)
-    }
-  }
-
-  return adjusted
-}

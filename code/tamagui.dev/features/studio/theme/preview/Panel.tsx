@@ -7,6 +7,7 @@ import {
   ListItem,
   Paragraph,
   Popover,
+  Sheet,
   Switch,
   Theme,
   YGroup,
@@ -84,7 +85,7 @@ export function Panel({
         <YStack
           position="absolute"
           opacity={hovered ? 1 : 0}
-          animation="100ms"
+          transition="100ms"
           r="$-2"
           t="$-2"
           z={100}
@@ -104,16 +105,16 @@ export function Panel({
             </Popover.Trigger>
 
             <Adapt when="maxMd" platform="touch">
-              <Popover.Sheet modal dismissOnSnapToBottom>
-                <Popover.Sheet.Frame p="$4">
+              <Sheet modal dismissOnSnapToBottom>
+                <Sheet.Frame p="$4">
                   <Adapt.Contents />
-                </Popover.Sheet.Frame>
-                <Popover.Sheet.Overlay
-                  animation="quickest"
+                </Sheet.Frame>
+                <Sheet.Overlay
+                  transition="quickest"
                   enterStyle={{ opacity: 0 }}
                   exitStyle={{ opacity: 0 }}
                 />
-              </Popover.Sheet>
+              </Sheet>
             </Adapt>
 
             <Popover.Content
@@ -126,7 +127,7 @@ export function Panel({
               elevate
               p={0}
               animateOnly={['transform', 'opacity']}
-              animation={[
+              transition={[
                 'quicker',
                 {
                   opacity: {
@@ -157,7 +158,7 @@ export function Panel({
                       }}
                     >
                       <Switch.Thumb
-                        animation={[
+                        transition={[
                           'quickest',
                           {
                             transform: {

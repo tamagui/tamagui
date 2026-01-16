@@ -127,3 +127,73 @@ export function sendProductRenewalEmail(
     HtmlBody: htmlBody,
   })
 }
+
+/**
+ * Send email to V1 subscribers when their subscription is expiring
+ * Informs them they need to purchase the new V2 plan to continue access
+ */
+export function sendV1ExpirationEmail(email: string, args: { name: string }) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.info(`Not sending V1 expiration email to ${email} since we're not on prod.`)
+    return
+  }
+
+  const htmlBody = `
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Hello ${args.name}!</h1>
+
+  <p>Your Tamagui Pro subscription is expiring soon and will not be renewed.</p>
+
+  <h2>Important: We've Updated Our Pro Plan</h2>
+
+  <p>We've completely revamped Tamagui Pro for V2 with a new per-project licensing model that includes:</p>
+
+  <ul>
+    <li><strong>All Templates</strong> - V1 Takeout, V2 Takeout, and the new Takeout Static (100 Lighthouse score)</li>
+    <li><strong>Unlimited Team Members</strong> - No more per-seat pricing</li>
+    <li><strong>1 Year of Updates</strong> - Included with your purchase</li>
+    <li><strong>Basic Chat Support</strong> - Included at no extra cost</li>
+    <li><strong>Lifetime Code Rights</strong> - Keep the code forever</li>
+  </ul>
+
+  <h2>How to Continue Access</h2>
+
+  <p>To maintain access to Tamagui Pro features, you'll need to purchase the new plan:</p>
+
+  <p><a href="https://tamagui.dev/takeout" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Get Tamagui Pro V2 - $1,500</a></p>
+
+  <p>The new plan is $1,500 per project (one web domain + iOS + Android), with optional $300/year upgrades to continue receiving updates after the first year.</p>
+
+  <h2>What Happens When Your Subscription Expires?</h2>
+
+  <ul>
+    <li>You'll lose access to the private GitHub repositories</li>
+    <li>Your existing code will continue to work (you own what you've downloaded)</li>
+    <li>You won't receive new updates or features</li>
+  </ul>
+
+  <p>If you have any questions about the transition, please reach out to us at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
+
+  <p>Thank you for being a Tamagui Pro subscriber!<br>The Tamagui Team</p>
+
+  <table class="body-sub">
+    <tr>
+      <td>
+        <p class="sub">If you're having trouble with the button above, copy and paste this URL into your web browser:</p>
+        <p class="sub">https://tamagui.dev/takeout</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `.trim()
+
+  return client.sendEmail({
+    From: 'support@tamagui.dev',
+    To: email,
+    Subject: 'Your Tamagui Pro subscription is expiring - Action required',
+    HtmlBody: htmlBody,
+  })
+}

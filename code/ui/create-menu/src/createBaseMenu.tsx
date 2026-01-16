@@ -75,6 +75,7 @@ type MenuContextValue = {
 }
 
 type MenuRootContextValue = {
+  open: boolean
   onClose(): void
   isUsingKeyboardRef: React.RefObject<boolean>
   dir: Direction
@@ -440,6 +441,7 @@ export function createBaseMenu({
         >
           <MenuRootProvider
             scope={scope}
+            open={open}
             onClose={React.useCallback(() => handleOpenChange(false), [handleOpenChange])}
             isUsingKeyboardRef={isUsingKeyboardRef}
             dir={direction}
@@ -531,8 +533,12 @@ export function createBaseMenu({
       children
     )
 
+    // For submenus, we need to check if the root menu is still open
+    // If root closes, submenu should close immediately (no exit animation)
+    const isPresent = forceMount || (rootContext.open && menuContext.open)
+
     return (
-      <Animate type="presence" present={forceMount || menuContext.open}>
+      <Animate type="presence" present={isPresent}>
         <PortalPrimitive>
           <>
             <PortalProvider scope={scope} forceMount={forceMount}>
@@ -735,11 +741,14 @@ export function createBaseMenu({
       <PopperPrimitive.PopperContent
         role="menu"
         {...(!unstyled && {
-          elevation: 30,
+          elevation: 20,
           paddingVertical: '$2',
           backgroundColor: '$background',
+          borderRadius: '$4',
+          borderWidth: 1,
           borderColor: '$borderColor',
           outlineWidth: 0,
+          minWidth: 180,
         })}
         aria-orientation="vertical"
         data-state={getOpenState(context.open)}
@@ -750,7 +759,7 @@ export function createBaseMenu({
         scope={scope || MENU_CONTEXT}
         {...contentProps}
         ref={composedRefs}
-        className={contentProps.animation ? undefined : contentProps.className}
+        className={contentProps.transition ? undefined : contentProps.className}
         {...(isWeb
           ? {
               onKeyDown: composeEventHandlers(contentProps.onKeyDown, (event) => {
@@ -777,7 +786,7 @@ export function createBaseMenu({
               }),
               // TODO
               // @ts-ignore
-              onBlur: composeEventHandlers(props.onBlur, (event: MouseEvent) => {
+              onBlur: composeEventHandlers(props.onBlur, (event: React.FocusEvent) => {
                 // clear search buffer when leaving the menu
                 // @ts-ignore
                 if (!event.currentTarget?.contains(event.target)) {
@@ -1028,8 +1037,8 @@ export function createBaseMenu({
               pressTheme: true,
               focusTheme: true,
               paddingVertical: '$2',
-              paddingHorizontal: '$4',
-              width: '100%',
+              paddingHorizontal: '$3',
+              marginHorizontal: '$1.5',
             })}
             componentName={ITEM_NAME}
             role="menuitem"

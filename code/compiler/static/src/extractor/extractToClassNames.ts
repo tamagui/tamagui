@@ -333,7 +333,7 @@ export async function extractToClassNames({
 
       let baseClassNameStr = !baseClassNames ? '' : baseClassNames.join(' ')
 
-      if (!hasTernaries && baseFontFamily) {
+      if (baseFontFamily) {
         baseClassNameStr = `font_${baseFontFamily}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
       }
 

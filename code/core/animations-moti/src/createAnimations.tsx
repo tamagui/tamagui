@@ -243,9 +243,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
     useAnimations: (animationProps) => {
       const { props, presence, style, componentState } = animationProps
-      const animationKey = Array.isArray(props.animation)
-        ? props.animation[0]
-        : props.animation
+      const animationKey = Array.isArray(props.transition)
+        ? props.transition[0]
+        : props.transition
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
@@ -312,8 +312,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         let hasClonedTransition = false
 
-        if (Array.isArray(props.animation)) {
-          const config = props.animation[1]
+        if (Array.isArray(props.transition)) {
+          const config = props.transition[1]
           if (config && typeof config === 'object') {
             for (const key in config) {
               const val = config[key]

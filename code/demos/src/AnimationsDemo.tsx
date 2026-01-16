@@ -18,7 +18,7 @@ export function AnimationsDemo(props) {
   return (
     <>
       <Square
-        animation={props.animation ?? 'bouncy'}
+        transition={props.animation ?? 'bouncy'}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}

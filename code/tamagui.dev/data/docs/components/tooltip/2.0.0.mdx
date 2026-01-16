@@ -228,3 +228,39 @@ See the [Floating UI docs](https://floating-ui.com/docs/floatingdelaygroup) for 
 ### closeOpenTooltips
 
 A small helper function of type `() => void` that will close any open tooltips.
+
+## Scoping
+
+Tooltip supports scoping which lets you mount a single Tooltip instance at
+the root of your app, while having deeply nested Trigger components anywhere
+in your tree attach to that single parent Tooltip.
+
+This is useful for performance - you only render `Tooltip.Trigger` in your
+list items or buttons, while the heavier `Tooltip` and `Tooltip.Content` live
+at the root. It also lets you style all your tooltips consistently in one place.
+
+```tsx fileName=_layout.tsx
+import { Tooltip } from 'tamagui'
+
+export default ({ children }) => (
+  <Tooltip scope="tooltip">
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+      {/* your tooltip content renders here */}
+    </Tooltip.Content>
+
+    {/* the rest of your app renders inside */}
+    {children}
+  </Tooltip>
+)
+```
+
+```tsx fileName=MyButton.tsx
+export default () => (
+  <Tooltip.Trigger scope="tooltip" aria-label="Settings">
+    <Button icon={Settings} />
+  </Tooltip.Trigger>
+)
+```
+
+The `scope` prop on `Trigger` connects it to the `Tooltip` with the matching scope.

@@ -25,7 +25,7 @@ export type TamaguiComponentState = {
     focus?: boolean;
     focusVisible?: boolean;
     focusWithin?: boolean;
-    animation?: null | {
+    transition?: null | {
         style?: any;
         avoidClasses?: boolean;
     };
@@ -475,7 +475,7 @@ export type Media = TamaguiConfig['media'];
 export type Themes = TamaguiConfig['themes'];
 export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>;
 export type ThemeTokens = `$${ThemeKeys}`;
-export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : string;
+export type TransitionKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : string;
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 export interface ThemeProps {
     className?: string;
@@ -795,17 +795,17 @@ export interface MediaQueryList {
 }
 export type MatchMedia = (query: string) => MediaQueryList;
 export type AnimationConfigType = any;
-export type AnimationProp = AnimationKeys | {
-    [key: string]: AnimationKeys | {
-        type: AnimationKeys;
+export type TransitionProp = TransitionKeys | {
+    [key: string]: TransitionKeys | {
+        type: TransitionKeys;
         [key: string]: any;
     };
 } | [
-    AnimationKeys,
+    TransitionKeys,
     {
         delay?: number;
-        [key: string]: AnimationKeys | {
-            type?: AnimationKeys;
+        [key: string]: TransitionKeys | {
+            type?: TransitionKeys;
             [key: string]: any;
         } | number | undefined;
     }
@@ -955,29 +955,75 @@ export interface TransformStyleProps {
     rotateX?: `${number}deg` | UnionableString;
     rotateZ?: `${number}deg` | UnionableString;
 }
+export interface BoxShadowObject {
+    offsetX: SpaceTokens | number | (string & {});
+    offsetY: SpaceTokens | number | (string & {});
+    blurRadius?: SpaceTokens | number | (string & {});
+    spreadDistance?: SpaceTokens | number | (string & {});
+    color?: ColorStyleProp | (string & {});
+    inset?: boolean;
+}
+export type BoxShadowValue = BoxShadowObject | BoxShadowObject[] | (string & {});
+export interface FilterBrightness {
+    brightness: number | `${number}%`;
+}
+export interface FilterOpacity {
+    opacity: number | `${number}%`;
+}
+export interface FilterBlur {
+    blur: SpaceTokens | number | string;
+}
+export interface FilterContrast {
+    contrast: number | `${number}%`;
+}
+export interface FilterGrayscale {
+    grayscale: number | `${number}%`;
+}
+export interface FilterHueRotate {
+    hueRotate: `${number}deg` | `${number}rad`;
+}
+export interface FilterInvert {
+    invert: number | `${number}%`;
+}
+export interface FilterSaturate {
+    saturate: number | `${number}%`;
+}
+export interface FilterSepia {
+    sepia: number | `${number}%`;
+}
+export interface FilterDropShadow {
+    dropShadow: {
+        offsetX: SpaceTokens | number | (string & {});
+        offsetY: SpaceTokens | number | (string & {});
+        blurRadius?: SpaceTokens | number | (string & {});
+        color?: ColorStyleProp | (string & {});
+    };
+}
+export type FilterFunction = FilterBrightness | FilterOpacity | FilterBlur | FilterContrast | FilterGrayscale | FilterHueRotate | FilterInvert | FilterSaturate | FilterSepia | FilterDropShadow;
+export type FilterValue = FilterFunction | FilterFunction[] | (string & {});
 interface ExtraStyleProps {
     /**
      * Web-only style property. Will be omitted on native.
      */
     contain?: Properties['contain'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * Cursor style. Supported on web, and iOS 17+ (trackpad/stylus/gaze).
      */
     cursor?: Properties['cursor'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * Outline color. Supported on web and RN 0.77+ (New Architecture).
      */
-    outlineColor?: Properties['outlineColor'];
+    outlineColor?: ColorStyleProp;
     /**
-     * Web-only style property. Will be omitted on native.
+     * Outline offset. Supported on web and RN 0.77+ (New Architecture).
      */
     outlineOffset?: SpaceValue;
     /**
-     * Web-only style property. Will be omitted on native.
+     * Outline style. Supported on web and RN 0.77+ (New Architecture).
      */
-    outlineStyle?: Properties['outlineStyle'];
+    outlineStyle?: 'none' | 'solid' | 'dotted' | 'dashed';
     /**
-     * Web-only style property. Will be omitted on native.
+     * Outline width. Supported on web and RN 0.77+ (New Architecture).
      */
     outlineWidth?: SpaceValue;
     /**
@@ -1013,9 +1059,15 @@ interface ExtraStyleProps {
      */
     backgroundSize?: Properties['backgroundSize'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * Box sizing model. Supported on web and RN 0.77+ (New Architecture).
+     * Default is 'border-box'.
      */
-    boxSizing?: Properties['boxSizing'];
+    boxSizing?: 'border-box' | 'content-box';
+    /**
+     * CSS box-shadow. Supports tokens: "$2 $4 $8 $shadowColor"
+     * Also accepts object/array format. Supported on web and RN 0.76+ (New Architecture).
+     */
+    boxShadow?: BoxShadowValue;
     /**
      * Web-only style property. Will be omitted on native.
      */
@@ -1030,13 +1082,20 @@ interface ExtraStyleProps {
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
     /**
-     * Web-only style property. Will be omitted on native.
+     * Graphical filter effects. Supported on web and RN 0.76+ (New Architecture).
+     * Cross-platform: brightness, opacity. Android 12+: blur, contrast, dropShadow, etc.
      */
-    filter?: Properties['filter'];
+    filter?: FilterValue;
     /**
-     * Web-only style property. Will be omitted on native.
+     * Blend mode for color mixing with stacking context.
+     * Supported on web and RN 0.77+ (New Architecture).
      */
-    mixBlendMode?: Properties['mixBlendMode'];
+    mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity';
+    /**
+     * Forces element to form a new stacking context for mixBlendMode.
+     * Supported on web and RN 0.77+ (New Architecture).
+     */
+    isolation?: 'auto' | 'isolate';
     /**
      * Web-only style property. Will be omitted on native.
      */
@@ -1279,15 +1338,15 @@ export interface ExtendBaseTextProps {
 }
 interface ExtraBaseProps {
     /**
-     * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
-     * Pass a string animation here and it uses an animation driver to execute it.
+     * Transitions are defined using `createTamagui` typically in a tamagui.config.ts file.
+     * Pass a string transition name here and it uses an animation driver to execute it.
      *
      * See: https://tamagui.dev/docs/core/animations
      */
-    animation?: AnimationProp | null;
+    transition?: TransitionProp | null;
     /**
      * Pass an array of strings containing the long style property names
-     * which will be exclusively animated.
+     * which will be exclusively transitioned.
      */
     animateOnly?: string[];
     /**
@@ -1402,6 +1461,8 @@ export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
 export type InferStyledProps<A extends StylableComponent, B extends StaticConfigPublic> = A extends {
     __tama: any;
 } ? GetProps<A> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>, {}>;
+/** Like InferStyledProps but returns only style props (no non-styled props or variants). */
+export type InferStyleProps<A extends StylableComponent, B extends StaticConfigPublic> = WithThemeShorthandsPseudosMedia<GetBaseStyles<A, B>, {}>;
 export type GetProps<A extends StylableComponent> = A extends {
     __tama: [
         infer Props,

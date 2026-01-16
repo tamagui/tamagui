@@ -140,7 +140,7 @@ export function createSheet<
       forwardedRef
     ) => {
       const context = useSheetContext(SHEET_NAME, __scopeSheet)
-      const { hasFit, removeScrollEnabled = true, frameSize, contentRef, open } = context
+      const { hasFit, disableRemoveScroll, frameSize, contentRef, open } = context
       const composedContentRef = useComposedRefs(forwardedRef, contentRef)
       const offscreenSize = useSheetOffscreenSize(context)
 
@@ -193,7 +193,7 @@ export function createSheet<
 
       return (
         <>
-          <RemoveScroll enabled={removeScrollEnabled && context.open}>
+          <RemoveScroll enabled={!disableRemoveScroll && context.open}>
             {sheetContents}
           </RemoveScroll>
 

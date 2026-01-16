@@ -312,7 +312,7 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackP
       position="absolute"
       backgroundColor="$color5"
       opacity={0.7}
-      animation="100ms"
+      transition="100ms"
       enterStyle={{
         opacity: 0,
       }}
@@ -333,7 +333,7 @@ const AnimatedYStack = styled(YStack, {
   x: 0,
   opacity: 1,
 
-  animation: '100ms',
+  transition: '100ms',
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     direction: {

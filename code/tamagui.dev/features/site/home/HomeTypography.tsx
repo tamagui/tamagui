@@ -206,7 +206,7 @@ const AnimatedHeading = memo(
     return (
       <Delay passThrough={disableAnimation} by={index * 180 + 20}>
         <Component
-          animation={disableAnimation ? null : 'lazy'}
+          transition={disableAnimation ? null : 'lazy'}
           enterStyle={{ opacity: 0, y: -10 }}
           exitStyle={{ opacity: 0, y: 10 }}
           opacity={1}

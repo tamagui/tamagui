@@ -27,6 +27,8 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   const bgIndex = 6
   const lighten = isLight ? -1 : 1
   const darken = -lighten
+  // always +1 because palette is structured with higher indices = more contrast from background
+  const increaseContrast = 1
   const borderColor = bgIndex + 3
 
   const baseColors = {
@@ -71,9 +73,9 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     // the @tamagui/button Button component looks for `$background`, so you set the
     // dark_red_Button theme to have a stronger background than the dark_red theme.
     background: bgIndex,
-    backgroundHover: bgIndex + lighten, // always lighten on hover no matter the scheme
-    backgroundPress: bgIndex + darken, // always darken on press no matter the theme
-    backgroundFocus: bgIndex + darken,
+    backgroundHover: bgIndex + increaseContrast * 2,
+    backgroundPress: bgIndex + increaseContrast * 3,
+    backgroundFocus: bgIndex + increaseContrast * 2,
     borderColor,
     borderColorHover: borderColor + lighten,
     borderColorPress: borderColor + darken,

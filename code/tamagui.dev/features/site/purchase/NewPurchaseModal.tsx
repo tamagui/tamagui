@@ -168,32 +168,25 @@ export function PurchaseModalContents() {
   // Calculate direction for animation
   const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
 
-  // Calculate prices
-  const basePrice = 240 // yearly subscription price
-  const chatSupportMonthly = chatSupport ? 200 : 0 // $200/month for chat support
-  const supportTierMonthly = Number(supportTier) * 800 // $800/month per tier
-  const teamSeatsPrice = teamSeats * 100 // $100 per seat
+  // V2 Pricing: $1,500 one-time per project
+  const V2_PRICE = 1500
 
-  // Keep yearly and monthly totals separate
-  const yearlyTotal = basePrice + teamSeatsPrice
-  const monthlyTotal = chatSupportMonthly + supportTierMonthly
+  // Legacy V1 prices (for existing subscribers adding support)
+  const chatSupportMonthly = chatSupport ? 200 : 0
+  const supportTierMonthly = Number(supportTier) * 800
 
-  // Determine subscription message based on selected options
+  // For V2, yearly total is just the base price (no more per-seat)
+  const yearlyTotal = V2_PRICE
+  const monthlyTotal = supportTierMonthly // Chat support included in V2, only premium support extra
+
+  // V2 subscription message
   const subscriptionMessage = useMemo(() => {
-    const hasChat = chatSupport
     const hasSupportTier = Number(supportTier) > 0
-
-    if (hasChat && hasSupportTier) {
-      return 'Yearly base + monthly chat and support tier, easy 1-click cancel.'
-    }
-    if (hasChat) {
-      return 'Yearly base + monthly chat support, easy 1-click cancel.'
-    }
     if (hasSupportTier) {
-      return 'Yearly base + monthly support tier, easy 1-click cancel.'
+      return `$${V2_PRICE.toLocaleString()} one-time + $${supportTierMonthly}/month premium support`
     }
-    return 'Pay one year up-front, easy one-click cancel.'
-  }, [chatSupport, supportTier])
+    return `$${V2_PRICE.toLocaleString()} one-time. Includes 1 year of updates, then $300/year.`
+  }, [supportTier, supportTierMonthly])
 
   const tabContents = {
     purchase: () => {
@@ -201,32 +194,48 @@ export function PurchaseModalContents() {
         <YStack>
           <YStack $gtMd={{ gap: '$6' }} gap="$5">
             <BigP text="center">
-              We've put together tools that make starting and building a universal app as
-              good as it gets.
+              Everything you need to build a universal app - web, iOS, and Android.
             </BigP>
 
             <XStack mx="$-4" flexWrap="wrap" gap="$3" items="center" justify="center">
               <PromoCards />
             </XStack>
 
-            <YStack gap="$3">
+            <YStack gap="$4" bg="$color2" p="$4" rounded="$4">
+              <H3 fontFamily="$mono" size="$6">
+                What's Included
+              </H3>
+              <YStack gap="$2">
+                <P color="$color11" size="$4">
+                  - All 3 templates: v1 Takeout, v2 Takeout, Takeout Static (100
+                  Lighthouse)
+                </P>
+                <P color="$color11" size="$4">
+                  - Bento premium components
+                </P>
+                <P color="$color11" size="$4">
+                  - 1 year of updates included
+                </P>
+                <P color="$color11" size="$4">
+                  - Unlimited team members (no extra cost)
+                </P>
+                <P color="$color11" size="$4">
+                  - Basic chat support in Discord
+                </P>
+                <P color="$color11" size="$4">
+                  - Lifetime rights to all code
+                </P>
+              </YStack>
+            </YStack>
+
+            <YStack gap="$2">
               <P color="$color10" size="$4">
-                For a one year term you get access to the private Takeout Github repo,
-                Bento components, and the private community chat room. You get lifetime
-                rights to all code and assets, even after subscription expires.
+                License covers one project: your web domain + iOS app + Android app. After
+                the first year, continue receiving updates for $300/year
+                (auto-subscribed).
               </P>
             </YStack>
           </YStack>
-
-          <Separator my="$10" />
-
-          <H3 fontFamily="$mono">Team</H3>
-
-          <TeamSeatsInput
-            value={teamSeats}
-            onChange={setTeamSeats}
-            yearlyPrice={teamSeatsPrice}
-          />
         </YStack>
       )
     },
@@ -257,7 +266,7 @@ export function PurchaseModalContents() {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal animation="medium">
+          <Sheet modal transition="medium">
             <Sheet.Frame bg="$color1" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
@@ -265,7 +274,7 @@ export function PurchaseModalContents() {
             </Sheet.Frame>
             <Sheet.Overlay
               bg="$shadow4"
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
@@ -276,7 +285,7 @@ export function PurchaseModalContents() {
           <Dialog.Overlay
             backdropFilter="blur(35px)"
             key="overlay"
-            animation="medium"
+            transition="medium"
             bg="$shadow2"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -288,7 +297,7 @@ export function PurchaseModalContents() {
             elevate
             key="content"
             bg="$color1"
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {
@@ -335,9 +344,9 @@ export function PurchaseModalContents() {
                       value={currentTab}
                       forceMount
                       flex={1}
-                      minH={400}
+                      minH={550}
                       $gtMd={{
-                        height: 'calc(min(100vh - 280px, 620px))',
+                        height: 'calc(min(100vh - 200px, 900px))',
                       }}
                     >
                       <YStack
@@ -378,15 +387,7 @@ export function PurchaseModalContents() {
                 >
                   <YStack gap="$1" flex={1} width="100%" $gtXs={{ width: '40%' }}>
                     <XStack>
-                      <H3 size="$11">
-                        $
-                        {Intl.NumberFormat('en-US').format(
-                          monthlyTotal + Math.ceil(yearlyTotal / 12)
-                        )}
-                        <Paragraph self="flex-end" y={-5} opacity={0.5} x={4}>
-                          /month
-                        </Paragraph>
-                      </H3>
+                      <H3 size="$11">${Intl.NumberFormat('en-US').format(V2_PRICE)}</H3>
                     </XStack>
 
                     <Paragraph theme="alt2" ellipsis size="$4" mb="$3">
@@ -621,49 +622,30 @@ const SupportTabContent = ({
     { value: '3', label: 'Tier 3', price: 2400 },
   ]
 
-  // Handle chat support toggle - disable support tier when enabled
-  const handleChatSupportChange = (checked: boolean) => {
-    setChatSupport(checked)
-    if (checked) {
-      setSupportTier('0') // Reset support tier to none
-    }
-  }
-
-  // Handle support tier change - disable chat support when tier is selected
+  // Handle support tier change
   const handleSupportTierChange = (value: string) => {
     setSupportTier(value)
-    if (value !== '0') {
-      setChatSupport(false) // Disable chat support
-    }
   }
 
   return (
     <>
       <BigP>
-        Support is great way for teams using Tamagui to ensure bugs get fixed, questions
-        are answered, and Tamagui stays healthy and up to date.
+        Premium support helps teams using Tamagui ensure bugs get fixed quickly, questions
+        are answered promptly, and receive dedicated development time.
       </BigP>
 
       <YStack gap="$6">
-        <YStack gap="$3">
-          <XStack items="center">
-            <Label flex={1} htmlFor="chat-support">
-              <P>Chat Support ($200/month)</P>
-            </Label>
-
-            <XStack maxW={100}>
-              <Switch
-                checked={chatSupport}
-                onCheckedChange={handleChatSupportChange}
-                id="chat-support"
-                disabled={supportTier !== '0'} // Disable if support tier is selected
-              />
-            </XStack>
+        <YStack gap="$3" bg="$color2" p="$4" rounded="$4">
+          <XStack items="center" gap="$2">
+            <Text fontSize="$5" color="$green10">
+              ✓
+            </Text>
+            <P fontWeight="600">Basic Chat Support - Included Free</P>
           </XStack>
-
-          <P maxW={500} size="$5" lineHeight="$6" opacity={chatSupport ? 1 : 0.5}>
-            A private Discord room just for your team with 2 invites, with responses
-            prioritized over our community chat.
+          <P maxW={500} size="$4" lineHeight="$6" theme="alt2">
+            Access to the private #takeout Discord channel. We prioritize responses there
+            over public Discord. No SLA, but we typically respond within 1-2 business
+            days.
           </P>
         </YStack>
 
@@ -713,7 +695,7 @@ const AnimatedYStack = styled(YStack, {
   x: 0,
   opacity: 1,
 
-  animation: '100ms',
+  transition: '100ms',
   variants: {
     direction: {
       ':number': (direction) => ({

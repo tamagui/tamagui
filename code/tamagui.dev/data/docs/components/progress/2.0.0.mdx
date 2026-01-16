@@ -45,7 +45,7 @@ import { Button, Progress } from 'tamagui'
 
 export default () => (
   <Progress value={60}>
-    <Progress.Indicator animation="bouncy" />
+    <Progress.Indicator transition="bouncy" />
   </Progress>
 )
 ```
@@ -67,7 +67,7 @@ Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getti
       name: 'value',
       required: false,
       type: 'number | null',
-      description: `Control the percent progress. Decimal values are rounded to the nearest integer.`,
+      description: `Control the percent progress.`,
     },
     {
       name: 'max',

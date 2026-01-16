@@ -15,7 +15,7 @@ import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ListItem, type ListItemProps } from '@tamagui/list-item'
 import { Separator } from '@tamagui/separator'
-import { Sheet, SheetController } from '@tamagui/sheet'
+import { SheetController } from '@tamagui/sheet/controller'
 import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -63,8 +63,11 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
 
-    // @ts-ignore TODO react 19 type needs fix
-    const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+    const composedRefs = useComposedRefs(
+      // @ts-ignore TODO react 19 type needs fix
+      forwardedRef,
+      context.onValueNodeChange
+    )
     const isEmptyValue = context.value == null || context.value === ''
 
     // Use renderValue for SSR support - called synchronously during render
@@ -454,7 +457,6 @@ export const Select = withStaticProperties(
     Value: SelectValue,
     Viewport: SelectViewport,
     Indicator: SelectIndicator,
-    Sheet: Sheet.Controlled,
     FocusScope: FocusScopeController,
   }
 )

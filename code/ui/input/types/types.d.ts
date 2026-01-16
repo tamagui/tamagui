@@ -1,18 +1,11 @@
-import type { ColorTokens, FontTokens, FontSizeTokens, StackProps, TextProps } from '@tamagui/web';
+import type { ColorTokens, StackProps, TextStylePropsBase } from '@tamagui/web';
 /**
  * Web-aligned Input props
- * Follows standard HTML input API as primary, with minimal RN compatibility
+ * Follows standard HTML input API as primary, with RN compatibility for native
  */
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
-export type InputProps = StackProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className'> & Pick<TextProps, 'color'> & {
-    /**
-     * Font size - accepts Tamagui size tokens or number
-     */
-    fontSize?: FontSizeTokens | number;
-    /**
-     * Font family - accepts Tamagui font tokens
-     */
-    fontFamily?: FontTokens;
+type InputTextStyleProps = Pick<TextStylePropsBase, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
+export type InputProps = StackProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps> & InputTextStyleProps & {
     /**
      * Rows for textarea (when tag="textarea")
      */
@@ -57,9 +50,13 @@ export type InputProps = StackProps & Omit<HTMLInputProps, 'size' | 'color' | 's
         };
     }) => void;
     /**
-     * Keyboard appearance (native only, ignored on web)
+     * Keyboard appearance for iOS (native only, no web equivalent)
      */
     keyboardAppearance?: 'default' | 'light' | 'dark';
+    /**
+     * Text content type for iOS autofill (native only, use `autoComplete` on web)
+     */
+    textContentType?: 'none' | 'URL' | 'addressCity' | 'addressCityAndState' | 'addressState' | 'countryName' | 'creditCardNumber' | 'emailAddress' | 'familyName' | 'fullStreetAddress' | 'givenName' | 'jobTitle' | 'location' | 'middleName' | 'name' | 'namePrefix' | 'nameSuffix' | 'nickname' | 'organizationName' | 'postalCode' | 'streetAddressLine1' | 'streetAddressLine2' | 'sublocality' | 'telephoneNumber' | 'username' | 'password' | 'newPassword' | 'oneTimeCode';
 };
 export {};
 //# sourceMappingURL=types.d.ts.map

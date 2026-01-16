@@ -75,6 +75,29 @@ export function ThemeNested() {
           <Square id={TEST_IDS.nestedThemeNoColor} bg="$background" size={100} />
         </Theme>
       </YStack>
+
+      {/* Test Case 5: Exact reproduction from issue #3673 - surface1 → surface3 */}
+      <YStack gap="$2">
+        <Text fontWeight="bold">
+          Case 7: Direct light_blue_surface3 (expected result)
+        </Text>
+        <Theme name="light_blue_surface3">
+          <Square id={TEST_IDS.nestedSurface1To3Direct} bg="$background" size={100} />
+        </Theme>
+      </YStack>
+
+      <YStack gap="$2">
+        <Text fontWeight="bold">
+          Case 8: Nested blue → surface1 → surface3 (should match Case 7)
+        </Text>
+        <Theme name="blue">
+          <Theme name="surface1">
+            <Theme name="surface3">
+              <Square id={TEST_IDS.nestedSurface1To3Nested} bg="$background" size={100} />
+            </Theme>
+          </Theme>
+        </Theme>
+      </YStack>
     </YStack>
   )
 }

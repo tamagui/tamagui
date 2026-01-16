@@ -4,6 +4,11 @@ export declare const webOnlyStylePropsView: {
     backdropFilter: boolean;
     WebkitBackdropFilter: boolean;
     background: boolean;
+    border: boolean;
+    borderTop: boolean;
+    borderRight: boolean;
+    borderBottom: boolean;
+    borderLeft: boolean;
     backgroundAttachment: boolean;
     backgroundBlendMode: boolean;
     backgroundClip: boolean;
@@ -17,7 +22,6 @@ export declare const webOnlyStylePropsView: {
     borderLeftStyle: boolean;
     borderRightStyle: boolean;
     borderTopStyle: boolean;
-    boxSizing: boolean;
     caretColor: boolean;
     clipPath: boolean;
     contain: boolean;
@@ -42,13 +46,8 @@ export declare const webOnlyStylePropsView: {
     maskRepeat: boolean;
     maskSize: boolean;
     maskType: boolean;
-    mixBlendMode: boolean;
     objectFit: boolean;
     objectPosition: boolean;
-    outlineOffset: boolean;
-    outlineStyle: boolean;
-    outlineWidth: boolean;
-    outlineColor: boolean;
     overflowBlock: boolean;
     overflowInline: boolean;
     overflowX: boolean;

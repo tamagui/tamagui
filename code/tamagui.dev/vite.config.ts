@@ -1,8 +1,10 @@
 import { existsSync } from 'node:fs'
+import { execSync } from 'node:child_process'
 import { resolve as pathResolve } from 'node:path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
+import { generateBentoProxy } from './scripts/generate-bento-proxy.mjs'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -11,23 +13,36 @@ if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
 }
 
-// Bento is required - check if ../bento exists (next to tamagui repo)
-const localBentoPath = pathResolve(import.meta.dirname, '../../../bento')
-const hasBento = existsSync(localBentoPath)
+// Check if required build artifacts exist, auto-build if missing
+const vitePluginDist = pathResolve(
+  import.meta.dirname,
+  '../compiler/vite-plugin/dist/esm/index.mjs'
+)
+const staticDist = pathResolve(import.meta.dirname, '../compiler/static/dist/index.cjs')
 
-if (!hasBento) {
-  const errMsg =
-    '❌ Bento repository not found at ../bento\n' +
-    'Please clone the bento repository as a sibling to tamagui:\n' +
-    'cd .. && git clone <bento-repo-url> bento'
-
-  if (!process.env.CI) {
-    console.warn(errMsg)
-  } else {
-    throw new Error(errMsg)
+if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
+  console.info('')
+  console.info('Building tamagui packages (dist not found)...')
+  try {
+    execSync('yarn build:js', {
+      cwd: pathResolve(import.meta.dirname, '../..'),
+      stdio: 'inherit',
+    })
+    console.info('Build complete!')
+  } catch (e) {
+    console.error('Build failed. You may need to run `yarn build` from the repo root.')
+    throw e
   }
-} else {
-  console.info('✅ Using ../bento')
+}
+
+// Generate bento proxy files (creates stubs if bento repo not found)
+const { hasBento } = generateBentoProxy({
+  basePath: pathResolve(import.meta.dirname, 'scripts'),
+  silent: false,
+})
+
+if (hasBento) {
+  console.info('Using ../bento')
 }
 
 const resolve = (path: string) => {

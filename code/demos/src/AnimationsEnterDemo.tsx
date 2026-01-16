@@ -23,7 +23,7 @@ export function AnimationsEnterDemo(props: any) {
           y: -10,
           opacity: 0,
         }}
-        animation="bouncy"
+        transition="bouncy"
         elevation="$4"
         size={110}
         opacity={1}

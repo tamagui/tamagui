@@ -4,7 +4,7 @@ import type { SnapPointsMode } from './types';
 export declare const SheetImplementationCustom: React.ForwardRefExoticComponent<{
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
+    onOpenChange?: React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void);
     position?: number;
     defaultPosition?: number;
     snapPoints?: (string | number)[];
@@ -13,12 +13,13 @@ export declare const SheetImplementationCustom: React.ForwardRefExoticComponent<
     children?: React.ReactNode;
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
+    disableRemoveScroll?: boolean;
     forceRemoveScrollEnabled?: boolean;
-    animationConfig?: import("@tamagui/core").AnimatedNumberStrategy;
+    transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
     native?: "ios"[] | boolean;
-    animation?: import("@tamagui/core").AnimationProp;
+    transition?: import("@tamagui/core").TransitionProp;
     handleDisableScroll?: boolean;
     disableDrag?: boolean;
     modal?: boolean;

@@ -51,11 +51,11 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
   props: ScopedProps<ProgressIndicatorProps>,
   forwardedRef
 ) {
-  const { __scopeProgress, animation, ...indicatorProps } = props
+  const { __scopeProgress, transition, ...indicatorProps } = props
   const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
   const pct = context.max - (context.value ?? 0)
   // default somewhat far off
-  const x = -(context.width === 0 ? 300 : context.width) * (pct / 100)
+  const x = -(context.width === 0 ? 300 : context.width) * (pct / context.max)
 
   return (
     <ProgressIndicatorFrame
@@ -71,7 +71,7 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
       {...indicatorProps}
       ref={forwardedRef}
       // avoid animation on first render so the progress doesn't bounce to initial location
-      animation={!context.width ? null : animation}
+      transition={!context.width ? null : transition}
     />
   )
 })
@@ -182,7 +182,11 @@ const Progress = withStaticProperties(
           })}
           {...progressProps}
           onLayout={(e) => {
-            setWidth(e.nativeEvent.layout.width)
+            // prevent unnecessary re-renders
+            const newWidth = Math.round(e.nativeEvent.layout.width)
+            if (newWidth !== width) {
+              setWidth(newWidth)
+            }
             progressProps.onLayout?.(e)
           }}
           ref={forwardedRef}

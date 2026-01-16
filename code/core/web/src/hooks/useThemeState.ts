@@ -207,7 +207,8 @@ const getNextState = (
         )
   const isSameAsParent = parentState && (!name || name === parentState.name)
   const shouldRerender = Boolean(
-    needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name)
+    pendingUpdate === 'force' ||
+      (needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name))
   )
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -397,24 +398,29 @@ function getNewThemeName(
       const parentScheme = getScheme(parentName)
 
       if (parentScheme) {
-        // Get the parent theme name without component part (already done in parentParts)
-        const parentBase = parentParts.join('_')
+        // Try progressively shorter parent bases to preserve color context
+        // For parent "light_blue_surface1" + name "surface3":
+        //   Try: light_blue_surface1_surface3, light_blue_surface3, light_surface3
+        // This ensures color context (blue) is preserved before falling back to scheme-only
 
-        // Try combining with full parent context first, then just scheme
-        // Prioritize component themes: try with componentName first, then without
-        // For parent "light" + name "green" + componentName "Button":
-        //   Try: light_green_Button, light_green (in that order)
-        const withScheme = [
-          componentName ? `${parentBase}_${name}_${componentName}` : undefined,
-          `${parentBase}_${name}`,
-          componentName ? `${parentScheme}_${name}_${componentName}` : undefined,
-          `${parentScheme}_${name}`,
-        ].filter(Boolean) as string[]
+        // Build list of potential bases from most specific to least specific
+        const potentialBases: string[] = []
+        for (let i = parentParts.length; i >= 1; i--) {
+          potentialBases.push(parentParts.slice(0, i).join('_'))
+        }
 
-        for (const potential of withScheme) {
-          if (potential in themes) {
-            found = potential
-            break
+        outer: for (const base of potentialBases) {
+          // Try with componentName first, then without
+          const candidates = [
+            componentName ? `${base}_${name}_${componentName}` : undefined,
+            `${base}_${name}`,
+          ].filter(Boolean) as string[]
+
+          for (const potential of candidates) {
+            if (potential in themes) {
+              found = potential
+              break outer
+            }
           }
         }
       }

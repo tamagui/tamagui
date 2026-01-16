@@ -37,7 +37,6 @@ import type {
   GetStyleState,
   PseudoStyles,
   RulesToInsert,
-  SpaceTokens,
   SplitStyleProps,
   StaticConfig,
   StyleObject,
@@ -54,6 +53,7 @@ import {
   extractValueFromDynamic,
   getDynamicVal,
   getOppositeScheme,
+  isColorStyleKey,
 } from './getDynamicVal'
 import { getGroupPropParts } from './getGroupPropParts'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
@@ -204,7 +204,6 @@ export const getSplitStyles: StyleSplitter = (
   const classNames: ClassNamesObject = {}
 
   let pseudos: PseudoStyles | null = null
-  let space: SpaceTokens | null = props.space
   let hasMedia: boolean | Set<string> = false
   let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
@@ -405,6 +404,11 @@ export const getSplitStyles: StyleSplitter = (
 
         if (keyInit === 'testID') {
           viewProps[isReactNative ? keyInit : 'data-testid'] = valInit
+          continue
+        }
+
+        if (keyInit === 'id' || keyInit === 'nativeID') {
+          viewProps.id = valInit
           continue
         }
 
@@ -891,24 +895,44 @@ export const getSplitStyles: StyleSplitter = (
           let importanceBump = 0
 
           if (isThemeMedia) {
-            // needed to get updates when theme changes
-            dynamicThemeAccess = true
-
-            if (isIos && getSetting('fastSchemeChange')) {
+            if (
+              process.env.TAMAGUI_TARGET === 'native' &&
+              isIos &&
+              getSetting('fastSchemeChange')
+            ) {
               // iOS will use https://reactnative.dev/docs/dynamiccolorios
-              // So need to predefine the dynamic color before merging the styles
-              // For example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
+              // so need to predefine the dynamic color before merging the styles
+              // for example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
 
               styleState.style ||= {}
               const scheme = mediaKeyShort
               const oppositeScheme = getOppositeScheme(mediaKeyShort)
               const themeOriginalValues = styleOriginalValues.get(mediaStyle)
+              const isCurrentScheme = themeName === scheme || themeName.startsWith(scheme)
 
               for (const subKey in mediaStyle) {
                 const val = extractValueFromDynamic(mediaStyle[subKey], scheme)
                 const existing = styleState.style[subKey]
 
-                // If there's already a dynamic object from the other theme pseudo prop,
+                // Only color properties support DynamicColorIOS - non-color properties
+                // like opacity, dimensions, etc. will crash if wrapped with {dynamic: {...}}
+                // See: https://github.com/tamagui/tamagui/issues/3096
+                // See: https://github.com/tamagui/tamagui/issues/2980
+                if (!isColorStyleKey(subKey)) {
+                  // non-color properties require re-render to update
+                  dynamicThemeAccess = true
+                  // only apply if this is the current theme
+                  if (isCurrentScheme) {
+                    // update mediastyle so the later merge loop uses correct value
+                    mediaStyle[subKey] = val
+                  } else {
+                    // Remove from mediaStyle so it doesn't get merged with wrong theme's value
+                    delete mediaStyle[subKey]
+                  }
+                  continue
+                }
+
+                // if there's already a dynamic object from the other theme pseudo prop,
                 // merge directly to avoid importance conflicts between $theme-dark and $theme-light
                 if (existing?.dynamic) {
                   existing.dynamic[scheme] = val
@@ -930,10 +954,12 @@ export const getSplitStyles: StyleSplitter = (
                   )
                 }
               }
-            } else if (
-              !(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))
-            ) {
-              return
+            } else {
+              // non-ios or no fastschemechange - need re-renders for theme changes
+              dynamicThemeAccess = true
+              if (!(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))) {
+                return
+              }
             }
           } else if (isGroupMedia) {
             const groupInfo = getGroupPropParts(mediaKeyShort)
@@ -1169,22 +1195,22 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const [key, value, identifier] = atomicStyle
-          const isAnimatedAndAnimateOnly =
+          const isAnimatedAndTransitionOnly =
             styleProps.isAnimated &&
             styleProps.noClass &&
             props.animateOnly?.includes(key)
 
           // or not animated but you have animateOnly
           // (moves it to style={}, nice to avoid generating lots of classnames)
-          const nonAnimatedAnimateOnly =
-            !isAnimatedAndAnimateOnly &&
+          const nonAnimatedTransitionOnly =
+            !isAnimatedAndTransitionOnly &&
             !styleProps.isAnimated &&
             props.animateOnly?.includes(key)
 
-          if (isAnimatedAndAnimateOnly) {
+          if (isAnimatedAndTransitionOnly) {
             retainedStyles ||= {}
             retainedStyles[key] = styleState.style[key]
-          } else if (nonAnimatedAnimateOnly) {
+          } else if (nonAnimatedTransitionOnly) {
             retainedStyles ||= {}
             retainedStyles[key] = value
             shouldRetain = true
@@ -1476,14 +1502,47 @@ export const getSubStyle = (
   }
 
   if (!avoidMergeTransform) {
-    if (Array.isArray(styleOut.transform)) {
-      const parentTransform = styleState.style?.transform
-      if (parentTransform) {
-        styleOut.transform = [...parentTransform, ...styleOut.transform]
+    const parentTransform = styleState.style?.transform
+    const flatTransforms = styleState.flatTransforms
+    const styleOutTransform = styleOut.transform
+
+    if (Array.isArray(styleOutTransform) && styleOutTransform.length) {
+      // Inline conflict check - faster than building lookup object for small arrays
+      const len = styleOutTransform.length
+
+      if (Array.isArray(parentTransform)) {
+        const merged: any[] = []
+        outer: for (let i = 0; i < parentTransform.length; i++) {
+          const pt = parentTransform[i]
+          for (const pk in pt) {
+            for (let j = 0; j < len; j++) {
+              for (const sk in styleOutTransform[j]) {
+                if (pk === sk) continue outer
+                break
+              }
+            }
+            merged.push(pt)
+            break
+          }
+        }
+        for (let i = 0; i < len; i++) merged.push(styleOutTransform[i])
+        styleOut.transform = merged
       }
-    }
-    if (styleState.flatTransforms) {
-      mergeFlatTransforms(styleOut, styleState.flatTransforms)
+
+      if (flatTransforms) {
+        outer: for (const fk in flatTransforms) {
+          const ck = fk === 'x' ? 'translateX' : fk === 'y' ? 'translateY' : fk
+          for (let j = 0; j < len; j++) {
+            for (const sk in styleOutTransform[j]) {
+              if (ck === sk) continue outer
+              break
+            }
+          }
+          mergeTransform(styleOut, fk, flatTransforms[fk])
+        }
+      }
+    } else if (flatTransforms) {
+      mergeFlatTransforms(styleOut, flatTransforms)
     }
   }
 

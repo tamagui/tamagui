@@ -55,7 +55,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
       )}
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet native={!!props.native} modal dismissOnSnapToBottom animation="medium">
+        <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -63,7 +63,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           </Sheet.Frame>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -91,7 +91,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
 
         <Select.Viewport
           // to do animations:
-          // animation="quick"
+          // transition="quick"
           // animateOnly={['transform', 'opacity']}
           // enterStyle={{ o: 0, y: -10 }}
           // exitStyle={{ o: 0, y: 10 }}
@@ -263,7 +263,7 @@ function SheetDemo() {
       />
       <Sheet
         modal
-        animation="medium"
+        transition="medium"
         open={open}
         onOpenChange={setOpen}
         snapPoints={[80]}
@@ -273,7 +273,7 @@ function SheetDemo() {
       >
         <Sheet.Overlay
           bg="$shadow4"
-          animation="lazy"
+          transition="lazy"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />

@@ -23,7 +23,7 @@ describe('animation props', () => {
   test.skip(`renders with animation props`, () => {
     const tree = render(
       <TamaguiProvider config={config} defaultTheme="light">
-        <View animation="quick" x={0} />
+        <View transition="quick" x={0} />
       </TamaguiProvider>
     )
 

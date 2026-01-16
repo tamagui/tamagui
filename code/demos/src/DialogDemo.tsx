@@ -37,7 +37,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
       {!disableAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet
-            animation="medium"
+            transition="medium"
             zIndex={200000}
             modal
             dismissOnSnapToBottom
@@ -49,7 +49,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
             <Sheet.Overlay
               bg="$background"
               opacity={0.5}
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
@@ -63,7 +63,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
           bg="$background"
           opacity={0.5}
           animateOnly={['transform', 'opacity']}
-          animation={[
+          transition={[
             'quicker',
             {
               opacity: {
@@ -84,7 +84,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
             rounded="$6"
             key="content"
             animateOnly={['transform', 'opacity']}
-            animation={[
+            transition={[
               'quicker',
               {
                 opacity: {
@@ -117,7 +117,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               <XStack flex={1}>
                 <SelectDemoContents
                   trigger={
-                    <Select.Trigger flex={1} iconAfter={ChevronDown}>
+                    <Select.Trigger flex={1} iconAfter={ChevronDown} borderRadius="$4">
                       <Select.Value placeholder="Something" />
                     </Select.Trigger>
                   }

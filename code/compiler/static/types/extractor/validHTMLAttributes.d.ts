@@ -1,6 +1,9 @@
 export declare const validHTMLAttributes: {
+    fill: boolean;
+    stroke: boolean;
     autocomplete: boolean;
-    border: boolean;
+    style: boolean;
+    tabIndex: boolean;
     contenteditable: boolean;
     crossorigin: boolean;
     dir: boolean;

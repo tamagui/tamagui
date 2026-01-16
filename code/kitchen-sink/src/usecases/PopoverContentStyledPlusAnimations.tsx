@@ -13,6 +13,7 @@ export function PopoverContentStyledPlusAnimations() {
     </Popover>
   )
 }
+
 const PopoverStyledContent = styled(Popover.Content, {
   name: 'PopoverContent2',
   elevate: true,
@@ -32,7 +33,7 @@ const PopoverStyledContent = styled(Popover.Content, {
   x: 0,
   y: 0,
   opacity: 1,
-  animation: [
+  transition: [
     'quick',
     {
       opacity: {

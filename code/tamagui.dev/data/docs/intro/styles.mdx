@@ -178,6 +178,42 @@ type TextStyleBase = BaseViewStyle & {
 }
 ```
 
+## CSS Shorthand with Variables
+
+Tamagui supports using `$variables` directly inside CSS shorthand string values.
+This is particularly useful for `boxShadow` where you want to reference theme
+colors:
+
+```tsx
+// Single variable
+<View boxShadow="0 0 10px $shadowColor" />
+
+// Multiple variables
+<View boxShadow="0 0 5px $shadowColor, 0 0 15px $color" />
+
+// On web: resolves to CSS custom properties
+// boxShadow: "0 0 10px var(--t-shadow-shadowColor)"
+
+// On native (RN 0.76+): resolves to raw values
+// boxShadow: "0 0 10px rgba(0,0,0,0.2)"
+```
+
+Supported shorthand properties with variable resolution:
+
+- `boxShadow` - Works on both web and native (RN 0.76+)
+- `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
+- `background` - Web only
+
+For native border styling, use individual props:
+
+```tsx
+// Web
+<View border="1px solid $borderColor" />
+
+// Native (or cross-platform)
+<View borderWidth={1} borderStyle="solid" borderColor="$borderColor" />
+```
+
 ## Parent based styling
 
 Tamagui has a variety of ways to style a child based on the "parent", a parent
@@ -264,7 +300,7 @@ Group styles also allow for targeting the parent pseudo state:
 ```
 
 Now only when the parent View is hovered the Text will turn white. The allowed
-psuedo modifiers are `hover` (web only), `press`, and `focus`.
+pseudo modifiers are `hover` (web only), `press`, and `focus`.
 
 For more advanced usecases you can use named groups
 
@@ -361,7 +397,7 @@ the media query, you'll avoid the need for a double render altogether.
 
 One thing that's very important to understand in Tamagui is that style props are
 sensitive to their order - a feature that without which would leave us with
-impossible styling challenges and awkward rules of inheritence we're trying to
+impossible styling challenges and awkward rules of inheritance we're trying to
 get away from with CSS in JS.
 
 For a detailed explanation of how prop order works and why it's necessary, see

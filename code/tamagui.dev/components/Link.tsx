@@ -20,7 +20,7 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
       cursor="pointer"
       color="inherit"
       // @ts-ignore
-      fontSize="inherit"
+      fontSize="unset"
       // @ts-ignore
       lineHeight="inherit"
       {...props}

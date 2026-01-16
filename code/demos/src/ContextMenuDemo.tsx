@@ -1,28 +1,11 @@
 import { ContextMenu } from '@tamagui/context-menu'
 import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
-import { styled, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
 
 /**
  * Note: you'll want to use createMenu() to customize further.
  */
-
-const Item = styled(ContextMenu.Item, {
-  py: 4,
-  hoverStyle: {
-    bg: '$color2',
-  },
-  pressStyle: {
-    bg: '$color3',
-  },
-})
-
-const ItemTitle = styled(ContextMenu.ItemTitle, {
-  color: '$color11',
-})
-
-Item.displayName = 'Item'
-ItemTitle.displayName = 'ItemTitle'
 
 export function ContextMenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
@@ -33,7 +16,7 @@ export function ContextMenuDemo() {
   }
 
   return (
-    <ContextMenu allowFlip native={native} placement="right-start">
+    <ContextMenu allowFlip native={native} placement="bottom-start" offset={14}>
       <ContextMenu.Trigger asChild>
         <Text text="center" select={null}>
           Right Click or longPress
@@ -42,22 +25,18 @@ export function ContextMenuDemo() {
 
       <ContextMenu.Portal zIndex={100}>
         <ContextMenu.Content
-          px={0}
+          p="$1.5"
+          minW={180}
           borderWidth={1}
-          items="flex-start"
           borderColor="$borderColor"
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-          elevate
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          transformOrigin="left top"
+          enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
+          exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
+          elevation="$3"
+          transition="menu"
         >
+          <ContextMenu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
+
           <ContextMenu.Preview>
             {() => {
               return (
@@ -73,50 +52,64 @@ export function ContextMenuDemo() {
               )
             }}
           </ContextMenu.Preview>
-          <ContextMenu.Item onSelect={onSelect} key="about-notes">
+          <ContextMenu.Item
+            onSelect={onSelect}
+            key="about-notes"
+            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            hoverStyle={{ bg: '$backgroundHover' }}
+          >
             <ContextMenu.ItemTitle>About Notes</ContextMenu.ItemTitle>
           </ContextMenu.Item>
           <ContextMenu.Separator />
-          <ContextMenu.Group backgroundColor="transparent">
-            <ContextMenu.Item onSelect={onSelect} key="settings">
-              <ContextMenu.ItemTitle>Settings</ContextMenu.ItemTitle>
-            </ContextMenu.Item>
-            <ContextMenu.Item
-              onSelect={onSelect}
-              justify="space-between"
-              // when title is nested inside a React element then you need to use `textValue`
-              textValue="Calender"
-              key="accounts"
+
+          <ContextMenu.Item
+            onSelect={onSelect}
+            key="settings"
+            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            hoverStyle={{ bg: '$backgroundHover' }}
+          >
+            <ContextMenu.ItemTitle>Settings</ContextMenu.ItemTitle>
+          </ContextMenu.Item>
+          <ContextMenu.Item
+            onSelect={onSelect}
+            justify="space-between"
+            textValue="Calendar"
+            key="accounts"
+            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            hoverStyle={{ bg: '$backgroundHover' }}
+          >
+            <ContextMenu.ItemTitle>Calendar</ContextMenu.ItemTitle>
+            <ContextMenu.ItemIcon
+              androidIconName="ic_menu_today"
+              ios={{
+                name: 'calendar',
+              }}
             >
-              <ContextMenu.ItemTitle>
-                <Text>Calender</Text>
-              </ContextMenu.ItemTitle>
-              <ContextMenu.ItemIcon
-                androidIconName="ic_menu_today"
-                ios={{
-                  name: 'calendar',
-                }}
-              >
-                <Calendar color="gray" size="$1" />
-              </ContextMenu.ItemIcon>
-            </ContextMenu.Item>
-          </ContextMenu.Group>
+              <Calendar color="gray" size={14} />
+            </ContextMenu.ItemIcon>
+          </ContextMenu.Item>
+
           <ContextMenu.Separator />
-          <ContextMenu.Group backgroundColor="transparent">
-            <ContextMenu.Item
-              onSelect={onSelect}
-              key="close-notes"
-              disabled
-              textValue="locked notes"
-            >
-              <ContextMenu.ItemTitle>
-                <Text color="gray">locked notes</Text>
-              </ContextMenu.ItemTitle>
-            </ContextMenu.Item>
-            <ContextMenu.Item destructive onSelect={onSelect} key="delete-all">
-              <ContextMenu.ItemTitle color="red">Delete all</ContextMenu.ItemTitle>
-            </ContextMenu.Item>
-          </ContextMenu.Group>
+
+          <ContextMenu.Item
+            onSelect={onSelect}
+            key="close-notes"
+            disabled
+            textValue="Locked Notes"
+            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            hoverStyle={{ bg: '$backgroundHover' }}
+          >
+            <ContextMenu.ItemTitle color="gray">Locked Notes</ContextMenu.ItemTitle>
+          </ContextMenu.Item>
+          <ContextMenu.Item
+            destructive
+            onSelect={onSelect}
+            key="delete-all"
+            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            hoverStyle={{ bg: '$backgroundHover' }}
+          >
+            <ContextMenu.ItemTitle color="red">Delete all</ContextMenu.ItemTitle>
+          </ContextMenu.Item>
           <ContextMenu.Separator />
           {/* Submenu */}
           <ContextMenu.Sub placement="right-start">
@@ -124,33 +117,61 @@ export function ContextMenuDemo() {
               key="actions-trigger"
               justify="space-between"
               textValue="Actions"
+              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              hoverStyle={{ bg: '$backgroundHover' }}
             >
               <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
-              <ChevronRight size="$1" />
+              <ChevronRight size={12} color="$color10" />
             </ContextMenu.SubTrigger>
             <ContextMenu.Portal zIndex={200}>
               <ContextMenu.SubContent
-                enterStyle={{ y: -10, opacity: 0 }}
-                exitStyle={{ y: -10, opacity: 0 }}
-                animation={[
-                  'quick',
-                  {
-                    opacity: {
-                      overshootClamping: true,
-                    },
-                  },
-                ]}
-                px={0}
+                enterStyle={{ scale: 0.9, opacity: 0, x: -5 }}
+                exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
+                transition="menu"
+                transformOrigin="left top"
+                elevation="$3"
+                minW={160}
+                bg="$background"
+                p="$1.5"
+                borderWidth={1}
+                borderColor="$borderColor"
               >
-                <Item onSelect={onSelect} key="create-note" textValue="Create note">
-                  <ItemTitle>Create note</ItemTitle>
-                </Item>
-                <Item onSelect={onSelect} key="delete-all" textValue="Delete all notes">
-                  <ItemTitle>Delete all notes</ItemTitle>
-                </Item>
-                <Item onSelect={onSelect} key="sync-all" textValue="Sync notes">
-                  <ItemTitle>Sync notes</ItemTitle>
-                </Item>
+                <ContextMenu.Label
+                  color="$color10"
+                  fontWeight="400"
+                  fontSize={14}
+                  alignSelf="flex-start"
+                  style={{ paddingHorizontal: 8, paddingVertical: 5 }}
+                >
+                  Note settings
+                </ContextMenu.Label>
+                <ContextMenu.Item
+                  onSelect={onSelect}
+                  key="create-note"
+                  textValue="Create note"
+                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                  hoverStyle={{ bg: '$backgroundHover' }}
+                >
+                  <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
+                </ContextMenu.Item>
+                <ContextMenu.Item
+                  onSelect={onSelect}
+                  key="delete-all"
+                  textValue="Delete all notes"
+                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                  hoverStyle={{ bg: '$backgroundHover' }}
+                >
+                  <ContextMenu.ItemTitle>Delete all notes</ContextMenu.ItemTitle>
+                </ContextMenu.Item>
+                <ContextMenu.Item
+                  onSelect={onSelect}
+                  key="sync-all"
+                  textValue="Sync notes"
+                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                  hoverStyle={{ bg: '$backgroundHover' }}
+                >
+                  <ContextMenu.ItemTitle>Sync notes</ContextMenu.ItemTitle>
+                </ContextMenu.Item>
               </ContextMenu.SubContent>
             </ContextMenu.Portal>
           </ContextMenu.Sub>
@@ -159,28 +180,28 @@ export function ContextMenuDemo() {
             key="show-hidden"
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
-            gap="$2"
             justify="space-between"
+            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
-              <Check size="$1" />
+              <Check size={12} color="$color10" />
             </ContextMenu.ItemIndicator>
           </ContextMenu.CheckboxItem>
           <ContextMenu.CheckboxItem
             key="show-other-notes"
             checked={native}
             onCheckedChange={setNative}
-            gap="$2"
             justify="space-between"
+            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
-              <Check size="$1" />
+              <Check size={12} color="$color10" />
             </ContextMenu.ItemIndicator>
           </ContextMenu.CheckboxItem>
-
-          <ContextMenu.Arrow size={'$2'} />
         </ContextMenu.Content>
       </ContextMenu.Portal>
     </ContextMenu>

@@ -8,7 +8,7 @@ const highlightCode = createCodeHighlighter()
 
 const snippet1 = highlightCode(
   `import { createAnimations }
-  from '@tamagui/animations-moti'
+  from '@tamagui/animations-reanimated'
 
 const animations = createAnimations({
   slow: {
@@ -40,7 +40,7 @@ const animations = createAnimations({
 const snippetUsage = highlightCode(
   `export default (props) => (
   <Stack
-    animation="fast"
+    transition="fast"
     y={0}
     scale={1}
 

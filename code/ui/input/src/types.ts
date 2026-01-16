@@ -1,31 +1,32 @@
-import type {
-  ColorTokens,
-  FontTokens,
-  FontSizeTokens,
-  StackProps,
-  TextProps,
-} from '@tamagui/web'
+import type { ColorTokens, StackProps, TextStylePropsBase } from '@tamagui/web'
 
 /**
  * Web-aligned Input props
- * Follows standard HTML input API as primary, with minimal RN compatibility
+ * Follows standard HTML input API as primary, with RN compatibility for native
  */
 
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
 
+// Text style props supported by RN TextInput
+// Using TextStylePropsBase (not TextProps) to avoid Pick issues with mapped types
+type InputTextStyleProps = Pick<
+  TextStylePropsBase,
+  | 'color'
+  | 'fontFamily'
+  | 'fontSize'
+  | 'fontStyle'
+  | 'fontWeight'
+  | 'letterSpacing'
+  | 'textAlign'
+  | 'textTransform'
+>
+
 export type InputProps = StackProps &
-  Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className'> &
-  Pick<TextProps, 'color'> & {
-    /**
-     * Font size - accepts Tamagui size tokens or number
-     */
-    fontSize?: FontSizeTokens | number
-
-    /**
-     * Font family - accepts Tamagui font tokens
-     */
-    fontFamily?: FontTokens
-
+  Omit<
+    HTMLInputProps,
+    'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps
+  > &
+  InputTextStyleProps & {
     // Core HTML input props are inherited from HTMLInputProps:
     // type, value, defaultValue, placeholder, disabled, readOnly,
     // onChange, onFocus, onBlur, onInput, autoComplete, autoFocus,
@@ -69,8 +70,43 @@ export type InputProps = StackProps &
       nativeEvent: { selection: { start: number; end: number } }
     }) => void
 
+    // Native-only props (no web equivalent)
+
     /**
-     * Keyboard appearance (native only, ignored on web)
+     * Keyboard appearance for iOS (native only, no web equivalent)
      */
     keyboardAppearance?: 'default' | 'light' | 'dark'
+
+    /**
+     * Text content type for iOS autofill (native only, use `autoComplete` on web)
+     */
+    textContentType?:
+      | 'none'
+      | 'URL'
+      | 'addressCity'
+      | 'addressCityAndState'
+      | 'addressState'
+      | 'countryName'
+      | 'creditCardNumber'
+      | 'emailAddress'
+      | 'familyName'
+      | 'fullStreetAddress'
+      | 'givenName'
+      | 'jobTitle'
+      | 'location'
+      | 'middleName'
+      | 'name'
+      | 'namePrefix'
+      | 'nameSuffix'
+      | 'nickname'
+      | 'organizationName'
+      | 'postalCode'
+      | 'streetAddressLine1'
+      | 'streetAddressLine2'
+      | 'sublocality'
+      | 'telephoneNumber'
+      | 'username'
+      | 'password'
+      | 'newPassword'
+      | 'oneTimeCode'
   }

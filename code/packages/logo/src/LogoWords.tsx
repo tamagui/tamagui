@@ -1,7 +1,7 @@
 import type { LayoutValue } from '@tamagui/use-element-layout'
 import React, { useEffect, useState } from 'react'
 import type { XStackProps } from 'tamagui'
-import { Circle, XStack, useTheme } from 'tamagui'
+import { Circle, XStack } from 'tamagui'
 import { useTint } from './useTint'
 
 const rgb = ['#ED0F0F', '#6BCF1A', '#6252F8']
@@ -17,16 +17,19 @@ export const LogoWords: React.MemoExoticComponent<
   }) => import('react/jsx-runtime').JSX.Element
 > = React.memo(({ downscale = 1, animated, ...props }) => {
   const Tint = useTint()
-  const theme = useTheme()
   const [hovered, setHovered] = React.useState(false)
   const [mounted, setMounted] = React.useState<'start' | 'animate' | 'done'>('start')
 
   const { tintIndex: index, tint } = Tint
   const hoveredTints = Tint.tints.map((x) => `${x}9`).map((t) => `var(--${t})`)
 
-  const textColor = theme.color12?.val || theme.color?.val || 'var(--accent1)'
-
-  const tints = [textColor, textColor, textColor, textColor, ...rgb]
+  const tints = [
+    'var(--accent1)',
+    'var(--accent1)',
+    'var(--accent1)',
+    'var(--accent1)',
+    ...rgb,
+  ]
 
   const circleTints = hovered
     ? Tint.tints.map((x) => `$${x}9`)
@@ -97,7 +100,7 @@ export const LogoWords: React.MemoExoticComponent<
     >
       {animated && (
         <Circle
-          animation="quicker"
+          transition="quicker"
           position="absolute"
           top={0}
           left={0}
