@@ -21,6 +21,7 @@ import {
   extractValueFromDynamic,
   getDynamicVal,
   getOppositeScheme,
+  isColorStyleKey,
 } from './getDynamicVal'
 
 import { getConfig, getFont, getSetting } from '../config'
@@ -51,7 +52,7 @@ import type {
   TamaguiInternalConfig,
   TextStyle,
   ThemeParsed,
-  ViewStyleWithPseudos,
+  ViewStyleWithPseudos
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
@@ -204,8 +205,8 @@ export const getSplitStyles: StyleSplitter = (
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
 
-  let pseudos: PseudoStyles | null = null
   let space: SpaceTokens | null = props.space
+  let pseudos: PseudoStyles | null = null
   let hasMedia: boolean | Set<string> = false
   let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
@@ -935,44 +936,71 @@ export const getSplitStyles: StyleSplitter = (
           let importanceBump = 0
 
           if (isThemeMedia) {
-            // needed to get updates when theme changes
-            dynamicThemeAccess = true
-
-            if (isIos && getSetting('fastSchemeChange')) {
+            if (
+              process.env.TAMAGUI_TARGET === 'native' &&
+              isIos &&
+              getSetting('fastSchemeChange')
+            ) {
               // iOS will use https://reactnative.dev/docs/dynamiccolorios
-              // So need to predefine the dynamic color before merging the styles
-              // For example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
+              // so need to predefine the dynamic color before merging the styles
+              // for example: <StyledYStack $theme-dark={{borderColor: '$red10'}} $theme-light={{borderColor: '$green10'}}> => {borderColor: {dynamic: {dark: '$red10', light: '$green10'}}}
 
               styleState.style ||= {}
               const scheme = mediaKeyShort
               const oppositeScheme = getOppositeScheme(mediaKeyShort)
               const themeOriginalValues = styleOriginalValues.get(mediaStyle)
+              const isCurrentScheme = themeName === scheme || themeName.startsWith(scheme)
 
               for (const subKey in mediaStyle) {
-                let val = extractValueFromDynamic(mediaStyle[subKey], scheme)
-                const oppositeVal = extractValueFromDynamic(
-                  styleState.style[subKey],
-                  oppositeScheme
-                )
+                const val = extractValueFromDynamic(mediaStyle[subKey], scheme)
+                const existing = styleState.style[subKey]
 
-                mediaStyle[subKey] = getDynamicVal({
-                  scheme,
-                  val,
-                  oppositeVal,
-                })
-                mergeStyle(
-                  styleState,
-                  subKey,
-                  mediaStyle[subKey],
-                  priority,
-                  false,
-                  themeOriginalValues?.[subKey]
-                )
+                // Only color properties support DynamicColorIOS - non-color properties
+                // like opacity, dimensions, etc. will crash if wrapped with {dynamic: {...}}
+                // See: https://github.com/tamagui/tamagui/issues/3096
+                // See: https://github.com/tamagui/tamagui/issues/2980
+                if (!isColorStyleKey(subKey)) {
+                  // non-color properties require re-render to update
+                  dynamicThemeAccess = true
+                  // only apply if this is the current theme
+                  if (isCurrentScheme) {
+                    // update mediaStyle so the later merge loop uses correct value
+                    mediaStyle[subKey] = val
+                  } else {
+                    // remove from mediaStyle so it doesn't get merged with wrong theme's value
+                    delete mediaStyle[subKey]
+                  }
+                  continue
+                }
+
+                // if there's already a dynamic object from the other theme pseudo prop,
+                // merge directly to avoid importance conflicts between $theme-dark and $theme-light
+                if (existing?.dynamic) {
+                  existing.dynamic[scheme] = val
+                  mediaStyle[subKey] = existing
+                } else {
+                  const oppositeVal = extractValueFromDynamic(existing, oppositeScheme)
+                  mediaStyle[subKey] = getDynamicVal({
+                    scheme,
+                    val,
+                    oppositeVal,
+                  })
+                  mergeStyle(
+                    styleState,
+                    subKey,
+                    mediaStyle[subKey],
+                    priority,
+                    false,
+                    themeOriginalValues?.[subKey]
+                  )
+                }
               }
-            } else if (
-              !(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))
-            ) {
-              return
+            } else {
+              // non-ios or no fastschemechange - need re-renders for theme changes
+              dynamicThemeAccess = true
+              if (!(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))) {
+                return
+              }
             }
           } else if (isGroupMedia) {
             const groupInfo = getGroupPropParts(mediaKeyShort)
