@@ -29,7 +29,7 @@
   "scripts": {
     "build:app": "./scripts/ci-build-app.sh",
     "build:force": "yarn clean:build && yarn build -- --force",
-    "build:js": "yarn build -- --force --skip-types",
+    "build:js": "bun run build --force -- --skip-types",
     "build:pre": "cd code/packages/babel-plugin-fully-specified && yarn build",
     "build:types": "SKIP_JS=1 yarn build",
     "build:verbose": "yarn build -vvv",
