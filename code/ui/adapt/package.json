@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/adapt",
-  "version": "2.0.0-1768427228811",
+  "version": "2.0.0-1768530912818",
   "type": "module",
   "sideEffects": [
     "*.css"
