@@ -1,0 +1,352 @@
+---
+title: '@tamagui/config'
+description: Modern config and themes with @tamagui/config/v5
+---
+
+<IntroParagraph>
+  The recommended Tamagui configuration with a complete theme system, sensible
+  defaults, and easy customization.
+</IntroParagraph>
+
+V5 is largely compatible with v4 - it's a superset that adds more colors/tokens
+and makes theme customization easier. The main differences are modern defaults
+for `styleCompat` and `position`, but everything can be customized to your
+preferences.
+
+First install the config package:
+
+```bash
+npm install @tamagui/config
+```
+
+Using `defaultConfig` from v5 is the easiest way to start:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v5'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(defaultConfig)
+
+type CustomConfig = typeof config
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends CustomConfig {}
+}
+```
+
+---
+
+## What's Different from v4
+
+- **More color themes** out of the box: blue, gray, green, orange, pink, purple,
+  red, tan, teal, yellow, neutral
+- **`createV5Theme` helper** for easy customization of themes without manually
+  calling `createThemes`
+- **`styleCompat: 'react-native'`** is the default, so `flex` uses
+  `flexBasis: 0` (matches React Native behavior)
+- **`defaultPosition: 'static'`** instead of `'relative'` (modern web default)
+- **Improved color palettes** using
+  [Radix Colors](https://www.radix-ui.com/colors) for better accessibility
+
+All settings can be overridden - if you prefer v4 behavior, set
+`styleCompat: 'legacy'` and `defaultPosition: 'relative'` in your settings.
+
+---
+
+## Customizing Themes with createV5Theme
+
+The `createV5Theme` function lets you customize the default v5 themes:
+
+```tsx fileName="tamagui.config.ts"
+import { createV5Theme, defaultConfig } from '@tamagui/config/v5'
+import { createTamagui } from 'tamagui'
+
+const themes = createV5Theme({
+  // Add a custom brand color
+  colors: {
+    brand: {
+      light: [
+        '#fff',
+        '#fef',
+        '#fdf',
+        '#fcf',
+        '#fbf',
+        '#faf',
+        '#f9f',
+        '#f8f',
+        '#f7f',
+        '#f6f',
+        '#f5f',
+        '#f0f',
+      ],
+      dark: [
+        '#101',
+        '#202',
+        '#303',
+        '#404',
+        '#505',
+        '#606',
+        '#707',
+        '#808',
+        '#909',
+        '#a0a',
+        '#b0b',
+        '#c0c',
+      ],
+    },
+  },
+})
+
+export const config = createTamagui({
+  ...defaultConfig,
+  themes,
+})
+```
+
+### createV5Theme Options
+
+<PropsTable
+  data={[
+    {
+      name: 'darkPalette',
+      type: 'string[]',
+      description:
+        'Override the dark base palette (12 colors from darkest to lightest)',
+    },
+    {
+      name: 'lightPalette',
+      type: 'string[]',
+      description:
+        'Override the light base palette (12 colors from lightest to darkest)',
+    },
+    {
+      name: 'colors',
+      type: 'Record<string, { dark: string[], light: string[] }>',
+      description:
+        'Add or override color themes (e.g., { brand: { dark: [...], light: [...] } })',
+    },
+    {
+      name: 'includeDefaultColors',
+      type: 'boolean',
+      default: 'true',
+      description:
+        'Whether to include default color themes (blue, red, green, etc.)',
+    },
+    {
+      name: 'grandChildrenThemes',
+      type: 'Record<string, { template: string }>',
+      description:
+        'Add or override grandChildrenThemes (e.g., { alt1: { template: "alt1" } })',
+    },
+    {
+      name: 'componentThemes',
+      type: 'false | ComponentThemes',
+      default: 'defaultComponentThemes',
+      description:
+        'Override component themes. Pass false to disable, or provide custom component themes.',
+    },
+  ]}
+/>
+
+### Disabling Component Themes
+
+If you prefer to style components yourself without the default component themes:
+
+```tsx
+const themes = createV5Theme({
+  componentThemes: false,
+})
+```
+
+### Custom Component Themes
+
+You can also provide your own component themes:
+
+```tsx
+const themes = createV5Theme({
+  componentThemes: {
+    Button: [{ parent: 'light', template: 'surface1' }],
+  },
+})
+```
+
+---
+
+## Default Colors
+
+V5 includes these color themes by default:
+
+- **Grayscale**: gray, neutral (same in light/dark for contrast on any
+  background)
+- **Colors**: blue, green, orange, pink, purple, red, tan, teal, yellow
+- **Fixed**: black, white (don't change between light/dark)
+
+Each color theme has 12 steps, following the Radix color scale pattern.
+
+---
+
+## Templates and Component Themes
+
+V5 includes default templates that control how theme values map to palette
+indices. Available templates: `base`, `surface1`, `surface2`, `surface3`,
+`alt1`, `alt2`, `inverse`.
+
+The default component themes use these templates to create visual hierarchy:
+
+- **surface1**: Card, ListItem, Input, TextArea, SelectTrigger, Progress,
+  SliderTrack
+- **surface2**: Checkbox, Switch, RadioGroupItem, TooltipContent
+- **surface3**: Button, SliderTrackActive
+- **inverse**: SliderThumb, SwitchThumb, ProgressIndicator, Tooltip
+
+For more details on how templates work, see the
+[Creating Custom Themes Guide](/docs/guides/theme-builder).
+
+---
+
+## Settings
+
+V5 config includes these default settings:
+
+<PropsTable
+  data={[
+    { name: 'defaultFont', description: '"body"' },
+    {
+      name: 'fastSchemeChange',
+      description:
+        'true - Uses DynamicColorIOS on iOS for fast light/dark theme changes.',
+    },
+    {
+      name: 'shouldAddPrefersColorThemes',
+      description: 'true - Generates CSS for prefers-color-scheme.',
+    },
+    {
+      name: 'allowedStyleValues',
+      description:
+        '"somewhat-strict-web" - Allows web-only values like vh, vw.',
+    },
+    {
+      name: 'addThemeClassName',
+      description:
+        '"html" - Adds theme className to html tag for CSS variable access.',
+    },
+    {
+      name: 'onlyAllowShorthands',
+      description: 'true - Removes types for longhand versions of shorthands.',
+    },
+    {
+      name: 'maxDarkLightNesting',
+      description:
+        '2 - Allows two levels of light/dark nesting (useful for tooltips).',
+    },
+    {
+      name: 'styleCompat',
+      description:
+        '"react-native" - Aligns flex defaults to React Native (flexBasis: 0).',
+    },
+  ]}
+/>
+
+---
+
+## Media Queries
+
+V5 uses the same media queries as v4, aligned to Tailwind breakpoints:
+
+<PropsTable
+  data={[
+    { name: '2xl', description: 'minWidth: 1536' },
+    { name: 'xl', description: 'minWidth: 1280' },
+    { name: 'lg', description: 'minWidth: 1024' },
+    { name: 'md', description: 'minWidth: 768' },
+    { name: 'sm', description: 'minWidth: 640' },
+    { name: 'xs', description: 'minWidth: 460' },
+    { name: '2xs', description: 'minWidth: 340' },
+  ]}
+/>
+
+---
+
+## Shorthands
+
+V5 uses the same Tailwind-aligned shorthands as v4. See the
+[v4 config docs](/docs/core/config-v4#shorthands) for the full list.
+
+---
+
+## Tree Shaking Themes (Production Optimization)
+
+Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS
+variables, you can remove the themes JS from your client bundle for better
+Lighthouse scores.
+
+This works because Tamagui generates CSS variables for all theme values. On the
+client, it reads these from the DOM instead of needing the JS object.
+
+### Setup
+
+Use your bundler's environment variables to conditionally exclude themes on the
+client:
+
+```tsx fileName="tamagui.config.ts"
+import { createV5Theme, defaultConfig } from '@tamagui/config/v5'
+import { createTamagui } from 'tamagui'
+
+const themesJS = createV5Theme()
+
+export const config = createTamagui({
+  ...defaultConfig,
+  // Tree shake themes JS on client - Tamagui hydrates from CSS instead
+  themes:
+    process.env.VITE_ENVIRONMENT === 'client'
+      ? ({} as typeof themesJS)
+      : themesJS,
+})
+```
+
+### Bundler Configuration
+
+You'll need to define the environment variable in your bundler.
+
+**One Framework:**
+
+[One](https://onestack.dev) sets `VITE_ENVIRONMENT` automatically - no
+configuration needed!
+
+**Vite:**
+
+```ts fileName="vite.config.ts"
+export default defineConfig({
+  define: {
+    'process.env.VITE_ENVIRONMENT': JSON.stringify(
+      process.env.SSR ? 'server' : 'client',
+    ),
+  },
+})
+```
+
+<Notice theme="green">
+  This optimization requires server-side rendering. The CSS must be rendered on
+  the server for the client to hydrate from it. Make sure you're using
+  `config.getCSS()` or the bundler plugin's `outputCSS` option.
+</Notice>
+
+---
+
+## Migrating from v4
+
+Key differences when migrating:
+
+1. **More colors**: v5 includes many more color themes out of the box
+2. **`styleCompat`**: v5 defaults to `'react-native'`, so `flex` behaves like
+   React Native
+3. **Color palettes**: v5 uses Radix colors with darker grays for dark mode
+4. **`createV5Theme`**: New helper function for customizing themes
+
+```tsx
+// v4
+import { defaultConfig } from '@tamagui/config/v4'
+
+// v5
+import { defaultConfig } from '@tamagui/config/v5'
+```

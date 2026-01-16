@@ -22,7 +22,7 @@ export const docsRoutes = [
     title: 'Core',
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
-      { title: '@tamagui/config', route: '/docs/core/config-v4' },
+      { title: '@tamagui/config', route: '/docs/core/config-v5' },
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'View & Text', route: '/docs/core/stack-and-text' },
       { title: 'Props', route: '/docs/intro/props' },
