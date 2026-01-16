@@ -179,7 +179,7 @@ const RovingFocusGroupItem = React.forwardRef<
       active={active}
     >
       <Stack
-        tabIndex={isCurrentTabStop ? 0 : -1}
+        tabIndex={focusable ? 0 : -1}
         data-orientation={context.orientation}
         {...itemProps}
         ref={forwardedRef}

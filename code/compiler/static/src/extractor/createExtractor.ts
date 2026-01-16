@@ -2386,13 +2386,22 @@ export function createExtractor(
             if (shouldPrintDebug) {
               logger.info(['  [✅] flattened', originalNodeName, flatNodeName].join(' '))
             }
-            // @ts-ignore
-            node.name.name = flatNodeName
-            res.flattened++
-            if (closingElement) {
+            // Only rename if onExtractTag hasn't already renamed to a custom wrapper
+            // @ts-ignore - check if already renamed by callback (e.g., to a styled wrapper)
+            const currentName = node.name?.name
+            if (
+              !currentName ||
+              currentName === originalNodeName ||
+              currentName.startsWith('__ReactNative')
+            ) {
               // @ts-ignore
-              closingElement.name.name = flatNodeName
+              node.name.name = flatNodeName
+              if (closingElement) {
+                // @ts-ignore
+                closingElement.name.name = flatNodeName
+              }
             }
+            res.flattened++
           }
         } catch (err: any) {
           node.attributes = ogAttributes
