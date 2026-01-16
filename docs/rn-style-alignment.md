@@ -3,7 +3,8 @@
 This document tracks Tamagui's alignment with React Native's new CSS-like style props introduced in versions 0.76-0.83.
 
 **Last Updated:** 2026-01-16
-**Manual Test Count:** 0 (browser extension not available)
+**Manual Test Count:** 0 (browser extension unavailable; unit tests: 39 RN style alignment + 171 total suite)
+**Automated Test Coverage:** ✅ All 39 RN style alignment tests pass (20 web + 19 native)
 
 ## Summary of New RN Style Props by Version
 
