@@ -955,29 +955,75 @@ export interface TransformStyleProps {
     rotateX?: `${number}deg` | UnionableString;
     rotateZ?: `${number}deg` | UnionableString;
 }
+export interface BoxShadowObject {
+    offsetX: SpaceTokens | number | (string & {});
+    offsetY: SpaceTokens | number | (string & {});
+    blurRadius?: SpaceTokens | number | (string & {});
+    spreadDistance?: SpaceTokens | number | (string & {});
+    color?: ColorStyleProp | (string & {});
+    inset?: boolean;
+}
+export type BoxShadowValue = BoxShadowObject | BoxShadowObject[] | (string & {});
+export interface FilterBrightness {
+    brightness: number | `${number}%`;
+}
+export interface FilterOpacity {
+    opacity: number | `${number}%`;
+}
+export interface FilterBlur {
+    blur: SpaceTokens | number | string;
+}
+export interface FilterContrast {
+    contrast: number | `${number}%`;
+}
+export interface FilterGrayscale {
+    grayscale: number | `${number}%`;
+}
+export interface FilterHueRotate {
+    hueRotate: `${number}deg` | `${number}rad`;
+}
+export interface FilterInvert {
+    invert: number | `${number}%`;
+}
+export interface FilterSaturate {
+    saturate: number | `${number}%`;
+}
+export interface FilterSepia {
+    sepia: number | `${number}%`;
+}
+export interface FilterDropShadow {
+    dropShadow: {
+        offsetX: SpaceTokens | number | (string & {});
+        offsetY: SpaceTokens | number | (string & {});
+        blurRadius?: SpaceTokens | number | (string & {});
+        color?: ColorStyleProp | (string & {});
+    };
+}
+export type FilterFunction = FilterBrightness | FilterOpacity | FilterBlur | FilterContrast | FilterGrayscale | FilterHueRotate | FilterInvert | FilterSaturate | FilterSepia | FilterDropShadow;
+export type FilterValue = FilterFunction | FilterFunction[] | (string & {});
 interface ExtraStyleProps {
     /**
      * Web-only style property. Will be omitted on native.
      */
     contain?: Properties['contain'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * Cursor style. Supported on web, and iOS 17+ (trackpad/stylus/gaze).
      */
     cursor?: Properties['cursor'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * Outline color. Supported on web and RN 0.77+ (New Architecture).
      */
-    outlineColor?: Properties['outlineColor'];
+    outlineColor?: ColorStyleProp;
     /**
-     * Web-only style property. Will be omitted on native.
+     * Outline offset. Supported on web and RN 0.77+ (New Architecture).
      */
     outlineOffset?: SpaceValue;
     /**
-     * Web-only style property. Will be omitted on native.
+     * Outline style. Supported on web and RN 0.77+ (New Architecture).
      */
-    outlineStyle?: Properties['outlineStyle'];
+    outlineStyle?: 'solid' | 'dotted' | 'dashed';
     /**
-     * Web-only style property. Will be omitted on native.
+     * Outline width. Supported on web and RN 0.77+ (New Architecture).
      */
     outlineWidth?: SpaceValue;
     /**
@@ -1013,9 +1059,15 @@ interface ExtraStyleProps {
      */
     backgroundSize?: Properties['backgroundSize'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * Box sizing model. Supported on web and RN 0.77+ (New Architecture).
+     * Default is 'border-box'.
      */
-    boxSizing?: Properties['boxSizing'];
+    boxSizing?: 'border-box' | 'content-box';
+    /**
+     * CSS box-shadow. Supports tokens: "$2 $4 $8 $shadowColor"
+     * Also accepts object/array format. Supported on web and RN 0.76+ (New Architecture).
+     */
+    boxShadow?: BoxShadowValue;
     /**
      * Web-only style property. Will be omitted on native.
      */
@@ -1030,13 +1082,20 @@ interface ExtraStyleProps {
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
     /**
-     * Web-only style property. Will be omitted on native.
+     * Graphical filter effects. Supported on web and RN 0.76+ (New Architecture).
+     * Cross-platform: brightness, opacity. Android 12+: blur, contrast, dropShadow, etc.
      */
-    filter?: Properties['filter'];
+    filter?: FilterValue;
     /**
-     * Web-only style property. Will be omitted on native.
+     * Blend mode for color mixing with stacking context.
+     * Supported on web and RN 0.77+ (New Architecture).
      */
-    mixBlendMode?: Properties['mixBlendMode'];
+    mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity';
+    /**
+     * Forces element to form a new stacking context for mixBlendMode.
+     * Supported on web and RN 0.77+ (New Architecture).
+     */
+    isolation?: 'auto' | 'isolate';
     /**
      * Web-only style property. Will be omitted on native.
      */

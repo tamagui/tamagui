@@ -20,76 +20,69 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 import { isRemValue, resolveRem } from './resolveRem'
 import { skipProps } from './skipProps'
 
-// Convert boxShadow object/array to CSS string
-const boxShadowObjToStr = (
+// Native: resolve tokens in boxShadow object, keep as object
+const boxShadowObjResolve = (
   v: any,
   sp: SplitStyleProps,
   ss: Partial<GetStyleState>
-): string => {
+): any => {
   const arr = Array.isArray(v) ? v : [v]
-  let r = ''
-  for (let i = 0; i < arr.length; i++) {
-    const o = arr[i]
-    if (i > 0) r += ', '
-    if (o.inset) r += 'inset '
-    // offsetX, offsetY required
-    r += normLen(resolveTok(o.offsetX, 'size', sp, ss)) + ' '
-    r += normLen(resolveTok(o.offsetY, 'size', sp, ss))
-    if (o.blurRadius != null) r += ' ' + normLen(resolveTok(o.blurRadius, 'size', sp, ss))
-    if (o.spreadDistance != null) {
-      if (o.blurRadius == null) r += ' 0'
-      r += ' ' + normLen(resolveTok(o.spreadDistance, 'size', sp, ss))
-    }
-    if (o.color != null) r += ' ' + resolveTok(o.color, 'color', sp, ss)
-  }
-  return r
+  return arr.map((o) => {
+    const r: any = {}
+    if (o.inset) r.inset = true
+    r.offsetX = resolveSizeTok(o.offsetX, sp, ss)
+    r.offsetY = resolveSizeTok(o.offsetY, sp, ss)
+    if (o.blurRadius != null) r.blurRadius = resolveSizeTok(o.blurRadius, sp, ss)
+    if (o.spreadDistance != null)
+      r.spreadDistance = resolveSizeTok(o.spreadDistance, sp, ss)
+    if (o.color != null) r.color = resolveColorTok(o.color, sp, ss)
+    return r
+  })
 }
 
-const resolveTok = (
+// Native: resolve tokens in filter object, keep as object array
+const filterObjResolve = (
   v: any,
-  cat: string,
   sp: SplitStyleProps,
   ss: Partial<GetStyleState>
-) => {
+): any => {
+  const arr = Array.isArray(v) ? v : [v]
+  return arr.map((o) => {
+    // Most filter functions don't need token resolution, but blur and dropShadow do
+    if ('blur' in o) {
+      return { blur: resolveSizeTok(o.blur, sp, ss) }
+    }
+    if ('dropShadow' in o) {
+      const ds = o.dropShadow
+      return {
+        dropShadow: {
+          offsetX: resolveSizeTok(ds.offsetX, sp, ss),
+          offsetY: resolveSizeTok(ds.offsetY, sp, ss),
+          ...(ds.blurRadius != null && {
+            blurRadius: resolveSizeTok(ds.blurRadius, sp, ss),
+          }),
+          ...(ds.color != null && { color: resolveColorTok(ds.color, sp, ss) }),
+        },
+      }
+    }
+    return o
+  })
+}
+
+const resolveSizeTok = (v: any, sp: SplitStyleProps, ss: Partial<GetStyleState>) => {
   if (typeof v === 'string' && v[0] === '$') {
-    const r = getTokenForKey(cat, v, sp, ss)
-    return r != null ? r : v
+    const r = getTokenForKey('size', v, sp, ss)
+    return r != null ? (typeof r === 'number' ? r : Number.parseFloat(String(r)) || 0) : 0
+  }
+  return typeof v === 'number' ? v : Number.parseFloat(String(v)) || 0
+}
+
+const resolveColorTok = (v: any, sp: SplitStyleProps, ss: Partial<GetStyleState>) => {
+  if (typeof v === 'string' && v[0] === '$') {
+    const r = getTokenForKey('color', v, sp, ss)
+    return r != null ? String(r) : v
   }
   return v
-}
-
-const normLen = (v: any) => (typeof v === 'number' ? v + 'px' : String(v))
-
-// Convert filter object/array to CSS string
-const filterObjToStr = (
-  v: any,
-  sp: SplitStyleProps,
-  ss: Partial<GetStyleState>
-): string => {
-  const arr = Array.isArray(v) ? v : [v]
-  const parts: string[] = []
-  for (const o of arr) {
-    if ('brightness' in o) parts.push(`brightness(${o.brightness})`)
-    else if ('opacity' in o) parts.push(`opacity(${o.opacity})`)
-    else if ('blur' in o)
-      parts.push(`blur(${normLen(resolveTok(o.blur, 'size', sp, ss))})`)
-    else if ('contrast' in o) parts.push(`contrast(${o.contrast})`)
-    else if ('grayscale' in o) parts.push(`grayscale(${o.grayscale})`)
-    else if ('hueRotate' in o) parts.push(`hue-rotate(${o.hueRotate})`)
-    else if ('invert' in o) parts.push(`invert(${o.invert})`)
-    else if ('saturate' in o) parts.push(`saturate(${o.saturate})`)
-    else if ('sepia' in o) parts.push(`sepia(${o.sepia})`)
-    else if ('dropShadow' in o) {
-      const ds = o.dropShadow
-      let s = `drop-shadow(${normLen(resolveTok(ds.offsetX, 'size', sp, ss))} ${normLen(resolveTok(ds.offsetY, 'size', sp, ss))}`
-      if (ds.blurRadius != null)
-        s += ` ${normLen(resolveTok(ds.blurRadius, 'size', sp, ss))}`
-      if (ds.color != null) s += ` ${resolveTok(ds.color, 'color', sp, ss)}`
-      s += ')'
-      parts.push(s)
-    }
-  }
-  return parts.join(' ')
 }
 
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
@@ -139,12 +132,12 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   const originalValue = value
 
   if (value != null) {
-    // boxShadow object/array -> string
+    // boxShadow object/array -> resolve tokens, keep as object array
     if (key === 'boxShadow' && typeof value === 'object') {
-      value = boxShadowObjToStr(value, styleProps, styleState)
+      value = boxShadowObjResolve(value, styleProps, styleState)
     } else if (key === 'filter' && typeof value === 'object') {
-      // filter object/array -> string
-      value = filterObjToStr(value, styleProps, styleState)
+      // filter object/array -> resolve tokens, keep as object array
+      value = filterObjResolve(value, styleProps, styleState)
     } else if (typeof value === 'string' && value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
     } else if (key === 'boxShadow' && typeof value === 'string' && value.includes('$')) {

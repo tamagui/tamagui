@@ -8,17 +8,23 @@ beforeAll(() => {
 })
 
 describe('shorthand variables - native', () => {
-  test('boxShadow with $variable resolves to raw value on native', () => {
+  // On native RN 0.76+, boxShadow strings are converted to object arrays
+  test('boxShadow with $variable resolves token in object array', () => {
     const { style } = getSplitStylesFor({
       boxShadow: '0 0 10px $white',
     })
 
     expect(style?.boxShadow).toBeDefined()
-    // On native, should resolve to actual color value, not CSS var
-    expect(style?.boxShadow).not.toContain('var(--')
-    expect(style?.boxShadow).toContain('0 0 10px')
-    // Should contain the resolved color (white = #fff or rgb format)
-    expect(style?.boxShadow).toMatch(/#fff|rgb|white/i)
+    expect(Array.isArray(style?.boxShadow)).toBe(true)
+    const boxShadow = style!.boxShadow as any
+    const shadow = boxShadow[0]
+    expect(shadow.offsetX).toBe(0)
+    expect(shadow.offsetY).toBe(0)
+    expect(shadow.blurRadius).toBe(10)
+    // Color token should be resolved to a raw value (not CSS var or token string)
+    expect(shadow.color).toBeDefined()
+    expect(String(shadow.color)).not.toContain('var(--')
+    expect(shadow.color).not.toBe('$white')
   })
 
   test('boxShadow with color token resolves to raw value', () => {
@@ -27,27 +33,41 @@ describe('shorthand variables - native', () => {
     })
 
     expect(style?.boxShadow).toBeDefined()
-    expect(style?.boxShadow).not.toContain('var(--')
+    expect(Array.isArray(style?.boxShadow)).toBe(true)
+    const boxShadow = style!.boxShadow as any
+    const shadow = boxShadow[0]
+    expect(shadow.color).toBeDefined()
+    expect(String(shadow.color)).not.toContain('var(--')
   })
 
-  test('boxShadow with multiple variables resolves all to raw values', () => {
+  test('boxShadow with multiple shadows produces array', () => {
     const { style } = getSplitStylesFor({
       boxShadow: '0 0 10px $white, 0 0 20px $black',
     })
 
     expect(style?.boxShadow).toBeDefined()
-    // Should not contain any CSS vars
-    expect(style?.boxShadow).not.toContain('var(--')
-    // Should contain both resolved colors
-    expect(style?.boxShadow).toContain(',')
+    expect(Array.isArray(style?.boxShadow)).toBe(true)
+    const boxShadow = style!.boxShadow as any
+    // Should have 2 shadow objects
+    expect(boxShadow.length).toBe(2)
+    // Both should have resolved colors
+    expect(String(boxShadow[0].color)).not.toContain('var(--')
+    expect(String(boxShadow[1].color)).not.toContain('var(--')
   })
 
-  test('boxShadow without variables passes through unchanged', () => {
+  test('boxShadow without variables converted to object array', () => {
     const { style } = getSplitStylesFor({
       boxShadow: '0 0 10px red',
     })
 
-    expect(style?.boxShadow).toBe('0 0 10px red')
+    expect(style?.boxShadow).toBeDefined()
+    expect(Array.isArray(style?.boxShadow)).toBe(true)
+    const boxShadow = style!.boxShadow as any
+    const shadow = boxShadow[0]
+    expect(shadow.offsetX).toBe(0)
+    expect(shadow.offsetY).toBe(0)
+    expect(shadow.blurRadius).toBe(10)
+    expect(shadow.color).toBe('red')
   })
 
   // Note: CSS border shorthand is web-only - native uses individual props (borderWidth, borderColor, etc.)
@@ -56,14 +76,16 @@ describe('shorthand variables - native', () => {
     // On native, use borderWidth, borderColor, borderStyle individually
   })
 
-  test('unresolvable $variable stays as-is', () => {
+  test('unresolvable $variable stays as-is in color', () => {
     const { style } = getSplitStylesFor({
       boxShadow: '0 0 10px $nonexistent',
     })
 
     expect(style?.boxShadow).toBeDefined()
-    // Unresolved variable stays as the original token string
-    expect(style?.boxShadow).toContain('$nonexistent')
+    expect(Array.isArray(style?.boxShadow)).toBe(true)
+    const boxShadow = style!.boxShadow as any
+    // Unresolved variable stays as the original token string in color
+    expect(boxShadow[0].color).toBe('$nonexistent')
   })
 })
 
