@@ -234,5 +234,45 @@ for (const driver of DRIVERS) {
       expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 0)
       expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
     })
+
+    // TEST 9: enterStyle with scaleX animates correctly (BenchmarkChart reproduction)
+    test('enterStyle with scaleX animates from 0 to 1', async ({ page }) => {
+      const START_SCALE_X = 0, END_SCALE_X = 1
+      const START_OPACITY = 0, END_OPACITY = 1
+
+      // Element should not exist initially
+      expect(await elementExists(page, 'scenario-37-target'), 'Initially hidden').toBe(false)
+
+      // Click to show element
+      await page.getByTestId('scenario-37-trigger').click()
+
+      // Wait a moment for the element to appear and start animating
+      await page.waitForTimeout(100)
+
+      // Element should exist now
+      expect(await elementExists(page, 'scenario-37-target'), 'Should exist after click').toBe(true)
+
+      // Get scaleX value (first value in matrix transform)
+      const getScaleX = async () => {
+        return page.evaluate(() => {
+          const el = document.querySelector('[data-testid="scenario-37-target"]')
+          if (!el) return -1
+          const transform = getComputedStyle(el).transform
+          if (transform === 'none') return 1
+          // matrix(a, b, c, d, tx, ty) - scaleX is in the 'a' position
+          const match = transform.match(/matrix\(([^,]+),/)
+          return match ? Number.parseFloat(match[1]) : 1
+        })
+      }
+
+      // Wait for animation to complete (lazy animation takes a while)
+      await page.waitForTimeout(2000)
+
+      const endScaleX = await getScaleX()
+      const endOpacity = await getOpacity(page, 'scenario-37-target')
+
+      expect(endScaleX, 'End scaleX').toBeCloseTo(END_SCALE_X, 1)
+      expect(endOpacity, 'End opacity').toBeCloseTo(END_OPACITY, 1)
+    })
   })
 }

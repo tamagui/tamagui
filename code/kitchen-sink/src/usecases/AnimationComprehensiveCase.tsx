@@ -174,6 +174,10 @@ export function AnimationComprehensiveCase() {
       {/* SECTION 10: Timing-based Tests */}
       <SectionHeader>10. Timing-based Tests</SectionHeader>
       <Scenario36_TimingTest />
+
+      {/* SECTION 11: scaleX EnterStyle (BenchmarkChart reproduction) */}
+      <SectionHeader>11. scaleX EnterStyle</SectionHeader>
+      <Scenario37_EnterStyleScaleX />
     </YStack>
   )
 }
@@ -1089,6 +1093,37 @@ function Scenario36_TimingTest() {
         testID="scenario-36-target" data-testid="scenario-36-target"
       />
       <Paragraph size="$1">1000ms timing</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 37: EnterStyle with scaleX (like BenchmarkChart)
+// Tests animation from scaleX: 0 to scaleX: 1
+// ============================================================================
+function Scenario37_EnterStyleScaleX() {
+  const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('37-enter-scaleX', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { if (!visible) startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-37-trigger" data-testid="scenario-37-trigger">
+        37: EnterScaleX
+      </Button>
+      {visible && (
+        <View
+          ref={ref as any}
+          transition="lazy"
+          width={100}
+          height={20}
+          bg="$pink10"
+          enterStyle={{ opacity: 0, scaleX: 0 }}
+          testID="scenario-37-target" data-testid="scenario-37-target"
+        />
+      )}
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
