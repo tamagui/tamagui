@@ -3,41 +3,25 @@ import {
   blue as blueIn,
   greenDark as greenDarkIn,
   green as greenIn,
-  orangeDark as orangeDarkIn,
-  orange as orangeIn,
-  pinkDark as pinkDarkIn,
-  pink as pinkIn,
-  purpleDark as purpleDarkIn,
-  purple as purpleIn,
   redDark as redDarkIn,
   red as redIn,
-  tealDark as tealDarkIn,
-  teal as tealIn,
   yellowDark as yellowDarkIn,
   yellow as yellowIn,
   gray as grayIn,
   grayDark as grayDarkIn,
 } from '@tamagui/colors'
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
-import { opacify } from './opacify'
+import { interpolateColor, opacify } from './opacify'
 
 // Use Radix colors directly without saturation/lightness adjustments
 const blue = blueIn
 const blueDark = blueDarkIn
 const green = greenIn
 const greenDark = greenDarkIn
-const purple = purpleIn
-const purpleDark = purpleDarkIn
 const red = redIn
 const redDark = redDarkIn
 const yellow = yellowIn
 const yellowDark = yellowDarkIn
-const pink = pinkIn
-const pinkDark = pinkDarkIn
-const orange = orangeIn
-const orangeDark = orangeDarkIn
-const teal = tealIn
-const tealDark = tealDarkIn
 const gray = grayIn
 const grayDark = grayDarkIn
 
@@ -556,6 +540,37 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
       surface2: { template: 'surface2' },
       surface3: { template: 'surface3' },
       ...customGrandChildrenThemes,
+    },
+
+    // Add computed colors to ALL themes based on each theme's palette
+    getTheme: ({ theme, palette }) => {
+      if (!palette || palette.length < 3) return theme
+
+      // palette[1] is background-ish, palette[length-2] is foreground-ish
+      const bgColor = palette[1]!
+      const fgColor = palette[palette.length - 2]!
+
+      return {
+        ...theme,
+        // In-between shades
+        color0pt5: interpolateColor(bgColor, palette[2]!, 0.5),
+        color1pt5: interpolateColor(palette[1]!, palette[2]!, 0.5),
+        color2pt5: interpolateColor(palette[2]!, palette[3]!, 0.5),
+        // Opacity variants of foreground color
+        color01: opacify(fgColor, 0.1),
+        color0075: opacify(fgColor, 0.075),
+        color005: opacify(fgColor, 0.05),
+        color0025: opacify(fgColor, 0.025),
+        color002: opacify(fgColor, 0.02),
+        color001: opacify(fgColor, 0.01),
+        // Opacity variants of background color
+        background01: opacify(bgColor, 0.1),
+        background0075: opacify(bgColor, 0.075),
+        background005: opacify(bgColor, 0.05),
+        background0025: opacify(bgColor, 0.025),
+        background002: opacify(bgColor, 0.02),
+        background001: opacify(bgColor, 0.01),
+      }
     },
   })
 }

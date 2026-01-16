@@ -1,3 +1,4 @@
+import { createThemes } from '@tamagui/theme-builder';
 declare const darkPalette: string[];
 declare const lightPalette: string[];
 export { darkPalette, lightPalette };
@@ -342,6 +343,8 @@ export type CreateV5ThemeOptions = {
     includeDefaultColors?: boolean;
     /** Add or override grandChildrenThemes (e.g., { alt1: { template: 'alt1' } }) */
     grandChildrenThemes?: Record<string, GrandChildrenThemeDefinition>;
+    /** Override component themes. Pass false to disable, or provide custom component themes. Defaults to defaultComponentThemes */
+    componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes'];
 };
 /**
  * Creates v5 themes with optional customizations.
@@ -367,8 +370,14 @@ export type CreateV5ThemeOptions = {
  *   lightPalette: ['#fff', '#fafafa', ...],
  *   darkPalette: ['#000', '#111', ...],
  * })
+ *
+ * @example
+ * Disable component themes
+ * const themes = createV5Theme({
+ *   componentThemes: false,
+ * })
  */
-export declare function createV5Theme(options?: CreateV5ThemeOptions): Record<"light" | "dark" | `light_${string}` | `dark_${string}`, {
+export declare function createV5Theme(options?: CreateV5ThemeOptions): Record<"light" | "dark" | "light_accent" | "dark_accent", {
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -485,6 +494,32 @@ export declare function createV5Theme(options?: CreateV5ThemeOptions): Record<"l
     color11: string;
     color12: string;
     background: string;
+    black: string;
+    black1: string;
+    black2: string;
+    black3: string;
+    black4: string;
+    black5: string;
+    black6: string;
+    black7: string;
+    black8: string;
+    black9: string;
+    black10: string;
+    black11: string;
+    black12: string;
+    white: string;
+    white1: string;
+    white2: string;
+    white3: string;
+    white4: string;
+    white5: string;
+    white6: string;
+    white7: string;
+    white8: string;
+    white9: string;
+    white10: string;
+    white11: string;
+    white12: string;
     backgroundHover: string;
     backgroundPress: string;
     backgroundFocus: string;
@@ -499,32 +534,6 @@ export declare function createV5Theme(options?: CreateV5ThemeOptions): Record<"l
     color0: string;
     white0: string;
     black0: string;
-    white1: string;
-    white2: string;
-    white3: string;
-    white4: string;
-    white5: string;
-    white6: string;
-    white7: string;
-    white8: string;
-    white9: string;
-    white10: string;
-    white11: string;
-    white12: string;
-    black1: string;
-    black2: string;
-    black3: string;
-    black4: string;
-    black5: string;
-    black6: string;
-    black7: string;
-    black8: string;
-    black9: string;
-    black10: string;
-    black11: string;
-    black12: string;
-    black: string;
-    white: string;
     shadow1: string;
     shadow2: string;
     shadow3: string;
@@ -542,16 +551,16 @@ export declare function createV5Theme(options?: CreateV5ThemeOptions): Record<"l
     accent0: string;
     accent2: string;
     accent1: string;
-    accent3: string;
     accent4: string;
-    accent5: string;
-    accent6: string;
-    accent7: string;
     accent8: string;
+    accent12: string;
+    accent3: string;
+    accent5: string;
+    accent7: string;
     accent9: string;
     accent10: string;
+    accent6: string;
     accent11: string;
-    accent12: string;
     teal1: string;
     teal2: string;
     teal3: string;
@@ -606,8 +615,8 @@ export declare function createV5Theme(options?: CreateV5ThemeOptions): Record<"l
     neutral10: string;
     neutral11: string;
     neutral12: string;
-}>;
-export declare const themes: Record<"light" | "dark" | `light_${string}` | `dark_${string}`, {
+} & Record<string, string>>;
+export declare const themes: Record<"light" | "dark" | "light_accent" | "dark_accent", {
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -724,6 +733,32 @@ export declare const themes: Record<"light" | "dark" | `light_${string}` | `dark
     color11: string;
     color12: string;
     background: string;
+    black: string;
+    black1: string;
+    black2: string;
+    black3: string;
+    black4: string;
+    black5: string;
+    black6: string;
+    black7: string;
+    black8: string;
+    black9: string;
+    black10: string;
+    black11: string;
+    black12: string;
+    white: string;
+    white1: string;
+    white2: string;
+    white3: string;
+    white4: string;
+    white5: string;
+    white6: string;
+    white7: string;
+    white8: string;
+    white9: string;
+    white10: string;
+    white11: string;
+    white12: string;
     backgroundHover: string;
     backgroundPress: string;
     backgroundFocus: string;
@@ -738,32 +773,6 @@ export declare const themes: Record<"light" | "dark" | `light_${string}` | `dark
     color0: string;
     white0: string;
     black0: string;
-    white1: string;
-    white2: string;
-    white3: string;
-    white4: string;
-    white5: string;
-    white6: string;
-    white7: string;
-    white8: string;
-    white9: string;
-    white10: string;
-    white11: string;
-    white12: string;
-    black1: string;
-    black2: string;
-    black3: string;
-    black4: string;
-    black5: string;
-    black6: string;
-    black7: string;
-    black8: string;
-    black9: string;
-    black10: string;
-    black11: string;
-    black12: string;
-    black: string;
-    white: string;
     shadow1: string;
     shadow2: string;
     shadow3: string;
@@ -781,16 +790,16 @@ export declare const themes: Record<"light" | "dark" | `light_${string}` | `dark
     accent0: string;
     accent2: string;
     accent1: string;
-    accent3: string;
     accent4: string;
-    accent5: string;
-    accent6: string;
-    accent7: string;
     accent8: string;
+    accent12: string;
+    accent3: string;
+    accent5: string;
+    accent7: string;
     accent9: string;
     accent10: string;
+    accent6: string;
     accent11: string;
-    accent12: string;
     teal1: string;
     teal2: string;
     teal3: string;
@@ -845,5 +854,5 @@ export declare const themes: Record<"light" | "dark" | `light_${string}` | `dark
     neutral10: string;
     neutral11: string;
     neutral12: string;
-}>;
+} & Record<string, string>>;
 //# sourceMappingURL=v5-themes.d.ts.map
