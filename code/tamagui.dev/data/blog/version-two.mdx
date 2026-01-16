@@ -25,32 +25,33 @@ means you can write natural inline styles without the typical performance cost.
 
 In comparison to other solutions, Tamagui is especially strong at:
 
-- _Able to share 100% between web and native._ Many other solutions focus on one
-  platform more than others, or implement their features in sub-par ways on web.
-- _Great performance and platform feeling on both web and native._ As a small
+- **Able to share 100% between web and native.** Many other solutions focus on
+  one platform more than others, or implement their features in sub-par ways on
+  web.
+- **Great performance and platform feeling on both web and native.** As a small
   example - you can choose from 4 animations drivers (CSS, Reanimated, Motion,
   React Native), per-platform, yet no matter which you choose proper SSR with
   media queries and dark mode properly renders and hydrates.
-- _Fast, type-safe, properly mergeable inline styling._ Inline styles are a leap
-  forward, but the lack of type safety or easy ability to merge and group your
-  styles is their biggest drawback. Tamagui is fully type safe, lets you control
-  how you merge styles, and optimizes it all nearly perfectly even in the face
-  of complicated logic.
-- _A first-class, composable components based UI kit._ Our UI kit doesn't just
+- **Fast, type-safe, properly mergeable inline styling.** Inline styles are a
+  leap forward, but the lack of type safety or easy ability to merge and group
+  your styles is their biggest drawback. Tamagui is fully type safe, lets you
+  control how you merge styles, and optimizes it all nearly perfectly even in
+  the face of complicated logic.
+- **A first-class, composable components based UI kit.** Our UI kit doesn't just
   target one platform, uses composable components, and can even adapt based on
   the device.
 
 The result is that Tamagui is the only library that lets you ship world class
-experiences on all platforms, with a lot less code. We're proud to be used by
-companies like [Uniswap](https://uniswap.org), who leveraged Tamagui to unify
-their featureset across platforms and greatly simplify their codebase.
+experiences on all platforms with fully shared code. We're proud to be used by
+companies like [Uniswap](https://uniswap.org) who used Tamagui to unify their
+featureset across platforms and greatly simplify their codebase.
 
 ### Improvements during v1
 
 Tamagui improved continuously during version one:
 
-- Added hundreds of tests, stricter lints, dependency checks and a stricter
-  release process to improve stability.
+- Hundreds of new tests, stricter lints, dependency checks and a more robust
+  release process.
 - Created
   [`@tamagui/build`](https://github.com/tamagui/tamagui/blob/v2/code/packages/build/README.md),
   the only way to publish npm packages that support CommonJS and ESModules and
@@ -66,9 +67,9 @@ Tamagui improved continuously during version one:
 
 ### New in v2
 
-Version two is mostly a cleanup release - it has few breaking changes. It mostly
-removes deprecated APIs, while adding a couple new components and refactoring a
-couple slow ones.
+Version two is easy to migrate to with just a few breaking changes. It mostly
+removes deprecated APIs, improves performance, aligns with modern React, React
+Native, and web standards, and includes a few new features and components.
 
 The breaking changes outside of deprecations are:
 
@@ -118,9 +119,8 @@ with the New Architecture:
   others.
 - **`mixBlendMode`** - Blend modes like `multiply`, `screen`, `overlay`, etc.
 - **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
-- **`boxSizing`** - Box model (`border-box` | `content-box`)
-- **`outlineColor`**, **`outlineStyle`**, **`outlineWidth`**, **`outlineOffset`** -
-  Full outline support
+- **`boxSizing`** - Box model (`border-box` | `content-box`).
+- **`display`** - Pass-through with `contents`.
 
 These properties accept the same syntax on both platforms, and Tamagui
 automatically handles the conversion between CSS strings (web) and object format
@@ -313,8 +313,8 @@ driver-specific regressions that would otherwise slip through.
 and iOS-specific behavior (`*.web.test.tsx`, `*.native.test.tsx`,
 `*.ios.test.tsx`), ensuring cross-platform correctness at the unit level.
 
-**Native CI:** Two dedicated workflows handle native testing - one for Detox
-E2E tests on both iOS and Android, and another for Maestro flow tests covering
+**Native CI:** Two dedicated workflows handle native testing - one for Detox E2E
+tests on both iOS and Android, and another for Maestro flow tests covering
 components like Sheet, Select, Tabs, and Toast on real iOS simulators.
 
 ### What's next
