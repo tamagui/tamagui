@@ -28,41 +28,45 @@ export const MediaQueryGtMd = () => {
 
     {/* Test 1: Both $md and $gtMd - should respect breakpoint boundaries */}
     <YStack
+      id="media-test-both"
       testID="media-test-both"
-      h={100}
-      w={100}
-      bc="red"
-      $md={{ bc: 'yellow' }}
-      $gtMd={{ bc: 'green' }}
+      height={100}
+      width={100}
+      backgroundColor="red"
+      $md={{ backgroundColor: 'yellow' }}
+      $gtMd={{ backgroundColor: 'green' }}
     />
 
     {/* Test 2: Only $gtMd - should NOT apply on small screens */}
     <YStack
+      id="media-test-gtmd-only"
       testID="media-test-gtmd-only"
-      h={100}
-      w={100}
-      bc="red"
-      $gtMd={{ bc: 'green' }}
+      height={100}
+      width={100}
+      backgroundColor="red"
+      $gtMd={{ backgroundColor: 'green' }}
     />
 
     {/* Test 3: Only $md - should apply on small screens */}
     <YStack
+      id="media-test-md-only"
       testID="media-test-md-only"
-      h={100}
-      w={100}
-      bc="red"
-      $md={{ bc: 'yellow' }}
+      height={100}
+      width={100}
+      backgroundColor="red"
+      $md={{ backgroundColor: 'yellow' }}
     />
 
     {/* Test 4: $sm, $md, and $gtMd together */}
     <YStack
+      id="media-test-all"
       testID="media-test-all"
-      h={100}
-      w={100}
-      bc="red"
-      $sm={{ bc: 'blue' }}
-      $md={{ bc: 'yellow' }}
-      $gtMd={{ bc: 'green' }}
+      height={100}
+      width={100}
+      backgroundColor="red"
+      $sm={{ backgroundColor: 'blue' }}
+      $md={{ backgroundColor: 'yellow' }}
+      $gtMd={{ backgroundColor: 'green' }}
     />
     </YStack>
   )
