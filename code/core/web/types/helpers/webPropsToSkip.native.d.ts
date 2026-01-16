@@ -68,7 +68,6 @@ export declare const webPropsToSkip: {
     borderLeftStyle: boolean;
     borderRightStyle: boolean;
     borderTopStyle: boolean;
-    boxSizing: boolean;
     caretColor: boolean;
     clipPath: boolean;
     contain: boolean;
@@ -92,13 +91,8 @@ export declare const webPropsToSkip: {
     maskRepeat: boolean;
     maskSize: boolean;
     maskType: boolean;
-    mixBlendMode: boolean;
     objectFit: boolean;
     objectPosition: boolean;
-    outlineOffset: boolean;
-    outlineStyle: boolean;
-    outlineWidth: boolean;
-    outlineColor: boolean;
     overflowBlock: boolean;
     overflowInline: boolean;
     overflowX: boolean;

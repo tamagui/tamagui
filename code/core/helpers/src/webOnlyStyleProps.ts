@@ -1,5 +1,7 @@
 // Web-only style props that need to be skipped on native
 // NOTE: backgroundColor is NOT web-only - it works on React Native too!
+// NOTE: RN 0.76+ added: boxShadow, filter (cross-platform, with some Android 12+ only filters)
+// NOTE: RN 0.77+ added: boxSizing, mixBlendMode, isolation, outline* props
 export const webOnlyStylePropsView = {
   transition: true,
   textWrap: true,
@@ -26,13 +28,13 @@ export const webOnlyStylePropsView = {
   borderLeftStyle: true,
   borderRightStyle: true,
   borderTopStyle: true,
-  boxSizing: true,
+  // boxSizing: now supported in RN 0.77+ (New Architecture)
   caretColor: true,
   clipPath: true,
   contain: true,
   containerType: true,
   content: true,
-  cursor: true,
+  cursor: true, // NOTE: cursor is supported on iOS 17+ for trackpad/stylus
   float: true,
   mask: true,
   maskBorder: true,
@@ -51,13 +53,10 @@ export const webOnlyStylePropsView = {
   maskRepeat: true,
   maskSize: true,
   maskType: true,
-  mixBlendMode: true,
+  // mixBlendMode: now supported in RN 0.77+ (New Architecture)
   objectFit: true,
   objectPosition: true,
-  outlineOffset: true,
-  outlineStyle: true,
-  outlineWidth: true,
-  outlineColor: true,
+  // outline*: now supported in RN 0.77+ (New Architecture)
   overflowBlock: true,
   overflowInline: true,
   overflowX: true,

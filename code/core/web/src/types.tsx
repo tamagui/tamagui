@@ -1839,7 +1839,7 @@ interface ExtraStyleProps {
   /**
    * Outline style. Supported on web and RN 0.77+ (New Architecture).
    */
-  outlineStyle?: 'solid' | 'dotted' | 'dashed'
+  outlineStyle?: 'none' | 'solid' | 'dotted' | 'dashed'
   /**
    * Outline width. Supported on web and RN 0.77+ (New Architecture).
    */
