@@ -40,8 +40,7 @@
     "@tamagui/popover": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/web": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"

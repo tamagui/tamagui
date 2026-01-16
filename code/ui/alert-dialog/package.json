@@ -53,8 +53,7 @@
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/use-controllable-state": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

@@ -33,8 +33,7 @@
     "@tamagui/constants": "workspace:*",
     "@tamagui/cubic-bezier-animator": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

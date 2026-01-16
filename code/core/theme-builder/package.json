@@ -40,8 +40,7 @@
   "dependencies": {
     "@tamagui/create-theme": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "color2k": "^2.0.2",
-    "react-compiler-runtime": ">=1.0.0"
+    "color2k": "^2.0.2"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

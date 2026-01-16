@@ -50,8 +50,7 @@
     "@tamagui/stacks": "workspace:*",
     "@tamagui/switch-headless": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-previous": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/use-previous": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

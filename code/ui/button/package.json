@@ -48,8 +48,7 @@
     "@tamagui/spacer": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

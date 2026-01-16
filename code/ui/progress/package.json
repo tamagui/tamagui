@@ -44,8 +44,7 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
-    "@tamagui/stacks": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/stacks": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

@@ -21,8 +21,7 @@
     "@tamagui/use-constant": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

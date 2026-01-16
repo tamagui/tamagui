@@ -37,8 +37,7 @@
     "@tamagui/types": "workspace:*",
     "@tamagui/use-did-finish-ssr": "workspace:*",
     "@tamagui/use-event": "workspace:*",
-    "@tamagui/use-force-update": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/use-force-update": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

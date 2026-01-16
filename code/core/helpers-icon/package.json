@@ -21,8 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/core": "workspace:*"
   },
   "exports": {
     "./package.json": "./package.json",

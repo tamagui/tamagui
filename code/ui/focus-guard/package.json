@@ -22,8 +22,7 @@
   },
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
-    "@tamagui/use-event": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/use-event": "workspace:*"
   },
   "peerDependencies": {
     "react": "*"

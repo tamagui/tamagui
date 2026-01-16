@@ -45,8 +45,7 @@
     "@tamagui/image": "workspace:*",
     "@tamagui/shapes": "workspace:*",
     "@tamagui/stacks": "workspace:*",
-    "@tamagui/text": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/text": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

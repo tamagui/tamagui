@@ -142,8 +142,7 @@
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-window-dimensions": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
-    "@tamagui/z-index-stack": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

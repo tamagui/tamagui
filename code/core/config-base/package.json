@@ -39,8 +39,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "react-compiler-runtime": ">=1.0.0"
   }
 }

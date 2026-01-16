@@ -45,8 +45,5 @@
   },
   "peerDependencies": {
     "react": "*"
-  },
-  "dependencies": {
-    "react-compiler-runtime": ">=1.0.0"
   }
 }

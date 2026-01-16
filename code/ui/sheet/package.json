@@ -69,8 +69,7 @@
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-did-finish-ssr": "workspace:*",
     "@tamagui/use-keyboard-visible": "workspace:*",
-    "@tamagui/z-index-stack": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/z-index-stack": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",

@@ -40,8 +40,7 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
-    "@tamagui/stacks": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/stacks": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

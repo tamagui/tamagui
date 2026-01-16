@@ -20,8 +20,7 @@
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"

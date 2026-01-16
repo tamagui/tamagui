@@ -47,8 +47,7 @@
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

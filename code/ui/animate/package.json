@@ -16,8 +16,7 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animate-presence": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/animate-presence": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

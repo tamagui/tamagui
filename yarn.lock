@@ -7241,7 +7241,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-direction": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7258,7 +7257,6 @@ __metadata:
     "@tamagui/portal": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7286,7 +7284,6 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -7306,7 +7303,6 @@ __metadata:
     "@tamagui/use-presence": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7319,7 +7315,6 @@ __metadata:
     "@tamagui/animate-presence": "workspace:*"
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7330,7 +7325,6 @@ __metadata:
   resolution: "@tamagui/animation-helpers@workspace:code/core/animation-helpers"
   dependencies:
     "@tamagui/build": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7345,7 +7339,6 @@ __metadata:
     "@tamagui/use-presence": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-dom: "npm:*"
   peerDependencies:
     react: "*"
@@ -7362,7 +7355,6 @@ __metadata:
     "@tamagui/use-presence": "workspace:*"
     moti: "npm:^0.30.0"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
     react-native-reanimated: "npm:~4.1.1"
   peerDependencies:
@@ -7381,7 +7373,6 @@ __metadata:
     "@tamagui/use-presence": "workspace:*"
     motion: "npm:^12.23.26"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7397,7 +7388,6 @@ __metadata:
     "@tamagui/use-presence": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -7414,7 +7404,6 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/use-presence": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
     react-native-reanimated: "npm:~4.1.1"
   peerDependencies:
@@ -7429,7 +7418,6 @@ __metadata:
   resolution: "@tamagui/assert@workspace:code/core/assert"
   dependencies:
     "@tamagui/build": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7446,7 +7434,6 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/text": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -7523,7 +7510,6 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     vitest: "npm:^4.0.4"
   peerDependencies:
     react: "*"
@@ -7536,7 +7522,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7551,7 +7536,6 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -7574,7 +7558,6 @@ __metadata:
     "@tamagui/use-previous": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -7602,7 +7585,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-previous": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7641,7 +7623,6 @@ __metadata:
     micromatch: "npm:^4.0.7"
     opener: "npm:^1.5.2"
     prompts: "npm:2.1.0"
-    react-compiler-runtime: "npm:>=1.0.0"
     ts-morph: "npm:^15.1.0"
     typescript: "npm:~5.9.2"
     url: "npm:^0.11.0"
@@ -7684,7 +7665,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7703,7 +7683,6 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7714,7 +7693,6 @@ __metadata:
   resolution: "@tamagui/colors@workspace:code/core/colors"
   dependencies:
     "@tamagui/build": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7741,7 +7719,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7764,7 +7741,6 @@ __metadata:
   resolution: "@tamagui/config-base@workspace:code/core/config-base"
   dependencies:
     "@tamagui/build": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7778,7 +7754,6 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
     "@tamagui/web": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7800,7 +7775,6 @@ __metadata:
     "@tamagui/theme-builder": "workspace:*"
     "@tamagui/themes": "workspace:*"
     "@tamagui/web": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7820,7 +7794,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -7839,7 +7812,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7878,7 +7850,6 @@ __metadata:
     "@testing-library/react": "npm:^16.1.0"
     csstype: "npm:^3.0.10"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
     typescript: "npm:~5.9.2"
     vitest: "npm:^4.0.4"
@@ -7894,7 +7865,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -7925,7 +7895,6 @@ __metadata:
     "@tamagui/use-direction": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
     react-native-ios-context-menu: "npm:^3.2.1"
     react-native-ios-utilities: "npm:^5.2.0"
@@ -7955,7 +7924,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/web": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7964,7 +7932,6 @@ __metadata:
   resolution: "@tamagui/cubic-bezier-animator@workspace:code/core/cubic-bezier-animator"
   dependencies:
     "@tamagui/build": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8037,7 +8004,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -8056,7 +8022,6 @@ __metadata:
     "@tamagui/use-escape-keydown": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-dom: "npm:*"
   peerDependencies:
     react: "*"
@@ -8159,7 +8124,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8179,7 +8143,6 @@ __metadata:
     "@floating-ui/react-native": "npm:^0.10.7"
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -8195,7 +8158,6 @@ __metadata:
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8212,7 +8174,6 @@ __metadata:
     "@tamagui/use-async": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8226,7 +8187,6 @@ __metadata:
     "@tamagui/compose-refs": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8239,7 +8199,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     subset-font: "npm:^2.1.0"
   languageName: unknown
   linkType: soft
@@ -8250,7 +8209,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     subset-font: "npm:^2.1.0"
   languageName: unknown
   linkType: soft
@@ -8261,7 +8219,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     subset-font: "npm:^2.1.0"
   languageName: unknown
   linkType: soft
@@ -8272,7 +8229,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8282,7 +8238,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/web": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8292,7 +8247,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     subset-font: "npm:^2.1.0"
   languageName: unknown
   linkType: soft
@@ -8303,7 +8257,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8313,7 +8266,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     subset-font: "npm:^2.1.0"
   languageName: unknown
   linkType: soft
@@ -8324,7 +8276,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8335,7 +8286,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8349,7 +8299,6 @@ __metadata:
     "@tamagui/constants": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8369,7 +8318,6 @@ __metadata:
     "@tamagui/helpers": "workspace:*"
     "@tamagui/text": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8385,7 +8333,6 @@ __metadata:
     "@tamagui/types": "workspace:*"
     esbuild-register: "npm:^3.6.0"
     fs-extra: "npm:^11.2.0"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8397,7 +8344,6 @@ __metadata:
     "@tamagui/get-token": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8411,7 +8357,6 @@ __metadata:
     "@tamagui/constants": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8424,7 +8369,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8442,7 +8386,6 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -8457,7 +8400,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native-svg: "npm:15.12.1"
   peerDependencies:
     react: "*"
@@ -8472,7 +8414,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/types": "workspace:*"
     fs-extra: "npm:^11.2.0"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8484,7 +8425,6 @@ __metadata:
     "@tamagui/helpers": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
     vitest: "npm:^4.0.4"
   peerDependencies:
@@ -8501,7 +8441,6 @@ __metadata:
     "@tamagui/constants": "workspace:*"
     "@tamagui/simple-hash": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8516,7 +8455,6 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -8541,7 +8479,6 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
     vitest: "npm:^4.0.4"
   peerDependencies:
@@ -8650,7 +8587,6 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -8667,7 +8603,6 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     expo-linear-gradient: "npm:~15.0.7"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -8689,7 +8624,6 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8743,7 +8677,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8849,7 +8782,6 @@ __metadata:
   dependencies:
     "@react-native/normalize-color": "npm:^2.1.0"
     "@tamagui/build": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -8885,7 +8817,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-freeze: "npm:^1.0.3"
     react-native: "npm:0.81.5"
   peerDependencies:
@@ -8908,7 +8839,6 @@ __metadata:
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -8928,7 +8858,6 @@ __metadata:
     "@tamagui/web": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-dom: "npm:*"
     react-native: "npm:0.81.5"
   peerDependencies:
@@ -8950,7 +8879,6 @@ __metadata:
     "@tamagui/helpers": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -8983,7 +8911,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-previous": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9004,7 +8931,6 @@ __metadata:
     "@tamagui/use-previous": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9018,7 +8944,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/web": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react-native: "*"
@@ -9045,7 +8970,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9057,7 +8981,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9075,7 +8998,6 @@ __metadata:
     "@tamagui/use-element-layout": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-dom: "npm:*"
   peerDependencies:
     react: "*"
@@ -9112,7 +9034,6 @@ __metadata:
     "@tamagui/react-native-use-responder-events": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9124,7 +9045,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9145,7 +9065,6 @@ __metadata:
     "@tamagui/use-direction": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9179,7 +9098,6 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9218,7 +9136,6 @@ __metadata:
     "@tamagui/use-event": "workspace:*"
     "@tamagui/use-previous": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-dom: "npm:*"
     react-native: "npm:0.81.5"
   peerDependencies:
@@ -9236,7 +9153,6 @@ __metadata:
     "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9250,7 +9166,6 @@ __metadata:
     "@tamagui/stacks": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9279,7 +9194,6 @@ __metadata:
     "@tamagui/use-keyboard-visible": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9293,7 +9207,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/web": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -9302,7 +9215,6 @@ __metadata:
   resolution: "@tamagui/simple-hash@workspace:code/core/simple-hash"
   dependencies:
     "@tamagui/build": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -9322,7 +9234,6 @@ __metadata:
     "@tamagui/use-debounce": "workspace:*"
     "@tamagui/use-direction": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9337,7 +9248,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9354,7 +9264,6 @@ __metadata:
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9366,7 +9275,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9496,7 +9404,6 @@ __metadata:
     "@tamagui/label": "workspace:*"
     "@tamagui/use-previous": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9521,7 +9428,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-previous": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9538,7 +9444,6 @@ __metadata:
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-direction": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9562,7 +9467,6 @@ __metadata:
     "@tamagui/use-direction": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9601,7 +9505,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -9623,7 +9526,6 @@ __metadata:
     "@tamagui/helpers-tamagui": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9634,7 +9536,6 @@ __metadata:
   resolution: "@tamagui/theme-base@workspace:code/core/theme-base"
   dependencies:
     "@tamagui/build": "workspace:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -9646,7 +9547,6 @@ __metadata:
     "@tamagui/create-theme": "workspace:*"
     "@tamagui/web": "workspace:*"
     color2k: "npm:^2.0.2"
-    react-compiler-runtime: "npm:>=1.0.0"
     vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
@@ -9660,7 +9560,6 @@ __metadata:
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9677,7 +9576,6 @@ __metadata:
     "@tamagui/theme-builder": "workspace:*"
     "@tamagui/web": "workspace:*"
     color2k: "npm:^2.0.2"
-    react-compiler-runtime: "npm:>=1.0.0"
     vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
@@ -9712,7 +9610,6 @@ __metadata:
     "@tamagui/visually-hidden": "workspace:*"
     burnt: "npm:^0.12.2"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9739,7 +9636,6 @@ __metadata:
     "@tamagui/use-direction": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9764,7 +9660,6 @@ __metadata:
     "@tamagui/text": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9795,7 +9690,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9807,7 +9701,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9821,7 +9714,6 @@ __metadata:
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9833,7 +9725,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9845,7 +9736,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9857,7 +9747,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9871,7 +9760,6 @@ __metadata:
     "@tamagui/constants": "workspace:*"
     "@tamagui/is-equal-shallow": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9884,7 +9772,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/use-callback-ref": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9897,7 +9784,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9909,7 +9795,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9921,7 +9806,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9936,7 +9820,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9948,7 +9831,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -9975,7 +9857,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
   peerDependencies:
     react: "*"
@@ -9990,7 +9871,6 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/web": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -10062,7 +9942,6 @@ __metadata:
     "@testing-library/react": "npm:^16.1.0"
     csstype: "npm:^3.0.10"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-dom: "npm:*"
     react-native: "npm:0.81.5"
     typescript: "npm:~5.9.2"
@@ -10080,7 +9959,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -14571,7 +14449,6 @@ __metadata:
     got: "npm:10.7.0"
     opener: "npm:^1.5.2"
     prompts: "npm:2.1.0"
-    react-compiler-runtime: "npm:>=1.0.0"
     rimraf: "npm:^5.0.1"
     tar: "npm:4.4.10"
     tempy: "npm:^3.1.0"
@@ -25779,15 +25656,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-compiler-runtime@npm:>=1.0.0":
-  version: 1.0.0
-  resolution: "react-compiler-runtime@npm:1.0.0"
-  peerDependencies:
-    react: ^17.0.0 || ^18.0.0 || ^19.0.0 || ^0.0.0-experimental
-  checksum: 10/7d85297de255c39f1aca3dd4942fbf59253e127db8abef1ad7fe3eb329e39aab4c30656ff77751165e2b21263d96836f44699777ca40c9a717ffe42c6c355543
-  languageName: node
-  linkType: hard
-
 "react-compiler-runtime@npm:^19.0.0-beta-201e55d-20241215":
   version: 19.0.0-beta-ebf51a3-20250411
   resolution: "react-compiler-runtime@npm:19.0.0-beta-ebf51a3-20250411"
@@ -29091,7 +28959,6 @@ __metadata:
     "@tamagui/visually-hidden": "workspace:*"
     "@tamagui/z-index-stack": "workspace:*"
     react: "npm:*"
-    react-compiler-runtime: "npm:>=1.0.0"
     react-native: "npm:0.81.5"
     react-native-web: "npm:^0.21.0"
   peerDependencies:

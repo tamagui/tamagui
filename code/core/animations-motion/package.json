@@ -35,8 +35,7 @@
     "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
-    "motion": "^12.23.26",
-    "react-compiler-runtime": ">=1.0.0"
+    "motion": "^12.23.26"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

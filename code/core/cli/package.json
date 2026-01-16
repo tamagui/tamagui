@@ -43,7 +43,6 @@
     "micromatch": "^4.0.7",
     "opener": "^1.5.2",
     "prompts": "2.1.0",
-    "react-compiler-runtime": ">=1.0.0",
     "ts-morph": "^15.1.0",
     "typescript": "~5.9.2",
     "url": "^0.11.0"

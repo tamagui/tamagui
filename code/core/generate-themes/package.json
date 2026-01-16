@@ -41,8 +41,7 @@
     "@tamagui/theme-builder": "workspace:*",
     "@tamagui/types": "workspace:*",
     "esbuild-register": "^3.6.0",
-    "fs-extra": "^11.2.0",
-    "react-compiler-runtime": ">=1.0.0"
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"

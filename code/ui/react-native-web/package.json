@@ -36,8 +36,7 @@
   "dependencies": {
     "@tamagui/react-native-use-pressable": "workspace:*",
     "@tamagui/react-native-use-responder-events": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

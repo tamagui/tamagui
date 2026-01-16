@@ -48,8 +48,7 @@
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",
-    "@tamagui/use-direction": "workspace:*",
-    "react-compiler-runtime": ">=1.0.0"
+    "@tamagui/use-direction": "workspace:*"
   },
   "peerDependencies": {
     "react": "*",
