@@ -1876,11 +1876,7 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   backgroundSize?: Properties['backgroundSize']
-  /**
-   * Box sizing model. Supported on web and RN 0.77+ (New Architecture).
-   * Default is 'border-box'.
-   */
-  boxSizing?: 'border-box' | 'content-box' | (string & {})
+  // boxSizing - provided by RN's ViewStyle
   /**
    * CSS box-shadow. Supports tokens: "$2 $4 $8 $shadowColor"
    * Also accepts object/array format. Supported on web and RN 0.76+ (New Architecture).
@@ -1915,33 +1911,8 @@ interface ExtraStyleProps {
    * Cross-platform: brightness, opacity. Android 12+: blur, contrast, dropShadow, etc.
    */
   filter?: FilterValue
-  /**
-   * Blend mode for color mixing with stacking context.
-   * Supported on web and RN 0.77+ (New Architecture).
-   */
-  mixBlendMode?:
-    | 'normal'
-    | 'multiply'
-    | 'screen'
-    | 'overlay'
-    | 'darken'
-    | 'lighten'
-    | 'color-dodge'
-    | 'color-burn'
-    | 'hard-light'
-    | 'soft-light'
-    | 'difference'
-    | 'exclusion'
-    | 'hue'
-    | 'saturation'
-    | 'color'
-    | 'luminosity'
-    | (string & {})
-  /**
-   * Forces element to form a new stacking context for mixBlendMode.
-   * Supported on web and RN 0.77+ (New Architecture).
-   */
-  isolation?: 'auto' | 'isolate' | (string & {})
+  // mixBlendMode - provided by RN's ViewStyle
+  // isolation - provided by RN's ViewStyle
   /**
    * Web-only style property. Will be omitted on native.
    */
