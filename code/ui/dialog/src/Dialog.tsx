@@ -497,7 +497,7 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
           event.preventDefault()
         )}
         {...(!props.unstyled && {
-          outlineStyle: 'none',
+          outlineWidth: 0,
         })}
       >
         {children}

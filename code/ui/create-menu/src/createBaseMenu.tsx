@@ -941,7 +941,7 @@ export function createBaseMenu({
 
       return (
         <MenuItemImpl
-          outlineStyle="none"
+          outlineWidth={0}
           {...itemProps}
           scope={scope}
           // @ts-ignore
@@ -1381,7 +1381,7 @@ export function createBaseMenu({
           aria-expanded={context.open}
           aria-controls={subContext.contentId}
           data-state={getOpenState(context.open)}
-          outlineStyle="none"
+          outlineWidth={0}
           {...props}
           ref={composeRefs(forwardedRef, subContext.onTriggerChange)}
           // This is redundant for mouse users but we cannot determine pointer type from
