@@ -169,16 +169,6 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       ),
     },
     {
-      name: 'focusable',
-      required: false,
-      type: 'boolean',
-      description: (
-        <span>
-          Whether the element can receive focus. On web, controls <code>tabIndex</code>.
-        </span>
-      ),
-    },
-    {
       name: 'hitSlop',
       required: false,
       type: `number | Insets`,
@@ -192,6 +182,157 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
 />
 
 Use these events alongside style states like `pressStyle`, `hoverStyle`, and `focusStyle` to create interactive components. See the [Style API](/docs/intro/styles) for styling on interaction states.
+
+## Accessibility Props
+
+Tamagui v2 uses web-standard accessibility props that work across all platforms:
+
+<PropsTable
+  data={[
+    {
+      name: 'aria-label',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          Accessible name for the element. Screen readers announce this when the element is focused.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-labelledby',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          ID of the element that labels this element.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          ID of the element that describes this element.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-hidden',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Hides element from the accessibility tree.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-disabled',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Indicates the element is disabled.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-checked',
+      required: false,
+      type: 'boolean | "mixed"',
+      description: (
+        <span>
+          Indicates the checked state for checkboxes and radio buttons.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-expanded',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Indicates whether a collapsible element is expanded.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-selected',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Indicates the selected state for tabs and list items.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-live',
+      required: false,
+      type: '"off" | "polite" | "assertive"',
+      description: (
+        <span>
+          Indicates that content will be updated and how to announce updates.
+        </span>
+      ),
+    },
+    {
+      name: 'aria-modal',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Indicates whether the element is a modal dialog.
+        </span>
+      ),
+    },
+    {
+      name: 'role',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          Defines the element's role for accessibility (e.g., "button", "link", "heading").
+        </span>
+      ),
+    },
+    {
+      name: 'tabIndex',
+      required: false,
+      type: 'number',
+      description: (
+        <span>
+          Controls focus order. Use <code>0</code> to make focusable, <code>-1</code> to remove from tab order.
+        </span>
+      ),
+    },
+    {
+      name: 'id',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          Unique identifier for the element. Used with aria-labelledby/describedby.
+        </span>
+      ),
+    },
+  ]}
+/>
+
+<Notice theme="yellow">
+  **Migrating from v1?** React Native-specific props like `accessibilityLabel`, `accessibilityRole`, and `focusable` are removed in v2. Use the web-standard equivalents:
+
+  - `accessibilityLabel` → `aria-label`
+  - `accessibilityRole` → `role`
+  - `accessibilityHint` → `aria-describedby`
+  - `accessibilityState` → `aria-disabled`, `aria-checked`, etc.
+  - `accessibilityHidden` → `aria-hidden`
+  - `focusable` → `tabIndex`
+  - `nativeID` → `id`
+</Notice>
 
 ## Other Props
 
@@ -379,28 +520,6 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
       description: (
         <span>
           Disable all compiler optimization.
-        </span>
-      ),
-    },
-
-    {
-      name: 'tabIndex',
-      required: false,
-      type: `string | number`,
-      description: (
-        <span>
-          Used for controlling the order of focus with keyboard or assistive device enavigation.
-        </span>
-      ),
-    },
-
-    {
-      name: 'role',
-      required: false,
-      type: 'Role',
-      description: (
-        <span>
-          Indicates to accessibility services to treat UI component like a specific role.
         </span>
       ),
     },

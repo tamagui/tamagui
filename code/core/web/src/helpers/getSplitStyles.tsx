@@ -348,7 +348,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // v2: RN-specific props are removed - use web-standard props instead
-    if (keyInit in removedProps) {
+    if (removedPropNames.has(keyInit)) {
       if (process.env.NODE_ENV === 'development') {
         warnRemovedProp(keyInit)
       }
@@ -1536,28 +1536,52 @@ const animatableDefaults = {
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
 
 // v2: RN-specific props removed - use web-standard props instead
-const removedProps: Record<string, string> = {
-  nativeID: 'id',
-  accessible: 'tabIndex={0}',
-  focusable: 'tabIndex',
-  selectable: 'userSelect',
-  accessibilityLabel: 'aria-label',
-  accessibilityRole: 'role',
-  accessibilityHint: 'aria-describedby',
-  accessibilityState: 'aria-disabled, aria-checked, etc',
-  accessibilityValue: 'aria-valuemin, aria-valuemax, etc',
-  accessibilityElementsHidden: 'aria-hidden',
-  accessibilityViewIsModal: 'aria-modal',
-  accessibilityLiveRegion: 'aria-live',
-  accessibilityLabelledBy: 'aria-labelledby',
-  accessibilityDescribedBy: 'aria-describedby',
-  accessibilityActions: 'onClick handlers',
-  accessibilityLanguage: 'lang',
-}
+// Only define in development for tree-shaking in production
+const removedProps: Record<string, string> | undefined =
+  process.env.NODE_ENV === 'development'
+    ? {
+        nativeID: 'id',
+        accessible: 'tabIndex={0}',
+        focusable: 'tabIndex',
+        selectable: 'userSelect',
+        accessibilityLabel: 'aria-label',
+        accessibilityRole: 'role',
+        accessibilityHint: 'aria-describedby',
+        accessibilityState: 'aria-disabled, aria-checked, etc',
+        accessibilityValue: 'aria-valuemin, aria-valuemax, etc',
+        accessibilityElementsHidden: 'aria-hidden',
+        accessibilityViewIsModal: 'aria-modal',
+        accessibilityLiveRegion: 'aria-live',
+        accessibilityLabelledBy: 'aria-labelledby',
+        accessibilityDescribedBy: 'aria-describedby',
+        accessibilityActions: 'onClick handlers',
+        accessibilityLanguage: 'lang',
+      }
+    : undefined
+
+// Set of prop names for fast lookup (tree-shaken in dev, always present for skipping)
+const removedPropNames = new Set([
+  'nativeID',
+  'accessible',
+  'focusable',
+  'selectable',
+  'accessibilityLabel',
+  'accessibilityRole',
+  'accessibilityHint',
+  'accessibilityState',
+  'accessibilityValue',
+  'accessibilityElementsHidden',
+  'accessibilityViewIsModal',
+  'accessibilityLiveRegion',
+  'accessibilityLabelledBy',
+  'accessibilityDescribedBy',
+  'accessibilityActions',
+  'accessibilityLanguage',
+])
 
 const warnedRemovedProps = new Set<string>()
 function warnRemovedProp(prop: string) {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' && removedProps) {
     if (warnedRemovedProps.has(prop)) return
     warnedRemovedProps.add(prop)
     console.warn(
