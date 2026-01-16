@@ -1575,7 +1575,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-typescript@npm:^7.16.7, @babel/preset-typescript@npm:^7.23.0, @babel/preset-typescript@npm:^7.24.7":
+"@babel/preset-typescript@npm:^7.16.7, @babel/preset-typescript@npm:^7.23.0":
   version: 7.27.1
   resolution: "@babel/preset-typescript@npm:7.27.1"
   dependencies:
@@ -8817,7 +8817,7 @@ __metadata:
   resolution: "@tamagui/next-site@workspace:code/tests/next-site"
   dependencies:
     "@babel/preset-react": "npm:^7.24.7"
-    "@babel/preset-typescript": "npm:^7.24.7"
+    "@babel/preset-typescript": "npm:^7.26.0"
     "@playwright/test": "npm:^1.49.1"
     "@tamagui/build": "workspace:*"
     "@types/d3-scale": "npm:^4.0.2"
