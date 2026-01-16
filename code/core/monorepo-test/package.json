@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/monorepo-test",
-  "version": "2.0.0-1768427228811",
+  "version": "2.0.0-1768530912818",
   "module": "dist/esm",
   "type": "module",
   "private": true,

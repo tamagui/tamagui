@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "2.0.0-1768427228811",
+  "version": "2.0.0-1768530912818",
   "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
