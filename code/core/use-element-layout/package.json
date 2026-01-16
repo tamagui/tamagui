@@ -36,7 +36,8 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/is-equal-shallow": "workspace:*"
+    "@tamagui/is-equal-shallow": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

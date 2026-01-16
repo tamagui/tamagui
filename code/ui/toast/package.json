@@ -53,7 +53,8 @@
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/visually-hidden": "workspace:*"
+    "@tamagui/visually-hidden": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "peerDependencies": {
     "react": "*",

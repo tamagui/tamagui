@@ -119,7 +119,8 @@
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/theme-builder": "workspace:*",
     "@tamagui/themes": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"

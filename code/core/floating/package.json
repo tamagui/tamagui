@@ -44,7 +44,8 @@
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.6",
-    "@floating-ui/react-native": "^0.10.7"
+    "@floating-ui/react-native": "^0.10.7",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

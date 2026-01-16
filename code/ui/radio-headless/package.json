@@ -33,7 +33,8 @@
     "@tamagui/label": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-previous": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "exports": {
     "./package.json": "./package.json",

@@ -21,12 +21,69 @@ const {
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
+
+/**
+ * esbuild plugin that runs React Compiler on TS/TSX files before transformation
+ */
+const reactCompilerPlugin = {
+  name: 'react-compiler',
+  setup(build) {
+    build.onLoad({ filter: /\.tsx?$/ }, async (args) => {
+      const source = await FSE.readFile(args.path, 'utf8')
+      const isTSX = args.path.endsWith('.tsx')
+
+      try {
+        const result = transform(source, {
+          filename: args.path,
+          configFile: false,
+          presets: [
+            ['@babel/preset-typescript', { isTSX, allExtensions: true }],
+          ],
+          plugins: [
+            [
+              require.resolve('babel-plugin-react-compiler'),
+              {
+                // Target React 19 for optimal output
+                target: '19',
+                // Log when functions can't be compiled and why
+                logger: process.env.REACT_COMPILER_DEBUG
+                  ? {
+                      logEvent(filename, event) {
+                        if (event.kind === 'CompileError' || event.kind === 'CompileSkip') {
+                          const name = event.fnLoc?.identifierName || 'unknown'
+                          const reason = event.detail?.reason || event.reason || ''
+                          console.log(`[RC] ${basename(filename)}:${name} - ${reason}`)
+                        }
+                      },
+                    }
+                  : undefined,
+              },
+            ],
+          ],
+        })
+
+        return {
+          contents: result.code,
+          loader: isTSX ? 'jsx' : 'js', // jsx/js since babel stripped TS
+        }
+      } catch (err) {
+        // If React Compiler fails, fall back to original source
+        console.warn(`React Compiler skipped for ${args.path}:`, err.message)
+        return null // let esbuild handle it normally
+      }
+    })
+  },
+}
+
 const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 
 const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
+const shouldSkipCompiler = !!(
+  process.argv.includes('--skip-compiler') || process.env.SKIP_COMPILER
+)
 const shouldBundleFlag = !!process.argv.includes('--bundle')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
@@ -630,6 +687,9 @@ async function esbuildWriteIfChanged(
 
       plugins: [
         ...(opts.plugins || []),
+
+        // React Compiler for automatic memoization (can be skipped with --skip-compiler)
+        ...(!shouldSkipCompiler ? [reactCompilerPlugin] : []),
 
         ...(platform === 'native' && !opts.bundle
           ? [

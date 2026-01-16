@@ -46,7 +46,8 @@
     "@tamagui/get-token": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "peerDependencies": {
     "react": "*",

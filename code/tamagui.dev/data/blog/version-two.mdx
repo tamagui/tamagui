@@ -171,6 +171,25 @@ Motion driver. This means animations run entirely on the UI thread without
 triggering React re-renders, giving you better performance for complex
 animations.
 
+#### React Compiler
+
+All Tamagui packages are now built with the
+[React Compiler](https://react.dev/learn/react-compiler), providing automatic
+memoization for better runtime performance. The compiler analyzes your
+components and automatically inserts `useMemo` and `useCallback` where
+beneficial, reducing unnecessary re-renders without any code changes on your
+part.
+
+To use Tamagui with the React Compiler in your own app, you'll want to add the
+`react-compiler-runtime` package as a dependency for React 18 compatibility:
+
+```bash
+npm install react-compiler-runtime
+```
+
+This runtime polyfill is required when using React 18 with code compiled by the
+React Compiler. React 19 includes this runtime natively.
+
 #### Headless and Unstyled Components
 
 During v2 we're expanding headless components. Many components now have three

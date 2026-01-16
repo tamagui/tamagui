@@ -34,7 +34,8 @@
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/use-direction": "workspace:*"
+    "@tamagui/use-direction": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "exports": {
     "./package.json": "./package.json",

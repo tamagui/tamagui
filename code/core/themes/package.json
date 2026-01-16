@@ -109,7 +109,8 @@
     "@tamagui/create-theme": "workspace:*",
     "@tamagui/theme-builder": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "color2k": "^2.0.2"
+    "color2k": "^2.0.2",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

@@ -83,7 +83,10 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
 
   // For test bundles, bundle a fake react-native implementation
   // For production bundles, bundle react-native-web-lite
-  const external = isTest ? ['react', /^react-native($|\/)/] : ['react']
+  // Note: react/compiler-runtime is from React Compiler - must be external as it's provided at runtime
+  const external = isTest
+    ? ['react', /^react-native($|\/)/, /^react\/compiler-runtime$/]
+    : ['react', /^react\/compiler-runtime$/]
   const alias = isTest
     ? [
         // Aliases don't work for pre-bundled deps, so we externalize and alias in vitest config

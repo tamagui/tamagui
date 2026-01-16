@@ -34,7 +34,8 @@
   "dependencies": {
     "@tamagui/core": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
-    "moti": "^0.30.0"
+    "moti": "^0.30.0",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

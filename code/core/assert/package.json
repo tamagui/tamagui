@@ -40,5 +40,8 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
+  },
+  "dependencies": {
+    "react-compiler-runtime": ">=1.0.0"
   }
 }

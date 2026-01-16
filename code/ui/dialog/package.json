@@ -56,7 +56,8 @@
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/z-index-stack": "workspace:*"
+    "@tamagui/z-index-stack": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "peerDependencies": {
     "react": "*",

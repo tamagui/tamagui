@@ -30,6 +30,7 @@
     "fs-extra": "^11.2.0",
     "opener": "^1.5.2",
     "prompts": "2.1.0",
+    "react-compiler-runtime": ">=1.0.0",
     "rimraf": "^5.0.1",
     "validate-npm-package-name": "3.0.0",
     "zx": "^8.5.5"

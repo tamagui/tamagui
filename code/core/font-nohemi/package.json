@@ -39,6 +39,7 @@
     "subset-font": "^2.1.0"
   },
   "dependencies": {
-    "@tamagui/core": "workspace:*"
+    "@tamagui/core": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   }
 }

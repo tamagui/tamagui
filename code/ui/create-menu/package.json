@@ -55,6 +55,7 @@
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
     "@tamagui/web": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0",
     "tamagui": "workspace:*"
   },
   "optionalDependencies": {

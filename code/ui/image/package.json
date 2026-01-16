@@ -41,7 +41,8 @@
   "dependencies": {
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "peerDependencies": {
     "react": "*",

@@ -1,9 +1,9 @@
 {
-  "name": "@tamagui/react-native-use-pressable",
+  "name": "@tamagui/conditional-hooks",
   "version": "2.0.0-1768586279389",
   "type": "module",
   "sideEffects": false,
-  "types": "./types/index.d.ts",
+  "types": "./src",
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [
@@ -12,8 +12,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -27,12 +27,15 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
+      "types": "./src/index.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
+  },
+  "dependencies": {
+    "@tamagui/constants": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
@@ -43,8 +46,5 @@
   },
   "peerDependencies": {
     "react": "*"
-  },
-  "dependencies": {
-    "react-compiler-runtime": ">=1.0.0"
   }
 }

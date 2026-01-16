@@ -33,7 +33,8 @@
     "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/simple-hash": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
-    "@tamagui/web": "workspace:*"
+    "@tamagui/web": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

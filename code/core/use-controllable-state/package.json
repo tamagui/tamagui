@@ -37,7 +37,8 @@
   },
   "dependencies": {
     "@tamagui/start-transition": "workspace:*",
-    "@tamagui/use-event": "workspace:*"
+    "@tamagui/use-event": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

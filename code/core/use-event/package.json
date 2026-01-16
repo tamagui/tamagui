@@ -24,7 +24,8 @@
     "react": "*"
   },
   "dependencies": {
-    "@tamagui/constants": "workspace:*"
+    "@tamagui/constants": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "exports": {
     "./package.json": "./package.json",

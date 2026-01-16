@@ -43,7 +43,8 @@
     "@tamagui/constants": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/label": "workspace:*",
-    "@tamagui/use-previous": "workspace:*"
+    "@tamagui/use-previous": "workspace:*",
+    "react-compiler-runtime": ">=1.0.0"
   },
   "peerDependencies": {
     "react": "*",
