@@ -41,7 +41,7 @@ function IndividualTooltip({
         y={0}
         opacity={1}
         py="$2"
-        animation={['tooltip', { opacity: '200ms', backgroundColor: '200ms' }]}
+        transition={['tooltip', { opacity: '200ms', backgroundColor: '200ms' }]}
       >
         <Tooltip.Arrow />
         <Paragraph size="$2" lineHeight="$1">
@@ -114,7 +114,7 @@ function GlobalProvider({ children }: { children: ReactNode }) {
           px="$2"
           animateOnly={['transform', 'opacity', 'width', 'height']}
           enableAnimationForPositionChange
-          animation={['tooltip', { opacity: '200ms', backgroundColor: '200ms' }]}
+          transition={['tooltip', { opacity: '200ms', backgroundColor: '200ms' }]}
         >
           <Tooltip.Arrow />
           <Paragraph size="$3">{label}</Paragraph>
@@ -173,7 +173,7 @@ export function TooltipDemo() {
           checked={animatePosition}
           onCheckedChange={setAnimatePosition}
         >
-          <Switch.Thumb animation="quick" />
+          <Switch.Thumb transition="quick" />
         </Switch>
         <Label htmlFor="animate-position" size="$2">
           Animate position
