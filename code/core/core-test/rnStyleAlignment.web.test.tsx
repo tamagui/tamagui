@@ -82,7 +82,13 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
     test('boxShadow with spreadDistance includes it', () => {
       const styles = simplifiedGetSplitStyles(Stack, {
-        boxShadow: { offsetX: 0, offsetY: 0, blurRadius: 10, spreadDistance: 5, color: 'red' },
+        boxShadow: {
+          offsetX: 0,
+          offsetY: 0,
+          blurRadius: 10,
+          spreadDistance: 5,
+          color: 'red',
+        },
       })
       const value = getStyleValue(styles, 'boxShadow')
       expect(value).toBeDefined()
