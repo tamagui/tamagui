@@ -1,9 +1,10 @@
 import { parseToHsla } from 'color2k'
+import type { Template } from '@tamagui/create-theme'
 import { defaultComponentThemes } from './defaultComponentThemes'
 import { defaultTemplates } from './defaultTemplates'
 import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
 import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
-import type { BuildPalettes, BuildTemplates, GetThemeFn } from './types'
+import type { BuildPalettes, BuildTemplates } from './types'
 
 /**
  * GrandChildren theme nesting logic implementation:
@@ -32,6 +33,18 @@ type SinglePalette = string[]
 type SchemePalette = { light: SinglePalette; dark: SinglePalette }
 type Palette = SinglePalette | SchemePalette
 
+/** Props for getTheme callback */
+export type GetThemeProps = {
+  name: string
+  theme: Record<string, string>
+  scheme?: 'light' | 'dark'
+  parentName: string
+  parentNames: string[]
+  level: number
+  palette?: string[]
+  template?: Template
+}
+
 export type CreateThemesProps<
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
@@ -39,6 +52,7 @@ export type CreateThemesProps<
   ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   Templates extends BuildTemplates = typeof defaultTemplates,
+  GetThemeReturn extends Record<string, string | number> = Record<string, string>,
 > = {
   base: BaseThemeDefinition<Extra>
   accent?: Accent
@@ -46,9 +60,44 @@ export type CreateThemesProps<
   grandChildrenThemes?: GrandChildrenThemes
   templates?: Templates
   componentThemes?: ComponentThemes
-  getTheme?: GetThemeFn<any>
+  getTheme?: (props: GetThemeProps) => GetThemeReturn
 }
 
+// Overload 1: With getTheme callback - infers return type
+export function createThemes<
+  Extra extends ExtraThemeValuesByScheme,
+  SubThemes extends SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition,
+  GrandChildrenThemes extends SimpleThemesDefinition | undefined,
+  Accent extends BaseThemeDefinition<Extra> | undefined,
+  Templates extends BuildTemplates,
+  GetThemeReturn extends Record<string, string | number>,
+>(
+  props: CreateThemesProps<
+    Accent,
+    GrandChildrenThemes,
+    Extra,
+    SubThemes,
+    ComponentThemes,
+    Templates,
+    GetThemeReturn
+  > & {
+    getTheme: (props: GetThemeProps) => GetThemeReturn
+  }
+): ReturnType<
+  typeof createSimpleThemeBuilder<
+    Extra,
+    typeof defaultTemplates,
+    SimplePaletteDefinitions,
+    any,
+    GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
+    Accent extends undefined ? false : true,
+    any,
+    GetThemeReturn
+  >
+>['themes']
+
+// Overload 2: Without getTheme callback - standard return type
 export function createThemes<
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
@@ -64,6 +113,40 @@ export function createThemes<
     SubThemes,
     ComponentThemes,
     Templates
+  > & {
+    getTheme?: undefined
+  }
+): ReturnType<
+  typeof createSimpleThemeBuilder<
+    Extra,
+    typeof defaultTemplates,
+    SimplePaletteDefinitions,
+    any,
+    GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
+    Accent extends undefined ? false : true,
+    any,
+    Record<string, string>
+  >
+>['themes']
+
+// Implementation
+export function createThemes<
+  Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
+  SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
+  Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
+  Templates extends BuildTemplates = typeof defaultTemplates,
+  GetThemeReturn extends Record<string, string | number> = Record<string, string>,
+>(
+  props: CreateThemesProps<
+    Accent,
+    GrandChildrenThemes,
+    Extra,
+    SubThemes,
+    ComponentThemes,
+    Templates,
+    GetThemeReturn
   >
 ) {
   const {
@@ -75,7 +158,16 @@ export function createThemes<
     getTheme,
   } = props
 
-  const builder = createSimpleThemeBuilder({
+  const builder = createSimpleThemeBuilder<
+    Extra,
+    typeof defaultTemplates,
+    SimplePaletteDefinitions,
+    any,
+    GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
+    Accent extends undefined ? false : true,
+    any,
+    GetThemeReturn
+  >({
     extra: props.base.extra,
     accentExtra: accent?.extra,
     componentThemes,
@@ -155,6 +247,7 @@ export function createSimpleThemeBuilder<
       >,
   HasAccent extends boolean = false,
   ComponentThemes extends SimpleThemesDefinition | false = false,
+  GetThemeReturn extends Record<string, string | number> = Record<string, string>,
   FullTheme extends Record<string, string | number> = {
     [ThemeKey in
       | keyof Templates['light_base']
@@ -181,10 +274,10 @@ export function createSimpleThemeBuilder<
   componentThemes?: ComponentThemes
   extra?: Extra
   accentExtra?: Extra
-  getTheme?: GetThemeFn<any>
+  getTheme?: (props: GetThemeProps) => GetThemeReturn
 }): {
   themeBuilder: ThemeBuilder<any>
-  themes: Record<ThemeNames, FullTheme>
+  themes: Record<ThemeNames, FullTheme & GetThemeReturn>
 } {
   const {
     getTheme,
