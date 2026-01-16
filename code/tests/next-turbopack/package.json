@@ -7,6 +7,7 @@
     "next-build": "next build",
     "start": "next start --port 3456",
     "test": "yarn test:unit && yarn test:integration",
+    "test:web": "yarn test:unit && yarn test:integration",
     "test:unit": "vitest run",
     "test:integration": "playwright test",
     "test:clean": "git checkout src/ public/ && git clean -fd src/"

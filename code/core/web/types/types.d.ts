@@ -1011,19 +1011,19 @@ interface ExtraStyleProps {
      */
     cursor?: Properties['cursor'];
     /**
-     * Outline color. Supported on web and RN 0.77+ (New Architecture).
+     * Outline color. Supported on web and native.
      */
     outlineColor?: ColorStyleProp;
     /**
-     * Outline offset. Supported on web and RN 0.77+ (New Architecture).
+     * Outline offset. Supported on web and native.
      */
     outlineOffset?: SpaceValue;
     /**
-     * Outline style. Supported on web and RN 0.77+ (New Architecture).
+     * Outline style. Supported on web and native.
      */
     outlineStyle?: 'solid' | 'dotted' | 'dashed' | (string & {});
     /**
-     * Outline width. Supported on web and RN 0.77+ (New Architecture).
+     * Outline width. Supported on web and native.
      */
     outlineWidth?: SpaceValue;
     /**
@@ -1060,7 +1060,7 @@ interface ExtraStyleProps {
     backgroundSize?: Properties['backgroundSize'];
     /**
      * CSS box-shadow. Supports tokens: "$2 $4 $8 $shadowColor"
-     * Also accepts object/array format. Supported on web and RN 0.76+ (New Architecture).
+     * Also accepts object/array format. Supported on web and native.
      */
     boxShadow?: BoxShadowValue;
     /**
@@ -1077,7 +1077,7 @@ interface ExtraStyleProps {
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
     /**
-     * Graphical filter effects. Supported on web and RN 0.76+ (New Architecture).
+     * Graphical filter effects. Supported on web and native.
      * Cross-platform: brightness, opacity. Android 12+: blur, contrast, dropShadow, etc.
      */
     filter?: FilterValue;
