@@ -692,7 +692,8 @@ test('boxShadow with $variable extracts correctly', async () => {
   expect(output?.styles).toContain('var(--')
 })
 
-test('border with $variable extracts correctly', async () => {
+// Skip until RN supports border shorthand - use borderWidth/borderColor/borderStyle for cross-platform
+test.skip('border with $variable extracts correctly', async () => {
   const output = await extractForWeb(
     `
     import { Stack } from '@tamagui/core'

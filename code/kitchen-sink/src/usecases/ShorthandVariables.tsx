@@ -1,10 +1,9 @@
-import { isWeb } from '@tamagui/constants'
 import { Stack } from 'tamagui'
 
 export function ShorthandVariables() {
   return (
     <Stack gap="$4" padding="$4">
-      {/* boxShadow with $variable - works on web and native (RN 0.77+) */}
+      {/* boxShadow with $variable - works on web and native (RN 0.76+) */}
       <Stack
         testID="boxshadow-var"
         id="boxshadow-var"
@@ -24,16 +23,16 @@ export function ShorthandVariables() {
         boxShadow="0px 0px 5px $shadowColor, 0px 0px 15px $color"
       />
 
-      {/* border with $variable - web only, native uses individual props */}
+      {/* border with $variable - use individual props for cross-platform */}
       <Stack
         testID="border-var"
         id="border-var"
         width={100}
         height={100}
         backgroundColor="$background"
-        {...(isWeb
-          ? { border: '2px solid $color' as any }
-          : { borderWidth: 2, borderStyle: 'solid', borderColor: '$color' })}
+        borderWidth={2}
+        borderStyle="solid"
+        borderColor="$color"
       />
 
       {/* boxShadow without variables (passthrough) */}
