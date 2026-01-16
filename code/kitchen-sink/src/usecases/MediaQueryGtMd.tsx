@@ -28,6 +28,7 @@ export const MediaQueryGtMd = () => {
 
     {/* Test 1: Both $md and $gtMd - should respect breakpoint boundaries */}
     <YStack
+      id="media-test-both"
       testID="media-test-both"
       height={100}
       width={100}
@@ -38,6 +39,7 @@ export const MediaQueryGtMd = () => {
 
     {/* Test 2: Only $gtMd - should NOT apply on small screens */}
     <YStack
+      id="media-test-gtmd-only"
       testID="media-test-gtmd-only"
       height={100}
       width={100}
@@ -47,6 +49,7 @@ export const MediaQueryGtMd = () => {
 
     {/* Test 3: Only $md - should apply on small screens */}
     <YStack
+      id="media-test-md-only"
       testID="media-test-md-only"
       height={100}
       width={100}
@@ -56,6 +59,7 @@ export const MediaQueryGtMd = () => {
 
     {/* Test 4: $sm, $md, and $gtMd together */}
     <YStack
+      id="media-test-all"
       testID="media-test-all"
       height={100}
       width={100}
