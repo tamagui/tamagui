@@ -89,7 +89,7 @@ const RovingFocusGroupImpl = React.forwardRef<
         data-orientation={orientation}
         {...groupProps}
         ref={composedRefs}
-        outlineStyle="none"
+        outlineWidth={0}
         // @ts-ignore
         onMouseDown={composeEventHandlers(props.onMouseDown, () => {
           isClickFocusRef.current = true
