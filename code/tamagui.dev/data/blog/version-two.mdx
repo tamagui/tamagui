@@ -267,12 +267,36 @@ really appreciate our community.
 
 We've changed a lot over the last couple years to improve stability:
 
-- Added over 500 tests, especially improving our native test suite.
 - Slowed down releases and added a variety of new checks to releases.
-- Fixed nearly 1,000 issues, and increased test coverage dramatically.
+- Fixed nearly 1,000 issues.
 - Improved our canary release process, and now use it much more often.
 - Completed all the major re-writes we wanted to do, which let us finally focus
   on the above.
+
+#### Testing
+
+The testing infrastructure has been completely rebuilt since v1. At the v1.0
+release we had 13 test files and a single CI workflow. Today we have 127 test
+files across 5 testing frameworks with dedicated native testing infrastructure.
+
+**Frameworks added:**
+
+- **Playwright** for E2E and integration tests
+- **Vitest** for unit and integration tests
+- **Jest + Detox** for iOS and Android native E2E testing
+- **Maestro** for iOS flow-based testing
+
+**Multi-driver testing:** Every Playwright UI test runs three times - once each
+with CSS, React Native, and Reanimated animation drivers. This catches
+driver-specific regressions that would otherwise slip through.
+
+**Platform-specific tests:** We now have separate test files for web, native,
+and iOS-specific behavior (`*.web.test.tsx`, `*.native.test.tsx`,
+`*.ios.test.tsx`), ensuring cross-platform correctness at the unit level.
+
+**Native CI:** Two dedicated workflows handle native testing - one for Detox
+E2E tests on both iOS and Android, and another for Maestro flow tests covering
+components like Sheet, Select, Tabs, and Toast on real iOS simulators.
 
 ### What's next
 
