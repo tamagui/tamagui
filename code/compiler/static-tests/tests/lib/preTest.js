@@ -20,6 +20,9 @@ const alias = {
   'react/jsx-runtime': path.resolve(
     require.resolve('react/jsx-runtime').replace('.web.js', '.js')
   ),
+  'react/compiler-runtime': path.resolve(
+    require.resolve('react/compiler-runtime').replace('.web.js', '.js')
+  ),
   react: path.resolve(require.resolve('react').replace('.web.js', '.js')),
   'react-dom/client': path.resolve(
     require.resolve('react-dom/client').replace('.web.js', '.js')
