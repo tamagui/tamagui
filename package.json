@@ -9,13 +9,10 @@
     "./code/compiler/**/*",
     "./code/core/**/*",
     "./code/demos",
-    "./code/integration",
     "./code/kitchen-sink",
     "./code/tests/**/*",
     "./code/sandbox",
-    "./code/docs",
     "./code/packages/**/*",
-    "./code/takeout",
     "./code/tamagui.dev",
     "./code/ui/**/*"
   ],
