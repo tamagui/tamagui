@@ -40,20 +40,29 @@ except the values can accept `"unset"` or one of your design tokens:
 ```tsx
 import { ViewStyle as RNViewStyle } from 'react-native'
 
-type BaseViewStyle = RNViewStyle & FlatTransformStyles & WebOnlyStyles
+type BaseViewStyle = RNViewStyle & FlatTransformStyles & CrossPlatformStyles & WebOnlyStyles
+
+// Cross-platform styles (RN 0.76+ with New Architecture):
+type CrossPlatformStyles = {
+  // RN 0.76+
+  boxShadow?: BoxShadowValue  // string, object, or array
+  filter?: FilterValue        // brightness, opacity cross-platform; blur, contrast, etc. Android 12+
+  cursor?: Properties['cursor'] // web + iOS 17+ (trackpad/stylus/gaze)
+  // RN 0.77+
+  mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | ... // blend modes
+  isolation?: 'auto' | 'isolate'
+  boxSizing?: 'border-box' | 'content-box'
+  outlineColor?: ColorValue
+  outlineOffset?: SpaceValue
+  outlineStyle?: 'solid' | 'dotted' | 'dashed'
+  outlineWidth?: SpaceValue
+}
 
 // these are accepted but only render on web:
 type WebOnlyStyles =  {
   contain?: Properties['contain']
   touchAction?: Properties['touchAction']
-  cursor?: Properties['cursor']
-  outlineColor?: Properties['outlineColor']
-  outlineOffset?: SpaceValue
-  outlineStyle?: Properties['outlineStyle']
-  outlineWidth?: SpaceValue
-  filter?: Properties['filter']
   backdropFilter?: Properties['backdropFilter']
-  mixBlendMode?: Properties['mixBlendMode']
   backgroundImage?: Properties['backgroundImage']
   backgroundOrigin: Properties['backgroundOrigin'],
   backgroundPosition: Properties['backgroundPosition'],

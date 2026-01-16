@@ -72,6 +72,8 @@ couple slow ones.
 
 The breaking changes outside of deprecations are:
 
+- **React Native 0.76+ required.** Tamagui 2 targets React Native 0.76 and above
+  with New Architecture support. This enables significant new style features.
 - Default flex and position styles align with the latest React Native versions,
   but you can change settings to keep the legacy behavior.
 - Button and ListItem lose direct text style props, to gain performance.
@@ -101,6 +103,48 @@ The `border` shorthand with variables (`border="1px solid $borderColor"`) is
 web-only since React Native doesn't support CSS border shorthand syntax. On
 native, continue using the individual props (`borderWidth`, `borderColor`,
 `borderStyle`).
+
+#### Cross-Platform Style Props (RN 0.76+)
+
+Many style properties that were previously web-only now work on React Native
+0.76+ with the New Architecture:
+
+- **`boxShadow`** - Full CSS box-shadow support including multiple shadows,
+  spread, and inset. Accepts strings, objects, or arrays.
+- **`filter`** - Graphical filters like `brightness`, `opacity`, `blur`,
+  `contrast`, `grayscale`, `hueRotate`, `invert`, `saturate`, `sepia`, and
+  `dropShadow`. Cross-platform for `brightness` and `opacity`; Android 12+ for
+  others.
+
+RN 0.77+ adds even more:
+
+- **`mixBlendMode`** - Blend modes like `multiply`, `screen`, `overlay`, etc.
+- **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
+- **`boxSizing`** - Box model (`border-box` | `content-box`)
+- **`outlineColor`**, **`outlineStyle`**, **`outlineWidth`**, **`outlineOffset`** -
+  Full outline support
+
+These properties accept the same syntax on both platforms, and Tamagui
+automatically handles the conversion between CSS strings (web) and object format
+(native).
+
+```tsx
+// Works identically on web and native!
+<View
+  boxShadow="0 4px 12px $shadowColor"
+  filter={[{ brightness: 1.1 }, { contrast: 0.9 }]}
+/>
+
+// Object syntax also supported
+<View
+  boxShadow={{
+    offsetX: 0,
+    offsetY: 4,
+    blurRadius: 12,
+    color: '$shadowColor',
+  }}
+/>
+```
 
 #### Colors
 
