@@ -3,12 +3,13 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-const APP_SCREEN_PATH = join(__dirname, '../packages/app/features/home/screen.tsx')
+const ROOT_DIR = join(__dirname, '..')
+const APP_SCREEN_PATH = join(ROOT_DIR, 'packages/app/features/home/screen.tsx')
 
 function resetAppPackage() {
   try {
     execSync(`yarn test:clean`, {
-      cwd: join(__dirname, '..'),
+      cwd: ROOT_DIR,
       stdio: 'pipe',
     })
   } catch {
@@ -26,12 +27,10 @@ describe('Package.json exports support', () => {
   })
 
   it('should build app package for both web and native targets', () => {
-    const cwd = join(__dirname, '../apps/next')
-
     // Build the features directory (contains screen.tsx for testing)
-    // Note: Building whole ../../packages/app hangs due to expo-constants issues in provider/
-    const result = execSync(`npx tamagui build ../../packages/app/features`, {
-      cwd,
+    // Note: Building whole packages/app hangs due to expo-constants issues in provider/
+    const result = execSync(`yarn tamagui build ./packages/app/features`, {
+      cwd: ROOT_DIR,
       encoding: 'utf-8',
       stdio: 'pipe',
     })
@@ -61,7 +60,7 @@ describe('Package.json exports support', () => {
     expect(webOptimized).toContain("from '@my/ui/components/SwitchThemeButton'")
 
     // Check CSS file was created with actual content
-    const cssPath = join(__dirname, '../packages/app/features/home/_screen.css')
+    const cssPath = join(ROOT_DIR, 'packages/app/features/home/_screen.css')
     expect(existsSync(cssPath)).toBe(true)
     const cssContent = readFileSync(cssPath, 'utf-8')
     expect(cssContent.length).toBeGreaterThan(50)
@@ -83,13 +82,11 @@ describe('Package.json exports support', () => {
   })
 
   it('should recognize imports from path-specific exports during optimization', () => {
-    const cwd = join(__dirname, '../apps/next')
-
     // Build just the screen.tsx which uses path-specific imports
     const result = execSync(
-      `npx tamagui build ../../packages/app/features/home/screen.tsx`,
+      `yarn tamagui build ./packages/app/features/home/screen.tsx`,
       {
-        cwd,
+        cwd: ROOT_DIR,
         encoding: 'utf-8',
         stdio: 'pipe',
       }

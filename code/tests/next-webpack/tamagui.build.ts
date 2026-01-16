@@ -1,6 +1,6 @@
-import type { TamaguiBuildOptions } from '@tamagui/core'
+import type { TamaguiBuildOptions } from 'tamagui'
 
 export default {
-  components: ['@tamagui/core'],
+  components: ['tamagui', '@my/ui'],
   config: './tamagui.config.ts',
 } satisfies TamaguiBuildOptions

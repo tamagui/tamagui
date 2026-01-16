@@ -8721,7 +8721,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-plugin@workspace:*, @tamagui/next-plugin@workspace:code/compiler/next-plugin":
+"@tamagui/next-plugin@workspace:code/compiler/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:code/compiler/next-plugin"
   dependencies:
@@ -12045,7 +12045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app@workspace:^, app@workspace:code/tests/next-webpack/packages/app":
+"app@workspace:code/tests/next-webpack/packages/app":
   version: 0.0.0-use.local
   resolution: "app@workspace:code/tests/next-webpack/packages/app"
   dependencies:
@@ -23411,29 +23411,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-app@workspace:code/tests/next-webpack/apps/next":
-  version: 0.0.0-use.local
-  resolution: "next-app@workspace:code/tests/next-webpack/apps/next"
-  dependencies:
-    "@playwright/test": "npm:^1.49.1"
-    "@tamagui/config": "workspace:*"
-    "@tamagui/next-plugin": "workspace:*"
-    "@tamagui/next-theme": "workspace:*"
-    "@types/node": "npm:^22.1.0"
-    app: "workspace:^"
-    next: "npm:16.1.1"
-    react: "npm:*"
-    react-dom: "npm:*"
-    react-native-web: "npm:^0.21.0"
-    tamagui: "workspace:*"
-  languageName: unknown
-  linkType: soft
-
 "next15-plus-cli-optimize@workspace:code/tests/next-webpack":
   version: 0.0.0-use.local
   resolution: "next15-plus-cli-optimize@workspace:code/tests/next-webpack"
   dependencies:
     "@tamagui/cli": "workspace:*"
+    tamagui: "workspace:*"
     vitest: "npm:^4.0.4"
   languageName: unknown
   linkType: soft
