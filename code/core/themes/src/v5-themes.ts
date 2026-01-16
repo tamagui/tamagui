@@ -344,6 +344,8 @@ export type CreateV5ThemeOptions = {
   includeDefaultColors?: boolean
   /** Add or override grandChildrenThemes (e.g., { alt1: { template: 'alt1' } }) */
   grandChildrenThemes?: Record<string, GrandChildrenThemeDefinition>
+  /** Override component themes. Pass false to disable, or provide custom component themes. Defaults to defaultComponentThemes */
+  componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes']
 }
 
 /**
@@ -370,6 +372,12 @@ export type CreateV5ThemeOptions = {
  *   lightPalette: ['#fff', '#fafafa', ...],
  *   darkPalette: ['#000', '#111', ...],
  * })
+ *
+ * @example
+ * Disable component themes
+ * const themes = createV5Theme({
+ *   componentThemes: false,
+ * })
  */
 export function createV5Theme(options: CreateV5ThemeOptions = {}) {
   const {
@@ -378,6 +386,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
     colors = {},
     includeDefaultColors = true,
     grandChildrenThemes: customGrandChildrenThemes = {},
+    componentThemes: customComponentThemes = defaultComponentThemes,
   } = options
 
   // Build childrenThemes from default colors + custom colors
@@ -478,7 +487,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
   }
 
   return createThemes({
-    componentThemes: defaultComponentThemes,
+    ...(customComponentThemes && { componentThemes: customComponentThemes }),
 
     base: {
       palette: {
