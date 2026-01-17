@@ -4,7 +4,7 @@ import { Square } from 'tamagui'
 export function AnimationsTimingDemo() {
   return (
     <Square
-      bg={"$pink10" as any}
+      bg={'$pink10' as any}
       transition="100ms"
       elevation="$4"
       size={110}
