@@ -9,7 +9,7 @@ env:
   # A unique ID to identify the app on GitHub Actions, this is used as part of cache keys and artifact names, must be unique among all workflows
   app_id: ios-tamaguikitchensink
   # The command used to prebuild the app
-  prebuild_command: npx expo prebuild --platform ios --no-install # --no-install is used to skip installing dependencies, specifically `pod install` as we want to do it after the Cache Pods step
+  prebuild_command: bunx expo prebuild --platform ios --no-install # --no-install is used to skip installing dependencies, specifically `pod install` as we want to do it after the Cache Pods step
 
   # These should be set in the repository secrets
   # Redis database used for caching and remembering things between runs, such as the last build number
@@ -150,7 +150,7 @@ jobs:
         id: calculate-fingerprint
         run: |
           # Use expo fingerprint for accurate native dependency detection
-          FINGERPRINT=$(npx @expo/fingerprint fingerprint:generate --platform ios | jq -r '.hash')
+          FINGERPRINT=$(bunx @expo/fingerprint fingerprint:generate --platform ios | jq -r '.hash')
           if [ -z "$FINGERPRINT" ]; then
             echo '[ERROR] Failed to calculate fingerprint.'
             exit 1

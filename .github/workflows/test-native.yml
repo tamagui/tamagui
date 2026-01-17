@@ -209,7 +209,7 @@ jobs:
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         working-directory: code/kitchen-sink
         run: |
-          npx expo prebuild --platform android --clean
+          bunx expo prebuild --platform android --clean
 
       - name: Setup Detox Test Infrastructure
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
@@ -332,7 +332,7 @@ jobs:
         id: calculate-fingerprint
         working-directory: code/kitchen-sink
         run: |
-          FINGERPRINT=$(npx @expo/fingerprint fingerprint:generate --platform android | jq -r '.hash')
+          FINGERPRINT=$(bunx @expo/fingerprint fingerprint:generate --platform android | jq -r '.hash')
           if [ -z "$FINGERPRINT" ]; then
             echo '[ERROR] Failed to calculate fingerprint.'
             exit 1
