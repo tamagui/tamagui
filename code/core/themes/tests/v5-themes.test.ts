@@ -108,47 +108,46 @@ describe('v5 themes', () => {
     expect(noComponentThemes.dark).toBeDefined()
   })
 
-  test('createV5Theme with custom childrenThemes', () => {
+  test('createV5Theme with custom childrenThemes (radix format)', () => {
+    // Custom brand color set in radix format
+    const brandLight = {
+      brand1: '#e0f7fa',
+      brand2: '#b2ebf2',
+      brand3: '#80deea',
+      brand4: '#4dd0e1',
+      brand5: '#26c6da',
+      brand6: '#00bcd4',
+      brand7: '#00acc1',
+      brand8: '#0097a7',
+      brand9: '#00838f',
+      brand10: '#006064',
+      brand11: '#004d40',
+      brand12: '#00251a',
+    }
+    const brandDark = {
+      brand1: '#00251a',
+      brand2: '#004d40',
+      brand3: '#006064',
+      brand4: '#00838f',
+      brand5: '#0097a7',
+      brand6: '#00acc1',
+      brand7: '#00bcd4',
+      brand8: '#26c6da',
+      brand9: '#4dd0e1',
+      brand10: '#80deea',
+      brand11: '#b2ebf2',
+      brand12: '#e0f7fa',
+    }
+
     const themesWithBrand = createV5Theme({
       childrenThemes: {
         ...defaultChildrenThemes,
-        brand: {
-          palette: {
-            light: [
-              '#e0f7fa',
-              '#b2ebf2',
-              '#80deea',
-              '#4dd0e1',
-              '#26c6da',
-              '#00bcd4',
-              '#00acc1',
-              '#0097a7',
-              '#00838f',
-              '#006064',
-              '#004d40',
-              '#00251a',
-            ],
-            dark: [
-              '#00251a',
-              '#004d40',
-              '#006064',
-              '#00838f',
-              '#0097a7',
-              '#00acc1',
-              '#00bcd4',
-              '#26c6da',
-              '#4dd0e1',
-              '#80deea',
-              '#b2ebf2',
-              '#e0f7fa',
-            ],
-          },
-        },
+        brand: { light: brandLight, dark: brandDark },
       },
     })
 
     expect(themesWithBrand.light).toBeDefined()
-    // Brand named colors should be in extra
+    // Brand named colors should be in extra (types flow from input)
     expect(themesWithBrand.light.brand1).toBeDefined()
     expect(themesWithBrand.light.brand12).toBeDefined()
   })
@@ -189,23 +188,21 @@ describe('v5 themes', () => {
   })
 
   test('defaultChildrenThemes exports expected colors', () => {
+    // New API: childrenThemes are { light: {...}, dark: {...} } objects
     expect(defaultChildrenThemes.blue).toBeDefined()
+    expect(defaultChildrenThemes.blue.light).toBeDefined()
+    expect(defaultChildrenThemes.blue.dark).toBeDefined()
     expect(defaultChildrenThemes.red).toBeDefined()
     expect(defaultChildrenThemes.green).toBeDefined()
     expect(defaultChildrenThemes.yellow).toBeDefined()
     expect(defaultChildrenThemes.gray).toBeDefined()
     expect(defaultChildrenThemes.neutral).toBeDefined()
-    expect(defaultChildrenThemes.black).toBeDefined()
-    expect(defaultChildrenThemes.white).toBeDefined()
+    // black/white are added internally, not exported in defaultChildrenThemes
   })
 
   test('defaultGrandChildrenThemes exports expected themes', () => {
     expect(defaultGrandChildrenThemes.accent).toBeDefined()
-    expect(defaultGrandChildrenThemes.alt1).toBeDefined()
-    expect(defaultGrandChildrenThemes.alt2).toBeDefined()
-    expect(defaultGrandChildrenThemes.surface1).toBeDefined()
-    expect(defaultGrandChildrenThemes.surface2).toBeDefined()
-    expect(defaultGrandChildrenThemes.surface3).toBeDefined()
+    // Simplified - only accent is included by default
   })
 })
 

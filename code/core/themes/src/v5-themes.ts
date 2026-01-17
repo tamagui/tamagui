@@ -13,11 +13,6 @@ import {
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { interpolateColor, opacify } from './opacify'
 
-/** Converts a palette array to a named color object (e.g., [color] -> { colorName1: color, colorName2: ... }) */
-function paletteToColorObject(name: string, palette: string[]): Record<string, string> {
-  return Object.fromEntries(palette.map((color, i) => [`${name}${i + 1}`, color]))
-}
-
 // Aligned with v4 - darker grays for dark mode
 const darkPalette = [
   '#050505',
@@ -213,11 +208,13 @@ export const defaultColors = {
 
 export type ColorPalette = string[]
 
-export type ColorTheme = {
-  palette: {
-    dark: ColorPalette
-    light: ColorPalette
-  }
+/** A named color set like { blue1: string, blue2: string, ... } */
+export type NamedColors = Record<string, string>
+
+/** Children theme definition - light/dark named color objects */
+export type ChildTheme<T extends NamedColors = NamedColors> = {
+  light: T
+  dark: T
 }
 
 export type GrandChildrenThemeDefinition = {
@@ -227,82 +224,71 @@ export type GrandChildrenThemeDefinition = {
 /** Default color names available in v5 themes */
 export type DefaultColorName = 'blue' | 'gray' | 'green' | 'red' | 'yellow'
 
-export type ColorDefinition = { dark: ColorPalette; light: ColorPalette }
-
-/** Default children themes available in v5 */
+/** Default children themes available in v5 - accepts radix colors directly */
 export const defaultChildrenThemes = {
-  black: {
-    palette: {
-      dark: Object.values(blackColors),
-      light: Object.values(blackColors),
-    },
-  },
-  white: {
-    palette: {
-      dark: Object.values(whiteColors),
-      light: Object.values(whiteColors),
-    },
-  },
-  gray: {
-    palette: {
-      dark: Object.values(grayDark),
-      light: Object.values(gray),
-    },
-  },
-  blue: {
-    palette: {
-      dark: Object.values(blueDark),
-      light: Object.values(blue),
-    },
-  },
-  red: {
-    palette: {
-      dark: Object.values(redDark),
-      light: Object.values(red),
-    },
-  },
-  yellow: {
-    palette: {
-      dark: Object.values(yellowDark),
-      light: Object.values(yellow),
-    },
-  },
-  green: {
-    palette: {
-      dark: Object.values(greenDark),
-      light: Object.values(green),
-    },
-  },
-  neutral: {
-    palette: {
-      dark: neutralPalette,
-      light: neutralPalette,
-    },
-  },
-} satisfies Record<string, ColorTheme>
+  gray: { light: gray, dark: grayDark },
+  blue: { light: blue, dark: blueDark },
+  red: { light: red, dark: redDark },
+  yellow: { light: yellow, dark: yellowDark },
+  green: { light: green, dark: greenDark },
+  neutral: { light: neutral, dark: neutral },
+}
 
 /** Default grandchildren themes available in v5 */
 export const defaultGrandChildrenThemes = {
   accent: { template: 'inverse' },
-  alt1: { template: 'alt1' },
-  alt2: { template: 'alt2' },
-  surface1: { template: 'surface1' },
-  surface2: { template: 'surface2' },
-  surface3: { template: 'surface3' },
+  // simplified and removed:
+  // alt1: { template: 'alt1' },
+  // alt2: { template: 'alt2' },
+  // surface1: { template: 'surface1' },
+  // surface2: { template: 'surface2' },
+  // surface3: { template: 'surface3' },
 } satisfies Record<string, GrandChildrenThemeDefinition>
 
-export type CreateV5ThemeOptions = {
+/** Union of all color values from children themes (for light or dark) */
+type ChildrenColors<
+  T extends Record<string, ChildTheme>,
+  Mode extends 'light' | 'dark',
+> = {
+  [K in keyof T]: T[K][Mode]
+}[keyof T]
+
+/** Merge all color objects from children into one type */
+type MergedChildrenColors<
+  T extends Record<string, ChildTheme>,
+  Mode extends 'light' | 'dark',
+> = UnionToIntersection<ChildrenColors<T, Mode>>
+
+// Helper to convert union to intersection
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never
+
+// Base extra colors type (always included)
+type BaseExtraLight = typeof blackColors &
+  typeof lightShadows &
+  typeof whiteColors & { shadowColor: string } & typeof whiteBlack &
+  typeof extraColorsLight
+
+type BaseExtraDark = typeof blackColors &
+  typeof darkShadows &
+  typeof whiteColors & { shadowColor: string } & typeof whiteBlack &
+  typeof extraColorsDark
+
+export type CreateV5ThemeOptions<
+  Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
+> = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: ColorPalette
   /** Override the light base palette (12 colors from lightest to darkest) */
   lightPalette?: ColorPalette
   /**
    * Override children themes (color themes like blue, red, etc.)
-   * Pass undefined or omit to use defaultChildrenThemes
-   * @example Use only a subset of colors
-   * { blue: defaultChildrenThemes.blue, brand: { palette: { dark: [...], light: [...] } } }
+   * Accepts radix color objects directly: { blue: { light: blue, dark: blueDark } }
    */
-  childrenThemes?: Record<string, ColorTheme>
+  childrenThemes?: Children
   /**
    * Override grandChildren themes (alt1, alt2, surface1, etc.)
    * Pass undefined or omit to use defaultGrandChildrenThemes
@@ -320,16 +306,11 @@ export type CreateV5ThemeOptions = {
  * const themes = createV5Theme()
  *
  * @example
- * Custom children themes with brand color
+ * Custom children themes with brand color (accepts radix colors directly)
  * const themes = createV5Theme({
  *   childrenThemes: {
  *     ...defaultChildrenThemes,
- *     brand: {
- *       palette: {
- *         light: ['#fff', '#fef', ...],
- *         dark: ['#101', '#202', ...],
- *       },
- *     },
+ *     brand: { light: brandLight, dark: brandDark },
  *   },
  * })
  *
@@ -338,25 +319,39 @@ export type CreateV5ThemeOptions = {
  * const themes = createV5Theme({
  *   childrenThemes: {},
  * })
- *
- * @example
- * Override base palettes
- * const themes = createV5Theme({
- *   lightPalette: ['#fff', '#fafafa', ...],
- *   darkPalette: ['#000', '#111', ...],
- * })
  */
-export function createV5Theme(options: CreateV5ThemeOptions = {}) {
+// Overload: no options or empty options - use defaults
+export function createV5Theme(): ReturnType<
+  typeof createV5ThemeImpl<typeof defaultChildrenThemes>
+>
+// Overload: with childrenThemes - infer from passed value
+export function createV5Theme<Children extends Record<string, ChildTheme>>(
+  options: CreateV5ThemeOptions<Children> & { childrenThemes: Children }
+): ReturnType<typeof createV5ThemeImpl<Children>>
+// Overload: without childrenThemes - use defaults
+export function createV5Theme(
+  options: Omit<CreateV5ThemeOptions, 'childrenThemes'>
+): ReturnType<typeof createV5ThemeImpl<typeof defaultChildrenThemes>>
+// Implementation
+export function createV5Theme<Children extends Record<string, ChildTheme>>(
+  options?: CreateV5ThemeOptions<Children>
+) {
+  return createV5ThemeImpl(options)
+}
+
+function createV5ThemeImpl<
+  Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
+>(options: CreateV5ThemeOptions<Children> = {} as CreateV5ThemeOptions<Children>) {
   const {
     darkPalette: customDarkPalette = darkPalette,
     lightPalette: customLightPalette = lightPalette,
-    childrenThemes = defaultChildrenThemes,
+    childrenThemes = defaultChildrenThemes as unknown as Children,
     grandChildrenThemes = defaultGrandChildrenThemes,
     componentThemes: customComponentThemes = defaultComponentThemes,
   } = options
 
-  // Auto-generate extra colors from childrenThemes
-  const lightExtra: Record<string, string> = {
+  // Build extra colors - spread children color objects directly (types flow naturally)
+  const lightExtraBase = {
     ...blackColors,
     ...lightShadows,
     ...whiteColors,
@@ -364,7 +359,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
     ...whiteBlack,
     ...extraColorsLight,
   }
-  const darkExtra: Record<string, string> = {
+  const darkExtraBase = {
     ...blackColors,
     ...darkShadows,
     ...whiteColors,
@@ -373,15 +368,39 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
     ...extraColorsDark,
   }
 
-  // Add named colors from each children theme (e.g., blue1-blue12 from blue palette)
+  // Spread all children colors into extra - types flow from Children generic
+  type LightExtra = BaseExtraLight & MergedChildrenColors<Children, 'light'>
+  type DarkExtra = BaseExtraDark & MergedChildrenColors<Children, 'dark'>
+
+  const lightExtra = { ...lightExtraBase } as LightExtra
+  const darkExtra = { ...darkExtraBase } as DarkExtra
+
+  for (const theme of Object.values(childrenThemes)) {
+    if (theme.light) Object.assign(lightExtra, theme.light)
+    if (theme.dark) Object.assign(darkExtra, theme.dark)
+  }
+
+  // Convert children to palette format for createThemes, adding black/white internally
+  type ChildrenWithPalette = Record<
+    string,
+    { palette: { light: string[]; dark: string[] } }
+  >
+  const childrenWithPalettes: ChildrenWithPalette = {
+    // Always include black/white for theme generation
+    black: {
+      palette: { dark: Object.values(blackColors), light: Object.values(blackColors) },
+    },
+    white: {
+      palette: { dark: Object.values(whiteColors), light: Object.values(whiteColors) },
+    },
+  }
+
   for (const [name, theme] of Object.entries(childrenThemes)) {
-    // Skip black/white as they're already in base colors
-    if (name === 'black' || name === 'white') continue
-    if (theme.palette.light) {
-      Object.assign(lightExtra, paletteToColorObject(name, theme.palette.light))
-    }
-    if (theme.palette.dark) {
-      Object.assign(darkExtra, paletteToColorObject(name, theme.palette.dark))
+    childrenWithPalettes[name] = {
+      palette: {
+        light: Object.values(theme.light),
+        dark: Object.values(theme.dark),
+      },
     }
   }
 
@@ -407,7 +426,7 @@ export function createV5Theme(options: CreateV5ThemeOptions = {}) {
       },
     },
 
-    childrenThemes,
+    childrenThemes: childrenWithPalettes,
 
     grandChildrenThemes,
 
