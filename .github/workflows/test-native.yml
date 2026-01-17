@@ -68,6 +68,10 @@ jobs:
         if: env.SKIP_IOS_TESTS != 'true'
         run: npm install -g detox-cli
 
+      - name: Rebuild Detox Framework Cache
+        if: env.SKIP_IOS_TESTS != 'true'
+        run: detox rebuild-framework-cache
+
       - name: Install applesimutils
         if: env.SKIP_IOS_TESTS != 'true'
         run: |
