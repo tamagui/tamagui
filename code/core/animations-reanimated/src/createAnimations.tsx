@@ -596,7 +596,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           const rawValue = nextStyle[key]
           const value = resolveDynamicValue(rawValue, isDark)
 
-          if (value === undefined) continue
+          if (value == undefined) continue
 
           if (configRef.get().disableAnimation) {
             statics[key] = value
@@ -694,21 +694,22 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         // Animate transform properties with validation
         if (transforms && Array.isArray(transforms)) {
-          const validTransforms = (transforms as Record<string, unknown>[])
-            .filter((t) => {
-              // Validate transform object has at least one key with a numeric value
-              if (!t || typeof t !== 'object') return false
-              const keys = Object.keys(t)
-              if (keys.length === 0) return false
-              const value = t[keys[0]]
-              return typeof value === 'number' || typeof value === 'string'
-            })
-            .map((t) => {
+          const validTransforms: Record<string, unknown>[] = []
+
+          for (const t of transforms) {
+            if (!t) continue
+            const keys = Object.keys(t)
+            if (keys.length === 0) continue
+            const value = t[keys[0]]
+            if (typeof value === 'number' || typeof value === 'string') {
               const transformKey = Object.keys(t)[0]
               const targetValue = t[transformKey]
               const propConfig = config.propertyConfigs[transformKey] ?? config.baseConfig
-              return { [transformKey]: applyAnimation(targetValue as number, propConfig) }
-            })
+              validTransforms.push({
+                [transformKey]: applyAnimation(targetValue as number, propConfig),
+              })
+            }
+          }
 
           if (validTransforms.length > 0) {
             result.transform = validTransforms
