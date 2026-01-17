@@ -124,7 +124,10 @@ Your bundler (Metro, Webpack, Vite) will automatically select the correct file b
 
 ### Multiple Animation Drivers
 
-Configure multiple drivers at the root and select per-component with `animatedBy`:
+Configure multiple drivers at the root and select per-component with `animatedBy`. This has two benefits:
+
+1. **Mix drivers** - Use CSS for simple transitions and Reanimated for complex springs
+2. **Compiler optimization** - The compiler can make smarter decisions when it knows which driver a component uses statically
 
 ```tsx
 import { createAnimations as createCSS } from '@tamagui/animations-css'

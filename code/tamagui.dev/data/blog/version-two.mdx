@@ -219,7 +219,10 @@ switch to `@tamagui/animations-reanimated` - the API is the same.
 #### Per-Component Animation Drivers
 
 You can now configure multiple animation drivers and select per-component using
-the new `animatedBy` prop:
+the new `animatedBy` prop. This serves two important purposes: it allows mixing
+drivers (like using CSS for simple transitions and Reanimated for complex
+springs), and it enables the compiler to better optimize your code by knowing
+statically which driver a component uses.
 
 ```tsx
 // Config with multiple drivers
@@ -230,9 +233,13 @@ createTamagui({
   },
 })
 
-// Select per-component
+// Select per-component - compiler can optimize knowing the driver
 <View animatedBy="spring" transition="bouncy" />
 ```
+
+When the compiler sees `animatedBy`, it can make smarter decisions about
+extraction and avoid including unnecessary animation runtime code for components
+that don't need it.
 
 For lazy loading drivers (e.g., load a heavier driver only after login), use the
 new `loadAnimationDriver` function:
