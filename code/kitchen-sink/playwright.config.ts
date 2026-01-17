@@ -1,10 +1,11 @@
 import { defineConfig } from '@playwright/test'
+import { ANIMATION_DRIVERS } from './tests/test-utils'
 
 const port = process.env.PORT || '9000'
 
 // Support both single-driver mode (via env var) and multi-driver parallel mode
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER
-const drivers = singleDriver ? [singleDriver] : ['css', 'native', 'reanimated']
+const drivers = singleDriver ? [singleDriver] : [...ANIMATION_DRIVERS]
 
 export default defineConfig({
   // Look for test files in the "tests" directory, relative to this configuration file.
