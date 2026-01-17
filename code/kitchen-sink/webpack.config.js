@@ -36,7 +36,6 @@ module.exports = {
       react: require.resolve('react'),
       'react-dom/client': require.resolve('react-dom/client'),
       'react-dom': require.resolve('react-dom'),
-      'moti/author': require.resolve('moti/author'),
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',
       '@expo/vector-icons': '@tamagui/proxy-worm',

@@ -41,7 +41,6 @@
     "@shopify/restyle": "^2.4.4",
     "@tamagui/animate-presence": "workspace:*",
     "@tamagui/animations-css": "workspace:*",
-    "@tamagui/animations-moti": "workspace:*",
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/animations-reanimated": "workspace:*",
