@@ -161,6 +161,25 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 type BlackColors = ReturnType<typeof paletteToNamedColors<'black'>>
 type WhiteColors = ReturnType<typeof paletteToNamedColors<'white'>>
 
+// Colors computed by getTheme callback based on each theme's palette
+type ComputedColors = {
+  color0pt5: string
+  color1pt5: string
+  color2pt5: string
+  color01: string
+  color0075: string
+  color005: string
+  color0025: string
+  color002: string
+  color001: string
+  background01: string
+  background0075: string
+  background005: string
+  background0025: string
+  background002: string
+  background001: string
+}
+
 // Base extra colors type (always included) - getTheme computes opacity/interpolation colors
 type BaseExtraCommon = BlackColors & WhiteColors & typeof whiteBlack
 type BaseExtraLight = BaseExtraCommon & typeof lightShadows & { shadowColor: string }
@@ -300,7 +319,7 @@ export function createV5Theme<
     grandChildrenThemes,
 
     // Add computed colors to ALL themes based on each theme's palette
-    getTheme: ({ theme, palette }) => {
+    getTheme: (({ theme, palette }) => {
       if (!palette || palette.length < 3) return theme
 
       // palette[1] is background-ish, palette[length-2] is foreground-ish
@@ -328,7 +347,7 @@ export function createV5Theme<
         background002: opacify(bgColor, 0.02),
         background001: opacify(bgColor, 0.01),
       }
-    },
+    }) as (props: { theme: Record<string, string>; palette?: string[] }) => ComputedColors,
   })
 }
 
