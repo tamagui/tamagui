@@ -50,6 +50,8 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     _enterKeyHint = undefined
   }
 
+  // Map HTML input types to React Native inputMode values.
+  // If inputMode is explicitly provided and type is not set, preserve the passed inputMode.
   let _inputMode = inputMode
   if (type === 'email') {
     _inputMode = 'email'
@@ -64,7 +66,8 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     _inputMode = 'text'
   } else if (type === 'number') {
     _inputMode = 'numeric'
-  } else {
+  } else if (!inputMode) {
+    // Only default to 'text' if inputMode was not explicitly provided
     _inputMode = 'text'
   }
 
