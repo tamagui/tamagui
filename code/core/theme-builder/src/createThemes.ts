@@ -89,10 +89,10 @@ export function createThemes<
     Extra,
     typeof defaultTemplates,
     SimplePaletteDefinitions,
-    any,
+    { [K in keyof SubThemes]: { template: string; palette?: string } },
     GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
     Accent extends undefined ? false : true,
-    any,
+    ComponentThemes,
     GetThemeReturn
   >
 >['themes']
@@ -121,10 +121,10 @@ export function createThemes<
     Extra,
     typeof defaultTemplates,
     SimplePaletteDefinitions,
-    any,
+    { [K in keyof SubThemes]: { template: string; palette?: string } },
     GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
     Accent extends undefined ? false : true,
-    any,
+    ComponentThemes,
     Record<string, string>
   >
 >['themes']
@@ -162,10 +162,10 @@ export function createThemes<
     Extra,
     typeof defaultTemplates,
     SimplePaletteDefinitions,
-    any,
+    { [K in keyof SubThemes]: { template: string; palette?: string } },
     GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
     Accent extends undefined ? false : true,
-    any,
+    ComponentThemes,
     GetThemeReturn
   >({
     extra: props.base.extra,
@@ -232,7 +232,7 @@ export function createSimpleThemeBuilder<
   ChildrenThemes extends Record<
     string,
     {
-      template: keyof Templates extends string ? keyof Templates : never
+      template: string
       palette?: string
     }
   >,
@@ -241,7 +241,7 @@ export function createSimpleThemeBuilder<
     | Record<
         string,
         {
-          template: keyof Templates extends string ? keyof Templates : never
+          template: string
           palette?: string
         }
       >,
