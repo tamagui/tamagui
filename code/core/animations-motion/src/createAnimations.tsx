@@ -96,7 +96,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         : props.transition
 
       const isHydrating = componentState.unmounted === true
-      const disableAnimation = isHydrating || !animationKey
+      const isMounting = componentState.unmounted === 'should-enter'
+      // Disable animation during hydration AND during mounting (should-enter phase)
+      // This prevents the "flying across the page" effect on initial render
+      const disableAnimation = isHydrating || isMounting || !animationKey
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
 
