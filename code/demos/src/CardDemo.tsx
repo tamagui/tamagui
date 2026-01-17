@@ -23,7 +23,7 @@ export function DemoCard(props: CardProps) {
     <Card size="$4" borderWidth={1} borderColor="$borderColor" {...props}>
       <Card.Header p="$4">
         <H2>Sony A7IV</H2>
-        <Paragraph theme="alt2">Now available</Paragraph>
+        <Paragraph theme={'alt2' as any}>Now available</Paragraph>
       </Card.Header>
       <Card.Footer p="$4">
         <XStack flex={1} />

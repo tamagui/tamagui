@@ -1,63 +1,107 @@
 export declare const breakpoints: {
-    '2xl': number;
-    xl: number;
-    lg: number;
-    md: number;
-    sm: number;
+    xxxs: number;
+    xxs: number;
     xs: number;
-    '2xs': number;
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+    xxl: number;
 };
 export declare const media: {
-    readonly maxXs: {
+    readonly pointerTouch: {
+        readonly pointer: "coarse";
+    };
+    readonly heightXXXS: {
+        readonly minHeight: number;
+    };
+    readonly heightXXS: {
+        readonly minHeight: number;
+    };
+    readonly heightXS: {
+        readonly minHeight: number;
+    };
+    readonly heightSM: {
+        readonly minHeight: number;
+    };
+    readonly heightMD: {
+        readonly minHeight: number;
+    };
+    readonly heightLG: {
+        readonly minHeight: number;
+    };
+    readonly maxXXXS: {
         readonly maxWidth: number;
     };
-    readonly max2xs: {
+    readonly maxXXS: {
         readonly maxWidth: number;
     };
-    readonly maxSm: {
+    readonly maxXS: {
         readonly maxWidth: number;
     };
-    readonly maxMd: {
+    readonly maxSM: {
         readonly maxWidth: number;
     };
-    readonly maxLg: {
+    readonly maxMD: {
         readonly maxWidth: number;
     };
-    readonly maxXl: {
+    readonly maxLG: {
         readonly maxWidth: number;
     };
-    readonly max2Xl: {
+    readonly maxXL: {
         readonly maxWidth: number;
     };
-    readonly '2xl': {
+    readonly maxXXL: {
+        readonly maxWidth: number;
+    };
+    readonly xxxs: {
         readonly minWidth: number;
     };
-    readonly xl: {
-        readonly minWidth: number;
-    };
-    readonly lg: {
-        readonly minWidth: number;
-    };
-    readonly md: {
-        readonly minWidth: number;
-    };
-    readonly sm: {
+    readonly xxs: {
         readonly minWidth: number;
     };
     readonly xs: {
         readonly minWidth: number;
     };
-    readonly '2xs': {
+    readonly sm: {
+        readonly minWidth: number;
+    };
+    readonly md: {
+        readonly minWidth: number;
+    };
+    readonly lg: {
+        readonly minWidth: number;
+    };
+    readonly xl: {
+        readonly minWidth: number;
+    };
+    readonly xxl: {
         readonly minWidth: number;
     };
 };
 export declare const mediaQueryDefaultActive: {
-    '2xl': boolean;
-    xl: boolean;
-    lg: boolean;
-    md: boolean;
-    sm: boolean;
+    pointerTouch: boolean;
+    heightXXXS: boolean;
+    heightXXS: boolean;
+    heightXS: boolean;
+    heightSM: boolean;
+    heightMD: boolean;
+    heightLG: boolean;
+    maxXXXS: boolean;
+    maxXXS: boolean;
+    maxXS: boolean;
+    maxSM: boolean;
+    maxMD: boolean;
+    maxLG: boolean;
+    maxXL: boolean;
+    maxXXL: boolean;
+    xxxs: boolean;
+    xxs: boolean;
     xs: boolean;
-    '2xs': boolean;
+    sm: boolean;
+    md: boolean;
+    lg: boolean;
+    xl: boolean;
+    xxl: boolean;
 };
 //# sourceMappingURL=v5-media.d.ts.map

@@ -168,22 +168,22 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     accent0: string;
     accent2: string;
     accent1: string;
-    accent3: string;
     accent4: string;
-    accent5: string;
-    accent6: string;
-    accent7: string;
     accent8: string;
+    accent12: string;
+    accent3: string;
+    accent5: string;
+    accent7: string;
     accent9: string;
     accent10: string;
+    accent6: string;
     accent11: string;
-    accent12: string;
     colorBg: string;
     shadow7: string;
     shadow8: string;
     shadow9: string;
     shadow10: string;
-}>;
+} & Record<string, string>>;
 export type TamaguiThemes = typeof themes;
 /**
  * This is an optional production optimization: themes JS can get to 20Kb or more.

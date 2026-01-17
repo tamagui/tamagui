@@ -1463,10 +1463,6 @@ export function createComponent<
         }
       }
 
-      if (debugProp) {
-        console.info('overriddenContextProps', overriddenContextProps)
-      }
-
       content = (
         <Provider __disableMergeDefaultValues {...overriddenContextProps}>
           {content}
