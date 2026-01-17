@@ -27,7 +27,8 @@
         "tamagui",
         "create-tamagui",
         "lighthouse",
-        "expo"
+        "expo",
+        "detox"
       ]
     }
   },
