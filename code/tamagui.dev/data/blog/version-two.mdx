@@ -216,6 +216,32 @@ Reanimated driver (`@tamagui/animations-reanimated`). This removes a dependency
 and fixes some compatibility issues. If you're using `@tamagui/animations-moti`,
 switch to `@tamagui/animations-reanimated` - the API is the same.
 
+#### Per-Component Animation Drivers
+
+You can now configure multiple animation drivers and select per-component using
+the new `animatedBy` prop:
+
+```tsx
+// Config with multiple drivers
+createTamagui({
+  animations: {
+    default: cssDriver,
+    spring: reanimatedDriver,
+  },
+})
+
+// Select per-component
+<View animatedBy="spring" transition="bouncy" />
+```
+
+For lazy loading drivers (e.g., load a heavier driver only after login), use the
+new `loadAnimationDriver` function:
+
+```tsx
+import { loadAnimationDriver } from 'tamagui'
+loadAnimationDriver('spring', reanimatedDriver)
+```
+
 #### Transition Delay
 
 All animation drivers now support delays:

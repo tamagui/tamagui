@@ -1,3 +1,4 @@
+export { AnimatedByProp } from './AnimatedByProp'
 export { AnimationComprehensiveCase } from './AnimationComprehensiveCase'
 export { Benchmark } from './Benchmark'
 export { ButtonCircular } from './ButtonCircular'

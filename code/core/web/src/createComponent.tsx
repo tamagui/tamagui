@@ -414,7 +414,23 @@ export function createComponent<
     }
 
     const groupContextParent = React.useContext(GroupContext)
-    const animationDriver = componentContext.animationDriver
+
+    // Get animation driver - either from animatedBy prop lookup or context
+    const animationDriver = (() => {
+      if (props.animatedBy && config?.animations) {
+        const animations = config.animations
+        // If animations is an object with named drivers (has 'default' key)
+        if ('default' in animations) {
+          return (
+            (animations as Record<string, any>)[props.animatedBy] ?? animations.default
+          )
+        }
+        // Single driver config - only 'default' makes sense
+        return props.animatedBy === 'default' ? animations : null
+      }
+      return componentContext.animationDriver
+    })()
+
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
     const componentState = useComponentState(
@@ -1388,7 +1404,8 @@ export function createComponent<
     }
 
     // needs to reset the presence state for nested children
-    const ResetPresence = config?.animations?.ResetPresence
+    // Use the resolved animationDriver (handles multi-driver config)
+    const ResetPresence = animationDriver?.ResetPresence
     const needsReset = Boolean(
       // not when passing down to child
       !asChild &&
