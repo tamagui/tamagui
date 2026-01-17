@@ -110,7 +110,7 @@ export declare const stylePropsView: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border?: boolean | undefined;
+    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -405,7 +405,7 @@ export declare const stylePropsText: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border?: boolean | undefined;
+    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -666,7 +666,7 @@ export declare const stylePropsAll: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border?: boolean | undefined;
+    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -912,7 +912,7 @@ export declare const validStyles: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border?: boolean | undefined;
+    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
