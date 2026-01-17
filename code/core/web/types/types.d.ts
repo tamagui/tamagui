@@ -628,19 +628,6 @@ export interface GenericTamaguiSettings {
      */
     mediaQueryDefaultActive?: Record<string, boolean>;
     /**
-     * What's between each CSS style rule, set to "\n" to be easier to read
-     * @default "\n" when NODE_ENV=development, "" otherwise
-     */
-    cssStyleSeparator?: string;
-    /**
-     * (Advanced) on the web, tamagui treats `dark` and `light` themes as special
-     * and generates extra CSS to avoid having to re-render the entire page. this
-     * CSS relies on specificity hacks that multiply by your sub-themes. this sets
-     * the maxiumum number of nested dark/light themes you can do defaults to 3
-     * for a balance, but can be higher if you nest them deeply.
-     */
-    maxDarkLightNesting?: number;
-    /**
      * Adds @media(prefers-color-scheme) media queries for dark/light, must be set
      * true if you are supporting system preference for light and dark mode themes
      */
