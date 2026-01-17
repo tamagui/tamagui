@@ -37,6 +37,7 @@ import type {
   GetStyleState,
   PseudoStyles,
   RulesToInsert,
+  SpaceTokens,
   SplitStyleProps,
   StaticConfig,
   StyleObject,
@@ -203,6 +204,7 @@ export const getSplitStyles: StyleSplitter = (
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
 
+  let space: SpaceTokens | null = props.space
   let pseudos: PseudoStyles | null = null
   let hasMedia: boolean | Set<string> = false
   let dynamicThemeAccess: boolean | undefined
@@ -923,10 +925,10 @@ export const getSplitStyles: StyleSplitter = (
                   dynamicThemeAccess = true
                   // only apply if this is the current theme
                   if (isCurrentScheme) {
-                    // update mediastyle so the later merge loop uses correct value
+                    // update mediaStyle so the later merge loop uses correct value
                     mediaStyle[subKey] = val
                   } else {
-                    // Remove from mediaStyle so it doesn't get merged with wrong theme's value
+                    // remove from mediaStyle so it doesn't get merged with wrong theme's value
                     delete mediaStyle[subKey]
                   }
                   continue
