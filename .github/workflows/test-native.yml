@@ -70,7 +70,8 @@ jobs:
 
       - name: Rebuild Detox Framework Cache
         if: env.SKIP_IOS_TESTS != 'true'
-        run: detox rebuild-framework-cache
+        working-directory: ${{ github.workspace }}
+        run: npx detox rebuild-framework-cache
 
       - name: Install applesimutils
         if: env.SKIP_IOS_TESTS != 'true'
