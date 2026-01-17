@@ -29,7 +29,7 @@ export function AnimationsEnterDemo(props: any) {
         opacity={1}
         scale={1}
         y={0}
-        bg={'$pink10' as any}
+        bg="$color9"
         rounded="$9"
       >
         {props.children ?? <LogoIcon downscale={0.75} />}
