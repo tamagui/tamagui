@@ -259,6 +259,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               if (changed) {
                 Object.assign(node.style, changed as any)
               }
+            } else {
+              // First time - apply directly without diff check
+              Object.assign(node.style, dontAnimate as any)
             }
           }
 
@@ -268,20 +271,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             }
 
             // bugfix: going from non-animated to animated in motion -
-            // motion batches things so the above removal can happen a frame before casuing flickering
+            // motion batches things so the above removal can happen a frame before causing flickering
             // we see this with tooltips, this is not an ideal solution though, ideally we can remove/update
             // in the same batch/frame as motion
             if (prevDont) {
               for (const key in prevDont) {
                 if (key in doAnimate) {
                   node.style[key] = prevDont[key]
+                  // Also update lastDoAnimate to include the previous value
+                  // This prevents animating from undefined to the current value
+                  // when a property transitions from dontAnimate to doAnimate
+                  if (lastDoAnimate.current) {
+                    lastDoAnimate.current[key] = prevDont[key]
+                  }
                 }
               }
             }
 
             const lastAnimated = lastDoAnimate.current
             if (lastAnimated) {
-              removeRemovedStyles(lastAnimated, doAnimate, node)
+              // Pass dontAnimate as third arg to prevent clearing styles that moved to dontAnimate
+              removeRemovedStyles(lastAnimated, doAnimate, node, dontAnimate)
             }
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
@@ -520,9 +530,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 }
 
-function removeRemovedStyles(prev: Object, next: Object, node: HTMLElement) {
+function removeRemovedStyles(
+  prev: Object,
+  next: Object,
+  node: HTMLElement,
+  dontClearIfIn?: Object
+) {
   for (const key in prev) {
     if (!(key in next)) {
+      // Don't clear if the style is now in dontAnimate (moved from animated to non-animated)
+      if (dontClearIfIn && key in dontClearIfIn) {
+        continue
+      }
       node.style[key] = ''
     }
   }
