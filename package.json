@@ -97,6 +97,7 @@
     "takeout:serve": "bun run --filter @tamagui/takeout serve",
     "takeout": "bun run --filter @tamagui/takeout dev",
     "test-ios": "turbo run test-ios --concurrency=1",
+    "test:native:detox": "cd code/kitchen-sink && bun run ../packages/native-ci/src/cli.ts test ios --project-root .",
     "test:ci": "turbo test --concurrency=1",
     "test:demos": "bun run --filter @tamagui/demos test",
     "test:docker:build": "dotenv -e .env -- sh -c 'docker build -t tamagui-test -f test/Dockerfile.test .'",
