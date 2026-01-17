@@ -140,6 +140,8 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
 
             onMouseUp() {
               if (!allowMouseUpRef!.current) {
+                // Re-enable mouseup for subsequent interactions
+                allowMouseUpRef!.current = true
                 return
               }
 
