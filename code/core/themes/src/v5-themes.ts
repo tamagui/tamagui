@@ -1,14 +1,14 @@
 import {
-  blueDark,
   blue,
-  greenDark,
-  green,
-  redDark,
-  red,
-  yellowDark,
-  yellow,
+  blueDark,
   gray,
   grayDark,
+  green,
+  greenDark,
+  red,
+  redDark,
+  yellow,
+  yellowDark,
 } from '@tamagui/colors'
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { interpolateColor, opacify } from './opacify'
@@ -157,25 +157,6 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 // Named color types for black/white (generated from palettes in createV5Theme)
 type BlackColors = ReturnType<typeof paletteToNamedColors<'black'>>
 type WhiteColors = ReturnType<typeof paletteToNamedColors<'white'>>
-
-// Colors computed by getTheme callback based on each theme's palette
-type ComputedColors = {
-  color0pt5: string
-  color1pt5: string
-  color2pt5: string
-  color01: string
-  color0075: string
-  color005: string
-  color0025: string
-  color002: string
-  color001: string
-  background01: string
-  background0075: string
-  background005: string
-  background0025: string
-  background002: string
-  background001: string
-}
 
 // Base extra colors type (always included) - getTheme computes opacity/interpolation colors
 type BaseExtraCommon = BlackColors & WhiteColors & typeof whiteBlack
@@ -331,8 +312,10 @@ export function createV5Theme<
     grandChildrenThemes,
 
     // Add computed colors to ALL themes based on each theme's palette
-    getTheme: ({ palette }): ComputedColors => {
-      if (!palette || palette.length < 3) return {} as ComputedColors
+    getTheme: ({ palette }) => {
+      if (!palette || palette.length < 3) {
+        throw new Error(`invalid palette: ${JSON.stringify(palette)}`)
+      }
 
       // palette[1] is background-ish, palette[length-2] is foreground-ish
       const bgColor = palette[1]!
