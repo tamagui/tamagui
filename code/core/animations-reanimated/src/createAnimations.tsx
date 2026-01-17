@@ -624,9 +624,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         // Update SharedValues - this triggers worklet without React re-render
-        animatedTargetsRef.value = animated
-        staticTargetsRef.value = statics
-        transformTargetsRef.value = transforms
+        // Using .set() method for concurrent-safe updates
+        animatedTargetsRef.set(animated)
+        staticTargetsRef.set(statics)
+        transformTargetsRef.set(transforms)
 
         if (
           process.env.NODE_ENV === 'development' &&
@@ -664,13 +665,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         const config = configRef.get()
 
         // Check if we have avoidRerenders updates
-        const hasEmitterUpdates = animatedTargetsRef.value !== null
+        // Using .get() method for concurrent-safe reads in worklets
+        const emitterAnimated = animatedTargetsRef.get()
+        const hasEmitterUpdates = emitterAnimated !== null
 
         // Use emitter values if available, otherwise use React state values
-        const animatedValues = hasEmitterUpdates
-          ? animatedTargetsRef.value!
-          : animatedStyles
-        const staticValues = hasEmitterUpdates ? staticTargetsRef.value! : {}
+        const animatedValues = hasEmitterUpdates ? emitterAnimated! : animatedStyles
+        const staticValues = hasEmitterUpdates ? staticTargetsRef.get()! : {}
 
         // Include static values from emitter (for hover/press style changes)
         for (const key in staticValues) {
@@ -688,7 +689,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         // Handle transforms
         const transforms = hasEmitterUpdates
-          ? transformTargetsRef.value
+          ? transformTargetsRef.get()
           : animatedStyles.transform
 
         // Animate transform properties with validation
