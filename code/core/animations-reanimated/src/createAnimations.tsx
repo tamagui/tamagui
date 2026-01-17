@@ -572,14 +572,15 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         return { baseConfig: base, propertyConfigs: configs }
       }, [isHydrating, props.transition, animatedStyles])
 
-      // Store config in ref for worklet access
-      const configRef = useRef({
+      // Store config in SharedValue for worklet access (concurrent-safe)
+      // Using .set() method for React Compiler compatibility
+      const configRef = useSharedValue({
         baseConfig,
         propertyConfigs,
         disableAnimation,
         isHydrating,
       })
-      configRef.current = { baseConfig, propertyConfigs, disableAnimation, isHydrating }
+      configRef.set({ baseConfig, propertyConfigs, disableAnimation, isHydrating })
 
       // =========================================================================
       // avoidRerenders: Register style emitter callback
@@ -597,7 +598,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
           if (value === undefined) continue
 
-          if (configRef.current.disableAnimation) {
+          if (configRef.get().disableAnimation) {
             statics[key] = value
             continue
           }
@@ -660,7 +661,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         const result: Record<string, any> = {}
-        const config = configRef.current
+        const config = configRef.get()
 
         // Check if we have avoidRerenders updates
         const hasEmitterUpdates = animatedTargetsRef.value !== null
