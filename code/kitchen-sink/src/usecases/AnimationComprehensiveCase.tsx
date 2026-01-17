@@ -242,7 +242,7 @@ function Scenario03_TranslateX() {
         testID="scenario-03-trigger" data-testid="scenario-03-trigger">
         03: TranslateX
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$purple10" x={active ? 50 : 0}
+      <Square ref={ref as any} transition="quick" size={40} bg="$blue10" x={active ? 50 : 0}
         testID="scenario-03-target" data-testid="scenario-03-target" />
       <Paragraph size="$1">{active ? '50px' : '0'}</Paragraph>
     </XStack>
@@ -305,7 +305,7 @@ function Scenario06_MultipleTransforms() {
         testID="scenario-06-trigger" data-testid="scenario-06-trigger">
         06: Multi-Transform
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$pink10"
+      <Square ref={ref as any} transition="quick" size={40} bg="$red10"
         scale={active ? 1.2 : 1} x={active ? 20 : 0} rotate={active ? '15deg' : '0deg'} opacity={active ? 0.7 : 1}
         testID="scenario-06-target" data-testid="scenario-06-target" />
       <Paragraph size="$1">{active ? 'active' : 'default'}</Paragraph>
@@ -369,7 +369,7 @@ function Scenario09_WidthAndHeight() {
         testID="scenario-09-trigger" data-testid="scenario-09-trigger">
         09: W+H
       </Button>
-      <View ref={ref as any} transition="quick" width={active ? 100 : 40} height={active ? 60 : 40} bg="$purple10"
+      <View ref={ref as any} transition="quick" width={active ? 100 : 40} height={active ? 60 : 40} bg="$blue10"
         testID="scenario-09-target" data-testid="scenario-09-target" />
       <Paragraph size="$1">{active ? '100x60' : '40x40'}</Paragraph>
     </XStack>
@@ -519,7 +519,7 @@ function Scenario16_SpringQuick() {
         testID="scenario-16-trigger" data-testid="scenario-16-trigger">
         16: Quick
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$purple10" scale={active ? 1.5 : 1}
+      <Square ref={ref as any} transition="quick" size={40} bg="$blue10" scale={active ? 1.5 : 1}
         testID="scenario-16-target" data-testid="scenario-16-target" />
       <Paragraph size="$1">quick spring</Paragraph>
     </XStack>
@@ -606,7 +606,7 @@ function Scenario20_TimingWithDelay() {
         testID="scenario-20-trigger" data-testid="scenario-20-trigger">
         20: Delay
       </Button>
-      <Square ref={ref as any} transition={['quick', { delay: 300 }]} size={40} bg="$purple10" opacity={active ? 0.3 : 1}
+      <Square ref={ref as any} transition={['quick', { delay: 300 }]} size={40} bg="$blue10" opacity={active ? 0.3 : 1}
         testID="scenario-20-target" data-testid="scenario-20-target" />
       <Paragraph size="$1">300ms delay</Paragraph>
     </XStack>
@@ -679,7 +679,7 @@ function Scenario23_EnterExitCombined() {
       </Button>
       <AnimatePresence>
         {visible && (
-          <Square key="enter-exit-square" ref={ref as any} transition="bouncy" size={40} bg="$purple10"
+          <Square key="enter-exit-square" ref={ref as any} transition="bouncy" size={40} bg="$blue10"
             enterStyle={{ opacity: 0, scale: 0.5, y: -20 }}
             exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
             testID="scenario-23-target" data-testid="scenario-23-target" />
@@ -814,7 +814,7 @@ function Scenario28_MultiProperty() {
         testID="scenario-28-trigger" data-testid="scenario-28-trigger">
         28: Multi
       </Button>
-      <View ref={ref as any} transition="bouncy" width={40} height={40} bg="$purple10"
+      <View ref={ref as any} transition="bouncy" width={40} height={40} bg="$blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         rotate={active ? '30deg' : '0deg'}
@@ -972,7 +972,7 @@ function Scenario33_MixedSpringTiming() {
         transition={['bouncy', { opacity: 'quick', borderRadius: 'lazy' }] as any}
         width={40}
         height={40}
-        bg="$purple10"
+        bg="$blue10"
         opacity={active ? 0.4 : 1}
         scale={active ? 1.4 : 1}
         borderRadius={active ? 20 : 4}
@@ -1118,7 +1118,7 @@ function Scenario37_EnterStyleScaleX() {
           transition="lazy"
           width={100}
           height={20}
-          bg="$pink10"
+          bg="$red10"
           enterStyle={{ opacity: 0, scaleX: 0 }}
           testID="scenario-37-target" data-testid="scenario-37-target"
         />

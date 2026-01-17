@@ -61,7 +61,7 @@ export function TransformMediaQueryMerge() {
             x={-75}
             $sm={{
               x: 75,
-              bg: '$purple10',
+              bg: '$blue10',
             }}
           />
         </XStack>

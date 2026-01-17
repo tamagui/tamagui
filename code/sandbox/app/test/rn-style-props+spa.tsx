@@ -44,7 +44,7 @@ export default function RNStylePropsTest() {
         <Text fontSize="$5" fontWeight="bold">boxShadow object with tokens</Text>
         <Square
           size={100}
-          bg="$purple10"
+          bg="$blue10"
           boxShadow={{
             offsetX: '$2',
             offsetY: '$4',
@@ -135,7 +135,7 @@ export default function RNStylePropsTest() {
         <Text fontSize="$5" fontWeight="bold">outline props</Text>
         <Square
           size={100}
-          bg="$pink10"
+          bg="$red10"
           outlineWidth={2}
           outlineStyle="solid"
           outlineColor="$blue10"
@@ -151,7 +151,7 @@ export default function RNStylePropsTest() {
             <Square size={50} bg="$green10" />
             <Square size={50} bg="$blue10" />
           </YStack>
-          <Square size={50} bg="$purple10" />
+          <Square size={50} bg="$blue10" />
         </XStack>
       </YStack>
     </YStack>

@@ -68,7 +68,7 @@ export const HeroTypography = memo(() => {
                   index={0}
                   Component={H1}
                   family={family}
-                  color="$pink10"
+                  color="$red10"
                 >
                   Swappable
                 </AnimatedHeading>
@@ -86,7 +86,7 @@ export const HeroTypography = memo(() => {
                   index={2}
                   Component={H3}
                   family={family}
-                  color="$purple10"
+                  color="$blue10"
                 >
                   custom per-size
                 </AnimatedHeading>
