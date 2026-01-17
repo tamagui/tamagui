@@ -1,3 +1,4 @@
+// @ts-nocheck - deprecated package, moti dependency intentionally not included
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 // we need core for hooks.usePropsTransform
 import {

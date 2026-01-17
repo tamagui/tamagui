@@ -204,8 +204,8 @@ export function setupDev(conf: DevConfig) {
  *
  * @example
  * ```tsx
- * import { loadAnimationDriver } from 'tamagui'
- * import { createAnimations } from '@tamagui/animations-moti'
+ * // import loadAnimationDriver from tamagui
+ * // import createAnimations from your preferred driver (e.g. animations-reanimated)
  *
  * const driver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
  * loadAnimationDriver('spring', driver)

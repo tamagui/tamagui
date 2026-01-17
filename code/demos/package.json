@@ -55,6 +55,7 @@
     "@tamagui/button": "workspace:*",
     "@tamagui/checkbox": "workspace:*",
     "@tamagui/checkbox-headless": "workspace:*",
+    "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/context-menu": "workspace:*",
     "@tamagui/core": "workspace:*",
