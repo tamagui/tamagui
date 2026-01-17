@@ -16,7 +16,7 @@ export const ProLicense = () => {
 
       <H3>Project License Scope</H3>
       <Paragraph>Each Tamagui Pro V2 License covers one project, defined as:</Paragraph>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>One public web domain (e.g., myapp.com)</Li>
           <Li>One iOS App Store application</Li>
@@ -29,7 +29,7 @@ export const ProLicense = () => {
       </Paragraph>
 
       <H3>What's Included</H3>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>
             Access to all Takeout templates (v1 Takeout, v2 Takeout, Takeout Static)
@@ -79,7 +79,7 @@ export const ProLicense = () => {
 
       <H3>License Terms</H3>
       <Paragraph>You can:</Paragraph>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>
             Use all Pro features including Theme Builder, Bento, and Takeout for your
@@ -93,7 +93,7 @@ export const ProLicense = () => {
         </Ul>
       </Paragraph>
       <Paragraph>You cannot:</Paragraph>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>Use the license for projects other than the one specified at purchase.</Li>
           <Li>
@@ -107,7 +107,7 @@ export const ProLicense = () => {
       </Paragraph>
 
       <H3>Definitions</H3>
-      <Paragraph tag="span">
+      <Paragraph render="span">
         <Ul>
           <Li>
             Licensee is a person or business entity who has purchased a Tamagui Pro V2
@@ -146,13 +146,13 @@ export const ProLicense = () => {
 
 const Ul = styled(YStack, {
   name: 'ul',
-  tag: 'ul',
+  render: 'ul',
   pl: 20,
 })
 
 const Li = styled(Paragraph, {
   name: 'li',
-  tag: 'li',
+  render: 'li',
   // @ts-ignore
   display: 'list-item',
 })

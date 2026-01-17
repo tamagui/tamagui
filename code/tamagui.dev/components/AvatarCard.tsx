@@ -11,7 +11,7 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
     <ThemeTintAlt offset={colorOffset}>
       <Link asChild href={link}>
         <Card
-          tag="a"
+          render="a"
           transition="quickest"
           flex={1}
           width="$19"

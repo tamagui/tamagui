@@ -46,6 +46,7 @@ export function styled<
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
     context?: StyledContext
+    render?: string
   },
   config?: StyledConfig
 ) {
@@ -289,13 +290,13 @@ export function styled<
 // })
 
 // const Test2 = styled(Text1, {
-//   tag: 'p',
+//   render: 'p',
 //   userSelect: 'auto',
 //   color: '$color',
 // })
 
 // const Test3 = styled(Test2, {
-//   tag: 'p',
+//   render: 'p',
 //   userSelect: 'auto',
 //   color: '$color',
 
@@ -307,7 +308,7 @@ export function styled<
 // })
 
 // const Test = styled(Paragraph, {
-//   tag: 'p',
+//   render: 'p',
 //   userSelect: 'auto',
 //   color: '$color',
 

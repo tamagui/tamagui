@@ -67,10 +67,17 @@ export type TamaguiComponentPropsBaseBase = {
      */
     id?: string;
     /**
-     * Controls the output tag on web
-     * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
+     * Controls the rendered element on web.
+     * - String: renders as that HTML element (e.g., `render="button"`)
+     * - JSX Element: clones element with merged props (e.g., `render={<a href="/" />}`)
+     * - Function: full control with props and state (e.g., `render={(props) => <Custom {...props} />}`)
+     * @example render="button"
+     * @example render={<a href="/" />}
+     * @example render={(props, state) => <MyComponent {...props} isPressed={state.press} />}
      */
-    tag?: keyof HTMLElementTagNameMap | (string & {});
+    render?: keyof HTMLElementTagNameMap | (string & {}) | React.ReactElement | ((props: Record<string, any> & {
+        ref?: React.Ref<any>;
+    }, state: TamaguiComponentState) => React.ReactElement);
     /**
      * Applies a theme to this element
      */

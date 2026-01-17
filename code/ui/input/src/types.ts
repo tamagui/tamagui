@@ -33,7 +33,7 @@ export type InputProps = StackProps &
     // maxLength, minLength, pattern, required, name, id, etc.
 
     /**
-     * Rows for textarea (when tag="textarea")
+     * Rows for textarea (when render="textarea")
      */
     rows?: number
 

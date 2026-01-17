@@ -1,4 +1,4 @@
-import type { DebugProp, ThemeName, GroupNames, Role } from '../types';
+import type { DebugProp, ThemeName, GroupNames, Role, TamaguiComponentState } from '../types';
 export type TamaguiComponentPropsBaseBase = {
     target?: string;
     htmlFor?: string;
@@ -33,10 +33,14 @@ export type TamaguiComponentPropsBaseBase = {
      */
     id?: string;
     /**
-     * Controls the output tag on web
-     * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
+     * Controls the rendered element on web.
+     * - String: renders as that HTML element (e.g., `render="button"`)
+     * - JSX Element: clones element with merged props (e.g., `render={<a href="/" />}`)
+     * - Function: full control with props and state (e.g., `render={(props) => <Custom {...props} />}`)
      */
-    tag?: keyof HTMLElementTagNameMap | (string & {});
+    render?: keyof HTMLElementTagNameMap | (string & {}) | React.ReactElement | ((props: Record<string, any> & {
+        ref?: React.Ref<any>;
+    }, state: TamaguiComponentState) => React.ReactElement);
     /**
      * Applies a theme to this element
      */

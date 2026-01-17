@@ -22,7 +22,7 @@ export const CustomButtonContext = createStyledContext<{
 const CustomButtonFrame = styled(ThemeableStack, {
   name: 'CustomButton',
   context: CustomButtonContext,
-  tag: 'button',
+  render: 'button',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'row',
@@ -71,7 +71,7 @@ const CustomButtonText = styled(SizableText, {
 const ContextRefButtonFrame = styled(ThemeableStack, {
   name: 'ContextRefButton',
   context: CustomButtonContext,
-  tag: 'button',
+  render: 'button',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'row',
@@ -152,7 +152,7 @@ const ContextRefButtonComponent = ContextRefButtonFrame.styleable<ContextRefButt
 const PressStyleButtonFrame = styled(ThemeableStack, {
   name: 'PressStyleButton',
   context: CustomButtonContext,
-  tag: 'button',
+  render: 'button',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'row',

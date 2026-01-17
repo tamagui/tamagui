@@ -37,6 +37,7 @@ export { PopoverContentStyledPlusAnimations } from './PopoverContentStyledPlusAn
 export { PopoverFocusScopeCase } from './PopoverFocusScopeCase'
 export { PopoverScopedCase } from './PopoverScopedCase'
 export { PseudoStyleMerge } from './PseudoStyleMerge'
+export { RenderPropCase } from './RenderPropCase'
 export { SecondPage } from './SecondPage'
 export { SelectFocusScopeCase } from './SelectFocusScopeCase'
 export { SelectRemount } from './SelectRemount'

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 
 const XStack = styled(Stack, { flexDirection: 'row' })
 const Button = styled(Stack, {
-  tag: 'button',
+  render: 'button',
   padding: '$3',
   backgroundColor: '$blue10',
   borderRadius: '$4',

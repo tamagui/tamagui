@@ -368,7 +368,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // we never change this, after first render on
         style: firstRenderStyle,
         ref: scope,
-        tag: 'div',
+        render: 'div',
       }
     },
 
@@ -589,13 +589,13 @@ const MotionText = createMotionView('span')
 function createMotionView(defaultTag: string) {
   // return forwardRef((props: any, ref) => {
   //   console.info('rendering?', props)
-  //   const Element = motion[props.tag || defaultTag]
+  //   const Element = motion[props.render || defaultTag]
   //   return <Element ref={ref} {...props} />
   // })
   const isText = defaultTag === 'span'
 
   const Component = forwardRef((propsIn: any, ref) => {
-    const { forwardedRef, animation, tag = defaultTag, style, ...propsRest } = propsIn
+    const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
     const [scope, animate] = useAnimate()
     const hostRef = useRef<HTMLElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, hostRef, scope)
@@ -652,8 +652,8 @@ function createMotionView(defaultTag: string) {
     }
 
     const props = getProps({ ...propsRest, style: nonAnimatedStyles })
-    const Element = tag || 'div'
-    const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
+    const Element = render || 'div'
+    const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
     useEffect(() => {
       if (!animatedStyle) return
