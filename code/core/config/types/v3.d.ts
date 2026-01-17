@@ -21,7 +21,6 @@ export declare const config: {
         quicker: string;
         quickest: string;
         tooltip: string;
-        select: string;
     }>;
     themes: import("@tamagui/themes/v3-themes").ThemesOut;
     media: {

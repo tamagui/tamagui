@@ -99,11 +99,6 @@ export declare const defaultConfig: {
             mass: number;
             stiffness: number;
         };
-        select: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
     }>;
     media: {
         readonly pointerTouch: {

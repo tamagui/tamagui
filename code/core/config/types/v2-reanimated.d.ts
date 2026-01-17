@@ -37,11 +37,6 @@ export declare const config: {
             mass: number;
             stiffness: number;
         };
-        select: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
     }>;
     themes: Omit<{
         readonly light: {

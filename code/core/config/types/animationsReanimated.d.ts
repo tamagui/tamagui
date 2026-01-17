@@ -1,14 +1,14 @@
 export declare const animationsReanimated: import("@tamagui/web").AnimationDriver<{
     '75ms': {
-        type: string;
+        type: "timing";
         duration: number;
     };
     '100ms': {
-        type: string;
+        type: "timing";
         duration: number;
     };
     '200ms': {
-        type: string;
+        type: "timing";
         duration: number;
     };
     superBouncy: {
@@ -50,11 +50,6 @@ export declare const animationsReanimated: import("@tamagui/web").AnimationDrive
         stiffness: number;
     };
     quickest: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    select: {
         damping: number;
         mass: number;
         stiffness: number;
