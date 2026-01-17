@@ -407,18 +407,21 @@ export class ThemeBuilder<
         )
 
         out[themeName] = this._getThemeFn
-          ? this._getThemeFn({
-              theme,
-              name: themeName,
-              level: nameParts.length,
-              parentName,
-              scheme: /^(light|dark)$/.test(nameParts[0])
-                ? (nameParts[0] as 'light' | 'dark')
-                : undefined,
-              parentNames: nameParts.slice(0, -1),
-              palette,
-              template,
-            })
+          ? {
+              ...theme,
+              ...this._getThemeFn({
+                theme,
+                name: themeName,
+                level: nameParts.length,
+                parentName,
+                scheme: /^(light|dark)$/.test(nameParts[0])
+                  ? (nameParts[0] as 'light' | 'dark')
+                  : undefined,
+                parentNames: nameParts.slice(0, -1),
+                palette,
+                template,
+              }),
+            }
           : theme
       }
     }

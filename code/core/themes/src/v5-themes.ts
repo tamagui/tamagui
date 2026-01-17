@@ -331,15 +331,14 @@ export function createV5Theme<
     grandChildrenThemes,
 
     // Add computed colors to ALL themes based on each theme's palette
-    getTheme: (({ theme, palette }) => {
-      if (!palette || palette.length < 3) return theme
+    getTheme: ({ palette }): ComputedColors => {
+      if (!palette || palette.length < 3) return {} as ComputedColors
 
       // palette[1] is background-ish, palette[length-2] is foreground-ish
       const bgColor = palette[1]!
       const fgColor = palette[palette.length - 2]!
 
       return {
-        ...theme,
         // In-between shades
         color0pt5: interpolateColor(bgColor, palette[2]!, 0.5),
         color1pt5: interpolateColor(palette[1]!, palette[2]!, 0.5),
@@ -359,7 +358,7 @@ export function createV5Theme<
         background002: opacify(bgColor, 0.02),
         background001: opacify(bgColor, 0.01),
       }
-    }) as () => ComputedColors,
+    },
   })
 }
 
