@@ -51,8 +51,6 @@ type TransitionAnimationOptions = AnimationOptions & {
   [propertyName: string]: ValueTransition | undefined
 }
 
-const minTimeBetweenAnimations = 1000 / 60
-
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 
 type AnimationProps = {
@@ -64,14 +62,24 @@ type AnimationProps = {
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animationsProp: A
 ): AnimationDriver<A> {
-  // normalize, it doesn't assume type: 'spring' even if damping etc there so we do that
-  // which also matches the moti driver
+  // normalize animation configs
   // @ts-expect-error avoid doing a spread for no reason, sub-constraint type issue
   const animations: A = {}
   for (const key in animationsProp) {
+    const config = animationsProp[key]
+    // If config only has duration (timing-based), use 'tween' type
+    // Otherwise default to 'spring' which matches the moti driver
+    const isTimingBased =
+      config.duration !== undefined &&
+      config.damping === undefined &&
+      config.stiffness === undefined &&
+      config.mass === undefined
     animations[key] = {
-      type: 'spring',
-      ...animationsProp[key],
+      type: isTimingBased ? 'tween' : 'spring',
+      // Convert duration from ms to seconds for motion library
+      ...(isTimingBased && config.duration
+        ? { ...config, duration: config.duration / 1000 }
+        : config),
     }
   }
 
