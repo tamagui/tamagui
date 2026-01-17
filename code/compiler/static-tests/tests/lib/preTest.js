@@ -77,6 +77,9 @@ async function extractStaticWebpackApp() {
                 loader: 'tsx',
                 target: 'es2021',
                 keepNames: true,
+                // Prevent esbuild-loader from trying to parse tsconfig files in node_modules
+                // (expo-modules-core's tsconfig extends expo-module-scripts which isn't installed)
+                tsconfigRaw: {},
               },
             },
             {
