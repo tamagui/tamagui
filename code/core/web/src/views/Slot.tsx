@@ -2,9 +2,9 @@
 
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import { composeEventHandlers } from '@tamagui/helpers'
 import type { ReactNode } from 'react'
-import { Children, cloneElement, forwardRef, isValidElement, memo } from 'react'
-import { mergeSlotStyleProps } from '../helpers/mergeSlotStyleProps'
+import { Children, cloneElement, forwardRef, isValidElement, version, memo } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * Slot
@@ -13,6 +13,8 @@ import { mergeSlotStyleProps } from '../helpers/mergeSlotStyleProps'
 interface SlotProps {
   children: ReactNode
 }
+
+const is19 = version.startsWith('19.')
 
 export const Slot = memo(
   forwardRef<any, SlotProps>(function Slot(props, forwardedRef) {
@@ -26,7 +28,10 @@ export const Slot = memo(
           ? mergedProps
           : {
               ...mergedProps,
-              ref: composeRefs(forwardedRef, (children as any).props.ref),
+              ref: composeRefs(
+                forwardedRef,
+                is19 ? (children as any).props.ref : (children as any).ref
+              ),
             }
       )
     }
@@ -57,9 +62,11 @@ const pressMap = isWeb
 
 function mergeSlotProps(child: any, slotProps: Record<string, any>) {
   const childProps = child.props
+
+  // all child props should override
+  const overrideProps = { ...childProps }
   const isHTMLChild = typeof child.type === 'string'
 
-  // convert RN press events to web events for HTML children
   if (isHTMLChild) {
     for (const key in pressMap) {
       if (key in slotProps) {
@@ -69,18 +76,29 @@ function mergeSlotProps(child: any, slotProps: Record<string, any>) {
     }
   }
 
-  // merge slot props with child props (child wins via overlay)
-  const merged = mergeSlotStyleProps(slotProps, childProps)
+  for (let propName in childProps) {
+    const slotPropValue = slotProps[propName]
+    const childPropValue = childProps[propName]
 
-  // convert child's RN press events to web events after merge
-  if (isHTMLChild) {
-    for (const key in pressMap) {
-      if (key in merged) {
-        merged[pressMap[key]] = merged[key]
-        delete merged[key]
-      }
+    if (isHTMLChild && propName in pressMap) {
+      propName = pressMap[propName]
+      delete overrideProps[propName]
+    }
+
+    const isHandler = handleRegex.test(propName)
+    // if it's a handler, modify the override by composing the base handler
+    if (isHandler) {
+      overrideProps[propName] = composeEventHandlers(childPropValue, slotPropValue)
+    }
+    // if it's `style`, we merge them
+    else if (propName === 'style') {
+      overrideProps[propName] = { ...slotPropValue, ...childPropValue }
+    } else if (propName === 'className') {
+      overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(' ')
     }
   }
 
-  return merged
+  return { ...slotProps, ...overrideProps }
 }
+
+const handleRegex = /^on[A-Z]/
