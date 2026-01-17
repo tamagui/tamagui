@@ -1,7 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import {
   IS_REACT_19,
-  isAndroid,
   isClient,
   isServer,
   isWeb,
@@ -1068,37 +1067,45 @@ export function createComponent<
       })
     }
 
-    // TODO should this be regular effect to allow the render in-between?
+    // Animation enter state machine: true -> 'should-enter' -> false
+    // Stage 1: Set 'should-enter' synchronously before paint to apply enterStyle classes
+    // Stage 2: After browser paint, set false to trigger CSS transition
+    //
+    // CRITICAL: useEffect does NOT guarantee post-paint execution!
+    // See: https://thoughtspile.github.io/2021/11/15/unintentional-layout-effect/
+    // When layoutEffect updates state → re-render before paint → useEffect flushes pre-paint
+    // Solution: Double RAF ensures browser has actually painted before we transition
     useIsomorphicLayoutEffect(() => {
-      // Note: We removed the early return on disabled to allow animations to work
-      // This fixes the issue where animations wouldn't work on disabled components
       if (state.unmounted === true && hasEnterStyle) {
         setStateShallow({ unmounted: 'should-enter' })
         return
       }
 
-      let tm: NodeJS.Timeout
       if (state.unmounted) {
-        if (animationDriver?.supportsCSS || isAndroid) {
-          // this setTimeout fixes css driver enter animations  - not sure why
-          // this setTimeout fixes the conflict when with the safe area view in android
-          tm = setTimeout(() => {
-            setStateShallow({ unmounted: false })
+        // For CSS transitions, we need browser to paint enterStyle before removing it.
+        // Double RAF guarantees paint: first RAF schedules after current frame,
+        // second RAF schedules after that frame completes (including paint).
+        if (supportsCSS) {
+          let cancelled = false
+          requestAnimationFrame(() => {
+            if (cancelled) return
+            requestAnimationFrame(() => {
+              if (cancelled) return
+              setStateShallow({ unmounted: false })
+            })
           })
-          return () => clearTimeout(tm)
-          // don't clearTimeout! safari gets bugs it just doesn't ever set unmounted: false
+          return () => {
+            cancelled = true
+          }
         }
-
+        // Non-CSS drivers handle their own animation timing
         setStateShallow({ unmounted: false })
-        return
       }
-
-      // Only subscribe to context group if not disabled
 
       return () => {
         componentSetStates.delete(setState)
       }
-    }, [state.unmounted, disabled])
+    }, [state.unmounted, supportsCSS])
 
     useIsomorphicLayoutEffect(() => {
       if (disabled) return
