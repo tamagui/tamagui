@@ -81,8 +81,9 @@ const shouldSkipTypes = !!(
 
 const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
-const shouldSkipCompiler = !!(
-  process.argv.includes('--skip-compiler') || process.env.SKIP_COMPILER
+// React Compiler is disabled by default - use --react-compiler to enable
+const shouldEnableCompiler = !!(
+  process.argv.includes('--react-compiler') || process.env.REACT_COMPILER
 )
 const shouldBundleFlag = !!process.argv.includes('--bundle')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
@@ -688,8 +689,8 @@ async function esbuildWriteIfChanged(
       plugins: [
         ...(opts.plugins || []),
 
-        // React Compiler for automatic memoization (can be skipped with --skip-compiler)
-        ...(!shouldSkipCompiler ? [reactCompilerPlugin] : []),
+        // React Compiler for automatic memoization (disabled by default, enable with --react-compiler)
+        ...(shouldEnableCompiler ? [reactCompilerPlugin] : []),
 
         ...(platform === 'native' && !opts.bundle
           ? [
