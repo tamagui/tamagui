@@ -23,13 +23,16 @@ function parseToRgb(color: string): { r: number; g: number; b: number } | null {
   if (color.startsWith('#')) {
     let hex = color.slice(1)
     if (hex.length === 3) {
-      hex = hex.split('').map((c) => c + c).join('')
+      hex = hex
+        .split('')
+        .map((c) => c + c)
+        .join('')
     }
     if (hex.length >= 6) {
       return {
-        r: parseInt(hex.slice(0, 2), 16),
-        g: parseInt(hex.slice(2, 4), 16),
-        b: parseInt(hex.slice(4, 6), 16),
+        r: Number.parseInt(hex.slice(0, 2), 16),
+        g: Number.parseInt(hex.slice(2, 4), 16),
+        b: Number.parseInt(hex.slice(4, 6), 16),
       }
     }
   }
@@ -38,7 +41,11 @@ function parseToRgb(color: string): { r: number; g: number; b: number } | null {
   if (color.startsWith('rgb')) {
     const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
     if (match) {
-      return { r: parseInt(match[1], 10), g: parseInt(match[2], 10), b: parseInt(match[3], 10) }
+      return {
+        r: Number.parseInt(match[1], 10),
+        g: Number.parseInt(match[2], 10),
+        b: Number.parseInt(match[3], 10),
+      }
     }
   }
 
@@ -46,9 +53,9 @@ function parseToRgb(color: string): { r: number; g: number; b: number } | null {
   if (color.startsWith('hsl')) {
     const match = color.match(/hsla?\((\d+),\s*(\d+)%,\s*(\d+)%/)
     if (match) {
-      const h = parseInt(match[1], 10)
-      const s = parseInt(match[2], 10) / 100
-      const l = parseInt(match[3], 10) / 100
+      const h = Number.parseInt(match[1], 10)
+      const s = Number.parseInt(match[2], 10) / 100
+      const l = Number.parseInt(match[3], 10) / 100
       return hslToRgb(h, s, l)
     }
   }
@@ -57,7 +64,9 @@ function parseToRgb(color: string): { r: number; g: number; b: number } | null {
 }
 
 function hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: number } {
-  let r: number, g: number, b: number
+  let r: number
+  let g: number
+  let b: number
   if (s === 0) {
     r = g = b = l
   } else {
