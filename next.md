@@ -25,7 +25,7 @@ See `docs/web-alignment-plan.md` for the full web props migration plan.
 
 AFTER v2 RC (nice to haves):
 
-- css driver can noRerender
+- css driver can avoidReRenders
   - reanimated too but requires testing native + worklets
 
 - Text weirdness fixes (explore)

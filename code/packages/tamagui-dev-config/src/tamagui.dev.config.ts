@@ -27,7 +27,6 @@ export const config = {
     ...defaultConfig.settings,
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    maxDarkLightNesting: 2,
     styleCompat: 'react-native',
     addThemeClassName: 'html',
     mediaQueryDefaultActive,

@@ -466,6 +466,44 @@ completely re-skinned at any point in the tree.
 Think of it as a super-power. If you don't use it, there's no downside. But if
 you do, you gain a pretty powerful new ability.
 
+#### Inverse Themes
+
+If you want an "inverse" theme that swaps light and dark values, create it as a
+sub-theme:
+
+```tsx
+const themes = createThemes({
+  base: {
+    palette: {
+      dark: ['#000', '#111', '#222', '#999', '#ccc', '#eee', '#fff'],
+      light: ['#fff', '#eee', '#ccc', '#999', '#222', '#111', '#000'],
+    },
+  },
+
+  childrenThemes: {
+    inverse: {
+      palette: {
+        // Swap the palettes
+        dark: ['#fff', '#eee', '#ccc', '#999', '#222', '#111', '#000'],
+        light: ['#000', '#111', '#222', '#999', '#ccc', '#eee', '#fff'],
+      },
+    },
+  },
+})
+```
+
+Then use it anywhere in your app:
+
+```tsx
+<Theme name="inverse">
+  <YourContent />
+</Theme>
+```
+
+This generates `light_inverse` and `dark_inverse` sub-themes that flip the color
+scheme within their parent theme. You can repeat this pattern with
+`grandChildrenThemes` to support a second level of inverse nesting.
+
 ### createThemeBuilder
 
 Now that we have all the required context to understand palettes and templates,

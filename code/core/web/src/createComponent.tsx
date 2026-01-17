@@ -497,7 +497,7 @@ export function createComponent<
       }
     }, [stateRef, groupName, groupContextParent])
 
-    // if our animation driver supports noReRender, we'll replace this below with
+    // if our animation driver supports avoidReRenders, we'll replace this below with
     // a version that essentially uses an internall emitter rather than setting state
     // but still stores the current state and applies if it it needs to during render
     let setStateShallow = componentState.setStateShallow

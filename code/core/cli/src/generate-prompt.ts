@@ -102,13 +102,6 @@ function generateMarkdown(config: any): string {
       }
     }
 
-    if (settings.maxDarkLightNesting !== undefined) {
-      sections.push(`### Max Dark/Light Nesting: \`${settings.maxDarkLightNesting}\`\n\n`)
-      sections.push(
-        `Maximum nesting depth for light/dark theme switching: ${settings.maxDarkLightNesting} levels.\n\n`
-      )
-    }
-
     // Check for platform-specific settings
     const platform = settings.platform || settings.defaultProps?.platform
     if (platform) {

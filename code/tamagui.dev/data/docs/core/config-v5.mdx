@@ -235,11 +235,6 @@ V5 config includes these default settings:
       description: 'true - Removes types for longhand versions of shorthands.',
     },
     {
-      name: 'maxDarkLightNesting',
-      description:
-        '2 - Allows two levels of light/dark nesting (useful for tooltips).',
-    },
-    {
       name: 'styleCompat',
       description:
         '"react-native" - Aligns flex defaults to React Native (flexBasis: 0).',
@@ -251,18 +246,71 @@ V5 config includes these default settings:
 
 ## Media Queries
 
-V5 uses the same media queries as v4, aligned to Tailwind breakpoints:
+V5 includes an expanded set of media queries with height-based, max-width, and
+min-width variants.
+
+### Breakpoints
 
 <PropsTable
   data={[
-    { name: '2xl', description: 'minWidth: 1536' },
-    { name: 'xl', description: 'minWidth: 1280' },
-    { name: 'lg', description: 'minWidth: 1024' },
-    { name: 'md', description: 'minWidth: 768' },
-    { name: 'sm', description: 'minWidth: 640' },
-    { name: 'xs', description: 'minWidth: 460' },
-    { name: '2xs', description: 'minWidth: 340' },
+    { name: 'xxxs', description: '260' },
+    { name: 'xxs', description: '340' },
+    { name: 'xs', description: '460' },
+    { name: 'sm', description: '640' },
+    { name: 'md', description: '768' },
+    { name: 'lg', description: '1024' },
+    { name: 'xl', description: '1280' },
+    { name: 'xxl', description: '1536' },
   ]}
+/>
+
+### Min-Width (Mobile-First)
+
+<PropsTable
+  data={[
+    { name: 'xxxs', description: 'minWidth: 260' },
+    { name: 'xxs', description: 'minWidth: 340' },
+    { name: 'xs', description: 'minWidth: 460' },
+    { name: 'sm', description: 'minWidth: 640' },
+    { name: 'md', description: 'minWidth: 768' },
+    { name: 'lg', description: 'minWidth: 1024' },
+    { name: 'xl', description: 'minWidth: 1280' },
+    { name: 'xxl', description: 'minWidth: 1536' },
+  ]}
+/>
+
+### Max-Width (Desktop-First)
+
+<PropsTable
+  data={[
+    { name: 'maxXXXS', description: 'maxWidth: 260' },
+    { name: 'maxXXS', description: 'maxWidth: 340' },
+    { name: 'maxXS', description: 'maxWidth: 460' },
+    { name: 'maxSM', description: 'maxWidth: 640' },
+    { name: 'maxMD', description: 'maxWidth: 768' },
+    { name: 'maxLG', description: 'maxWidth: 1024' },
+    { name: 'maxXL', description: 'maxWidth: 1280' },
+    { name: 'maxXXL', description: 'maxWidth: 1536' },
+  ]}
+/>
+
+### Height-Based
+
+<PropsTable
+  data={[
+    { name: 'heightXXXS', description: 'minHeight: 260' },
+    { name: 'heightXXS', description: 'minHeight: 340' },
+    { name: 'heightXS', description: 'minHeight: 460' },
+    { name: 'heightSM', description: 'minHeight: 640' },
+    { name: 'heightMD', description: 'minHeight: 768' },
+    { name: 'heightLG', description: 'minHeight: 1024' },
+  ]}
+/>
+
+### Other
+
+<PropsTable
+  data={[{ name: 'pointerTouch', description: 'pointer: coarse' }]}
 />
 
 ---

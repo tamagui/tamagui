@@ -13,7 +13,10 @@ We recommend
 the current version being `@tamagui/config/v4`:
 
 <Notice theme="blue">
-  **v5 config beta**: `@tamagui/config/v5` is now available in beta. It improves themes and aligns default style values to modern React Native. Note that it may not work perfectly with Bento or some docs examples until we move those to v5 in the next major release.
+  **v5 config beta**: `@tamagui/config/v5` is now available in beta. It improves
+  themes and aligns default style values to modern React Native. Note that it
+  may not work perfectly with Bento or some docs examples until we move those to
+  v5 in the next major release.
 </Notice>
 
 ```bash
@@ -419,7 +422,8 @@ And then run:
 npx @tamagui/cli generate
 ```
 
-See the [CLI Guide](/docs/guides/cli#generate) for more information on the `generate` command and other CLI tools.
+See the [CLI Guide](/docs/guides/cli#generate) for more information on the
+`generate` command and other CLI tools.
 
 ## Tokens
 
@@ -619,12 +623,17 @@ For more full docs on media queries, see the
 
 Tamagui supports four animation drivers that can be swapped out per-platform:
 
-- [`@tamagui/animations-css`](/docs/core/animations-css) - CSS transition based animations (lightest)
-- [`@tamagui/animations-react-native`](/docs/core/animations-react-native) - React Native Animated
-- [`@tamagui/animations-reanimated`](/docs/core/animations-reanimated) - Reanimated for advanced animations
-- [`@tamagui/animations-motion`](/docs/core/animations-motion) - Motion with WAAPI for web
+- [`@tamagui/animations-css`](/docs/core/animations-css) - CSS transition based
+  animations (lightest)
+- [`@tamagui/animations-react-native`](/docs/core/animations-react-native) -
+  React Native Animated
+- [`@tamagui/animations-reanimated`](/docs/core/animations-reanimated) -
+  Reanimated for advanced animations
+- [`@tamagui/animations-motion`](/docs/core/animations-motion) - Motion with
+  WAAPI for web
 
-See the [Animations documentation](/docs/core/animations) for a full comparison and guide on choosing the right driver.
+See the [Animations documentation](/docs/core/animations) for a full comparison
+and guide on choosing the right driver.
 
 Add `animations` to `createTamagui`:
 
@@ -645,7 +654,9 @@ export const animations = createAnimations({
 })
 ```
 
-You can use different drivers per-platform - see the [Platform-Specific Configuration](/docs/core/animations#platform-specific-configuration) section.
+You can use different drivers per-platform - see the
+[Platform-Specific Configuration](/docs/core/animations#platform-specific-configuration)
+section.
 
 ### Shorthands
 
@@ -705,19 +716,13 @@ You can pass a `settings` object to `createTamagui`:
       description: `For the first render, determines which media queries are true (useful for SSR).`,
     },
     {
-      name: 'cssStyleSeparator',
-      required: false,
-      type: 'string',
-      description: `What's between each generated CSS style rule. Set as newline to more easily debug outputted CSS.`,
-    },
-    {
       name: 'addThemeClassName',
       required: false,
       type: "false | 'html' | 'body'",
       default: false,
       description: `If you want to style your <body> tag to use theme CSS variables on web, you must place the theme className  onto the body element or above. This will do so. If disabled, Tamagui will place the className onto the element rendered by the TamaguiProvider`,
     },
-     {
+    {
       name: 'disableRootThemeClass',
       required: false,
       type: 'boolean',
@@ -736,14 +741,7 @@ You can pass a `settings` object to `createTamagui`:
       required: false,
       type: 'boolean',
       default: `true`,
-      description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
-    },
-    {
-      name: 'maxDarkLightNesting',
-      required: false,
-      type: 'number',
-      default: 3,
-      description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maximum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
+      description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes, causes larger total CSS sizes.`,
     },
     {
       name: 'onlyAllowShorthands',
@@ -829,12 +827,20 @@ color.
 
 ### Environment Settings
 
-A few things in Tamagui can be configuring via environment variables. Doing it this way lets us avoid extra code being shipped to the client, as we your bundler can tree shake the unused code easily when using envronment variables. You should be sure to either use the Vite or Webpack Tamagui plugins, or configure your bundler to define the environment variables for tree shaking. On native, it is not a concern as the extra size is minimal.
-
+A few things in Tamagui can be configuring via environment variables. Doing it
+this way lets us avoid extra code being shipped to the client, as we your
+bundler can tree shake the unused code easily when using envronment variables.
+You should be sure to either use the Vite or Webpack Tamagui plugins, or
+configure your bundler to define the environment variables for tree shaking. On
+native, it is not a concern as the extra size is minimal.
 
 #### React 19
 
-We have early support for React 19, which mostly does a single thing: it moves our runtime CSS insertion from [`useInsertionEffect`](https://react.dev/reference/react/useInsertionEffect) to using inline `<style />` tags. React 19 supports hoisting and de-duplicating style tags, which simplifies our implementation and should improve performance.
+We have early support for React 19, which mostly does a single thing: it moves
+our runtime CSS insertion from
+[`useInsertionEffect`](https://react.dev/reference/react/useInsertionEffect) to
+using inline `<style />` tags. React 19 supports hoisting and de-duplicating
+style tags, which simplifies our implementation and should improve performance.
 
 To enable set the `TAMAGUI_REACT_19` variable to `"1"`:
 

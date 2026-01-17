@@ -11,42 +11,50 @@ poster: banner-two.jpg
   without sacrificing quality, simplicity, or performance.
 </IntroParagraph>
 
-<IntroParagraph>
-  Tamagui is three things: a style library, an optimizing compiler, and a suite
-  of UI components. It avoids the usual sacrifices in sharing code by simply
-  going quite deep to make that possible. Some examples:
-</IntroParagraph>
+Tamagui is three things: a style library, an optimizing compiler, and a suite of
+UI components. It's a vertically integrated solution with a lot of features,
+hard-fought performance and testing, and AI agents can generate it with ease.
 
-Tamagui brings many style features from CSS to native, yet all style primitives
-work native and web, runtime and compile-time, server-side and client-side. You
-get server-side rendering without flickering, even when using spring-based
-animation drivers, or with media queries, or themes, and the optimizing compiler
-means you can write natural inline styles without the typical performance cost.
+If you want, [skip to the new stuff in version two](#new-in-version-two).
+
+### What and Why
+
+You can skip this section if you are familiar with Tamagui already.
+
+Tamagui brings many style features from CSS to native. Every style it supposrts
+works on both native and web, at runtime and compile-time, and server-side and
+client-side. It's SSR support is advanced without jumps or flickers, even when
+using spring-based animation drivers, media queries, or themes. The optimizing
+compiler unlocks natural inline styles, even when using abstracted styled
+components or logic.
 
 In comparison to other solutions, Tamagui is especially strong at:
 
-- **Able to share 100% between web and native.** Many other solutions focus on
-  one platform more than others, or implement their features in sub-par ways on
-  web.
-- **Great performance and platform feeling on both web and native.** As a small
-  example - you can choose from 4 animations drivers (CSS, Reanimated, Motion,
-  React Native), per-platform, yet no matter which you choose proper SSR with
-  media queries and dark mode properly renders and hydrates.
-- **Fast, type-safe, properly mergeable inline styling.** Inline styles are a
-  leap forward, but the lack of type safety or easy ability to merge and group
-  your styles is their biggest drawback. Tamagui is fully type safe, lets you
-  control how you merge styles, and optimizes it all nearly perfectly even in
-  the face of complicated logic.
-- **A first-class, composable components based UI kit.** Our UI kit doesn't just
+- **Sharing between web and native without sacrifice.** Many other solutions
+  focus on one platform more than others, or implement their features in sub-par
+  ways on web, Tamagui has a large style featureset and hard-fought parity
+  between platforms.
+- **Great performance everywhere.** A small example - you can choose from 4
+  animation drivers (CSS, Reanimated, Motion, React Native), per-platform, yet
+  no matter which you choose proper SSR with media queries and dark mode
+  properly renders and hydrates.
+- **Fast, type-safe, mergeable inline styling.** Inline styles are a leap
+  forward, but the lack of type safety or easy ability to merge and group your
+  styles is their biggest drawback. Tamagui is fully type safe, lets you control
+  how you merge styles, and optimizes it all nearly perfectly even in the face
+  of complicated logic.
+- **First-class, composable components based UI kit.** Our UI kit doesn't just
   target one platform, uses composable components, and can even adapt based on
   the device.
+- **Well designed and robust.** It's been developed actively for many years,
+  proven in [large apps](https://unsiwap.org), has a large test suite and
+  extensive ecosystem.
 
-The result is that Tamagui is the only library that lets you ship world class
-experiences on all platforms with fully shared code. We're proud to be used by
-companies like [Uniswap](https://uniswap.org) who used Tamagui to unify their
-featureset across platforms and greatly simplify their codebase.
+Tamagui lets you do more with less. We're proud to be used by companies like
+Uniswap to unify their featureset across platforms and greatly simplify their
+codebase.
 
-### Improvements during v1
+### Improvements During Version One
 
 Tamagui improved continuously during version one:
 
@@ -65,7 +73,7 @@ Tamagui improved continuously during version one:
 - The Takeout starter kit, and Bento copy-paste components and patterns.
 - A lot of low level work on performance, documentation, our CLI, and more.
 
-### New in v2
+### New in Version Two
 
 Version two is easy to migrate to with just a few breaking changes. It mostly
 removes deprecated APIs, improves performance, aligns with modern React, React
@@ -78,14 +86,43 @@ The breaking changes outside of deprecations are:
   significant new style features and simplifies internals.
 - Default flex and position styles align with the latest React Native versions,
   but you can change settings to keep the legacy behavior.
-- Button and ListItem lose direct text style props, to gain performance.
-- useTheme no longer takes props, must be changed using a component.
+- Button and ListItem lose direct text style props for better performance.
+- useTheme no longer takes props; use the Theme component instead.
 - Removed web-only `onHoverIn` and `onHoverOut` in favor of standard web events
   (`onMouseEnter` or `onPointerEnter`).
 - Added comprehensive web event handler support including keyboard, pointer,
   drag and drop, clipboard, and scroll events.
-- Move from ThemeableStack to View for most base components used in UI
+- Moved from ThemeableStack to View for most base components in UI
 - Renamed the `animation` prop to `transition` for clarity and consistency
+- Removed `<Theme inverse />` and the `themeInverse` prop on all components
+- Removed the `maxDarkLightNesting` and `cssStyleSeparator` settings
+
+#### Theme Inverse Removal
+
+The `inverse` prop on `<Theme>` and the `themeInverse` prop on components have
+been removed. Supporting inverse themes properly with CSS and SSR required
+complex, bloated code.
+
+If you need inverse theme behavior, you can achieve this by creating an
+"inverse" sub-theme and using `<Theme name="inverse">` instead:
+
+```tsx
+// In your theme config
+const themes = {
+  light: { ... },
+  dark: { ... },
+  light_inverse: { ...darkTheme },
+  dark_inverse: { ...lightTheme },
+}
+
+// Usage
+<Theme name="inverse">
+  <YourContent />
+</Theme>
+```
+
+You can also use the [Theme Builder](/docs/guides/theme-builder#inverse-themes)
+to generate this.
 
 #### CSS Shorthand with Variables
 
@@ -164,12 +201,98 @@ Things deprecated in version one that are now gone:
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
 - Moved all settings on `createTamagui` onto the `settings` object.
 
-#### Animation Drivers
+#### Motion Animation Driver
 
-The Reanimated animation driver now supports `noRerender` mode, matching the
+We've added a new [animation driver](/docs/core/animations) powered by
+[Motion](https://motion.dev), and it's our recommended choice for web. The
+`@tamagui/animations-motion` package brings excellent performance through some
+key architectural decisions.
+
+The Motion driver avoids React re-renders entirely during animations. When
+styles change, instead of triggering a re-render cycle, it directly mutates the
+DOM through Motion's `useAnimate` hook. This is enabled by a rewrite of Tamagui
+internals to allow a new `avoidReRenders` setting for animation drivers, which
+tells Tamagui's core to emit style changes via a callback rather than through
+state updates.
+
+Under the hood, Motion leverages the
+[Web Animations API (WAAPI)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
+which runs animations off the main thread. This means your spring animations run
+at 60fps even when JavaScript is busy. The driver also implements intelligent
+diffing - it tracks the previous animated styles and only sends changed
+properties to Motion, minimizing work on each frame.
+
+```tsx
+import { createAnimations } from '@tamagui/animations-motion'
+
+const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
+  lazy: {
+    type: 'spring',
+    damping: 20,
+    stiffness: 60,
+  },
+})
+```
+
+The result is buttery smooth animations that don't block your UI, making it
+ideal for complex interactive components like sheets, popovers, and page
+transitions on web.
+
+#### Reanimated Driver Improvements
+
+The Reanimated animation driver now supports `avoidReRenders`, matching the
 Motion driver. This means animations run entirely on the UI thread without
-triggering React re-renders, giving you better performance for complex
-animations.
+triggering React re-renders, giving you much better performance for complex
+animations on both web and native.
+
+The Moti driver (`@tamagui/animations-moti`) is now deprecated in favor of the
+Reanimated driver (`@tamagui/animations-reanimated`). This removes a dependency
+and fixes some compatibility issues. If you're using `@tamagui/animations-moti`,
+switch to `@tamagui/animations-reanimated` - the API is the same.
+
+#### Transition Delay
+
+All animation drivers now support delays:
+
+```tsx
+<View transition={['bouncy', { delay: 200 }]} />
+```
+
+This works with CSS, React Native Animated, Reanimated, and Motion drivers.
+
+#### Popover Transform Origin
+
+[Popover](/docs/components/popover) and [Tooltip](/docs/components/tooltip) now
+automatically calculate the correct CSS `transform-origin` based on placement
+and arrow position. This means scale animations naturally "grow" from the anchor
+point where the content connects to the trigger.
+
+```tsx
+<Popover placement="bottom">
+  <Popover.Trigger asChild>
+    <Button>Open</Button>
+  </Popover.Trigger>
+  <Popover.Content
+    transition="quick"
+    enterStyle={{ scale: 0.9, opacity: 0 }}
+    exitStyle={{ scale: 0.9, opacity: 0 }}
+  >
+    {/* Content scales from top center, near the trigger */}
+    <Popover.Arrow />
+    {/* ... */}
+  </Popover.Content>
+</Popover>
+```
+
+The transform origin adjusts automatically based on the final placement - if the
+popover flips from `bottom` to `top`, the origin updates accordingly. This
+creates polished, native-feeling animations without any manual configuration.
 
 #### React Compiler
 
@@ -192,7 +315,7 @@ React Compiler. React 19 includes this runtime natively.
 
 #### Headless and Unstyled Components
 
-During v2 we're expanding headless components. Many components now have three
+We're expanding headless components in v2. Many components now have three
 variants:
 
 - **Styled** - Full Tamagui components with default styles
@@ -208,6 +331,55 @@ your own styling solution.
 This makes Tamagui components usable even if you're not using Tamagui for
 styling. For now it's a subset, but we plan to continue expanding headless
 exports throughout v2.
+
+#### Web-First Input & TextArea
+
+<HeroContainer demoMultiple>
+  <NewInputsDemo />
+</HeroContainer>
+
+```tsx hero template=Inputs
+
+```
+
+The v2 Input takes a web-first approach - you write standard HTML input
+attributes and Tamagui automatically converts them to React Native equivalents
+on native platforms:
+
+```tsx
+// Web-standard API that works everywhere
+<Input type="email" enterKeyHint="send" />
+<Input type="password" />
+<Input type="tel" />
+```
+
+This replaces the React Native-style props like `keyboardType`,
+`secureTextEntry`, and `returnKeyType` with their web equivalents. The old props
+still work but are deprecated. See the [Input docs](/docs/components/inputs) for
+the full migration guide.
+
+#### Web-First Image
+
+The [Image](/docs/components/image) component follows the same web-first
+philosophy as Input. It uses standard HTML `<img>` attributes like `src`, `alt`,
+`loading`, and `decoding` as the primary API, with automatic conversion to React
+Native equivalents on native.
+
+On native, you can choose your image loading adapter - use the built-in React
+Native Image, or integrate with optimized libraries like `expo-image` or
+`react-native-fast-image` for better caching and performance.
+
+#### @tamagui/react-native-web-lite
+
+React Native Web has slowed down development and has various issues in modern JS
+projects. We built `@tamagui/react-native-web-lite` by translating
+`react-native-web` to TypeScript, moving to a modern ESModule setup, and
+enabling tree shaking.
+
+If you're using Tamagui for most styling, you can save a significant amount of
+bundled JS on web by aliasing to this package. It's not perfectly compatible
+with `react-native-web` - it strips out the style system to share Tamagui
+internals - but for Tamagui-first apps, it's a nice optimization.
 
 #### New Components
 
@@ -245,8 +417,14 @@ content on iOS.
 
 Dialog, Popover, and Tooltip now support a `scope` prop that lets you mount a
 single instance at your app's root while placing triggers anywhere in your tree.
-This improves performance in lists or other sensitive areas since only the
-lightweight Trigger renders inline.
+This is a significant performance win - in testing with large apps, we found it
+greatly improved UX by eliminating the overhead of mounting full overlay
+components inline.
+
+Instead of each Tooltip or Popover in a list rendering its own portal, content,
+and animation logic, you mount one instance at the root and scatter lightweight
+triggers throughout your app. The triggers are just simple components that
+communicate with the shared instance via context.
 
 ```tsx
 // _layout.tsx - mount once at root
@@ -262,6 +440,10 @@ lightweight Trigger renders inline.
   <Button icon={Settings} />
 </Tooltip.Trigger>
 ```
+
+This pattern is especially valuable for data-heavy views like tables, lists, or
+dashboards where you might have dozens or hundreds of interactive elements that
+need tooltips or popovers.
 
 ### Goals
 
@@ -280,9 +462,9 @@ honestly, I just wanted to slow down, fix as many issues as possible, and find a
 better balance.
 
 I love Tamagui, it's always been something I do for the love of the game and not
-profit. The company to date has made nearly half a million dollars and
-re-invested all of it entirely to paying our team. We get amazing support, and I
-really appreciate our community.
+profit. The company has made nearly half a million dollars to date and
+re-invested all of it into paying our team. We get amazing support, and I really
+appreciate our community.
 
 We've changed a lot over the last couple years to improve stability:
 
@@ -328,3 +510,16 @@ things we want to, in order to clear the way.
 Our broad goals for the future include better alignment to the web, simpler
 onboarding, and potentially more familiar style APIs for people who aren't
 Tamagui-pilled.
+
+### Thanks
+
+A huge thanks is owed to our amazing team, which has persisted through this
+giant release and throughout the last two years fixing issues.
+
+Special thanks to [Quan Nguyen](https://github.com/anhquan291)
+([@LionelNguyen19](https://x.com/LionelNguyen19)) for extensive work on Takeout
+documentation, Radix v3 color updates, and theme improvements. And to
+[Dave Mkpa-Eke](https://github.com/DaveyEke)
+([@1804davey](https://x.com/1804davey)) for numerous bug fixes across Progress,
+Input, ContextMenu, and other components, as well as the new Select.Indicator
+feature and blog improvements.

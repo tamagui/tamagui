@@ -6,9 +6,6 @@ import type { CreateTamaguiProps, ThemeParsed, Variable } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
 import { sortString } from './sortString'
 
-const darkLight = ['dark', 'light']
-const lightDark = ['light', 'dark']
-
 export function getThemeCSSRules(props: {
   config: CreateTamaguiProps
   themeName: string
@@ -26,18 +23,11 @@ export function getThemeCSSRules(props: {
     process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'false'
   ) {
-    const { config, themeName, theme, names } = props
-
-    // special case for SSR
-    const hasDarkLight =
-      props.hasDarkLight ??
-      (config.themes && ('light' in config.themes || 'dark' in config.themes))
+    const { themeName, theme, names } = props
 
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
-    // themeToVariableToValueMap.set(theme, {})
-    // const varToValMap = themeToVariableToValueMap.get(theme)
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
       let value: any = null
@@ -54,69 +44,9 @@ export function getThemeCSSRules(props: {
       )}:${value};`
     }
 
-    const isDarkBase = themeName === 'dark'
-    const isLightBase = themeName === 'light'
-    const baseSelectors = names.map((name) => `${CNP}${name}`)
-    const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
-
-    // since we dont specify dark/light in classnames we have to do an awkward specificity war
-    // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
-    if (hasDarkLight) {
-      const maxDepth = getSetting('maxDarkLightNesting') ?? 3
-
-      for (const subName of names) {
-        const isDark = isDarkBase || subName.startsWith('dark_')
-        const isLight = !isDark && (isLightBase || subName.startsWith('light_'))
-
-        if (!(isDark || isLight)) {
-          // neither light nor dark subtheme, just generate one selector with :root:root which
-          // will override all :root light/dark selectors generated below
-          selectorsSet.add(`${CNP}${subName}`)
-          continue
-        }
-
-        const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
-        const order = isDark ? darkLight : lightDark
-        const [stronger, weaker] = order
-        const numSelectors = Math.round(maxDepth * 1.5)
-
-        for (let depth = 0; depth < numSelectors; depth++) {
-          const isOdd = depth % 2 === 1
-
-          // wtf is this continue:
-          if (isOdd && depth < 3) {
-            continue
-          }
-
-          const parents = new Array(depth + 1).fill(0).map((_, idx) => {
-            return `${CNP}${idx % 2 === 0 ? stronger : weaker}`
-          })
-
-          let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
-
-          if (isOdd) {
-            const [_first, second, ...rest] = parentSelectors
-            parentSelectors = [second, ...rest, second]
-          }
-
-          const lastParentSelector = parentSelectors[parentSelectors.length - 1]
-          const nextChildSelector =
-            childSelector === lastParentSelector ? '' : childSelector
-
-          // for light/dark/light:
-          const parentSelectorString = parentSelectors.join(' ')
-          selectorsSet.add(`${parentSelectorString} ${nextChildSelector}`)
-          // selectorsSet.add(
-          //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
-          // )
-        }
-      }
-    }
-
-    const selectors = [...selectorsSet].sort(sortString)
+    const selectors = names.map((name) => `${CNP}${name}`).sort(sortString)
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
-    // this isBaseTheme logic could probably be done more efficiently above
     const selectorsString =
       selectors
         .map((x) => {
@@ -167,7 +97,7 @@ export function getThemeCSSRules(props: {
     if (selectionStyles) {
       const rules = selectionStyles(theme as any)
       if (rules) {
-        const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
+        const selectionSelectors = selectors.map((s) => `${s} ::selection`).join(', ')
         const styles = Object.entries(rules)
           .flatMap(([k, v]) =>
             v

@@ -215,12 +215,6 @@ function getThemeClassNameAndColor(
       }
     : undefined
 
-  // const maxInverses = getSetting('maxDarkLightNesting') || 3
-  // const themeClassName =
-  //   themeState.inverses >= maxInverses
-  //     ? themeState.name
-  //     : themeState.name.replace(schemePrefix, '')
-
   const themeClassName = themeState.name.replace(schemePrefix, '')
 
   // Build full hierarchy of theme classes for CSS variable inheritance

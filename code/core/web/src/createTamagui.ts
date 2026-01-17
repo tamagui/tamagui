@@ -166,9 +166,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         }
       }
 
-      const sep = configIn.settings?.cssStyleSeparator || ''
+      const sep = ` `
       function declarationsToRuleSet(decs: string[], selector = '') {
-        return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
+        return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}\n}`
       }
 
       // non-font
