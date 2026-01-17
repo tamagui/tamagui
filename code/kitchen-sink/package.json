@@ -55,6 +55,7 @@
     "@tamagui/get-token": "workspace:*",
     "@tamagui/input": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/sandbox-ui": "workspace:*",
     "@tamagui/sheet": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
