@@ -3,8 +3,6 @@ import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { Theme, XGroup, XStack, YStack } from 'tamagui'
 
 export function ButtonDemo(props) {
-  console.info('hi')
-
   return (
     <YStack p="$3" gap="$3" {...props}>
       <Button>Plain</Button>
