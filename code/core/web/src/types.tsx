@@ -3059,6 +3059,7 @@ export type UseAnimationHook = (props: {
   componentState: TamaguiComponentState
   useStyleEmitter?: UseStyleEmitter
   theme: ThemeParsed
+  themeName: string
   pseudos: WithPseudoProps<ViewStyle> | null
   stateRef: { current: TamaguiComponentStateRef }
   onDidAnimate?: any

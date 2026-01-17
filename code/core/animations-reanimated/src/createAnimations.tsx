@@ -1,5 +1,4 @@
 import { normalizeTransition } from '@tamagui/animation-helpers'
-import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   getSplitStyles,
   hooks,
@@ -11,6 +10,7 @@ import {
   type AnimationDriver,
   type UniversalAnimatedNumber,
 } from '@tamagui/core'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import React, { forwardRef, useMemo, useRef } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
@@ -66,9 +66,6 @@ type TimingConfig = {
 /** Combined animation configuration type */
 export type TransitionConfig = SpringConfig | TimingConfig
 
-/** Per-property animation overrides */
-type PropertyOverrides = Record<string, TransitionConfig | string>
-
 // =============================================================================
 // Utility Functions
 // =============================================================================
@@ -111,62 +108,6 @@ const applyAnimation = (
   }
 
   return animatedValue
-}
-
-/**
- * Estimate spring animation duration based on physics parameters
- * Uses underdamped harmonic oscillator settling time formula
- *
- * Adds 15% buffer to ensure animation visually completes before exit callback
- */
-const estimateSpringDuration = (config: SpringConfig): number => {
-  const stiffness = config.stiffness ?? 100
-  const damping = config.damping ?? 10
-  const mass = config.mass ?? 1
-
-  // Guard against invalid parameters that would cause division by zero or NaN
-  if (mass <= 0 || stiffness <= 0) {
-    return 400 // sensible default
-  }
-
-  // Natural frequency: ω₀ = √(k/m)
-  const omega0 = Math.sqrt(stiffness / mass)
-  // Damping ratio: ζ = c / (2√(km))
-  const zeta = damping / (2 * Math.sqrt(stiffness * mass))
-
-  let duration: number
-  if (zeta < 1 && zeta > 0 && omega0 > 0) {
-    // Underdamped: oscillates, settling time ≈ 4 / (ζω₀)
-    duration = (4 / (zeta * omega0)) * 1000
-  } else if (omega0 > 0) {
-    // Overdamped or critically damped
-    duration = (2 / omega0) * 1000
-  } else {
-    duration = 400 // fallback
-  }
-
-  // Guard against NaN/Infinity from edge cases
-  if (!Number.isFinite(duration)) {
-    return 400
-  }
-
-  // Clamp and add 15% buffer to prevent premature exit callbacks
-  return Math.ceil(Math.min(2000, Math.max(200, duration)) * 1.15)
-}
-
-/**
- * Get total animation duration including delay
- * Adds 50ms buffer for timing animations to ensure completion before callbacks
- */
-const getAnimationDuration = (config: TransitionConfig): number => {
-  const delay = Math.max(0, config.delay ?? 0)
-
-  if (config.type === 'timing') {
-    const duration = Math.max(0, (config as TimingConfig).duration ?? 300)
-    return duration + delay + 50
-  }
-
-  return estimateSpringDuration(config as SpringConfig) + delay
 }
 
 // =============================================================================
@@ -444,25 +385,28 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     // useAnimations - Main animation hook for components
     // =========================================================================
     useAnimations(animationProps) {
-      const { props, presence, style, componentState, useStyleEmitter } = animationProps
+      const { props, presence, style, componentState, useStyleEmitter, themeName } =
+        animationProps
 
-      // Extract animation key
-      const animationKey = Array.isArray(props.transition)
-        ? props.transition[0]
-        : props.transition
+      // Extract animation key from normalized transition
+      // props.transition can be: string | [string, config] | { default: string, ... }
+      const normalized = normalizeTransition(props.transition)
+      const animationKey = normalized.default
 
       // State flags
       const isHydrating = componentState.unmounted === true
       const isMounting = componentState.unmounted === 'should-enter'
       const disableAnimation = isHydrating || !animationKey
 
-      // Theme state for dynamic values
-      const [, themeState] = useThemeWithState({})
-      const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
+      // Theme state for dynamic values - use themeName from props instead of hook
+      const isDark = themeName?.startsWith('dark') || false
 
       // Presence state for exit animations
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+
+      // Track exit animation progress (0 = not started, 1 = complete)
+      const exitProgress = useSharedValue(0)
 
       // =========================================================================
       // avoidRerenders: SharedValues for style updates without re-renders
@@ -533,16 +477,15 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // Build per-property overrides from normalized properties
         const overrides: Record<string, TransitionConfig> = {}
 
-        for (const [key, animationNameOrConfig] of Object.entries(
-          normalized.properties
-        )) {
+        for (const key in normalized.properties) {
+          const animationNameOrConfig = normalized.properties[key]
           if (typeof animationNameOrConfig === 'string') {
             // Property override referencing a named animation: { x: 'quick' }
             overrides[key] =
               animations[animationNameOrConfig as keyof typeof animations] ?? base
           } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
             // Property override with inline config: { x: { type: 'quick', delay: 100 } }
-            const configType = animationNameOrConfig.type
+            const configType = (animationNameOrConfig as any).type
             const baseForProp = configType
               ? (animations[configType as keyof typeof animations] ?? base)
               : base
@@ -642,16 +585,45 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
       })
 
-      // Handle exit animation completion
-      // Use timeout based on calculated animation duration
+      // Store baseConfig in a ref so the exit effect doesn't re-run when config changes
+      const baseConfigRef = useRef(baseConfig)
+      baseConfigRef.current = baseConfig
+
+      // Handle exit animation completion using reanimated's native callback
+      // Animate exitProgress from 0 to 1 during exit, call sendExitComplete on completion
       React.useEffect(() => {
         if (!isExiting || !sendExitComplete) return
 
-        const duration = getAnimationDuration(baseConfig)
-        const timeoutId = setTimeout(sendExitComplete, duration)
+        // Use ref to get current config without adding to deps
+        const config = baseConfigRef.current
 
-        return () => clearTimeout(timeoutId)
-      }, [isExiting, sendExitComplete, baseConfig])
+        // Animate exitProgress to 1, which triggers sendExitComplete on completion
+        // Using .set() for React Compiler compatibility
+        if (config.type === 'timing') {
+          exitProgress.set(
+            withTiming(1, config as WithTimingConfig, (finished) => {
+              'worklet'
+              if (finished) {
+                runOnJS(sendExitComplete)()
+              }
+            })
+          )
+        } else {
+          exitProgress.set(
+            withSpring(1, config as WithSpringConfig, (finished) => {
+              'worklet'
+              if (finished) {
+                runOnJS(sendExitComplete)()
+              }
+            })
+          )
+        }
+
+        return () => {
+          // Cancel the exit animation if component unmounts early
+          cancelAnimation(exitProgress)
+        }
+      }, [isExiting, sendExitComplete])
 
       // Create animated style
       const animatedStyle = useAnimatedStyle(() => {

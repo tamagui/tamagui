@@ -966,6 +966,7 @@ export function createComponent<
         componentState: state,
         styleProps,
         theme,
+        themeName,
         pseudos: pseudos || null,
         staticConfig,
         stateRef,
