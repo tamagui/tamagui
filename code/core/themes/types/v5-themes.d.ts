@@ -204,23 +204,6 @@ type ChildrenColors<T extends Record<string, ChildTheme>, Mode extends 'light' |
     [K in keyof T]: T[K][Mode];
 }[keyof T];
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
-type ComputedColors = {
-    color0pt5: string;
-    color1pt5: string;
-    color2pt5: string;
-    color01: string;
-    color0075: string;
-    color005: string;
-    color0025: string;
-    color002: string;
-    color001: string;
-    background01: string;
-    background0075: string;
-    background005: string;
-    background0025: string;
-    background002: string;
-    background001: string;
-};
 export type CreateV5ThemeOptions<Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes, GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof defaultGrandChildrenThemes> = {
     /** Override the dark base palette (12 colors from darkest to lightest) */
     darkPalette?: string[];
@@ -261,7 +244,23 @@ export type CreateV5ThemeOptions<Children extends Record<string, ChildTheme> = t
  *   childrenThemes: {},
  * })
  */
-export declare function createV5Theme<Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes, GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof defaultGrandChildrenThemes>(options?: CreateV5ThemeOptions<Children, GrandChildren>): Record<"light" | "dark" | "light_accent" | "dark_accent" | ("black" | "white" | keyof Children extends string ? `light_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T ? T extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (string & keyof Children) | (keyof T extends infer T_1 ? T_1 extends keyof T ? T_1 extends string ? `black_${T_1}` | `white_${T_1}` | `${string & keyof Children}_${T_1}` : never : never : never) : never : never}` | `dark_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T_2 ? T_2 extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T_2 extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (string & keyof Children) | (keyof T_2 extends infer T_3 ? T_3 extends keyof T_2 ? T_3 extends string ? `black_${T_3}` | `white_${T_3}` | `${string & keyof Children}_${T_3}` : never : never : never) : never : never}` : never), { [ThemeKey in "color" | "shadowColor" | "borderColor" | "borderColorHover" | "colorHover" | "colorFocus" | "colorPress" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "background" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "colorTransparent" | "borderColorFocus" | "borderColorPress" | "placeholderColor" | "outlineColor" | "accentBackground" | "accentColor" | "background0" | "color0" | "white0" | "black0" | "white1" | "white2" | "white3" | "white4" | "white5" | "white6" | "white7" | "white8" | "white9" | "white10" | "white11" | "white12" | "black1" | "black2" | "black3" | "black4" | "black5" | "black6" | "black7" | "black8" | "black9" | "black10" | "black11" | "black12" | "black" | "white" | "shadow1" | "shadow2" | "shadow3" | "shadow4" | "shadow5" | "shadow6" | "background02" | "background04" | "background06" | "background08" | "color02" | "color04" | "color06" | "color08" | "accent0" | "accent2" | "accent1" | "accent4" | "accent8" | "accent12" | "accent3" | "accent5" | "accent7" | "accent9" | "accent10" | "accent6" | "accent11" | "white02" | "white04" | "white06" | "white08" | "black02" | "black04" | "black06" | "black08" | keyof UnionToIntersection<ChildrenColors<Children, "dark">>]: string; } & ComputedColors>;
+export declare function createV5Theme<Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes, GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof defaultGrandChildrenThemes>(options?: CreateV5ThemeOptions<Children, GrandChildren>): Record<"light" | "dark" | "light_accent" | "dark_accent" | ("black" | "white" | keyof Children extends string ? `light_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T ? T extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (string & keyof Children) | (keyof T extends infer T_1 ? T_1 extends keyof T ? T_1 extends string ? `black_${T_1}` | `white_${T_1}` | `${string & keyof Children}_${T_1}` : never : never : never) : never : never}` | `dark_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T_2 ? T_2 extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T_2 extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (string & keyof Children) | (keyof T_2 extends infer T_3 ? T_3 extends keyof T_2 ? T_3 extends string ? `black_${T_3}` | `white_${T_3}` | `${string & keyof Children}_${T_3}` : never : never : never) : never : never}` : never), { [ThemeKey in "color" | "shadowColor" | "borderColor" | "borderColorHover" | "colorHover" | "colorFocus" | "colorPress" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "background" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "colorTransparent" | "borderColorFocus" | "borderColorPress" | "placeholderColor" | "outlineColor" | "accentBackground" | "accentColor" | "background0" | "color0" | "white0" | "black0" | "white1" | "white2" | "white3" | "white4" | "white5" | "white6" | "white7" | "white8" | "white9" | "white10" | "white11" | "white12" | "black1" | "black2" | "black3" | "black4" | "black5" | "black6" | "black7" | "black8" | "black9" | "black10" | "black11" | "black12" | "black" | "white" | "shadow1" | "shadow2" | "shadow3" | "shadow4" | "shadow5" | "shadow6" | "background02" | "background04" | "background06" | "background08" | "color02" | "color04" | "color06" | "color08" | "accent0" | "accent2" | "accent1" | "accent4" | "accent8" | "accent12" | "accent3" | "accent5" | "accent7" | "accent9" | "accent10" | "accent6" | "accent11" | "white02" | "white04" | "white06" | "white08" | "black02" | "black04" | "black06" | "black08" | keyof UnionToIntersection<ChildrenColors<Children, "dark">>]: string; } & {
+    color0pt5: string;
+    color1pt5: string;
+    color2pt5: string;
+    color01: string;
+    color0075: string;
+    color005: string;
+    color0025: string;
+    color002: string;
+    color001: string;
+    background01: string;
+    background0075: string;
+    background005: string;
+    background0025: string;
+    background002: string;
+    background001: string;
+}>;
 export declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "light_blue_accent" | "light_green_accent" | "light_red_accent" | "light_yellow_accent" | "light_black_accent" | "light_white_accent" | "dark_black" | "dark_white" | "dark_blue_accent" | "dark_green_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_black_accent" | "dark_white_accent" | "light_gray_accent" | "dark_gray_accent" | "light_neutral" | "light_neutral_accent" | "dark_neutral" | "dark_neutral_accent", {
     yellow1: string;
     yellow2: string;
@@ -430,5 +429,21 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     black04: string;
     black06: string;
     black08: string;
-} & ComputedColors>;
+} & {
+    color0pt5: string;
+    color1pt5: string;
+    color2pt5: string;
+    color01: string;
+    color0075: string;
+    color005: string;
+    color0025: string;
+    color002: string;
+    color001: string;
+    background01: string;
+    background0075: string;
+    background005: string;
+    background0025: string;
+    background002: string;
+    background001: string;
+}>;
 //# sourceMappingURL=v5-themes.d.ts.map
