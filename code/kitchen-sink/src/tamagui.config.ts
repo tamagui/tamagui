@@ -82,19 +82,19 @@ export const animationsMoti = createAnimationsMoti({
 export const animationsMotion = createAnimationsMotion({
   '75ms': {
     type: 'tween',
-    duration: 75,
+    duration: 0.075,
   },
   '100ms': {
     type: 'tween',
-    duration: 100,
+    duration: 0.1,
   },
   '200ms': {
     type: 'tween',
-    duration: 200,
+    duration: 0.2,
   },
   '1000ms': {
     type: 'tween',
-    duration: 1000,
+    duration: 1,
   },
   bouncy: {
     type: 'spring',

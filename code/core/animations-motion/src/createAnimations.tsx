@@ -208,12 +208,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         animationOptions = {},
         dontAnimate,
       }: AnimationProps) => {
-        // if (shouldDebug) {
-        //   if (Date.now() - lastAnimateAt.current < minTimeBetweenAnimations) {
-        //     console.warn('TO SOON')
-        //   }
-        // }
-
         try {
           const node = stateRef.current.host
 
