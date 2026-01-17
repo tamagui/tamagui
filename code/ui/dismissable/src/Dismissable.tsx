@@ -93,7 +93,10 @@ const Dismissable = React.forwardRef<
   })
 
   useEscapeKeydown((event) => {
-    const isHighestLayer = index === context.layers.size - 1
+    // Check layers at callback time, not render time, to avoid stale closures
+    const currentLayers = Array.from(context.layers)
+    const currentIndex = node ? currentLayers.indexOf(node) : -1
+    const isHighestLayer = currentIndex === currentLayers.length - 1
     if (!isHighestLayer) return
     onEscapeKeyDown?.(event)
     if (!event.defaultPrevented && onDismiss) {

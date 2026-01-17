@@ -402,6 +402,8 @@ const DialogContentFrame = styled(ThemeableStack, {
         radiused: true,
         elevate: true,
         zIndex: 100_000,
+        // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
+        pointerEvents: 'auto',
       },
     },
   } as const,
