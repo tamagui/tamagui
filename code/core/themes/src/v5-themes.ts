@@ -14,13 +14,10 @@ import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { interpolateColor, opacify } from './opacify'
 
 /** Generate named colors from a palette: ['#fff', ...] -> { name1: '#fff', name2: ... } */
-function paletteToNamedColors<N extends string>(
-  name: N,
-  palette: readonly string[]
-) {
-  return Object.fromEntries(
-    palette.map((color, i) => [`${name}${i + 1}`, color])
-  ) as { [K in `${N}${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`]: string }
+function paletteToNamedColors<N extends string>(name: N, palette: readonly string[]) {
+  return Object.fromEntries(palette.map((color, i) => [`${name}${i + 1}`, color])) as {
+    [K in `${N}${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`]: string
+  }
 }
 
 // Base palettes
@@ -187,7 +184,10 @@ type BaseExtraDark = BaseExtraCommon & typeof darkShadows & { shadowColor: strin
 
 export type CreateV5ThemeOptions<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
-  GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof defaultGrandChildrenThemes,
+  GrandChildren extends Record<
+    string,
+    GrandChildrenThemeDefinition
+  > = typeof defaultGrandChildrenThemes,
 > = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: string[]
@@ -231,8 +231,16 @@ export type CreateV5ThemeOptions<
  */
 export function createV5Theme<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
-  GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof defaultGrandChildrenThemes,
->(options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<Children, GrandChildren>) {
+  GrandChildren extends Record<
+    string,
+    GrandChildrenThemeDefinition
+  > = typeof defaultGrandChildrenThemes,
+>(
+  options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<
+    Children,
+    GrandChildren
+  >
+) {
   const {
     darkPalette: customDarkPalette = darkPalette,
     lightPalette: customLightPalette = lightPalette,
@@ -252,7 +260,11 @@ export function createV5Theme<
     ...whiteColors,
     ...whiteBlack,
   }
-  const lightExtraBase = { ...extraBase, ...lightShadows, shadowColor: lightShadows.shadow1 }
+  const lightExtraBase = {
+    ...extraBase,
+    ...lightShadows,
+    shadowColor: lightShadows.shadow1,
+  }
   const darkExtraBase = { ...extraBase, ...darkShadows, shadowColor: darkShadows.shadow1 }
 
   // Spread all children colors into extra - types flow from Children generic
@@ -347,9 +359,17 @@ export function createV5Theme<
         background002: opacify(bgColor, 0.02),
         background001: opacify(bgColor, 0.01),
       }
-    }) as (props: { theme: Record<string, string>; palette?: string[] }) => ComputedColors,
+    }) as () => ComputedColors,
   })
 }
 
 // Default themes using the createV5Theme function
 export const themes = createV5Theme()
+
+// type santify checks, shouldnt cause any error:
+
+// @ts-expect-error
+themes.dark.whatever
+themes.dark.background0075
+themes.dark.accent0
+themes.dark.background
