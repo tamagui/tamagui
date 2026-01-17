@@ -38,7 +38,7 @@ function SelectComponent({ id }: { id: string }) {
         <Select.Value placeholder="Select a fruit" />
       </Select.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when={true} platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
