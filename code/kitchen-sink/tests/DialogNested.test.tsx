@@ -6,8 +6,7 @@ test.describe('Dialog Nested Stacking', () => {
     await setupPage(page, { name: 'DialogNestedCase', type: 'useCase' })
   })
 
-  // TODO: Skipped - elementFromPoint returns overlay due to pointer-events inheritance, needs investigation
-  test.skip('nested dialog appears above parent dialog (z-index stacking)', async ({ page }) => {
+  test('nested dialog appears above parent dialog (z-index stacking)', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
     // Open parent dialog
@@ -75,8 +74,7 @@ test.describe('Dialog Nested Stacking', () => {
     }
   })
 
-  // TODO: Skipped - overlay intercepting pointer events on nested dialogs, needs investigation
-  test.skip('three levels of nested dialogs stack correctly', async ({ page }) => {
+  test('three levels of nested dialogs stack correctly', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
     // Open level 1 dialog
