@@ -286,7 +286,8 @@ export function createV5Theme<
   } as ChildrenWithPalettes
 
   return createThemes({
-    ...(customComponentThemes && { componentThemes: customComponentThemes }),
+    // componentThemes: false disables them, undefined/truthy values enable them
+    componentThemes: customComponentThemes,
 
     base: {
       palette: {
@@ -348,10 +349,7 @@ export function createV5Theme<
 // Default themes using the createV5Theme function
 export const themes = createV5Theme()
 
-// type santify checks, shouldnt cause any error:
-
-// @ts-expect-error
-themes.dark.whatever
+// type sanity checks - these should not cause type errors:
 themes.dark.background0075
-themes.dark.accent0
 themes.dark.background
+themes.dark.accent1

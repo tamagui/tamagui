@@ -41,7 +41,7 @@ export type GetThemeProps = {
     palette?: string[];
     template?: Template;
 };
-export type CreateThemesProps<Accent extends BaseThemeDefinition<Extra> | undefined = undefined, GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined, Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme, ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition, Templates extends BuildTemplates = typeof defaultTemplates, GetThemeReturn extends Record<string, string | number> = Record<string, string>> = {
+export type CreateThemesProps<Accent extends BaseThemeDefinition<Extra> | undefined = undefined, GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined, Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme, ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition | false = SimpleThemesDefinition, Templates extends BuildTemplates = typeof defaultTemplates, GetThemeReturn extends Record<string, string | number> = Record<string, string>> = {
     base: BaseThemeDefinition<Extra>;
     accent?: Accent;
     childrenThemes?: ChildrenThemes;
@@ -50,7 +50,7 @@ export type CreateThemesProps<Accent extends BaseThemeDefinition<Extra> | undefi
     componentThemes?: ComponentThemes;
     getTheme?: (props: GetThemeProps) => GetThemeReturn;
 };
-export declare function createThemes<Extra extends ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition, GrandChildrenThemes extends SimpleThemesDefinition | undefined, Accent extends BaseThemeDefinition<Extra> | undefined, Templates extends BuildTemplates, GetThemeReturn extends Record<string, string | number>>(props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes, Templates, GetThemeReturn> & {
+export declare function createThemes<Extra extends ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition | false, GrandChildrenThemes extends SimpleThemesDefinition | undefined, Accent extends BaseThemeDefinition<Extra> | undefined, Templates extends BuildTemplates, GetThemeReturn extends Record<string, string | number>>(props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes, Templates, GetThemeReturn> & {
     getTheme: (props: GetThemeProps) => GetThemeReturn;
 }): ReturnType<typeof createSimpleThemeBuilder<Extra, typeof defaultTemplates, SimplePaletteDefinitions, {
     [K in keyof SubThemes]: {
@@ -58,7 +58,7 @@ export declare function createThemes<Extra extends ExtraThemeValuesByScheme, Sub
         palette?: string;
     };
 }, GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>, Accent extends undefined ? false : true, ComponentThemes, GetThemeReturn>>['themes'];
-export declare function createThemes<Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition, GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined, Accent extends BaseThemeDefinition<Extra> | undefined = undefined, Templates extends BuildTemplates = typeof defaultTemplates>(props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes, Templates> & {
+export declare function createThemes<Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition | false = SimpleThemesDefinition, GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined, Accent extends BaseThemeDefinition<Extra> | undefined = undefined, Templates extends BuildTemplates = typeof defaultTemplates>(props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes, Templates> & {
     getTheme?: undefined;
 }): ReturnType<typeof createSimpleThemeBuilder<Extra, typeof defaultTemplates, SimplePaletteDefinitions, {
     [K in keyof SubThemes]: {

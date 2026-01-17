@@ -50,7 +50,7 @@ export type CreateThemesProps<
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
-  ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false = SimpleThemesDefinition,
   Templates extends BuildTemplates = typeof defaultTemplates,
   GetThemeReturn extends Record<string, string | number> = Record<string, string>,
 > = {
@@ -67,7 +67,7 @@ export type CreateThemesProps<
 export function createThemes<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
-  ComponentThemes extends SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined,
   Accent extends BaseThemeDefinition<Extra> | undefined,
   Templates extends BuildTemplates,
@@ -90,7 +90,9 @@ export function createThemes<
     typeof defaultTemplates,
     SimplePaletteDefinitions,
     { [K in keyof SubThemes]: { template: string; palette?: string } },
-    GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
+    GrandChildrenThemes extends undefined
+      ? undefined
+      : Record<keyof GrandChildrenThemes, any>,
     Accent extends undefined ? false : true,
     ComponentThemes,
     GetThemeReturn
@@ -101,7 +103,7 @@ export function createThemes<
 export function createThemes<
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
-  ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false = SimpleThemesDefinition,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
   Templates extends BuildTemplates = typeof defaultTemplates,
@@ -122,7 +124,9 @@ export function createThemes<
     typeof defaultTemplates,
     SimplePaletteDefinitions,
     { [K in keyof SubThemes]: { template: string; palette?: string } },
-    GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
+    GrandChildrenThemes extends undefined
+      ? undefined
+      : Record<keyof GrandChildrenThemes, any>,
     Accent extends undefined ? false : true,
     ComponentThemes,
     Record<string, string>
@@ -133,7 +137,7 @@ export function createThemes<
 export function createThemes<
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
-  ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false = SimpleThemesDefinition,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
   Templates extends BuildTemplates = typeof defaultTemplates,
@@ -163,7 +167,9 @@ export function createThemes<
     typeof defaultTemplates,
     SimplePaletteDefinitions,
     { [K in keyof SubThemes]: { template: string; palette?: string } },
-    GrandChildrenThemes extends undefined ? undefined : Record<keyof GrandChildrenThemes, any>,
+    GrandChildrenThemes extends undefined
+      ? undefined
+      : Record<keyof GrandChildrenThemes, any>,
     Accent extends undefined ? false : true,
     ComponentThemes,
     GetThemeReturn

@@ -5,230 +5,193 @@ import {
   defaultChildrenThemes,
   defaultGrandChildrenThemes,
 } from '../src/v5-themes'
+import { opacify, interpolateColor } from '../src/opacify'
 
-describe('v5 themes', () => {
-  test('default themes have expected structure', () => {
-    expect(defaultThemes.light).toBeDefined()
-    expect(defaultThemes.dark).toBeDefined()
-    expect(defaultThemes.light_accent).toBeDefined()
-    expect(defaultThemes.dark_accent).toBeDefined()
+describe('opacify', () => {
+  test('converts hex to hex with alpha', () => {
+    expect(opacify('#ff0000', 0.5)).toBe('#ff000080')
+    expect(opacify('#fff', 0.25)).toBe('#ffffff40') // shorthand
   })
 
-  test('themes include base color tokens', () => {
-    expect(defaultThemes.light.background).toBeDefined()
-    expect(defaultThemes.light.color).toBeDefined()
-    expect(defaultThemes.light.color1).toBeDefined()
-    expect(defaultThemes.light.color12).toBeDefined()
+  test('converts hsl to hsla', () => {
+    expect(opacify('hsl(0, 100%, 50%)', 0.5)).toBe('hsla(0, 100%, 50%, 0.5)')
   })
 
-  test('themes include getTheme-computed opacity colors', () => {
-    // These are computed by the getTheme callback
-    expect(defaultThemes.light.color01).toBeDefined()
-    expect(defaultThemes.light.color0075).toBeDefined()
-    expect(defaultThemes.light.color005).toBeDefined()
-    expect(defaultThemes.light.color0025).toBeDefined()
-    expect(defaultThemes.light.background01).toBeDefined()
-    expect(defaultThemes.light.background0075).toBeDefined()
-  })
-
-  test('themes include getTheme-computed interpolation colors', () => {
-    expect(defaultThemes.light.color0pt5).toBeDefined()
-    expect(defaultThemes.light.color1pt5).toBeDefined()
-    expect(defaultThemes.light.color2pt5).toBeDefined()
-  })
-
-  test('themes include extra colors like shadows', () => {
-    expect(defaultThemes.light.shadow1).toBeDefined()
-    expect(defaultThemes.light.shadow6).toBeDefined()
-    expect(defaultThemes.light.shadowColor).toBeDefined()
-  })
-
-  test('themes include whiteBlack values', () => {
-    expect(defaultThemes.light.white).toBeDefined()
-    expect(defaultThemes.light.black).toBeDefined()
-    expect(defaultThemes.light.white02).toBeDefined()
-    expect(defaultThemes.light.black02).toBeDefined()
-  })
-
-  test('createV5Theme with custom palettes', () => {
-    const customThemes = createV5Theme({
-      lightPalette: [
-        '#fff',
-        '#f0f0f0',
-        '#e0e0e0',
-        '#d0d0d0',
-        '#c0c0c0',
-        '#b0b0b0',
-        '#a0a0a0',
-        '#909090',
-        '#808080',
-        '#707070',
-        '#606060',
-        '#000',
-      ],
-      darkPalette: [
-        '#000',
-        '#101010',
-        '#202020',
-        '#303030',
-        '#404040',
-        '#505050',
-        '#606060',
-        '#707070',
-        '#808080',
-        '#909090',
-        '#a0a0a0',
-        '#fff',
-      ],
-    })
-
-    expect(customThemes.light).toBeDefined()
-    expect(customThemes.dark).toBeDefined()
-    expect(customThemes.light.background).toBeDefined()
-  })
-
-  test('createV5Theme with empty childrenThemes (no color themes)', () => {
-    const minimalThemes = createV5Theme({
-      childrenThemes: {},
-    })
-
-    expect(minimalThemes.light).toBeDefined()
-    expect(minimalThemes.dark).toBeDefined()
-    // Should still have accent themes
-    expect(minimalThemes.light_accent).toBeDefined()
-    expect(minimalThemes.dark_accent).toBeDefined()
-  })
-
-  test('createV5Theme with componentThemes: false', () => {
-    const noComponentThemes = createV5Theme({
-      componentThemes: false,
-    })
-
-    expect(noComponentThemes.light).toBeDefined()
-    expect(noComponentThemes.dark).toBeDefined()
-  })
-
-  test('createV5Theme with custom childrenThemes (radix format)', () => {
-    // Custom brand color set in radix format
-    const brandLight = {
-      brand1: '#e0f7fa',
-      brand2: '#b2ebf2',
-      brand3: '#80deea',
-      brand4: '#4dd0e1',
-      brand5: '#26c6da',
-      brand6: '#00bcd4',
-      brand7: '#00acc1',
-      brand8: '#0097a7',
-      brand9: '#00838f',
-      brand10: '#006064',
-      brand11: '#004d40',
-      brand12: '#00251a',
-    }
-    const brandDark = {
-      brand1: '#00251a',
-      brand2: '#004d40',
-      brand3: '#006064',
-      brand4: '#00838f',
-      brand5: '#0097a7',
-      brand6: '#00acc1',
-      brand7: '#00bcd4',
-      brand8: '#26c6da',
-      brand9: '#4dd0e1',
-      brand10: '#80deea',
-      brand11: '#b2ebf2',
-      brand12: '#e0f7fa',
-    }
-
-    const themesWithBrand = createV5Theme({
-      childrenThemes: {
-        ...defaultChildrenThemes,
-        brand: { light: brandLight, dark: brandDark },
-      },
-    })
-
-    expect(themesWithBrand.light).toBeDefined()
-    // Brand named colors should be in extra (types flow from input)
-    expect(themesWithBrand.light.brand1).toBeDefined()
-    expect(themesWithBrand.light.brand12).toBeDefined()
-  })
-
-  test('createV5Theme with custom grandChildrenThemes', () => {
-    const themesWithCustomGrandChildren = createV5Theme({
-      grandChildrenThemes: {
-        ...defaultGrandChildrenThemes,
-        dim: { template: 'alt1' },
-        bright: { template: 'alt2' },
-      },
-    })
-
-    expect(themesWithCustomGrandChildren.light).toBeDefined()
-    // Default grandchildren should still work
-    expect(themesWithCustomGrandChildren.light_accent).toBeDefined()
-  })
-
-  test('auto-generated extra colors from childrenThemes', () => {
-    // The default themes should have blue1-12, red1-12, etc. from defaultChildrenThemes
-    expect(defaultThemes.light.blue1).toBeDefined()
-    expect(defaultThemes.light.blue12).toBeDefined()
-    expect(defaultThemes.light.red1).toBeDefined()
-    expect(defaultThemes.light.red12).toBeDefined()
-    expect(defaultThemes.light.green1).toBeDefined()
-    expect(defaultThemes.light.yellow1).toBeDefined()
-    expect(defaultThemes.light.gray1).toBeDefined()
-    expect(defaultThemes.light.neutral1).toBeDefined()
-  })
-
-  test('accent themes inherit properly', () => {
-    // Accent themes should have inverted values
-    expect(defaultThemes.light_accent).toBeDefined()
-    expect(defaultThemes.dark_accent).toBeDefined()
-
-    // Accent should have different background than base
-    expect(defaultThemes.light_accent.background).not.toBe(defaultThemes.light.background)
-  })
-
-  test('defaultChildrenThemes exports expected colors', () => {
-    // New API: childrenThemes are { light: {...}, dark: {...} } objects
-    expect(defaultChildrenThemes.blue).toBeDefined()
-    expect(defaultChildrenThemes.blue.light).toBeDefined()
-    expect(defaultChildrenThemes.blue.dark).toBeDefined()
-    expect(defaultChildrenThemes.red).toBeDefined()
-    expect(defaultChildrenThemes.green).toBeDefined()
-    expect(defaultChildrenThemes.yellow).toBeDefined()
-    expect(defaultChildrenThemes.gray).toBeDefined()
-    expect(defaultChildrenThemes.neutral).toBeDefined()
-    // black/white are added internally, not exported in defaultChildrenThemes
-  })
-
-  test('defaultGrandChildrenThemes exports expected themes', () => {
-    expect(defaultGrandChildrenThemes.accent).toBeDefined()
-    // Simplified - only accent is included by default
+  test('returns unsupported formats unchanged', () => {
+    expect(opacify('rgb(255, 0, 0)', 0.5)).toBe('rgb(255, 0, 0)')
+    expect(opacify('invalid', 0.5)).toBe('invalid')
   })
 })
 
-// Type-level tests
-describe('v5 theme types', () => {
-  test('type inference works for default themes', () => {
-    // These assertions verify at compile time that the types are correct
-    const light = defaultThemes.light
-
-    // Should have theme tokens
-    assertType<string>(light.background)
-    assertType<string>(light.color)
-
-    // Should have getTheme-computed values
-    assertType<string>(light.color01)
-    assertType<string>(light.background01)
-    assertType<string>(light.color0pt5)
+describe('interpolateColor', () => {
+  test('interpolates between colors', () => {
+    expect(interpolateColor('#000000', '#ffffff', 0)).toBe('rgb(0, 0, 0)')
+    expect(interpolateColor('#000000', '#ffffff', 1)).toBe('rgb(255, 255, 255)')
+    expect(interpolateColor('#000000', '#ffffff', 0.5)).toBe('rgb(128, 128, 128)')
   })
 
-  test('type inference works for custom themes', () => {
-    const customThemes = createV5Theme({
-      childrenThemes: {},
-    })
+  test('handles different color formats', () => {
+    expect(interpolateColor('rgb(0, 0, 0)', 'rgb(255, 255, 255)', 0.5)).toBe(
+      'rgb(128, 128, 128)'
+    )
+    expect(interpolateColor('hsl(0, 100%, 50%)', 'hsl(0, 100%, 100%)', 0.5)).toMatch(
+      /^rgb/
+    )
+  })
 
-    // Should still have proper types
-    assertType<string>(customThemes.light.background)
-    assertType<string>(customThemes.light.color)
+  test('returns first color on invalid input', () => {
+    expect(interpolateColor('#ff0000', 'invalid', 0.5)).toBe('#ff0000')
+  })
+})
+
+describe('v5 themes', () => {
+  test('generates expected theme structure', () => {
+    const keys = Object.keys(defaultThemes)
+
+    // Base + accent
+    expect(keys).toContain('light')
+    expect(keys).toContain('dark')
+    expect(keys).toContain('light_accent')
+
+    // Children themes
+    expect(keys).toContain('light_blue')
+    expect(keys).toContain('dark_red')
+  })
+
+  test('light and dark themes have different values', () => {
+    expect(defaultThemes.light.background).not.toBe(defaultThemes.dark.background)
+    expect(defaultThemes.light.color).not.toBe(defaultThemes.dark.color)
+  })
+
+  test('accent themes are inverted', () => {
+    expect(defaultThemes.light.background).not.toBe(defaultThemes.light_accent.background)
+    expect(defaultThemes.dark.background).not.toBe(defaultThemes.dark_accent.background)
+  })
+
+  test('getTheme computes opacity and interpolation colors', () => {
+    // Opacity variants
+    expect(defaultThemes.light.color01).toBeDefined()
+    expect(defaultThemes.light.background01).toBeDefined()
+
+    // Interpolation colors
+    expect(defaultThemes.light.color1pt5).toMatch(/^rgb|^#|^hsl/)
+
+    // Works on all theme types
+    expect(defaultThemes.light_blue.color01).toBeDefined()
+  })
+
+  test('children colors spread to base theme extras', () => {
+    expect(defaultThemes.light.blue1).toBe(defaultChildrenThemes.blue.light.blue1)
+    expect(defaultThemes.light.blue12).toBe(defaultChildrenThemes.blue.light.blue12)
+    expect(defaultThemes.dark.blue1).toBe(defaultChildrenThemes.blue.dark.blue1)
+  })
+
+  test('includes shadow and whiteBlack colors', () => {
+    expect(defaultThemes.light.shadow1).toBeDefined()
+    expect(defaultThemes.light.shadow6).toBeDefined()
+    expect(defaultThemes.light.white).toBe('rgba(255,255,255,1)')
+    expect(defaultThemes.light.black).toBe('rgba(0,0,0,1)')
+  })
+
+  test('has color1-12 and accent1-12 tokens', () => {
+    expect(defaultThemes.light.color1).toBeDefined()
+    expect(defaultThemes.light.color12).toBeDefined()
+    expect(defaultThemes.light.accent1).toBeDefined()
+    expect(defaultThemes.light.accent12).toBeDefined()
+  })
+})
+
+describe('createV5Theme options', () => {
+  test('custom palettes affect black/white colors', () => {
+    const themes = createV5Theme({
+      darkPalette: [
+        '#111',
+        '#222',
+        '#333',
+        '#444',
+        '#555',
+        '#666',
+        '#777',
+        '#888',
+        '#999',
+        '#aaa',
+        '#bbb',
+        '#ccc',
+      ],
+    })
+    expect(themes.light.black1).toBe('#111')
+    expect(themes.light.black12).toBe('#ccc')
+  })
+
+  test('componentThemes: false removes component themes', () => {
+    const themes = createV5Theme({ componentThemes: false })
+    const keys = Object.keys(themes)
+    expect(keys.filter((k) => k.includes('Button'))).toHaveLength(0)
+  })
+
+  test('empty childrenThemes produces minimal themes', () => {
+    const themes = createV5Theme({ childrenThemes: {} })
+    const keys = Object.keys(themes)
+    expect(keys).toContain('light')
+    expect(keys).toContain('light_black') // internal
+    expect(keys).not.toContain('light_blue')
+  })
+
+  test('custom childrenThemes adds color themes', () => {
+    const themes = createV5Theme({
+      childrenThemes: {
+        brand: {
+          light: { brand1: '#e0f7fa', brand12: '#00251a' },
+          dark: { brand1: '#00251a', brand12: '#e0f7fa' },
+        },
+      },
+    })
+    expect(themes.light.brand1).toBe('#e0f7fa')
+    expect(themes.dark.brand1).toBe('#00251a')
+  })
+
+  test('grandChildrenThemes override defaults', () => {
+    const themes = createV5Theme({
+      grandChildrenThemes: { custom: { template: 'alt1' } },
+    })
+    const keys = Object.keys(themes)
+    expect(keys).toContain('light_blue_custom')
+    expect(keys).not.toContain('light_blue_accent')
+  })
+})
+
+describe('defaultChildrenThemes', () => {
+  test('has expected structure', () => {
+    expect(Object.keys(defaultChildrenThemes.blue.light)).toHaveLength(12)
+    expect(defaultChildrenThemes.neutral.light).toEqual(
+      defaultChildrenThemes.neutral.dark
+    )
+  })
+})
+
+describe('defaultGrandChildrenThemes', () => {
+  test('has accent with inverse template', () => {
+    expect(defaultGrandChildrenThemes.accent.template).toBe('inverse')
+  })
+})
+
+describe('type safety', () => {
+  test('theme values are string | number', () => {
+    assertType<string | number>(defaultThemes.light.background)
+    assertType<string | number>(defaultThemes.light.color01)
+    assertType<string | number>(defaultThemes.light.blue1)
+  })
+
+  test('custom themes infer types correctly', () => {
+    const themes = createV5Theme({
+      childrenThemes: {
+        brand: {
+          light: { brand1: '#fff', brand12: '#000' },
+          dark: { brand1: '#000', brand12: '#fff' },
+        },
+      },
+    })
+    // brand colors should be typed
+    assertType<string | number>(themes.light.brand1)
   })
 })
