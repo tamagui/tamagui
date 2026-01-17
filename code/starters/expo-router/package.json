@@ -2,7 +2,7 @@
   "name": "expo-router",
   "main": "expo-router/entry",
   "version": "1.0.0",
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "bun@1.2.22",
   "private": true,
   "scripts": {
     "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest",

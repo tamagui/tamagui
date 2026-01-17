@@ -85,7 +85,7 @@
     "tamagui": "workspace:*",
     "vitest": "^4.0.4"
   },
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "bun@1.2.22",
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@expo/fingerprint": "^0.15.3",

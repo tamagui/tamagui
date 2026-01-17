@@ -1,7 +1,7 @@
 {
   "name": "simple-web-starter",
   "private": true,
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "bun@1.2.22",
   "scripts": {
     "web": "bun run dev",
     "dev:vite": "NODE_ENV=development vite --host --clearScreen false",
