@@ -11,7 +11,7 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: 'yarn dev',
+        command: 'bun run dev',
         port: 3456,
         reuseExistingServer: true,
         timeout: 120000,

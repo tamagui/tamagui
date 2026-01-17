@@ -33,7 +33,7 @@ describe('Platform-specific file optimization', () => {
   describe('BaseOnly.tsx - file without platform-specific versions', () => {
     it('should optimize for both web and native by default', () => {
       const result = execSync(
-        'yarn tamagui build ./packages/app/test-fixtures --include BaseOnly.tsx',
+        'bun tamagui build ./packages/app/test-fixtures --include BaseOnly.tsx',
         {
           cwd: ROOT_DIR,
           encoding: 'utf-8',
@@ -84,7 +84,7 @@ describe('Platform-specific file optimization', () => {
 
   describe('WithWeb.tsx + WithWeb.web.tsx', () => {
     it('should optimize .web.tsx for web and base file for native only', () => {
-      execSync('yarn tamagui build ./packages/app/test-fixtures --include "WithWeb*"', {
+      execSync('bun tamagui build ./packages/app/test-fixtures --include "WithWeb*"', {
         cwd: ROOT_DIR,
         encoding: 'utf-8',
         stdio: 'pipe',
@@ -119,7 +119,7 @@ describe('Platform-specific file optimization', () => {
 
   describe('WithNative.tsx + WithNative.native.tsx', () => {
     it('should optimize base file for web only and .native.tsx for native', () => {
-      execSync('yarn tamagui build ./packages/app/test-fixtures --include "WithNative*"', {
+      execSync('bun tamagui build ./packages/app/test-fixtures --include "WithNative*"', {
         cwd: ROOT_DIR,
         encoding: 'utf-8',
         stdio: 'pipe',
@@ -156,7 +156,7 @@ describe('Platform-specific file optimization', () => {
     it('should leave base file untouched and optimize platform-specific files', () => {
       const originalBase = readFileSync(join(FIXTURES_DIR, 'WithBoth.tsx'), 'utf-8')
 
-      execSync('yarn tamagui build ./packages/app/test-fixtures --include "WithBoth*"', {
+      execSync('bun tamagui build ./packages/app/test-fixtures --include "WithBoth*"', {
         cwd: ROOT_DIR,
         encoding: 'utf-8',
         stdio: 'pipe',
@@ -193,7 +193,7 @@ describe('Platform-specific file optimization', () => {
   describe('WebOnly.web.tsx - web-only file', () => {
     it('should optimize for web only', () => {
       const result = execSync(
-        'yarn tamagui build ./packages/app/test-fixtures --include "WebOnly*"',
+        'bun tamagui build ./packages/app/test-fixtures --include "WebOnly*"',
         {
           cwd: ROOT_DIR,
           encoding: 'utf-8',
@@ -222,7 +222,7 @@ describe('Platform-specific file optimization', () => {
   describe('NativeOnly.native.tsx - native-only file', () => {
     it('should optimize for native only', () => {
       const result = execSync(
-        'yarn tamagui build ./packages/app/test-fixtures --include "NativeOnly*"',
+        'bun tamagui build ./packages/app/test-fixtures --include "NativeOnly*"',
         {
           cwd: ROOT_DIR,
           encoding: 'utf-8',

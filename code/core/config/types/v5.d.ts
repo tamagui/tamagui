@@ -40,7 +40,6 @@ export declare const settings: {
     allowedStyleValues: "somewhat-strict-web";
     addThemeClassName: "html";
     onlyAllowShorthands: true;
-    maxDarkLightNesting: number;
     styleCompat: "react-native";
 };
 export declare const defaultConfig: {
@@ -551,7 +550,6 @@ export declare const defaultConfig: {
         allowedStyleValues: "somewhat-strict-web";
         addThemeClassName: "html";
         onlyAllowShorthands: true;
-        maxDarkLightNesting: number;
         styleCompat: "react-native";
     };
 };
