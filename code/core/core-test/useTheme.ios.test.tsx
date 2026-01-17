@@ -40,9 +40,7 @@ describe('useTheme', () => {
     `)
   })
 
-  // TODO: This test verifies de-opt behavior when nested theme changes scheme
-  // Currently returns dynamic color object - may need investigation
-  test.skip(`nested fast scheme change de-opts`, () => {
+  test(`nested fast scheme change de-opts`, () => {
     const tree = render(
       <TamaguiProvider defaultTheme="light" config={config}>
         <Theme name="dark">
