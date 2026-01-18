@@ -134,7 +134,7 @@ const QueueCardFrame = ({
         <Paragraph size="$8">{teamName}</Paragraph>
         <Paragraph size="$4">Studio Access</Paragraph>
 
-        <Paragraph theme="alt2" size="$3">
+        <Paragraph color="$color9" size="$3">
           In queue for access {estimatedDate}
         </Paragraph>
       </YStack>
@@ -160,7 +160,7 @@ const QueueCardFrame = ({
         <Paragraph my="$-3" size="$12" fontWeight="900">
           {place}
         </Paragraph>
-        <Paragraph ml="$3" theme="alt2">
+        <Paragraph ml="$3" color="$color9">
           in the {tierName ?? 'non-sponsor'} tier
         </Paragraph>
 

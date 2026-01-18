@@ -175,7 +175,7 @@ export default function DocsLayout() {
                           $group-card-hover={{ x: '$0' }}
                           transition="quicker"
                         >
-                          <Paragraph select="none" theme="alt1" size="$5">
+                          <Paragraph select="none" color="$color10" size="$5">
                             Previous
                           </Paragraph>
                           <Paragraph select="none" size="$3" color="$gray10">
@@ -210,7 +210,7 @@ export default function DocsLayout() {
                           $group-card-hover={{ x: '$0' }}
                           transition="quicker"
                         >
-                          <Paragraph select="none" theme="alt1" size="$5">
+                          <Paragraph select="none" color="$color10" size="$5">
                             Next
                           </Paragraph>
                           <Paragraph select="none" size="$3" color="$gray10">

@@ -3,7 +3,7 @@ import { H1, YStack } from 'tamagui'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
 import { isSafari } from './helpers'
 
-export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 0.73, ...props }) => (
+export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
     select="none"
     color="transparent"
@@ -12,6 +12,10 @@ export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 0.73, ...props
     lineHeight={lineHeight}
     whiteSpace="nowrap"
     minW={900}
+    $sm={{
+      scale: 0.7,
+      m: -75,
+    }}
     text="center"
     {...props}
   >
@@ -38,19 +42,21 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <TAKEOUT className="text-3d" zi={1000} color="$color5" />
+        <ThemeTintAlt offset={-2}>
+          <TAKEOUT className="text-3d" zi={1000} color="$color8" />
+        </ThemeTintAlt>
       </YStack> */}
 
       <YStack
         mt={0}
         z={0}
-        className="mix-blend"
+        // className="mix-blend"
         // style={{
         //   clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         // }}
       >
         <ThemeTintAlt>
-          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
+          <TAKEOUT className="font-outlined" zi={1000} color="transparent" />
         </ThemeTintAlt>
 
         {!disableMotion && !isSafari() && (
@@ -67,7 +73,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
             </ThemeTint>
 
             {/* alt color slices */}
-            <ThemeTintAlt>
+            {/* <ThemeTintAlt>
               <TAKEOUT
                 color="$color7"
                 className="clip-slice mix-blend"
@@ -75,10 +81,10 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 opacity={1}
                 z={1002}
               />
-            </ThemeTintAlt>
+            </ThemeTintAlt> */}
 
             {/* secondary slice layer */}
-            <ThemeTintAlt offset={-2}>
+            {/* <ThemeTintAlt offset={-2}>
               <TAKEOUT
                 color="$color7"
                 className="clip-slice-2 mix-blend"
@@ -86,7 +92,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 opacity={1}
                 z={1001}
               />
-            </ThemeTintAlt>
+            </ThemeTintAlt> */}
           </>
         )}
       </YStack>

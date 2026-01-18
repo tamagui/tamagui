@@ -3,7 +3,6 @@ import { YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Footer } from '~/features/site/Footer'
-import { PageThemeCarousel } from '../../features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 
@@ -37,7 +36,7 @@ export default function TakeoutPageNew() {
         }}
       />
 
-      <PageThemeCarousel />
+      {/* <PageThemeCarousel /> */}
 
       {/* Glassmorphism background layers */}
       <ThemeTintAlt>

@@ -134,9 +134,9 @@ export default function ResponsiveDemo() {
           <YStack flex={1} flexBasis="auto" gap="$4">
             <XStack>
               <XStack items="center" gap="$4">
-                <Paragraph theme="alt2">4 guests</Paragraph>
-                <Paragraph theme="alt2">&middot;</Paragraph>
-                <Paragraph theme="alt2">Entire house</Paragraph>
+                <Paragraph color="$color9">4 guests</Paragraph>
+                <Paragraph color="$color9">&middot;</Paragraph>
+                <Paragraph color="$color9">Entire house</Paragraph>
               </XStack>
               <Spacer flex={1} />
               <XStack items="center" gap="$4">
@@ -145,14 +145,14 @@ export default function ResponsiveDemo() {
               </XStack>
             </XStack>
 
-            <Paragraph theme="alt1" size="$4">
+            <Paragraph color="$color10" size="$4">
               A lovely, private and very clean cottage with all amenities for a
               comfortable and peaceful stay. We are a 20 minute walk from the Hawaii
               Tropical Botanical Garden and well situated for touring to Akaka Falls,
               Volcano National Park, and many other destinations.
             </Paragraph>
 
-            <Paragraph $medium={{ display: 'none' }} theme="alt1" size="$4">
+            <Paragraph $medium={{ display: 'none' }} color="$color10" size="$4">
               A lovely, private and very clean cottage with all amenities for a
               comfortable and peaceful stay. We are a 20 minute walk from the Hawaii
               Tropical Botanical Garden and well situated for touring to Akaka Falls,

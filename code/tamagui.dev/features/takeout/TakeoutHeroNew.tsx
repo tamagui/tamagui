@@ -1,12 +1,11 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, Copy } from '@tamagui/lucide-icons'
-import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Suspense, lazy } from 'react'
 import { Button, Paragraph, XStack, YStack, styled } from 'tamagui'
 
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Link } from '~/components/Link'
-import { PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
+import { PurchaseButton } from '~/features/site/purchase/helpers'
 import { useClipboard } from '~/hooks/useClipboard'
 import { TakeoutLogo } from './TakeoutLogo'
 
@@ -65,10 +64,6 @@ export function TakeoutHeroNew({
   onBuyPress?: () => void
   isProUser?: boolean
 }) {
-  const enable3d = useClientValue(
-    () => !isSafariMobile && !window.location.search?.includes('disable-3d')
-  )
-
   return (
     <YStack items="center" gap="$8" pt="$10" pb="$8" px="$4" position="relative">
       {/* Buy button - same position as original takeout.tsx */}
@@ -84,19 +79,20 @@ export function TakeoutHeroNew({
       <YStack
         position="absolute"
         pointerEvents="none"
-        t={200}
-        r={0}
+        t={50}
+        r={100}
+        bg="red"
+        width={300}
+        height={300}
         $md={{ r: -150 }}
         $sm={{ display: 'none' }}
-        z={-1}
+        z={100}
       >
-        {enable3d && (
-          <Suspense fallback={null}>
-            <ErrorBoundary noMessage>
-              <TakeoutBox3D />
-            </ErrorBoundary>
-          </Suspense>
-        )}
+        <Suspense fallback={null}>
+          <ErrorBoundary noMessage>
+            <TakeoutBox3D />
+          </ErrorBoundary>
+        </Suspense>
       </YStack>
 
       <YStack gap="$6" items="center" maxW={800} width="100%">

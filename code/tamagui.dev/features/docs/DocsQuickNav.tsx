@@ -293,7 +293,7 @@ export function DocsQuickNav() {
             fontFamily="$mono"
             size="$5"
             mb="$2"
-            theme="alt1"
+            color="$color10"
             id="site-quick-nav-heading"
           >
             Contents

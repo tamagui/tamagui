@@ -40,7 +40,7 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
                 justify="center"
                 height="$3"
                 width="$3"
-                theme="alt1"
+                color="$color10"
                 bg="$color6"
                 rounded="$true"
               >

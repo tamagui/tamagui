@@ -53,7 +53,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
 
         <H2
           opacity={0.5}
-          theme="alt1"
+          color="$color10"
           size="$7"
           fontWeight="500"
           fontFamily="$body"
@@ -68,7 +68,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Paragraph size="$3" theme="alt1" whiteSpace="nowrap">
+            <Paragraph size="$3" color="$color10" whiteSpace="nowrap">
               {authors?.[frontmatter.by || '']?.name}
             </Paragraph>
           </Link>
@@ -79,7 +79,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             opacity={0.4}
             render="time"
             size="$3"
-            theme="alt1"
+            color="$color10"
             whiteSpace="nowrap"
           >
             {Intl.DateTimeFormat('en-US', {
@@ -92,7 +92,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           <Separator vertical mx="$2" />
 
           <YStack items="center" display="none" $gtSm={{ display: 'flex' }}>
-            <Paragraph opacity={0.4} size="$3" theme="alt1">
+            <Paragraph opacity={0.4} size="$3" color="$color10">
               {frontmatter.readingTime?.text}
             </Paragraph>
 

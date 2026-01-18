@@ -91,7 +91,7 @@ export function ComponentItem({
             {name}
           </H4>
 
-          <H5 opacity={0} fontFamily="$mono" theme="alt1" size="$1" letterSpacing={1}>
+          <H5 opacity={0} fontFamily="$mono" color="$color10" size="$1" letterSpacing={1}>
             {numberOfComponents} components
           </H5>
 
