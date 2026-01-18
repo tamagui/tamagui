@@ -4,7 +4,7 @@ import { TamaguiLogo, ThemeTintAlt } from '@tamagui/logo'
 import { Link } from '~/components/Link'
 import { HighlightText } from './HighlightText'
 
-// One logo - based on takeout3-new reference
+// One logo - based on takeout2 reference
 const OneLogo = ({ size = 32 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 590 590" fill="none">
     <defs>

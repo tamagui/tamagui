@@ -1004,7 +1004,7 @@ const PlanTab = ({
                 ? {
                     label: 'Takeout 2',
                     onPress: () =>
-                      handleTakeoutAccess('https://github.com/tamagui/takeout3'),
+                      handleTakeoutAccess('https://github.com/tamagui/takeout2'),
                   }
                 : null
             }
