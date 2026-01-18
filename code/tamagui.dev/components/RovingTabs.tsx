@@ -96,7 +96,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
               <AnimatePresence initial={false}>
                 {activeAt && (
                   <TabIndicator
-                    bg="$color10"
+                    bg="$color9"
                     width={activeAt.width}
                     height={activeAt.height}
                     x={activeAt.x}
@@ -170,7 +170,7 @@ export function Tab({
         <SizableText
           y={-0.5}
           size="$2"
-          color={active ? '$color11' : '$color9'}
+          color={active ? '$color11' : '$color10'}
           opacity={active ? 1 : 0.5}
         >
           {pkgManager}
@@ -186,7 +186,7 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
       position="absolute"
       t={0}
       l={0}
-      bg="$color5"
+      bg="$color6"
       opacity={0.7}
       rounded="$4"
       transition="quickest"
