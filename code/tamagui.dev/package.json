@@ -14,9 +14,9 @@
     "lint:fix": "biome check --write",
     "serve": "one serve --port 8081",
     "build:prod": "one build",
-    "prod": "yarn build:prod && yarn serve",
+    "prod": "bun run build:prod && bun run serve",
     "serve:railway": "one serve --host 0.0.0.0",
-    "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve",
+    "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 bun run build:prod && bun run serve",
     "test": "vitest run",
     "test:watch": "vitest"
   },

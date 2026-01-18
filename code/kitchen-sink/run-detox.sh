@@ -6,7 +6,7 @@ CONFIG="${1:-ios.sim.debug}"
 # Check if Metro is running on port 8081
 if ! curl -s http://localhost:8081/status > /dev/null 2>&1; then
   echo "Metro not running, starting it..."
-  yarn expo start --dev-client --offline &
+  bun expo start --dev-client --offline &
   METRO_PID=$!
 
   # Wait for Metro to be ready

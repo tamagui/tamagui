@@ -1,4 +1,4 @@
 #!/bin/bash
 
-yarn next:build
-yarn test:prod
+bun run next:build
+bun run test:prod

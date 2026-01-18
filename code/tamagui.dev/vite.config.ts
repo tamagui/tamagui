@@ -24,7 +24,7 @@ if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   console.info('')
   console.info('Building tamagui packages (dist not found)...')
   try {
-    execSync('yarn build:js', {
+    execSync('bun run build:js', {
       cwd: pathResolve(import.meta.dirname, '../..'),
       stdio: 'inherit',
     })

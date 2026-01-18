@@ -13,7 +13,7 @@ const baseline = Date.now() - start
 console.info('baseline', baseline)
 
 test('performance of types', { retry: 1, timeout: 5 * 60 * 1000 }, async () => {
-  const out = execSync(`yarn typecheck --extendedDiagnostics || exit 0`, {
+  const out = execSync(`bun run typecheck --extendedDiagnostics || exit 0`, {
     cwd: join(__dirname, '..', '..'),
   }).toString()
   const [_, checkTime] = out.match(/Check time:\s+([^\s]+)/) ?? []

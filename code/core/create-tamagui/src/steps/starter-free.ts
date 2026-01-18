@@ -2,14 +2,12 @@ import chalk from 'chalk'
 
 import type { ExtraSteps } from './types'
 
-const packageManager = 'yarn'
-const useYarn = packageManager === 'yarn'
+const packageManager = 'bun'
 
-const runCommand = (scriptName: string) =>
-  `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
+const runCommand = (scriptName: string) => `${packageManager} run ${scriptName}`
 
 const main: ExtraSteps = async ({ isFullClone, projectName }) => {
-  console.info(`Note: you need yarn for this repo.`)
+  console.info(`Note: you need bun for this repo.`)
 
   if (isFullClone) {
     console.info(`${chalk.green.bold(

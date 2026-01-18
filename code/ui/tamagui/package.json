@@ -31,7 +31,7 @@
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
-    "check": "yarn check-circular-deps",
+    "check": "bun run check-circular-deps",
     "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "exports": {

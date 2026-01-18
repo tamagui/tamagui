@@ -81,7 +81,7 @@ describe('Turbopack + Tamagui CLI optimization', () => {
 
   it('prod build works after CLI optimization', () => {
     execSync(`npx tamagui build --target web ./src`, { cwd: ROOT, stdio: 'pipe' })
-    const result = execSync(`yarn next-build`, { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
+    const result = execSync(`bun run next-build`, { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
     expect(result).toContain('Generating static pages')
   }, 120000)
 

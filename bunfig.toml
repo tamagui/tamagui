@@ -1,0 +1,3 @@
+[install]
+# Use hoisted linker strategy like yarn
+linker = "hoisted"
