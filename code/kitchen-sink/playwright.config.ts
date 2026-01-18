@@ -7,6 +7,14 @@ const port = process.env.PORT || '9000'
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER
 const drivers = singleDriver ? [singleDriver] : [...ANIMATION_DRIVERS]
 
+/**
+ * Test organization:
+ * - *.animated.test.ts - Animation-dependent tests, run with ALL animation drivers
+ * - *.test.ts (non-animated) - Style/functional tests, run ONCE with default driver
+ *
+ * This significantly speeds up the test suite since most tests don't need
+ * to run 4x across all animation drivers.
+ */
 export default defineConfig({
   // Look for test files in the "tests" directory, relative to this configuration file.
   testDir: 'tests',
@@ -19,15 +27,20 @@ export default defineConfig({
     viewport: { width: 1920, height: 1080 },
   },
 
-  // Define a project per animation driver for parallel execution
-  projects: drivers.map((driver) => ({
-    name: driver,
-    use: {
-      // Pass driver to tests via env-like mechanism
+  projects: [
+    // Non-animated tests run once with default driver (native)
+    {
+      name: 'default',
+      testIgnore: '**/*.animated.test.{ts,tsx}',
+      metadata: { animationDriver: 'native' },
     },
-    // Set env var for this project's tests
-    metadata: { animationDriver: driver },
-  })),
+    // Animated tests run with all animation drivers
+    ...drivers.map((driver) => ({
+      name: `animated-${driver}`,
+      testMatch: '**/*.animated.test.{ts,tsx}',
+      metadata: { animationDriver: driver },
+    })),
+  ],
 
   // Run your local dev server before starting the tests.
   webServer: {

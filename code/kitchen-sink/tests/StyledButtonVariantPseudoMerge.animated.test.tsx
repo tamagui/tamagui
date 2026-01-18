@@ -4,10 +4,10 @@ import { setupPage } from './test-utils'
 import { getPressStyle } from './utils'
 
 // These tests only run with CSS driver
-const driver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER || 'native'
-test.skip(driver !== 'css', `skipping for ${driver} driver`)
+test.beforeEach(async ({ page }, testInfo) => {
+  const driver = (testInfo.project?.metadata as any)?.animationDriver
+  test.skip(driver !== 'css', `skipping for ${driver} driver`)
 
-test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StyledButtonVariantPseudoMerge', type: 'useCase' })
 })
 
