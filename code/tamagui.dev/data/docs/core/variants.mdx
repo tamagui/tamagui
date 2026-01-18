@@ -97,7 +97,7 @@ to a less clear separation of styled components and regular ones.
 #### `true` or `false`
 
 The special keys `true` and `false` will map to a boolean. So the `centered`
-prop will be typed to accept true or false, and when true it will apply it's
+prop will be typed to accept true or false, and when true it will apply its
 styles.
 
 ```tsx
@@ -262,7 +262,7 @@ Which you can use:
 
 The Spread variant function will receive two arguments: the first is the value
 given to the property (`"$lg"`), and the second is an object with
-`{ theme, tokens, props, font }`.
+`{ theme, tokens, props, font, context }`.
 
 <PropsTable
   data={[
@@ -295,6 +295,11 @@ given to the property (`"$lg"`), and the second is an object with
       name: 'fonts',
       type: 'string',
       description: `All your fonts passed to createTamagui.`,
+    },
+    {
+      name: 'context',
+      type: 'StyledContext',
+      description: `The styledContext values from the parent component, useful for compound components.`,
     },
   ]}
 />

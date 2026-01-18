@@ -198,12 +198,13 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
 <PropsTable
   data={[
     {
-      name: 'animation',
+      name: 'transition',
       required: false,
       type: 'string',
       description: (
         <span>
-          Apply an animation as defined in your createTamagui configuration.
+          Apply a transition animation as defined in your createTamagui configuration. See the{' '}
+          <a href="/docs/core/animations">Animations documentation</a> for more details on configuring animation drivers.
         </span>
       ),
     },
@@ -214,7 +215,8 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
       type: 'string[]',
       description: (
         <span>
-          A list of properties to animate. Note that flat transforms can only be controlled via `transform`.
+          A list of properties to animate. Note that flat transforms can only be controlled via `transform`. Learn more in the{' '}
+          <a href="/docs/core/animations#granular-animations">Granular animations</a> section.
         </span>
       ),
     },
@@ -427,3 +429,45 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
     },
 
 ]} />
+
+## Event Handlers
+
+Tamagui supports all React Native events on all platforms. On web, we also support all standard DOM event handlers:
+
+### Cross-Platform Events
+- `onPress`, `onLongPress`, `onPressIn`, `onPressOut` - Touch/press events that work on both native and web
+
+### Web-Only Events
+The following events are available on web and automatically ignored on native:
+
+**Mouse Events**
+- `onClick`, `onDoubleClick`, `onContextMenu`
+- `onMouseEnter`, `onMouseLeave`, `onMouseMove`, `onMouseOver`, `onMouseOut`
+- `onMouseDown`, `onMouseUp`
+- `onWheel`
+
+**Keyboard Events**
+- `onKeyDown`, `onKeyUp`, `onKeyPress`
+
+**Pointer Events** - Modern events that work across mouse, touch, and pen:
+- `onPointerDown`, `onPointerUp`, `onPointerMove`
+- `onPointerEnter`, `onPointerLeave`, `onPointerCancel`
+
+**Drag and Drop**
+- `onDrag`, `onDragStart`, `onDragEnd`
+- `onDragEnter`, `onDragLeave`, `onDragOver`
+- `onDrop`
+
+**Input Events**
+- `onChange`, `onInput`, `onBeforeInput`
+
+**Scroll Events**
+- `onScroll`
+
+**Clipboard Events**
+- `onCopy`, `onCut`, `onPaste`
+
+**Focus Events**
+- `onFocus`, `onBlur`
+
+All event handlers receive the standard React synthetic event as their argument.

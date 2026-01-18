@@ -373,7 +373,7 @@ export const manageSubscriptionStatusChange = async (
 
     // Send one consolidated purchase email
     if (includesTakeoutStarter || includesBento) {
-      const productNames = []
+      const productNames: string[] = []
       if (includesTakeoutStarter) productNames.push('Takeout')
       if (includesBento) productNames.push('Bento')
 

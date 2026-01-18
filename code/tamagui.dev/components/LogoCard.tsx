@@ -2,7 +2,6 @@ import { ThemeTintAlt } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { Avatar, Card, H5, Paragraph, View, XStack, YStack } from 'tamagui'
-import { Link } from './Link'
 
 export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...props }) {
   const [isHovered, setHovered] = useState(false)
@@ -10,18 +9,18 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
   return (
     <ThemeTintAlt offset={colorOffset}>
       <Card
-        tag="a"
-        animation="quickest"
+        render="a"
+        transition="quickest"
         flex={1}
         width="$19"
         height="$11"
         y={0}
         hoverStyle={{ y: -2, bg: '$backgroundHover' }}
         pressStyle={{ y: 2, bg: '$color2' }}
-        onHoverIn={() => setHovered(true)}
-        onHoverOut={() => setHovered(false)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        {...(props as any)}
         href={link}
-        {...props}
       >
         <Card.Header>
           <XStack justify="space-between">
@@ -40,7 +39,6 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
                 justify="center"
                 height="$3"
                 width="$3"
-                theme="alt1"
                 bg="$color6"
                 rounded="$true"
               >
@@ -55,7 +53,7 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
           </XStack>
         </Card.Header>
 
-        <Card.Footer animation="quicker" x={isHovered ? 5 : 0}>
+        <Card.Footer transition="quicker" x={isHovered ? 5 : 0}>
           <ChevronRight size="$1" position="absolute" b="$4" r="$4" color="$color11" />
         </Card.Footer>
       </Card>

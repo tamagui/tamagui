@@ -26,20 +26,20 @@ export const Components = () => {
               Active
             </Button>
           </AccentTheme>
-          <Button size="$3" theme="alt1" {...demoProps.borderRadiusProps}>
+          <Button size="$3" {...demoProps.borderRadiusProps}>
             Subtle
           </Button>
         </XStack>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
-        <XStack {...demoProps.gapPropsLg} flex={1} flexWrap="wrap">
+        <XStack {...demoProps.gapPropsLg} flex={1} flexBasis="auto" flexWrap="wrap">
           <SelectDemoContents size="$3" />
         </XStack>
       </XStack>
 
       <XStack gap="$4" flexWrap="wrap">
-        <YStack flex={1} gap="$2">
+        <YStack flex={1} flexBasis="auto" gap="$2">
           <CheckboxWithLabel defaultChecked size="$4" />
 
           <RadioGroup defaultValue="1" name="form">

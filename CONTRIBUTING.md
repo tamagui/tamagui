@@ -48,7 +48,6 @@ Is a bit easier but runs on One, it should work with Expo Go.
 If you are ok to build the native apps, then:
 
 ```bash
-yarn profile react-18
 yarn kitchen-sink
 ```
 

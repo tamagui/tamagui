@@ -3,17 +3,16 @@
  */
 export declare const skipProps: {
     untilMeasured: number;
-    animation: number;
+    transition: number;
     space: number;
     animateOnly: number;
     disableClassName: number;
     debug: number;
     componentName: number;
     disableOptimization: number;
-    tag: number;
+    render: number;
     style: number;
     group: number;
-    themeInverse: number;
     animatePresence: number;
 };
 //# sourceMappingURL=skipProps.d.ts.map

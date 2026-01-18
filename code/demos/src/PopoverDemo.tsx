@@ -69,13 +69,13 @@ export function Demo({
 
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
-          <Sheet animation="medium" modal dismissOnSnapToBottom>
+          <Sheet transition="medium" modal dismissOnSnapToBottom>
             <Sheet.Frame p="$4">
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
               bg="$shadowColor"
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
@@ -90,8 +90,8 @@ export function Demo({
         height={200}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
-        elevate
-        animation={[
+        boxShadow="0px 4px 8px rgba(0,0,0,0.1), 0px 12px 32px rgba(0,0,0,0.08)"
+        transition={[
           'quick',
           {
             opacity: {
@@ -102,25 +102,23 @@ export function Demo({
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
-        <YStack gap="$3">
-          <XStack gap="$3">
-            <Label size="$3" htmlFor={Name}>
-              Name
-            </Label>
-            <Input flex={1} size="$3" id={Name} />
-          </XStack>
+        <XStack gap="$3" mb="$3">
+          <Label size="$3" htmlFor={Name}>
+            Name
+          </Label>
+          <Input flex={1} size="$3" id={Name} />
+        </XStack>
 
-          <Popover.Close asChild>
-            <Button
-              size="$3"
-              onPress={() => {
-                /* Custom code goes here, does not interfere with popover closure */
-              }}
-            >
-              Submit
-            </Button>
-          </Popover.Close>
-        </YStack>
+        <Popover.Close asChild>
+          <Button
+            size="$3"
+            onPress={() => {
+              /* Custom code goes here, does not interfere with popover closure */
+            }}
+          >
+            Submit
+          </Button>
+        </Popover.Close>
       </Popover.Content>
     </Popover>
   )

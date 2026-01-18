@@ -1,9 +1,9 @@
-import { YStack, Button } from '@my/ui'
+import { View } from '@tamagui/core'
 
-export function WithBoth() {
+export function Both() {
   return (
-    <YStack flex={1} gap="$4">
-      <Button>Base File Should Not Be Modified</Button>
-    </YStack>
+    <View flex={1} gap="$6" bg="$green5">
+      <>Root</>
+    </View>
   )
 }

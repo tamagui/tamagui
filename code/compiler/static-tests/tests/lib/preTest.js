@@ -20,6 +20,9 @@ const alias = {
   'react/jsx-runtime': path.resolve(
     require.resolve('react/jsx-runtime').replace('.web.js', '.js')
   ),
+  'react/compiler-runtime': path.resolve(
+    require.resolve('react/compiler-runtime').replace('.web.js', '.js')
+  ),
   react: path.resolve(require.resolve('react').replace('.web.js', '.js')),
   'react-dom/client': path.resolve(
     require.resolve('react-dom/client').replace('.web.js', '.js')
@@ -74,6 +77,9 @@ async function extractStaticWebpackApp() {
                 loader: 'tsx',
                 target: 'es2021',
                 keepNames: true,
+                // Prevent esbuild-loader from trying to parse tsconfig files in node_modules
+                // (expo-modules-core's tsconfig extends expo-module-scripts which isn't installed)
+                tsconfigRaw: {},
               },
             },
             {

@@ -17,15 +17,7 @@ import {
   validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
-import {
-  extractValueFromDynamic,
-  getDynamicVal,
-  getOppositeScheme,
-  isColorStyleKey,
-} from './getDynamicVal'
-
 import { getConfig, getFont, getSetting } from '../config'
-import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
@@ -57,6 +49,12 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
+import {
+  extractValueFromDynamic,
+  getDynamicVal,
+  getOppositeScheme,
+  isColorStyleKey,
+} from './getDynamicVal'
 import { getGroupPropParts } from './getGroupPropParts'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { isActivePlatform } from './isActivePlatform'
@@ -313,12 +311,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      // otherwise things just keep nesting - careful don't leave these around
-      // they cause big performance dips in Chrome, only use them when debug prop set
-      // console.groupEnd()
-    }
-
     // normalize shorthands up front
     if (!disableExpandShorthands) {
       if (keyInit in shorthands) {
@@ -387,14 +379,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // TODO deprecate dataSet be sure we map on native from data-
-    if (keyInit === 'dataSet') {
-      for (const keyInit in valInit) {
-        viewProps[`data-${hyphenate(keyInit)}`] = valInit[keyInit]
-      }
-      continue
-    }
-
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (!noExpand) {
         /**
@@ -424,86 +408,8 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
 
-        if (keyInit === 'id' || keyInit === 'nativeID') {
-          // nativeId now deprecated for RN
+        if (keyInit === 'id') {
           viewProps.id = valInit
-          continue
-        }
-
-        let didUseKeyInit = false
-
-        if (isReactNative) {
-          // pass along to react-native-web
-          if (keyInit in accessibilityDirectMap || keyInit.startsWith('accessibility')) {
-            viewProps[keyInit] = valInit
-            continue
-          }
-        } else {
-          didUseKeyInit = true
-
-          if (keyInit in accessibilityDirectMap) {
-            viewProps[accessibilityDirectMap[keyInit]] = valInit
-            continue
-          }
-          // TODO: remove this in the future when react native a11y API is removed
-          switch (keyInit) {
-            case 'accessibilityRole': {
-              if (valInit === 'none') {
-                viewProps.role = 'presentation'
-              } else {
-                viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
-              }
-              continue
-            }
-            case 'accessibilityLabelledBy':
-            case 'accessibilityFlowTo':
-            case 'accessibilityControls':
-            case 'accessibilityDescribedBy': {
-              viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
-                processIDRefList(valInit)
-              continue
-            }
-            case 'accessibilityKeyShortcuts': {
-              if (Array.isArray(valInit)) {
-                viewProps['aria-keyshortcuts'] = valInit.join(' ')
-              }
-              continue
-            }
-            case 'accessibilityLiveRegion': {
-              viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
-              continue
-            }
-            case 'accessibilityReadOnly': {
-              viewProps['aria-readonly'] = valInit
-              // Enhance with native semantics
-              if (
-                elementType === 'input' ||
-                elementType === 'select' ||
-                elementType === 'textarea'
-              ) {
-                viewProps.readOnly = true
-              }
-              continue
-            }
-            case 'accessibilityRequired': {
-              viewProps['aria-required'] = valInit
-              // Enhance with native semantics
-              if (
-                elementType === 'input' ||
-                elementType === 'select' ||
-                elementType === 'textarea'
-              ) {
-                viewProps.required = valInit
-              }
-              continue
-            }
-            default: {
-              didUseKeyInit = false
-            }
-          }
-        }
-
-        if (didUseKeyInit) {
           continue
         }
       }
@@ -818,10 +724,10 @@ export const getSplitStyles: StyleSplitter = (
 
         // for some reason 'space' in val upsetting next ssr during prod build
         // technically i guess this also will not apply if 0 space which makes sense?
-        const hasSpace = val['space']
         const mediaKeyShort = key.slice(isMedia == 'theme' ? 7 : 1)
 
         hasMedia ||= true
+        const hasSpace = val['space']
 
         if (hasSpace || !shouldDoClasses || styleProps.willBeAnimated) {
           if (!hasMedia || typeof hasMedia === 'boolean') {
@@ -854,29 +760,6 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldDoClasses) {
           const mediaStyle = getSubStyle(styleState, key, val, false)
-
-          if (hasSpace) {
-            delete mediaStyle['space']
-            // TODO group/theme/platform + space support (or just make it official not supported in favor of gap)
-            if (mediaState[mediaKeyShort]) {
-              const importance = getMediaImportanceIfMoreImportant(
-                mediaKeyShort,
-                'space',
-                styleState,
-                true
-              )
-              if (importance) {
-                space = val['space']
-                styleState.usedKeys['space'] = importance
-                if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                  log(
-                    `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
-                  )
-                }
-              }
-            }
-          }
-
           const mediaStyles = getCSSStylesAtomic(mediaStyle)
 
           for (const style of mediaStyles) {
@@ -1104,7 +987,6 @@ export const getSplitStyles: StyleSplitter = (
 
           for (const subKey in mediaStyle) {
             if (subKey === 'space') {
-              space = valInit.space
               continue
             }
             if (subKey[0] === '$') {
@@ -1237,22 +1119,22 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const [key, value, identifier] = atomicStyle
-          const isAnimatedAndAnimateOnly =
+          const isAnimatedAndTransitionOnly =
             styleProps.isAnimated &&
             styleProps.noClass &&
             props.animateOnly?.includes(key)
 
           // or not animated but you have animateOnly
           // (moves it to style={}, nice to avoid generating lots of classnames)
-          const nonAnimatedAnimateOnly =
-            !isAnimatedAndAnimateOnly &&
+          const nonAnimatedTransitionOnly =
+            !isAnimatedAndTransitionOnly &&
             !styleProps.isAnimated &&
             props.animateOnly?.includes(key)
 
-          if (isAnimatedAndAnimateOnly) {
+          if (isAnimatedAndTransitionOnly) {
             retainedStyles ||= {}
             retainedStyles[key] = styleState.style[key]
-          } else if (nonAnimatedAnimateOnly) {
+          } else if (nonAnimatedTransitionOnly) {
             retainedStyles ||= {}
             retainedStyles[key] = value
             shouldRetain = true
@@ -1272,55 +1154,6 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
           styleState.style = retainedStyles || {}
-        }
-      }
-    }
-
-    if (isReactNative) {
-      if (viewProps.tabIndex === 0) {
-        viewProps.accessible ??= true
-      }
-    } else {
-      if (viewProps.tabIndex == null) {
-        const isFocusable = viewProps.focusable ?? viewProps.accessible
-
-        if (viewProps.focusable) {
-          delete viewProps.focusable
-        }
-
-        const role = viewProps.role
-        if (isFocusable === false) {
-          viewProps.tabIndex = '-1'
-        }
-        if (
-          // These native elements are focusable by default
-          elementType === 'a' ||
-          elementType === 'button' ||
-          elementType === 'input' ||
-          elementType === 'select' ||
-          elementType === 'textarea'
-        ) {
-          if (isFocusable === false || props.accessibilityDisabled === true) {
-            viewProps.tabIndex = '-1'
-          }
-        } else if (
-          // These roles are made focusable by default
-          role === 'button' ||
-          role === 'checkbox' ||
-          role === 'link' ||
-          role === 'radio' ||
-          // @ts-expect-error (consistent with RNW)
-          role === 'textbox' ||
-          role === 'switch'
-        ) {
-          if (isFocusable !== false) {
-            viewProps.tabIndex = '0'
-          }
-        }
-        // Everything else must explicitly set the prop
-        if (isFocusable) {
-          viewProps.tabIndex = '0'
-          delete viewProps.focusable
         }
       }
     }
@@ -1382,7 +1215,6 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const result: GetStyleResult = {
-    space,
     hasMedia,
     fontFamily: styleState.fontFamily,
     viewProps,
@@ -1594,14 +1426,47 @@ export const getSubStyle = (
   }
 
   if (!avoidMergeTransform) {
-    if (Array.isArray(styleOut.transform)) {
-      const parentTransform = styleState.style?.transform
-      if (parentTransform) {
-        styleOut.transform = [...parentTransform, ...styleOut.transform]
+    const parentTransform = styleState.style?.transform
+    const flatTransforms = styleState.flatTransforms
+    const styleOutTransform = styleOut.transform
+
+    if (Array.isArray(styleOutTransform) && styleOutTransform.length) {
+      // Inline conflict check - faster than building lookup object for small arrays
+      const len = styleOutTransform.length
+
+      if (Array.isArray(parentTransform)) {
+        const merged: any[] = []
+        outer: for (let i = 0; i < parentTransform.length; i++) {
+          const pt = parentTransform[i]
+          for (const pk in pt) {
+            for (let j = 0; j < len; j++) {
+              for (const sk in styleOutTransform[j]) {
+                if (pk === sk) continue outer
+                break
+              }
+            }
+            merged.push(pt)
+            break
+          }
+        }
+        for (let i = 0; i < len; i++) merged.push(styleOutTransform[i])
+        styleOut.transform = merged
       }
-    }
-    if (styleState.flatTransforms) {
-      mergeFlatTransforms(styleOut, styleState.flatTransforms)
+
+      if (flatTransforms) {
+        outer: for (const fk in flatTransforms) {
+          const ck = fk === 'x' ? 'translateX' : fk === 'y' ? 'translateY' : fk
+          for (let j = 0; j < len; j++) {
+            for (const sk in styleOutTransform[j]) {
+              if (ck === sk) continue outer
+              break
+            }
+          }
+          mergeTransform(styleOut, fk, flatTransforms[fk])
+        }
+      }
+    } else if (flatTransforms) {
+      mergeFlatTransforms(styleOut, flatTransforms)
     }
   }
 
@@ -1647,10 +1512,6 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
   }
 }
 
-function processIDRefList(idRefList: string | Array<string>): string {
-  return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
-}
-
 const defaultColor = process.env.TAMAGUI_DEFAULT_COLOR || 'rgba(0,0,0,0)'
 const animatableDefaults = {
   ...Object.fromEntries(
@@ -1658,16 +1519,18 @@ const animatableDefaults = {
   ),
   opacity: 1,
   scale: 1,
+  scaleX: 1,
+  scaleY: 1,
   rotate: '0deg',
-  rotateY: '0deg',
   rotateX: '0deg',
+  rotateY: '0deg',
+  rotateZ: '0deg',
+  skewX: '0deg',
+  skewY: '0deg',
   x: 0,
   y: 0,
   borderRadius: 0,
 }
-
-const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
-const hyphenate = (str: string) => str.replace(/[A-Z]/g, lowercaseHyphenate)
 
 const mergeTransform = (obj: TextStyle, key: string, val: any, backwards = false) => {
   if (typeof obj.transform === 'string') {
@@ -1682,15 +1545,6 @@ const mergeTransform = (obj: TextStyle, key: string, val: any, backwards = false
 const mapTransformKeys = {
   x: 'translateX',
   y: 'translateY',
-}
-
-const accessibilityRoleToWebRole = {
-  adjustable: 'slider',
-  header: 'heading',
-  image: 'img',
-  link: 'link',
-  none: 'presentation',
-  summary: 'region',
 }
 
 function passDownProp(

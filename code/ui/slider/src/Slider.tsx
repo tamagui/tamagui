@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb } from '@tamagui/constants'
+import { isClient, isWeb, isIos } from '@tamagui/constants'
 import type {
   GestureReponderEvent,
   GetProps,
@@ -13,10 +13,10 @@ import {
   getTokens,
   getVariableValue,
   styled,
+  useConfiguration,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { withStaticProperties } from '@tamagui/helpers'
-import { clamp, composeEventHandlers } from '@tamagui/helpers'
+import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -110,45 +110,8 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
       })
     }
 
-    if (isClient) {
-      useOnDebouncedWindowResize(measure)
-
-      // intersection change
-      React.useEffect(() => {
-        const node = sliderRef.current as any as HTMLDivElement
-        if (!node) return
-
-        let measureTm
-        const debouncedMeasure = () => {
-          clearTimeout(measureTm)
-          measureTm = setTimeout(() => {
-            measure()
-          }, 200)
-        }
-
-        const io = new IntersectionObserver(
-          (entries) => {
-            debouncedMeasure()
-            if (entries?.[0].isIntersecting) {
-              activeSliderMeasureListeners.add(debouncedMeasure)
-            } else {
-              activeSliderMeasureListeners.delete(debouncedMeasure)
-            }
-          },
-          {
-            root: null, // Use the viewport as the container.
-            rootMargin: '0px',
-            threshold: [0, 0.5, 1.0],
-          }
-        )
-
-        io.observe(node)
-
-        return () => {
-          activeSliderMeasureListeners.delete(debouncedMeasure)
-          io.disconnect()
-        }
-      }, [])
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      useSliderMeasure(sliderRef, measure)
     }
 
     return (
@@ -209,6 +172,46 @@ function useOnDebouncedWindowResize(callback: Function, amt = 200) {
   }, [])
 }
 
+function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () => void) {
+  useOnDebouncedWindowResize(measure)
+
+  React.useEffect(() => {
+    const node = sliderRef.current as any as HTMLDivElement
+    if (!node) return
+
+    let measureTm
+    const debouncedMeasure = () => {
+      clearTimeout(measureTm)
+      measureTm = setTimeout(() => {
+        measure()
+      }, 200)
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        debouncedMeasure()
+        if (entries?.[0].isIntersecting) {
+          activeSliderMeasureListeners.add(debouncedMeasure)
+        } else {
+          activeSliderMeasureListeners.delete(debouncedMeasure)
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: [0, 0.5, 1.0],
+      }
+    )
+
+    io.observe(node)
+
+    return () => {
+      activeSliderMeasureListeners.delete(debouncedMeasure)
+      io.disconnect()
+    }
+  }, [])
+}
+
 /* -------------------------------------------------------------------------------------------------
  * SliderVertical
  * -----------------------------------------------------------------------------------------------*/
@@ -227,6 +230,10 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
     const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
     const setState = useCreateShallowSetState(setState_)
     const sliderRef = React.useRef<View>(null)
+    const configuration = useConfiguration()
+    // these insets are insets passed from TamaguiProvider by useSafeAreaInsets()
+    const insets =
+      isIos && configuration.insets ? configuration.insets : { top: 0, bottom: 0 }
 
     function getValueFromPointer(pointerPosition: number) {
       const input: [number, number] = [0, state.size]
@@ -239,13 +246,13 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
       sliderRef.current?.measure((_x, _y, _width, height, _pageX, pageY) => {
         setState({
           size: height,
-          offset: pageY,
+          offset: pageY + (isIos ? insets.top : 0),
         })
       })
     }
 
-    if (isClient) {
-      useOnDebouncedWindowResize(measure)
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      useSliderMeasure(sliderRef, measure)
     }
 
     return (
@@ -344,9 +351,21 @@ const RANGE_NAME = 'SliderTrackActive'
 
 export const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
-  backgroundColor: '$background',
   position: 'absolute',
   pointerEvents: 'box-none',
+
+  variants: {
+    unstyled: {
+      false: {
+        backgroundColor: '$background',
+        borderRadius: 100_000,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>
@@ -396,8 +415,6 @@ SliderTrackActive.displayName = RANGE_NAME
 /* -------------------------------------------------------------------------------------------------
  * SliderThumb
  * -----------------------------------------------------------------------------------------------*/
-
-const THUMB_NAME = 'SliderThumb'
 
 // TODO make this customizable through tamagui
 // so we can accurately use it for estimatedSize below
@@ -749,14 +766,14 @@ const Range = SliderTrackActive
 const Thumb = SliderThumb
 
 export {
+  Range,
   Slider,
+  SliderThumb,
   SliderTrack,
   SliderTrackActive,
-  SliderThumb,
+  Thumb,
   //
   Track,
-  Range,
-  Thumb,
 }
 
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps }
+export type { SliderProps, SliderTrackActiveProps, SliderTrackProps }

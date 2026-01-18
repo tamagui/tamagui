@@ -23,13 +23,13 @@ export function AnimationsEnterDemo(props: any) {
           y: -10,
           opacity: 0,
         }}
-        animation="bouncy"
+        transition="bouncy"
         elevation="$4"
         size={110}
         opacity={1}
         scale={1}
         y={0}
-        bg="$pink10"
+        bg="$color9"
         rounded="$9"
       >
         {props.children ?? <LogoIcon downscale={0.75} />}

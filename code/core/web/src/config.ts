@@ -1,6 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 import { MISSING_THEME_MESSAGE } from './constants/constants'
 import type {
+  AnimationDriver,
   ConfigListener,
   GenericTamaguiSettings,
   TamaguiInternalConfig,
@@ -194,5 +195,45 @@ export let devConfig: DevConfig | undefined
 export function setupDev(conf: DevConfig) {
   if (process.env.NODE_ENV === 'development') {
     devConfig = conf
+  }
+}
+
+/**
+ * Dynamically load an animation driver at runtime.
+ * Useful for lazy loading heavier animation drivers after initial page load.
+ *
+ * @example
+ * ```tsx
+ * // import loadAnimationDriver from tamagui
+ * // import createAnimations from your preferred driver (e.g. animations-reanimated)
+ *
+ * const driver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
+ * loadAnimationDriver('spring', driver)
+ * ```
+ */
+export function loadAnimationDriver(name: string, driver: AnimationDriver) {
+  const config = getConfigFromGlobalOrLocal()
+  if (!config) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('loadAnimationDriver called before createTamagui')
+    }
+    return
+  }
+
+  // Convert single driver to object format if needed
+  if (config.animations && !('default' in config.animations)) {
+    ;(config as any).animations = {
+      default: config.animations,
+    }
+  }
+
+  // Add the new driver
+  if (config.animations) {
+    ;(config.animations as Record<string, any>)[name] = driver
+  } else {
+    ;(config as any).animations = {
+      default: driver,
+      [name]: driver,
+    }
   }
 }

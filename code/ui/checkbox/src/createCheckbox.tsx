@@ -1,11 +1,9 @@
-import React, { useMemo } from 'react'
 import type {
   CheckedState,
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
 } from '@tamagui/checkbox-headless'
-import { registerFocusable } from '@tamagui/focusable'
 import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
-import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core'
+import type { NativeValue, SizeTokens, ViewProps } from '@tamagui/core'
 import {
   getVariableValue,
   shouldRenderNativePlatform,
@@ -13,10 +11,12 @@ import {
   useTheme,
   withStaticProperties,
 } from '@tamagui/core'
+import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import React, { useMemo } from 'react'
 
 import { CheckboxFrame, CheckboxIndicatorFrame } from './Checkbox'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
@@ -32,7 +32,7 @@ type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
   sizeAdjust?: number
   native?: NativeValue<'web'>
 }
-type CheckboxBaseProps = StackProps
+type CheckboxBaseProps = ViewProps
 
 export type CheckboxProps = CheckboxBaseProps &
   CheckboxExtraProps &
@@ -40,12 +40,14 @@ export type CheckboxProps = CheckboxBaseProps &
 
 type CheckboxComponent = (
   props: CheckboxExtraProps & CheckboxExpectingVariantProps
-) => any
+) => React.ReactNode
 
 type CheckboxIndicatorExpectingVariantProps = {}
-type CheckboxIndicatorComponent = (props: CheckboxIndicatorExpectingVariantProps) => any
+type CheckboxIndicatorComponent = (
+  props: CheckboxIndicatorExpectingVariantProps
+) => React.ReactNode
 
-type CheckboxIndicatorBaseProps = StackProps
+type CheckboxIndicatorBaseProps = ViewProps
 type CheckboxIndicatorExtraProps = {
   /**
    * Used to force mounting when more control is needed. Useful when
@@ -184,7 +186,7 @@ export function createCheckbox<
                 width: size,
                 height: size,
               })}
-              tag="button"
+              render="button"
               ref={checkboxRef}
               unstyled={unstyled}
               {...(unstyled === false && {
@@ -194,7 +196,8 @@ export function createCheckbox<
               // potential variant
               checked={checked}
               disabled={checkboxProps.disabled}
-              {...checkboxProps}
+              // regressed in v2 types
+              {...(checkboxProps as CheckboxProps)}
               // react 76 style prop mis-match, but should be fine
               style={checkboxProps.style}
             >

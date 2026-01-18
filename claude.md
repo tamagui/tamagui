@@ -24,18 +24,18 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    ```bash
    yarn test:web
    ```
-   This runs tests with CSS, React Native, and Moti animation drivers.
+   This runs tests with CSS, React Native, and Reanimated animation drivers.
 
 3. **Run tests with a specific animation driver**:
    ```bash
    # CSS animations driver
    yarn test:web:driver-css
-   
-   # React Native animations driver  
+
+   # React Native animations driver
    yarn test:web:driver-rn
-   
-   # Moti animations driver
-   yarn test:web:driver-moti
+
+   # Reanimated animations driver
+   yarn test:web:driver-reanimated
    ```
 
 4. **Run a specific test file**:
@@ -57,7 +57,12 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
 
 ### Test Structure
 
-Tests are located in `code/kitchen-sink/tests/` and follow the naming convention `ComponentName.test.tsx`.
+Tests are located in `code/kitchen-sink/tests/` and follow these naming conventions:
+
+- `ComponentName.test.tsx` - Standard tests that run ONCE with the default animation driver
+- `ComponentName.animated.test.tsx` - Animation-dependent tests that run with ALL animation drivers (css, native, reanimated, motion)
+
+This separation significantly speeds up the test suite since most tests don't need to run 4x across all animation drivers. Only use `.animated.test.tsx` for tests that specifically verify animation behavior across different drivers.
 
 ### Writing Tests
 

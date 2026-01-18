@@ -564,6 +564,11 @@ textarea {
   -webkit-font-smoothing: antialiased !important;
 }
 
+.font-smooth-none,
+.font_silkscreen {
+  -webkit-font-smoothing: none !important;
+}
+
 .hero-tag:hover,
 .hero-tag.active {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
@@ -645,8 +650,6 @@ textarea {
 .font-outlined {
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: var(--color12);
-  text-shadow: 4px 4px var(--color5), -4px -4px var(--color6), -4px 4px var(--color6), 4px
-    -4px var(--color7);
 }
 
 .font-outlined-sm {
@@ -660,15 +663,14 @@ textarea {
 
 @media (hover: hover) {
   .clip-slice {
-    mask-image: url(./public/takeouticon.svg);
-    mask-size: 20% 20%;
-    transform: rotate(1deg);
+    mask-image: url(/takeouticon.svg);
+    mask-size: 50% 50%;
     animation: clip-fade2 50s infinite alternate;
     mix-blend-mode: difference !important;
   }
 
   .clip-slice-2 {
-    mask-image: url(./public/takeouticon.svg);
+    mask-image: url(/takeouticon.svg);
     mask-size: 25% 25%;
     transform: rotate(-2deg);
     animation: clip-fade 70s infinite alternate;
@@ -681,7 +683,7 @@ textarea {
 }
 
 .clip-wave {
-  mask-image: url(./public/takeout/geometric.svg);
+  mask-image: url(/takeout/geometric.svg);
   mask-size: 150% 150%;
   animation: clip-fade 80s infinite alternate;
 }
@@ -808,4 +810,85 @@ p {
   z-index: 10000000000000000 !important;
   background-color: rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(50px) !important;
+}
+
+/* Takeout phone scroll animation */
+@keyframes takeout-phone-scroll {
+  from {
+    transform: rotateX(41deg) rotateZ(33deg) translateX(0) translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: rotateX(15deg) rotateY(-20deg) rotateZ(10deg) translateX(-400px)
+      translateY(-200px) scale(0.7);
+    opacity: 0.3;
+  }
+}
+
+.takeout-phone {
+  transform: rotateX(41deg) rotateZ(33deg);
+  animation: takeout-phone-scroll linear both;
+  animation-timeline: scroll(root);
+  animation-range: 0% 60%;
+}
+
+/* Fallback for browsers without scroll-driven animation support */
+@supports not (animation-timeline: scroll()) {
+  .takeout-phone {
+    transform: rotateX(41deg) rotateZ(33deg);
+    animation: none;
+  }
+}
+
+/* Orbit animation for takeout page */
+.orbit-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.orbit-planet {
+  --offset: 520px;
+  grid-area: 1 / 1;
+  width: 60px;
+  height: 60px;
+  will-change: transform;
+  contain: layout style;
+  animation: orbitSpin 20s linear infinite, orbitZ 20s step-end infinite;
+}
+
+.orbit-planet img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg) translateX(var(--offset)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--offset)) rotate(-360deg);
+  }
+}
+
+@keyframes orbitZ {
+  0%,
+  24.99% {
+    z-index: 1;
+  }
+  25%,
+  74.99% {
+    z-index: -1;
+  }
+  75%,
+  100% {
+    z-index: 1;
+  }
 }

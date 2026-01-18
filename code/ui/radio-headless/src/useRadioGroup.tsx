@@ -4,7 +4,7 @@ import { registerFocusable } from '@tamagui/focusable'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { StackProps } from '@tamagui/web'
+import type { ViewProps } from '@tamagui/web'
 import type { ReactElement } from 'react'
 import { useContext, useEffect, useRef, useState } from 'react'
 import type { GestureResponderEvent } from 'react-native'
@@ -71,9 +71,9 @@ interface UseRadioItemParams {
   labelledBy?: string
   disabled?: boolean
   ref?: any
-  onPress?: StackProps['onPress']
-  onKeyDown?: React.HTMLProps<React.ReactElement>['onKeyDown']
-  onFocus?: StackProps['onFocus']
+  onPress?: ViewProps['onPress']
+  onKeyDown?: ViewProps['onKeyDown']
+  onFocus?: ViewProps['onFocus']
 }
 
 export type RadioGroupContextValue = {
@@ -196,7 +196,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         value: value,
       }),
       id,
-      onPress: composeEventHandlers(onPress as any, (event: GestureResponderEvent) => {
+      onPress: composeEventHandlers(onPress, (event: GestureResponderEvent) => {
         if (!checked) {
           onChange?.(value)
         }
@@ -210,10 +210,14 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         }
       }),
       ...(isWeb && {
-        onKeyDown: composeEventHandlers(onKeyDown as any, (event: KeyboardEvent) => {
-          // According to WAI ARIA, Checkboxes don't activate on enter keypress
-          if (event.key === 'Enter') event.preventDefault()
-        }) as (event: KeyboardEvent) => void,
+        onKeyDown: composeEventHandlers(onKeyDown, (event) => {
+          // Allow Enter and Space to select the radio item
+          if (event.key === 'Enter' || event.key === ' ') {
+            if (!checked) {
+              onChange?.(value)
+            }
+          }
+        }),
         onFocus: composeEventHandlers(onFocus, () => {
           /**
            * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys

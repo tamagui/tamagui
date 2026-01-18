@@ -1,4 +1,6 @@
+import type { ReactNode } from 'react'
 import { ThemeTint } from '@tamagui/logo'
+import { useIsDocsTinted } from './docsTint'
 import { Timer, Waves } from '@tamagui/lucide-icons'
 import {
   Configuration,
@@ -49,6 +51,7 @@ export function HeroContainer({
       mt="$4"
       mb="$4"
       position="relative"
+      flexBasis="auto"
       display="flex"
       items={alignItems || 'center'}
       justify="center"
@@ -100,10 +103,18 @@ export function HeroContainer({
   )
 
   if (tinted) {
-    return <ThemeTint>{contents}</ThemeTint>
+    return <ThemeTintWithToggle>{contents}</ThemeTintWithToggle>
   }
 
   return contents
+}
+
+const ThemeTintWithToggle = ({ children }: { children: ReactNode }) => {
+  const isTinted = useIsDocsTinted()
+  if (!isTinted) {
+    return <Theme name="gray">{children}</Theme>
+  }
+  return <ThemeTint>{children}</ThemeTint>
 }
 
 const Card = styled(YStack, {
@@ -140,7 +151,7 @@ const AnimationControl = () => {
             animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
           }
         >
-          <Switch.Thumb animation="quick" />
+          <Switch.Thumb transition="quickest" />
         </Switch>
         <Waves size={14} opacity={0.6} />
       </XStack>

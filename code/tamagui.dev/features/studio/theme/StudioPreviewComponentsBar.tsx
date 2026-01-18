@@ -17,7 +17,7 @@ import { optionValues } from './demoOptions'
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
     <XStack z={1000} mt={-10} data-tauri-drag-region className="all ease-in ms300">
-      <XStack flexWrap="wrap" flex={1} gap="$3">
+      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$3">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 
@@ -48,7 +48,6 @@ const ToggleGroupItem = styled(ToggleGroup.Item, {
 
   focusStyle: {
     backgroundColor: '$color10',
-    color: '$color2',
   },
 
   focusVisibleStyle: {
@@ -284,7 +283,7 @@ export function ElevationInput() {
         </TooltipSimple>
         <TooltipSimple label="Subtle Shadow">
           <ToggleGroupItem value="$1" aria-label="Subtle Shadow">
-            <Square size={10} y={-1} x={-1}>
+            <Square size={10} y={-1} x={-1} position="relative">
               <Square size={10} position="absolute" bg="$color8" b={-2} r={-2} />
               <Square
                 size={10}
@@ -298,7 +297,7 @@ export function ElevationInput() {
 
         <TooltipSimple label="Intense Shadow">
           <ToggleGroupItem value="$2" aria-label="Intense Shadow">
-            <Square size={10} y={-2} x={-2}>
+            <Square size={10} y={-2} x={-2} position="relative">
               <Square size={12} position="absolute" bg="$color8" b={-4} r={-4} />
               <Square
                 size={10}
@@ -334,7 +333,13 @@ export function SpacingInput() {
       >
         <TooltipSimple label="Small Padding">
           <ToggleGroupItem value="sm" aria-label="Small Padding">
-            <Square rounded="$1" size={10} borderWidth="$0.5" borderColor="$color">
+            <Square
+              rounded="$1"
+              size={10}
+              borderWidth="$0.5"
+              borderColor="$color"
+              position="relative"
+            >
               <Square size={6} position="absolute" bg="$color" />
             </Square>
           </ToggleGroupItem>
@@ -342,7 +347,13 @@ export function SpacingInput() {
 
         <TooltipSimple label="Medium Padding">
           <ToggleGroupItem value="md" aria-label="Medium Padding">
-            <Square rounded="$1" size={10} borderWidth="$0.5" borderColor="$color">
+            <Square
+              rounded="$1"
+              size={10}
+              borderWidth="$0.5"
+              borderColor="$color"
+              position="relative"
+            >
               <Square size={3} position="absolute" bg="$color" />
             </Square>
           </ToggleGroupItem>
@@ -350,7 +361,13 @@ export function SpacingInput() {
 
         <TooltipSimple label="Large Padding">
           <ToggleGroupItem value="lg" aria-label="Large Padding">
-            <Square rounded="$1" size={10} borderWidth="$0.5" borderColor="$color">
+            <Square
+              rounded="$1"
+              size={10}
+              borderWidth="$0.5"
+              borderColor="$color"
+              position="relative"
+            >
               <Square size={1} position="absolute" bg="$color" />
             </Square>
           </ToggleGroupItem>
@@ -443,7 +460,7 @@ export function InverseAccentInput() {
     <XStack gap="$3" items="center">
       <Label
         size="$2"
-        theme="alt1"
+        color="$color10"
         htmlFor="switch-accent-switch"
         onPress={() => {
           // for some reason id+htmlFor is not triggering - manually change the value here
@@ -466,7 +483,7 @@ export function InverseAccentInput() {
           }
         }}
       >
-        <Switch.Thumb animation="quickest" />
+        <Switch.Thumb transition="quickest" />
       </Switch>
     </XStack>
   )

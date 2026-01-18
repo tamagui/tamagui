@@ -1,0 +1,311 @@
+---
+title: Takeout
+description: Full-stack, cross-platform starter kit for React Native
+---
+
+# Takeout
+
+Takeout is a production-ready starter kit for building real-time, cross-platform applications. It brings together modern tools and patterns refined through building real products, with a focus on developer experience and deployment reliability.
+
+## Versions
+
+### v2 (Recommended)
+
+The latest version of Takeout built on modern technologies:
+
+- **One** - Universal React framework for web and native
+- **Zero** - Real-time sync with offline-first architecture
+- **Better Auth** - OAuth and email authentication
+- **Tamagui** - Universal UI components
+- **Drizzle ORM** - Type-safe database schema
+- **SST / Uncloud** - Deployment options
+
+### v2-free (Open Source)
+
+A free, open-source starter template with limited features. Great for learning and prototyping.
+
+[View on GitHub](https://github.com/tamagui/starter-free)
+
+### v1 (Legacy)
+
+The original Takeout stack, still supported:
+
+- **Next.js + Expo Router** - Web and native routing
+- **Supabase** - Backend and authentication
+- **tRPC** - Type-safe APIs
+- **Tamagui** - Universal UI components
+
+
+---
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- **Bun** 1.2+ - [Install Bun](https://bun.sh)
+- **Docker** - [Install Docker](https://docs.docker.com/get-docker/) (must be running)
+- **Git** - For version control
+
+For mobile development:
+
+- **iOS**: macOS with Xcode 15+
+- **Android**: Android Studio with JDK 17+
+
+---
+
+## Quick Start
+
+```bash
+bun install
+bun tko onboard
+```
+
+The onboarding wizard will guide you through setup. After onboarding, run in separate terminals:
+
+```bash
+bun backend      # start docker services (postgres, zero, minio)
+bun dev          # start web dev server at http://localhost:8081
+```
+
+---
+
+## Development Commands
+
+<SimpleTable
+  headers={['Command', 'Description']}
+  rows={[
+    ['`bun dev`', 'Start web dev server'],
+    ['`bun backend`', 'Start Docker services'],
+    ['`bun ios`', 'Run iOS simulator'],
+    ['`bun android`', 'Run Android emulator'],
+    ['`bun tko check`', 'Run all checks (lint, types, dependencies)'],
+    ['`bun tko docs list`', 'View built-in documentation'],
+    ['`bun lint:fix`', 'Auto-fix linting issues'],
+    ['`bun test:unit`', 'Run unit tests'],
+    ['`bun test:integration`', 'Run integration tests'],
+  ]}
+/>
+
+---
+
+## CLI Tools
+
+Takeout comes with a CLI (`bun tko`) that provides organized access to scripts and documentation:
+
+```bash
+# List available commands
+bun tko
+
+# View documentation
+bun tko docs list
+
+# Run specific scripts
+bun tko check types      # TypeScript checking
+bun tko aws health       # AWS health check
+```
+
+---
+
+## Deployment
+
+### Uncloud (Self-hosted)
+
+Deploy to any VPS with Docker using a single command:
+
+```bash
+bun tko uncloud deploy-prod
+```
+
+Features:
+- Zero-downtime deployments
+- Automatic load balancing
+- Built-in service discovery
+- Minimal resource footprint
+
+### SST (AWS)
+
+Full serverless deployment to AWS:
+
+```bash
+bun tko sst deploy production
+```
+
+### CI/CD
+
+GitHub Actions is pre-configured. On every push to main:
+
+1. Runs tests and builds
+2. Creates Docker image
+3. Deploys to your configured platform
+4. Runs health checks
+
+---
+
+## Project Structure
+
+```text
+takeout/
+├── app/                   # File-based routing (One router)
+│   ├── (tabs)/            # Tab navigation
+│   └── api/               # API routes
+├── src/
+│   ├── features/          # Feature modules (auth, feed, profile, etc.)
+│   ├── interface/         # Reusable UI components
+│   ├── database/          # Database schema and migrations
+│   ├── auth/              # Authentication system
+│   ├── zero/              # Real-time sync configuration
+│   └── server/            # Server-side code
+├── scripts/               # Build and deployment scripts
+├── docs/                  # Detailed guides
+├── assets/                # Images, fonts, splash screens
+└── public/                # Static web assets
+```
+
+---
+
+## Adding Icons
+
+This project uses [Phosphor Icons](https://phosphoricons.com/) for all UI icons:
+
+```bash
+# Add a regular icon
+bun tko icon/add-phosphor Heart
+
+# Add a different weight (regular, bold, duotone, fill, light, thin)
+bun tko icon/add-phosphor User --weight=fill
+```
+
+Icons are automatically generated and can be imported:
+
+```tsx
+import { HeartIcon } from '~/interface/icons/phosphor/HeartIcon'
+```
+
+---
+
+## Database
+
+### Local Development
+
+PostgreSQL runs in Docker on port 5433:
+
+- Main database: `postgresql://user:password@localhost:5433/postgres`
+- Zero sync databases: `zero_cvr` and `zero_cdb`
+
+### Migrations
+
+Update your schema in `src/database/schema-public.ts` and run:
+
+```bash
+bun migrate          # Build and run migrations
+bun db:migrate-add   # Create one-off migrations
+```
+
+---
+
+## Environment Configuration
+
+<SimpleTable
+  headers={['File', 'Purpose']}
+  rows={[
+    ['`.env.development`', 'Development defaults (committed)'],
+    ['`.env`', 'Active environment (generated, gitignored)'],
+    ['`.env.local`', 'Personal secrets/overrides (gitignored)'],
+    ['`.env.production.example`', 'Production template (committed)'],
+  ]}
+/>
+
+Key variables:
+
+```bash
+# Authentication
+BETTER_AUTH_SECRET=<secret>
+BETTER_AUTH_URL=<url>
+
+# Server
+ONE_SERVER_URL=<url>
+
+# Database
+ZERO_UPSTREAM_DB=<connection-string>
+```
+
+---
+
+## Real-time Sync with Zero
+
+Zero provides the real-time sync foundation. Key features:
+
+- Instant updates across devices
+- Offline-first architecture
+- Optimistic UI updates
+- Automatic conflict resolution
+
+Data models and queries are defined in `src/data/`.
+
+---
+
+## Testing
+
+### Unit Tests
+
+```bash
+bun test:unit
+```
+
+Uses Vitest for fast, type-safe unit testing.
+
+### Integration Tests
+
+```bash
+bun test:integration
+```
+
+Uses Playwright for end-to-end testing with enhanced logging.
+
+---
+
+## Mobile Apps
+
+### iOS
+
+```bash
+bun ios          # Run in simulator
+```
+
+Requires macOS, Xcode 15+, and iOS 17.0+ deployment target.
+
+### Android
+
+```bash
+bun android      # Run in emulator
+```
+
+Requires Android Studio, JDK 17+, and Android SDK 34+.
+
+### Over-the-Air Updates
+
+```bash
+bun hot-update ios
+bun hot-update android
+```
+
+---
+
+## Getting Help
+
+- **Documentation**: `bun tko docs list`
+- **Private Discord**: Available to Pro subscribers
+- **GitHub Issues**: For bug reports and feature requests
+
+---
+
+## Pro Access
+
+Pro subscribers get:
+
+- Access to private v1 and v2 GitHub repositories
+- Private Discord channel for support
+- Full source code with all features
+- Ongoing updates and improvements
+
+[Get Pro Access](/takeout)

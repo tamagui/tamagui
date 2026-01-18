@@ -19,9 +19,8 @@ export function TamaguiProvider({
   config,
   className,
   defaultTheme,
-  disableRootThemeClass,
   reset,
-  themeClassNameOnRoot,
+  insets,
 }: TamaguiProviderProps) {
   if (!IS_REACT_19) {
     if (isClient) {
@@ -45,20 +44,29 @@ export function TamaguiProvider({
     updateMediaListeners()
   }, [])
 
+  const memoizedInsets = React.useMemo(
+    () => insets,
+    [insets?.top, insets?.right, insets?.bottom, insets?.left]
+  )
+
+  // Get the default animation driver from config
+  // animations can be a single driver or { default: driver, ...others }
+  const defaultAnimationDriver = React.useMemo(() => {
+    const animations = config?.animations
+    if (!animations) return null
+    if ('default' in animations) {
+      return (animations as { default: any }).default
+    }
+    return animations
+  }, [config?.animations])
+
   let contents = (
     <UnmountedClassName>
-      <ComponentContext.Provider animationDriver={config?.animations}>
-        <ThemeProvider
-          themeClassNameOnRoot={
-            themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
-          }
-          disableRootThemeClass={
-            disableRootThemeClass ?? getSetting('disableRootThemeClass')
-          }
-          defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
-          reset={reset}
-          className={className}
-        >
+      <ComponentContext.Provider
+        animationDriver={defaultAnimationDriver}
+        insets={memoizedInsets}
+      >
+        <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
           {children}
         </ThemeProvider>
       </ComponentContext.Provider>

@@ -44,8 +44,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const parentSheet = React.useContext(ParentSheetContext)
 
     const {
-      animation,
-      animationConfig: animationConfigProp,
+      transition,
+      transitionConfig: transitionConfigProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
@@ -85,17 +85,17 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       throw new Error(`Sheet reqiures an animation driver to be set`)
     }
 
-    const animationConfig = (() => {
-      // explicit animationConfig prop always takes precedence
-      if (animationConfigProp) {
-        return animationConfigProp
+    const transitionConfig = (() => {
+      // explicit transitionConfig prop always takes precedence
+      if (transitionConfigProp) {
+        return transitionConfigProp
       }
 
-      const [animationProp, animationPropConfig] = !animation
+      const [animationProp, animationPropConfig] = !transition
         ? []
-        : Array.isArray(animation)
-          ? animation
-          : ([animation] as const)
+        : Array.isArray(transition)
+          ? transition
+          : ([transition] as const)
 
       // look up named animation config from driver if available
       if (animationProp && animationDriver.animations?.[animationProp as string]) {
@@ -209,7 +209,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       stopSpring()
       animatedNumber.setValue(toValue, {
         type: 'spring',
-        ...animationConfig,
+        ...transitionConfig,
       })
     })
 
@@ -426,14 +426,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
 
         // avoid bugs where it grows forever for whatever reason
-        const next = Math.min(
-          e.nativeEvent?.layout.height,
-          Dimensions.get(relativeDimensionTo).height
-        )
+        // For inline mode (non-modal), don't cap at window height - use actual layout
+        const layoutHeight = e.nativeEvent?.layout.height
+        const next = modal
+          ? Math.min(layoutHeight, Dimensions.get(relativeDimensionTo).height)
+          : layoutHeight
         if (!next) return
         setFrameSize(next)
       },
-      [open]
+      [open, modal]
     )
 
     const handleMaxContentViewLayout = React.useCallback((e: LayoutChangeEvent) => {
@@ -509,7 +510,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const forcedContentHeight = hasFit
       ? undefined
       : snapPointsMode === 'percent'
-        ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
+        ? // Use dvh for modal (viewport-relative), % for inline (container-relative)
+          `${maxSnapPoint}${isWeb ? (modal ? 'dvh' : '%') : '%'}`
         : maxSnapPoint
 
     const setHasScrollView = React.useCallback((val: boolean) => {
@@ -550,7 +552,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
               onLayout={handleAnimationViewLayout}
               // @ts-ignore for CSS driver this is necessary to attach the transition
               // also motion driver at least though i suspect all drivers?
-              animation={isDragging || disableAnimation ? null : animation}
+              transition={isDragging || disableAnimation ? null : transition}
               // @ts-ignore
               disableClassName
               style={[

@@ -1,5 +1,5 @@
 import { throttle } from '@github/mini-throttle'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
 import { demoMedia } from '@tamagui/tamagui-dev-config'
@@ -31,7 +31,7 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'
 import favicon from '~/public/favicon.svg'
@@ -271,7 +271,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
     <YStack
       className="unselectable"
       theme={active ? 'pink' : null}
-      pos="absolute"
+      position="absolute"
       {...props}
     >
       <XStack y={-60} items="flex-start">
@@ -286,12 +286,11 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
           l={0}
           y={-20}
           x={-17}
-          fontSize={12}
           onPress={() => {
             onPress(name)
           }}
         >
-          {name}
+          <Button.Text fontSize={12}>{name}</Button.Text>
         </Button>
       </XStack>
     </YStack>
@@ -300,14 +299,14 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
 
 const ResponsiveHeader = memo(() => {
   return (
-    <YStack flex={1} gap="$3">
+    <YStack flex={1} gap="$3" flexBasis="auto">
       <XStack>
         <HomeH2 text="left" self="flex-start">
           Easily responsive
         </HomeH2>
       </XStack>
 
-      <HomeH3 text="left" self="flex-start" p={0} maxW={450} theme="alt2">
+      <HomeH3 text="left" self="flex-start" p={0} maxW={450} color="$color9">
         Responsive props and hooks, compiled to atomic CSS on web.
       </HomeH3>
     </YStack>
@@ -323,6 +322,7 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
       contain="paint layout"
       elevation="$6"
       flex={1}
+      flexBasis="auto"
       overflow="hidden"
       rounded="$4"
       borderColor="$borderColor"
@@ -377,7 +377,7 @@ export const Safari = memo(
                 gap="$2"
               >
                 <Lock color="var(--colorPress)" size={12} />
-                <Paragraph theme="alt1" size="$2">
+                <Paragraph color="$color10" size="$2">
                   tamagui.dev
                 </Paragraph>
               </XStack>
@@ -463,9 +463,9 @@ export const Safari = memo(
               <YStack px="$4">
                 <XStack>
                   <XStack items="center" gap="$4">
-                    <Paragraph theme="alt2">4 guests</Paragraph>
-                    <Paragraph theme="alt2">&middot;</Paragraph>
-                    <Paragraph theme="alt2">Entire house</Paragraph>
+                    <Paragraph color="$color9">4 guests</Paragraph>
+                    <Paragraph color="$color9">&middot;</Paragraph>
+                    <Paragraph color="$color9">Entire house</Paragraph>
                   </XStack>
                   <Spacer flex={1} />
                   <XStack items="center" gap="$4">
@@ -476,7 +476,7 @@ export const Safari = memo(
 
                 <Spacer />
 
-                <Paragraph theme="alt1" size="$4">
+                <Paragraph color="$color10" size="$4">
                   A lovely, private and very clean cottage with all amenities for a
                   comfortable and peaceful stay. We are a 20 minute walk from the Hawaii
                   Tropical Botanical Garden and well situated for touring to Akaka Falls,
@@ -517,7 +517,7 @@ const Tab = memo(({ active, children, borderColor, ...props }: any) => {
           <Image width={10} height={10} src={favicon} />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph opacity={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
+        <Paragraph opacity={active ? 1 : 0.5} cursor="default" size="$1" ellipsis>
           {children}
         </Paragraph>
       </XStack>

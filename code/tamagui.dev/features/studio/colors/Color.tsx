@@ -92,7 +92,8 @@ export function Color({
               id="color-lightness"
               // type="number" // min={0} // max={360}
               value={color.lightness as any}
-              onChangeText={(text) => {
+              onChange={(e) => {
+                const text = e.target?.value ?? ''
                 state.colors.changeColorValue({
                   index: indexAsNumber,
                   value: {

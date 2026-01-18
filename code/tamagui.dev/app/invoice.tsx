@@ -8,7 +8,7 @@ export default function InvoicePage() {
       <YStack p={40}>
         <XStack justify="space-between" items="center">
           <H2>Invoice</H2>
-          <H2 theme="alt2">Tamagui LLC</H2>
+          <H2 color="$color9">Tamagui LLC</H2>
         </XStack>
         <YStack mt={20}>
           <Text fontWeight="bold">Invoice number: FE9BF9FB-DRAFT</Text>

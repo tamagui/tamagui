@@ -30,7 +30,7 @@ export const CurrentTask = () => {
 
       <Separator mb="$2" />
 
-      <YStack flex={1} gap="$4" separator={<Separator />}>
+      <YStack flex={1} flexBasis="auto" gap="$4">
         <YStack gap="$6">
           <XStack {...demoProps.gapPropsLg}>
             <XStack {...demoProps.gapPropsMd}>
@@ -42,20 +42,20 @@ export const CurrentTask = () => {
           </XStack>
 
           <TaskSection title="This Sprint">
-            <Paragraph size="$2" theme="alt1">
+            <Paragraph size="$2" color="$color10">
               6/8 tasks done
             </Paragraph>
             <Progress minW={100} size="$5" value={60}>
-              <Progress.Indicator bg={accentTokenName} animation="quick" />
+              <Progress.Indicator bg={accentTokenName} transition="quick" />
             </Progress>
           </TaskSection>
 
           <TaskSection title="Upcoming Sprint">
-            <Paragraph size="$2" theme="alt1">
+            <Paragraph size="$2" color="$color10">
               1/8 tasks done
             </Paragraph>
             <Progress minW={100} size="$5" value={25}>
-              <Progress.Indicator bg={accentTokenName} animation="quick" />
+              <Progress.Indicator bg={accentTokenName} transition="quick" />
             </Progress>
           </TaskSection>
         </YStack>
@@ -78,7 +78,7 @@ const TaskSection = ({
 
   return (
     <YStack {...props} {...demoProps.gapPropsMd}>
-      <H6 {...demoProps.headingFontFamilyProps} theme="alt2" size="$1" mb="$-2">
+      <H6 {...demoProps.headingFontFamilyProps} color="$color9" size="$1" mb="$-2">
         {title}
       </H6>
       {children}

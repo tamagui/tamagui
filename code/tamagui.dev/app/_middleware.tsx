@@ -32,7 +32,6 @@ function initializeVersionCache() {
         componentVersionCache.set(component, versions)
       }
     }
-    console.info('Component version cache initialized')
   } catch (error) {
     console.error('Error initializing component version cache:', error)
   }

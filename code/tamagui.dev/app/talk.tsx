@@ -42,26 +42,25 @@ export default function TamaguiTalk() {
   }
 
   return (
-    <YStack {...slideDimensions}>
-      <XStack pos="absolute" t="$0" l="$0" r="$0" p="$4" zi={1000}>
+    <YStack {...slideDimensions} position="relative">
+      <XStack position="absolute" t="$0" l="$0" r="$0" p="$4" z={1000}>
         <YStack>
           <TamaguiLogo y={15} x={10} downscale={2} />
         </YStack>
 
-        <YStack fullscreen ai="center" jc="center">
+        <YStack fullscreen items="center" justify="center">
           <LogoWords />
         </YStack>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <ThemeToggle borderWidth={0} chromeless />
       </XStack>
 
-      <YStack pos="absolute" {...slideDimensions} ov="hidden">
-        <YStack o={0.6} fullscreen>
+      <YStack position="absolute" {...slideDimensions} overflow="hidden">
+        <YStack opacity={0.6} fullscreen>
           <YStack fullscreen className="bg-grid" />
         </YStack>
-        {/* <RibbonContainer /> */}
       </YStack>
 
       <Slides

@@ -21,7 +21,7 @@ export default memo(() => {
 
             content: (
               <YStack mt={-100} items="center">
-                <Paragraph theme="alt2" size="$10">
+                <Paragraph color="$color9" size="$10">
                   (Ironically)
                 </Paragraph>
               </YStack>

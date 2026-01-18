@@ -75,14 +75,14 @@ export const NewAccountModal = () => {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal dismissOnSnapToBottom animation="medium">
+          <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Frame bg="$background" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
             <Sheet.Overlay
-              animation="lazy"
+              transition="lazy"
               bg="$shadow6"
               opacity={1}
               enterStyle={{ opacity: 0 }}
@@ -95,7 +95,7 @@ export const NewAccountModal = () => {
           <Configuration animationDriver={animationsCSS}>
             <Dialog.Overlay
               key="overlay"
-              animation="medium"
+              transition="medium"
               bg="$shadow3"
               backdropFilter="blur(20px)"
               enterStyle={{ opacity: 0 }}
@@ -107,7 +107,7 @@ export const NewAccountModal = () => {
             bordered
             elevate
             key="content"
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {
@@ -341,7 +341,7 @@ const AccountHeader = () => {
   if (isLoading || !data) {
     return null
   }
-  const { userDetails, user } = data
+  const { userDetails, user, githubUsername } = data
 
   const handleLogout = async () => {
     try {
@@ -384,7 +384,12 @@ const AccountHeader = () => {
             >
               {userDetails?.full_name}
             </H3>
-            <Paragraph theme="alt1">{user?.email}</Paragraph>
+            <Paragraph color="$color10">{user?.email}</Paragraph>
+            {githubUsername && (
+              <Paragraph color="$color9" size="$2">
+                GitHub: @{githubUsername}
+              </Paragraph>
+            )}
           </YStack>
         </XStack>
       </YStack>
@@ -396,7 +401,7 @@ const AccountHeader = () => {
         self="flex-end"
         aria-label="Logout"
       >
-        Logout
+        <Button.Text>Logout</Button.Text>
       </Button>
     </XStack>
   )
@@ -486,11 +491,12 @@ const ServiceCard = ({
       gap="$2"
       width={300}
       flex={1}
+      flexBasis="auto"
     >
       <H3 fontFamily="$mono" size="$6">
         {title}
       </H3>
-      <Paragraph theme="alt1">{description}</Paragraph>
+      <Paragraph color="$color10">{description}</Paragraph>
 
       <XStack gap="$3">
         <Button
@@ -501,7 +507,7 @@ const ServiceCard = ({
           theme="accent"
           onPress={onAction}
         >
-          {actionLabel}
+          <Button.Text>{actionLabel}</Button.Text>
         </Button>
 
         {!!secondAction && (
@@ -513,7 +519,7 @@ const ServiceCard = ({
             theme="accent"
             onPress={secondAction.onPress}
           >
-            {secondAction.label}
+            <Button.Text>{secondAction.label}</Button.Text>
           </Button>
         )}
 
@@ -550,7 +556,7 @@ const DiscordAccessDialog = ({
       <Dialog.Portal zIndex={999999}>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -559,7 +565,7 @@ const DiscordAccessDialog = ({
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           width="90%"
           maxW={600}
           p="$6"
@@ -684,7 +690,7 @@ const DiscordPanel = ({
     <>
       <Form onSubmit={handleSearch} gap="$2" flexDirection="row" items="flex-end">
         <Fieldset>
-          <Label size="$3" theme="alt1" htmlFor="discord-username">
+          <Label size="$3" color="$color10" htmlFor="discord-username">
             Username / Nickname
           </Label>
           <Input
@@ -692,17 +698,19 @@ const DiscordPanel = ({
             placeholder="Your username..."
             id="discord-username"
             value={draftQuery}
-            onChange={(e) => setDraftQuery(e.target?.value ?? '')}
+            onChange={(e) => setDraftQuery(e.target.value)}
           />
         </Fieldset>
 
         <Form.Trigger>
-          <Button icon={Search}>Search</Button>
+          <Button icon={Search}>
+            <Button.Text>Search</Button.Text>
+          </Button>
         </Form.Trigger>
       </Form>
 
-      <XStack tag="article">
-        <Paragraph size="$3" theme="alt1">
+      <XStack render="article">
+        <Paragraph size="$3" color="$color10">
           Note: You must{' '}
           <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
             join the Discord server
@@ -712,7 +720,7 @@ const DiscordPanel = ({
       </XStack>
 
       {Array.isArray(searchSwr.data) && searchSwr.data.length === 0 ? (
-        <Paragraph size="$3" theme="alt1">
+        <Paragraph size="$3" color="$color10">
           No users found
         </Paragraph>
       ) : (
@@ -760,7 +768,9 @@ const DiscordPanel = ({
             onPress={() => resetChannelMutation.trigger()}
             disabled={resetChannelMutation.isMutating}
           >
-            {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+            <Button.Text>
+              {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+            </Button.Text>
           </Button>
         )}
       </XStack>
@@ -778,7 +788,7 @@ const DiscordPanel = ({
 
     if (isTeamMember) {
       return (
-        <Paragraph size="$3" theme="alt1">
+        <Paragraph size="$3" color="$color10">
           Only the team owner can manage Discord access.
         </Paragraph>
       )
@@ -790,7 +800,7 @@ const DiscordPanel = ({
       if (!supportAccess.hasAccess) {
         return (
           <YStack gap="$4" p="$4" bg="$color2" rounded="$4">
-            <Paragraph theme="alt2" text="center">
+            <Paragraph color="$color9" text="center">
               You need a Chat Support or Support tier subscription to access private
               support channels.
             </Paragraph>
@@ -804,7 +814,7 @@ const DiscordPanel = ({
     }
 
     return (
-      <Paragraph size="$3" theme="alt1">
+      <Paragraph size="$3" color="$color10">
         You've reached the maximum number of Discord members for your plan. Please reset
         if you want to add new members.
       </Paragraph>
@@ -816,11 +826,11 @@ const DiscordPanel = ({
       <DiscordAccessHeader />
 
       {apiType === 'channel' ? (
-        <Paragraph theme="alt2">
+        <Paragraph color="$color9">
           Join the #takeout-general channel to discuss Tamagui with other Pro users.
         </Paragraph>
       ) : (
-        <Paragraph theme="alt2">
+        <Paragraph color="$color9">
           Get access to your private support channel where you can directly communicate
           with the Tamagui team.
         </Paragraph>
@@ -889,11 +899,11 @@ const DiscordMember = ({
   return (
     <XStack gap="$2" items="center" flexWrap="wrap">
       <Button minW={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
-        {isMutating ? 'Inviting...' : 'Add'}
+        <Button.Text>{isMutating ? 'Inviting...' : 'Add'}</Button.Text>
       </Button>
       <Avatar circular size="$2">
-        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
-        <Avatar.Fallback backgroundColor="$blue10" />
+        <Avatar.Image aria-label={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Fallback bg="$blue10" />
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
       {data && (
@@ -909,7 +919,6 @@ const DiscordMember = ({
     </XStack>
   )
 }
-
 const PlanTab = ({
   subscription,
   supportSubscription,
@@ -995,7 +1004,7 @@ const PlanTab = ({
                 ? {
                     label: 'Takeout 2',
                     onPress: () =>
-                      handleTakeoutAccess('https://github.com/tamagui/takeout3'),
+                      handleTakeoutAccess('https://github.com/tamagui/takeout2'),
                   }
                 : null
             }
@@ -1203,14 +1212,13 @@ const UpgradeTab = () => {
       />
 
       <Button
-        fontFamily="$mono"
         theme="accent"
         rounded="$10"
         self="flex-end"
         onPress={handleUpgrade}
         disabled={supportTier === currentTier}
       >
-        {getActionLabel()}
+        <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
       </Button>
 
       <Separator />
@@ -1267,7 +1275,7 @@ const SupportTabContent = ({
                 <H3 fontFamily="$mono" size="$6">
                   {tier.label}
                 </H3>
-                <Paragraph theme="alt1">
+                <Paragraph color="$color10">
                   {tier.price === 0
                     ? 'Basic Support'
                     : `${formatCurrency(tier.price)}/month`}
@@ -1308,16 +1316,17 @@ const ManageTab = ({
     return (
       <YStack gap="$4">
         <H3>No Active Subscription</H3>
-        <Paragraph theme="alt1">
+        <Paragraph color="$color10">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
+
         <Button
-          themeInverse
+          theme="accent"
           onPress={() => {
             paymentModal.show = true
           }}
         >
-          Purchase Plan
+          <Button.Text>Purchase Plan</Button.Text>
         </Button>
       </YStack>
     )
@@ -1368,9 +1377,7 @@ const ManageTab = ({
           {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
         </View>
         <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
-          <Button size="$3" theme="alt2">
-            View Invoices
-          </Button>
+          <Button size="$3">View Invoices</Button>
         </Link>
       </XStack>
       {sortedSubscriptions.map((subscription) => {
@@ -1422,7 +1429,7 @@ const ManageTab = ({
                       <YStack width="60%">
                         <Paragraph fontWeight="bold">{product?.name}</Paragraph>
                         {product?.description && (
-                          <Paragraph theme="alt2" size="$3">
+                          <Paragraph color="$color9" size="$3">
                             {product.description}
                           </Paragraph>
                         )}
@@ -1491,9 +1498,11 @@ const ManageTab = ({
                   disabled={isLoading || !!subscription.cancel_at_period_end}
                   onPress={() => handleCancelSubscription(subscription.id)}
                 >
-                  {subscription.cancel_at_period_end
-                    ? 'Cancellation Scheduled'
-                    : 'Cancel Subscription'}
+                  <Button.Text>
+                    {subscription.cancel_at_period_end
+                      ? 'Cancellation Scheduled'
+                      : 'Cancel Subscription'}
+                  </Button.Text>
                 </Button>
               </>
             ) : null}
@@ -1565,7 +1574,7 @@ const TeamTab = ({
     return (
       <YStack gap="$4">
         <H3>No Team Subscription</H3>
-        <Paragraph theme="alt1">
+        <Paragraph color="$color10">
           Purchase team seats to invite team members to your Tamagui Pro subscription.
         </Paragraph>
         <Button
@@ -1575,7 +1584,7 @@ const TeamTab = ({
             paymentModal.teamSeats = 1
           }}
         >
-          Purchase Team Seats
+          <Button.Text>Purchase Team Seats</Button.Text>
         </Button>
       </YStack>
     )
@@ -1586,7 +1595,7 @@ const TeamTab = ({
       <YStack gap="$4">
         <H3>Team Management</H3>
         <XStack items="center" justify="space-between">
-          <Paragraph theme="alt1">
+          <Paragraph color="$color10">
             {teamData.subscription.used_seats || 0} of {teamData.subscription.total_seats}{' '}
             seats used
           </Paragraph>
@@ -1604,7 +1613,7 @@ const TeamTab = ({
                   id="github-username"
                   placeholder="Search GitHub users by name, email, or id"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target?.value ?? '')}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </Fieldset>
             </XStack>
@@ -1625,8 +1634,8 @@ const TeamTab = ({
               ))
             ) : searchQuery.length > 0 ? (
               <YStack gap={0}>
-                <Paragraph theme="alt1">No results found</Paragraph>
-                <Paragraph theme="alt1">User is not a member of Tamagui</Paragraph>
+                <Paragraph color="$color10">No results found</Paragraph>
+                <Paragraph color="$color10">User is not a member of Tamagui</Paragraph>
               </YStack>
             ) : null}
           </YStack>
@@ -1679,7 +1688,7 @@ const GitHubUserRow = ({
         </Avatar>
         <YStack>
           <Paragraph>{user.full_name ?? 'Unknown User'}</Paragraph>
-          <Paragraph size="$2" theme="alt2">
+          <Paragraph size="$2" color="$color9">
             {user.email ?? 'Unknown Email'}
           </Paragraph>
           {inviteError && (
@@ -1696,7 +1705,7 @@ const GitHubUserRow = ({
         onPress={() => inviteTeamMember({ user_id: String(user.id) })}
         disabled={isInviting}
       >
-        {isInviting ? 'Inviting...' : 'Invite'}
+        <Button.Text>{isInviting ? 'Inviting...' : 'Invite'}</Button.Text>
       </Button>
     </XStack>
   )
@@ -1733,14 +1742,14 @@ const TeamMemberRow = ({
         </Avatar>
         <YStack>
           <Paragraph>{member.user?.full_name ?? 'Unknown User'}</Paragraph>
-          <Paragraph theme="alt2" size="$2">
+          <Paragraph color="$color9" size="$2">
             {member.user?.email}
           </Paragraph>
         </YStack>
       </XStack>
 
       <XStack items="center" gap="$2">
-        <Paragraph size="$2" theme="alt2">
+        <Paragraph size="$2" color="$color9">
           {member.role}
         </Paragraph>
         <Button
@@ -1749,7 +1758,7 @@ const TeamMemberRow = ({
           onPress={() => removeTeamMember({ team_member_id: member.user?.id ?? '' })}
           disabled={isRemoving}
         >
-          {isRemoving ? 'Removing...' : 'Remove'}
+          <Button.Text>{isRemoving ? 'Removing...' : 'Remove'}</Button.Text>
         </Button>
       </XStack>
     </XStack>

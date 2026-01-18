@@ -10,7 +10,7 @@ import { Stack } from '@tamagui/core'
   
 export default (props) => (
   <Stack
-    animation="fast"
+    transition="fast"
 
     hoverStyle={{
       opacity: 0,
@@ -29,7 +29,7 @@ import { Stack } from '@tamagui/core'
   
 export default (props) => (
   <Stack
-    animation="fast"
+    transition="fast"
     backgroundColor="$color6"
     hoverStyle={{
       backgroundColor: '$color5',

@@ -69,7 +69,7 @@ export function Slides(props: { slides: Slides }) {
         <AnimatePresence custom={{ going: direction }} initial={false}>
           <YStackEnterable
             key={page}
-            animation="lazy"
+            transition="lazy"
             fullscreen
             x={0}
             opacity={1}
@@ -89,7 +89,7 @@ export function Slides(props: { slides: Slides }) {
           position="absolute"
           l="$4"
           circular
-          elevate
+          elevation="$2"
           onPress={prevStep}
         />
         <Button
@@ -99,7 +99,7 @@ export function Slides(props: { slides: Slides }) {
           position="absolute"
           r="$4"
           circular
-          elevate
+          elevation="$2"
           onPress={nextStep}
         />
 
@@ -107,7 +107,7 @@ export function Slides(props: { slides: Slides }) {
           position="absolute"
           b="$4"
           size="$2"
-          theme="alt2"
+          color="$color9"
           l={0}
           r={0}
           text="center"

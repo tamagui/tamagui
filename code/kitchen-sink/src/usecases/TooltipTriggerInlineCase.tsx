@@ -46,7 +46,7 @@ export function TooltipTriggerInlineCase() {
         </Tooltip>
         <Tooltip>
           <Tooltip.Trigger display="inline" data-testid="inline-word-3">
-            <Text color="$purple10" textDecorationLine="underline">
+            <Text color="$blue10" textDecorationLine="underline">
               these
             </Text>
           </Tooltip.Trigger>

@@ -4,7 +4,7 @@ import { SizableText, XStack, styled } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
 import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { ScrollView } from 'react-native'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {
@@ -96,7 +96,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
               <AnimatePresence initial={false}>
                 {activeAt && (
                   <TabIndicator
-                    theme="alt1"
+                    bg="$color9"
                     width={activeAt.width}
                     height={activeAt.height}
                     x={activeAt.x}
@@ -170,7 +170,7 @@ export function Tab({
         <SizableText
           y={-0.5}
           size="$2"
-          color={active ? '$color11' : '$color9'}
+          color={active ? '$color11' : '$color10'}
           opacity={active ? 1 : 0.5}
         >
           {pkgManager}
@@ -184,10 +184,12 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
   return (
     <YStack
       position="absolute"
-      bg="$color5"
+      t={0}
+      l={0}
+      bg="$color6"
       opacity={0.7}
       rounded="$4"
-      animation="quickest"
+      transition="quickest"
       enterStyle={{
         opacity: 0,
       }}

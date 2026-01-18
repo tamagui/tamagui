@@ -5,7 +5,7 @@ export function AnimationsHoverDemo() {
   return (
     <Square
       borderColor="$borderColor"
-      animation="bouncy"
+      transition="bouncy"
       elevation="$4"
       bg="$color9"
       size={104}

@@ -1,4 +1,4 @@
-import type { AnimatedNumberStrategy, AnimationProp } from '@tamagui/core';
+import type { AnimatedNumberStrategy, TransitionProp } from '@tamagui/core';
 import type { ScopedProps } from '@tamagui/create-context';
 import type { PortalProps } from '@tamagui/portal';
 import type { RemoveScroll } from '@tamagui/remove-scroll';
@@ -26,8 +26,17 @@ export type SheetProps = ScopedProps<{
     children?: ReactNode;
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
+    /**
+     * Disables the RemoveScroll behavior that prevents body scrolling while sheet is open.
+     * By default, RemoveScroll is enabled when the sheet is open and modal.
+     */
+    disableRemoveScroll?: boolean;
+    /**
+     * @deprecated Use `disableRemoveScroll` instead. This prop will be removed in a future version.
+     * Note: `disableRemoveScroll={true}` is equivalent to `forceRemoveScrollEnabled={false}`
+     */
     forceRemoveScrollEnabled?: boolean;
-    animationConfig?: AnimatedNumberStrategy;
+    transitionConfig?: AnimatedNumberStrategy;
     /**
      * By default Sheet will prefer the open prop over a parent component that is
      * controlling it via Adapt. In general if you want to Adapt to a sheet, you'd
@@ -46,7 +55,7 @@ export type SheetProps = ScopedProps<{
     /**
      * Pass if you're using the CSS animation driver
      */
-    animation?: AnimationProp;
+    transition?: TransitionProp;
     handleDisableScroll?: boolean;
     disableDrag?: boolean;
     modal?: boolean;

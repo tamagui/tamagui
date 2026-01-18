@@ -18,12 +18,18 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   inMenu?: boolean
 }) {
   const isExternal = external || href.startsWith('http')
-  const ref = useRef<any>(undefined)
+  const ref = useRef<any>(null)
 
   return (
     <Link
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       href={href as Href}
+      focusVisibleStyle={{
+        outlineColor: '$outlineColor',
+        outlineWidth: 2,
+        outlineStyle: 'solid',
+        outlineOffset: -2,
+      }}
     >
       <XStack
         ref={ref}
@@ -69,7 +75,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           cursor="pointer"
           select="none"
           opacity={active ? 1 : 0.65}
-          text={inMenu ? 'left' : 'right'}
+          style={{ textAlign: inMenu ? 'left' : 'right' }}
           width="100%"
           hoverStyle={{
             opacity: 0.85,
@@ -99,7 +105,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           <>
             <XStack flex={1} />
             <SizableText
-              theme="alt2"
+              color="$color9"
               size="$1"
               px="$2"
               py="$1"

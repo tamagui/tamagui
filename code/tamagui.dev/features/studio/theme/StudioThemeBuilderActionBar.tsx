@@ -6,7 +6,14 @@ import { StudioThemeBuilderSettingsDropdown } from './StudioThemeBuilderSettings
 
 export const StudioThemeBuilderActionBar = memo(function StudioThemeBuilderActionBar() {
   return (
-    <XStack z={100000} gap="$3" flex={1} items="center" justify="space-between">
+    <XStack
+      z={100000}
+      gap="$3"
+      flex={1}
+      flexBasis="auto"
+      items="center"
+      justify="space-between"
+    >
       <ThemeSwitch />
       <StudioThemeBuilderSettingsDropdown />
     </XStack>

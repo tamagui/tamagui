@@ -1,5 +1,5 @@
 import type React from 'react'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import {
   Button,
   Circle,
@@ -9,6 +9,7 @@ import {
   styled,
   Switch as TamaguiSwitch,
   type SwitchProps as TamaguiSwitchProps,
+  Text,
   View,
   XStack,
   YStack,
@@ -16,48 +17,125 @@ import {
 import { TimedRender } from './components/TimedRender'
 
 const StyledButton = styled(Button, {
-  animation: 'quick',
+  transition: 'quick',
 })
 
+// Test component that tracks render counts
+const RenderCountBox = memo(({ id }: { id: string }) => {
+  const renderCount = useRef(0)
+  renderCount.current++
+
+  return (
+    <View
+      testID={`render-count-box-${id}`}
+      transition="quick"
+      width={100}
+      height={100}
+      backgroundColor="$blue10"
+      borderRadius="$4"
+      alignItems="center"
+      justifyContent="center"
+      hoverStyle={{
+        backgroundColor: '$green10',
+        scale: 1.1,
+      }}
+      pressStyle={{
+        backgroundColor: '$red10',
+        scale: 0.95,
+      }}
+    >
+      <Text testID={`render-count-${id}`} color="white" fontWeight="bold">
+        {renderCount.current}
+      </Text>
+    </View>
+  )
+})
+
+// Container that shows multiple boxes for render count testing
+const RenderCountTest = () => {
+  const [resetKey, setResetKey] = useState(0)
+
+  return (
+    <YStack gap="$4" padding="$4">
+      <Paragraph>
+        Hover/press boxes below. Lower render counts = better.
+      </Paragraph>
+      <Paragraph fontSize="$2" color="$gray11">
+        With avoidRerenders, hover/press should NOT increment render count.
+      </Paragraph>
+
+      <Button testID="reset-render-counts" onPress={() => setResetKey((k) => k + 1)}>
+        Reset Render Counts
+      </Button>
+
+      <XStack key={resetKey} gap="$4" flexWrap="wrap">
+        <RenderCountBox id="1" />
+        <RenderCountBox id="2" />
+        <RenderCountBox id="3" />
+      </XStack>
+    </YStack>
+  )
+}
+
 export const Sandbox = () => {
+  const [mode, setMode] = useState<'sheet' | 'renderCount'>('renderCount')
+
+  if (mode === 'renderCount') {
+    return (
+      <YStack flex={1}>
+        <XStack padding="$2" gap="$2">
+          <Button size="$2" onPress={() => setMode('sheet')}>
+            Sheet Test
+          </Button>
+          <Button size="$2" onPress={() => setMode('renderCount')}>
+            Render Count Test
+          </Button>
+        </XStack>
+        <RenderCountTest />
+      </YStack>
+    )
+  }
+
+  return <SheetTest onBack={() => setMode('renderCount')} />
+}
+
+const SheetTest = ({ onBack }: { onBack: () => void }) => {
   const [open, setOpen] = useState(false)
   const [animationType, setAnimationType] = useState<'lazy' | 'quick' | 'bouncy'>('lazy')
 
   return (
     <YStack gap="$4" padding="$4">
+      <Button size="$2" onPress={onBack}>
+        Back to Render Count Test
+      </Button>
+
       <XStack gap="$2">
-        <Button onPress={() => setAnimationType('lazy')}>
-          lazy
-        </Button>
-        <Button onPress={() => setAnimationType('quick')}>
-          quick
-        </Button>
-        <Button onPress={() => setAnimationType('bouncy')}>
-          bouncy
-        </Button>
+        <Button onPress={() => setAnimationType('lazy')}>lazy</Button>
+        <Button onPress={() => setAnimationType('quick')}>quick</Button>
+        <Button onPress={() => setAnimationType('bouncy')}>bouncy</Button>
       </XStack>
 
       <Button onPress={() => setOpen(true)}>
-        Open Sheet (animation="{animationType}")
+        Open Sheet (transition="{animationType}")
       </Button>
 
       <Sheet
         open={open}
         onOpenChange={setOpen}
-        animation={animationType}
+        transition={animationType}
         modal
         dismissOnSnapToBottom
         snapPoints={[50]}
       >
         <Sheet.Overlay
-          animation={animationType}
+          transition={animationType}
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Frame padding="$4" bg="$background">
           <YStack gap="$4">
-            <Paragraph>Sheet with animation="{animationType}"</Paragraph>
+            <Paragraph>Sheet with transition="{animationType}"</Paragraph>
             <Button onPress={() => setOpen(false)}>Close</Button>
           </YStack>
         </Sheet.Frame>
@@ -250,7 +328,7 @@ const Switch = memo(
       <TamaguiSwitch
         width={100}
         alignItems="center"
-        animation={[
+        transition={[
           'bouncy',
           {
             backgroundColor: {
@@ -289,7 +367,7 @@ const Switch = memo(
       >
         <TamaguiSwitch.Thumb
           alignItems="center"
-          animation={[
+          transition={[
             'bouncy',
             {
               backgroundColor: {
@@ -305,7 +383,7 @@ const Switch = memo(
           <View
             $group-item-hover={frameActiveStyle}
             $group-item-press={frameActiveStyle}
-            animation="100ms"
+            transition="100ms"
             opacity={checked ? 1 : 0}
           >
             {/* <Check color={iconColor} size={14} /> */}
@@ -315,7 +393,7 @@ const Switch = memo(
           <View
             $group-item-hover={outerActiveStyle}
             $group-item-press={outerActiveStyle}
-            animation={[
+            transition={[
               'bouncy',
               {
                 backgroundColor: {

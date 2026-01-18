@@ -17,7 +17,7 @@ export const getUserDetails = async (
   supabase: SupabaseClient<Database>,
   userId: string
 ) => {
-  const result = await supabase.from('users').select('*').eq('id', userId).single()
+  const result = await supabase.from('users').select('*').eq('id', userId).maybeSingle()
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -296,7 +296,7 @@ export async function getUserThemeHistories(
 
     return data.map((d) => ({
       ...d,
-      theme_data: ThemeSuiteSchema.parse(d.theme_data) as ThemeSuiteItemData,
+      theme_data: ThemeSuiteSchema.parse(d.theme_data) as unknown as ThemeSuiteItemData,
     }))
   } catch {
     return []

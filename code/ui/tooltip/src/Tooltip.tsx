@@ -44,27 +44,25 @@ export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
 // warning: setting to stylebale causes issues with themeInverse across portal root
 
-const TooltipContent = PopperContentFrame.extractable(
-  React.forwardRef<TamaguiElement, TooltipContentProps>((props, ref) => {
-    const preventAnimation = React.useContext(PreventTooltipAnimationContext)
+const TooltipContent = PopperContentFrame.styleable((props: TooltipContentProps, ref) => {
+  const preventAnimation = React.useContext(PreventTooltipAnimationContext)
 
-    return (
-      <PopoverContent
-        scope={props.scope || TOOLTIP_SCOPE}
-        componentName="Tooltip"
-        disableFocusScope
-        {...(!props.unstyled && {
-          pointerEvents: 'none',
-        })}
-        ref={ref}
-        {...props}
-        {...(preventAnimation && {
-          animation: null,
-        })}
-      />
-    )
-  })
-)
+  return (
+    <PopoverContent
+      scope={props.scope || TOOLTIP_SCOPE}
+      componentName="Tooltip"
+      disableFocusScope
+      {...(!props.unstyled && {
+        pointerEvents: 'none',
+      })}
+      ref={ref}
+      {...props}
+      {...(preventAnimation && {
+        animation: null,
+      })}
+    />
+  )
+})
 
 const TooltipArrow = React.forwardRef<TamaguiElement, PopperArrowProps>((props, ref) => {
   return (
@@ -139,12 +137,8 @@ const TooltipComponent = React.forwardRef(function Tooltip(
 ) {
   const {
     children,
-    delay: delayProp = 400,
-    restMs = typeof delayProp === 'undefined'
-      ? 0
-      : typeof delayProp === 'number'
-        ? delayProp
-        : 0,
+    delay: delayProp,
+    restMs: restMsProp,
     onOpenChange: onOpenChangeProp,
     focus,
     open: openProp,
@@ -155,7 +149,9 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   const triggerRef = React.useRef<HTMLButtonElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
   const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
-  const delay = delayProp ?? delayGroup ?? 0
+  // Use delayProp if explicitly provided, otherwise fall back to group delay or default 400
+  const delay = delayProp !== undefined ? delayProp : (delayGroup ?? 400)
+  const restMs = restMsProp ?? (typeof delay === 'number' ? delay : 0)
   const [open, setOpen] = useControllableState({
     prop: openProp,
     defaultProp: false,
@@ -193,8 +189,15 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       open,
       onOpenChange,
     })
-    const { delay: delayContext } = useDelayGroup(floating.context, { id })
-    const delayOut = delay ?? delayContext
+    // useDelayGroup returns the coordinated delay from FloatingDelayGroup
+    // When another tooltip in the group is open, it returns { open: 1, close: ... }
+    // to enable instant opening when moving between grouped tooltips
+    const { delay: delayContext, currentId } = useDelayGroup(floating.context, { id })
+    // Use coordinated delay only when actively in a group with another tooltip showing
+    // (currentId is set and delayContext is the coordinated { open: 1, ... } object)
+    // Otherwise fall back to local delay
+    const isInActiveGroup = currentId != null && typeof delayContext === 'object'
+    const delayOut = isInActiveGroup ? delayContext : delay
 
     const { getReferenceProps, getFloatingProps } = useInteractions([
       useHover(floating.context, {

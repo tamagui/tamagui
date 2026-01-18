@@ -1,4 +1,4 @@
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { animations } from './animations'
@@ -18,21 +18,19 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-// Use v4 config as base and override with our customizations
+// Use v5 config as base, but with tamagui.dev custom themes
 export const config = {
   ...defaultConfig,
+  themes: themeDev,
   fonts,
   animations,
-  themes: themeDev,
   media,
-  // v4 has shorthands built-in, no need to import
   settings: {
     ...defaultConfig.settings,
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    maxDarkLightNesting: 2,
-    themeClassNameOnRoot: true,
-    disableRootThemeClass: true,
+    styleCompat: 'react-native',
+    addThemeClassName: 'html',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
@@ -40,8 +38,8 @@ export const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
-    // Allow full style props (not just shorthands) for demos
-    onlyAllowShorthands: true,
+    // Allow both shorthands and longhand names for flexibility
+    onlyAllowShorthands: false,
   },
 } satisfies CreateTamaguiProps
 

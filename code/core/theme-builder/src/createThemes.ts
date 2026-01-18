@@ -1,16 +1,16 @@
 import { parseToHsla } from 'color2k'
+import type { Template } from '@tamagui/create-theme'
 import { defaultComponentThemes } from './defaultComponentThemes'
 import { defaultTemplates } from './defaultTemplates'
 import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
 import { createThemeBuilder, type ThemeBuilder } from './ThemeBuilder'
-import type { BuildPalettes, BuildTemplates, GetThemeFn } from './types'
+import type { BuildPalettes, BuildTemplates } from './types'
 
 /**
- * TODO
- *
- *  - we avoidNestingWithin accent, but sometimes want it eg v4-tamagui grandChildren
- *    a good default would be to IF palette is set, dont nest, IF only template, nest
- *    needs to update both runtime logic and types
+ * GrandChildren theme nesting logic implementation:
+ *  - IF palette is set: treat as palette theme (don't nest into accent family)
+ *  - IF only template: nest into color children, but avoid base themes (light, dark)
+ *    to prevent conflicts with top-level accent theme
  */
 
 type ExtraThemeValues = Record<string, string>
@@ -33,13 +33,26 @@ type SinglePalette = string[]
 type SchemePalette = { light: SinglePalette; dark: SinglePalette }
 type Palette = SinglePalette | SchemePalette
 
+/** Props for getTheme callback */
+export type GetThemeProps = {
+  name: string
+  theme: Record<string, string>
+  scheme?: 'light' | 'dark'
+  parentName: string
+  parentNames: string[]
+  level: number
+  palette?: string[]
+  template?: Template
+}
+
 export type CreateThemesProps<
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
-  ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false = SimpleThemesDefinition,
   Templates extends BuildTemplates = typeof defaultTemplates,
+  GetThemeReturn extends Record<string, string | number> = Record<string, string>,
 > = {
   base: BaseThemeDefinition<Extra>
   accent?: Accent
@@ -47,13 +60,50 @@ export type CreateThemesProps<
   grandChildrenThemes?: GrandChildrenThemes
   templates?: Templates
   componentThemes?: ComponentThemes
-  getTheme?: GetThemeFn<any>
+  getTheme?: (props: GetThemeProps) => GetThemeReturn
 }
 
+// Overload 1: With getTheme callback - infers return type
+export function createThemes<
+  Extra extends ExtraThemeValuesByScheme,
+  SubThemes extends SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false,
+  GrandChildrenThemes extends SimpleThemesDefinition | undefined,
+  Accent extends BaseThemeDefinition<Extra> | undefined,
+  Templates extends BuildTemplates,
+  GetThemeReturn extends Record<string, string | number>,
+>(
+  props: CreateThemesProps<
+    Accent,
+    GrandChildrenThemes,
+    Extra,
+    SubThemes,
+    ComponentThemes,
+    Templates,
+    GetThemeReturn
+  > & {
+    getTheme: (props: GetThemeProps) => GetThemeReturn
+  }
+): ReturnType<
+  typeof createSimpleThemeBuilder<
+    Extra,
+    typeof defaultTemplates,
+    SimplePaletteDefinitions,
+    { [K in keyof SubThemes]: { template: string; palette?: string } },
+    GrandChildrenThemes extends undefined
+      ? undefined
+      : Record<keyof GrandChildrenThemes, any>,
+    Accent extends undefined ? false : true,
+    ComponentThemes,
+    GetThemeReturn
+  >
+>['themes']
+
+// Overload 2: Without getTheme callback - standard return type
 export function createThemes<
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
-  ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false = SimpleThemesDefinition,
   GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
   Templates extends BuildTemplates = typeof defaultTemplates,
@@ -65,6 +115,42 @@ export function createThemes<
     SubThemes,
     ComponentThemes,
     Templates
+  > & {
+    getTheme?: undefined
+  }
+): ReturnType<
+  typeof createSimpleThemeBuilder<
+    Extra,
+    typeof defaultTemplates,
+    SimplePaletteDefinitions,
+    { [K in keyof SubThemes]: { template: string; palette?: string } },
+    GrandChildrenThemes extends undefined
+      ? undefined
+      : Record<keyof GrandChildrenThemes, any>,
+    Accent extends undefined ? false : true,
+    ComponentThemes,
+    Record<string, string>
+  >
+>['themes']
+
+// Implementation
+export function createThemes<
+  Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
+  SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition | false = SimpleThemesDefinition,
+  GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
+  Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
+  Templates extends BuildTemplates = typeof defaultTemplates,
+  GetThemeReturn extends Record<string, string | number> = Record<string, string>,
+>(
+  props: CreateThemesProps<
+    Accent,
+    GrandChildrenThemes,
+    Extra,
+    SubThemes,
+    ComponentThemes,
+    Templates,
+    GetThemeReturn
   >
 ) {
   const {
@@ -76,7 +162,18 @@ export function createThemes<
     getTheme,
   } = props
 
-  const builder = createSimpleThemeBuilder({
+  const builder = createSimpleThemeBuilder<
+    Extra,
+    typeof defaultTemplates,
+    SimplePaletteDefinitions,
+    { [K in keyof SubThemes]: { template: string; palette?: string } },
+    GrandChildrenThemes extends undefined
+      ? undefined
+      : Record<keyof GrandChildrenThemes, any>,
+    Accent extends undefined ? false : true,
+    ComponentThemes,
+    GetThemeReturn
+  >({
     extra: props.base.extra,
     accentExtra: accent?.extra,
     componentThemes,
@@ -104,10 +201,13 @@ export const getLastBuilder = () => lastBuilder
 function normalizeSubThemes<A extends SimpleThemesDefinition>(defs?: A) {
   return Object.fromEntries(
     Object.entries(defs || {}).map(([name, value]) => {
+      const hasPalette = value.palette !== undefined
+
       return [
         name,
         {
-          palette: name,
+          // Only add palette if the definition has one, otherwise theme is template-only
+          ...(hasPalette ? { palette: name } : {}),
           template: value.template || 'base',
         },
       ]
@@ -138,7 +238,7 @@ export function createSimpleThemeBuilder<
   ChildrenThemes extends Record<
     string,
     {
-      template: keyof Templates extends string ? keyof Templates : never
+      template: string
       palette?: string
     }
   >,
@@ -147,12 +247,13 @@ export function createSimpleThemeBuilder<
     | Record<
         string,
         {
-          template: keyof Templates extends string ? keyof Templates : never
+          template: string
           palette?: string
         }
       >,
   HasAccent extends boolean = false,
   ComponentThemes extends SimpleThemesDefinition | false = false,
+  GetThemeReturn extends Record<string, string | number> = Record<string, string>,
   FullTheme extends Record<string, string | number> = {
     [ThemeKey in
       | keyof Templates['light_base']
@@ -179,10 +280,10 @@ export function createSimpleThemeBuilder<
   componentThemes?: ComponentThemes
   extra?: Extra
   accentExtra?: Extra
-  getTheme?: GetThemeFn<any>
+  getTheme?: (props: GetThemeProps) => GetThemeReturn
 }): {
   themeBuilder: ThemeBuilder<any>
-  themes: Record<ThemeNames, FullTheme>
+  themes: Record<ThemeNames, FullTheme & GetThemeReturn>
 } {
   const {
     getTheme,
@@ -249,25 +350,6 @@ export function createSimpleThemeBuilder<
       },
     })
 
-  if (palettes.light_accent) {
-    themeBuilder = themeBuilder.addChildThemes({
-      accent: [
-        {
-          parent: 'light',
-          template: 'base',
-          palette: 'light_accent',
-          nonInheritedValues: accentExtra?.light,
-        },
-        {
-          parent: 'dark',
-          template: 'base',
-          palette: 'dark_accent',
-          nonInheritedValues: accentExtra?.dark,
-        },
-      ],
-    }) as any
-  }
-
   if (childrenThemes) {
     themeBuilder = themeBuilder.addChildThemes(childrenThemes, {
       avoidNestingWithin: ['accent'],
@@ -278,6 +360,32 @@ export function createSimpleThemeBuilder<
     themeBuilder = themeBuilder.addChildThemes(grandChildrenThemes, {
       avoidNestingWithin: ['accent'],
     }) as any
+  }
+
+  // Add top-level accent AFTER grandChildren
+  // Avoid nesting within color children (blue, red, etc.) so grandChildren accent can handle those
+  if (palettes.light_accent) {
+    themeBuilder = themeBuilder.addChildThemes(
+      {
+        accent: [
+          {
+            parent: 'light',
+            template: 'base',
+            palette: 'light_accent',
+            nonInheritedValues: accentExtra?.light,
+          },
+          {
+            parent: 'dark',
+            template: 'base',
+            palette: 'dark_accent',
+            nonInheritedValues: accentExtra?.dark,
+          },
+        ],
+      },
+      {
+        avoidNestingWithin: Object.keys(childrenThemes || {}),
+      }
+    ) as any
   }
 
   if (componentThemes) {
@@ -343,19 +451,27 @@ function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
 
   const baseAnchors = getAnchors(base)
 
-  function getSubThemesPalettes(defs: SimpleThemesDefinition) {
+  function getSubThemesPalettes(defs: SimpleThemesDefinition, isGrandChildren = false) {
     return Object.fromEntries(
-      Object.entries(defs).map(([key, value]) => {
-        return [
-          key,
-          {
-            name: key,
-            anchors: value.palette
-              ? getAnchors(coerceSimplePaletteToSchemePalette(value.palette))
-              : baseAnchors,
-          },
-        ]
-      })
+      Object.entries(defs)
+        .map(([key, value]) => {
+          // For grandChildren accent without custom palette: skip it entirely
+          // It will inherit from parent in the theme builder
+          if (isGrandChildren && key === 'accent' && !value.palette) {
+            return null
+          }
+
+          return [
+            key,
+            {
+              name: key,
+              anchors: value.palette
+                ? getAnchors(coerceSimplePaletteToSchemePalette(value.palette))
+                : baseAnchors,
+            },
+          ]
+        })
+        .filter(Boolean) as [string, any][]
     )
   }
 
@@ -370,8 +486,9 @@ function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
         anchors: getAnchors(accent),
       },
     }),
-    ...(props.childrenThemes && getSubThemesPalettes(props.childrenThemes)),
-    ...(props.grandChildrenThemes && getSubThemesPalettes(props.grandChildrenThemes)),
+    ...(props.childrenThemes && getSubThemesPalettes(props.childrenThemes, false)),
+    ...(props.grandChildrenThemes &&
+      getSubThemesPalettes(props.grandChildrenThemes, true)),
   }
 }
 

@@ -1,9 +1,9 @@
-import { animationsCSS } from '@tamagui/tamagui-dev-config'
+import { animationsCSS, animationsMotion } from '@tamagui/tamagui-dev-config'
 import type { AnimationDriver } from '@tamagui/web'
 import { createContext, useContext, useMemo, useState } from 'react'
 import tamaConf from '~/config/tamagui.config'
 
-const ANIMATION_DRIVERS = ['css', 'react-native'] as const
+const ANIMATION_DRIVERS = ['css', 'react-native', 'motion'] as const
 
 export const useAnimationDriverToggler = () => {
   const contextValue = useContext(AnimationDriverTogglerContext)
@@ -14,7 +14,7 @@ export const useAnimationDriverToggler = () => {
 
 const AnimationDriverTogglerContext = createContext<{
   driverName: (typeof ANIMATION_DRIVERS)[number]
-  driver: AnimationDriver
+  driver: AnimationDriver<any>
   nextDriver: () => void
   setDriverName: (driverName: (typeof ANIMATION_DRIVERS)[number]) => void
 } | null>(null)
@@ -36,7 +36,13 @@ export const AnimationDriverTogglerContextProvider = ({
     )
   }
 
-  const driver = driverName === 'css' ? animationsCSS : tamaConf.animations
+  const driver = (
+    driverName === 'css'
+      ? animationsCSS
+      : driverName === 'motion'
+        ? animationsMotion
+        : tamaConf.animations
+  ) as AnimationDriver<any>
 
   const value = useMemo(() => {
     return { driverName, nextDriver, setDriverName, driver }

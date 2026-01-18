@@ -1,36 +1,36 @@
-import React from "react";
-import { Input, styled } from 'tamagui';
+import React from 'react'
+import { Input, styled } from 'tamagui'
 
 const StyledInput = styled(Input, {
   borderColor: 'red',
   borderWidth: 5,
 
-  variants: ({
+  variants: {
     test: {
       true: {
         focusStyle: {
           borderWidth: 10,
-          borderColor: 'blue'
-        }
-      }
-    }
-  } as const)
-});
+          borderColor: 'blue',
+        },
+      },
+    },
+  } as const,
+})
 
-const AnotherStyled = styled(StyledInput);
+const AnotherStyled = styled(StyledInput, {})
 
-const MyComponent = AnotherStyled.styleable((props, ref) =>
-<StyledInput ref={ref as any} {...props} />
-);
+const MyComponent = AnotherStyled.styleable((props, ref) => (
+  <StyledInput ref={ref as any} {...props} />
+))
 
 export function StyledStyledStyleableInputOnFocus() {
-  const [onFocus, setOnFocus] = React.useState(false);
+  const [onFocus, setOnFocus] = React.useState(false)
   return (
     <MyComponent
       test
       data-onfocus={onFocus}
       id="onFocus"
-      onFocus={() => setOnFocus(true)} />);
-
-
+      onFocus={() => setOnFocus(true)}
+    />
+  )
 }

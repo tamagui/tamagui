@@ -8,6 +8,7 @@ export const ComponentContext = createStyledContext<ComponentContextI>({
   language: null,
   animationDriver: null,
   setParentFocusState: null,
+  insets: null,
 })
 
 export const useConfiguration = () => {

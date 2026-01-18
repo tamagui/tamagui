@@ -94,7 +94,7 @@ export const ColorsSidebarLeft = memo(function ColorsSidebarLeft() {
                   state.colors.setBackgroundColor(color)
                 }}
               />
-              <Label ellipse size="$3" htmlFor="bg-color">
+              <Label ellipsis size="$3" htmlFor="bg-color">
                 Background
               </Label>
             </XStack>

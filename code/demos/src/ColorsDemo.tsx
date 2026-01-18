@@ -1,49 +1,74 @@
-import type { Variable } from '@tamagui/core'
 import {
-  H2,
-  Paragraph,
-  Separator,
-  Square,
-  XStack,
-  YStack,
-  getTokens,
-  getVariableValue,
-} from 'tamagui'
+  blue,
+  blueDark,
+  gray,
+  grayDark,
+  green,
+  greenDark,
+  red,
+  redDark,
+  yellow,
+  yellowDark,
+} from '@tamagui/colors'
+import { H2, Paragraph, Separator, Square, XStack, YStack } from 'tamagui'
 
-const colorGroups = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red']
+const colorGroups = ['gray', 'blue', 'green', 'yellow', 'red'] as const
+
+const lightColors = {
+  gray,
+  blue,
+  green,
+  yellow,
+  red,
+}
+
+const darkColors = {
+  gray: grayDark,
+  blue: blueDark,
+  green: greenDark,
+  yellow: yellowDark,
+  red: redDark,
+}
 
 export function ColorsDemo() {
-  const colors = getTokens({ prefixed: false }).color
-  const [colorsLight, colorsDark] = [getColors(colors), getColors(colors, true)]
-
   return (
     <YStack mt="$4" gap="$8">
-      <ColorsRow title="Light" colors={colorsLight} />
+      <ColorsRow title="Light" colorSets={lightColors} />
       <Separator />
-      <ColorsRow title="Dark" colors={colorsDark} />
+      <ColorsRow title="Dark" colorSets={darkColors} />
     </YStack>
   )
 }
 
-function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
+type ColorSet = Record<string, string>
+
+function ColorsRow({
+  title,
+  colorSets,
+}: {
+  title: string
+  colorSets: Record<(typeof colorGroups)[number], ColorSet>
+}) {
   return (
     <YStack gap="$4" $sm={{ gap: '$2' }}>
       <H2 size="$2">{title}</H2>
 
       <XStack gap="$4" self="center">
         <YStack gap="$4" $sm={{ gap: '$2' }} self="center">
-          {colors.map((group, index) => {
+          {colorGroups.map((groupName) => {
+            const colorSet = colorSets[groupName]
+            const colors = Object.values(colorSet)
             return (
-              <XStack gap="$2" key={index}>
-                {group.map((color) => {
+              <XStack gap="$2" key={groupName}>
+                {colors.map((color, index) => {
                   return (
                     <Square
-                      key={`${color.key}${index}`}
+                      key={`${groupName}${index}`}
                       rounded="$2"
                       size="$4"
                       height="$4"
                       borderWidth={1}
-                      bg={getVariableValue(color)}
+                      bg={color as any}
                       borderColor="$color7"
                       $sm={{
                         size: '$2',
@@ -105,20 +130,4 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
       </XStack>
     </YStack>
   )
-}
-
-function getColors(colors: Record<string, Variable> | undefined, dark = false) {
-  if (!colors) {
-    console.warn(`⚠️ no colors?`, colors)
-    return []
-  }
-  return colorGroups.map((group) => {
-    return Object.keys(colors)
-      .filter(
-        (color) =>
-          color.startsWith(group) &&
-          (dark ? color.endsWith('Dark') : !color.endsWith('Dark'))
-      )
-      .map((key) => colors[key])
-  })
 }

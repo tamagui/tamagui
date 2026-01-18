@@ -71,14 +71,14 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
       />
 
       <Theme name={screenshot ? 'blue' : undefined}>
-        <XStack w="100%" h="100%" fullscreen>
+        <XStack width="100%" height="100%" fullscreen>
           <YStack
             {...(centered && {
-              ai: 'center',
-              jc: 'center',
+              items: 'center',
+              justify: 'center',
             })}
-            f={1}
-            h="100%"
+            flex={1}
+            height="100%"
           >
             {props.children}
           </YStack>
@@ -88,11 +88,11 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
               <Separator vertical />
               <Theme name="dark">
                 <YStack
-                  f={1}
+                  flex={1}
                   {...(centered && {
-                    ai: 'center',
-                    jc: 'center',
-                    h: '100%',
+                    items: 'center',
+                    justify: 'center',
+                    height: '100%',
                   })}
                   bg={screenshot ? 'transparent' : '$background'}
                 >

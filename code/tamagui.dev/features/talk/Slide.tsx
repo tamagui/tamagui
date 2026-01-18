@@ -208,7 +208,7 @@ const SlideInner = (props: SlideProps) => {
           )}
 
           {Boolean(props.subTitle) && (
-            <H2 size="$10" theme="alt2" self="center">
+            <H2 size="$10" color="$color9" self="center">
               {props.subTitle}
             </H2>
           )}
@@ -425,7 +425,7 @@ function getTextContent(
                     pr: '$2',
                     pt: '$0',
                   })}
-                  animation={superBouncyOpacityClamped}
+                  transition={superBouncyOpacityClamped}
                   enterStyle={{
                     opacity: 0,
                     y: -10,

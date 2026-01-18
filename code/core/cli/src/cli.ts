@@ -64,7 +64,7 @@ const COMMAND_MAP = {
   },
 
   'generate-themes': {
-    shorthands: ['gt'],
+    shorthands: [],
     description: `Use to pre-build your themes`,
     flags: {
       '--help': Boolean,
@@ -102,7 +102,7 @@ const COMMAND_MAP = {
   },
 
   add: {
-    shorthands: ['a'],
+    shorthands: [],
     description: `Use to add fonts and icons to your monorepo. Supported types: ${generatedPackageTypes.join(
       ', '
     )}`,
@@ -212,7 +212,7 @@ const COMMAND_MAP = {
   },
 
   'generate-prompt': {
-    shorthands: ['gp'],
+    shorthands: [],
     description: `Generate an LLM-friendly markdown file from your Tamagui config`,
     flags: {
       '--help': Boolean,

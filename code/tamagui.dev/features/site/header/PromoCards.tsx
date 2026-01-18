@@ -8,6 +8,7 @@ const Card = styled(YStack, {
   maxH: 120,
   maxW: 'calc(min(100%, 257px))',
   flex: 1,
+  flexBasis: 'auto',
   rounded: '$4',
   borderWidth: 0.5,
   borderColor: '$color4',

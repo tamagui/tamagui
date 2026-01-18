@@ -1,3 +1,8 @@
+import {
+  normalizeTransition,
+  getAnimatedProperties,
+  hasAnimation as hasNormalizedAnimation,
+} from '@tamagui/animation-helpers'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
@@ -86,12 +91,17 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      // const initialPositionRef = useRef<any>(null)
-      const [animationKey, animationConfig] = Array.isArray(props.animation)
-        ? props.animation
-        : [props.animation]
-      const animation = animations[animationKey]
-      const keys = props.animateOnly ?? ['all']
+      // Normalize the transition prop to a consistent format
+      const normalized = normalizeTransition(props.transition)
+      const defaultAnimation = normalized.default ? animations[normalized.default] : null
+      const animatedProperties = getAnimatedProperties(normalized)
+
+      // Determine which properties to animate
+      // If object format with properties specified, use those; otherwise use animateOnly or 'all'
+      const keys =
+        animatedProperties.length > 0
+          ? animatedProperties
+          : (props.animateOnly ?? ['all'])
 
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host
@@ -108,7 +118,11 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
          */
 
         // Use timeout as primary, transition events as backup for reliable exit handling
-        const fallbackTimeout = animation ? extractDuration(animation) : 200
+        const animationDuration = defaultAnimation
+          ? extractDuration(defaultAnimation)
+          : 200
+        const delay = normalized.delay ?? 0
+        const fallbackTimeout = animationDuration + delay
 
         const timeoutId = setTimeout(() => {
           sendExitComplete?.()
@@ -130,36 +144,52 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         }
       }, [sendExitComplete, isExiting])
 
-      if (animation) {
-        if (Array.isArray(style.transform)) {
-          style.transform = transformsToString(style.transform)
-        }
-
-        // add css transition
-        // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
-        // for non layout transform properties either use animate function or find a workaround to do it with css
-        style.transition = keys
-          .map((key) => {
-            const override = animations[animationConfig?.[key]] ?? animation
-            return `${key} ${override}`
-          })
-          .join(', ')
+      // Check if we have any animation to apply
+      if (!hasNormalizedAnimation(normalized)) {
+        return null
       }
+
+      if (Array.isArray(style.transform)) {
+        style.transform = transformsToString(style.transform)
+      }
+
+      // Build CSS transition string
+      // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
+      // for non layout transform properties either use animate function or find a workaround to do it with css
+      const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
+      style.transition = keys
+        .map((key) => {
+          // Check for property-specific animation, fall back to default
+          const propAnimation = normalized.properties[key]
+          let animationValue: string | null = null
+
+          if (typeof propAnimation === 'string') {
+            animationValue = animations[propAnimation]
+          } else if (
+            propAnimation &&
+            typeof propAnimation === 'object' &&
+            propAnimation.type
+          ) {
+            animationValue = animations[propAnimation.type]
+          } else if (defaultAnimation) {
+            animationValue = defaultAnimation
+          }
+
+          return animationValue ? `${key} ${animationValue}${delayStr}` : null
+        })
+        .filter(Boolean)
+        .join(', ')
 
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
         console.info('CSS animation', {
           props,
           animations,
-          animation,
-          animationKey,
+          normalized,
+          defaultAnimation,
           style,
           isEntering,
           isExiting,
         })
-      }
-
-      if (!animation) {
-        return null
       }
 
       return { style, className: isEntering ? 't_unmounted' : '' }

@@ -22,7 +22,7 @@ export const ButtonFrame = styled(View, {
 
   // Here is the issue: <---------------------------------------------------
   height: 'auto',
-  animation: 'bouncy',
+  transition: 'bouncy',
   pressStyle: {
     scale: 0.97,
     opacity: 0.9

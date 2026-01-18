@@ -2,6 +2,9 @@ export declare const defaultComponentThemes: {
     ListItem: {
         template: string;
     };
+    SelectItem: {
+        template: string;
+    };
     SelectTrigger: {
         template: string;
     };

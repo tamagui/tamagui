@@ -22,7 +22,7 @@ function TooltipComp() {
       <Tooltip.Content
         enterStyle={{ x: 0, y: -4, opacity: 0, scale: 0.96 }}
         exitStyle={{ x: 0, y: -4, opacity: 0, scale: 0.96 }}
-        animation="bouncy"
+        transition="bouncy"
       >
         <Tooltip.Arrow />
         <Paragraph>some tooltip</Paragraph>

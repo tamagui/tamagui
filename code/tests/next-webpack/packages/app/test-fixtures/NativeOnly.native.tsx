@@ -1,9 +1,9 @@
-import { YStack, Button } from '@my/ui'
+import { View } from '@tamagui/core'
 
 export function NativeOnly() {
   return (
-    <YStack flex={1} gap="$6" bg="$orange5">
-      <Button>Native Only File</Button>
-    </YStack>
+    <View flex={1} gap="$6" bg="$color5">
+      <>Native Only File</>
+    </View>
   )
 }
