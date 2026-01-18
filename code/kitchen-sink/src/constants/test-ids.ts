@@ -36,4 +36,9 @@ export const TEST_IDS = {
   themeMutationSquare: 'theme-mutation-square',
   themeMutationButton: 'theme-mutation-button',
   themeMutationColorText: 'theme-mutation-color-text',
+  // Theme Shallow test IDs
+  themeShallowNormal: 'theme-shallow-normal',
+  themeShallowEnabled: 'theme-shallow-enabled',
+  themeShallowContainer: 'theme-shallow-container',
+  themeShallowInner: 'theme-shallow-inner',
 } as const
