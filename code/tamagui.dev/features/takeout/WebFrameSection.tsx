@@ -140,7 +140,7 @@ const PointsCard = ({
         p="$5"
         position="relative"
         bg="$background"
-        borderWidth={1}
+        borderWidth={0.5}
         borderColor="$borderColor"
       >
         {isHydrated && <innerGlow.Component />}
@@ -204,7 +204,7 @@ export const WebFrameSection = () => {
           py="$3"
           items="center"
           gap="$3"
-          borderWidth={1}
+          borderWidth={0.5}
           borderBottomWidth={0}
           borderColor="$borderColor"
         >
@@ -233,7 +233,7 @@ export const WebFrameSection = () => {
           bg={isDark ? '$color2' : '$color3'}
           borderBottomLeftRadius="$4"
           borderBottomRightRadius="$4"
-          borderWidth={1}
+          borderWidth={0.5}
           borderTopWidth={0}
           borderColor="$borderColor"
           p="$6"

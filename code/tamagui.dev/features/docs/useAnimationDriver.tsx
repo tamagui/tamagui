@@ -14,7 +14,7 @@ export const useAnimationDriverToggler = () => {
 
 const AnimationDriverTogglerContext = createContext<{
   driverName: (typeof ANIMATION_DRIVERS)[number]
-  driver: AnimationDriver
+  driver: AnimationDriver<any>
   nextDriver: () => void
   setDriverName: (driverName: (typeof ANIMATION_DRIVERS)[number]) => void
 } | null>(null)
@@ -36,12 +36,13 @@ export const AnimationDriverTogglerContextProvider = ({
     )
   }
 
-  const driver =
+  const driver = (
     driverName === 'css'
       ? animationsCSS
       : driverName === 'motion'
         ? animationsMotion
         : tamaConf.animations
+  ) as AnimationDriver<any>
 
   const value = useMemo(() => {
     return { driverName, nextDriver, setDriverName, driver }

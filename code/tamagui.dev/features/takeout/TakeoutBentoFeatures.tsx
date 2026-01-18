@@ -1,3 +1,15 @@
+import { ThemeTintAlt } from '@tamagui/logo'
+import {
+  Cloud,
+  Code,
+  Globe,
+  Rocket,
+  Shield,
+  Smartphone,
+  Terminal,
+  Zap,
+} from '@tamagui/lucide-icons'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import {
   composeRefs,
   H2,
@@ -8,34 +20,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { ThemeTintAlt } from '@tamagui/logo'
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import {
-  Globe,
-  Zap,
-  Smartphone,
-  Shield,
-  Cloud,
-  Terminal,
-  Rocket,
-  Code,
-} from '@tamagui/lucide-icons'
 import { useHoverGlow } from '~/components/HoverGlow'
-import { HighlightText } from './HighlightText'
-
-const BentoCardFrame = styled(YStack, {
-  rounded: '$5',
-  p: '$5',
-  bg: '$background04',
-  borderWidth: 1,
-  borderColor: '$borderColor',
-  overflow: 'hidden',
-  position: 'relative',
-  style: {
-    backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)',
-  },
-})
 
 const IconWrapper = styled(YStack, {
   width: 44,
@@ -49,7 +34,7 @@ const IconWrapper = styled(YStack, {
 const features = [
   {
     title: 'Universal Apps',
-    description: 'One codebase for iOS, Android, and Web. Share 95%+ of code.',
+    description: 'One codebase. iOS, Android, & Web. 90%+ shared code.',
     Icon: Globe,
   },
   {
@@ -74,7 +59,7 @@ const features = [
   },
   {
     title: 'CLI Powered',
-    description: 'The tko CLI handles dev, build, deploy, and migrations.',
+    description: 'The tko CLI handles dev, build, deploy, testing, migrations.',
     Icon: Terminal,
   },
   {
@@ -101,12 +86,12 @@ function BentoCard({
   const isDark = useThemeName().startsWith('dark')
   const isHydrated = useDidFinishSSR()
   const innerGlow = useHoverGlow({
-    resist: 30,
+    resist: 80,
     size: 200,
     strategy: 'blur',
     blurPct: 60,
-    color: isDark ? 'var(--color1)' : 'var(--color4)',
-    opacity: isDark ? 0.18 : 0.35,
+    color: isDark ? 'var(--red3)' : 'var(--red4)',
+    opacity: isDark ? 0.3 : 0.35,
     background: 'transparent',
     style: {
       transition: `all ease-out 300ms`,
@@ -121,7 +106,7 @@ function BentoCard({
       rounded="$5"
       p="$5"
       bg="$background04"
-      borderWidth={1}
+      borderWidth={0.5}
       borderColor="$color4"
       overflow="hidden"
       position="relative"
@@ -132,11 +117,9 @@ function BentoCard({
     >
       {isHydrated && <innerGlow.Component />}
 
-      <ThemeTintAlt>
-        <IconWrapper bg="$color5" z={1} position="relative">
-          <Icon size={22} color="$color12" />
-        </IconWrapper>
-      </ThemeTintAlt>
+      <IconWrapper bg="$color5" z={1} position="relative">
+        <Icon size={22} color="$color12" />
+      </IconWrapper>
 
       <H3
         fontSize={16}
@@ -149,13 +132,7 @@ function BentoCard({
         {title}
       </H3>
 
-      <Paragraph
-        fontSize={14}
-        color="$color11"
-        z={1}
-        position="relative"
-        style={{ lineHeight: '1.5' }}
-      >
+      <Paragraph size="$3" color="$color11" z={1} position="relative">
         {description}
       </Paragraph>
     </YStack>
@@ -202,10 +179,7 @@ export function TakeoutBentoFeatures() {
           style={{ lineHeight: '1.2' }}
           $sm={{ fontSize: 40 }}
         >
-          Everything{' '}
-          <ThemeTintAlt>
-            <HighlightText tag="span">you need.</HighlightText>
-          </ThemeTintAlt>
+          Modern, robust, maintained
         </H2>
         <Paragraph
           fontSize={16}
@@ -215,13 +189,13 @@ export function TakeoutBentoFeatures() {
           style={{ lineHeight: '1.6' }}
           $sm={{ fontSize: 18 }}
         >
-          A complete stack for building production apps, not a boilerplate.
+          A complete startup stack for production apps, not a boilerplate.
         </Paragraph>
       </YStack>
 
       {/* 4 cards per row on desktop, 2 on tablet, 1 on mobile */}
       <XStack flexWrap="wrap" gap="$4" justify="center" z={1}>
-        {features.map((feature) => (
+        {features.map((feature, index) => (
           <YStack
             key={feature.title}
             width="calc(25% - 40px)"
@@ -230,11 +204,13 @@ export function TakeoutBentoFeatures() {
             $sm={{ width: 'calc(50% - 8px)' }}
             $xs={{ width: '100%' }}
           >
-            <BentoCard
-              title={feature.title}
-              description={feature.description}
-              Icon={feature.Icon}
-            />
+            <ThemeTintAlt offset={index}>
+              <BentoCard
+                title={feature.title}
+                description={feature.description}
+                Icon={feature.Icon}
+              />
+            </ThemeTintAlt>
           </YStack>
         ))}
       </XStack>

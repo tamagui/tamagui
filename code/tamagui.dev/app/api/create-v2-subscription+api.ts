@@ -10,7 +10,7 @@ const PRO_V2_UPGRADE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId
 
 /**
  * V2 Pro Purchase Flow:
- * 1. Charge $1,500 one-time for license
+ * 1. Charge $999 one-time for license
  * 2. Create $300/year upgrade subscription (starts in 1 year)
  * 3. Project is created after successful payment via webhook
  */
@@ -82,7 +82,7 @@ export default apiRoute(async (req) => {
     const upgradeStartDate = new Date()
     upgradeStartDate.setFullYear(upgradeStartDate.getFullYear() + 1)
 
-    // Create invoice for the $1,500 one-time license fee
+    // Create invoice for the $999 one-time license fee
     await stripe.invoiceItems.create({
       customer: stripeCustomerId,
       price: PRO_V2_LICENSE_PRICE_ID,

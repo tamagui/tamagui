@@ -19,7 +19,7 @@ function getLazyComponent(
 
 export function lazyDemo(importFunc: () => Promise<ComponentType<any>>) {
   return () => {
-    const Component = use(getLazyComponent(importFunc) as any)
+    const Component = use(getLazyComponent(importFunc)) as ComponentType<any>
 
     return (
       <Suspense fallback={<Spinner />}>

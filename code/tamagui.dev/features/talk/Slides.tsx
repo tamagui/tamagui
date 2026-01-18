@@ -89,7 +89,7 @@ export function Slides(props: { slides: Slides }) {
           position="absolute"
           l="$4"
           circular
-          elevate
+          elevation="$2"
           onPress={prevStep}
         />
         <Button
@@ -99,7 +99,7 @@ export function Slides(props: { slides: Slides }) {
           position="absolute"
           r="$4"
           circular
-          elevate
+          elevation="$2"
           onPress={nextStep}
         />
 

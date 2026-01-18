@@ -395,18 +395,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
       </SlidingPopoverContext.Provider>
 
       <Adapt platform="touch" when="sm">
-        <Sheet
-          zIndex={100000000}
-          modal
-          dismissOnSnapToBottom
-          transition="bouncy"
-          animationConfig={{
-            type: 'spring',
-            damping: 25,
-            mass: 1.2,
-            stiffness: 200,
-          }}
-        >
+        <Sheet zIndex={100000000} modal dismissOnSnapToBottom>
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />

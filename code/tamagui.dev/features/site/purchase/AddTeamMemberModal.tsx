@@ -228,10 +228,10 @@ export const AddTeamMemberModalComponent = () => {
   const appearance: Appearance = {
     theme: themeName.startsWith('dark') ? 'night' : 'stripe',
     variables: {
-      colorPrimary: theme.blue9.val,
-      colorBackground: theme.background.val,
-      colorText: theme.color.val,
-      colorDanger: theme.red9.val,
+      colorPrimary: theme.blue9?.val,
+      colorBackground: theme.background?.val,
+      colorText: theme.color?.val,
+      colorDanger: theme.red9?.val,
       fontFamily: '"Berkeley Mono", system-ui, -apple-system, sans-serif',
     },
   }

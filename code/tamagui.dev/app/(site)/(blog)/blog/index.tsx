@@ -30,14 +30,14 @@ export default function Blog() {
           Blog
         </H2>
         <Spacer size="$6" />
-        <XStack flexWrap="wrap" jc="space-between">
+        <XStack flexWrap="wrap" justifyContent="space-between">
           {frontmatters.map((frontmatter) => (
             <Link asChild key={frontmatter.title} href={`/blog/${frontmatter.slug}`}>
               <TamaguiCard
                 title={frontmatter.title}
                 render="a"
                 subTitle={
-                  <Paragraph o={0.5} cursor="inherit" color="$color10" size="$3">
+                  <Paragraph opacity={0.5} cursor="inherit" color="$color10" size="$3">
                     {Intl.DateTimeFormat('en-US', {
                       month: 'short',
                       year: 'numeric',

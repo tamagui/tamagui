@@ -19,8 +19,8 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
       className="t_Link"
       cursor="pointer"
       color="inherit"
-      fontSize="inherit"
-      lineHeight="inherit"
+      fontSize="unset"
+      lineHeight="unset"
       {...props}
       {...linkProps}
       {...(delayNavigate && {

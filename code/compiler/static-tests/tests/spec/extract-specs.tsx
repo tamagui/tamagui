@@ -372,12 +372,12 @@ export function TestFlexProperties() {
     <YStack
       flexDirection="column"
       flexWrap="wrap"
-      flexGrow={1}
-      flexShrink={0}
+      flex={1}
+      shrink={0}
       flexBasis="auto"
-      alignItems="stretch"
-      justifyContent="flex-start"
-      alignContent="flex-start"
+      items="stretch"
+      justify="flex-start"
+      content="flex-start"
     >
       {child}
     </YStack>
@@ -425,7 +425,7 @@ export function TestFlexWrapWithMediaQuery() {
       gap="$2"
       $sm={{
         flexWrap: 'nowrap',
-        padding: '$4',
+        p: '$4',
       }}
     >
       {child}
@@ -437,7 +437,7 @@ export function TestFlexWrapWithMediaQuery() {
 export function TestAriaProps() {
   return (
     <YStack
-      tag="nav"
+      render="nav"
       aria-labelledby="test-heading"
       aria-label="Navigation menu"
       p="$4"

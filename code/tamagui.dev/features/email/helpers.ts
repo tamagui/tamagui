@@ -162,9 +162,9 @@ export function sendV1ExpirationEmail(email: string, args: { name: string }) {
 
   <p>To maintain access to Tamagui Pro features, you'll need to purchase the new plan:</p>
 
-  <p><a href="https://tamagui.dev/takeout" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Get Tamagui Pro V2 - $1,500</a></p>
+  <p><a href="https://tamagui.dev/takeout" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Get Tamagui Pro V2 - $999</a></p>
 
-  <p>The new plan is $1,500 per project (one web domain + iOS + Android), with optional $300/year upgrades to continue receiving updates after the first year.</p>
+  <p>The new plan is $999 per project (one web domain + iOS + Android), with optional $300/year upgrades to continue receiving updates after the first year.</p>
 
   <h2>What Happens When Your Subscription Expires?</h2>
 

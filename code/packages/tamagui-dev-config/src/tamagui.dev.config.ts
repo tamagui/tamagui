@@ -4,6 +4,7 @@ import { setupDev } from '@tamagui/core'
 import { animations } from './animations'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
+import { themeDev } from './theme.dev'
 
 setupDev({
   visualizer: true,
@@ -17,9 +18,10 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-// Use v5 config as base
+// Use v5 config as base, but with tamagui.dev custom themes
 export const config = {
   ...defaultConfig,
+  themes: themeDev,
   fonts,
   animations,
   media,
@@ -36,6 +38,8 @@ export const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
+    // Allow both shorthands and longhand names for flexibility
+    onlyAllowShorthands: false,
   },
 } satisfies CreateTamaguiProps
 

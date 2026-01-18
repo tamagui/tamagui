@@ -16,12 +16,12 @@ const CommandBoxLarge = styled(XStack, {
   rounded: '$10',
   px: '$6',
   py: '$4',
-  bg: '$color4',
+  bg: '$color3',
   items: 'center',
   justify: 'center',
   gap: '$3',
   cursor: 'pointer',
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: '$color4',
 
   hoverStyle: {
@@ -115,8 +115,8 @@ export function TakeoutHeroNew({
               $sm={{ size: '$5' }}
               text="center"
             >
-              Takeout is a full-stack, cross-platform starter kit for building modern web
-              and mobile apps with React Native. It funds the OSS development of Tamagui.
+              Takeout makes React Native + web as well-structured, fast, and simple as
+              possible, and funds the OSS development of Tamagui.
             </Paragraph>
           </YStack>
         </ThemeTintAlt>
@@ -131,7 +131,7 @@ export function TakeoutHeroNew({
               <Button
                 size="$4"
                 bg="$color5"
-                borderWidth={1}
+                borderWidth={0.5}
                 borderColor="$color7"
                 cursor="pointer"
                 hoverStyle={{ bg: '$color6', borderColor: '$color8' }}
@@ -148,14 +148,14 @@ export function TakeoutHeroNew({
             <Button
               size="$4"
               bg="$color3"
-              borderWidth={1}
+              borderWidth={0.5}
               borderColor="$color6"
               cursor="pointer"
               hoverStyle={{ bg: '$color4', borderColor: '$color8' }}
               pressStyle={{ bg: '$color5' }}
             >
               <Button.Text fontFamily="$mono" color="$color12">
-                Demo Website
+                Demo (web)
               </Button.Text>
             </Button>
           </Link>
