@@ -21,7 +21,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "workspace:*"
+    "@tamagui/core": "workspace:*",
+    "@tamagui/sizable-context": "workspace:*"
   },
   "exports": {
     "./package.json": "./package.json",

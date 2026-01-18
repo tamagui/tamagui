@@ -5,12 +5,15 @@ import {
   usePropsAndStyle,
   type ResolveVariableAs,
 } from '@tamagui/core'
+import { SizableContext } from '@tamagui/sizable-context'
 import React from 'react'
 
 import type { IconProps } from './IconProps'
 
 // sad fix https://github.com/tamagui/tamagui/issues/1812
 React['keep']
+
+export { SizableContext }
 
 type Options = {
   noClass?: boolean
@@ -30,6 +33,8 @@ export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
   }
 
   const wrapped = (propsIn: IconProps) => {
+    const styledContext = SizableContext.useStyledContext()
+
     const [props, style, theme] = usePropsAndStyle(propsIn, {
       ...opts,
       forComponent: Text,
@@ -49,7 +54,7 @@ export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
     const size =
       typeof props.size === 'string'
         ? getTokenValue(props.size as any, 'size')
-        : props.size
+        : props.size || styledContext.size
 
     const strokeWidth =
       typeof props.strokeWidth === 'string'
