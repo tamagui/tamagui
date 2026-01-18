@@ -546,7 +546,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     compiler: 117,
     ui: Math.min(maxHeight, 1300),
     theme: data?.user ? 300 : 240,
-    menu: Math.min(maxHeight, isOnlyShowingMenu ? 1000 : 390),
+    menu: Math.min(maxHeight, isOnlyShowingMenu ? 1000 : 520),
   }
 
   return (

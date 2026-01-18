@@ -64,7 +64,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
             {/* main color slices */}
             <ThemeTint>
               <TAKEOUT
-                color="$color1"
+                color="$color10"
                 className="clip-slice mix-blend"
                 position="absolute"
                 opacity={1}

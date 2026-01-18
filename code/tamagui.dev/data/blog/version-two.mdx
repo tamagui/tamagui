@@ -463,6 +463,22 @@ files across 5 testing frameworks with dedicated native testing infrastructure.
 each animation driver. This catches driver-specific regressions that would
 otherwise slip through.
 
+#### CLI Improvements
+
+The [Tamagui CLI](/docs/guides/cli) has new commands for building and working
+with your design system:
+
+- **`tamagui build`** - Pre-compile components in-place for production. Works
+  with any bundler and supports wrapping your build command to automatically
+  restore files after.
+- **`tamagui generate`** - Build your full Tamagui configuration and output CSS.
+  Validates your config and pre-generates your design system.
+- **`tamagui generate-prompt`** - Generate an LLM-friendly markdown file from
+  your config, documenting all tokens, themes, components, and shorthands for
+  use with AI assistants.
+- **`tamagui check`** - Scan for inconsistent dependency versions across your
+  project.
+
 ### What's next
 
 Tamagui is quite mature in terms of features, foundation, and performance. We

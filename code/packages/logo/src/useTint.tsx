@@ -70,13 +70,17 @@ export const useTint = (
     })
   }, [])
 
+  // index 3 is the "none" position - return null for no tint
+  const tint = index === 3 ? null : tints[index]
+  const tintAlt = tintAltIndex === 3 ? null : tints[tintAltIndex]
+
   return {
     ...tintsContext,
     tints: tintsContext.tints as ThemeName[],
     tintIndex: index,
     tintAltIndex,
-    tint: tints[index] as ThemeName,
-    tintAlt: tints[tintAltIndex] as ThemeName,
+    tint: tint as ThemeName,
+    tintAlt: tintAlt as ThemeName,
     setTintIndex,
     setNextTintFamily,
     setNextTint: () => {
