@@ -2,8 +2,8 @@ import { Image } from '@tamagui/image'
 import { SizableText, Theme, YStack } from 'tamagui'
 import {
   useScrollProgress,
-  WEB_FRAME_SCROLL_START,
   WEB_FRAME_SCROLL_END,
+  WEB_FRAME_SCROLL_START,
 } from './useScrollProgress'
 
 export const PinnedNote = () => {
@@ -37,7 +37,7 @@ export const PinnedNote = () => {
         x={-18}
         z={1}
       />
-      <Theme name="orange">
+      <Theme name="yellow">
         <YStack
           bg="$color4"
           px="$4"

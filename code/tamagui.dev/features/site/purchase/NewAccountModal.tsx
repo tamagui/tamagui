@@ -425,7 +425,6 @@ const Tab = ({
       py="$1"
       bg="$color1"
       height={60}
-      disableActiveTheme
       borderBottomWidth={1}
       borderBottomColor="transparent"
       {...(!isActive && {

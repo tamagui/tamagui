@@ -1,6 +1,6 @@
-import { H2, Paragraph, styled, Theme, XStack, YStack } from 'tamagui'
-import { ThemeTintAlt } from '@tamagui/logo'
 import { Image } from '@tamagui/image'
+import { ThemeTintAlt } from '@tamagui/logo'
+import { H2, Paragraph, styled, Theme, XStack, YStack } from 'tamagui'
 
 const HighlightText = styled(Paragraph, {
   fontSize: 32,
@@ -254,7 +254,7 @@ export function TakeoutDeviceShowcase() {
         {[
           { label: '100 Lighthouse score', theme: 'green' as const },
           { label: 'SSR & SSG support', theme: 'blue' as const },
-          { label: 'Native UI elements', theme: 'orange' as const },
+          { label: 'Native UI elements', theme: 'gray' as const },
           { label: 'Shared design system', theme: 'yellow' as const },
           { label: 'Per-platform divergence', theme: 'red' as const },
         ].map((feature) => (

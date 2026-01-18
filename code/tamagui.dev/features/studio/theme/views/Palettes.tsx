@@ -1,8 +1,8 @@
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from '@tamagui/lucide-icons'
-import { Paragraph, Theme, XStack, YStack } from 'tamagui'
 import { type BuildPalette, getThemeSuitePalettes } from '@tamagui/theme-builder'
-import { StudioPaletteBar } from '../../StudioPaletteBar'
+import { Paragraph, XStack, YStack } from 'tamagui'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { StudioPaletteBar } from '../../StudioPaletteBar'
 
 export function Palettes({
   palette,
@@ -27,46 +27,44 @@ export function Palettes({
       )}
 
       {!condensed && (
-        <Theme name="alt1">
-          <XStack
-            bg="$background"
-            pointerEvents="none"
-            py="$1"
-            px="$2"
-            justify="space-between"
-            items="center"
-          >
-            <XStack items="center" gap="$1">
-              <ArrowLeft opacity={0.33} size={12} />
-              <Paragraph size="$1">Background</Paragraph>
-            </XStack>
-
-            {schemes.light && schemes.dark && (
-              <XStack
-                position="absolute"
-                l="25%"
-                r="25%"
-                items="center"
-                gap="$4"
-                justify="center"
-              >
-                <XStack y={0} items="center" gap="$1">
-                  <ArrowUp opacity={0.33} size={12} />
-                  <Paragraph size="$1">Light</Paragraph>
-                </XStack>
-                <XStack y={0} items="center" gap="$1">
-                  <Paragraph size="$1">Dark</Paragraph>
-                  <ArrowDown opacity={0.33} size={12} />
-                </XStack>
-              </XStack>
-            )}
-
-            <XStack items="center" gap="$1">
-              <Paragraph size="$1">Foreground</Paragraph>
-              <ArrowRight opacity={0.33} size={12} />
-            </XStack>
+        <XStack
+          bg="$background"
+          pointerEvents="none"
+          py="$1"
+          px="$2"
+          justify="space-between"
+          items="center"
+        >
+          <XStack items="center" gap="$1">
+            <ArrowLeft opacity={0.33} size={12} />
+            <Paragraph size="$1">Background</Paragraph>
           </XStack>
-        </Theme>
+
+          {schemes.light && schemes.dark && (
+            <XStack
+              position="absolute"
+              l="25%"
+              r="25%"
+              items="center"
+              gap="$4"
+              justify="center"
+            >
+              <XStack y={0} items="center" gap="$1">
+                <ArrowUp opacity={0.33} size={12} />
+                <Paragraph size="$1">Light</Paragraph>
+              </XStack>
+              <XStack y={0} items="center" gap="$1">
+                <Paragraph size="$1">Dark</Paragraph>
+                <ArrowDown opacity={0.33} size={12} />
+              </XStack>
+            </XStack>
+          )}
+
+          <XStack items="center" gap="$1">
+            <Paragraph size="$1">Foreground</Paragraph>
+            <ArrowRight opacity={0.33} size={12} />
+          </XStack>
+        </XStack>
       )}
 
       {schemes.dark && (

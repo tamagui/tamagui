@@ -1,5 +1,5 @@
 import { useTint } from '@tamagui/logo'
-import { H1, type ThemeProps, YStack, Theme } from 'tamagui'
+import { H1, Theme, type ThemeProps, YStack } from 'tamagui'
 
 const offsetAdjust = 1
 
@@ -15,7 +15,7 @@ export const BentoLogoTheme = ({
   const curTint = useTint(offset).tintAlt
   const name = disable ? null : curTint
   return (
-    <Theme name={name === 'purple' ? 'yellow' : name} {...rest}>
+    <Theme name={name} {...rest}>
       {children}
     </Theme>
   )

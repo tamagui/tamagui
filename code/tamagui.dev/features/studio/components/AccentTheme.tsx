@@ -3,10 +3,8 @@ import { Theme, useThemeName } from 'tamagui'
 
 import { accentThemeName } from '../accentThemeName'
 import { useHasAccent } from '../hooks/useHasAccent'
-import { useThemeBuilderStore } from '../theme/store/ThemeBuilderStore'
 
 export function useAccentTheme(): ThemeProps & { isInAccent?: boolean } {
-  const rootStore = useThemeBuilderStore()
   const hasAccent = useHasAccent()
   const currentThemeName = useThemeName()
   const isInAccent = currentThemeName.includes(accentThemeName)
@@ -14,7 +12,7 @@ export function useAccentTheme(): ThemeProps & { isInAccent?: boolean } {
   if (hasAccent) {
     return {
       isInAccent,
-      name: isInAccent ? 'surface3' : accentThemeName,
+      name: isInAccent ? 'accent' : accentThemeName,
     }
   }
 

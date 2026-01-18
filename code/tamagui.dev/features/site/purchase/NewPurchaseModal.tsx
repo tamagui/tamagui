@@ -28,7 +28,6 @@ import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
 import { Link } from '../../../components/Link'
 import { Select } from '../../../components/Select'
-import { Switch } from '../../../components/Switch'
 import { sendEvent } from '../../analytics/sendEvent'
 import { PromoCards } from '../header/PromoCards'
 import { ProAgreementModal } from './AgreementModal'
@@ -484,9 +483,7 @@ export function PurchaseModalContents() {
                           Policies
                         </SizableText>
                       </XStack>
-                      <Theme name="alt1">
-                        <PoweredByStripeIcon width={96} height={40} />
-                      </Theme>
+                      <PoweredByStripeIcon width={96} height={40} />
                     </XStack>
                   </YStack>
                 </YStack>
@@ -730,7 +727,6 @@ function Tab({
       bg="$color1"
       height={60}
       value=""
-      disableActiveTheme
       borderBottomWidth={1}
       borderBottomColor="transparent"
       {...(!isActive && {

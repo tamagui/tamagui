@@ -36,7 +36,7 @@ export const HeroBelowContent = memo(() => {
           px: '$6',
         }}
       >
-        <Section theme="pink">
+        <Section theme="red">
           <XStack items="center" gap="$4">
             <IconStack>
               <Code size={12} color="var(--color9)" />
@@ -62,7 +62,7 @@ export const HeroBelowContent = memo(() => {
           </Paragraph>
         </Section>
 
-        <Section theme="red">
+        <Section theme="blue">
           <XStack items="center" gap="$4">
             <IconStack>
               <Layers size={16} color="var(--color9)" />

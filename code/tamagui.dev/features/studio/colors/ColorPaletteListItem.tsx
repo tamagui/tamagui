@@ -1,16 +1,6 @@
-import {
-  H5,
-  ListItem,
-  Popover,
-  SizableText,
-  Theme,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { H5, ListItem, SizableText, Theme, XStack, YStack, styled } from 'tamagui'
 
 import type { Palette, Scale } from '../state/types'
-import { ColorPicker } from './ColorPicker'
 import { colorToHex } from './helpers'
 
 const OffsetIndicator = styled(SizableText, {
@@ -44,7 +34,7 @@ export const ColorPaletteListItem = ({
   const numColors = colors.length
 
   return (
-    <Theme name={isActive ? 'alt1' : null}>
+    <Theme name={isActive ? 'accent' : null}>
       <ListItem
         size="$2"
         p={0}

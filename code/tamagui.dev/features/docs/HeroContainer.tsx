@@ -1,7 +1,6 @@
-import type { ReactNode } from 'react'
 import { ThemeTint } from '@tamagui/logo'
-import { useIsDocsTinted } from './docsTint'
 import { Timer, Waves } from '@tamagui/lucide-icons'
+import type { ReactNode } from 'react'
 import {
   Configuration,
   Switch,
@@ -11,6 +10,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { useIsDocsTinted } from './docsTint'
 import {
   AnimationDriverTogglerContextProvider,
   useAnimationDriverToggler,
@@ -173,6 +173,7 @@ const HeroContainerInner = ({
       <ErrorBoundary>
         {demoMultiple ? (
           <XStack gap="$3" px="$8">
+            <Card>{children}</Card>
             <Theme name="gray">
               <Card>{children}</Card>
             </Theme>
@@ -180,12 +181,6 @@ const HeroContainerInner = ({
               <Card>{children}</Card>
             </Theme>
             <Theme name="red">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="pink">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="orange">
               <Card>{children}</Card>
             </Theme>
             <Theme name="green">

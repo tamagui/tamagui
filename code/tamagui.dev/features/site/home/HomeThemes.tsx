@@ -26,7 +26,7 @@ export const HomeThemes = memo(function HomeThemes() {
   const userScheme = useUserScheme()
 
   const tints = useTints().tints as ThemeName[]
-  const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]
+  const themes: (ThemeName | null)[][] = [tints, [null, 'accent']]
 
   const themeCombos: string[] = []
   for (let i = 0; i < themes[0].length; i++) {

@@ -446,7 +446,7 @@ export const IPhoneFrame = () => {
 
         {/* Phone frame */}
         <YStack items="center" position="relative">
-          <Theme name="orange">
+          <Theme name="blue">
             <YStack
               position="absolute"
               width={500}

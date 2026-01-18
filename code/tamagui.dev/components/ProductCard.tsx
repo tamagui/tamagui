@@ -32,7 +32,6 @@ export function ProductCard({ product, children, ...props }) {
         position="relative"
         group="card"
         render="a"
-        theme="surface3"
         transition="quickest"
         bg="$background"
         flex={1}

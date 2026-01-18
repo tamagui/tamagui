@@ -22,13 +22,14 @@ import {
   useEvent,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
-// @ts-expect-error - bento component wildcard import
-import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
+// @ts-ignore - bento component wildcard import
 import { useCurrentRouteParams } from '@tamagui/bento'
+// @ts-ignore - bento component wildcard import
+import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
-import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
 import { useBentoShowcase } from './BentoProvider'
+import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
 
 type Props = {
   children: React.ReactNode
@@ -153,7 +154,7 @@ const ShowcaseView = forwardRef<any, Props>(
               <XGroup rounded="$10">
                 <Button
                   icon={Eye}
-                  theme={view === 'preview' ? 'accent' : 'alt1'}
+                  theme={view === 'preview' ? 'accent' : null}
                   size="$3"
                   onPress={() => setView('preview')}
                 >
@@ -163,7 +164,7 @@ const ShowcaseView = forwardRef<any, Props>(
                 </Button>
                 <Button
                   icon={approved ? Code : Lock}
-                  theme={view === 'code' ? 'accent' : 'alt1'}
+                  theme={view === 'code' ? 'accent' : null}
                   size="$3"
                   onPress={() => setView('code')}
                 >
@@ -494,13 +495,13 @@ export function Hint({ children }: { children: React.ReactNode }) {
       b={12}
       l={12}
       bordered
-      backgrounded
-      theme="orange"
+      bg="$color1"
+      theme="green"
       p="$2"
       px="$3"
       gap="$3"
       z={100000}
-      radiused
+      rounded="$4"
       flexDirection="row"
       justify="center"
       items="center"
