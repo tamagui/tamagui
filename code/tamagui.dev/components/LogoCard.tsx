@@ -2,7 +2,6 @@ import { ThemeTintAlt } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { Avatar, Card, H5, Paragraph, View, XStack, YStack } from 'tamagui'
-import { Link } from './Link'
 
 export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...props }) {
   const [isHovered, setHovered] = useState(false)
@@ -20,8 +19,8 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
         pressStyle={{ y: 2, bg: '$color2' }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        {...(props as any)}
         href={link}
-        {...props}
       >
         <Card.Header>
           <XStack justify="space-between">
@@ -40,7 +39,6 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
                 justify="center"
                 height="$3"
                 width="$3"
-                color="$color10"
                 bg="$color6"
                 rounded="$true"
               >

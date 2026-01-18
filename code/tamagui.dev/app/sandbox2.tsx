@@ -5,8 +5,8 @@ import { Select } from '../components/Select'
 export default () => {
   return (
     <YStack>
-      <YStack maw={300} m={200} zi={1000} pe="auto">
-        <Select id="support-tier" miw={200} size="$4">
+      <YStack maxWidth={300} margin={200} zIndex={1000} pointerEvents="auto">
+        <Select id="support-tier" minW={200} size="$4">
           <Select.Item value="0" index={0}>
             None
           </Select.Item>

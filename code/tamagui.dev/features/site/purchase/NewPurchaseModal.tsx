@@ -168,8 +168,8 @@ export function PurchaseModalContents() {
   // Calculate direction for animation
   const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
 
-  // V2 Pricing: $1,500 one-time per project
-  const V2_PRICE = 1500
+  // V2 Pricing: $999 one-time per project
+  const V2_PRICE = 999
 
   // Legacy V1 prices (for existing subscribers adding support)
   const chatSupportMonthly = chatSupport ? 200 : 0
@@ -194,18 +194,18 @@ export function PurchaseModalContents() {
         <YStack>
           <YStack $gtMd={{ gap: '$6' }} gap="$5">
             <BigP text="center">
-              Everything you need to build a universal app - web, iOS, and Android.
+              The best you can get for building a cross-platform React + React Native app.
             </BigP>
 
             <XStack mx="$-4" flexWrap="wrap" gap="$3" items="center" justify="center">
               <PromoCards />
             </XStack>
 
-            <YStack gap="$4" bg="$color2" p="$4" rounded="$4">
+            <YStack gap="$3" p="$3" rounded="$4">
               <H3 fontFamily="$mono" size="$6">
                 What's Included
               </H3>
-              <YStack gap="$2">
+              <YStack gap="$0.5">
                 <P color="$color11" size="$4">
                   - 3 templates: Takeout v1, Takeout v2, Takeout Static
                 </P>
@@ -228,7 +228,7 @@ export function PurchaseModalContents() {
             </YStack>
 
             <YStack gap="$2">
-              <P color="$color10" size="$4">
+              <P color="$color11" size="$4">
                 License covers one project: your web domain + iOS app + Android app. After
                 the first year, continue receiving updates for $300/year
                 (auto-subscribed).
@@ -522,11 +522,25 @@ export function PurchaseModalContents() {
 const Question = styled(P, {
   fontWeight: 'bold',
   color: '$green9',
+  mb: '$-4',
 })
 
 export const FaqTabContent = () => {
   return (
     <YStack gap="$6">
+      <Question>Why the high price?</Question>
+      <P>
+        The new Takeout stack took immense, loving effort. We considered not selling it
+        all and keeping it a trade secret, especially as it's AI integration x docs x DRY
+        setup means you can truly one-shot high quality features faster than sloppy
+        vibe-code stacks. Still, we do like the idea that Tamagui supports itself, and we
+        hope the stack leads to{' '}
+        <Link target="_blank" href="https://addeven.com">
+          higher quality consulting gigs
+        </Link>
+        .
+      </P>
+
       <Question>Do I own the code? Can I publish it publicly?</Question>
       <P>
         For Bento - yes. For Takeout - no. Takeout is closed source, but the Bento license
@@ -558,23 +572,10 @@ export const FaqTabContent = () => {
         code generation tools.
       </P> */}
 
-      <P>
-        All that said, it's currently in beta and may experience outages or poor
-        performance. We appreciate your feedback.
-      </P>
-
       <Question>What support do I get in the base plan?</Question>
       <P>
         For subscribers, you get access to the private #takeout channel. We prioritize
         responses there over the public Discord, but we don't provide any SLA.
-      </P>
-
-      <Question>What support do I get with the Chat add-on?</Question>
-      <P>
-        You get a private Discord channel just for your team and a highlighted role in
-        Discord chat. You can add up to 2 members to the private channel. We answer
-        questions within 2 business days, and will prioritize bugs above our base
-        subscribers. The Chat add-on costs $200/month.
       </P>
 
       <Question>What support do I get with Support tiers?</Question>
@@ -629,17 +630,17 @@ const SupportTabContent = ({
   return (
     <>
       <BigP>
-        Premium support helps teams using Tamagui ensure bugs get fixed quickly, questions
-        are answered promptly, and receive dedicated development time.
+        Premium support helps teams using Tamagui ensure bugs get fixed quickly and
+        questions are answered promptly.
       </BigP>
 
       <YStack gap="$6">
-        <YStack gap="$3" bg="$color2" p="$4" rounded="$4">
-          <XStack items="center" gap="$2">
-            <Text fontSize="$5" color="$green10">
+        <YStack gap="$3" p="$4" rounded="$4">
+          <XStack items="center">
+            <Text fontSize="$5" color="$green10" width={0}>
               ✓
             </Text>
-            <P fontWeight="600">Basic Chat Support - Included Free</P>
+            <P fontWeight="600">Basic Chat Support - Included</P>
           </XStack>
           <P maxW={500} size="$4" lineHeight="$6" color="$color9">
             Access to the private #takeout Discord channel. We prioritize responses there
@@ -651,7 +652,7 @@ const SupportTabContent = ({
         <YStack gap="$3">
           <XStack overflow="hidden" items="center">
             <Label flex={1} htmlFor="support-tier" rounded="$4">
-              <P>Extra Support Level </P>
+              <P>Premium Support </P>
             </Label>
 
             <XStack flex={1} maxW={200}>

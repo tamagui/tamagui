@@ -84,7 +84,7 @@ export function SourceVersionSwitcher({
           borderWidth={1}
           borderColor="$borderColor"
           elevation="$3"
-          br="$4"
+          borderRadius="$4"
         >
           <Select.Group>
             <Select.Label>Source Version</Select.Label>

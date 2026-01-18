@@ -18,7 +18,7 @@ const HighlightText = styled(Paragraph, {
 const BrowserFrame = styled(YStack, {
   bg: '$color2',
   rounded: '$6',
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: '$color4',
   overflow: 'hidden',
   shadowColor: '$shadowColor',
@@ -85,7 +85,7 @@ export function TakeoutDeviceShowcase() {
         >
           Cross-Platform{' '}
           <ThemeTintAlt>
-            <HighlightText tag="span">Excellence.</HighlightText>
+            <HighlightText render="span">Excellence.</HighlightText>
           </ThemeTintAlt>
         </H2>
         <Paragraph
@@ -142,7 +142,7 @@ export function TakeoutDeviceShowcase() {
           <Theme name="blue">
             <FeatureChip
               bg="$color4"
-              borderWidth={1}
+              borderWidth={0.5}
               borderColor="$color6"
               style={{
                 boxShadow: '0 2px 8px rgba(59, 130, 246, 0.2)',
@@ -228,7 +228,7 @@ export function TakeoutDeviceShowcase() {
           <Theme name="green">
             <FeatureChip
               bg="$color4"
-              borderWidth={1}
+              borderWidth={0.5}
               borderColor="$color6"
               style={{
                 boxShadow: '0 2px 8px rgba(34, 197, 94, 0.2)',
@@ -264,7 +264,7 @@ export function TakeoutDeviceShowcase() {
               py="$2.5"
               rounded="$10"
               bg="$color3"
-              borderWidth={1}
+              borderWidth={0.5}
               borderColor="$color5"
               gap="$2"
               items="center"

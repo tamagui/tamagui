@@ -25,7 +25,7 @@ const FeatureChip = styled(XStack, {
   py: '$3',
   items: 'center',
   gap: '$3',
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: '$color4',
 })
 
@@ -187,7 +187,7 @@ function DemoMenu() {
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',
           }}
-          tag="button"
+          render="button"
         >
           <Paragraph fontSize={14} fontWeight="500">
             Actions
@@ -199,7 +199,7 @@ function DemoMenu() {
         <Menu.Content
           bg="$background"
           rounded="$4"
-          borderWidth={1}
+          borderWidth={0.5}
           borderColor="$color4"
           overflow="hidden"
           minW={220}
@@ -256,7 +256,7 @@ function DemoMenu() {
               <Menu.SubContent
                 bg="$background"
                 rounded="$4"
-                borderWidth={1}
+                borderWidth={0.5}
                 borderColor="$color4"
                 overflow="hidden"
                 minW={180}
@@ -319,7 +319,7 @@ function DemoMenu() {
 
 export function TakeoutMenuShowcase() {
   return (
-    <YStack gap="$6" py="$8" px="$4" maxW={1200} self="center" width="100%">
+    <YStack gap="$6" py="$12" px="$4" maxW={1200} self="center" width="100%">
       <XStack gap="$8" flexWrap="wrap" $md={{ flexWrap: 'nowrap' }}>
         {/* left side - content */}
         <YStack flex={1} gap="$5" minW={300} maxW={500}>
@@ -330,9 +330,8 @@ export function TakeoutMenuShowcase() {
             style={{ lineHeight: '1.1' }}
             $sm={{ fontSize: 40 }}
           >
-            Universal design system{' '}
             <ThemeTintAlt>
-              <HighlightText tag="span">with native feel.</HighlightText>
+              <HighlightText render="span">Native feel</HighlightText>
             </ThemeTintAlt>
           </H2>
 
@@ -352,19 +351,24 @@ export function TakeoutMenuShowcase() {
                 <ChipIcon>
                   <feature.Icon size={16} color="$color11" />
                 </ChipIcon>
-                <Paragraph fontSize={14} color="$color12" fontWeight="500">
+                <Paragraph
+                  pointerEvents="none"
+                  fontSize={14}
+                  color="$color11"
+                  fontWeight="500"
+                >
                   {feature.label}
                 </Paragraph>
               </FeatureChip>
             ))}
           </XStack>
 
-          <Link href="https://tamagui.dev" target="_blank">
+          {/* <Link href="https://tamagui.dev" target="_blank">
             <ThemeTintAlt>
               <Button
                 size="$4"
                 bg="$color5"
-                borderWidth={1}
+                borderWidth={0.5}
                 borderColor="$color7"
                 cursor="pointer"
                 mt="$4"
@@ -377,7 +381,7 @@ export function TakeoutMenuShowcase() {
                 </Button.Text>
               </Button>
             </ThemeTintAlt>
-          </Link>
+          </Link> */}
         </YStack>
 
         {/* right side - demo */}
@@ -394,7 +398,7 @@ export function TakeoutMenuShowcase() {
               }}
             />
           </ThemeTintAlt>
-          <Link href="https://tamagui.dev" target="_blank">
+          {/* <Link href="https://tamagui.dev" target="_blank">
             <YStack
               position="absolute"
               t={16}
@@ -415,7 +419,7 @@ export function TakeoutMenuShowcase() {
             >
               <Info size={16} color="$color11" />
             </YStack>
-          </Link>
+          </Link> */}
           <YStack p="$6" z={1} gap="$5" items="center">
             <DemoMenu />
             <DemoAccordion />

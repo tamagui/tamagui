@@ -145,6 +145,7 @@ export const ScreenshotGallery = () => {
       gap="$6"
       maxW={1100}
       mx="auto"
+      py="$8"
       width="100%"
       position="relative"
     >
@@ -178,9 +179,9 @@ export const ScreenshotGallery = () => {
         $sm={{ fontSize: 40 }}
         z={1}
       >
-        Explore the{' '}
-        <ThemeTintAlt>
-          <HighlightText tag="span">screenshots.</HighlightText>
+        v1{' '}
+        <ThemeTintAlt offset={2}>
+          <HighlightText render="span">screenshots</HighlightText>
         </ThemeTintAlt>
       </H2>
 

@@ -48,7 +48,6 @@ const ToggleGroupItem = styled(ToggleGroup.Item, {
 
   focusStyle: {
     backgroundColor: '$color10',
-    color: '$color2',
   },
 
   focusVisibleStyle: {

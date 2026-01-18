@@ -22,7 +22,7 @@ const CTAContainer = styled(YStack, {
   bg: '$color2',
   rounded: '$8',
   p: '$8',
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: '$color4',
   position: 'relative',
   overflow: 'hidden',
@@ -72,7 +72,7 @@ const SecondaryButton = styled(YStack, {
   items: 'center',
   justify: 'center',
   bg: '$color2',
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: '$color6',
   style: {
     transition: 'all 200ms ease',
@@ -129,7 +129,7 @@ export function TakeoutCTA() {
           >
             Ready to{' '}
             <ThemeTintAlt>
-              <HighlightText tag="span">ship?</HighlightText>
+              <HighlightText render="span">ship?</HighlightText>
             </ThemeTintAlt>
           </H2>
           <Paragraph

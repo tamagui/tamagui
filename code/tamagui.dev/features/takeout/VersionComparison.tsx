@@ -21,24 +21,24 @@ const VersionBadge = styled(SizableText, {
   fontWeight: '600',
   textTransform: 'uppercase',
   letterSpacing: 1,
-  borderWidth: 1,
+  borderWidth: 0.5,
 
   variants: {
     variant: {
       new: {
-        backgroundColor: '$green4',
+        bg: '$green4',
         color: '$green11',
         borderColor: '$green7',
       },
       free: {
-        backgroundColor: '$blue4',
+        bg: '$blue4',
         color: '$blue11',
         borderColor: '$blue7',
       },
       legacy: {
-        backgroundColor: '$orange4',
-        color: '$orange11',
-        borderColor: '$orange7',
+        bg: '$gray4',
+        color: '$gray11',
+        borderColor: '$gray7',
       },
     },
   } as const,
@@ -122,6 +122,7 @@ export function VersionComparison() {
     <YStack
       items="center"
       gap="$6"
+      py="$6"
       maxW={1000}
       mx="auto"
       width="100%"
@@ -136,17 +137,7 @@ export function VersionComparison() {
           style={{ lineHeight: '1.2' }}
           $sm={{ fontSize: 40 }}
         >
-          Pick Your{' '}
-          <ThemeTintAlt>
-            <SizableText
-              fontSize={32}
-              fontWeight="700"
-              color="$color10"
-              $sm={{ fontSize: 40 }}
-            >
-              Version
-            </SizableText>
-          </ThemeTintAlt>
+          Three Flavors
         </H3>
         <Paragraph
           fontSize={16}
@@ -162,7 +153,7 @@ export function VersionComparison() {
         bg={isDark ? 'rgba(255,255,255,0.03)' : '$color2'}
         rounded="$6"
         p="$6"
-        borderWidth={1}
+        borderWidth={0.5}
         borderColor={isDark ? 'rgba(255,255,255,0.08)' : '$color4'}
         gap="$4"
         overflow="hidden"
@@ -173,7 +164,7 @@ export function VersionComparison() {
       >
         <YStack
           rounded="$4"
-          borderWidth={1}
+          borderWidth={0.5}
           borderColor="$color6"
           overflow="hidden"
           bg="$background02"
@@ -202,7 +193,7 @@ export function VersionComparison() {
               >
                 v1
               </SizableText>
-              <Theme name="orange">
+              <Theme name="gray">
                 <VersionBadge variant="legacy">Conservative</VersionBadge>
               </Theme>
             </XStack>
@@ -235,7 +226,7 @@ export function VersionComparison() {
               <Button
                 size="$4"
                 bg="$color5"
-                borderWidth={1}
+                borderWidth={0.5}
                 borderColor="$color7"
                 cursor="pointer"
                 hoverStyle={{ bg: '$color6', borderColor: '$color8' }}
@@ -251,7 +242,7 @@ export function VersionComparison() {
             <Button
               size="$4"
               bg="$color3"
-              borderWidth={1}
+              borderWidth={0.5}
               borderColor="$color6"
               cursor="pointer"
               hoverStyle={{ bg: '$color4', borderColor: '$color8' }}

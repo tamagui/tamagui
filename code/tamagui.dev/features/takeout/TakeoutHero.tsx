@@ -1,6 +1,6 @@
 import { Image } from '@tamagui/image'
 import { ThemeTintAlt } from '@tamagui/logo'
-import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { Suspense, lazy } from 'react'
 import {
   Button,
@@ -17,7 +17,6 @@ import {
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
-import { isSafariMobile } from '~/features/site/purchase/helpers'
 import { isSafari } from './helpers'
 import { SafariFloatingIcons } from './SafariStaticLayout'
 import { TakeoutLogo } from './TakeoutLogo'
@@ -173,12 +172,12 @@ const SideFeatureCardFrame = styled(YStack, {
   p: '$4',
   position: 'relative',
   bg: '$background02',
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: '$borderColor',
 })
 
 const CodeInline = styled(Paragraph, {
-  tag: 'code',
+  render: 'code',
   fontFamily: '$mono',
   color: '$color12',
   bg: 'color-mix(in srgb, var(--color8) 50%, transparent 50%)' as any,

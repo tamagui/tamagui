@@ -261,7 +261,7 @@ const ImageGallery = () => {
         />
 
         <Dialog.Content
-          borderWidth={1}
+          borderWidth={0.5}
           borderColor="$borderColor"
           elevate
           key="content"
@@ -414,7 +414,7 @@ const TakeoutImage = ({
         store.galleryImageIdx = props.index
       }}
       rounded="$5"
-      borderWidth={1}
+      borderWidth={0.5}
       borderColor="$color5"
       overflow="hidden"
       elevation="$3"

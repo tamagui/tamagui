@@ -153,7 +153,7 @@ export const paymentModal = createStore(PaymentModal)
 export const usePaymentModal = createUseStore(PaymentModal)
 
 // V2 Pro pricing constants
-export const V2_LICENSE_PRICE = 1500 // $1,500 one-time
+export const V2_LICENSE_PRICE = 999 // $999 one-time
 export const V2_UPGRADE_PRICE = 300 // $300/year for updates
 
 type StripePaymentModalProps = {
@@ -676,10 +676,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     const appearance: Appearance = {
       theme: themeName.startsWith('dark') ? 'night' : 'stripe',
       variables: {
-        colorPrimary: theme.blue9.val,
-        colorBackground: theme.background.val,
-        colorText: theme.color.val,
-        colorDanger: theme.red9.val,
+        colorPrimary: theme.blue9?.val,
+        colorBackground: theme.background?.val,
+        colorText: theme.color?.val,
+        colorDanger: theme.red9?.val,
         fontFamily: '"Berkeley Mono", system-ui, -apple-system, sans-serif',
         spacingUnit: '4px',
         gridRowSpacing: '20px',
@@ -688,7 +688,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       },
     }
 
-    // V2: $1,500 one-time, V1: legacy monthly + yearly
+    // V2: $999 one-time, V1: legacy monthly + yearly
     const baseAmount = isV2
       ? V2_LICENSE_PRICE * 100
       : monthlyTotal * 100 + yearlyTotal * 100
