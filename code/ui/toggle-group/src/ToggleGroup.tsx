@@ -1,20 +1,19 @@
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
-import { getFontSize } from '@tamagui/font-size'
-import { getSize } from '@tamagui/get-token'
 import type { GroupProps } from '@tamagui/group'
 import { Group, useGroupItem } from '@tamagui/group'
 import { withStaticProperties } from '@tamagui/helpers'
-import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tamagui/web'
-import { createStyledContext, getVariableValue, styled, useTheme } from '@tamagui/web'
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web'
+import { createStyledContext, getVariableValue, styled } from '@tamagui/web'
 import React from 'react'
 
-import type { ToggleProps, ToggleStylesBase } from './Toggle'
-import { Toggle, ToggleFrame, context as ToggleContext } from './Toggle'
+import type { ToggleProps } from './Toggle'
+import { Toggle, ToggleFrame } from './Toggle'
+import { context as ToggleContext } from './context'
+import type { ToggleStylesBase } from './types'
 
 const TOGGLE_GROUP_NAME = 'ToggleGroup'
 
@@ -32,7 +31,9 @@ const { Provider: ToggleGroupItemProvider } =
   createStyledContext<ToggleGroupItemContextValue>()
 
 const { Provider: ToggleGroupContext, useStyledContext: useToggleGroupContext } =
-  createStyledContext<ToggleGroupContextValue>()
+  createStyledContext<ToggleGroupContextValue>({
+    size: undefined,
+  })
 
 type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
   value: string
@@ -51,10 +52,9 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
     const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
     const context = useToggleGroupContext(props.__scopeToggleGroup)
     const toggleContext = ToggleContext.useStyledContext(props.__scopeToggleGroup)
-    const pressed = valueContext?.value.includes(props.value)
-    const activeStyle = props.activeStyle || toggleContext.activeStyle
+    const active = valueContext?.value.includes(props.value)
     const color = (props as any).color || toggleContext.color
-    const { disablePassStyles, activeStyle: _, ...rest } = props
+    const { disablePassStyles, ...rest } = props
     const disabled = context.disabled || props.disabled || false
     const groupItemProps = useGroupItem({ disabled })
     const size = props.size ?? context.size
@@ -67,32 +67,11 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
           padding: getVariableValue(size) * 0.6,
         }
 
-    const iconSize =
-      (typeof size === 'number' ? size * 0.7 : getFontSize(size as FontSizeTokens)) * 1.2
-
-    const theme = useTheme()
-    const toggledColor = (activeStyle as ToggleStylesBase)?.color
-    const activeColor = pressed && toggledColor ? toggledColor : color
-    const getThemedIcon = useGetThemedIcon({
-      size: iconSize,
-      color: activeColor || theme.color,
-    })
-
-    const childrens = React.Children.toArray(props.children)
-    const children = childrens.map((child) => {
-      if (props.disablePassStyles || !React.isValidElement(child)) {
-        return child
-      }
-      return React.cloneElement(getThemedIcon(child), { active: pressed } as any)
-    })
-
     const commonProps = {
-      pressed,
+      active,
       disabled,
       ...sizeProps,
       ...rest,
-      children,
-      activeStyle,
     }
 
     const inner = (
@@ -102,19 +81,20 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
         // focusable={!disabled}
         tabIndex={disabled ? -1 : 0}
         disabled={disabled}
+        active={active}
         {...groupItemProps}
       />
     )
 
     return (
       <ToggleGroupItemProvider scope={props.__scopeToggleGroup}>
-        <ToggleContext.Provider color={color} activeStyle={activeStyle}>
+        <ToggleContext.Provider size={size} color={color} active={active}>
           {context.rovingFocus ? (
             <RovingFocusGroup.Item
               asChild="except-style"
               __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
               focusable={!disabled}
-              active={pressed}
+              active={active}
             >
               {inner}
             </RovingFocusGroup.Item>
@@ -158,7 +138,7 @@ const ToggleGroupItemImpl = React.forwardRef<
       {...typeProps}
       {...itemProps}
       ref={forwardedRef}
-      onPressedChange={(pressed) => {
+      onActiveChange={(pressed) => {
         if (pressed) {
           valueContext.onItemActivate(value)
         } else {
@@ -358,9 +338,9 @@ ToggleGroup.displayName = TOGGLE_GROUP_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 type ToggleGroupContextValue = {
-  rovingFocus: boolean
-  disabled: boolean
-  size: SizeTokens
+  rovingFocus?: boolean
+  disabled?: boolean
+  size?: SizeTokens
 }
 
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>
@@ -415,21 +395,15 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.styleable<
     dir: direction,
     ...toggleGroupProps,
   }
-  const adjustedSize = getVariableValue(
-    getSize(sizeProp, {
-      shift: sizeAdjust,
-    })
-  )
-  const size = Math.round(adjustedSize * 0.45)
 
   return (
     <ToggleGroupContext
       scope={__scopeToggleGroup}
       rovingFocus={rovingFocus}
       disabled={disabled}
-      size={size}
+      size={sizeProp}
     >
-      <ToggleContext.Provider color={color} activeStyle={activeStyle}>
+      <ToggleContext.Provider color={color}>
         {rovingFocus ? (
           <RovingFocusGroup
             asChild="except-style"

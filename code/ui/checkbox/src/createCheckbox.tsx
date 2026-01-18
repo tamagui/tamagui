@@ -52,6 +52,7 @@ export type CheckboxProps = CheckboxBaseProps &
   CheckboxExpectingVariantProps &
   CheckboxFrameActiveStyleProps
 
+// loose types for createCheckbox generics - actual components have stricter types
 type CheckboxComponent = (props: any) => React.ReactNode
 type CheckboxIndicatorComponent = (props: any) => React.ReactNode
 

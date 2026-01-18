@@ -5,12 +5,6 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<impo
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;

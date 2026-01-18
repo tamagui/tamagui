@@ -49,6 +49,7 @@
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
     "@tamagui/portal": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",

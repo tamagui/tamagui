@@ -17,7 +17,6 @@ export function AlertDialogDemo() {
           exitStyle={{ opacity: 0 }}
         />
         <AlertDialog.Content
-          bordered
           elevate
           key="content"
           transition={[
