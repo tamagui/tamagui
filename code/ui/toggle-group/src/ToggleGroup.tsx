@@ -43,7 +43,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
    * Used to disable passing styles down to children.
    */
   disablePassStyles?: boolean
-  toggledStyle?: ToggleStylesBase | null
+  activeStyle?: ToggleStylesBase | null
   color?: string
 }
 const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>(
@@ -52,9 +52,9 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
     const context = useToggleGroupContext(props.__scopeToggleGroup)
     const toggleContext = ToggleContext.useStyledContext(props.__scopeToggleGroup)
     const pressed = valueContext?.value.includes(props.value)
-    const toggledStyle = props.toggledStyle || toggleContext.toggledStyle
+    const activeStyle = props.activeStyle || toggleContext.activeStyle
     const color = (props as any).color || toggleContext.color
-    const { disablePassStyles, toggledStyle: _, ...rest } = props
+    const { disablePassStyles, activeStyle: _, ...rest } = props
     const disabled = context.disabled || props.disabled || false
     const groupItemProps = useGroupItem({ disabled })
     const size = props.size ?? context.size
@@ -71,7 +71,7 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
       (typeof size === 'number' ? size * 0.7 : getFontSize(size as FontSizeTokens)) * 1.2
 
     const theme = useTheme()
-    const toggledColor = (toggledStyle as ToggleStylesBase)?.color
+    const toggledColor = (activeStyle as ToggleStylesBase)?.color
     const activeColor = pressed && toggledColor ? toggledColor : color
     const getThemedIcon = useGetThemedIcon({
       size: iconSize,
@@ -92,7 +92,7 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
       ...sizeProps,
       ...rest,
       children,
-      toggledStyle,
+      activeStyle,
     }
 
     const inner = (
@@ -108,7 +108,7 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
 
     return (
       <ToggleGroupItemProvider scope={props.__scopeToggleGroup}>
-        <ToggleContext.Provider color={color} toggledStyle={toggledStyle}>
+        <ToggleContext.Provider color={color} activeStyle={activeStyle}>
           {context.rovingFocus ? (
             <RovingFocusGroup.Item
               asChild="except-style"
@@ -387,7 +387,7 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
     dir?: RovingFocusGroupProps['dir']
     loop?: RovingFocusGroupProps['loop']
     sizeAdjust?: number
-    toggledStyle?: ToggleStylesBase | null
+    activeStyle?: ToggleStylesBase | null
     color?: string
   }
 
@@ -405,7 +405,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.styleable<
     unstyled = false,
     size: sizeProp = '$true',
     sizeAdjust = 0,
-    toggledStyle,
+    activeStyle,
     color,
     ...toggleGroupProps
   } = props
@@ -429,7 +429,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.styleable<
       disabled={disabled}
       size={size}
     >
-      <ToggleContext.Provider color={color} toggledStyle={toggledStyle}>
+      <ToggleContext.Provider color={color} activeStyle={activeStyle}>
         {rovingFocus ? (
           <RovingFocusGroup
             asChild="except-style"

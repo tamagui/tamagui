@@ -24,6 +24,10 @@ export const CheckboxIndicatorFrame = styled(YStack, {
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
+}, {
+  accept: {
+    activeStyle: 'style',
+  } as const,
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -100,4 +104,8 @@ export const CheckboxFrame = styled(YStack, {
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
+}, {
+  accept: {
+    activeStyle: 'style',
+  } as const,
 })

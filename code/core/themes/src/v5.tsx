@@ -8,3 +8,4 @@ export {
   defaultDarkPalette,
   defaultLightPalette,
 } from './v5-themes'
+export { v5Templates } from './v5-templates'

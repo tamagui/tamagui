@@ -27,6 +27,7 @@ type Theme = {
     backgroundHover: string;
     backgroundPress: string;
     backgroundFocus: string;
+    backgroundActive: string;
     borderColor: string;
     borderColorHover: string;
     borderColorPress: string;

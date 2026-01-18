@@ -3,7 +3,7 @@ import type {
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
 } from '@tamagui/checkbox-headless'
 import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
-import type { NativeValue, SizeTokens, ViewProps } from '@tamagui/core'
+import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/core'
 import {
   getVariableValue,
   shouldRenderNativePlatform,
@@ -34,9 +34,22 @@ type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
 }
 type CheckboxBaseProps = ViewProps
 
+type DefaultCheckboxFrame = typeof CheckboxFrame
+type DefaultIndicatorFrame = typeof CheckboxIndicatorFrame
+
+type CheckboxFrameActiveStyleProps = {
+  activeStyle?: GetProps<DefaultCheckboxFrame>
+  activeTheme?: string | null
+}
+
+type CheckboxIndicatorActiveStyleProps = {
+  activeStyle?: GetProps<DefaultIndicatorFrame>
+}
+
 export type CheckboxProps = CheckboxBaseProps &
   CheckboxExtraProps &
-  CheckboxExpectingVariantProps
+  CheckboxExpectingVariantProps &
+  CheckboxFrameActiveStyleProps
 
 type CheckboxComponent = (
   props: CheckboxExtraProps & CheckboxExpectingVariantProps
@@ -61,7 +74,8 @@ type CheckboxIndicatorExtraProps = {
 }
 
 export type CheckboxIndicatorProps = CheckboxIndicatorBaseProps &
-  CheckboxIndicatorExtraProps
+  CheckboxIndicatorExtraProps &
+  CheckboxIndicatorActiveStyleProps
 
 export const CheckboxContext = React.createContext<{
   checked: CheckedState
@@ -80,16 +94,12 @@ const ensureContext = (x: any) => {
 export function createCheckbox<
   F extends CheckboxComponent,
   T extends CheckboxIndicatorComponent,
->(createProps: { disableActiveTheme?: boolean; Frame?: F; Indicator?: T }) {
-  const {
-    disableActiveTheme,
-    Frame = CheckboxFrame,
-    Indicator = CheckboxIndicatorFrame,
-  } = createProps as any as {
-    disableActiveTheme?: boolean
-    Frame: typeof CheckboxFrame
-    Indicator: typeof CheckboxIndicatorFrame
-  }
+>(createProps: { Frame?: F; Indicator?: T }) {
+  const { Frame = CheckboxFrame, Indicator = CheckboxIndicatorFrame } =
+    createProps as any as {
+      Frame: typeof CheckboxFrame
+      Indicator: typeof CheckboxIndicatorFrame
+    }
 
   ensureContext(Frame)
   ensureContext(Indicator)
@@ -105,6 +115,8 @@ export function createCheckbox<
         onCheckedChange,
         native,
         unstyled = false,
+        activeStyle,
+        activeTheme,
         ...props
       } = _props
       const propsActive = useProps(props)
@@ -175,11 +187,15 @@ export function createCheckbox<
         [checked, checkboxProps.disabled]
       )
 
+      const isActive = !!checked
+
       return (
         <CheckboxContext.Provider value={memoizedContext}>
           <CheckboxStyledContext.Provider
             size={propsActive.size ?? styledContext?.size ?? '$true'}
             scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
+            unstyled={unstyled}
+            active={isActive}
           >
             <Frame
               {...(!unstyled && {
@@ -189,9 +205,15 @@ export function createCheckbox<
               render="button"
               ref={checkboxRef}
               unstyled={unstyled}
+              theme={activeTheme ?? null}
               {...(unstyled === false && {
                 size,
-                theme: checked ? 'active' : null,
+              })}
+              {...(isActive && {
+                ...(!unstyled && !activeStyle && {
+                  backgroundColor: '$backgroundActive',
+                }),
+                ...activeStyle,
               })}
               // potential variant
               checked={checked}
@@ -218,9 +240,11 @@ export function createCheckbox<
         forceMount,
         disablePassStyles,
         unstyled = false,
+        activeStyle,
         ...indicatorProps
       } = props
-      const styledContext = React.useContext(CheckboxStyledContext)
+      const styledContext = CheckboxStyledContext.useStyledContext()
+      const { active } = styledContext
       let children = childrenProp
 
       if (!unstyled) {
@@ -243,7 +267,12 @@ export function createCheckbox<
       const context = React.useContext(CheckboxContext)
       if (forceMount || isIndeterminate(context.checked) || context.checked === true)
         return (
-          <Indicator pointerEvents="none" {...indicatorProps} ref={forwardedRef}>
+          <Indicator
+            pointerEvents="none"
+            {...indicatorProps}
+            {...(active && activeStyle)}
+            ref={forwardedRef}
+          >
             {children}
           </Indicator>
         )

@@ -53,6 +53,10 @@ export const DefaultTabsTabFrame = styled(ThemeableStack, {
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
+}, {
+  accept: {
+    activeStyle: 'style',
+  } as const,
 })
 
 const CONTENT_NAME = 'TabsContent'

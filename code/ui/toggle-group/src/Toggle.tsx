@@ -9,7 +9,7 @@ export type ToggleStylesBase = StackStyleBase & { color?: string }
 
 export const context = createStyledContext({
   color: '',
-  toggledStyle: null as null | ToggleStylesBase,
+  activeStyle: null as null | ToggleStylesBase,
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -51,25 +51,25 @@ export const ToggleFrame = styled(ThemeableStack, {
       },
     },
 
-    toggledStyle: (val: ToggleStylesBase | null) => ({}),
+    activeStyle: (val: ToggleStylesBase | null) => ({}),
 
     active: {
       true: (_, { props, context }: any) => {
-        const toggledStyle = props.toggledStyle || context?.toggledStyle
+        const activeStyle = props.activeStyle || context?.activeStyle
         return {
           zIndex: 1,
           ...(!props.unstyled &&
-            !toggledStyle && {
-              backgroundColor: '$background',
+            !activeStyle && {
+              backgroundColor: '$backgroundActive',
               hoverStyle: {
-                backgroundColor: '$background',
+                backgroundColor: '$backgroundActive',
               },
               focusStyle: {
-                backgroundColor: '$background',
+                backgroundColor: '$backgroundActive',
                 borderColor: '$borderColor',
               },
             }),
-          ...toggledStyle,
+          ...(activeStyle as object),
         }
       },
     },
@@ -99,7 +99,8 @@ type ToggleItemExtraProps = {
   pressed?: boolean
   defaultPressed?: boolean
   onPressedChange?(pressed: boolean): void
-  toggledStyle?: ToggleStylesBase | null
+  activeStyle?: ToggleStylesBase | null
+  activeTheme?: string | null
 }
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
@@ -110,6 +111,9 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
       pressed: pressedProp,
       defaultPressed = false,
       onPressedChange,
+      activeTheme,
+      unstyled = false,
+      activeStyle,
       ...buttonProps
     } = props
 
@@ -121,14 +125,13 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
 
     return (
       <ToggleFrame
-        {...(!props.unstyled && {
-          theme: pressed ? 'accent' : null,
-          themeShallow: true,
-        })}
+        theme={activeTheme ?? null}
         active={pressed}
+        activeStyle={activeStyle}
         aria-pressed={pressed}
         data-state={pressed ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
+        unstyled={unstyled}
         {...buttonProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
