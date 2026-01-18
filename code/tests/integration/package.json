@@ -10,7 +10,7 @@
     "dev": "NODE_ENV=development vite --host --clearScreen false",
     "dev:extract": "EXTRACT=1 bun run dev",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest"
+    "upgrade:tamagui": "tko update-deps '*tamagui*'@latest '@tamagui/*'@latest"
   },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",

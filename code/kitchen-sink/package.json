@@ -20,7 +20,6 @@
     "ios": "bun run pod && EXPO_NO_TELEMETRY=true bunx expo run:ios",
     "ios:prod": "bun run ios --configuration Release",
     "eject": "EXPO_NO_TELEMETRY=true bunx expo eject",
-    "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
     "test:native:ios": "bun run ../packages/native-ci/src/cli.ts test ios --project-root .",
     "test:native:android": "bun run ../packages/native-ci/src/cli.ts test android --project-root .",
     "test:native:maestro": "bun run ../packages/native-ci/src/cli.ts test maestro --project-root .",
