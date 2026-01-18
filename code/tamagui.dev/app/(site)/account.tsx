@@ -1,13 +1,29 @@
-import { Container } from '~/components/Containers'
-import { AccountView } from '~/features/site/purchase/NewAccountModal'
-import { UserGuard } from '~/features/user/useUser'
+import { useRouter } from 'one'
+import { useEffect } from 'react'
+import { Spinner, YStack } from 'tamagui'
+import { accountModal } from '~/features/site/purchase/NewAccountModal'
+import { useUser } from '~/features/user/useUser'
 
 export default function AccountPage() {
+  const router = useRouter()
+  const { data, isLoading } = useUser()
+
+  useEffect(() => {
+    if (isLoading) return
+
+    if (!data?.user) {
+      router.push('/login')
+      return
+    }
+
+    // redirect home and open the account modal
+    accountModal.show = true
+    router.push('/')
+  }, [data, isLoading, router])
+
   return (
-    <UserGuard>
-      <Container my="$10" py="$10" rounded="$10" justify="center" items="center" flex={1}>
-        <AccountView />
-      </Container>
-    </UserGuard>
+    <YStack items="center" flex={1} justify="center">
+      <Spinner size="large" />
+    </YStack>
   )
 }
