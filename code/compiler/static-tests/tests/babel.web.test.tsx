@@ -645,15 +645,14 @@ test('font_body class is present in BOTH ternary branches', async () => {
   expect(output?.js).toMatchSnapshot()
 })
 
-// BUG FIX: accessibilityRole: 'header' from Heading component was being stripped during extraction
-// This caused hydration mismatch - SSR has role="heading" but client doesn't
-test('accessibilityRole converts to role attribute', async () => {
+// role attribute is passed through during extraction
+test('role attribute is preserved during extraction', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
 
     export function Test() {
-      return <View accessibilityRole="button" />
+      return <View role="button" />
     }
   `,
     {

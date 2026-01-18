@@ -6,7 +6,7 @@ import { Paragraph } from './Paragraph'
 export const Heading = styled(Paragraph, {
   render: 'span',
   name: 'Heading',
-  accessibilityRole: 'header',
+  role: 'heading',
   fontFamily: '$heading',
   size: '$8',
   margin: 0,

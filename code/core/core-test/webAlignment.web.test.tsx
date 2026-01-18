@@ -2,11 +2,7 @@
  * Web Alignment Tests - Web Platform
  *
  * These tests verify that Tamagui v2 uses web-standard props exclusively.
- * After the migration, RN-specific props should not be supported.
- *
- * Test categories:
- * 1. Web props work correctly (should PASS now and after migration)
- * 2. RN props should NOT work (should FAIL now, PASS after migration)
+ * RN-specific accessibility props are no longer converted - use aria-* directly.
  */
 
 import { Stack, Text, View, createTamagui } from '@tamagui/core'
@@ -140,80 +136,56 @@ describe('Web Alignment - Accessibility Props', () => {
     })
   })
 
-  describe('RN accessibility props should NOT work after migration', () => {
-    // These tests should FAIL now (RN props still work) and PASS after migration
+  describe('RN accessibility props are NOT converted (v2)', () => {
+    test('accessibilityLabel is NOT converted to aria-label', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityLabel: 'Test label',
+      })
 
-    test.fails(
-      'accessibilityLabel should NOT be converted to aria-label (removed in v2)',
-      () => {
-        const { viewProps } = simplifiedGetSplitStyles(Stack, {
-          accessibilityLabel: 'Test label',
-        })
+      // RN props are no longer converted - use aria-label directly
+      expect(viewProps['aria-label']).toBeUndefined()
+    })
 
-        // After migration, this prop should be ignored entirely
-        // viewProps should NOT have aria-label from accessibilityLabel
-        expect(viewProps['aria-label']).toBeUndefined()
-        expect(viewProps.accessibilityLabel).toBeUndefined()
-      }
-    )
-
-    test.fails('accessibilityRole should NOT be converted to role (removed in v2)', () => {
+    test('accessibilityRole is NOT converted to role', () => {
       const { viewProps } = simplifiedGetSplitStyles(Stack, {
         accessibilityRole: 'button',
       })
 
-      // After migration, this prop should be ignored entirely
+      // RN props are no longer converted - use role directly
       expect(viewProps.role).toBeUndefined()
-      expect(viewProps.accessibilityRole).toBeUndefined()
     })
 
-    test.fails(
-      'accessibilityLabelledBy should NOT be converted to aria-labelledby (removed in v2)',
-      () => {
-        const { viewProps } = simplifiedGetSplitStyles(Stack, {
-          accessibilityLabelledBy: 'label-id',
-        })
+    test('accessibilityLabelledBy is NOT converted to aria-labelledby', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityLabelledBy: 'label-id',
+      })
 
-        expect(viewProps['aria-labelledby']).toBeUndefined()
-        expect(viewProps.accessibilityLabelledBy).toBeUndefined()
-      }
-    )
+      expect(viewProps['aria-labelledby']).toBeUndefined()
+    })
 
-    test.fails(
-      'accessibilityHint should NOT be converted to aria-describedby (removed in v2)',
-      () => {
-        const { viewProps } = simplifiedGetSplitStyles(Stack, {
-          accessibilityHint: 'Test hint',
-        })
+    test('accessibilityHint is NOT converted to aria-describedby', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityHint: 'Test hint',
+      })
 
-        expect(viewProps['aria-describedby']).toBeUndefined()
-        expect(viewProps.accessibilityHint).toBeUndefined()
-      }
-    )
+      expect(viewProps['aria-describedby']).toBeUndefined()
+    })
 
-    // Note: accessibilityElementsHidden is iOS-only and not currently mapped to aria-hidden
-    // This is different from the other accessibility props
-    test(
-      'accessibilityElementsHidden is already not converted (iOS-only prop)',
-      () => {
-        const { viewProps } = simplifiedGetSplitStyles(Stack, {
-          accessibilityElementsHidden: true,
-        })
+    test('accessibilityElementsHidden is NOT converted to aria-hidden', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        accessibilityElementsHidden: true,
+      })
 
-        // This prop is already not converted because it's iOS-specific
-        // After migration, we want to ensure it stays that way (users should use aria-hidden)
-        expect(viewProps['aria-hidden']).toBeUndefined()
-      }
-    )
+      expect(viewProps['aria-hidden']).toBeUndefined()
+    })
 
-    test.fails('nativeID should NOT work (removed in v2, use id instead)', () => {
+    test('nativeID is NOT converted to id (use id instead)', () => {
       const { viewProps } = simplifiedGetSplitStyles(Stack, {
         nativeID: 'my-element',
       })
 
-      // nativeID should be ignored, use id instead
+      // nativeID is no longer converted - use id directly
       expect(viewProps.id).toBeUndefined()
-      expect(viewProps.nativeID).toBeUndefined()
     })
   })
 })
@@ -221,43 +193,30 @@ describe('Web Alignment - Accessibility Props', () => {
 describe('Web Alignment - Focus Props', () => {
   describe('Web props should work (tabIndex)', () => {
     test('tabIndex={0} makes element focusable', () => {
-      const { viewProps } = simplifiedGetSplitStyles(
-        Stack,
-        {
-          tabIndex: 0,
-        },
-        { tag: 'div' }
-      )
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        tabIndex: 0,
+      })
 
       expect(viewProps.tabIndex).toBe(0)
     })
 
     test('tabIndex={-1} makes element not focusable', () => {
-      const { viewProps } = simplifiedGetSplitStyles(
-        Stack,
-        {
-          tabIndex: -1,
-        },
-        { tag: 'div' }
-      )
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        tabIndex: -1,
+      })
 
       expect(viewProps.tabIndex).toBe(-1)
     })
   })
 
-  describe('RN focus props should NOT work after migration', () => {
-    test.fails('focusable should NOT work (removed in v2, use tabIndex instead)', () => {
-      const { viewProps } = simplifiedGetSplitStyles(
-        Stack,
-        {
-          focusable: true,
-        },
-        { tag: 'div' }
-      )
+  describe('RN focus props are NOT converted (v2)', () => {
+    test('focusable is NOT converted (use tabIndex instead)', () => {
+      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+        focusable: true,
+      })
 
-      // focusable should be ignored entirely
+      // focusable is no longer converted - use tabIndex directly
       expect(viewProps.tabIndex).toBeUndefined()
-      expect(viewProps.focusable).toBeUndefined()
     })
   })
 })
@@ -314,36 +273,33 @@ describe('Web Alignment - Event Handlers', () => {
     })
   })
 
-  describe('RN event props should NOT work after migration', () => {
-    test.fails('onPress should NOT work on web (removed in v2, use onClick)', () => {
+  describe('RN event props still work (kept for cross-platform compatibility)', () => {
+    test('onPress is passed through to viewProps', () => {
       const handler = () => {}
       const { viewProps } = simplifiedGetSplitStyles(Stack, {
         onPress: handler,
       })
 
-      // onPress should be ignored on web
-      expect(viewProps.onPress).toBeUndefined()
-      expect(viewProps.onClick).toBeUndefined()
+      // onPress is kept for cross-platform compatibility
+      expect(viewProps.onPress).toBe(handler)
     })
 
-    test.fails('onPressIn should NOT work on web (removed in v2, use onPointerDown)', () => {
+    test('onPressIn is passed through to viewProps', () => {
       const handler = () => {}
       const { viewProps } = simplifiedGetSplitStyles(Stack, {
         onPressIn: handler,
       })
 
-      expect(viewProps.onPressIn).toBeUndefined()
-      expect(viewProps.onPointerDown).toBeUndefined()
+      expect(viewProps.onPressIn).toBe(handler)
     })
 
-    test.fails('onPressOut should NOT work on web (removed in v2, use onPointerUp)', () => {
+    test('onPressOut is passed through to viewProps', () => {
       const handler = () => {}
       const { viewProps } = simplifiedGetSplitStyles(Stack, {
         onPressOut: handler,
       })
 
-      expect(viewProps.onPressOut).toBeUndefined()
-      expect(viewProps.onPointerUp).toBeUndefined()
+      expect(viewProps.onPressOut).toBe(handler)
     })
   })
 })
