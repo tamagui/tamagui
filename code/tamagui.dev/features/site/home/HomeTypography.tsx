@@ -127,7 +127,7 @@ export const HomeTypography = memo(() => {
                   index={4}
                   Component={H5}
                   family={family}
-                  color="$orange10"
+                  color="$yellow10"
                 >
                   easy to author
                 </AnimatedHeading>
