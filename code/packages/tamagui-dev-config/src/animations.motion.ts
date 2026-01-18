@@ -77,20 +77,4 @@ export const animationsMotion = createAnimations({
     mass: 0.1,
     stiffness: 380,
   },
-  select: {
-    damping: 32,
-    mass: 0.2,
-    stiffness: 800,
-  },
-  menu: {
-    type: 'spring',
-    damping: 28,
-    mass: 0.4,
-    stiffness: 300,
-  },
-  menuFast: {
-    type: 'tween',
-    duration: 150,
-    ease: 'easeOut',
-  },
 })

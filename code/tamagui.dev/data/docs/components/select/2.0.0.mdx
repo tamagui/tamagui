@@ -234,14 +234,14 @@ An animated indicator that highlights the currently focused item. Place it insid
 
 ```tsx
 <Select.Viewport>
-  <Select.Indicator transition="select" />
+  <Select.Indicator transition="quick" />
   <Select.Group>
     {/* items */}
   </Select.Group>
 </Select.Viewport>
 ```
 
-Use the `transition` prop to control the animation speed. The `select` animation is optimized for quick, snappy movement. You can also use other animation names from your config like `quick`, `quicker`, or `quickest`.
+Use the `transition` prop to control the animation speed. You can use any animation name from your config like `quick`, `quicker`, or `quickest`.
 
 <Notice>
   By default, Select uses the item's `hoverStyle` and `pressStyle` for hover feedback. Add `Select.Indicator` for a smoother animated effect. If using the indicator, you may want to set items to have transparent hover styles to avoid visual conflict.
