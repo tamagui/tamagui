@@ -29,7 +29,7 @@ export function SwitchWithLabel(props: { size: SizeTokens; defaultChecked?: bool
       </Label>
       <Separator minH={20} vertical />
       <Switch id={id} size={props.size} defaultChecked={props.defaultChecked}>
-        <Switch.Thumb transition="quickest" />
+        <Switch.Thumb transition="quickest" animateOnly={['transform']} />
       </Switch>
     </XStack>
   )

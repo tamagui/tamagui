@@ -1,71 +1,20 @@
-import type { GetProps, NativeValue, SizeTokens, StackProps } from '@tamagui/core'
-import {
-  composeEventHandlers,
-  getShorthandValue,
-  getVariableValue,
-  isWeb,
-  shouldRenderNativePlatform,
-  View,
-  withStaticProperties,
-} from '@tamagui/core'
-import { registerFocusable } from '@tamagui/focusable'
-import type {
-  SwitchExtraProps as HeadlessSwitchExtraProps,
-  SwitchState,
-} from '@tamagui/switch-headless'
+import { composeEventHandlers, getVariableValue, isWeb, View, withStaticProperties } from '@tamagui/core'
 import { useSwitch } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import type {
-  LayoutChangeEvent,
-  SwitchProps as NativeSwitchProps,
-  ViewStyle,
-} from 'react-native'
-import { Switch as NativeSwitch } from 'react-native'
+import type { LayoutChangeEvent } from 'react-native'
 import { SwitchStyledContext } from './StyledContext'
 import { SwitchFrame as DefaultSwitchFrame, SwitchThumb } from './Switch'
+import type {
+  SwitchComponent,
+  SwitchExtraProps,
+  SwitchProps,
+  SwitchThumbComponent,
+  SwitchThumbProps,
+} from './types'
+import { useSwitchNative } from './useSwitchNative'
 
-type SwitchSharedProps = {
-  size?: SizeTokens | number
-  unstyled?: boolean
-}
-
-type SwitchBaseProps = StackProps & SwitchSharedProps
-
-type SwitchFrameActiveStyleProps = {
-  activeStyle?: ViewStyle
-  activeTheme?: string | null
-}
-
-type SwitchThumbActiveStyleProps = {
-  activeStyle?: GetProps<typeof SwitchThumb>
-}
-
-export type SwitchExtraProps = HeadlessSwitchExtraProps & {
-  native?: NativeValue<'mobile' | 'ios' | 'android'>
-  nativeProps?: NativeSwitchProps
-} & SwitchFrameActiveStyleProps
-
-export type SwitchProps = SwitchBaseProps & SwitchExtraProps
-
-type SwitchThumbBaseProps = StackProps
-
-export type SwitchThumbProps = SwitchThumbBaseProps &
-  SwitchSharedProps &
-  SwitchThumbActiveStyleProps
-
-export const SwitchContext = React.createContext<{
-  checked: SwitchState
-  frameWidth: number
-  disabled?: boolean
-}>({
-  checked: false,
-  disabled: false,
-  frameWidth: 0,
-})
-
-type SwitchComponent = (props: SwitchSharedProps & SwitchExtraProps) => any
-type SwitchThumbComponent = (props: any) => any
+export type { SwitchExtraProps, SwitchProps, SwitchThumbProps }
 
 export function createSwitch<
   F extends SwitchComponent,
@@ -97,26 +46,26 @@ export function createSwitch<
   const SwitchThumbComponent = Thumb.styleable<SwitchThumbProps>(
     function SwitchThumb(props, forwardedRef) {
       const { size: sizeProp, unstyled: unstyledProp, activeStyle, ...thumbProps } = props
-      const context = React.useContext(SwitchContext)
-      const { checked, disabled, frameWidth } = context
       const styledContext = SwitchStyledContext.useStyledContext()
-      const { unstyled: unstyledContext, size: sizeContext, active } = styledContext
+      const {
+        unstyled: unstyledContext,
+        size: sizeContext,
+        active,
+        disabled,
+        frameWidth = 0,
+      } = styledContext
       const unstyled =
         process.env.TAMAGUI_HEADLESS === '1'
           ? true
           : (unstyledProp ?? unstyledContext ?? false)
       const size = sizeProp ?? sizeContext ?? '$true'
-
-      const initialChecked = React.useRef(checked).current
-
+      const initialChecked = React.useRef(active).current
       const initialWidth = getVariableValue(props.width || size, 'size')
       const [thumbWidth, setThumbWidth] = React.useState(
         typeof initialWidth === 'number' ? initialWidth : 0
       )
       const distance = frameWidth - thumbWidth
-      const x = initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0
-
-      console.log('???', x, distance, frameWidth, thumbProps, thumbWidth)
+      const x = initialChecked ? (active ? 0 : -distance) : active ? distance : 0
 
       return (
         <Thumb
@@ -129,14 +78,11 @@ export function createSwitch<
           x={x}
           onLayout={composeEventHandlers(props.onLayout, (e) => {
             const next = e.nativeEvent.layout.width
-            if (next !== thumbWidth) {
-              setThumbWidth(next)
-            }
+            setThumbWidth(next)
           })}
           disabled={disabled}
           {...thumbProps}
           {...(active && activeStyle)}
-          backgroundColor="red"
         />
       )
     }
@@ -163,25 +109,8 @@ export function createSwitch<
 
       const styledContext = React.useContext(SwitchStyledContext.context)
 
-      let estimatedInitialWidth = 0
-
-      const estWidth = getVariableValue(getShorthandValue(props, 'width'), 'size')
-
-      if (estWidth) {
-        const estPad =
-          getShorthandValue(props, 'paddingHorizontal') ??
-          getShorthandValue(props, 'padding') ??
-          0
-        const estLeftPad = getShorthandValue(props, 'paddingLeft') ?? estPad ?? 0
-        const estRightPad = getShorthandValue(props, 'paddingRight') ?? estPad ?? 0
-        estimatedInitialWidth =
-          estWidth -
-          (estLeftPad ? getVariableValue(estLeftPad, 'size') : 0) -
-          (estRightPad ? getVariableValue(estRightPad, 'size') : 0)
-      }
-
       // this is actually inner width
-      const [frameWidth, setFrameInnerWidth] = React.useState(estimatedInitialWidth)
+      const [frameWidth, setFrameInnerWidth] = React.useState(0)
 
       const { switchProps, bubbleInput, switchRef } = useSwitch(
         props as any,
@@ -190,25 +119,17 @@ export function createSwitch<
         forwardedRef
       )
 
-      if (process.env.TAMAGUI_TARGET === 'native') {
-        React.useEffect(() => {
-          if (!props.id) return
-          if (props.disabled) return
+      const nativeSwitch = useSwitchNative({
+        id: props.id,
+        disabled: props.disabled,
+        native,
+        nativeProps,
+        checked,
+        setChecked,
+      })
 
-          return registerFocusable(props.id, {
-            focusAndSelect: () => {
-              setChecked?.((value) => !value)
-            },
-            focus: () => {},
-          })
-        }, [props.id, props.disabled])
-      }
-
-      const renderNative = shouldRenderNativePlatform(native)
-      if (renderNative === 'android' || renderNative === 'ios') {
-        return (
-          <NativeSwitch value={checked} onValueChange={setChecked} {...nativeProps} />
-        )
+      if (nativeSwitch) {
+        return nativeSwitch
       }
 
       const disabled = props.disabled
