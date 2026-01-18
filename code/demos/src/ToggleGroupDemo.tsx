@@ -2,27 +2,17 @@ import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
 import type { SizeTokens } from 'tamagui'
 import { Label, styled, ToggleGroup, XStack, YStack } from 'tamagui'
 
-// Example using styled() to define toggledStyle and hoverStyle
-const StyledItem = styled(ToggleGroup.Item, {
-  hoverStyle: {
-    backgroundColor: '$color5',
-  },
-  toggledStyle: {
-    backgroundColor: '$color6',
-  },
-})
-
 export function ToggleGroupDemo() {
   return (
     <YStack px="$4">
       <XStack items="center" gap="$10">
         <YStack items="center" gap="$6">
-          <ToggleGroupComponent type="single" size="$3" orientation="horizontal" />
-          <ToggleGroupComponent type="multiple" size="$4" orientation="horizontal" />
+          <ToggleGroupComponent type="single" size="$4" orientation="horizontal" />
+          <ToggleGroupComponent type="multiple" size="$5" orientation="horizontal" />
         </YStack>
         <XStack items="center" gap="$6">
-          <ToggleGroupComponent type="single" size="$3" orientation="vertical" />
-          <ToggleGroupComponent type="multiple" size="$4" orientation="vertical" />
+          <ToggleGroupComponent type="single" size="$4" orientation="vertical" />
+          <ToggleGroupComponent type="multiple" size="$5" orientation="vertical" />
         </XStack>
       </XStack>
     </YStack>
@@ -42,37 +32,31 @@ function ToggleGroupComponent(props: {
       justify="center"
       gap="$4"
     >
-      <Label pr="$0" justify="flex-end" size={props.size} htmlFor={id}>
+      <Label pr="$0" justify="flex-end" size="$4" htmlFor={id}>
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
+
       <ToggleGroup
         orientation={props.orientation}
         id={id}
         type={props.type as any} // since this demo switches between loosen types
-        size={props.size}
         disableDeactivation={props.type === 'single' ? true : undefined}
+        size={props.size}
       >
         {/* Using styled() component */}
         <StyledItem value="left" aria-label="Left aligned">
           <AlignLeft />
         </StyledItem>
 
-        {/* Using inline toggledStyle prop */}
-        <ToggleGroup.Item
-          value="center"
-          aria-label="Center aligned"
-          hoverStyle={{ backgroundColor: '$color5' }}
-          toggledStyle={{ backgroundColor: '$color6' }}
-        >
+        <ToggleGroup.Item value="center" aria-label="Center aligned">
           <AlignCenter />
         </ToggleGroup.Item>
 
-        {/* Using inline toggledStyle prop */}
+        {/* Using inline activeStyle prop */}
         <ToggleGroup.Item
           value="right"
           aria-label="Right aligned"
-          hoverStyle={{ backgroundColor: '$color5' }}
-          toggledStyle={{ backgroundColor: '$color6' }}
+          activeStyle={{ backgroundColor: '$green5' }}
         >
           <AlignRight />
         </ToggleGroup.Item>
@@ -80,3 +64,14 @@ function ToggleGroupComponent(props: {
     </XStack>
   )
 }
+
+// Example using styled() to define activeStyle and hoverStyle
+
+const StyledItem = styled(ToggleGroup.Item, {
+  hoverStyle: {
+    backgroundColor: '$color5',
+  },
+  activeStyle: {
+    backgroundColor: '$color6',
+  },
+})
