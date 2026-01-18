@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme-base",
-  "version": "2.0.0-1768700985112",
+  "version": "2.0.0-1768717573053",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
