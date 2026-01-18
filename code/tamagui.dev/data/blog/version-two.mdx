@@ -105,6 +105,9 @@ The breaking changes outside of deprecations are:
   [inverse themes guide](/docs/guides/theme-builder#inverse-themes).
 - Removed the `maxDarkLightNesting` and `cssStyleSeparator` settings.
 - Removed `space` and `spaceDirection` props - use `gap` instead.
+- Tabs `activationMode` now defaults to `'manual'` instead of `'automatic'`. This
+  means focusing a tab no longer changes the active tab - you must click or press
+  Enter/Space. This matches web standards.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
 - Removed React Native accessibility props in favor of web-standard props:
