@@ -874,9 +874,10 @@ export function createBaseMenu({
                 currentTabStopId={currentItemId}
                 onCurrentTabStopIdChange={setCurrentItemId}
                 onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
-                  // only focus first item when using keyboard (for accessibility)
-                  // focusVisible style won't show until user actively navigates
-                  if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
+                  // prevent auto-focus on first item when menu opens
+                  // let the content frame stay focused, arrow keys will move focus to items
+                  // this avoids showing focus style on first item immediately on open
+                  event.preventDefault()
                 })}
               >
                 {content}

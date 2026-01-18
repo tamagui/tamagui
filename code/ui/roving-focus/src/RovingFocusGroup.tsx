@@ -53,14 +53,6 @@ const RovingFocusGroupImpl = React.forwardRef<
   const isClickFocusRef = React.useRef(false)
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
 
-  React.useEffect(() => {
-    const node = (ref as unknown as React.RefObject<HTMLDivElement>).current
-    if (node) {
-      node.addEventListener(ENTRY_FOCUS, handleEntryFocus)
-      return () => node.removeEventListener(ENTRY_FOCUS, handleEntryFocus)
-    }
-  }, [handleEntryFocus])
-
   const Comp = (asChild ? Slot : Stack) as typeof Stack
 
   return (
@@ -105,8 +97,10 @@ const RovingFocusGroupImpl = React.forwardRef<
             isKeyboardFocus &&
             !isTabbingBackOut
           ) {
+            // create a cancelable event that onEntryFocus can call preventDefault on
             const entryFocusEvent = new CustomEvent(ENTRY_FOCUS, EVENT_OPTIONS)
-            event.currentTarget.dispatchEvent(entryFocusEvent)
+            // call onEntryFocus directly (dispatching to DOM had issues with asChild/Slot)
+            handleEntryFocus(entryFocusEvent)
 
             if (!entryFocusEvent.defaultPrevented) {
               const items = getItems().filter((item) => item.focusable)
