@@ -91,7 +91,6 @@ const HeroContents = memo(function HeroContents() {
         />
       </YStack>
       <YStack
-        flex={1}
         overflow="hidden"
         gap="$3"
         position="relative"
@@ -157,7 +156,7 @@ const HeroContents = memo(function HeroContents() {
             </Text>
             {/* add gradient to other colors: */}
             <br />
-            <span style={{ position: 'relative' }}>
+            <span style={{ position: 'relative', display: 'inline-block' }}>
               <TextWithEffects text="runs&nbsp;faster" />
             </span>
           </H1>
