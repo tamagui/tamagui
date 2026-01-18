@@ -230,19 +230,21 @@ Extends [Paragraph](/docs/components/text). Used inside Item to provide unselect
 
 ### Select.Indicator
 
-An animated indicator that highlights the currently focused item. Place it inside `Select.Viewport` to enable the sliding indicator animation.
+An animated indicator that highlights the currently focused item. Place it inside `Select.Viewport` to enable a smooth sliding highlight animation as users navigate through options.
 
 ```tsx
 <Select.Viewport>
-  <Select.Indicator />
+  <Select.Indicator transition="select" />
   <Select.Group>
     {/* items */}
   </Select.Group>
 </Select.Viewport>
 ```
 
+Use the `transition` prop to control the animation speed. The `select` animation is optimized for quick, snappy movement. You can also use other animation names from your config like `quick`, `quicker`, or `quickest`.
+
 <Notice>
-  To disable the indicator animation and use the default hover/press styles instead, simply remove `Select.Indicator`. The `Select.Item` component has `hoverStyle` and `pressStyle` with `$backgroundHover` and `$backgroundPress` by default.
+  By default, Select uses the item's `hoverStyle` and `pressStyle` for hover feedback. Add `Select.Indicator` for a smoother animated effect. If using the indicator, you may want to set items to have transparent hover styles to avoid visual conflict.
 </Notice>
 
 ### Select.FocusScope
