@@ -29,6 +29,8 @@
     "test:web:debug": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test --debug",
     "detox:build:ios": "detox build -c ios.sim.debug",
     "detox:build:android": "detox build -c android.emu.debug",
+    "detox:test:ios": "./run-detox.sh ios.sim.debug",
+    "detox:test:android": "./run-detox.sh android.emu.debug",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test:native": "yarn test:native:ios && yarn test:native:maestro",
     "test": "yarn test:web && ./run-native-tests.sh"

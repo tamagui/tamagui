@@ -903,7 +903,9 @@ type GetAnimationsFromMultiDriver<T> = T extends { default: infer D }
 type ExtractDriver<T> = Extract<T, AnimationDriver<any>>
 
 // Main extraction - use Extract to get AnimationDriver from union, then get keys
-type InferredTransitionKeys = ExtractDriver<TamaguiConfig['animations']> extends AnimationDriver<any>
+type InferredTransitionKeys = ExtractDriver<
+  TamaguiConfig['animations']
+> extends AnimationDriver<any>
   ? GetAnimationsFromDriver<ExtractDriver<TamaguiConfig['animations']>>
   : GetAnimationsFromMultiDriver<TamaguiConfig['animations']>
 
