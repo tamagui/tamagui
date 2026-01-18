@@ -88,11 +88,11 @@ export function TakeoutHeroNew({
       <YStack
         position="absolute"
         pointerEvents="none"
-        t={280}
-        r={-50}
+        t={260}
+        r={20}
         width={400}
         height={400}
-        $sm={{ scale: 0.7, t: 220, r: -150 }}
+        $sm={{ scale: 0.6, t: 220, r: -100 }}
         z={100}
       >
         <Suspense fallback={null}>
