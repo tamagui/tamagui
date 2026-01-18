@@ -6,7 +6,7 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<impo
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;

@@ -7,7 +7,7 @@ export declare const Tabs: import("react").ForwardRefExoticComponent<Omit<import
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }>, keyof {
@@ -31,7 +31,7 @@ export declare const Tabs: import("react").ForwardRefExoticComponent<Omit<import
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }>, keyof {
@@ -62,7 +62,7 @@ export declare const Tabs: import("react").ForwardRefExoticComponent<Omit<import
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
@@ -73,7 +73,7 @@ export declare const Tabs: import("react").ForwardRefExoticComponent<Omit<import
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
+        bordered?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
     }>, keyof {
@@ -104,7 +104,7 @@ export declare const Tabs: import("react").ForwardRefExoticComponent<Omit<import
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
+        bordered?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];

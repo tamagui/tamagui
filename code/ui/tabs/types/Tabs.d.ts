@@ -5,7 +5,7 @@ export declare const DefaultTabsFrame: import("@tamagui/core").TamaguiComponent<
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;

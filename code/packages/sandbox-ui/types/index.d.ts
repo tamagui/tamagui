@@ -15,14 +15,8 @@ export declare const TestBorderExtraction: import("tamagui").TamaguiComponent<im
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    padded?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 //# sourceMappingURL=index.d.ts.map

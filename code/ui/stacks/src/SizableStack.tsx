@@ -17,7 +17,10 @@ export const SizableStack = styled(ThemeableStack, {
 
     circular,
     elevate,
-    bordered,
+
+    bordered: {
+      true: bordered,
+    },
 
     size: {
       '...size': (val, extras) => {

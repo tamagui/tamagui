@@ -54,13 +54,16 @@ export const CheckboxFrame = styled(
           backgroundColor: '$background',
           alignItems: 'center',
           justifyContent: 'center',
-          pressTheme: true,
-          focusable: true,
           borderWidth: 1,
           borderColor: '$borderColor',
 
           hoverStyle: {
             borderColor: '$borderColorHover',
+          },
+
+          pressStyle: {
+            backgroundColor: '$backgroundPress',
+            borderColor: '$borderColorPress',
           },
 
           focusStyle: {

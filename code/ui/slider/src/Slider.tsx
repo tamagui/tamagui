@@ -445,20 +445,20 @@ export const SliderThumbFrame = styled(ThemeableStack, {
     unstyled: {
       false: {
         position: 'absolute',
-        bordered: 2,
         borderWidth: 2,
+        borderColor: '$borderColor',
         backgroundColor: '$background',
         pressStyle: {
           backgroundColor: '$backgroundPress',
-          borderColor: '$borderPress',
+          borderColor: '$borderColorPress',
         },
         focusStyle: {
           backgroundColor: '$backgroundFocus',
-          borderColor: '$borderPress',
+          borderColor: '$borderColorFocus',
         },
         hoverStyle: {
           backgroundColor: '$backgroundHover',
-          borderColor: '$borderPress',
+          borderColor: '$borderColorHover',
         },
       },
     },

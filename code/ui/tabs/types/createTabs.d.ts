@@ -22,7 +22,7 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }>, keyof TabsExtraProps<string>> & TabsExtraProps<string> & React.RefAttributes<TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
@@ -32,7 +32,7 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }>, keyof TabsExtraProps<string>> & TabsExtraProps<string>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsExtraProps<string>, import("@tamagui/web").StackStyleBase, {
@@ -42,7 +42,7 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
@@ -53,7 +53,7 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
+        bordered?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
     }>, keyof TabsExtraProps<string>> & TabsExtraProps<string>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsExtraProps<string>, import("@tamagui/web").StackStyleBase, {
@@ -63,7 +63,7 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
+        bordered?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
