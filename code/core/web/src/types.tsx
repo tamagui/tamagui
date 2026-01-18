@@ -1829,68 +1829,13 @@ export interface TransformStyleProps {
   rotateZ?: `${number}deg` | UnionableString
 }
 
-// Box Shadow types (New Architecture)
-export interface BoxShadowObject {
-  offsetX: SpaceTokens | number | (string & {})
-  offsetY: SpaceTokens | number | (string & {})
-  blurRadius?: SpaceTokens | number | (string & {})
-  spreadDistance?: SpaceTokens | number | (string & {})
-  color?: ColorStyleProp | (string & {})
-  inset?: boolean
-}
+// Box Shadow - CSS string format (e.g. "0 4px 8px $shadowColor")
+// Supports embedded tokens that get resolved at runtime
+export type BoxShadowValue = string & {}
 
-export type BoxShadowValue = BoxShadowObject | BoxShadowObject[] | (string & {})
-
-// Filter types (New Architecture)
-export interface FilterBrightness {
-  brightness: number | `${number}%`
-}
-export interface FilterOpacity {
-  opacity: number | `${number}%`
-}
-export interface FilterBlur {
-  blur: SpaceTokens | number | string
-}
-export interface FilterContrast {
-  contrast: number | `${number}%`
-}
-export interface FilterGrayscale {
-  grayscale: number | `${number}%`
-}
-export interface FilterHueRotate {
-  hueRotate: `${number}deg` | `${number}rad`
-}
-export interface FilterInvert {
-  invert: number | `${number}%`
-}
-export interface FilterSaturate {
-  saturate: number | `${number}%`
-}
-export interface FilterSepia {
-  sepia: number | `${number}%`
-}
-export interface FilterDropShadow {
-  dropShadow: {
-    offsetX: SpaceTokens | number | (string & {})
-    offsetY: SpaceTokens | number | (string & {})
-    blurRadius?: SpaceTokens | number | (string & {})
-    color?: ColorStyleProp | (string & {})
-  }
-}
-
-export type FilterFunction =
-  | FilterBrightness
-  | FilterOpacity
-  | FilterBlur
-  | FilterContrast
-  | FilterGrayscale
-  | FilterHueRotate
-  | FilterInvert
-  | FilterSaturate
-  | FilterSepia
-  | FilterDropShadow
-
-export type FilterValue = FilterFunction | FilterFunction[] | (string & {})
+// Filter - CSS string format (e.g. "blur(10px) brightness(1.2)")
+// Supports embedded tokens that get resolved at runtime
+export type FilterValue = string & {}
 
 interface ExtraStyleProps {
   /**
@@ -1951,8 +1896,8 @@ interface ExtraStyleProps {
   backgroundSize?: Properties['backgroundSize']
   // boxSizing - provided by RN's ViewStyle
   /**
-   * CSS box-shadow. Supports tokens: "$2 $4 $8 $shadowColor"
-   * Also accepts object/array format. Supported on web and native.
+   * CSS box-shadow string. Supports tokens: "0 4px 8px $shadowColor"
+   * Works on web and native (RN 0.76+).
    */
   boxShadow?: BoxShadowValue
   /**
@@ -1980,8 +1925,8 @@ interface ExtraStyleProps {
     | `${TwoValueTransformOrigin} ${Px}`
 
   /**
-   * Graphical filter effects. Supported on web and native.
-   * Cross-platform: brightness, opacity. Android 12+: blur, contrast, dropShadow, etc.
+   * CSS filter string. Example: "blur(10px) brightness(1.2)"
+   * Works on web and native (RN 0.76+). Supports embedded tokens.
    */
   filter?: FilterValue
   // mixBlendMode - provided by RN's ViewStyle

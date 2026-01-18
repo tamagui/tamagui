@@ -28,6 +28,7 @@ function getStyleValue(
 }
 
 describe('RN 0.76+ Style Alignment - Web', () => {
+  // boxShadow and filter are string-only
   describe('boxShadow', () => {
     test('boxShadow string with tokens resolves', () => {
       const styles = simplifiedGetSplitStyles(Stack, {
@@ -38,62 +39,38 @@ describe('RN 0.76+ Style Alignment - Web', () => {
       expect(value).toContain('var(--')
     })
 
-    test('boxShadow object converts to CSS string', () => {
+    test('boxShadow string passes through', () => {
       const styles = simplifiedGetSplitStyles(Stack, {
-        boxShadow: { offsetX: 5, offsetY: 5, blurRadius: 10, color: 'red' },
+        boxShadow: '5px 5px 10px red',
       })
       const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBeDefined()
-      expect(value).toContain('5px')
-      expect(value).toContain('10px')
-      expect(value).toContain('red')
+      expect(value).toBe('5px 5px 10px red')
     })
 
-    test('boxShadow object array converts to CSS string with commas', () => {
+    test('boxShadow multiple shadows', () => {
       const styles = simplifiedGetSplitStyles(Stack, {
-        boxShadow: [
-          { offsetX: 0, offsetY: 2, blurRadius: 4, color: 'rgba(0,0,0,0.1)' },
-          { offsetX: 0, offsetY: 4, blurRadius: 8, color: 'rgba(0,0,0,0.2)' },
-        ],
+        boxShadow: '0 0 10px red, 0 0 20px blue',
       })
       const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBeDefined()
-      expect(value).toContain(',')
+      expect(value).toBe('0 0 10px red, 0 0 20px blue')
     })
 
-    test('boxShadow object with token values resolves tokens', () => {
+    test('boxShadow inset syntax', () => {
       const styles = simplifiedGetSplitStyles(Stack, {
-        boxShadow: { offsetX: '$2', offsetY: '$2', blurRadius: '$4', color: '$white' },
+        boxShadow: 'inset 0 2px 4px black',
       })
       const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBeDefined()
-      // Tokens should be resolved to CSS vars or values
-      expect(value).toContain('var(--')
+      expect(value).toBe('inset 0 2px 4px black')
     })
 
-    test('boxShadow inset object adds inset keyword', () => {
+    test('boxShadow with multiple tokens resolves all', () => {
       const styles = simplifiedGetSplitStyles(Stack, {
-        boxShadow: { offsetX: 0, offsetY: 2, blurRadius: 4, color: 'black', inset: true },
+        boxShadow: '0 0 10px $white, 0 0 20px $black',
       })
       const value = getStyleValue(styles, 'boxShadow')
       expect(value).toBeDefined()
-      expect(value).toContain('inset')
-    })
-
-    test('boxShadow with spreadDistance includes it', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
-        boxShadow: {
-          offsetX: 0,
-          offsetY: 0,
-          blurRadius: 10,
-          spreadDistance: 5,
-          color: 'red',
-        },
-      })
-      const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBeDefined()
-      // Should have 4 length values: offsetX offsetY blurRadius spreadDistance
-      expect(value).toMatch(/0px\s+0px\s+10px\s+5px/)
+      expect(value).not.toContain('$white')
+      expect(value).not.toContain('$black')
     })
   })
 
@@ -106,42 +83,6 @@ describe('RN 0.76+ Style Alignment - Web', () => {
       expect(value).toBe('brightness(1.2)')
     })
 
-    test('filter object converts to CSS string', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
-        filter: { brightness: 1.2 },
-      })
-      const value = getStyleValue(styles, 'filter')
-      expect(value).toBe('brightness(1.2)')
-    })
-
-    test('filter object array converts to space-separated CSS', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
-        filter: [{ brightness: 1.2 }, { contrast: 1.1 }],
-      })
-      const value = getStyleValue(styles, 'filter')
-      expect(value).toBe('brightness(1.2) contrast(1.1)')
-    })
-
-    test('filter blur with token resolves', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
-        filter: { blur: '$2' },
-      })
-      const value = getStyleValue(styles, 'filter')
-      expect(value).toContain('blur(')
-      // Token should be resolved
-      expect(value).not.toContain('$2')
-    })
-
-    test('filter dropShadow object converts correctly', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
-        filter: { dropShadow: { offsetX: 5, offsetY: 5, blurRadius: 10, color: 'red' } },
-      })
-      const value = getStyleValue(styles, 'filter')
-      expect(value).toContain('drop-shadow(')
-      expect(value).toContain('5px')
-      expect(value).toContain('red')
-    })
-
     test('filter with embedded tokens resolves', () => {
       const styles = simplifiedGetSplitStyles(Stack, {
         filter: 'blur($2)',
@@ -149,6 +90,22 @@ describe('RN 0.76+ Style Alignment - Web', () => {
       const value = getStyleValue(styles, 'filter')
       // Token should be resolved
       expect(value).not.toContain('$2')
+    })
+
+    test('filter multiple functions', () => {
+      const styles = simplifiedGetSplitStyles(Stack, {
+        filter: 'blur(10px) brightness(1.2)',
+      })
+      const value = getStyleValue(styles, 'filter')
+      expect(value).toBe('blur(10px) brightness(1.2)')
+    })
+
+    test('filter drop-shadow', () => {
+      const styles = simplifiedGetSplitStyles(Stack, {
+        filter: 'drop-shadow(5px 5px 10px red)',
+      })
+      const value = getStyleValue(styles, 'filter')
+      expect(value).toBe('drop-shadow(5px 5px 10px red)')
     })
   })
 
