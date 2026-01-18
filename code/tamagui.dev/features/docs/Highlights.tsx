@@ -14,7 +14,6 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
   return (
     <YStack
       mb="$2"
-      flex={1}
       $gtSm={{
         fd: 'row',
         justifyContent: 'space-between',
@@ -24,7 +23,6 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
       })}
     >
       <YStack
-        flex={1}
         minH={142}
         $gtSm={{
           flex: 1,
