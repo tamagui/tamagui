@@ -442,11 +442,7 @@ type ConfProps<A, B, C, D, E, F, I> = {
     themes?: B;
     shorthands?: C;
     media?: D;
-    animations?: E extends AnimationConfig ? AnimationDriver<E> | ({
-        default: AnimationDriver<E>;
-    } & {
-        [key: string]: AnimationDriver<any>;
-    }) : undefined;
+    animations?: E;
     fonts?: F;
     settings?: I;
 };
@@ -466,7 +462,10 @@ type EmptyTamaguiSettings = {
     allowedStyleValues: false;
     autocompleteSpecificTokens: 'except-special';
 };
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings> : unknown;
+type ExtractAnimationConfig<E> = E extends AnimationDriver<infer Config> ? Config : E extends {
+    default: AnimationDriver<infer Config>;
+} ? Config : E extends GenericAnimations ? E : EmptyAnimations;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
@@ -492,9 +491,16 @@ export type Media = TamaguiConfig['media'];
 export type Themes = TamaguiConfig['themes'];
 export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>;
 export type ThemeTokens = `$${ThemeKeys}`;
-type InferredTransitionKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : TamaguiConfig['animations'] extends {
-    default: AnimationDriver<infer Config>;
-} ? keyof Config : string;
+type GetAnimationsFromDriver<T> = T extends {
+    animations: infer A;
+} ? keyof A : never;
+type GetAnimationsFromMultiDriver<T> = T extends {
+    default: infer D;
+} ? GetAnimationsFromDriver<D> : T extends {
+    [key: string]: infer D;
+} ? GetAnimationsFromDriver<D> : never;
+type ExtractDriver<T> = Extract<T, AnimationDriver<any>>;
+type InferredTransitionKeys = ExtractDriver<TamaguiConfig['animations']> extends AnimationDriver<any> ? GetAnimationsFromDriver<ExtractDriver<TamaguiConfig['animations']>> : GetAnimationsFromMultiDriver<TamaguiConfig['animations']>;
 export type TransitionKeys = InferredTransitionKeys;
 type InferredAnimationDriverKeys = TamaguiConfig['animations'] extends AnimationDriver<any> ? 'default' : TamaguiConfig['animations'] extends Record<string, AnimationDriver<any>> ? keyof TamaguiConfig['animations'] : 'default';
 export type AnimationDriverKeys = 'default' | InferredAnimationDriverKeys | (ReturnType<TypeOverride['animationDrivers']> extends 1 ? never : ReturnType<TypeOverride['animationDrivers']>);
