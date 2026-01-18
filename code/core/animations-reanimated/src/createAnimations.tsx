@@ -5,6 +5,7 @@ import {
   isWeb,
   Text,
   useComposedRefs,
+  useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
   type AnimationDriver,
@@ -516,14 +517,17 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }, [isHydrating, props.transition, animatedStyles])
 
       // Store config in SharedValue for worklet access (concurrent-safe)
-      // Using .set() method for React Compiler compatibility
+      // Using useEffect to avoid writing to shared value during render
       const configRef = useSharedValue({
         baseConfig,
         propertyConfigs,
         disableAnimation,
         isHydrating,
       })
-      configRef.set({ baseConfig, propertyConfigs, disableAnimation, isHydrating })
+
+      useIsomorphicLayoutEffect(() => {
+        configRef.set({ baseConfig, propertyConfigs, disableAnimation, isHydrating })
+      }, [baseConfig, propertyConfigs, disableAnimation, isHydrating])
 
       // =========================================================================
       // avoidRerenders: Register style emitter callback
@@ -585,17 +589,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
       })
 
-      // Store baseConfig in a ref so the exit effect doesn't re-run when config changes
-      const baseConfigRef = useRef(baseConfig)
-      baseConfigRef.current = baseConfig
-
       // Handle exit animation completion using reanimated's native callback
       // Animate exitProgress from 0 to 1 during exit, call sendExitComplete on completion
       React.useEffect(() => {
         if (!isExiting || !sendExitComplete) return
 
         // Use ref to get current config without adding to deps
-        const config = baseConfigRef.current
+        const config = configRef.get().baseConfig
 
         // Animate exitProgress to 1, which triggers sendExitComplete on completion
         // Using .set() for React Compiler compatibility

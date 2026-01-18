@@ -63,8 +63,9 @@ export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<vo
   console.info(`\n--- iOS app not found at ${appPath}, building... ---`)
 
   // Ensure pods are installed first
-  const podsPath = join(process.cwd(), 'ios', 'Pods')
-  if (!existsSync(podsPath)) {
+  // Check for actual pod config files, not just the Pods directory (which may be incomplete)
+  const podConfigPath = join(process.cwd(), 'ios', 'Pods', 'Target Support Files', 'Pods-tamaguikitchensink', 'Pods-tamaguikitchensink.debug.xcconfig')
+  if (!existsSync(podConfigPath)) {
     console.info('Installing CocoaPods dependencies...')
     await $`pod install --project-directory=ios`
   }
