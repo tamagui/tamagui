@@ -769,8 +769,10 @@ export function createBaseMenu({
                   if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
                 }
                 // focus first/last item based on key pressed
-                const content = contentRef.current
-                if (event.target !== content) return
+                // check if keydown is on the content frame itself (not a menu item)
+                // use data attribute check since ref may point to different element due to Slot/asChild
+                const isOnContentFrame = (event.target as HTMLElement).hasAttribute('data-tamagui-menu-content')
+                if (!isOnContentFrame) return
                 if (!FIRST_LAST_KEYS.includes(event.key)) return
                 event.preventDefault()
                 const items = getItems().filter((item) => !item.disabled)

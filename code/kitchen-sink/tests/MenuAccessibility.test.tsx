@@ -70,6 +70,25 @@ test.describe('Menu Accessibility', () => {
     await expect(menuContent).toBeFocused()
   })
 
+  test('arrow down from content frame focuses first item', async ({ page }) => {
+    await page.waitForLoadState('networkidle')
+
+    const trigger = page.getByTestId('menu-trigger')
+    await trigger.click()
+    await page.waitForTimeout(300)
+
+    const menuContent = page.getByTestId('menu-content')
+    await expect(menuContent).toBeVisible()
+    await expect(menuContent).toBeFocused()
+
+    // press ArrowDown to focus first item
+    await page.keyboard.press('ArrowDown')
+    await page.waitForTimeout(100)
+
+    const firstItem = page.getByTestId('menu-item-1')
+    await expect(firstItem).toBeFocused()
+  })
+
   test('arrow keys navigate between menu items', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
@@ -80,9 +99,11 @@ test.describe('Menu Accessibility', () => {
     const menuContent = page.getByTestId('menu-content')
     await expect(menuContent).toBeVisible()
 
-    // focus first item manually if not focused
+    // arrow down to focus first item from content frame
+    await page.keyboard.press('ArrowDown')
+    await page.waitForTimeout(100)
+
     const firstItem = page.getByTestId('menu-item-1')
-    await firstItem.focus()
     await expect(firstItem).toBeFocused()
 
     // arrow down to second item
