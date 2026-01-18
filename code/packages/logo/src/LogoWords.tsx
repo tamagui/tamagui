@@ -6,12 +6,12 @@ import { useTint } from './useTint'
 
 // T A M A G U I
 // default: white white white white red green blue
-// hover: yellow yellow yellow color8 red green blue
+// hover: yellow yellow yellow color12 red green blue
 const defaultColors = [
-  'var(--color1)',
-  'var(--color1)',
-  'var(--color1)',
-  'var(--color1)',
+  'var(--color12)',
+  'var(--color12)',
+  'var(--color12)',
+  'var(--color12)',
   'var(--red9)',
   'var(--green9)',
   'var(--blue9)',
@@ -21,17 +21,17 @@ const hoveredColors = [
   'var(--yellow9)',
   'var(--yellow9)',
   'var(--yellow9)',
-  'var(--color8)',
+  'var(--color12)',
   'var(--red9)',
   'var(--green9)',
   'var(--blue9)',
 ]
 
 const defaultCircleColors = [
-  '$color1',
-  '$color1',
-  '$color1',
-  '$color1',
+  '$color12',
+  '$color12',
+  '$color12',
+  '$color12',
   '$red9',
   '$green9',
   '$blue9',
@@ -57,7 +57,7 @@ export const LogoWords: React.MemoExoticComponent<
     '$yellow9',
     '$yellow9',
     '$yellow9',
-    '$color8',
+    '$color12',
     '$red9',
     '$green9',
     '$blue9',
