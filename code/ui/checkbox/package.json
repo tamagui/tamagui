@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "2.0.0-1768696252732",
+  "version": "2.0.0-1768699687560",
   "type": "module",
   "sideEffects": [
     "*.css"
