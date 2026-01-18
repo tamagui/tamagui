@@ -20,58 +20,6 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 import { isRemValue, resolveRem } from './resolveRem'
 import { skipProps } from './skipProps'
 
-// Token resolver for size (returns number) or color (returns string)
-const resolveTok = (
-  v: any,
-  cat: 'size' | 'color',
-  sp: SplitStyleProps,
-  ss: Partial<GetStyleState>
-) => {
-  if (typeof v === 'string' && v[0] === '$') {
-    const r = getTokenForKey(cat, v, sp, ss)
-    if (cat === 'size') return r != null ? +r || 0 : 0
-    return r != null ? String(r) : v
-  }
-  return cat === 'size' ? (typeof v === 'number' ? v : +v || 0) : v
-}
-
-// Native: resolve tokens in boxShadow object, keep as object
-const boxShadowObjResolve = (
-  v: any,
-  sp: SplitStyleProps,
-  ss: Partial<GetStyleState>
-): any =>
-  (Array.isArray(v) ? v : [v]).map((o) => ({
-    ...(o.inset && { inset: true }),
-    offsetX: resolveTok(o.offsetX, 'size', sp, ss),
-    offsetY: resolveTok(o.offsetY, 'size', sp, ss),
-    ...(o.blurRadius != null && { blurRadius: resolveTok(o.blurRadius, 'size', sp, ss) }),
-    ...(o.spreadDistance != null && {
-      spreadDistance: resolveTok(o.spreadDistance, 'size', sp, ss),
-    }),
-    ...(o.color != null && { color: resolveTok(o.color, 'color', sp, ss) }),
-  }))
-
-// Native: resolve tokens in filter object, keep as object array
-const filterObjResolve = (v: any, sp: SplitStyleProps, ss: Partial<GetStyleState>): any =>
-  (Array.isArray(v) ? v : [v]).map((o) => {
-    if ('blur' in o) return { blur: resolveTok(o.blur, 'size', sp, ss) }
-    if ('dropShadow' in o) {
-      const ds = o.dropShadow
-      return {
-        dropShadow: {
-          offsetX: resolveTok(ds.offsetX, 'size', sp, ss),
-          offsetY: resolveTok(ds.offsetY, 'size', sp, ss),
-          ...(ds.blurRadius != null && {
-            blurRadius: resolveTok(ds.blurRadius, 'size', sp, ss),
-          }),
-          ...(ds.color != null && { color: resolveTok(ds.color, 'color', sp, ss) }),
-        },
-      }
-    }
-    return o
-  })
-
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
   if (disabled) {
     return map(key, value)
@@ -119,27 +67,20 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   const originalValue = value
 
   if (value != null) {
-    // boxShadow object/array -> resolve tokens, keep as object array
-    if (key === 'boxShadow' && typeof value === 'object') {
-      value = boxShadowObjResolve(value, styleProps, styleState)
-    } else if (key === 'filter' && typeof value === 'object') {
-      // filter object/array -> resolve tokens, keep as object array
-      value = filterObjResolve(value, styleProps, styleState)
-    } else if (typeof value === 'string' && value[0] === '$') {
+    if (typeof value === 'string' && value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
-    } else if (key === 'boxShadow' && typeof value === 'string' && value.includes('$')) {
-      // boxShadow with embedded $tokens - resolve each token
+    } else if (
+      (key === 'boxShadow' || key === 'filter') &&
+      typeof value === 'string' &&
+      value.includes('$')
+    ) {
+      // boxShadow/filter with embedded $tokens - resolve each token
+      // Try size first (for dimensions), then color (for the color value)
       value = value.replace(/(\$[\w.-]+)/g, (t) => {
-        // $5, $-2 etc -> size token, otherwise -> color
-        const cat = /^\$-?\d/.test(t) ? 'size' : 'color'
-        const r = getTokenForKey(cat, t, styleProps, styleState)
-        return r != null ? String(r) : t
-      })
-    } else if (key === 'filter' && typeof value === 'string' && value.includes('$')) {
-      // filter with embedded $tokens - resolve each token
-      value = value.replace(/(\$[\w.-]+)/g, (t) => {
-        const cat = /^\$-?\d/.test(t) ? 'size' : 'color'
-        const r = getTokenForKey(cat, t, styleProps, styleState)
+        let r = getTokenForKey('size', t, styleProps, styleState)
+        if (r == null) {
+          r = getTokenForKey('color', t, styleProps, styleState)
+        }
         return r != null ? String(r) : t
       })
     } else if (isVariable(value)) {

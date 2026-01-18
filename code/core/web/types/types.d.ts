@@ -989,52 +989,8 @@ export interface TransformStyleProps {
     rotateX?: `${number}deg` | UnionableString;
     rotateZ?: `${number}deg` | UnionableString;
 }
-export interface BoxShadowObject {
-    offsetX: SpaceTokens | number | (string & {});
-    offsetY: SpaceTokens | number | (string & {});
-    blurRadius?: SpaceTokens | number | (string & {});
-    spreadDistance?: SpaceTokens | number | (string & {});
-    color?: ColorStyleProp | (string & {});
-    inset?: boolean;
-}
-export type BoxShadowValue = BoxShadowObject | BoxShadowObject[] | (string & {});
-export interface FilterBrightness {
-    brightness: number | `${number}%`;
-}
-export interface FilterOpacity {
-    opacity: number | `${number}%`;
-}
-export interface FilterBlur {
-    blur: SpaceTokens | number | string;
-}
-export interface FilterContrast {
-    contrast: number | `${number}%`;
-}
-export interface FilterGrayscale {
-    grayscale: number | `${number}%`;
-}
-export interface FilterHueRotate {
-    hueRotate: `${number}deg` | `${number}rad`;
-}
-export interface FilterInvert {
-    invert: number | `${number}%`;
-}
-export interface FilterSaturate {
-    saturate: number | `${number}%`;
-}
-export interface FilterSepia {
-    sepia: number | `${number}%`;
-}
-export interface FilterDropShadow {
-    dropShadow: {
-        offsetX: SpaceTokens | number | (string & {});
-        offsetY: SpaceTokens | number | (string & {});
-        blurRadius?: SpaceTokens | number | (string & {});
-        color?: ColorStyleProp | (string & {});
-    };
-}
-export type FilterFunction = FilterBrightness | FilterOpacity | FilterBlur | FilterContrast | FilterGrayscale | FilterHueRotate | FilterInvert | FilterSaturate | FilterSepia | FilterDropShadow;
-export type FilterValue = FilterFunction | FilterFunction[] | (string & {});
+export type BoxShadowValue = string & {};
+export type FilterValue = string & {};
 interface ExtraStyleProps {
     /**
      * Controls the curve style of rounded corners.
@@ -1101,8 +1057,8 @@ interface ExtraStyleProps {
      */
     backgroundSize?: Properties['backgroundSize'];
     /**
-     * CSS box-shadow. Supports tokens: "$2 $4 $8 $shadowColor"
-     * Also accepts object/array format. Supported on web and native.
+     * CSS box-shadow string. Supports tokens: "0 4px 8px $shadowColor"
+     * Works on web and native (RN 0.76+).
      */
     boxShadow?: BoxShadowValue;
     /**
@@ -1119,8 +1075,8 @@ interface ExtraStyleProps {
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
     /**
-     * Graphical filter effects. Supported on web and native.
-     * Cross-platform: brightness, opacity. Android 12+: blur, contrast, dropShadow, etc.
+     * CSS filter string. Example: "blur(10px) brightness(1.2)"
+     * Works on web and native (RN 0.76+). Supports embedded tokens.
      */
     filter?: FilterValue;
     /**
