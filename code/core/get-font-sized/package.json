@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-font-sized",
-  "version": "2.0.0-1768699687560",
+  "version": "2.0.0-1768700139740",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
