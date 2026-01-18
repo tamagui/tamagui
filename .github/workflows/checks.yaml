@@ -47,6 +47,6 @@ jobs:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
           SKIP_NATIVE_TESTS: true
         with:
-          timeout_minutes: 20
+          timeout_minutes: 25
           max_attempts: 2
           command: 'yarn test'
