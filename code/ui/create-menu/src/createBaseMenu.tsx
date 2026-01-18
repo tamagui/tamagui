@@ -768,11 +768,13 @@ export function createBaseMenu({
                   if (event.key === 'Tab') event.preventDefault()
                   if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
                 }
-                // focus first/last item based on key pressed
-                // check if keydown is on the content frame itself (not a menu item)
-                // use data attribute check since ref may point to different element due to Slot/asChild
-                const isOnContentFrame = (event.target as HTMLElement).hasAttribute('data-tamagui-menu-content')
-                if (!isOnContentFrame) return
+                // focus first/last item based on key pressed when on THIS menu's content frame
+                // isKeyDownInside ensures we only handle keys for this menu, not bubbled from submenus
+                // isOnContentFrame ensures we only handle when focused on the content frame, not an item
+                const isOnContentFrame = (event.target as HTMLElement).hasAttribute(
+                  'data-tamagui-menu-content'
+                )
+                if (!isKeyDownInside || !isOnContentFrame) return
                 if (!FIRST_LAST_KEYS.includes(event.key)) return
                 event.preventDefault()
                 const items = getItems().filter((item) => !item.disabled)
@@ -876,10 +878,11 @@ export function createBaseMenu({
                 currentTabStopId={currentItemId}
                 onCurrentTabStopIdChange={setCurrentItemId}
                 onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
-                  // prevent auto-focus on first item when menu opens
-                  // let the content frame stay focused, arrow keys will move focus to items
-                  // this avoids showing focus style on first item immediately on open
-                  event.preventDefault()
+                  // for keyboard users, focus first item for immediate navigation
+                  // for mouse users, prevent auto-focus to avoid showing focus style
+                  if (!rootContext.isUsingKeyboardRef.current) {
+                    event.preventDefault()
+                  }
                 })}
               >
                 {content}

@@ -36,7 +36,7 @@ export function MenuDemo() {
     <>
       <Menu allowFlip placement="bottom-start" offset={8}>
         <Menu.Trigger asChild>
-          <Button size="$3" circular icon={Backpack} scaleIcon={1.2} />
+          <Button size="$4" circular icon={Backpack} scaleIcon={1.2} />
         </Menu.Trigger>
 
         <Menu.Portal zIndex={100}>

@@ -29,7 +29,7 @@ test.describe('Menu Accessibility', () => {
     await expect(afterButton).toBeFocused()
   })
 
-  test('menu opens on Enter key and focuses content frame (not first item)', async ({ page }) => {
+  test('menu opens on Enter key and focuses first item', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
     const trigger = page.getByTestId('menu-trigger')
@@ -43,16 +43,12 @@ test.describe('Menu Accessibility', () => {
     const menuContent = page.getByTestId('menu-content')
     await expect(menuContent).toBeVisible()
 
-    // content frame should be focused, NOT the first item
-    // this prevents showing focus style on first item on open
-    await expect(menuContent).toBeFocused()
-
-    // first item should NOT be focused
+    // first item should be focused for keyboard users
     const firstItem = page.getByTestId('menu-item-1')
-    await expect(firstItem).not.toBeFocused()
+    await expect(firstItem).toBeFocused()
   })
 
-  test('menu opens on Space key and focuses content frame (not first item)', async ({ page }) => {
+  test('menu opens on Space key and focuses first item', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
     const trigger = page.getByTestId('menu-trigger')
@@ -66,8 +62,9 @@ test.describe('Menu Accessibility', () => {
     const menuContent = page.getByTestId('menu-content')
     await expect(menuContent).toBeVisible()
 
-    // content frame should be focused, NOT the first item
-    await expect(menuContent).toBeFocused()
+    // first item should be focused for keyboard users
+    const firstItem = page.getByTestId('menu-item-1')
+    await expect(firstItem).toBeFocused()
   })
 
   test('arrow down from content frame focuses first item', async ({ page }) => {
@@ -198,7 +195,7 @@ test.describe('Menu Accessibility', () => {
     await expect(trigger).toBeFocused()
   })
 
-  test('arrow right opens submenu and focuses submenu content (not first item)', async ({ page }) => {
+  test('arrow right opens submenu and focuses first submenu item', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
     const trigger = page.getByTestId('menu-trigger')
@@ -220,8 +217,33 @@ test.describe('Menu Accessibility', () => {
     const submenuContent = page.getByTestId('submenu-content')
     await expect(submenuContent).toBeVisible()
 
-    // submenu content should be focused, not first item
-    await expect(submenuContent).toBeFocused()
+    // first submenu item should be focused for keyboard users
+    const firstSubmenuItem = page.getByTestId('submenu-item-1')
+    await expect(firstSubmenuItem).toBeFocused()
+  })
+
+  test('arrow down in hover-opened submenu focuses first item', async ({ page }) => {
+    await page.waitForLoadState('networkidle')
+
+    const trigger = page.getByTestId('menu-trigger')
+    await trigger.click()
+    await page.waitForTimeout(300)
+
+    // hover over submenu trigger to open submenu
+    const submenuTrigger = page.getByTestId('submenu-trigger')
+    await submenuTrigger.hover()
+    await page.waitForTimeout(500)
+
+    const submenuContent = page.getByTestId('submenu-content')
+    await expect(submenuContent).toBeVisible()
+
+    // focus the submenu content and press down
+    await submenuContent.focus()
+    await page.keyboard.press('ArrowDown')
+    await page.waitForTimeout(100)
+
+    const firstSubmenuItem = page.getByTestId('submenu-item-1')
+    await expect(firstSubmenuItem).toBeFocused()
   })
 
   test('arrow left closes submenu and returns to parent', async ({ page }) => {
