@@ -2,13 +2,13 @@ import { createAnimations } from '@tamagui/animations-motion'
 
 export const animationsMotion = createAnimations({
   '75ms': {
-    duration: 75,
+    duration: 0.075,
   },
   '100ms': {
-    duration: 100,
+    duration: 0.1,
   },
   '200ms': {
-    duration: 200,
+    duration: 0.2,
   },
   superBouncy: {
     type: 'spring',
@@ -62,9 +62,9 @@ export const animationsMotion = createAnimations({
   },
   tooltip: {
     type: 'spring',
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
+    damping: 25,
+    mass: 0.45,
+    stiffness: 500,
   },
   quicker: {
     type: 'spring',
