@@ -782,11 +782,7 @@ type ConfProps<A, B, C, D, E, F, I> = {
   themes?: B
   shorthands?: C
   media?: D
-  animations?: E extends AnimationConfig
-    ?
-        | AnimationDriver<E>
-        | ({ default: AnimationDriver<E> } & { [key: string]: AnimationDriver<any> })
-    : undefined
+  animations?: E
   fonts?: F
   settings?: I
 }
@@ -809,6 +805,15 @@ type EmptyTamaguiSettings = {
   autocompleteSpecificTokens: 'except-special'
 }
 
+// Helper to extract animation config from AnimationDriver<Config> or multi-driver object
+type ExtractAnimationConfig<E> = E extends AnimationDriver<infer Config>
+  ? Config
+  : E extends { default: AnimationDriver<infer Config> }
+    ? Config
+    : E extends GenericAnimations
+      ? E
+      : EmptyAnimations
+
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer A,
   infer B,
@@ -823,7 +828,7 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
       B extends GenericThemes ? B : EmptyThemes,
       C extends GenericShorthands ? C : EmptyShorthands,
       D extends GenericMedia ? D : EmptyMedia,
-      E extends GenericAnimations ? E : EmptyAnimations,
+      ExtractAnimationConfig<E>,
       F extends GenericFonts ? F : EmptyFonts,
       H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings
     >
@@ -882,13 +887,25 @@ export type Themes = TamaguiConfig['themes']
 export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>
 export type ThemeTokens = `$${ThemeKeys}`
 // Animation names (slow, fast, bouncy) for the `transition` prop
-type InferredTransitionKeys = TamaguiConfig['animations'] extends AnimationDriver<
-  infer Config
->
-  ? keyof Config
-  : TamaguiConfig['animations'] extends { default: AnimationDriver<infer Config> }
-    ? keyof Config
-    : string
+// Extract animation keys from the driver's `animations` property
+// The AnimationDriver<Config> has an `animations: Config` property
+type GetAnimationsFromDriver<T> = T extends { animations: infer A } ? keyof A : never
+
+// For multi-driver configs like { default: AnimationDriver, css: AnimationDriver }
+// Extract from the 'default' driver or first driver found
+type GetAnimationsFromMultiDriver<T> = T extends { default: infer D }
+  ? GetAnimationsFromDriver<D>
+  : T extends { [key: string]: infer D }
+    ? GetAnimationsFromDriver<D>
+    : never
+
+// Extract just the AnimationDriver from the union (excluding AnimationsConfigObject)
+type ExtractDriver<T> = Extract<T, AnimationDriver<any>>
+
+// Main extraction - use Extract to get AnimationDriver from union, then get keys
+type InferredTransitionKeys = ExtractDriver<TamaguiConfig['animations']> extends AnimationDriver<any>
+  ? GetAnimationsFromDriver<ExtractDriver<TamaguiConfig['animations']>>
+  : GetAnimationsFromMultiDriver<TamaguiConfig['animations']>
 
 export type TransitionKeys = InferredTransitionKeys
 
