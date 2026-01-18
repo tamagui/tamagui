@@ -229,14 +229,10 @@ interface MenuItemTitleProps extends TextProps {}
  * -----------------------------------------------------------------------------------------------*/
 interface MenuItemSubTitleProps extends TextProps {}
 
-/* ---------------------------------------------------------------------------------------------- */
-
 /* -------------------------------------------------------------------------------------------------
  * MenuItemIcon
  * -----------------------------------------------------------------------------------------------*/
 type MenuItemIconProps = ViewProps
-
-/* ---------------------------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------------------------------
  * MenuCheckboxItem
@@ -731,10 +727,8 @@ export function createBaseMenu({
     const isPointerMovingToSubmenu = React.useCallback((event: React.PointerEvent) => {
       const isMovingTowards =
         pointerDirRef.current === pointerGraceIntentRef.current?.side
-      return (
-        isMovingTowards &&
-        isPointerInGraceArea(event, pointerGraceIntentRef.current?.area)
-      )
+      const inArea = isPointerInGraceArea(event, pointerGraceIntentRef.current?.area)
+      return isMovingTowards && inArea
     }, [])
 
     const content = (
@@ -1128,7 +1122,6 @@ export function createBaseMenu({
 
   // TODO review why styleable was here
   const ITEM_ICON = 'MenuItemIcon'
-  type MenuItemIconProps = ViewProps
   const MenuItemIcon = _Icon
   // .styleable((props: ThemeableStackProps, forwardedRef) => {
   //   return <_Icon {...props} ref={forwardedRef} />
@@ -1419,18 +1412,38 @@ export function createBaseMenu({
 
             clearOpenTimer()
 
+            /**
+             * SafePolygon Implementation
+             *
+             * When the mouse leaves the submenu trigger, we create a "safe polygon" zone
+             * that allows diagonal mouse movement toward the submenu content without
+             * accidentally closing it by hovering over other menu items.
+             *
+             * The polygon is a 5-point shape from the current mouse position to the
+             * submenu content bounds. When the mouse moves through this polygon while
+             * moving toward the submenu (checked via `isPointerMovingToSubmenu`),
+             * we prevent other menu items from stealing focus.
+             *
+             * Key requirement: The polygon needs a `side` property ('left' or 'right')
+             * that indicates which direction the submenu is. This is compared against
+             * the pointer movement direction - if they match and the mouse is inside
+             * the polygon, `isPointerMovingToSubmenu` returns true.
+             */
+
             // @ts-ignore
             const contentRect = context.content?.getBoundingClientRect()
             if (contentRect) {
-              // TODO: make sure to update this when we change positioning logic
-              // @ts-ignore
-              const side = context.content?.dataset.side as Side
+              // Get side from data-side attribute (set by MenuSubContent)
+              // This is critical - without it, side is undefined and isPointerMovingToSubmenu
+              // always returns false because pointerDir === undefined is never true
+              const contentEl = context.content as HTMLElement
+              const side: Side = (contentEl?.dataset?.side as Side) || 'right'
               const rightSide = side === 'right'
               const bleed = rightSide ? -5 : +5
               const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
               const contentFarEdge = contentRect[rightSide ? 'right' : 'left']
 
-              contentContext.onPointerGraceIntentChange({
+              const polygon = {
                 area: [
                   // Apply a bleed on clientX to ensure that our exit point is
                   // consistently within polygon bounds
@@ -1441,18 +1454,48 @@ export function createBaseMenu({
                   { x: contentNearEdge, y: contentRect.bottom },
                 ],
                 side,
-              })
+              }
+              contentContext.onPointerGraceIntentChange(polygon)
 
+              // Clear polygon after 300ms grace period
               window.clearTimeout(pointerGraceTimerRef.current)
               pointerGraceTimerRef.current = window.setTimeout(
                 () => contentContext.onPointerGraceIntentChange(null),
                 300
               )
+            } else if (isWeb && subContext.trigger) {
+              // Fallback: Content doesn't exist yet, create polygon based on trigger position
+              const triggerEl = subContext.trigger as unknown as HTMLElement
+              const triggerRect = triggerEl?.getBoundingClientRect()
+              if (triggerRect) {
+                const rightSide = rootContext.dir !== 'rtl'
+                const side: Side = rightSide ? 'right' : 'left'
+                const bleed = rightSide ? -5 : +5
+                // Estimate submenu position based on trigger
+                const nearEdge = rightSide ? triggerRect.right + 4 : triggerRect.left - 4
+                const farEdge = rightSide ? nearEdge + 200 : nearEdge - 200
+
+                const polygon = {
+                  area: [
+                    { x: event.clientX + bleed, y: event.clientY },
+                    { x: nearEdge, y: triggerRect.top - 50 },
+                    { x: farEdge, y: triggerRect.top - 50 },
+                    { x: farEdge, y: triggerRect.bottom + 50 },
+                    { x: nearEdge, y: triggerRect.bottom + 50 },
+                  ],
+                  side,
+                }
+                contentContext.onPointerGraceIntentChange(polygon)
+
+                window.clearTimeout(pointerGraceTimerRef.current)
+                pointerGraceTimerRef.current = window.setTimeout(
+                  () => contentContext.onPointerGraceIntentChange(null),
+                  300
+                )
+              }
             } else {
               contentContext.onTriggerLeave(event)
               if (event.defaultPrevented) return
-
-              // There's 100ms where the user may leave an item before the submenu was opened.
               contentContext.onPointerGraceIntentChange(null)
             }
           })}
@@ -1688,8 +1731,6 @@ function isPointerInGraceArea(event: React.PointerEvent, area?: Polygon) {
   const cursorPos = { x: event.clientX, y: event.clientY }
   return isPointInPolygon(cursorPos, area)
 }
-
-type PointerHandler = (e: { pointerType?: string }) => void
 
 export type {
   MenuAnchorProps,
