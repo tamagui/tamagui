@@ -119,11 +119,17 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
     const selectItemProps = React.useMemo(() => {
       return interactions
         ? interactions.getItemProps({
-            onTouchMove() {
+            onTouchStart(event: React.TouchEvent) {
+              // Prevent touch events from propagating to elements underneath
+              event.stopPropagation()
+            },
+            onTouchMove(event: React.TouchEvent) {
+              event.stopPropagation()
               allowSelectRef!.current = true
               allowMouseUpRef!.current = false
             },
-            onTouchEnd() {
+            onTouchEnd(event: React.TouchEvent) {
+              event.stopPropagation()
               allowSelectRef!.current = false
               allowMouseUpRef!.current = true
             },
@@ -139,13 +145,17 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
               }
             },
 
-            onClick() {
+            onClick(event: React.MouseEvent) {
+              // Prevent click from propagating to elements underneath
+              event.stopPropagation()
               if (allowSelectRef!.current) {
                 handleSelect()
               }
             },
 
-            onMouseUp() {
+            onMouseUp(event: React.MouseEvent) {
+              // Prevent mouseup from propagating to elements underneath
+              event.stopPropagation()
               if (!allowMouseUpRef!.current) {
                 return
               }
