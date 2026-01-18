@@ -1,4 +1,63 @@
 import { createThemes } from '@tamagui/theme-builder';
+export declare const defaultComponentThemes: {
+    readonly ListItem: {
+        readonly template: "surface1";
+    };
+    readonly SelectItem: {
+        readonly template: "surface1";
+    };
+    readonly SelectTrigger: {
+        readonly template: "surface1";
+    };
+    readonly Card: {
+        readonly template: "surface1";
+    };
+    readonly Button: {
+        readonly template: "surface3";
+    };
+    readonly Checkbox: {
+        readonly template: "surface2";
+    };
+    readonly Switch: {
+        readonly template: "surface2";
+    };
+    readonly SwitchThumb: {
+        readonly template: "inverse";
+    };
+    readonly TooltipContent: {
+        readonly template: "surface2";
+    };
+    readonly Progress: {
+        readonly template: "surface1";
+    };
+    readonly RadioGroupItem: {
+        readonly template: "surface2";
+    };
+    readonly TooltipArrow: {
+        readonly template: "surface1";
+    };
+    readonly SliderTrackActive: {
+        readonly template: "surface2";
+    };
+    readonly SliderTrack: {
+        readonly template: "inverse";
+    };
+    readonly SliderThumb: {
+        readonly template: "inverse";
+    };
+    readonly Tooltip: {
+        readonly template: "inverse";
+    };
+    readonly ProgressIndicator: {
+        readonly template: "inverse";
+    };
+    readonly Input: {
+        readonly template: "surface1";
+    };
+    readonly TextArea: {
+        readonly template: "surface1";
+    };
+};
 declare const darkPalette: string[];
 declare const lightPalette: string[];
 export { darkPalette as defaultDarkPalette, lightPalette as defaultLightPalette };
