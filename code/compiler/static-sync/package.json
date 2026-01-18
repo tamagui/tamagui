@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-sync",
-  "version": "2.0.0-1768700139740",
+  "version": "2.0.0-1768700985112",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",

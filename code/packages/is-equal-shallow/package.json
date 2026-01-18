@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/is-equal-shallow",
-  "version": "2.0.0-1768700139740",
+  "version": "2.0.0-1768700985112",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

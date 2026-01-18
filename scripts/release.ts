@@ -389,10 +389,6 @@ async function run() {
       await finishAndCommit()
 
       async function finishAndCommit(cwd = process.cwd()) {
-        if (canary && !isMain) {
-          console.info(`Canary off main - avoiding commit`)
-          return
-        }
         if (!rePublish || reRun || shouldFinish) {
           await spawnify(`git add -A`, { cwd })
           await spawnify(`git commit -m ${gitTag}`, { cwd })
