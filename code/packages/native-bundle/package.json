@@ -14,7 +14,7 @@
     "name": "Nate Wienert"
   },
   "dependencies": {
-    "vite": "^7.1.12"
+    "vite": "7.1.12"
   },
   "devDependencies": {
     "esbuild": "^0.25.11"
