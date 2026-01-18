@@ -6,6 +6,7 @@ import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
 import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/core'
 import {
   getVariableValue,
+  isWeb,
   shouldRenderNativePlatform,
   useProps,
   useTheme,
@@ -51,14 +52,8 @@ export type CheckboxProps = CheckboxBaseProps &
   CheckboxExpectingVariantProps &
   CheckboxFrameActiveStyleProps
 
-type CheckboxComponent = (
-  props: CheckboxExtraProps & CheckboxExpectingVariantProps
-) => React.ReactNode
-
-type CheckboxIndicatorExpectingVariantProps = {}
-type CheckboxIndicatorComponent = (
-  props: CheckboxIndicatorExpectingVariantProps
-) => React.ReactNode
+type CheckboxComponent = (props: any) => React.ReactNode
+type CheckboxIndicatorComponent = (props: any) => React.ReactNode
 
 type CheckboxIndicatorBaseProps = ViewProps
 type CheckboxIndicatorExtraProps = {
@@ -121,8 +116,7 @@ export function createCheckbox<
       } = _props
       const propsActive = useProps(props)
 
-      // TODO: this could be null - fix the type
-      const styledContext = React.useContext(CheckboxStyledContext)
+      const styledContext = React.useContext(CheckboxStyledContext.context)
       let adjustedSize = 0
       let size = 0
       if (!unstyled) {
@@ -173,7 +167,7 @@ export function createCheckbox<
             style={{
               appearance: 'auto',
               accentColor: 'var(--color6)',
-              ...(checkboxProps.style as any), // TODO: any
+              ...(checkboxProps.style as any),
             }}
           />
         )
@@ -188,6 +182,7 @@ export function createCheckbox<
       )
 
       const isActive = !!checked
+      const disabled = checkboxProps.disabled
 
       return (
         <CheckboxContext.Provider value={memoizedContext}>
@@ -196,32 +191,29 @@ export function createCheckbox<
             scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
             unstyled={unstyled}
             active={isActive}
+            disabled={disabled}
           >
             <Frame
-              {...(!unstyled && {
-                width: size,
-                height: size,
-              })}
               render="button"
               ref={checkboxRef}
               unstyled={unstyled}
               theme={activeTheme ?? null}
-              {...(unstyled === false && {
+              {...(isWeb && { type: 'button' })}
+              {...(!unstyled && {
+                width: size,
+                height: size,
                 size,
               })}
+              checked={checked}
+              disabled={disabled}
+              {...(checkboxProps as CheckboxProps)}
+              {...props}
               {...(isActive && {
                 ...(!unstyled && !activeStyle && {
                   backgroundColor: '$backgroundActive',
                 }),
                 ...activeStyle,
               })}
-              // potential variant
-              checked={checked}
-              disabled={checkboxProps.disabled}
-              // regressed in v2 types
-              {...(checkboxProps as CheckboxProps)}
-              // react 76 style prop mis-match, but should be fine
-              style={checkboxProps.style}
             >
               {propsActive.children}
             </Frame>
@@ -235,7 +227,6 @@ export function createCheckbox<
   const IndicatorComponent = Indicator.styleable<CheckboxIndicatorProps>(
     (props, forwardedRef) => {
       const {
-        // __scopeCheckbox,
         children: childrenProp,
         forceMount,
         disablePassStyles,

@@ -4,5 +4,6 @@ export declare const CheckboxStyledContext: import("@tamagui/core").StyledContex
     scaleIcon: number;
     unstyled?: boolean;
     active?: boolean;
+    disabled?: boolean;
 }>;
 //# sourceMappingURL=CheckboxStyledContext.d.ts.map

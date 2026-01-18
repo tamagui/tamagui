@@ -259,7 +259,17 @@ function MySwitch({ defaultChecked, onCheckedChange, ...props }) {
     {
       name: 'nativeProps',
       type: 'SwitchProps (from `react-native`)',
-      description: `Props to pass to the native Switch;`,
+      description: `Props to pass to the native Switch.`,
+    },
+    {
+      name: 'activeStyle',
+      type: 'ViewStyle',
+      description: `Styles to apply when the switch is checked/active.`,
+    },
+    {
+      name: 'activeTheme',
+      type: 'string | null',
+      description: `Theme to apply when the switch is checked/active.`,
     },
   ]}
 />
@@ -276,6 +286,11 @@ function MySwitch({ defaultChecked, onCheckedChange, ...props }) {
       type: 'boolean',
       default: 'false',
       description: `When true, remove all default tamagui styling.`,
+    },
+    {
+      name: 'activeStyle',
+      type: 'ViewStyle',
+      description: `Styles to apply to the thumb when the switch is checked/active.`,
     },
   ]}
 />
