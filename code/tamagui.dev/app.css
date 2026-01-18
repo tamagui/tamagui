@@ -663,14 +663,14 @@ textarea {
 
 @media (hover: hover) {
   .clip-slice {
-    mask-image: url(./public/takeouticon.svg);
+    mask-image: url(/takeouticon.svg);
     mask-size: 50% 50%;
     animation: clip-fade2 50s infinite alternate;
     mix-blend-mode: difference !important;
   }
 
   .clip-slice-2 {
-    mask-image: url(./public/takeouticon.svg);
+    mask-image: url(/takeouticon.svg);
     mask-size: 25% 25%;
     transform: rotate(-2deg);
     animation: clip-fade 70s infinite alternate;
@@ -683,7 +683,7 @@ textarea {
 }
 
 .clip-wave {
-  mask-image: url(./public/takeout/geometric.svg);
+  mask-image: url(/takeout/geometric.svg);
   mask-size: 150% 150%;
   animation: clip-fade 80s infinite alternate;
 }
