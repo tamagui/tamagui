@@ -51,7 +51,6 @@ export const Dialogs = memo(() => {
           onPointerDownOutside={() => {
             rootStore.hideDialog()
           }}
-          bordered
           elevate
           key="content"
           transition={[

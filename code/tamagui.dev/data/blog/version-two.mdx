@@ -114,8 +114,10 @@ The breaking changes outside of deprecations are:
   - `accessibilityLabel` → `aria-label`
   - `accessibilityRole` → `role`
   - `accessibilityHint` → `aria-describedby`
-  - `accessibilityState` → `aria-disabled`, `aria-selected`, `aria-checked`, `aria-busy`, `aria-expanded`
-  - `accessibilityValue` → `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-valuetext`
+  - `accessibilityState` → `aria-disabled`, `aria-selected`, `aria-checked`,
+    `aria-busy`, `aria-expanded`
+  - `accessibilityValue` → `aria-valuemin`, `aria-valuemax`, `aria-valuenow`,
+    `aria-valuetext`
   - `accessibilityElementsHidden` → `aria-hidden`
   - `accessibilityViewIsModal` → `aria-modal`
   - `accessibilityLiveRegion` → `aria-live`
@@ -239,12 +241,10 @@ switch to `@tamagui/animations-reanimated` - the API is the same.
 
 You can now configure multiple animation drivers and select per-component using
 the new `animatedBy` prop. This serves two important purposes: it allows mixing
-drivers (like using CSS for simple transitions and Reanimated for complex
-springs), and it enables the compiler to better optimize your code by knowing
-statically which driver a component uses.
+drivers more granularly, and it enables the compiler to better optimize.
 
 ```tsx
-// Config with multiple drivers
+// Config with multiple drivers up front
 createTamagui({
   animations: {
     default: cssDriver,
@@ -258,10 +258,9 @@ createTamagui({
 
 When the compiler sees `animatedBy`, it can make smarter decisions about
 extraction and avoid including unnecessary animation runtime code for components
-that don't need it.
-
-For lazy loading drivers (e.g., load a heavier driver only after login), use the
-new `loadAnimationDriver` function:
+that don't need it. You can also lazy load a driver (e.g., load a heavier driver
+only after login), use the new `loadAnimationDriver` function, similar to how
+you could before using Configuration:
 
 ```tsx
 import { loadAnimationDriver } from 'tamagui'
