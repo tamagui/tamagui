@@ -86,7 +86,7 @@ const Contents = ({
               >
                 <XStack items="center" gap="$4">
                   <Separator />
-                  <SizableText size="$2" theme="alt1" select="none">
+                  <SizableText size="$2" color="$color10" select="none">
                     {showAccent ? 'Accent' : 'Base'} Light Theme
                   </SizableText>
                   <Separator />
@@ -114,7 +114,7 @@ const Contents = ({
               >
                 <XStack items="center" gap="$4">
                   <Separator />
-                  <SizableText size="$2" theme="alt1" select="none">
+                  <SizableText size="$2" color="$color10" select="none">
                     {showAccent ? 'Accent' : 'Base'} Dark Theme
                   </SizableText>
                   <Separator />

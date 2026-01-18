@@ -9,7 +9,7 @@ import { defaultStyles, textAreaSizeVariant } from '../shared'
  */
 export const TextArea = styled(Input, {
   name: 'TextArea',
-  tag: 'textarea',
+  render: 'textarea',
 
   // this attribute fixes firefox newline issue
   // @ts-ignore

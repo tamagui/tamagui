@@ -14,7 +14,7 @@ export function simplifiedGetSplitStyles(
   component: any,
   props: Record<string, any>,
   options: {
-    tag?: string
+    render?: string
     mediaState?: Record<string, any>
   } = {}
 ) {
@@ -33,7 +33,7 @@ export function simplifiedGetSplitStyles(
       },
     } as any,
     undefined,
-    options.tag,
+    options.render,
     true
   )!
 }

@@ -100,7 +100,7 @@ export function SelectDemoContents(
           borderWidth={1}
           borderColor="$borderColor"
         >
-          <Select.Indicator transition="select" />
+          <Select.Indicator transition="quick" />
           <Select.Group>
             <Select.Label fontWeight="bold">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}

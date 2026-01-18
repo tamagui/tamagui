@@ -243,7 +243,7 @@ export function DocsQuickNav() {
 
   return (
     <YStack
-      tag="aside"
+      render="aside"
       display="none"
       $gtLg={{
         display: 'flex',
@@ -282,7 +282,7 @@ export function DocsQuickNav() {
         <Separator />
 
         <YStack
-          tag="nav"
+          render="nav"
           aria-labelledby="site-quick-nav-heading"
           mb="$10"
           mt="$2"
@@ -293,7 +293,7 @@ export function DocsQuickNav() {
             fontFamily="$mono"
             size="$5"
             mb="$2"
-            theme="alt1"
+            color="$color10"
             id="site-quick-nav-heading"
           >
             Contents
@@ -326,7 +326,7 @@ export function DocsQuickNav() {
                       style={{ textDecoration: 'none' }}
                     >
                       <Paragraph
-                        tag="span"
+                        render="span"
                         size={level === 2 ? '$3' : '$2'}
                         color={
                           index === activeIndex

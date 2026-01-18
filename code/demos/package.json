@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "2.0.0-1768636514428",
+  "version": "2.0.0-1768717573053",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -55,6 +55,7 @@
     "@tamagui/button": "workspace:*",
     "@tamagui/checkbox": "workspace:*",
     "@tamagui/checkbox-headless": "workspace:*",
+    "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/context-menu": "workspace:*",
     "@tamagui/core": "workspace:*",

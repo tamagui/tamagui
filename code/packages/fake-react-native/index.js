@@ -1,4 +1,22 @@
+const React = require('react')
+
+// Create mock RN components that render as simple divs/spans for testing
+// react-test-renderer will serialize these properly
+const createMockComponent = (name) => {
+  const Component = React.forwardRef((props, ref) => {
+    const { children, style, ...rest } = props
+    // Return a "View" element that react-test-renderer understands
+    return React.createElement(name, { ...rest, style, ref }, children)
+  })
+  Component.displayName = name
+  return Component
+}
+
+// For components that don't need to render (like Image)
 const emtpyComponent = () => null
+
+// Mock usePressability for testing - returns empty event handlers
+const usePressabilityMock = () => ({})
 
 function proxyWorm() {
   return new Proxy(
@@ -10,10 +28,10 @@ function proxyWorm() {
         OS: 'web',
       },
       Image: emtpyComponent,
-      View: emtpyComponent,
-      Text: emtpyComponent,
-      TextInput: emtpyComponent,
-      ScrollView: emtpyComponent,
+      View: createMockComponent('View'),
+      Text: createMockComponent('Text'),
+      TextInput: createMockComponent('TextInput'),
+      ScrollView: createMockComponent('ScrollView'),
       Dimensions: {
         addEventListener(cb) {},
       },
@@ -23,6 +41,14 @@ function proxyWorm() {
         removeChangeListener: () => {},
       },
       addPoolingTo() {},
+      // Libraries/Pressability/usePressability mock
+      Libraries: {
+        Pressability: {
+          usePressability: {
+            default: usePressabilityMock,
+          },
+        },
+      },
     },
     {
       get(target, key) {

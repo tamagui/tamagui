@@ -352,14 +352,14 @@ test.describe('Sheet Animation - Motion Driver', () => {
 })
 
 // ============================================================================
-// MOTI DRIVER TESTS (default)
+// REANIMATED DRIVER TESTS (default)
 // ============================================================================
-test.describe('Sheet Animation - Moti Driver (default)', () => {
+test.describe('Sheet Animation - Reanimated Driver (default)', () => {
   test.beforeEach(async ({ page }) => {
     await setupPage(page, {
       name: 'SheetAnimationCase',
       type: 'useCase',
-      // No animationDriver param = default moti
+      // No animationDriver param = default reanimated
     })
   })
 
@@ -387,7 +387,7 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
     }
   })
 
-  // Flaky in CI - Moti driver timing differences are too small to measure reliably
+  // Flaky in CI - Reanimated driver timing differences are too small to measure reliably
   test.fixme('transition="quick" is faster than transition="lazy"', async ({ page }) => {
     const quickDuration = await measureSheetAnimationDuration(
       page,
@@ -403,7 +403,7 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
       'animation-lazy-close'
     )
 
-    console.info(`Moti Driver - quick: ${quickDuration}ms, lazy: ${lazyDuration}ms`)
+    console.info(`Reanimated Driver - quick: ${quickDuration}ms, lazy: ${lazyDuration}ms`)
 
     expect(lazyDuration).toBeGreaterThan(quickDuration)
   })
@@ -423,7 +423,7 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
     await expect(frame).not.toBeInViewport()
   })
 
-  // Flaky in CI - Moti driver timing differences are too small to measure reliably
+  // Flaky in CI - Reanimated driver timing differences are too small to measure reliably
   test.fixme('transitionConfig overrides animation prop', async ({ page }) => {
     const overrideDuration = await measureSheetAnimationDuration(
       page,
@@ -440,7 +440,7 @@ test.describe('Sheet Animation - Moti Driver (default)', () => {
     )
 
     console.info(
-      `Moti Driver - lazy: ${lazyDuration}ms, lazy+fastConfig: ${overrideDuration}ms`
+      `Reanimated Driver - lazy: ${lazyDuration}ms, lazy+fastConfig: ${overrideDuration}ms`
     )
 
     expect(overrideDuration).toBeLessThan(lazyDuration)

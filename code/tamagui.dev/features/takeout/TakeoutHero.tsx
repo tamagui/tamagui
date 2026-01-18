@@ -598,9 +598,9 @@ export const IPhoneFrame = () => {
 export const heroHeight = 1050
 
 export const TakeoutHero = () => {
-  const enable3d = useClientValue(
-    () => !isSafariMobile && !window.location.search?.includes('disable-3d')
-  )
+  // const enable3d = useClientValue(
+  //   () => !isSafariMobile && !window.location.search?.includes('disable-3d')
+  // )
 
   return (
     <YStack
@@ -662,16 +662,14 @@ export const TakeoutHero = () => {
         t={200}
         r={0}
         $md={{ r: -150 }}
-        $sm={{ display: 'none' }}
+        // $sm={{ display: 'none' }}
         z={-1}
       >
-        {enable3d && (
-          <Suspense fallback={null}>
-            <ErrorBoundary noMessage>
-              <TakeoutBox3D />
-            </ErrorBoundary>
-          </Suspense>
-        )}
+        <Suspense fallback={null}>
+          <ErrorBoundary noMessage>
+            <TakeoutBox3D />
+          </ErrorBoundary>
+        </Suspense>
       </YStack>
 
       <XStack gap="$2" mt="$6" mb="$4">

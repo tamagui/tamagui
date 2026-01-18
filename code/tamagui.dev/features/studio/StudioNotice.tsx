@@ -85,7 +85,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
       afterTitle={
         !steps ? null : (
           <XStack gap="$2" items="center">
-            <Paragraph mr="$2" size="$2" theme="alt2">
+            <Paragraph mr="$2" size="$2" color="$color9">
               {index + 1}/{total}
             </Paragraph>
 

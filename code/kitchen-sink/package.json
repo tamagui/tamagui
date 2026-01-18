@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "2.0.0-1768636514428",
+  "version": "2.0.0-1768717573053",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,8 @@
     "test:web:debug": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test --debug",
     "detox:build:ios": "detox build -c ios.sim.debug",
     "detox:build:android": "detox build -c android.emu.debug",
+    "detox:test:ios": "./run-detox.sh ios.sim.debug",
+    "detox:test:android": "./run-detox.sh android.emu.debug",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test:native": "bun run test:native:ios && bun run test:native:maestro",
     "test": "bun run test:web && ./run-native-tests.sh"
@@ -41,7 +43,6 @@
     "@shopify/restyle": "^2.4.4",
     "@tamagui/animate-presence": "workspace:*",
     "@tamagui/animations-css": "workspace:*",
-    "@tamagui/animations-moti": "workspace:*",
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/animations-reanimated": "workspace:*",

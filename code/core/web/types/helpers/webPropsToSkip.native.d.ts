@@ -42,7 +42,6 @@ export declare const webPropsToSkip: {
     wordWrap: boolean;
     textOverflow: boolean;
     textDecorationDistance: boolean;
-    cursor: boolean;
     WebkitLineClamp: boolean;
     WebkitBoxOrient: boolean;
     transition: boolean;

@@ -19,7 +19,7 @@ export function ContextMenuDemo() {
     <ContextMenu allowFlip native={native} placement="bottom-start" offset={14}>
       <ContextMenu.Trigger asChild>
         <Text text="center" select={null}>
-          Right Click or longPress
+          Right Click or Long Press
         </Text>
       </ContextMenu.Trigger>
 

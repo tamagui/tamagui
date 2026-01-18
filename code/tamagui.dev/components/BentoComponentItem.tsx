@@ -44,7 +44,7 @@ export function ComponentItem({
   return (
     <Link href={href as any} asChild>
       <YStack
-        tag="a"
+        render="a"
         width={210}
         cursor="pointer"
         position="relative"
@@ -86,12 +86,12 @@ export function ComponentItem({
           />
         </YStack>
 
-        <YStack flex={1} flexBasis="auto" p="$4" position="relative">
+        <YStack flex={1} p="$4" position="relative">
           <H4 fontFamily="$mono" size="$5" color="$color12">
             {name}
           </H4>
 
-          <H5 opacity={0} fontFamily="$mono" theme="alt1" size="$1" letterSpacing={1}>
+          <H5 opacity={0} fontFamily="$mono" color="$color10" size="$1" letterSpacing={1}>
             {numberOfComponents} components
           </H5>
 

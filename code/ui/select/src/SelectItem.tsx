@@ -140,6 +140,9 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
 
             onMouseUp() {
               if (!allowMouseUpRef!.current) {
+                // Re-enable mouseup and selection for subsequent interactions
+                allowMouseUpRef!.current = true
+                allowSelectRef!.current = true
                 return
               }
 
@@ -171,7 +174,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
           <option value={value}>{props.children}</option>
         ) : (
           <ListItem.Frame
-            tag="div"
+            render="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
             aria-labelledby={textId}

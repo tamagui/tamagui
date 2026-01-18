@@ -97,7 +97,7 @@ export default function StudioSplashPage() {
 
               <XStack maxW={790} gap="$8">
                 <H2
-                  theme="alt1"
+                  color="$color10"
                   className="text-glow"
                   self="center"
                   fontFamily="$silkscreen"

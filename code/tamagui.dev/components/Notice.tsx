@@ -40,7 +40,13 @@ export const Notice = ({
               {title}
             </H3>
           )}
-          <Paragraph py="$2" theme="alt1" mt={-3} mb={-3} className="paragraph-parent">
+          <Paragraph
+            py="$2"
+            color="$color10"
+            mt={-3}
+            mb={-3}
+            className="paragraph-parent"
+          >
             {disableUnwrap ? children : unwrapText(children)}
           </Paragraph>
         </YStack>

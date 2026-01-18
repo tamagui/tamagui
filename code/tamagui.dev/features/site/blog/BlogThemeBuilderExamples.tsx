@@ -60,10 +60,10 @@ export const ExamplePalette = ({
     <YStack my="$4" space="$2">
       {showLabels && (
         <XStack justify="space-between">
-          <Paragraph size="$2" theme="alt2">
+          <Paragraph size="$2" color="$color9">
             Background
           </Paragraph>
-          <Paragraph size="$2" theme="alt2">
+          <Paragraph size="$2" color="$color9">
             Foreground
           </Paragraph>
         </XStack>
@@ -81,10 +81,10 @@ export const ExampleTemplate = () => {
   return (
     <YStack my="$4" gap="$2">
       <XStack justify="space-between">
-        <Paragraph size="$2" theme="alt2">
+        <Paragraph size="$2" color="$color9">
           Background
         </Paragraph>
-        <Paragraph size="$2" theme="alt2">
+        <Paragraph size="$2" color="$color9">
           Foreground
         </Paragraph>
       </XStack>

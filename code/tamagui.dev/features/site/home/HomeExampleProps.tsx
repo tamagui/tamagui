@@ -10,7 +10,7 @@ const FeatureItem = ({ label, children }) => {
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
-      <SizableText size="$5" tag="span" theme="alt2">
+      <SizableText size="$5" render="span" color="$color9">
         {children}
       </SizableText>
     </SizableText>
@@ -22,7 +22,7 @@ const Features = ({ items, ...props }: any) => {
     <YStack gap="$4" {...props}>
       {items.map((feature, i) => (
         <Card key={i} p="$6" elevation="$1" $sm={{ p: '$4' }}>
-          <XStack tag="li">
+          <XStack render="li">
             <Text color="$green9">
               <CheckCircle />
             </Text>

@@ -17,7 +17,7 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
       {...props}
     >
       <H3
-        tag="span"
+        render="span"
         fontFamily="$silkscreen"
         size="$7"
         lineHeight="$6"
@@ -31,7 +31,7 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
 
       {!!subTitle && <XStack opacity={0.5}>{subTitle}</XStack>}
 
-      <Paragraph tag="span" size="$4" cursor="inherit" theme="alt2" opacity={0.7}>
+      <Paragraph render="span" size="$4" cursor="inherit" color="$color9" opacity={0.7}>
         {children}
       </Paragraph>
     </Card>

@@ -21,9 +21,9 @@ If you want, [skip to the new stuff in version two](#new-in-version-two).
 
 You can skip this section if you are familiar with Tamagui already.
 
-Tamagui brings many style features from CSS to native. Every style it supposrts
+Tamagui brings many style features from CSS to native. Every style it supports
 works on both native and web, at runtime and compile-time, and server-side and
-client-side. It's SSR support is advanced without jumps or flickers, even when
+client-side. Its SSR support is advanced without jumps or flickers, even when
 using spring-based animation drivers, media queries, or themes. The optimizing
 compiler unlocks natural inline styles, even when using abstracted styled
 components or logic.
@@ -47,7 +47,7 @@ In comparison to other solutions, Tamagui is especially strong at:
   target one platform, uses composable components, and can even adapt based on
   the device.
 - **Well designed and robust.** It's been developed actively for many years,
-  proven in [large apps](https://unsiwap.org), has a large test suite and
+  proven in [large apps](https://uniswap.org), has a large test suite and
   extensive ecosystem.
 
 Tamagui lets you do more with less. We're proud to be used by companies like
@@ -107,6 +107,18 @@ The breaking changes outside of deprecations are:
 - Removed `space` and `spaceDirection` props - use `gap` instead.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
+- Removed React Native accessibility props in favor of web-standard props:
+  - `accessibilityLabel` → `aria-label`
+  - `accessibilityRole` → `role`
+  - `accessibilityHint` → `aria-describedby`
+  - `accessibilityState` → `aria-disabled`, `aria-selected`, `aria-checked`, `aria-busy`, `aria-expanded`
+  - `accessibilityValue` → `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-valuetext`
+  - `accessibilityElementsHidden` → `aria-hidden`
+  - `accessibilityViewIsModal` → `aria-modal`
+  - `accessibilityLiveRegion` → `aria-live`
+  - `accessible` → `tabIndex={0}`
+  - `focusable` → `tabIndex`
+  - `nativeID` → `id`
 
 #### CSS Shorthand with Variables
 
@@ -142,6 +154,10 @@ with the New Architecture:
 - **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
 - **`boxSizing`** - Box model (`border-box` | `content-box`).
 - **`display`** - Pass-through with `contents`.
+- **`borderCurve`** - Corner curve style (`circular` | `continuous` for Apple's
+  "squircle"). iOS 13+ only.
+- **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS
+  17+ (trackpad/stylus).
 
 These properties accept the same syntax on both platforms, and Tamagui
 automatically handles the conversion between CSS strings (web) and object format
@@ -215,6 +231,39 @@ The Moti driver (`@tamagui/animations-moti`) is now deprecated in favor of the
 Reanimated driver (`@tamagui/animations-reanimated`). This removes a dependency
 and fixes some compatibility issues. If you're using `@tamagui/animations-moti`,
 switch to `@tamagui/animations-reanimated` - the API is the same.
+
+#### Per-Component Animation Drivers
+
+You can now configure multiple animation drivers and select per-component using
+the new `animatedBy` prop. This serves two important purposes: it allows mixing
+drivers (like using CSS for simple transitions and Reanimated for complex
+springs), and it enables the compiler to better optimize your code by knowing
+statically which driver a component uses.
+
+```tsx
+// Config with multiple drivers
+createTamagui({
+  animations: {
+    default: cssDriver,
+    spring: reanimatedDriver,
+  },
+})
+
+// Select per-component - compiler can optimize knowing the driver
+<View animatedBy="spring" transition="bouncy" />
+```
+
+When the compiler sees `animatedBy`, it can make smarter decisions about
+extraction and avoid including unnecessary animation runtime code for components
+that don't need it.
+
+For lazy loading drivers (e.g., load a heavier driver only after login), use the
+new `loadAnimationDriver` function:
+
+```tsx
+import { loadAnimationDriver } from 'tamagui'
+loadAnimationDriver('spring', reanimatedDriver)
+```
 
 #### Transition Delay
 

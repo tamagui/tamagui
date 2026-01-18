@@ -31,7 +31,7 @@ export function ProductCard({ product, children, ...props }) {
       <Stack
         position="relative"
         group="card"
-        tag="a"
+        render="a"
         theme="surface3"
         transition="quickest"
         bg="$background"
@@ -61,7 +61,7 @@ export function ProductCard({ product, children, ...props }) {
           />
         </ThemeTintAlt>
 
-        <Card position="relative" tag="a" bg="transparent" {...props}>
+        <Card position="relative" render="a" bg="transparent" {...props}>
           <View
             position="absolute"
             self="flex-end"
@@ -78,7 +78,7 @@ export function ProductCard({ product, children, ...props }) {
           <Card.Header>
             <YStack items="center" gap="$5" p="$5">
               <H3>{title}</H3>
-              <Paragraph size="$5" theme="alt1">
+              <Paragraph size="$5" color="$color10">
                 {childText}
               </Paragraph>
             </YStack>

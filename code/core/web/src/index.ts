@@ -56,6 +56,7 @@ export {
   getToken,
   getTokens,
   getTokenValue,
+  loadAnimationDriver,
   setConfig,
   setupDev,
   updateConfig,

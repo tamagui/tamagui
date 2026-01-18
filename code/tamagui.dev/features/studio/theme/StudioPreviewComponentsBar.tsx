@@ -461,7 +461,7 @@ export function InverseAccentInput() {
     <XStack gap="$3" items="center">
       <Label
         size="$2"
-        theme="alt1"
+        color="$color10"
         htmlFor="switch-accent-switch"
         onPress={() => {
           // for some reason id+htmlFor is not triggering - manually change the value here

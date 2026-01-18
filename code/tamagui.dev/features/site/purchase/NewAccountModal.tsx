@@ -384,9 +384,9 @@ const AccountHeader = () => {
             >
               {userDetails?.full_name}
             </H3>
-            <Paragraph theme="alt1">{user?.email}</Paragraph>
+            <Paragraph color="$color10">{user?.email}</Paragraph>
             {githubUsername && (
-              <Paragraph theme="alt2" size="$2">
+              <Paragraph color="$color9" size="$2">
                 GitHub: @{githubUsername}
               </Paragraph>
             )}
@@ -496,7 +496,7 @@ const ServiceCard = ({
       <H3 fontFamily="$mono" size="$6">
         {title}
       </H3>
-      <Paragraph theme="alt1">{description}</Paragraph>
+      <Paragraph color="$color10">{description}</Paragraph>
 
       <XStack gap="$3">
         <Button
@@ -690,7 +690,7 @@ const DiscordPanel = ({
     <>
       <Form onSubmit={handleSearch} gap="$2" flexDirection="row" items="flex-end">
         <Fieldset>
-          <Label size="$3" theme="alt1" htmlFor="discord-username">
+          <Label size="$3" color="$color10" htmlFor="discord-username">
             Username / Nickname
           </Label>
           <Input
@@ -709,8 +709,8 @@ const DiscordPanel = ({
         </Form.Trigger>
       </Form>
 
-      <XStack tag="article">
-        <Paragraph size="$3" theme="alt1">
+      <XStack render="article">
+        <Paragraph size="$3" color="$color10">
           Note: You must{' '}
           <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
             join the Discord server
@@ -720,7 +720,7 @@ const DiscordPanel = ({
       </XStack>
 
       {Array.isArray(searchSwr.data) && searchSwr.data.length === 0 ? (
-        <Paragraph size="$3" theme="alt1">
+        <Paragraph size="$3" color="$color10">
           No users found
         </Paragraph>
       ) : (
@@ -788,7 +788,7 @@ const DiscordPanel = ({
 
     if (isTeamMember) {
       return (
-        <Paragraph size="$3" theme="alt1">
+        <Paragraph size="$3" color="$color10">
           Only the team owner can manage Discord access.
         </Paragraph>
       )
@@ -800,7 +800,7 @@ const DiscordPanel = ({
       if (!supportAccess.hasAccess) {
         return (
           <YStack gap="$4" p="$4" bg="$color2" rounded="$4">
-            <Paragraph theme="alt2" text="center">
+            <Paragraph color="$color9" text="center">
               You need a Chat Support or Support tier subscription to access private
               support channels.
             </Paragraph>
@@ -814,7 +814,7 @@ const DiscordPanel = ({
     }
 
     return (
-      <Paragraph size="$3" theme="alt1">
+      <Paragraph size="$3" color="$color10">
         You've reached the maximum number of Discord members for your plan. Please reset
         if you want to add new members.
       </Paragraph>
@@ -826,11 +826,11 @@ const DiscordPanel = ({
       <DiscordAccessHeader />
 
       {apiType === 'channel' ? (
-        <Paragraph theme="alt2">
+        <Paragraph color="$color9">
           Join the #takeout-general channel to discuss Tamagui with other Pro users.
         </Paragraph>
       ) : (
-        <Paragraph theme="alt2">
+        <Paragraph color="$color9">
           Get access to your private support channel where you can directly communicate
           with the Tamagui team.
         </Paragraph>
@@ -1275,7 +1275,7 @@ const SupportTabContent = ({
                 <H3 fontFamily="$mono" size="$6">
                   {tier.label}
                 </H3>
-                <Paragraph theme="alt1">
+                <Paragraph color="$color10">
                   {tier.price === 0
                     ? 'Basic Support'
                     : `${formatCurrency(tier.price)}/month`}
@@ -1316,7 +1316,7 @@ const ManageTab = ({
     return (
       <YStack gap="$4">
         <H3>No Active Subscription</H3>
-        <Paragraph theme="alt1">
+        <Paragraph color="$color10">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
 
@@ -1377,9 +1377,7 @@ const ManageTab = ({
           {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
         </View>
         <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
-          <Button size="$3" theme="alt2">
-            View Invoices
-          </Button>
+          <Button size="$3">View Invoices</Button>
         </Link>
       </XStack>
       {sortedSubscriptions.map((subscription) => {
@@ -1431,7 +1429,7 @@ const ManageTab = ({
                       <YStack width="60%">
                         <Paragraph fontWeight="bold">{product?.name}</Paragraph>
                         {product?.description && (
-                          <Paragraph theme="alt2" size="$3">
+                          <Paragraph color="$color9" size="$3">
                             {product.description}
                           </Paragraph>
                         )}
@@ -1576,7 +1574,7 @@ const TeamTab = ({
     return (
       <YStack gap="$4">
         <H3>No Team Subscription</H3>
-        <Paragraph theme="alt1">
+        <Paragraph color="$color10">
           Purchase team seats to invite team members to your Tamagui Pro subscription.
         </Paragraph>
         <Button
@@ -1597,7 +1595,7 @@ const TeamTab = ({
       <YStack gap="$4">
         <H3>Team Management</H3>
         <XStack items="center" justify="space-between">
-          <Paragraph theme="alt1">
+          <Paragraph color="$color10">
             {teamData.subscription.used_seats || 0} of {teamData.subscription.total_seats}{' '}
             seats used
           </Paragraph>
@@ -1636,8 +1634,8 @@ const TeamTab = ({
               ))
             ) : searchQuery.length > 0 ? (
               <YStack gap={0}>
-                <Paragraph theme="alt1">No results found</Paragraph>
-                <Paragraph theme="alt1">User is not a member of Tamagui</Paragraph>
+                <Paragraph color="$color10">No results found</Paragraph>
+                <Paragraph color="$color10">User is not a member of Tamagui</Paragraph>
               </YStack>
             ) : null}
           </YStack>
@@ -1690,7 +1688,7 @@ const GitHubUserRow = ({
         </Avatar>
         <YStack>
           <Paragraph>{user.full_name ?? 'Unknown User'}</Paragraph>
-          <Paragraph size="$2" theme="alt2">
+          <Paragraph size="$2" color="$color9">
             {user.email ?? 'Unknown Email'}
           </Paragraph>
           {inviteError && (
@@ -1744,14 +1742,14 @@ const TeamMemberRow = ({
         </Avatar>
         <YStack>
           <Paragraph>{member.user?.full_name ?? 'Unknown User'}</Paragraph>
-          <Paragraph theme="alt2" size="$2">
+          <Paragraph color="$color9" size="$2">
             {member.user?.email}
           </Paragraph>
         </YStack>
       </XStack>
 
       <XStack items="center" gap="$2">
-        <Paragraph size="$2" theme="alt2">
+        <Paragraph size="$2" color="$color9">
           {member.role}
         </Paragraph>
         <Button

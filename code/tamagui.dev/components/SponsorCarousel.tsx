@@ -157,7 +157,7 @@ export function SponsorCarousel() {
           <H2 size="$10" text="center" color="$color">
             Our Sponsors
           </H2>
-          <Paragraph text="center" theme="alt1" size="$5" mt="$2">
+          <Paragraph text="center" color="$color10" size="$5" mt="$2">
             Sponsors who made Tamagui possible
           </Paragraph>
         </YStack>

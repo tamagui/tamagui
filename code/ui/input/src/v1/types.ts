@@ -53,9 +53,9 @@ export type InputProps = StackProps &
     inputMode?: InputModeOptions
     placeholderTextColor?: ColorTokens
     selectionColor?: ColorTokens
-    tag?: TamaguiComponentPropsBase['tag']
+    render?: TamaguiComponentPropsBase['render']
     /**
-     * @deprecated - use `tag='textarea'` instead
+     * @deprecated - use `render='textarea'` instead
      */
     multiline?: boolean
     /**

@@ -64,7 +64,7 @@ function SelectComponent({ id }: { id: string }) {
                 key={item.name}
                 value={item.name.toLowerCase()}
                 testID={`${id}-option-${item.name.toLowerCase()}`}
-                accessibilityLabel={`${id}-option-${item.name.toLowerCase()}`}
+                aria-label={`${id}-option-${item.name.toLowerCase()}`}
               >
                 <Select.ItemText>{item.name}</Select.ItemText>
                 <Select.ItemIndicator marginLeft="auto">

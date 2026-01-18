@@ -129,7 +129,7 @@ export default function DocsLayout() {
         }}
       >
         <>
-          <YStack tag="article">
+          <YStack render="article">
             <Container position="relative">
               <Slot />
             </Container>
@@ -145,7 +145,7 @@ export default function DocsLayout() {
                   {previous && (
                     <Link href={previous.route as Href} asChild>
                       <XStack
-                        tag="a"
+                        render="a"
                         group="card"
                         hoverStyle={{
                           borderColor: '$color5',
@@ -175,7 +175,7 @@ export default function DocsLayout() {
                           $group-card-hover={{ x: '$0' }}
                           transition="quicker"
                         >
-                          <Paragraph select="none" theme="alt1" size="$5">
+                          <Paragraph select="none" color="$color10" size="$5">
                             Previous
                           </Paragraph>
                           <Paragraph select="none" size="$3" color="$gray10">
@@ -188,7 +188,7 @@ export default function DocsLayout() {
                   {next && (
                     <Link href={next.route as Href} asChild>
                       <XStack
-                        tag="a"
+                        render="a"
                         group="card"
                         hoverStyle={{
                           borderColor: '$color5',
@@ -210,7 +210,7 @@ export default function DocsLayout() {
                           $group-card-hover={{ x: '$0' }}
                           transition="quicker"
                         >
-                          <Paragraph select="none" theme="alt1" size="$5">
+                          <Paragraph select="none" color="$color10" size="$5">
                             Next
                           </Paragraph>
                           <Paragraph select="none" size="$3" color="$gray10">

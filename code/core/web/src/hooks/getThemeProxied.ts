@@ -112,12 +112,13 @@ export function getThemeProxied(
 
           if (process.env.TAMAGUI_TARGET === 'native') {
             // ios can avoid re-rendering in some cases when we are using a root light/dark
-            // disabled in cases where we have animations
+            // disabled in cases where we have animations or when scheme changes from parent (isInverse)
             const shouldOptimize =
               scheme &&
               platform !== 'web' &&
               isIos &&
               !curProps.deopt &&
+              !curState.isInverse &&
               getSetting('fastSchemeChange') &&
               doesRootSchemeMatchSystem()
 

@@ -11,6 +11,5 @@ export declare const animationsCSS: import("@tamagui/web").AnimationDriver<{
     quicker: string;
     quickest: string;
     tooltip: string;
-    select: string;
 }>;
 //# sourceMappingURL=animationsCSS.d.ts.map

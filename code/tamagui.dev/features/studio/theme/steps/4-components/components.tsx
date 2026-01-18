@@ -38,7 +38,7 @@ export const components: PreviewComponent[] = [
               <SizableText size="$5" fontWeight="600">
                 Card Title
               </SizableText>
-              <SizableText size="$3" theme="alt1">
+              <SizableText size="$3" color="$color10">
                 Card subtitle goes here
               </SizableText>
             </YStack>

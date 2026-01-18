@@ -51,8 +51,6 @@ type TransitionAnimationOptions = AnimationOptions & {
   [propertyName: string]: ValueTransition | undefined
 }
 
-const minTimeBetweenAnimations = 1000 / 60
-
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 
 type AnimationProps = {
@@ -64,14 +62,24 @@ type AnimationProps = {
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animationsProp: A
 ): AnimationDriver<A> {
-  // normalize, it doesn't assume type: 'spring' even if damping etc there so we do that
-  // which also matches the moti driver
+  // normalize animation configs
   // @ts-expect-error avoid doing a spread for no reason, sub-constraint type issue
   const animations: A = {}
   for (const key in animationsProp) {
+    const config = animationsProp[key]
+    // If config only has duration (timing-based), use 'tween' type
+    // Otherwise default to 'spring' which matches the moti driver
+    const isTimingBased =
+      config.duration !== undefined &&
+      config.damping === undefined &&
+      config.stiffness === undefined &&
+      config.mass === undefined
     animations[key] = {
-      type: 'spring',
-      ...animationsProp[key],
+      type: isTimingBased ? 'tween' : 'spring',
+      // Convert duration from ms to seconds for motion library
+      ...(isTimingBased && config.duration
+        ? { ...config, duration: config.duration / 1000 }
+        : config),
     }
   }
 
@@ -96,7 +104,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         : props.transition
 
       const isHydrating = componentState.unmounted === true
-      const disableAnimation = isHydrating || !animationKey
+      const isMounting = componentState.unmounted === 'should-enter'
+      // Disable animation during hydration AND during mounting (should-enter phase)
+      // This prevents the "flying across the page" effect on initial render
+      const disableAnimation = isHydrating || isMounting || !animationKey
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
 
@@ -248,6 +259,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               if (changed) {
                 Object.assign(node.style, changed as any)
               }
+            } else {
+              // First time - apply directly without diff check
+              Object.assign(node.style, dontAnimate as any)
             }
           }
 
@@ -257,20 +271,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             }
 
             // bugfix: going from non-animated to animated in motion -
-            // motion batches things so the above removal can happen a frame before casuing flickering
+            // motion batches things so the above removal can happen a frame before causing flickering
             // we see this with tooltips, this is not an ideal solution though, ideally we can remove/update
             // in the same batch/frame as motion
             if (prevDont) {
               for (const key in prevDont) {
                 if (key in doAnimate) {
                   node.style[key] = prevDont[key]
+                  // Also update lastDoAnimate to include the previous value
+                  // This prevents animating from undefined to the current value
+                  // when a property transitions from dontAnimate to doAnimate
+                  if (lastDoAnimate.current) {
+                    lastDoAnimate.current[key] = prevDont[key]
+                  }
                 }
               }
             }
 
             const lastAnimated = lastDoAnimate.current
             if (lastAnimated) {
-              removeRemovedStyles(lastAnimated, doAnimate, node)
+              // Pass dontAnimate as third arg to prevent clearing styles that moved to dontAnimate
+              removeRemovedStyles(lastAnimated, doAnimate, node, dontAnimate)
             }
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
@@ -347,7 +368,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // we never change this, after first render on
         style: firstRenderStyle,
         ref: scope,
-        tag: 'div',
+        render: 'div',
       }
     },
 
@@ -509,9 +530,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 }
 
-function removeRemovedStyles(prev: Object, next: Object, node: HTMLElement) {
+function removeRemovedStyles(
+  prev: Object,
+  next: Object,
+  node: HTMLElement,
+  dontClearIfIn?: Object
+) {
   for (const key in prev) {
     if (!(key in next)) {
+      // Don't clear if the style is now in dontAnimate (moved from animated to non-animated)
+      if (dontClearIfIn && key in dontClearIfIn) {
+        continue
+      }
       node.style[key] = ''
     }
   }
@@ -559,13 +589,13 @@ const MotionText = createMotionView('span')
 function createMotionView(defaultTag: string) {
   // return forwardRef((props: any, ref) => {
   //   console.info('rendering?', props)
-  //   const Element = motion[props.tag || defaultTag]
+  //   const Element = motion[props.render || defaultTag]
   //   return <Element ref={ref} {...props} />
   // })
   const isText = defaultTag === 'span'
 
   const Component = forwardRef((propsIn: any, ref) => {
-    const { forwardedRef, animation, tag = defaultTag, style, ...propsRest } = propsIn
+    const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
     const [scope, animate] = useAnimate()
     const hostRef = useRef<HTMLElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, hostRef, scope)
@@ -622,8 +652,8 @@ function createMotionView(defaultTag: string) {
     }
 
     const props = getProps({ ...propsRest, style: nonAnimatedStyles })
-    const Element = tag || 'div'
-    const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
+    const Element = render || 'div'
+    const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
     useEffect(() => {
       if (!animatedStyle) return

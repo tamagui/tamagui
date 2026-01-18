@@ -260,7 +260,7 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
         items="center"
         justify="center"
       >
-        <SizableText size="$3" theme="alt2">{`${parts.length} theme${
+        <SizableText size="$3" color="$color9">{`${parts.length} theme${
           parts.length === 1 ? '' : 's'
         }:`}</SizableText>
 

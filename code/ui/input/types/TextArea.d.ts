@@ -42,7 +42,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     unstyled?: boolean | undefined;
 }, ({
     name: string;
-    tag: string;
+    render: string;
     variants: {
         readonly unstyled: {
             readonly false: {
@@ -112,7 +112,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         [key: string]: boolean;
     } | undefined;
     name?: undefined;
-    tag?: undefined;
+    render?: undefined;
     variants?: undefined;
     defaultVariants?: undefined;
 }) & import("@tamagui/web").StaticConfigPublic>;
