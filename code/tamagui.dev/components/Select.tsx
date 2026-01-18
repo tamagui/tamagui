@@ -13,10 +13,10 @@ export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
   return (
     <TamaguiSelect.Item
       index={index + 1}
-      borderColor="transparent"
-      hoverStyle={{
-        bg: '$color2',
-      }}
+      unstyled
+      cursor="default"
+      py="$2"
+      px="$3"
       {...props}
     >
       <TamaguiSelect.ItemText>{children}</TamaguiSelect.ItemText>
@@ -118,6 +118,7 @@ const SelectComponent = (
           borderWidth={1}
           borderColor="$borderColor"
         >
+          <TamaguiSelect.Indicator transition="select" />
           {children}
         </TamaguiSelect.Viewport>
 
