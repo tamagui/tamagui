@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/lucide-icons",
-  "version": "2.0.0-1768717573053",
+  "version": "2.0.0-1768741592663",
   "description": "React Native components for Lucide icons - native and web",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
