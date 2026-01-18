@@ -142,6 +142,10 @@ with the New Architecture:
 - **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
 - **`boxSizing`** - Box model (`border-box` | `content-box`).
 - **`display`** - Pass-through with `contents`.
+- **`borderCurve`** - Corner curve style (`circular` | `continuous` for Apple's
+  "squircle"). iOS 13+ only.
+- **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS
+  17+ (trackpad/stylus).
 
 These properties accept the same syntax on both platforms, and Tamagui
 automatically handles the conversion between CSS strings (web) and object format

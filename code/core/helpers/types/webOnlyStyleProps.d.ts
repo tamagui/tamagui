@@ -27,7 +27,6 @@ export declare const webOnlyStylePropsView: {
     contain: boolean;
     containerType: boolean;
     content: boolean;
-    cursor: boolean;
     float: boolean;
     mask: boolean;
     maskBorder: boolean;
@@ -65,7 +64,6 @@ export declare const webOnlyStylePropsText: {
     wordWrap: boolean;
     textOverflow: boolean;
     textDecorationDistance: boolean;
-    cursor: boolean;
     WebkitLineClamp: boolean;
     WebkitBoxOrient: boolean;
 };

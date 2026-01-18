@@ -34,7 +34,7 @@ export const webOnlyStylePropsView = {
   contain: true,
   containerType: true,
   content: true,
-  cursor: true, // NOTE: cursor is supported on iOS 17+ for trackpad/stylus
+  // cursor: now cross-platform - supported on iOS 17+ (trackpad/stylus) with limited values
   float: true,
   mask: true,
   maskBorder: true,
@@ -76,7 +76,7 @@ export const webOnlyStylePropsText = {
   wordWrap: true,
   textOverflow: true,
   textDecorationDistance: true,
-  cursor: true,
+  // cursor: now cross-platform - in stylePropsView
   WebkitLineClamp: true,
   WebkitBoxOrient: true,
 }

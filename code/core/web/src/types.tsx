@@ -1894,11 +1894,19 @@ export type FilterValue = FilterFunction | FilterFunction[] | (string & {})
 
 interface ExtraStyleProps {
   /**
+   * Controls the curve style of rounded corners.
+   * - 'circular': Standard circular arc corners (default)
+   * - 'continuous': Apple's "squircle" style continuous curve
+   * @platform iOS 13+
+   */
+  borderCurve?: 'circular' | 'continuous'
+  /**
    * Web-only style property. Will be omitted on native.
    */
   contain?: Properties['contain']
   /**
-   * Cursor style. Supported on web, and iOS 17+ (trackpad/stylus/gaze).
+   * Cursor style. On web, supports all CSS cursor values.
+   * On iOS 17+ (trackpad/stylus), only 'auto' and 'pointer' are supported.
    */
   cursor?: Properties['cursor']
   /**

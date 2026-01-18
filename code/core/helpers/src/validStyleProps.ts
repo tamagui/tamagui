@@ -126,6 +126,8 @@ export const stylePropsTransform = {
 
 export const stylePropsView = {
   backfaceVisibility: true,
+  borderCurve: true,
+  cursor: true,
   borderBottomEndRadius: true,
   borderBottomStartRadius: true,
   borderBottomWidth: true,
