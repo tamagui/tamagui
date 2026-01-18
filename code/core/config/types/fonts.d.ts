@@ -40,8 +40,8 @@ export declare const fonts: {
                 normal: string;
             };
         };
-    }, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-    body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+    }, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+    body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     mono: {
         weight: {
             1: string;
@@ -65,6 +65,6 @@ export declare const fonts: {
             16: number;
         };
     };
-    silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+    silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
 };
 //# sourceMappingURL=fonts.d.ts.map

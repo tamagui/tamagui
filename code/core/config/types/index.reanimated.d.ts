@@ -4,17 +4,17 @@ export * from './animations.reanimated';
 export declare const config: {
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         bouncy: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         lazy: {
-            type: string;
+            type: "spring";
             damping: number;
             stiffness: number;
         };
@@ -24,18 +24,18 @@ export declare const config: {
             mass: number;
         };
         slow: {
-            type: string;
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         quick: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
@@ -943,8 +943,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -968,7 +968,7 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
     };
     selectionStyles: (theme: Record<string, string>) => {
         backgroundColor: string;
