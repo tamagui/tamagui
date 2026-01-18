@@ -4,7 +4,27 @@ import type { XStackProps } from 'tamagui'
 import { Circle, XStack } from 'tamagui'
 import { useTint } from './useTint'
 
-const rgb = ['#ED0F0F', '#6BCF1A', '#6252F8']
+// T A M A G U I
+// yellow yellow yellow none red green blue
+const defaultColors = [
+  'var(--yellow9)',
+  'var(--yellow9)',
+  'var(--yellow9)',
+  'var(--accent1)',
+  'var(--red9)',
+  'var(--green9)',
+  'var(--blue9)',
+]
+
+const defaultCircleColors = [
+  '$yellow9',
+  '$yellow9',
+  '$yellow9',
+  '$accent1',
+  '$red9',
+  '$green9',
+  '$blue9',
+]
 
 export const LogoWords: React.MemoExoticComponent<
   ({
@@ -20,20 +40,10 @@ export const LogoWords: React.MemoExoticComponent<
   const [hovered, setHovered] = React.useState(false)
   const [mounted, setMounted] = React.useState<'start' | 'animate' | 'done'>('start')
 
-  const { tintIndex: index, tint } = Tint
-  const hoveredTints = Tint.tints.map((x) => `${x}9`).map((t) => `var(--${t})`)
+  const { tintIndex: index } = Tint
+  const hoveredTints = Tint.tints.map((x) => `var(--${x}9)`)
 
-  const tints = [
-    'var(--accent1)',
-    'var(--accent1)',
-    'var(--accent1)',
-    'var(--accent1)',
-    ...rgb,
-  ]
-
-  const circleTints = hovered
-    ? Tint.tints.map((x) => `$${x}9`)
-    : ['$accent1', '$accent1', '$accent1', '$accent1', ...rgb]
+  const circleTints = hovered ? Tint.tints.map((x) => `$${x}9`) : defaultCircleColors
 
   useEffect(() => {
     const idle = window.requestIdleCallback || setTimeout
@@ -65,11 +75,11 @@ export const LogoWords: React.MemoExoticComponent<
 
   const getColor = (i: number) => {
     if (hovered) return hoveredTints[i]
-    return tints[i]
+    return defaultColors[i]
   }
 
   const x = Math.round(
-    index * 18.5 + (18 / 2) * (index / tints.length) + 3 + (index === 6 ? -3 : 0)
+    index * 18.5 + (18 / 2) * (index / defaultColors.length) + 3 + (index === 6 ? -3 : 0)
   )
 
   const [layout, setLayout] = useState<LayoutValue>()
