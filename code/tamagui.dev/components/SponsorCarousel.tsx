@@ -139,7 +139,7 @@ const LogoContainer = styled(YStack, {
   position: 'relative',
   width: '100%',
   height: '100%',
-  animation: 'quick',
+  transition: 'quick',
   hoverStyle: {
     scale: 1.15,
   },

@@ -270,6 +270,10 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   useIsomorphicLayoutEffect(() => {
     if (open) {
+      // Prevent the initial mouseup from selecting an item
+      // (the mouseup from the click that opened the menu)
+      allowMouseUpRef.current = false
+
       selectTimeoutRef.current = setTimeout(() => {
         allowSelectRef.current = true
       }, 300)

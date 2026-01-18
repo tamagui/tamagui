@@ -1,17 +1,17 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { useDisableMotion } from '~/hooks/useDisableMotion'
 import { H1, YStack } from 'tamagui'
+import { useDisableMotion } from '~/hooks/useDisableMotion'
+import { isSafari } from './helpers'
 
-export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 1.1, ...props }) => (
+export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
     select="none"
     color="transparent"
-    fontFamily="$silkscreen"
+    fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
-    letterSpacing={-10}
     whiteSpace="nowrap"
-    minW={970}
+    minW={900}
     text="center"
     {...props}
   >
@@ -32,44 +32,61 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         margin: -(1 - props.scale) * 295,
       })}
     >
-      <YStack
+      {/* <YStack
         position="absolute"
         style={{
           clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <>
-          <ThemeTintAlt offset={-7}>
-            <TAKEOUT className="text-3d" zi={1000} color="$color8" />
-          </ThemeTintAlt>
-        </>
-      </YStack>
+        <TAKEOUT className="text-3d" zi={1000} color="$color5" />
+      </YStack> */}
 
       <YStack
         mt={0}
         z={0}
         className="mix-blend"
-        style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
-        }}
+        // style={{
+        //   clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
+        // }}
       >
-        <ThemeTintAlt offset={-0}>
-          <TAKEOUT className="font-outlined" zi={1000} color="var(--color10)" />
+        <ThemeTintAlt>
+          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
         </ThemeTintAlt>
 
-        {!disableMotion && (
+        {!disableMotion && !isSafari() && (
           <>
-            {/* alt color slices */}
-            <ThemeTintAlt offset={7}>
+            {/* main color slices */}
+            <ThemeTint>
               <TAKEOUT
-                color="$color9"
-                className="clip-slice slice-alt"
+                color="$color1"
+                className="clip-slice mix-blend"
+                position="absolute"
+                opacity={1}
+                z={1001}
+              />
+            </ThemeTint>
+
+            {/* alt color slices */}
+            <ThemeTintAlt>
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice mix-blend"
                 position="absolute"
                 opacity={1}
                 z={1002}
               />
             </ThemeTintAlt>
-            x
+
+            {/* secondary slice layer */}
+            <ThemeTintAlt offset={-2}>
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice-2 mix-blend"
+                position="absolute"
+                opacity={1}
+                z={1001}
+              />
+            </ThemeTintAlt>
           </>
         )}
       </YStack>

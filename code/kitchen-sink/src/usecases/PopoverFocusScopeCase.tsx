@@ -16,7 +16,7 @@ export function PopoverFocusScopeCase() {
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
           elevate
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {
@@ -76,7 +76,7 @@ export function PopoverFocusScopeCase() {
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
           elevate
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {
@@ -111,7 +111,7 @@ export function PopoverFocusScopeCase() {
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
           elevate
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {
@@ -139,7 +139,7 @@ export function PopoverFocusScopeCase() {
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}
                 elevate
-                animation={[
+                transition={[
                   'quick',
                   {
                     opacity: {

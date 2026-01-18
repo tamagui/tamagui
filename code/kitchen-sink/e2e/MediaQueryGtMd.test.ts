@@ -16,7 +16,7 @@
  * 3. Future: Could use pixel sampling to verify actual colors
  */
 
-import { by, device, element, expect } from 'detox'
+import { by, device, element, expect, waitFor } from 'detox'
 
 describe('MediaQueryGtMd', () => {
   beforeAll(async () => {
@@ -73,19 +73,34 @@ describe('MediaQueryGtMd', () => {
  * Navigate to the MediaQueryGtMd test case from home screen
  */
 async function navigateToMediaQueryTest() {
-  // Wait for home screen to load
-  await expect(element(by.text('Test Cases'))).toBeVisible()
+  // Wait for app to load - look for "Kitchen Sink" title
+  await waitFor(element(by.text('Kitchen Sink')))
+    .toExist()
+    .withTimeout(60000)
 
-  // Tap on Test Cases
-  await element(by.text('Test Cases')).tap()
+  // Give the app a moment to fully render and settle
+  await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  // Wait for test cases list and scroll to find MediaQueryGtMd
+  // Tap "Test Cases" using testID (works cross-platform)
+  await waitFor(element(by.id('home-test-cases-link')))
+    .toBeVisible()
+    .withTimeout(10000)
+  await element(by.id('home-test-cases-link')).tap()
+
+  // Wait for Test Cases screen to load
+  await waitFor(element(by.text('All Test Cases')))
+    .toExist()
+    .withTimeout(10000)
+
+  // Small delay for the list to render
+  await new Promise((resolve) => setTimeout(resolve, 500))
+
+  // Scroll to and tap MediaQueryGtMd test case
   await waitFor(element(by.id('test-case-MediaQueryGtMd')))
     .toBeVisible()
     .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(200, 'down')
+    .scroll(600, 'down', Number.NaN, Number.NaN)
 
-  // Tap on MediaQueryGtMd test case
   await element(by.id('test-case-MediaQueryGtMd')).tap()
 
   // Wait for test case to load

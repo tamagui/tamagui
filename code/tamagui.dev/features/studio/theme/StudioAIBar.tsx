@@ -204,9 +204,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
       className="all ease-in ms300"
       $lg={{ mr: '$6' }}
     >
-      <YStack flex={1} width="100%" gap="$4">
-        <XStack flexWrap="wrap" items="center" flex={1} gap="$3">
-          <XStack minW={300} flex={1}>
+      <YStack flex={1} flexBasis="auto" width="100%" gap="$4">
+        <XStack flexWrap="wrap" items="center" flex={1} flexBasis="auto" gap="$3">
+          <XStack minW={300} flex={1} flexBasis="auto" position="relative">
             <Input
               ref={inputRef as any}
               flex={1}
@@ -259,6 +259,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
           mx="$-6"
           px="$6"
           flex={1}
+          flexBasis="auto"
           horizontal
           showsHorizontalScrollIndicator={false}
         >
@@ -299,7 +300,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
             })}
 
             {!hasAccess && (
-              <XStack flex={1} overflow="hidden" items="center" px="$4">
+              <XStack flex={1} flexBasis="auto" overflow="hidden" items="center" px="$4">
                 <Paragraph fontFamily="$mono" size="$3">
                   Welcome to the Theme Builder! Pro members can build, save and refine
                   themes using the generate input above.
@@ -385,9 +386,9 @@ const ThemeToggle = () => {
           }}
           size="$3"
         >
-          <Switch.Thumb checked={checked} animation="75ms" size="$3">
+          <Switch.Thumb checked={checked} transition="quickest" size="$3">
             <YStack
-              animation="bouncy"
+              transition="bouncy"
               fullscreen
               items="center"
               justify="center"
@@ -398,7 +399,7 @@ const ThemeToggle = () => {
               <Moon size={14} />
             </YStack>
             <YStack
-              animation="bouncy"
+              transition="bouncy"
               fullscreen
               items="center"
               justify="center"

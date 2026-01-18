@@ -7,6 +7,11 @@ const LayoutDisableKey = new WeakMap<HTMLElement, string>()
 const Nodes = new Set<HTMLElement>()
 const IntersectionState = new WeakMap<HTMLElement, boolean>()
 
+// Store pre-transform content box sizes from ResizeObserver
+// These are the dimensions BEFORE CSS transforms are applied (e.g., scale)
+// See: https://github.com/tamagui/tamagui/pull/2329
+const ContentBoxSizes = new WeakMap<HTMLElement, { width: number; height: number }>()
+
 // separating to avoid all re-rendering
 const DisableLayoutContextValues: Record<string, boolean> = {}
 const DisableLayoutContextKey = createContext<string>('')
@@ -38,6 +43,10 @@ export const LayoutMeasurementController = ({
 
 // Single persistent IntersectionObserver for all nodes
 let globalIntersectionObserver: IntersectionObserver | null = null
+
+// Single persistent ResizeObserver to track pre-transform content box sizes
+// This avoids reflows from reading offsetWidth/offsetHeight
+let globalResizeObserver: ResizeObserver | null = null
 
 type TamaguiComponentStatePartial = {
   host?: any
@@ -86,21 +95,50 @@ export function enable(): void {
 }
 
 function startGlobalObservers() {
-  if (!ENABLE || globalIntersectionObserver) return
+  if (!ENABLE) return
 
-  globalIntersectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
+  // Start IntersectionObserver for visibility tracking
+  if (!globalIntersectionObserver) {
+    globalIntersectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const node = entry.target as HTMLElement
+          if (IntersectionState.get(node) !== entry.isIntersecting) {
+            IntersectionState.set(node, entry.isIntersecting)
+          }
+        })
+      },
+      {
+        threshold: 0,
+      }
+    )
+  }
+
+  // Start ResizeObserver for pre-transform content box sizes
+  // ResizeObserver reports the CSS layout box size, which is NOT affected by transforms
+  // This matches React Native's onLayout behavior
+  if (!globalResizeObserver && typeof ResizeObserver !== 'undefined') {
+    globalResizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
         const node = entry.target as HTMLElement
-        if (IntersectionState.get(node) !== entry.isIntersecting) {
-          IntersectionState.set(node, entry.isIntersecting)
+        // contentBoxSize gives us the pre-transform dimensions
+        // Use borderBoxSize as fallback for older browsers
+        const boxSize = entry.contentBoxSize?.[0] || entry.borderBoxSize?.[0]
+        if (boxSize) {
+          ContentBoxSizes.set(node, {
+            width: boxSize.inlineSize,
+            height: boxSize.blockSize,
+          })
+        } else if (entry.contentRect) {
+          // Fallback for browsers that don't support contentBoxSize
+          ContentBoxSizes.set(node, {
+            width: entry.contentRect.width,
+            height: entry.contentRect.height,
+          })
         }
-      })
-    },
-    {
-      threshold: 0,
-    }
-  )
+      }
+    })
+  }
 }
 
 if (ENABLE) {
@@ -152,7 +190,7 @@ if (ENABLE) {
       NodeRectCache.set(node, nodeRect)
       NodeRectCache.set(parentNode, parentRect)
 
-      const event = getElementLayoutEvent(nodeRect, parentRect)
+      const event = getElementLayoutEvent(nodeRect, parentRect, node)
 
       if (avoidUpdates) {
         queuedUpdates.set(node, () => onLayout(event))
@@ -221,21 +259,62 @@ if (ENABLE) {
 
 export const getElementLayoutEvent = (
   nodeRect: DOMRectReadOnly,
-  parentRect: DOMRectReadOnly
+  parentRect: DOMRectReadOnly,
+  node?: HTMLElement
 ): LayoutEvent => {
   return {
     nativeEvent: {
-      layout: getRelativeDimensions(nodeRect, parentRect),
+      layout: getRelativeDimensions(nodeRect, parentRect, node),
       target: nodeRect,
     },
     timeStamp: Date.now(),
   }
 }
 
-const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
-  const { height, left, top, width } = a
+/**
+ * Get pre-transform dimensions for a node.
+ * First tries to use cached values from ResizeObserver (no reflow).
+ * Falls back to offsetWidth/offsetHeight (may cause reflow) for initial measurements.
+ * Last resort is boundingClientRect dimensions (affected by transforms).
+ *
+ * See: https://github.com/tamagui/tamagui/pull/2329
+ */
+const getPreTransformDimensions = (
+  node: HTMLElement | undefined,
+  fallbackRect: DOMRectReadOnly
+): { width: number; height: number } => {
+  // First try cached ResizeObserver values (no reflow)
+  if (node) {
+    const cachedSize = ContentBoxSizes.get(node)
+    if (cachedSize) {
+      return cachedSize
+    }
+    // Fall back to offsetWidth/offsetHeight (may cause reflow, but only on initial mount)
+    // This is needed because ResizeObserver fires asynchronously
+    return {
+      width: node.offsetWidth,
+      height: node.offsetHeight,
+    }
+  }
+  // Last resort: use boundingClientRect (affected by transforms)
+  return {
+    width: fallbackRect.width,
+    height: fallbackRect.height,
+  }
+}
+
+const getRelativeDimensions = (
+  a: DOMRectReadOnly,
+  b: DOMRectReadOnly,
+  aNode?: HTMLElement
+) => {
+  const { left, top } = a
   const x = left - b.left
   const y = top - b.top
+
+  // Get pre-transform dimensions (prioritizes ResizeObserver cache, falls back to offsetWidth/Height)
+  const { width, height } = getPreTransformDimensions(aNode, a)
+
   return { x, y, width, height, pageX: a.left, pageY: a.top }
 }
 
@@ -259,21 +338,25 @@ export function useElementLayout(
 
     Nodes.add(node)
 
-    // Add node to intersection observer
+    // Add node to intersection and resize observers
     startGlobalObservers()
     if (globalIntersectionObserver) {
       globalIntersectionObserver.observe(node)
       // Initialize as intersecting by default
       IntersectionState.set(node, true)
     }
+    if (globalResizeObserver) {
+      globalResizeObserver.observe(node)
+    }
 
     // always do one immediate sync layout event no matter the strategy for accuracy
-    const parentNode = node.parentNode
+    const parentNode = node.parentNode as HTMLElement | null
     if (parentNode) {
       onLayout(
         getElementLayoutEvent(
           node.getBoundingClientRect(),
-          parentNode.getBoundingClientRect()
+          parentNode.getBoundingClientRect(),
+          node
         )
       )
     }
@@ -284,10 +367,15 @@ export function useElementLayout(
       NodeRectCache.delete(node)
       LastChangeTime.delete(node)
       IntersectionState.delete(node)
+      ContentBoxSizes.delete(node)
 
       // Remove from intersection observer
       if (globalIntersectionObserver) {
         globalIntersectionObserver.unobserve(node)
+      }
+      // Remove from resize observer
+      if (globalResizeObserver) {
+        globalResizeObserver.unobserve(node)
       }
     }
   }, [ref, !!onLayout])
@@ -330,7 +418,7 @@ export const measureNode = async (
       getBoundingClientRectAsync(relativeNode),
     ])
     if (relativeNodeDim && nodeDim) {
-      return getRelativeDimensions(nodeDim, relativeNodeDim)
+      return getRelativeDimensions(nodeDim, relativeNodeDim, node)
     }
   }
   return null

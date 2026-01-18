@@ -1,6 +1,6 @@
 import { Check } from '@tamagui/lucide-icons'
 import type { ListItemProps } from 'tamagui'
-import { H4, ListItem, Paragraph, Spacer, YStack } from 'tamagui'
+import { H4, ListItem, Paragraph, Spacer, Theme, YStack } from 'tamagui'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 
@@ -25,7 +25,7 @@ export const AllTasks = () => {
         </Paragraph>
       </YStack>
 
-      <YStack flex={1} {...demoProps.gapPropsMd}>
+      <YStack flex={1} flexBasis="auto" {...demoProps.gapPropsMd}>
         <Task>
           <Paragraph size="$5" lineHeight="$3">
             Migrate to the new version
@@ -60,12 +60,6 @@ export const AllTasks = () => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum amet
           </Paragraph>
         </Task>
-        {/* <Task checked>
-          <Paragraph textDecorationLine="line-through">Fix the workflow bugs</Paragraph>
-          <Paragraph textDecorationLine="line-through" theme="alt1" size="$2" numberOfLines={1}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum amet
-          </Paragraph>
-        </Task> */}
       </YStack>
 
       <Spacer size="$2" />
@@ -86,23 +80,23 @@ const Task = ({
       px="$2"
       bg="transparent"
       icon={
-        <AccentTheme>
-          <YStack
-            self="flex-start"
-            mt="$1"
-            {...(checked && {
-              bg: '$borderColor',
-            })}
-            borderColor="$borderColor"
-            width="$1"
-            height="$1"
-            justify="center"
-            items="center"
-            {...demoProps.borderRadiusProps}
-          >
-            {checked && <Check size={10} color="$color" />}
-          </YStack>
-        </AccentTheme>
+        <YStack
+          theme="accent"
+          self="flex-start"
+          mt="$1"
+          {...(checked && {
+            bg: '$borderColor',
+          })}
+          borderColor="$borderColor"
+          width="$1"
+          height="$1"
+          justify="center"
+          items="center"
+          flexBasis="auto"
+          {...demoProps.borderRadiusProps}
+        >
+          {checked && <Check size={10} color="$color" />}
+        </YStack>
       }
       {...props}
     >

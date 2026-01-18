@@ -1,4 +1,4 @@
-import { Stack, createTamagui } from '@tamagui/core'
+import { View, createTamagui } from '@tamagui/core'
 import { beforeAll, describe, expect, test, vi } from 'vitest'
 import { isColorStyleKey } from '../web/src/helpers/getDynamicVal'
 
@@ -17,7 +17,7 @@ vi.mock('@tamagui/constants', async () => {
     isIos: true,
     isWeb: false,
     isClient: true,
-    isAndroid: false
+    isAndroid: false,
   }
 })
 
@@ -45,8 +45,8 @@ function createDynamicColor(lightValue: string, darkValue: string) {
   return {
     dynamic: {
       light: lightValue,
-      dark: darkValue
-    }
+      dark: darkValue,
+    },
   }
 }
 
@@ -106,7 +106,7 @@ describe('getSplitStyles iOS specific', () => {
     const result = getSplitStylesWithTheme(props, 'dark')
 
     // Assert - on iOS with fastSchemeChange, colors should be wrapped with dynamic object
-    expect(result.style?.backgroundColor).toEqual({
+    expect(result?.style?.backgroundColor).toEqual({
       dynamic: {
         light: 'white',
         dark: 'black',
@@ -130,14 +130,13 @@ describe('getSplitStyles iOS specific', () => {
     const result = getSplitStylesWithTheme(props, 'light')
 
     // Assert - on iOS with fastSchemeChange, colors should be wrapped with dynamic object
-    expect(result.style?.backgroundColor).toEqual({
+    expect(result?.style?.backgroundColor).toEqual({
       dynamic: {
         light: 'white',
         dark: 'black',
       },
     })
   })
-
 
   test('dynamic color works with theme tokens', () => {
     // Arrange
@@ -154,7 +153,7 @@ describe('getSplitStyles iOS specific', () => {
 
     // Act
     const result = getSplitStylesWithTheme(props, 'light')
-    const style = patchStyle(result.style, props)
+    const style = patchStyle(result?.style, props)
 
     // Assert - just verify the structure is correct
     expect(style.backgroundColor).toHaveProperty('dynamic')
@@ -189,9 +188,9 @@ describe('getSplitStyles iOS specific', () => {
 
     // Assert - opacity should be a plain number, NOT a dynamic object
     // If opacity is wrapped as { dynamic: { dark: 0.5, light: 0.8 } }, this will fail
-    expect(result.style?.opacity).not.toHaveProperty('dynamic')
-    expect(typeof result.style?.opacity).toBe('number')
-    expect(result.style?.opacity).toBe(0.5)
+    expect(result?.style?.opacity).not.toHaveProperty('dynamic')
+    expect(typeof result?.style?.opacity).toBe('number')
+    expect(result?.style?.opacity).toBe(0.5)
 
     // backgroundColor IS a color property, so it CAN be wrapped with dynamic
     // Check if backgroundColor has the dynamic structure (which is OK for colors)
@@ -213,8 +212,8 @@ describe('getSplitStyles iOS specific', () => {
 
     // borderTopLeftRadius should be resolved to the current theme's value (12), NOT wrapped
     // console.log('borderRadius result.style:', JSON.stringify(result.style, null, 2))
-    expect(result.style?.borderTopLeftRadius).toBe(12)
-    expect(typeof result.style?.borderTopLeftRadius).toBe('number')
+    expect(result?.style?.borderTopLeftRadius).toBe(12)
+    expect(typeof result?.style?.borderTopLeftRadius).toBe('number')
   })
 
   test('non-color properties like paddingTop should NOT be wrapped with dynamic object', () => {
@@ -233,8 +232,8 @@ describe('getSplitStyles iOS specific', () => {
 
     // paddingTop should be resolved to the current theme's value (10), NOT wrapped
     // console.log('padding result.style:', JSON.stringify(result.style, null, 2))
-    expect(result.style?.paddingTop).toBe(10)
-    expect(typeof result.style?.paddingTop).toBe('number')
+    expect(result?.style?.paddingTop).toBe(10)
+    expect(typeof result?.style?.paddingTop).toBe('number')
   })
 
   test('mixed color and non-color properties should handle each appropriately', () => {
@@ -259,16 +258,16 @@ describe('getSplitStyles iOS specific', () => {
 
     // Non-color properties should be plain values
     // console.log('mixed result.style:', JSON.stringify(result.style, null, 2))
-    expect(typeof result.style?.opacity).toBe('number')
-    expect(result.style?.opacity).toBe(0.9)
-    expect(typeof result.style?.borderTopWidth).toBe('number')
-    expect(result.style?.borderTopWidth).toBe(2)
+    expect(typeof result?.style?.opacity).toBe('number')
+    expect(result?.style?.opacity).toBe(0.9)
+    expect(typeof result?.style?.borderTopWidth).toBe('number')
+    expect(result?.style?.borderTopWidth).toBe(2)
   })
 
   test('dynamicThemeAccess should be true when non-color properties exist (requires re-render)', () => {
     const props = {
       '$theme-dark': {
-        opacity: 0.5,  // non-color property
+        opacity: 0.5, // non-color property
       },
     }
 
@@ -276,7 +275,7 @@ describe('getSplitStyles iOS specific', () => {
 
     // dynamicThemeAccess must be true so component re-renders when theme changes
     // This ensures non-color properties get updated
-    expect(result.dynamicThemeAccess).toBe(true)
+    expect(result?.dynamicThemeAccess).toBe(true)
   })
 
   test('dynamicThemeAccess should be falsy when ALL properties are colors (no re-render needed)', () => {
@@ -297,21 +296,21 @@ describe('getSplitStyles iOS specific', () => {
 
     // dynamicThemeAccess should be falsy (undefined or false) since iOS
     // can handle all color switching natively via DynamicColorIOS
-    expect(result.dynamicThemeAccess).toBeFalsy()
+    expect(result?.dynamicThemeAccess).toBeFalsy()
   })
 
   test('dynamicThemeAccess should be true when mixing color and non-color properties', () => {
     const props = {
       '$theme-dark': {
-        backgroundColor: 'black',  // color - can use DynamicColorIOS
-        opacity: 0.9,              // non-color - requires re-render
+        backgroundColor: 'black', // color - can use DynamicColorIOS
+        opacity: 0.9, // non-color - requires re-render
       },
     }
 
     const result = getSplitStylesWithTheme(props, 'dark')
 
     // Even one non-color property means we need re-renders
-    expect(result.dynamicThemeAccess).toBe(true)
+    expect(result?.dynamicThemeAccess).toBe(true)
   })
 
   test('non-color properties only apply for current theme scheme', () => {
@@ -326,19 +325,23 @@ describe('getSplitStyles iOS specific', () => {
 
     // In dark theme, dark's opacity should apply
     const darkResult = getSplitStylesWithTheme(props, 'dark')
-    expect(darkResult.style?.opacity).toBe(0.5)
+    expect(darkResult?.style?.opacity).toBe(0.5)
 
     // In light theme, light's opacity should apply
     const lightResult = getSplitStylesWithTheme(props, 'light')
-    expect(lightResult.style?.opacity).toBe(1)
+    expect(lightResult?.style?.opacity).toBe(1)
   })
 })
 
 // Helper function for easier testing
-function getSplitStylesWithTheme(props: Record<string, any>, themeName: string, tag?: string) {
+function getSplitStylesWithTheme(
+  props: Record<string, any>,
+  themeName: string,
+  tag?: string
+) {
   return getSplitStyles(
     props,
-    Stack.staticConfig,
+    View.staticConfig as any,
     {} as any,
     themeName,
     {
@@ -355,6 +358,7 @@ function getSplitStylesWithTheme(props: Record<string, any>, themeName: string, 
     },
     undefined,
     undefined,
+    undefined,
     tag
   )
 }
@@ -365,7 +369,7 @@ function patchStyle(style: any, props: Record<string, any>): any {
   const lightTheme = props['$theme-light'] || {}
   const darkTheme = props['$theme-dark'] || {}
   const patchedStyle = { ...style }
-  
+
   // Create dynamic colors for properties that exist in both themes
   if (lightTheme && darkTheme) {
     for (const key in lightTheme) {
@@ -374,13 +378,13 @@ function patchStyle(style: any, props: Record<string, any>): any {
       }
     }
   }
-  
+
   // Add non-theme properties directly
   for (const key in props) {
     if (!key.startsWith('$theme-') && !(key in patchedStyle)) {
       patchedStyle[key] = props[key]
     }
   }
-  
+
   return patchedStyle
-} 
+}

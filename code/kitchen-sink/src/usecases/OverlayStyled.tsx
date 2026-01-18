@@ -2,7 +2,7 @@ import { Button, XStack } from 'tamagui'
 import { AlertDialog, styled } from 'tamagui'
 
 export const MyOverlay = styled(AlertDialog.Overlay, {
-  animation: 'quick',
+  transition: 'quick',
   backgroundColor: 'gray',
   opacity: 0.7,
   enterStyle: { opacity: 0 },
@@ -28,7 +28,7 @@ const WorkingExample = () => {
       <MyAlert.Portal>
         <MyAlert.Overlay
           key="overlay"
-          animation="quick"
+          transition="quick"
           backgroundColor="gray"
           opacity={0.7}
           enterStyle={{ opacity: 0 }}

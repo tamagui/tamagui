@@ -37,55 +37,41 @@ export default function Layout() {
         <meta name="twitter:creator" content="@natebirdman" />
         <meta name="robots" content="index,follow" />
 
-        <link crossOrigin="anonymous" href="/fonts/berkeley.css" rel="stylesheet" />
         <link
-          rel="stylesheet preload prefetch"
+          rel="preload"
           href="/fonts/berkeley.woff2"
           as="font"
           crossOrigin="anonymous"
           type="font/woff2"
-          precedence="default"
         />
+        <link crossOrigin="anonymous" href="/fonts/berkeley.css" rel="stylesheet" />
 
-        <link crossOrigin="anonymous" href="/fonts/inter-700.css" rel="stylesheet" />
         <link
-          rel="stylesheet preload prefetch"
+          rel="preload"
+          href="/fonts/Inter-Regular.woff2"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/woff2"
+        />
+        <link crossOrigin="anonymous" href="/fonts/inter-400.css" rel="stylesheet" />
+
+        <link
+          rel="preload"
           href="/fonts/Inter-ExtraBold.woff2"
           as="font"
           crossOrigin="anonymous"
           type="font/woff2"
-          precedence="default"
         />
+        <link crossOrigin="anonymous" href="/fonts/inter-700.css" rel="stylesheet" />
 
         <link
-          crossOrigin="anonymous"
-          href="/fonts/inter-400.css"
-          rel="stylesheet"
-          precedence="default"
-        />
-        <link
-          crossOrigin="anonymous"
-          rel="stylesheet preload prefetch"
-          href="/fonts/Inter-Regular.woff2"
-          as="font"
-          type="font/woff2"
-          precedence="default"
-        />
-
-        <link
-          crossOrigin="anonymous"
-          href="/fonts/silkscreen.css"
-          rel="stylesheet"
-          precedence="default"
-        />
-        <link
-          crossOrigin="anonymous"
-          rel="stylesheet preload prefetch"
+          rel="preload"
           href="/fonts/slkscr.woff2"
           as="font"
+          crossOrigin="anonymous"
           type="font/woff2"
-          precedence="default"
         />
+        <link crossOrigin="anonymous" href="/fonts/silkscreen.css" rel="stylesheet" />
         {!pathname.startsWith('/theme/') && (
           <HeadInfo
             openGraph={{

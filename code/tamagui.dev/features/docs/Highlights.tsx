@@ -1,18 +1,20 @@
 import { ExternalLink } from '@tamagui/lucide-icons'
 import React from 'react'
 import { H2, Paragraph, SizableText, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
-
 import { Features } from '~/components/Features'
 import { Link } from '~/components/Link'
 import { FrontmatterContext } from './FrontmatterContext'
+import { SourceVersionSwitcher } from './SourceVersionSwitcher'
 
 export function Highlights({ features, disableLinks, disableTitle, large }: any) {
   const frontmatter = React.useContext(FrontmatterContext)
+  // Use the version from frontmatter (loaded from path)
+  const sourceVersion = frontmatter.version || frontmatter.versions?.[0]
 
   return (
     <YStack
       mb="$2"
-      f={1}
+      flex={1}
       $gtSm={{
         fd: 'row',
         justifyContent: 'space-between',
@@ -36,7 +38,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           </H2>
         )}
 
-        <YStack tag="ul" p={0} m={0} gap="$4">
+        <YStack render="ul" p={0} m={0} gap="$4">
           <Features large={large} items={features} />
         </YStack>
       </YStack>
@@ -44,7 +46,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
       {!disableLinks && (
         <YStack
           gap="$3"
-          tag="nav"
+          render="nav"
           aria-labelledby="site-component-info-header"
           minW={140}
         >
@@ -52,8 +54,15 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
           <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
+            {frontmatter.versions && frontmatter.versions.length > 1 && (
+              <SourceVersionSwitcher
+                versions={frontmatter.versions}
+                componentName={frontmatter.name || frontmatter.component || ''}
+              />
+            )}
+
             <Link
-              href={`https://github.com/tamagui/tamagui/tree/main/code/ui/${
+              href={`https://github.com/tamagui/tamagui/tree/${sourceVersion ? `v${sourceVersion}` : 'main'}/code/ui/${
                 frontmatter.package
                   ? `${frontmatter.package}/src/${frontmatter.component}.tsx`
                   : `tamagui/src/views/${frontmatter.component}.tsx`

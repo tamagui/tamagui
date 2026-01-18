@@ -71,7 +71,7 @@ export const SidePaneHost = memo(() => {
       />
       <XStack
         fullscreen
-        animation="quick"
+        transition="quick"
         l="15%"
         bg="$background"
         borderColor="$borderColor"

@@ -89,7 +89,7 @@ export function createSwitch<
 
   const SwitchThumbComponent = Thumb.styleable<SwitchThumbProps>(
     function SwitchThumb(props, forwardedRef) {
-      const { size: sizeProp, unstyled: unstyledProp, nativeID, ...thumbProps } = props
+      const { size: sizeProp, unstyled: unstyledProp, ...thumbProps } = props
       const context = React.useContext(SwitchContext)
       const { checked, disabled, frameWidth } = context
       const styledContext = SwitchStyledContext.useStyledContext()
@@ -224,7 +224,7 @@ export function createSwitch<
         <SwitchContext.Provider value={value}>
           <Frame
             ref={switchRef}
-            tag="button"
+            render="button"
             {...(isWeb && { type: 'button' })}
             {...(!unstyled && {
               size: styledContext.size ?? props.size ?? '$true',

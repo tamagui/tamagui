@@ -5,6 +5,7 @@
   },
   "exclude": [
     "types",
+    "tests",
     "v2.d.ts",
     "v2.js",
     "v2-themes.cjs",
@@ -16,7 +17,7 @@
     "v4.d.ts",
     "v4.cjs",
     "v5.d.ts",
-    "v5.js",
+    "v5.cjs",
     "dist",
     "**/__tests__"
   ],

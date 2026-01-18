@@ -14,7 +14,7 @@ export const Overview1 = () => {
       p="$0"
       overflow="hidden"
     >
-      <YStack flex={1}>
+      <YStack flex={1} flexBasis="auto">
         <OverviewCard
           // alternative
           title="ARR"
@@ -38,7 +38,7 @@ export const Overview2 = () => {
       p="$0"
       overflow="hidden"
     >
-      <YStack flex={1}>
+      <YStack flex={1} flexBasis="auto">
         <OverviewCard
           title="New Users"
           value="113"
@@ -80,7 +80,12 @@ export const OverviewCard = ({
         p: 10,
       })}
     >
-      <Card.Header flex={1} justify="space-between" {...demoProps.gapPropsLg}>
+      <Card.Header
+        flex={1}
+        flexBasis="auto"
+        justify="space-between"
+        {...demoProps.gapPropsLg}
+      >
         <Paragraph
           {...demoProps.headingFontFamilyProps}
           fontWeight="400"

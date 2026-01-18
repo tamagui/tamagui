@@ -2,6 +2,7 @@ import type { SimpleThemesDefinition } from './createThemes'
 
 export const defaultComponentThemes = {
   ListItem: { template: 'surface1' },
+  SelectItem: { template: 'surface1' },
   SelectTrigger: { template: 'surface1' },
   Card: { template: 'surface1' },
   Button: { template: 'surface3' },
@@ -12,8 +13,8 @@ export const defaultComponentThemes = {
   Progress: { template: 'surface1' },
   RadioGroupItem: { template: 'surface2' },
   TooltipArrow: { template: 'surface1' },
-  SliderTrackActive: { template: 'surface3' },
-  SliderTrack: { template: 'surface1' },
+  SliderTrackActive: { template: 'surface2' },
+  SliderTrack: { template: 'inverse' },
   SliderThumb: { template: 'inverse' },
   Tooltip: { template: 'inverse' },
   ProgressIndicator: { template: 'inverse' },

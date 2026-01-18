@@ -1,0 +1,195 @@
+---
+title: Reanimated Driver
+description: Advanced off-thread animations with Reanimated
+---
+
+[Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an
+animation library that targets React Native and React Native Web. It runs
+off-thread animations and provides smooth spring and timing animations.
+
+## Installation
+
+```bash
+yarn add @tamagui/animations-reanimated react-native-reanimated
+```
+
+Follow the [Reanimated installation guide](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/) to complete setup for your platform.
+
+## Configuration
+
+Add your animations to your [Tamagui config](/docs/core/configuration):
+
+```tsx
+import { createAnimations } from '@tamagui/animations-reanimated'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: {
+      type: 'spring',
+      damping: 20,
+      mass: 1.2,
+      stiffness: 250,
+    },
+    medium: {
+      type: 'spring',
+      damping: 10,
+      mass: 0.9,
+      stiffness: 100,
+    },
+    slow: {
+      type: 'spring',
+      damping: 20,
+      stiffness: 60,
+    },
+  }),
+  // ...
+})
+```
+
+## How it Works
+
+At runtime, this driver parses animatable style properties and hands them over
+to Reanimated using worklets. Animations run on the UI thread for smooth 60fps performance.
+
+## Animation Configuration
+
+Reanimated animations support both spring and timing (tween) animations:
+
+### Spring Animations
+
+```tsx
+{
+  type: 'spring',
+  damping: 10,     // Higher = less bouncy
+  mass: 0.9,       // Higher = more inertia
+  stiffness: 100,  // Higher = faster
+}
+```
+
+### Timing Animations
+
+```tsx
+{
+  type: 'timing',
+  duration: 300,   // Duration in milliseconds
+}
+```
+
+### Delay
+
+You can add animation delays using the array syntax:
+
+```tsx
+<Square transition={['bouncy', { delay: 200 }]} />
+```
+
+The delay is specified in milliseconds.
+
+## When to Use
+
+**Advantages:**
+- **Off-thread animations** - Runs on UI thread for 60fps performance
+- **Cross-platform** - Works on web and React Native
+- **Advanced features** - Worklets, gesture integration, shared values
+- **React Native optimized** - Best performance on native platforms
+- **Powerful** - Most feature-rich animation driver
+
+**Considerations:**
+- Larger bundle size
+- Requires Reanimated setup and configuration
+- More complex than simpler drivers
+- Web-only apps might prefer Motion or CSS drivers
+
+## Platform-Specific Configuration
+
+You can use Reanimated on native and a lighter driver on web:
+
+```tsx
+// animations.native.ts
+import { createAnimations } from '@tamagui/animations-reanimated'
+
+export const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    stiffness: 100,
+  },
+})
+```
+
+```tsx
+// animations.ts (web)
+import { createAnimations } from '@tamagui/animations-motion'
+
+export const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    stiffness: 100,
+  },
+})
+```
+
+Then import without the extension:
+
+```tsx
+import { animations } from './animations'
+```
+
+## Example
+
+```tsx
+import { createAnimations } from '@tamagui/animations-reanimated'
+import { YStack, createTamagui } from 'tamagui'
+
+const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
+  quick: {
+    type: 'spring',
+    damping: 20,
+    mass: 1.2,
+    stiffness: 250,
+  },
+})
+
+export default createTamagui({
+  animations,
+  // ... rest of config
+})
+
+// Usage in components
+export const MyComponent = () => (
+  <YStack
+    transition="bouncy"
+    enterStyle={{
+      opacity: 0,
+      scale: 0.9,
+    }}
+  />
+)
+```
+
+## Advanced Features
+
+Reanimated provides advanced features:
+
+- **Gesture integration** - Animate based on gesture values
+- **Shared values** - Share animated values between components
+- **Worklets** - JavaScript functions that run on the UI thread
+- **Custom animations** - Full control over animation curves
+
+See the [Reanimated documentation](https://docs.swmansion.com/react-native-reanimated/) for more details.
+
+## See Also
+
+- [Animations Introduction](/docs/core/animations)
+- [CSS Driver](/docs/core/animations-css)
+- [React Native Driver](/docs/core/animations-react-native)
+- [Motion Driver](/docs/core/animations-motion)
+- [Reanimated Documentation](https://docs.swmansion.com/react-native-reanimated/)

@@ -1,4 +1,4 @@
-import type { Provider } from '@supabase/supabase-js'
+import type { Provider } from '@supabase/auth-js'
 import { LogoIcon } from '@tamagui/logo'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -45,7 +45,7 @@ function SignIn() {
 
   if (!supabase) {
     return (
-      <YStack items="center" flex={1} justify="center">
+      <YStack flex={1} flexBasis="auto" items="center" justify="center">
         <Spinner size="small" />
       </YStack>
     )
@@ -89,7 +89,7 @@ function SignIn() {
     const redirectTo = `${window.location.origin}/api/auth/callback`
     setLoading(true)
 
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo,
@@ -98,9 +98,14 @@ function SignIn() {
 
     if (error) {
       setMessage({ type: 'error', content: error.message })
+      setLoading(false)
+      return
     }
 
-    setLoading(false)
+    // AuthClient doesn't auto-redirect, we need to do it manually
+    if (data?.url) {
+      window.location.href = data.url
+    }
   }
 
   if (!user)
@@ -146,7 +151,7 @@ function SignIn() {
                         // @ts-ignore
                         onSubmitEditing={handleSignin}
                         value={email}
-                        onChange={(e) => setEmail(e.nativeEvent.text)}
+                        onChange={(e) => setEmail(e.target.value)}
                         ref={emailRef}
                         disabled={emailAuthDisabledFlag}
                       />
@@ -169,18 +174,16 @@ function SignIn() {
                         autoComplete="email"
                         placeholder="Email"
                         value={email}
-                        onChange={(e) => setEmail(e.nativeEvent.text)}
-                        // @ts-ignore
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                         disabled={emailAuthDisabledFlag}
                       />
                       <Input
                         autoComplete="password"
-                        secureTextEntry
+                        type="password"
                         placeholder="Password"
                         value={password}
-                        onChange={(e) => setPassword(e.nativeEvent.text)}
-                        // @ts-ignore
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                         disabled={emailAuthDisabledFlag}
                       />
@@ -219,7 +222,7 @@ function SignIn() {
           )}
           {/* <YStack gap="$2" >
             <Paragraph
-              tag="button"
+              render="button"
               ta="center"
               size="$2"
               cursor="pointer"

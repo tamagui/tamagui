@@ -11,56 +11,56 @@ export function SheetAnimationCase() {
       {/* Test 1: animation prop only - "quick" */}
       <SheetTest
         testId="animation-quick"
-        animation="quick"
-        label='animation="quick"'
+        transition="quick"
+        label='transition="quick"'
       />
 
       {/* Test 2: animation prop only - "lazy" */}
       <SheetTest
         testId="animation-lazy"
-        animation="lazy"
-        label='animation="lazy"'
+        transition="lazy"
+        label='transition="lazy"'
       />
 
       {/* Test 3: animation prop only - "slow" */}
       <SheetTest
         testId="animation-slow"
-        animation="slow"
-        label='animation="slow"'
+        transition="slow"
+        label='transition="slow"'
       />
 
-      {/* Test 4: animationConfig prop only */}
+      {/* Test 4: transitionConfig prop only */}
       <SheetTest
-        testId="animationConfig-only"
-        animationConfig={{
+        testId="transitionConfig-only"
+        transitionConfig={{
           type: 'spring',
           damping: 30,
           stiffness: 400,
         }}
-        label="animationConfig only (fast spring)"
+        label="transitionConfig only (fast spring)"
       />
 
-      {/* Test 5: animationConfig prop only - slow */}
+      {/* Test 5: transitionConfig prop only - slow */}
       <SheetTest
-        testId="animationConfig-slow"
-        animationConfig={{
+        testId="transitionConfig-slow"
+        transitionConfig={{
           type: 'spring',
           damping: 20,
           stiffness: 30,
         }}
-        label="animationConfig only (slow spring)"
+        label="transitionConfig only (slow spring)"
       />
 
-      {/* Test 6: animation + animationConfig together */}
+      {/* Test 6: animation + transitionConfig together */}
       <SheetTest
         testId="animation-plus-config"
-        animation="lazy"
-        animationConfig={{
+        transition="lazy"
+        transitionConfig={{
           type: 'spring',
           damping: 30,
           stiffness: 500,
         }}
-        label='animation="lazy" + animationConfig (override to fast)'
+        label='transition="lazy" + transitionConfig (override to fast)'
       />
     </YStack>
   )
@@ -68,8 +68,8 @@ export function SheetAnimationCase() {
 
 interface SheetTestProps {
   testId: string
-  animation?: string
-  animationConfig?: {
+  transition?: string
+  transitionConfig?: {
     type: 'spring' | 'timing' | 'decay'
     damping?: number
     stiffness?: number
@@ -79,7 +79,7 @@ interface SheetTestProps {
   label: string
 }
 
-function SheetTest({ testId, animation, animationConfig, label }: SheetTestProps) {
+function SheetTest({ testId, transition, transitionConfig, label }: SheetTestProps) {
   const [open, setOpen] = useState(false)
   const [lastDuration, setLastDuration] = useState<number | null>(null)
   const startTimeRef = useRef<number>(0)
@@ -128,14 +128,14 @@ function SheetTest({ testId, animation, animationConfig, label }: SheetTestProps
       <Sheet
         open={open}
         onOpenChange={handleOpenChange}
-        animation={animation as any}
-        animationConfig={animationConfig as any}
+        transition={transition as any}
+        transitionConfig={transitionConfig as any}
         modal
         dismissOnSnapToBottom
         snapPoints={[40]}
       >
         <Sheet.Overlay
-          animation={animation as any}
+          transition={transition as any}
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -152,8 +152,8 @@ function SheetTest({ testId, animation, animationConfig, label }: SheetTestProps
               {label}
             </Paragraph>
             <Paragraph size="$2" color="$color10">
-              Animation: {animation || 'none'}, Config:{' '}
-              {animationConfig ? JSON.stringify(animationConfig) : 'none'}
+              Transition: {transition || 'none'}, Config:{' '}
+              {transitionConfig ? JSON.stringify(transitionConfig) : 'none'}
             </Paragraph>
             <Button
               onPress={() => setOpen(false)}

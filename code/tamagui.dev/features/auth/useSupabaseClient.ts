@@ -1,81 +1,95 @@
-import type { Session, SupabaseClient } from '@supabase/supabase-js'
+import { AuthClient, type Session } from '@supabase/auth-js'
 import { useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
-import type { Database } from '../supabase/types'
 
-type OurClient = SupabaseClient<Database>
-
-let client: OurClient | null = null
-
-// lazy load it only once needed (auth page)
-
-export function useSupabaseClient(given?: SupabaseClient) {
-  const [current, setCurrent] = useState(given ?? client)
-
-  useEffect(() => {
-    const run = async () => {
-      if (current || client) return
-
-      // ‼️ NOTE YOU DO NEED SSR HERE OR IT WONT DO SSR STYLE REDIRECT
-      //  you could get the client flow working but:
-      //    1. supabase-js also for some reason imports crypto/websockets/buffer etc
-      //    2. would have to redo the oauth callback stuff
-      //    3. at that point just move to better-auth
-      const { createBrowserClient } = await import('@supabase/ssr')
-
-      if (
-        !import.meta.env.NEXT_PUBLIC_SUPABASE_URL ||
-        !import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      ) {
-        console.error(`Missing supabase info`)
-      }
-
-      client = createBrowserClient(
-        import.meta.env.NEXT_PUBLIC_SUPABASE_URL!,
-        import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-          auth: {
-            storage: window.localStorage,
-          },
-        }
-      )
-
-      globalThis['supabaseClient'] = client
-      // client!.auth.initialize()
-
-      setCurrent(client)
-    }
-
-    run()
-  }, [current])
-
-  return current as OurClient
+// Lightweight wrapper that provides the same interface as SupabaseClient
+// but only includes auth functionality (no realtime/ws dependencies)
+type SupabaseAuthOnlyClient = {
+  auth: InstanceType<typeof AuthClient>
 }
 
-export function useSupabaseSession(client?: OurClient) {
+// Initialize client eagerly - @supabase/auth-js is small (~30kb) and has no ws/realtime deps
+function createClient(): SupabaseAuthOnlyClient | null {
+  if (typeof window === 'undefined') return null
+
+  if (
+    !import.meta.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  ) {
+    console.error(`Missing supabase info`)
+    return null
+  }
+
+  const authClient = new AuthClient({
+    url: `${import.meta.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1`,
+    headers: {
+      apikey: import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      Authorization: `Bearer ${import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+    },
+    storageKey: 'sb-auth-token',
+    storage: window.localStorage,
+    flowType: 'pkce',
+    detectSessionInUrl: false, // We handle OAuth callback manually in /auth
+  })
+
+  return { auth: authClient }
+}
+
+let client: SupabaseAuthOnlyClient | null = null
+
+// Get the current access token - can be called outside React
+export async function getAccessToken(): Promise<string | null> {
+  if (typeof window === 'undefined') return null
+
+  // Ensure client is initialized
+  if (!client) {
+    client = createClient()
+    if (client) {
+      globalThis['supabaseClient'] = client
+    }
+  }
+
+  if (!client) return null
+
+  const { data, error } = await client.auth.getSession()
+  if (error || !data.session) return null
+
+  return data.session.access_token
+}
+
+export function useSupabaseClient(given?: SupabaseAuthOnlyClient) {
+  const [current, setCurrent] = useState(() => given ?? client)
+
+  useEffect(() => {
+    if (current || client) return
+    client = createClient()
+    if (client) {
+      globalThis['supabaseClient'] = client
+      setCurrent(client)
+    }
+  }, [current])
+
+  return current as SupabaseAuthOnlyClient
+}
+
+export function useSupabaseSession(client?: SupabaseAuthOnlyClient) {
   const supabase = useSupabaseClient(client)
   const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {
+    if (!supabase) return // Client not ready yet
+
     const run = async () => {
-      const reply = await supabase?.auth.getSession()
+      const reply = await supabase.auth.getSession()
 
-      if (!reply || reply.error) {
-        console.error(
-          `Error authenticating`,
-          reply,
-          import.meta.env.NEXT_PUBLIC_SUPABASE_URL,
-          import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-        )
+      if (reply.error) {
+        console.error(`Error authenticating`, reply.error)
         return
       }
 
-      if (!reply.data.session) {
-        console.warn(`no session data`)
-        return
+      if (reply.data.session) {
+        setSession(reply.data.session)
       }
-
-      setSession(reply.data.session)
     }
 
     run()
@@ -97,7 +111,6 @@ export const useSupabase = () => {
         if (session?.user.id === currentSession?.user.id) {
           return
         }
-        await fetch('/api/account-sync', { method: 'POST' })
       }
 
       await swrClient.mutate('user')

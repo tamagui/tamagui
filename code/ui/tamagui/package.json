@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "1.144.2",
+  "version": "2.0.0-1768700985112",
   "type": "module",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
@@ -112,6 +112,7 @@
     "@tamagui/group": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/image": "workspace:*",
+    "@tamagui/input": "workspace:*",
     "@tamagui/label": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
@@ -128,6 +129,7 @@
     "@tamagui/shapes": "workspace:*",
     "@tamagui/sheet": "workspace:*",
     "@tamagui/slider": "workspace:*",
+    "@tamagui/spacer": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/switch": "workspace:*",
     "@tamagui/tabs": "workspace:*",

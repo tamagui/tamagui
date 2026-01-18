@@ -17,7 +17,7 @@ export const getUserDetails = async (
   supabase: SupabaseClient<Database>,
   userId: string
 ) => {
-  const result = await supabase.from('users').select('*').eq('id', userId).single()
+  const result = await supabase.from('users').select('*').eq('id', userId).maybeSingle()
 
   if (result.error) {
     throw new Error(result.error.message)

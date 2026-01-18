@@ -23,7 +23,7 @@ import {
   ToggleRight,
 } from '@tamagui/lucide-icons'
 import { H4, H5, Image, YStack } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Link } from '~/components/Link'
 import ComponentPreview from './ComponentPreview'
 
@@ -44,7 +44,7 @@ export function ComponentItem({
   return (
     <Link href={href as any} asChild>
       <YStack
-        tag="a"
+        render="a"
         width={210}
         cursor="pointer"
         position="relative"
@@ -58,6 +58,7 @@ export function ComponentItem({
       >
         {/* Preview */}
         <YStack
+          position="relative"
           height={192}
           rounded="$8"
           overflow="hidden"
@@ -85,7 +86,7 @@ export function ComponentItem({
           />
         </YStack>
 
-        <YStack flex={1} p="$4">
+        <YStack flex={1} p="$4" position="relative">
           <H4 fontFamily="$mono" size="$5" color="$color12">
             {name}
           </H4>

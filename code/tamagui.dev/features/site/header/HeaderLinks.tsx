@@ -1,7 +1,7 @@
 import { Paragraph, styled } from 'tamagui'
 
 export const HeadAnchor = styled(Paragraph, {
-  tag: 'a',
+  render: 'a',
   fontFamily: '$silkscreen',
   px: '$4',
   py: '$4',

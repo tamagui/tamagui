@@ -24,18 +24,18 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    ```bash
    yarn test:web
    ```
-   This runs tests with CSS, React Native, and Moti animation drivers.
+   This runs tests with CSS, React Native, and Reanimated animation drivers.
 
 3. **Run tests with a specific animation driver**:
    ```bash
    # CSS animations driver
    yarn test:web:driver-css
-   
-   # React Native animations driver  
+
+   # React Native animations driver
    yarn test:web:driver-rn
-   
-   # Moti animations driver
-   yarn test:web:driver-moti
+
+   # Reanimated animations driver
+   yarn test:web:driver-reanimated
    ```
 
 4. **Run a specific test file**:

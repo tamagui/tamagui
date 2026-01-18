@@ -79,7 +79,7 @@ We can use these like so:
 <RoundedSquare pin="top" centered size="$lg" />
 ```
 
-To learn more about to use them and all the special types, [see the docs on variants](/docs/core/variants).
+To learn more about how to use them and all the special types, [see the docs on variants](/docs/core/variants).
 
 ### Non-working React Native views
 
@@ -98,6 +98,101 @@ import { styled } from 'tamagui' // or '@tamagui/core'
 export const TamaguiCustomComponent = styled(SomeCustomComponent, {
   acceptsClassName: true,
 })
+```
+
+## render
+
+The `render` prop lets you control which element or component is rendered. It accepts three forms:
+
+### String (HTML element)
+
+Render as a specific HTML element on web while maintaining native View on mobile:
+
+```tsx
+const Button = styled(Stack, {
+  render: 'button',
+  padding: '$4',
+  backgroundColor: '$background',
+})
+
+const Anchor = styled(Text, {
+  render: 'a',
+  color: '$blue10',
+})
+
+const Nav = styled(Stack, {
+  render: 'nav',
+})
+```
+
+This is the recommended approach for semantic HTML and accessibility. String render props are optimized by the Tamagui compiler.
+
+### JSX Element
+
+Pass a JSX element to clone with Tamagui's computed props:
+
+```tsx
+<Stack
+  render={<a href="/about" target="_blank" />}
+  padding="$4"
+  backgroundColor="$background"
+>
+  About Page
+</Stack>
+```
+
+The JSX element's props are merged with Tamagui's computed styles, classNames, and event handlers. This is useful when you need to pass element-specific props like `href` or `target`.
+
+<Notice theme="yellow">
+  JSX element render props are not optimized by the compiler - they will cause a deopt.
+</Notice>
+
+### Function
+
+For full control, pass a render function that receives props and component state:
+
+```tsx
+import { TamaguiComponentState } from '@tamagui/core'
+
+<Stack
+  render={(props, state: TamaguiComponentState) => (
+    <CustomButton
+      {...props}
+      isHovered={state.hover}
+      isPressed={state.press}
+    />
+  )}
+  padding="$4"
+  hoverStyle={{ backgroundColor: '$blue5' }}
+>
+  Custom Button
+</Stack>
+```
+
+The state object includes:
+- `hover` - true when hovered (web)
+- `press` - true when pressed
+- `focus` - true when focused
+- `disabled` - true when disabled
+
+<Notice theme="yellow">
+  Function render props are not optimized by the compiler - they will cause a deopt.
+</Notice>
+
+### Runtime override
+
+You can also override the render prop at runtime:
+
+```tsx
+const Box = styled(Stack, {
+  padding: '$4',
+})
+
+// Use as a button
+<Box render="button">Click me</Box>
+
+// Use as a link
+<Box render="a" href="/about">About</Box>
 ```
 
 ## styleable

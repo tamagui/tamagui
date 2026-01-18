@@ -1,6 +1,6 @@
 export { shorthands } from '@tamagui/shorthands/v5';
 export { createThemes } from '@tamagui/theme-builder';
-export { tokens, defaultThemes as themes } from '@tamagui/themes/v5';
+export { themes, tokens, createV5Theme } from '@tamagui/themes/v5';
 export { animations } from './v5-animations';
 export { createSystemFont, fonts } from './v5-fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media';
@@ -10,78 +10,164 @@ export declare const selectionStyles: (theme: any) => {
 } | null;
 export declare const settings: {
     mediaQueryDefaultActive: {
-        '2xl': boolean;
-        xl: boolean;
-        lg: boolean;
-        md: boolean;
-        sm: boolean;
+        pointerTouch: boolean;
+        heightXXXS: boolean;
+        heightXXS: boolean;
+        heightXS: boolean;
+        heightSM: boolean;
+        heightMD: boolean;
+        heightLG: boolean;
+        maxXXXS: boolean;
+        maxXXS: boolean;
+        maxXS: boolean;
+        maxSM: boolean;
+        maxMD: boolean;
+        maxLG: boolean;
+        maxXL: boolean;
+        maxXXL: boolean;
+        xxxs: boolean;
+        xxs: boolean;
         xs: boolean;
-        '2xs': boolean;
+        sm: boolean;
+        md: boolean;
+        lg: boolean;
+        xl: boolean;
+        xxl: boolean;
     };
     defaultFont: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
-    themeClassNameOnRoot: true;
+    addThemeClassName: "html";
     onlyAllowShorthands: true;
-    maxDarkLightNesting: number;
+    styleCompat: "react-native";
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
-        '75ms': string;
-        '100ms': string;
-        '200ms': string;
-        bouncy: string;
-        superBouncy: string;
-        lazy: string;
-        medium: string;
-        slow: string;
-        quick: string;
-        quicker: string;
-        quickest: string;
-        tooltip: string;
+        '75ms': {
+            type: "timing";
+            duration: number;
+        };
+        '100ms': {
+            type: "timing";
+            duration: number;
+        };
+        '200ms': {
+            type: "timing";
+            duration: number;
+        };
+        superBouncy: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        bouncy: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        medium: {
+            damping: number;
+            stiffness: number;
+            mass: number;
+        };
+        lazy: {
+            damping: number;
+            stiffness: number;
+        };
+        slow: {
+            damping: number;
+            stiffness: number;
+        };
+        quick: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        tooltip: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        quicker: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
+        quickest: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
     }>;
     media: {
-        readonly maxXs: {
+        readonly pointerTouch: {
+            readonly pointer: "coarse";
+        };
+        readonly heightXXXS: {
+            readonly minHeight: number;
+        };
+        readonly heightXXS: {
+            readonly minHeight: number;
+        };
+        readonly heightXS: {
+            readonly minHeight: number;
+        };
+        readonly heightSM: {
+            readonly minHeight: number;
+        };
+        readonly heightMD: {
+            readonly minHeight: number;
+        };
+        readonly heightLG: {
+            readonly minHeight: number;
+        };
+        readonly maxXXXS: {
             readonly maxWidth: number;
         };
-        readonly max2xs: {
+        readonly maxXXS: {
             readonly maxWidth: number;
         };
-        readonly maxSm: {
+        readonly maxXS: {
             readonly maxWidth: number;
         };
-        readonly maxMd: {
+        readonly maxSM: {
             readonly maxWidth: number;
         };
-        readonly maxLg: {
+        readonly maxMD: {
             readonly maxWidth: number;
         };
-        readonly maxXl: {
+        readonly maxLG: {
             readonly maxWidth: number;
         };
-        readonly max2Xl: {
+        readonly maxXL: {
             readonly maxWidth: number;
         };
-        readonly '2xl': {
+        readonly maxXXL: {
+            readonly maxWidth: number;
+        };
+        readonly xxxs: {
             readonly minWidth: number;
         };
-        readonly xl: {
-            readonly minWidth: number;
-        };
-        readonly lg: {
-            readonly minWidth: number;
-        };
-        readonly md: {
-            readonly minWidth: number;
-        };
-        readonly sm: {
+        readonly xxs: {
             readonly minWidth: number;
         };
         readonly xs: {
             readonly minWidth: number;
         };
-        readonly '2xs': {
+        readonly sm: {
+            readonly minWidth: number;
+        };
+        readonly md: {
+            readonly minWidth: number;
+        };
+        readonly lg: {
+            readonly minWidth: number;
+        };
+        readonly xl: {
+            readonly minWidth: number;
+        };
+        readonly xxl: {
             readonly minWidth: number;
         };
     };
@@ -120,7 +206,7 @@ export declare const defaultConfig: {
         t: "top";
         z: "zIndex";
     };
-    themes: Record<"light" | "dark" | "light_orange" | "light_yellow" | "light_green" | "light_blue" | "light_purple" | "light_pink" | "light_red" | "dark_orange" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_purple" | "dark_pink" | "dark_red" | "light_gray" | "dark_gray" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_teal" | "dark_teal", {
+    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_gray" | "dark_gray" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_accent" | "dark_accent" | "light_black_accent" | "light_white_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_black_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent" | "light_neutral" | "dark_neutral" | "light_gray_accent" | "light_neutral_accent" | "dark_gray_accent" | "dark_neutral_accent", {
         accentBackground: string;
         accentColor: string;
         background0: string;
@@ -172,108 +258,6 @@ export declare const defaultConfig: {
         black10: string;
         black11: string;
         black12: string;
-        blue1: string;
-        blue2: string;
-        blue3: string;
-        blue4: string;
-        blue5: string;
-        blue6: string;
-        blue7: string;
-        blue8: string;
-        blue9: string;
-        blue10: string;
-        blue11: string;
-        blue12: string;
-        gray1: string;
-        gray2: string;
-        gray3: string;
-        gray4: string;
-        gray5: string;
-        gray6: string;
-        gray7: string;
-        gray8: string;
-        gray9: string;
-        gray10: string;
-        gray11: string;
-        gray12: string;
-        green1: string;
-        green2: string;
-        green3: string;
-        green4: string;
-        green5: string;
-        green6: string;
-        green7: string;
-        green8: string;
-        green9: string;
-        green10: string;
-        green11: string;
-        green12: string;
-        shadow1: string;
-        shadow2: string;
-        shadow3: string;
-        shadow4: string;
-        shadow5: string;
-        shadow6: string;
-        orange1: string;
-        orange2: string;
-        orange3: string;
-        orange4: string;
-        orange5: string;
-        orange6: string;
-        orange7: string;
-        orange8: string;
-        orange9: string;
-        orange10: string;
-        orange11: string;
-        orange12: string;
-        pink1: string;
-        pink2: string;
-        pink3: string;
-        pink4: string;
-        pink5: string;
-        pink6: string;
-        pink7: string;
-        pink8: string;
-        pink9: string;
-        pink10: string;
-        pink11: string;
-        pink12: string;
-        purple1: string;
-        purple2: string;
-        purple3: string;
-        purple4: string;
-        purple5: string;
-        purple6: string;
-        purple7: string;
-        purple8: string;
-        purple9: string;
-        purple10: string;
-        purple11: string;
-        purple12: string;
-        red1: string;
-        red2: string;
-        red3: string;
-        red4: string;
-        red5: string;
-        red6: string;
-        red7: string;
-        red8: string;
-        red9: string;
-        red10: string;
-        red11: string;
-        red12: string;
-        teal1: string;
-        teal2: string;
-        teal3: string;
-        teal4: string;
-        teal5: string;
-        teal6: string;
-        teal7: string;
-        teal8: string;
-        teal9: string;
-        teal10: string;
-        teal11: string;
-        teal12: string;
         white1: string;
         white2: string;
         white3: string;
@@ -286,19 +270,6 @@ export declare const defaultConfig: {
         white10: string;
         white11: string;
         white12: string;
-        yellow1: string;
-        yellow2: string;
-        yellow3: string;
-        yellow4: string;
-        yellow5: string;
-        yellow6: string;
-        yellow7: string;
-        yellow8: string;
-        yellow9: string;
-        yellow10: string;
-        yellow11: string;
-        yellow12: string;
-        shadowColor: string;
         white: string;
         white0: string;
         white02: string;
@@ -311,16 +282,85 @@ export declare const defaultConfig: {
         black04: string;
         black06: string;
         black08: string;
-        color1pt5: string;
-        color2pt5: string;
-        color01: string;
-        color0075: string;
-        color005: string;
-        color0025: string;
-        background01: string;
-        background0075: string;
-        background005: string;
-        background0025: string;
+        shadow1: string;
+        shadow2: string;
+        shadow3: string;
+        shadow4: string;
+        shadow5: string;
+        shadow6: string;
+        shadowColor: string;
+        gray1: string;
+        gray2: string;
+        gray3: string;
+        gray4: string;
+        gray5: string;
+        gray6: string;
+        gray7: string;
+        gray8: string;
+        gray9: string;
+        gray10: string;
+        gray11: string;
+        gray12: string;
+        blue1: string;
+        blue2: string;
+        blue3: string;
+        blue4: string;
+        blue5: string;
+        blue6: string;
+        blue7: string;
+        blue8: string;
+        blue9: string;
+        blue10: string;
+        blue11: string;
+        blue12: string;
+        red1: string;
+        red2: string;
+        red3: string;
+        red4: string;
+        red5: string;
+        red6: string;
+        red7: string;
+        red8: string;
+        red9: string;
+        red10: string;
+        red11: string;
+        red12: string;
+        yellow1: string;
+        yellow2: string;
+        yellow3: string;
+        yellow4: string;
+        yellow5: string;
+        yellow6: string;
+        yellow7: string;
+        yellow8: string;
+        yellow9: string;
+        yellow10: string;
+        yellow11: string;
+        yellow12: string;
+        green1: string;
+        green2: string;
+        green3: string;
+        green4: string;
+        green5: string;
+        green6: string;
+        green7: string;
+        green8: string;
+        green9: string;
+        green10: string;
+        green11: string;
+        green12: string;
+        neutral1: string;
+        neutral2: string;
+        neutral3: string;
+        neutral4: string;
+        neutral5: string;
+        neutral6: string;
+        neutral7: string;
+        neutral8: string;
+        neutral9: string;
+        neutral10: string;
+        neutral11: string;
+        neutral12: string;
         accent1: string;
         accent2: string;
         accent3: string;
@@ -333,6 +373,21 @@ export declare const defaultConfig: {
         accent10: string;
         accent11: string;
         accent12: string;
+        color0pt5: string;
+        color1pt5: string;
+        color2pt5: string;
+        color01: string;
+        color0075: string;
+        color005: string;
+        color0025: string;
+        color002: string;
+        color001: string;
+        background01: string;
+        background0075: string;
+        background005: string;
+        background0025: string;
+        background002: string;
+        background001: string;
     }>;
     tokens: {
         readonly radius: {
@@ -460,21 +515,37 @@ export declare const defaultConfig: {
     } | null;
     settings: {
         mediaQueryDefaultActive: {
-            '2xl': boolean;
-            xl: boolean;
-            lg: boolean;
-            md: boolean;
-            sm: boolean;
+            pointerTouch: boolean;
+            heightXXXS: boolean;
+            heightXXS: boolean;
+            heightXS: boolean;
+            heightSM: boolean;
+            heightMD: boolean;
+            heightLG: boolean;
+            maxXXXS: boolean;
+            maxXXS: boolean;
+            maxXS: boolean;
+            maxSM: boolean;
+            maxMD: boolean;
+            maxLG: boolean;
+            maxXL: boolean;
+            maxXXL: boolean;
+            xxxs: boolean;
+            xxs: boolean;
             xs: boolean;
-            '2xs': boolean;
+            sm: boolean;
+            md: boolean;
+            lg: boolean;
+            xl: boolean;
+            xxl: boolean;
         };
         defaultFont: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
-        themeClassNameOnRoot: true;
+        addThemeClassName: "html";
         onlyAllowShorthands: true;
-        maxDarkLightNesting: number;
+        styleCompat: "react-native";
     };
 };
 //# sourceMappingURL=v5.d.ts.map

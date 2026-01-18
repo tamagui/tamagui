@@ -26,8 +26,8 @@ export interface MetroOptions {
 export interface MetroProcess {
   /** The underlying Bun subprocess */
   proc: Subprocess
-  /** Kill the Metro process */
-  kill: () => void
+  /** Kill the Metro process and its children */
+  kill: () => Promise<void>
 }
 
 /**
@@ -111,8 +111,19 @@ export function startMetro(): MetroProcess {
 
   return {
     proc,
-    kill: () => {
-      proc.kill()
+    kill: async () => {
+      // Metro spawns child processes (watchman, etc.) that may survive a simple kill
+      // Use pkill to kill the entire process tree by parent PID
+      const pid = proc.pid
+      if (pid) {
+        try {
+          // Kill all child processes first (works on macOS and Linux)
+          await Bun.spawn(['pkill', '-P', String(pid)], { stdout: 'ignore', stderr: 'ignore' }).exited
+        } catch {
+          // Ignore errors - children may already be dead
+        }
+      }
+      proc.kill('SIGKILL')
       console.info('Metro stopped')
     },
   }
@@ -123,9 +134,9 @@ export function startMetro(): MetroProcess {
  * This prevents orphaned Metro processes when CI jobs are cancelled.
  */
 export function setupSignalHandlers(metro: MetroProcess): void {
-  const cleanup = (signal: string) => {
+  const cleanup = async (signal: string) => {
     console.info(`\nReceived ${signal}, cleaning up...`)
-    metro.kill()
+    await metro.kill()
     process.exit(signal === 'SIGINT' ? 130 : 143)
   }
 
@@ -152,6 +163,6 @@ export async function withMetro<T>(platform: Platform, fn: () => Promise<T>): Pr
 
     return await fn()
   } finally {
-    metro.kill()
+    await metro.kill()
   }
 }

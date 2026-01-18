@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "1.144.2",
+  "version": "2.0.0-1768700985112",
   "type": "module",
   "source": "src/index.ts",
   "sideEffects": false,
@@ -29,6 +29,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/cubic-bezier-animator": "workspace:*",
     "@tamagui/use-presence": "workspace:*",

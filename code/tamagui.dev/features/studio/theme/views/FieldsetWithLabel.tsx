@@ -28,12 +28,13 @@ export const FieldsetWithLabel = ({
 
   return (
     <YStack
-      tag="fieldset"
+      render="fieldset"
       rounded="$4"
       borderColor={isActive ? '$color9' : '$color6'}
       borderWidth={0}
       px="$3"
       onPress={onPress}
+      position="relative"
     >
       <YStack
         z={100}
@@ -49,10 +50,10 @@ export const FieldsetWithLabel = ({
           <Input
             size="$3"
             autoFocus
-            selectTextOnFocus
-            onEndEditing={() => {
+            onBlur={() => {
               setIsEditing(false)
             }}
+            onFocus={(e) => e.currentTarget.select()}
             defaultValue={label}
             onChange={(e) => {
               text.current = e.target?.value ?? ''
@@ -73,7 +74,7 @@ export const FieldsetWithLabel = ({
         ) : (
           <Heading
             select="none"
-            tag="label"
+            render="label"
             size="$5"
             color="$color11"
             text="center"
@@ -96,16 +97,13 @@ export const FieldsetWithLabel = ({
                 }
               >
                 <Button
-                  color="$color9"
                   size="$1"
                   scaleIcon={1.2}
                   ml="$2"
                   circular
                   rounded={100}
-                  hoverTheme={false}
-                  pressTheme={false}
                   chromeless
-                  icon={Info}
+                  icon={<Info color="$color9" />}
                   position="absolute"
                   t={0}
                   r={8}

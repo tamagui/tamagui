@@ -92,8 +92,7 @@ export const ThemeSwitch = memo(() => {
             <XStack fullscreen z={100} x={2} y={0.5}>
               {isLight && (
                 <Button
-                  tag="span"
-                  color="$color"
+                  render="span"
                   disabled
                   chromeless
                   size="$1"
@@ -101,7 +100,7 @@ export const ThemeSwitch = memo(() => {
                   opacity={0.44}
                   x={-1.5}
                   y={-1.5}
-                  icon={Moon}
+                  icon={<Moon color="$color" />}
                 />
               )}
             </XStack>
@@ -109,8 +108,7 @@ export const ThemeSwitch = memo(() => {
             <XStack position="absolute" t={0} r={0} z={100} x={1} y={0}>
               {!isLight && (
                 <Button
-                  tag="span"
-                  color="$color"
+                  render="span"
                   disabled
                   chromeless
                   size="$1"
@@ -118,37 +116,35 @@ export const ThemeSwitch = memo(() => {
                   opacity={0.25}
                   x={-1.5}
                   y={-1.5}
-                  icon={Sun}
+                  icon={<Sun color="$color" />}
                 />
               )}
             </XStack>
 
-            <Switch.Thumb animation="quickest">
+            <Switch.Thumb transition="quickest">
               <YStack items="center">
                 {isLight && (
                   <Button
-                    tag="span"
-                    color="$background"
+                    render="span"
                     disabled
                     chromeless
                     size="$1"
                     scaleIcon={1.2}
                     opacity={0.8}
                     y={-0.75}
-                    icon={Sun}
+                    icon={<Sun color="$background" />}
                   />
                 )}
                 {!isLight && (
                   <Button
-                    tag="span"
-                    color="$background"
+                    render="span"
                     disabled
                     chromeless
                     size="$1"
                     scaleIcon={1.2}
                     opacity={0.5}
                     y={-0.75}
-                    icon={Moon}
+                    icon={<Moon color="$background" />}
                   />
                 )}
               </YStack>
@@ -165,7 +161,7 @@ export const ThemeSwitch = memo(() => {
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
-        animation={[
+        transition={[
           'quickest',
           {
             opacity: {

@@ -22,11 +22,12 @@ export function CodeDemoPreParsed({
       overflow="hidden"
       borderWidth={1}
       flex={1}
+      flexBasis="auto"
       {...props}
     >
       <ScrollView
         contentContainerStyle={{
-          flex: 1,
+          minHeight: '100%',
         }}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -34,12 +35,12 @@ export function CodeDemoPreParsed({
         <ScrollView
           horizontal
           contentContainerStyle={{
-            flex: 1,
+            minWidth: '100%',
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >
-          <Pre flex={1}>
+          <Pre>
             <Code dangerouslySetInnerHTML={{ __html: source }} />
           </Pre>
         </ScrollView>

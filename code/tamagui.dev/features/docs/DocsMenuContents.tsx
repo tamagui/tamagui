@@ -64,7 +64,10 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
   return (
     <>
-      <div style={{ width: '100%' }} aria-label="Docs Menu">
+      <div
+        style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }}
+        aria-label="Docs Menu"
+      >
         {React.useMemo(() => {
           return (
             <>

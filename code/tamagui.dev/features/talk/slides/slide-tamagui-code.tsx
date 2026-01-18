@@ -19,7 +19,7 @@ const adaptSnippet = highlightCode(
     </Popover.Sheet>
   </Adapt>
 
-  <Popover.Content animation="quick">
+  <Popover.Content transition="quick">
      {/* ... */}
   </Popover.Content>
 </Popover>`,

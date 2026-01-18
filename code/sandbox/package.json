@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "1.144.2",
+  "version": "2.0.0-1768700985112",
   "private": true,
   "type": "module",
   "scripts": {
@@ -24,13 +24,12 @@
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/demos": "workspace:*",
-    "@tamagui/image-next": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@vxrn/color-scheme": "^1.2.58",
+    "@vxrn/color-scheme": "^1.2.61",
     "expo": "^54.0.23",
-    "one": "1.2.58",
+    "one": "1.2.61",
     "react": "*",
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1",

@@ -153,12 +153,13 @@ const PaymentForm = ({
         <PaymentElement />
         <Theme name="accent">
           <Button
-            fontFamily="$mono"
             rounded="$10"
             self="flex-end"
             disabled={isProcessing || !stripe || !elements}
           >
-            {isProcessing ? 'Processing...' : 'Add Seats'}
+            <Button.Text fontFamily="$mono">
+              {isProcessing ? 'Processing...' : 'Add Seats'}
+            </Button.Text>
           </Button>
         </Theme>
         {error && (
@@ -258,7 +259,7 @@ export const AddTeamMemberModalComponent = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -267,7 +268,7 @@ export const AddTeamMemberModalComponent = () => {
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           width="90%"
           maxW={600}
           p="$6"
@@ -291,7 +292,7 @@ export const AddTeamMemberModalComponent = () => {
                     const num = Number(text.replace(/^0+/, '')) || 1
                     setAdditionalSeats(num)
                   }}
-                  keyboardType="numeric"
+                  type="number-pad"
                   width={200}
                 />
                 <YStack items="flex-end">
@@ -327,10 +328,10 @@ export const AddTeamMemberModalComponent = () => {
                       borderWidth={1}
                       placeholder="Enter code"
                       value={couponCode}
-                      onChangeText={setCouponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
                     />
                     <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
-                      Apply
+                      <Button.Text>Apply</Button.Text>
                     </Button>
                   </XStack>
                 )}

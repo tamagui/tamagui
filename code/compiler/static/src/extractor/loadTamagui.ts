@@ -267,12 +267,9 @@ export function loadTamaguiSync({
         console.error(`Error loading tamagui.config.ts`, err)
       }
 
-      const { createTamagui } = requireTamaguiCore(props.platform || 'web')
-      const { getDefaultTamaguiConfig } = require('@tamagui/config-default')
-
       return {
         components: [],
-        tamaguiConfig: createTamagui(getDefaultTamaguiConfig()) as any,
+        tamaguiConfig: null,
         nameToPaths: {},
       }
     }

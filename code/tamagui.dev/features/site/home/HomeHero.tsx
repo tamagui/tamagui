@@ -44,19 +44,19 @@ const HeroSubTitle = memo(() => {
   return (
     <Subtitle>
       <Link asChild href="/docs/intro/introduction">
-        <Tag theme="red" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="red" onMouseEnter={() => setHovered(2)} active={hovered === 2}>
           styles
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/docs/intro/why-a-compiler">
-        <Tag theme="green" onHoverIn={() => setHovered(3)} active={hovered === 3}>
+        <Tag theme="green" onMouseEnter={() => setHovered(3)} active={hovered === 3}>
           optimizing compiler
         </Tag>
       </Link>{' '}
       ·{' '}
       <Link asChild href="/ui/stacks">
-        <Tag theme="blue" onHoverIn={() => setHovered(4)} active={hovered === 4}>
+        <Tag theme="blue" onMouseEnter={() => setHovered(4)} active={hovered === 4}>
           UI&nbsp;kit
         </Tag>
       </Link>
@@ -240,10 +240,8 @@ const HeroContents = memo(function HeroContents() {
                 aria-label="Get started (docs)"
                 group="item"
                 containerType="normal"
-                fontFamily="$silkscreen"
                 componentName=""
                 size="$5"
-                fontSize="$2"
                 rounded={1000}
                 bordered
                 borderWidth={2}
@@ -254,7 +252,12 @@ const HeroContents = memo(function HeroContents() {
                   elevation: '$0',
                 }}
               >
-                Start
+                <Button.Text fontFamily="$silkscreen" fontSize="$2">
+                  Start
+                </Button.Text>
+                {/* <YStack $group-item-press={{ scaleX: -1 }}>
+                  <LogoIcon downscale={3} />
+                </YStack> */}
               </Button>
             </Link>
           </Theme>
@@ -262,7 +265,7 @@ const HeroContents = memo(function HeroContents() {
           <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
             <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
               <YStack
-                tag="a"
+                render="a"
                 p="$5"
                 $sm={{ p: '$3' }}
                 opacity={0.65}
@@ -324,7 +327,7 @@ const Subtitle = styled(Paragraph, {
 })
 
 const Tag = styled(Text, {
-  tag: 'a',
+  render: 'a',
   className: 'hero-tag text-decoration-none',
   fontFamily: '$silkscreen',
   fontSize: 'inherit' as any,

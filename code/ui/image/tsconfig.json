@@ -3,17 +3,17 @@
   "compilerOptions": {
     "composite": true
   },
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ],
   "references": [
     {
       "path": "../../core/constants"
     },
     {
-      "path": "../../core/core"
+      "path": "../../core/web"
     }
-  ],
-  "exclude": [
-    "types",
-    "dist",
-    "**/__tests__"
   ]
 }

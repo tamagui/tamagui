@@ -27,7 +27,7 @@ import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { Portal, PortalItem, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
+import { SheetController } from '@tamagui/sheet/controller'
 import type { YStackProps } from '@tamagui/stacks'
 import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
@@ -98,7 +98,7 @@ const DialogTrigger = DialogTriggerFrame.styleable<ScopedProps<{}>>(
     return (
       <ButtonNestingContext.Provider value={true}>
         <DialogTriggerFrame
-          tag={isInsideButton ? 'span' : 'button'}
+          render={isInsideButton ? 'span' : 'button'}
           aria-haspopup="dialog"
           aria-expanded={context.open}
           aria-controls={context.contentId}
@@ -128,7 +128,7 @@ type DialogPortalProps = ScopedProps<
 
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
-  tag: 'dialog',
+  render: 'dialog',
 
   variants: {
     unstyled: {
@@ -308,8 +308,33 @@ const OVERLAY_NAME = 'DialogOverlay'
 /**
  * exported for internal use with extractable()
  */
-export const DialogOverlayFrame = styled(Overlay, {
+export const DialogOverlayFrame = styled(YStack, {
   name: OVERLAY_NAME,
+
+  variants: {
+    open: {
+      true: {
+        pointerEvents: 'auto',
+      },
+      false: {
+        pointerEvents: 'none',
+      },
+    },
+
+    unstyled: {
+      false: {
+        fullscreen: true,
+        position: 'absolute',
+        backgrounded: true,
+        zIndex: 100_000 - 1,
+        pointerEvents: 'auto',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 export type DialogOverlayExtraProps = ScopedProps<{
@@ -377,6 +402,8 @@ const DialogContentFrame = styled(ThemeableStack, {
         radiused: true,
         elevate: true,
         zIndex: 100_000,
+        // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
+        pointerEvents: 'auto',
       },
     },
   } as const,
@@ -593,6 +620,8 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       <DialogContentFrame
         ref={composedRefs}
         id={context.contentId}
+        role="dialog"
+        aria-modal={context.modal}
         aria-describedby={context.descriptionId}
         aria-labelledby={context.titleId}
         data-state={getState(context.open)}
@@ -694,7 +723,7 @@ const CLOSE_NAME = 'DialogClose'
 
 const DialogCloseFrame = styled(View, {
   name: CLOSE_NAME,
-  tag: 'button',
+  render: 'button',
 })
 
 export type DialogCloseExtraProps = ScopedProps<{
@@ -716,8 +745,8 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
 
     return (
       <DialogCloseFrame
-        accessibilityLabel="Dialog Close"
-        tag={isInsideButton ? 'span' : 'button'}
+        aria-label="Dialog Close"
+        render={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () => {
@@ -888,7 +917,6 @@ const Dialog = withStaticProperties(
     Title: DialogTitle,
     Description: DialogDescription,
     Close: DialogClose,
-    Sheet: Sheet.Controlled,
     FocusScope: FocusScopeController,
     Adapt,
   }

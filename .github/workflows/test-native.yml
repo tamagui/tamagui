@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - 'native-*'
+      - 'v*'
   workflow_dispatch:
 
 # Cancel in-progress runs when a new run is triggered
@@ -122,8 +123,8 @@ jobs:
 
   build-android:
     name: Build Android App
-    # Only run on main branch (not PRs) - uses WarpBuild for faster builds
-    if: github.ref == 'refs/heads/main'
+    # Only run on main/v* branches (not PRs) - uses WarpBuild for faster builds
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v')
     runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 30
     outputs:
@@ -374,8 +375,8 @@ jobs:
   test-android:
     name: Android Detox Tests
     needs: build-android
-    # Only run on main branch (not PRs) - uses WarpBuild for reliable emulator
-    if: github.ref == 'refs/heads/main'
+    # Only run on main/v* branches (not PRs) - uses WarpBuild for reliable emulator
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v')
     runs-on: warp-ubuntu-latest-x64-8x
     timeout-minutes: 45
     # Android emulator in CI is flaky with window focus issues - don't block on failures

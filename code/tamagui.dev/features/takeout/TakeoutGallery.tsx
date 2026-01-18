@@ -1,4 +1,4 @@
-import { Image, type ImageProps } from '@tamagui/image-next'
+import { Image, type ImageProps } from '@tamagui/image'
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
@@ -105,6 +105,14 @@ class GalleryStore {
 
 const useGalleryStore = createUseStore(GalleryStore)
 
+// Export for external use
+export { useGalleryStore }
+
+// Export just the dialog for use in other pages
+export function TakeoutGalleryDialog() {
+  return <ImageGallery />
+}
+
 export default function TakeoutGallery() {
   const store = useGalleryStore()
 
@@ -117,6 +125,7 @@ export default function TakeoutGallery() {
         justify="center"
         gap="$6"
         px="$4"
+        width="100%"
         $md={{
           flexDirection: 'column',
         }}
@@ -131,6 +140,7 @@ export default function TakeoutGallery() {
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
           wrapperProps={{
             flex: 1,
+            flexBasis: 'auto',
             position: 'relative',
             height: 300,
 
@@ -152,6 +162,7 @@ export default function TakeoutGallery() {
           height="100%"
           wrapperProps={{
             flex: 2,
+            flexBasis: 'auto',
             position: 'relative',
             height: 300,
 
@@ -173,6 +184,7 @@ export default function TakeoutGallery() {
           height="100%"
           wrapperProps={{
             flex: 1,
+            flexBasis: 'auto',
             position: 'relative',
             height: 300,
 
@@ -242,17 +254,18 @@ const ImageGallery = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="lazy"
+          transition="lazy"
           opacity={0.1}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.Content
-          bordered
+          borderWidth={1}
+          borderColor="$borderColor"
           elevate
           key="content"
-          animation={[
+          transition={[
             'medium',
             {
               opacity: {
@@ -333,7 +346,7 @@ const ImagesCarousel = () => {
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable
           key={store.galleryImageIdx}
-          animation="medium"
+          transition="medium"
           x={0}
           opacity={1}
           width="100vw"
@@ -360,7 +373,7 @@ const ImagesCarousel = () => {
         position="absolute"
         l="$4"
         circular
-        elevate
+        elevation="$2"
         onPress={() => store.paginateGallery(-1)}
       />
       <Button
@@ -370,7 +383,7 @@ const ImagesCarousel = () => {
         position="absolute"
         r="$4"
         circular
-        elevate
+        elevation="$2"
         onPress={() => store.paginateGallery(1)}
       />
     </XStack>
@@ -406,7 +419,7 @@ const TakeoutImage = ({
       overflow="hidden"
       elevation="$3"
       cursor="pointer"
-      animation="100ms"
+      transition="100ms"
       hoverStyle={{ scale: 1.015 }}
       pressStyle={{ scale: 0.975 }}
       {...wrapperProps}

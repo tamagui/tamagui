@@ -425,7 +425,7 @@ function getTextContent(
                     pr: '$2',
                     pt: '$0',
                   })}
-                  animation={superBouncyOpacityClamped}
+                  transition={superBouncyOpacityClamped}
                   enterStyle={{
                     opacity: 0,
                     y: -10,

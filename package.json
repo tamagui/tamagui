@@ -25,7 +25,9 @@
     "@react-navigation/native": "7.1.9",
     "@react-navigation/native-stack": "7.6.2",
     "@react-navigation/routers": "7.4.0",
-    "@react-navigation/elements": "2.8.1"
+    "@react-navigation/elements": "2.8.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "scripts": {
     "build:app": "./scripts/ci-build-app.sh",
@@ -74,7 +76,6 @@
     "lint": "ultra -r --no-pretty lint",
     "llink": "lllink ~/one",
     "next-site": "yarn workspace @tamagui/next-site dev",
-    "profile": "node -r esbuild-register ./scripts/yarn-profile.ts",
     "release:canary": "bun release --canary --ci",
     "release": "bun ./scripts/release.ts",
     "check:references": "node -r esbuild-register ./scripts/check-references.ts",
@@ -118,16 +119,6 @@
   },
   "manypkg": {
     "workspaceProtocol": "require"
-  },
-  "profile": {
-    "//": "run 'yarn profile x' to toggle it on/off",
-    "react-18": {
-      "applied": false,
-      "resolutions": {
-        "react": "18.3.1",
-        "react-dom": "18.3.1"
-      }
-    }
   },
   "packageManager": "yarn@4.5.0",
   "devDependencies": {

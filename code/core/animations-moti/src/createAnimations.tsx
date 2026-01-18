@@ -1,3 +1,4 @@
+// @ts-nocheck - deprecated package, moti dependency intentionally not included
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 // we need core for hooks.usePropsTransform
 import {
@@ -11,6 +12,15 @@ import {
   type AnimationDriver,
   type UniversalAnimatedNumber,
 } from '@tamagui/core'
+
+// Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
+const resolveDynamicValue = (value: any, isDark: boolean): any => {
+  if (value && typeof value === 'object' && 'dynamic' in value) {
+    const dynamicValue = isDark ? value.dynamic.dark : value.dynamic.light
+    return dynamicValue
+  }
+  return value
+}
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import type { CSSProperties } from 'react'
@@ -49,7 +59,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
 
   const Component = Animated.createAnimatedComponent(
     forwardRef((propsIn: any, ref) => {
-      const { forwardedRef, animation, tag = defaultTag, ...propsRest } = propsIn
+      const { forwardedRef, animation, render = defaultTag, ...propsRest } = propsIn
       const hostRef = useRef(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
       const stateRef = useRef<any>(null)
@@ -79,8 +89,8 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
       )
 
       const props = result?.viewProps || {}
-      const Element = tag
-      const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
+      const Element = render
+      const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
       return <Element {...transformedProps} ref={composedRefs} />
     })
@@ -234,13 +244,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
     useAnimations: (animationProps) => {
       const { props, presence, style, componentState } = animationProps
-      const animationKey = Array.isArray(props.animation)
-        ? props.animation[0]
-        : props.animation
+      const animationKey = Array.isArray(props.transition)
+        ? props.transition[0]
+        : props.transition
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
       const presenceContext = React.useContext(PresenceContext)
+      const [, themeState] = useThemeWithState({})
+      // Check scheme first, then fall back to checking theme name for 'dark'
+      const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
 
       // this memo is very important for performance, there's a big cost to
       // updating these values every render
@@ -249,11 +262,20 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         let dontAnimate = {}
 
         if (disableAnimation) {
-          dontAnimate = style
+          // Resolve dynamic objects based on current theme
+          for (const key in style) {
+            const rawValue = style[key]
+            const value = resolveDynamicValue(rawValue, isDark)
+            if (value === undefined) continue
+            dontAnimate[key] = value
+          }
         } else {
           const animateOnly = props.animateOnly as string[]
           for (const key in style) {
-            const value = style[key]
+            const rawValue = style[key]
+            // Resolve dynamic theme values (like $theme-dark)
+            const value = resolveDynamicValue(rawValue, isDark)
+            if (value === undefined) continue
             if (
               !onlyAnimateKeys[key] ||
               value === 'auto' ||
@@ -269,7 +291,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         // if we don't do this moti seems to flicker a frame before applying animation
         if (componentState.unmounted === 'should-enter') {
-          dontAnimate = style
+          // Resolve dynamic objects based on current theme
+          for (const key in style) {
+            const rawValue = style[key]
+            const value = resolveDynamicValue(rawValue, isDark)
+            if (value === undefined) continue
+            dontAnimate[key] = value
+          }
         }
 
         const styles = animate
@@ -285,8 +313,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         let hasClonedTransition = false
 
-        if (Array.isArray(props.animation)) {
-          const config = props.animation[1]
+        if (Array.isArray(props.transition)) {
+          const config = props.transition[1]
           if (config && typeof config === 'object') {
             for (const key in config) {
               const val = config[key]
@@ -325,6 +353,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         componentState.unmounted,
         JSON.stringify(style),
         presenceContext,
+        isDark,
       ])
 
       const moti = useMotify(motiProps)

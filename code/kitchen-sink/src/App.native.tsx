@@ -6,7 +6,7 @@ import { Appearance, LogBox, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
-import { ThemeContext, ThemeMode } from './useKitchenSinkTheme'
+import { ThemeContext, type ThemeMode } from './useKitchenSinkTheme'
 import * as SplashScreen from 'expo-splash-screen'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
