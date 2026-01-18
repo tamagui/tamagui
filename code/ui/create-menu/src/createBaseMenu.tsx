@@ -776,7 +776,7 @@ export function createBaseMenu({
                 const items = getItems().filter((item) => !item.disabled)
                 const candidateNodes = items.map((item) => item.ref.current!)
                 if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
-                focusFirst(candidateNodes as HTMLElement[])
+                focusFirst(candidateNodes as HTMLElement[], { focusVisible: true })
               }),
               // TODO
               // @ts-ignore
@@ -844,9 +844,15 @@ export function createBaseMenu({
             trapped={trapFocus}
             onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
               // when opening, explicitly focus the content area only and leave
-              // `onEntryFocus` in  control of focusing first item
+              // `onEntryFocus` in control of focusing first item
               event.preventDefault()
-              contentRef.current?.focus()
+              // contentRef.current doesn't reliably point to the focusable DOM element
+              // due to how refs propagate through Tamagui's styled component chain,
+              // so we query for the element directly using the data attribute
+              const content = document.querySelector(
+                '[data-tamagui-menu-content]'
+              ) as HTMLElement | null
+              content?.focus()
             })}
             onUnmountAutoFocus={onCloseAutoFocus}
           >
@@ -868,7 +874,8 @@ export function createBaseMenu({
                 currentTabStopId={currentItemId}
                 onCurrentTabStopIdChange={setCurrentItemId}
                 onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
-                  // only focus first item when using keyboard
+                  // only focus first item when using keyboard (for accessibility)
+                  // focusVisible style won't show until user actively navigates
                   if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
                 })}
               >
@@ -1062,9 +1069,9 @@ export function createBaseMenu({
                 // @ts-ignore
                 contentContext.onItemEnter(event)
                 if (!event.defaultPrevented) {
-                  const item = event.currentTarget
-                  // @ts-ignore
-                  item.focus()
+                  const item = event.currentTarget as HTMLElement
+                  // @ts-ignore focusVisible is a newer API
+                  item.focus({ preventScroll: true, focusVisible: false })
                 }
               }
             })}
@@ -1348,6 +1355,7 @@ export function createBaseMenu({
     const rootContext = useMenuRootContext(scope)
     const subContext = useMenuSubContext(scope)
     const contentContext = useMenuContentContext(scope)
+    const popperContext = PopperPrimitive.usePopperContext(scope)
     const openTimerRef = React.useRef<number | null>(null)
     const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
 
@@ -1504,8 +1512,18 @@ export function createBaseMenu({
                 onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
                   const isTypingAhead = contentContext.searchRef.current !== ''
                   if (props.disabled || (isTypingAhead && event.key === ' ')) return
-                  if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
+                  const willOpen = SUB_OPEN_KEYS[rootContext.dir].includes(event.key)
+                  if (willOpen) {
+                    // set the popper reference for keyboard-only open
+                    // (normally set on mouseEnter, see PopperAnchor)
+                    const triggerEl = event.currentTarget as HTMLElement
+                    popperContext.refs?.setReference(triggerEl)
+
                     context.onOpenChange(true)
+                    // force popper to recalculate position after render
+                    requestAnimationFrame(() => {
+                      popperContext.update?.()
+                    })
                     // The trigger may hold focus if opened via pointer interaction
                     // so we ensure content is given focus again when switching to keyboard.
                     context.content?.focus()
@@ -1554,7 +1572,14 @@ export function createBaseMenu({
             trapFocus={false}
             onOpenAutoFocus={(event) => {
               // when opening a submenu, focus content for keyboard users only
-              if (rootContext.isUsingKeyboardRef.current) ref.current?.focus()
+              if (rootContext.isUsingKeyboardRef.current) {
+                // ref.current doesn't reliably point to the focusable DOM element,
+                // so we query for the submenu content directly
+                const content = document.querySelector(
+                  '[data-tamagui-menu-content][data-side]'
+                ) as HTMLElement | null
+                content?.focus()
+              }
               event.preventDefault()
             }}
             // The menu might close because of focusing another menu item in the parent menu. We
@@ -1566,7 +1591,10 @@ export function createBaseMenu({
               if (event.target !== subContext.trigger) context.onOpenChange(false)
             })}
             onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
-              rootContext.onClose()
+              // close only this submenu, not the root menu
+              context.onOpenChange(false)
+              // return focus to the submenu trigger
+              subContext.trigger?.focus()
               // ensure pressing escape in submenu doesn't escape full screen mode
               event.preventDefault()
             })}
@@ -1658,12 +1686,13 @@ function getCheckedState(checked: CheckedState) {
   return isIndeterminate(checked) ? 'indeterminate' : checked ? 'checked' : 'unchecked'
 }
 
-function focusFirst(candidates: HTMLElement[]) {
+function focusFirst(candidates: HTMLElement[], options?: { focusVisible?: boolean }) {
   const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement
   for (const candidate of candidates) {
     // if focus is already where we want to go, we don't want to keep going through the candidates
     if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return
-    candidate.focus()
+    // @ts-ignore focusVisible is a newer API not yet in all TS libs
+    candidate.focus({ focusVisible: options?.focusVisible })
     if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return
   }
 }

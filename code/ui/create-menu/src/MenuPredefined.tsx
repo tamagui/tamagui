@@ -140,6 +140,12 @@ const MenuItem = styled(View, {
         gap: '$3',
         cursor: 'pointer',
         borderRadius: '$3',
+
+        // focusVisibleStyle for keyboard navigation
+        // works in Safari now, Chrome 145+
+        focusVisibleStyle: {
+          backgroundColor: '$backgroundHover',
+        },
       },
     },
   } as const,
