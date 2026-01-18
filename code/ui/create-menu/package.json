@@ -44,6 +44,7 @@
     "@tamagui/dismissable": "workspace:*",
     "@tamagui/focus-guard": "workspace:*",
     "@tamagui/focus-scope": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/popover": "workspace:*",

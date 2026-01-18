@@ -1039,14 +1039,6 @@ export function createBaseMenu({
           {...itemProps}
         >
           <_Item
-            {...(!unstyled && {
-              hoverTheme: true,
-              pressTheme: true,
-              focusTheme: true,
-              paddingVertical: '$2',
-              paddingHorizontal: '$3',
-              marginHorizontal: '$1.5',
-            })}
             componentName={ITEM_NAME}
             role="menuitem"
             data-highlighted={isFocused ? '' : undefined}

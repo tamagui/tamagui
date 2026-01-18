@@ -1,3 +1,4 @@
+import { getSpace } from '@tamagui/get-token'
 import { Image } from '@tamagui/image'
 import { styled, Text, View } from '@tamagui/web'
 
@@ -141,11 +142,34 @@ const MenuItem = styled(View, {
         cursor: 'pointer',
         borderRadius: '$3',
 
-        // focusVisibleStyle for keyboard navigation
-        // works in Safari now, Chrome 145+
-        focusVisibleStyle: {
+        hoverStyle: {
           backgroundColor: '$backgroundHover',
         },
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
+        focusVisibleStyle: {
+          backgroundColor: '$backgroundFocus',
+        },
+      },
+    },
+
+    size: {
+      '...size': (val) => {
+        if (!val) return
+        const paddingVertical = getSpace(val, {
+          shift: -2,
+          bounds: [2],
+        })
+        const paddingHorizontal = getSpace(val, {
+          shift: -1,
+          bounds: [2],
+        })
+
+        return {
+          paddingVertical,
+          paddingHorizontal,
+        }
       },
     },
   } as const,
