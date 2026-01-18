@@ -150,9 +150,14 @@ Props:
       default: `false`,
     },
     {
-      name: 'toggledStyle',
-      type: 'object',
+      name: 'activeStyle',
+      type: 'StyleProp',
       description: `Style object applied when the item is in its active/pressed state. Accepts standard style properties like backgroundColor, color, etc.`,
+    },
+    {
+      name: 'activeTheme',
+      type: 'string | null',
+      description: `Theme to apply when the item is active. Set to null for no theme change.`,
     },
     {
       name: 'unstyled',
@@ -165,22 +170,30 @@ Props:
 
 ### Styling Active State
 
-You can customize the active/pressed state using `toggledStyle`:
+You can customize the active/pressed state using `activeStyle`:
 
 ```tsx
 // Inline usage
 <ToggleGroup.Item
   value="left"
-  toggledStyle={{ backgroundColor: '$green9', color: '$yellow9' }}
+  activeStyle={{ backgroundColor: '$green9', color: '$yellow9' }}
 >
   Left
 </ToggleGroup.Item>
 
 // Or via styled()
 const GreenItem = styled(ToggleGroup.Item, {
-  toggledStyle: {
+  activeStyle: {
     backgroundColor: '$green9',
     color: '$yellow9',
   },
 })
+```
+
+You can also use `activeTheme` to apply a theme when active:
+
+```tsx
+<ToggleGroup.Item value="option1" activeTheme="green">
+  Option 1
+</ToggleGroup.Item>
 ```

@@ -288,6 +288,35 @@ The transform origin adjusts automatically based on the final placement - if the
 popover flips from `bottom` to `top`, the origin updates accordingly. This
 creates polished, native-feeling animations without any manual configuration.
 
+#### Active State Styling
+
+Components with toggle/selection states now support consistent `activeStyle` and
+`activeTheme` props for styling their active states:
+
+- **Switch** - Styles applied when the switch is on
+- **Checkbox** - Styles applied when checked
+- **ToggleGroup.Item** - Styles applied when the item is selected
+- **Tabs.Tab** - Styles applied when the tab is active
+
+```tsx
+// Apply custom styles when active
+<Switch activeStyle={{ backgroundColor: '$green8' }} />
+
+// Or apply a theme when active
+<Checkbox activeTheme="green" />
+
+// Works inline or via styled()
+const GreenTab = styled(Tabs.Tab, {
+  activeStyle: {
+    backgroundColor: '$green9',
+  },
+})
+```
+
+This replaces the previous `toggledStyle` prop on ToggleGroup with the more
+consistent `activeStyle` naming. Icons inside these components also automatically
+size based on `SizableContext`.
+
 #### Headless and Unstyled Components
 
 We're expanding headless components in v2. Many components now have three
