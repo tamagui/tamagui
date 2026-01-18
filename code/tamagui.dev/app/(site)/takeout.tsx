@@ -16,8 +16,7 @@ import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { VideoSection } from '~/features/takeout/VideoSection'
 
 export default function TakeoutPageNew() {
-  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
-  const isProUser = subscriptionStatus?.pro
+  const { showAppropriateModal } = useSubscriptionModal()
 
   return (
     <YStack maxW="100%">
@@ -116,7 +115,7 @@ export default function TakeoutPageNew() {
 
       <ContainerLarge px={0}>
         {/* Hero Section */}
-        <TakeoutHeroNew onBuyPress={() => showAppropriateModal()} isProUser={isProUser} />
+        <TakeoutHeroNew onBuyPress={() => showAppropriateModal()} />
 
         {/* Features Section */}
         <TakeoutBentoFeatures />
