@@ -48,7 +48,7 @@ export function MenuDemo() {
             transformOrigin="left top"
             enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
             exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
-            transition="menu"
+            transition="quickest"
             elevation="$3"
           >
             <Menu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
@@ -137,7 +137,7 @@ export function MenuDemo() {
                 <Menu.SubContent
                   enterStyle={{ scale: 0.9, opacity: 0, x: -5 }}
                   exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
-                  transition="menu"
+                  transition="quickest"
                   transformOrigin="left top"
                   elevation="$3"
                   minW={160}
