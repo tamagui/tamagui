@@ -39,6 +39,7 @@ function TabsComponent(props: TabsProps) {
 
   return (
     <Tabs
+      activationMode="manual"
       onValueChange={updateUrl}
       unstyled
       orientation="horizontal"

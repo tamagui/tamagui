@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-token",
-  "version": "2.0.0-1768717573053",
+  "version": "2.0.0-1768741592663",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",

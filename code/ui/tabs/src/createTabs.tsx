@@ -279,7 +279,7 @@ export function createTabs<
       defaultValue,
       orientation = 'horizontal',
       dir,
-      activationMode = 'automatic',
+      activationMode = 'manual',
       size = '$true',
       ...tabsProps
     } = props

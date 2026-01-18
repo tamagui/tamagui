@@ -226,8 +226,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   position="absolute"
                   aria-label="Copy code to clipboard"
                   size="$2"
-                  t={showFileName ? '$3' : '$3'}
-                  r="$6"
+                  t="$3"
+                  r="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
                   onPress={() => {

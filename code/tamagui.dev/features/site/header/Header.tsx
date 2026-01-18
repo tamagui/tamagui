@@ -415,10 +415,16 @@ export const HeaderLink = (props: {
   children: string
   href: string
 }) => {
+  const pathname = usePathname()
+  const section = getDocsSectionFromPath(pathname)
+  const isActive =
+    props.id === section || (props.id === 'theme' && pathname.startsWith('/theme'))
+
   return (
     <SlidingPopoverTarget id={props.id}>
       <Link asChild href={props.href as any}>
         <HeadAnchor
+          {...(isActive && { active: true })}
           $sm={{
             display: 'none',
           }}
@@ -546,7 +552,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
     compiler: 117,
     ui: Math.min(maxHeight, 1300),
     theme: data?.user ? 300 : 240,
-    menu: Math.min(maxHeight, isOnlyShowingMenu ? 1000 : 390),
+    menu: Math.min(maxHeight, isOnlyShowingMenu ? 1000 : 520),
   }
 
   return (
@@ -949,11 +955,17 @@ const HeadAnchor = styled(Paragraph, {
   cursor: 'pointer',
   fontSize: 16,
   color: '$color11',
-  tabIndex: -1,
 
   hoverStyle: {
     color: '$color',
     rounded: '$3',
+  },
+
+  focusVisibleStyle: {
+    outlineColor: '$outlineColor',
+    outlineWidth: 2,
+    outlineStyle: 'solid',
+    outlineOffset: -2,
   },
 
   pressStyle: {
@@ -961,6 +973,12 @@ const HeadAnchor = styled(Paragraph, {
   },
 
   variants: {
+    active: {
+      true: {
+        color: '$color12',
+      },
+    },
+
     grid: {
       true: {
         fontWeight: '200',

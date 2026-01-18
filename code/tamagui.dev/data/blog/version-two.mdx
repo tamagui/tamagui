@@ -105,6 +105,9 @@ The breaking changes outside of deprecations are:
   [inverse themes guide](/docs/guides/theme-builder#inverse-themes).
 - Removed the `maxDarkLightNesting` and `cssStyleSeparator` settings.
 - Removed `space` and `spaceDirection` props - use `gap` instead.
+- Tabs `activationMode` now defaults to `'manual'` instead of `'automatic'`. This
+  means focusing a tab no longer changes the active tab - you must click or press
+  Enter/Space. This matches web standards.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
 - Removed React Native accessibility props in favor of web-standard props:
@@ -462,6 +465,22 @@ files across 5 testing frameworks with dedicated native testing infrastructure.
 **Multi-driver testing:** Every Playwright UI test runs four times, once for
 each animation driver. This catches driver-specific regressions that would
 otherwise slip through.
+
+#### CLI Improvements
+
+The [Tamagui CLI](/docs/guides/cli) has new commands for building and working
+with your design system:
+
+- **`tamagui build`** - Pre-compile components in-place for production. Works
+  with any bundler and supports wrapping your build command to automatically
+  restore files after.
+- **`tamagui generate`** - Build your full Tamagui configuration and output CSS.
+  Validates your config and pre-generates your design system.
+- **`tamagui generate-prompt`** - Generate an LLM-friendly markdown file from
+  your config, documenting all tokens, themes, components, and shorthands for
+  use with AI assistants.
+- **`tamagui check`** - Scan for inconsistent dependency versions across your
+  project.
 
 ### What's next
 

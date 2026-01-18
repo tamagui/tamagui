@@ -25,7 +25,7 @@ function isIntermediate(value: number, start: number, end: number, tolerance = T
 test.describe('animatedBy prop', () => {
   // Skip native driver - it doesn't work on web
   test.beforeEach(async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name === 'native', 'Native driver not supported on web')
+    test.skip(testInfo.project.name === 'animated-native', 'Native driver not supported on web')
 
     await setupPage(page, {
       name: 'AnimatedByProp',
