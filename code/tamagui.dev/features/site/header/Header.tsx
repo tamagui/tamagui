@@ -417,7 +417,8 @@ export const HeaderLink = (props: {
 }) => {
   const pathname = usePathname()
   const section = getDocsSectionFromPath(pathname)
-  const isActive = props.id === section || (props.id === 'theme' && pathname.startsWith('/theme'))
+  const isActive =
+    props.id === section || (props.id === 'theme' && pathname.startsWith('/theme'))
 
   return (
     <SlidingPopoverTarget id={props.id}>
