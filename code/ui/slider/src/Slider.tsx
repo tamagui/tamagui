@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb, isIos } from '@tamagui/constants'
+import { isClient, isIos, isWeb } from '@tamagui/constants'
 import type {
   GestureReponderEvent,
   GetProps,
@@ -9,11 +9,11 @@ import type {
   TamaguiElement,
 } from '@tamagui/core'
 import {
-  useCreateShallowSetState,
   getTokens,
   getVariableValue,
   styled,
   useConfiguration,
+  useCreateShallowSetState,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -447,10 +447,19 @@ export const SliderThumbFrame = styled(ThemeableStack, {
         position: 'absolute',
         bordered: 2,
         borderWidth: 2,
-        backgrounded: true,
-        pressTheme: isWeb,
-        focusTheme: isWeb,
-        hoverTheme: isWeb,
+        backgroundColor: '$background',
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+          borderColor: '$borderPress',
+        },
+        focusStyle: {
+          backgroundColor: '$backgroundFocus',
+          borderColor: '$borderPress',
+        },
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+          borderColor: '$borderPress',
+        },
       },
     },
   } as const,

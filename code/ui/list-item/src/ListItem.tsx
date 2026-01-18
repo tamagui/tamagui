@@ -44,9 +44,6 @@ const ListItemFrame = styled(View, {
   render: 'li',
   role: 'listitem',
 
-  ...themeableVariants.pressTheme.true,
-  ...themeableVariants.hoverTheme.true,
-
   variants: {
     unstyled: {
       false: {
@@ -64,10 +61,12 @@ const ListItemFrame = styled(View, {
 
         hoverStyle: {
           backgroundColor: '$backgroundHover',
+          borderColor: '$borderColorHover',
         },
 
         pressStyle: {
           backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorPress',
         },
       },
     },
