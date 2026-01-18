@@ -24,9 +24,8 @@ export const BentoLogoTheme = ({
 export const BentoLogo = ({
   children = 'BENTO',
   scale = 1,
-  noShadow,
   backgrounded,
-}: { children?: string; scale?: number; noShadow?: boolean; backgrounded?: boolean }) => {
+}: { children?: string; scale?: number; backgrounded?: boolean }) => {
   return (
     <YStack
       pointerEvents="none"
@@ -121,72 +120,6 @@ export const BentoLogo = ({
         >
           {children}&nbsp;
         </H1>
-      </BentoLogoTheme>
-
-      <BentoLogoTheme offset={-2 + offsetAdjust}>
-        {!noShadow && (
-          <H1
-            className={`glow-shadow mask-gradient-up`}
-            position="absolute"
-            t={0}
-            l={0}
-            zIndex={1100}
-            fontFamily="$cherryBomb"
-            px="$3"
-            mx="$-3"
-            whiteSpace="pre"
-            $theme-dark={{
-              opacity: 0,
-            }}
-            color="$color8"
-            maxWidth="100%"
-            flex={1}
-            letterSpacing={-21}
-            lineHeight={280}
-            my={-45}
-            fontSize={180}
-            userSelect="none"
-            pointerEvents="none"
-            style={{
-              filter: noShadow ? '' : 'blur(2px)',
-            }}
-          >
-            {children}&nbsp;
-          </H1>
-        )}
-      </BentoLogoTheme>
-
-      <BentoLogoTheme offset={-3 + offsetAdjust}>
-        {!noShadow && (
-          <H1
-            className={`glow-shadow mask-gradient-up`}
-            position="absolute"
-            t={0}
-            l={0}
-            zIndex={1100}
-            fontFamily="$cherryBomb"
-            px="$3"
-            mx="$-3"
-            whiteSpace="pre"
-            $theme-light={{
-              opacity: 0,
-            }}
-            color="$color2"
-            maxWidth="100%"
-            flex={1}
-            letterSpacing={-21}
-            lineHeight={280}
-            my={-45}
-            fontSize={180}
-            userSelect="none"
-            pointerEvents="none"
-            style={{
-              filter: noShadow ? '' : 'blur(2px)',
-            }}
-          >
-            {children}&nbsp;
-          </H1>
-        )}
       </BentoLogoTheme>
 
       <BentoLogoTheme offset={-2 + offsetAdjust}>
