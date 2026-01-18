@@ -372,12 +372,12 @@ export function TestFlexProperties() {
     <YStack
       flexDirection="column"
       flexWrap="wrap"
-      flex={1}
-      shrink={0}
+      flexGrow={1}
+      flexShrink={0}
       flexBasis="auto"
-      items="stretch"
-      justify="flex-start"
-      content="flex-start"
+      alignItems="stretch"
+      justifyContent="flex-start"
+      alignContent="flex-start"
     >
       {child}
     </YStack>
@@ -425,7 +425,7 @@ export function TestFlexWrapWithMediaQuery() {
       gap="$2"
       $sm={{
         flexWrap: 'nowrap',
-        p: '$4',
+        padding: '$4',
       }}
     >
       {child}
