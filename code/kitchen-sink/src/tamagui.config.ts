@@ -6,6 +6,7 @@ import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
 import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
+// TODO just move this into this folder
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
 
 export const animationsCSS = createAnimationsCSS({
