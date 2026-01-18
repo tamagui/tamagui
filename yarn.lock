@@ -7539,6 +7539,7 @@ __metadata:
     "@tamagui/dismissable": "workspace:*"
     "@tamagui/focus-guard": "workspace:*"
     "@tamagui/focus-scope": "workspace:*"
+    "@tamagui/get-token": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/image": "workspace:*"
     "@tamagui/popover": "workspace:*"
@@ -8056,6 +8057,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/sizable-context": "workspace:*"
     react: "npm:*"
     react-native-svg: "npm:15.12.1"
   peerDependencies:
@@ -8875,6 +8877,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/sizable-context@workspace:*, @tamagui/sizable-context@workspace:code/core/sizable-context":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/sizable-context@workspace:code/core/sizable-context"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+    "@tamagui/core": "workspace:*"
+    react: "npm:*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/slider@workspace:*, @tamagui/slider@workspace:code/ui/slider":
   version: 0.0.0-use.local
   resolution: "@tamagui/slider@workspace:code/ui/slider"
@@ -9119,6 +9133,7 @@ __metadata:
     "@tamagui/group": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/roving-focus": "workspace:*"
+    "@tamagui/sizable-context": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-direction": "workspace:*"
@@ -9288,6 +9303,7 @@ __metadata:
     "@tamagui/helpers": "workspace:*"
     "@tamagui/helpers-tamagui": "workspace:*"
     "@tamagui/roving-focus": "workspace:*"
+    "@tamagui/sizable-context": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-direction": "workspace:*"
