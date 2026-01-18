@@ -8,6 +8,13 @@ on:
       - '.vscode/**'
     branches:
       - main
+      - v2
+      - 'v2-*'
+
+# cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   checks:
