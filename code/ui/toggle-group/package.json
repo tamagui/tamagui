@@ -48,6 +48,7 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
+    "@tamagui/sizable-context": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
