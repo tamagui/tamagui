@@ -55,7 +55,12 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
 
 ### Test Structure
 
-Tests are located in `code/kitchen-sink/tests/` and follow the naming convention `ComponentName.test.tsx`.
+Tests are located in `code/kitchen-sink/tests/` and follow these naming conventions:
+
+- `ComponentName.test.tsx` - Standard tests that run ONCE with the default animation driver
+- `ComponentName.animated.test.tsx` - Animation-dependent tests that run with ALL animation drivers (css, native, reanimated, motion)
+
+This separation significantly speeds up the test suite since most tests don't need to run 4x across all animation drivers. Only use `.animated.test.tsx` for tests that specifically verify animation behavior across different drivers.
 
 ### Writing Tests
 

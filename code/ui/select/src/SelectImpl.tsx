@@ -276,6 +276,8 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
       selectTimeoutRef.current = setTimeout(() => {
         allowSelectRef.current = true
+        // Re-enable mouseup after delay for click-and-hold-to-select behavior
+        allowMouseUpRef.current = true
       }, 300)
 
       return () => {

@@ -479,8 +479,6 @@ const AccordionTriggerFrame = styled(Collapsible.Trigger, {
       false: {
         cursor: 'pointer',
         backgroundColor: '$background',
-        borderColor: '$borderColor',
-        borderWidth: 1,
         padding: '$true',
 
         hoverStyle: {

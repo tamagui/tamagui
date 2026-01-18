@@ -6,7 +6,12 @@ export function AccordionDemo() {
     <Accordion overflow="hidden" width="$20" type="multiple">
       {/* negative margin prevents double border between items */}
       <Accordion.Item value="a1" mb={-1}>
-        <Accordion.Trigger flexDirection="row" justify="space-between">
+        <Accordion.Trigger
+          flexDirection="row"
+          justify="space-between"
+          borderWidth={1}
+          borderColor="$borderColor"
+        >
           {({
             open,
           }: {
@@ -21,7 +26,13 @@ export function AccordionDemo() {
           )}
         </Accordion.Trigger>
         <Accordion.HeightAnimator transition="medium">
-          <Accordion.Content transition="medium" exitStyle={{ opacity: 0 }}>
+          <Accordion.Content
+            transition="medium"
+            exitStyle={{ opacity: 0 }}
+            borderWidth={1}
+            borderTopWidth={0}
+            borderColor="$borderColor"
+          >
             <Paragraph>
               Cold showers can help reduce inflammation, relieve pain, improve
               circulation, lower stress levels, and reduce muscle soreness and fatigue.
@@ -31,7 +42,12 @@ export function AccordionDemo() {
       </Accordion.Item>
 
       <Accordion.Item value="a2">
-        <Accordion.Trigger flexDirection="row" justify="space-between">
+        <Accordion.Trigger
+          flexDirection="row"
+          justify="space-between"
+          borderWidth={1}
+          borderColor="$borderColor"
+        >
           {({
             open,
           }: {
@@ -46,9 +62,15 @@ export function AccordionDemo() {
           )}
         </Accordion.Trigger>
         <Accordion.HeightAnimator transition="medium">
-          <Accordion.Content transition="medium" exitStyle={{ opacity: 0 }}>
+          <Accordion.Content
+            transition="medium"
+            exitStyle={{ opacity: 0 }}
+            borderWidth={1}
+            borderTopWidth={0}
+            borderColor="$borderColor"
+          >
             <Paragraph>
-              Eggs have been a dietary staple since time immemorial and there’s good
+              Eggs have been a dietary staple since time immemorial and there's good
               reason for their continued presence in our menus and meals.
             </Paragraph>
           </Accordion.Content>
