@@ -11,14 +11,7 @@ import {
 
 export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
   return (
-    <TamaguiSelect.Item
-      index={index + 1}
-      unstyled
-      cursor="default"
-      py="$2"
-      px="$3"
-      {...props}
-    >
+    <TamaguiSelect.Item index={index + 1} borderColor="transparent" {...props}>
       <TamaguiSelect.ItemText>{children}</TamaguiSelect.ItemText>
     </TamaguiSelect.Item>
   )
@@ -118,7 +111,6 @@ const SelectComponent = (
           borderWidth={1}
           borderColor="$borderColor"
         >
-          <TamaguiSelect.Indicator transition="select" />
           {children}
         </TamaguiSelect.Viewport>
 
