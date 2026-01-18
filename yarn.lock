@@ -7200,7 +7200,7 @@ __metadata:
     "@tamagui/babel-plugin-fully-specified": "workspace:*"
     "@types/fs-extra": "npm:^9.0.13"
     babel-plugin-react-compiler: "npm:^1.0.0"
-    baseline-browser-mapping: "npm:^2.9.11"
+    baseline-browser-mapping: "npm:^2.9.15"
     chokidar: "npm:^3.5.2"
     esbuild: "npm:^0.25.11"
     esbuild-plugin-es5: "npm:^2.1.1"
@@ -12461,7 +12461,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.8.25, baseline-browser-mapping@npm:^2.8.3, baseline-browser-mapping@npm:^2.9.11":
+"baseline-browser-mapping@npm:^2.8.25, baseline-browser-mapping@npm:^2.8.3, baseline-browser-mapping@npm:^2.9.15":
   version: 2.9.15
   resolution: "baseline-browser-mapping@npm:2.9.15"
   bin:
