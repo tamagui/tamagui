@@ -508,6 +508,12 @@ const componentsIn = {
           fontSize="inherit"
           display="inline"
           cursor="pointer"
+          focusVisibleStyle={{
+            outlineColor: '$outlineColor',
+            outlineWidth: 2,
+            outlineStyle: 'solid',
+            outlineOffset: 2,
+          }}
           {...props}
         >
           {children}

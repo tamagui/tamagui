@@ -24,6 +24,12 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
     <Link
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       href={href as Href}
+      focusVisibleStyle={{
+        outlineColor: '$outlineColor',
+        outlineWidth: 2,
+        outlineStyle: 'solid',
+        outlineOffset: -2,
+      }}
     >
       <XStack
         ref={ref}
