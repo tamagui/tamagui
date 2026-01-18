@@ -78,7 +78,7 @@ export function ProductCard({ product, children, ...props }) {
           <Card.Header>
             <YStack items="center" gap="$5" p="$5">
               <H3>{title}</H3>
-              <Paragraph size="$5" theme="alt1">
+              <Paragraph size="$5" color="$color10">
                 {childText}
               </Paragraph>
             </YStack>

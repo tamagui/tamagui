@@ -99,7 +99,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           <>
             <XStack flex={1} />
             <SizableText
-              theme="alt2"
+              color="$color9"
               size="$1"
               px="$2"
               py="$1"

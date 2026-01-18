@@ -37,7 +37,7 @@ const Frame = styled(View, {
   containerType: 'normal',
   role: 'button',
   render: 'button',
-  focusable: true,
+  tabIndex: 0,
 
   variants: {
     unstyled: {
@@ -257,7 +257,6 @@ const ButtonComponent = Frame.styleable<{
         // Pass resolved size to circular variant when no explicit size provided
         {...(props.circular && !propsIn.size && { size })}
         tabIndex={0}
-        focusable={true}
       >
         {themedIcon}
         {wrappedChildren}

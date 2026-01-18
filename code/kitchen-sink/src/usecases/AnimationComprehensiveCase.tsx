@@ -263,7 +263,7 @@ function Scenario04_TranslateY() {
         testID="scenario-04-trigger" data-testid="scenario-04-trigger">
         04: TranslateY
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$orange10" y={active ? -30 : 0}
+      <Square ref={ref as any} transition="quick" size={40} bg="$yellow10" y={active ? -30 : 0}
         testID="scenario-04-target" data-testid="scenario-04-target" />
       <Paragraph size="$1">{active ? '-30px' : '0'}</Paragraph>
     </XStack>
@@ -390,7 +390,7 @@ function Scenario10_BorderRadius() {
         testID="scenario-10-trigger" data-testid="scenario-10-trigger">
         10: BorderRadius
       </Button>
-      <View ref={ref as any} transition="quick" width={40} height={40} bg="$orange10" borderRadius={active ? 20 : 0}
+      <View ref={ref as any} transition="quick" width={40} height={40} bg="$yellow10" borderRadius={active ? 20 : 0}
         testID="scenario-10-target" data-testid="scenario-10-target" />
       <Paragraph size="$1">{active ? '20px' : '0'}</Paragraph>
     </XStack>
@@ -543,7 +543,7 @@ function Scenario17_SpringCustom() {
       <Square ref={ref as any} transition="quick"
         // @ts-ignore
         animationConfig={{ type: 'spring', damping: 5, stiffness: 100, mass: 0.5 }}
-        size={40} bg="$orange10" scale={active ? 1.5 : 1}
+        size={40} bg="$yellow10" scale={active ? 1.5 : 1}
         testID="scenario-17-target" data-testid="scenario-17-target" />
       <Paragraph size="$1">custom spring</Paragraph>
     </XStack>
@@ -718,7 +718,7 @@ function Scenario24_RapidToggle() {
         testID="scenario-24-trigger" data-testid="scenario-24-trigger">
         24: Rapid
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$orange10" scale={active ? 1.5 : 1}
+      <Square ref={ref as any} transition="quick" size={40} bg="$yellow10" scale={active ? 1.5 : 1}
         testID="scenario-24-target" data-testid="scenario-24-target" />
       <Paragraph size="$1">6 toggles @ 100ms</Paragraph>
     </XStack>
@@ -1057,7 +1057,7 @@ function Scenario35_RapidPerPropertyChanges() {
         ref={ref as any}
         transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
         size={40}
-        bg="$orange10"
+        bg="$yellow10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
         x={active ? 40 : 0}

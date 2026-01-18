@@ -306,13 +306,13 @@ export const AddTeamMemberModalComponent = () => {
                       Cost: ${baseAmount}/year per seat
                     </Paragraph>
                   )}
-                  <Paragraph theme="alt2">Cost: ${amount}/year per seat</Paragraph>
+                  <Paragraph color="$color9">Cost: ${amount}/year per seat</Paragraph>
                 </YStack>
               </YStack>
 
               <YStack gap="$2">
                 <SizableText
-                  theme="alt1"
+                  color="$color10"
                   opacity={0.3}
                   cursor="pointer"
                   hoverStyle={{ opacity: 0.8 }}

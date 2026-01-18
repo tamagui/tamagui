@@ -26,7 +26,7 @@ export const Components = () => {
               Active
             </Button>
           </AccentTheme>
-          <Button size="$3" theme="alt1" {...demoProps.borderRadiusProps}>
+          <Button size="$3" {...demoProps.borderRadiusProps}>
             Subtle
           </Button>
         </XStack>

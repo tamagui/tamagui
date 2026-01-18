@@ -197,7 +197,7 @@ export function VersionComparison() {
               <SizableText
                 size="$2"
                 fontWeight="600"
-                color="$orange10"
+                color="$yellow10"
                 fontFamily="$mono"
               >
                 v1

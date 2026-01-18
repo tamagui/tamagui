@@ -346,7 +346,7 @@ function EnterExitAnimationTest() {
           ref={squareRef as any}
           transition="bouncy"
           size={60}
-          backgroundColor="$orange10"
+          backgroundColor="$yellow10"
           enterStyle={{
             opacity: 0,
             scale: 0.5,

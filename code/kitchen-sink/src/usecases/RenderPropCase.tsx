@@ -103,7 +103,7 @@ const CustomButton = forwardRef<any, any>((props, ref) =>
   isWeb ? (
     <button ref={ref} {...props} data-custom-button="true" />
   ) : (
-    <View ref={ref} {...props} accessibilityLabel="custom-button" />
+    <View ref={ref} {...props} aria-label="custom-button" />
   )
 )
 CustomButton.displayName = 'CustomButton'
@@ -249,7 +249,7 @@ export function RenderPropCase() {
           render={(props, state: TamaguiComponentState) => (
             <View
               {...props}
-              accessibilityHint={`hover:${state.hover},press:${state.press}`}
+              aria-description={`hover:${state.hover},press:${state.press}`}
             />
           )}
           padding="$3"

@@ -107,7 +107,7 @@ export function Slides(props: { slides: Slides }) {
           position="absolute"
           b="$4"
           size="$2"
-          theme="alt2"
+          color="$color9"
           l={0}
           r={0}
           text="center"

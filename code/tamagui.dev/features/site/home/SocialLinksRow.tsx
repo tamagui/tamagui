@@ -20,7 +20,7 @@ export const SocialLinksRow = () => {
           <H4 cursor="pointer" fontFamily="$silkscreen">
             X
           </H4>
-          <Paragraph cursor="pointer" theme="alt2">
+          <Paragraph cursor="pointer" color="$color9">
             Announcements and general updates.
           </Paragraph>
         </Card>
@@ -37,7 +37,7 @@ export const SocialLinksRow = () => {
           <H4 cursor="pointer" fontFamily="$silkscreen">
             Discord
           </H4>
-          <Paragraph cursor="pointer" theme="alt2">
+          <Paragraph cursor="pointer" color="$color9">
             Get involved and get questions answered.
           </Paragraph>
         </Card>
@@ -53,7 +53,7 @@ export const SocialLinksRow = () => {
           <H4 cursor="pointer" fontFamily="$silkscreen">
             GitHub
           </H4>
-          <Paragraph cursor="pointer" theme="alt2">
+          <Paragraph cursor="pointer" color="$color9">
             Issues, feature requests, and contributing.
           </Paragraph>
         </Card>

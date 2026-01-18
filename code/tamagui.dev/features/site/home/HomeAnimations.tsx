@@ -201,7 +201,7 @@ export const ExampleAnimations = memo(() => {
       <Separator vertical />
 
       <YStack position="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack flex={1} theme="alt2" bg="$color1">
+        <YStack flex={1} bg="$color1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (

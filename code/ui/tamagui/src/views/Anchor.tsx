@@ -15,7 +15,7 @@ export type AnchorProps = SizableTextProps & AnchorExtraProps
 const AnchorFrame = styled(SizableText, {
   name: 'Anchor',
   render: 'a',
-  accessibilityRole: 'link',
+  role: 'link',
 })
 
 export const Anchor = AnchorFrame.styleable<AnchorExtraProps>(

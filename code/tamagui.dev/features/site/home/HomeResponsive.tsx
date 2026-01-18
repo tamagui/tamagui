@@ -306,7 +306,7 @@ const ResponsiveHeader = memo(() => {
         </HomeH2>
       </XStack>
 
-      <HomeH3 text="left" self="flex-start" p={0} maxW={450} theme="alt2">
+      <HomeH3 text="left" self="flex-start" p={0} maxW={450} color="$color9">
         Responsive props and hooks, compiled to atomic CSS on web.
       </HomeH3>
     </YStack>
@@ -377,7 +377,7 @@ export const Safari = memo(
                 gap="$2"
               >
                 <Lock color="var(--colorPress)" size={12} />
-                <Paragraph theme="alt1" size="$2">
+                <Paragraph color="$color10" size="$2">
                   tamagui.dev
                 </Paragraph>
               </XStack>
@@ -463,9 +463,9 @@ export const Safari = memo(
               <YStack px="$4">
                 <XStack>
                   <XStack items="center" gap="$4">
-                    <Paragraph theme="alt2">4 guests</Paragraph>
-                    <Paragraph theme="alt2">&middot;</Paragraph>
-                    <Paragraph theme="alt2">Entire house</Paragraph>
+                    <Paragraph color="$color9">4 guests</Paragraph>
+                    <Paragraph color="$color9">&middot;</Paragraph>
+                    <Paragraph color="$color9">Entire house</Paragraph>
                   </XStack>
                   <Spacer flex={1} />
                   <XStack items="center" gap="$4">
@@ -476,7 +476,7 @@ export const Safari = memo(
 
                 <Spacer />
 
-                <Paragraph theme="alt1" size="$4">
+                <Paragraph color="$color10" size="$4">
                   A lovely, private and very clean cottage with all amenities for a
                   comfortable and peaceful stay. We are a 20 minute walk from the Hawaii
                   Tropical Botanical Garden and well situated for touring to Akaka Falls,

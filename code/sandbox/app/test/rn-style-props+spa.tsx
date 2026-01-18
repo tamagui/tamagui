@@ -58,7 +58,7 @@ export default function RNStylePropsTest() {
         <Text fontSize="$5" fontWeight="bold">boxShadow inset</Text>
         <Square
           size={100}
-          bg="$orange10"
+          bg="$yellow10"
           boxShadow={{
             offsetX: 0,
             offsetY: 2,

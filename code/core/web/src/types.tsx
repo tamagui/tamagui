@@ -2294,69 +2294,21 @@ export interface TextStylePropsBase
 
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B)
 
-type A11yDeprecated = {
-  /**
-   * @deprecated
-   * use aria-hidden instead
-   * https://reactnative.dev/docs/accessibility#aria-hidden
-   */
-  accessibilityElementsHidden?: ViewProps['accessibilityElementsHidden']
-  /**
-   * @deprecated
-   * native doesn't support this, so fallback to accessibilityHint on native
-   * use aria-describedby instead
-   */
-  accessibilityHint?: ViewProps['accessibilityHint']
-  /**
-   * @deprecated
-   * use aria-label instead
-   * https://reactnative.dev/docs/accessibility#aria-label
-   */
-  accessibilityLabel?: ViewProps['accessibilityLabel']
-  /**
-   * @deprecated
-   * use aria-labelledby instead
-   * https://reactnative.dev/docs/accessibility#aria-label
-   */
-  accessibilityLabelledBy?: ViewProps['accessibilityLabelledBy']
-  /**
-   * @deprecated
-   * use aria-live instead
-   */
-  accessibilityLiveRegion?: ViewProps['accessibilityLiveRegion']
-  /**
-   * @deprecated
-   * use role instead
-   */
-  accessibilityRole?: ViewProps['accessibilityRole']
-  /**
-   * @deprecated
-   * use aria-disabled, aria-selected, aria-checked, aria-busy, and aria-expanded instead
-   * https://reactnative.dev/docs/accessibility#aria-busy
-   */
-  accessibilityState?: ViewProps['accessibilityState']
-  /**
-   * @deprecated
-   * use aria-valuemax, aria-valuemin, aria-valuenow, and aria-valuetext instead
-   * https://reactnative.dev/docs/accessibility#aria-valuemax
-   */
-  accessibilityValue?: ViewProps['accessibilityValue']
-  /**
-   * @deprecated
-   * use aria-modal instead
-   */
-  accessibilityViewIsModal?: ViewProps['accessibilityViewIsModal']
-  /**
-   * @deprecated
-   * use tabIndex={0} instead
-   * make sure to fallback to accessible on native
-   */
-  accessible?: ViewProps['accessible']
-}
+// v2: Removed A11yDeprecated - use web-standard props instead:
+// - accessibilityLabel → aria-label
+// - accessibilityRole → role
+// - accessibilityHint → aria-describedby
+// - accessibilityState → aria-disabled, aria-selected, aria-checked, aria-busy, aria-expanded
+// - accessibilityValue → aria-valuemin, aria-valuemax, aria-valuenow, aria-valuetext
+// - accessibilityElementsHidden → aria-hidden
+// - accessibilityViewIsModal → aria-modal
+// - accessibilityLiveRegion → aria-live
+// - accessible → tabIndex={0}
+// - focusable → tabIndex
+// - nativeID → id
 
 export interface StackNonStyleProps
-  extends A11yDeprecated,
-    Omit<
+  extends Omit<
       ViewProps,
       | 'hitSlop' //  we bring our own via Pressable in TamaguiComponentPropsBase
       | 'pointerEvents'
@@ -2390,8 +2342,7 @@ export type StackProps = StackNonStyleProps & StackStyle
 //
 
 export interface TextNonStyleProps
-  extends A11yDeprecated,
-    Omit<
+  extends Omit<
       ReactTextProps,
       | 'children'
       | keyof WebOnlyPressEvents

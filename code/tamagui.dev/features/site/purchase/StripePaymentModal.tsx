@@ -467,7 +467,7 @@ const PaymentForm = ({
                 <Paragraph fontFamily="$mono" fontWeight="600" size="$4">
                   Project Information
                 </Paragraph>
-                <Paragraph size="$3" theme="alt2">
+                <Paragraph size="$3" color="$color9">
                   Enter your project name and primary domain. Your license covers this
                   domain plus iOS/Android apps.
                 </Paragraph>
@@ -495,7 +495,7 @@ const PaymentForm = ({
                   onChangeText={onProjectDomainChange}
                   fontFamily="$mono"
                 />
-                <Paragraph size="$2" theme="alt2">
+                <Paragraph size="$2" color="$color9">
                   Primary web domain for your project
                 </Paragraph>
               </YStack>
@@ -732,28 +732,28 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
                 What's included:
               </Paragraph>
-              <Paragraph size="$2" theme="alt2">
+              <Paragraph size="$2" color="$color9">
                 - All templates (v1 Takeout, v2 Takeout, Takeout Static)
               </Paragraph>
-              <Paragraph size="$2" theme="alt2">
+              <Paragraph size="$2" color="$color9">
                 - 1 year of updates included
               </Paragraph>
-              <Paragraph size="$2" theme="alt2">
+              <Paragraph size="$2" color="$color9">
                 - Unlimited team members
               </Paragraph>
-              <Paragraph size="$2" theme="alt2">
+              <Paragraph size="$2" color="$color9">
                 - Basic chat support included
               </Paragraph>
-              <Paragraph size="$2" theme="alt2">
+              <Paragraph size="$2" color="$color9">
                 - Lifetime rights to code
               </Paragraph>
             </YStack>
 
             <XStack justify="space-between" items="center">
-              <Paragraph size="$3" theme="alt2">
+              <Paragraph size="$3" color="$color9">
                 After 1 year: $300/year for updates
               </Paragraph>
-              <Paragraph size="$2" theme="alt2">
+              <Paragraph size="$2" color="$color9">
                 (auto-subscribed)
               </Paragraph>
             </XStack>
@@ -936,14 +936,14 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           <XStack gap="$2" items="center">
             <Info size={16} color="$color11" />
             <YStack flex={1}>
-              <Paragraph py="$2" theme="alt1" fontSize="$2">
+              <Paragraph py="$2" color="$color10" fontSize="$2">
                 Pro subscription is billed yearly for the full amount up front.
               </Paragraph>
             </YStack>
           </XStack>
           <YStack gap="$2">
             <SizableText
-              theme="alt1"
+              color="$color10"
               opacity={0.3}
               cursor="pointer"
               hoverStyle={{ opacity: 0.8 }}

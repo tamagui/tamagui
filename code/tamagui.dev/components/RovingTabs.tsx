@@ -96,7 +96,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
               <AnimatePresence initial={false}>
                 {activeAt && (
                   <TabIndicator
-                    theme="alt1"
+                    color="$color10"
                     width={activeAt.width}
                     height={activeAt.height}
                     x={activeAt.x}

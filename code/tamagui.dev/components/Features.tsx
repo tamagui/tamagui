@@ -30,7 +30,7 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
               {feature}
             </Paragraph>
             {soon && (
-              <Paragraph size="$2" theme="alt2">
+              <Paragraph size="$2" color="$color9">
                 In development
               </Paragraph>
             )}

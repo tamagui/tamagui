@@ -674,7 +674,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
     if (props.id === 'theme') {
       return (
-        <YStack flex={1} gap="$2">
+        <YStack flex={1} gap="$2" flexBasis="auto">
           {!isOnBentoPage || !themeHistories.length ? (
             <>
               <PromoCardTheme />
@@ -728,13 +728,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
               <Separator mb="$3" opacity={0.5} />
 
-              <SizableText
-                size="$3"
-                fontFamily="$mono"
-                px="$4"
-                color="$color10"
-                theme="alt2"
-              >
+              <SizableText size="$3" fontFamily="$mono" px="$4" color="$color9">
                 Recent Themes
               </SizableText>
 
@@ -754,7 +748,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
 
               {themeHistories.length === 0 && (
                 <YStack p="$4" items="center">
-                  <SizableText size="$2" theme="alt2">
+                  <SizableText size="$2" color="$color9">
                     {data?.user ? 'No theme history yet' : 'Login to save themes'}
                   </SizableText>
                 </YStack>
@@ -818,7 +812,7 @@ const HeaderMenuMoreContents = () => {
         <Separator bg="$color02" opacity={0.25} my="$2" />
       </YStack>
 
-      <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
+      <XStack flex={1} flexBasis="auto" flexWrap="wrap" gap="$2" width="100%">
         <Link asChild href="/docs/intro/introduction">
           <HeadAnchor grid half>
             Core
@@ -875,7 +869,7 @@ const HeaderMenuMoreContents = () => {
 
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      <XStack flexWrap="wrap" flex={1} gap="$2" width="100%">
+      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$2" width="100%">
         <Link asChild href="/takeout">
           <HeadAnchor grid half render="a">
             <XStack items="center">
@@ -884,7 +878,7 @@ const HeaderMenuMoreContents = () => {
                 <TakeoutIcon scale={0.65} />
               </YStack>
             </XStack>
-            <SizableText size="$2" theme="alt2">
+            <SizableText size="$2" color="$color9">
               Starter Kit
             </SizableText>
           </HeadAnchor>
@@ -905,7 +899,7 @@ const HeaderMenuMoreContents = () => {
                 <BentoIcon scale={0.65} />
               </YStack>
             </XStack>
-            <SizableText size="$2" theme="alt2">
+            <SizableText size="$2" color="$color9">
               Copy-paste UI
             </SizableText>
           </HeadAnchor>
@@ -985,6 +979,7 @@ const HeadAnchor = styled(Paragraph, {
         textTransform: 'unset',
         width: '100%',
         flex: 1,
+        flexBasis: 'auto',
         p: '$2',
         px: '$4',
 

@@ -650,8 +650,6 @@ textarea {
 .font-outlined {
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: var(--color12);
-  text-shadow: 4px 4px var(--color5), -4px -4px var(--color6), -4px 4px var(--color6), 4px
-    -4px var(--color7);
 }
 
 .font-outlined-sm {
@@ -666,8 +664,7 @@ textarea {
 @media (hover: hover) {
   .clip-slice {
     mask-image: url(./public/takeouticon.svg);
-    mask-size: 20% 20%;
-    transform: rotate(1deg);
+    mask-size: 50% 50%;
     animation: clip-fade2 50s infinite alternate;
     mix-blend-mode: difference !important;
   }

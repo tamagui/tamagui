@@ -1,12 +1,11 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, Copy } from '@tamagui/lucide-icons'
-import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Suspense, lazy } from 'react'
-import { Button, Paragraph, XStack, YStack, styled } from 'tamagui'
+import { Button, Paragraph, XGroup, XStack, YStack, styled } from 'tamagui'
 
 import { ErrorBoundary } from '~/components/ErrorBoundary'
-import { Link } from '~/components/Link'
-import { PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
+import { ButtonLink, Link } from '~/components/Link'
+import { PurchaseButton } from '~/features/site/purchase/helpers'
 import { useClipboard } from '~/hooks/useClipboard'
 import { TakeoutLogo } from './TakeoutLogo'
 
@@ -60,43 +59,47 @@ function InstallCommand() {
 
 export function TakeoutHeroNew({
   onBuyPress,
-  isProUser,
 }: {
   onBuyPress?: () => void
-  isProUser?: boolean
 }) {
-  const enable3d = useClientValue(
-    () => !isSafariMobile && !window.location.search?.includes('disable-3d')
-  )
-
   return (
     <YStack items="center" gap="$8" pt="$10" pb="$8" px="$4" position="relative">
-      {/* Buy button - same position as original takeout.tsx */}
+      {/* Buy buttons */}
       {onBuyPress && (
-        <YStack position="absolute" t={30} r="2%" z={10}>
-          <PurchaseButton onPress={onBuyPress} size="$4" theme="accent">
-            {isProUser ? 'Plus | Free' : 'Buy Now'}
-          </PurchaseButton>
-        </YStack>
+        <XGroup position="absolute" t={30} r="2%" z={10}>
+          <XGroup.Item>
+            <ButtonLink
+              href="https://github.com/tamagui/takeout-free"
+              target="_blank"
+              size="$4"
+            >
+              Free
+            </ButtonLink>
+          </XGroup.Item>
+          <XGroup.Item>
+            <PurchaseButton onPress={onBuyPress} size="$4" theme="accent">
+              Pro
+            </PurchaseButton>
+          </XGroup.Item>
+        </XGroup>
       )}
 
       {/* 3D Rotating Takeout Box */}
       <YStack
         position="absolute"
         pointerEvents="none"
-        t={200}
-        r={0}
-        $md={{ r: -150 }}
-        $sm={{ display: 'none' }}
-        z={-1}
+        t={280}
+        r={-50}
+        width={400}
+        height={400}
+        $sm={{ scale: 0.7, t: 220, r: -150 }}
+        z={100}
       >
-        {enable3d && (
-          <Suspense fallback={null}>
-            <ErrorBoundary noMessage>
-              <TakeoutBox3D />
-            </ErrorBoundary>
-          </Suspense>
-        )}
+        <Suspense fallback={null}>
+          <ErrorBoundary noMessage>
+            <TakeoutBox3D />
+          </ErrorBoundary>
+        </Suspense>
       </YStack>
 
       <YStack gap="$6" items="center" maxW={800} width="100%">

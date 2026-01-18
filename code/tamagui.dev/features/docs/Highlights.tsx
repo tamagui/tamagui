@@ -102,11 +102,11 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
                 {/* @ts-ignore */}
                 <Link theme="blue" href={frontmatter.aria} target="_blank">
                   <XStack position="relative">
-                    <Paragraph size="$2" theme="alt1">
+                    <Paragraph size="$2" color="$color10">
                       ARIA design pattern
                     </Paragraph>
                     <YStack ml="$1">
-                      <Text theme="alt2">
+                      <Text color="$color9">
                         <ExternalLink size={12} color="var(--color)" />
                       </Text>
                     </YStack>

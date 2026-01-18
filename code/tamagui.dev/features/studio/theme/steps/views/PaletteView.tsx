@@ -667,7 +667,7 @@ const PaletteIndices = () => (
               flex={1}
               key={i}
               size="$1"
-              theme="alt2"
+              color="$color9"
               fontFamily="$mono"
               self="center"
               text="center"

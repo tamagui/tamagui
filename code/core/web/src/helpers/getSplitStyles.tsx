@@ -18,7 +18,6 @@ import {
 } from '@tamagui/helpers'
 import React from 'react'
 import { getConfig, getFont, getSetting } from '../config'
-import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
@@ -409,85 +408,8 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
 
-        if (keyInit === 'id' || keyInit === 'nativeID') {
+        if (keyInit === 'id') {
           viewProps.id = valInit
-          continue
-        }
-
-        let didUseKeyInit = false
-
-        if (isReactNative) {
-          // pass along to react-native-web
-          if (keyInit in accessibilityDirectMap || keyInit.startsWith('accessibility')) {
-            viewProps[keyInit] = valInit
-            continue
-          }
-        } else {
-          didUseKeyInit = true
-
-          if (keyInit in accessibilityDirectMap) {
-            viewProps[accessibilityDirectMap[keyInit]] = valInit
-            continue
-          }
-          // TODO: remove this in the future when react native a11y API is removed
-          switch (keyInit) {
-            case 'accessibilityRole': {
-              if (valInit === 'none') {
-                viewProps.role = 'presentation'
-              } else {
-                viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
-              }
-              continue
-            }
-            case 'accessibilityLabelledBy':
-            case 'accessibilityFlowTo':
-            case 'accessibilityControls':
-            case 'accessibilityDescribedBy': {
-              viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
-                processIDRefList(valInit)
-              continue
-            }
-            case 'accessibilityKeyShortcuts': {
-              if (Array.isArray(valInit)) {
-                viewProps['aria-keyshortcuts'] = valInit.join(' ')
-              }
-              continue
-            }
-            case 'accessibilityLiveRegion': {
-              viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
-              continue
-            }
-            case 'accessibilityReadOnly': {
-              viewProps['aria-readonly'] = valInit
-              // Enhance with native semantics
-              if (
-                elementType === 'input' ||
-                elementType === 'select' ||
-                elementType === 'textarea'
-              ) {
-                viewProps.readOnly = true
-              }
-              continue
-            }
-            case 'accessibilityRequired': {
-              viewProps['aria-required'] = valInit
-              // Enhance with native semantics
-              if (
-                elementType === 'input' ||
-                elementType === 'select' ||
-                elementType === 'textarea'
-              ) {
-                viewProps.required = valInit
-              }
-              continue
-            }
-            default: {
-              didUseKeyInit = false
-            }
-          }
-        }
-
-        if (didUseKeyInit) {
           continue
         }
       }
@@ -1590,10 +1512,6 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
   }
 }
 
-function processIDRefList(idRefList: string | Array<string>): string {
-  return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
-}
-
 const defaultColor = process.env.TAMAGUI_DEFAULT_COLOR || 'rgba(0,0,0,0)'
 const animatableDefaults = {
   ...Object.fromEntries(
@@ -1614,9 +1532,6 @@ const animatableDefaults = {
   borderRadius: 0,
 }
 
-const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
-const hyphenate = (str: string) => str.replace(/[A-Z]/g, lowercaseHyphenate)
-
 const mergeTransform = (obj: TextStyle, key: string, val: any, backwards = false) => {
   if (typeof obj.transform === 'string') {
     return
@@ -1630,15 +1545,6 @@ const mergeTransform = (obj: TextStyle, key: string, val: any, backwards = false
 const mapTransformKeys = {
   x: 'translateX',
   y: 'translateY',
-}
-
-const accessibilityRoleToWebRole = {
-  adjustable: 'slider',
-  header: 'heading',
-  image: 'img',
-  link: 'link',
-  none: 'presentation',
-  summary: 'region',
 }
 
 function passDownProp(

@@ -77,7 +77,7 @@ export const LoginScreen = () => {
           <XStack my="$2" width="100%">
             <XStack position="absolute" l={0} r={0} items="center" gap="$4">
               <Separator flex={1} />
-              <SizableText fontFamily="$heading" text="center" theme="alt2" size="$1">
+              <SizableText fontFamily="$heading" text="center" color="$color9" size="$1">
                 or continue with
               </SizableText>
               <Separator flex={1} />

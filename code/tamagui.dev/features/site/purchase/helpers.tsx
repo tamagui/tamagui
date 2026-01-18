@@ -156,7 +156,7 @@ export function BentoTable({
           <Paragraph size="$6" fontWeight="bold">
             Lifetime access
           </Paragraph>
-          <Paragraph flex={1} ellipsis size="$3" theme="alt1">
+          <Paragraph flex={1} ellipsis size="$3" color="$color10">
             You own and can use the code forever.
           </Paragraph>
         </YStack>
@@ -169,7 +169,7 @@ export function BentoTable({
           <Paragraph size="$6" fontWeight="bold">
             Seats
           </Paragraph>
-          <Paragraph size="$3" theme="alt1" lineHeight="$2">
+          <Paragraph size="$3" color="$color10" lineHeight="$2">
             Accounts given access
           </Paragraph>
         </YStack>
@@ -199,7 +199,7 @@ export const TakeoutTable = ({
           <Paragraph size="$6" fontWeight="bold">
             Lifetime access, 1 year of updates
           </Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
             You own the code for life, but only have access for a year. One-click cancel
             in your account page
           </Paragraph>
@@ -211,7 +211,7 @@ export const TakeoutTable = ({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6">License Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
             Number of people allowed to&nbsp;develop&nbsp;on&nbsp;it
           </Paragraph>
         </YStack>
@@ -222,7 +222,7 @@ export const TakeoutTable = ({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6">Discord Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
             Access to the Discord #takeout room
           </Paragraph>
         </YStack>
@@ -234,7 +234,7 @@ export const TakeoutTable = ({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6">GitHub Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
             Open PRs and issues on the GitHub repo
           </Paragraph>
         </YStack>

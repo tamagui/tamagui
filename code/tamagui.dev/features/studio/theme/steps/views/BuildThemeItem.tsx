@@ -33,7 +33,7 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
           <SizableText size="$3" fontWeight="600">
             {label}
           </SizableText>
-          <SizableText size="$2" theme="alt1">
+          <SizableText size="$2" color="$color10">
             {theme.type === 'theme' ? `Palette: ${theme.palette}` : 'Mask theme'}
           </SizableText>
         </YStack>

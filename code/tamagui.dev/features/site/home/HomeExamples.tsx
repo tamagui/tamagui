@@ -129,7 +129,7 @@ export const HomeExamples = memo(
               items="center"
               justify="center"
               t="55%"
-              theme="alt2"
+              color="$color9"
               z={1000}
               pointerEvents="none"
             >

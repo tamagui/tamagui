@@ -103,7 +103,7 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
             <YStack flex={1}>
               <Paragraph>{item.label}</Paragraph>
               {!!item.description && (
-                <Paragraph theme="alt1" size="$2">
+                <Paragraph color="$color10" size="$2">
                   {item.description}
                 </Paragraph>
               )}

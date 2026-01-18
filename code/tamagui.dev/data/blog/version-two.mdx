@@ -107,6 +107,18 @@ The breaking changes outside of deprecations are:
 - Removed `space` and `spaceDirection` props - use `gap` instead.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
+- Removed React Native accessibility props in favor of web-standard props:
+  - `accessibilityLabel` → `aria-label`
+  - `accessibilityRole` → `role`
+  - `accessibilityHint` → `aria-describedby`
+  - `accessibilityState` → `aria-disabled`, `aria-selected`, `aria-checked`, `aria-busy`, `aria-expanded`
+  - `accessibilityValue` → `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-valuetext`
+  - `accessibilityElementsHidden` → `aria-hidden`
+  - `accessibilityViewIsModal` → `aria-modal`
+  - `accessibilityLiveRegion` → `aria-live`
+  - `accessible` → `tabIndex={0}`
+  - `focusable` → `tabIndex`
+  - `nativeID` → `id`
 
 #### CSS Shorthand with Variables
 

@@ -207,20 +207,19 @@ export function PurchaseModalContents() {
               </H3>
               <YStack gap="$2">
                 <P color="$color11" size="$4">
-                  - All 3 templates: v1 Takeout, v2 Takeout, Takeout Static (100
-                  Lighthouse)
+                  - 3 templates: Takeout v1, Takeout v2, Takeout Static
                 </P>
                 <P color="$color11" size="$4">
-                  - Bento premium components
+                  - Bento pro components
                 </P>
                 <P color="$color11" size="$4">
-                  - 1 year of updates included
+                  - 1 year of updates
                 </P>
                 <P color="$color11" size="$4">
                   - Unlimited team members (no extra cost)
                 </P>
                 <P color="$color11" size="$4">
-                  - Basic chat support in Discord
+                  - Private #takeout chat room in Discord
                 </P>
                 <P color="$color11" size="$4">
                   - Lifetime rights to all code
@@ -390,7 +389,7 @@ export function PurchaseModalContents() {
                       <H3 size="$11">${Intl.NumberFormat('en-US').format(V2_PRICE)}</H3>
                     </XStack>
 
-                    <Paragraph theme="alt2" ellipsis size="$4" mb="$3">
+                    <Paragraph color="$color9" ellipsis size="$4" mb="$3">
                       {subscriptionMessage}
                     </Paragraph>
                   </YStack>
@@ -456,7 +455,7 @@ export function PurchaseModalContents() {
                     <XStack justify="space-between" gap="$4" items="center" mb="$2">
                       <XStack items="center" gap="$2">
                         <SizableText
-                          theme="alt1"
+                          color="$color10"
                           cursor="pointer"
                           onPress={() => {
                             takeoutStore.showProAgreement = true
@@ -471,7 +470,7 @@ export function PurchaseModalContents() {
                         </SizableText>
 
                         <SizableText
-                          theme="alt1"
+                          color="$color10"
                           cursor="pointer"
                           onPress={() => {
                             takeoutStore.showProPolicies = true
@@ -642,7 +641,7 @@ const SupportTabContent = ({
             </Text>
             <P fontWeight="600">Basic Chat Support - Included Free</P>
           </XStack>
-          <P maxW={500} size="$4" lineHeight="$6" theme="alt2">
+          <P maxW={500} size="$4" lineHeight="$6" color="$color9">
             Access to the private #takeout Discord channel. We prioritize responses there
             over public Discord. No SLA, but we typically respond within 1-2 business
             days.
@@ -793,7 +792,7 @@ const TeamSeatsInput = ({
         />
       </XStack>
       {value > 0 && (
-        <Text theme="alt2">
+        <Text color="$color9">
           +${yearlyPrice}/year for {value} additional {value === 1 ? 'seat' : 'seats'}
         </Text>
       )}

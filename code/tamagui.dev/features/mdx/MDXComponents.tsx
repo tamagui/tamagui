@@ -912,7 +912,7 @@ const componentsIn = {
         {...props}
       >
         {areChildrenString ? (
-          <Paragraph theme="alt1" my="$-5">
+          <Paragraph color="$color10" my="$-5">
             {children}
           </Paragraph>
         ) : (

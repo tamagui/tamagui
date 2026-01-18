@@ -6117,134 +6117,66 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-spring/animated@npm:~9.7.5":
-  version: 9.7.5
-  resolution: "@react-spring/animated@npm:9.7.5"
-  dependencies:
-    "@react-spring/shared": "npm:~9.7.5"
-    "@react-spring/types": "npm:~9.7.5"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/f4130b7ffae25621514ff2b3873acab65c21d6acf8eab798ef1fe5ee917c07f4c75aaa19788244dce7d9a0d6586a794f59634f2809e2f6399d9766dfbd454837
-  languageName: node
-  linkType: hard
-
-"@react-spring/core@npm:~9.7.5":
-  version: 9.7.5
-  resolution: "@react-spring/core@npm:9.7.5"
-  dependencies:
-    "@react-spring/animated": "npm:~9.7.5"
-    "@react-spring/shared": "npm:~9.7.5"
-    "@react-spring/types": "npm:~9.7.5"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/b76578ffbd26f66cce7212ab3335eea488c05a533acea6bc09c5357f3d5f7a2550e4588124fc7445f5effcb91f8b2ddf049a556c9c8786556740a90780cbd73b
-  languageName: node
-  linkType: hard
-
-"@react-spring/rafz@npm:~9.7.5":
-  version: 9.7.5
-  resolution: "@react-spring/rafz@npm:9.7.5"
-  checksum: 10/25b2dfc674603251bb4645758b4b35e7807a887fe7b58e7257edd32993abb9d7e36cd381f831d532f45278460227357112dd008ca3d07f9d8694aedd59d786b8
-  languageName: node
-  linkType: hard
-
-"@react-spring/shared@npm:~9.7.5":
-  version: 9.7.5
-  resolution: "@react-spring/shared@npm:9.7.5"
-  dependencies:
-    "@react-spring/rafz": "npm:~9.7.5"
-    "@react-spring/types": "npm:~9.7.5"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/4e8d7927a1543745f36600396250999d2e8fdb57d73b2cb8b4d859f35ba202cf3bdcc1a64c72ca495fcc8025f739b428b1735ab5159d01fc45ea30b568be11d8
-  languageName: node
-  linkType: hard
-
-"@react-spring/three@npm:~9.7.5":
-  version: 9.7.5
-  resolution: "@react-spring/three@npm:9.7.5"
-  dependencies:
-    "@react-spring/animated": "npm:~9.7.5"
-    "@react-spring/core": "npm:~9.7.5"
-    "@react-spring/shared": "npm:~9.7.5"
-    "@react-spring/types": "npm:~9.7.5"
-  peerDependencies:
-    "@react-three/fiber": ">=6.0"
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    three: ">=0.126"
-  checksum: 10/0ae7bfcc438fa308b83cf6213fb34ef5eb8fbec3868190dd5eb27dde67810d4060dd944559f936e36b1efbdd84f03ffa0235dab8e0979a03e3e5f1bef7f70921
-  languageName: node
-  linkType: hard
-
-"@react-spring/types@npm:~9.7.5":
-  version: 9.7.5
-  resolution: "@react-spring/types@npm:9.7.5"
-  checksum: 10/5b0edc00f31dcd3a8c5027130c9992ba286dd275112800c63f706da2b871837ca96b52f6a1f0796f38190a947d7ae7bf4916ec9b440b04a0bc0e5c57f6fd70aa
-  languageName: node
-  linkType: hard
-
-"@react-three/drei@npm:^9.105.6":
-  version: 9.122.0
-  resolution: "@react-three/drei@npm:9.122.0"
+"@react-three/drei@npm:^10.7.7":
+  version: 10.7.7
+  resolution: "@react-three/drei@npm:10.7.7"
   dependencies:
     "@babel/runtime": "npm:^7.26.0"
     "@mediapipe/tasks-vision": "npm:0.10.17"
     "@monogrid/gainmap-js": "npm:^3.0.6"
-    "@react-spring/three": "npm:~9.7.5"
     "@use-gesture/react": "npm:^10.3.1"
-    camera-controls: "npm:^2.9.0"
+    camera-controls: "npm:^3.1.0"
     cross-env: "npm:^7.0.3"
     detect-gpu: "npm:^5.0.56"
     glsl-noise: "npm:^0.0.0"
     hls.js: "npm:^1.5.17"
     maath: "npm:^0.10.8"
     meshline: "npm:^3.3.1"
-    react-composer: "npm:^5.0.3"
     stats-gl: "npm:^2.2.8"
     stats.js: "npm:^0.17.0"
     suspend-react: "npm:^0.1.3"
-    three-mesh-bvh: "npm:^0.7.8"
+    three-mesh-bvh: "npm:^0.8.3"
     three-stdlib: "npm:^2.35.6"
-    troika-three-text: "npm:^0.52.0"
+    troika-three-text: "npm:^0.52.4"
     tunnel-rat: "npm:^0.1.2"
+    use-sync-external-store: "npm:^1.4.0"
     utility-types: "npm:^3.11.0"
     zustand: "npm:^5.0.1"
   peerDependencies:
-    "@react-three/fiber": ^8
-    react: ^18
-    react-dom: ^18
-    three: ">=0.137"
+    "@react-three/fiber": ^9.0.0
+    react: ^19
+    react-dom: ^19
+    three: ">=0.159"
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10/5e2fd4cfa5d19c45c9efd3898a8dfd1e39acfbba786d92522d60b3412e4aeccc7e6bd90a1ecde75bac81e4e5ffc7f21f93cc70180f57b61b8c82267468b2eb04
+  checksum: 10/92fdfeaef334e38b81affe66482c5c3936e8f1fe9c257310653f13f27750f9ace09b34c1c4c0976e3b5f93889669d1d436d7bc668e98f9b5a2940206c1bf7e49
   languageName: node
   linkType: hard
 
-"@react-three/fiber@npm:@react-three/fiber@9.0.0-alpha.6":
-  version: 9.0.0-alpha.6
-  resolution: "@react-three/fiber@npm:9.0.0-alpha.6"
+"@react-three/fiber@npm:^9.5.0":
+  version: 9.5.0
+  resolution: "@react-three/fiber@npm:9.5.0"
   dependencies:
     "@babel/runtime": "npm:^7.17.8"
-    "@types/react-reconciler": "npm:^0.28.8"
+    "@types/webxr": "npm:*"
     base64-js: "npm:^1.5.1"
     buffer: "npm:^6.0.3"
-    its-fine: "npm:^1.2.5"
-    react-reconciler: "npm:0.31.0-beta-6946ebe620-20240508"
-    react-use-measure: "npm:^2.1.1"
-    scheduler: "npm:0.25.0-beta-6946ebe620-20240508"
+    its-fine: "npm:^2.0.0"
+    react-use-measure: "npm:^2.1.7"
+    scheduler: "npm:^0.27.0"
     suspend-react: "npm:^0.1.3"
-    zustand: "npm:^4.1.2"
+    use-sync-external-store: "npm:^1.4.0"
+    zustand: "npm:^5.0.3"
   peerDependencies:
     expo: ">=43.0"
     expo-asset: ">=8.4"
     expo-file-system: ">=11.0"
     expo-gl: ">=11.0"
-    react: ">=19.0"
-    react-dom: ">=19.0"
-    react-native: ">=0.69"
-    three: ">=0.141"
+    react: ">=19 <19.3"
+    react-dom: ">=19 <19.3"
+    react-native: ">=0.78"
+    three: ">=0.156"
   peerDependenciesMeta:
     expo:
       optional: true
@@ -6258,7 +6190,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 10/d40de84cfe44a216d581a519708551fff275b8d8c7d10bd6193c153c6776b4f1e4fea04a2697aa14e190950ea7bb4def0e215f3686871e8f7cc5ed5a0dc7028b
+  checksum: 10/4a2280099fd13105196fea18fa5af3ada34441f65d881ce7e5b741ca72cdafecfb0e9d9da82bc420449795167601faaad42b56965ead7b8ee393d81155a3d740
   languageName: node
   linkType: hard
 
@@ -7772,8 +7704,8 @@ __metadata:
     "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@ngneat/falso": "npm:^7.3.0"
     "@openrouter/ai-sdk-provider": "npm:^0.1.0"
-    "@react-three/drei": "npm:^9.105.6"
-    "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
+    "@react-three/drei": "npm:^10.7.7"
+    "@react-three/fiber": "npm:^9.5.0"
     "@rehookify/datepicker": "npm:^6.6.8"
     "@sentry/browser": "npm:^8.17.0"
     "@sindresorhus/slugify": "npm:^2.2.1"
@@ -7830,7 +7762,7 @@ __metadata:
     subset-font: "npm:^2.1.0"
     swr: "npm:^2.2.5"
     tamagui: "workspace:*"
-    three: "npm:^0.152.2"
+    three: "npm:^0.172.0"
     valibot: "npm:^0.35.0"
     victory: "npm:^37.0.2"
     vite: "npm:^7.1.12"
@@ -10520,7 +10452,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-reconciler@npm:^0.28.0, @types/react-reconciler@npm:^0.28.8":
+"@types/react-reconciler@npm:^0.28.9":
   version: 0.28.9
   resolution: "@types/react-reconciler@npm:0.28.9"
   peerDependencies:
@@ -13065,12 +12997,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camera-controls@npm:^2.9.0":
-  version: 2.10.1
-  resolution: "camera-controls@npm:2.10.1"
+"camera-controls@npm:^3.1.0":
+  version: 3.1.2
+  resolution: "camera-controls@npm:3.1.2"
   peerDependencies:
     three: ">=0.126.1"
-  checksum: 10/2d6c7e6f5a5bf41681dbf92c689b14ebe4273d41c02fb138fede6f742fb03429a4add10fe064ac93241b55bbe99905a80adf576709c19eeb1a1c18a342963c99
+  checksum: 10/66b4f1c714cacd3f3d246d318b8f38d0a89bb24612590f265cc717fa43df6bc93a79e98fa5e2b6e124c4e560c4f733d3949b4a665d757a4932acf501ef4ce9e0
   languageName: node
   linkType: hard
 
@@ -19523,14 +19455,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"its-fine@npm:^1.2.5":
-  version: 1.2.5
-  resolution: "its-fine@npm:1.2.5"
+"its-fine@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "its-fine@npm:2.0.0"
   dependencies:
-    "@types/react-reconciler": "npm:^0.28.0"
+    "@types/react-reconciler": "npm:^0.28.9"
   peerDependencies:
-    react: ">=18.0"
-  checksum: 10/a4f1e3dd5e271e4f78df626cb56279bbddaa5f065d53bb94d266396e1d8d773c8c9ba4ed268c11e15a1879814e7c8ca1601c08759a8d666bdcfee8f4737c54fa
+    react: ^19.0.0
+  checksum: 10/26a6005615e31a8c5cec64ea66d4357bfa274616ed3e8224dd118e14c3f16aaa5a6c9454ae92a7bde687a4af80b5cfe7681f7ecc44edc3e64ee603a16550c8ea
   languageName: node
   linkType: hard
 
@@ -25010,7 +24942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -25300,17 +25232,6 @@ __metadata:
   peerDependencies:
     react: ^17.0.0 || ^18.0.0 || ^19.0.0 || ^0.0.0-experimental
   checksum: 10/cb8eb348e2c87787e035e865551786a99490d4078b00ec3b7acab0deb7019bdd530f010761f9aa3f5527454e3692b751fff139444f5b8b71d14efd6ca91ff91a
-  languageName: node
-  linkType: hard
-
-"react-composer@npm:^5.0.3":
-  version: 5.0.3
-  resolution: "react-composer@npm:5.0.3"
-  dependencies:
-    prop-types: "npm:^15.6.0"
-  peerDependencies:
-    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/8138199963bb653ea185f4bb646fa74f8b06bb2e5cf8d2660bd3deec38c0a2fe20d3f52753103098cf2ea7d3bb224e771bdd2db427fb7475cb93350b19b3ccb3
   languageName: node
   linkType: hard
 
@@ -25677,17 +25598,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-reconciler@npm:0.31.0-beta-6946ebe620-20240508":
-  version: 0.31.0-beta-6946ebe620-20240508
-  resolution: "react-reconciler@npm:0.31.0-beta-6946ebe620-20240508"
-  dependencies:
-    scheduler: "npm:0.25.0-beta-6946ebe620-20240508"
-  peerDependencies:
-    react: 19.0.0-beta-6946ebe620-20240508
-  checksum: 10/03f716609ded947f5c6d01a8f2d92becf288554e651167ceb87e1a44478d809c7827cb97a91ec423d764f8dec849218b82be9eb4e7fe4089915ea8ba3dc046f4
-  languageName: node
-  linkType: hard
-
 "react-reconciler@npm:^0.29.0":
   version: 0.29.2
   resolution: "react-reconciler@npm:0.29.2"
@@ -25807,7 +25717,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-use-measure@npm:^2.1.1":
+"react-use-measure@npm:^2.1.7":
   version: 2.1.7
   resolution: "react-use-measure@npm:2.1.7"
   peerDependencies:
@@ -26889,13 +26799,6 @@ __metadata:
   dependencies:
     xmlchars: "npm:^2.2.0"
   checksum: 10/97b50daf6ca3a153e89842efa18a862e446248296622b7473c169c84c823ee8a16e4a43bac2f73f11fc8cb9168c73fbb0d73340f26552bac17970e9052367aa9
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:0.25.0-beta-6946ebe620-20240508":
-  version: 0.25.0-beta-6946ebe620-20240508
-  resolution: "scheduler@npm:0.25.0-beta-6946ebe620-20240508"
-  checksum: 10/522476652ee02d928c9a514c132ce8263758ed064739ce2cf3a4d447aa3b02c8e216107c345b228aa145a486a9783f3d25a8898eff6ea9aeae533f47a60adcf2
   languageName: node
   linkType: hard
 
@@ -28807,12 +28710,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three-mesh-bvh@npm:^0.7.8":
-  version: 0.7.8
-  resolution: "three-mesh-bvh@npm:0.7.8"
+"three-mesh-bvh@npm:^0.8.3":
+  version: 0.8.3
+  resolution: "three-mesh-bvh@npm:0.8.3"
   peerDependencies:
-    three: ">= 0.151.0"
-  checksum: 10/7bc07ea3e77372de41df54764de5e2f8baacf43d816c9d1ee94ed343cec853ce1f6645d022676c0377d37c3a5dab4db1dc8b6ed4fd44a9a1af4c8ae574ccecda
+    three: ">= 0.159.0"
+  checksum: 10/834d5ceac3c0c4e22ab74e8125eae647d6394785dffb2958f90eefe112738d8f79cba99b027b9de782c2eaec9b81c97a1500e7c92897f74d24534687c0fd6730
   languageName: node
   linkType: hard
 
@@ -28832,17 +28735,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.152.2":
-  version: 0.152.2
-  resolution: "three@npm:0.152.2"
-  checksum: 10/ba51acf583de7781dd5f4ccb81449bccc2688c9eee6aa11e2b000b70aa3ceaf5d8e2c3398e3d7b6093a6d10db8bbe27f9c7e384e393b2fe4b3e1af37434b8d5b
-  languageName: node
-  linkType: hard
-
 "three@npm:^0.170.0":
   version: 0.170.0
   resolution: "three@npm:0.170.0"
   checksum: 10/ce523a35b17b47526df7d21323afeac3482ef69a67d9304ed2d71877c079debfb1e77249af8a55ab376b48ee8265488da1bb0912200c170a6874f574f19f63c9
+  languageName: node
+  linkType: hard
+
+"three@npm:^0.172.0":
+  version: 0.172.0
+  resolution: "three@npm:0.172.0"
+  checksum: 10/ad166a56290258331b358ab70e57fccc25eece7879cdf5638f209709b77b7277002e8653ce517c28566d6529908f08c9ba96d4fbb4a1a553a3ffcc0f57c21b1a
   languageName: node
   linkType: hard
 
@@ -29076,7 +28979,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"troika-three-text@npm:^0.52.0":
+"troika-three-text@npm:^0.52.4":
   version: 0.52.4
   resolution: "troika-three-text@npm:0.52.4"
   dependencies:
@@ -31927,7 +31830,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.1.2, zustand@npm:^4.3.2":
+"zustand@npm:^4.3.2":
   version: 4.5.6
   resolution: "zustand@npm:4.5.6"
   dependencies:
@@ -31965,6 +31868,27 @@ __metadata:
     use-sync-external-store:
       optional: true
   checksum: 10/aa1eef07766c1dbed0e492239e8083fbb905738a73dc2818e5a5dbf002f28ae5645902d9cc0e867a03d9ad871621185899f4f2799728e83598c30b37127b58f5
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^5.0.3":
+  version: 5.0.10
+  resolution: "zustand@npm:5.0.10"
+  peerDependencies:
+    "@types/react": ">=18.0.0"
+    immer: ">=9.0.6"
+    react: ">=18.0.0"
+    use-sync-external-store: ">=1.2.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+    use-sync-external-store:
+      optional: true
+  checksum: 10/1a48812ef1f5dc8ead8eb05c9861d1627d4ec79302f3b329cb3029d07e0325c44beb1829d2d2bbc511cf42e4f26be496723813f1117effa1ee10c2e83834c9ff
   languageName: node
   linkType: hard
 

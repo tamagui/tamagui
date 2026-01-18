@@ -10,7 +10,7 @@ const FeatureItem = ({ label, children }) => {
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
-      <SizableText size="$5" render="span" theme="alt2">
+      <SizableText size="$5" render="span" color="$color9">
         {children}
       </SizableText>
     </SizableText>

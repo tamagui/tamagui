@@ -13,7 +13,7 @@ export function StepSchemes() {
     <YStack flex={1} my="$4" gap="$4">
       <H4>Dark and light schemes</H4>
 
-      <Paragraph size="$5" theme="alt1">
+      <Paragraph size="$5" color="$color10">
         At the base of your themes we recommend a light and dark theme, but you can choose
         just one.
       </Paragraph>
@@ -106,7 +106,7 @@ const Option = ({
       <YStack gap="$2" flex={1}>
         <Paragraph size="$5">{label}</Paragraph>
         {!!description && (
-          <Paragraph size="$3" lineHeight="$1" theme="alt2">
+          <Paragraph size="$3" lineHeight="$1" color="$color9">
             {description}
           </Paragraph>
         )}
