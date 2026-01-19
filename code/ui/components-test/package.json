@@ -15,11 +15,16 @@
     "test": "bun test:native"
   },
   "devDependencies": {
+    "@tamagui/button": "workspace:*",
+    "@tamagui/config-default": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "jsdom": "^25.0.1",
     "react": "*",
+    "tamagui": "workspace:*",
     "typescript": "~5.9.2",
     "vitest": "^4.0.4",
     "vitest-axe": "^0.1.0"
