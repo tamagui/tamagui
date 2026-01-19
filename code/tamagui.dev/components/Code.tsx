@@ -26,7 +26,7 @@ export const CodeInline = styled(Paragraph, {
   render: 'code',
   fontFamily: '$mono',
   color: '$color12',
-  backgroundColor: '$color4',
+  backgroundColor: '$color3',
   cursor: 'inherit',
   rounded: '$3',
   // @ts-ignore
