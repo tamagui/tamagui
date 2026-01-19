@@ -197,3 +197,25 @@ You can also use `activeTheme` to apply a theme when active:
   Option 1
 </ToggleGroup.Item>
 ```
+
+### useToggleGroupItem
+
+For custom components inside `ToggleGroup.Item` that need to know the active state, use the `useToggleGroupItem` hook:
+
+```tsx
+import { useToggleGroupItem, ToggleGroup } from '@tamagui/toggle-group'
+
+function CustomLabel({ children }) {
+  const { active, size, color } = useToggleGroupItem()
+  return (
+    <Text color={active ? '$green10' : '$color'}>
+      {children}
+    </Text>
+  )
+}
+
+// Usage
+<ToggleGroup.Item value="option1">
+  <CustomLabel>Option 1</CustomLabel>
+</ToggleGroup.Item>
+```
