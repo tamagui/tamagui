@@ -35,8 +35,8 @@ ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
 ARG BENTO_GITHUB_TOKEN
 
-# unlock
-RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh
+# install dependencies (sharp needs libvips for image processing)
+RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-dev
 
 WORKDIR /root/tamagui
 COPY . .

@@ -3,30 +3,25 @@ title: Tamagui 2
 publishedAt: '2025-12-29'
 description: Stability, ease of use, docs, and new components.
 by: nate
-poster: banner-two.jpg
+image: /blog/version-two.webp
 ---
 
 <IntroParagraph large>
-  Tamagui lets you build apps that share UI across React web and React Native
-  without sacrificing quality, simplicity, or performance.
+  Tamagui makes cross-platform React styling fast, easy, and feature-complete.
+  It's optimizing compiler turns logical, typed, inline styles into optimally
+  performant output. Plus, a huge ecosystem of components, themes, copy-paste
+  UI, and starters.
 </IntroParagraph>
 
-Tamagui is three things: a style library, an optimizing compiler, and a suite of
-UI components. It's a vertically integrated solution with a lot of features,
-hard-fought performance and testing, and AI agents can generate it with ease.
+We're excited to announce that the release candidate of **Tamagui v2 is here**!
 
-If you want, [skip to the new stuff in version two](#new-in-version-two).
+If you want to skip to the good stuff: [what's new in version two](#new-in-v2).
 
-### What and Why
-
-You can skip this section if you are familiar with Tamagui already.
+### Background
 
 Tamagui brings many style features from CSS to native. Every style it supports
-works on both native and web, at runtime and compile-time, and server-side and
-client-side. Its SSR support is advanced without jumps or flickers, even when
-using spring-based animation drivers, media queries, or themes. The optimizing
-compiler unlocks natural inline styles, even when using abstracted styled
-components or logic.
+works on both native and web, at both run-time and compile-time, and server-side
+as well as client-side.
 
 In comparison to other solutions, Tamagui is especially strong at:
 
@@ -36,8 +31,8 @@ In comparison to other solutions, Tamagui is especially strong at:
   between platforms.
 - **Great performance everywhere.** A small example - you can choose from 4
   animation drivers (CSS, Reanimated, Motion, React Native), per-platform, yet
-  no matter which you choose proper SSR with media queries and dark mode
-  properly renders and hydrates.
+  no matter which you choose proper SSR support even with media queries and dark
+  mode properly rendering and hydrating without jumps or flickers.
 - **Fast, type-safe, mergeable inline styling.** Inline styles are a leap
   forward, but the lack of type safety or easy ability to merge and group your
   styles is their biggest drawback. Tamagui is fully type safe, lets you control
@@ -54,19 +49,16 @@ Tamagui lets you do more with less. We're proud to be used by companies like
 Uniswap to unify their featureset across platforms and greatly simplify their
 codebase.
 
-### Improvements During Version One
+### In the last two years
 
-Some stats:
+Some highlights:
 
-- **7,900+ commits** over 2 years (~330/month)
-- **900+ issues closed**
-- **136 new contributors** (from 46 to 182 total)
+- **7,900+ commits** over 2 years (~330/month).
+- **900+ issues closed**.
+- **136 new contributors** (from 46 to 182 total).
 - **289 test files** with kitchen-sink tests running across all 4 animation
   drivers (256 test runs per CI), plus new native-specific tests with Detox and
-  Maestro
-
-Highlights:
-
+  Maestro.
 - Created
   [`@tamagui/build`](https://github.com/tamagui/tamagui/blob/v2/code/packages/build/README.md),
   the only way to publish npm packages that support CommonJS and ESModules and
@@ -81,7 +73,7 @@ Highlights:
 - The Takeout starter kit, and Bento copy-paste components and patterns.
 - A lot of low level work on performance, documentation, our CLI, and more.
 
-### New in Version Two
+## New in v2
 
 Version two is easy to migrate to with just a few breaking changes. It mostly
 removes deprecated APIs, improves performance, aligns with modern React, React
@@ -130,7 +122,30 @@ The breaking changes outside of deprecations are:
   Copy this blog post to give to AI Agents to migrate from v1 to v2!
 </Notice>
 
-#### CSS Shorthand with Variables
+### Features
+
+#### Cross-Platform Style Props
+
+Many style properties that were previously web-only now work on React Native
+with the New Architecture. See the [Style API docs](/docs/intro/styles) for the
+full reference.
+
+- **`boxShadow`** - Full CSS box-shadow support including multiple shadows,
+  spread, and inset. Accepts strings, objects, or arrays.
+- **`filter`** - Graphical filters like `brightness`, `opacity`, `blur`,
+  `contrast`, `grayscale`, `hueRotate`, `invert`, `saturate`, `sepia`, and
+  `dropShadow`. Cross-platform for `brightness` and `opacity`; Android 12+ for
+  others.
+- **`mixBlendMode`** - Blend modes like `multiply`, `screen`, `overlay`, etc.
+- **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
+- **`boxSizing`** - Box model (`border-box` | `content-box`).
+- **`display`** - Pass-through with `contents`.
+- **`borderCurve`** - Corner curve style (`circular` | `continuous` for Apple's
+  "squircle"). iOS 13+ only.
+- **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS
+  17+ (trackpad/stylus).
+
+#### CSS Shorthands with Variables
 
 You can now use Tamagui `$variables` directly inside CSS shorthand string values
 like `boxShadow`. On web, variables resolve to CSS custom properties; on native,
@@ -148,62 +163,6 @@ The `border` shorthand with variables (`border="1px solid $borderColor"`) is
 web-only since React Native doesn't support CSS border shorthand syntax. On
 native, continue using the individual props (`borderWidth`, `borderColor`,
 `borderStyle`).
-
-#### Cross-Platform Style Props
-
-Many style properties that were previously web-only now work on React Native
-with the New Architecture:
-
-- **`boxShadow`** - Full CSS box-shadow support including multiple shadows,
-  spread, and inset. Accepts strings, objects, or arrays.
-- **`filter`** - Graphical filters like `brightness`, `opacity`, `blur`,
-  `contrast`, `grayscale`, `hueRotate`, `invert`, `saturate`, `sepia`, and
-  `dropShadow`. Cross-platform for `brightness` and `opacity`; Android 12+ for
-  others.
-- **`mixBlendMode`** - Blend modes like `multiply`, `screen`, `overlay`, etc.
-- **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
-- **`boxSizing`** - Box model (`border-box` | `content-box`).
-- **`display`** - Pass-through with `contents`.
-- **`borderCurve`** - Corner curve style (`circular` | `continuous` for Apple's
-  "squircle"). iOS 13+ only.
-- **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS
-  17+ (trackpad/stylus).
-
-These properties accept the same syntax on both platforms, and Tamagui
-automatically handles the conversion between CSS strings (web) and object format
-(native).
-
-```tsx
-// Works identically on web and native!
-<View
-  boxShadow="0 4px 12px $shadowColor"
-  filter={[{ brightness: 1.1 }, { contrast: 0.9 }]}
-/>
-
-// Object syntax also supported
-<View
-  boxShadow={{
-    offsetX: 0,
-    offsetY: 4,
-    blurRadius: 12,
-    color: '$shadowColor',
-  }}
-/>
-```
-
-#### Colors
-
-`@tamagui/colors` has been updated to Radix v3 colors (hex format). To preserve
-backwards compatibility, existing v1-v4 theme configurations now use
-`@tamagui/colors/legacy` which contains the original Radix v2 colors (HSL
-format). Only v5 themes use the new colors.
-
-If you have custom themes importing from `@tamagui/colors` and want to keep the
-original colors, change your import to:
-
-```tsx
-import { blue, blueDark, ... } from '@tamagui/colors/legacy'
-```
 
 #### Motion Animation Driver
 
@@ -310,9 +269,8 @@ const GreenTab = styled(Tabs.Tab, {
 })
 ```
 
-This replaces the previous `toggledStyle` prop on ToggleGroup with the more
-consistent `activeStyle` naming. Icons inside these components also
-automatically size based on `SizableContext`.
+This replaces the incosistent methods of active styling found across components
+in v1.
 
 #### Headless and Unstyled Components
 
@@ -377,9 +335,14 @@ This pattern is especially valuable for data-heavy views like tables, lists, or
 dashboards where you might have dozens or hundreds of interactive elements that
 need tooltips or popovers.
 
-#### New Components
+#### Colors
 
-##### Input & TextArea
+`@tamagui/colors` has been updated to Radix v3, old colors are available at
+`@tamagui/colors/legacy`.
+
+### New Components
+
+#### Input & TextArea
 
 <HeroContainer demoMultiple>
   <NewInputsDemo />
@@ -405,7 +368,7 @@ This replaces the React Native-style props like `keyboardType`,
 still work but are deprecated. See the [Input docs](/docs/components/inputs) for
 the full migration guide.
 
-##### Image
+#### Image
 
 The [Image](/docs/components/image) component follows the same web-first
 philosophy as Input. It uses standard HTML `<img>` attributes like `src`, `alt`,
@@ -416,7 +379,7 @@ On native, you can choose your image loading adapter - use the built-in React
 Native Image, or integrate with optimized libraries like `expo-image` or
 `react-native-fast-image` for better caching and performance.
 
-##### Menu
+#### Menu
 
 [Menu](/docs/components/menu) provides dropdown menus with full keyboard
 navigation, submenus, checkbox items, and animations. On iOS and Android, it
@@ -430,7 +393,7 @@ automatically renders using native platform menus.
 
 ```
 
-##### ContextMenu
+#### ContextMenu
 
 [ContextMenu](/docs/components/context-menu) works like Menu but activates on
 right-click (web) or long-press (native). It includes support for preview

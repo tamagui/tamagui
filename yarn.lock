@@ -7759,6 +7759,7 @@ __metadata:
     react-native-worklets: "npm:0.5.1"
     refractor: "npm:^4.7.0"
     rehype-parse: "npm:^8.0.4"
+    sharp: "npm:^0.34.5"
     stripe: "npm:^9.1.0"
     subset-font: "npm:^2.1.0"
     swr: "npm:^2.2.5"
@@ -27180,7 +27181,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:>=0.33.0, sharp@npm:^0.34.4":
+"sharp@npm:>=0.33.0, sharp@npm:^0.34.4, sharp@npm:^0.34.5":
   version: 0.34.5
   resolution: "sharp@npm:0.34.5"
   dependencies:

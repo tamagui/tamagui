@@ -57,13 +57,13 @@ export default function BlogSlug() {
         openGraph={{
           images: [
             {
-              url:
-                data.frontmatter.image ??
-                getOgUrl({
-                  title: data.frontmatter.title,
-                  description: data.frontmatter.description ?? '',
-                  category: 'Blog',
-                }),
+              url: data.frontmatter.image
+                ? `https://tamagui.dev${data.frontmatter.image}`
+                : getOgUrl({
+                    title: data.frontmatter.title,
+                    description: data.frontmatter.description ?? '',
+                    category: 'Blog',
+                  }),
               width: 1200,
               height: 630,
             },

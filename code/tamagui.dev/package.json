@@ -81,6 +81,7 @@
     "react-native-worklets": "0.5.1",
     "refractor": "^4.7.0",
     "rehype-parse": "^8.0.4",
+    "sharp": "^0.34.5",
     "stripe": "^9.1.0",
     "swr": "^2.2.5",
     "tamagui": "workspace:*",
