@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs'
 import { execSync } from 'node:child_process'
+import { createRequire } from 'node:module'
 import { resolve as pathResolve } from 'node:path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
@@ -46,12 +47,10 @@ if (hasBento) {
   console.info('Using ../bento')
 }
 
+// use createRequire instead of import.meta.resolve for bun compatibility in vite config
+const require = createRequire(import.meta.url)
 const resolve = (path: string) => {
-  const resolved = import.meta.resolve?.(path)
-  if (!resolved) {
-    throw new Error(`Not found: ${path}, maybe on wrong node version`)
-  }
-  return resolved.replace('file:/', '')
+  return require.resolve(path)
 }
 
 const include = [
