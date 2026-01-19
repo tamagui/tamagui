@@ -735,10 +735,8 @@ export function createBaseMenu({
       <PopperPrimitive.PopperContent
         role="menu"
         {...(!unstyled && {
-          elevation: 20,
-          paddingVertical: '$2',
+          padding: 4,
           backgroundColor: '$background',
-          borderRadius: '$4',
           borderWidth: 1,
           borderColor: '$borderColor',
           outlineWidth: 0,
@@ -768,15 +766,19 @@ export function createBaseMenu({
                   if (event.key === 'Tab') event.preventDefault()
                   if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key)
                 }
-                // focus first/last item based on key pressed
-                const content = contentRef.current
-                if (event.target !== content) return
+                // focus first/last item based on key pressed when on THIS menu's content frame
+                // isKeyDownInside ensures we only handle keys for this menu, not bubbled from submenus
+                // isOnContentFrame ensures we only handle when focused on the content frame, not an item
+                const isOnContentFrame = (event.target as HTMLElement).hasAttribute(
+                  'data-tamagui-menu-content'
+                )
+                if (!isKeyDownInside || !isOnContentFrame) return
                 if (!FIRST_LAST_KEYS.includes(event.key)) return
                 event.preventDefault()
                 const items = getItems().filter((item) => !item.disabled)
                 const candidateNodes = items.map((item) => item.ref.current!)
                 if (LAST_KEYS.includes(event.key)) candidateNodes.reverse()
-                focusFirst(candidateNodes as HTMLElement[])
+                focusFirst(candidateNodes as HTMLElement[], { focusVisible: true })
               }),
               // TODO
               // @ts-ignore
@@ -844,9 +846,15 @@ export function createBaseMenu({
             trapped={trapFocus}
             onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
               // when opening, explicitly focus the content area only and leave
-              // `onEntryFocus` in  control of focusing first item
+              // `onEntryFocus` in control of focusing first item
               event.preventDefault()
-              contentRef.current?.focus()
+              // contentRef.current doesn't reliably point to the focusable DOM element
+              // due to how refs propagate through Tamagui's styled component chain,
+              // so we query for the element directly using the data attribute
+              const content = document.querySelector(
+                '[data-tamagui-menu-content]'
+              ) as HTMLElement | null
+              content?.focus()
             })}
             onUnmountAutoFocus={onCloseAutoFocus}
           >
@@ -868,8 +876,11 @@ export function createBaseMenu({
                 currentTabStopId={currentItemId}
                 onCurrentTabStopIdChange={setCurrentItemId}
                 onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
-                  // only focus first item when using keyboard
-                  if (!rootContext.isUsingKeyboardRef.current) event.preventDefault()
+                  // for keyboard users, focus first item for immediate navigation
+                  // for mouse users, prevent auto-focus to avoid showing focus style
+                  if (!rootContext.isUsingKeyboardRef.current) {
+                    event.preventDefault()
+                  }
                 })}
               >
                 {content}
@@ -897,6 +908,15 @@ export function createBaseMenu({
         onSelect,
         children,
         scope = MENU_CONTEXT,
+        // filter out native-only props that shouldn't reach the DOM
+        // @ts-ignore
+        destructive,
+        // @ts-ignore
+        hidden,
+        // @ts-ignore
+        androidIconName,
+        // @ts-ignore
+        iosIconName,
         ...itemProps
       } = props
       const ref = React.useRef<HTMLDivElement>(null)
@@ -1026,14 +1046,6 @@ export function createBaseMenu({
           {...itemProps}
         >
           <_Item
-            {...(!unstyled && {
-              hoverTheme: true,
-              pressTheme: true,
-              focusTheme: true,
-              paddingVertical: '$2',
-              paddingHorizontal: '$3',
-              marginHorizontal: '$1.5',
-            })}
             componentName={ITEM_NAME}
             role="menuitem"
             data-highlighted={isFocused ? '' : undefined}
@@ -1062,9 +1074,9 @@ export function createBaseMenu({
                 // @ts-ignore
                 contentContext.onItemEnter(event)
                 if (!event.defaultPrevented) {
-                  const item = event.currentTarget
-                  // @ts-ignore
-                  item.focus()
+                  const item = event.currentTarget as HTMLElement
+                  // @ts-ignore focusVisible is a newer API
+                  item.focus({ preventScroll: true, focusVisible: false })
                 }
               }
             })}
@@ -1109,7 +1121,17 @@ export function createBaseMenu({
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_IMAGE = 'MenuItemImage'
   const MenuItemImage = React.forwardRef<Image, ImageProps>((props, forwardedRef) => {
-    return <_Image {...props} ref={forwardedRef} />
+    // filter out native-only props that shouldn't reach the DOM
+    const {
+      // @ts-ignore - native menu ios config
+      ios,
+      // @ts-ignore
+      androidIconName,
+      // @ts-ignore
+      iosIconName,
+      ...rest
+    } = props
+    return <_Image {...rest} ref={forwardedRef} />
   })
 
   MenuItemImage.displayName = ITEM_IMAGE
@@ -1120,12 +1142,22 @@ export function createBaseMenu({
    * MenuItemIcon
    * -----------------------------------------------------------------------------------------------*/
 
-  // TODO review why styleable was here
   const ITEM_ICON = 'MenuItemIcon'
-  const MenuItemIcon = _Icon
-  // .styleable((props: ThemeableStackProps, forwardedRef) => {
-  //   return <_Icon {...props} ref={forwardedRef} />
-  // })
+  const MenuItemIcon = _Icon.styleable((props: MenuItemIconProps, forwardedRef) => {
+    // filter out native-only props that shouldn't reach the DOM
+    const {
+      // @ts-ignore
+      ios,
+      // @ts-ignore
+      android,
+      // @ts-ignore
+      androidIconName,
+      // @ts-ignore
+      iosIconName,
+      ...rest
+    } = props
+    return <_Icon {...rest} ref={forwardedRef} />
+  })
 
   MenuItemIcon.displayName = ITEM_ICON
 
@@ -1145,6 +1177,11 @@ export function createBaseMenu({
       checked = false,
       onCheckedChange,
       scope = MENU_CONTEXT,
+      // filter out native-only props
+      // @ts-ignore - native menu value state
+      value,
+      // @ts-ignore - native menu value change handler
+      onValueChange,
       ...checkboxItemProps
     } = props
     return (
@@ -1348,6 +1385,7 @@ export function createBaseMenu({
     const rootContext = useMenuRootContext(scope)
     const subContext = useMenuSubContext(scope)
     const contentContext = useMenuContentContext(scope)
+    const popperContext = PopperPrimitive.usePopperContext(scope)
     const openTimerRef = React.useRef<number | null>(null)
     const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
 
@@ -1504,8 +1542,18 @@ export function createBaseMenu({
                 onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
                   const isTypingAhead = contentContext.searchRef.current !== ''
                   if (props.disabled || (isTypingAhead && event.key === ' ')) return
-                  if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
+                  const willOpen = SUB_OPEN_KEYS[rootContext.dir].includes(event.key)
+                  if (willOpen) {
+                    // set the popper reference for keyboard-only open
+                    // (normally set on mouseEnter, see PopperAnchor)
+                    const triggerEl = event.currentTarget as HTMLElement
+                    popperContext.refs?.setReference(triggerEl)
+
                     context.onOpenChange(true)
+                    // force popper to recalculate position after render
+                    requestAnimationFrame(() => {
+                      popperContext.update?.()
+                    })
                     // The trigger may hold focus if opened via pointer interaction
                     // so we ensure content is given focus again when switching to keyboard.
                     context.content?.focus()
@@ -1554,7 +1602,14 @@ export function createBaseMenu({
             trapFocus={false}
             onOpenAutoFocus={(event) => {
               // when opening a submenu, focus content for keyboard users only
-              if (rootContext.isUsingKeyboardRef.current) ref.current?.focus()
+              if (rootContext.isUsingKeyboardRef.current) {
+                // ref.current doesn't reliably point to the focusable DOM element,
+                // so we query for the submenu content directly
+                const content = document.querySelector(
+                  '[data-tamagui-menu-content][data-side]'
+                ) as HTMLElement | null
+                content?.focus()
+              }
               event.preventDefault()
             }}
             // The menu might close because of focusing another menu item in the parent menu. We
@@ -1566,7 +1621,10 @@ export function createBaseMenu({
               if (event.target !== subContext.trigger) context.onOpenChange(false)
             })}
             onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
-              rootContext.onClose()
+              // close only this submenu, not the root menu
+              context.onOpenChange(false)
+              // return focus to the submenu trigger
+              subContext.trigger?.focus()
               // ensure pressing escape in submenu doesn't escape full screen mode
               event.preventDefault()
             })}
@@ -1658,12 +1716,13 @@ function getCheckedState(checked: CheckedState) {
   return isIndeterminate(checked) ? 'indeterminate' : checked ? 'checked' : 'unchecked'
 }
 
-function focusFirst(candidates: HTMLElement[]) {
+function focusFirst(candidates: HTMLElement[], options?: { focusVisible?: boolean }) {
   const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement
   for (const candidate of candidates) {
     // if focus is already where we want to go, we don't want to keep going through the candidates
     if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return
-    candidate.focus()
+    // @ts-ignore focusVisible is a newer API not yet in all TS libs
+    candidate.focus({ focusVisible: options?.focusVisible })
     if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return
   }
 }

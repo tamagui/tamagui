@@ -1,5 +1,6 @@
 import { Image } from '@tamagui/image'
-import { styled, Text, View } from '@tamagui/web'
+import { SizableText } from '@tamagui/text'
+import { styled, View } from '@tamagui/web'
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
@@ -34,19 +35,14 @@ const MenuGroup = styled(View, {
 
 const LABEL_NAME = 'MenuLabel'
 
-const MenuLabel = styled(Text, {
+const MenuLabel = styled(SizableText, {
   name: LABEL_NAME,
 
   variants: {
     unstyled: {
       false: {
         cursor: 'default',
-        fontSize: 13,
-        fontWeight: '600',
         color: '$color',
-        paddingHorizontal: '$3',
-        paddingTop: '$2',
-        paddingBottom: '$1',
       },
     },
   } as const,
@@ -75,8 +71,8 @@ const MenuSeparator = styled(View, {
         flexShrink: 0,
         borderWidth: 0,
         height: 1,
-        marginVertical: '$1.5',
-        marginHorizontal: '$3',
+        marginVertical: 3,
+        marginHorizontal: 10,
         backgroundColor: '$borderColor',
       },
     },
@@ -137,9 +133,20 @@ const MenuItem = styled(View, {
         flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
-        gap: '$3',
         cursor: 'pointer',
-        borderRadius: '$3',
+        borderRadius: 6,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
+        focusVisibleStyle: {
+          backgroundColor: '$backgroundFocus',
+        },
       },
     },
   } as const,
@@ -149,15 +156,13 @@ const MenuItem = styled(View, {
   },
 })
 
-const Title = styled(Text, {
+const Title = styled(SizableText, {
   name: 'MenuTitle',
 
   variants: {
     unstyled: {
       false: {
         cursor: 'default',
-        fontSize: 16,
-        fontWeight: '400',
         color: '$color',
         flexGrow: 1,
         flexShrink: 1,
@@ -170,14 +175,13 @@ const Title = styled(Text, {
   },
 })
 
-const SubTitle = styled(Text, {
+const SubTitle = styled(SizableText, {
   name: 'MenuSubTitle',
 
   variants: {
     unstyled: {
       false: {
         cursor: 'default',
-        fontSize: 14,
         color: '$colorFaint',
       },
     },

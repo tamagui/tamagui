@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "build": "tamagui-build --skip-native",
-    "watch": "bun run build --skip-native --watch",
+    "watch": "yarn build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "test": "vitest run"

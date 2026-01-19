@@ -8,7 +8,7 @@ const listeners = new Set<ChangeHandler>()
 // T A M A G U I
 // Maps to logo letters - index 3 (A) is the "none" theme position
 const familiesValues = {
-  tamagui: ['yellow', 'yellow', 'yellow', 'blue', 'red', 'green', 'blue'] as ThemeName[],
+  tamagui: ['yellow', 'yellow', 'yellow', 'gray', 'red', 'green', 'blue'] as ThemeName[],
   xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'] as ThemeName[],
   easter: [
     'yellow',

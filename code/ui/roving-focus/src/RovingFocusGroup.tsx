@@ -53,14 +53,6 @@ const RovingFocusGroupImpl = React.forwardRef<
   const isClickFocusRef = React.useRef(false)
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
 
-  React.useEffect(() => {
-    const node = (ref as unknown as React.RefObject<HTMLDivElement>).current
-    if (node) {
-      node.addEventListener(ENTRY_FOCUS, handleEntryFocus)
-      return () => node.removeEventListener(ENTRY_FOCUS, handleEntryFocus)
-    }
-  }, [handleEntryFocus])
-
   const Comp = (asChild ? Slot : Stack) as typeof Stack
 
   return (
@@ -105,8 +97,10 @@ const RovingFocusGroupImpl = React.forwardRef<
             isKeyboardFocus &&
             !isTabbingBackOut
           ) {
+            // create a cancelable event that onEntryFocus can call preventDefault on
             const entryFocusEvent = new CustomEvent(ENTRY_FOCUS, EVENT_OPTIONS)
-            event.currentTarget.dispatchEvent(entryFocusEvent)
+            // call onEntryFocus directly (dispatching to DOM had issues with asChild/Slot)
+            handleEntryFocus(entryFocusEvent)
 
             if (!entryFocusEvent.defaultPrevented) {
               const items = getItems().filter((item) => item.focusable)
@@ -116,7 +110,7 @@ const RovingFocusGroupImpl = React.forwardRef<
                 Boolean
               ) as typeof items
               const candidateNodes = candidateItems.map((item) => item.ref.current!)
-              focusFirst(candidateNodes)
+              focusFirst(candidateNodes, { focusVisible: false })
             }
           }
 
@@ -222,7 +216,7 @@ const RovingFocusGroupItem = React.forwardRef<
                  * Imperative focus during keydown is risky so we prevent React's batching updates
                  * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
                  */
-                setTimeout(() => focusFirst(candidateNodes))
+                setTimeout(() => focusFirst(candidateNodes, { focusVisible: true }))
               }
             }
           ),
@@ -347,12 +341,13 @@ function getFocusIntent(
   return MAP_KEY_TO_FOCUS_INTENT[key]
 }
 
-function focusFirst(candidates: HTMLElement[]) {
+function focusFirst(candidates: HTMLElement[], options?: { focusVisible?: boolean }) {
   const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement
   for (const candidate of candidates) {
     // if focus is already where we want to go, we don't want to keep going through the candidates
     if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return
-    candidate.focus()
+    // @ts-ignore focusVisible is a newer API not yet in all TS libs
+    candidate.focus({ focusVisible: options?.focusVisible })
     if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return
   }
 }

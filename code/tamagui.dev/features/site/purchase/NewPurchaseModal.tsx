@@ -1,7 +1,6 @@
 import type { StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
-import { createStore, createUseStore } from '@tamagui/use-store'
-import { startTransition, useEffect, useMemo, useState } from 'react'
+import { lazy, startTransition, Suspense, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   Button,
@@ -28,34 +27,27 @@ import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
 import { Link } from '../../../components/Link'
 import { Select } from '../../../components/Select'
-import { Switch } from '../../../components/Switch'
 import { sendEvent } from '../../analytics/sendEvent'
 import { PromoCards } from '../header/PromoCards'
 import { ProAgreementModal } from './AgreementModal'
 import { BigP, P } from './BigP'
 import { ProPoliciesModal } from './PoliciesModal'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
-import { paymentModal, StripePaymentModal } from './StripePaymentModal'
+import { paymentModal } from './paymentModalStore'
+import { purchaseModal, usePurchaseModal } from './purchaseModalStore'
+
+const StripePaymentModal = lazy(() =>
+  import('./StripePaymentModal').then((mod) => ({ default: mod.StripePaymentModal }))
+)
 import { PurchaseButton } from './helpers'
 import { useTakeoutStore } from './useTakeoutStore'
 
-class PurchaseModal {
-  show = false
-  yearlyTotal = 0
-  monthlyTotal = 0
-  disableAutoRenew = false
-  chatSupport = false
-  supportTier = 0
-  teamSeats = 0
-  selectedPrices = {
-    disableAutoRenew: false,
-    chatSupport: false,
-    supportTier: 0,
-    teamSeats: 0,
-  }
-}
-export const purchaseModal = createStore(PurchaseModal)
-export const usePurchaseModal = createUseStore(PurchaseModal)
+// re-export for backwards compat
+export { purchaseModal, usePurchaseModal } from './purchaseModalStore'
+export { FaqTabContent } from './FaqTabContent'
+
+// import for internal use
+import { FaqTabContent } from './FaqTabContent'
 
 export const NewPurchaseModal = () => {
   const [mounted, setMounted] = useState(false)
@@ -484,9 +476,7 @@ export function PurchaseModalContents() {
                           Policies
                         </SizableText>
                       </XStack>
-                      <Theme name="alt1">
-                        <PoweredByStripeIcon width={96} height={40} />
-                      </Theme>
+                      <PoweredByStripeIcon width={96} height={40} />
                     </XStack>
                   </YStack>
                 </YStack>
@@ -505,104 +495,23 @@ export function PurchaseModalContents() {
 
       <ProAgreementModal />
 
-      <StripePaymentModal
-        yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : yearlyTotal} // if they have a pro subscription or have subscribed before, the yearly total is 0
-        monthlyTotal={monthlyTotal}
-        disableAutoRenew={false}
-        chatSupport={chatSupport}
-        supportTier={Number(supportTier)}
-        teamSeats={teamSeats}
-        onSuccess={handlePaymentSuccess}
-        onError={handlePaymentError}
-      />
+      <Suspense fallback={null}>
+        <StripePaymentModal
+          yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : yearlyTotal} // if they have a pro subscription or have subscribed before, the yearly total is 0
+          monthlyTotal={monthlyTotal}
+          disableAutoRenew={false}
+          chatSupport={chatSupport}
+          supportTier={Number(supportTier)}
+          teamSeats={teamSeats}
+          onSuccess={handlePaymentSuccess}
+          onError={handlePaymentError}
+        />
+      </Suspense>
     </>
   )
 }
 
-const Question = styled(P, {
-  fontWeight: 'bold',
-  color: '$green9',
-  mb: '$-4',
-})
-
-export const FaqTabContent = () => {
-  return (
-    <YStack gap="$6">
-      <Question>Why the high price?</Question>
-      <P>
-        The new Takeout stack took immense, loving effort. We considered not selling it
-        all and keeping it a trade secret, especially as it's AI integration x docs x DRY
-        setup means you can truly one-shot high quality features faster than sloppy
-        vibe-code stacks. Still, we do like the idea that Tamagui supports itself, and we
-        hope the stack leads to{' '}
-        <Link target="_blank" href="https://addeven.com">
-          higher quality consulting gigs
-        </Link>
-        .
-      </P>
-
-      <Question>Do I own the code? Can I publish it publicly?</Question>
-      <P>
-        For Bento - yes. For Takeout - no. Takeout is closed source, but the Bento license
-        is liberal, you have all rights to the code. The only limit we have is that you
-        don't directly list or sell the majority of Bento code in one place, but you can
-        absolutely use it in public projects.
-      </P>
-
-      <Question>What is Theme AI?</Question>
-      <P>
-        If you go to the Theme page from the header, we have an input box to prompt. We've
-        spent a lot of effort putting together a prompt and examples for LLMs to generate
-        great looking themes based on your input. It's quite fun and generates some great
-        themes.
-      </P>
-
-      {/* <Question>What is Chat?</Question>
-
-      <P>
-        We've spent a few months building a custom chatbot that's an expert at all things
-        Tamagui. It's not just a simple prompt over a GPT model, it has multiple tools,
-        often using a multi-stage LLM pipeline to find the best answers.
-      </P>
-
-      <P>
-        We've given the chatbot a huge amount of context on Tamagui, Bento, Takeout, React
-        Native, and the ecosystem of common libraries. It has access to our entire
-        Discord, docs, and many examples of configurations and demos, vector search, and
-        code generation tools.
-      </P> */}
-
-      <Question>What support do I get in the base plan?</Question>
-      <P>
-        For subscribers, you get access to the private #takeout channel. We prioritize
-        responses there over the public Discord, but we don't provide any SLA.
-      </P>
-
-      <Question>What support do I get with Support tiers?</Question>
-      <P>
-        Each tier adds 4 hours of development per month, faster response times, and 4
-        additional private chat invites.
-      </P>
-
-      <Question>How do I use a coupon?</Question>
-      <P>
-        When you checkout, you'll see an input box to enter a coupon. If you have a
-        coupon, enter it and click apply. If it's valid, the price will update.
-      </P>
-
-      <Question>How do I get my invoice?</Question>
-      <P>
-        You can access all your invoices through our billing partner Zenvoice.{' '}
-        <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
-          Click here to view your invoices
-        </Link>
-        .
-      </P>
-
-      <Spacer height="$10" />
-    </YStack>
-  )
-}
+// FaqTabContent moved to FaqTabContent.tsx
 
 const SupportTabContent = ({
   chatSupport,
@@ -730,7 +639,6 @@ function Tab({
       bg="$color1"
       height={60}
       value=""
-      disableActiveTheme
       borderBottomWidth={1}
       borderBottomColor="transparent"
       {...(!isActive && {

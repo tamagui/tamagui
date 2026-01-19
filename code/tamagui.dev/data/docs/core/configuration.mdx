@@ -560,59 +560,74 @@ Tamagui components in general expect a set of theme keys to be defined like the
 following, but you can deviate if you create your own design system.
 
 ```tsx
-const light = {
-  background: '#fff',
-  backgroundHover: tokens.color.gray2,
-  backgroundPress: tokens.color.gray4,
-  backgroundFocus: tokens.color.gray5,
-  borderColor: tokens.color.gray4,
-  borderColorHover: tokens.color.gray6,
-  borderColorPress: tokens.color.gray12,
-  borderColorFocus: tokens.color.gray11,
-  color: tokens.color.gray10,
-  colorHover: tokens.color.gray9,
-  colorPress: tokens.color.gray8,
-  colorFocus: tokens.color.gray8,
-  shadowColor: tokens.color.grayA4,
-  shadowColorHover: tokens.color.grayA6,
-  shadowColorPress: tokens.color.grayA8,
-  shadowColorFocus: tokens.color.grayA8,
-  ...lightColors,
-}
-```
-
-You don't have to use tokens as your theme values, but if you do they avoid some
-overhead. With Tamagui, the idea is that `bg`, `color`, and `borderColor`
-represent the "primary" and clearest colors, and `bg2`, `color2` etc get more
-subtle.
-
-To see how it works, here's a snippet from `InteractiveFrame` which is the frame
-component that's used in `Button`:
-
-```tsx
-export const InteractiveFrame = styled(XStack, {
-  borderRadius: '$1',
-  paddingVertical: '$2',
-  paddingHorizontal: '$3',
-  backgroundColor: '$background',
-  justifyContent: 'center',
-  alignItems: 'center',
-  cursor: 'pointer',
-  flexWrap: 'nowrap',
-  flexDirection: 'row',
-  flexShrink: 1,
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
+const config = createTamagui({
+  themes: {
+    light: {
+      background: '#fff',
+      backgroundHover: tokens.color.gray2,
+      // ...
+      color: tokens.color.gray10,
+      colorHover: tokens.color.gray9,
+      colorPress: tokens.color.gray8,
+      // ...
+      color1: tokens.color.gray1,
+    },
+    dark: {
+      background: '#000',
+      // ... matching the properties for light ^
+    },
   },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
-
-  // ...
+  // ... the rest of your configuration
 })
 ```
+
+Passing tokens to themes will be smart about sharing CSS, but is not requred.
+
+You can then access theme values for any style value, either through styled() or
+through a Styled Compoent like View or Text:
+
+```tsx
+const P = styled(Text, {
+  color: '$color12'
+})
+
+// or directly
+<Text color="$color11" />
+```
+
+One of the more powerful features in Tamagui is nesting themes, you just define
+them like so:
+
+```tsx
+const config = createTamagui({
+  themes: {
+    light: {
+      color1: '#fff',
+      // ...
+    },
+    dark: {
+      color1: '#000',
+      // ...
+    },
+
+    light_alert: {
+      background: '#e6ebbd',
+    },
+    dark_alert: {
+      background: '#3e3f33',
+    },
+  },
+  // ... the rest of your configuration
+})
+```
+
+Themes work just like CSS variables, they can be changed anywhere in the tree.
+Sub-themes can be subsets of parent themes likewise as their values will fall
+back to the parent theme. They can also be nested as deeply as you like - so
+even `light_alert_subtle` is possible.
+
+For more on themes, see the [themes docs](/docs/core/themes), and more
+[advanced theme building library](/docs/guides/theme-builder).
 
 ### Media
 

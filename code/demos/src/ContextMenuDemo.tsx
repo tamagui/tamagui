@@ -18,7 +18,7 @@ export function ContextMenuDemo() {
   return (
     <ContextMenu allowFlip native={native} placement="bottom-start" offset={14}>
       <ContextMenu.Trigger asChild>
-        <Text text="center" select={null}>
+        <Text text="center" userSelect="none">
           Right Click or Long Press
         </Text>
       </ContextMenu.Trigger>
@@ -33,7 +33,7 @@ export function ContextMenuDemo() {
           enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
           exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
           elevation="$3"
-          transition="menu"
+          transition="quickest"
         >
           <ContextMenu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
 
@@ -45,29 +45,19 @@ export function ContextMenuDemo() {
                   justify="center"
                   height={100}
                   width={250}
-                  style={{ backgroundColor: 'pink' }}
+                  bg="pink"
                 >
                   <Text>Your Preview here</Text>
                 </YStack>
               )
             }}
           </ContextMenu.Preview>
-          <ContextMenu.Item
-            onSelect={onSelect}
-            key="about-notes"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-            hoverStyle={{ bg: '$backgroundHover' }}
-          >
+          <ContextMenu.Item onSelect={onSelect} key="about-notes">
             <ContextMenu.ItemTitle>About Notes</ContextMenu.ItemTitle>
           </ContextMenu.Item>
           <ContextMenu.Separator />
 
-          <ContextMenu.Item
-            onSelect={onSelect}
-            key="settings"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-            hoverStyle={{ bg: '$backgroundHover' }}
-          >
+          <ContextMenu.Item onSelect={onSelect} key="settings">
             <ContextMenu.ItemTitle>Settings</ContextMenu.ItemTitle>
           </ContextMenu.Item>
           <ContextMenu.Item
@@ -75,8 +65,6 @@ export function ContextMenuDemo() {
             justify="space-between"
             textValue="Calendar"
             key="accounts"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Calendar</ContextMenu.ItemTitle>
             <ContextMenu.ItemIcon
@@ -96,18 +84,10 @@ export function ContextMenuDemo() {
             key="close-notes"
             disabled
             textValue="Locked Notes"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle color="gray">Locked Notes</ContextMenu.ItemTitle>
           </ContextMenu.Item>
-          <ContextMenu.Item
-            destructive
-            onSelect={onSelect}
-            key="delete-all"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-            hoverStyle={{ bg: '$backgroundHover' }}
-          >
+          <ContextMenu.Item destructive onSelect={onSelect} key="delete-all">
             <ContextMenu.ItemTitle color="red">Delete all</ContextMenu.ItemTitle>
           </ContextMenu.Item>
           <ContextMenu.Separator />
@@ -117,8 +97,6 @@ export function ContextMenuDemo() {
               key="actions-trigger"
               justify="space-between"
               textValue="Actions"
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-              hoverStyle={{ bg: '$backgroundHover' }}
             >
               <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
               <ChevronRight size={12} color="$color10" />
@@ -127,7 +105,7 @@ export function ContextMenuDemo() {
               <ContextMenu.SubContent
                 enterStyle={{ scale: 0.9, opacity: 0, x: -5 }}
                 exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
-                transition="menu"
+                transition="quickest"
                 transformOrigin="left top"
                 elevation="$3"
                 minW={160}
@@ -136,30 +114,18 @@ export function ContextMenuDemo() {
                 borderWidth={1}
                 borderColor="$borderColor"
               >
-                <ContextMenu.Label
-                  color="$color10"
-                  fontWeight="400"
-                  fontSize={14}
-                  alignSelf="flex-start"
-                  style={{ paddingHorizontal: 8, paddingVertical: 5 }}
-                >
-                  Note settings
-                </ContextMenu.Label>
+                <ContextMenu.Label>Note settings</ContextMenu.Label>
                 <ContextMenu.Item
                   onSelect={onSelect}
                   key="create-note"
                   textValue="Create note"
-                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-                  hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
                 </ContextMenu.Item>
                 <ContextMenu.Item
                   onSelect={onSelect}
-                  key="delete-all"
+                  key="delete-all-notes"
                   textValue="Delete all notes"
-                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-                  hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Delete all notes</ContextMenu.ItemTitle>
                 </ContextMenu.Item>
@@ -167,22 +133,18 @@ export function ContextMenuDemo() {
                   onSelect={onSelect}
                   key="sync-all"
                   textValue="Sync notes"
-                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-                  hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Sync notes</ContextMenu.ItemTitle>
                 </ContextMenu.Item>
               </ContextMenu.SubContent>
             </ContextMenu.Portal>
           </ContextMenu.Sub>
-          <ContextMenu.Separator className="MenuSeparator" />
+          <ContextMenu.Separator />
           <ContextMenu.CheckboxItem
             key="show-hidden"
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
             justify="space-between"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
@@ -194,8 +156,6 @@ export function ContextMenuDemo() {
             checked={native}
             onCheckedChange={setNative}
             justify="space-between"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
-            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>

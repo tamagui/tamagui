@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/generate-themes",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
@@ -32,7 +32,7 @@
   },
   "scripts": {
     "build": "tamagui-build",
-    "watch": "bun run build --watch",
+    "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

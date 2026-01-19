@@ -108,7 +108,7 @@ const Frame = styled(View, {
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
-        const gap = getTokenValue(val as Token) * 0.4
+        const gap = getTokenValue(val as Token)
         return {
           ...buttonStyle,
           gap,

@@ -1829,13 +1829,38 @@ export interface TransformStyleProps {
   rotateZ?: `${number}deg` | UnionableString
 }
 
+// box shadow presets - one example per pattern for autocomplete hints
+type BoxShadowPreset =
+  | '0 0' // offset only
+  | '0 1px 2px' // offset + blur
+  | '0 1px 2px 0' // offset + blur + spread
+  | '0 1px 2px $shadowColor' // offset + blur + color token
+  | '0 1px 3px 0 $shadowColor' // offset + blur + spread + color token
+  | '0 4px 6px -1px $shadowColor' // negative spread
+  | 'inset 0 2px 4px $shadowColor' // inset
+  | 'none'
+
 // Box Shadow - CSS string format (e.g. "0 4px 8px $shadowColor")
-// Supports embedded tokens that get resolved at runtime
-export type BoxShadowValue = string & {}
+// Supports embedded $tokens that get resolved at runtime
+export type BoxShadowValue = BoxShadowPreset | (string & {})
+
+// filter presets - one example per function for autocomplete hints
+type FilterPreset =
+  | 'blur(4px)'
+  | 'brightness(1.2)'
+  | 'contrast(1.2)'
+  | 'drop-shadow(0 4px 8px $shadowColor)'
+  | 'grayscale(1)'
+  | 'hue-rotate(90deg)'
+  | 'invert(1)'
+  | 'opacity(0.5)'
+  | 'saturate(1.5)'
+  | 'sepia(1)'
+  | 'none'
 
 // Filter - CSS string format (e.g. "blur(10px) brightness(1.2)")
-// Supports embedded tokens that get resolved at runtime
-export type FilterValue = string & {}
+// Supports embedded $tokens that get resolved at runtime
+export type FilterValue = FilterPreset | (string & {})
 
 interface ExtraStyleProps {
   /**

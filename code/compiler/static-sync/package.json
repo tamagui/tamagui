@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-sync",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "tamagui-build --skip-native --bundle",
-    "watch": "bun run build --watch",
+    "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",

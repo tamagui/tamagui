@@ -7,7 +7,7 @@ declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/we
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
@@ -22,7 +22,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>, "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
@@ -37,7 +37,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>, "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
@@ -58,7 +58,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    bordered?: number | boolean | undefined;
+    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
@@ -68,7 +68,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        bordered?: number | boolean | undefined;
+        bordered?: boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>, "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
@@ -89,7 +89,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        bordered?: number | boolean | undefined;
+        bordered?: boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
@@ -114,7 +114,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        bordered?: number | boolean | undefined;
+        bordered?: boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;

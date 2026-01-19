@@ -1,6 +1,8 @@
 import { type ResolveVariableAs } from '@tamagui/core';
+import { SizableContext } from '@tamagui/sizable-context';
 import React from 'react';
 import type { IconProps } from './IconProps';
+export { SizableContext };
 type Options = {
     noClass?: boolean;
     defaultThemeColor?: string;
@@ -15,5 +17,4 @@ export declare function themed(Component: React.FC<IconProps>, optsIn?: Options)
         acceptsClassName: boolean;
     };
 };
-export {};
 //# sourceMappingURL=themed.d.ts.map

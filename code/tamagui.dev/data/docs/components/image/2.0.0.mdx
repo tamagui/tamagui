@@ -111,10 +111,32 @@ export default () => (
 
 [Tamagui props](/docs/intro/props).
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `src` | `string` | The image URL. Preferred over `source` for better web alignment. |
-| `objectFit` | `'cover' \| 'contain' \| 'fill' \| 'none' \| 'scale-down'` | How the image should be resized to fit its container. Maps to CSS `object-fit` on web and `resizeMode` on native. |
-| `objectPosition` | `string` | How the image should be positioned within its container. On native, requires expo-image or similar for full support. |
-| `source` | `ImageSourcePropType` | **Deprecated.** Use `src` instead. |
-| `resizeMode` | `ImageResizeMode` | **Deprecated.** Use `objectFit` instead. |
+<PropsTable
+  data={[
+    {
+      name: 'src',
+      type: 'string',
+      description: 'The image URL. Preferred over source for better web alignment.',
+    },
+    {
+      name: 'objectFit',
+      type: "'cover' | 'contain' | 'fill' | 'none' | 'scale-down'",
+      description: 'How the image should be resized to fit its container. Maps to CSS object-fit on web and resizeMode on native.',
+    },
+    {
+      name: 'objectPosition',
+      type: 'string',
+      description: 'How the image should be positioned within its container. On native, requires expo-image or similar for full support.',
+    },
+    {
+      name: 'source',
+      type: 'ImageSourcePropType',
+      description: 'Deprecated. Use src instead.',
+    },
+    {
+      name: 'resizeMode',
+      type: 'ImageResizeMode',
+      description: 'Deprecated. Use objectFit instead.',
+    },
+  ]}
+/>

@@ -1,16 +1,9 @@
 import { composeEventHandlers } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { GetProps, StackStyleBase, TamaguiElement } from '@tamagui/web'
-import { createStyledContext, styled, Text } from '@tamagui/web'
+import type { GetProps, TamaguiElement, ViewStyle } from '@tamagui/web'
+import { styled, View } from '@tamagui/web'
 import * as React from 'react'
-
-export type ToggleStylesBase = StackStyleBase & { color?: string }
-
-export const context = createStyledContext({
-  color: '',
-  toggledStyle: null as null | ToggleStylesBase,
-})
+import { context } from './context'
 
 /* -------------------------------------------------------------------------------------------------
  * Toggle
@@ -18,88 +11,90 @@ export const context = createStyledContext({
 
 const NAME = 'Toggle'
 
-export const ToggleFrame = styled(ThemeableStack, {
-  name: NAME,
-  render: 'button',
-  context,
+export const ToggleFrame = styled(
+  View,
+  {
+    name: NAME,
+    render: 'button',
+    context,
 
-  variants: {
-    unstyled: {
-      false: {
-        pressTheme: true,
-        backgroundColor: '$background',
-        alignItems: 'center',
-        justifyContent: 'center',
-        display: 'flex',
-        borderColor: '$borderColor',
-        borderWidth: 1,
-        margin: -1,
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-        },
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-        },
-        focusStyle: {
-          borderColor: '$borderColorFocus',
-        },
-        focusVisibleStyle: {
-          outlineColor: '$outlineColor',
-          outlineWidth: 2,
-          outlineStyle: 'solid',
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+          alignItems: 'center',
+          justifyContent: 'center',
+          display: 'flex',
+          backgroundColor: '$background',
+          borderColor: '$borderColor',
+          borderWidth: 1,
+          margin: -1,
+          hoverStyle: {
+            backgroundColor: '$backgroundHover',
+            borderColor: '$borderColorHover',
+          },
+          pressStyle: {
+            backgroundColor: '$backgroundPress',
+            borderColor: '$borderColorPress',
+          },
+          focusVisibleStyle: {
+            outlineColor: '$outlineColor',
+            outlineWidth: 2,
+            outlineStyle: 'solid',
+            zIndex: 10,
+          },
         },
       },
+
+      size: {
+        '...size': (val, { tokens }) => {
+          if (!val) return
+          return {
+            width: tokens.size[val],
+            height: tokens.size[val],
+          }
+        },
+        ':number': (val) => ({
+          width: val,
+          height: val,
+        }),
+      },
+
+      defaultActiveStyle: {
+        true: {
+          backgroundColor: '$backgroundActive',
+          hoverStyle: {
+            backgroundColor: '$backgroundActive',
+          },
+          focusStyle: {
+            backgroundColor: '$backgroundActive',
+            borderColor: '$borderColorActive',
+          },
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1',
     },
-
-    toggledStyle: (val: ToggleStylesBase | null) => ({}),
-
-    active: {
-      true: (_, { props, context }: any) => {
-        const toggledStyle = props.toggledStyle || context?.toggledStyle
-        return {
-          zIndex: 1,
-          ...(!props.unstyled &&
-            !toggledStyle && {
-              backgroundColor: '$background',
-              hoverStyle: {
-                backgroundColor: '$background',
-              },
-              focusStyle: {
-                backgroundColor: '$background',
-                borderColor: '$borderColor',
-              },
-            }),
-          ...toggledStyle,
-        }
-      },
-    },
-
-    orientation: {
-      horizontal: {
-        flexDirection: 'row',
-        spaceDirection: 'horizontal',
-      },
-      vertical: {
-        flexDirection: 'column',
-        spaceDirection: 'vertical',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
-})
+  {
+    accept: {
+      activeStyle: 'style',
+    } as const,
+  }
+)
 
 type ToggleFrameProps = GetProps<typeof ToggleFrame>
 
 type ToggleItemExtraProps = {
   defaultValue?: string
   disabled?: boolean
-  pressed?: boolean
-  defaultPressed?: boolean
-  onPressedChange?(pressed: boolean): void
-  toggledStyle?: ToggleStylesBase | null
+  active?: boolean
+  defaultActive?: boolean
+  onActiveChange?(active: boolean): void
+  activeStyle?: ViewStyle | null
+  activeTheme?: string | null
 }
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
@@ -107,33 +102,44 @@ export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
 export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
   function Toggle(props, forwardedRef) {
     const {
-      pressed: pressedProp,
-      defaultPressed = false,
-      onPressedChange,
+      active: activeProp,
+      activeStyle,
+      defaultActive = false,
+      onActiveChange,
+      activeTheme,
+      unstyled = false,
       ...buttonProps
     } = props
 
-    const [pressed = false, setPressed] = useControllableState({
-      prop: pressedProp,
-      onChange: onPressedChange,
-      defaultProp: defaultPressed,
+    const [active = false, setActive] = useControllableState({
+      prop: activeProp,
+      onChange: onActiveChange,
+      defaultProp: defaultActive,
     })
 
     return (
       <ToggleFrame
-        {...(!props.unstyled && {
-          theme: pressed ? 'accent' : null,
-          themeShallow: true,
-        })}
-        active={pressed}
-        aria-pressed={pressed}
-        data-state={pressed ? 'on' : 'off'}
+        theme={activeTheme ?? null}
+        aria-pressed={active}
+        data-state={active ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
+        unstyled={unstyled}
+        {...(active &&
+          !activeStyle &&
+          !unstyled && {
+            defaultActiveStyle: true,
+          })}
+        {...(active &&
+          activeStyle && {
+            ...(activeStyle as any),
+            hoverStyle: activeStyle,
+            focusStyle: activeStyle,
+          })}
         {...buttonProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
           if (!props.disabled) {
-            setPressed((prev) => !prev)
+            setActive((prev) => !prev)
           }
         })}
       />

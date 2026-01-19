@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "private": true,
   "main": "./dist/cjs/vite.config.js",
   "module": "./dist/esm/vite.config.js",
@@ -31,7 +31,6 @@
     "@vitejs/plugin-react": "^5.1.0",
     "happy-dom": "^10.11.2",
     "react": "*",
-    "vite": "^7.1.12",
     "vitest": "^4.0.4",
     "vitest-axe": "^0.1.0",
     "vitest-mock-process": "^1.0.4",

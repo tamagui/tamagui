@@ -42,7 +42,7 @@ export function sendProductPurchaseEmail(
   <ul>
     <li><strong>Bento</strong> - Our premium component library: <a href="https://github.com/tamagui/bento">https://github.com/tamagui/bento</a></li>
     <li><strong>Takeout v1</strong>: <a href="https://github.com/tamagui/takeout">https://github.com/tamagui/takeout</a></li>
-    <li><strong>Takeout v2 (Beta)</strong>: <a href="https://github.com/tamagui/takeout3">https://github.com/tamagui/takeout3</a></li>
+    <li><strong>Takeout v2 (Beta)</strong>: <a href="https://github.com/tamagui/takeout2">https://github.com/tamagui/takeout2</a></li>
   </ul>
 
   <p>If you have any questions or need help, feel free to reach out to us at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
@@ -59,7 +59,7 @@ export function sendProductPurchaseEmail(
         <p class="sub">Tamagui: https://tamagui.dev</p>
         <p class="sub">Bento: https://github.com/tamagui/bento</p>
         <p class="sub">Takeout v1: https://github.com/tamagui/takeout</p>
-        <p class="sub">Takeout v2: https://github.com/tamagui/takeout3</p>
+        <p class="sub">Takeout v2: https://github.com/tamagui/takeout2</p>
       </td>
     </tr>
   </table>

@@ -1,5 +1,6 @@
 import { throttle } from '@github/mini-throttle'
 import { Image } from '@tamagui/image'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
 import { demoMedia } from '@tamagui/tamagui-dev-config'
@@ -31,7 +32,6 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
-import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'
 import favicon from '~/public/favicon.svg'
@@ -470,7 +470,7 @@ export const Safari = memo(
                   <Spacer flex={1} />
                   <XStack items="center" gap="$4">
                     <Star size={20} color="var(--purple10)" />
-                    <Paragraph theme="purple">4.55</Paragraph>
+                    <Paragraph theme="red">4.55</Paragraph>
                   </XStack>
                 </XStack>
 
@@ -493,7 +493,7 @@ export const Safari = memo(
 
 const Tab = memo(({ active, children, borderColor, ...props }: any) => {
   return (
-    <Theme name={active ? null : 'alt1'}>
+    <Theme name={active ? 'accent' : null}>
       <XStack
         borderTopWidth={1}
         borderColor={active ? 'transparent' : '$borderColor'}

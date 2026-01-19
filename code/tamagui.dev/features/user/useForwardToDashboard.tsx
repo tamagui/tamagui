@@ -1,7 +1,7 @@
 import { type Href, useActiveParams, useRouter } from 'one'
 import { useEffect } from 'react'
 import { useUser } from './useUser'
-import { accountModal } from '../site/purchase/NewAccountModal'
+import { accountModal } from '../site/purchase/accountModalStore'
 
 const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev', '127.0.0.1', 'localhost']
 

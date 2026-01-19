@@ -41,7 +41,7 @@ export const AnimationDriverTogglerContextProvider = ({
       ? animationsCSS
       : driverName === 'motion'
         ? animationsMotion
-        : tamaConf.animations
+        : ((tamaConf.animations as any).default ?? tamaConf.animations)
   ) as AnimationDriver<any>
 
   const value = useMemo(() => {

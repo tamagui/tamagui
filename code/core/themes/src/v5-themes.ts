@@ -10,8 +10,31 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
+import { createThemes } from '@tamagui/theme-builder'
 import { interpolateColor, opacify } from './opacify'
+import { v5Templates } from './v5-templates'
+
+export const defaultComponentThemes = {
+  ListItem: { template: 'surface1' },
+  SelectItem: { template: 'surface1' },
+  SelectTrigger: { template: 'surface1' },
+  Card: { template: 'surface1' },
+  Button: { template: 'surface3' },
+  Checkbox: { template: 'surface2' },
+  Switch: { template: 'surface2' },
+  SwitchThumb: { template: 'inverse' },
+  TooltipContent: { template: 'surface2' },
+  Progress: { template: 'surface1' },
+  RadioGroupItem: { template: 'surface2' },
+  TooltipArrow: { template: 'surface1' },
+  SliderTrackActive: { template: 'surface2' },
+  SliderTrack: { template: 'inverse' },
+  SliderThumb: { template: 'inverse' },
+  Tooltip: { template: 'inverse' },
+  ProgressIndicator: { template: 'inverse' },
+  Input: { template: 'surface1' },
+  TextArea: { template: 'surface1' },
+} as const
 
 /** Generate named colors from a palette: ['#fff', ...] -> { name1: '#fff', name2: ... } */
 function paletteToNamedColors<N extends string>(name: N, palette: readonly string[]) {
@@ -26,14 +49,14 @@ const darkPalette = [
   '#151515',
   '#191919',
   '#232323',
-  '#282828',
-  '#323232',
-  '#424242',
-  '#494949',
-  '#545454',
-  '#626262',
-  '#a5a5a5',
-  '#fff',
+  '#333',
+  '#444',
+  '#666',
+  '#777',
+  '#999',
+  '#bbb',
+  '#ddd',
+  '#ffffff',
 ]
 
 const lightPalette = [
@@ -42,12 +65,12 @@ const lightPalette = [
   'hsl(0, 0%, 93%)',
   'hsl(0, 0%, 87%)',
   'hsl(0, 0%, 80%)',
-  'hsl(0, 0%, 74%)',
-  'hsl(0, 0%, 68%)',
-  'hsl(0, 0%, 60%)',
-  'hsl(0, 0%, 48%)',
-  'hsl(0, 0%, 38%)',
+  'hsl(0, 0%, 70%)',
+  'hsl(0, 0%, 59%)',
+  'hsl(0, 0%, 45%)',
+  'hsl(0, 0%, 30%)',
   'hsl(0, 0%, 20%)',
+  'hsl(0, 0%, 12%)',
   'hsl(0, 0%, 2%)',
 ]
 
@@ -288,6 +311,8 @@ export function createV5Theme<
   return createThemes({
     // componentThemes: false disables them, undefined/truthy values enable them
     componentThemes: customComponentThemes,
+
+    templates: v5Templates,
 
     base: {
       palette: {

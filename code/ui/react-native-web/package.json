@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -20,7 +20,7 @@
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
-    "check": "bun run check-circular-deps",
+    "check": "yarn check-circular-deps",
     "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "exports": {

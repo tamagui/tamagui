@@ -12,19 +12,27 @@ import { CheckboxStyledContext } from './CheckboxStyledContext'
  * -----------------------------------------------------------------------------------------------*/
 const INDICATOR_NAME = 'CheckboxIndicator'
 
-export const CheckboxIndicatorFrame = styled(YStack, {
-  // use Checkbox for easier themes
-  name: INDICATOR_NAME,
-  context: CheckboxStyledContext,
-  variants: {
-    unstyled: {
-      false: {},
+export const CheckboxIndicatorFrame = styled(
+  YStack,
+  {
+    // use Checkbox for easier themes
+    name: INDICATOR_NAME,
+    context: CheckboxStyledContext,
+    variants: {
+      unstyled: {
+        false: {},
+      },
+    } as const,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1',
     },
-  } as const,
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
-})
+  {
+    accept: {
+      activeStyle: 'style',
+    } as const,
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * Checkbox
@@ -32,72 +40,83 @@ export const CheckboxIndicatorFrame = styled(YStack, {
 
 const CHECKBOX_NAME = 'Checkbox'
 
-export const CheckboxFrame = styled(YStack, {
-  name: CHECKBOX_NAME,
-  render: 'button',
+export const CheckboxFrame = styled(
+  YStack,
+  {
+    name: CHECKBOX_NAME,
+    render: 'button',
 
-  context: CheckboxStyledContext,
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        backgroundColor: '$background',
-        alignItems: 'center',
-        justifyContent: 'center',
-        pressTheme: true,
-        focusable: true,
-        borderWidth: 1,
-        borderColor: '$borderColor',
-
-        hoverStyle: {
-          borderColor: '$borderColorHover',
-        },
-
-        focusStyle: {
-          borderColor: '$borderColorFocus',
-        },
-
-        focusVisibleStyle: {
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineColor: '$outlineColor',
-        },
-      },
-    },
-
-    disabled: {
-      true: {
-        pointerEvents: 'none',
-        userSelect: 'none',
-        cursor: 'not-allowed',
-
-        hoverStyle: {
-          borderColor: '$borderColor',
+    context: CheckboxStyledContext,
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
           backgroundColor: '$background',
-        },
-
-        pressStyle: {
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 1,
           borderColor: '$borderColor',
-          backgroundColor: '$background',
-        },
 
-        focusStyle: {
-          outlineWidth: 0,
+          hoverStyle: {
+            borderColor: '$borderColorHover',
+          },
+
+          pressStyle: {
+            backgroundColor: '$backgroundPress',
+            borderColor: '$borderColorPress',
+          },
+
+          focusStyle: {
+            borderColor: '$borderColorFocus',
+          },
+
+          focusVisibleStyle: {
+            outlineStyle: 'solid',
+            outlineWidth: 2,
+            outlineColor: '$outlineColor',
+          },
         },
       },
-    },
 
-    size: {
-      '...size': (val) => {
-        const radiusToken = getVariableValue(getSize(val)) / 8
-        return {
-          borderRadius: radiusToken,
-        }
+      disabled: {
+        true: {
+          pointerEvents: 'none',
+          userSelect: 'none',
+          cursor: 'not-allowed',
+
+          hoverStyle: {
+            borderColor: '$borderColor',
+            backgroundColor: '$background',
+          },
+
+          pressStyle: {
+            borderColor: '$borderColor',
+            backgroundColor: '$background',
+          },
+
+          focusStyle: {
+            outlineWidth: 0,
+          },
+        },
       },
-    },
-  } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+      size: {
+        '...size': (val) => {
+          const radiusToken = getVariableValue(getSize(val)) / 8
+          return {
+            borderRadius: radiusToken,
+          }
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    },
   },
-})
+  {
+    accept: {
+      activeStyle: 'style',
+    } as const,
+  }
+)

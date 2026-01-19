@@ -83,11 +83,11 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
   return (
     <Paragraph
       render="p"
-      ff="$mono"
-      size={large ? '$9' : '$8'}
+      // ff="$mono"
+      size={large ? '$8' : '$7'}
       mb="$4"
       $sm={{
-        size: '$7',
+        size: '$6',
       }}
       {...props}
     >
@@ -158,6 +158,7 @@ const TableCell = styled(Paragraph, {
   items: 'center',
   position: 'relative',
   flex: 1,
+  flexBasis: 'auto',
   justify: 'center',
   text: 'center',
   height: '$4',
@@ -184,6 +185,7 @@ const TableCol = styled(YStack, {
   borderRightWidth: 1,
   borderRightColor: '$borderColor',
   flex: 1,
+  flexBasis: 'auto',
   mr: -1,
   flexDirection: 'column',
 })
@@ -411,7 +413,7 @@ const componentsIn = {
       aria-label="Beta blog post"
       pointerEvents="none"
       size="$2"
-      theme="pink"
+      theme="yellow"
       position="absolute"
       t={-15}
       r={-25}
@@ -490,13 +492,7 @@ const componentsIn = {
   h5: (props) => <H5 fontWeight="600" mt="$4" {...props} />,
 
   p: (props) => (
-    <Paragraph
-      className="docs-paragraph"
-      display="block"
-      size="$6"
-      my="$2.5"
-      {...props}
-    />
+    <Paragraph className="docs-paragraph" display="block" size="$6" my="$2" {...props} />
   ),
 
   a: ({ href = '', children, ...props }) => {

@@ -206,7 +206,7 @@ export default function DocsLayout() {
                         transition="100ms"
                       >
                         <YStack
-                          x="$-4"
+                          x="$4"
                           $group-card-hover={{ x: '$0' }}
                           transition="quicker"
                         >
@@ -220,7 +220,7 @@ export default function DocsLayout() {
 
                         <View
                           opacity={0}
-                          x="$-2"
+                          x="$2"
                           $group-card-hover={{ opacity: 1, x: '$0' }}
                           transition="quickest"
                         >

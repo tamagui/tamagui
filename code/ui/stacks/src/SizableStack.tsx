@@ -2,14 +2,7 @@ import { styled } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import type { GetProps } from '@tamagui/web'
 import { ThemeableStack } from './ThemeableStack'
-import {
-  bordered,
-  circular,
-  elevate,
-  focusTheme,
-  hoverTheme,
-  pressTheme,
-} from './variants'
+import { bordered, circular, elevate } from './variants'
 
 export const SizableStack = styled(ThemeableStack, {
   name: 'SizableStack',
@@ -17,20 +10,17 @@ export const SizableStack = styled(ThemeableStack, {
   variants: {
     unstyled: {
       true: {
-        hoverTheme: false,
-        pressTheme: false,
-        focusTheme: false,
         elevate: false,
         bordered: false,
       },
     },
 
-    hoverTheme,
-    pressTheme,
-    focusTheme,
     circular,
     elevate,
-    bordered,
+
+    bordered: {
+      true: bordered,
+    },
 
     size: {
       '...size': (val, extras) => {

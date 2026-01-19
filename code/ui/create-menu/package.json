@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-menu",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -44,6 +44,7 @@
     "@tamagui/dismissable": "workspace:*",
     "@tamagui/focus-guard": "workspace:*",
     "@tamagui/focus-scope": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/popover": "workspace:*",
@@ -51,6 +52,7 @@
     "@tamagui/portal": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
+    "@tamagui/text": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-direction": "workspace:*",

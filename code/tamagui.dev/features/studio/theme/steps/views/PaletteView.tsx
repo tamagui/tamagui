@@ -16,7 +16,6 @@ import { parseToHsla } from 'color2k'
 import { memo } from 'react'
 import {
   Button,
-  Separator,
   SizableText,
   Theme,
   TooltipGroup,
@@ -373,7 +372,7 @@ const SyncButtons = memo(
   }) => {
     return (
       <>
-        <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+        <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
             <Button
               size={16}
@@ -405,7 +404,7 @@ const SyncButtons = memo(
           </TooltipSimple>
         </Theme>
 
-        <Theme name={anchor?.[anchorKey].sync ? 'accent' : 'surface1'}>
+        <Theme name={anchor?.[anchorKey].sync ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
             <Button
               size={16}
@@ -431,7 +430,7 @@ const SyncButtons = memo(
           </TooltipSimple>
         </Theme>
 
-        <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+        <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
             <Button
               size={16}
@@ -475,11 +474,7 @@ const DataItem = ({
   return (
     <YStack width={width} maxW={width}>
       <SizableText select="none">{labelTop}</SizableText>
-      <SizableText
-        select="none"
-        size="$2"
-        theme={typeof labelBottom === 'string' ? 'alt2' : null}
-      >
+      <SizableText select="none" size="$2">
         {labelBottom}
       </SizableText>
     </YStack>

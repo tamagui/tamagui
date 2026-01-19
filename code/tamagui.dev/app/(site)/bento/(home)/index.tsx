@@ -337,7 +337,7 @@ const Hero = () => {
             >
               <YStack rounded="$4" shadowColor="rgba(0,0,0,0.1)" shadowRadius="$8">
                 <ThemeTintAlt>
-                  <Theme name="surface3">
+                  <Theme name="accent">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -352,7 +352,7 @@ const Hero = () => {
                 }}
               >
                 <ThemeTintAlt>
-                  <Theme name="surface3">
+                  <Theme name="accent">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -367,7 +367,7 @@ const Hero = () => {
                 }}
               >
                 <ThemeTintAlt>
-                  <Theme name="surface2">
+                  <Theme name="accent">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -395,7 +395,7 @@ const Hero = () => {
                 shadowRadius="$8"
               >
                 <ThemeTint>
-                  <Theme name="surface3">
+                  <Theme name="accent">
                     <LocationNotification />
                   </Theme>
                 </ThemeTint>

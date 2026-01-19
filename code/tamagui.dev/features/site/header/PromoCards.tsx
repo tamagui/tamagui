@@ -69,7 +69,7 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
           <Card>
             <TooltipLabelLarge
               href="/takeout"
-              icon={<Box />}
+              icon={<Box size={20} />}
               title="Assets"
               subtitle="Scripts to easily add fonts and icon packs."
             />

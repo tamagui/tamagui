@@ -73,7 +73,7 @@ export const HomeExamples = memo(
                     <Button
                       aria-label="See example"
                       onPress={() => setActiveIndex(i)}
-                      theme={i === activeIndex ? 'surface2' : null}
+                      theme={i === activeIndex ? 'accent' : null}
                       chromeless={i !== activeIndex}
                       rounded={0}
                       size="$3"
@@ -89,7 +89,6 @@ export const HomeExamples = memo(
           </ThemeTint>
 
           <XStack
-            theme="surface1"
             position="relative"
             justify="space-between"
             $sm={{ flexDirection: 'column' }}

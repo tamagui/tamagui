@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "clean": "one clean",
     "prebuild:native": "one prebuild",
     "build:web": "one build",
-    "prod": "bun run build:web && bun run serve",
+    "prod": "yarn build:web && yarn serve",
     "test": "node -r esbuild-register ../../node_modules/.bin/playwright test use-cases.test.js",
     "serve": "one serve",
     "ios": "one run:ios",
@@ -27,9 +27,9 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@vxrn/color-scheme": "^1.2.65",
+    "@vxrn/color-scheme": "^1.2.66",
     "expo": "^54.0.23",
-    "one": "1.2.65",
+    "one": "1.2.66",
     "react": "*",
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1",

@@ -1,10 +1,10 @@
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig, themes } from '@tamagui/config/v5'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { animations } from './animations'
+import { animationsCSS } from './animations.css'
+import { animationsMotion } from './animations.motion'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
-import { themeDev } from './theme.dev'
 
 setupDev({
   visualizer: true,
@@ -21,16 +21,17 @@ const fonts = {
 // Use v5 config as base, but with tamagui.dev custom themes
 export const config = {
   ...defaultConfig,
-  themes: themeDev,
+  themes,
   fonts,
-  animations,
+  animations: {
+    default: animationsMotion,
+    css: animationsCSS,
+  },
   media,
   settings: {
     ...defaultConfig.settings,
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    styleCompat: 'react-native',
-    addThemeClassName: 'html',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,

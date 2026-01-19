@@ -1,13 +1,13 @@
 {
   "name": "test-next-turbopack",
   "private": true,
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "scripts": {
     "dev": "next dev --turbopack --port 3456",
     "next-build": "next build",
     "start": "next start --port 3456",
-    "test": "bun run test:unit && bun run test:integration",
-    "test:web": "bun run test:unit && bun run test:integration",
+    "test": "yarn test:unit && yarn test:integration",
+    "test:web": "yarn test:unit && yarn test:integration",
     "test:unit": "vitest run",
     "test:integration": "playwright test",
     "test:clean": "git checkout src/ public/ && git clean -fd src/"

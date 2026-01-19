@@ -1,6 +1,6 @@
 import type { Href } from 'one'
 import type { ReactNode } from 'react'
-import { Paragraph, styled, Text, XStack, YStack } from 'tamagui'
+import { Paragraph, ScrollView, styled, Text, useMedia, XStack, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 
 const TableFrame = styled(YStack, {
@@ -119,9 +119,11 @@ export function SimpleTable({
 }) {
   const colCount = headers.length
   const colWidth = `${100 / colCount}%` as `${number}%`
+  const media = useMedia()
+  const isMobile = media.sm
 
-  return (
-    <TableFrame>
+  const table = (
+    <TableFrame {...(isMobile && { minWidth: 760 })}>
       <TableRow>
         {headers.map((header, i) => (
           <TableCellContainer key={i} head width={colWidth}>
@@ -140,4 +142,10 @@ export function SimpleTable({
       ))}
     </TableFrame>
   )
+
+  if (isMobile) {
+    return <ScrollView horizontal>{table}</ScrollView>
+  }
+
+  return table
 }

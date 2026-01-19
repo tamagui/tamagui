@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -48,6 +48,7 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
+    "@tamagui/sizable-context": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
