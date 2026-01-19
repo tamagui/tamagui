@@ -2,10 +2,8 @@ import type { ExtraSteps } from './steps/types'
 
 import chalk from 'chalk'
 
-import simpleWeb from './steps/simple-web'
 import expoRouter from './steps/expo-router'
 import starterFree from './steps/starter-free'
-import remix from './steps/remix'
 import takeoutSteps from './steps/takeout'
 
 export const templates: Array<{
@@ -52,7 +50,7 @@ export const templates: Array<{
   },
 
   {
-    title: `Expo Router (beta) - Expo Router starter with Tamagui set up`,
+    title: `Expo Router - Expo Router starter with Tamagui`,
     value: 'expo-router',
     type: 'included-in-monorepo',
     hidden: false,
@@ -64,33 +62,5 @@ export const templates: Array<{
       branch: 'main',
     },
     extraSteps: expoRouter,
-  },
-  {
-    title: `Learn - Vite + Webpack, Tamagui config from scratch`,
-    value: 'simple-web',
-    type: 'included-in-monorepo',
-    hidden: false,
-    packageManager: 'yarn',
-    repo: {
-      url: process.env.TAMAGUI_REPO_SOURCE || `https://github.com/tamagui/tamagui.git`,
-      sshFallback: `git@github.com:tamagui/tamagui.git`,
-      dir: [`code`, `starters`, `simple-web`],
-      branch: 'main',
-    },
-    extraSteps: simpleWeb,
-  },
-  {
-    title: `Remix - Remix + Vite starter with Tamagui set up`,
-    value: 'remix',
-    type: 'included-in-monorepo',
-    hidden: false,
-    packageManager: 'yarn',
-    repo: {
-      url: process.env.TAMAGUI_REPO_SOURCE || `https://github.com/tamagui/tamagui.git`,
-      sshFallback: `git@github.com:tamagui/tamagui.git`,
-      dir: [`code`, `starters`, `remix`],
-      branch: 'main',
-    },
-    extraSteps: remix,
   },
 ]
