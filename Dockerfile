@@ -72,6 +72,8 @@ RUN bun install
 
 # Merge bento dependencies into root package.json and reinstall
 RUN node scripts/with-bento.mjs
+# Re-link workspaces after bento setup
+RUN bun install
 RUN bun run build:js
 RUN bun run build:app
 
