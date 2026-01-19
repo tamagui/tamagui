@@ -45,33 +45,19 @@ export function ContextMenuDemo() {
                   justify="center"
                   height={100}
                   width={250}
-                  style={{ backgroundColor: 'pink' }}
+                  bg="pink"
                 >
                   <Text>Your Preview here</Text>
                 </YStack>
               )
             }}
           </ContextMenu.Preview>
-          <ContextMenu.Item
-            onSelect={onSelect}
-            key="about-notes"
-            paddingHorizontal={8}
-            paddingVertical={5}
-            borderRadius={4}
-            hoverStyle={{ bg: '$backgroundHover' }}
-          >
+          <ContextMenu.Item onSelect={onSelect} key="about-notes">
             <ContextMenu.ItemTitle>About Notes</ContextMenu.ItemTitle>
           </ContextMenu.Item>
           <ContextMenu.Separator />
 
-          <ContextMenu.Item
-            onSelect={onSelect}
-            key="settings"
-            paddingHorizontal={8}
-            paddingVertical={5}
-            borderRadius={4}
-            hoverStyle={{ bg: '$backgroundHover' }}
-          >
+          <ContextMenu.Item onSelect={onSelect} key="settings">
             <ContextMenu.ItemTitle>Settings</ContextMenu.ItemTitle>
           </ContextMenu.Item>
           <ContextMenu.Item
@@ -79,10 +65,6 @@ export function ContextMenuDemo() {
             justify="space-between"
             textValue="Calendar"
             key="accounts"
-            paddingHorizontal={8}
-            paddingVertical={5}
-            borderRadius={4}
-            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Calendar</ContextMenu.ItemTitle>
             <ContextMenu.ItemIcon
@@ -102,22 +84,10 @@ export function ContextMenuDemo() {
             key="close-notes"
             disabled
             textValue="Locked Notes"
-            paddingHorizontal={8}
-            paddingVertical={5}
-            borderRadius={4}
-            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle color="gray">Locked Notes</ContextMenu.ItemTitle>
           </ContextMenu.Item>
-          <ContextMenu.Item
-            destructive
-            onSelect={onSelect}
-            key="delete-all"
-            paddingHorizontal={8}
-            paddingVertical={5}
-            borderRadius={4}
-            hoverStyle={{ bg: '$backgroundHover' }}
-          >
+          <ContextMenu.Item destructive onSelect={onSelect} key="delete-all">
             <ContextMenu.ItemTitle color="red">Delete all</ContextMenu.ItemTitle>
           </ContextMenu.Item>
           <ContextMenu.Separator />
@@ -127,10 +97,6 @@ export function ContextMenuDemo() {
               key="actions-trigger"
               justify="space-between"
               textValue="Actions"
-              paddingHorizontal={8}
-              paddingVertical={5}
-              borderRadius={4}
-              hoverStyle={{ bg: '$backgroundHover' }}
             >
               <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
               <ChevronRight size={12} color="$color10" />
@@ -148,24 +114,11 @@ export function ContextMenuDemo() {
                 borderWidth={1}
                 borderColor="$borderColor"
               >
-                <ContextMenu.Label
-                  color="$color10"
-                  fontWeight="400"
-                  fontSize={14}
-                  alignSelf="flex-start"
-                  paddingHorizontal={8}
-                  paddingVertical={5}
-                >
-                  Note settings
-                </ContextMenu.Label>
+                <ContextMenu.Label>Note settings</ContextMenu.Label>
                 <ContextMenu.Item
                   onSelect={onSelect}
                   key="create-note"
                   textValue="Create note"
-                  paddingHorizontal={8}
-                  paddingVertical={5}
-                  borderRadius={4}
-                  hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
                 </ContextMenu.Item>
@@ -173,10 +126,6 @@ export function ContextMenuDemo() {
                   onSelect={onSelect}
                   key="delete-all-notes"
                   textValue="Delete all notes"
-                  paddingHorizontal={8}
-                  paddingVertical={5}
-                  borderRadius={4}
-                  hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Delete all notes</ContextMenu.ItemTitle>
                 </ContextMenu.Item>
@@ -184,26 +133,18 @@ export function ContextMenuDemo() {
                   onSelect={onSelect}
                   key="sync-all"
                   textValue="Sync notes"
-                  paddingHorizontal={8}
-                  paddingVertical={5}
-                  borderRadius={4}
-                  hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Sync notes</ContextMenu.ItemTitle>
                 </ContextMenu.Item>
               </ContextMenu.SubContent>
             </ContextMenu.Portal>
           </ContextMenu.Sub>
-          <ContextMenu.Separator className="MenuSeparator" />
+          <ContextMenu.Separator />
           <ContextMenu.CheckboxItem
             key="show-hidden"
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
             justify="space-between"
-            paddingHorizontal={8}
-            paddingVertical={5}
-            borderRadius={4}
-            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
@@ -215,10 +156,6 @@ export function ContextMenuDemo() {
             checked={native}
             onCheckedChange={setNative}
             justify="space-between"
-            paddingHorizontal={8}
-            paddingVertical={5}
-            borderRadius={4}
-            hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
