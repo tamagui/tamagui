@@ -135,6 +135,7 @@ const MenuItem = styled(View, {
   variants: {
     unstyled: {
       false: {
+        size: '$true',
         flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
@@ -176,7 +177,6 @@ const MenuItem = styled(View, {
 
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
-    size: '$3',
   },
 })
 
