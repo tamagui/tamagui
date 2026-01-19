@@ -102,7 +102,7 @@ export function MenuDemo() {
                 textValue="Actions"
               >
                 <Menu.ItemTitle>Actions</Menu.ItemTitle>
-                <ChevronRight color="$color10" />
+                <ChevronRight size={16} color="$color10" />
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
@@ -118,7 +118,9 @@ export function MenuDemo() {
                   borderWidth={1}
                   borderColor="$borderColor"
                 >
-                  <Menu.Label>Note settings</Menu.Label>
+                  <Menu.Label pt="$2" pb="$2" color="$color8">
+                    Note settings
+                  </Menu.Label>
                   <Menu.Item
                     onSelect={onSelect}
                     key="create-note"

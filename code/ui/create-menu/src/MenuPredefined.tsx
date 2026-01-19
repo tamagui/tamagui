@@ -1,4 +1,3 @@
-import { getSpace } from '@tamagui/get-token'
 import { Image } from '@tamagui/image'
 import { SizableText } from '@tamagui/text'
 import { styled, View } from '@tamagui/web'
@@ -43,7 +42,6 @@ const MenuLabel = styled(SizableText, {
     unstyled: {
       false: {
         cursor: 'default',
-        size: '$true',
         color: '$color',
       },
     },
@@ -132,11 +130,13 @@ const MenuItem = styled(View, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
         flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
         cursor: 'pointer',
+        borderRadius: 6,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
 
         hoverStyle: {
           backgroundColor: '$backgroundHover',
@@ -147,25 +147,6 @@ const MenuItem = styled(View, {
         focusVisibleStyle: {
           backgroundColor: '$backgroundFocus',
         },
-      },
-    },
-
-    size: {
-      '...size': (val) => {
-        if (!val) return
-        const paddingVertical = getSpace(val, {
-          shift: -3,
-          bounds: [2],
-        })
-        const paddingHorizontal = getSpace(val, {
-          shift: -1,
-          bounds: [2],
-        })
-
-        return {
-          paddingVertical,
-          paddingHorizontal,
-        }
       },
     },
   } as const,

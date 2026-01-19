@@ -1,6 +1,7 @@
 ---
 title: Context Menu
-description:  A menu component that is triggered by a right-click on the web and a long
+description:
+  A menu component that is triggered by a right-click on the web and a long
   press on touch devices.
 name: context menu
 component: ContextMenu
@@ -30,29 +31,19 @@ package: context-menu
 
 ## Installation
 
- ContextMenu is already installed in `tamagui`, or you can install it
+ContextMenu is already installed in `tamagui`, or you can install it
 independently:
 
 ```bash
 yarn add @tamagui/context-menu
 ```
 
-If you want to use native menus, make sure to install these dependencies in your
-Expo project:
+If you want to use native menus, add these dependencies:
 
-```bash
+```sh
 yarn add @react-native-menu/menu
-```
-
-```bash
 yarn add react-native-ios-context-menu
-```
-
-```bash
 yarn add react-native-ios-utilities
-```
-
-```bash
 yarn add zeego
 ```
 
@@ -166,7 +157,8 @@ Contains every component for the Context Menu.
       type: 'boolean',
       default: 'true',
       required: false,
-      description: 'When true, traps focus inside the menu and blocks outside scroll/interactions.',
+      description:
+        'When true, traps focus inside the menu and blocks outside scroll/interactions.',
     },
     {
       name: 'stayInFrame',
@@ -178,7 +170,8 @@ Contains every component for the Context Menu.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
-      description: 'Flips the menu to the opposite side if there is insufficient space.',
+      description:
+        'Flips the menu to the opposite side if there is insufficient space.',
     },
     {
       name: 'offset',
@@ -217,7 +210,8 @@ This is necessary for the Context Menu.
       name: 'forceMount',
       type: 'true',
       required: false,
-      description: 'Forces the portal to stay mounted, useful for controlling animations.',
+      description:
+        'Forces the portal to stay mounted, useful for controlling animations.',
     },
   ]}
 />
@@ -264,7 +258,8 @@ Contains the content of the Context Menu.
       name: 'forceMount',
       type: 'true',
       required: false,
-      description: 'Forces the content to stay mounted, useful for controlling animations.',
+      description:
+        'Forces the content to stay mounted, useful for controlling animations.',
     },
     {
       name: 'onCloseAutoFocus',
@@ -317,7 +312,8 @@ A selectable menu item that triggers an action when selected.
       type: 'boolean',
       required: false,
       platform: 'ios/android',
-      description: 'Renders the item in red on iOS to indicate a dangerous action (e.g. delete). No effect on web.',
+      description:
+        'Renders the item in red on iOS to indicate a dangerous action (e.g. delete). No effect on web.',
     },
     {
       name: 'hidden',
@@ -348,7 +344,8 @@ A selectable menu item that triggers an action when selected.
       type: 'string',
       required: false,
       platform: 'ios/android',
-      description: 'Text used for typeahead and native menus. Required when ItemTitle contains a React node instead of a string.',
+      description:
+        'Text used for typeahead and native menus. Required when ItemTitle contains a React node instead of a string.',
     },
   ]}
 />
@@ -395,7 +392,8 @@ On iOS, it renders the native
       type: 'object',
       required: false,
       platform: 'ios',
-      description: 'SF Symbol configuration: name, weight, scale, hierarchicalColor, paletteColors.',
+      description:
+        'SF Symbol configuration: name, weight, scale, hierarchicalColor, paletteColors.',
     },
     {
       name: 'android',
@@ -492,7 +490,8 @@ A menu item with a checkbox that can be toggled on/off.
       type: 'boolean',
       required: false,
       platform: 'ios/android',
-      description: 'Renders the item in red on iOS to indicate a dangerous action. No effect on web.',
+      description:
+        'Renders the item in red on iOS to indicate a dangerous action. No effect on web.',
     },
     {
       name: 'hidden',
@@ -517,7 +516,8 @@ A menu item with a checkbox that can be toggled on/off.
       type: 'string',
       required: false,
       platform: 'ios/android',
-      description: 'Text for native menus. Required when ItemTitle contains a React node.',
+      description:
+        'Text for native menus. Required when ItemTitle contains a React node.',
     },
     {
       name: 'value',
@@ -571,14 +571,16 @@ This allows you to conditionally render a checkmark.
       name: 'forceMount',
       type: 'true',
       required: false,
-      description: 'Forces the indicator to stay mounted for animation control.',
+      description:
+        'Forces the indicator to stay mounted for animation control.',
     },
   ]}
 />
 
 ### Label
 
-Renders a non-focusable label for a group of items. On native menus, only one label is supported per menu and submenu.
+Renders a non-focusable label for a group of items. On native menus, only one
+label is supported per menu and submenu.
 
 <PropsTable
   data={[
@@ -652,18 +654,22 @@ A container for nested sub-menu components.
 
 ### SubContent
 
-Renders the content of a sub-menu. Same props as `Content`, excluding `side` and `align`.
+Renders the content of a sub-menu. Same props as `Content`, excluding `side` and
+`align`.
 
 ### SubTrigger
 
-A menu item that opens a sub-menu on hover/focus. Accepts the same props as `Item`.
+A menu item that opens a sub-menu on hover/focus. Accepts the same props as
+`Item`.
 
 ### Preview (iOS only)
 
-When the Context Menu is visible, this renders a custom preview component. Only works with native iOS menus.
+When the Context Menu is visible, this renders a custom preview component. Only
+works with native iOS menus.
 
 <Notice>
-  Should be rendered as a child of `<ContextMenu.Content />`.
+  Should be rendered as a child of `<ContextMenu.Content />
+  `.
 </Notice>
 
 <PropsTable
@@ -673,7 +679,8 @@ When the Context Menu is visible, this renders a custom preview component. Only 
       type: 'React.ReactNode | (() => React.ReactNode)',
       required: true,
       platform: 'ios',
-      description: 'The preview content to render. Can be a function for lazy rendering.',
+      description:
+        'The preview content to render. Can be a function for lazy rendering.',
     },
     {
       name: 'size',
@@ -709,7 +716,8 @@ When the Context Menu is visible, this renders a custom preview component. Only 
       required: false,
       default: "'dismiss'",
       platform: 'ios',
-      description: "Exit transition when preview is tapped. Use 'pop' when navigating to another screen.",
+      description:
+        "Exit transition when preview is tapped. Use 'pop' when navigating to another screen.",
     },
   ]}
 />
