@@ -55,7 +55,9 @@ export function ContextMenuDemo() {
           <ContextMenu.Item
             onSelect={onSelect}
             key="about-notes"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            paddingHorizontal={8}
+            paddingVertical={5}
+            borderRadius={4}
             hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>About Notes</ContextMenu.ItemTitle>
@@ -65,7 +67,9 @@ export function ContextMenuDemo() {
           <ContextMenu.Item
             onSelect={onSelect}
             key="settings"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            paddingHorizontal={8}
+            paddingVertical={5}
+            borderRadius={4}
             hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Settings</ContextMenu.ItemTitle>
@@ -75,7 +79,9 @@ export function ContextMenuDemo() {
             justify="space-between"
             textValue="Calendar"
             key="accounts"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            paddingHorizontal={8}
+            paddingVertical={5}
+            borderRadius={4}
             hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Calendar</ContextMenu.ItemTitle>
@@ -96,7 +102,9 @@ export function ContextMenuDemo() {
             key="close-notes"
             disabled
             textValue="Locked Notes"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            paddingHorizontal={8}
+            paddingVertical={5}
+            borderRadius={4}
             hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle color="gray">Locked Notes</ContextMenu.ItemTitle>
@@ -105,7 +113,9 @@ export function ContextMenuDemo() {
             destructive
             onSelect={onSelect}
             key="delete-all"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            paddingHorizontal={8}
+            paddingVertical={5}
+            borderRadius={4}
             hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle color="red">Delete all</ContextMenu.ItemTitle>
@@ -117,7 +127,9 @@ export function ContextMenuDemo() {
               key="actions-trigger"
               justify="space-between"
               textValue="Actions"
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              paddingHorizontal={8}
+              paddingVertical={5}
+              borderRadius={4}
               hoverStyle={{ bg: '$backgroundHover' }}
             >
               <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
@@ -141,7 +153,8 @@ export function ContextMenuDemo() {
                   fontWeight="400"
                   fontSize={14}
                   alignSelf="flex-start"
-                  style={{ paddingHorizontal: 8, paddingVertical: 5 }}
+                  paddingHorizontal={8}
+                  paddingVertical={5}
                 >
                   Note settings
                 </ContextMenu.Label>
@@ -149,16 +162,20 @@ export function ContextMenuDemo() {
                   onSelect={onSelect}
                   key="create-note"
                   textValue="Create note"
-                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                  paddingHorizontal={8}
+                  paddingVertical={5}
+                  borderRadius={4}
                   hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
                 </ContextMenu.Item>
                 <ContextMenu.Item
                   onSelect={onSelect}
-                  key="delete-all"
+                  key="delete-all-notes"
                   textValue="Delete all notes"
-                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                  paddingHorizontal={8}
+                  paddingVertical={5}
+                  borderRadius={4}
                   hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Delete all notes</ContextMenu.ItemTitle>
@@ -167,7 +184,9 @@ export function ContextMenuDemo() {
                   onSelect={onSelect}
                   key="sync-all"
                   textValue="Sync notes"
-                  style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                  paddingHorizontal={8}
+                  paddingVertical={5}
+                  borderRadius={4}
                   hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   <ContextMenu.ItemTitle>Sync notes</ContextMenu.ItemTitle>
@@ -181,7 +200,9 @@ export function ContextMenuDemo() {
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
             justify="space-between"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            paddingHorizontal={8}
+            paddingVertical={5}
+            borderRadius={4}
             hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
@@ -194,7 +215,9 @@ export function ContextMenuDemo() {
             checked={native}
             onCheckedChange={setNative}
             justify="space-between"
-            style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+            paddingHorizontal={8}
+            paddingVertical={5}
+            borderRadius={4}
             hoverStyle={{ bg: '$backgroundHover' }}
           >
             <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>

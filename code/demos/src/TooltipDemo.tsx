@@ -10,7 +10,7 @@ import { Button, Paragraph, Tooltip, TooltipGroup, XStack, YStack } from 'tamagu
 
 export function TooltipDemo() {
   return (
-    <TooltipGroup delay={{ open: 3000, close: 100 }}>
+    <TooltipGroup delay={{ open: 300, close: 100 }}>
       <YStack gap="$2" self="center">
         <XStack gap="$2">
           <Demo groupId="0" placement="top-end" Icon={Circle} />
@@ -35,7 +35,7 @@ export function TooltipDemo() {
 function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
-      <Tooltip.Trigger>
+      <Tooltip.Trigger asChild>
         <Button icon={Icon} circular />
       </Tooltip.Trigger>
       <Tooltip.Content

@@ -56,7 +56,9 @@ export function MenuDemo() {
             <Menu.Item
               onSelect={onSelect}
               key="about-notes"
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              paddingHorizontal={8}
+              paddingVertical={5}
+              borderRadius={4}
               hoverStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle>About Notes</Menu.ItemTitle>
@@ -67,7 +69,9 @@ export function MenuDemo() {
             <Menu.Item
               onSelect={onSelect}
               key="settings"
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              paddingHorizontal={8}
+              paddingVertical={5}
+              borderRadius={4}
               hoverStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle>Settings</Menu.ItemTitle>
@@ -78,7 +82,9 @@ export function MenuDemo() {
               justify="space-between"
               // when title is nested inside a React element then you need to use `textValue`
               textValue="Calendar"
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              paddingHorizontal={8}
+              paddingVertical={5}
+              borderRadius={4}
               hoverStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle>Calendar</Menu.ItemTitle>
@@ -100,7 +106,9 @@ export function MenuDemo() {
               onSelect={onSelect}
               key="close-notes"
               disabled
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              paddingHorizontal={8}
+              paddingVertical={5}
+              borderRadius={4}
               hoverStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle color="gray">Locked Notes</Menu.ItemTitle>
@@ -109,7 +117,9 @@ export function MenuDemo() {
               onSelect={onSelect}
               destructive
               key="delete-all"
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              paddingHorizontal={8}
+              paddingVertical={5}
+              borderRadius={4}
               hoverStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle color="red">Delete all</Menu.ItemTitle>
@@ -126,7 +136,9 @@ export function MenuDemo() {
                 justify="space-between"
                 key="actions-trigger"
                 textValue="Actions"
-                style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                paddingHorizontal={8}
+                paddingVertical={5}
+                borderRadius={4}
                 hoverStyle={{ bg: '$backgroundHover' }}
               >
                 <Menu.ItemTitle>Actions</Menu.ItemTitle>
@@ -151,7 +163,8 @@ export function MenuDemo() {
                     fontWeight="400"
                     fontSize={14}
                     alignSelf="flex-start"
-                    style={{ paddingHorizontal: 8, paddingVertical: 5 }}
+                    paddingHorizontal={8}
+                    paddingVertical={5}
                   >
                     Note settings
                   </Menu.Label>
@@ -160,7 +173,9 @@ export function MenuDemo() {
                     key="create-note"
                     textValue="Create note"
                     justify="space-between"
-                    style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                    paddingHorizontal={8}
+                    paddingVertical={5}
+                    borderRadius={4}
                     hoverStyle={{ bg: '$backgroundHover' }}
                   >
                     <Menu.ItemTitle>Create note</Menu.ItemTitle>
@@ -170,10 +185,12 @@ export function MenuDemo() {
                   </Menu.Item>
                   <Menu.Item
                     onSelect={onSelect}
-                    key="delete-all"
+                    key="delete-all-notes"
                     textValue="Delete all notes"
                     justify="space-between"
-                    style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                    paddingHorizontal={8}
+                    paddingVertical={5}
+                    borderRadius={4}
                     hoverStyle={{ bg: '$backgroundHover' }}
                   >
                     <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
@@ -186,7 +203,9 @@ export function MenuDemo() {
                     key="sync-all"
                     textValue="Sync notes"
                     justify="space-between"
-                    style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+                    paddingHorizontal={8}
+                    paddingVertical={5}
+                    borderRadius={4}
                     hoverStyle={{ bg: '$backgroundHover' }}
                   >
                     <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
@@ -205,7 +224,9 @@ export function MenuDemo() {
               checked={bookmarksChecked}
               onCheckedChange={setBookmarksChecked}
               justify="space-between"
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              paddingHorizontal={8}
+              paddingVertical={5}
+              borderRadius={4}
               hoverStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle>Mark as read</Menu.ItemTitle>
@@ -218,7 +239,9 @@ export function MenuDemo() {
               checked={native}
               onCheckedChange={setNative}
               justify="space-between"
-              style={{ paddingHorizontal: 8, paddingVertical: 5, borderRadius: 4 }}
+              paddingHorizontal={8}
+              paddingVertical={5}
+              borderRadius={4}
               hoverStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle>Enable Native</Menu.ItemTitle>
