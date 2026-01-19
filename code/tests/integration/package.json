@@ -32,7 +32,7 @@
     "wait-port": "^0.3.0",
     "zx": "^8.5.5"
   },
-  "version": "2.0.0-1768781784925",
+  "version": "2.0.0-1768782502458",
   "peerDependencies": {
     "react-dom": "*"
   }

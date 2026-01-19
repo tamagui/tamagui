@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-group",
-  "version": "2.0.0-1768781784925",
+  "version": "2.0.0-1768782502458",
   "type": "module",
   "removeSideEffects": true,
   "sideEffects": [
