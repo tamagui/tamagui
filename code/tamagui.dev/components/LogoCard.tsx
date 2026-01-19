@@ -12,6 +12,7 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
         render="a"
         transition="quickest"
         flex={1}
+        flexBasis="auto"
         width="$19"
         height="$11"
         y={0}
