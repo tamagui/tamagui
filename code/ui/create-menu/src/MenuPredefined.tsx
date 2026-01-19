@@ -1,5 +1,6 @@
 import { getSpace } from '@tamagui/get-token'
 import { Image } from '@tamagui/image'
+import { SizableText } from '@tamagui/text/types'
 import { styled, Text, View } from '@tamagui/web'
 
 /* -------------------------------------------------------------------------------------------------
@@ -35,19 +36,15 @@ const MenuGroup = styled(View, {
 
 const LABEL_NAME = 'MenuLabel'
 
-const MenuLabel = styled(Text, {
+const MenuLabel = styled(SizableText, {
   name: LABEL_NAME,
 
   variants: {
     unstyled: {
       false: {
         cursor: 'default',
-        fontSize: 13,
-        fontWeight: '600',
+        size: '$true',
         color: '$color',
-        paddingHorizontal: '$3',
-        paddingTop: '$2',
-        paddingBottom: '$1',
       },
     },
   } as const,
@@ -76,8 +73,8 @@ const MenuSeparator = styled(View, {
         flexShrink: 0,
         borderWidth: 0,
         height: 1,
-        marginVertical: '$1.5',
-        marginHorizontal: '$3',
+        marginVertical: 3,
+        marginHorizontal: 10,
         backgroundColor: '$borderColor',
       },
     },
@@ -159,7 +156,7 @@ const MenuItem = styled(View, {
       '...size': (val) => {
         if (!val) return
         const paddingVertical = getSpace(val, {
-          shift: -2,
+          shift: -3,
           bounds: [2],
         })
         const paddingHorizontal = getSpace(val, {

@@ -735,10 +735,8 @@ export function createBaseMenu({
       <PopperPrimitive.PopperContent
         role="menu"
         {...(!unstyled && {
-          elevation: 20,
-          paddingVertical: '$2',
+          padding: 4,
           backgroundColor: '$background',
-          borderRadius: '$4',
           borderWidth: 1,
           borderColor: '$borderColor',
           outlineWidth: 0,
@@ -910,6 +908,15 @@ export function createBaseMenu({
         onSelect,
         children,
         scope = MENU_CONTEXT,
+        // filter out native-only props that shouldn't reach the DOM
+        // @ts-ignore
+        destructive,
+        // @ts-ignore
+        hidden,
+        // @ts-ignore
+        androidIconName,
+        // @ts-ignore
+        iosIconName,
         ...itemProps
       } = props
       const ref = React.useRef<HTMLDivElement>(null)
@@ -1114,7 +1121,17 @@ export function createBaseMenu({
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_IMAGE = 'MenuItemImage'
   const MenuItemImage = React.forwardRef<Image, ImageProps>((props, forwardedRef) => {
-    return <_Image {...props} ref={forwardedRef} />
+    // filter out native-only props that shouldn't reach the DOM
+    const {
+      // @ts-ignore - native menu ios config
+      ios,
+      // @ts-ignore
+      androidIconName,
+      // @ts-ignore
+      iosIconName,
+      ...rest
+    } = props
+    return <_Image {...rest} ref={forwardedRef} />
   })
 
   MenuItemImage.displayName = ITEM_IMAGE
@@ -1125,12 +1142,22 @@ export function createBaseMenu({
    * MenuItemIcon
    * -----------------------------------------------------------------------------------------------*/
 
-  // TODO review why styleable was here
   const ITEM_ICON = 'MenuItemIcon'
-  const MenuItemIcon = _Icon
-  // .styleable((props: ThemeableStackProps, forwardedRef) => {
-  //   return <_Icon {...props} ref={forwardedRef} />
-  // })
+  const MenuItemIcon = _Icon.styleable((props: MenuItemIconProps, forwardedRef) => {
+    // filter out native-only props that shouldn't reach the DOM
+    const {
+      // @ts-ignore
+      ios,
+      // @ts-ignore
+      android,
+      // @ts-ignore
+      androidIconName,
+      // @ts-ignore
+      iosIconName,
+      ...rest
+    } = props
+    return <_Icon {...rest} ref={forwardedRef} />
+  })
 
   MenuItemIcon.displayName = ITEM_ICON
 
@@ -1150,6 +1177,11 @@ export function createBaseMenu({
       checked = false,
       onCheckedChange,
       scope = MENU_CONTEXT,
+      // filter out native-only props
+      // @ts-ignore - native menu value state
+      value,
+      // @ts-ignore - native menu value change handler
+      onValueChange,
       ...checkboxItemProps
     } = props
     return (
