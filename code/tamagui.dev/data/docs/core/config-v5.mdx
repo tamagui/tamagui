@@ -47,6 +47,46 @@ Available animation drivers:
   separately from one of the driver entry points above.
 </Notice>
 
+### Available Animations
+
+All v5 animation drivers include these preset animations:
+
+**Timing animations** (fixed duration):
+
+<PropsTable
+  data={[
+    { name: '0ms', description: 'Instant (0ms)' },
+    { name: '30ms', description: '30 milliseconds' },
+    { name: '50ms', description: '50 milliseconds' },
+    { name: '75ms', description: '75 milliseconds' },
+    { name: '100ms', description: '100 milliseconds' },
+    { name: '200ms', description: '200 milliseconds' },
+    { name: '300ms', description: '300 milliseconds' },
+  ]}
+/>
+
+**Spring animations** (physics-based):
+
+<PropsTable
+  data={[
+    { name: 'superBouncy', description: 'Very bouncy, playful spring' },
+    { name: 'bouncy', description: 'Bouncy spring with natural feel' },
+    { name: 'kindaBouncy', description: 'Subtle bounce, good for UI elements' },
+    { name: 'superLazy', description: 'Very slow, heavy spring' },
+    { name: 'lazy', description: 'Slow, relaxed spring' },
+    { name: 'medium', description: 'Balanced spring for general use' },
+    { name: 'slowest', description: 'Slowest spring animation' },
+    { name: 'slow', description: 'Slow spring animation' },
+    { name: 'quick', description: 'Fast, responsive spring' },
+    { name: 'quickLessBouncy', description: 'Quick with minimal overshoot' },
+    { name: 'quicker', description: 'Faster spring' },
+    { name: 'quickerLessBouncy', description: 'Faster with minimal overshoot' },
+    { name: 'quickest', description: 'Fastest spring' },
+    { name: 'quickestLessBouncy', description: 'Fastest with minimal overshoot' },
+    { name: 'tooltip', description: 'Tuned for tooltip enter/exit' },
+  ]}
+/>
+
 ---
 
 ## What's Different from v4

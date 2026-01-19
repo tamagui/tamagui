@@ -943,8 +943,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -968,7 +968,7 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13>;
     };
     selectionStyles: (theme: Record<string, string>) => {
         backgroundColor: string;

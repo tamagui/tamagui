@@ -83,18 +83,28 @@ export declare const selectionStyles: (theme: any) => {
 } | null;
 export declare const config: {
     animations: import("@tamagui/web").AnimationDriver<{
+        '0ms': string;
+        '30ms': string;
+        '50ms': string;
         '75ms': string;
         '100ms': string;
         '200ms': string;
-        bouncy: string;
+        '300ms': string;
         superBouncy: string;
+        bouncy: string;
+        kindaBouncy: string;
+        superLazy: string;
         lazy: string;
         medium: string;
+        slowest: string;
         slow: string;
         quick: string;
-        quicker: string;
-        quickest: string;
+        quickLessBouncy: string;
         tooltip: string;
+        quicker: string;
+        quickerLessBouncy: string;
+        quickest: string;
+        quickestLessBouncy: string;
     }>;
     themes: import("@tamagui/themes/v3-themes").ThemesOut;
     media: {
@@ -932,8 +942,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -957,7 +967,7 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13>;
     };
     selectionStyles: (theme: any) => {
         backgroundColor: any;

@@ -1,15 +1,25 @@
 export declare const animationsCSS: import("@tamagui/web").AnimationDriver<{
+    '0ms': string;
+    '30ms': string;
+    '50ms': string;
     '75ms': string;
     '100ms': string;
     '200ms': string;
-    bouncy: string;
+    '300ms': string;
     superBouncy: string;
+    bouncy: string;
+    kindaBouncy: string;
+    superLazy: string;
     lazy: string;
     medium: string;
+    slowest: string;
     slow: string;
     quick: string;
-    quicker: string;
-    quickest: string;
+    quickLessBouncy: string;
     tooltip: string;
+    quicker: string;
+    quickerLessBouncy: string;
+    quickest: string;
+    quickestLessBouncy: string;
 }>;
 //# sourceMappingURL=animationsCSS.d.ts.map
