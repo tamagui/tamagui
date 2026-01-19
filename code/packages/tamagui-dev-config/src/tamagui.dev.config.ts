@@ -23,7 +23,6 @@ export const config = {
   ...defaultConfig,
   themes,
   fonts,
-  // animations: animationsMotion,
   animations: {
     default: animationsMotion,
     css: animationsCSS,
@@ -33,8 +32,6 @@ export const config = {
     ...defaultConfig.settings,
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    styleCompat: 'react-native',
-    addThemeClassName: 'html',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
