@@ -36,20 +36,18 @@ export function MenuDemo() {
     <>
       <Menu allowFlip placement="bottom-start" offset={8}>
         <Menu.Trigger asChild>
-          <Button size="$4" circular icon={Backpack} scaleIcon={1.2} />
+          <Button size="$4" icon={Backpack}>
+            Open
+          </Button>
         </Menu.Trigger>
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
-            p="$1.5"
-            minW={180}
-            borderWidth={1}
-            borderColor="$borderColor"
-            transformOrigin="left top"
+            transition="quickest"
+            borderRadius="$4"
             enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
             exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
-            transition="quickest"
-            elevation="$3"
+            boxShadow="0 $2 $4 $shadowColor"
           >
             <Menu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
 
@@ -104,7 +102,7 @@ export function MenuDemo() {
                 textValue="Actions"
               >
                 <Menu.ItemTitle>Actions</Menu.ItemTitle>
-                <ChevronRight size={12} color="$color10" />
+                <ChevronRight color="$color10" />
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
