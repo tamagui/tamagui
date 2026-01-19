@@ -145,11 +145,7 @@ export {
 } from './paymentModalStore'
 
 // also import for internal use
-import {
-  usePaymentModal,
-  V2_LICENSE_PRICE,
-  V2_UPGRADE_PRICE,
-} from './paymentModalStore'
+import { usePaymentModal, V2_LICENSE_PRICE, V2_UPGRADE_PRICE } from './paymentModalStore'
 
 type StripePaymentModalProps = {
   yearlyTotal: number

@@ -1,6 +1,6 @@
 import { LogoIcon, useTint } from '@tamagui/logo'
 import { ArrowDown, Play } from '@tamagui/lucide-icons'
-import { animations } from '@tamagui/tamagui-dev-config'
+import { animationsMotion } from '@tamagui/tamagui-dev-config'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
   Button,
@@ -29,19 +29,19 @@ const animationDescriptions = [
     name: 'Bouncy',
     description: 'A bouncy spring',
     animation: 'bouncy',
-    settings: animations.animations.bouncy,
+    settings: animationsMotion.animations.bouncy,
   },
   {
     name: 'Lazy',
     description: 'A lazy, straightforward spring',
     animation: 'lazy',
-    settings: animations.animations.lazy,
+    settings: animationsMotion.animations.lazy,
   },
   {
     name: 'Quick',
     description: 'A super fast spring',
     animation: 'quick',
-    settings: animations.animations.quick,
+    settings: animationsMotion.animations.quick,
   },
 ] as const
 
