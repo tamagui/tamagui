@@ -1,5 +1,5 @@
 export * from './tamagui.dev.config'
 export * from './animations.css'
-// export * from './animations'
+export * from './animations'
 export * from './animations.motion'
 export * from './media'
