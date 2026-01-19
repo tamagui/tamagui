@@ -45,11 +45,11 @@ function ToggleGroupComponent(props: {
       >
         {/* Using styled() component */}
         <StyledItem value="left" aria-label="Left aligned">
-          <AlignLeft />
+          <AlignLeft size={16} />
         </StyledItem>
 
         <ToggleGroup.Item value="center" aria-label="Center aligned">
-          <AlignCenter />
+          <AlignCenter size={16} />
         </ToggleGroup.Item>
 
         {/* Using inline activeStyle prop */}
@@ -58,7 +58,7 @@ function ToggleGroupComponent(props: {
           aria-label="Right aligned"
           activeStyle={{ backgroundColor: '$green5' }}
         >
-          <AlignRight />
+          <AlignRight size={16} />
         </ToggleGroup.Item>
       </ToggleGroup>
     </XStack>

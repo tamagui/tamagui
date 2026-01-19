@@ -176,6 +176,7 @@ const MenuItem = styled(View, {
 
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    size: '$3',
   },
 })
 
