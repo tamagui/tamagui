@@ -47,7 +47,7 @@
     "clean:ts": "tsc -b --clean tsconfig.build.json",
     "clean": "./scripts/run.sh clean:build",
     "create": "./node_modules/.bin/create-tamagui",
-    "dev:build": "bun run --filter @tamagui/dot-dev build:prod",
+    "dev:build": "bun run --cwd code/tamagui.dev build:prod",
     "dev:extract": "TAMAGUI_EXTRACT=1 bun run --filter @tamagui/dot-dev dev:clean",
     "dev:prod-only-homepage": "bun run dev:build --only index && bun run dev:serve",
     "dev:prod": "bun run dev:build && bun run dev:serve",

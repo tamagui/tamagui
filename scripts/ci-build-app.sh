@@ -8,6 +8,6 @@ if [ "$app" = "takeout" ]; then
 elif [ "$app" = "docs" ]; then
   bun run docs:build
 else
-  # Use cd instead of --filter to avoid bun ENOENT issues in Docker
-  cd code/tamagui.dev && bun run build:prod
+  # Run from root directory to maintain proper module resolution
+  bun run dev:build
 fi
