@@ -1,4 +1,9 @@
-FROM oven/bun:1.2.22
+# use node base with bun installed - avoids vite+bun+docker hanging issues
+# see: https://github.com/vitejs/vite/discussions/16030
+FROM node:22
+
+# install bun
+RUN npm install -g bun
 
 ARG CF_API_KEY
 ARG CF_EMAIL

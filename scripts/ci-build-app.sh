@@ -8,6 +8,5 @@ if [ "$app" = "takeout" ]; then
 elif [ "$app" = "docs" ]; then
   bun run docs:build
 else
-  # Run from root directory to maintain proper module resolution
   bun run dev:build
 fi
