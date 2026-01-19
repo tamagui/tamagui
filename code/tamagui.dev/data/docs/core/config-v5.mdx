@@ -19,20 +19,33 @@ First install the config package:
 npm install @tamagui/config
 ```
 
-Using `defaultConfig` from v5 is the easiest way to start:
+## Choosing an Animation Driver
+
+V5 provides separate entry points for different animation drivers, so you only
+bundle what you need:
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v5'
+import { animations } from '@tamagui/config/v5-css'
 import { createTamagui } from 'tamagui'
 
-export const config = createTamagui(defaultConfig)
-
-type CustomConfig = typeof config
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends CustomConfig {}
-}
+export const config = createTamagui({
+  ...defaultConfig,
+  animations,
+})
 ```
+
+Available animation drivers:
+
+- **`@tamagui/config/v5-css`** - CSS animations (smallest bundle, great for web)
+- **`@tamagui/config/v5-motion`** - Motion animations (spring physics, smooth)
+- **`@tamagui/config/v5-rn`** - React Native Animated API
+- **`@tamagui/config/v5-reanimated`** - Reanimated (best native performance)
+
+<Notice>
+  The base `@tamagui/config/v5` export includes no animations. Import animations
+  separately from one of the driver entry points above.
+</Notice>
 
 ---
 
