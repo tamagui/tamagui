@@ -3,6 +3,7 @@ import { execSync } from 'node:child_process'
 import { resolve as pathResolve } from 'node:path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 import type { UserConfig } from 'vite'
 import { generateBentoProxy } from './scripts/generate-bento-proxy.mjs'
 
@@ -288,6 +289,7 @@ export const LocationNotification = BentoComponentStub
       },
 
       web: {
+        experimental_scriptLoading: 'after-lcp-aggressive',
         redirects: [
           {
             source: '/account/subscriptions',
@@ -319,6 +321,25 @@ export const LocationNotification = BentoComponentStub
     }),
 
     // removeReactNativeWebAnimatedPlugin(),
+
+    ...(process.env.ANALYZE
+      ? [
+          visualizer({
+            filename: 'bundle_stats.html',
+            open: false,
+            gzipSize: true,
+            brotliSize: true,
+            emitFile: true,
+          }),
+          visualizer({
+            filename: 'bundle_stats.json',
+            template: 'raw-data',
+            gzipSize: true,
+            brotliSize: true,
+            emitFile: true,
+          }),
+        ]
+      : []),
   ],
 } satisfies UserConfig
 
