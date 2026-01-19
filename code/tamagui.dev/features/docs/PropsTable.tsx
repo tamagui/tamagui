@@ -50,12 +50,12 @@ export function PropsTable({
             borderBottomWidth={1}
             borderBottomColor="$color4"
             py="$3"
+            pointerEvents="none"
           >
             <YStack width="100%">
               <XStack
                 position="relative"
                 py="$1"
-                bg="$background"
                 px="$4"
                 $sm={{ flexDirection: 'column' }}
               >
@@ -93,6 +93,7 @@ export function PropsTable({
 
                     <XStack
                       flex={2}
+                      flexBasis="auto"
                       minW="30%"
                       items="center"
                       $xs={{
