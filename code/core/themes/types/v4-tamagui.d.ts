@@ -122,11 +122,11 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     borderColorFocus: string;
     borderColorPress: string;
     placeholderColor: string;
-    outlineColor: string;
     accentBackground: string;
     accentColor: string;
     background0: string;
     color0: string;
+    outlineColor: string;
     white1: string;
     white2: string;
     white3: string;
