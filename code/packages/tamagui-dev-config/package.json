@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tamagui-dev-config",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768781784925",
   "source": "src/index.ts",
   "types": "./src/index.ts",
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/accordion",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768781784925",
   "type": "module",
   "sideEffects": [
     "*.css"

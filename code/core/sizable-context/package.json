@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sizable-context",
-  "version": "2.0.0-1768741592663",
+  "version": "2.0.0-1768781784925",
   "type": "module",
   "sideEffects": false,
   "description": "Sizable context for Tamagui components",
@@ -20,6 +20,9 @@
     "clean:build": "tamagui-build clean:build"
   },
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@tamagui/core": "workspace:*"
   },
