@@ -17,16 +17,21 @@ demoName: ThemeBuilder
 
 We have two ways to generate themes with `@tamagui/theme-builder`:
 
-- `createThemeBuilder` is a more low-level, chainable API.
-- `createThemes` makes generating a slightly opinonated suite of themes much
-  simpler.
+- **`createThemes`** - A declarative, opinionated helper that generates a complete theme suite from simple configuration. Start here for most projects.
+- **`createThemeBuilder`** - A low-level, chainable API for full control over every aspect of theme generation. Use this when you need custom structure beyond what `createThemes` provides.
 
 We've also released [Theme](/theme), a free point-and-click way to create themes
 that generates copy-paste `createThemes` code for you.
 
+---
+
 ## createThemes
 
-At it's simplest, `createThemes` is as simple as:
+`createThemes` is the recommended way to generate themes. It takes a simple configuration object and produces a complete, production-ready theme suite with sensible defaults.
+
+### Quick Start
+
+At its simplest:
 
 ```tsx
 import { createThemes } from '@tamagui/theme-builder'
@@ -34,68 +39,325 @@ import { createThemes } from '@tamagui/theme-builder'
 export const themes = createThemes({
   base: {
     palette: {
-      dark: ['#000', '#fff'],
       light: ['#fff', '#000'],
+      dark: ['#000', '#fff'],
     },
   },
 })
 ```
 
-Which will generate `light` and `dark` themes, spreading your palette colors
-between 1 and 12, and adding component themes.
+This generates `light` and `dark` themes with a 12-color scale interpolated from your palette, plus component themes for all Tamagui components.
 
-But you can go much further, generating a production-grade theme suite like so:
+### Structure Overview
+
+`createThemes` enforces an opinionated but flexible structure:
+
+```
+light                    # base light theme
+dark                     # base dark theme
+├── light_accent         # accent theme (inverted colors)
+├── dark_accent
+├── light_blue           # color child themes
+├── dark_blue
+│   ├── light_blue_accent   # grandchild themes
+│   └── dark_blue_accent
+├── light_Button         # component themes (auto-generated)
+├── dark_Button
+└── ...
+```
+
+This nesting enables powerful composition—wrap any part of your app in `<Theme name="blue">` and everything inside adapts.
+
+### Full Example
+
+Here's a production-ready configuration:
 
 ```tsx
-import { createThemes } from '@tamagui/theme-builder'
+import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import * as Colors from '@tamagui/colors'
 
 export const themes = createThemes({
+  // use the default component theme mappings
+  componentThemes: defaultComponentThemes,
+
+  // base theme - your primary light/dark palette
   base: {
     palette: {
-      dark: ['#000', '#fff',],
-      light: ['#fff', '#000'],
+      light: ['#fff', '#f2f2f2', '#e0e0e0', '#999', '#666', '#333', '#000'],
+      dark: ['#000', '#111', '#222', '#666', '#999', '#ccc', '#fff'],
+    },
+    // extra values not inherited by child themes
+    extra: {
+      light: {
+        ...Colors.blue,
+        shadowColor: 'rgba(0,0,0,0.1)',
+      },
+      dark: {
+        ...Colors.blueDark,
+        shadowColor: 'rgba(0,0,0,0.4)',
+      },
     },
   },
 
-  // this sets up both an accent theme, and $accent tokens
-  // in this case we're just making them "inverse" of the current theme
+  // accent theme - typically inverted for emphasis
   accent: {
     palette: {
-      dark: ['#fff', '#000'],
-      light: ['#000', '#fff',],
+      light: ['#000', '#333', '#666', '#999', '#ccc', '#eee', '#fff'],
+      dark: ['#fff', '#eee', '#ccc', '#999', '#666', '#333', '#000'],
     },
-  }
+  },
 
+  // child themes for semantic colors
   childrenThemes: {
-    warning: {
+    blue: {
       palette: {
-        dark: Object.values(Colors.yellowDark),
-        light: Object.values(Colors.yellow),
+        light: Object.values(Colors.blue),
+        dark: Object.values(Colors.blueDark),
       },
     },
-
-    error: {
+    red: {
       palette: {
-        dark: Object.values(Colors.redDark),
         light: Object.values(Colors.red),
+        dark: Object.values(Colors.redDark),
       },
     },
-
-    success: {
+    green: {
       palette: {
-        dark: Object.values(Colors.greenDark),
         light: Object.values(Colors.green),
+        dark: Object.values(Colors.greenDark),
       },
+    },
+  },
+
+  // grandchild themes - nest under each child theme
+  grandChildrenThemes: {
+    accent: {
+      template: 'inverse', // use inverse template, no custom palette
     },
   },
 })
 ```
 
-You can also use the `getTheme` callback to customize any theme at any level, an
-easy escape hatch if you don't want to use templates and palettes for
-everything. See the [getTheme](#customizing-themes-with-gettheme) section below
-for details.
+### Configuration Reference
+
+#### `base` (required)
+
+The foundation of your theme suite:
+
+```tsx
+base: {
+  // colors from background to foreground
+  // can be 2+ colors - will be interpolated to 12
+  palette: {
+    light: string[],
+    dark: string[],
+  },
+  // or a single array (auto-reversed for dark mode):
+  palette: string[],
+
+  // optional template (defaults to 'base')
+  template: 'base' | 'surface1' | 'surface2' | 'surface3' | 'inverse',
+
+  // optional extra values only on base themes
+  extra: {
+    light: { shadowColor: '...', brandColor: '...' },
+    dark: { shadowColor: '...', brandColor: '...' },
+  },
+}
+```
+
+#### `accent` (optional)
+
+Creates an accent theme and adds `$accent1-12` tokens to base themes:
+
+```tsx
+accent: {
+  palette: {
+    light: string[],
+    dark: string[],
+  },
+}
+```
+
+Generates: `light_accent`, `dark_accent`
+
+#### `childrenThemes` (optional)
+
+Color variations that nest under base themes:
+
+```tsx
+childrenThemes: {
+  blue: {
+    palette: { light: [...], dark: [...] },
+    template: 'base', // optional, defaults to 'base'
+  },
+  warning: {
+    palette: { light: [...], dark: [...] },
+  },
+}
+```
+
+Generates: `light_blue`, `dark_blue`, `light_warning`, `dark_warning`
+
+#### `grandChildrenThemes` (optional)
+
+Third-level themes that nest under children:
+
+```tsx
+grandChildrenThemes: {
+  // template-only: inherits parent's palette
+  accent: {
+    template: 'inverse',
+  },
+  // or with custom palette
+  subtle: {
+    palette: { light: [...], dark: [...] },
+    template: 'surface1',
+  },
+}
+```
+
+Generates: `light_blue_accent`, `dark_blue_accent`, etc.
+
+#### `templates` (optional)
+
+Override the default templates. Templates map property names to palette indices:
+
+```tsx
+templates: {
+  base: {
+    background: 6,        // 6th color in palette
+    backgroundHover: 8,
+    color: -1,           // negative = from end (-1 = last)
+    borderColor: 9,
+    // ...
+  },
+  surface1: { ... },
+  inverse: { ... },
+}
+```
+
+Default templates include: `base`, `surface1`, `surface2`, `surface3`, `alt1`, `alt2`, `inverse`
+
+#### `componentThemes` (optional)
+
+Map components to templates for automatic sub-theming:
+
+```tsx
+import { defaultComponentThemes } from '@tamagui/theme-builder'
+
+componentThemes: {
+  ...defaultComponentThemes,
+  Button: { template: 'surface3' },  // stronger background
+  Card: { template: 'surface1' },    // subtle background
+}
+
+// or disable entirely:
+componentThemes: false
+```
+
+Default mappings include Button, Card, Input, Switch, Checkbox, and more.
+
+#### `getTheme` (optional)
+
+Callback for customizing any generated theme:
+
+```tsx
+getTheme: ({
+  name,        // 'light_blue_accent'
+  theme,       // generated theme object
+  scheme,      // 'light' | 'dark' | undefined
+  level,       // 1=base, 2=children, 3=grandchildren
+  parentName,  // immediate parent
+  parentNames, // all ancestors
+  palette,     // palette array used
+  template,    // template object used
+}) => ({
+  ...theme,
+  // add computed values
+  shadowColor: scheme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.1)',
+  // override values
+  background: level > 1 ? `${theme.background}f0` : theme.background,
+})
+```
+
+### Generated Theme Shape
+
+Each theme includes these token categories:
+
+```tsx
+{
+  // background scale
+  background: '#fff',
+  backgroundHover: '#f5f5f5',
+  backgroundPress: '#eee',
+  backgroundFocus: '#f5f5f5',
+
+  // foreground scale
+  color: '#000',
+  colorHover: '#111',
+  colorPress: '#000',
+  colorFocus: '#111',
+
+  // borders
+  borderColor: '#ccc',
+  borderColorHover: '#bbb',
+  borderColorPress: '#ddd',
+  borderColorFocus: '#ccc',
+
+  // utility colors
+  placeholderColor: '#999',
+  outlineColor: '#333',
+
+  // full 12-color scale from palette
+  color1: '#fff',   // lightest
+  color2: '#f5f5f5',
+  // ...
+  color12: '#000',  // darkest
+
+  // transparent variants
+  background0: 'transparent',
+  background02: 'rgba(255,255,255,0.2)',
+  // ...
+
+  // accent colors (if accent theme defined)
+  accent1: '#000',
+  accent2: '#111',
+  // ... accent12
+
+  // extra values from base.extra
+  shadowColor: '...',
+}
+```
+
+### Usage in Your App
+
+```tsx
+import { Theme } from 'tamagui'
+import { themes } from './themes'
+
+// in your config
+createTamagui({
+  themes,
+  // ...
+})
+
+// in your app
+<Theme name="light">
+  <App />
+</Theme>
+
+// nest themes anywhere
+<Theme name="blue">
+  <Card>
+    <Theme name="accent">
+      <Button>Inverted Blue</Button>
+    </Theme>
+  </Card>
+</Theme>
+```
+
+---
 
 ## createThemeBuilder
 

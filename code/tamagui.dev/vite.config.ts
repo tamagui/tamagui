@@ -225,19 +225,6 @@ export const LocationNotification = BentoComponentStub
     one({
       react: {
         compiler: true,
-        // scan: {
-        //   options: {
-        //     showToolbar: true,
-        //     enabled: true,
-        //     // log: true,
-        //   },
-        // },
-      },
-
-      router: {
-        experimental: {
-          preventLayoutRemounting: true,
-        },
       },
 
       ssr: {

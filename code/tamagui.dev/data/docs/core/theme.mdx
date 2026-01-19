@@ -3,38 +3,40 @@ title: Theme
 description: Change themes contextually
 ---
 
-<Notice theme="blue">
-  The package `tamagui` is a superset of `@tamagui/core`. If you are using `tamagui`, be sure to
-  import Theme from there - there's no need to add core to your package.json.
-</Notice>
-
-Changing themes in Tamagui is as easy as passing their name to the Theme component.
+Changing themes in Tamagui is as easy as passing their name to the Theme
+component.
 
 ### Usage
 
 Change themes anywhere in your app like so:
 
 ```tsx
-import { Button, Theme } from 'tamagui' // or '@tamagui/core'
+import { Square, Theme } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
   <Theme name="dark">
     <Button>I'm a dark button</Button>
+    <Button theme="subtle">I'm using dark_subtle theme</Button>
   </Theme>
 )
 ```
 
-### Sub-themes
+### Defining themes
 
-There is one special property of themes that's very helpful for what is essentially sub-themes, or tints.
+Themes live one level below tokens. Tokens are your static variables, where
+themes are more dynamic like CSS variables.
 
-Basically, if you have a base `dark` theme and a `light` theme, you may want to have "tinted" versions of those themes. For example `light_pink` and `dark_pink`. Instead of having hard-coded color values like `$pink3`, you create as many pink themes as you want: `light_pink_alt1`, `light_pink_alt2`, etc.
+You can define themes however you want, but for the `tamagui` UI kit, the
+components default styling will use a set of pre-defined keys. Those keys are:
 
-Each of those themes is recommended to be small: just having values that map to ViewStyle or TextStyle, like `$color` (and that can postfix pseudo states, like `$colorHover`).
+- `background`, `backgroundHover`,`backgroundPress`, `backgroundFocus`
+- `borderColor`, `borderColorHover`,`borderColorPress`, `borderColorFocus`
+- `shadowColor`
 
-Then, you just give your component a `theme="pink"` prop, or wrap it in `<Theme name="pink" />`. Note that you can leave out the `light_` or even `light_pink` prefix, Tamagui will nest properly so long as the parent is set.
+These are optional, as you can always set `unstyled` on any Tamagui component to
+use your own styles.
 
-It's easier to understand with an example. First, define your tokens and themes:
+Here's a simplified theme definition:
 
 ```tsx
 import { createTamagui, createTokens } from 'tamagui'
@@ -70,7 +72,22 @@ export default createTamagui({
 })
 ```
 
-Using the `_pink` suffix, the `Theme` component will now let us automatically do sub-theming:
+Passing tokens to themes will reduce CSS, but is not requred.
+
+You can then access theme values for any style value, either through styled() or
+through a Styled Compoent like View or Text:
+
+```tsx
+const P = styled(Text, {
+  color: '$color12'
+})
+
+// or directly
+<Text color="$color11" />
+```
+
+Because we defined sub-themes `light_pink` and `dark_pink`, the `Theme`
+component will now let us do this:
 
 ```tsx
 import { Button, Theme } from 'tamagui'
@@ -80,135 +97,15 @@ export default () => {
     <Theme name="dark">
       <Button>I have the theme dark</Button>
       <Theme name="pink">
-        <Button>I have the theme pink-dark</Button>
+        <Button>I have the theme pink_dark</Button>
       </Theme>
     </Theme>
   )
 }
 ```
 
-Notice we just use the name `pink`. Because theres no `pink` theme, the Theme component will automatically check if theres a theme that matches the pattern `[currentThemeName]_[givenName]`, in this case `dark_pink`. This is really useful for things like having an `active` or `error` theme that match your parent theme styles.
+Notice we just use the name `pink`, easy!
 
----
-
-## Accent (Contrasting Theme)
-
-The `accent` sub-theme provides contrasting colors - use it when you need elements to stand out against the current theme. It works with all color themes:
-
-<HeroContainer>
-  <ThemeInverseDemo />
-</HeroContainer>
-
-```tsx hero template=ThemeInverse
-
-```
-
-### Usage
-
-```tsx
-import { Button, Theme } from 'tamagui'
-
-export default () => (
-  <Theme name="light">
-    <Button>Light Button</Button>
-
-    <Theme name="accent">
-      <Button>Contrasting Button (dark-ish)</Button>
-    </Theme>
-
-    <Theme name="red">
-      <Theme name="accent">
-        <Button>Red + Accent</Button>
-      </Theme>
-    </Theme>
-  </Theme>
-)
-```
-
-### What themes are created
-
-The `accent` sub-theme creates these theme combinations:
-
-- `light_accent`, `dark_accent` - base contrasting themes
-- `light_red_accent`, `light_blue_accent`, etc. - color + contrasting themes
-
-### Important notes
-
-- `accent` must be the **last** (innermost) theme in your nesting
-- You cannot nest themes like `<Theme name="accent"><Theme name="red">` - this won't work
-- The correct order is always: base → color → accent
-
-```tsx
-// ✅ Correct - accent is last
-<Theme name="red">
-  <Theme name="accent">
-    <Button />
-  </Theme>
-</Theme>
-
-// ❌ Wrong - accent is not last
-<Theme name="accent">
-  <Theme name="red">
-    <Button />
-  </Theme>
-</Theme>
-```
-
-### Using tokens in accent themes
-
-When inside an accent theme, use `$color` tokens - they automatically adapt to the inverted palette:
-
-```tsx
-// ✅ Correct - use $color tokens inside accent theme
-<View theme="accent" bg="$background">
-  <Text color="$color12">This text has proper contrast</Text>
-</View>
-
-// $background → dark (inverted from light)
-// $color12 → light text (for contrast on dark background)
-```
-
-Most Tamagui components (Button, Card, etc.) use `$color` tokens internally, so simply adding `theme="accent"` will give you the correct contrasting appearance.
-
-```tsx
-// Components automatically use $color tokens
-<Button theme="accent">Contrasting Button</Button>
-
-// For custom styling, use $color tokens
-<View theme="accent" bg="$color3" borderColor="$color6">
-  <Text color="$color12">Custom styled content</Text>
-</View>
-```
-
-## Reset
-
-The `reset` prop will change the theme to the grandparent's value:
-
-```tsx
-<Theme name="dark">
-  <Theme name="pink">
-    <Theme reset>
-      {/* This square and all children will have theme "dark" */}
-      <Square bg="$background" size={10} />
-    </Theme>
-  </Theme>
-</Theme>
-```
-
----
-
-## themeable()
-
-The `themeable` helper function is a "higher order component" that wraps any React component definition and adds the `theme` prop for changing the theme on that component and its children.
-
-It's used for example on [Button](/docs/components/button).
-
-```tsx
-import { Button } from 'tamagui'
-
-// Using theme prop to apply accent theme to a button
-<Button theme="accent">Contrasting Button</Button>
-
-// Or with color themes
-<Button theme="red">Red Button</Button>
-```
+For more on themes see our [advanced theme guide](/docs/guides/theme-builder)
+which also introduces the `createThemes` and `createThemeBuilder`, both of which
+help generate larger and richer, typed themes more easily.

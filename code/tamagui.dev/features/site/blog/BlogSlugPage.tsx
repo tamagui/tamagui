@@ -53,7 +53,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
 
         <H2
           opacity={0.5}
-          color="$color10"
+          color="$color11"
           size="$7"
           fontWeight="500"
           fontFamily="$body"

@@ -207,6 +207,25 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         </Link>
 
         <UpgradeToProPopover />
+
+        <Link href="/blog/version-two">
+          <XStack
+            bg="$color5"
+            px="$2"
+            py="$1"
+            rounded="$4"
+            hoverStyle={{
+              bg: '$color6',
+            }}
+            pressStyle={{
+              bg: '$color7',
+            }}
+          >
+            <SizableText size="$1" fontWeight="700" color="$color11">
+              v2
+            </SizableText>
+          </XStack>
+        </Link>
       </XStack>
 
       <View flex={1} />

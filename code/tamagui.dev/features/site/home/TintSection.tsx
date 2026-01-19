@@ -144,14 +144,15 @@ export const SectionTinted = ({
       position="relative"
       py="$14"
       elevation="$2"
-      {...(bubble && {
-        maxW: 1400,
-        rounded: '$6',
-        borderWidth: 1,
-        borderColor: `$${tint}4`,
-        self: 'center',
-        width: '100%',
-      })}
+      {...(bubble &&
+        tint && {
+          maxW: 1400,
+          rounded: '$6',
+          borderWidth: 1,
+          borderColor: `$${tint}4`,
+          self: 'center',
+          width: '100%',
+        })}
       {...props}
     >
       <YStack
@@ -159,11 +160,11 @@ export const SectionTinted = ({
         className="all ease-in ms1000"
         z={-1}
         opacity={0.4}
-        bg={gradient ? (`$${tint}2` as any) : null}
+        bg={gradient && tint ? (`$${tint}2` as any) : null}
         {...(!bubble && {
           borderTopWidth: noBorderTop ? 0 : 1,
           borderBottomWidth: 1,
-          borderColor: `$${tint}3` as any,
+          borderColor: tint ? (`$${tint}3` as any) : '$borderColor',
         })}
       />
       {childrenMemo}

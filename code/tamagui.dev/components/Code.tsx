@@ -26,15 +26,15 @@ export const CodeInline = styled(Paragraph, {
   render: 'code',
   fontFamily: '$mono',
   color: '$color12',
-  backgroundColor: '$color4',
+  backgroundColor: '$color3',
   cursor: 'inherit',
   rounded: '$3',
   // @ts-ignore
   fontSize: '90%',
   // @ts-ignore
-  lineHeight: '80%',
+  lineHeight: '70%',
   px: '0.6%',
-  py: '0.8%',
+  py: '0.45%',
   mx: '-0.1%',
   whiteSpace: 'pre',
 })
