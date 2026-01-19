@@ -104,11 +104,56 @@
       "module": "./dist/esm/v5.mjs",
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs"
+    },
+    "./v5-css": {
+      "react-native": {
+        "module": "./dist/esm/v5-css.native.js",
+        "import": "./dist/esm/v5-css.native.js",
+        "require": "./dist/cjs/v5-css.native.js"
+      },
+      "types": "./types/v5-css.d.ts",
+      "module": "./dist/esm/v5-css.mjs",
+      "import": "./dist/esm/v5-css.mjs",
+      "require": "./dist/cjs/v5-css.cjs"
+    },
+    "./v5-rn": {
+      "react-native": {
+        "module": "./dist/esm/v5-rn.native.js",
+        "import": "./dist/esm/v5-rn.native.js",
+        "require": "./dist/cjs/v5-rn.native.js"
+      },
+      "types": "./types/v5-rn.d.ts",
+      "module": "./dist/esm/v5-rn.mjs",
+      "import": "./dist/esm/v5-rn.mjs",
+      "require": "./dist/cjs/v5-rn.cjs"
+    },
+    "./v5-reanimated": {
+      "react-native": {
+        "module": "./dist/esm/v5-reanimated.native.js",
+        "import": "./dist/esm/v5-reanimated.native.js",
+        "require": "./dist/cjs/v5-reanimated.native.js"
+      },
+      "types": "./types/v5-reanimated.d.ts",
+      "module": "./dist/esm/v5-reanimated.mjs",
+      "import": "./dist/esm/v5-reanimated.mjs",
+      "require": "./dist/cjs/v5-reanimated.cjs"
+    },
+    "./v5-motion": {
+      "react-native": {
+        "module": "./dist/esm/v5-motion.native.js",
+        "import": "./dist/esm/v5-motion.native.js",
+        "require": "./dist/cjs/v5-motion.native.js"
+      },
+      "types": "./types/v5-motion.d.ts",
+      "module": "./dist/esm/v5-motion.mjs",
+      "import": "./dist/esm/v5-motion.mjs",
+      "require": "./dist/cjs/v5-motion.cjs"
     }
   },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
     "@tamagui/animations-moti": "workspace:*",
+    "@tamagui/animations-motion": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/animations-reanimated": "workspace:*",
     "@tamagui/colors": "workspace:*",
