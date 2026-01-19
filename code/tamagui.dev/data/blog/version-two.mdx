@@ -56,7 +56,7 @@ codebase.
 
 ### Improvements During Version One
 
-Tamagui improved continuously during version one. Some stats:
+Some stats:
 
 - **7,900+ commits** over 2 years (~330/month)
 - **900+ issues closed**
@@ -75,8 +75,9 @@ Highlights:
 - Added many styling features like container queries, container and media
   queries combined, and platform/theme selectors.
 - New compound components like Tabs, Accordion, and ToggleGroup.
-- Unstyled versions of every component.
-- Improved theme generation packages, and released a free visual Theme builder.
+- Unstyled versions of most components.
+- Improved theme generation packages, and the
+  [free and paid theme builder](/theme).
 - The Takeout starter kit, and Bento copy-paste components and patterns.
 - A lot of low level work on performance, documentation, our CLI, and more.
 
@@ -90,7 +91,7 @@ The breaking changes outside of deprecations are:
 
 - **React Native 0.82+ and React 19+ required.** Tamagui 2 targets React Native
   0.82 and React 19 and above with New Architecture support. This enables
-  significant new style features and simplifies internals.
+  significant new style features and simplified internals.
 - Default flex and position styles align with the latest React Native versions,
   but you can change settings to keep the legacy behavior.
 - Button and ListItem lose direct text style props for better performance.
@@ -105,9 +106,9 @@ The breaking changes outside of deprecations are:
   [inverse themes guide](/docs/guides/theme-builder#inverse-themes).
 - Removed the `maxDarkLightNesting` and `cssStyleSeparator` settings.
 - Removed `space` and `spaceDirection` props - use `gap` instead.
-- Tabs `activationMode` now defaults to `'manual'` instead of `'automatic'`. This
-  means focusing a tab no longer changes the active tab - you must click or press
-  Enter/Space. This matches web standards.
+- Tabs `activationMode` now defaults to `'manual'` instead of `'automatic'`.
+  This means focusing a tab no longer changes the active tab - you must click or
+  press Enter/Space. This matches web standards.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
 - Removed React Native accessibility props in favor of web-standard props:
@@ -124,6 +125,10 @@ The breaking changes outside of deprecations are:
   - `accessible` → `tabIndex={0}`
   - `focusable` → `tabIndex`
   - `nativeID` → `id`
+
+<Notice>
+  Copy this blog post to give to AI Agents to migrate from v1 to v2!
+</Notice>
 
 #### CSS Shorthand with Variables
 
@@ -212,18 +217,10 @@ styles change, instead of triggering a re-render cycle, it directly mutates the
 DOM through Motion's `useAnimate` hook. This is enabled by a rewrite of Tamagui
 internals to allow a new `avoidReRenders` setting for animation drivers, which
 tells Tamagui's core to emit style changes via a callback rather than through
-state updates.
-
-Under the hood, Motion leverages the
+state updates. Further, Motion leverages the
 [Web Animations API (WAAPI)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
-which runs animations off the main thread. This means your spring animations run
-at 60fps even when JavaScript is busy. The driver also implements intelligent
-diffing - it tracks the previous animated styles and only sends changed
-properties to Motion, minimizing work on each frame.
-
-The result is buttery smooth animations that don't block your UI, making it
-ideal for complex interactive components like sheets, popovers, and page
-transitions on web.
+which runs animations off the main thread. Both together make for much smoother
+web animations with springs.
 
 #### Reanimated Driver Improvements
 
@@ -314,8 +311,8 @@ const GreenTab = styled(Tabs.Tab, {
 ```
 
 This replaces the previous `toggledStyle` prop on ToggleGroup with the more
-consistent `activeStyle` naming. Icons inside these components also automatically
-size based on `SizableContext`.
+consistent `activeStyle` naming. Icons inside these components also
+automatically size based on `SizableContext`.
 
 #### Headless and Unstyled Components
 
@@ -494,7 +491,7 @@ files across 5 testing frameworks with dedicated native testing infrastructure.
 each animation driver. This catches driver-specific regressions that would
 otherwise slip through.
 
-#### CLI Improvements
+#### CLI Improvements / Agent Docs Generation
 
 The [Tamagui CLI](/docs/guides/cli) has new commands for building and working
 with your design system:
@@ -510,16 +507,25 @@ with your design system:
 - **`tamagui check`** - Scan for inconsistent dependency versions across your
   project.
 
+We recommend generating your prompt and committing to your repo, even before you
+do your full upgrade to version 2, as it will help agents understand your
+Tamagui config better.
+
 ### What's next
 
-Tamagui is quite mature in terms of features, foundation, and performance. We
-likely won't add much for a while, instead I'd like to continue focusing on
-refinement, and also move much more quickly towards a version three. That will
-probably involve a version 2.X sometime soon that deprecates a variety more
-things we want to, in order to clear the way.
+Tamagui is quite mature in terms of features, foundation, and performance. AI
+Agents generate it's code exceptionally well becuase it's been in wide use and
+well documented for years. For this reason, we are avoiding large syntax or
+theme changes, for now.
 
-Our broad goals for the future include better alignment to the web, simpler
-onboarding, and a few more components.
+We're going to deprecate a variety of things in 2.1 that will be planned for
+3.0, and will follow with 3.0 a lot quicker than this major took.
+
+There's still some work to do in terms of simplifying internals, we'd like to
+move both our built-in styles and standardized sizing to be done in a more clear
+way where it's easy to unplug either. Other broad goals include better alignment
+to the web, simpler onboarding, more components, better components, and more
+native component integrations.
 
 ### Thanks
 
