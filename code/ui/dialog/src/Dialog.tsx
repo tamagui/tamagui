@@ -397,9 +397,11 @@ const DialogContentFrame = styled(ThemeableStack, {
     unstyled: {
       false: {
         position: 'relative',
-        backgrounded: true,
-        padded: true,
-        radiused: true,
+        backgroundColor: '$background',
+        borderWidth: 1,
+        borderColor: '$borderColor',
+        padding: '$true',
+        borderRadius: '$true',
         elevate: true,
         zIndex: 100_000,
         // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
