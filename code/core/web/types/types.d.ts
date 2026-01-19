@@ -989,8 +989,10 @@ export interface TransformStyleProps {
     rotateX?: `${number}deg` | UnionableString;
     rotateZ?: `${number}deg` | UnionableString;
 }
-export type BoxShadowValue = string & {};
-export type FilterValue = string & {};
+type BoxShadowPreset = '0 0' | '0 1px 2px' | '0 1px 2px 0' | '0 1px 2px $shadowColor' | '0 1px 3px 0 $shadowColor' | '0 4px 6px -1px $shadowColor' | 'inset 0 2px 4px $shadowColor' | 'none';
+export type BoxShadowValue = BoxShadowPreset | (string & {});
+type FilterPreset = 'blur(4px)' | 'brightness(1.2)' | 'contrast(1.2)' | 'drop-shadow(0 4px 8px $shadowColor)' | 'grayscale(1)' | 'hue-rotate(90deg)' | 'invert(1)' | 'opacity(0.5)' | 'saturate(1.5)' | 'sepia(1)' | 'none';
+export type FilterValue = FilterPreset | (string & {});
 interface ExtraStyleProps {
     /**
      * Controls the curve style of rounded corners.
