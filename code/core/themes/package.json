@@ -7,10 +7,9 @@
   "module": "dist/esm",
   "sideEffects": false,
   "scripts": {
-    "generate": "yarn generate:v1 && yarn generate:v2 && yarn generate:v3 && yarn generate:v4 && yarn generate:v4-tamagui && yarn generate:v5",
+    "generate": "yarn generate:v1 && yarn generate:v3 && yarn generate:v4 && yarn generate:v4-tamagui && yarn generate:v5",
     "generate:v5": "tamagui generate-themes ./src/v5-themes.ts ./src/generated-v5.ts",
     "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
-    "generate:v2": "tamagui generate-themes ./src/v2-themes.ts ./src/generated-v2.ts",
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
     "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
     "generate:v4-tamagui": "tamagui generate-themes ./src/v4-tamagui.ts ./src/generated-v4-tamagui.ts",
@@ -36,28 +35,6 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
-    },
-    "./v2": {
-      "react-native": {
-        "module": "./dist/esm/v2.native.js",
-        "import": "./dist/esm/v2.native.js",
-        "require": "./dist/cjs/v2.native.js"
-      },
-      "types": "./types/v2.d.ts",
-      "module": "./dist/esm/v2.mjs",
-      "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.cjs"
-    },
-    "./v2-themes": {
-      "react-native": {
-        "module": "./dist/esm/v2-themes.native.js",
-        "import": "./dist/esm/v2-themes.native.js",
-        "require": "./dist/cjs/v2-themes.native.js"
-      },
-      "types": "./types/v2-themes.d.ts",
-      "module": "./dist/esm/v2-themes.mjs",
-      "import": "./dist/esm/v2-themes.mjs",
-      "require": "./dist/cjs/v2-themes.cjs"
     },
     "./v3": {
       "react-native": {

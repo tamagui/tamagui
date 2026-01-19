@@ -126,7 +126,6 @@
     "@manypkg/cli": "^0.23.0",
     "@playwright/test": "^1.49.1",
     "@testing-library/dom": "^10.4.0",
-    "@typescript/native-preview": "^7.0.0-dev.20260119.1",
     "dotenv-cli": "^7.4.2",
     "esbuild": "^0.25.11",
     "esbuild-register": "^3.6.0",

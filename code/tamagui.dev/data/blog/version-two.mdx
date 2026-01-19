@@ -81,6 +81,12 @@ Native, and web standards, and includes a few new features and components.
 
 The breaking changes outside of deprecations are:
 
+- **Removed deprecated v2 config exports.** The `/v2` exports from `@tamagui/config`,
+  `@tamagui/themes`, and `@tamagui/shorthands` have been removed. These were the
+  original config format from early Tamagui versions - not to be confused with
+  Tamagui v2 itself. The current config is now at v5. If you were using
+  `@tamagui/config/v2`, migrate to `@tamagui/config/v5` or the default export.
+
 - **React Native 0.82+ and React 19+ required.** Tamagui 2 targets React Native
   0.82 and React 19 and above with New Architecture support. This enables
   significant new style features and simplified internals.
