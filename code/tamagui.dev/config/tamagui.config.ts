@@ -1,10 +1,7 @@
+import { config } from '@tamagui/tamagui-dev-config'
 import { createTamagui } from 'tamagui'
-import { config, animationsMotion } from '@tamagui/tamagui-dev-config'
 
-const tamaConf = createTamagui({
-  ...config,
-  animations: animationsMotion,
-})
+const tamaConf = createTamagui(config)
 
 export type Conf = typeof tamaConf
 
