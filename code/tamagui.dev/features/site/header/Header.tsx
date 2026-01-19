@@ -1,6 +1,6 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
-import { isTouchable, useGet, useMedia } from '@tamagui/web'
+import { isTouchable, Theme, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import { useWindowDimensions, type LayoutRectangle } from 'react-native'
@@ -36,7 +36,7 @@ import { useDocsMenu } from '../../docs/useDocsMenu'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
-import { accountModal } from '../purchase/NewAccountModal'
+import { accountModal } from '../purchase/accountModalStore'
 import { PromoCardTheme } from './PromoCards'
 import { SearchButton } from './SearchButton'
 import { UpgradeToProPopover } from './UpgradeToProPopover'
@@ -208,24 +208,26 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <UpgradeToProPopover />
 
-        <Link href="/blog/version-two">
-          <XStack
-            bg="$color5"
-            px="$2"
-            py="$1"
-            rounded="$4"
-            hoverStyle={{
-              bg: '$color6',
-            }}
-            pressStyle={{
-              bg: '$color7',
-            }}
-          >
-            <SizableText size="$1" fontWeight="700" color="$color11">
-              v2
-            </SizableText>
-          </XStack>
-        </Link>
+        <Theme name="green">
+          <Link href="/blog/version-two">
+            <XStack
+              bg="$color5"
+              px="$2"
+              py="$1"
+              rounded="$4"
+              hoverStyle={{
+                bg: '$color4',
+              }}
+              pressStyle={{
+                bg: '$color6',
+              }}
+            >
+              <SizableText size="$3" color="$color11">
+                v2
+              </SizableText>
+            </XStack>
+          </Link>
+        </Theme>
       </XStack>
 
       <View flex={1} />

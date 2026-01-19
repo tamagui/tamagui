@@ -127,34 +127,29 @@ if (!key) {
   console.warn(`No stripe key!`)
 }
 
-const stripePromise = loadStripe(key || '')
-
-class PaymentModal {
-  show = false
-  yearlyTotal = 0
-  monthlyTotal = 0
-  disableAutoRenew = false
-  chatSupport = false
-  supportTier = 0
-  teamSeats = 0
-  selectedPrices = {
-    disableAutoRenew: false,
-    chatSupport: false,
-    supportTier: 0,
-    teamSeats: 0,
+// lazy load stripe only when needed
+let stripePromise: ReturnType<typeof loadStripe> | null = null
+const getStripe = () => {
+  if (!stripePromise) {
+    stripePromise = loadStripe(key || '')
   }
-  // V2 fields
-  isV2 = true // Default to V2 for new purchases
-  projectName = ''
-  projectDomain = ''
+  return stripePromise
 }
 
-export const paymentModal = createStore(PaymentModal)
-export const usePaymentModal = createUseStore(PaymentModal)
+// re-export from separate file to allow code splitting
+export {
+  paymentModal,
+  usePaymentModal,
+  V2_LICENSE_PRICE,
+  V2_UPGRADE_PRICE,
+} from './paymentModalStore'
 
-// V2 Pro pricing constants
-export const V2_LICENSE_PRICE = 999 // $999 one-time
-export const V2_UPGRADE_PRICE = 300 // $300/year for updates
+// also import for internal use
+import {
+  usePaymentModal,
+  V2_LICENSE_PRICE,
+  V2_UPGRADE_PRICE,
+} from './paymentModalStore'
 
 type StripePaymentModalProps = {
   yearlyTotal: number
@@ -1009,7 +1004,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
           {amount > 0 && (
             <Elements
-              stripe={stripePromise}
+              stripe={getStripe()}
               options={{
                 appearance,
                 mode: 'payment',

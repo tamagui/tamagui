@@ -20,7 +20,7 @@ import {
   YStack,
 } from 'tamagui'
 import { defaultModel } from '../../api/generateModels'
-import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
+import { purchaseModal } from '../../site/purchase/purchaseModalStore'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { themeJSONToText } from './helpers/themeJSONToText'

@@ -1,12 +1,11 @@
 import { LogOut, Search, X } from '@tamagui/lucide-icons'
 import { animationsCSS } from '@tamagui/tamagui-dev-config'
-import { createStore, createUseStore } from '@tamagui/use-store'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
 import { router } from 'one'
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
 import {
@@ -39,9 +38,10 @@ import { useUser } from '~/features/user/useUser'
 import { useClipboard } from '~/hooks/useClipboard'
 import { Pricing, ProductName, SubscriptionStatus } from '~/shared/types/subscription'
 import { Link } from '../../../components/Link'
-import { addTeamMemberModal, AddTeamMemberModalComponent } from './AddTeamMemberModal'
-import { FaqTabContent } from './NewPurchaseModal'
-import { paymentModal } from './StripePaymentModal'
+import { accountModal, useAccountModal } from './accountModalStore'
+import { addTeamMemberModal } from './addTeamMemberModalStore'
+import { FaqTabContent } from './FaqTabContent'
+import { paymentModal } from './paymentModalStore'
 import { useProducts } from './useProducts'
 import {
   useInviteTeamMember,
@@ -51,14 +51,16 @@ import {
   type TeamSubscription,
 } from './useTeamSeats'
 
-class AccountModal {
-  show = false
-}
+const AddTeamMemberModalComponent = lazy(() =>
+  import('./AddTeamMemberModal').then((mod) => ({
+    default: mod.AddTeamMemberModalComponent,
+  }))
+)
+
+// re-export for backwards compat
+export { accountModal, useAccountModal } from './accountModalStore'
 
 type Subscription = NonNullable<UserContextType['subscriptions']>[number]
-
-export const accountModal = createStore(AccountModal)
-export const useAccountModal = createUseStore(AccountModal)
 
 type TabName = 'plan' | 'upgrade' | 'manage' | 'team' | 'faq'
 
@@ -134,7 +136,9 @@ export const NewAccountModal = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog>
-      <AddTeamMemberModalComponent />
+      <Suspense fallback={null}>
+        <AddTeamMemberModalComponent />
+      </Suspense>
     </>
   )
 }

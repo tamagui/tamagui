@@ -1,6 +1,6 @@
 import { useUser } from '~/features/user/useUser'
-import { accountModal } from './NewAccountModal'
-import { purchaseModal } from './NewPurchaseModal'
+import { accountModal } from './accountModalStore'
+import { purchaseModal } from './purchaseModalStore'
 
 /**
  * This hook is used to show the appropriate modal based on the user's subscription status.

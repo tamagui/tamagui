@@ -1,7 +1,7 @@
 import type { Href } from 'one'
 import { H2, Paragraph, XStack, YStack } from 'tamagui'
 import { Link } from '../../../components/Link'
-import { purchaseModal } from '../purchase/NewPurchaseModal'
+import { purchaseModal } from '../purchase/purchaseModalStore'
 
 export const TooltipLabelLarge = ({
   title,
