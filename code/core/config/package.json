@@ -28,39 +28,6 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
-    "./v2": {
-      "react-native": {
-        "module": "./dist/esm/v2.native.js",
-        "import": "./dist/esm/v2.native.js",
-        "require": "./dist/cjs/v2.native.js"
-      },
-      "types": "./types/v2.d.ts",
-      "module": "./dist/esm/v2.mjs",
-      "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.cjs"
-    },
-    "./v2-reanimated": {
-      "react-native": {
-        "module": "./dist/esm/v2-reanimated.native.js",
-        "import": "./dist/esm/v2-reanimated.native.js",
-        "require": "./dist/cjs/v2-reanimated.native.js"
-      },
-      "types": "./types/v2-reanimated.d.ts",
-      "module": "./dist/esm/v2-reanimated.mjs",
-      "import": "./dist/esm/v2-reanimated.mjs",
-      "require": "./dist/cjs/v2-reanimated.cjs"
-    },
-    "./v2-native": {
-      "react-native": {
-        "module": "./dist/esm/v2-native.native.js",
-        "import": "./dist/esm/v2-native.native.js",
-        "require": "./dist/cjs/v2-native.native.js"
-      },
-      "types": "./types/v2-native.d.ts",
-      "module": "./dist/esm/v2-native.mjs",
-      "import": "./dist/esm/v2-native.mjs",
-      "require": "./dist/cjs/v2-native.cjs"
-    },
     "./reanimated": {
       "react-native": {
         "module": "./dist/esm/index.reanimated.native.js",
