@@ -73,6 +73,7 @@ export const animationsMotion = createAnimations({
     stiffness: 250,
   },
   quickest: {
+    type: 'tween',
     damping: 14,
     mass: 0.1,
     stiffness: 380,
