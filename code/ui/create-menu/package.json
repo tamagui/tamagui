@@ -52,11 +52,11 @@
     "@tamagui/portal": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",
+    "@tamagui/text": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "@tamagui/text": "workspace:*",
     "tamagui": "workspace:*"
   },
   "optionalDependencies": {

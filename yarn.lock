@@ -7548,6 +7548,7 @@ __metadata:
     "@tamagui/portal": "workspace:*"
     "@tamagui/remove-scroll": "workspace:*"
     "@tamagui/roving-focus": "workspace:*"
+    "@tamagui/text": "workspace:*"
     "@tamagui/use-callback-ref": "workspace:*"
     "@tamagui/use-controllable-state": "workspace:*"
     "@tamagui/use-direction": "workspace:*"
