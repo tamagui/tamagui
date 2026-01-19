@@ -116,7 +116,7 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     ItemTitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     ItemSubtitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;
-    ItemIcon: import("@tamagui/web").TamaguiComponent;
+    ItemIcon: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
 };
 export type { MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIndicatorProps, MenuItemProps, MenuLabelProps, MenuPortalProps, MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps, };
 //# sourceMappingURL=createNonNativeMenu.d.ts.map
