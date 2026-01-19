@@ -325,7 +325,7 @@ export const DialogOverlayFrame = styled(YStack, {
       false: {
         fullscreen: true,
         position: 'absolute',
-        backgrounded: true,
+        backgroundColor: '$background',
         zIndex: 100_000 - 1,
         pointerEvents: 'auto',
       },

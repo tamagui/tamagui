@@ -94,7 +94,7 @@ const ButtonFrame = styled(ThemeableStack, {
         cursor: 'pointer',
         hoverTheme: true,
         pressTheme: true,
-        backgrounded: true,
+        backgroundColor: '$background',
         borderWidth: 1,
         borderColor: 'transparent',
 
