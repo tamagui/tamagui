@@ -12,9 +12,11 @@ export declare const MenuPredefined: {
     }, import("@tamagui/web").StaticConfigPublic>;
     Title: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     SubTitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     MenuGroup: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
@@ -24,6 +26,7 @@ export declare const MenuPredefined: {
     }, import("@tamagui/web").StaticConfigPublic>;
     MenuLabel: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };
 //# sourceMappingURL=MenuPredefined.d.ts.map

@@ -1,7 +1,7 @@
 import { getSpace } from '@tamagui/get-token'
 import { Image } from '@tamagui/image'
-import { SizableText } from '@tamagui/text/types'
-import { styled, Text, View } from '@tamagui/web'
+import { SizableText } from '@tamagui/text'
+import { styled, View } from '@tamagui/web'
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
@@ -136,9 +136,7 @@ const MenuItem = styled(View, {
         flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
-        gap: '$3',
         cursor: 'pointer',
-        borderRadius: '$3',
 
         hoverStyle: {
           backgroundColor: '$backgroundHover',
@@ -177,15 +175,13 @@ const MenuItem = styled(View, {
   },
 })
 
-const Title = styled(Text, {
+const Title = styled(SizableText, {
   name: 'MenuTitle',
 
   variants: {
     unstyled: {
       false: {
         cursor: 'default',
-        fontSize: 16,
-        fontWeight: '400',
         color: '$color',
         flexGrow: 1,
         flexShrink: 1,
@@ -198,14 +194,13 @@ const Title = styled(Text, {
   },
 })
 
-const SubTitle = styled(Text, {
+const SubTitle = styled(SizableText, {
   name: 'MenuSubTitle',
 
   variants: {
     unstyled: {
       false: {
         cursor: 'default',
-        fontSize: 14,
         color: '$colorFaint',
       },
     },
