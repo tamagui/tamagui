@@ -1,8 +1,7 @@
 import { defaultConfig, themes } from '@tamagui/config/v5'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { animationsCSS } from './animations.css'
-import { animationsMotion } from './animations.motion'
+import { animations } from './animations'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
@@ -23,11 +22,7 @@ export const config = {
   ...defaultConfig,
   themes,
   fonts,
-  // animations: animationsMotion,
-  animations: {
-    default: animationsMotion,
-    css: animationsCSS,
-  },
+  animations,
   media,
   settings: {
     ...defaultConfig.settings,
