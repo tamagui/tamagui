@@ -41,10 +41,6 @@ runs:
       shell: bash
       run: bun install
 
-    - name: Remove duplicate React from nested node_modules
-      shell: bash
-      run: find code -type d -path "*/node_modules/react" -exec rm -rf {} + 2>/dev/null || true
-
     - name: Build JS
       shell: bash
       run: ${{ inputs.workspace-focus && format('bunx turbo run build --filter={0}... -- --skip-types', inputs.workspace-focus) || 'bun run build:js'}}
@@ -53,3 +49,7 @@ runs:
       shell: bash
       # Re-run install to ensure bin symlinks are created for workspace packages after build
       run: bun install
+
+    - name: Remove duplicate React from nested node_modules
+      shell: bash
+      run: find code -type d -path "*/node_modules/react" -exec rm -rf {} + 2>/dev/null || true
