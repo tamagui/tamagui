@@ -173,7 +173,6 @@ const HeroContainerInner = ({
       <ErrorBoundary>
         {demoMultiple ? (
           <XStack gap="$3" px="$8">
-            <Card>{children}</Card>
             <Theme name="gray">
               <Card>{children}</Card>
             </Theme>
