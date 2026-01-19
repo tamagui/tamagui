@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "2.0.0-1768813265762",
+  "version": "2.0.0-1768856950546",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
