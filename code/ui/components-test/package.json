@@ -23,13 +23,13 @@
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "jsdom": "^25.0.1",
-    "react": "*",
+    "react": ">=19",
     "tamagui": "workspace:*",
     "typescript": "~5.9.2",
     "vitest": "^4.0.4",
     "vitest-axe": "^0.1.0"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=19"
   }
 }

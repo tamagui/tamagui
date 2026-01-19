@@ -36,10 +36,10 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": ">=19"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=19"
   },
   "publishConfig": {
     "access": "public"

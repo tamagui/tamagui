@@ -43,7 +43,7 @@
     "dedent": "^0.7.0",
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
-    "react": "*",
+    "react": ">=19",
     "react-native-web": "^0.21.0",
     "react-test-renderer": "^19.0.0",
     "style-loader": "^3.3.3",
@@ -52,7 +52,7 @@
     "webpack": "^5.88.2"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native-web": "*"
   }
 }

@@ -49,7 +49,3 @@ runs:
       shell: bash
       # Re-run install to ensure bin symlinks are created for workspace packages after build
       run: bun install
-
-    - name: Remove duplicate React from nested node_modules
-      shell: bash
-      run: find code -type d -path "*/node_modules/react" -exec rm -rf {} + 2>/dev/null || true
