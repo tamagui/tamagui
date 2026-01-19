@@ -30,7 +30,7 @@ package: context-menu
 
 ## Installation
 
-ContextMenu is already installed in `tamagui`, or you can install it
+ ContextMenu is already installed in `tamagui`, or you can install it
 independently:
 
 ```bash
@@ -128,65 +128,69 @@ Contains every component for the Context Menu.
       name: 'children',
       type: 'React.ReactNode',
       required: true,
+      description: 'Menu parts: Trigger, Portal, Content, Items, etc.',
     },
     {
       name: 'placement',
       type: 'Placement',
       required: false,
-      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+      description: `Where the menu appears relative to the trigger. Options: 'top' | 'right' | 'bottom' | 'left' with optional '-start' | '-end' alignment.`,
     },
     {
       name: 'open',
       type: 'boolean',
       required: false,
-      description: ``,
+      description: 'Controlled open state for the menu.',
     },
     {
       name: 'defaultOpen',
       type: 'boolean',
       required: false,
+      description: 'Initial open state when uncontrolled.',
     },
     {
       name: 'onOpenChange',
       type: '(open: boolean) => void',
       required: false,
+      description: 'Called when the menu opens or closes.',
     },
     {
       name: 'onOpenWillChange',
       type: '(open: boolean) => void',
       required: false,
       platform: 'ios',
+      description: 'Called before the open/close animation begins.',
     },
     {
       name: 'modal',
       type: 'boolean',
       default: 'true',
       required: false,
-      description: `Renders into root of app instead of inline.`,
+      description: 'When true, traps focus inside the menu and blocks outside scroll/interactions.',
     },
     {
       name: 'stayInFrame',
       type: 'ShiftProps | boolean',
       required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+      description: 'Shifts the menu to stay within viewport bounds.',
     },
     {
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+      description: 'Flips the menu to the opposite side if there is insufficient space.',
     },
     {
       name: 'offset',
       type: 'OffsetOptions',
       required: false,
-      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+      description: 'Distance between the menu and its trigger.',
     },
     {
       name: 'unstyled',
       required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
+      type: 'boolean',
+      description: 'Removes all default Tamagui styles.',
     },
   ]}
 />
@@ -201,11 +205,19 @@ This is necessary for the Context Menu.
       name: 'zIndex',
       required: false,
       type: 'number',
+      description: 'Stacking order of the portal layer.',
     },
     {
       name: 'children',
       type: 'React.ReactNode',
       required: true,
+      description: 'Content to render inside the portal.',
+    },
+    {
+      name: 'forceMount',
+      type: 'true',
+      required: false,
+      description: 'Forces the portal to stay mounted, useful for controlling animations.',
     },
   ]}
 />
@@ -231,7 +243,7 @@ long-presses within the Trigger area.
 
 ### Content
 
-Contains the content of the Context Menu
+Contains the content of the Context Menu.
 
 <PropsTable
   data={[
@@ -239,63 +251,107 @@ Contains the content of the Context Menu
       name: 'children',
       type: 'React.ReactNode',
       required: true,
+      description: 'Menu items, groups, labels, separators, and submenus.',
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether keyboard navigation wraps from last to first item.',
+    },
+    {
+      name: 'forceMount',
+      type: 'true',
+      required: false,
+      description: 'Forces the content to stay mounted, useful for controlling animations.',
+    },
+    {
+      name: 'onCloseAutoFocus',
+      type: '(event: Event) => void',
+      required: false,
+      description: 'Called when focus returns to the trigger after closing.',
+    },
+    {
+      name: 'onEscapeKeyDown',
+      type: '(event: KeyboardEvent) => void',
+      required: false,
+      description: 'Called when the escape key is pressed. Can be prevented.',
+    },
+    {
+      name: 'onPointerDownOutside',
+      type: '(event: PointerEvent) => void',
+      required: false,
+      description: 'Called when a pointer event occurs outside the content.',
+    },
+    {
+      name: 'onInteractOutside',
+      type: '(event: Event) => void',
+      required: false,
+      description: 'Called when any interaction occurs outside the content.',
     },
   ]}
 />
 
 ### Item
 
-Context Menu Item
+A selectable menu item that triggers an action when selected.
 
 <PropsTable
   data={[
     {
       name: 'key',
-      type: 'React.ReactNode',
+      type: 'string',
       required: true,
+      description: 'Unique identifier for the item.',
     },
-
     {
       name: 'disabled',
       type: 'boolean',
       required: false,
-      default: false
+      default: 'false',
+      description: 'Prevents interaction and dims the item.',
     },
     {
       name: 'destructive',
       type: 'boolean',
       required: false,
+      platform: 'ios/android',
+      description: 'Renders the item in red on iOS to indicate a dangerous action (e.g. delete). No effect on web.',
     },
     {
       name: 'hidden',
       type: 'boolean',
-      required: false
+      required: false,
+      description: 'Hides the item from the menu.',
     },
     {
       name: 'onSelect',
-      type: 'function',
-      required: true
+      type: '(event?: Event) => void',
+      required: false,
+      description: 'Called when the item is selected via click or keyboard.',
     },
     {
       name: 'onFocus',
-      type: 'function',
+      type: '() => void',
       required: false,
+      description: 'Called when the item receives focus.',
     },
     {
       name: 'onBlur',
-      type: 'function',
+      type: '() => void',
       required: false,
+      description: 'Called when the item loses focus.',
     },
     {
       name: 'textValue',
       type: 'string',
       required: false,
       platform: 'ios/android',
-      description:
-        'This value is necessary when the content of ItemTitle is not a string.',
+      description: 'Text used for typeahead and native menus. Required when ItemTitle contains a React node instead of a string.',
     },
-
-]} />
+  ]}
+/>
 
 ### ItemTitle
 
@@ -305,8 +361,9 @@ Renders the title of the menu item.
   data={[
     {
       name: 'children',
-      type: 'React.ReactNode',
+      type: 'string | React.ReactNode',
       required: true,
+      description: 'The title text or element to display.',
     },
   ]}
 />
@@ -322,20 +379,30 @@ A component to render an icon. For non-native menus, you can pass an icon
 component. For native menus, you can pass platform-specific icons to the
 `android`/`ios` props.
 
-On iOS, it renders platform
-[SF Symbol](https://hotpot.ai/free-icons?s=sfSymbols) icons.
+On iOS, it renders the native
+[SF Symbols](https://github.com/andrewtavis/sf-symbols-online) icons.
 
 <PropsTable
   data={[
     {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Fallback icon for web when native icons are not available.',
+    },
+    {
       name: 'ios',
       type: 'object',
       required: false,
+      platform: 'ios',
+      description: 'SF Symbol configuration: name, weight, scale, hierarchicalColor, paletteColors.',
     },
     {
       name: 'android',
       type: 'object',
       required: false,
+      platform: 'android',
+      description: 'Android resource drawable name.',
     },
   ]}
 />
@@ -379,84 +446,104 @@ works on iOS.
   data={[
     {
       name: 'children',
-      type: 'React.ReactNode',
+      type: 'string',
       required: true,
+      description: 'The subtitle text to display below the title.',
     },
   ]}
 />
 
 ### Group
 
-A component that groups multiple items.
+A component that groups multiple menu items together.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Menu items to group together.',
+    },
+  ]}
+/>
 
 ### CheckboxItem
 
-Usage is similar to Item, with added checkbox features.
+A menu item with a checkbox that can be toggled on/off.
 
 <PropsTable
   data={[
     {
       name: 'key',
-      type: 'React.ReactNode',
+      type: 'string',
       required: true,
+      description: 'Unique identifier for the checkbox item.',
     },
     {
       name: 'disabled',
       type: 'boolean',
       required: false,
-      default: false,
+      default: 'false',
+      description: 'Prevents interaction and dims the item.',
     },
     {
       name: 'destructive',
       type: 'boolean',
       required: false,
+      platform: 'ios/android',
+      description: 'Renders the item in red on iOS to indicate a dangerous action. No effect on web.',
     },
     {
       name: 'hidden',
       type: 'boolean',
       required: false,
+      description: 'Hides the item from the menu.',
     },
     {
       name: 'onFocus',
-      type: 'function',
+      type: '() => void',
       required: false,
+      description: 'Called when the item receives focus.',
     },
     {
       name: 'onBlur',
-      type: 'function',
+      type: '() => void',
       required: false,
+      description: 'Called when the item loses focus.',
     },
     {
       name: 'textValue',
       type: 'string',
       required: false,
       platform: 'ios/android',
-      description:
-        'This value is necessary when the content of ItemTitle is not a string.',
+      description: 'Text for native menus. Required when ItemTitle contains a React node.',
     },
     {
       name: 'value',
-      type: 'on|off|mixed',
-      required: true,
-      platform: 'ios|android',
+      type: "'on' | 'off' | 'mixed'",
+      required: false,
+      platform: 'ios/android',
+      description: 'Controlled checked state for native menus.',
     },
     {
       name: 'onValueChange',
-      type: 'function',
-      required: true,
-      platform: 'ios|android',
+      type: '(state, prevState) => void',
+      required: false,
+      platform: 'ios/android',
+      description: 'Called when checked state changes on native menus.',
     },
     {
       name: 'checked',
       type: 'boolean',
-      required: true,
-      description: 'This value is necessary for non-native menus.',
+      required: false,
+      description: 'Controlled checked state for web menus.',
     },
     {
       name: 'onCheckedChange',
-      type: 'function',
-      required: true,
-      description: 'This value is necessary for non-native menus.',
+      type: '(checked: boolean) => void',
+      required: false,
+      description: 'Called when checked state changes on web.',
     },
   ]}
 />
@@ -472,82 +559,157 @@ This allows you to conditionally render a checkmark.
 </ContextMenu.ItemIndicator>
 ```
 
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Custom checkmark icon. Only works on web.',
+    },
+    {
+      name: 'forceMount',
+      type: 'true',
+      required: false,
+      description: 'Forces the indicator to stay mounted for animation control.',
+    },
+  ]}
+/>
+
 ### Label
 
-Renders a non-focusable label.
+Renders a non-focusable label for a group of items. On native menus, only one label is supported per menu and submenu.
 
-On native menus, only one label is supported per menu and submenu.
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'string',
+      required: true,
+      description: 'The label text.',
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description: 'Text for native menus when children is a React node.',
+    },
+  ]}
+/>
 
 ### Arrow
 
-Renders an arrow component.
+Renders an arrow pointing to the trigger.
 
 <PropsTable
   data={[
     {
       name: 'size',
-      type: 'number|SizeToken',
-      required: true,
+      type: 'number | SizeToken',
+      required: false,
+      description: 'Width and height of the arrow.',
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      required: false,
+      description: 'Removes default arrow styles.',
     },
   ]}
 />
 
 ### Separator
 
-Renders a content separator component. This only works with non-native menus.
+Renders a visual divider between menu items. Web only.
 
 ### Sub
 
-A component that holds sub-menu parts.
+A container for nested sub-menu components.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'SubTrigger, Portal, and SubContent components.',
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: 'Controlled open state for the sub-menu.',
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+      description: 'Called when the sub-menu opens or closes.',
+    },
+  ]}
+/>
 
 ### SubContent
 
-Renders the content of a `SubMenu`.
+Renders the content of a sub-menu. Same props as `Content`, excluding `side` and `align`.
 
 ### SubTrigger
 
-Same as `Trigger`, but for `SubMenu`.
+A menu item that opens a sub-menu on hover/focus. Accepts the same props as `Item`.
 
 ### Preview (iOS only)
 
-When the Context Menu is visible, this renders a custom component. It needs to
-be passed a function as a child and only works with the native iOS menu.
+When the Context Menu is visible, this renders a custom preview component. Only works with native iOS menus.
 
 <Notice>
-  Should be rendered as a child of `<Item.Content />
-  `.
+  Should be rendered as a child of `<ContextMenu.Content />`.
 </Notice>
 
 <PropsTable
   data={[
     {
-      name: 'size',
-      type: 'number',
+      name: 'children',
+      type: 'React.ReactNode | (() => React.ReactNode)',
+      required: true,
       platform: 'ios',
+      description: 'The preview content to render. Can be a function for lazy rendering.',
+    },
+    {
+      name: 'size',
+      type: '{ width?: number, height?: number }',
+      required: false,
+      platform: 'ios',
+      description: 'Dimensions of the preview.',
     },
     {
       name: 'onPress',
-      type: 'function',
+      type: '() => void',
+      required: false,
       platform: 'ios',
+      description: 'Called when the preview is pressed.',
     },
     {
-      name: 'isResizeAnimated',
-      type: 'boolean',
-      default: true,
+      name: 'backgroundColor',
+      type: 'string | { dark: string, light: string }',
+      required: false,
       platform: 'ios',
+      description: 'Background color of the preview.',
     },
     {
       name: 'borderRadius',
       type: 'number',
       required: false,
-    },
-    {
-      name: 'backgroundColor',
-      type: 'object',
+      platform: 'ios',
+      description: 'Border radius of the preview.',
     },
     {
       name: 'preferredCommitStyle',
-      type: 'pop|dismiss',
+      type: "'pop' | 'dismiss'",
+      required: false,
+      default: "'dismiss'",
+      platform: 'ios',
+      description: "Exit transition when preview is tapped. Use 'pop' when navigating to another screen.",
     },
   ]}
 />
