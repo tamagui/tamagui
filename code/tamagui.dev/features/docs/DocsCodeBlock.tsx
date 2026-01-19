@@ -116,7 +116,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             t={-82}
             r="$6"
             $gtMd={{
-              r: '$7',
+              r: '$3',
             }}
           >
             <Button
