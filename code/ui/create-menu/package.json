@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-menu",
-  "version": "2.0.0-1768858510816",
+  "version": "2.0.0-1768859816578",
   "type": "module",
   "sideEffects": [
     "*.css"
