@@ -207,6 +207,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       at.current = toValue
       stopSpring()
+
       animatedNumber.setValue(toValue, {
         type: 'spring',
         ...transitionConfig,
@@ -367,8 +368,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
         const granted = getShouldSet()
 
-        // console.log('DEBUG', { granted, dy }, { ...scrollBridge })
-
         if (granted) {
           scrollBridge.setParentDragging(true)
         }
@@ -396,6 +395,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       scrollBridge.release = release
 
       return PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: onMoveShouldSet,
         onPanResponderGrant: grant,
         onPanResponderMove: (_e, { dy }) => {
