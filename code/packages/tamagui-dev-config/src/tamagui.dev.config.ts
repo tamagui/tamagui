@@ -1,8 +1,8 @@
 import { defaultConfig, themes } from '@tamagui/config/v5'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { animations as animationsCSS } from './animations.css'
-import { animations as animationsMotion } from './animations.motion'
+import { animationsCSS } from './animations.css'
+import { animationsMotion } from './animations.motion'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
