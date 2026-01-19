@@ -146,6 +146,7 @@
     "@playwright/test": "^1.49.1",
     "@take-out/cli": "^0.0.40",
     "@testing-library/dom": "^10.4.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260119.1",
     "dotenv-cli": "^7.4.2",
     "fs-extra": "^11.2.0",
     "knip": "^5.70.2",
