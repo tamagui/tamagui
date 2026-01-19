@@ -106,7 +106,7 @@ async function run() {
 
     // ensure we are up to date
     // ensure we are on main (skip for canary and rc releases)
-    if (!canary && !isRC) {
+    if (!canary && !isRC && !rePublish) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
@@ -323,7 +323,8 @@ async function run() {
       await pMap(
         packageJsons,
         async ({ name, cwd }) => {
-          const publishTag = canary ? 'canary' : version.includes('-rc.') ? 'rc' : undefined
+          const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
+          const publishTag = canary || isCanaryVersion ? 'canary' : version.includes('-rc.') ? 'rc' : undefined
           const publishOptions = [publishTag && `--tag ${publishTag}`].filter(Boolean).join(' ')
 
           const absolutePath = `${tmpDir}/${name.replace('/', '_')}-package.tmp.tgz`
