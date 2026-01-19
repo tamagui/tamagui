@@ -4,7 +4,7 @@ export const Section = styled(View, {
   name: 'Section',
   render: 'section',
   flexDirection: 'column',
-  accessibilityRole: 'summary',
+  role: 'region',
 })
 
 export const Article = styled(View, {
@@ -22,7 +22,7 @@ export const Main = styled(View, {
 export const Header = styled(View, {
   name: 'Header',
   render: 'header',
-  accessibilityRole: 'header',
+  role: 'banner',
   flexDirection: 'column',
 })
 
