@@ -158,6 +158,7 @@ const TableCell = styled(Paragraph, {
   items: 'center',
   position: 'relative',
   flex: 1,
+  flexBasis: 'auto',
   justify: 'center',
   text: 'center',
   height: '$4',
@@ -184,6 +185,7 @@ const TableCol = styled(YStack, {
   borderRightWidth: 1,
   borderRightColor: '$borderColor',
   flex: 1,
+  flexBasis: 'auto',
   mr: -1,
   flexDirection: 'column',
 })
