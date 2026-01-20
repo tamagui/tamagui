@@ -4,8 +4,14 @@ import { Accordion, Paragraph, Square } from 'tamagui'
 export function AccordionDemo() {
   return (
     <Accordion overflow="hidden" width="$20" type="multiple">
-      <Accordion.Item value="a1">
-        <Accordion.Trigger flexDirection="row" justify="space-between">
+      {/* negative margin prevents double border between items */}
+      <Accordion.Item value="a1" mb={-1}>
+        <Accordion.Trigger
+          flexDirection="row"
+          justify="space-between"
+          borderWidth={1}
+          borderColor="$borderColor"
+        >
           {({
             open,
           }: {
@@ -13,14 +19,20 @@ export function AccordionDemo() {
           }) => (
             <>
               <Paragraph>1. Take a cold shower</Paragraph>
-              <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" />
+              <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
+                <ChevronDown size="$1" color="$color" />
               </Square>
             </>
           )}
         </Accordion.Trigger>
-        <Accordion.HeightAnimator animation="medium">
-          <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+        <Accordion.HeightAnimator transition="medium">
+          <Accordion.Content
+            transition="medium"
+            exitStyle={{ opacity: 0 }}
+            borderWidth={1}
+            borderTopWidth={0}
+            borderColor="$borderColor"
+          >
             <Paragraph>
               Cold showers can help reduce inflammation, relieve pain, improve
               circulation, lower stress levels, and reduce muscle soreness and fatigue.
@@ -30,7 +42,12 @@ export function AccordionDemo() {
       </Accordion.Item>
 
       <Accordion.Item value="a2">
-        <Accordion.Trigger flexDirection="row" justify="space-between">
+        <Accordion.Trigger
+          flexDirection="row"
+          justify="space-between"
+          borderWidth={1}
+          borderColor="$borderColor"
+        >
           {({
             open,
           }: {
@@ -38,14 +55,20 @@ export function AccordionDemo() {
           }) => (
             <>
               <Paragraph>2. Eat 4 eggs</Paragraph>
-              <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" />
+              <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
+                <ChevronDown size="$1" color="$color" />
               </Square>
             </>
           )}
         </Accordion.Trigger>
-        <Accordion.HeightAnimator animation="medium">
-          <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+        <Accordion.HeightAnimator transition="medium">
+          <Accordion.Content
+            transition="medium"
+            exitStyle={{ opacity: 0 }}
+            borderWidth={1}
+            borderTopWidth={0}
+            borderColor="$borderColor"
+          >
             <Paragraph>
               Eggs have been a dietary staple since time immemorial and there's good
               reason for their continued presence in our menus and meals.
