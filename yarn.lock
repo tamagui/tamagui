@@ -8455,6 +8455,7 @@ __metadata:
     next: "npm:16.1.1"
     react: "npm:*"
   peerDependencies:
+    next: ">=14"
     react: "*"
   languageName: unknown
   linkType: soft

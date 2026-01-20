@@ -38,7 +38,11 @@ function DraggableSheetPercent() {
         onPositionChange={setPosition}
         dismissOnSnapToBottom
         zIndex={100000}
+<<<<<<< HEAD
         transition="medium"
+=======
+        animation="medium"
+>>>>>>> origin/main
       >
         <Sheet.Overlay
           data-testid="drag-percent-overlay"
@@ -98,7 +102,11 @@ function DraggableSheetConstant() {
         onPositionChange={setPosition}
         dismissOnSnapToBottom
         zIndex={100000}
+<<<<<<< HEAD
         transition="medium"
+=======
+        animation="medium"
+>>>>>>> origin/main
       >
         <Sheet.Overlay
           data-testid="drag-constant-overlay"
@@ -159,7 +167,11 @@ function DismissOnDragSheet() {
         snapPointsMode="percent"
         dismissOnSnapToBottom
         zIndex={100000}
+<<<<<<< HEAD
         transition="medium"
+=======
+        animation="medium"
+>>>>>>> origin/main
       >
         <Sheet.Overlay
           data-testid="dismiss-drag-overlay"
