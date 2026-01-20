@@ -10,7 +10,7 @@ Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet), 
 
 ## Native Portal Setup (Recommended)
 
-On web, React's built-in `createPortal` preserves context automatically. On native, the default Gorhom portal implementation doesn't preserve React context. Tamagui automatically re-propagates its own contexts (theme, configuration), but your custom contexts like navigation or app state won't be available inside portaled content. The re-propagation also adds some overhead.
+On web, React's built-in `createPortal` preserves context automatically. On native, the default default portal implementation implementation doesn't preserve React context. Tamagui automatically re-propagates its own contexts (theme, configuration), but your custom contexts like navigation or app state won't be available inside portaled content. The re-propagation also adds some overhead.
 
 We recommend using [react-native-teleport](https://github.com/nicksrandall/react-native-teleport) to solve this. It uses React Native's native portal API to preserve context automatically.
 
@@ -110,6 +110,6 @@ This is more verbose and error-prone as you need to remember to re-propagate eve
 
 [react-native-teleport](https://github.com/nicksrandall/react-native-teleport) uses `ReactNativeFabricUIManager.createPortal` (Fabric) or `UIManager.createPortal` (Paper) to create true native portals that preserve the React fiber tree.
 
-The Gorhom portal, by contrast, uses a JS-based approach with context providers and a reducer to manage portal state. While compatible with older RN versions, it breaks React context because it re-renders content in a separate provider tree.
+The default portal implementation, by contrast, uses a JS-based approach with context providers and a reducer to manage portal state. While compatible with older RN versions, it breaks React context because it re-renders content in a separate provider tree.
 
-Tamagui includes a `needsPortalRepropagation()` helper that returns `true` when using the Gorhom portal and `false` when using native portals, so library authors can conditionally re-propagate context only when needed.
+Tamagui includes a `needsPortalRepropagation()` helper that returns `true` when using the default portal implementation and `false` when using native portals, so library authors can conditionally re-propagate context only when needed.
