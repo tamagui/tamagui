@@ -194,44 +194,6 @@ export class TamaguiPlugin {
       }
     }
 
-    if (this.options.emitSingleCSSFile) {
-      console.info(`    ➡ [tamagui] 🎨 combining css into one file`)
-
-      compiler.hooks.make.tap(this.pluginName, (compilation) => {
-        compilation.hooks.processAssets.tap(this.pluginName, (assets) => {
-          try {
-            const cssFiles = Object.keys(assets).filter((asset) => asset.endsWith('.css'))
-            if (cssFiles.length === 0) {
-              return
-            }
-
-            const combinedCSS = cssFiles.reduce((acc, file) => {
-              const cssContent = compilation.assets[file].source()
-              return `${acc}\n${cssContent}`
-            }, '')
-
-            for (const [index, cssFile] of cssFiles.entries()) {
-              if (index > 0) {
-                compilation.updateAsset(
-                  cssFile,
-                  new compiler.webpack.sources.RawSource(``)
-                )
-              } else {
-                console.info(`    ➡ [tamagui] 🎨 emitting single css to ${cssFile}`)
-                // just replace the first one? hacky
-                compilation.updateAsset(
-                  cssFile,
-                  new compiler.webpack.sources.RawSource(Buffer.from(combinedCSS))
-                )
-              }
-            }
-          } catch (error: any) {
-            compilation.errors.push(error)
-          }
-        })
-      })
-    }
-
     compiler.options.resolve.extensions = [
       ...new Set([
         '.web.tsx',

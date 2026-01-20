@@ -6,7 +6,6 @@ module.exports = {
         components: ['tamagui', '@tamagui/test-design-system'],
         platform: 'native',
         config: './tests/lib/tamagui.config.cjs',
-        forceExtractStyleDefinitions: true,
       },
     ],
     [
