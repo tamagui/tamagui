@@ -1,7 +1,6 @@
 import type { SimpleThemesDefinition } from './createThemes'
 
 export const defaultComponentThemes = {
-  ListItem: { template: 'surface1' },
   SelectItem: { template: 'surface1' },
   SelectTrigger: { template: 'surface1' },
   Card: { template: 'surface1' },
