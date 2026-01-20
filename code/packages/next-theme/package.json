@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "2.0.0-1768883422398",
+  "version": "1.144.3",
   "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -31,14 +31,15 @@
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
-    "@tamagui/use-event": "workspace:*",
-    "next": "16.1.1"
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "next": "16.1.1",
     "react": "*"
   },
   "peerDependencies": {
+    "next": ">=14",
     "react": "*"
   },
   "publishConfig": {
