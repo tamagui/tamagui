@@ -25,6 +25,7 @@ describe('useTheme', () => {
 
     expect(tree.toJSON()).toMatchInlineSnapshot(`
       <View
+        ref={[Function]}
         style={
           {
             "backgroundColor": {
@@ -50,6 +51,7 @@ describe('useTheme', () => {
 
     expect(tree.toJSON()).toMatchInlineSnapshot(`
       <View
+        ref={[Function]}
         style={
           {
             "backgroundColor": "#000",

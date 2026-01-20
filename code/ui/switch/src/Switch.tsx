@@ -3,82 +3,90 @@ import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { YStack } from '@tamagui/stacks'
 
-export const SwitchThumb = styled(YStack, {
-  name: 'SwitchThumb',
+export const SwitchThumb = styled(
+  YStack,
+  {
+    name: 'SwitchThumb',
 
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        backgroundColor: '$background',
-        borderRadius: 1000,
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+          backgroundColor: '$background',
+          borderRadius: 1000,
+        },
       },
-    },
 
-    checked: {
-      true: {},
-    },
-
-    size: {
-      '...size': (val) => {
-        const size = getSwitchHeight(val)
-        return {
-          height: size,
-          width: size,
-        }
+      size: {
+        '...size': (val) => {
+          const size = getSwitchHeight(val)
+          return {
+            height: size,
+            width: size,
+          }
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    },
   },
-})
+  {
+    accept: {
+      activeStyle: 'style',
+    } as const,
+  }
+)
 
 const getSwitchHeight = (val: SizeTokens) =>
   Math.round(getVariableValue(getSize(val)) * 0.65)
 
 const getSwitchWidth = (val: SizeTokens) => getSwitchHeight(val) * 2
 
-export const SwitchFrame = styled(YStack, {
-  name: 'Switch',
-  tag: 'button',
-  tabIndex: 0,
+export const SwitchFrame = styled(
+  YStack,
+  {
+    name: 'Switch',
+    render: 'button',
+    tabIndex: 0,
 
-  variants: {
-    unstyled: {
-      false: {
-        borderRadius: 1000,
-        backgroundColor: '$background',
-        borderWidth: 2,
-        borderColor: '$background',
+    variants: {
+      unstyled: {
+        false: {
+          borderRadius: 1000,
+          backgroundColor: '$background',
+          borderWidth: 2,
+          borderColor: '$background',
 
-        focusVisibleStyle: {
-          outlineColor: '$outlineColor',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
+          focusVisibleStyle: {
+            outlineColor: '$outlineColor',
+            outlineStyle: 'solid',
+            outlineWidth: 2,
+          },
         },
       },
-    },
 
-    checked: {
-      true: {},
-    },
-
-    size: {
-      '...size': (val) => {
-        const height = getSwitchHeight(val) + 4
-        const width = getSwitchWidth(val) + 4
-        return {
-          height,
-          minHeight: height,
-          width,
-        }
+      size: {
+        '...size': (val) => {
+          const height = getSwitchHeight(val) + 4
+          const width = getSwitchWidth(val) + 4
+          return {
+            height,
+            minHeight: height,
+            width,
+          }
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    },
   },
-})
+  {
+    accept: {
+      activeStyle: 'style',
+    } as const,
+  }
+)

@@ -36,8 +36,6 @@ export function getThemeCSSRules(props: {
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
-    // themeToVariableToValueMap.set(theme, {})
-    // const varToValMap = themeToVariableToValueMap.get(theme)
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
       let value: any = null
@@ -60,9 +58,9 @@ export function getThemeCSSRules(props: {
     const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
 
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
-    // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
+    // hardcoded to support 2 levels of nesting (e.g. light > dark or dark > light)
     if (hasDarkLight) {
-      const maxDepth = getSetting('maxDarkLightNesting') ?? 3
+      const maxDepth = 2
 
       for (const subName of names) {
         const isDark = isDarkBase || subName.startsWith('dark_')
@@ -83,7 +81,6 @@ export function getThemeCSSRules(props: {
         for (let depth = 0; depth < numSelectors; depth++) {
           const isOdd = depth % 2 === 1
 
-          // wtf is this continue:
           if (isOdd && depth < 3) {
             continue
           }
@@ -106,9 +103,6 @@ export function getThemeCSSRules(props: {
           // for light/dark/light:
           const parentSelectorString = parentSelectors.join(' ')
           selectorsSet.add(`${parentSelectorString} ${nextChildSelector}`)
-          // selectorsSet.add(
-          //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
-          // )
         }
       }
     }
@@ -116,7 +110,6 @@ export function getThemeCSSRules(props: {
     const selectors = [...selectorsSet].sort(sortString)
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
-    // this isBaseTheme logic could probably be done more efficiently above
     const selectorsString =
       selectors
         .map((x) => {

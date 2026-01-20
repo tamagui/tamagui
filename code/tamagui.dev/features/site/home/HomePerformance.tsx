@@ -48,7 +48,7 @@ export function HomePerformance() {
             b={-20}
             r={20}
             mt={-20}
-            theme="alt2"
+            color="$color9"
             size="$2"
             $sm={{ display: 'none' }}
           >

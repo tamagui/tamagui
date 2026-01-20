@@ -19,20 +19,33 @@ First install the config package:
 npm install @tamagui/config
 ```
 
-Using `defaultConfig` from v5 is the easiest way to start:
+## Choosing an Animation Driver
+
+V5 provides separate entry points for different animation drivers, so you only
+bundle what you need:
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v5'
+import { animations } from '@tamagui/config/v5-css'
 import { createTamagui } from 'tamagui'
 
-export const config = createTamagui(defaultConfig)
-
-type CustomConfig = typeof config
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends CustomConfig {}
-}
+export const config = createTamagui({
+  ...defaultConfig,
+  animations,
+})
 ```
+
+Available animation drivers:
+
+- **`@tamagui/config/v5-css`** - CSS animations (smallest bundle, great for web)
+- **`@tamagui/config/v5-motion`** - Motion animations (spring physics, smooth)
+- **`@tamagui/config/v5-rn`** - React Native Animated API
+- **`@tamagui/config/v5-reanimated`** - Reanimated (best native performance)
+
+<Notice>
+  The base `@tamagui/config/v5` export includes no animations. Import animations
+  separately from one of the driver entry points above.
+</Notice>
 
 ---
 
@@ -235,11 +248,6 @@ V5 config includes these default settings:
       description: 'true - Removes types for longhand versions of shorthands.',
     },
     {
-      name: 'maxDarkLightNesting',
-      description:
-        '2 - Allows two levels of light/dark nesting (useful for tooltips).',
-    },
-    {
       name: 'styleCompat',
       description:
         '"react-native" - Aligns flex defaults to React Native (flexBasis: 0).',
@@ -251,18 +259,71 @@ V5 config includes these default settings:
 
 ## Media Queries
 
-V5 uses the same media queries as v4, aligned to Tailwind breakpoints:
+V5 includes an expanded set of media queries with height-based, max-width, and
+min-width variants.
+
+### Breakpoints
 
 <PropsTable
   data={[
-    { name: '2xl', description: 'minWidth: 1536' },
-    { name: 'xl', description: 'minWidth: 1280' },
-    { name: 'lg', description: 'minWidth: 1024' },
-    { name: 'md', description: 'minWidth: 768' },
-    { name: 'sm', description: 'minWidth: 640' },
-    { name: 'xs', description: 'minWidth: 460' },
-    { name: '2xs', description: 'minWidth: 340' },
+    { name: 'xxxs', description: '260' },
+    { name: 'xxs', description: '340' },
+    { name: 'xs', description: '460' },
+    { name: 'sm', description: '640' },
+    { name: 'md', description: '768' },
+    { name: 'lg', description: '1024' },
+    { name: 'xl', description: '1280' },
+    { name: 'xxl', description: '1536' },
   ]}
+/>
+
+### Min-Width (Mobile-First)
+
+<PropsTable
+  data={[
+    { name: 'xxxs', description: 'minWidth: 260' },
+    { name: 'xxs', description: 'minWidth: 340' },
+    { name: 'xs', description: 'minWidth: 460' },
+    { name: 'sm', description: 'minWidth: 640' },
+    { name: 'md', description: 'minWidth: 768' },
+    { name: 'lg', description: 'minWidth: 1024' },
+    { name: 'xl', description: 'minWidth: 1280' },
+    { name: 'xxl', description: 'minWidth: 1536' },
+  ]}
+/>
+
+### Max-Width (Desktop-First)
+
+<PropsTable
+  data={[
+    { name: 'maxXXXS', description: 'maxWidth: 260' },
+    { name: 'maxXXS', description: 'maxWidth: 340' },
+    { name: 'maxXS', description: 'maxWidth: 460' },
+    { name: 'maxSM', description: 'maxWidth: 640' },
+    { name: 'maxMD', description: 'maxWidth: 768' },
+    { name: 'maxLG', description: 'maxWidth: 1024' },
+    { name: 'maxXL', description: 'maxWidth: 1280' },
+    { name: 'maxXXL', description: 'maxWidth: 1536' },
+  ]}
+/>
+
+### Height-Based
+
+<PropsTable
+  data={[
+    { name: 'heightXXXS', description: 'minHeight: 260' },
+    { name: 'heightXXS', description: 'minHeight: 340' },
+    { name: 'heightXS', description: 'minHeight: 460' },
+    { name: 'heightSM', description: 'minHeight: 640' },
+    { name: 'heightMD', description: 'minHeight: 768' },
+    { name: 'heightLG', description: 'minHeight: 1024' },
+  ]}
+/>
+
+### Other
+
+<PropsTable
+  data={[{ name: 'pointerTouch', description: 'pointer: coarse' }]}
 />
 
 ---

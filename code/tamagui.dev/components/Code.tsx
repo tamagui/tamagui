@@ -2,7 +2,7 @@ import { Paragraph, styled } from 'tamagui'
 
 export const Code = styled(Paragraph, {
   name: 'Code',
-  tag: 'code',
+  render: 'code',
   fontFamily: '$mono',
   size: '$3',
   lineHeight: 18,
@@ -23,7 +23,7 @@ export const Code = styled(Paragraph, {
 
 export const CodeInline = styled(Paragraph, {
   name: 'CodeInline',
-  tag: 'code',
+  render: 'code',
   fontFamily: '$mono',
   color: '$color12',
   backgroundColor: '$color3',
@@ -32,9 +32,9 @@ export const CodeInline = styled(Paragraph, {
   // @ts-ignore
   fontSize: '90%',
   // @ts-ignore
-  lineHeight: '80%',
+  lineHeight: '70%',
   px: '0.6%',
-  py: '0.8%',
+  py: '0.45%',
   mx: '-0.1%',
   whiteSpace: 'pre',
 })

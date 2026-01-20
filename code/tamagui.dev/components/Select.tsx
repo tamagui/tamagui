@@ -1,31 +1,18 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SelectItemProps, SelectProps, SelectTriggerProps } from 'tamagui'
-import {
-  Select as TamaguiSelect,
-  XStack,
-  YStack,
-  useProps,
-  withStaticProperties,
-} from 'tamagui'
+import { Select as TamaguiSelect, YStack, useProps, withStaticProperties } from 'tamagui'
 
 export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
   return (
-    <TamaguiSelect.Item
-      index={index + 1}
-      borderColor="transparent"
-      hoverStyle={{
-        bg: '$color2',
-      }}
-      {...props}
-    >
+    <TamaguiSelect.Item index={index + 1} borderColor="transparent" {...props}>
       <TamaguiSelect.ItemText>{children}</TamaguiSelect.ItemText>
     </TamaguiSelect.Item>
   )
 }
 
 const SelectComponent = (
-  propsIn: SelectProps & SelectTriggerProps & { placeholder?: string; variant?: 'pill' }
+  propsIn: SelectProps & SelectTriggerProps & { placeholder?: string }
 ) => {
   const {
     placeholder,
@@ -63,23 +50,8 @@ const SelectComponent = (
   } as SelectProps
   return (
     <TamaguiSelect {...selectProps}>
-      <TamaguiSelect.Trigger
-        iconAfter={ChevronDown}
-        {...selectTriggerProps}
-        {...(variant === 'pill' && {
-          borderWidth: 1,
-          borderColor: '$borderColor',
-          rounded: '$10',
-          width: 'auto',
-          color: '$color9',
-        })}
-      >
-        <TamaguiSelect.Value
-          placeholder={placeholder}
-          {...(variant === 'pill' && {
-            theme: 'alt1',
-          })}
-        />
+      <TamaguiSelect.Trigger iconAfter={ChevronDown} {...selectTriggerProps}>
+        <TamaguiSelect.Value placeholder={placeholder} />
       </TamaguiSelect.Trigger>
 
       <TamaguiSelect.Content zIndex={1_000_000}>

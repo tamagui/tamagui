@@ -61,7 +61,6 @@ export function StudioCurrentStepTip() {
           exitStyle={{ y: -10, opacity: 0 }}
           elevate
           maxW={500}
-          theme="surface2"
           transition={[
             'quickest',
             {

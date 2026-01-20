@@ -1,8 +1,10 @@
 import { existsSync } from 'node:fs'
 import { execSync } from 'node:child_process'
+import { createRequire } from 'node:module'
 import { resolve as pathResolve } from 'node:path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 import type { UserConfig } from 'vite'
 import { generateBentoProxy } from './scripts/generate-bento-proxy.mjs'
 
@@ -45,12 +47,10 @@ if (hasBento) {
   console.info('Using ../bento')
 }
 
+// use createRequire instead of import.meta.resolve for bun compatibility in vite config
+const require = createRequire(import.meta.url)
 const resolve = (path: string) => {
-  const resolved = import.meta.resolve?.(path)
-  if (!resolved) {
-    throw new Error(`Not found: ${path}, maybe on wrong node version`)
-  }
-  return resolved.replace('file:/', '')
+  return require.resolve(path)
 }
 
 const include = [
@@ -225,19 +225,6 @@ export const LocationNotification = BentoComponentStub
     one({
       react: {
         compiler: true,
-        // scan: {
-        //   options: {
-        //     showToolbar: true,
-        //     enabled: true,
-        //     // log: true,
-        //   },
-        // },
-      },
-
-      router: {
-        experimental: {
-          preventLayoutRemounting: true,
-        },
       },
 
       ssr: {
@@ -301,6 +288,7 @@ export const LocationNotification = BentoComponentStub
       },
 
       web: {
+        experimental_scriptLoading: 'after-lcp-aggressive',
         redirects: [
           {
             source: '/account/subscriptions',
@@ -332,6 +320,25 @@ export const LocationNotification = BentoComponentStub
     }),
 
     // removeReactNativeWebAnimatedPlugin(),
+
+    ...(process.env.ANALYZE
+      ? [
+          visualizer({
+            filename: 'bundle_stats.html',
+            open: false,
+            gzipSize: true,
+            brotliSize: true,
+            emitFile: true,
+          }),
+          visualizer({
+            filename: 'bundle_stats.json',
+            template: 'raw-data',
+            gzipSize: true,
+            brotliSize: true,
+            emitFile: true,
+          }),
+        ]
+      : []),
   ],
 } satisfies UserConfig
 

@@ -222,7 +222,7 @@ function SignIn() {
           )}
           {/* <YStack gap="$2" >
             <Paragraph
-              tag="button"
+              render="button"
               ta="center"
               size="$2"
               cursor="pointer"
@@ -236,7 +236,7 @@ function SignIn() {
               Or sign in with {showPasswordInput ? 'magic link' : 'password'}
             </Paragraph>
 
-            <Paragraph theme="alt2" ta="center" size="$2">
+            <Paragraph color="$color9" ta="center" size="$2">
               Don't have an account?
               {` `}
               <Link href="/signup" style={{ fontWeight: '800' }}>

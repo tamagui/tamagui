@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-react-native",
-  "version": "2.0.0-1768586279389",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "source": "src/index.ts",
   "removeSideEffects": true,
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5"
   },
   "scripts": {
@@ -55,7 +55,7 @@
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native": "*"
   }
 }

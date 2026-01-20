@@ -80,7 +80,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     unstyled?: boolean | undefined;
 }, {
     name: string;
-    tag: string;
+    render: string;
     variants: {
         readonly unstyled: {
             readonly false: {
@@ -150,7 +150,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
         [key: string]: boolean;
     } | undefined;
     name?: undefined;
-    tag?: undefined;
+    render?: undefined;
     variants?: undefined;
     defaultVariants?: undefined;
 }>;

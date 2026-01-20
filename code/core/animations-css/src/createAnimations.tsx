@@ -62,6 +62,11 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         setValue(next, config, onFinish) {
           setVal(next)
           setOnFinish(onFinish)
+          // call reaction listeners with the new value
+          const listeners = reactionListeners.get(setVal)
+          if (listeners) {
+            listeners.forEach((listener) => listener(next))
+          }
         },
         stop() {},
       }

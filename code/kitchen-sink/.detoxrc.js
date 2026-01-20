@@ -1,9 +1,16 @@
+const os = require('os')
+
+// ~2.5GB per simulator, leave 2GB for system overhead
+const totalMemGB = os.totalmem() / 1024 / 1024 / 1024
+const maxWorkers = Math.max(1, Math.floor((totalMemGB - 2) / 2.5))
+
 /** @type {Detox.DetoxConfig} */
 module.exports = {
   testRunner: {
     args: {
       $0: 'jest',
       config: 'e2e/jest.config.js',
+      maxWorkers,
     },
     jest: {
       setupTimeout: 180000, // 3 minutes for CI environments

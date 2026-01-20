@@ -497,7 +497,6 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
               refs.setReference(ref.current)
 
               if (!refProps) {
-                console.info('wwut', context, refProps, props)
                 return
               }
 

@@ -200,7 +200,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         ItemTitle: TamaguiComponent<any, any, {} & void, {}, {}, {}>;
         ItemSubtitle: TamaguiComponent<any, any, {} & void, {}, {}, {}>;
         ItemImage: React.ForwardRefExoticComponent<ImageProps & React.RefAttributes<Image>>;
-        ItemIcon: TamaguiComponent;
+        ItemIcon: TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     };
 };
 export type { MenuAnchorProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIconProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubTitleProps, MenuItemTitleProps, MenuLabelProps, MenuPortalProps, MenuBaseProps as MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSeparatorProps, MenuSubTriggerProps, };

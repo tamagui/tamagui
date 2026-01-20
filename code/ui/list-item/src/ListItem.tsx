@@ -41,11 +41,8 @@ const context = createStyledContext<{
 const ListItemFrame = styled(View, {
   context,
   name: NAME,
-  tag: 'li',
+  render: 'li',
   role: 'listitem',
-
-  ...themeableVariants.pressTheme.true,
-  ...themeableVariants.hoverTheme.true,
 
   variants: {
     unstyled: {
@@ -64,10 +61,12 @@ const ListItemFrame = styled(View, {
 
         hoverStyle: {
           backgroundColor: '$backgroundHover',
+          borderColor: '$borderColorHover',
         },
 
         pressStyle: {
           backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorPress',
         },
       },
     },

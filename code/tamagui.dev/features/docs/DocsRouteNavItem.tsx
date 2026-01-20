@@ -24,6 +24,12 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
     <Link
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       href={href as Href}
+      focusVisibleStyle={{
+        outlineColor: '$outlineColor',
+        outlineWidth: 2,
+        outlineStyle: 'solid',
+        outlineOffset: -2,
+      }}
     >
       <XStack
         ref={ref}
@@ -99,7 +105,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           <>
             <XStack flex={1} />
             <SizableText
-              theme="alt2"
+              color="$color9"
               size="$1"
               px="$2"
               py="$1"

@@ -1,7 +1,8 @@
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig, themes } from '@tamagui/config/v5'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { animations } from './animations'
+import { animationsCSS } from './animations.css'
+import { animationsMotion } from './animations.motion'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
@@ -17,19 +18,20 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-// Use v5 config as base
+// Use v5 config as base, but with tamagui.dev custom themes
 export const config = {
   ...defaultConfig,
+  themes,
   fonts,
-  animations,
+  animations: {
+    default: animationsMotion,
+    css: animationsCSS,
+  },
   media,
   settings: {
     ...defaultConfig.settings,
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    maxDarkLightNesting: 2,
-    styleCompat: 'react-native',
-    addThemeClassName: 'html',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
@@ -37,6 +39,8 @@ export const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
+    // Allow both shorthands and longhand names for flexibility
+    onlyAllowShorthands: false,
   },
 } satisfies CreateTamaguiProps
 

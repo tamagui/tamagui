@@ -437,7 +437,7 @@ export function TestFlexWrapWithMediaQuery() {
 export function TestAriaProps() {
   return (
     <YStack
-      tag="nav"
+      render="nav"
       aria-labelledby="test-heading"
       aria-label="Navigation menu"
       p="$4"

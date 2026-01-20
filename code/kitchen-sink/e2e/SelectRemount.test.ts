@@ -25,38 +25,64 @@ describe('SelectRemount', () => {
   })
 
   it('should open Select on first mount', async () => {
-    // Tap the select trigger
-    await element(by.id('select-remount-test-trigger')).tap()
+    // Disable synchronization during sheet animations - spring animations can be slow to settle
+    await device.disableSynchronization()
 
-    // Wait for Select options to appear
-    await expect(element(by.id('select-remount-test-option-apple'))).toBeVisible()
+    try {
+      // Tap the select trigger
+      await element(by.id('select-remount-test-trigger')).tap()
 
-    // Close Select by pressing back on Android or tapping outside on iOS
-    if (device.getPlatform() === 'android') {
-      await device.pressBack()
-    } else {
-      await device.tap({ x: 200, y: 100 })
+      // Wait for Select options to appear with timeout
+      await waitFor(element(by.id('select-remount-test-option-apple')))
+        .toBeVisible()
+        .withTimeout(10000)
+
+      // Close Select by pressing back on Android or tapping outside on iOS
+      if (device.getPlatform() === 'android') {
+        await device.pressBack()
+      } else {
+        await device.tap({ x: 200, y: 100 })
+      }
+
+      // Wait for sheet to close
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    } finally {
+      // Re-enable synchronization
+      await device.enableSynchronization()
     }
   })
 
   it('should open Select after unmount/remount cycle', async () => {
-    // Tap remount button to unmount and remount the Select
-    await element(by.id('remount-button')).tap()
+    // Disable synchronization during sheet animations - spring animations can be slow to settle
+    await device.disableSynchronization()
 
-    // Wait a moment for remount to complete
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      // Tap remount button to unmount and remount the Select
+      await element(by.id('remount-button')).tap()
 
-    // Try to open the Select again - THIS IS THE KEY TEST for #1859
-    await element(by.id('select-remount-test-trigger')).tap()
+      // Wait a moment for remount to complete
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
-    // If the bug exists, the Select won't open. With the fix, options should be visible
-    await expect(element(by.id('select-remount-test-option-apple'))).toBeVisible()
+      // Try to open the Select again - THIS IS THE KEY TEST for #1859
+      await element(by.id('select-remount-test-trigger')).tap()
 
-    // Close Select
-    if (device.getPlatform() === 'android') {
-      await device.pressBack()
-    } else {
-      await device.tap({ x: 200, y: 100 })
+      // If the bug exists, the Select won't open. With the fix, options should be visible
+      await waitFor(element(by.id('select-remount-test-option-apple')))
+        .toBeVisible()
+        .withTimeout(10000)
+
+      // Close Select
+      if (device.getPlatform() === 'android') {
+        await device.pressBack()
+      } else {
+        await device.tap({ x: 200, y: 100 })
+      }
+
+      // Wait for sheet to close
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    } finally {
+      // Re-enable synchronization
+      await device.enableSynchronization()
     }
   })
 

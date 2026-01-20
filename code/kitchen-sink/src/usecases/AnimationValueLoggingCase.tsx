@@ -260,7 +260,7 @@ function TranslateAnimationTest() {
         ref={squareRef as any}
         transition="quick"
         size={60}
-        backgroundColor="$purple10"
+        backgroundColor="$blue10"
         y={moved ? -30 : 0}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
@@ -346,7 +346,7 @@ function EnterExitAnimationTest() {
           ref={squareRef as any}
           transition="bouncy"
           size={60}
-          backgroundColor="$orange10"
+          backgroundColor="$yellow10"
           enterStyle={{
             opacity: 0,
             scale: 0.5,
@@ -498,7 +498,7 @@ function AnimationConfigTest() {
         }}
         height={60}
         width={expanded ? 150 : 60}
-        backgroundColor="$pink10"
+        backgroundColor="$red10"
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />

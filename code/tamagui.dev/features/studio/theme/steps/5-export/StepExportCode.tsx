@@ -204,7 +204,7 @@ export const StepExportCodeSidebar = () => {
                 return (
                   <XStack key={_idx} ml="$4" mr="$3">
                     {subStep.type === 'text' && (
-                      <Paragraph theme="alt1" size="$4">
+                      <Paragraph color="$color10" size="$4">
                         {subStep.content}
                       </Paragraph>
                     )}

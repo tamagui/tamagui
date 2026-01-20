@@ -137,7 +137,7 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexWrap')
     const { container } = renderTrue()
 
-    const element = container.querySelector('div[class*="_fw-"]')
+    const element = container.querySelector('div[class*="_fwr-"]')
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)
@@ -152,8 +152,8 @@ describe('webpack-tests', () => {
     const { container: containerTrue } = renderTrue()
     const { container: containerFalse } = renderFalse()
 
-    const elementTrue = containerTrue.querySelector('div[class*="_fw-"]')
-    const elementFalse = containerFalse.querySelector('div[class*="_fw-"]')
+    const elementTrue = containerTrue.querySelector('div[class*="_fwr-"]')
+    const elementFalse = containerFalse.querySelector('div[class*="_fwr-"]')
 
     expect(elementTrue).toBeTruthy()
     expect(elementFalse).toBeTruthy()

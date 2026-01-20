@@ -1,3 +1,6 @@
+// Include tamagui config types for proper type checking
+import type {} from './tamagui.config'
+
 export * from './AccordionDemo'
 export * from './AddThemeDemo'
 export * from './AlertDialogDemo'

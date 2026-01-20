@@ -1,3 +1,4 @@
+// @ts-nocheck - deprecated package, moti dependency intentionally not included
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 // we need core for hooks.usePropsTransform
 import {
@@ -58,7 +59,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
 
   const Component = Animated.createAnimatedComponent(
     forwardRef((propsIn: any, ref) => {
-      const { forwardedRef, animation, tag = defaultTag, ...propsRest } = propsIn
+      const { forwardedRef, animation, render = defaultTag, ...propsRest } = propsIn
       const hostRef = useRef(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
       const stateRef = useRef<any>(null)
@@ -88,8 +89,8 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
       )
 
       const props = result?.viewProps || {}
-      const Element = tag
-      const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
+      const Element = render
+      const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
       return <Element {...transformedProps} ref={composedRefs} />
     })

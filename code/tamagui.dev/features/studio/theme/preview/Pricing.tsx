@@ -41,7 +41,7 @@ export const PricingCards = () => {
         <H4 {...demoProps.headingFontFamilyProps} size="$4" text="center">
           Subscribe
         </H4>
-        <Paragraph theme="alt2" size="$4" text="center">
+        <Paragraph color="$color9" size="$4" text="center">
           Select a plan
         </Paragraph>
       </YStack>
@@ -86,9 +86,9 @@ export const PricingCards = () => {
       </YStack>
 
       <YStack mt="$4" gap="$4">
-        <Paragraph size="$3" text="center" theme="alt1" color="$color10">
+        <Paragraph size="$3" text="center" color="$color10">
           Have a coupon?{' '}
-          <Paragraph tag="span" textDecorationLine="underline">
+          <Paragraph render="span" textDecorationLine="underline">
             Click here
           </Paragraph>
         </Paragraph>

@@ -21,7 +21,7 @@ export const UserDropdown = () => {
           <XStack items="center" flex={1} flexBasis="auto" justify="space-between">
             <YStack>
               <H4 {...demoProps.headingFontFamilyProps}>John Doe</H4>
-              <Paragraph theme="alt1" size="$3">
+              <Paragraph color="$color10" size="$3">
                 johndoe@acme.co
               </Paragraph>
             </YStack>

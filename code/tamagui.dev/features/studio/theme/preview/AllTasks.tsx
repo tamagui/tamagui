@@ -30,7 +30,7 @@ export const AllTasks = () => {
           <Paragraph size="$5" lineHeight="$3">
             Migrate to the new version
           </Paragraph>
-          <Paragraph theme="alt1" size="$2" numberOfLines={1}>
+          <Paragraph color="$color10" size="$2" numberOfLines={1}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum amet
           </Paragraph>
         </Task>
@@ -40,7 +40,7 @@ export const AllTasks = () => {
           </Paragraph>
           <Paragraph
             textDecorationLine="line-through"
-            theme="alt1"
+            color="$color10"
             size="$2"
             numberOfLines={1}
           >
@@ -53,7 +53,7 @@ export const AllTasks = () => {
           </Paragraph>
           <Paragraph
             textDecorationLine="line-through"
-            theme="alt1"
+            color="$color10"
             size="$2"
             numberOfLines={1}
           >

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "2.0.0-1768586279389",
+  "version": "2.0.0-1768813265762",
   "bin": {
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"
@@ -18,7 +18,7 @@
     "@tamagui/babel-plugin-fully-specified": "workspace:*",
     "@types/fs-extra": "^9.0.13",
     "babel-plugin-react-compiler": "^1.0.0",
-    "baseline-browser-mapping": "^2.9.11",
+    "baseline-browser-mapping": "^2.9.15",
     "chokidar": "^3.5.2",
     "esbuild": "^0.25.11",
     "esbuild-plugin-es5": "^2.1.1",

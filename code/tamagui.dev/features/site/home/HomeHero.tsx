@@ -91,11 +91,9 @@ const HeroContents = memo(function HeroContents() {
         />
       </YStack>
       <YStack
-        flex={1}
         overflow="hidden"
         gap="$3"
         position="relative"
-        flexBasis="auto"
         pt="$16"
         mb="$4"
         $sm={{
@@ -112,7 +110,7 @@ const HeroContents = memo(function HeroContents() {
               </XGroup.Item>
             </Link>
 
-            <Theme name="tan">
+            <Theme name="green">
               <Link href="/bento">
                 <XGroup.Item>
                   <BentoButton />
@@ -129,6 +127,7 @@ const HeroContents = memo(function HeroContents() {
             lineHeight={61}
             maxW={500}
             maxH={400}
+            position="relative"
             $gtSm={{
               scale: 1.5,
               m: '5%',
@@ -157,7 +156,7 @@ const HeroContents = memo(function HeroContents() {
             </Text>
             {/* add gradient to other colors: */}
             <br />
-            <span style={{ position: 'relative' }}>
+            <span style={{ position: 'relative', display: 'inline-block' }}>
               <TextWithEffects text="runs&nbsp;faster" />
             </span>
           </H1>
@@ -194,7 +193,6 @@ const HeroContents = memo(function HeroContents() {
           <YStack
             px={0}
             maxW={420}
-            flexBasis="auto"
             // safari fix width
             width="100%"
             // prevent layout shift
@@ -256,6 +254,9 @@ const HeroContents = memo(function HeroContents() {
                 <Button.Text fontFamily="$silkscreen" fontSize="$2">
                   Start
                 </Button.Text>
+                {/* <YStack $group-item-press={{ scaleX: -1 }}>
+                  <LogoIcon downscale={3} />
+                </YStack> */}
               </Button>
             </Link>
           </Theme>
@@ -263,7 +264,7 @@ const HeroContents = memo(function HeroContents() {
           <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
             <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
               <YStack
-                tag="a"
+                render="a"
                 p="$5"
                 $sm={{ p: '$3' }}
                 opacity={0.65}
@@ -325,7 +326,7 @@ const Subtitle = styled(Paragraph, {
 })
 
 const Tag = styled(Text, {
-  tag: 'a',
+  render: 'a',
   className: 'hero-tag text-decoration-none',
   fontFamily: '$silkscreen',
   fontSize: 'inherit' as any,

@@ -5,20 +5,30 @@ type ChangeHandler = (next: TintFamily) => void
 
 const listeners = new Set<ChangeHandler>()
 
+// T A M A G U I
+// Maps to logo letters - index 3 (A) is the "none" theme position
 const familiesValues = {
-  tamagui: ['orange', 'yellow', 'pink', 'gray', 'red', 'green', 'blue'] as ThemeName[],
+  tamagui: ['yellow', 'yellow', 'yellow', 'gray', 'red', 'green', 'blue'] as ThemeName[],
   xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'] as ThemeName[],
-  easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'] as ThemeName[],
-  halloween: [
-    'orange',
-    'gray',
-    'orange',
-    'gray',
-    'orange',
-    'gray',
-    'orange',
+  easter: [
+    'yellow',
+    'yellow',
+    'yellow',
+    'yellow',
+    'yellow',
+    'yellow',
+    'yellow',
   ] as ThemeName[],
-  valentine: ['pink', 'red', 'pink', 'red', 'pink', 'red', 'pink'] as ThemeName[],
+  halloween: [
+    'yellow',
+    'gray',
+    'yellow',
+    'gray',
+    'yellow',
+    'gray',
+    'yellow',
+  ] as ThemeName[],
+  valentine: ['red', 'red', 'red', 'red', 'red', 'red', 'red'] as ThemeName[],
   lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'] as ThemeName[],
 }
 

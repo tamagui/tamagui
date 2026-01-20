@@ -14,8 +14,6 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
   return (
     <YStack
       mb="$2"
-      flex={1}
-      flexBasis="auto"
       $gtSm={{
         fd: 'row',
         justifyContent: 'space-between',
@@ -25,7 +23,6 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
       })}
     >
       <YStack
-        flex={1}
         minH={142}
         $gtSm={{
           flex: 1,
@@ -39,7 +36,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           </H2>
         )}
 
-        <YStack tag="ul" p={0} m={0} gap="$4">
+        <YStack render="ul" p={0} m={0} gap="$4">
           <Features large={large} items={features} />
         </YStack>
       </YStack>
@@ -47,14 +44,14 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
       {!disableLinks && (
         <YStack
           gap="$3"
-          tag="nav"
+          render="nav"
           aria-labelledby="site-component-info-header"
           minW={140}
         >
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
-          <YStack my="$3" gap="$3">
+          <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
             {frontmatter.versions && frontmatter.versions.length > 1 && (
               <SourceVersionSwitcher
                 versions={frontmatter.versions}
@@ -103,11 +100,11 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
                 {/* @ts-ignore */}
                 <Link theme="blue" href={frontmatter.aria} target="_blank">
                   <XStack position="relative">
-                    <Paragraph size="$2" theme="alt1">
+                    <Paragraph size="$2" color="$color10">
                       ARIA design pattern
                     </Paragraph>
                     <YStack ml="$1">
-                      <Text theme="alt2">
+                      <Text color="$color9">
                         <ExternalLink size={12} color="var(--color)" />
                       </Text>
                     </YStack>

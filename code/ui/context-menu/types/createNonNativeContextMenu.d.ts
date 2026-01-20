@@ -115,7 +115,7 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
     } & React.RefAttributes<HTMLElement | import("react-native").View>>;
     ItemTitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     ItemSubtitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
-    ItemIcon: import("@tamagui/web").TamaguiComponent;
+    ItemIcon: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
     ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;
     Preview: () => null;
 };

@@ -95,7 +95,6 @@ const NativeOptions = ({
       </Label>
       <Switch
         id="native-toggle"
-        nativeID="native-toggle"
         theme="accent"
         size="$1"
         checked={!!native}

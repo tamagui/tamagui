@@ -1,12 +1,11 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, Copy } from '@tamagui/lucide-icons'
-import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Suspense, lazy } from 'react'
-import { Button, Paragraph, XStack, YStack, styled } from 'tamagui'
+import { Button, Paragraph, XGroup, XStack, YStack, styled } from 'tamagui'
 
 import { ErrorBoundary } from '~/components/ErrorBoundary'
-import { Link } from '~/components/Link'
-import { PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
+import { ButtonLink, Link } from '~/components/Link'
+import { PurchaseButton } from '~/features/site/purchase/helpers'
 import { useClipboard } from '~/hooks/useClipboard'
 import { TakeoutLogo } from './TakeoutLogo'
 
@@ -17,12 +16,12 @@ const CommandBoxLarge = styled(XStack, {
   rounded: '$10',
   px: '$6',
   py: '$4',
-  bg: '$color4',
+  bg: '$color3',
   items: 'center',
   justify: 'center',
   gap: '$3',
   cursor: 'pointer',
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: '$color4',
 
   hoverStyle: {
@@ -60,43 +59,47 @@ function InstallCommand() {
 
 export function TakeoutHeroNew({
   onBuyPress,
-  isProUser,
 }: {
   onBuyPress?: () => void
-  isProUser?: boolean
 }) {
-  const enable3d = useClientValue(
-    () => !isSafariMobile && !window.location.search?.includes('disable-3d')
-  )
-
   return (
     <YStack items="center" gap="$8" pt="$10" pb="$8" px="$4" position="relative">
-      {/* Buy button - same position as original takeout.tsx */}
+      {/* Buy buttons */}
       {onBuyPress && (
-        <YStack position="absolute" t={30} r="2%" z={10}>
-          <PurchaseButton onPress={onBuyPress} size="$4" theme="accent">
-            {isProUser ? 'Plus | Free' : 'Buy Now'}
-          </PurchaseButton>
-        </YStack>
+        <XGroup position="absolute" t={30} r="2%" z={10}>
+          <XGroup.Item>
+            <ButtonLink
+              href="https://github.com/tamagui/takeout-free"
+              target="_blank"
+              size="$4"
+            >
+              Free
+            </ButtonLink>
+          </XGroup.Item>
+          <XGroup.Item>
+            <PurchaseButton onPress={onBuyPress} size="$4" theme="accent">
+              Pro
+            </PurchaseButton>
+          </XGroup.Item>
+        </XGroup>
       )}
 
       {/* 3D Rotating Takeout Box */}
       <YStack
         position="absolute"
         pointerEvents="none"
-        t={200}
-        r={0}
-        $md={{ r: -150 }}
-        $sm={{ display: 'none' }}
-        z={-1}
+        t={260}
+        r={20}
+        width={400}
+        height={400}
+        $sm={{ scale: 0.6, t: 220, r: -100 }}
+        z={100}
       >
-        {enable3d && (
-          <Suspense fallback={null}>
-            <ErrorBoundary noMessage>
-              <TakeoutBox3D />
-            </ErrorBoundary>
-          </Suspense>
-        )}
+        <Suspense fallback={null}>
+          <ErrorBoundary noMessage>
+            <TakeoutBox3D />
+          </ErrorBoundary>
+        </Suspense>
       </YStack>
 
       <YStack gap="$6" items="center" maxW={800} width="100%">
@@ -112,8 +115,8 @@ export function TakeoutHeroNew({
               $sm={{ size: '$5' }}
               text="center"
             >
-              Takeout is a full-stack, cross-platform starter kit for building modern web
-              and mobile apps with React Native. It funds the OSS development of Tamagui.
+              Takeout makes React Native + web as well-structured, fast, and simple as
+              possible, and funds the OSS development of Tamagui.
             </Paragraph>
           </YStack>
         </ThemeTintAlt>
@@ -128,7 +131,7 @@ export function TakeoutHeroNew({
               <Button
                 size="$4"
                 bg="$color5"
-                borderWidth={1}
+                borderWidth={0.5}
                 borderColor="$color7"
                 cursor="pointer"
                 hoverStyle={{ bg: '$color6', borderColor: '$color8' }}
@@ -145,14 +148,14 @@ export function TakeoutHeroNew({
             <Button
               size="$4"
               bg="$color3"
-              borderWidth={1}
+              borderWidth={0.5}
               borderColor="$color6"
               cursor="pointer"
               hoverStyle={{ bg: '$color4', borderColor: '$color8' }}
               pressStyle={{ bg: '$color5' }}
             >
               <Button.Text fontFamily="$mono" color="$color12">
-                Demo Website
+                Demo (web)
               </Button.Text>
             </Button>
           </Link>

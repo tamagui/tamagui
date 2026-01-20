@@ -116,7 +116,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             t={-82}
             r="$6"
             $gtMd={{
-              r: '$7',
+              r: '$3',
             }}
           >
             <Button
@@ -175,6 +175,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               id={id}
               justify="center"
               bg="$color3"
+              position="relative"
             >
               {showFileName && (
                 <XStack
@@ -207,6 +208,25 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               >
                 {children}
               </RovingTabs>
+
+              {!disableCopy && (
+                <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+                  <Button
+                    position="absolute"
+                    aria-label="Copy code to clipboard"
+                    size="$2"
+                    t={showFileName ? '$6' : '$3'}
+                    r="$3"
+                    display="inline-flex"
+                    icon={hasCopied ? CheckCircle : Copy}
+                    onPress={() => {
+                      onCopy()
+                    }}
+                  >
+                    Copy
+                  </Button>
+                </TooltipSimple>
+              )}
             </Pre>
 
             <AnimatePresence>
@@ -219,25 +239,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </>
               )}
             </AnimatePresence>
-
-            {!disableCopy && (
-              <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
-                <Button
-                  position="absolute"
-                  aria-label="Copy code to clipboard"
-                  size="$2"
-                  t={showFileName ? '$3' : '$3'}
-                  r="$6"
-                  display="inline-flex"
-                  icon={hasCopied ? CheckCircle : Copy}
-                  onPress={() => {
-                    onCopy()
-                  }}
-                >
-                  Copy
-                </Button>
-              </TooltipSimple>
-            )}
           </YStack>
         )}
       </ErrorBoundary>

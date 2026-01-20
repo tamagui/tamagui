@@ -4,7 +4,38 @@ import type { XStackProps } from 'tamagui'
 import { Circle, XStack } from 'tamagui'
 import { useTint } from './useTint'
 
-const rgb = ['#ED0F0F', '#6BCF1A', '#6252F8']
+// T A M A G U I
+// default: white white white white red green blue
+// hover: yellow yellow yellow color12 red green blue
+const defaultColors = [
+  'var(--color12)',
+  'var(--color12)',
+  'var(--color12)',
+  'var(--color12)',
+  'var(--red9)',
+  'var(--green9)',
+  'var(--blue9)',
+]
+
+const hoveredColors = [
+  'var(--yellow9)',
+  'var(--yellow9)',
+  'var(--yellow9)',
+  'var(--color12)',
+  'var(--red9)',
+  'var(--green9)',
+  'var(--blue9)',
+]
+
+const defaultCircleColors = [
+  '$color12',
+  '$color12',
+  '$color12',
+  '$color12',
+  '$red9',
+  '$green9',
+  '$blue9',
+]
 
 export const LogoWords: React.MemoExoticComponent<
   ({
@@ -20,20 +51,18 @@ export const LogoWords: React.MemoExoticComponent<
   const [hovered, setHovered] = React.useState(false)
   const [mounted, setMounted] = React.useState<'start' | 'animate' | 'done'>('start')
 
-  const { tintIndex: index, tint } = Tint
-  const hoveredTints = Tint.tints.map((x) => `${x}9`).map((t) => `var(--${t})`)
+  const { tintIndex: index } = Tint
 
-  const tints = [
-    'var(--accent1)',
-    'var(--accent1)',
-    'var(--accent1)',
-    'var(--accent1)',
-    ...rgb,
+  const hoveredCircleColors = [
+    '$yellow9',
+    '$yellow9',
+    '$yellow9',
+    '$color12',
+    '$red9',
+    '$green9',
+    '$blue9',
   ]
-
-  const circleTints = hovered
-    ? Tint.tints.map((x) => `$${x}9`)
-    : ['$accent1', '$accent1', '$accent1', '$accent1', ...rgb]
+  const circleTints = hovered ? hoveredCircleColors : defaultCircleColors
 
   useEffect(() => {
     const idle = window.requestIdleCallback || setTimeout
@@ -64,12 +93,12 @@ export const LogoWords: React.MemoExoticComponent<
   }, [Tint])
 
   const getColor = (i: number) => {
-    if (hovered) return hoveredTints[i]
-    return tints[i]
+    if (hovered) return hoveredColors[i]
+    return defaultColors[i]
   }
 
   const x = Math.round(
-    index * 18.5 + (18 / 2) * (index / tints.length) + 3 + (index === 6 ? -3 : 0)
+    index * 18.5 + (18 / 2) * (index / defaultColors.length) + 3 + (index === 6 ? -3 : 0)
   )
 
   const [layout, setLayout] = useState<LayoutValue>()

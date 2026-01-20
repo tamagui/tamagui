@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/avatar",
-  "version": "2.0.0-1768586279389",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -49,14 +49,14 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native": "*"
   }
 }

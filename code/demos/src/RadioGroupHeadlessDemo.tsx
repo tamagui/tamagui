@@ -68,10 +68,10 @@ function RadioGroupItem(props: {
             <Pressable
               style={{
                 ...styles.radioGroupItem,
-                ...{ borderColor: theme.borderColor.get() },
+                ...{ borderColor: theme.borderColor?.get() },
                 ...(checked
                   ? { borderWidth: 4 }
-                  : { backgroundColor: theme.background.get() }),
+                  : { backgroundColor: theme.background?.get() }),
               }}
               {...frameAttrs}
               onFocus={frameAttrs.onFocus as any}
@@ -79,7 +79,7 @@ function RadioGroupItem(props: {
               <RadioGroupItemIndicator />
             </Pressable>
           </RovingFocusGroup.Item>
-          <Text style={{ color: theme.color.get() }}>{label}</Text>
+          <Text style={{ color: theme.color?.get() }}>{label}</Text>
           {isFormControl && bubbleInput}
         </View>
       )}
@@ -98,7 +98,7 @@ function RadioGroupItemIndicator() {
       <View
         style={{
           ...styles.radioGroupItemIndicator,
-          backgroundColor: theme.color.get(),
+          backgroundColor: theme.color?.get(),
         }}
         {...params}
       />

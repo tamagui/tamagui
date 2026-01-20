@@ -1,31 +1,10 @@
-v2:
-
-See `docs/web-alignment-plan.md` for the full web props migration plan.
-
-**DONE (already in v2):**
-- ✅ `transition` prop (not `animation`)
-- ✅ `defaultPosition: 'static'`
-- ✅ `box-sizing: border-box` default
-- ✅ Image component (new web-aligned with `src`, `objectFit`)
-- ✅ `inputMode`, `enterKeyHint` for Input
-
-**Web Alignment (breaking changes):**
-- Remove RN accessibility props entirely, use only `aria-*` and `role`
-- Remove `focusable`, use only `tabIndex`
-- Remove `onPress/onPressIn/onPressOut`, use only `onClick/onPointerDown/onPointerUp`
-- Remove legacy shadow props (`shadowColor`, `shadowOffset`, etc), use `boxShadow`
-  - RN 0.82+ natively supports `boxShadow` (New Architecture)
-  - Supports string, object, and array (multiple shadows) syntax
-  - Add $token support in boxShadow strings: `boxShadow="0 2px 10px $shadowColor"`
-- Keep `onChangeText` as exception (ergonomic for RN devs)
-
-- <Button render={} /> i started a pr we should try and move from tag => render fully, but render can take string as a simple option
+- accept type not looking right?
 
 ---
 
 AFTER v2 RC (nice to haves):
 
-- css driver can noRerender
+- css driver can avoidReRenders
   - reanimated too but requires testing native + worklets
 
 - Text weirdness fixes (explore)
@@ -47,32 +26,10 @@ AFTER v2 RC (nice to haves):
   - seems <Switch checked defaultChecked> isnt showing in the checked position
 
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
-- v2 useTheme({ name: '' }) should remove since .get() doesnt match
 
   - useTheme().x.val may have bug on light/dark switch
   - react native 78 dialogs not working
     - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
-  
-  
-As an example, we have a Button that has a variant, default.
-its pressStyle is
-pressStyle: {
-  backgroundColor: '$accent3Hovered',
-},
-1:48
-however, doing this
-<Button
-  variant="default"
-  {...props}
-  pressStyle={{
-    backgroundColor: 'red',
-  }}
->
-does not give the Button a red background when pressed
-
-- beef up tests:
-  - native integration
-  - $group $platform $theme styling
 
 uniswap:
 
@@ -95,6 +52,13 @@ uniswap:
 
 - AnimatePresence leaving things in DOM
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
+
+---
+
+# v3 cleanups
+
+- remove `usePropsAndStyle` from icon `themed` somehow / pattern for that
+- remove getToken + shift weirdness in general
 
 ---
 

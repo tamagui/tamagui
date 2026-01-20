@@ -56,9 +56,4 @@ export const animationsReanimated = createAnimations({
     mass: 0.2,
     stiffness: 300,
   },
-  select: {
-    damping: 45,
-    mass: 0.5,
-    stiffness: 1000,
-  },
 })

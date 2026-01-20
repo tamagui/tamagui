@@ -9,7 +9,7 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
   return (
     <ThemeTintAlt offset={colorOffset}>
       <Card
-        tag="a"
+        render="a"
         transition="quickest"
         flex={1}
         flexBasis="auto"
@@ -20,9 +20,8 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
         pressStyle={{ y: 2, bg: '$color2' }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        // @ts-ignore
+        {...(props as any)}
         href={link}
-        {...props}
       >
         <Card.Header>
           <XStack justify="space-between">
@@ -41,7 +40,6 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
                 justify="center"
                 height="$3"
                 width="$3"
-                theme="alt1"
                 bg="$color6"
                 rounded="$true"
               >
@@ -57,7 +55,6 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
         </Card.Header>
 
         <Card.Footer transition="quicker" x={isHovered ? 5 : 0}>
-          {/* @ts-ignore */}
           <ChevronRight size="$1" position="absolute" b="$4" r="$4" color="$color11" />
         </Card.Footer>
       </Card>

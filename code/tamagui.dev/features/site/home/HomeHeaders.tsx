@@ -33,7 +33,7 @@ export const HomeH3 = styled(H3, {
   fontFamily: '$mono',
   name: 'HomeH3',
   text: 'center',
-  theme: 'alt1',
+  color: '$color10',
   self: 'center',
   px: 20,
   size: '$8',

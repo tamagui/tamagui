@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "2.0.0-1768586279389",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "description": "React Native for Web",
   "main": "dist/cjs",
@@ -71,12 +71,12 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
-    "react-dom": "*"
+    "react": ">=19",
+    "react-dom": ">=19"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": ">=19",
+    "react-dom": ">=19"
   },
   "license": "MIT",
   "tags": [

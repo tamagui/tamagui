@@ -126,6 +126,8 @@ export const stylePropsTransform = {
 
 export const stylePropsView = {
   backfaceVisibility: true,
+  borderCurve: true,
+  cursor: true,
   borderBottomEndRadius: true,
   borderBottomStartRadius: true,
   borderBottomWidth: true,
@@ -219,6 +221,7 @@ export const stylePropsView = {
   ...(isAndroid ? { elevationAndroid: true } : {}),
 
   boxShadow: true,
+  border: true,
   filter: true,
   // RN 0.76/0.77+ style props (New Architecture)
   boxSizing: true,

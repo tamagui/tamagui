@@ -31,8 +31,6 @@ export function StudioStepTip() {
   const button = (
     <Button
       cursor="default"
-      pressTheme={false}
-      hoverTheme={!Tip}
       size="$2"
       chromeless
       scaleIcon={1.2}
@@ -63,7 +61,6 @@ export function StudioStepTip() {
           exitStyle={{ y: -10, opacity: 0 }}
           elevate
           maxW={500}
-          theme="surface2"
           transition={[
             'quickest',
             {

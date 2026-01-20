@@ -1,5 +1,6 @@
 export { tokens } from './v5-tokens';
-export { createThemes } from '@tamagui/theme-builder';
+export { createThemes, defaultComponentThemes } from '@tamagui/theme-builder';
 export { themes } from './generated-v5';
-export { createV5Theme } from './v5-themes';
+export { createV5Theme, defaultChildrenThemes, defaultGrandChildrenThemes, defaultDarkPalette, defaultLightPalette, } from './v5-themes';
+export { v5Templates } from './v5-templates';
 //# sourceMappingURL=v5.d.ts.map

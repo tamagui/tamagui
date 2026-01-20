@@ -76,7 +76,7 @@ export const getTheme = async (id: string, request?: Request) => {
   const themeData = ThemeSuiteSchema.parse(currentTheme.theme_data)
 
   return {
-    theme: themeData as ThemeSuiteItemData,
+    theme: themeData as unknown as ThemeSuiteItemData,
     search: currentTheme.search_query,
     id: currentTheme.id,
     is_cached: currentTheme.is_cached as boolean | null,

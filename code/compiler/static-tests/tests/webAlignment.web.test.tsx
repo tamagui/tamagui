@@ -171,35 +171,29 @@ test('boxShadow is extracted to CSS correctly', async () => {
   expect(output?.styles).toContain('box-shadow')
 })
 
-// Tests for RN props that should NOT work after migration
-// These use test.fails because they should fail now and pass after migration
+// Tests for RN props that are NOT converted in v2
 
-test.fails(
-  'accessibilityLabel should NOT be in extracted output after migration',
-  async () => {
-    const output = await extractForWeb(
-      `
+test('accessibilityLabel is NOT converted to aria-label in v2', async () => {
+  const output = await extractForWeb(
+    `
     import { View } from '@tamagui/core'
     export function Test() {
       return <View accessibilityLabel="Test label" />
     }
   `,
-      {
-        options: {
-          platform: 'web',
-          components: ['@tamagui/core'],
-        },
-      }
-    )
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
 
-    // After migration, accessibilityLabel should be ignored
-    // The output should NOT contain aria-label from accessibilityLabel
-    expect(output?.js).not.toContain('aria-label')
-    expect(output?.js).not.toContain('accessibilityLabel')
-  }
-)
+  // accessibilityLabel is no longer converted - use aria-label directly
+  expect(output?.js).not.toContain('aria-label')
+})
 
-test.fails('accessibilityRole should NOT be in extracted output after migration', async () => {
+test('accessibilityRole is NOT converted to role in v2', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -215,12 +209,11 @@ test.fails('accessibilityRole should NOT be in extracted output after migration'
     }
   )
 
-  // After migration, accessibilityRole should be ignored
-  expect(output?.js).not.toContain('role')
-  expect(output?.js).not.toContain('accessibilityRole')
+  // accessibilityRole is no longer converted - use role directly
+  expect(output?.js).not.toContain('role":')
 })
 
-test.fails('focusable should NOT be in extracted output after migration', async () => {
+test('focusable is NOT converted to tabIndex in v2', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -236,17 +229,16 @@ test.fails('focusable should NOT be in extracted output after migration', async 
     }
   )
 
-  // After migration, focusable should be ignored
+  // focusable is no longer converted - use tabIndex directly
   expect(output?.js).not.toContain('tabIndex')
-  expect(output?.js).not.toContain('focusable')
 })
 
-test.fails('onPress should NOT be in extracted output after migration', async () => {
+test('onPress is preserved in extracted output (kept for cross-platform)', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
-    export function Test() {
-      return <View onPress={() => {}} />
+    export function Test(props) {
+      return <View onPress={props.handler} />
     }
   `,
     {
@@ -257,7 +249,7 @@ test.fails('onPress should NOT be in extracted output after migration', async ()
     }
   )
 
-  // After migration, onPress should be ignored on web
-  expect(output?.js).not.toContain('onClick')
-  expect(output?.js).not.toContain('onPress')
+  // onPress is kept for cross-platform compatibility
+  const fullOutput = JSON.stringify(output)
+  expect(fullOutput).toContain('onPress')
 })

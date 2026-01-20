@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb, isIos } from '@tamagui/constants'
+import { isClient, isIos, isWeb } from '@tamagui/constants'
 import type {
   GestureReponderEvent,
   GetProps,
@@ -9,11 +9,11 @@ import type {
   TamaguiElement,
 } from '@tamagui/core'
 import {
-  useCreateShallowSetState,
   getTokens,
   getVariableValue,
   styled,
   useConfiguration,
+  useCreateShallowSetState,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -110,45 +110,8 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
       })
     }
 
-    if (isClient) {
-      useOnDebouncedWindowResize(measure)
-
-      // intersection change
-      React.useEffect(() => {
-        const node = sliderRef.current as any as HTMLDivElement
-        if (!node) return
-
-        let measureTm
-        const debouncedMeasure = () => {
-          clearTimeout(measureTm)
-          measureTm = setTimeout(() => {
-            measure()
-          }, 200)
-        }
-
-        const io = new IntersectionObserver(
-          (entries) => {
-            debouncedMeasure()
-            if (entries?.[0].isIntersecting) {
-              activeSliderMeasureListeners.add(debouncedMeasure)
-            } else {
-              activeSliderMeasureListeners.delete(debouncedMeasure)
-            }
-          },
-          {
-            root: null, // Use the viewport as the container.
-            rootMargin: '0px',
-            threshold: [0, 0.5, 1.0],
-          }
-        )
-
-        io.observe(node)
-
-        return () => {
-          activeSliderMeasureListeners.delete(debouncedMeasure)
-          io.disconnect()
-        }
-      }, [])
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      useSliderMeasure(sliderRef, measure)
     }
 
     return (
@@ -209,6 +172,46 @@ function useOnDebouncedWindowResize(callback: Function, amt = 200) {
   }, [])
 }
 
+function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () => void) {
+  useOnDebouncedWindowResize(measure)
+
+  React.useEffect(() => {
+    const node = sliderRef.current as any as HTMLDivElement
+    if (!node) return
+
+    let measureTm
+    const debouncedMeasure = () => {
+      clearTimeout(measureTm)
+      measureTm = setTimeout(() => {
+        measure()
+      }, 200)
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        debouncedMeasure()
+        if (entries?.[0].isIntersecting) {
+          activeSliderMeasureListeners.add(debouncedMeasure)
+        } else {
+          activeSliderMeasureListeners.delete(debouncedMeasure)
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: [0, 0.5, 1.0],
+      }
+    )
+
+    io.observe(node)
+
+    return () => {
+      activeSliderMeasureListeners.delete(debouncedMeasure)
+      io.disconnect()
+    }
+  }, [])
+}
+
 /* -------------------------------------------------------------------------------------------------
  * SliderVertical
  * -----------------------------------------------------------------------------------------------*/
@@ -248,45 +251,8 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
       })
     }
 
-    if (isClient) {
-      useOnDebouncedWindowResize(measure)
-
-      // intersection change
-      React.useEffect(() => {
-        const node = sliderRef.current as any as HTMLDivElement
-        if (!node) return
-
-        let measureTm
-        const debouncedMeasure = () => {
-          clearTimeout(measureTm)
-          measureTm = setTimeout(() => {
-            measure()
-          }, 200)
-        }
-
-        const io = new IntersectionObserver(
-          (entries) => {
-            debouncedMeasure()
-            if (entries?.[0].isIntersecting) {
-              activeSliderMeasureListeners.add(debouncedMeasure)
-            } else {
-              activeSliderMeasureListeners.delete(debouncedMeasure)
-            }
-          },
-          {
-            root: null, // Use the viewport as the container.
-            rootMargin: '0px',
-            threshold: [0, 0.5, 1.0],
-          }
-        )
-
-        io.observe(node)
-
-        return () => {
-          activeSliderMeasureListeners.delete(debouncedMeasure)
-          io.disconnect()
-        }
-      }, [])
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      useSliderMeasure(sliderRef, measure)
     }
 
     return (
@@ -385,9 +351,21 @@ const RANGE_NAME = 'SliderTrackActive'
 
 export const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
-  backgroundColor: '$background',
   position: 'absolute',
   pointerEvents: 'box-none',
+
+  variants: {
+    unstyled: {
+      false: {
+        backgroundColor: '$background',
+        borderRadius: 100_000,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>
@@ -467,12 +445,21 @@ export const SliderThumbFrame = styled(ThemeableStack, {
     unstyled: {
       false: {
         position: 'absolute',
-        bordered: 2,
         borderWidth: 2,
-        backgrounded: true,
-        pressTheme: isWeb,
-        focusTheme: isWeb,
-        hoverTheme: isWeb,
+        borderColor: '$borderColor',
+        backgroundColor: '$background',
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorPress',
+        },
+        focusStyle: {
+          backgroundColor: '$backgroundFocus',
+          borderColor: '$borderColorFocus',
+        },
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+          borderColor: '$borderColorHover',
+        },
       },
     },
   } as const,

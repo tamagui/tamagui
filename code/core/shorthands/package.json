@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "2.0.0-1768586279389",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
@@ -28,17 +28,6 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
-    },
-    "./v2": {
-      "react-native": {
-        "module": "./dist/esm/v2.native.js",
-        "import": "./dist/esm/v2.native.js",
-        "require": "./dist/cjs/v2.native.js"
-      },
-      "types": "./types/v2.d.ts",
-      "module": "./dist/esm/v2.mjs",
-      "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.cjs"
     },
     "./v4": {
       "react-native": {

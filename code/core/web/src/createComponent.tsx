@@ -1,7 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import {
   IS_REACT_19,
-  isAndroid,
   isClient,
   isServer,
   isWeb,
@@ -19,6 +18,7 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
+import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
@@ -415,7 +415,23 @@ export function createComponent<
     }
 
     const groupContextParent = React.useContext(GroupContext)
-    const animationDriver = componentContext.animationDriver
+
+    // Get animation driver - either from animatedBy prop lookup or context
+    const animationDriver = (() => {
+      if (props.animatedBy && config?.animations) {
+        const animations = config.animations
+        // If animations is an object with named drivers (has 'default' key)
+        if ('default' in animations) {
+          return (
+            (animations as Record<string, any>)[props.animatedBy] ?? animations.default
+          )
+        }
+        // Single driver config - only 'default' makes sense
+        return props.animatedBy === 'default' ? animations : null
+      }
+      return componentContext.animationDriver
+    })()
+
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
     const componentState = useComponentState(
@@ -498,7 +514,7 @@ export function createComponent<
       }
     }, [stateRef, groupName, groupContextParent])
 
-    // if our animation driver supports noReRender, we'll replace this below with
+    // if our animation driver supports avoidReRenders, we'll replace this below with
     // a version that essentially uses an internall emitter rather than setting state
     // but still stores the current state and applies if it it needs to during render
     let setStateShallow = componentState.setStateShallow
@@ -506,9 +522,9 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     const isTaggable = !Component || typeof Component === 'string'
-    const tagProp = props.tag
-    // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? tagProp || Component : Component) : Component
+    const renderProp = props.render
+    // default to render prop, fallback to component (when both strings)
+    const element = isWeb ? (isTaggable ? renderProp || Component : Component) : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -535,14 +551,10 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
-    if (props.themeShallow) {
-      stateRef.current.themeShallow = true
-    }
-
     const themeStateProps: UseThemeWithStateProps = {
       componentName,
       disable: disableTheme,
-      shallow: stateRef.current.themeShallow,
+      shallow: props.themeShallow,
       debug: debugProp,
     }
 
@@ -627,7 +639,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    elementType = Component || elementType
+    elementType = element || elementType
     const isStringElement = typeof elementType === 'string'
 
     const mediaState = useMedia(componentContext, debugProp)
@@ -919,8 +931,8 @@ export function createComponent<
       }
     }
 
-    if (tagProp && elementType['acceptTagProp']) {
-      viewProps.tag = tagProp
+    if (renderProp && elementType['acceptTagProp']) {
+      viewProps.render = renderProp
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -950,6 +962,7 @@ export function createComponent<
         componentState: state,
         styleProps,
         theme,
+        themeName,
         pseudos: pseudos || null,
         staticConfig,
         stateRef,
@@ -1068,37 +1081,45 @@ export function createComponent<
       })
     }
 
-    // TODO should this be regular effect to allow the render in-between?
+    // Animation enter state machine: true -> 'should-enter' -> false
+    // Stage 1: Set 'should-enter' synchronously before paint to apply enterStyle classes
+    // Stage 2: After browser paint, set false to trigger CSS transition
+    //
+    // CRITICAL: useEffect does NOT guarantee post-paint execution!
+    // See: https://thoughtspile.github.io/2021/11/15/unintentional-layout-effect/
+    // When layoutEffect updates state → re-render before paint → useEffect flushes pre-paint
+    // Solution: Double RAF ensures browser has actually painted before we transition
     useIsomorphicLayoutEffect(() => {
-      // Note: We removed the early return on disabled to allow animations to work
-      // This fixes the issue where animations wouldn't work on disabled components
       if (state.unmounted === true && hasEnterStyle) {
         setStateShallow({ unmounted: 'should-enter' })
         return
       }
 
-      let tm: NodeJS.Timeout
       if (state.unmounted) {
-        if (animationDriver?.supportsCSS || isAndroid) {
-          // this setTimeout fixes css driver enter animations  - not sure why
-          // this setTimeout fixes the conflict when with the safe area view in android
-          tm = setTimeout(() => {
-            setStateShallow({ unmounted: false })
+        // For CSS transitions, we need browser to paint enterStyle before removing it.
+        // Double RAF guarantees paint: first RAF schedules after current frame,
+        // second RAF schedules after that frame completes (including paint).
+        if (supportsCSS) {
+          let cancelled = false
+          requestAnimationFrame(() => {
+            if (cancelled) return
+            requestAnimationFrame(() => {
+              if (cancelled) return
+              setStateShallow({ unmounted: false })
+            })
           })
-          return () => clearTimeout(tm)
-          // don't clearTimeout! safari gets bugs it just doesn't ever set unmounted: false
+          return () => {
+            cancelled = true
+          }
         }
-
+        // Non-CSS drivers handle their own animation timing
         setStateShallow({ unmounted: false })
-        return
       }
-
-      // Only subscribe to context group if not disabled
 
       return () => {
         componentSetStates.delete(setState)
       }
-    }, [state.unmounted, disabled])
+    }, [state.unmounted, supportsCSS])
 
     useIsomorphicLayoutEffect(() => {
       if (disabled) return
@@ -1377,11 +1398,28 @@ export function createComponent<
     if (useChildrenResult) {
       content = useChildrenResult
     } else {
-      content = React.createElement(elementType, viewProps, content)
+      // Handle render prop variants: function, JSX element, or string
+      if (typeof renderProp === 'function') {
+        // Render function: full control with props and state
+        const renderProps = { ...viewProps, children: content }
+        content = renderProp(renderProps, state)
+      } else if (
+        renderProp &&
+        typeof renderProp === 'object' &&
+        React.isValidElement(renderProp)
+      ) {
+        // JSX element: clone with merged props
+        const elementProps = (renderProp as React.ReactElement).props || {}
+        const mergedProps = mergeRenderElementProps(elementProps, viewProps, content)
+        content = React.cloneElement(renderProp as React.ReactElement, mergedProps)
+      } else {
+        content = React.createElement(elementType, viewProps, content)
+      }
     }
 
     // needs to reset the presence state for nested children
-    const ResetPresence = config?.animations?.ResetPresence
+    // Use the resolved animationDriver (handles multi-driver config)
+    const ResetPresence = animationDriver?.ResetPresence
     const needsReset = Boolean(
       // not when passing down to child
       !asChild &&
@@ -1461,10 +1499,6 @@ export function createComponent<
         if (!(key in overriddenContextProps)) {
           overriddenContextProps[key] = styledContextValue[key]
         }
-      }
-
-      if (debugProp) {
-        console.info('overriddenContextProps', overriddenContextProps)
       }
 
       content = (

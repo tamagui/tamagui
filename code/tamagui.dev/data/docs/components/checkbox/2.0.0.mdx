@@ -265,6 +265,18 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
       type: `boolean`,
       description: `Removes all default Tamagui styles.`,
     },
+    {
+      name: 'activeStyle',
+      required: false,
+      type: `StyleProp`,
+      description: `Styles to apply when the checkbox is checked.`,
+    },
+    {
+      name: 'activeTheme',
+      required: false,
+      type: `string | null`,
+      description: `Theme to apply when the checkbox is checked. Set to null for no theme change.`,
+    },
   ]}
 />
 

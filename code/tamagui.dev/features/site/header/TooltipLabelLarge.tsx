@@ -1,7 +1,7 @@
 import type { Href } from 'one'
 import { H2, Paragraph, XStack, YStack } from 'tamagui'
 import { Link } from '../../../components/Link'
-import { purchaseModal } from '../purchase/NewPurchaseModal'
+import { purchaseModal } from '../purchase/purchaseModalStore'
 
 export const TooltipLabelLarge = ({
   title,
@@ -30,7 +30,7 @@ export const TooltipLabelLarge = ({
       <Paragraph
         $gtXs={{ text: 'center' }}
         fontFamily="$mono"
-        theme="alt1"
+        color="$color10"
         flex={1}
         size="$4"
         lineHeight="$3"

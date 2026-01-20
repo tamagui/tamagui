@@ -20,71 +20,6 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 import { isRemValue, resolveRem } from './resolveRem'
 import { skipProps } from './skipProps'
 
-// Web-only: convert boxShadow object/array to CSS string
-const normLen = (v: any) => (typeof v === 'number' ? v + 'px' : String(v))
-
-const boxShadowObjToStr = (
-  value: any,
-  styleProps: SplitStyleProps,
-  styleState: Partial<GetStyleState>
-): string =>
-  (Array.isArray(value) ? value : [value])
-    .map((s) => {
-      const tok = (v: any, cat: string) =>
-        typeof v === 'string' && v[0] === '$'
-          ? (getTokenForKey(cat, v, styleProps, styleState) ?? v)
-          : v
-      const x = normLen(tok(s.offsetX, 'size'))
-      const y = normLen(tok(s.offsetY, 'size'))
-      const blur = s.blurRadius != null ? ' ' + normLen(tok(s.blurRadius, 'size')) : ''
-      const spread =
-        s.spreadDistance != null
-          ? (blur ? '' : ' 0') + ' ' + normLen(tok(s.spreadDistance, 'size'))
-          : ''
-      const color = s.color != null ? ' ' + tok(s.color, 'color') : ''
-      return (s.inset ? 'inset ' : '') + x + ' ' + y + blur + spread + color
-    })
-    .join(', ')
-
-// Web-only: convert filter object/array to CSS string
-const simpleFilters = [
-  'brightness',
-  'opacity',
-  'contrast',
-  'grayscale',
-  'invert',
-  'saturate',
-  'sepia',
-]
-
-const filterObjToStr = (
-  value: any,
-  styleProps: SplitStyleProps,
-  styleState: Partial<GetStyleState>
-): string =>
-  (Array.isArray(value) ? value : [value])
-    .map((f) => {
-      const tok = (v: any, cat: string) =>
-        typeof v === 'string' && v[0] === '$'
-          ? (getTokenForKey(cat, v, styleProps, styleState) ?? v)
-          : v
-      for (const fn of simpleFilters) if (fn in f) return `${fn}(${f[fn]})`
-      if ('blur' in f) return `blur(${normLen(tok(f.blur, 'size'))})`
-      if ('hueRotate' in f) return `hue-rotate(${f.hueRotate})`
-      if ('dropShadow' in f) {
-        const ds = f.dropShadow
-        const x = normLen(tok(ds.offsetX, 'size'))
-        const y = normLen(tok(ds.offsetY, 'size'))
-        const blur =
-          ds.blurRadius != null ? ` ${normLen(tok(ds.blurRadius, 'size'))}` : ''
-        const color = ds.color != null ? ` ${tok(ds.color, 'color')}` : ''
-        return `drop-shadow(${x} ${y}${blur}${color})`
-      }
-      return ''
-    })
-    .filter(Boolean)
-    .join(' ')
-
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
   if (disabled) {
     return map(key, value)
@@ -132,27 +67,20 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   const originalValue = value
 
   if (value != null) {
-    // boxShadow object/array -> string
-    if (key === 'boxShadow' && typeof value === 'object') {
-      value = boxShadowObjToStr(value, styleProps, styleState)
-    } else if (key === 'filter' && typeof value === 'object') {
-      // filter object/array -> string
-      value = filterObjToStr(value, styleProps, styleState)
-    } else if (typeof value === 'string' && value[0] === '$') {
+    if (typeof value === 'string' && value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
-    } else if (key === 'boxShadow' && typeof value === 'string' && value.includes('$')) {
-      // boxShadow with embedded $tokens - resolve each token
+    } else if (
+      (key === 'boxShadow' || key === 'filter') &&
+      typeof value === 'string' &&
+      value.includes('$')
+    ) {
+      // boxShadow/filter with embedded $tokens - resolve each token
+      // Try size first (for dimensions), then color (for the color value)
       value = value.replace(/(\$[\w.-]+)/g, (t) => {
-        // $5, $-2 etc -> size token, otherwise -> color
-        const cat = /^\$-?\d/.test(t) ? 'size' : 'color'
-        const r = getTokenForKey(cat, t, styleProps, styleState)
-        return r != null ? String(r) : t
-      })
-    } else if (key === 'filter' && typeof value === 'string' && value.includes('$')) {
-      // filter with embedded $tokens - resolve each token
-      value = value.replace(/(\$[\w.-]+)/g, (t) => {
-        const cat = /^\$-?\d/.test(t) ? 'size' : 'color'
-        const r = getTokenForKey(cat, t, styleProps, styleState)
+        let r = getTokenForKey('size', t, styleProps, styleState)
+        if (r == null) {
+          r = getTokenForKey('color', t, styleProps, styleState)
+        }
         return r != null ? String(r) : t
       })
     } else if (isVariable(value)) {

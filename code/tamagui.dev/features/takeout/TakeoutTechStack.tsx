@@ -4,7 +4,7 @@ import { TamaguiLogo, ThemeTintAlt } from '@tamagui/logo'
 import { Link } from '~/components/Link'
 import { HighlightText } from './HighlightText'
 
-// One logo - based on takeout3-new reference
+// One logo - based on takeout2 reference
 const OneLogo = ({ size = 32 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 590 590" fill="none">
     <defs>
@@ -86,7 +86,7 @@ const TechCard = styled(YStack, {
   bg: '$background',
   rounded: '$8',
   p: '$6',
-  borderWidth: 1,
+  borderWidth: 0.5,
   borderColor: '$borderColor',
   flex: 1,
   minW: 260,
@@ -121,34 +121,12 @@ const LogoWrapper = styled(YStack, {
 
 const Badge = styled(YStack, {
   px: '$3',
-  py: '$1.5',
+  py: '$1',
   rounded: '$10',
   self: 'flex-start',
 })
 
 const techStack = [
-  {
-    name: 'One',
-    badge: 'Framework',
-    description:
-      'Vite-powered universal React framework. File-based routing, SSR, SSG, and API routes. The simplicity of Expo Router with the power of Vite.',
-    url: 'https://onestack.dev',
-    highlight: 'v1 RC1 Released',
-    Logo: OneLogo,
-    color: '$yellow10',
-    bgColor: 'rgba(245, 202, 5, 0.15)',
-  },
-  {
-    name: 'Zero',
-    badge: 'Sync Engine',
-    description:
-      'An incredible next-generation way to handle data. It makes building truly native-feeling apps easier than ever, sharing every piece of code between native and web.',
-    url: 'https://zero.rocicorp.dev',
-    highlight: 'Instant sync',
-    Logo: ZeroLogo,
-    color: '$blue10',
-    bgColor: 'rgba(59, 130, 246, 0.15)',
-  },
   {
     name: 'Tamagui',
     badge: 'UI System',
@@ -158,7 +136,29 @@ const techStack = [
     highlight: 'v2 RC1 Released',
     Logo: TamaguiLogo,
     color: '$yellow10',
-    bgColor: 'rgba(236, 210, 10, 0.15)',
+    bgColor: 'rgba(236, 210, 10, 0.1)',
+  },
+  {
+    name: 'One',
+    badge: 'Framework',
+    description:
+      'Vite-powered universal React framework. Typed file-based routing, loaders, SSR, SSG, SPA and API routes. Deploys anywhere with a single command.',
+    url: 'https://onestack.dev',
+    highlight: 'v1 RC1 Released',
+    Logo: OneLogo,
+    color: '$yellow10',
+    bgColor: 'rgba(245, 202, 5, 0.1)',
+  },
+  {
+    name: 'Zero',
+    badge: 'Sync Engine',
+    description:
+      'The next-generation way to handle data. Build truly native-feeling apps easier than ever, sharing every piece of code between native and web.',
+    url: 'https://zero.rocicorp.dev',
+    highlight: 'Instant sync',
+    Logo: ZeroLogo,
+    color: '$blue10',
+    bgColor: 'rgba(59, 130, 246, 0.1)',
   },
 ]
 
@@ -183,9 +183,9 @@ export function TakeoutTechStack() {
           style={{ lineHeight: '1.2' }}
           $sm={{ fontSize: 40 }}
         >
-          The perfect{' '}
-          <ThemeTintAlt>
-            <HighlightText tag="span">stack.</HighlightText>
+          A brand new{' '}
+          <ThemeTintAlt offset={-1}>
+            <HighlightText render="span">stack</HighlightText>
           </ThemeTintAlt>
         </H2>
         <Paragraph
@@ -196,8 +196,8 @@ export function TakeoutTechStack() {
           style={{ lineHeight: '1.6' }}
           $sm={{ fontSize: 18 }}
         >
-          The ability to render truly high-quality web and native at once is only possible
-          through the combination of these technologies
+          Combining three libraries aimed at solving cross-platform in the best way
+          possible, in a refined and cohesive whole.
         </Paragraph>
       </YStack>
 
@@ -242,7 +242,7 @@ export function TakeoutTechStack() {
               </XStack>
 
               {/* decorative gradient orb */}
-              <YStack
+              {/* <YStack
                 position="absolute"
                 t={-30}
                 r={-30}
@@ -251,13 +251,13 @@ export function TakeoutTechStack() {
                 rounded={999}
                 bg={tech.color as any}
                 opacity={0.06}
-              />
+              /> */}
             </TechCard>
           </Link>
         ))}
       </XStack>
 
-      <YStack gap="$4" mt="$6">
+      {/* <YStack gap="$4" mt="$6">
         <Paragraph
           fontSize={16}
           fontWeight="600"
@@ -293,7 +293,7 @@ export function TakeoutTechStack() {
             </YStack>
           ))}
         </XStack>
-      </YStack>
+      </YStack> */}
     </YStack>
   )
 }

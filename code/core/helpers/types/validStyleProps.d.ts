@@ -110,7 +110,7 @@ export declare const stylePropsView: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border?: boolean | undefined;
+    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -133,7 +133,6 @@ export declare const stylePropsView: {
     contain?: boolean | undefined;
     containerType?: boolean | undefined;
     content?: boolean | undefined;
-    cursor?: boolean | undefined;
     float?: boolean | undefined;
     mask?: boolean | undefined;
     maskBorder?: boolean | undefined;
@@ -262,6 +261,8 @@ export declare const stylePropsView: {
     borderStartColor: boolean;
     shadowColor: boolean;
     backfaceVisibility: boolean;
+    borderCurve: boolean;
+    cursor: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
@@ -352,7 +353,6 @@ export declare const stylePropsTextOnly: {
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
-    cursor?: boolean | undefined;
     WebkitLineClamp?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
@@ -379,7 +379,6 @@ export declare const stylePropsText: {
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
-    cursor?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
@@ -405,7 +404,7 @@ export declare const stylePropsText: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border?: boolean | undefined;
+    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -550,6 +549,8 @@ export declare const stylePropsText: {
     borderStartColor: boolean;
     shadowColor: boolean;
     backfaceVisibility: boolean;
+    borderCurve: boolean;
+    cursor: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
@@ -640,7 +641,6 @@ export declare const stylePropsAll: {
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
-    cursor?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
@@ -666,7 +666,7 @@ export declare const stylePropsAll: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border?: boolean | undefined;
+    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -811,6 +811,8 @@ export declare const stylePropsAll: {
     borderStartColor: boolean;
     shadowColor: boolean;
     backfaceVisibility: boolean;
+    borderCurve: boolean;
+    cursor: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
@@ -912,7 +914,7 @@ export declare const validStyles: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border?: boolean | undefined;
+    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -935,7 +937,6 @@ export declare const validStyles: {
     contain?: boolean | undefined;
     containerType?: boolean | undefined;
     content?: boolean | undefined;
-    cursor?: boolean | undefined;
     float?: boolean | undefined;
     mask?: boolean | undefined;
     maskBorder?: boolean | undefined;
@@ -1064,6 +1065,8 @@ export declare const validStyles: {
     borderStartColor: boolean;
     shadowColor: boolean;
     backfaceVisibility: boolean;
+    borderCurve: boolean;
+    cursor: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;

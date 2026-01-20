@@ -54,10 +54,5 @@ export declare const animationsReanimated: import("@tamagui/web").AnimationDrive
         mass: number;
         stiffness: number;
     };
-    select: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
 }>;
 //# sourceMappingURL=animationsReanimated.d.ts.map

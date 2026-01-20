@@ -31,7 +31,6 @@ export const settings = {
   allowedStyleValues: 'somewhat-strict-web',
   addThemeClassName: 'html',
   onlyAllowShorthands: true,
-  maxDarkLightNesting: 2,
   styleCompat: 'legacy',
   defaultPosition: 'relative',
 } satisfies CreateTamaguiProps['settings']

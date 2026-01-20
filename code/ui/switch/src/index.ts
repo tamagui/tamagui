@@ -4,6 +4,8 @@ import { SwitchFrame, SwitchThumb } from './Switch'
 export * from './createSwitch'
 export * from './StyledContext'
 export * from './Switch'
+export * from './types'
+export { useSwitchNative } from './useSwitchNative'
 
 /**
  * @summary A component that displays a switch that can be used to toggle between two states.

@@ -3,7 +3,7 @@ import type { ImageProps, ImageType } from './types'
 
 const StyledImage = styled(View, {
   name: 'Image',
-  tag: 'img',
+  render: 'img',
 })
 
 export const Image = StyledImage.styleable<ImageProps>(

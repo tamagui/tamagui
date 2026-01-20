@@ -7,7 +7,7 @@ export default () => {
       <Square
         transition="bouncy"
         size={110}
-        bg="$pink10"
+        bg="$red10"
         br="$9"
         hoverStyle={{
           scale: 1.1,
@@ -85,7 +85,7 @@ const App = (props) => (
 )
 
 const Heading = styled(Text, {
-  tag: 'h1',
+  render: 'h1',
   color: 'green',
   backgroundColor: '$background',
 

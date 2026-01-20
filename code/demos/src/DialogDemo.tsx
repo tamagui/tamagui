@@ -77,7 +77,6 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
 
         <Dialog.FocusScope focusOnIdle>
           <Dialog.Content
-            bordered
             py="$4"
             px="$6"
             elevate

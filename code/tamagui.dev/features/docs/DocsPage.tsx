@@ -25,7 +25,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         {/* capture all docs pages */}
         <ThemeNameEffect colorKey="$color1" />
 
-        <YStack tag="article">
+        <YStack render="article">
           <Container position="relative">{children}</Container>
 
           <Container>
@@ -39,7 +39,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 {previous && (
                   <Link href={previous.route as Href} asChild>
                     <XStack
-                      tag="a"
+                      render="a"
                       group="card"
                       hoverStyle={{
                         borderColor: '$color11',
@@ -74,7 +74,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         $group-card-press={{ l: '$-8' }}
                         transition="quicker"
                       >
-                        <Paragraph select="none" theme="alt1" size="$5">
+                        <Paragraph select="none" color="$color10" size="$5">
                           Previous
                         </Paragraph>
                         <Paragraph select="none" size="$3" color="$gray10">
@@ -87,7 +87,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 {next && (
                   <Link href={next.route as Href} asChild>
                     <XStack
-                      tag="a"
+                      render="a"
                       group="card"
                       hoverStyle={{
                         borderColor: '$color11',
@@ -113,7 +113,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         $group-card-press={{ r: '$-8' }}
                         transition="quicker"
                       >
-                        <Paragraph select="none" theme="alt1" size="$5">
+                        <Paragraph select="none" color="$color10" size="$5">
                           Next
                         </Paragraph>
                         <Paragraph select="none" size="$3" color="$gray10">

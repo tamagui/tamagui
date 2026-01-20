@@ -296,7 +296,7 @@ export async function getUserThemeHistories(
 
     return data.map((d) => ({
       ...d,
-      theme_data: ThemeSuiteSchema.parse(d.theme_data) as ThemeSuiteItemData,
+      theme_data: ThemeSuiteSchema.parse(d.theme_data) as unknown as ThemeSuiteItemData,
     }))
   } catch {
     return []

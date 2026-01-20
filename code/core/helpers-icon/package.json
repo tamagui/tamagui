@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "2.0.0-1768586279389",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "sideEffects": false,
   "description": "Utilities for icon packages",
@@ -21,7 +21,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "workspace:*"
+    "@tamagui/core": "workspace:*",
+    "@tamagui/sizable-context": "workspace:*"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -39,12 +40,12 @@
     }
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native-svg": ">=12"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native-svg": "15.12.1"
   }
 }

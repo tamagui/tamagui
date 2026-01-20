@@ -20,7 +20,7 @@ import {
   YStack,
 } from 'tamagui'
 import { defaultModel } from '../../api/generateModels'
-import { purchaseModal } from '../../site/purchase/NewPurchaseModal'
+import { purchaseModal } from '../../site/purchase/purchaseModalStore'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
 import { themeJSONToText } from './helpers/themeJSONToText'
@@ -386,7 +386,7 @@ const ThemeToggle = () => {
           }}
           size="$3"
         >
-          <Switch.Thumb checked={checked} transition="quickest" size="$3">
+          <Switch.Thumb transition="quickest" size="$3">
             <YStack
               transition="bouncy"
               fullscreen

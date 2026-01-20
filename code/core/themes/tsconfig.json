@@ -5,6 +5,7 @@
   },
   "exclude": [
     "types",
+    "tests",
     "v2.d.ts",
     "v2.js",
     "v2-themes.cjs",

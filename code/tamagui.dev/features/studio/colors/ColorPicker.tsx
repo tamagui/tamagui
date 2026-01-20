@@ -213,7 +213,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           y="$-2"
           gap="$1"
         >
-          <SizableText size="$1" select="none" theme="alt2">
+          <SizableText size="$1" select="none" color="$color9">
             Hue
           </SizableText>
           <Slider
@@ -258,7 +258,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           y="$-2"
           gap="$1"
         >
-          <SizableText size="$1" select="none" theme="alt2">
+          <SizableText size="$1" select="none" color="$color9">
             Saturation
           </SizableText>
           <YStack>
@@ -300,7 +300,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
 
         {!props.disableLightness && (
           <YStack y="$-2" gap="$1">
-            <SizableText size="$1" select="none" theme="alt2">
+            <SizableText size="$1" select="none" color="$color9">
               Lightness
             </SizableText>
             <YStack rounded="$2">

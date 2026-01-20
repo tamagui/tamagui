@@ -83,9 +83,9 @@ export default function Community() {
                       <XStack ai="center" space="$2">
                         <Paragraph
                           cursor="inherit"
-                          tag="time"
+                          render="time"
                           size="$5"
-                          theme="alt2"
+                          color="$color9"
                           fow="300"
                         >
                           {Intl.DateTimeFormat('en-US', {
@@ -94,7 +94,7 @@ export default function Community() {
                             day: 'numeric',
                           }).format(new Date(frontmatter.publishedAt || ''))}
                         </Paragraph>
-                        <Paragraph cursor="inherit" theme="alt2" size="$4" fow="300">
+                        <Paragraph cursor="inherit" color="$color9" size="$4" fow="300">
                           &nbsp;by {authors[frontmatter.by].name}
                         </Paragraph>
                       </XStack>
@@ -236,7 +236,7 @@ const StarterRepoCard = ({
       flexBasis={0}
       maxW={300}
       gap="$2"
-      tag="a"
+      render="a"
       // @ts-ignore
       href={url as string}
       target="_blank"
@@ -256,7 +256,7 @@ const StarterRepoCard = ({
           {name}
         </H4>
       </YStack>
-      <Paragraph cursor="pointer" theme="alt2">
+      <Paragraph cursor="pointer" color="$color9">
         by {author}
       </Paragraph>
     </Card>

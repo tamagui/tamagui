@@ -39,6 +39,7 @@ function TabsComponent(props: TabsProps) {
 
   return (
     <Tabs
+      activationMode="manual"
       onValueChange={updateUrl}
       unstyled
       orientation="horizontal"
@@ -70,12 +71,12 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
         outlineStyle: 'solid',
       }}
       {...(isActive && {
-        bg: '$color7',
+        bg: '$color4',
         hoverStyle: {
-          bg: '$color7',
+          bg: '$color4',
         },
         focusStyle: {
-          bg: '$color7',
+          bg: '$color4',
         },
       })}
     >

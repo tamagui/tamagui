@@ -67,10 +67,17 @@ export type TamaguiComponentPropsBaseBase = {
      */
     id?: string;
     /**
-     * Controls the output tag on web
-     * {@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element}
+     * Controls the rendered element on web.
+     * - String: renders as that HTML element (e.g., `render="button"`)
+     * - JSX Element: clones element with merged props (e.g., `render={<a href="/" />}`)
+     * - Function: full control with props and state (e.g., `render={(props) => <Custom {...props} />}`)
+     * @example render="button"
+     * @example render={<a href="/" />}
+     * @example render={(props, state) => <MyComponent {...props} isPressed={state.press} />}
      */
-    tag?: keyof HTMLElementTagNameMap | (string & {});
+    render?: keyof HTMLElementTagNameMap | (string & {}) | React.ReactElement | ((props: Record<string, any> & {
+        ref?: React.Ref<any>;
+    }, state: TamaguiComponentState) => React.ReactElement);
     /**
      * Applies a theme to this element
      */
@@ -115,6 +122,12 @@ export type TamaguiComponentPropsBaseBase = {
      * Tamagui uses Pressable internally so it supports `number | Insets` rather than just `Insets`
      */
     hitSlop?: number | Insets | null;
+    /**
+     * Select which animation driver to use for this component.
+     * Pass a string key matching a driver registered in the `animations` config.
+     * Example: `<View animatedBy="spring">` when config has `animations: { default: css, spring: moti }`
+     */
+    animatedBy?: AnimationDriverKeys | null;
 };
 export interface Insets {
     top?: number;
@@ -415,7 +428,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     };
     shorthands: C;
     media: D;
-    animations: AnimationDriver<E>;
+    animations: AnimationDriver<E> | AnimationsConfigObject;
     settings: H;
 };
 type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
@@ -429,7 +442,7 @@ type ConfProps<A, B, C, D, E, F, I> = {
     themes?: B;
     shorthands?: C;
     media?: D;
-    animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined;
+    animations?: E;
     fonts?: F;
     settings?: I;
 };
@@ -449,7 +462,10 @@ type EmptyTamaguiSettings = {
     allowedStyleValues: false;
     autocompleteSpecificTokens: 'except-special';
 };
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings> : unknown;
+type ExtractAnimationConfig<E> = E extends AnimationDriver<infer Config> ? Config : E extends {
+    default: AnimationDriver<infer Config>;
+} ? Config : E extends GenericAnimations ? E : EmptyAnimations;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
@@ -475,7 +491,19 @@ export type Media = TamaguiConfig['media'];
 export type Themes = TamaguiConfig['themes'];
 export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>;
 export type ThemeTokens = `$${ThemeKeys}`;
-export type TransitionKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : string;
+type GetAnimationsFromDriver<T> = T extends {
+    animations: infer A;
+} ? keyof A : never;
+type GetAnimationsFromMultiDriver<T> = T extends {
+    default: infer D;
+} ? GetAnimationsFromDriver<D> : T extends {
+    [key: string]: infer D;
+} ? GetAnimationsFromDriver<D> : never;
+type ExtractDriver<T> = Extract<T, AnimationDriver<any>>;
+type InferredTransitionKeys = ExtractDriver<TamaguiConfig['animations']> extends AnimationDriver<any> ? GetAnimationsFromDriver<ExtractDriver<TamaguiConfig['animations']>> : GetAnimationsFromMultiDriver<TamaguiConfig['animations']>;
+export type TransitionKeys = InferredTransitionKeys;
+type InferredAnimationDriverKeys = TamaguiConfig['animations'] extends AnimationDriver<any> ? 'default' : TamaguiConfig['animations'] extends Record<string, AnimationDriver<any>> ? keyof TamaguiConfig['animations'] : 'default';
+export type AnimationDriverKeys = 'default' | InferredAnimationDriverKeys | (ReturnType<TypeOverride['animationDrivers']> extends 1 ? never : ReturnType<TypeOverride['animationDrivers']>);
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 export interface ThemeProps {
     className?: string;
@@ -628,19 +656,6 @@ export interface GenericTamaguiSettings {
      */
     mediaQueryDefaultActive?: Record<string, boolean>;
     /**
-     * What's between each CSS style rule, set to "\n" to be easier to read
-     * @default "\n" when NODE_ENV=development, "" otherwise
-     */
-    cssStyleSeparator?: string;
-    /**
-     * (Advanced) on the web, tamagui treats `dark` and `light` themes as special
-     * and generates extra CSS to avoid having to re-render the entire page. this
-     * CSS relies on specificity hacks that multiply by your sub-themes. this sets
-     * the maxiumum number of nested dark/light themes you can do defaults to 3
-     * for a balance, but can be higher if you nest them deeply.
-     */
-    maxDarkLightNesting?: number;
-    /**
      * Adds @media(prefers-color-scheme) media queries for dark/light, must be set
      * true if you are supporting system preference for light and dark mode themes
      */
@@ -672,12 +687,30 @@ export type BaseStyleProps = {
 } & {
     [Key in keyof StackStyleBase]?: StackStyle[Key] | GetThemeValueForKey<Key>;
 };
+/**
+ * Animation drivers config - can be a single driver or named drivers object.
+ * If object, must include a 'default' key.
+ */
+export type AnimationsConfig = AnimationDriver<any> | AnimationsConfigObject;
+export type AnimationsConfigObject = {
+    default: AnimationDriver<any>;
+    [key: string]: AnimationDriver<any>;
+};
 export type CreateTamaguiProps = {
     unset?: BaseStyleProps;
     reactNative?: any;
     shorthands?: CreateShorthands;
     media?: GenericTamaguiConfig['media'];
-    animations?: AnimationDriver<any>;
+    /**
+     * Animation driver(s) configuration.
+     * Can be a single driver or an object of named drivers (must include 'default').
+     * @example
+     * // Single driver
+     * animations: createAnimations({ slow: '...', fast: '...' })
+     * // Multiple named drivers
+     * animations: { default: cssDriver, spring: motiDriver }
+     */
+    animations?: AnimationsConfig;
     fonts?: GenericTamaguiConfig['fonts'];
     tokens?: GenericTamaguiConfig['tokens'];
     themes?: {
@@ -766,6 +799,7 @@ export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = `$theme-${T
 export type PlatformMediaKeys = `$platform-${AllPlatforms}`;
 export interface TypeOverride {
     groupNames(): 1;
+    animationDrivers(): 1;
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
 type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin';
@@ -955,59 +989,25 @@ export interface TransformStyleProps {
     rotateX?: `${number}deg` | UnionableString;
     rotateZ?: `${number}deg` | UnionableString;
 }
-export interface BoxShadowObject {
-    offsetX: SpaceTokens | number | (string & {});
-    offsetY: SpaceTokens | number | (string & {});
-    blurRadius?: SpaceTokens | number | (string & {});
-    spreadDistance?: SpaceTokens | number | (string & {});
-    color?: ColorStyleProp | (string & {});
-    inset?: boolean;
-}
-export type BoxShadowValue = BoxShadowObject | BoxShadowObject[] | (string & {});
-export interface FilterBrightness {
-    brightness: number | `${number}%`;
-}
-export interface FilterOpacity {
-    opacity: number | `${number}%`;
-}
-export interface FilterBlur {
-    blur: SpaceTokens | number | string;
-}
-export interface FilterContrast {
-    contrast: number | `${number}%`;
-}
-export interface FilterGrayscale {
-    grayscale: number | `${number}%`;
-}
-export interface FilterHueRotate {
-    hueRotate: `${number}deg` | `${number}rad`;
-}
-export interface FilterInvert {
-    invert: number | `${number}%`;
-}
-export interface FilterSaturate {
-    saturate: number | `${number}%`;
-}
-export interface FilterSepia {
-    sepia: number | `${number}%`;
-}
-export interface FilterDropShadow {
-    dropShadow: {
-        offsetX: SpaceTokens | number | (string & {});
-        offsetY: SpaceTokens | number | (string & {});
-        blurRadius?: SpaceTokens | number | (string & {});
-        color?: ColorStyleProp | (string & {});
-    };
-}
-export type FilterFunction = FilterBrightness | FilterOpacity | FilterBlur | FilterContrast | FilterGrayscale | FilterHueRotate | FilterInvert | FilterSaturate | FilterSepia | FilterDropShadow;
-export type FilterValue = FilterFunction | FilterFunction[] | (string & {});
+type BoxShadowPreset = '0 0' | '0 1px 2px' | '0 1px 2px 0' | '0 1px 2px $shadowColor' | '0 1px 3px 0 $shadowColor' | '0 4px 6px -1px $shadowColor' | 'inset 0 2px 4px $shadowColor' | 'none';
+export type BoxShadowValue = BoxShadowPreset | (string & {});
+type FilterPreset = 'blur(4px)' | 'brightness(1.2)' | 'contrast(1.2)' | 'drop-shadow(0 4px 8px $shadowColor)' | 'grayscale(1)' | 'hue-rotate(90deg)' | 'invert(1)' | 'opacity(0.5)' | 'saturate(1.5)' | 'sepia(1)' | 'none';
+export type FilterValue = FilterPreset | (string & {});
 interface ExtraStyleProps {
+    /**
+     * Controls the curve style of rounded corners.
+     * - 'circular': Standard circular arc corners (default)
+     * - 'continuous': Apple's "squircle" style continuous curve
+     * @platform iOS 13+
+     */
+    borderCurve?: 'circular' | 'continuous';
     /**
      * Web-only style property. Will be omitted on native.
      */
     contain?: Properties['contain'];
     /**
-     * Cursor style. Supported on web, and iOS 17+ (trackpad/stylus/gaze).
+     * Cursor style. On web, supports all CSS cursor values.
+     * On iOS 17+ (trackpad/stylus), only 'auto' and 'pointer' are supported.
      */
     cursor?: Properties['cursor'];
     /**
@@ -1059,8 +1059,8 @@ interface ExtraStyleProps {
      */
     backgroundSize?: Properties['backgroundSize'];
     /**
-     * CSS box-shadow. Supports tokens: "$2 $4 $8 $shadowColor"
-     * Also accepts object/array format. Supported on web and native.
+     * CSS box-shadow string. Supports tokens: "0 4px 8px $shadowColor"
+     * Works on web and native (RN 0.76+).
      */
     boxShadow?: BoxShadowValue;
     /**
@@ -1077,8 +1077,8 @@ interface ExtraStyleProps {
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
     /**
-     * Graphical filter effects. Supported on web and native.
-     * Cross-platform: brightness, opacity. Android 12+: blur, contrast, dropShadow, etc.
+     * CSS filter string. Example: "blur(10px) brightness(1.2)"
+     * Works on web and native (RN 0.76+). Supports embedded tokens.
      */
     filter?: FilterValue;
     /**
@@ -1358,71 +1358,12 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBase
     wordWrap?: Properties['wordWrap'];
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
-type A11yDeprecated = {
-    /**
-     * @deprecated
-     * use aria-hidden instead
-     * https://reactnative.dev/docs/accessibility#aria-hidden
-     */
-    accessibilityElementsHidden?: ViewProps['accessibilityElementsHidden'];
-    /**
-     * @deprecated
-     * native doesn't support this, so fallback to accessibilityHint on native
-     * use aria-describedby instead
-     */
-    accessibilityHint?: ViewProps['accessibilityHint'];
-    /**
-     * @deprecated
-     * use aria-label instead
-     * https://reactnative.dev/docs/accessibility#aria-label
-     */
-    accessibilityLabel?: ViewProps['accessibilityLabel'];
-    /**
-     * @deprecated
-     * use aria-labelledby instead
-     * https://reactnative.dev/docs/accessibility#aria-label
-     */
-    accessibilityLabelledBy?: ViewProps['accessibilityLabelledBy'];
-    /**
-     * @deprecated
-     * use aria-live instead
-     */
-    accessibilityLiveRegion?: ViewProps['accessibilityLiveRegion'];
-    /**
-     * @deprecated
-     * use role instead
-     */
-    accessibilityRole?: ViewProps['accessibilityRole'];
-    /**
-     * @deprecated
-     * use aria-disabled, aria-selected, aria-checked, aria-busy, and aria-expanded instead
-     * https://reactnative.dev/docs/accessibility#aria-busy
-     */
-    accessibilityState?: ViewProps['accessibilityState'];
-    /**
-     * @deprecated
-     * use aria-valuemax, aria-valuemin, aria-valuenow, and aria-valuetext instead
-     * https://reactnative.dev/docs/accessibility#aria-valuemax
-     */
-    accessibilityValue?: ViewProps['accessibilityValue'];
-    /**
-     * @deprecated
-     * use aria-modal instead
-     */
-    accessibilityViewIsModal?: ViewProps['accessibilityViewIsModal'];
-    /**
-     * @deprecated
-     * use tabIndex={0} instead
-     * make sure to fallback to accessible on native
-     */
-    accessible?: ViewProps['accessible'];
-};
-export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
+export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
-export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
 export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
@@ -1775,6 +1716,7 @@ export type UseAnimationHook = (props: {
     componentState: TamaguiComponentState;
     useStyleEmitter?: UseStyleEmitter;
     theme: ThemeParsed;
+    themeName: string;
     pseudos: WithPseudoProps<ViewStyle> | null;
     stateRef: {
         current: TamaguiComponentStateRef;

@@ -3,7 +3,7 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "bun@1.2.22",
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",

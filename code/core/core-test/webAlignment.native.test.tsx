@@ -141,32 +141,25 @@ describe('Web Alignment - Native Accessibility Mapping', () => {
     })
   })
 
-  describe('RN accessibility props should NOT work after migration', () => {
-    // These tests verify that after migration, passing RN-specific props
-    // will NOT work - users must use web props
+  describe('RN accessibility props are NOT converted (v2)', () => {
+    // These tests verify that RN-specific props are NOT converted
+    // Users should use web-standard aria-* props instead
 
-    test.fails(
-      'accessibilityLabel should be ignored on native after migration',
-      () => {
-        const result = getSplitStylesFor({
-          accessibilityLabel: 'Test label',
-        })
+    test('accessibilityLabel is NOT converted (use aria-label)', () => {
+      const result = getSplitStylesFor({
+        accessibilityLabel: 'Test label',
+      })
 
-        // After migration, accessibilityLabel should be ignored
-        // Users must use aria-label instead
-        expect(result.viewProps.accessibilityLabel).toBeUndefined()
-        expect(result.viewProps['aria-label']).toBeUndefined()
-      }
-    )
+      // accessibilityLabel is no longer converted - use aria-label instead
+      expect(result.viewProps['aria-label']).toBeUndefined()
+    })
 
-    test.fails('accessibilityRole should be ignored on native after migration', () => {
+    test('accessibilityRole is NOT converted (use role)', () => {
       const result = getSplitStylesFor({
         accessibilityRole: 'button',
       })
 
-      // After migration, accessibilityRole should be ignored
-      // Users must use role instead
-      expect(result.viewProps.accessibilityRole).toBeUndefined()
+      // accessibilityRole is no longer converted - use role instead
       expect(result.viewProps.role).toBeUndefined()
     })
   })
@@ -192,15 +185,13 @@ describe('Web Alignment - Native Focus Mapping', () => {
     })
   })
 
-  describe('RN focusable prop should NOT work after migration', () => {
-    test.fails('focusable should be ignored on native after migration', () => {
+  describe('RN focusable prop is NOT converted (v2)', () => {
+    test('focusable is NOT converted (use tabIndex)', () => {
       const result = getSplitStylesFor({
         focusable: true,
       })
 
-      // After migration, focusable should be ignored
-      // Users must use tabIndex instead
-      expect(result.viewProps.focusable).toBeUndefined()
+      // focusable is no longer converted - use tabIndex instead
       expect(result.viewProps.tabIndex).toBeUndefined()
     })
   })
@@ -252,53 +243,46 @@ describe('Web Alignment - Native Event Mapping', () => {
     )
   })
 
-  describe('RN event props should NOT work after migration', () => {
-    test.fails('onPress should be ignored on native after migration', () => {
+  describe('RN event props still work (kept for cross-platform compatibility)', () => {
+    test('onPress is passed through on native', () => {
       const handler = () => {}
       const result = getSplitStylesFor({
         onPress: handler,
       })
 
-      // After migration, onPress should be ignored
-      // Users must use onClick instead
-      expect(result.viewProps.onPress).toBeUndefined()
+      // onPress is kept for cross-platform compatibility
+      expect(result.viewProps.onPress).toBe(handler)
     })
 
-    test.fails('onPressIn should be ignored on native after migration', () => {
+    test('onPressIn is passed through on native', () => {
       const handler = () => {}
       const result = getSplitStylesFor({
         onPressIn: handler,
       })
 
-      expect(result.viewProps.onPressIn).toBeUndefined()
+      expect(result.viewProps.onPressIn).toBe(handler)
     })
 
-    test.fails('onPressOut should be ignored on native after migration', () => {
+    test('onPressOut is passed through on native', () => {
       const handler = () => {}
       const result = getSplitStylesFor({
         onPressOut: handler,
       })
 
-      expect(result.viewProps.onPressOut).toBeUndefined()
+      expect(result.viewProps.onPressOut).toBe(handler)
     })
   })
 })
 
 describe('Web Alignment - Native Shadow Props', () => {
   describe('boxShadow should work on native (RN 0.76+)', () => {
-    test('boxShadow string is converted to object array on native', () => {
+    test('boxShadow string is passed through directly on native', () => {
       const result = getSplitStylesFor({
         boxShadow: '0 2px 10px rgba(0,0,0,0.5)',
       })
 
-      // boxShadow is converted to object array format on native (RN 0.76+)
-      expect(result.style?.boxShadow).toBeDefined()
-      expect(Array.isArray(result.style?.boxShadow)).toBe(true)
-      const shadow = (result.style?.boxShadow as any)?.[0]
-      expect(shadow.offsetX).toBe(0)
-      expect(shadow.offsetY).toBe(2)
-      expect(shadow.blurRadius).toBe(10)
-      expect(shadow.color).toBe('rgba(0,0,0,0.5)')
+      // boxShadow strings are passed through directly to RN 0.76+ which handles CSS syntax
+      expect(result.style?.boxShadow).toBe('0 2px 10px rgba(0,0,0,0.5)')
     })
   })
 

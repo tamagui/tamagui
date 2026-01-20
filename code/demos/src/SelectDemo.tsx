@@ -100,7 +100,6 @@ export function SelectDemoContents(
           borderWidth={1}
           borderColor="$borderColor"
         >
-          <Select.Indicator transition="select" />
           <Select.Group>
             <Select.Label fontWeight="bold">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
@@ -112,13 +111,6 @@ export function SelectDemoContents(
                       index={i}
                       key={item.name}
                       value={item.name.toLowerCase()}
-                      bg="transparent"
-                      pressStyle={{
-                        bg: '$backgroundPress',
-                      }}
-                      hoverStyle={{
-                        bg: 'transparent',
-                      }}
                     >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">

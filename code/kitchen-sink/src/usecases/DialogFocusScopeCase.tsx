@@ -179,7 +179,7 @@ function DialogContent({
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Description>{description}</Dialog.Description>
 
-          <YStack gap="$3" tag="form">
+          <YStack gap="$3" render="form">
             <YStack gap="$3">
               <Label htmlFor={`${testId}-first`}>First Name</Label>
               <Input

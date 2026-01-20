@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate",
-  "version": "2.0.0-1768586279389",
+  "version": "2.0.0-1768813265762",
   "type": "module",
   "source": "src/index.ts",
   "sideEffects": [
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": ">=19"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -49,6 +49,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=19"
   }
 }

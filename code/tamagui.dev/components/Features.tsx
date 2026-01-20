@@ -7,7 +7,7 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
   return (
     <YStack mt="$4" mb="$2" {...props} gap="$3">
       {items.map((feature, i) => (
-        <XStack tag="li" key={i}>
+        <XStack render="li" key={i}>
           <YStack y={1} mt={large ? 1 : -2}>
             {soon ? (
               <YStack
@@ -30,7 +30,7 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
               {feature}
             </Paragraph>
             {soon && (
-              <Paragraph size="$2" theme="alt2">
+              <Paragraph size="$2" color="$color9">
                 In development
               </Paragraph>
             )}

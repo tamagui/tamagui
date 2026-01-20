@@ -166,9 +166,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         }
       }
 
-      const sep = configIn.settings?.cssStyleSeparator || ''
+      const sep = ` `
       function declarationsToRuleSet(decs: string[], selector = '') {
-        return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
+        return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}\n}`
       }
 
       // non-font
@@ -408,21 +408,8 @@ function getThemesDeduped(
 
 // Built-in shorthands used internally for short classname generation
 const builtinShorthands = {
-  fd: 'flexDirection',
-  fb: 'flexBasis',
   bblr: 'borderBottomLeftRadius',
   bbrr: 'borderBottomRightRadius',
-  fwr: 'flexWrap',
-  col: 'color',
-  ff: 'fontFamily',
-  fst: 'fontStyle',
-  tr: 'transform',
-  tt: 'textTransform',
-  td: 'textDecorationLine',
-  va: 'verticalAlign',
-  ws: 'whiteSpace',
-  wb: 'wordBreak',
-  ww: 'wordWrap',
   brc: 'borderRightColor',
   brw: 'borderRightWidth',
   bs: 'borderStyle',
@@ -431,18 +418,33 @@ const builtinShorthands = {
   btrr: 'borderTopRightRadius',
   btw: 'borderTopWidth',
   bw: 'borderWidth',
-  o: 'opacity',
-  cur: 'cursor',
-  pe: 'pointerEvents',
-  ov: 'overflow',
-  pos: 'position',
-  dsp: 'display',
-  fw: 'fontWeight',
-  fs: 'fontSize',
-  ls: 'letterSpacing',
-  lh: 'lineHeight',
   bxs: 'boxSizing',
   bxsh: 'boxShadow',
+  col: 'color',
+  cur: 'cursor',
+  dsp: 'display',
+  fb: 'flexBasis',
+  fd: 'flexDirection',
+  ff: 'fontFamily',
+  fs: 'fontSize',
+  fst: 'fontStyle',
+  fw: 'fontWeight',
+  fwr: 'flexWrap',
+  // height: 'h',
+  lh: 'lineHeight',
+  ls: 'letterSpacing',
+  o: 'opacity',
+  ov: 'overflow',
   ox: 'overflowX',
   oy: 'overflowY',
+  pe: 'pointerEvents',
+  pos: 'position',
+  td: 'textDecorationLine',
+  tr: 'transform',
+  tt: 'textTransform',
+  va: 'verticalAlign',
+  wb: 'wordBreak',
+  // width: 'w',
+  ws: 'whiteSpace',
+  ww: 'wordWrap',
 } as const

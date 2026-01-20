@@ -24,7 +24,15 @@ import {
 import { useUser } from '~/features/user/useUser'
 
 const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-const stripePromise = loadStripe(key || '')
+
+// lazy load stripe only when needed
+let stripePromise: ReturnType<typeof loadStripe> | null = null
+const getStripe = () => {
+  if (!stripePromise) {
+    stripePromise = loadStripe(key || '')
+  }
+  return stripePromise
+}
 
 const couponSchema = z.object({
   id: z.string(),
@@ -46,13 +54,11 @@ const couponResponseSchema = z.discriminatedUnion('valid', [
   }),
 ])
 
-class AddTeamMemberModal {
-  show = false
-  subscriptionId = ''
-}
+// re-export from separate file to allow code splitting
+export { addTeamMemberModal, useAddTeamMemberModal } from './addTeamMemberModalStore'
 
-export const addTeamMemberModal = createStore(AddTeamMemberModal)
-export const useAddTeamMemberModal = createUseStore(AddTeamMemberModal)
+// also import for internal use
+import { useAddTeamMemberModal } from './addTeamMemberModalStore'
 
 const PaymentForm = ({
   onSuccess,
@@ -228,10 +234,10 @@ export const AddTeamMemberModalComponent = () => {
   const appearance: Appearance = {
     theme: themeName.startsWith('dark') ? 'night' : 'stripe',
     variables: {
-      colorPrimary: theme.blue9.val,
-      colorBackground: theme.background.val,
-      colorText: theme.color.val,
-      colorDanger: theme.red9.val,
+      colorPrimary: theme.blue9?.val,
+      colorBackground: theme.background?.val,
+      colorText: theme.color?.val,
+      colorDanger: theme.red9?.val,
       fontFamily: '"Berkeley Mono", system-ui, -apple-system, sans-serif',
     },
   }
@@ -306,13 +312,13 @@ export const AddTeamMemberModalComponent = () => {
                       Cost: ${baseAmount}/year per seat
                     </Paragraph>
                   )}
-                  <Paragraph theme="alt2">Cost: ${amount}/year per seat</Paragraph>
+                  <Paragraph color="$color9">Cost: ${amount}/year per seat</Paragraph>
                 </YStack>
               </YStack>
 
               <YStack gap="$2">
                 <SizableText
-                  theme="alt1"
+                  color="$color10"
                   opacity={0.3}
                   cursor="pointer"
                   hoverStyle={{ opacity: 0.8 }}
@@ -351,7 +357,7 @@ export const AddTeamMemberModalComponent = () => {
               </YStack>
 
               <Elements
-                stripe={stripePromise}
+                stripe={getStripe()}
                 options={{
                   appearance,
                   mode: 'payment',

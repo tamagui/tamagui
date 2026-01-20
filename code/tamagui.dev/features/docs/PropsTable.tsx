@@ -50,12 +50,12 @@ export function PropsTable({
             borderBottomWidth={1}
             borderBottomColor="$color4"
             py="$3"
+            pointerEvents="none"
           >
             <YStack width="100%">
               <XStack
                 position="relative"
                 py="$1"
-                bg="$background"
                 px="$4"
                 $sm={{ flexDirection: 'column' }}
               >
@@ -73,13 +73,13 @@ export function PropsTable({
                     {name}
                     {required ? (
                       <Paragraph
-                        tag="span"
+                        render="span"
                         // @ts-ignore
                         fontSize="inherit"
                         opacity={0.5}
                       >
                         {' '}
-                        <Paragraph tag="span" fontWeight="300">
+                        <Paragraph render="span" fontWeight="300">
                           (required)
                         </Paragraph>
                       </Paragraph>
@@ -93,6 +93,7 @@ export function PropsTable({
 
                     <XStack
                       flex={2}
+                      flexBasis="auto"
                       minW="30%"
                       items="center"
                       $xs={{
@@ -137,7 +138,7 @@ export function PropsTable({
                             borderWidth={1}
                             rounded="$2"
                           >
-                            <Paragraph tag="span" size="$2" fontWeight="300">
+                            <Paragraph render="span" size="$2" fontWeight="300">
                               deprecated
                             </Paragraph>
                           </View>

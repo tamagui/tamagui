@@ -80,7 +80,7 @@ describe('Turbopack + Tamagui CLI optimization', () => {
   })
 
   it('prod build works after CLI optimization', () => {
-    execSync(`bun tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
+    execSync(`bunx tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
     const result = execSync(`bun run next-build`, { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
     expect(result).toContain('Generating static pages')
   }, 120000)

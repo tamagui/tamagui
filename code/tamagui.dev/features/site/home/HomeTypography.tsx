@@ -87,7 +87,7 @@ export const HomeTypography = memo(() => {
                   index={0}
                   Component={H1}
                   family={family}
-                  color="$pink10"
+                  color="$red10"
                 >
                   Swappable
                 </AnimatedHeading>
@@ -107,7 +107,7 @@ export const HomeTypography = memo(() => {
                   index={2}
                   Component={H3}
                   family={family}
-                  color="$purple10"
+                  color="$blue10"
                 >
                   custom per-size
                 </AnimatedHeading>
@@ -127,7 +127,7 @@ export const HomeTypography = memo(() => {
                   index={4}
                   Component={H5}
                   family={family}
-                  color="$orange10"
+                  color="$yellow10"
                 >
                   easy to author
                 </AnimatedHeading>
@@ -173,7 +173,7 @@ const OverlayCard = () => {
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph text="left" size="$6" theme="alt2" fontWeight="400">
+        <Paragraph text="left" size="$6" color="$color9" fontWeight="400">
           Typed, sizable fonts with control over every facet - weight, spacing,
           line-height, letter-spacing, color and more.
         </Paragraph>

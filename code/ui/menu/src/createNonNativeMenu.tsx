@@ -9,6 +9,7 @@ import {
   isWeb,
   Slot,
   type TamaguiElement,
+  useIsTouchDevice,
   View,
   type ViewProps,
   withStaticProperties,
@@ -213,6 +214,12 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       } = props
       const context = useMenuContext(scope)
       const Comp = asChild ? Slot : View
+      const isTouchDevice = useIsTouchDevice()
+
+      // Use onClick for touch devices to avoid race condition with Dismissable
+      // Use onPointerDown for mouse for faster feedback
+      const pressEvent = isWeb ? (isTouchDevice ? 'onClick' : 'onPointerDown') : 'onPress'
+
       return (
         <MenuTriggerFrame
           asChild
@@ -220,7 +227,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           scope={scope || DROPDOWN_MENU_CONTEXT}
         >
           <Comp
-            tag="button"
+            render="button"
             id={context.triggerId}
             aria-haspopup="menu"
             aria-expanded={context.open}
@@ -230,9 +237,9 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             disabled={disabled}
             ref={composeRefs(forwardedRef, context.triggerRef)}
             {...{
-              [isWeb ? 'onPointerDown' : 'onPress']: composeEventHandlers(
+              [pressEvent]: composeEventHandlers(
                 //@ts-ignore
-                props[isWeb ? 'onPointerDown' : 'onPress'],
+                props[pressEvent],
                 (event) => {
                   // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
                   // but not when the control key is pressed (avoiding MacOS right click)

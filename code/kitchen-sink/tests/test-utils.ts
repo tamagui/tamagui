@@ -1,5 +1,9 @@
 import { test, type Page } from '@playwright/test'
 
+/** Animation drivers available for testing */
+export const ANIMATION_DRIVERS = ['css', 'native', 'reanimated', 'motion'] as const
+export type AnimationDriver = (typeof ANIMATION_DRIVERS)[number]
+
 type SetupPageArgs = {
   type: 'demo' | 'useCase'
   name: string

@@ -21,14 +21,13 @@ export const spawn = proc.spawn
 const reRun = process.argv.includes('--rerun')
 const rePublish = reRun || process.argv.includes('--republish')
 const shouldFinish = process.argv.includes('--finish')
-const skipFinish = process.argv.includes('--skip-finish')
 
 const canary = process.argv.includes('--canary')
 const isRC = process.argv.includes('--rc')
 const skipStarters = canary || process.argv.includes('--skip-starters')
 const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
-const dirty = shouldFinish || process.argv.includes('--dirty')
+const dirty = shouldFinish || rePublish || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
   shouldFinish ||
@@ -38,12 +37,13 @@ const skipTest =
 const skipNativeTests =
   process.argv.includes('--skip-native-test') ||
   process.argv.includes('--skip-native-tests')
-const skipChecks = process.argv.includes('--skip-checks')
+const skipChecks = rePublish || process.argv.includes('--skip-checks')
 const skipBuild = shouldFinish || rePublish || process.argv.includes('--skip-build')
 const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
-const isCI = shouldFinish || process.argv.includes('--ci')
+const isCI = shouldFinish || rePublish || process.argv.includes('--ci')
+const skipFinish = rePublish || process.argv.includes('--skip-finish')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
@@ -54,12 +54,12 @@ const currentRCBase = rcMatch ? rcMatch[1] : null
 const currentRCNumber = rcMatch ? Number.parseInt(rcMatch[2], 10) : 0
 
 const nextVersion = (() => {
-  if (canary) {
-    return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
-  }
-
   if (rePublish) {
     return curVersion
+  }
+
+  if (canary) {
+    return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
   }
 
   // RC mode: bump existing RC or will prompt for new RC version
@@ -135,7 +135,7 @@ async function run() {
 
     // ensure we are up to date
     // ensure we are on main (skip for canary and rc releases)
-    if (!canary && !isRC) {
+    if (!canary && !isRC && !rePublish) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
@@ -346,7 +346,8 @@ async function run() {
       await pMap(
         packageJsons,
         async ({ name, cwd }) => {
-          const publishTag = canary ? 'canary' : version.includes('-rc.') ? 'rc' : undefined
+          const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
+          const publishTag = canary || isCanaryVersion ? 'canary' : version.includes('-rc.') ? 'rc' : undefined
           const publishOptions = [publishTag && `--tag ${publishTag}`].filter(Boolean).join(' ')
 
           // Copy to temp directory and replace workspace:* with versions
@@ -440,10 +441,6 @@ async function run() {
       await finishAndCommit()
 
       async function finishAndCommit(cwd = process.cwd()) {
-        if (canary && !isMain) {
-          console.info(`Canary off main - avoiding commit`)
-          return
-        }
         if (!rePublish || reRun || shouldFinish) {
           await spawnify(`git add -A`, { cwd })
           await spawnify(`git commit -m ${gitTag}`, { cwd })

@@ -36,8 +36,8 @@ const Frame = styled(View, {
   group: 'Button' as any,
   containerType: 'normal',
   role: 'button',
-  tag: 'button',
-  focusable: true,
+  render: 'button',
+  tabIndex: 0,
 
   variants: {
     unstyled: {
@@ -108,7 +108,7 @@ const Frame = styled(View, {
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
-        const gap = getTokenValue(val as Token) * 0.4
+        const gap = getTokenValue(val as Token)
         return {
           ...buttonStyle,
           gap,
@@ -253,11 +253,10 @@ const ButtonComponent = Frame.styleable<{
       <Frame
         ref={ref}
         {...props}
-        {...(isNested && { tag: 'span' })}
+        {...(isNested && { render: 'span' })}
         // Pass resolved size to circular variant when no explicit size provided
         {...(props.circular && !propsIn.size && { size })}
         tabIndex={0}
-        focusable={true}
       >
         {themedIcon}
         {wrappedChildren}

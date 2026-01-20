@@ -69,16 +69,6 @@ describe('tamagui-build integration test', () => {
     expect(existsSync(distEsmFilePath)).toBe(false)
   })
 
-  // it('should set declaration root correctly', () => {
-  //   execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
-
-  //   execSync('yarn build:declaration-root', { cwd: simplePackagePath })
-  //   // Check if the output files exist
-  //   expect(existsSync(distTypesFilePath)).toBe(true)
-  //   // clear up declaration root files
-  //   execSync('rm -rf index.d.ts && index.d', { cwd: simplePackagePath })
-  // })
-
   it('should ignore base URL when --ignore-base-url is used', () => {
     execSync('bun run build:ignore-base-url', { cwd: simplePackagePath })
 
