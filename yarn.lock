@@ -8191,6 +8191,7 @@ __metadata:
     "@tamagui/input": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/menu": "workspace:*"
+    "@tamagui/native-portal": "workspace:*"
     "@tamagui/sandbox-ui": "workspace:*"
     "@tamagui/sheet": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
@@ -8223,6 +8224,7 @@ __metadata:
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"
     react-native-svg: "npm:15.12.1"
+    react-native-teleport: "npm:^0.5.6"
     react-native-web: "npm:^0.21.0"
     react-native-worklets: "npm:0.5.1"
     solito: "npm:^4.3.0"
@@ -8384,6 +8386,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/native-portal@workspace:*, @tamagui/native-portal@workspace:code/core/native-portal":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/native-portal@workspace:code/core/native-portal"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+    react: "npm:*"
+    react-native: "npm:0.81.5"
+    react-native-teleport: "npm:^0.5.6"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-teleport: ">=0.5.0"
+  peerDependenciesMeta:
+    react-native-teleport:
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/next-plugin@workspace:code/compiler/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:code/compiler/next-plugin"
@@ -8517,6 +8537,7 @@ __metadata:
     "@tamagui/build": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/native-portal": "workspace:*"
     "@tamagui/start-transition": "workspace:*"
     "@tamagui/use-event": "workspace:*"
     "@tamagui/web": "workspace:*"
@@ -8789,6 +8810,7 @@ __metadata:
     "@tamagui/get-token": "workspace:*"
     "@tamagui/helpers": "workspace:*"
     "@tamagui/list-item": "workspace:*"
+    "@tamagui/native-portal": "workspace:*"
     "@tamagui/portal": "workspace:*"
     "@tamagui/remove-scroll": "workspace:*"
     "@tamagui/separator": "workspace:*"
@@ -25525,6 +25547,17 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/aa7b3a54cf2eb52aeb1322ba4a3f63176d4da0725ea4b9ec0051a59df0a511dc189fd101abf7993e94676c1cdea736e4abb207a0aea6f3083b5982c48e4648ac
+  languageName: node
+  linkType: hard
+
+"react-native-teleport@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "react-native-teleport@npm:0.5.6"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  checksum: 10/cf53f37287fd9becaecb57dc50961b56f5623f86a3490f61b082f5267a65acdd9d06cd5b318d1e6ec183f87fdaddc768ca6f0082670f1c50ca5786dc3957a6f1
   languageName: node
   linkType: hard
 

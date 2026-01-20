@@ -109,6 +109,9 @@ The breaking changes outside of deprecations are:
   press Enter/Space. This matches web standards.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
+- Native portals no longer auto-import React internals hack. If you want native
+  portals for better context preservation, call `setupNativePortal()` from
+  `@tamagui/portal/setup-native` at app startup. See [Portal docs](/docs/components/portal).
 - Removed React Native accessibility props in favor of web-standard props:
   - `accessibilityLabel` → `aria-label`
   - `accessibilityRole` → `role`
@@ -362,6 +365,33 @@ The native compiler has been significantly improved in v2. Most notably, the
 experimental theme optimization setting has been removed - theme optimization
 now works automatically and much more effectively. This means better performance
 on native without any configuration needed.
+
+#### Native Portals
+
+Tamagui's portal-based components (Sheet, Dialog, Popover, Select, and Toast)
+now support true native portals via
+[react-native-teleport](https://github.com/nicksrandall/react-native-teleport).
+
+The problem: on native, the default default portal implementation doesn't
+preserve React context. Tamagui automatically re-propagates its own contexts
+(theme, configuration), but your custom contexts like navigation or app state
+aren't available inside portaled content. The re-propagation also adds overhead.
+
+The solution: call `setupNativePortal()` once at app startup:
+
+```tsx
+import { setupNativePortal } from '@tamagui/portal/setup-native'
+
+setupNativePortal()
+```
+
+This uses React Native's native `createPortal` API (Fabric or Paper) to preserve
+the React fiber tree, so all context flows through automatically. No more
+manually re-propagating theme context or navigation state into your sheets and
+dialogs.
+
+See the [Portal docs](/docs/components/portal) for full details and alternative
+approaches like component scoping.
 
 ### New Components
 
