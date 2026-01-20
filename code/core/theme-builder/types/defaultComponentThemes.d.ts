@@ -1,7 +1,4 @@
 export declare const defaultComponentThemes: {
-    ListItem: {
-        template: string;
-    };
     SelectItem: {
         template: string;
     };

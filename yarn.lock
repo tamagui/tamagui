@@ -8192,6 +8192,7 @@ __metadata:
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/menu": "workspace:*"
     "@tamagui/native-portal": "workspace:*"
+    "@tamagui/portal": "workspace:*"
     "@tamagui/sandbox-ui": "workspace:*"
     "@tamagui/sheet": "workspace:*"
     "@tamagui/shorthands": "workspace:*"

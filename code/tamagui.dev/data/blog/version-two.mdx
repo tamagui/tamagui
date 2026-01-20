@@ -81,11 +81,12 @@ Native, and web standards, and includes a few new features and components.
 
 The breaking changes outside of deprecations are:
 
-- **Removed deprecated v2 config exports.** The `/v2` exports from `@tamagui/config`,
-  `@tamagui/themes`, and `@tamagui/shorthands` have been removed. These were the
-  original config format from early Tamagui versions - not to be confused with
-  Tamagui v2 itself. The current config is now at v5. If you were using
-  `@tamagui/config/v2`, migrate to `@tamagui/config/v5` or the default export.
+- **Removed deprecated v2 config exports.** The `/v2` exports from
+  `@tamagui/config`, `@tamagui/themes`, and `@tamagui/shorthands` have been
+  removed. These were the original config format from early Tamagui versions -
+  not to be confused with Tamagui v2 itself. The current config is now at v5. If
+  you were using `@tamagui/config/v2`, migrate to `@tamagui/config/v5` or the
+  default export.
 
 - **React Native 0.82+ and React 19+ required.** Tamagui 2 targets React Native
   0.82 and React 19 and above with New Architecture support. This enables
@@ -111,7 +112,8 @@ The breaking changes outside of deprecations are:
 - Moved all settings on `createTamagui` to the `settings` object.
 - Native portals no longer auto-import React internals hack. If you want native
   portals for better context preservation, call `setupNativePortal()` from
-  `@tamagui/portal/setup-native` at app startup. See [Portal docs](/docs/components/portal).
+  `@tamagui/portal/setup-native` at app startup. See
+  [Portal docs](/docs/components/portal).
 - Removed React Native accessibility props in favor of web-standard props:
   - `accessibilityLabel` → `aria-label`
   - `accessibilityRole` → `role`
@@ -561,9 +563,9 @@ feature and blog improvements.
 ### Consulting
 
 We're also testing out consulting this year through
-**[Add Even](https://addeven.com)**. We built a production app for a company late
-last year in record time — three weeks from start to approval in app stores —
-and that was before we spent the last few months refining everything based on
+**[Add Even](https://addeven.com)**. We built a production app for a company
+late last year in record time — three weeks from start to approval in app stores
+— and that was before we spent the last few months refining everything based on
 that project.
 
 If you'd like to launch something in record time that's as ambitious as
