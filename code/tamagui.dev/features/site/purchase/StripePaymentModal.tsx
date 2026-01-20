@@ -143,10 +143,18 @@ class PaymentModal {
     supportTier: 0,
     teamSeats: 0,
   }
+  // V2 fields
+  isV2 = true // Default to V2 for new purchases
+  projectName = ''
+  projectDomain = ''
 }
 
 export const paymentModal = createStore(PaymentModal)
 export const usePaymentModal = createUseStore(PaymentModal)
+
+// V2 Pro pricing constants
+export const V2_LICENSE_PRICE = 1500 // $1,500 one-time
+export const V2_UPGRADE_PRICE = 300 // $300/year for updates
 
 type StripePaymentModalProps = {
   yearlyTotal: number
@@ -173,6 +181,12 @@ const PaymentForm = ({
   finalCoupon,
   subscriptionStatus,
   children,
+  // V2 fields
+  isV2,
+  projectName,
+  projectDomain,
+  onProjectNameChange,
+  onProjectDomainChange,
 }: {
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -192,14 +206,38 @@ const PaymentForm = ({
   finalCoupon: Coupon | null
   subscriptionStatus: UserSubscriptionStatus
   children: React.ReactNode
+  // V2 fields
+  isV2: boolean
+  projectName: string
+  projectDomain: string
+  onProjectNameChange: (value: string) => void
+  onProjectDomainChange: (value: string) => void
 }) => {
   const stripe = useStripe()
   const elements = useElements()
   const [error, setError] = useState<Error | StripeError | null>(null)
 
+  // V2 validation
+  const v2ValidationError = useMemo(() => {
+    if (!isV2) return null
+    if (!projectName || projectName.length <= 2)
+      return 'Project name must be more than 2 characters'
+    if (!projectDomain || projectDomain.length <= 2)
+      return 'Domain must be more than 2 characters'
+    return null
+  }, [isV2, projectName, projectDomain])
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setError(null)
+
+    // V2 validation
+    if (isV2 && v2ValidationError) {
+      const validationErr = new Error(v2ValidationError)
+      setError(validationErr)
+      onError(validationErr)
+      return
+    }
 
     if (!stripe || !elements) {
       return
@@ -232,7 +270,36 @@ const PaymentForm = ({
 
       // Only create Pro subscription if user doesn't already have PRO
       if (!subscriptionStatus.pro) {
-        // Create Pro subscription/payment first
+        // V2 purchase flow
+        if (isV2) {
+          const response = await fetch('/api/create-v2-subscription', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              paymentMethodId: paymentMethod.id,
+              projectName,
+              projectDomain,
+              couponId: finalCoupon?.id,
+            }),
+          })
+
+          data = await response.json()
+
+          if (!response.ok) {
+            const error = new Error(data.error || JSON.stringify(data))
+            setError(error)
+            onError(error)
+            return
+          }
+
+          // V2 purchase successful
+          onSuccess(data.invoiceId)
+          return
+        }
+
+        // Legacy V1 subscription/payment flow
         const response = await fetch('/api/create-subscription', {
           method: 'POST',
           headers: {
@@ -393,6 +460,50 @@ const PaymentForm = ({
           }}
           py="$4"
         >
+          {/* V2 Project Information Fields */}
+          {isV2 && (
+            <YStack gap="$4" mb="$4">
+              <YStack gap="$2">
+                <Paragraph fontFamily="$mono" fontWeight="600" size="$4">
+                  Project Information
+                </Paragraph>
+                <Paragraph size="$3" theme="alt2">
+                  Enter your project name and primary domain. Your license covers this
+                  domain plus iOS/Android apps.
+                </Paragraph>
+              </YStack>
+
+              <YStack gap="$2">
+                <Paragraph fontFamily="$mono" size="$3">
+                  Project Name
+                </Paragraph>
+                <Input
+                  placeholder="My Awesome App"
+                  value={projectName}
+                  onChangeText={onProjectNameChange}
+                  fontFamily="$mono"
+                />
+              </YStack>
+
+              <YStack gap="$2">
+                <Paragraph fontFamily="$mono" size="$3">
+                  Domain
+                </Paragraph>
+                <Input
+                  placeholder="myapp.com"
+                  value={projectDomain}
+                  onChangeText={onProjectDomainChange}
+                  fontFamily="$mono"
+                />
+                <Paragraph size="$2" theme="alt2">
+                  Primary web domain for your project
+                </Paragraph>
+              </YStack>
+
+              <Separator my="$2" />
+            </YStack>
+          )}
+
           <PaymentElement
             options={{
               layout: 'accordion',
@@ -432,7 +543,6 @@ const PaymentForm = ({
               }}
             >
               <Button
-                fontFamily="$mono"
                 rounded="$10"
                 self="flex-end"
                 $maxMd={{
@@ -440,7 +550,9 @@ const PaymentForm = ({
                 }}
                 disabled={isProcessing || !stripe || !elements}
               >
-                {isProcessing ? 'Processing...' : 'Complete purchase'}
+                <Button.Text fontFamily="$mono">
+                  {isProcessing ? 'Processing...' : 'Complete purchase'}
+                </Button.Text>
               </Button>
             </YStack>
           </Theme>
@@ -465,13 +577,18 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   } = props
   const store = usePaymentModal()
   const [isProcessing, setIsProcessing] = useState(false)
-  const { data: userData, isLoading, refresh, subscriptionStatus } = useUser()
+  const { data: userData, isLoading, subscriptionStatus } = useUser()
   const supabaseClient = useSupabaseClient()
   const [showCoupon, setShowCoupon] = useState(false)
   const [couponCode, setCouponCode] = useState('')
   const [finalCoupon, setFinalCoupon] = useState<Coupon | null>(null)
   const [couponError, setCouponError] = useState<string | null>(null)
   const { handleLogin } = useLoginLink()
+
+  // V2 project fields
+  const [projectName, setProjectName] = useState(store.projectName || '')
+  const [projectDomain, setProjectDomain] = useState(store.projectDomain || '')
+  const isV2 = store.isV2 ?? true // Default to V2 for new purchases
 
   const theme = useTheme()
   const themeName = useThemeName()
@@ -550,7 +667,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
             icon={GithubIcon}
             disabled={!supabaseClient}
           >
-            Continue with GitHub
+            <Button.Text>Continue with GitHub</Button.Text>
           </Button>
         </YStack>
       )
@@ -571,12 +688,117 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       },
     }
 
-    const baseAmount = monthlyTotal * 100 + yearlyTotal * 100
+    // V2: $1,500 one-time, V1: legacy monthly + yearly
+    const baseAmount = isV2
+      ? V2_LICENSE_PRICE * 100
+      : monthlyTotal * 100 + yearlyTotal * 100
     const amount = Math.ceil(
       calculateDiscountedAmount(baseAmount / 100, finalCoupon) * 100
     )
 
     const renderTotalView = () => {
+      // V2 Order Summary
+      if (isV2) {
+        const discountedPrice = calculateDiscountedAmount(V2_LICENSE_PRICE, finalCoupon)
+        return (
+          <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
+            <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+              Order summary
+            </H3>
+            <Separator />
+
+            <XStack justify="space-between">
+              <Paragraph fontFamily="$mono" lineHeight="$6">
+                Tamagui Pro V2 License
+              </Paragraph>
+              <YStack items="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    fontFamily="$mono"
+                    size="$3"
+                    opacity={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${V2_LICENSE_PRICE.toLocaleString()}
+                  </Paragraph>
+                )}
+                <Paragraph fontFamily="$mono">
+                  ${Math.ceil(discountedPrice).toLocaleString()}
+                </Paragraph>
+              </YStack>
+            </XStack>
+
+            <YStack gap="$2" bg="$color3" p="$3" rounded="$3">
+              <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
+                What's included:
+              </Paragraph>
+              <Paragraph size="$2" theme="alt2">
+                - All templates (v1 Takeout, v2 Takeout, Takeout Static)
+              </Paragraph>
+              <Paragraph size="$2" theme="alt2">
+                - 1 year of updates included
+              </Paragraph>
+              <Paragraph size="$2" theme="alt2">
+                - Unlimited team members
+              </Paragraph>
+              <Paragraph size="$2" theme="alt2">
+                - Basic chat support included
+              </Paragraph>
+              <Paragraph size="$2" theme="alt2">
+                - Lifetime rights to code
+              </Paragraph>
+            </YStack>
+
+            <XStack justify="space-between" items="center">
+              <Paragraph size="$3" theme="alt2">
+                After 1 year: $300/year for updates
+              </Paragraph>
+              <Paragraph size="$2" theme="alt2">
+                (auto-subscribed)
+              </Paragraph>
+            </XStack>
+
+            <Separator />
+
+            <XStack justify="space-between">
+              <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+                Total
+              </H3>
+              <YStack items="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    fontFamily="$mono"
+                    size="$3"
+                    opacity={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${V2_LICENSE_PRICE.toLocaleString()}
+                  </Paragraph>
+                )}
+                <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+                  ${Math.ceil(discountedPrice).toLocaleString()}
+                </H3>
+              </YStack>
+            </XStack>
+
+            <Theme name="red">
+              <YStack
+                bg="$color3"
+                p="$3"
+                rounded="$3"
+                borderWidth={1}
+                borderColor="$color6"
+              >
+                <Paragraph size="$2" fontWeight="600" color="$color11">
+                  Sales are final. No refunds.
+                </Paragraph>
+              </YStack>
+            </Theme>
+          </YStack>
+        )
+      }
+
+      // Legacy V1 Order Summary
       return (
         <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
           <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
@@ -746,7 +968,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   }}
                 />
                 <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
-                  Apply
+                  <Button.Text>Apply</Button.Text>
                 </Button>
               </XStack>
             )}
@@ -776,6 +998,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           p: '$6',
         }}
         flex={1}
+        flexBasis="auto"
         gap="$6"
       >
         <YStack flex={1}>
@@ -818,6 +1041,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 userData={userData}
                 finalCoupon={finalCoupon}
                 subscriptionStatus={subscriptionStatus}
+                // V2 fields
+                isV2={isV2}
+                projectName={projectName}
+                projectDomain={projectDomain}
+                onProjectNameChange={setProjectName}
+                onProjectDomainChange={setProjectDomain}
               >
                 {maxMd && renderTotalView()}
               </PaymentForm>
@@ -839,7 +1068,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       }}
     >
       <Dialog.Adapt when="maxMd">
-        <Sheet zIndex={1_000_001} modal dismissOnSnapToBottom animation="medium">
+        <Sheet zIndex={1_000_001} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame bg="$color1" p={0} gap="$4">
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Dialog.Adapt.Contents />
@@ -847,7 +1076,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadow4"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -857,7 +1086,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       <Dialog.Portal zIndex={1_000_001}>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           opacity={0.95}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -866,7 +1095,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           width="90%"
           maxW={1000}
           $maxMd={{

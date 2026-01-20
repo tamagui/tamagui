@@ -1,4 +1,11 @@
-import { type ButtonProps, SizableText, YStack } from 'tamagui'
+import { type ButtonProps, type ColorTokens, SizableText, YStack } from 'tamagui'
+
+type ButtonSimpleProps = ButtonProps & {
+  color?: ColorTokens
+  fontSize?: number
+  fontFamily?: string
+  icon?: any
+}
 
 export const ButtonSimple = ({
   color = '$color12',
@@ -7,7 +14,7 @@ export const ButtonSimple = ({
   children,
   disabled,
   ...rest
-}: ButtonProps) => {
+}: ButtonSimpleProps) => {
   return (
     <YStack
       rounded="$4"
@@ -27,7 +34,7 @@ export const ButtonSimple = ({
         cursor="default"
         text="center"
         fontSize={14}
-        fontFamily={fontFamily}
+        fontFamily={fontFamily as any}
         color={color}
       >
         {children}

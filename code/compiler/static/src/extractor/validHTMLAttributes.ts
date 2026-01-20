@@ -1,6 +1,10 @@
 export const validHTMLAttributes = {
+  // SVG attributes that should pass through untouched
+  fill: true,
+  stroke: true,
   autocomplete: true,
-  border: true,
+  style: true,
+  tabIndex: true,
   contenteditable: true,
   crossorigin: true,
   dir: true,

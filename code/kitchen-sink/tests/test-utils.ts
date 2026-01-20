@@ -1,4 +1,8 @@
-import type { Page } from '@playwright/test'
+import { test, type Page } from '@playwright/test'
+
+/** Animation drivers available for testing */
+export const ANIMATION_DRIVERS = ['css', 'native', 'reanimated', 'motion'] as const
+export type AnimationDriver = (typeof ANIMATION_DRIVERS)[number]
 
 type SetupPageArgs = {
   type: 'demo' | 'useCase'
@@ -24,9 +28,17 @@ export async function setupPage(
     searchParams = {},
   }: SetupPageArgs
 ) {
+  // Get animation driver from: searchParams > project metadata > env var > default
+  const testInfo = test.info()
+  const animationDriver =
+    searchParams.animationDriver ??
+    (testInfo.project?.metadata as any)?.animationDriver ??
+    process.env.TAMAGUI_TEST_ANIMATION_DRIVER ??
+    'native'
+
   const params = new URLSearchParams({
     theme,
-    animationDriver: searchParams.animationDriver ?? process.env.TAMAGUI_TEST_ANIMATION_DRIVER ?? 'native',
+    animationDriver,
   })
 
   // Add any additional custom search params

@@ -15,7 +15,7 @@ import type { DismissableProps } from '@tamagui/dismissable'
 import { Dismissable } from '@tamagui/dismissable'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { PortalItem } from '@tamagui/portal'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import type {
   Animated,
@@ -29,7 +29,7 @@ import type { ScopedProps, SwipeDirection } from './ToastProvider'
 import { Collection, useToastProviderContext } from './ToastProvider'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
-const ToastImplFrame = styled(ThemeableStack, {
+const ToastImplFrame = styled(YStack, {
   name: 'ToastImpl',
   focusable: true,
 
@@ -42,11 +42,12 @@ const ToastImplFrame = styled(ThemeableStack, {
           outlineColor: '$outlineColor',
         },
         backgroundColor: '$color6',
-        borderRadius: '$10',
-        paddingHorizontal: '$5',
-        paddingVertical: '$2',
+        borderRadius: '$4',
+        paddingHorizontal: '$4',
+        paddingVertical: '$3',
         marginHorizontal: 'auto',
         marginVertical: '$1',
+        elevation: '$3',
       },
     },
   } as const,
@@ -368,23 +369,22 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                       data-state={open ? 'open' : 'closed'}
                       data-swipe-direction={context.swipeDirection}
                       pointerEvents="auto"
-                      touchAction="none"
-                      userSelect="none"
+                      $platform-web={{
+                        touchAction: 'none',
+                        userSelect: 'none',
+                      }}
                       {...toastProps}
                       ref={composedRefs}
                       {...(isWeb && {
-                        onKeyDown: composeEventHandlers(
-                          (props as any).onKeyDown,
-                          (event: KeyboardEvent) => {
-                            if (event.key !== 'Escape') return
-                            onEscapeKeyDown?.(event)
-                            onEscapeKeyDown?.(event)
-                            if (!event.defaultPrevented) {
-                              context.isFocusedToastEscapeKeyDownRef.current = true
-                              handleClose()
-                            }
+                        onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                          if (event.key !== 'Escape') return
+                          onEscapeKeyDown?.(event)
+                          onEscapeKeyDown?.(event)
+                          if (!event.defaultPrevented) {
+                            context.isFocusedToastEscapeKeyDownRef.current = true
+                            handleClose()
                           }
-                        ),
+                        }),
                       })}
                     />
                   </Collection.ItemSlot>

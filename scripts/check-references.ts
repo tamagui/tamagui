@@ -68,7 +68,7 @@ async function findImports(location: string): Promise<string[]> {
     let stdout = ''
     try {
       const result = await exec(
-        `rg 'from ['"'"'"][^'"'"'"]+['"'"'"]' ${searchPath} --glob "*.tsx" --glob "*.ts" --only-matching --no-filename --no-line-number`,
+        `rg 'from ['"'"'"][^'"'"'"]+['"'"'"]' ${searchPath} --glob "*.tsx" --glob "*.ts" --glob "!*.test.ts" --glob "!*.test.tsx" --only-matching --no-filename --no-line-number`,
         {
           cwd: process.cwd(),
         }
@@ -145,6 +145,7 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
     ...Object.keys(packageJson.dependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),
     ...Object.keys(packageJson.devDependencies || {}),
+    ...Object.keys(packageJson.optionalDependencies || {}),
   ])
 
   // Find missing dependencies
@@ -154,8 +155,13 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
   missingDeps = missingDeps.filter((dep) => {
     const isViteOrTest = dep.includes('vite') || dep.includes('test')
     // bun is a runtime environment like node, not a package dependency
-    const isBlacklisted = dep === 'expo-linear-gradient' || dep === 'bun'
-    return !isViteOrTest && !isBlacklisted
+    // expo-image is an optional dependency
+    // expo-linear-gradient is handled by expo
+    // moti is deprecated and animations-moti package intentionally doesn't list it
+    const isBlacklisted = dep === 'expo-linear-gradient' || dep === 'bun' || dep === 'expo-image' || dep === 'moti'
+    // Filter out self-references (package importing itself, often from JSDoc comments)
+    const isSelfReference = dep === pkg.name
+    return !isViteOrTest && !isBlacklisted && !isSelfReference
   })
 
   if (missingDeps.length === 0) {

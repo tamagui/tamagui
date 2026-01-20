@@ -25,7 +25,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         {/* capture all docs pages */}
         <ThemeNameEffect colorKey="$color1" />
 
-        <YStack tag="article">
+        <YStack render="article">
           <Container position="relative">{children}</Container>
 
           <Container>
@@ -39,7 +39,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 {previous && (
                   <Link href={previous.route as Href} asChild>
                     <XStack
-                      tag="a"
+                      render="a"
                       group="card"
                       hoverStyle={{
                         borderColor: '$color11',
@@ -56,14 +56,14 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       aria-label={`Previous page: ${previous.title}`}
                       items="center"
                       gap="$4"
-                      animation="100ms"
+                      transition="100ms"
                     >
                       <View
                         opacity={0}
                         l="$-4"
                         $group-card-hover={{ opacity: 1, l: '$0' }}
                         $group-card-press={{ opacity: 0, l: '$-4' }}
-                        animation="quickest"
+                        transition="quickest"
                       >
                         <ChevronLeft color="$color11" />
                       </View>
@@ -72,7 +72,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         l="$-8"
                         $group-card-hover={{ l: '$0' }}
                         $group-card-press={{ l: '$-8' }}
-                        animation="quicker"
+                        transition="quicker"
                       >
                         <Paragraph select="none" theme="alt1" size="$5">
                           Previous
@@ -87,7 +87,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 {next && (
                   <Link href={next.route as Href} asChild>
                     <XStack
-                      tag="a"
+                      render="a"
                       group="card"
                       hoverStyle={{
                         borderColor: '$color11',
@@ -105,13 +105,13 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       items="center"
                       justify="flex-end"
                       gap="$4"
-                      animation="100ms"
+                      transition="100ms"
                     >
                       <YStack
                         r="$-8"
                         $group-card-hover={{ r: '$0' }}
                         $group-card-press={{ r: '$-8' }}
-                        animation="quicker"
+                        transition="quicker"
                       >
                         <Paragraph select="none" theme="alt1" size="$5">
                           Next
@@ -126,7 +126,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         r="$-4"
                         $group-card-hover={{ opacity: 1, r: '$0' }}
                         $group-card-press={{ opacity: 0, r: '$-4' }}
-                        animation="quickest"
+                        transition="quickest"
                       >
                         <ChevronRight color="$color11" />
                       </View>

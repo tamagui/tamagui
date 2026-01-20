@@ -122,7 +122,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
             >
               <YStackEnterable
                 key={page}
-                animation="quicker"
+                transition="quicker"
                 gap="$3"
                 position="absolute"
                 p="$4"

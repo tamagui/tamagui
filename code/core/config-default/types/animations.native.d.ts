@@ -31,5 +31,10 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         mass: number;
         stiffness: number;
     };
+    select: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
 }>;
 //# sourceMappingURL=animations.native.d.ts.map

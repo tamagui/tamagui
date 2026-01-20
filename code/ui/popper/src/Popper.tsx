@@ -12,8 +12,10 @@ import {
 } from '@tamagui/core'
 import type {
   Coords,
+  Middleware,
   OffsetOptions,
   Placement,
+  Side,
   SizeOptions,
   Strategy,
   UseFloatingReturn,
@@ -30,7 +32,7 @@ import {
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import { Keyboard, type View, useWindowDimensions } from 'react-native'
@@ -52,6 +54,7 @@ export type PopperContextShared = {
   placement?: Placement
   arrowRef: any
   onArrowSize?: (val: number) => void
+  transformOrigin?: { x: string; y: string }
 }
 
 export type PopperContextValue = UseFloatingReturn & PopperContextShared
@@ -195,6 +198,54 @@ export function setupPopper(options?: PopperSetupOptions) {
   Object.assign(setupOptions, options)
 }
 
+// forked from radix-ui 👇
+// https://github.com/radix-ui/primitives/blob/1910a8c91c5927e58b8fca3aeaa31411f32fee7c/packages/react/popper/src/Popper.tsx#L359-L399
+function getSideAndAlignFromPlacement(placement: Placement) {
+  const [side, align = 'center'] = placement.split('-')
+  return [side as Side, align as 'center' | 'start' | 'end'] as const
+}
+
+const transformOriginMiddleware = (options: {
+  arrowWidth: number
+  arrowHeight: number
+}): Middleware => ({
+  name: 'transformOrigin',
+  options,
+  fn(data) {
+    const { placement, rects, middlewareData } = data
+
+    const cannotCenterArrow = middlewareData.arrow?.centerOffset !== 0
+    const isArrowHidden = cannotCenterArrow
+    const arrowWidth = isArrowHidden ? 0 : options.arrowWidth
+    const arrowHeight = isArrowHidden ? 0 : options.arrowHeight
+
+    const [placedSide, placedAlign] = getSideAndAlignFromPlacement(placement)
+    const noArrowAlign = { start: '0%', center: '50%', end: '100%' }[placedAlign]
+
+    const arrowXCenter = (middlewareData.arrow?.x ?? 0) + arrowWidth / 2
+    const arrowYCenter = (middlewareData.arrow?.y ?? 0) + arrowHeight / 2
+
+    let x = ''
+    let y = ''
+
+    if (placedSide === 'bottom') {
+      x = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`
+      y = `${-arrowHeight}px`
+    } else if (placedSide === 'top') {
+      x = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`
+      y = `${rects.floating.height + arrowHeight}px`
+    } else if (placedSide === 'right') {
+      x = `${-arrowHeight}px`
+      y = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`
+    } else if (placedSide === 'left') {
+      x = `${rects.floating.width + arrowHeight}px`
+      y = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`
+    }
+
+    return { data: { x, y } }
+  },
+})
+
 export function Popper(props: PopperProps) {
   const {
     children,
@@ -258,6 +309,38 @@ export function Popper(props: PopperProps) {
               }
             },
             ...(typeof resize === 'object' && resize),
+          })
+        : (null as any),
+      // Add size middleware for CSS custom properties (web only)
+      process.env.TAMAGUI_TARGET !== 'native'
+        ? sizeMiddleware({
+            apply({ elements, rects, availableWidth, availableHeight }) {
+              const { width: anchorWidth, height: anchorHeight } = rects.reference
+              const contentStyle = elements.floating.style
+              contentStyle.setProperty(
+                '--tamagui-popper-available-width',
+                `${availableWidth}px`
+              )
+              contentStyle.setProperty(
+                '--tamagui-popper-available-height',
+                `${availableHeight}px`
+              )
+              contentStyle.setProperty(
+                '--tamagui-popper-anchor-width',
+                `${anchorWidth}px`
+              )
+              contentStyle.setProperty(
+                '--tamagui-popper-anchor-height',
+                `${anchorHeight}px`
+              )
+            },
+          })
+        : (null as any),
+      // Transform origin middleware (web only)
+      process.env.TAMAGUI_TARGET !== 'native'
+        ? transformOriginMiddleware({
+            arrowHeight: arrowSize,
+            arrowWidth: arrowSize,
           })
         : (null as any),
     ].filter(Boolean),
@@ -325,6 +408,9 @@ export function Popper(props: PopperProps) {
       arrowStyle: middlewareData.arrow,
       onArrowSize: setArrowSize,
       hasFloating: middlewareData.checkFloating?.hasFloating,
+      transformOrigin: middlewareData.transformOrigin as
+        | { x: string; y: string }
+        | undefined,
       open: !!open,
       ...floating,
     } satisfies PopperContextValue
@@ -335,6 +421,7 @@ export function Popper(props: PopperProps) {
     floating.y,
     floating.placement,
     JSON.stringify(middlewareData.arrow || null),
+    JSON.stringify(middlewareData.transformOrigin || null),
     floating.isPositioned,
   ])
 
@@ -353,70 +440,78 @@ export function Popper(props: PopperProps) {
 
 type PopperAnchorRef = HTMLElement | View
 
-export type PopperAnchorProps = YStackProps & {
+export type PopperAnchorExtraProps = {
   virtualRef?: React.RefObject<any>
   scope?: string
 }
+export type PopperAnchorProps = YStackProps
 
-export const PopperAnchor = YStack.extractable(
-  React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
-    function PopperAnchor(props, forwardedRef) {
-      const { virtualRef, scope, ...anchorProps } = props
-      const context = usePopperContextSlow(scope)
-      const { getReferenceProps, refs, update } = context
-      const ref = React.useRef<PopperAnchorRef>(null)
+export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
+  function PopperAnchor(props, forwardedRef) {
+    const { virtualRef, scope, ...rest } = props
+    const context = usePopperContextSlow(scope)
+    const { getReferenceProps, refs, update } = context
+    const ref = React.useRef<PopperAnchorRef>(null)
 
-      React.useEffect(() => {
-        if (virtualRef) {
-          refs.setReference(virtualRef.current)
-        }
-      }, [virtualRef])
+    React.useEffect(() => {
+      if (virtualRef) {
+        refs.setReference(virtualRef.current)
+      }
+    }, [virtualRef])
 
-      const stackProps = anchorProps
-
-      // Wrap setReference in startTransition to avoid React #185 (setState during render)
-      const safeSetReference = React.useCallback(
-        (node: any) => {
-          startTransition(() => {
-            refs.setReference(node)
-          })
-        },
-        [refs.setReference]
-      )
-
-      const refProps = getReferenceProps ? getReferenceProps(stackProps as any) : null
-      const shouldHandleInHover = isWeb && scope
-      const composedRefs = useComposedRefs(
-        forwardedRef,
+    const refProps =
+      getReferenceProps?.({
+        ...rest,
         ref,
-        // web handles this onMouseEnter below so it can support multiple targets + hovering
-        shouldHandleInHover ? undefined : safeSetReference
-      )
+      }) || null
 
-      return (
-        <TamaguiView
-          {...stackProps}
-          {...refProps}
-          ref={composedRefs}
-          {...(shouldHandleInHover && {
-            // this helps us with handling scoped poppers with many different targets
-            // basically we wait for mouseEnter to ever set a reference and remove it on leave
-            // otherwise floating ui gets confused by having >1 reference
-            onMouseEnter: (e) => {
-              if (ref.current instanceof HTMLElement) {
-                refs.setReference(ref.current)
-                refProps.onPointerEnter?.(e)
-                update()
+    // Wrap setReference in startTransition to avoid React #185 (setState during render)
+    const safeSetReference = React.useCallback(
+      (node: any) => {
+        startTransition(() => {
+          refs.setReference(node)
+        })
+      },
+      [refs.setReference]
+    )
+
+    const shouldHandleInHover = isWeb && scope
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      ref,
+      // web handles this onMouseEnter below so it can support multiple targets + hovering
+      shouldHandleInHover ? undefined : safeSetReference
+    )
+
+    return (
+      <TamaguiView
+        {...rest}
+        {...refProps}
+        ref={composedRefs}
+        {...(shouldHandleInHover && {
+          // this helps us with handling scoped poppers with many different targets
+          // basically we wait for mouseEnter to ever set a reference and remove it on leave
+          // otherwise floating ui gets confused by having >1 reference
+          onMouseEnter: (e) => {
+            if (ref.current instanceof HTMLElement) {
+              refs.setReference(ref.current)
+
+              if (!refProps) {
+                console.info('wwut', context, refProps, props)
+                return
               }
-            },
-            onMouseLeave: (e) => {
-              refProps?.onMouseLeave?.(e)
-            },
-          })}
-        />
-      )
-    }
-  )
+
+              refProps.onPointerEnter?.(e)
+              update()
+            }
+          },
+          onMouseLeave: (e) => {
+            refProps?.onMouseLeave?.(e)
+          },
+        })}
+      />
+    )
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -431,7 +526,7 @@ export type PopperContentProps = SizableStackProps & {
   passThrough?: boolean
 }
 
-export const PopperContentFrame = styled(ThemeableStack, {
+export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
 
   variants: {
@@ -440,7 +535,6 @@ export const PopperContentFrame = styled(ThemeableStack, {
         size: '$true',
         backgroundColor: '$background',
         alignItems: 'center',
-        radiused: true,
       },
     },
 
@@ -465,8 +559,17 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       props
     const context = usePopperContext(scope)
 
-    const { strategy, placement, refs, x, y, getFloatingProps, size, isPositioned } =
-      context
+    const {
+      strategy,
+      placement,
+      refs,
+      x,
+      y,
+      getFloatingProps,
+      size,
+      isPositioned,
+      transformOrigin,
+    } = context
 
     // Wrap setFloating in startTransition to avoid React #185 (setState during render)
     // This can happen during rapid navigation when refs are set during render phase
@@ -516,7 +619,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       position: strategy,
       opacity: 1,
       ...(enableAnimationForPositionChange && {
-        animation: rest.animation,
+        transition: rest.transition,
         animateOnly: disableAnimation ? [] : rest.animateOnly,
         // apply animation but disable it on initial render to avoid animating from 0 to the first position
         animatePresence: false,
@@ -533,6 +636,12 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       ? getFloatingProps(frameProps)
       : frameProps
 
+    // Compute the CSS transform-origin value from middleware data
+    const transformOriginStyle =
+      isWeb && transformOrigin
+        ? { transformOrigin: `${transformOrigin.x} ${transformOrigin.y}` }
+        : undefined
+
     return (
       <TamaguiView
         passThrough={passThrough}
@@ -548,6 +657,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
             'data-strategy': strategy,
             size,
             ...style,
+            ...transformOriginStyle,
             ...rest,
           })}
         >

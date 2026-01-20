@@ -1,145 +1,59 @@
-- option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
-- v2 useTheme({ name: '' }) should remove since .get() doesnt match
-- release v5 config now
-
-- v2 - whitelist more web-only events like onKeyDown in types
-  - react 19 only (can move some stuff to conditional use())
-
-- react-native-web-lite fixes things like data- attributes not passing down etc
-
-via chat
-
-```
-Time jsx-element-flattened: 2ms
-  style: mt = "$3"
-  style: mx = -6
-  style: x = 3
-  style: flexWrap = "wrap"
-  style: columnGap = "calc(20% - 38px)"
-Recoverable error extracting attribute Cannot destructure property 'shadowOffset' of 'style' as it is undefined. TypeError: Cannot destructure property 'shadowOffset' of 'style' as it is undefined.
-    at styleToCSS (/Users/n8/chat/node_modules/@tamagui/web/dist/cjs/helpers/getCSSStylesAtomic.cjs:78:5)
-    at getCSSStylesAtomic (/Users/n8/chat/node_modules/@tamagui/web/dist/cjs/helpers/getCSSStylesAtomic.cjs:37:3)
-    at Object.createDOMProps (/Users/n8/chat/node_modules/@tamagui/react-native-web-internals/dist/cjs/modules/createDOMProps/index.cjs:143:60)
-    at evaluateAttribute (/Users/n8/chat/node_modules/@tamagui/static/dist/extractor/createExtractor.js:510:76)
-    at /Users/n8/chat/node_modules/@tamagui/static/dist/extractor/createExtractor.js:757:30
-    at Array.flatMap (<anonymous>)
-    at JSXElement (/Users/n8/chat/node_modules/@tamagui/static/dist/extractor/createExtractor.js:754:76)
-    at NodePath._call (/Users/n8/chat/node_modules/@babel/traverse/lib/path/context.js:49:20)
-    at NodePath.call (/Users/n8/chat/node_modules/@babel/traverse/lib/path/context.js:39:18)
-    at NodePath.visit (/Users/n8/chat/node_modules/@babel/traverse/lib/path/context.js:88:31)
-```
-
-- docs on reprop context on ios new arch
-
-- popover bring back dismissable - document dismissable etc
-- in SheetImplCustom bad logic for pulling up when scroll view inside
-  - if scrollview isn't able to scroll we shouldn't disable that behavior:
-    `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`
-    - we can: pass in scrollable node selector
-    - do logic to determine if its actually scrollable
-
-- Dialog.Overlay shouldn't need to define key for animation
-- apply visibility hidden to fully hidden popover for perf gains
-- css driver can noRerender
-- reanimated too but requires testing native + worklets
-
 v2:
 
-- remove webpack plugin
+See `docs/web-alignment-plan.md` for the full web props migration plan.
 
-- removeScrollEnabled => disableRemoveScroll
+**DONE (already in v2):**
+- ✅ `transition` prop (not `animation`)
+- ✅ `defaultPosition: 'static'`
+- ✅ `box-sizing: border-box` default
+- ✅ Image component (new web-aligned with `src`, `objectFit`)
+- ✅ `inputMode`, `enterKeyHint` for Input
 
-- move to types react/react-dom 19
+**Web Alignment (breaking changes):**
+- Remove RN accessibility props entirely, use only `aria-*` and `role`
+- Remove `focusable`, use only `tabIndex`
+- Remove `onPress/onPressIn/onPressOut`, use only `onClick/onPointerDown/onPointerUp`
+- Remove legacy shadow props (`shadowColor`, `shadowOffset`, etc), use `boxShadow`
+  - RN 0.82+ natively supports `boxShadow` (New Architecture)
+  - Supports string, object, and array (multiple shadows) syntax
+  - Add $token support in boxShadow strings: `boxShadow="0 2px 10px $shadowColor"`
+- Keep `onChangeText` as exception (ergonomic for RN devs)
 
-- removing default size based styling, look at this in tooltip!:
-```
-const padding = !props.unstyled
-        ? (props.padding ??
-          props.size ??
-          popperSize ??
-          getSize('$true', {
-            shift: -2,
-          }))
-        : undefined
-```
+- <Button render={} /> i started a pr we should try and move from tag => render fully, but render can take string as a simple option
 
 ---
 
-- escape on tamagui sheet doesn't close in general keyboard accessibility
-  - check radix sheet and compare and improve
+AFTER v2 RC (nice to haves):
 
-- perf: could avoid even creating style rules, easy / big win:
-  - note that in addStyleToInsertRules it checks if shouldInsert
-  - note that we create all the style rules before we actually check if should insert
-  - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
+- css driver can avoidReRenders
+  - reanimated too but requires testing native + worklets
 
-- perf: could avoid parent re-renders on group changes even if dynamic
-  - if they dont themselves have animation, would need to group.emit() in the actual press events not based on an effect based on state
+- Text weirdness fixes (explore)
+    - remove suppressHighlighting / margin 0 default from Text
+    - fix display: inline issue
+    - see what react-strict-dom is doing
+    - move it to <div><span> where div is flex, span is text only props
+        <div {...nonTextStyleProps}>
+          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
 
-for v2, new site hero that captures:
+          </span>
+        </div>
 
-- 100% features work the same cross-platform
-- optionally compile-time optimized, but 100% runtime feature-set
-- 0-dependency: no / faster than react-native-web
-- fully typesafe styling
-- by far best SSR
-- headless component kit
-- super-powerful: themes, animations
+- smaller bugfixes/things to check work:
+  - ensure onlyAllowShorthands changes types properly
+  - tooltip: expects zIndex but shorthand overrides and doesn't work
+  - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
+  - fix toggle / multiple https://github.com/tamagui/tamagui/pull/3362
+  - seems <Switch checked defaultChecked> isnt showing in the checked position
 
-v2 big win / lowish effort:
+- option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
+- v2 useTheme({ name: '' }) should remove since .get() doesnt match
 
-- two fixes for animation drivers
-  - remove <Configuration animationDriver (breaks compiler)
-    - instead `animationDriver` prop on any component
-  - accept multiple animationDrivers at root for proper types
-
-- document <ClientOnly />
-
-# force railway deploy
-
-- in onejs/chat bug with transforms merging media queries: 
-  - see // TODO bug x should overwrite not be cumulative
-
-- css animation driver enter animations not working it seems, i used to have
-  a fix for this where setState({ unmounted: true }) inside createComponent had a setTimeout() wrapped around it, but then removed it when i tested and found it didnt need it anymore, but seems it does need it again? or some other better fix ideally.
-
-- small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
-
-- react native 78 dialogs not working
-  - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
-
-- tamagui.dev the right side quick nav on docs isnt updating on page nav
-  - lets redo it like how onestack.dev does it, so its actually rendered server side not just client side, that will improve it as well
-
-- we need to actually in validStyleProps probably have the web-only ones be on a new object like "webOnly" and then actually filtered out on native so they dont clutter things.
-
-- fix react 19 + nextjs 15
-  - https://github.com/gcoakleyjr/React19-Tamagui
-  - react-native-web-lite or patch rnw because it doesn't work, we should:
-    - somehow fix rnw issue with rn19
-    - fix issue with rnw-lite
-      - https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
-  - eventually we should avoid RNW altogether - part of v2 work is that, need to remove it from Input + Image + Spinner
-  - announcement
-
-- option to default to position "static"
-
-- i think a big current bug is onlyAllowShorthands can be set on settings or on base, but if its set on base it breaks types entirely.
-
-- tooltip: expects zIndex but shorthand overrides and doesn't work
-
-- make group props require the prop key to be stable like animations
-  - saves 2 hooks in every component
-  - in dev mode add a extra component around every component
-    - make it so it automatically handles animation/group changes without breaking
-    - but make it error in the console
-
-- useTheme().x.val may have bug on light/dark switch
-
-bug:
-
-- https://github.com/tamagui/tamagui/issues/3322
-
+  - useTheme().x.val may have bug on light/dark switch
+  - react native 78 dialogs not working
+    - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
+  
+  
 As an example, we have a Button that has a variant, default.
 its pressStyle is
 pressStyle: {
@@ -156,25 +70,111 @@ however, doing this
 >
 does not give the Button a red background when pressed
 
+- beef up tests:
+  - native integration
+  - $group $platform $theme styling
+
+uniswap:
+
+- enter/exit in media not overriding
+
+- Checkbox disabled prop not disabling on native
+
+- if Popover can not be portaled that would be useful for some use cases
+
+- RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
+  - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
+
+- bug: if you name a file `polyfill-native.ts` tamagui-build doesnt output the .native files properly
+
+- When using <Adapt.Contents />  inside an Adapt when="maxMd"  it seems to hide the children before fully closed
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
+
+- When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
+
+- AnimatePresence leaving things in DOM
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
+
+---
+
+- perf: could avoid even creating style rules, easy / big win:
+  - note that in addStyleToInsertRules it checks if shouldInsert
+  - note that we create all the style rules before we actually check if should insert
+  - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
+
+- import `tamagui/styled` / `@tamagui/button/styled`
+  - adds styles, sizing, unstyled prop
+    - removing default size based styling, look at this in tooltip!:
+
+```
+const padding = !props.unstyled
+        ? (props.padding ??
+          props.size ??
+          popperSize ??
+          getSize('$true', {
+            shift: -2,
+          }))
+        : undefined
+```
+
+
+- checkbox disableActiveTheme not workign
+- ssr fix i think select not showing value until after load?
+
+animations improvements:
+
+- make tamagui package work in some simple way
+  - probably making tamagui + tamagui/ui both work is fine
+
+- react-native-web-lite 
+  - tree shakeable, smaller, fixes things like data- attributes not passing
+  - shares core style logic with tamagui for smaller bundles used together
+  - outstanding bug? https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
+
+- docs on reprop context on ios new arch
+
+- in SheetImplCustom bad logic for pulling up when scroll view inside
+  - if scrollview isn't able to scroll we shouldn't disable that behavior:
+    `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`
+    - we can: pass in scrollable node selector
+    - do logic to determine if its actually scrollable
+
+- apply visibility hidden to fully hidden popover for perf gains
+
+- refresh site hero:
+  - 100% features work the same cross-platform
+  - optionally compile-time optimized, but 100% runtime feature-set
+  - 0-dependency: no / faster than react-native-web
+  - fully typesafe styling
+  - by far best SSR
+  - headless component kit
+  - super-powerful: themes, animations
+
+- sync AnimatePresence with latest changes from framer-motion
+  - BUT needs careful checking - the aniamted gallery thing for example is realyl fussy and i saw regressions before when i tried syncing it
+
+---
+
+- popover bring back dismissable - document dismissable etc
+
+- escape on tamagui sheet doesn't close in general keyboard accessibility
+  - check radix sheet and compare and improve
+
+- announcement
+
+- group props require the prop key to be stable like animations
+  - saves 2 hooks in every component
+  - in dev mode add a extra component around every component
+    - make it so it automatically handles animation/group changes without breaking
+    - but make it error in the console
+
 - issue with letter spacing after upgrading
   - https://discord.com/channels/909986013848412191/974145843919716412/1356379335132446740
   - https://share.cleanshot.com/4rKTYFkl
 
-v2
-
-blog post:
-
-- during v2:
-  - headless versions of every component
-  - native versions of every components
-  - border, background, boxShadow props with web style , separation
-  - var(--) style tokens
-
-- talk about v3:
+v3:
   - aim for fast follow
-  - if not in 2, animation => transition
-  - default box-sizing to border-box
-  - default position: static
   - remove component themes, instead theme="surface2" etc
   - remove `name` from styled()
   - remove inverse in favor of sub-themes that can inverse already ssr safe
@@ -182,38 +182,62 @@ blog post:
     - themes => variables, control any property
     - remove tokens in favor of variables
   
-  - RSD style - no View + Text (just Element and we can extend it later)
+  - RSD - no View + Text (just Element and we can extend it later)
     - compiler can optimize
     - mimic text inhertance on native (or remove it on web)
     - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
-
 - todo:
   - remove $true tokens and concept
-  - default position relative => position static with ENV to revert
-  - onMouseMove, onDoubleClick and other web props
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
-  - animation => transition
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
   - remove componentName, just allow setting default theme: ""
   - remove builders like themebuilder etc from config
     - do it via plugins automatically
+  - inlineProps => `accept: 'number' | 'string' | value<type>()`
   - remove inlineProps, usedKeys, partial extraction
 
   - must pass in colors separately but it exports the defaults still
   - createSystemFont into package
   - remove component themes by default instead just do:
     - "surface1-3" and have components use that instead of name by default when not unstyled
-  - // TODO on inverse theme changes
+  - theme inverse only works with sub-themes named _inverse. createThemes.generateInverseSubThemes: boolean 
+    - v4 config can add a boolean to do this by default
+  <!-- - button-next is mostly ready now to replace button:
+    - remove old button, move new button into place, fix issues around the site/bento
+    - docs update: we should show "headless" style and non-headless
+      - <Button.Frame><Button.Icon></Button.Icon></Button.Frame> for headless
+      - <Button> for non-headless -->
+  - input-next
+    - rather than wrapping react-native-web we implement our own
+    - keep it simple, align to web props as much as possible
+  <!-- - swap image-next => image -->
+  - make sure webContainerType is "right" - probably not `normal` default (currently `inline-size`)
+  - we should fix "tag" and have it so you can pass typed props to the tag
+    - tag => as?
+    - tag={['a', { href: '' }]}
+  - we may need to move the web-only valid style props to a webOnly const and filter it out on native? how does that work currently...
+  - see various `@deprecated` jsdocs
+  - need to copy/paste all the component docs to 2.0.0.mdx
+  - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
+  - see how much of accessibilityDirectMap we can remove for web
+  - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
+  - @tamagui/cli => tamagui
+    - `tamagui build` document/announce
+    - `tamagui lint` fix check and document/announce
+  - tamagui => tamagui
+    - note many are headless
+  - Cleanup Select/ListItem
+    - v2-3 ListItem simplification esp for performance of Select
+    - fix Select hover/type/performance
+
+potential
+
+  - group => container
 
 is this a bug? the is_static conditional is odd, maybe backward
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
-
-- config v5
-
-  - aligned setting to react native layout mode
-  - tokens aligned to tailwind
 
 ---
 
@@ -228,26 +252,19 @@ createCore<CustomTypes>({
 })
 ```
 
-  - `background` prop + linear-gradient + background-image (see *Skeleton)
   - can we remove the need for separate Text/View?
       - seems like we could scan just the direct descendents?
       https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+
   - light-dark()
     - this is an official css thing so would be easy-ish to implement
+
   - run over components and review for removing some assumptions about `size`
   - disableInjectCSS should maybe just be automated better or defaulted on
   - flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
   - no react-native deps across the ui kit on web
   - html.div, styled('div'), styled(html.div)
-  - zero runtime mode
-    - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
   - `<Theme values={{}} />` dynamic override
-
-- beef up tests:
-  - native
-  - native/web performance
-  - nextjs (can add to code/next-site), esp light/dark/animations
-  - $group $platform $theme styling
 
 - reanimated animate presence is making me set `opacity: 1` type default values
 
@@ -257,38 +274,15 @@ createCore<CustomTypes>({
   - closeTooltips() helper
   - tooltip prop `closeOnGlobalPress`
 
-- we should add a docs page on testing tamagui:
+- looks like our upgrade to 1.114 added virtualkeyboardpolicy="manual" which broke the auto keyboard appearance on android web, working on a quick fix but wanted to flag
 
-jest-preset.js should add (for testing native):
+- nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
-testEnvironmentOptions: {
-  customExportConditions: ['react-native'],
-}
-
-- can skip a ton of CSS by disabling prefers color theme setting
-  - so long as they use next-theme, or vxrn/color-scheme
-
-uniswap:
-
-- enter/exit in media not overriding
-
-- Checkbox disabled prop not disabling on native
-
-- if Popover can not be portaled that would be useful for some use cases
-
-- RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
-  - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
-
-- bug: if you name a file `polyfill-native.ts` tamagui-biuld doesnt output the .native files properly
-
-- When using <Adapt.Contents />  inside an Adapt when="maxMd"  it seems to hide the children before fully closed
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
-
-- When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
-  
-- AnimatePresence leaving things in DOM
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
+- button media queries break due to useStyle hook
+- algolia creds
+- uniswap/tamagui fixes, see uniswap section
+  - the platform-web type issues should be relatively easy
+  - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
 
 ---
 
@@ -306,14 +300,6 @@ const Context = createStyledContext({
   - we should try and redo FocusScope to not cloneElement at all and instead wrap with an element + display: contents
 
 ---
-
-- Dialog.Portal and <Dialog modal /> redundant
-
-- as long as you use the nextjs or other new color scheme helpers they always add t_dark/t_light on first render so as long as youre ok with dark mode not working for js-off users, you could turn default the tamagui/config v4 to shouldAddPrefersColorThemes: false
-
-- lower priority uniswap:
-  - seems <Switch checked defaultChecked> isnt showing in the checked position
-  - <Theme name="dark"> with switch, the thumb is not picking up the right surface color, must be a multiple-nested theme issue
 
 - small win: `useTheme()` could take a theme name to use a diff theme than the current one
 
@@ -349,7 +335,7 @@ const Context = createStyledContext({
 - move from useMedia match.addListener to addEventListener
 - media query height taking into account the "safe height" is important
 - https://linear.app/uniswap/issue/EXT-925/tamagui-error-breaking-the-extension
-- document Popover.Anchor
+- document Popover.Anchor (implemented, needs docs)
 - Sometimes press getting stuck still on uniswap moonpay flow
 - Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
 
@@ -377,8 +363,6 @@ const Context = createStyledContext({
 
 - Select `ListItemFrame` area is messy/slow due to inline styles and complex components
 - propMode
-
-- make styled() only not accept most non-style props
 
 - Scale / ScaleSelect
   should be a Menu with mini visualizations of the lum/sat scales for each
@@ -439,32 +423,13 @@ const MyComponent = (props: { accentedStyle?: StackStyle }) => {
 
 ---
 
-Smaller features:
-
-- no-rerender psuedo styles on native when using reanimated driver (fernando PR)
-- imperative methods for many things - sheet, popover, etc, close etc
-- ssr safe themeInverse would be pretty nice
-- styled(ExternalComponent) should always allow Partial props
-  - but if you do provide the props ideally it should 'know' they are pre-filled and therefore not required anymore
-  - also it should make sure to make those props required if they aren't set in styled()
-- avoid css extract on server mode next.js?
-
----
-
 # Backlog
+
+- imperative methods for things - sheet, popover, etc, close etc
 
 - Popover.Close inside Sheet
 
 - merge font-size and get-font-sized packages
-
-- cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
-
-- <Sheet native />
-  - https://github.com/dominicstop/react-native-ios-modal
-  - we'd want expo module + snap points
-
-- <ActionSheet />
-- plus `native` prop https://reactnative.dev/docs/actionsheetios
 
 - add test that builds site for prod + checks for header text / no errors
 

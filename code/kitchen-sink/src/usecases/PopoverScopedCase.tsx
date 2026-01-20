@@ -1,13 +1,4 @@
-import {
-  Adapt,
-  Button,
-  Paragraph,
-  Popover,
-  Sheet,
-  useMedia,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Adapt, Button, Paragraph, Popover, Sheet, XStack, YStack } from 'tamagui'
 
 export function PopoverScopedCase() {
   const shouldAdapt = window.location.search.includes('adapt=true')
@@ -67,13 +58,13 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
 
       {shouldAdapt && (
         <Adapt when={true}>
-          <Sheet animation="medium" modal dismissOnSnapToBottom>
+          <Sheet transition="medium" modal dismissOnSnapToBottom>
             <Sheet.Frame data-testid={`${name}-sheet-contents`} padding="$4">
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
               backgroundColor="$shadowColor"
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />

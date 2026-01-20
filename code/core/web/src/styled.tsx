@@ -46,8 +46,7 @@ export function styled<
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
     context?: StyledContext
-    /** @deprecated pass in instead as the third argument to styled() */
-    acceptsClassName?: boolean
+    render?: string
   },
   config?: StyledConfig
 ) {
@@ -136,14 +135,7 @@ export function styled<
   )
 
   const staticConfigProps = (() => {
-    let {
-      variants,
-      name,
-      defaultVariants,
-      acceptsClassName: acceptsClassNameProp,
-      context,
-      ...defaultProps
-    } = options || {}
+    let { variants, name, defaultVariants, context, ...defaultProps } = options || {}
 
     let parentDefaultVariants
     let parentDefaultProps
@@ -199,7 +191,6 @@ export function styled<
 
     const acceptsClassName =
       config?.acceptsClassName ??
-      acceptsClassNameProp ??
       (isPlainStyledComponent ||
         isReactNative ||
         (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
@@ -299,13 +290,13 @@ export function styled<
 // })
 
 // const Test2 = styled(Text1, {
-//   tag: 'p',
+//   render: 'p',
 //   userSelect: 'auto',
 //   color: '$color',
 // })
 
 // const Test3 = styled(Test2, {
-//   tag: 'p',
+//   render: 'p',
 //   userSelect: 'auto',
 //   color: '$color',
 
@@ -317,7 +308,7 @@ export function styled<
 // })
 
 // const Test = styled(Paragraph, {
-//   tag: 'p',
+//   render: 'p',
 //   userSelect: 'auto',
 //   color: '$color',
 

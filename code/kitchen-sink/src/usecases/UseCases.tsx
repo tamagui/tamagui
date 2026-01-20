@@ -3,7 +3,6 @@ import '@tamagui/polyfill-dev'
 
 import {
   Button,
-  ButtonFrame,
   H1,
   Header,
   SizableText,
@@ -50,7 +49,7 @@ export function UseCases() {
   )
 }
 
-const CustomButtonFrame = styled(ButtonFrame, {
+const CustomButtonFrame = styled(Button.Frame, {
   variants: {
     backgrounded: {
       true: {
@@ -67,12 +66,17 @@ const CustomButtonFrame = styled(ButtonFrame, {
   },
 })
 function AnimationChangeTest() {
-  const [animation, setanimation] = React.useState('lazy' as any)
+  const [transition, setTransition] = React.useState<'lazy' | 'quick'>('lazy')
   return (
     <>
-      <Square animation={animation} size={100} bc="red" hoverStyle={{ scale: 2 }} />
-      <Button onPress={() => setanimation(animation === 'lazy' ? 'quick' : 'lazy')}>
-        {animation}
+      <Square
+        transition={transition}
+        size={100}
+        borderColor="red"
+        hoverStyle={{ scale: 2 }}
+      />
+      <Button onPress={() => setTransition(transition === 'lazy' ? 'quick' : 'lazy')}>
+        {transition}
       </Button>
     </>
   )
@@ -174,7 +178,6 @@ export const Sandbox = () => {
           <Button
             onPress={async () => {
               await import('./SecondPage')
-              console.log(`loaded (not navigating)`)
             }}
           >
             Load Second Page
@@ -186,7 +189,7 @@ export const Sandbox = () => {
             <Square
              size={100}
              bc="red"
-             animation="bouncy"
+             transition="bouncy"
              
              // scale={1}
              enterStyle={{
@@ -194,7 +197,7 @@ export const Sandbox = () => {
              }}
             /> */}
           {/* <AnimationsPresenceDemo /> */}
-          {/* <Square size={100} bc="red" animation="bouncy" /> */}
+          {/* <Square size={100} bc="red" transition="bouncy" /> */}
           {/* <AnimationsPresenceDemo /> */}
           {/* <SandboxExample /> */}
           {/* <SelectDemo /> */}
@@ -230,7 +233,7 @@ export const Sandbox = () => {
           {/* <SheetDemo /> */}
 
           {/* space */}
-          {/* <YStack  space="$2" $gtSm={{ space: '$10' }}>
+          {/* <YStack  gap="$2" $gtSm={{ gap: '$10' }}>
              <Circle bc="red" size="$10" />
              <Circle bc="red" size="$10" />
              <Circle bc="red" size="$10" />
@@ -282,7 +285,7 @@ export const Sandbox = () => {
           {/* <SheetDemo2 /> */}
           {/* <SheetDemo /> */}
           {/* <SwitchDemo /> */}
-          {/* <XStack space>
+          {/* <XStack gap="$4">
             <Square size={50} bc="red" />
             <Square $sm={{ display: 'none' }} size={50} bc="red" />
             <Square size={50} bc="red" />
@@ -403,21 +406,4 @@ function UseThemeNameChildTest() {
   const name = useThemeName()
 
   return <H1>{name}</H1>
-}
-
-function ThemeInverseReverseTest() {
-  return (
-    <>
-      {/* Theme reset + invert */}
-      <Theme name="dark">
-        <Theme reset>
-          {/* should be light */}
-          <Theme inverse>
-            {/* should be dark */}
-            <Square bg="$background" size={100} />
-          </Theme>
-        </Theme>
-      </Theme>
-    </>
-  )
 }

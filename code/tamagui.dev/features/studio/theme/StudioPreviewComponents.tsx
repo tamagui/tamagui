@@ -129,7 +129,7 @@ const PalettePreviewPanels = memo(() => {
         }
 
         return (
-          <Panel key={name} disableSettings m={0} height="auto" flex={1}>
+          <Panel key={name} disableSettings m={0} height="auto" flex={1} flexBasis="auto">
             <YStack borderWidth={0} gap="$0" p="$0" overflow="hidden">
               <StudioPaletteBar showLabelIndices colors={palette} />
             </YStack>

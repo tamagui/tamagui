@@ -1,14 +1,4 @@
-import {
-  H3,
-  H4,
-  ListItem,
-  Paragraph,
-  Separator,
-  View,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { H3, H4, ListItem, Paragraph, Separator, View, XStack, YStack } from 'tamagui'
 
 import { Code } from '~/components/Code'
 
@@ -38,6 +28,7 @@ export function PropsTable({
       borderWidth={1}
       borderColor="$borderColor"
       flex={1}
+      flexBasis="auto"
       aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
       aria-labelledby={ariaLabelledBy}
       my="$4"
@@ -82,13 +73,13 @@ export function PropsTable({
                     {name}
                     {required ? (
                       <Paragraph
-                        tag="span"
+                        render="span"
                         // @ts-ignore
                         fontSize="inherit"
                         opacity={0.5}
                       >
                         {' '}
-                        <Paragraph tag="span" fontWeight="300">
+                        <Paragraph render="span" fontWeight="300">
                           (required)
                         </Paragraph>
                       </Paragraph>
@@ -104,7 +95,6 @@ export function PropsTable({
                       flex={2}
                       minW="30%"
                       items="center"
-                      separator={<Separator self="stretch" vertical mx="$3.5" my="$2" />}
                       $xs={{
                         flexDirection: 'column',
                         items: 'flex-start',
@@ -115,7 +105,7 @@ export function PropsTable({
                         opacity={0.8}
                         fontFamily="$mono"
                         overflow="hidden"
-                        ellipse
+                        ellipsis
                         mr="auto"
                       >
                         {type}
@@ -147,7 +137,7 @@ export function PropsTable({
                             borderWidth={1}
                             rounded="$2"
                           >
-                            <Paragraph tag="span" size="$2" fontWeight="300">
+                            <Paragraph render="span" size="$2" fontWeight="300">
                               deprecated
                             </Paragraph>
                           </View>

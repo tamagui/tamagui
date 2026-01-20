@@ -46,7 +46,7 @@ function TabsComponent(props: TabsProps) {
       borderWidth={0}
       position="unset"
       {...props}
-      value={value}
+      value={value ?? ''}
     />
   )
 }
@@ -118,7 +118,14 @@ const TabsList = (props) => {
 
 const TabsContent = (props) => {
   return (
-    <Tabs.Content width="100%" jc="flex-start" ai="stretch" t="$-2" pt="$4" {...props} />
+    <Tabs.Content
+      width="100%"
+      justify="flex-start"
+      items="stretch"
+      t="$-2"
+      pt="$4"
+      {...props}
+    />
   )
 }
 

@@ -22,7 +22,7 @@ export const SelectItemTextFrame = styled(SizableText, {
       false: {
         userSelect: 'none',
         color: '$color',
-        ellipse: true,
+        ellipsis: true,
       },
     },
   } as const,

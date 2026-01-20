@@ -17,12 +17,13 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
       {...props}
     >
       <H3
-        tag="span"
+        render="span"
         fontFamily="$silkscreen"
         size="$7"
         lineHeight="$6"
         color="$color"
         cursor="inherit"
+        className="font-smooth-none"
         letterSpacing={0}
       >
         {title}
@@ -30,7 +31,7 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
 
       {!!subTitle && <XStack opacity={0.5}>{subTitle}</XStack>}
 
-      <Paragraph tag="span" size="$4" cursor="inherit" theme="alt2" opacity={0.7}>
+      <Paragraph render="span" size="$4" cursor="inherit" theme="alt2" opacity={0.7}>
         {children}
       </Paragraph>
     </Card>

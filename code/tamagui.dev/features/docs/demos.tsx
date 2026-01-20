@@ -1,26 +1,29 @@
 import { Suspense, use } from 'react'
 import { Spinner, View } from 'tamagui'
+import type { ComponentType } from 'react'
 
 const cached: any = {}
 
-function getLazyComponent<Import extends Function>(importFunc: Import): Import {
-  if (cached[importFunc]) {
-    return cached[importFunc]
+function getLazyComponent(
+  importFunc: () => Promise<ComponentType<any>>
+): Promise<ComponentType<any>> {
+  const key = importFunc.toString()
+  if (cached[key]) {
+    return cached[key]
   }
 
-  cached[importFunc] = importFunc?.()
+  cached[key] = importFunc()
 
-  return cached[importFunc]
+  return cached[key]
 }
 
-export function lazyDemo(importFunc: () => Promise<any>) {
+export function lazyDemo(importFunc: () => Promise<ComponentType<any>>) {
   return () => {
     const Component = use(getLazyComponent(importFunc) as any)
 
     return (
       <Suspense fallback={<Spinner />}>
         <View display="contents" id="demo">
-          {/* @ts-ignore */}
           <Component />
         </View>
       </Suspense>
@@ -205,6 +208,14 @@ export const RadioGroupUnstyledDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then(
     (x) => x.RadioGroupUnstyledDemo
   )
+)
+
+export const MenuDemo = lazyDemo(() =>
+  import('@tamagui/demos/demo/MenuDemo').then((x) => x.MenuDemo)
+)
+
+export const ContextMenuDemo = lazyDemo(() =>
+  import('@tamagui/demos/demo/ContextMenuDemo').then((x) => x.ContextMenuDemo)
 )
 
 export const TabsHeadlessDemo = lazyDemo(() =>

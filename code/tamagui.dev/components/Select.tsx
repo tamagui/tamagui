@@ -15,7 +15,7 @@ export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
       index={index + 1}
       borderColor="transparent"
       hoverStyle={{
-        bg: 'rgba(0,0,0,0.1)',
+        bg: '$color2',
       }}
       {...props}
     >
@@ -44,7 +44,6 @@ const SelectComponent = (
     onActiveChange,
     renderValue,
     variant,
-    color,
     ...selectTriggerProps
   } = useProps(propsIn)
   const selectProps = {
@@ -104,7 +103,6 @@ const SelectComponent = (
         </TamaguiSelect.ScrollUpButton>
 
         <TamaguiSelect.Viewport
-          // animation="quicker"
           opacity={1}
           y={0}
           enterStyle={{
@@ -118,8 +116,8 @@ const SelectComponent = (
           bg="transparent"
           className="blur-medium"
           borderWidth={1}
+          borderColor="$borderColor"
         >
-          <XStack fullscreen z={0} bg="$background" opacity={0.7} />
           {children}
         </TamaguiSelect.Viewport>
 

@@ -23,8 +23,8 @@ export function list({ isProUser, showAppropriateModal }: BentoShowcaseContext) 
         </Showcase>
 
         <Showcase fileName={Lists.Chat.fileName} title={Lists.Chat.fileName}>
-          <YStack flex={1} items="center" maxH={700}>
-            <YStack themeInverse bg="$background" position="absolute" inset={0} />
+          <YStack flex={1} flexBasis="auto" items="center" maxH={700} position="relative">
+            <YStack theme="accent" bg="$background" position="absolute" inset={0} />
             <Lists.Chat />
           </YStack>
         </Showcase>

@@ -13,7 +13,7 @@ import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tama
 import { createStyledContext, getVariableValue, styled, useTheme } from '@tamagui/web'
 import React from 'react'
 
-import type { ToggleProps } from './Toggle'
+import type { ToggleProps, ToggleStylesBase } from './Toggle'
 import { Toggle, ToggleFrame, context as ToggleContext } from './Toggle'
 
 const TOGGLE_GROUP_NAME = 'ToggleGroup'
@@ -43,7 +43,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
    * Used to disable passing styles down to children.
    */
   disablePassStyles?: boolean
-  toggledStyle?: Record<string, any>
+  toggledStyle?: ToggleStylesBase | null
   color?: string
 }
 const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>(
@@ -54,7 +54,6 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
     const pressed = valueContext?.value.includes(props.value)
     const toggledStyle = props.toggledStyle || toggleContext.toggledStyle
     const color = (props as any).color || toggleContext.color
-
     const { disablePassStyles, toggledStyle: _, ...rest } = props
     const disabled = context.disabled || props.disabled || false
     const groupItemProps = useGroupItem({ disabled })
@@ -72,7 +71,7 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
       (typeof size === 'number' ? size * 0.7 : getFontSize(size as FontSizeTokens)) * 1.2
 
     const theme = useTheme()
-    const toggledColor = (toggledStyle as Record<string, any>)?.color
+    const toggledColor = (toggledStyle as ToggleStylesBase)?.color
     const activeColor = pressed && toggledColor ? toggledColor : color
     const getThemedIcon = useGetThemedIcon({
       size: iconSize,
@@ -87,7 +86,14 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
       return React.cloneElement(getThemedIcon(child), { active: pressed } as any)
     })
 
-    const commonProps = { pressed, disabled, ...sizeProps, ...rest, children }
+    const commonProps = {
+      pressed,
+      disabled,
+      ...sizeProps,
+      ...rest,
+      children,
+      toggledStyle,
+    }
 
     const inner = (
       <ToggleGroupItemImpl
@@ -368,17 +374,6 @@ const ToggleGroupImplElementFrame = styled(Group, {
         backgroundColor: '$background',
       },
     },
-
-    orientation: {
-      vertical: {
-        flexDirection: 'column',
-        spaceDirection: 'vertical',
-      },
-      horizontal: {
-        flexDirection: 'row',
-        spaceDirection: 'horizontal',
-      },
-    },
   } as const,
 
   defaultVariants: {
@@ -392,7 +387,7 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
     dir?: RovingFocusGroupProps['dir']
     loop?: RovingFocusGroupProps['loop']
     sizeAdjust?: number
-    toggledStyle?: Record<string, any>
+    toggledStyle?: ToggleStylesBase | null
     color?: string
   }
 

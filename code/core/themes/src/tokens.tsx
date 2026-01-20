@@ -15,7 +15,7 @@ import {
   redDark,
   yellow,
   yellowDark,
-} from '@tamagui/colors'
+} from '@tamagui/colors/legacy'
 import type { Variable } from '@tamagui/web'
 import { createTokens } from '@tamagui/web'
 

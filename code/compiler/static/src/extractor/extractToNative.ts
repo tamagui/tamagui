@@ -165,9 +165,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
               shouldPrintDebug,
               ...finalOptions,
               // disable extracting variables as no native concept of them (only theme values)
-              disableExtractVariables: options.experimentalFlattenThemesOnNative
-                ? false
-                : 'theme',
+              disableExtractVariables: false,
               sourcePath,
 
               // disabling flattening for now
@@ -200,7 +198,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
 
                   // TODO: themed is not a good name, because it's not just theme it also includes tokens
                   let themeExpr: t.ObjectExpression | null = null
-                  if (themed && options.experimentalFlattenThemesOnNative) {
+                  if (themed) {
                     for (const key in themed) {
                       themeKeysUsed.add(themed[key].split('$')[1])
                     }
@@ -256,9 +254,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                     case 'style': {
                       let styleExpr = getStyleExpression(attr.value)
                       addStyleExpression(styleExpr)
-                      if (options.experimentalFlattenThemesOnNative) {
-                        addStyleExpression(styleExpr, true)
-                      }
+                      addStyleExpression(styleExpr, true)
                       break
                     }
 
@@ -267,17 +263,15 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                       const consExpr = getStyleExpression(consequent)
                       const altExpr = getStyleExpression(alternate)
 
-                      if (options.experimentalFlattenThemesOnNative) {
-                        expressions.push(attr.value.test)
-                        addStyleExpression(
-                          t.conditionalExpression(
-                            t.identifier(`_expressions[${expressions.length - 1}]`),
-                            consExpr || t.nullLiteral(),
-                            altExpr || t.nullLiteral()
-                          ),
-                          true
-                        )
-                      }
+                      expressions.push(attr.value.test)
+                      addStyleExpression(
+                        t.conditionalExpression(
+                          t.identifier(`_expressions[${expressions.length - 1}]`),
+                          consExpr || t.nullLiteral(),
+                          altExpr || t.nullLiteral()
+                        ),
+                        true
+                      )
 
                       const styleExpr = t.conditionalExpression(
                         attr.value.test,
@@ -294,14 +288,9 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                           stylesExpr.elements.push(
                             t.memberExpression(attr.value.argument, t.identifier('style'))
                           )
-                          if (options.experimentalFlattenThemesOnNative) {
-                            hocStylesExpr.elements.push(
-                              t.memberExpression(
-                                attr.value.argument,
-                                t.identifier('style')
-                              )
-                            )
-                          }
+                          hocStylesExpr.elements.push(
+                            t.memberExpression(attr.value.argument, t.identifier('style'))
+                          )
                         }
                       }
                       finalAttrs.push(attr.value)
@@ -313,10 +302,9 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                 props.node.attributes = finalAttrs
 
                 if (
-                  options.experimentalFlattenThemesOnNative &&
-                  (themeKeysUsed.size ||
-                    hocStylesExpr.elements.length > 1 ||
-                    hasDynamicStyle)
+                  themeKeysUsed.size ||
+                  hocStylesExpr.elements.length > 1 ||
+                  hasDynamicStyle
                 ) {
                   if (!hasImportedViewWrapper) {
                     root.unshiftContainer('body', importWithStyle())

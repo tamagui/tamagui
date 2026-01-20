@@ -1,7 +1,7 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ListItemProps } from '@tamagui/list-item'
-import { ListItemFrame, useListItem } from '@tamagui/list-item'
+import { ListItem } from '@tamagui/list-item'
 import { createStyledContext } from '@tamagui/core'
 import * as React from 'react'
 import { useSelectItemParentContext } from './context'
@@ -35,7 +35,7 @@ export interface SelectItemProps
   extends Omit<ListItemProps, keyof SelectItemExtraProps>,
     SelectItemExtraProps {}
 
-export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
+export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
   function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
     const {
       scope,
@@ -45,13 +45,6 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
       index,
       ...restProps
     } = props
-
-    const { props: listItemProps } = useListItem({
-      ...(!props.unstyled && {
-        ellipse: true,
-      }),
-      ...restProps,
-    })
 
     const context = useSelectItemParentContext(scope)
 
@@ -147,6 +140,9 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
 
             onMouseUp() {
               if (!allowMouseUpRef!.current) {
+                // Re-enable mouseup and selection for subsequent interactions
+                allowMouseUpRef!.current = true
+                allowSelectRef!.current = true
                 return
               }
 
@@ -177,8 +173,8 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
         {shouldRenderWebNative ? (
           <option value={value}>{props.children}</option>
         ) : (
-          <ListItemFrame
-            tag="div"
+          <ListItem.Frame
+            render="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
             aria-labelledby={textId}
@@ -188,13 +184,18 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
             {...(!props.unstyled && {
-              backgrounded: true,
-              pressTheme: true,
-              hoverTheme: true,
-              focusTheme: true,
               cursor: 'default',
               size,
               outlineOffset: -0.5,
+              zIndex: 100,
+
+              hoverStyle: {
+                backgroundColor: '$backgroundHover',
+              },
+
+              pressStyle: {
+                backgroundColor: '$backgroundPress',
+              },
 
               focusVisibleStyle: {
                 outlineColor: '$outlineColor',
@@ -202,7 +203,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
                 outlineStyle: 'solid',
               },
             })}
-            {...listItemProps}
+            {...restProps}
             {...selectItemProps}
           />
         )}

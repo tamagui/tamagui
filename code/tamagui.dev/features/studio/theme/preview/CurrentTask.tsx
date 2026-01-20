@@ -30,7 +30,7 @@ export const CurrentTask = () => {
 
       <Separator mb="$2" />
 
-      <YStack flex={1} gap="$4" separator={<Separator />}>
+      <YStack flex={1} flexBasis="auto" gap="$4">
         <YStack gap="$6">
           <XStack {...demoProps.gapPropsLg}>
             <XStack {...demoProps.gapPropsMd}>
@@ -46,7 +46,7 @@ export const CurrentTask = () => {
               6/8 tasks done
             </Paragraph>
             <Progress minW={100} size="$5" value={60}>
-              <Progress.Indicator bg={accentTokenName} animation="quick" />
+              <Progress.Indicator bg={accentTokenName} transition="quick" />
             </Progress>
           </TaskSection>
 
@@ -55,7 +55,7 @@ export const CurrentTask = () => {
               1/8 tasks done
             </Paragraph>
             <Progress minW={100} size="$5" value={25}>
-              <Progress.Indicator bg={accentTokenName} animation="quick" />
+              <Progress.Indicator bg={accentTokenName} transition="quick" />
             </Progress>
           </TaskSection>
         </YStack>

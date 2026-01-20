@@ -1,4 +1,4 @@
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.css'
 
@@ -70,7 +70,7 @@ export const CustomToast = () => {
       y={0}
       opacity={1}
       scale={1}
-      animation="quick"
+      transition="quick"
     >
       <YStack py="$1.5" px="$2">
         <Toast.Title lineHeight="$1">{currentToast.title}</Toast.Title>
@@ -86,12 +86,7 @@ const TamaguiRootProvider = ({ children }: { children: React.ReactNode }) => {
   const userScheme = useUserScheme()
 
   return (
-    <TamaguiProvider
-      disableInjectCSS
-      config={config}
-      defaultTheme={userScheme.value}
-      disableRootThemeClass
-    >
+    <TamaguiProvider disableInjectCSS config={config} defaultTheme={userScheme.value}>
       {children}
     </TamaguiProvider>
   )

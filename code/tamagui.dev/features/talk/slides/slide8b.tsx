@@ -25,7 +25,7 @@ const tamaguiUiSnippet = highlightCode(
     x={0}
     y={0}
     opacity={1}
-    animation="quick"
+    transition="quick"
     >
     <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 

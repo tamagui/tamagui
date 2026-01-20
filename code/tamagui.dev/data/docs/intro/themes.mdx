@@ -3,16 +3,26 @@ title: Themes
 description: Create themes and sub-themes
 ---
 
-Themes map neatly to CSS variables: they are objects whose values you want to contextually change at any point in your React tree. They are used either as the first lookup for `$` prefixed style values, or with the `useTheme` hook directly. Tamagui allows nesting themes - both the definition and at runtime. At runtime Tamagui resolves theme values upwards, ultimately all the way back to tokens.
+Themes map neatly to CSS variables: they are objects whose values you want to
+contextually change at any point in your React tree. They are used either as the
+first lookup for `$` prefixed style values, or with the `useTheme` hook
+directly. Tamagui allows nesting themes - both the definition and at runtime. At
+runtime Tamagui resolves theme values upwards, ultimately all the way back to
+tokens.
 
 If you learn faster through example, skip to [the Quick Start](#quick-start).
 
-If you want to style `bento` or `tamagui` components: see [Styling `tamagui` UI components](#styling-tamagui-ui-components).
+If you want to style `bento` or `tamagui` components: see
+[Styling `tamagui` UI components](#styling-tamagui-components).
 
-Once you've learned the basics here, be sure to [check out the ThemeBuilder guide](/docs/guides/theme-builder) for generating more interesting theme suites.
+Once you've learned the basics here, be sure to
+[check out the ThemeBuilder guide](/docs/guides/theme-builder) for generating
+more interesting theme suites.
 
 <Notice theme="green">
-  If you want a copy-paste theme generation setup, [try this gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f) for a well-structured example.
+  If you want a copy-paste theme generation setup, [try this
+  gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f) for a
+  well-structured example.
 </Notice>
 
 You define a theme like this:
@@ -25,7 +35,8 @@ const dark = {
 }
 ```
 
-If you use tokens, you can share values from tokens down to themes. Tokens act as fallback values for themes, like global CSS variables vs scoped ones:
+If you use tokens, you can share values from tokens down to themes. Tokens act
+as fallback values for themes, like global CSS variables vs scoped ones:
 
 ```tsx
 const tokens = createTokens({
@@ -44,9 +55,12 @@ const dark = {
 
 ### Sub-themes
 
-One of the unique powers of Tamagui is theme nesting . Define a theme with a name in the form of `parentName_subName` and Tamagui will let you nest themes, with both `parentName` and `subName` being valid theme names.
+One of the unique powers of Tamagui is theme nesting . Define a theme with a
+name in the form of `parentName_subName` and Tamagui will let you nest themes,
+with both `parentName` and `subName` being valid theme names.
 
-You can do this as many times as you'd like. Here's an example of having three levels:
+You can do this as many times as you'd like. Here's an example of having three
+levels:
 
 - `dark_green_subtle`
 - `light_green_subtle`
@@ -67,11 +81,15 @@ You can also access a specific sub-theme more specifically:
 </Theme>
 ```
 
-In general you want your themes to all be the same shape - the same named keys and typed values - but sub-themes can be sub-sets of parent themes. The `useTheme` hook and style system will resolve missing keys upwards to parent themes, and ultimately to tokens.
+In general you want your themes to all be the same shape - the same named keys
+and typed values - but sub-themes can be sub-sets of parent themes. The
+`useTheme` hook and style system will resolve missing keys upwards to parent
+themes, and ultimately to tokens.
 
 #### Component themes
 
-Every Tamagui `styled()` component looks for its own specific theme if you pass it the `name` property. For example:
+Every Tamagui `styled()` component looks for its own specific theme if you pass
+it the `name` property. For example:
 
 ```tsx
 import { Stack, styled } from 'tamagui' // or '@tamagui/core'
@@ -82,9 +100,11 @@ const Circle = styled(Stack, {
 })
 ```
 
-The `name` attribute will be removed from the defaultProps and used internally by Tamagui to check for a sub-theme that ends with `_Circle`.
+The `name` attribute will be removed from the defaultProps and used internally
+by Tamagui to check for a sub-theme that ends with `_Circle`.
 
-Now you can create the default theme for all Circle components at any level of nesting:
+Now you can create the default theme for all Circle components at any level of
+nesting:
 
 ```tsx
 const dark_Circle = {
@@ -98,19 +118,26 @@ const light_Circle = {
 }
 ```
 
-<Notice theme="blue">Component themes must have the first letter capitalized.</Notice>
+<Notice theme="blue">
+  Component themes must have the first letter capitalized.
+</Notice>
 
 - `dark_Circle`
 - `dark_green_Circle`
 - `dark_green_subtle_Circle`
 
-This is an incredibly powerful and unique feature that allows authors of UI components control over design, while still letting users customize them completely.
+This is an incredibly powerful and unique feature that allows authors of UI
+components control over design, while still letting users customize them
+completely.
 
 ---
 
 ### Styling Tamagui UI components
 
-Tamagui comes in two parts: a core library and a full UI kit. The core library (`@tamagui/core`) is flexible and doesn't have many rules. But the full UI kit (`tamagui`) has some standard ways of doing things. This helps make everything work well together.
+Tamagui comes in two parts: a core library and a full UI kit. The core library
+(`@tamagui/core`) is flexible and doesn't have many rules. But the full UI kit
+(`tamagui`) has some standard ways of doing things. This helps make everything
+work well together.
 
 In the `tamagui` UI kit, all components use these main theme keys:
 
@@ -118,15 +145,21 @@ In the `tamagui` UI kit, all components use these main theme keys:
 - `color`: for text colors
 - `borderColor`: for border colors
 - `shadowColor`: for shadow colors
-- `placeholderColor`: for placeholder text colors (doesn't change when you interact with it)
+- `placeholderColor`: for placeholder text colors (doesn't change when you
+  interact with it)
 
-It also uses special versions of these for when you hover, press, or focus on something. For example, `backgroundHover` or `colorPress`.
+It also uses special versions of these for when you hover, press, or focus on
+something. For example, `backgroundHover` or `colorPress`.
 
-These keys help standardize how you style components, and make for easy re-theming. They are also optional, if you find the theme system too complex for your use case, you can always just use plain old style props
+These keys help standardize how you style components, and make for easy
+re-theming. They are also optional, if you find the theme system too complex for
+your use case, you can always just use plain old style props
 
-...plus all the pseudo variants for each, eg, `backgroundHover`, `backgroundPress`, and `backgroundFocus`.
+...plus all the pseudo variants for each, eg, `backgroundHover`,
+`backgroundPress`, and `backgroundFocus`.
 
-This means that you can easily re-theme `tamagui`'s UI kit and your own components together in both light and dark mode.
+This means that you can easily re-theme `tamagui`'s UI kit and your own
+components together in both light and dark mode.
 
 A minimal theme might look like this:
 
@@ -180,9 +213,11 @@ const light = {
 }
 ```
 
-You can of course do all of this yourself in your own design system with `styled`:
+You can of course do all of this yourself in your own design system with
+`styled`:
 
-If you are building a component with more than one sub-components, you can follow this pattern:
+If you are building a component with more than one sub-components, you can
+follow this pattern:
 
 ```tsx
 import { GetProps, Stack, Text, styled } from 'tamagui' // or '@tamagui/core'
@@ -200,20 +235,26 @@ const ButtonText = styled(Text, {
 type ButtonProps = GetProps<typeof ButtonFrame>
 
 // note: styleable will tell the tamagui compiler to optimize usages of this:
-export const Button = ButtonFrame.styleable<ButtonProps>(({ children, ...props }, ref) => {
-  return (
-    <ButtonFrame ref={ref} {...props}>
-      <ButtonText>{children}</ButtonText>
-    </ButtonFrame>
-  )
-})
+export const Button = ButtonFrame.styleable<ButtonProps>(
+  ({ children, ...props }, ref) => {
+    return (
+      <ButtonFrame ref={ref} {...props}>
+        <ButtonText>{children}</ButtonText>
+      </ButtonFrame>
+    )
+  },
+)
 ```
 
-And now you can add two themes: `dark_Button` and `dark_ButtonText`, and override their default styles.
+And now you can add two themes: `dark_Button` and `dark_ButtonText`, and
+override their default styles.
 
 ## Quick start
 
-To get started quickly, you can use the themes we've developed alongside this site and with other apps, `@tamagui/themes`. It's even easier to see how it all comes together by using [create-tamagui to bootstrap](/docs/guides/create-tamagui-app).
+To get started quickly, you can use the themes we've developed alongside this
+site and with other apps, `@tamagui/themes`. It's even easier to see how it all
+comes together by using
+[create-tamagui to bootstrap](/docs/guides/create-tamagui-app).
 
 To install, just add import it and add it to your `tamagui.config.ts`:
 
@@ -245,13 +286,15 @@ export default config
 ```
 
 <Notice theme="green">
-  If you want to customize the starter themes, we recommend you just grab the `src` for
-  `@tamagui/themes` and copy/paste it into your app, and customize from there.
+  If you want to customize the starter themes, we recommend you just grab the
+  `src` for `@tamagui/themes` and copy/paste it into your app, and customize
+  from there.
 </Notice>
 
 ## Full Example
 
-Let's start with an example of inline styling with a subset of the configuration:
+Let's start with an example of inline styling with a subset of the
+configuration:
 
 ```tsx
 import { TamaguiProvider, createTokens, createTamagui, View, Theme } from 'tamagui'
@@ -286,7 +329,8 @@ export const App = () => (
 )
 ```
 
-In this example we've set up darkRed and lightRed variables and a dark and light theme that use those variables. Tamagui will handle defining:
+In this example we've set up darkRed and lightRed variables and a dark and light
+theme that use those variables. Tamagui will handle defining:
 
 ```css
 :root {
@@ -303,7 +347,8 @@ In this example we've set up darkRed and lightRed variables and a dark and light
 }
 ```
 
-Which will automatically apply at runtime, or can be gathered for use in SSR using `Tamagui.getCSS()`.
+Which will automatically apply at runtime, or can be gathered for use in SSR
+using `Tamagui.getCSS()`.
 
 Finally, the compiler on web will extract your views roughly as so:
 
@@ -323,7 +368,8 @@ export const App = () => (
 
 ## Ensuring valid types
 
-Here's what we've landed on which helps ensure everything is typed properly. Keep themes in a separate `themes.ts` file, and structure it like this:
+Here's what we've landed on which helps ensure everything is typed properly.
+Keep themes in a separate `themes.ts` file, and structure it like this:
 
 ```tsx
 import { tokens } from './tokens'
@@ -383,13 +429,15 @@ export const allThemes = {
   light,
   dark_translucent,
   light_translucent,
-} satisfies {[key: string]: BaseTheme}
+} satisfies { [key: string]: BaseTheme }
 // note: `satisfies` was introduced with TypeScript 4.9
 ```
 
 ## Dynamic Themes
 
-Sometimes you want to defer loading themes, or change existing theme values at runtime. Tamagui exports three helpers for this in the package `@tamagui/theme` which exports `addTheme`, `updateTheme`, and `replaceTheme`.
+Sometimes you want to defer loading themes, or change existing theme values at
+runtime. Tamagui exports three helpers for this in the package `@tamagui/theme`
+which exports `addTheme`, `updateTheme`, and `replaceTheme`.
 
 ### addTheme
 
@@ -423,15 +471,21 @@ Sometimes you want to defer loading themes, or change existing theme values at r
 
 ### Notes
 
-- Dynamic themes only work on the client side and will be ignored on the server side.
-- The difference between `updateTheme` and `replaceTheme` is that `replaceTheme` will replace the entire theme, while `updateTheme` will only update the values that are passed in.
-- On the web if you are going to change between dark and light themes more than 3 times, you'll want to adjust the `maxDarkLightNesting` option, see [Configuration](/docs/core/configuration).
+- Dynamic themes only work on the client side and will be ignored on the server
+  side.
+- The difference between `updateTheme` and `replaceTheme` is that `replaceTheme`
+  will replace the entire theme, while `updateTheme` will only update the values
+  that are passed in.
 
 ### Advanced Optimization
 
-You can configure Tamagui to not send any themes JS to the client side, so long as your are serving the resulting css file from the `getCSS` call on initial load of your app (SSR).
+You can configure Tamagui to not send any themes JS to the client side, so long
+as your are serving the resulting css file from the `getCSS` call on initial
+load of your app (SSR).
 
-To enable this you need to have your bundler tree shake away the themes object you'd typically pass to `createTamagui` for the client bundle. Note this is a somewhat advanced optimization and not necessary to do right away.
+To enable this you need to have your bundler tree shake away the themes object
+you'd typically pass to `createTamagui` for the client bundle. Note this is a
+somewhat advanced optimization and not necessary to do right away.
 
 ```tsx
 import { themes as themesIn } from './your-themes-file'

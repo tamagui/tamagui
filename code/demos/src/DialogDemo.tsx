@@ -37,7 +37,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
       {!disableAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet
-            animation="medium"
+            transition="medium"
             zIndex={200000}
             modal
             dismissOnSnapToBottom
@@ -47,8 +47,9 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
-              bg="$shadow6"
-              animation="lazy"
+              bg="$background"
+              opacity={0.5}
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
@@ -59,9 +60,10 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          bg="$shadow6"
+          bg="$background"
+          opacity={0.5}
           animateOnly={['transform', 'opacity']}
-          animation={[
+          transition={[
             'quicker',
             {
               opacity: {
@@ -82,7 +84,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
             rounded="$6"
             key="content"
             animateOnly={['transform', 'opacity']}
-            animation={[
+            transition={[
               'quicker',
               {
                 opacity: {

@@ -1,26 +1,48 @@
+export type { InputProps as TextAreaProps } from './types';
 /**
- * @summary A text area is a multi-line input field that allows users to enter text.
+ * A web-aligned textarea component (multi-line input).
  * @see — Docs https://tamagui.dev/ui/inputs#textarea
  */
-export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").ClassAttributes<HTMLInputElement> & import("react").HTMLProps<HTMLInputElement>, "size" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & Pick<import("@tamagui/web").TextProps, "color"> & Omit<import("react").CSSProperties | undefined, "color"> & Omit<import("react-native").TextInputProps, "numberOfLines" | "selectionColor" | "enterKeyHint" | "inputMode" | "secureTextEntry" | "onChangeText" | "editable" | "keyboardType" | "placeholderTextColor"> & {
-    secureTextEntry?: import("react-native").TextInputProps["secureTextEntry"];
-    onChangeText?: import("react-native").TextInputProps["onChangeText"];
-    editable?: import("react-native").TextInputProps["editable"];
-    enterKeyHint?: "done" | "go" | "next" | "search" | "send" | "enter" | "previous";
-    keyboardType?: import("react-native").TextInputProps["keyboardType"];
-    inputMode?: import("react-native").InputModeOptions;
+export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "color" | "size" | "children" | "style" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "textAlign" | "textTransform" | "className"> & {
+    color?: import("react-native").ColorValue | undefined;
+    fontFamily?: string | undefined | undefined;
+    fontSize?: number | undefined | undefined;
+    fontStyle?: "normal" | "italic" | undefined | undefined;
+    fontWeight?: "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | "ultralight" | "thin" | "light" | "medium" | "regular" | "semibold" | "condensedBold" | "condensed" | "heavy" | "black" | undefined | undefined;
+    letterSpacing?: number | undefined | undefined;
+    textAlign?: "auto" | "left" | "right" | "center" | "justify" | undefined | undefined;
+    textTransform?: "none" | "capitalize" | "uppercase" | "lowercase" | undefined | undefined;
+} & {
+    rows?: number;
     placeholderTextColor?: import("@tamagui/web").ColorTokens;
     selectionColor?: import("@tamagui/web").ColorTokens;
-    tag?: import("@tamagui/web").TamaguiComponentPropsBase["tag"];
-    multiline?: boolean;
-    numberOfLines?: number;
+    onChangeText?: (text: string) => void;
+    onSubmitEditing?: (e: {
+        nativeEvent: {
+            text: string;
+        };
+    }) => void;
+    selection?: {
+        start: number;
+        end?: number;
+    };
+    onSelectionChange?: (e: {
+        nativeEvent: {
+            selection: {
+                start: number;
+                end: number;
+            };
+        };
+    }) => void;
+    keyboardAppearance?: "default" | "light" | "dark";
+    textContentType?: "none" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "name" | "namePrefix" | "nameSuffix" | "nickname" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "username" | "password" | "newPassword" | "oneTimeCode";
 }, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, ({
     name: string;
-    tag: string;
+    render: string;
     variants: {
         readonly unstyled: {
             readonly false: {
@@ -90,7 +112,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         [key: string]: boolean;
     } | undefined;
     name?: undefined;
-    tag?: undefined;
+    render?: undefined;
     variants?: undefined;
     defaultVariants?: undefined;
 }) & import("@tamagui/web").StaticConfigPublic>;

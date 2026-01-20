@@ -46,7 +46,7 @@ export const PricingCards = () => {
         </Paragraph>
       </YStack>
 
-      <YStack mx="$-3" flex={1}>
+      <YStack mx="$-3" flex={1} flexBasis="auto">
         <RadioGroup {...demoProps.gapPropsMd} value={val} onValueChange={setVal}>
           {options.map((price) => {
             const active = val === price.value
@@ -71,7 +71,7 @@ export const PricingCards = () => {
                 <RadioGroup.Item id={htmlId} size="$3" value={price.value}>
                   <RadioGroup.Indicator />
                 </RadioGroup.Item>
-                <YStack flex={1}>
+                <YStack flex={1} flexBasis="auto">
                   <Paragraph size="$6" mb={-3}>
                     {price.title}
                   </Paragraph>
@@ -88,7 +88,7 @@ export const PricingCards = () => {
       <YStack mt="$4" gap="$4">
         <Paragraph size="$3" text="center" theme="alt1" color="$color10">
           Have a coupon?{' '}
-          <Paragraph tag="span" textDecorationLine="underline">
+          <Paragraph render="span" textDecorationLine="underline">
             Click here
           </Paragraph>
         </Paragraph>

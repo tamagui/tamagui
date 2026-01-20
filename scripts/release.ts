@@ -47,7 +47,7 @@ const isCI = shouldFinish || process.argv.includes('--ci')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
-// Check if current version is an RC (e.g., 1.3.0-rc.1)
+// Check if current version is an RC (e.g., 1.143.0-rc.1)
 const rcMatch = curVersion.match(/^(\d+\.\d+\.\d+)-rc\.(\d+)$/)
 const isCurrentRC = !!rcMatch
 const currentRCBase = rcMatch ? rcMatch[1] : null
@@ -68,7 +68,7 @@ const nextVersion = (() => {
       // Already an RC, bump the RC number
       return `${currentRCBase}-rc.${currentRCNumber + 1}`
     }
-    // Not an RC yet, return placeholder - will be set via prompt
+    // Not an RC yet, return null - will be set via prompt
     return null
   }
 
@@ -93,15 +93,7 @@ const sleep = (ms) => {
 }
 
 if (!skipVersion) {
-  console.info('Current:', curVersion)
-  if (isRC) {
-    if (isCurrentRC) {
-      console.info(`RC mode: bumping RC ${currentRCNumber} → ${currentRCNumber + 1}`)
-    } else {
-      console.info('RC mode: will prompt for version to RC')
-    }
-  }
-  console.info('')
+  console.info('Current:', curVersion, '\n')
 } else {
   console.info(`Re-releasing ${curVersion}`)
 }
@@ -113,8 +105,8 @@ async function run() {
     let version = curVersion
 
     // ensure we are up to date
-    // ensure we are on main
-    if (!canary) {
+    // ensure we are on main (skip for canary and rc releases)
+    if (!canary && !isRC) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
@@ -218,14 +210,8 @@ async function run() {
         const [major, minor, patch] = baseVersion.split('.').map(Number)
 
         const rcChoices = [
-          {
-            title: `${major}.${minor + 1}.0-rc.1 (next minor)`,
-            value: `${major}.${minor + 1}.0-rc.1`,
-          },
-          {
-            title: `${major}.${minor}.${patch + 1}-rc.1 (next patch)`,
-            value: `${major}.${minor}.${patch + 1}-rc.1`,
-          },
+          { title: `${major}.${minor + 1}.0-rc.1 (next minor)`, value: `${major}.${minor + 1}.0-rc.1` },
+          { title: `${major}.${minor}.${patch + 1}-rc.1 (next patch)`, value: `${major}.${minor}.${patch + 1}-rc.1` },
           { title: `${major + 1}.0.0-rc.1 (next major)`, value: `${major + 1}.0.0-rc.1` },
         ]
 
@@ -337,14 +323,8 @@ async function run() {
       await pMap(
         packageJsons,
         async ({ name, cwd }) => {
-          const publishTag = canary
-            ? 'canary'
-            : version.includes('-rc.')
-              ? 'rc'
-              : undefined
-          const publishOptions = [publishTag && `--tag ${publishTag}`]
-            .filter(Boolean)
-            .join(' ')
+          const publishTag = canary ? 'canary' : version.includes('-rc.') ? 'rc' : undefined
+          const publishOptions = [publishTag && `--tag ${publishTag}`].filter(Boolean).join(' ')
 
           const absolutePath = `${tmpDir}/${name.replace('/', '_')}-package.tmp.tgz`
           await spawnify(`yarn pack --out ${absolutePath}`, {
@@ -409,10 +389,6 @@ async function run() {
       await finishAndCommit()
 
       async function finishAndCommit(cwd = process.cwd()) {
-        if (canary && !isMain) {
-          console.info(`Canary off main - avoiding commit`)
-          return
-        }
         if (!rePublish || reRun || shouldFinish) {
           await spawnify(`git add -A`, { cwd })
           await spawnify(`git commit -m ${gitTag}`, { cwd })

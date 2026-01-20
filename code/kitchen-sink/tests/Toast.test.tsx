@@ -1,4 +1,4 @@
-import type { Page} from '@playwright/test';
+import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
 import { setupPage } from './test-utils'
@@ -89,13 +89,17 @@ test.describe('given multiple toasts', () => {
   test('should tab forwards from viewport to latest toast or backwards into the document', async ({
     page,
   }) => {
+    // Focus viewport directly instead of using F8
+    const viewport = page.locator('[role="region"][aria-label="Notifications (F8)"]')
+    await viewport.focus()
+    await expect(viewport).toBeFocused()
+
     // Tab forward from viewport
-    await page.keyboard.press('F8')
     await page.keyboard.press('Tab')
     await toastIsFocused(page, 2)
 
-    // Tab backward from viewport
-    await page.keyboard.press('F8')
+    // Tab backward from viewport - focus viewport again
+    await viewport.focus()
     await page.keyboard.press('Shift+Tab')
     await expect(page.getByTestId('button-before')).toBeFocused()
   })

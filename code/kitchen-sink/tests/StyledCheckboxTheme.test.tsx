@@ -6,10 +6,11 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StyledCheckboxTheme', type: 'useCase' })
 })
 
-test(`theme passes through .extractable HOC`, async ({ page }) => {
+test(`theme passes through .styleable HOC`, async ({ page }) => {
   const styles = await page.locator('button[role=checkbox]').evaluate((el) => {
     return window.getComputedStyle(el)
   })
 
-  expect(styles.backgroundColor).toBe(`rgb(233, 249, 238)`)
+  // Green theme background from themeDev
+  expect(styles.backgroundColor).toBe(`rgb(232, 242, 235)`)
 })

@@ -7,13 +7,17 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 
 const PROGRESS_NAME = 'Progress'
 
 const [createProgressContext, createProgressScope] = createContextScope(PROGRESS_NAME)
-type ProgressContextValue = { value: number | null; max: number; width: number }
+type ProgressContextValue = {
+  value: number | null
+  max: number
+  width: number
+}
 const [ProgressProvider, useProgressContext] =
   createProgressContext<ProgressContextValue>(PROGRESS_NAME)
 
@@ -23,7 +27,7 @@ const [ProgressProvider, useProgressContext] =
 
 const INDICATOR_NAME = 'ProgressIndicator'
 
-export const ProgressIndicatorFrame = styled(ThemeableStack, {
+export const ProgressIndicatorFrame = styled(YStack, {
   name: INDICATOR_NAME,
 
   variants: {
@@ -47,11 +51,11 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
   props: ScopedProps<ProgressIndicatorProps>,
   forwardedRef
 ) {
-  const { __scopeProgress, animation, ...indicatorProps } = props
+  const { __scopeProgress, transition, ...indicatorProps } = props
   const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
   const pct = context.max - (context.value ?? 0)
   // default somewhat far off
-  const x = -(context.width === 0 ? 300 : context.width) * (pct / 100)
+  const x = -(context.width === 0 ? 300 : context.width) * (pct / context.max)
 
   return (
     <ProgressIndicatorFrame
@@ -67,7 +71,7 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
       {...indicatorProps}
       ref={forwardedRef}
       // avoid animation on first render so the progress doesn't bounce to initial location
-      animation={!context.width ? null : animation}
+      transition={!context.width ? null : transition}
     />
   )
 })
@@ -107,7 +111,7 @@ type ScopedProps<P> = P & { __scopeProgress?: Scope }
 
 type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
-export const ProgressFrame = styled(ThemeableStack, {
+export const ProgressFrame = styled(YStack, {
   name: 'Progress',
 
   variants: {
@@ -157,7 +161,7 @@ const Progress = withStaticProperties(
     } = props
 
     const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
-    const value = isValidValueNumber(valueProp, max) ? valueProp : null
+    const value = isValidValueNumber(valueProp, max) ? Math.round(valueProp) : null // Math.round() so the component doesn't crash with decimal values such as 16.666
     const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
     const [width, setWidth] = React.useState(0)
 
@@ -178,7 +182,11 @@ const Progress = withStaticProperties(
           })}
           {...progressProps}
           onLayout={(e) => {
-            setWidth(e.nativeEvent.layout.width)
+            // prevent unnecessary re-renders
+            const newWidth = Math.round(e.nativeEvent.layout.width)
+            if (newWidth !== width) {
+              setWidth(newWidth)
+            }
             progressProps.onLayout?.(e)
           }}
           ref={forwardedRef}

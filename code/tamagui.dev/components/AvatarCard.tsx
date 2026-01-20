@@ -11,16 +11,16 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
     <ThemeTintAlt offset={colorOffset}>
       <Link asChild href={link}>
         <Card
-          tag="a"
-          animation="quickest"
+          render="a"
+          transition="quickest"
           flex={1}
           width="$19"
           height="$11"
           y={0}
           hoverStyle={{ y: -2, bg: '$backgroundHover' }}
           pressStyle={{ y: 2, bg: '$color2' }}
-          onHoverIn={() => setHovered(true)}
-          onHoverOut={() => setHovered(false)}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
           {...props}
         >
           <Card.Header>
@@ -41,7 +41,7 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
             </XStack>
           </Card.Header>
 
-          <Card.Footer animation="quicker" x={isHovered ? 5 : 0}>
+          <Card.Footer transition="quicker" x={isHovered ? 5 : 0}>
             <ChevronRight size="$1" position="absolute" b="$4" r="$4" color="$color11" />
           </Card.Footer>
         </Card>

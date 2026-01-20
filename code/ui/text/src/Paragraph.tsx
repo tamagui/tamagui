@@ -5,7 +5,7 @@ import { SizableText } from './SizableText'
 
 export const Paragraph = styled(SizableText, {
   name: 'Paragraph',
-  tag: 'p',
+  render: 'p',
   userSelect: 'auto',
   color: '$color',
   size: '$true',

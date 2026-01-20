@@ -50,12 +50,11 @@ export const LoginScreen = () => {
           </Paragraph>
         </YStack>
 
-        <YStack flex={1} {...demoProps.gapPropsLg}>
+        <YStack flex={1} flexBasis="auto" {...demoProps.gapPropsLg}>
           <XStack {...demoProps.gapPropsMd}>
             <>
               <ButtonSimple
                 flex={1}
-                flexBasis={0}
                 size="$3"
                 icon={IconGitlab}
                 {...demoProps.borderRadiusProps}
@@ -65,7 +64,6 @@ export const LoginScreen = () => {
               </ButtonSimple>
               <ButtonSimple
                 flex={1}
-                flexBasis={0}
                 size="$3"
                 icon={IconGithub}
                 {...demoProps.borderRadiusProps}
@@ -104,7 +102,7 @@ export const LoginScreen = () => {
               <Label>Password</Label>
               <Input
                 placeholder="Password"
-                secureTextEntry
+                type="password"
                 bg="transparent"
                 {...demoProps.borderRadiusProps}
               />
@@ -115,12 +113,11 @@ export const LoginScreen = () => {
         <YStack mt="$4">
           <Theme name="accent">
             <Button
-              fontWeight="600"
               size="$5"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >
-              Login
+              <SizableText fontWeight="600">Login</SizableText>
             </Button>
           </Theme>
         </YStack>

@@ -547,6 +547,9 @@ const themes = createThemes({
   },
 
   grandChildrenThemes: {
+    accent: {
+      template: 'inverse',
+    },
     alt1: {
       template: 'alt1',
     },

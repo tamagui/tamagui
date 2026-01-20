@@ -132,6 +132,10 @@ export const PaletteView = memo((props: Props) => {
           light: lightHSLA[2],
           dark: darkHSLA[2],
         },
+        alpha: {
+          light: 1,
+          dark: 1,
+        },
       }
 
       const next = [...anchors]
@@ -278,7 +282,7 @@ export const PaletteView = memo((props: Props) => {
 
       <XLabeledItem label="">
         <YStack gap="$4">
-          <XStack gap="$4" separator={<Separator vertical />}>
+          <XStack gap="$4">
             <DataItem
               width={50}
               labelTop=""
@@ -639,7 +643,7 @@ const PaletteColor = memo(
       >
         <XStack fullscreen bg={color as any} items="center" justify="center">
           <SizableText
-            selectable={false}
+            select="none"
             color={index > 4 ? '$background' : '$color'}
             size="$1"
             scale={size === 'small' ? 0.8 : 1}

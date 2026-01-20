@@ -15,7 +15,7 @@ export function LabelDemo() {
           Notifications
         </Label>
         <Switch id="notify">
-          <Switch.Thumb animation="quick" />
+          <Switch.Thumb transition="quickest" />
         </Switch>
       </XStack>
     </YStack>

@@ -13,10 +13,7 @@ const config = createTamagui({
   },
 })
 
-// Skip these tests due to @testing-library/react-native environment issues
-// The library can't detect host component names in this test environment
-// TODO: Fix test environment setup to properly mock React Native host components
-describe.skip('useTheme', () => {
+describe('useTheme', () => {
   test(`nested non-changing scheme with fast scheme change doesn't de-opt`, () => {
     const tree = render(
       <TamaguiProvider defaultTheme="light" config={config}>
@@ -28,6 +25,7 @@ describe.skip('useTheme', () => {
 
     expect(tree.toJSON()).toMatchInlineSnapshot(`
       <View
+        ref={[Function]}
         style={
           {
             "backgroundColor": {
@@ -53,6 +51,7 @@ describe.skip('useTheme', () => {
 
     expect(tree.toJSON()).toMatchInlineSnapshot(`
       <View
+        ref={[Function]}
         style={
           {
             "backgroundColor": "#000",

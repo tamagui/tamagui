@@ -18,7 +18,7 @@ export const UserDropdown = () => {
           <Avatar size="$5" {...demoProps.borderRadiusProps}>
             <Avatar.Image src="https://i.pravatar.cc/300?u=some-user" />
           </Avatar>
-          <XStack items="center" flex={1} justify="space-between">
+          <XStack items="center" flex={1} flexBasis="auto" justify="space-between">
             <YStack>
               <H4 {...demoProps.headingFontFamilyProps}>John Doe</H4>
               <Paragraph theme="alt1" size="$3">
@@ -29,7 +29,7 @@ export const UserDropdown = () => {
         </XStack>
       </YStack>
 
-      <YStack flex={1} mx="$-2" gap="$2">
+      <YStack flex={1} flexBasis="auto" mx="$-2" gap="$2">
         <ListItem
           bg="transparent"
           hoverStyle={{

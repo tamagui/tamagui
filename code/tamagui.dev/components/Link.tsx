@@ -1,4 +1,5 @@
-import { type ViewProps, Button, Paragraph, Text, type ButtonProps } from 'tamagui'
+import { Button, Paragraph, Text } from 'tamagui'
+import type { ViewProps, ButtonProps } from 'tamagui'
 import { router, useLinkTo, type LinkProps as OneLinkProps } from 'one'
 
 export type LinkProps = ViewProps &
@@ -12,15 +13,13 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
 
   return (
     <Text
-      tag="a"
+      render="a"
       // always except-style
       asChild={asChild ? 'except-style' : false}
       className="t_Link"
       cursor="pointer"
       color="inherit"
-      // @ts-expect-error
       fontSize="inherit"
-      // @ts-expect-error
       lineHeight="inherit"
       {...props}
       {...linkProps}
@@ -49,7 +48,7 @@ export const ParagraphLink = ({
 
   return (
     <Paragraph
-      tag="a"
+      render="a"
       cursor="pointer"
       color="$color"
       hoverStyle={{ color: '$color', outlineColor: 'red' }}
@@ -82,7 +81,6 @@ export const ButtonLink = ({
   ...props
 }: ButtonLinkProps) => {
   return (
-    // @ts-expect-error
     <Link
       asChild
       {...{
@@ -92,7 +90,7 @@ export const ButtonLink = ({
         replace,
       }}
     >
-      <Button tag="a" {...props}>
+      <Button render="a" {...props}>
         {children}
       </Button>
     </Link>

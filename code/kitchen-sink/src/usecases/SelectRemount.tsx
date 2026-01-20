@@ -23,7 +23,12 @@ function SelectComponent({ id }: { id: string }) {
   const [val, setVal] = React.useState('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll renderValue={getItemLabel}>
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      renderValue={getItemLabel}
+    >
       <Select.Trigger
         testID={`${id}-trigger`}
         aria-label={`${id}-trigger`}
@@ -33,8 +38,8 @@ function SelectComponent({ id }: { id: string }) {
         <Select.Value placeholder="Select a fruit" />
       </Select.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
-        <Sheet modal dismissOnSnapToBottom animation="medium">
+      <Adapt when={true} platform="touch">
+        <Sheet modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -42,7 +47,7 @@ function SelectComponent({ id }: { id: string }) {
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadowColor"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -50,7 +55,7 @@ function SelectComponent({ id }: { id: string }) {
       </Adapt>
 
       <Select.Content zIndex={200000}>
-        <Select.Viewport miw={200}>
+        <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {items.map((item, i) => (

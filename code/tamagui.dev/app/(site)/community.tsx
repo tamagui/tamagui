@@ -83,7 +83,7 @@ export default function Community() {
                       <XStack ai="center" space="$2">
                         <Paragraph
                           cursor="inherit"
-                          tag="time"
+                          render="time"
                           size="$5"
                           theme="alt2"
                           fow="300"
@@ -107,7 +107,7 @@ export default function Community() {
 
           <Spacer size="$4" />
 
-          <FlatBubbleCard items="center" feature borderWidth={0}>
+          <FlatBubbleCard items="center" borderWidth={0}>
             <H2 size="$9" text="center">
               Figma Design Kit
             </H2>
@@ -123,7 +123,7 @@ export default function Community() {
                   borderColor="$borderColor"
                 >
                   <Image
-                    animation="quick"
+                    transition="quick"
                     cursor="pointer"
                     shadowColor="$shadowColor"
                     shadowRadius="$4"
@@ -236,7 +236,8 @@ const StarterRepoCard = ({
       flexBasis={0}
       maxW={300}
       gap="$2"
-      tag="a"
+      render="a"
+      // @ts-ignore
       href={url as string}
       target="_blank"
       p="$5"

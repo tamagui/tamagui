@@ -19,8 +19,8 @@ import {
 
 export default function Sandbox() {
   return (
-    <Configuration animationDriver={animationsMotion}>
-      <YStack p="$10" ai="center" jc="center">
+    <Configuration>
+      <YStack p="$10" items="center" justify="center">
         <SandboxContent />
         {/* <LogoWords animated /> */}
       </YStack>
@@ -48,9 +48,9 @@ function SandboxContent() {
   return (
     <View>
       <YStack
-        animation="lazy"
-        w={500}
-        h={500}
+        transition="lazy"
+        width={500}
+        height={500}
         bg="red"
         hoverStyle={{
           y: 100,
@@ -127,10 +127,10 @@ export function MergeStylesTests() {
 
       {/* test case: ensure hoverStyle animates because it gets default aniamtable styles */}
       <Square
-        animation="bouncy"
-        backgroundColor="$color9"
+        transition="bouncy"
+        bg="$color9"
         size={104}
-        borderRadius="$9"
+        rounded="$9"
         hoverStyle={{
           scale: 1.2,
         }}
@@ -145,7 +145,7 @@ export function MergeStylesTests() {
           <Circle
             bg="$shadow4"
             size={100}
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -156,7 +156,7 @@ export function MergeStylesTests() {
         <Circle
           bg="$shadow4"
           size={100}
-          animation="lazy"
+          transition="lazy"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
@@ -172,7 +172,7 @@ export function MergeStylesTests() {
 //     <YStack gap="$2">
 //       {/* <Theme name="blue">
 //         <Switch>
-//           <Switch.Thumb animation="quicker" />
+//           <Switch.Thumb transition="quicker" />
 //         </Switch>
 //       </Theme> */}
 

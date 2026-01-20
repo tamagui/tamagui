@@ -120,7 +120,7 @@ export const BarTabs = memo(function HeaderTabs({
               {hasChanges && (
                 <Circle
                   key={value}
-                  animation="bouncy"
+                  transition="bouncy"
                   opacity={1}
                   scale={1}
                   enterStyle={{ opacity: 0, scale: 0.4 }}
@@ -150,7 +150,7 @@ const TabsRovingIndicator = ({
       rounded="$2"
       position="absolute"
       bg="$color6"
-      animation="quick"
+      transition="quick"
       enterStyle={{
         opacity: 0,
       }}

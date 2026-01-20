@@ -27,16 +27,17 @@ export function DialogFocusScopeCase() {
         />
       </Dialog>
 
-
       {/* Nested Dialogs */}
       <Dialog modal>
         <Dialog.Trigger asChild>
-          <Button data-testid="parent-dialog-trigger">Open Dialog with Nested Dialog</Button>
+          <Button data-testid="parent-dialog-trigger">
+            Open Dialog with Nested Dialog
+          </Button>
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay
             key="parent-overlay"
-            animation="quick"
+            transition="quick"
             opacity={0.5}
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -45,7 +46,7 @@ export function DialogFocusScopeCase() {
             key="parent-content"
             bordered
             elevate
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {
@@ -78,7 +79,7 @@ export function DialogFocusScopeCase() {
                 <Dialog.Portal>
                   <Dialog.Overlay
                     key="nested-overlay"
-                    animation="quick"
+                    transition="quick"
                     opacity={0.5}
                     enterStyle={{ opacity: 0 }}
                     exitStyle={{ opacity: 0 }}
@@ -87,7 +88,7 @@ export function DialogFocusScopeCase() {
                     key="nested-content"
                     bordered
                     elevate
-                    animation="quick"
+                    transition="quick"
                     enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
                     exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
                     width={400}
@@ -149,7 +150,7 @@ function DialogContent({
     <Dialog.Portal>
       <Dialog.Overlay
         key="overlay"
-        animation="quick"
+        transition="quick"
         opacity={0.5}
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
@@ -159,7 +160,7 @@ function DialogContent({
         bordered
         elevate
         disableOutsidePointerEvents={disableOutsidePointerEvents}
-        animation={[
+        transition={[
           'quick',
           {
             opacity: {
@@ -178,7 +179,7 @@ function DialogContent({
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Description>{description}</Dialog.Description>
 
-          <YStack gap="$3" tag="form">
+          <YStack gap="$3" render="form">
             <YStack gap="$3">
               <Label htmlFor={`${testId}-first`}>First Name</Label>
               <Input

@@ -41,7 +41,7 @@ export const HomeExamples = memo(
     }
 
     return (
-      <ContainerLarge position="relative">
+      <ContainerLarge position="relative" flexBasis="auto">
         <YStack z={1} gap="$6" mb="$4">
           {!onlyDemo && (
             <YStack items="center" gap="$3">
@@ -57,7 +57,8 @@ export const HomeExamples = memo(
           <ThemeTint>
             <XGroup
               scrollable
-              bordered
+              borderWidth={1}
+              borderColor="$borderColor"
               bg="$color2"
               maxW="100%"
               self="center"
@@ -76,9 +77,10 @@ export const HomeExamples = memo(
                       chromeless={i !== activeIndex}
                       rounded={0}
                       size="$3"
-                      fontFamily="$silkscreen"
                     >
-                      {example.name}
+                      <Button.Text fontFamily="$silkscreen" size="$3" fontWeight="600">
+                        {example.name}
+                      </Button.Text>
                     </Button>
                   </XGroup.Item>
                 )
@@ -98,6 +100,7 @@ export const HomeExamples = memo(
             <YStack
               key={`input${activeIndex}`}
               flex={1}
+              flexBasis="auto"
               maxW="50%"
               {...(onlyDemo && { maxW: '100%' })}
               $sm={{ maxW: '100%' }}
@@ -137,6 +140,7 @@ export const HomeExamples = memo(
             <YStack
               key={`output${activeIndex}`}
               flex={1}
+              flexBasis="auto"
               maxW="50%"
               {...(onlyDemo && { maxW: '100%', mt: '$6' })}
               $sm={{ maxW: '100%', mt: '$6' }}
@@ -168,7 +172,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
   const { tint } = useTint()
 
   return (
-    <YStack overflow="hidden" flex={1}>
+    <YStack overflow="hidden" flexBasis="auto">
       <>
         <ScrollView
           self="center"
@@ -182,8 +186,8 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           <XStack px="$4" shrink={0} gap="$4">
             <Theme name="accent">
               <Heading
-                bg="$color1"
-                color="$color12"
+                bg="$background"
+                color="$color"
                 py="$1"
                 size="$5"
                 px="$4"
@@ -193,7 +197,8 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                 {title}
               </Heading>
             </Theme>
-            <XGroup size="$2" bordered>
+
+            <XGroup size="$2" borderWidth={1} borderColor="$borderColor">
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button
@@ -203,7 +208,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                     size="$2"
                     rounded={0}
                   >
-                    {example.name}
+                    <Button.Text size="$2">{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}
@@ -211,9 +216,10 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           </XStack>
         </ScrollView>
       </>
-      <XStack maxW="100%" flex={1}>
+      <XStack maxW="100%" flex={1} flexBasis="auto">
         <YStack flex={1} maxW="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemoPreParsed
+            flexBasis="auto"
             height={325}
             maxH={325}
             flex={1}

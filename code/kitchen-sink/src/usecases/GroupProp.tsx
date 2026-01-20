@@ -75,11 +75,11 @@ export function GroupProp() {
         <GroupChild id="styled" />
       </GroupTest>
 
-      <GroupTest w={1000}>
+      <GroupTest width={1000}>
         <GroupChildMedia id="styled-media-unmatched" />
       </GroupTest>
 
-      <GroupTest w={200}>
+      <GroupTest width={200}>
         <GroupChildMedia id="styled-media-matched" />
       </GroupTest>
 

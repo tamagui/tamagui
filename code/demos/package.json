@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.144.2",
+  "version": "2.0.0-1768700985112",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -55,10 +55,14 @@
     "@tamagui/button": "workspace:*",
     "@tamagui/checkbox": "workspace:*",
     "@tamagui/checkbox-headless": "workspace:*",
+    "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",
+    "@tamagui/context-menu": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
-    "@tamagui/image-next": "workspace:*",
+    "@tamagui/image": "workspace:*",
+    "@tamagui/input": "workspace:*",
+    "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",

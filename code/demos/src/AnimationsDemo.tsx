@@ -1,6 +1,6 @@
 import { LogoIcon } from '@tamagui/logo'
 import { Play } from '@tamagui/lucide-icons'
-import { Button, Square, useControllableState, useEvent } from 'tamagui'
+import { Button, isWeb, Square, useControllableState, Image, useEvent } from 'tamagui'
 
 export function AnimationsDemo(props) {
   const [positionI, setPositionI] = useControllableState({
@@ -18,7 +18,7 @@ export function AnimationsDemo(props) {
   return (
     <>
       <Square
-        animation={props.animation ?? 'bouncy'}
+        transition={props.animation ?? 'bouncy'}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}
@@ -34,7 +34,7 @@ export function AnimationsDemo(props) {
         }}
         {...position}
       >
-        {props.children || <LogoIcon downscale={0.75} />}
+        {isWeb && <LogoIcon downscale={0.75} />}
       </Square>
 
       <Button

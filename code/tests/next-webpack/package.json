@@ -2,20 +2,20 @@
   "name": "next15-plus-cli-optimize",
   "private": true,
   "workspaces": [
-    "./apps/*",
     "./packages/*"
   ],
   "scripts": {
-    "test": "yarn test:unit && yarn test:integration",
+    "test": "vitest run",
+    "test:web": "vitest run",
     "test:unit": "vitest run",
-    "test:integration": "yarn workspace next-app test:integration",
     "test:clean": "git checkout packages/app/ && git clean -fd packages/app/"
   },
   "dependencies": {
-    "@tamagui/cli": "workspace:*"
+    "@tamagui/cli": "workspace:*",
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
     "vitest": "^4.0.4"
   },
-  "version": "1.144.2"
+  "version": "2.0.0-1768700985112"
 }

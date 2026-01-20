@@ -45,7 +45,13 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
   val = '$true',
   extras
 ) => {
-  if (extras.props.multiline || extras.props.numberOfLines > 1) {
+  // Check for textarea mode via tag, rows, multiline, or numberOfLines
+  if (
+    extras.props.tag === 'textarea' ||
+    extras.props.rows > 1 ||
+    extras.props.multiline ||
+    extras.props.numberOfLines > 1
+  ) {
     return textAreaSizeVariant(val, extras)
   }
   const buttonStyles = getButtonSized(val, extras)
@@ -75,6 +81,10 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
   const lines = props.rows ?? props.numberOfLines
   const height =
     typeof lines === 'number' ? lines * getVariableValue(fontStyle.lineHeight) : 'auto'
+  // lineHeight messes up input on native
+  if (!isWeb && fontStyle) {
+    delete fontStyle['lineHeight']
+  }
   const paddingVertical = getSpace(val, {
     shift: -2,
     bounds: [2],
@@ -96,7 +106,7 @@ export const INPUT_NAME = 'Input'
 export const styledBody = [
   {
     name: INPUT_NAME,
-    tag: 'input',
+    render: 'input',
     variants: {
       unstyled: {
         false: defaultStyles,

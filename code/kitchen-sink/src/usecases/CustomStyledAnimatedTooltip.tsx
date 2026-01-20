@@ -23,15 +23,15 @@ export const Tooltip = withStaticProperties(StyledTooltip, {
     padding: 0,
     px: 8,
     zIndex: 1_000_000,
-    br: 6,
+    rounded: 6,
     bg: '$color1',
-    enterStyle: { x: 0, y: 5, o: 0, scale: 0.9 },
-    exitStyle: { x: 0, y: 5, o: 0, scale: 0.9 },
+    enterStyle: { x: 0, y: 5, opacity: 0, scale: 0.9 },
+    exitStyle: { x: 0, y: 5, opacity: 0, scale: 0.9 },
     scale: 1,
     x: 0,
     y: 0,
-    o: 1,
-    animation: [
+    opacity: 1,
+    transition: [
       'quick',
       {
         opacity: {
@@ -51,14 +51,14 @@ const TriggerText = styled(Text, {
 
 export function CustomStyledAnimatedTooltip() {
   return (
-    <Stack f={1} ai="center" jc="center" gap="$5">
+    <Stack flex={1} items="center" justify="center" gap="$5">
       <Stack theme="red">
         <Tooltip>
           <Tooltip.Trigger>
             <TriggerText>No animation with styled()</TriggerText>
           </Tooltip.Trigger>
 
-          <Theme inverse>
+          <Theme name="accent">
             <Tooltip.Content>
               <Text theme="red" color="$color11">
                 Hey there!
@@ -66,42 +66,6 @@ export function CustomStyledAnimatedTooltip() {
             </Tooltip.Content>
           </Theme>
         </Tooltip>
-      </Stack>
-
-      <Stack theme="blue">
-        {/* <TamaguiTooltip delay={0} restMs={0}>
-          <TamaguiTooltip.Trigger>
-            <TriggerText>This works with inline props</TriggerText>
-          </TamaguiTooltip.Trigger>
-
-          <Theme inverse>
-            <TamaguiTooltip.Content
-              {...{
-                padding: 0,
-                px: 8,
-                zIndex: 1_000_000,
-                br: 6,
-                bg: '$color1',
-                enterStyle: { x: 0, y: 5, o: 0, scale: 0.9 },
-                exitStyle: { x: 0, y: 5, o: 0, scale: 0.9 },
-                scale: 1,
-                x: 0,
-                y: 0,
-                o: 1,
-                animation: [
-                  'quick',
-                  {
-                    opacity: {
-                      overshootClamping: true,
-                    },
-                  },
-                ],
-              }}
-            >
-              <Text color="$color12">Hey there!</Text>
-            </TamaguiTooltip.Content>
-          </Theme>
-        </TamaguiTooltip> */}
       </Stack>
     </Stack>
   )

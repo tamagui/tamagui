@@ -4,7 +4,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { VIEWPORT_NAME } from './constants'
 import {
   ForwardSelectContext,
@@ -19,7 +19,7 @@ import { useId } from 'react'
  * SelectViewport
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectViewportFrame = styled(ThemeableStack, {
+export const SelectViewportFrame = styled(YStack, {
   name: VIEWPORT_NAME,
 
   variants: {
@@ -70,7 +70,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     }, [isAdapted])
 
     if (itemContext.shouldRenderWebNative) {
-      return <>{children}</>
+      return <YStack position="relative">{children}</YStack>
     }
 
     if (isAdapted || !isWeb) {

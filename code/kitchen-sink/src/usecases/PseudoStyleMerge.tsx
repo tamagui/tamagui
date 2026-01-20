@@ -9,14 +9,14 @@ const CustomYStack = styled(YStack, {
 
 export function PseudoStyleMerge() {
   return (
-    <Stack f={1} ai="center" jc="center">
+    <Stack flex={1} items="center" justify="center">
       <CustomYStack
         width={100}
         height={100}
         hoverStyle={{
           scale: 2,
         }}
-        animation="quick"
+        transition="quick"
       >
         <Text>hi</Text>
       </CustomYStack>

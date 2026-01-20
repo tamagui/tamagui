@@ -62,7 +62,9 @@ export function Inner({
         <SandboxThemeChildStatic level={level} />
         <SandboxThemeChildDynamic level={level} />
         <YStack gap="$2">
-          <Button themeInverse>Inverse</Button>
+          <Theme name="accent">
+            <Button>Accent</Button>
+          </Theme>
           <Button>Normal</Button>
         </YStack>
 
@@ -86,7 +88,7 @@ const SandboxThemeChildDynamic = React.memo(({ level }: { level: number }) => {
   return (
     <Square
       id={`${TEST_IDS.dynamicSquare}-${level}`}
-      animation="bouncy"
+      transition="bouncy"
       size={20}
       backgroundColor="$color10"
       animateOnly={['backgroundColor']}

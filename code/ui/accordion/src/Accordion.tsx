@@ -227,7 +227,7 @@ const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext }
   createStyledContext<AccordionImplContextValue>()
 
 type AccordionImplElement = TamaguiElement
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
+type PrimitiveDivProps = GetProps<typeof Stack>
 interface AccordionImplProps extends PrimitiveDivProps {
   /**
    * Whether or not an accordion is disabled from user interaction.
@@ -266,84 +266,81 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
     const getItems = useCollection(__scopeAccordion || ACCORDION_CONTEXT)
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
-    const handleKeyDown = composeEventHandlers(
-      (props as any).onKeyDown,
-      (event: KeyboardEvent) => {
-        if (!ACCORDION_KEYS.includes(event.key)) return
-        const target = event.target as HTMLElement
-        const triggerCollection = getItems().filter((item) => {
-          const el = item.ref.current as { disabled?: boolean } | null
-          return !el?.disabled
-        })
-        const triggerIndex = triggerCollection.findIndex(
-          (item) => item.ref.current === target
-        )
-        const triggerCount = triggerCollection.length
+    const handleKeyDown = composeEventHandlers(props.onKeyDown, (event) => {
+      if (!ACCORDION_KEYS.includes(event.key)) return
+      const target = event.target as HTMLElement
+      const triggerCollection = getItems().filter((item) => {
+        const el = item.ref.current as { disabled?: boolean } | null
+        return !el?.disabled
+      })
+      const triggerIndex = triggerCollection.findIndex(
+        (item) => item.ref.current === target
+      )
+      const triggerCount = triggerCollection.length
 
-        if (triggerIndex === -1) return
+      if (triggerIndex === -1) return
 
-        // Prevents page scroll while user is navigating
-        event.preventDefault()
+      // Prevents page scroll while user is navigating
+      event.preventDefault()
 
-        let nextIndex = triggerIndex
-        const homeIndex = 0
-        const endIndex = triggerCount - 1
+      let nextIndex = triggerIndex
+      const homeIndex = 0
+      const endIndex = triggerCount - 1
 
-        const moveNext = () => {
-          nextIndex = triggerIndex + 1
-          if (nextIndex > endIndex) {
-            nextIndex = homeIndex
-          }
+      const moveNext = () => {
+        nextIndex = triggerIndex + 1
+        if (nextIndex > endIndex) {
+          nextIndex = homeIndex
         }
+      }
 
-        const movePrev = () => {
-          nextIndex = triggerIndex - 1
-          if (nextIndex < homeIndex) {
-            nextIndex = endIndex
-          }
+      const movePrev = () => {
+        nextIndex = triggerIndex - 1
+        if (nextIndex < homeIndex) {
+          nextIndex = endIndex
         }
+      }
 
-        switch (event.key) {
-          case 'Home':
-            nextIndex = homeIndex
-            break
-          case 'End':
-            nextIndex = endIndex
-            break
-          case 'ArrowRight':
-            if (orientation === 'horizontal') {
-              if (isDirectionLTR) {
-                moveNext()
-              } else {
-                movePrev()
-              }
-            }
-            break
-          case 'ArrowDown':
-            if (orientation === 'vertical') {
+      switch (event.key) {
+        case 'Home':
+          nextIndex = homeIndex
+          break
+        case 'End':
+          nextIndex = endIndex
+          break
+        case 'ArrowRight':
+          if (orientation === 'horizontal') {
+            if (isDirectionLTR) {
               moveNext()
-            }
-            break
-          case 'ArrowLeft':
-            if (orientation === 'horizontal') {
-              if (isDirectionLTR) {
-                movePrev()
-              } else {
-                moveNext()
-              }
-            }
-            break
-          case 'ArrowUp':
-            if (orientation === 'vertical') {
+            } else {
               movePrev()
             }
-            break
-        }
-
-        const clampedIndex = nextIndex % triggerCount
-        triggerCollection[clampedIndex].ref.current?.focus()
+          }
+          break
+        case 'ArrowDown':
+          if (orientation === 'vertical') {
+            moveNext()
+          }
+          break
+        case 'ArrowLeft':
+          if (orientation === 'horizontal') {
+            if (isDirectionLTR) {
+              movePrev()
+            } else {
+              moveNext()
+            }
+          }
+          break
+        case 'ArrowUp':
+          if (orientation === 'vertical') {
+            movePrev()
+          }
+          break
       }
-    )
+
+      const clampedIndex = nextIndex % triggerCount
+      triggerCollection[clampedIndex].ref.current?.focus()
+    })
 
     return (
       <AccordionImplProvider
@@ -373,7 +370,11 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
 
 const ITEM_NAME = 'AccordionItem'
 
-type AccordionItemContextValue = { open?: boolean; disabled?: boolean; triggerId: string }
+type AccordionItemContextValue = {
+  open?: boolean
+  disabled?: boolean
+  triggerId: string
+}
 const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemContext } =
   createStyledContext<AccordionItemContextValue>()
 type AccordionItemElement = React.ElementRef<typeof Collapsible>
@@ -583,7 +584,7 @@ const HeightAnimator = View.styleable((props, ref) => {
   const [height, setHeight] = React.useState(0)
 
   return (
-    <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
+    <View ref={ref} height={itemContext.open ? height : 0} position="relative" {...rest}>
       <View
         position="absolute"
         width="100%"

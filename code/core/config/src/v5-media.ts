@@ -2,39 +2,73 @@
 // earlier defined = less important
 
 export const breakpoints = {
-  '2xl': 1536,
-  xl: 1280,
-  lg: 1024,
-  md: 768,
-  sm: 640,
+  xxxs: 260,
+  xxs: 340,
   xs: 460,
-  '2xs': 340,
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  xxl: 1536,
 }
 
 export const media = {
-  maxXs: { maxWidth: breakpoints.xs },
-  max2xs: { maxWidth: breakpoints['2xs'] },
-  maxSm: { maxWidth: breakpoints.sm },
-  maxMd: { maxWidth: breakpoints.md },
-  maxLg: { maxWidth: breakpoints.lg },
-  maxXl: { maxWidth: breakpoints.xl },
-  max2Xl: { maxWidth: breakpoints['2xl'] },
-  // for site
-  '2xl': { minWidth: breakpoints['2xl'] },
-  xl: { minWidth: breakpoints.xl },
-  lg: { minWidth: breakpoints.lg },
-  md: { minWidth: breakpoints.md },
-  sm: { minWidth: breakpoints.sm },
+  pointerTouch: { pointer: 'coarse' },
+
+  // Height-based queries
+  heightXXXS: { minHeight: breakpoints.xxxs },
+  heightXXS: { minHeight: breakpoints.xxs },
+  heightXS: { minHeight: breakpoints.xs },
+  heightSM: { minHeight: breakpoints.sm },
+  heightMD: { minHeight: breakpoints.md },
+  heightLG: { minHeight: breakpoints.lg },
+
+  // Max-width queries (desktop-first)
+  maxXXXS: { maxWidth: breakpoints.xxxs },
+  maxXXS: { maxWidth: breakpoints.xxs },
+  maxXS: { maxWidth: breakpoints.xs },
+  maxSM: { maxWidth: breakpoints.sm },
+  maxMD: { maxWidth: breakpoints.md },
+  maxLG: { maxWidth: breakpoints.lg },
+  maxXL: { maxWidth: breakpoints.xl },
+  maxXXL: { maxWidth: breakpoints.xxl },
+
+  // Min-width queries (mobile-first)
+  xxxs: { minWidth: breakpoints.xxxs },
+  xxs: { minWidth: breakpoints.xxs },
   xs: { minWidth: breakpoints.xs },
-  '2xs': { minWidth: breakpoints['2xs'] },
+  sm: { minWidth: breakpoints.sm },
+  md: { minWidth: breakpoints.md },
+  lg: { minWidth: breakpoints.lg },
+  xl: { minWidth: breakpoints.xl },
+  xxl: { minWidth: breakpoints.xxl },
 } as const
 
 export const mediaQueryDefaultActive = {
-  '2xl': false,
-  xl: false,
-  lg: false,
-  md: false,
-  sm: false,
+  pointerTouch: false,
+  // Height queries
+  heightXXXS: true,
+  heightXXS: true,
+  heightXS: true,
+  heightSM: false,
+  heightMD: false,
+  heightLG: false,
+  // Max queries
+  maxXXXS: false,
+  maxXXS: false,
+  maxXS: true,
+  maxSM: true,
+  maxMD: true,
+  maxLG: true,
+  maxXL: true,
+  maxXXL: true,
+  // Min queries
+  xxxs: true,
+  xxs: true,
   xs: true,
-  '2xs': true,
+  sm: false,
+  md: false,
+  lg: false,
+  xl: false,
+  xxl: false,
 }

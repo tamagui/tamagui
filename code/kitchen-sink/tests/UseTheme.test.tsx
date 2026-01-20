@@ -8,7 +8,9 @@ test.beforeEach(async ({ page }) => {
 
 test(`useTheme() returns right values`, async ({ page }) => {
   expect(await page.locator('#theme-get').innerText()).toBe(`var(--background)`)
-  expect(await page.locator('#theme-val').innerText()).toBe(`#fff`)
+  // themeDev uses hsla format
+  expect(await page.locator('#theme-val').innerText()).toBe(`hsla(0, 0%, 100%, 1)`)
   expect(await page.locator('#token-get').innerText()).toBe(`var(--blue1)`)
-  expect(await page.locator('#token-val').innerText()).toBe(`hsl(206, 100%, 99.2%)`)
+  // Updated for Radix v3 hex format
+  expect(await page.locator('#token-val').innerText()).toBe(`#fbfdff`)
 })

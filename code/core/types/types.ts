@@ -130,11 +130,6 @@ export interface TamaguiBuildOptions {
   forceExtractStyleDefinitions?: boolean
 
   /**
-   * (Experimental) Will flatten theme and other dynamic values on native
-   */
-  experimentalFlattenThemesOnNative?: boolean
-
-  /**
    * combine all css files into one file
    */
   emitSingleCSSFile?: boolean
@@ -144,6 +139,11 @@ export interface TamaguiBuildOptions {
    */
   useReactNativeWebLite?: boolean | 'without-animated'
   disableWatchTamaguiConfig?: boolean
+
+  /**
+   * (Experimental) Flatten theme access on native for better performance
+   */
+  experimentalFlattenThemesOnNative?: boolean
 }
 
 export interface TamaguiOptions extends TamaguiBuildOptions {

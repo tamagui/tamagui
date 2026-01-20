@@ -47,7 +47,7 @@ export const StyledButtonVariantPseudoMerge = () => (
       test
     </StyledButton>
 
-    <StyledButton id="animated" reddish animation="quick">
+    <StyledButton id="animated" reddish transition="quick">
       animated
     </StyledButton>
 

@@ -1,5 +1,5 @@
 import { throttle } from '@github/mini-throttle'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
 import { demoMedia } from '@tamagui/tamagui-dev-config'
@@ -31,7 +31,7 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'
 import favicon from '~/public/favicon.svg'
@@ -271,7 +271,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
     <YStack
       className="unselectable"
       theme={active ? 'pink' : null}
-      pos="absolute"
+      position="absolute"
       {...props}
     >
       <XStack y={-60} items="flex-start">
@@ -286,12 +286,11 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
           l={0}
           y={-20}
           x={-17}
-          fontSize={12}
           onPress={() => {
             onPress(name)
           }}
         >
-          {name}
+          <Button.Text fontSize={12}>{name}</Button.Text>
         </Button>
       </XStack>
     </YStack>
@@ -300,7 +299,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
 
 const ResponsiveHeader = memo(() => {
   return (
-    <YStack flex={1} gap="$3">
+    <YStack flex={1} gap="$3" flexBasis="auto">
       <XStack>
         <HomeH2 text="left" self="flex-start">
           Easily responsive
@@ -323,6 +322,7 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
       contain="paint layout"
       elevation="$6"
       flex={1}
+      flexBasis="auto"
       overflow="hidden"
       rounded="$4"
       borderColor="$borderColor"
@@ -517,7 +517,7 @@ const Tab = memo(({ active, children, borderColor, ...props }: any) => {
           <Image width={10} height={10} src={favicon} />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph opacity={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
+        <Paragraph opacity={active ? 1 : 0.5} cursor="default" size="$1" ellipsis>
           {children}
         </Paragraph>
       </XStack>

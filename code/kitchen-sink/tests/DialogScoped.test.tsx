@@ -118,10 +118,11 @@ test('scoped dialogs adapt to sheets', async ({ page: pageIn }) => {
     const closeButton = sheetContents.getByTestId('dialog-close')
     await expect(closeButton).not.toBeVisible()
 
-    // Click sheet backdrop
+    // Click sheet backdrop (at top of screen to avoid sheet content)
     const overlay = page.locator(`#${name}-sheet-overlay`)
     await expect(overlay).toBeVisible()
-    await overlay.click()
+    // Click near the top of the overlay where the sheet content doesn't cover
+    await overlay.click({ position: { x: 10, y: 10 } })
 
     // Wait for sheet to close by checking data-state attribute
     await expect(sheetContents).toHaveAttribute('data-state', 'closed', { timeout: 5000 })

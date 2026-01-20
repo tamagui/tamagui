@@ -180,7 +180,7 @@ import { Paragraph, styled } from 'tamagui'
 
 const Code = styled(Paragraph, {
   name: 'Code',
-  tag: 'code',
+  render: 'code',
   fontFamily: '$mono',
   size: '$3',
   lineHeight: 18,
@@ -201,7 +201,7 @@ const Code = styled(Paragraph, {
 
 const Pre = styled(YStack, {
   overflow: 'visible',
-  tag: 'pre',
+  render: 'pre',
   p: '$4',
   rounded: '$4',
   bg: '$background',

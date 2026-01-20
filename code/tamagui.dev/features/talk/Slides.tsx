@@ -69,7 +69,7 @@ export function Slides(props: { slides: Slides }) {
         <AnimatePresence custom={{ going: direction }} initial={false}>
           <YStackEnterable
             key={page}
-            animation="lazy"
+            transition="lazy"
             fullscreen
             x={0}
             opacity={1}

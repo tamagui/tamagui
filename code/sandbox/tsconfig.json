@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"],
+      "~/*": [
+        "./*"
+      ],
       // tsconfig doesnt support merging so we have to duplicate:
       "tamagui": [
         "../ui/tamagui"
@@ -17,7 +19,9 @@
         "../demos"
       ]
     },
-    "types": ["vite/client"],
+    "types": [
+      "vite/client"
+    ],
     "noEmit": true
   }
 }

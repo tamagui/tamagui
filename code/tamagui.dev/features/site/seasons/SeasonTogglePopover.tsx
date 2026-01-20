@@ -35,7 +35,7 @@ export const SeasonTogglePopover = (props: { children: any }) => {
         t="$2"
         overflow="hidden"
         rounded="$8"
-        animation={[
+        transition={[
           'medium',
           {
             opacity: {

@@ -6,7 +6,7 @@ export default () => {
   return (
     <>
       {/* <Circle
-        animation="medium"
+        transition="medium"
         size={200}
         bg="red"
         enterStyle={{
@@ -16,7 +16,7 @@ export default () => {
       /> */}
 
       <AnimatePresence exitBeforeEnter>
-        <AnimatedHeading family="mono" index={0} Component={H1} color="$pink10">
+        <AnimatedHeading family="mono" index={0} Component={H1} color="$red10">
           Swappable
         </AnimatedHeading>
       </AnimatePresence>
@@ -55,7 +55,7 @@ const AnimatedHeading = memo(
     return (
       <Delay by={50}>
         <Component
-          animation="lazy"
+          transition="lazy"
           enterStyle={{ o: 0, y: -100 }}
           exitStyle={{ o: 0, y: 100 }}
           o={1}
@@ -70,7 +70,7 @@ const AnimatedHeading = memo(
           textShadowColor="$shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
-          ellipse
+          ellipsis
           {...rest}
         >
           {children}

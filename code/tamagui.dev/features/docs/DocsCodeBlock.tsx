@@ -7,7 +7,7 @@ import {
   TerminalSquare,
 } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useId, useRef, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -18,7 +18,7 @@ import {
   YStack,
   useEvent,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
 import { RovingTabs } from '~/components/RovingTabs'
@@ -29,8 +29,8 @@ import { toggleDocsTinted } from './docsTint'
 class CollapseStore {
   isCollapsed: boolean
 
-  constructor(initialState: { isCollapsed: boolean } = { isCollapsed: true }) {
-    this.isCollapsed = initialState.isCollapsed
+  constructor(props: { id: string; isCollapsed: boolean }) {
+    this.isCollapsed = props.isCollapsed
   }
 
   setIsCollapsed(val: boolean) {
@@ -58,7 +58,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
-  const store = useStore(CollapseStore, { isCollapsed: showMore })
+  const storeId = useId()
+  const store = useStore(CollapseStore, { id: storeId, isCollapsed: showMore })
   const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
   const [isCutoff, setIsCutoff] = useState(isLong && !showMore)
@@ -135,7 +136,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
         {isPreVisible && (
           <YStack
-            position="relative"
             {...(isCutoff && {
               maxHeight: 400,
               ov: 'hidden',
@@ -153,7 +153,12 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 z={1000}
               >
                 <Spacer flex={1} />
-                <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} self="center">
+                <Button
+                  z={10}
+                  size="$3"
+                  onPress={() => setIsCutoff(!isCutoff)}
+                  self="center"
+                >
                   Show more
                 </Button>
                 <Spacer size="$4" />
@@ -222,7 +227,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   aria-label="Copy code to clipboard"
                   size="$2"
                   t={showFileName ? '$3' : '$3'}
-                  r="$3"
+                  r="$6"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
                   onPress={() => {

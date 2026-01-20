@@ -1,10 +1,6 @@
 module.exports = (api) => {
   api.cache(true)
   return {
-    ignore: [
-      // speeds up compile
-      '**/@tamagui/**/dist/**',
-    ],
     presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],
     plugins: [
       [
@@ -12,7 +8,6 @@ module.exports = (api) => {
         {
           components: ['tamagui', '@tamagui/sandbox-ui'],
           config: './src/tamagui.config.ts',
-          experimentalFlattenThemesOnNative: true,
         },
       ],
       'react-native-reanimated/plugin',

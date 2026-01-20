@@ -155,7 +155,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
         </Popover.Trigger>
 
         <Popover.Content
-          animation="quick"
+          transition="quick"
           elevation="$8"
           borderWidth={1}
           borderColor="$color10"
@@ -180,12 +180,15 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 size="$3"
                 width={75}
                 self="center"
-                selectTextOnFocus
+                onFocus={(e) => e.currentTarget.select()}
+                style={{
+                  fontFamily: '$mono',
+                }}
                 value={hex}
                 onChange={(e) => {
                   updateHexInput(e.target?.value ?? '')
                 }}
-                onEndEditing={() => {
+                onBlur={() => {
                   sendUpdateHexDelayed(hex)
                 }}
               />

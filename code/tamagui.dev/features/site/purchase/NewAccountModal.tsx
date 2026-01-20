@@ -75,14 +75,14 @@ export const NewAccountModal = () => {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal dismissOnSnapToBottom animation="medium">
+          <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Frame bg="$background" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
             <Sheet.Overlay
-              animation="lazy"
+              transition="lazy"
               bg="$shadow6"
               opacity={1}
               enterStyle={{ opacity: 0 }}
@@ -95,7 +95,7 @@ export const NewAccountModal = () => {
           <Configuration animationDriver={animationsCSS}>
             <Dialog.Overlay
               key="overlay"
-              animation="medium"
+              transition="medium"
               bg="$shadow3"
               backdropFilter="blur(20px)"
               enterStyle={{ opacity: 0 }}
@@ -107,7 +107,7 @@ export const NewAccountModal = () => {
             bordered
             elevate
             key="content"
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {
@@ -341,7 +341,7 @@ const AccountHeader = () => {
   if (isLoading || !data) {
     return null
   }
-  const { userDetails, user } = data
+  const { userDetails, user, githubUsername } = data
 
   const handleLogout = async () => {
     try {
@@ -385,6 +385,11 @@ const AccountHeader = () => {
               {userDetails?.full_name}
             </H3>
             <Paragraph theme="alt1">{user?.email}</Paragraph>
+            {githubUsername && (
+              <Paragraph theme="alt2" size="$2">
+                GitHub: @{githubUsername}
+              </Paragraph>
+            )}
           </YStack>
         </XStack>
       </YStack>
@@ -396,7 +401,7 @@ const AccountHeader = () => {
         self="flex-end"
         aria-label="Logout"
       >
-        Logout
+        <Button.Text>Logout</Button.Text>
       </Button>
     </XStack>
   )
@@ -486,6 +491,7 @@ const ServiceCard = ({
       gap="$2"
       width={300}
       flex={1}
+      flexBasis="auto"
     >
       <H3 fontFamily="$mono" size="$6">
         {title}
@@ -501,7 +507,7 @@ const ServiceCard = ({
           theme="accent"
           onPress={onAction}
         >
-          {actionLabel}
+          <Button.Text>{actionLabel}</Button.Text>
         </Button>
 
         {!!secondAction && (
@@ -513,7 +519,7 @@ const ServiceCard = ({
             theme="accent"
             onPress={secondAction.onPress}
           >
-            {secondAction.label}
+            <Button.Text>{secondAction.label}</Button.Text>
           </Button>
         )}
 
@@ -550,7 +556,7 @@ const DiscordAccessDialog = ({
       <Dialog.Portal zIndex={999999}>
         <Dialog.Overlay
           key="overlay"
-          animation="medium"
+          transition="medium"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -559,7 +565,7 @@ const DiscordAccessDialog = ({
           bordered
           elevate
           key="content"
-          animation="quick"
+          transition="quick"
           width="90%"
           maxW={600}
           p="$6"
@@ -692,16 +698,18 @@ const DiscordPanel = ({
             placeholder="Your username..."
             id="discord-username"
             value={draftQuery}
-            onChange={(e) => setDraftQuery(e.target?.value ?? '')}
+            onChange={(e) => setDraftQuery(e.target.value)}
           />
         </Fieldset>
 
         <Form.Trigger>
-          <Button icon={Search}>Search</Button>
+          <Button icon={Search}>
+            <Button.Text>Search</Button.Text>
+          </Button>
         </Form.Trigger>
       </Form>
 
-      <XStack tag="article">
+      <XStack render="article">
         <Paragraph size="$3" theme="alt1">
           Note: You must{' '}
           <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
@@ -760,7 +768,9 @@ const DiscordPanel = ({
             onPress={() => resetChannelMutation.trigger()}
             disabled={resetChannelMutation.isMutating}
           >
-            {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+            <Button.Text>
+              {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+            </Button.Text>
           </Button>
         )}
       </XStack>
@@ -889,11 +899,11 @@ const DiscordMember = ({
   return (
     <XStack gap="$2" items="center" flexWrap="wrap">
       <Button minW={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
-        {isMutating ? 'Inviting...' : 'Add'}
+        <Button.Text>{isMutating ? 'Inviting...' : 'Add'}</Button.Text>
       </Button>
       <Avatar circular size="$2">
-        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
-        <Avatar.Fallback backgroundColor="$blue10" />
+        <Avatar.Image aria-label={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Fallback bg="$blue10" />
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
       {data && (
@@ -909,7 +919,6 @@ const DiscordMember = ({
     </XStack>
   )
 }
-
 const PlanTab = ({
   subscription,
   supportSubscription,
@@ -1203,14 +1212,13 @@ const UpgradeTab = () => {
       />
 
       <Button
-        fontFamily="$mono"
         theme="accent"
         rounded="$10"
         self="flex-end"
         onPress={handleUpgrade}
         disabled={supportTier === currentTier}
       >
-        {getActionLabel()}
+        <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
       </Button>
 
       <Separator />
@@ -1311,13 +1319,14 @@ const ManageTab = ({
         <Paragraph theme="alt1">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
+
         <Button
-          themeInverse
+          theme="accent"
           onPress={() => {
             paymentModal.show = true
           }}
         >
-          Purchase Plan
+          <Button.Text>Purchase Plan</Button.Text>
         </Button>
       </YStack>
     )
@@ -1491,9 +1500,11 @@ const ManageTab = ({
                   disabled={isLoading || !!subscription.cancel_at_period_end}
                   onPress={() => handleCancelSubscription(subscription.id)}
                 >
-                  {subscription.cancel_at_period_end
-                    ? 'Cancellation Scheduled'
-                    : 'Cancel Subscription'}
+                  <Button.Text>
+                    {subscription.cancel_at_period_end
+                      ? 'Cancellation Scheduled'
+                      : 'Cancel Subscription'}
+                  </Button.Text>
                 </Button>
               </>
             ) : null}
@@ -1575,7 +1586,7 @@ const TeamTab = ({
             paymentModal.teamSeats = 1
           }}
         >
-          Purchase Team Seats
+          <Button.Text>Purchase Team Seats</Button.Text>
         </Button>
       </YStack>
     )
@@ -1604,7 +1615,7 @@ const TeamTab = ({
                   id="github-username"
                   placeholder="Search GitHub users by name, email, or id"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target?.value ?? '')}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </Fieldset>
             </XStack>
@@ -1696,7 +1707,7 @@ const GitHubUserRow = ({
         onPress={() => inviteTeamMember({ user_id: String(user.id) })}
         disabled={isInviting}
       >
-        {isInviting ? 'Inviting...' : 'Invite'}
+        <Button.Text>{isInviting ? 'Inviting...' : 'Invite'}</Button.Text>
       </Button>
     </XStack>
   )
@@ -1749,7 +1760,7 @@ const TeamMemberRow = ({
           onPress={() => removeTeamMember({ team_member_id: member.user?.id ?? '' })}
           disabled={isRemoving}
         >
-          {isRemoving ? 'Removing...' : 'Remove'}
+          <Button.Text>{isRemoving ? 'Removing...' : 'Remove'}</Button.Text>
         </Button>
       </XStack>
     </XStack>

@@ -96,33 +96,31 @@ const TabsAdvancedBackground = () => {
       activationMode="manual"
       bg="$background"
       rounded="$4"
-      position="relative"
     >
-      <YStack>
-        <AnimatePresence>
-          {intentAt && (
-            <TabsRovingIndicator
-              rounded="$4"
-              width={intentAt.width}
-              height={intentAt.height}
-              x={intentAt.x}
-              y={intentAt.y}
-            />
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {activeAt && (
-            <TabsRovingIndicator
-              rounded="$4"
-              theme="accent"
-              width={activeAt.width}
-              height={activeAt.height}
-              x={activeAt.x}
-              y={activeAt.y}
-            />
-          )}
-        </AnimatePresence>
-
+      <AnimatePresence>
+        {intentAt && (
+          <TabsRovingIndicator
+            rounded="$4"
+            width={intentAt.width}
+            height={intentAt.height}
+            x={intentAt.x}
+            y={intentAt.y}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {activeAt && (
+          <TabsRovingIndicator
+            rounded="$4"
+            theme="accent"
+            width={activeAt.width}
+            height={activeAt.height}
+            x={activeAt.x}
+            y={activeAt.y}
+          />
+        )}
+      </AnimatePresence>
+      <YStack position="relative">
         <Tabs.List
           disablePassBorderRadius
           loop={false}
@@ -227,7 +225,7 @@ const TabsAdvancedUnderline = () => {
       bg="$background"
       rounded="$4"
     >
-      <YStack>
+      <YStack position="relative">
         <AnimatePresence>
           {intentAt && (
             <TabsRovingIndicator
@@ -293,7 +291,13 @@ const TabsAdvancedUnderline = () => {
 
       <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
         <AnimatedYStack key={currentTab}>
-          <Tabs.Content value={currentTab} forceMount flex={1} justify="center">
+          <Tabs.Content
+            value={currentTab}
+            forceMount
+            flex={1}
+            justify="center"
+            flexBasis="auto"
+          >
             <H5 text="center">{currentTab}</H5>
           </Tabs.Content>
         </AnimatedYStack>
@@ -308,7 +312,7 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackP
       position="absolute"
       backgroundColor="$color5"
       opacity={0.7}
-      animation="100ms"
+      transition="100ms"
       enterStyle={{
         opacity: 0,
       }}
@@ -329,7 +333,7 @@ const AnimatedYStack = styled(YStack, {
   x: 0,
   opacity: 1,
 
-  animation: '100ms',
+  transition: '100ms',
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     direction: {

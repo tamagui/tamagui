@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.144.2",
+  "version": "2.0.0-1768700985112",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -40,9 +40,11 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
+    "@tamagui/create-menu": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/popover": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*"
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

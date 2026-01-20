@@ -16,9 +16,6 @@ export const TEST_IDS = {
   nestedThemeRedDirect: 'nested-theme-red-direct',
   nestedThemeRedNested: 'nested-theme-red-nested',
   nestedThemeNoColor: 'nested-theme-no-color',
-  // Surface-to-surface nesting (exact reproduction from issue #3673)
-  nestedSurface1To3Direct: 'nested-surface-1-to-3-direct',
-  nestedSurface1To3Nested: 'nested-surface-1-to-3-nested',
   // Color Token Fallback test IDs (Issue #3620)
   colorTokenFallbackThemeValue: 'color-token-fallback-theme-value',
   colorTokenFallbackTokenValue: 'color-token-fallback-token-value',
@@ -32,4 +29,11 @@ export const TEST_IDS = {
   // Goal 2: Component-only preserves sub-theme (no backtracking)
   themeAlt1Direct: 'theme-alt1-direct',
   themeAlt1WithComponent: 'theme-alt1-with-component',
+  // Nested Surface test IDs
+  nestedSurface1To3Direct: 'nested-surface-1-to-3-direct',
+  nestedSurface1To3Nested: 'nested-surface-1-to-3-nested',
+  // Theme Mutation test IDs (DynamicColorIOS force update fix)
+  themeMutationSquare: 'theme-mutation-square',
+  themeMutationButton: 'theme-mutation-button',
+  themeMutationColorText: 'theme-mutation-color-text',
 } as const

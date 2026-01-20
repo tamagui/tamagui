@@ -11,10 +11,10 @@ import { Text, useMedia, YStack } from 'tamagui'
  * - gtMd: minWidth 1021 (matches when width > 1020)
  *
  * Expected behavior on iPhone (~390px width):
- * - Test 1: bc should be 'yellow' from $md (gtMd doesn't match)
- * - Test 2: bc should be 'red' (gtMd doesn't match, stays default)
- * - Test 3: bc should be 'yellow' from $md
- * - Test 4: bc should be 'yellow' from $md (md has higher priority than sm)
+ * - Test 1: backgroundColor should be 'yellow' from $md (gtMd doesn't match)
+ * - Test 2: backgroundColor should be 'red' (gtMd doesn't match, stays default)
+ * - Test 3: backgroundColor should be 'yellow' from $md
+ * - Test 4: backgroundColor should be 'yellow' from $md (md has higher priority than sm)
  */
 export const MediaQueryGtMd = () => {
   const media = useMedia()

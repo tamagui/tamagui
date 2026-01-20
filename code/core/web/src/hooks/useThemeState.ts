@@ -65,7 +65,7 @@ export const useThemeState = (
         id: '',
         name: 'light',
         theme: getConfig().themes.light,
-        inverses: 0,
+        // inverses: 0,
       }
     )
   }
@@ -207,7 +207,8 @@ const getNextState = (
         )
   const isSameAsParent = parentState && (!name || name === parentState.name)
   const shouldRerender = Boolean(
-    needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name)
+    pendingUpdate === 'force' ||
+      (needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name))
   )
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -241,9 +242,9 @@ const getNextState = (
   }
 
   const scheme = getScheme(name)
-  const parentInverses = parentState?.inverses ?? 0
+  // const parentInverses = parentState?.inverses ?? 0
   const isInverse = parentState && scheme !== parentState.scheme
-  const inverses = parentInverses + (isInverse ? 1 : 0)
+  // const inverses = parentInverses + (isInverse ? 1 : 0)
 
   const nextState = {
     id,
@@ -252,7 +253,7 @@ const getNextState = (
     scheme,
     parentId,
     parentName: parentState?.name,
-    inverses,
+    // inverses,
     isInverse,
     isNew: true,
   } satisfies ThemeState
@@ -324,7 +325,7 @@ function getScheme(name: string) {
 
 function getNewThemeName(
   parentName = '',
-  { name, reset, componentName, inverse, debug }: UseThemeWithStateProps,
+  { name, reset, componentName, debug }: UseThemeWithStateProps,
   forceUpdate = false
 ): string | null {
   if (name && reset) {
@@ -458,12 +459,6 @@ function getNewThemeName(
     }
   }
 
-  if (inverse) {
-    found ||= parentName
-    const scheme = found.split('_')[0]
-    found = found.replace(new RegExp(`^${scheme}`), scheme === 'light' ? 'dark' : 'light')
-  }
-
   if (
     !forceUpdate &&
     found === parentName &&
@@ -477,14 +472,8 @@ function getNewThemeName(
   return found
 }
 
-const getPropsKey = ({
-  name,
-  reset,
-  inverse,
-  forceClassName,
-  componentName,
-}: ThemeProps) =>
-  `${name || ''}${inverse || ''}${reset || ''}${forceClassName || ''}${componentName || ''}`
+const getPropsKey = ({ name, reset, forceClassName, componentName }: ThemeProps) =>
+  `${name || ''}${reset || ''}${forceClassName || ''}${componentName || ''}`
 
 export const hasThemeUpdatingProps = (props: ThemeProps) =>
-  'inverse' in props || 'name' in props || 'reset' in props || 'forceClassName' in props
+  'name' in props || 'reset' in props || 'forceClassName' in props

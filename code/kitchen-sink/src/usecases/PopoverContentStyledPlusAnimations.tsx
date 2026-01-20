@@ -8,31 +8,32 @@ export function PopoverContentStyledPlusAnimations() {
       </Popover.Trigger>
 
       <PopoverStyledContent>
-        <Popover.Arrow bw={1} bc="$borderColor" />
+        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
       </PopoverStyledContent>
     </Popover>
   )
 }
+
 const PopoverStyledContent = styled(Popover.Content, {
   name: 'PopoverContent2',
   elevate: true,
   bordered: true,
   p: '$3',
-  br: '$3',
+  rounded: '$3',
   enterStyle: {
-    o: 0,
+    opacity: 0,
     y: -10,
     x: 0,
   },
   exitStyle: {
-    o: 0,
+    opacity: 0,
     y: -10,
     x: 0,
   },
   x: 0,
   y: 0,
-  o: 1,
-  animation: [
+  opacity: 1,
+  transition: [
     'quick',
     {
       opacity: {

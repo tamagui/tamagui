@@ -15,7 +15,7 @@ import {
   redDark,
   yellow,
   yellowDark,
-} from '@tamagui/colors'
+} from '@tamagui/colors/legacy'
 import { createThemeBuilder, objectFromEntries } from '@tamagui/theme-builder'
 import { createTokens } from '@tamagui/web'
 import { objectKeys, postfixObjKeys } from './utils'

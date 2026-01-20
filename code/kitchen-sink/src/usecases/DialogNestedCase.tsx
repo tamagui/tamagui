@@ -31,7 +31,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
 
       <Adapt when="maxMd" platform="touch">
         <Sheet
-          animation="medium"
+          transition="medium"
           zIndex={200000}
           modal
           dismissOnSnapToBottom
@@ -41,7 +41,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -51,7 +51,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          transition="quick"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -61,7 +61,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
           bordered
           elevate
           key="content"
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {

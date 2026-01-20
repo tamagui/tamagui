@@ -5,6 +5,10 @@ import { useUser } from '~/features/user/useUser'
 export const UserAvatar = ({ size = 28 }: { size?: number }) => {
   const userSwr = useUser()
 
+  // Try userDetails first, then fall back to user metadata from auth
+  const avatarUrl =
+    userSwr.data?.userDetails?.avatar_url || userSwr.data?.user?.user_metadata?.avatar_url
+
   return (
     <Avatar circular size={size}>
       <Avatar.Image
@@ -14,9 +18,12 @@ export const UserAvatar = ({ size = 28 }: { size?: number }) => {
           width: size,
           height: size,
           uri:
-            userSwr.data?.userDetails?.avatar_url ||
+            avatarUrl ||
             getDefaultAvatarImage(
-              userSwr.data?.userDetails?.full_name || userSwr.data?.user?.email || 'User'
+              userSwr.data?.userDetails?.full_name ||
+                userSwr.data?.user?.user_metadata?.name ||
+                userSwr.data?.user?.email ||
+                'User'
             ),
         }}
       />

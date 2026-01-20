@@ -129,7 +129,7 @@ export type SelectViewportExtraProps = SelectScopedProps<{
   unstyled?: boolean
 }>
 
-export type SelectViewportProps = ThemeableStackProps & SelectViewportExtraProps
+export type SelectViewportProps = YStackProps & SelectViewportExtraProps
 
 export type SelectContentProps = SelectScopedProps<{
   children?: React.ReactNode

@@ -7,6 +7,7 @@ import {
   ListItem,
   Paragraph,
   Popover,
+  Sheet,
   Switch,
   Theme,
   YGroup,
@@ -60,10 +61,11 @@ export function Panel({
       width="100%"
       maxH={600}
       flex={1}
+      flexBasis="auto"
       group="card"
       containerType="normal"
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       {...props}
     >
       <PanelContext.Provider
@@ -74,12 +76,7 @@ export function Panel({
           [inverse]
         )}
       >
-        <Theme
-          name={accent ? accentThemeName : null}
-          // TODO shouldn't need this
-          key={`${accent}`}
-          inverse={inverse}
-        >
+        <Theme name={accent ? accentThemeName : null} key={`${accent}`}>
           {children}
         </Theme>
       </PanelContext.Provider>
@@ -88,7 +85,7 @@ export function Panel({
         <YStack
           position="absolute"
           opacity={hovered ? 1 : 0}
-          animation="100ms"
+          transition="100ms"
           r="$-2"
           t="$-2"
           z={100}
@@ -96,10 +93,10 @@ export function Panel({
           <Popover size="$5" allowFlip placement="bottom">
             <Popover.Trigger asChild>
               <Button
+                theme="accent"
                 onPress={(event) => {
                   event.stopPropagation()
                 }}
-                themeInverse
                 elevation="$2"
                 size="$2"
                 circular
@@ -108,16 +105,16 @@ export function Panel({
             </Popover.Trigger>
 
             <Adapt when="maxMd" platform="touch">
-              <Popover.Sheet modal dismissOnSnapToBottom>
-                <Popover.Sheet.Frame p="$4">
+              <Sheet modal dismissOnSnapToBottom>
+                <Sheet.Frame p="$4">
                   <Adapt.Contents />
-                </Popover.Sheet.Frame>
-                <Popover.Sheet.Overlay
-                  animation="quickest"
+                </Sheet.Frame>
+                <Sheet.Overlay
+                  transition="quickest"
                   enterStyle={{ opacity: 0 }}
                   exitStyle={{ opacity: 0 }}
                 />
-              </Popover.Sheet>
+              </Sheet>
             </Adapt>
 
             <Popover.Content
@@ -130,7 +127,7 @@ export function Panel({
               elevate
               p={0}
               animateOnly={['transform', 'opacity']}
-              animation={[
+              transition={[
                 'quicker',
                 {
                   opacity: {
@@ -142,36 +139,6 @@ export function Panel({
               <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
               <YGroup>
-                <ListItem
-                  bg="transparent"
-                  gap="$3"
-                  onPress={() => setInverse((val) => !val)}
-                >
-                  <Paragraph size="$3" mr="$2" text="left" select="none">
-                    Inverse
-                  </Paragraph>
-
-                  <Switch
-                    size="$1"
-                    checked={inverse}
-                    onPress={(e) => e.stopPropagation()}
-                    onCheckedChange={(val) => {
-                      setInverse(val)
-                    }}
-                  >
-                    <Switch.Thumb
-                      animation={[
-                        'quickest',
-                        {
-                          transform: {
-                            overshootClamping: true,
-                          },
-                        },
-                      ]}
-                    />
-                  </Switch>
-                </ListItem>
-
                 {hasAccent && (
                   <ListItem
                     bg="transparent"
@@ -191,7 +158,7 @@ export function Panel({
                       }}
                     >
                       <Switch.Thumb
-                        animation={[
+                        transition={[
                           'quickest',
                           {
                             transform: {

@@ -82,7 +82,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
           zIndex={100000000}
           modal
           dismissOnSnapToBottom
-          animation="bouncy"
+          transition="bouncy"
           animationConfig={{
             type: 'spring',
             damping: 25,
@@ -101,7 +101,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
 
       <Popover.Content
         enableAnimationForPositionChange
-        animation="quick"
+        transition="quick"
         bg="$background08"
         backdropFilter="blur(40px)"
         shadowRadius={50}
@@ -147,13 +147,13 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
                   borderWidth={0.5}
                   borderColor="$color3"
                   cursor="pointer"
-                  animation="lazy"
+                  transition="lazy"
                   hoverStyle={{
                     y: -2,
                     color: '$color12',
                   }}
                   pressStyle={{
-                    animation: '100ms',
+                    transition: '100ms',
                     y: -2,
                   }}
                   onPress={() => {
@@ -172,13 +172,12 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
                   <Button
                     rounded="$10"
                     my="$3"
-                    fontFamily="$mono"
                     onPress={() => {
                       showAppropriateModal()
                       setOpen(false)
                     }}
                   >
-                    More info
+                    <Button.Text fontFamily="$mono">More info</Button.Text>
                   </Button>
                 </Theme>
               )}

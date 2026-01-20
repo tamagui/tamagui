@@ -3,7 +3,7 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import { isAndroid, isWeb } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 
 import { getSetting } from '../config'
 import {
@@ -27,15 +27,12 @@ export function expandStyle(key: string, value: any): PropMappedValue {
       return [
         ['flexGrow', value],
         ['flexShrink', 1],
-        ['flexBasis', getSetting('styleCompat') === 'react-native' ? 0 : 'auto'],
+        ['flexBasis', getSetting('styleCompat') === 'legacy' ? 'auto' : 0],
       ]
     }
 
     // web only
     switch (key) {
-      case 'textAlignVertical': {
-        return [['verticalAlign', value === 'center' ? 'middle' : value]]
-      }
       case 'writingDirection': {
         return [['direction', value]]
       }
@@ -47,14 +44,6 @@ export function expandStyle(key: string, value: any): PropMappedValue {
         ]
       }
     }
-  }
-
-  if (
-    process.env.TAMAGUI_TARGET === 'native' &&
-    isAndroid &&
-    key === 'elevationAndroid'
-  ) {
-    return [['elevation', value]]
   }
 
   if (key in EXPANSIONS) {

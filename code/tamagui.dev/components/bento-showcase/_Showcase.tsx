@@ -153,8 +153,7 @@ const ShowcaseView = forwardRef<any, Props>(
               <XGroup rounded="$10">
                 <Button
                   icon={Eye}
-                  // @ts-expect-error - active theme name
-                  theme={view === 'preview' ? 'active' : 'alt1'}
+                  theme={view === 'preview' ? 'accent' : 'alt1'}
                   size="$3"
                   onPress={() => setView('preview')}
                 >
@@ -164,8 +163,7 @@ const ShowcaseView = forwardRef<any, Props>(
                 </Button>
                 <Button
                   icon={approved ? Code : Lock}
-                  // @ts-expect-error - active theme name
-                  theme={view === 'code' ? 'active' : 'alt1'}
+                  theme={view === 'code' ? 'accent' : 'alt1'}
                   size="$3"
                   onPress={() => setView('code')}
                 >
@@ -285,7 +283,6 @@ const MessagesFrame = (props: {
         ))}
       </XStack>
 
-      {/* @ts-expect-error - hideDragHandle type mismatch */}
       <ResizableBox hideDragHandle={props.hideDragHandle}>
         <YStack
           bg="$backgroundPress"
@@ -434,7 +431,15 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
     })
 
     return (
-      <XStack flex={1} ref={ref} items="stretch" select="none" gap="$2" {...rest}>
+      <XStack
+        flex={1}
+        flexBasis="auto"
+        ref={ref}
+        items="stretch"
+        select="none"
+        gap="$2"
+        {...rest}
+      >
         <XStack
           items="center"
           // @ts-expect-error - window group name

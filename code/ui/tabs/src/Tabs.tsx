@@ -11,7 +11,7 @@ const TRIGGER_NAME = 'TabsTrigger'
 
 export const DefaultTabsTabFrame = styled(ThemeableStack, {
   name: TRIGGER_NAME,
-  tag: 'button',
+  render: 'button',
 
   variants: {
     size: {

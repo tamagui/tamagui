@@ -53,10 +53,10 @@ export default function DocsLayout() {
         height="100%"
         maxH={1000}
         z={0}
-        colors={['$color1', '$accent12']}
+        colors={['$color1', '$color1']}
       />
 
-      <YStack z={-1} fullscreen bg="$accent12" />
+      <YStack z={-1} fullscreen bg="$color1" />
 
       {/* Sidebar container - no transform wrapper to preserve position:fixed */}
       <YStack
@@ -80,8 +80,8 @@ export default function DocsLayout() {
           }}
           $gtSm={{
             position: 'fixed' as any,
-            top: 0,
-            bottom: 0,
+            t: 0,
+            b: 0,
             width: 245,
           }}
         >
@@ -116,8 +116,10 @@ export default function DocsLayout() {
       <YStack
         maxW="100%"
         flex={1}
+        flexBasis="auto"
         py="$8"
         $gtLg={{
+          position: 'relative',
           l: -50,
         }}
         $gtMd={{
@@ -127,7 +129,7 @@ export default function DocsLayout() {
         }}
       >
         <>
-          <YStack tag="article">
+          <YStack render="article">
             <Container position="relative">
               <Slot />
             </Container>
@@ -143,7 +145,7 @@ export default function DocsLayout() {
                   {previous && (
                     <Link href={previous.route as Href} asChild>
                       <XStack
-                        tag="a"
+                        render="a"
                         group="card"
                         hoverStyle={{
                           borderColor: '$color5',
@@ -157,21 +159,21 @@ export default function DocsLayout() {
                         aria-label={`Previous page: ${previous.title}`}
                         items="center"
                         gap="$4"
-                        animation="100ms"
+                        transition="100ms"
                       >
                         <View
                           opacity={0}
-                          l="$-2"
-                          $group-card-hover={{ opacity: 1, l: '$0' }}
-                          animation="quickest"
+                          x="$-2"
+                          $group-card-hover={{ opacity: 1, x: '$0' }}
+                          transition="quickest"
                         >
                           <ChevronLeft color="$color11" />
                         </View>
 
                         <YStack
-                          l="$-4"
-                          $group-card-hover={{ l: '$0' }}
-                          animation="quicker"
+                          x="$-4"
+                          $group-card-hover={{ x: '$0' }}
+                          transition="quicker"
                         >
                           <Paragraph select="none" theme="alt1" size="$5">
                             Previous
@@ -186,7 +188,7 @@ export default function DocsLayout() {
                   {next && (
                     <Link href={next.route as Href} asChild>
                       <XStack
-                        tag="a"
+                        render="a"
                         group="card"
                         hoverStyle={{
                           borderColor: '$color5',
@@ -201,12 +203,12 @@ export default function DocsLayout() {
                         items="center"
                         justify="flex-end"
                         gap="$4"
-                        animation="100ms"
+                        transition="100ms"
                       >
                         <YStack
-                          r="$-4"
-                          $group-card-hover={{ r: '$0' }}
-                          animation="quicker"
+                          x="$-4"
+                          $group-card-hover={{ x: '$0' }}
+                          transition="quicker"
                         >
                           <Paragraph select="none" theme="alt1" size="$5">
                             Next
@@ -218,9 +220,9 @@ export default function DocsLayout() {
 
                         <View
                           opacity={0}
-                          r="$-2"
-                          $group-card-hover={{ opacity: 1, r: '$0' }}
-                          animation="quickest"
+                          x="$-2"
+                          $group-card-hover={{ opacity: 1, x: '$0' }}
+                          transition="quickest"
                         >
                           <ChevronRight color="$color11" />
                         </View>

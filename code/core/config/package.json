@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config",
-  "version": "1.144.2",
+  "version": "2.0.0-1768700985112",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -110,6 +110,7 @@
     "@tamagui/animations-css": "workspace:*",
     "@tamagui/animations-moti": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
+    "@tamagui/animations-reanimated": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/font-inter": "workspace:*",

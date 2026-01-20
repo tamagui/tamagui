@@ -47,7 +47,7 @@ import {
 import { Portal, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
-import { Sheet, SheetController } from '@tamagui/sheet'
+import { SheetController } from '@tamagui/sheet/controller'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -222,96 +222,94 @@ const PopoverContentFrame = styled(PopperContentFrame, {
   name: 'Popover',
 })
 
-export const PopoverContent = PopoverContentFrame.extractable(
-  React.forwardRef<PopoverContentTypeElement, PopoverContentProps>(
-    function PopoverContent(props, forwardedRef) {
-      const {
-        trapFocus,
-        enableRemoveScroll = false,
-        zIndex,
-        scope,
-        ...contentImplProps
-      } = props
+export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>(
+  function PopoverContent(props, forwardedRef) {
+    const {
+      trapFocus,
+      enableRemoveScroll = false,
+      zIndex,
+      scope,
+      ...contentImplProps
+    } = props
 
-      const context = usePopoverContext(scope)
-      const contentRef = React.useRef<any>(null)
-      const composedRefs = useComposedRefs(forwardedRef, contentRef)
-      const isRightClickOutsideRef = React.useRef(false)
-      const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
+    const context = usePopoverContext(scope)
+    const contentRef = React.useRef<any>(null)
+    const composedRefs = useComposedRefs(forwardedRef, contentRef)
+    const isRightClickOutsideRef = React.useRef(false)
+    const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
-      // Reset isFullyHidden when popover opens (useEffect avoids render-phase timing issues)
-      // there was a hard to isolate bug in tamagui.dev where moving between /ui docs pages quickly
-      // caused it to infinite loop, the setState in render (and useLayoutEffect) made it too prone
-      // to bug, useEffect maybe fine here because its hidden, ok to be slightly delayed while hidden
-      React.useEffect(() => {
-        if (context.open && isFullyHidden) {
-          setIsFullyHidden(false)
-        }
-      }, [context.open, isFullyHidden])
-
-      if (!context.keepChildrenMounted) {
-        if (isFullyHidden && !context.open) {
-          return null
-        }
+    // Reset isFullyHidden when popover opens (useEffect avoids render-phase timing issues)
+    // there was a hard to isolate bug in tamagui.dev where moving between /ui docs pages quickly
+    // caused it to infinite loop, the setState in render (and useLayoutEffect) made it too prone
+    // to bug, useEffect maybe fine here because its hidden, ok to be slightly delayed while hidden
+    React.useEffect(() => {
+      if (context.open && isFullyHidden) {
+        setIsFullyHidden(false)
       }
+    }, [context.open, isFullyHidden])
 
-      return (
-        <PopoverPortal
-          passThrough={context.breakpointActive}
-          context={context}
-          zIndex={zIndex}
-        >
-          <Stack
-            passThrough={context.breakpointActive}
-            pointerEvents={
-              context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
-            }
-          >
-            <PopoverContentImpl
-              {...contentImplProps}
-              context={context}
-              enableRemoveScroll={enableRemoveScroll}
-              ref={composedRefs}
-              setIsFullyHidden={setIsFullyHidden}
-              scope={scope}
-              // we make sure we're not trapping once it's been closed
-              // (closed !== unmounted when animating out)
-              trapFocus={trapFocus ?? context.open}
-              disableOutsidePointerEvents
-              onCloseAutoFocus={
-                props.onCloseAutoFocus === false
-                  ? undefined
-                  : composeEventHandlers(props.onCloseAutoFocus, (event) => {
-                      if (event.defaultPrevented) return
-                      event.preventDefault()
-                      if (!isRightClickOutsideRef.current)
-                        context.triggerRef.current?.focus()
-                    })
-              }
-              onPointerDownOutside={composeEventHandlers(
-                props.onPointerDownOutside,
-                (event) => {
-                  const originalEvent = event.detail.originalEvent
-                  const ctrlLeftClick =
-                    originalEvent.button === 0 && originalEvent.ctrlKey === true
-                  const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-                  isRightClickOutsideRef.current = isRightClick
-                },
-                { checkDefaultPrevented: false }
-              )}
-              // When focus is trapped, a `focusout` event may still happen.
-              // We make sure we don't trigger our `onDismiss` in such case.
-              onFocusOutside={composeEventHandlers(
-                props.onFocusOutside,
-                (event) => event.preventDefault(),
-                { checkDefaultPrevented: false }
-              )}
-            />
-          </Stack>
-        </PopoverPortal>
-      )
+    if (!context.keepChildrenMounted) {
+      if (isFullyHidden && !context.open) {
+        return null
+      }
     }
-  )
+
+    return (
+      <PopoverPortal
+        passThrough={context.breakpointActive}
+        context={context}
+        zIndex={zIndex}
+      >
+        <Stack
+          passThrough={context.breakpointActive}
+          pointerEvents={
+            context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
+          }
+        >
+          <PopoverContentImpl
+            {...contentImplProps}
+            context={context}
+            enableRemoveScroll={enableRemoveScroll}
+            ref={composedRefs}
+            setIsFullyHidden={setIsFullyHidden}
+            scope={scope}
+            // we make sure we're not trapping once it's been closed
+            // (closed !== unmounted when animating out)
+            trapFocus={trapFocus ?? context.open}
+            disableOutsidePointerEvents
+            onCloseAutoFocus={
+              props.onCloseAutoFocus === false
+                ? undefined
+                : composeEventHandlers(props.onCloseAutoFocus, (event) => {
+                    if (event.defaultPrevented) return
+                    event.preventDefault()
+                    if (!isRightClickOutsideRef.current)
+                      context.triggerRef.current?.focus()
+                  })
+            }
+            onPointerDownOutside={composeEventHandlers(
+              props.onPointerDownOutside,
+              (event) => {
+                const originalEvent = event.detail.originalEvent
+                const ctrlLeftClick =
+                  originalEvent.button === 0 && originalEvent.ctrlKey === true
+                const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                isRightClickOutsideRef.current = isRightClick
+              },
+              { checkDefaultPrevented: false }
+            )}
+            // When focus is trapped, a `focusout` event may still happen.
+            // We make sure we don't trigger our `onDismiss` in such case.
+            onFocusOutside={composeEventHandlers(
+              props.onFocusOutside,
+              (event) => event.preventDefault(),
+              { checkDefaultPrevented: false }
+            )}
+          />
+        </Stack>
+      </PopoverPortal>
+    )
+  }
 )
 
 const useParentContexts = (scope: string) => {
@@ -670,7 +668,6 @@ export const Popover = withStaticProperties(
     Close: PopoverClose,
     Adapt,
     ScrollView: PopoverScrollView,
-    Sheet: Sheet.Controlled,
     FocusScope: FocusScopeController,
   }
 )

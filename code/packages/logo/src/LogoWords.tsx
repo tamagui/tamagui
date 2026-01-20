@@ -76,8 +76,8 @@ export const LogoWords: React.MemoExoticComponent<
 
   return (
     <XStack
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       paddingVertical="$2"
       data-tauri-drag-region
       marginVertical="$-2"
@@ -100,7 +100,7 @@ export const LogoWords: React.MemoExoticComponent<
     >
       {animated && (
         <Circle
-          animation="quicker"
+          transition="quicker"
           position="absolute"
           top={0}
           left={0}
