@@ -24,7 +24,7 @@
   },
   "typesVersions": {
     "*": {
-      "setup": ["./types/setup.d.ts"],
+      "setup-native": ["./types/setup-native.d.ts"],
       "native-portal": ["./types/native-portal.d.ts"]
     }
   },
@@ -54,17 +54,17 @@
       "import": "./dist/esm/native-portal.mjs",
       "require": "./dist/cjs/native-portal.cjs"
     },
-    "./setup": {
+    "./setup-native": {
       "react-native": {
-        "types": "./types/setup.d.ts",
-        "module": "./dist/esm/setup.js",
-        "import": "./dist/esm/setup.js",
-        "require": "./dist/cjs/setup.js"
+        "types": "./types/setup-native.d.ts",
+        "module": "./dist/esm/setup-native.js",
+        "import": "./dist/esm/setup-native.js",
+        "require": "./dist/cjs/setup-native.js"
       },
-      "types": "./types/setup.d.ts",
-      "module": "./dist/esm/setup.mjs",
-      "import": "./dist/esm/setup.mjs",
-      "require": "./dist/cjs/setup.cjs"
+      "types": "./types/setup-native.d.ts",
+      "module": "./dist/esm/setup-native.mjs",
+      "import": "./dist/esm/setup-native.mjs",
+      "require": "./dist/cjs/setup-native.cjs"
     }
   },
   "dependencies": {
