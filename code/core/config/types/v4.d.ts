@@ -23,35 +23,24 @@ export declare const settings: {
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
-    addThemeClassName: "html";
+    themeClassNameOnRoot: true;
     onlyAllowShorthands: true;
-    styleCompat: "legacy";
-    defaultPosition: "relative";
+    maxDarkLightNesting: number;
 };
 export declare const defaultConfig: {
     animations: import("@tamagui/web").AnimationDriver<{
-        '0ms': string;
-        '30ms': string;
-        '50ms': string;
         '75ms': string;
         '100ms': string;
         '200ms': string;
-        '300ms': string;
-        superBouncy: string;
         bouncy: string;
-        kindaBouncy: string;
-        superLazy: string;
+        superBouncy: string;
         lazy: string;
         medium: string;
-        slowest: string;
         slow: string;
         quick: string;
-        quickLessBouncy: string;
-        tooltip: string;
         quicker: string;
-        quickerLessBouncy: string;
         quickest: string;
-        quickestLessBouncy: string;
+        tooltip: string;
     }>;
     media: {
         readonly maxXs: {
@@ -132,7 +121,7 @@ export declare const defaultConfig: {
         t: "top";
         z: "zIndex";
     };
-    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_accent" | "dark_accent" | "light_black_accent" | "light_white_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_black_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent", {
+    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "dark_black" | "dark_white", {
         accentBackground: string;
         accentColor: string;
         background0: string;
@@ -184,6 +173,18 @@ export declare const defaultConfig: {
         blue10: string;
         blue11: string;
         blue12: string;
+        green1: string;
+        green2: string;
+        green3: string;
+        green4: string;
+        green5: string;
+        green6: string;
+        green7: string;
+        green8: string;
+        green9: string;
+        green10: string;
+        green11: string;
+        green12: string;
         red1: string;
         red2: string;
         red3: string;
@@ -208,18 +209,6 @@ export declare const defaultConfig: {
         yellow10: string;
         yellow11: string;
         yellow12: string;
-        green1: string;
-        green2: string;
-        green3: string;
-        green4: string;
-        green5: string;
-        green6: string;
-        green7: string;
-        green8: string;
-        green9: string;
-        green10: string;
-        green11: string;
-        green12: string;
         shadow1: string;
         shadow2: string;
         shadow3: string;
@@ -381,8 +370,8 @@ export declare const defaultConfig: {
         };
     };
     fonts: {
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
-        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
     selectionStyles: (theme: any) => {
         backgroundColor: any;
@@ -402,10 +391,9 @@ export declare const defaultConfig: {
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";
-        addThemeClassName: "html";
+        themeClassNameOnRoot: true;
         onlyAllowShorthands: true;
-        styleCompat: "legacy";
-        defaultPosition: "relative";
+        maxDarkLightNesting: number;
     };
 };
 //# sourceMappingURL=v4.d.ts.map

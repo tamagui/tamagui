@@ -189,11 +189,22 @@ export const SheetScrollView = React.forwardRef<
         onStartShouldSetResponder={() => {
           scrollBridge.scrollStartY = -1
           state.current.isDraggingScrollArea = true
-          return scrollable
+          // don't claim responder on start - let children handle taps
+          // we'll claim on move if needed
+          return false
         }}
-        // setting to false while onResponderMove is disabled
         onMoveShouldSetResponder={(e) => {
-          return scrollable
+          if (!scrollable) return false
+          // require minimum movement (10px) before claiming responder
+          // this allows children (like Select.Item) to handle taps
+          // fixes #3436: onPress not firing on physical Android devices
+          const { pageY } = e.nativeEvent
+          if (state.current.lastPageY === 0) {
+            state.current.lastPageY = pageY
+            return false
+          }
+          const dy = Math.abs(pageY - state.current.lastPageY)
+          return dy > 10
         }}
         contentContainerStyle={{
           minHeight: '100%',
