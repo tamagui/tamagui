@@ -13,6 +13,7 @@ import {
 
 import { Link } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
+import { ConsultingButton } from '../site/ConsultingButton'
 import { TakeoutButton } from '../site/TakeoutButton'
 
 // SVG tree line indicator component with path-based animation
@@ -360,6 +361,9 @@ export function DocsQuickNav() {
               <TakeoutButton bg="transparent" />
             </Link>
           </Theme>
+          <Link width="100%" href="https://addeven.com" target="_blank">
+            <ConsultingButton bg="transparent" />
+          </Link>
         </YStack>
       </YStack>
     </YStack>
