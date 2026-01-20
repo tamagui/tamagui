@@ -44,7 +44,7 @@ export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
 // warning: setting to stylebale causes issues with themeInverse across portal root
 
-const TooltipContent = PopperContentFrame.styleable((props: TooltipContentProps, ref) => {
+const TooltipContent = PopperContentFrame.styleable<TooltipContentProps>((props, ref) => {
   const preventAnimation = React.useContext(PreventTooltipAnimationContext)
 
   return (
