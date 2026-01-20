@@ -6,17 +6,62 @@ component: Portal
 package: portal
 ---
 
-Portal is included in `tamagui` as it's used by a few components. It uses [@gorhom/portal](https://github.com/gorhom/react-native-portal) as its base.
+Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet), [Dialog](/docs/components/dialog), [Popover](/docs/components/popover), [Select](/docs/components/select), [Tooltip](/docs/components/tooltip), and [Toast](/docs/components/toast).
 
-## Context and Portals
+## Native Portal Setup (Recommended)
 
-Because portals render outside the normal React tree, React context from parent components won't be available inside portaled content by default.
+On web, React's built-in `createPortal` preserves context automatically. On native, the default Gorhom portal implementation doesn't preserve React context - meaning providers like theme, navigation, or your own custom context won't be available inside portaled content.
 
-There are two approaches to handle this:
+We recommend using [react-native-teleport](https://github.com/nicksrandall/react-native-teleport) to solve this. It uses React Native's native portal API to preserve context automatically.
 
-### 1. Use Component Scoping (Recommended)
+### Step 1: Install react-native-teleport
 
-For components like Dialog, Popover, and Tooltip, you can use the `scope` prop to hoist a single instance to your app root while placing triggers anywhere. This avoids context issues entirely since the content lives at the root inside your providers:
+```bash
+npm install react-native-teleport
+```
+
+### Step 2: Call setupNativePortal
+
+In your app's entry file (index.js or App.tsx), before rendering:
+
+```tsx
+import { setupNativePortal } from '@tamagui/portal/setup-native'
+
+setupNativePortal()
+```
+
+That's it! All portal-using components will now preserve context automatically on native.
+
+### Why This Matters
+
+Without native portals, context from parent components won't be available inside portaled content:
+
+```tsx
+const MyContext = createContext('default')
+
+function App() {
+  return (
+    <MyContext.Provider value="from-provider">
+      <Sheet modal open>
+        <Sheet.Frame>
+          {/* Without native portal: logs "default" instead of "from-provider" */}
+          <MyConsumer />
+        </Sheet.Frame>
+      </Sheet>
+    </MyContext.Provider>
+  )
+}
+```
+
+With `setupNativePortal()`, the context flows through correctly.
+
+## Alternative Approaches
+
+If you can't use react-native-teleport, there are other ways to handle context in portals:
+
+### Component Scoping
+
+For Dialog, Popover, and Tooltip, use the `scope` prop to mount a single instance at your app root. This avoids portals entirely on native:
 
 ```tsx
 // _layout.tsx - mount once at root with all your providers
@@ -38,35 +83,41 @@ For components like Dialog, Popover, and Tooltip, you can use the `scope` prop t
 </Tooltip.Trigger>
 ```
 
-This pattern is also a performance win for lists or tables with many interactive elements, and avoids needing portals entirely on native.
+This pattern is also a performance win for lists or tables with many interactive elements.
 
-For Sheet, scoping isn't yet available, but you can achieve a similar pattern by mounting a single Sheet at your app root and controlling it via context or a state emitter. This avoids portal context issues on native.
+### Manual Context Re-propagation
 
-### 2. Re-propagate Context
-
-If you need context inside portaled content, wrap the portal children with the necessary providers:
+Wrap portal children with the necessary providers:
 
 ```tsx
 const theme = useTheme()
+const myValue = useContext(MyContext)
 
 <Sheet>
   <Sheet.Frame>
     <ThemeProvider theme={theme}>
-      {/* content that needs theme context */}
+      <MyContext.Provider value={myValue}>
+        {/* content that needs context */}
+      </MyContext.Provider>
     </ThemeProvider>
   </Sheet.Frame>
 </Sheet>
 ```
 
-## Native Portal Setup (Advanced)
+This is more verbose and error-prone as you need to remember to re-propagate every context you use.
 
-By default, portals use the Gorhom portal implementation which works well for most cases.
+## Trade-offs
 
-If you want to use React Native's native `createPortal` API instead, you can opt-in by calling `setupNativePortal` early in your app. This is an unofficial API that may have compatibility issues with newer React Native versions:
+| Approach | Pros | Cons |
+|----------|------|------|
+| Native Portal (setupNativePortal) | Zero config after setup, works automatically | Requires react-native-teleport dependency |
+| Component Scoping | Best performance, no portal on native | Different code structure, not available for all components |
+| Manual Re-propagation | No dependencies | Verbose, easy to miss contexts |
 
-```tsx
-// in index.js or App.tsx, before rendering
-import { setupNativePortal } from '@tamagui/portal/native-portal'
+## Technical Details
 
-setupNativePortal()
-```
+[react-native-teleport](https://github.com/nicksrandall/react-native-teleport) uses `ReactNativeFabricUIManager.createPortal` (Fabric) or `UIManager.createPortal` (Paper) to create true native portals that preserve the React fiber tree.
+
+The Gorhom portal, by contrast, uses a JS-based approach with context providers and a reducer to manage portal state. While compatible with older RN versions, it breaks React context because it re-renders content in a separate provider tree.
+
+Tamagui includes a `needsPortalRepropagation()` helper that returns `true` when using the Gorhom portal and `false` when using native portals, so library authors can conditionally re-propagate context only when needed.

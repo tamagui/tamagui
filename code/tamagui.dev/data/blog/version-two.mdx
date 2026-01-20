@@ -363,6 +363,33 @@ experimental theme optimization setting has been removed - theme optimization
 now works automatically and much more effectively. This means better performance
 on native without any configuration needed.
 
+#### Native Portals
+
+Tamagui's portal-based components (Sheet, Dialog, Popover, Select, Tooltip, and
+Toast) now support true native portals via
+[react-native-teleport](https://github.com/nicksrandall/react-native-teleport).
+
+The problem: on native, the default Gorhom portal implementation doesn't
+preserve React context. This means providers like theme, navigation, or your own
+custom context aren't available inside portaled content - a major pain point
+when building real apps.
+
+The solution: call `setupNativePortal()` once at app startup:
+
+```tsx
+import { setupNativePortal } from '@tamagui/portal/setup-native'
+
+setupNativePortal()
+```
+
+This uses React Native's native `createPortal` API (Fabric or Paper) to preserve
+the React fiber tree, so all context flows through automatically. No more
+manually re-propagating theme context or navigation state into your sheets and
+dialogs.
+
+See the [Portal docs](/docs/components/portal) for full details and alternative
+approaches like component scoping.
+
 ### New Components
 
 #### Input & TextArea
