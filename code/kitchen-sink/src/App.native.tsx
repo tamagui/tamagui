@@ -1,14 +1,19 @@
 import 'react-native-gesture-handler'
+import { setupNativePortal } from '@tamagui/portal/setup'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import React from 'react'
 import { Appearance, LogBox, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { PortalProvider } from 'react-native-teleport'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext, type ThemeMode } from './useKitchenSinkTheme'
 import * as SplashScreen from 'expo-splash-screen'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+// setup native portal - will use teleport if available, otherwise fall back to legacy
+setupNativePortal()
 
 // Disable LogBox warnings to prevent them from blocking E2E tests
 // These are typically deep import warnings from react-native internals
@@ -51,14 +56,16 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <ThemeContext.Provider value={themeContext}>
-          <Provider defaultTheme={resolvedTheme as any}>
-            <Navigation />
-            <SafeToastViewport />
-          </Provider>
-        </ThemeContext.Provider>
-      </SafeAreaProvider>
+      <PortalProvider>
+        <SafeAreaProvider>
+          <ThemeContext.Provider value={themeContext}>
+            <Provider defaultTheme={resolvedTheme as any}>
+              <Navigation />
+              <SafeToastViewport />
+            </Provider>
+          </ThemeContext.Provider>
+        </SafeAreaProvider>
+      </PortalProvider>
     </GestureHandlerRootView>
   )
 }

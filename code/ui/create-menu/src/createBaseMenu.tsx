@@ -9,7 +9,7 @@ import { useFocusGuards } from '@tamagui/focus-guard'
 import { FocusScope } from '@tamagui/focus-scope'
 import type { PopperContentProps } from '@tamagui/popper'
 import * as PopperPrimitive from '@tamagui/popper'
-import { Portal as PortalPrimitive } from '@tamagui/portal'
+import { needsPortalRepropagation, Portal as PortalPrimitive } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
@@ -24,7 +24,6 @@ import {
   composeEventHandlers,
   composeRefs,
   createStyledContext,
-  isAndroid,
   isWeb,
   useComposedRefs,
   withStaticProperties,
@@ -515,7 +514,7 @@ export function createBaseMenu({
     const rootContext = useMenuRootContext(scope)
     const popperContext = PopperPrimitive.usePopperContext(scope)
     const menuSubContext = useMenuSubContext(scope)
-    const content = isAndroid ? (
+    const content = needsPortalRepropagation() ? (
       <RepropagateMenuAndMenuRootProvider
         menuContext={menuContext}
         rootContext={rootContext}

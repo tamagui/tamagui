@@ -12,7 +12,7 @@ import {
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isAndroid, isIos, isWeb } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
@@ -44,7 +44,7 @@ import {
   PopperProvider,
   usePopperContext,
 } from '@tamagui/popper'
-import { Portal, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
+import { needsPortalRepropagation, Portal, resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
 import { SheetController } from '@tamagui/sheet/controller'
@@ -61,7 +61,7 @@ type ScopedPopoverProps<P> = Omit<P, 'scope'> & {
   scope?: PopoverScopes
 }
 
-const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL)
+const needsRepropagation = needsPortalRepropagation()
 
 type PopoverVia = 'hover' | 'press'
 

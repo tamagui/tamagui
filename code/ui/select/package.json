@@ -55,6 +55,7 @@
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/list-item": "workspace:*",
+    "@tamagui/native-portal": "workspace:*",
     "@tamagui/portal": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/separator": "workspace:*",

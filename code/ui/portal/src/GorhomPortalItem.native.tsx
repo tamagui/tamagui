@@ -3,11 +3,49 @@
 
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent } from '@tamagui/core'
+import { getNativePortalState, NativePortal } from '@tamagui/native-portal'
 import { useEffect, useId } from 'react'
 import { usePortal } from './GorhomPortal'
 import type { PortalItemProps } from './types'
 
 export const GorhomPortalItem = (props: PortalItemProps) => {
+  const {
+    name: _providedName,
+    hostName = 'root',
+    handleOnMount: _providedHandleOnMount,
+    handleOnUnmount: _providedHandleOnUnmount,
+    handleOnUpdate: _providedHandleOnUpdate,
+    children,
+    passThrough,
+  } = props
+
+  const portalState = getNativePortalState()
+
+  // use teleport if available - it preserves context so we can skip the Gorhom system
+  if (portalState.type === 'teleport') {
+    if (passThrough) {
+      return children
+    }
+    return <NativePortal hostName={hostName}>{children}</NativePortal>
+  }
+
+  // fall back to Gorhom portal system
+  return (
+    <GorhomPortalItemFallback
+      name={_providedName}
+      hostName={hostName}
+      handleOnMount={_providedHandleOnMount}
+      handleOnUnmount={_providedHandleOnUnmount}
+      handleOnUpdate={_providedHandleOnUpdate}
+      passThrough={passThrough}
+    >
+      {children}
+    </GorhomPortalItemFallback>
+  )
+}
+
+// original Gorhom implementation as fallback
+const GorhomPortalItemFallback = (props: PortalItemProps) => {
   const {
     name: _providedName,
     hostName,

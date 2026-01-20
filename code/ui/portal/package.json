@@ -22,6 +22,12 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "typesVersions": {
+    "*": {
+      "setup": ["./types/setup.d.ts"],
+      "native-portal": ["./types/native-portal.d.ts"]
+    }
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -47,11 +53,24 @@
       "module": "./dist/esm/native-portal.mjs",
       "import": "./dist/esm/native-portal.mjs",
       "require": "./dist/cjs/native-portal.cjs"
+    },
+    "./setup": {
+      "react-native": {
+        "types": "./types/setup.d.ts",
+        "module": "./dist/esm/setup.js",
+        "import": "./dist/esm/setup.js",
+        "require": "./dist/cjs/setup.js"
+      },
+      "types": "./types/setup.d.ts",
+      "module": "./dist/esm/setup.mjs",
+      "import": "./dist/esm/setup.mjs",
+      "require": "./dist/cjs/setup.cjs"
     }
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/native-portal": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/web": "workspace:*",

@@ -1,4 +1,5 @@
 import { createStyledContext } from '@tamagui/core'
+import { getNativePortalState } from '@tamagui/native-portal'
 import type { SelectContextValue, SelectItemParentContextValue } from './types'
 
 export const { Provider: SelectProvider, useStyledContext: useSelectContext } =
@@ -20,6 +21,14 @@ export const ForwardSelectContext = ({
   context: SelectContextValue
   itemContext: SelectItemParentContextValue
 }) => {
+  // when teleport is enabled, context is automatically preserved
+  // so we can skip the forwarding logic for better performance
+  const portalState = getNativePortalState()
+  if (portalState.type === 'teleport') {
+    return children
+  }
+
+  // fall back to context forwarding for legacy portal implementations
   return (
     <SelectProvider isInSheet scope={context.scopeName} {...context}>
       <SelectItemParentProvider scope={context.scopeName} {...itemContext}>
