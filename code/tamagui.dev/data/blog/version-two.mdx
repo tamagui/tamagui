@@ -109,6 +109,9 @@ The breaking changes outside of deprecations are:
   press Enter/Space. This matches web standards.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
+- Native portals no longer auto-import React internals hack. If you want native
+  portals for better context preservation, call `setupNativePortal()` from
+  `@tamagui/portal/setup-native` at app startup. See [Portal docs](/docs/components/portal).
 - Removed React Native accessibility props in favor of web-standard props:
   - `accessibilityLabel` → `aria-label`
   - `accessibilityRole` → `role`
