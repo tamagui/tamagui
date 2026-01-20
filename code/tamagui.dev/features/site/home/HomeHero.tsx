@@ -22,6 +22,7 @@ import { TwitterIcon } from '~/features/icons/TwitterIcon'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 
 import { BentoButton } from '../BentoButton'
+import { ConsultingButton } from '../ConsultingButton'
 import { TakeoutButton } from '../TakeoutButton'
 import { InstallInput } from './InstallInput'
 import { useHeroHovered } from './useHeroHovered'
@@ -117,6 +118,12 @@ const HeroContents = memo(function HeroContents() {
                 </XGroup.Item>
               </Link>
             </Theme>
+
+            <Link href="https://addeven.com" target="_blank">
+              <XGroup.Item>
+                <ConsultingButton />
+              </XGroup.Item>
+            </Link>
           </XGroup>
         </>
 

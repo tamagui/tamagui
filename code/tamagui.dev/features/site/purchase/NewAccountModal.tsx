@@ -1,5 +1,4 @@
 import { LogOut, Search, X } from '@tamagui/lucide-icons'
-import { animationsCSS } from '@tamagui/tamagui-dev-config'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
@@ -11,7 +10,6 @@ import useSWRMutation from 'swr/mutation'
 import {
   Avatar,
   Button,
-  Configuration,
   debounce,
   Dialog,
   Fieldset,
@@ -94,16 +92,14 @@ export const NewAccountModal = () => {
         </Dialog.Adapt>
 
         <Dialog.Portal>
-          <Configuration animationDriver={animationsCSS}>
-            <Dialog.Overlay
-              key="overlay"
-              transition="medium"
-              bg="$shadow3"
-              backdropFilter="blur(20px)"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-            />
-          </Configuration>
+          <Dialog.Overlay
+            key="overlay"
+            transition="medium"
+            bg="$shadow3"
+            backdropFilter="blur(20px)"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
 
           <Dialog.Content
             bordered
@@ -994,20 +990,20 @@ const PlanTab = ({
           <ServiceCard
             title="Takeout"
             description="Access to repository and updates."
-            actionLabel={subscription ? 'Takeout 1' : 'Purchase'}
+            actionLabel={subscription ? 'Pro' : 'Purchase'}
             onAction={() => {
               if (!subscription) {
                 paymentModal.show = true
               } else {
-                handleTakeoutAccess('https://github.com/tamagui/takeout')
+                handleTakeoutAccess('https://github.com/tamagui/takeout2')
               }
             }}
             secondAction={
               subscription
                 ? {
-                    label: 'Takeout 2',
+                    label: 'Pro Classic',
                     onPress: () =>
-                      handleTakeoutAccess('https://github.com/tamagui/takeout2'),
+                      handleTakeoutAccess('https://github.com/tamagui/takeout'),
                   }
                 : null
             }

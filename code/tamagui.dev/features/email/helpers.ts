@@ -41,8 +41,8 @@ export function sendProductPurchaseEmail(
   <p>Once you accept the invite, you'll have access to:</p>
   <ul>
     <li><strong>Bento</strong> - Our premium component library: <a href="https://github.com/tamagui/bento">https://github.com/tamagui/bento</a></li>
-    <li><strong>Takeout v1</strong>: <a href="https://github.com/tamagui/takeout">https://github.com/tamagui/takeout</a></li>
-    <li><strong>Takeout v2 (Beta)</strong>: <a href="https://github.com/tamagui/takeout2">https://github.com/tamagui/takeout2</a></li>
+    <li><strong>Takeout Pro</strong>: <a href="https://github.com/tamagui/takeout2">https://github.com/tamagui/takeout2</a></li>
+    <li><strong>Takeout Pro Classic</strong>: <a href="https://github.com/tamagui/takeout">https://github.com/tamagui/takeout</a></li>
   </ul>
 
   <p>If you have any questions or need help, feel free to reach out to us at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
@@ -58,8 +58,8 @@ export function sendProductPurchaseEmail(
         <p class="sub">If you're having trouble with the links above, copy and paste these URLs into your web browser:</p>
         <p class="sub">Tamagui: https://tamagui.dev</p>
         <p class="sub">Bento: https://github.com/tamagui/bento</p>
-        <p class="sub">Takeout v1: https://github.com/tamagui/takeout</p>
-        <p class="sub">Takeout v2: https://github.com/tamagui/takeout2</p>
+        <p class="sub">Takeout Pro: https://github.com/tamagui/takeout2</p>
+        <p class="sub">Takeout Pro Classic: https://github.com/tamagui/takeout</p>
       </td>
     </tr>
   </table>
