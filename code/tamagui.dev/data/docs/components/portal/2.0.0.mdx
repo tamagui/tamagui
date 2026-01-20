@@ -10,7 +10,7 @@ Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet), 
 
 ## Native Portal Setup (Recommended)
 
-On web, React's built-in `createPortal` preserves context automatically. On native, the default Gorhom portal implementation doesn't preserve React context - meaning providers like theme, navigation, or your own custom context won't be available inside portaled content.
+On web, React's built-in `createPortal` preserves context automatically. On native, the default Gorhom portal implementation doesn't preserve React context. Tamagui automatically re-propagates its own contexts (theme, configuration), but your custom contexts like navigation or app state won't be available inside portaled content. The re-propagation also adds some overhead.
 
 We recommend using [react-native-teleport](https://github.com/nicksrandall/react-native-teleport) to solve this. It uses React Native's native portal API to preserve context automatically.
 
@@ -34,7 +34,7 @@ That's it! All portal-using components will now preserve context automatically o
 
 ### Why This Matters
 
-Without native portals, context from parent components won't be available inside portaled content:
+Without native portals, your custom context from parent components won't be available inside portaled content:
 
 ```tsx
 const MyContext = createContext('default')
@@ -53,7 +53,7 @@ function App() {
 }
 ```
 
-With `setupNativePortal()`, the context flows through correctly.
+With `setupNativePortal()`, all context flows through correctly - and it's faster since Tamagui no longer needs to manually re-propagate its own contexts.
 
 ## Alternative Approaches
 
