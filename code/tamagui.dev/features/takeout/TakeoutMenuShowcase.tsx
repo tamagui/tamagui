@@ -17,6 +17,7 @@ import { ThemeTintAlt } from '@tamagui/logo'
 
 import { Link } from '~/components/Link'
 import { HighlightText } from './HighlightText'
+import { SubTitle } from '../../components/SubTitle'
 
 const FeatureChip = styled(XStack, {
   bg: '$color2',
@@ -335,15 +336,10 @@ export function TakeoutMenuShowcase() {
             </ThemeTintAlt>
           </H2>
 
-          <Paragraph
-            fontSize={16}
-            color="$color11"
-            style={{ lineHeight: '1.6' }}
-            $sm={{ fontSize: 18 }}
-          >
+          <SubTitle>
             Tamagui enables high-level web features on native without performance downside
             on web. Write styles once, run everywhere with native performance.
-          </Paragraph>
+          </SubTitle>
 
           <XStack flexWrap="wrap" gap="$3" mt="$4">
             {features.map((feature) => (

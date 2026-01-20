@@ -3,6 +3,7 @@ import { YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Footer } from '~/features/site/Footer'
+import { getActivePromo } from '../../features/site/purchase/promoConfig'
 import { useSubscriptionModal } from '../../features/site/purchase/useSubscriptionModal'
 import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 
@@ -16,11 +17,12 @@ import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { VideoSection } from '~/features/takeout/VideoSection'
 
 export default function TakeoutPageNew() {
-  const { showAppropriateModal } = useSubscriptionModal()
+  const { showAppropriateModal, showWithActivePromo } = useSubscriptionModal()
+  const activePromo = getActivePromo()
 
   return (
     <YStack maxW="100%">
-      <ThemeNameEffect colorKey="$color5" />
+      <ThemeNameEffect colorKey="$color2" />
       <LoadCherryBomb />
       <HeadInfo
         title="Tamagui Takeout"
@@ -47,14 +49,14 @@ export default function TakeoutPageNew() {
           b={0}
           style={{
             background:
-              'linear-gradient(180deg, var(--color1) 0%, var(--color2) 50%, var(--color1) 100%)',
+              'linear-gradient(180deg, var(--color0) 0%, var(--color2) 50%, var(--color1) 100%)',
           }}
           z={-3}
         />
       </ThemeTintAlt>
 
       {/* Subtle ambient glow */}
-      <ThemeTintAlt offset={2}>
+      {/* <ThemeTintAlt offset={3}>
         <YStack
           position="absolute"
           l="10%"
@@ -70,7 +72,7 @@ export default function TakeoutPageNew() {
           z={-2}
           pointerEvents="none"
         />
-      </ThemeTintAlt>
+      </ThemeTintAlt> */}
 
       <ThemeTintAlt offset={0}>
         <YStack
@@ -78,16 +80,16 @@ export default function TakeoutPageNew() {
           l={0}
           r={0}
           t={-100}
-          mixBlendMode="color-burn"
+          // mixBlendMode="color-burn"
           b={0}
           style={{
-            background: 'linear-gradient(10deg, var(--color5), var(--color1))',
+            background: 'linear-gradient(0deg, var(--color5), var(--color1))',
           }}
           z={-3}
         />
       </ThemeTintAlt>
 
-      <ThemeTintAlt offset={3}>
+      {/* <ThemeTintAlt offset={3}>
         <YStack
           position="absolute"
           l={0}
@@ -100,10 +102,19 @@ export default function TakeoutPageNew() {
           }}
           z={-3}
         />
-      </ThemeTintAlt>
+      </ThemeTintAlt> */}
+
+      <YStack
+        fullscreen
+        className="grain"
+        opacity={0.2}
+        style={{
+          maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
+        }}
+      />
 
       {/* Gradient fade at bottom */}
-      <ThemeTint>
+      {/* <ThemeTint>
         <YStack
           z={-1}
           fullscreen
@@ -111,14 +122,20 @@ export default function TakeoutPageNew() {
             background: `linear-gradient(to bottom, transparent, transparent, var(--color2))`,
           }}
         />
-      </ThemeTint>
+      </ThemeTint> */}
 
       <ContainerLarge px={0}>
         {/* Hero Section */}
-        <TakeoutHeroNew onBuyPress={() => showAppropriateModal()} />
+        <TakeoutHeroNew
+          onBuyPress={() => showAppropriateModal()}
+          onPromoPress={() => showWithActivePromo()}
+          activePromo={activePromo}
+        />
 
-        {/* Features Section */}
-        <TakeoutBentoFeatures />
+        {/* Version Comparison Section */}
+        <YStack py="$8" px="$4">
+          <VersionComparison />
+        </YStack>
 
         {/* Tech Stack Section */}
         <TakeoutTechStack />
@@ -126,10 +143,8 @@ export default function TakeoutPageNew() {
         {/* Menu Showcase Section */}
         <TakeoutMenuShowcase />
 
-        {/* Version Comparison Section */}
-        <YStack py="$8" px="$4">
-          <VersionComparison />
-        </YStack>
+        {/* Features Section */}
+        <TakeoutBentoFeatures />
 
         {/* Video Section */}
         <YStack py="$8" px="$4">

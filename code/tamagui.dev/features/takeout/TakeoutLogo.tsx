@@ -60,28 +60,36 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         </ThemeTintAlt>
 
         {!disableMotion && !isSafari() && (
-          <>
+          <YStack
+            fullscreen
+            $theme-dark={{
+              opacity: 0.5,
+            }}
+            $theme-light={{
+              opacity: 1,
+            }}
+          >
             {/* main color slices */}
-            <ThemeTint>
+            <ThemeTintAlt offset={5}>
               <TAKEOUT
                 color="$color10"
                 className="clip-slice mix-blend"
                 position="absolute"
-                opacity={1}
+                opacity={0.3}
                 z={1001}
               />
-            </ThemeTint>
+            </ThemeTintAlt>
 
             {/* alt color slices */}
-            {/* <ThemeTintAlt>
+            <ThemeTintAlt>
               <TAKEOUT
                 color="$color7"
-                className="clip-slice mix-blend"
+                className="clip-slice-2 mix-blend"
                 position="absolute"
-                opacity={1}
+                opacity={0.3}
                 z={1002}
               />
-            </ThemeTintAlt> */}
+            </ThemeTintAlt>
 
             {/* secondary slice layer */}
             {/* <ThemeTintAlt offset={-2}>
@@ -93,7 +101,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 z={1001}
               />
             </ThemeTintAlt> */}
-          </>
+          </YStack>
         )}
       </YStack>
     </YStack>

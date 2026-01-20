@@ -12,7 +12,6 @@ import {
   Separator,
   Sheet,
   SizableText,
-  Spacer,
   styled,
   Tabs,
   Text,
@@ -25,7 +24,6 @@ import {
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
-import { Link } from '../../../components/Link'
 import { Select } from '../../../components/Select'
 import { sendEvent } from '../../analytics/sendEvent'
 import { PromoCards } from '../header/PromoCards'
@@ -33,21 +31,22 @@ import { ProAgreementModal } from './AgreementModal'
 import { BigP, P } from './BigP'
 import { ProPoliciesModal } from './PoliciesModal'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
+import { PurchaseButton } from './helpers'
 import { paymentModal } from './paymentModalStore'
-import { purchaseModal, usePurchaseModal } from './purchaseModalStore'
+import { usePurchaseModal } from './purchaseModalStore'
+import { useTakeoutStore } from './useTakeoutStore'
 
 const StripePaymentModal = lazy(() =>
   import('./StripePaymentModal').then((mod) => ({ default: mod.StripePaymentModal }))
 )
-import { PurchaseButton } from './helpers'
-import { useTakeoutStore } from './useTakeoutStore'
 
 // re-export for backwards compat
-export { purchaseModal, usePurchaseModal } from './purchaseModalStore'
 export { FaqTabContent } from './FaqTabContent'
+export { purchaseModal, usePurchaseModal } from './purchaseModalStore'
 
 // import for internal use
 import { FaqTabContent } from './FaqTabContent'
+import { calculatePromoPrice } from './promoConfig'
 
 export const NewPurchaseModal = () => {
   const [mounted, setMounted] = useState(false)
@@ -155,6 +154,9 @@ export function PurchaseModalContents() {
       supportTier: Number(supportTier),
       teamSeats,
     }
+    // pass promo info from purchase modal
+    paymentModal.activePromo = store.activePromo
+    paymentModal.prefilledCouponCode = store.prefilledCouponCode
   }
 
   // Calculate direction for animation
@@ -257,7 +259,7 @@ export function PurchaseModalContents() {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal transition="medium">
+          <Sheet modal transition="quick">
             <Sheet.Frame bg="$color1" p={0} gap="$4">
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
@@ -276,7 +278,7 @@ export function PurchaseModalContents() {
           <Dialog.Overlay
             backdropFilter="blur(35px)"
             key="overlay"
-            transition="medium"
+            transition="quick"
             bg="$shadow2"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -377,12 +379,32 @@ export function PurchaseModalContents() {
                   }}
                 >
                   <YStack gap="$1" flex={1} width="100%" $gtXs={{ width: '40%' }}>
-                    <XStack>
-                      <H3 size="$11">${Intl.NumberFormat('en-US').format(V2_PRICE)}</H3>
+                    <XStack items="baseline" gap="$2">
+                      {store.activePromo && (
+                        <H3
+                          size="$10"
+                          fontWeight="200"
+                          opacity={0.5}
+                          textDecorationLine="line-through"
+                          color="$green10"
+                          y={-3}
+                          letterSpacing={-2}
+                        >
+                          ${Intl.NumberFormat('en-US').format(V2_PRICE)}
+                        </H3>
+                      )}
+                      <H3 size="$11" letterSpacing={-2}>
+                        $
+                        {Intl.NumberFormat('en-US').format(
+                          calculatePromoPrice(V2_PRICE, store.activePromo)
+                        )}
+                      </H3>
                     </XStack>
 
-                    <Paragraph color="$color9" ellipsis size="$4" mb="$3">
-                      {subscriptionMessage}
+                    <Paragraph color="$color9" size="$3">
+                      {store.activePromo
+                        ? `${store.activePromo.label}! ${subscriptionMessage}`
+                        : subscriptionMessage}
                     </Paragraph>
                   </YStack>
 

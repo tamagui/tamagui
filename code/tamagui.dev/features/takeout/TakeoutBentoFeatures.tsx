@@ -21,6 +21,7 @@ import {
   YStack,
 } from 'tamagui'
 import { useHoverGlow } from '~/components/HoverGlow'
+import { SubTitle } from '../../components/SubTitle'
 
 const IconWrapper = styled(YStack, {
   width: 44,
@@ -181,16 +182,9 @@ export function TakeoutBentoFeatures() {
         >
           Modern, robust, maintained
         </H2>
-        <Paragraph
-          fontSize={16}
-          color="$color11"
-          text="center"
-          maxW={500}
-          style={{ lineHeight: '1.6' }}
-          $sm={{ fontSize: 18 }}
-        >
+        <SubTitle maxW={680} text="center">
           A complete startup stack for production apps, not a boilerplate.
-        </Paragraph>
+        </SubTitle>
       </YStack>
 
       {/* 4 cards per row on desktop, 2 on tablet, 1 on mobile */}

@@ -38,7 +38,7 @@ import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { Info, X } from '@tamagui/lucide-icons'
 import { createStore, createUseStore } from '@tamagui/use-store'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -146,6 +146,7 @@ export {
 
 // also import for internal use
 import { usePaymentModal, V2_LICENSE_PRICE, V2_UPGRADE_PRICE } from './paymentModalStore'
+import { calculatePromoPrice } from './promoConfig'
 
 type StripePaymentModalProps = {
   yearlyTotal: number
@@ -592,6 +593,36 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const chatSupport = store.chatSupport || propChatSupport
   const supportTier = store.supportTier || propSupportTier
   const teamSeats = store.teamSeats || propTeamSeats
+
+  // auto-apply prefilled coupon when modal opens
+  useEffect(() => {
+    if (store.show && store.prefilledCouponCode && !finalCoupon) {
+      setCouponCode(store.prefilledCouponCode)
+      // auto-validate the coupon
+      const validateCoupon = async () => {
+        try {
+          const response = await fetch('/api/validate-coupon', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code: store.prefilledCouponCode }),
+          })
+
+          const result = await response.json()
+          const data = couponResponseSchema.parse(result)
+
+          if (data.valid) {
+            setFinalCoupon(data.coupon)
+          }
+        } catch (error) {
+          // silently fail - user can still manually enter coupon
+          console.error('Failed to auto-apply coupon:', error)
+        }
+      }
+      validateCoupon()
+    }
+  }, [store.show, store.prefilledCouponCode])
 
   const handleApplyCoupon = async () => {
     try {

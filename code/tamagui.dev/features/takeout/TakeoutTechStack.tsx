@@ -1,8 +1,9 @@
-import { H2, H3, Paragraph, styled, XStack, YStack } from 'tamagui'
 import { TamaguiLogo, ThemeTintAlt } from '@tamagui/logo'
+import { H2, H3, Paragraph, styled, XStack, YStack } from 'tamagui'
 
 import { Link } from '~/components/Link'
 import { HighlightText } from './HighlightText'
+import { SubTitle } from '../../components/SubTitle'
 
 // One logo - based on takeout2 reference
 const OneLogo = ({ size = 32 }: { size?: number }) => (
@@ -83,7 +84,7 @@ const ZeroLogo = ({ size = 32 }: { size?: number }) => (
 )
 
 const TechCard = styled(YStack, {
-  bg: '$background',
+  bg: '$background02',
   rounded: '$8',
   p: '$6',
   borderWidth: 0.5,
@@ -131,7 +132,7 @@ const techStack = [
     name: 'Tamagui',
     badge: 'UI System',
     description:
-      'Universal design system with an optimizing compiler. Write styles once, run everywhere with native performance. Includes a full UI kit.',
+      'The best universal style system. A smart optimizing compiler unlocks write once, run everywhere styles with platform-native performance, and a ton of components.',
     url: 'https://tamagui.dev',
     highlight: 'v2 RC1 Released',
     Logo: TamaguiLogo,
@@ -142,7 +143,7 @@ const techStack = [
     name: 'One',
     badge: 'Framework',
     description:
-      'Vite-powered universal React framework. Typed file-based routing, loaders, SSR, SSG, SPA and API routes. Deploys anywhere with a single command.',
+      'Vite-powered universal React framework. Typed file-based routing, loaders, SSR, SSG, SPA and API routes. Deploy with a single command.',
     url: 'https://onestack.dev',
     highlight: 'v1 RC1 Released',
     Logo: OneLogo,
@@ -162,15 +163,6 @@ const techStack = [
   },
 ]
 
-const additionalTools = [
-  { name: 'Better Auth', description: 'Type-safe authentication' },
-  { name: 'Valibot', description: 'Fast schema validation' },
-  { name: 'SST', description: 'AWS infrastructure as code' },
-  { name: 'Drizzle', description: 'Type-safe SQL ORM' },
-  { name: 'PostHog', description: 'Analytics & feature flags' },
-  { name: 'Expo', description: 'Native iOS & Android' },
-]
-
 export function TakeoutTechStack() {
   return (
     <YStack gap="$6" py="$8" px="$4" maxW={1200} self="center" width="100%">
@@ -188,17 +180,10 @@ export function TakeoutTechStack() {
             <HighlightText render="span">stack</HighlightText>
           </ThemeTintAlt>
         </H2>
-        <Paragraph
-          fontSize={16}
-          color="$color11"
-          text="center"
-          maxW={500}
-          style={{ lineHeight: '1.6' }}
-          $sm={{ fontSize: 18 }}
-        >
+        <SubTitle maxW={680} text="center">
           Combining three libraries aimed at solving cross-platform in the best way
-          possible, in a refined and cohesive whole.
-        </Paragraph>
+          possible.
+        </SubTitle>
       </YStack>
 
       <XStack flexWrap="wrap" gap="$5" justify="center" $md={{ flexWrap: 'nowrap' }}>
@@ -225,12 +210,7 @@ export function TakeoutTechStack() {
                 {tech.name}
               </H3>
 
-              <Paragraph
-                fontSize={14}
-                color="$color11"
-                mb="$4"
-                style={{ lineHeight: '1.6' }}
-              >
+              <Paragraph size="$5" color="$color10" mb="$4">
                 {tech.description}
               </Paragraph>
 

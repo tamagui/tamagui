@@ -1,4 +1,5 @@
 import { createStore, createUseStore } from '@tamagui/use-store'
+import type { PromoConfig } from './promoConfig'
 
 class PurchaseModal {
   show = false
@@ -14,6 +15,9 @@ class PurchaseModal {
     supportTier: 0,
     teamSeats: 0,
   }
+  // promo support
+  activePromo: PromoConfig | null = null
+  prefilledCouponCode: string | null = null
 }
 
 export const purchaseModal = createStore(PurchaseModal)
