@@ -37,7 +37,7 @@
     "check:deps": "manypkg check",
     "check:unused": "knip --dependencies --workspace .",
     "check:tamagui": "./node_modules/.bin/tamagui check",
-    "check": "yarn check:deps && yarn check:unused && yarn check:tamagui && yarn check:references",
+    "check": "bun run check:deps && bun run check:unused && bun run check:tamagui && bun run check:references",
     "ci": "yarn && yarn check && yarn lint && yarn typecheck && yarn build && yarn test",
     "clean:build": "./scripts/run.sh clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
@@ -117,7 +117,7 @@
   "manypkg": {
     "workspaceProtocol": "require"
   },
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "bun@1.2.22",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@manypkg/cli": "^0.23.0",
