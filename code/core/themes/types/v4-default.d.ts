@@ -74,11 +74,11 @@ declare const generatedThemes: Record<"light_blue" | "light_green" | "light_red"
     borderColorFocus: string;
     borderColorPress: string;
     placeholderColor: string;
-    outlineColor: string;
     accentBackground: string;
     accentColor: string;
     background0: string;
     color0: string;
+    outlineColor: string;
     white1: string;
     white2: string;
     white3: string;
@@ -208,11 +208,11 @@ export declare const themes: Record<"light_blue" | "light_green" | "light_red" |
     borderColorFocus: string;
     borderColorPress: string;
     placeholderColor: string;
-    outlineColor: string;
     accentBackground: string;
     accentColor: string;
     background0: string;
     color0: string;
+    outlineColor: string;
     white1: string;
     white2: string;
     white3: string;

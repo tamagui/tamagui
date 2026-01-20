@@ -153,7 +153,6 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
           try {
             res = extractor.parseSync(root, {
               importsWhitelist: ['constants.js', 'colors.js'],
-              extractStyledDefinitions: options.forceExtractStyleDefinitions,
               excludeProps: new Set([
                 'className',
                 'userSelect',

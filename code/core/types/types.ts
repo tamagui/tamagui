@@ -127,15 +127,10 @@ export interface TamaguiBuildOptions {
   deoptProps?: Set<string>
   excludeProps?: Set<string>
   inlineProps?: Set<string>
-  forceExtractStyleDefinitions?: boolean
 
   /**
-   * combine all css files into one file
-   */
-  emitSingleCSSFile?: boolean
-
-  /**
-   * @deprecated Deprecated, just leave it off
+   * Use react-native-web-lite for better tree shaking on web.
+   * Set to 'without-animated' to exclude animated components.
    */
   useReactNativeWebLite?: boolean | 'without-animated'
   disableWatchTamaguiConfig?: boolean

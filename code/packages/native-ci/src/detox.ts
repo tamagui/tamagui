@@ -5,7 +5,6 @@
  */
 
 import { parseArgs } from 'node:util'
-import { $ } from 'bun'
 import type { Platform } from './constants'
 import { DETOX_SERVER_PORT } from './constants'
 
@@ -67,6 +66,8 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
     options.recordLogs,
     '--retries',
     String(options.retries),
+    // force jest to exit after tests complete (prevents hanging on open handles)
+    '--forceExit',
   ]
 
   if (options.headless) {
@@ -75,6 +76,9 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
 
   return args
 }
+
+// 30 min timeout for detox tests (in ms)
+const DETOX_TIMEOUT_MS = 30 * 60 * 1000
 
 /**
  * Run Detox tests with the given options
@@ -88,9 +92,27 @@ export async function runDetoxTests(options: DetoxRunnerOptions): Promise<number
   console.info(`Using fixed Detox server port: ${DETOX_SERVER_PORT}`)
   console.info(`Command: npx ${detoxArgs.join(' ')}`)
 
-  // Set DETOX_SERVER_PORT environment variable to use fixed port for ADB reverse forwarding
-  const result = await $`DETOX_SERVER_PORT=${DETOX_SERVER_PORT} npx ${detoxArgs}`.nothrow()
-  const exitCode = result.exitCode
+  // Use Bun.spawn with timeout to prevent hanging on zombie processes
+  const proc = Bun.spawn(['npx', ...detoxArgs], {
+    env: { ...process.env, DETOX_SERVER_PORT: String(DETOX_SERVER_PORT) },
+    stdout: 'inherit',
+    stderr: 'inherit',
+  })
+
+  // Race between process completion and timeout
+  const timeoutPromise = new Promise<'timeout'>((resolve) => {
+    setTimeout(() => resolve('timeout'), DETOX_TIMEOUT_MS)
+  })
+
+  const result = await Promise.race([proc.exited, timeoutPromise])
+
+  if (result === 'timeout') {
+    console.info('\nDetox timed out, killing process...')
+    proc.kill('SIGKILL')
+    return 1
+  }
+
+  const exitCode = result
 
   if (exitCode === 0) {
     console.info('\nAll tests passed!')

@@ -1,4 +1,5 @@
 import { createStore, createUseStore } from '@tamagui/use-store'
+import type { PromoConfig } from './promoConfig'
 
 class PaymentModal {
   show = false
@@ -18,6 +19,9 @@ class PaymentModal {
   isV2 = true // Default to V2 for new purchases
   projectName = ''
   projectDomain = ''
+  // promo support
+  activePromo: PromoConfig | null = null
+  prefilledCouponCode: string | null = null
 }
 
 export const paymentModal = createStore(PaymentModal)

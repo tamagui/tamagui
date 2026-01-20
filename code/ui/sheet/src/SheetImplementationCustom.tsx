@@ -395,7 +395,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       scrollBridge.release = release
 
       return PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: onMoveShouldSet,
         onPanResponderGrant: grant,
         onPanResponderMove: (_e, { dy }) => {

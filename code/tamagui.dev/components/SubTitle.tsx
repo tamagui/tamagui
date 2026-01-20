@@ -39,6 +39,9 @@ export const SubTitle = ({ children, ...props }) => {
       letterSpacing={-0.25}
       render="p"
       mb="$3"
+      $platform-web={{
+        textWrap: 'balance',
+      }}
       {...props}
     >
       {nbspLastWord(childText)}

@@ -35,7 +35,7 @@ export const ProgressIndicatorFrame = styled(YStack, {
       false: {
         height: '100%',
         width: '100%',
-        backgrounded: true,
+        backgroundColor: '$background',
       },
     },
   } as const,
@@ -119,7 +119,7 @@ export const ProgressFrame = styled(YStack, {
       false: {
         borderRadius: 100_000,
         overflow: 'hidden',
-        backgrounded: true,
+        backgroundColor: '$background',
       },
     },
 

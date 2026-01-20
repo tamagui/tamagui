@@ -12,6 +12,7 @@ import {
   useThemeName,
 } from 'tamagui'
 import { Link } from '~/components/Link'
+import { SubTitle } from '../../components/SubTitle'
 
 const VersionBadge = styled(SizableText, {
   px: '$2',
@@ -19,26 +20,25 @@ const VersionBadge = styled(SizableText, {
   rounded: '$3',
   fontSize: '$2',
   fontWeight: '600',
-  textTransform: 'uppercase',
   letterSpacing: 1,
   borderWidth: 0.5,
 
   variants: {
     variant: {
       new: {
-        bg: '$green4',
+        bg: '$green2',
         color: '$green11',
-        borderColor: '$green7',
+        borderColor: '$green5',
       },
       free: {
-        bg: '$blue4',
+        bg: '$blue2',
         color: '$blue11',
-        borderColor: '$blue7',
+        borderColor: '$blue5',
       },
       legacy: {
-        bg: '$gray4',
+        bg: '$gray2',
         color: '$gray11',
-        borderColor: '$gray7',
+        borderColor: '$gray5',
       },
     },
   } as const,
@@ -122,7 +122,7 @@ export function VersionComparison() {
     <YStack
       items="center"
       gap="$6"
-      py="$6"
+      py="$4"
       maxW={1000}
       mx="auto"
       width="100%"
@@ -137,22 +137,18 @@ export function VersionComparison() {
           style={{ lineHeight: '1.2' }}
           $sm={{ fontSize: 40 }}
         >
-          Three Flavors
+          Next generation, and last
         </H3>
-        <Paragraph
-          fontSize={16}
-          color="$color11"
-          text="center"
-          style={{ lineHeight: '1.6' }}
-        >
-          Pro subscribers get access to both v1 and v2 repositories.
-        </Paragraph>
+        <SubTitle maxW={680} text="center">
+          We've spent two years building a whole new stack + starter. Pro includes the
+          last starter, and a "lite" one too!
+        </SubTitle>
       </YStack>
 
       <YStack
         bg={isDark ? 'rgba(255,255,255,0.03)' : '$color2'}
         rounded="$6"
-        p="$6"
+        p="$3"
         borderWidth={0.5}
         borderColor={isDark ? 'rgba(255,255,255,0.08)' : '$color4'}
         gap="$4"
@@ -165,24 +161,13 @@ export function VersionComparison() {
         <YStack
           rounded="$4"
           borderWidth={0.5}
-          borderColor="$color6"
+          borderColor="$color4"
           overflow="hidden"
           bg="$background02"
-          style={{
-            boxShadow: '0 0 30px var(--color4)',
-          }}
         >
-          <XStack py="$3" px="$3" borderBottomWidth={1} borderBottomColor="$color6">
+          <XStack py="$3" px="$3">
             <YStack flex={1.5} justify="center">
-              <SizableText
-                size="$2"
-                fontWeight="600"
-                color="$color11"
-                fontFamily="$mono"
-                textTransform="uppercase"
-              >
-                Feature
-              </SizableText>
+              <SizableText fontFamily="$mono" size="$3" color="$color11"></SizableText>
             </YStack>
             <XStack flex={1} justify="center" items="center" gap="$2">
               <SizableText
@@ -220,7 +205,7 @@ export function VersionComparison() {
           ))}
         </YStack>
 
-        <XStack gap="$3" flexWrap="wrap" justify="center" pt="$4">
+        <XStack gap="$3" flexWrap="wrap" justify="center">
           <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
             <ThemeTintAlt>
               <Button

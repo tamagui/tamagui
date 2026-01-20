@@ -6,4 +6,67 @@ component: Portal
 package: portal
 ---
 
-Portal is included in `tamagui` as it's used by a few components. For now, it's simply using [@gorhom/portal](https://github.com/gorhom/react-native-portal).
+Portal is included in `tamagui` as it's used by a few components. It uses [@gorhom/portal](https://github.com/gorhom/react-native-portal) as its base.
+
+## Context and Portals
+
+Because portals render outside the normal React tree, React context from parent components won't be available inside portaled content by default.
+
+There are two approaches to handle this:
+
+### 1. Use Component Scoping (Recommended)
+
+For components like Dialog, Popover, and Tooltip, you can use the `scope` prop to hoist a single instance to your app root while placing triggers anywhere. This avoids context issues entirely since the content lives at the root inside your providers:
+
+```tsx
+// _layout.tsx - mount once at root with all your providers
+<TamaguiProvider>
+  <Tooltip scope="global">
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+      <Paragraph>{/* label set by trigger */}</Paragraph>
+    </Tooltip.Content>
+
+    {/* rest of your app */}
+    <Slot />
+  </Tooltip>
+</TamaguiProvider>
+
+// anywhere in your app - just the trigger
+<Tooltip.Trigger scope="global" aria-label="Settings">
+  <Button icon={Settings} />
+</Tooltip.Trigger>
+```
+
+This pattern is also a performance win for lists or tables with many interactive elements, and avoids needing portals entirely on native.
+
+For Sheet, scoping isn't yet available, but you can achieve a similar pattern by mounting a single Sheet at your app root and controlling it via context or a state emitter. This avoids portal context issues on native.
+
+### 2. Re-propagate Context
+
+If you need context inside portaled content, wrap the portal children with the necessary providers:
+
+```tsx
+const theme = useTheme()
+
+<Sheet>
+  <Sheet.Frame>
+    <ThemeProvider theme={theme}>
+      {/* content that needs theme context */}
+    </ThemeProvider>
+  </Sheet.Frame>
+</Sheet>
+```
+
+## Native Portal Setup (Advanced)
+
+By default, portals use the Gorhom portal implementation which works well for most cases.
+
+If you want to use React Native's native `createPortal` API instead, you can opt-in by calling `setupNativePortal` early in your app. This is an unofficial API that may have compatibility issues with newer React Native versions:
+
+```tsx
+// in index.js or App.tsx, before rendering
+import { setupNativePortal } from '@tamagui/portal/native-portal'
+
+setupNativePortal()
+```
