@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "next": ">=14",
+    "next": "16.1.1",
     "react": "*"
   },
   "peerDependencies": {
