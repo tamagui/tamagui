@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin-fully-specified",
-  "version": "2.0.0-1768869088163",
+  "version": "2.0.0-1768883422398",
   "source": "src/index.ts",
   "main": "permanent/cjs/index.js",
   "module": "permanent/esm/index.mjs",

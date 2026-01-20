@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/metro-plugin",
-  "version": "2.0.0-1768869088163",
+  "version": "2.0.0-1768883422398",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",

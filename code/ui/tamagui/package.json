@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "2.0.0-1768869088163",
+  "version": "2.0.0-1768883422398",
   "type": "module",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
