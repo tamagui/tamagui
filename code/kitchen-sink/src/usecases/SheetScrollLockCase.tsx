@@ -8,19 +8,25 @@ import { Button, H2, Paragraph, Sheet, YStack } from 'tamagui'
  */
 export function SheetScrollLockCase() {
   return (
-    <YStack minHeight="200vh" padding="$4" gap="$4">
+    <YStack
+      $platform-web={{
+        minHeight: '200vh',
+      }}
+      padding="$4"
+      gap="$4"
+    >
       <H2>Sheet Scroll Lock Test</H2>
       <Paragraph data-testid="scroll-indicator">
-        This page has a lot of content that makes the body scrollable.
-        When the sheet is open, the body should NOT scroll.
+        This page has a lot of content that makes the body scrollable. When the sheet is
+        open, the body should NOT scroll.
       </Paragraph>
 
       {/* some content before buttons to require scrolling */}
       {Array.from({ length: 8 }).map((_, i) => (
         <Paragraph key={`pre-${i}`}>
-          Scroll down to find the sheet buttons. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua.
+          Scroll down to find the sheet buttons. Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna
+          aliqua.
         </Paragraph>
       ))}
 
@@ -31,9 +37,9 @@ export function SheetScrollLockCase() {
       {Array.from({ length: 30 }).map((_, i) => (
         <Paragraph key={i} data-testid={`body-content-${i}`}>
           Body content paragraph {i + 1}. Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat.
+          adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna
+          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+          ut aliquip ex ea commodo consequat.
         </Paragraph>
       ))}
     </YStack>
@@ -73,17 +79,13 @@ function BasicScrollLockSheet() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="basic-scroll-lock-handle" />
-        <Sheet.Frame
-          data-testid="basic-scroll-lock-frame"
-          padding="$4"
-          gap="$4"
-        >
+        <Sheet.Frame data-testid="basic-scroll-lock-frame" padding="$4" gap="$4">
           <Paragraph data-testid="basic-scroll-lock-snap-indicator">
             Current snap point: {position}
           </Paragraph>
           <Paragraph>
-            Drag the handle to test scroll lock. The body behind this sheet
-            should NOT scroll while dragging.
+            Drag the handle to test scroll lock. The body behind this sheet should NOT
+            scroll while dragging.
           </Paragraph>
           <YStack flex={1} justifyContent="center" alignItems="center">
             <Paragraph opacity={0.5}>Sheet content area</Paragraph>
@@ -132,10 +134,7 @@ function SheetWithScrollView() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="scrollview-sheet-handle" />
-        <Sheet.Frame
-          data-testid="scrollview-sheet-frame"
-          padding="$4"
-        >
+        <Sheet.Frame data-testid="scrollview-sheet-frame" padding="$4">
           <Paragraph data-testid="scrollview-sheet-snap-indicator">
             Current snap point: {position}
           </Paragraph>
@@ -145,14 +144,14 @@ function SheetWithScrollView() {
                 This content is inside Sheet.ScrollView.
               </Paragraph>
               <Paragraph>
-                When scrolled to top and pulling down, the sheet should drag.
-                When there's scroll content above, the content should scroll.
+                When scrolled to top and pulling down, the sheet should drag. When there's
+                scroll content above, the content should scroll.
               </Paragraph>
               {Array.from({ length: 20 }).map((_, i) => (
                 <Paragraph key={i} data-testid={`scrollview-content-${i}`}>
-                  ScrollView paragraph {i + 1}. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua.
+                  ScrollView paragraph {i + 1}. Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+                  magna aliqua.
                 </Paragraph>
               ))}
               <Button data-testid="scrollview-sheet-close" onPress={() => setOpen(false)}>
