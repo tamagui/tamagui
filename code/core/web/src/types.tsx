@@ -2176,7 +2176,7 @@ export interface StackStyleBase
     ExtendedBaseProps {}
 
 export interface TextStylePropsBase
-  extends Omit<RNTextStyle, keyof ExtendedBaseProps>,
+  extends Omit<RNTextStyle, keyof ExtendedBaseProps | 'fontVariant'>,
     ExtendedBaseProps {
   ellipse?: boolean
   textDecorationDistance?: number
@@ -2185,6 +2185,10 @@ export interface TextStylePropsBase
   wordWrap?: Properties['wordWrap']
   /** @deprecated use verticalAlign instead */
   textAlignVertical?: RNTextStyle['textAlignVertical']
+  /**
+   * Font variant - accepts RN FontVariant[] or string[] for easier typing in variants
+   */
+  fontVariant?: RNTextStyle['fontVariant'] | string[]
 }
 
 //
