@@ -74,7 +74,7 @@ export function SelectAndroidOnPress() {
         </Adapt>
 
         <Select.Content zIndex={200000}>
-          <Select.Viewport miw={200}>
+          <Select.Viewport minWidth={200}>
             <Select.Group>
               <Select.Label>Fruits</Select.Label>
               {items.map((item, i) => (
