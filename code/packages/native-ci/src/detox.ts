@@ -67,6 +67,8 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
     options.recordLogs,
     '--retries',
     String(options.retries),
+    // force jest to exit after tests complete (prevents hanging on open handles)
+    '--forceExit',
   ]
 
   if (options.headless) {
