@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "1.144.2",
+  "version": "1.144.3",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "type": "module",
