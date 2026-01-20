@@ -33,8 +33,8 @@
   },
   "dependencies": {
     "@tamagui/animation-helpers": "workspace:*",
-    "@tamagui/core": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
+    "@tamagui/web": "workspace:*",
     "motion": "^12.23.26"
   },
   "devDependencies": {

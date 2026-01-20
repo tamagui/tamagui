@@ -13,7 +13,7 @@ import {
   useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
-} from '@tamagui/core'
+} from '@tamagui/web'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimationOptions,

@@ -7025,8 +7025,8 @@ __metadata:
   dependencies:
     "@tamagui/animation-helpers": "workspace:*"
     "@tamagui/build": "workspace:*"
-    "@tamagui/core": "workspace:*"
     "@tamagui/use-presence": "workspace:*"
+    "@tamagui/web": "workspace:*"
     motion: "npm:^12.23.26"
     react: "npm:*"
   peerDependencies:

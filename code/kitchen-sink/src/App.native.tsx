@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import { setupNativePortal } from '@tamagui/portal/setup'
+import { setupNativePortal } from '@tamagui/portal/setup-native'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import React from 'react'
