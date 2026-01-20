@@ -58,7 +58,7 @@ export function SelectAndroidOnPress() {
         </Select.Trigger>
 
         <Adapt when="maxMd" platform="touch">
-          <Sheet modal dismissOnSnapToBottom animation="medium">
+          <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Frame>
               <Sheet.ScrollView>
                 <Adapt.Contents />
@@ -66,7 +66,7 @@ export function SelectAndroidOnPress() {
             </Sheet.Frame>
             <Sheet.Overlay
               bg="$shadowColor"
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
