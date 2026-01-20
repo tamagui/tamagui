@@ -6,7 +6,7 @@ component: Portal
 package: portal
 ---
 
-Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet), [Dialog](/docs/components/dialog), [Popover](/docs/components/popover), [Select](/docs/components/select), [Tooltip](/docs/components/tooltip), and [Toast](/docs/components/toast).
+Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet), [Dialog](/docs/components/dialog), [Popover](/docs/components/popover), [Select](/docs/components/select), and [Toast](/docs/components/toast).
 
 ## Native Portal Setup (Recommended)
 
@@ -105,14 +105,6 @@ const myValue = useContext(MyContext)
 ```
 
 This is more verbose and error-prone as you need to remember to re-propagate every context you use.
-
-## Trade-offs
-
-| Approach | Pros | Cons |
-|----------|------|------|
-| Native Portal (setupNativePortal) | Zero config after setup, works automatically | Requires react-native-teleport dependency |
-| Component Scoping | Best performance, no portal on native | Different code structure, not available for all components |
-| Manual Re-propagation | No dependencies | Verbose, easy to miss contexts |
 
 ## Technical Details
 
