@@ -2,7 +2,6 @@ import type { ExtraSteps } from './steps/types'
 
 import chalk from 'chalk'
 
-import expoRouter from './steps/expo-router'
 import starterFree from './steps/starter-free'
 import takeoutSteps from './steps/takeout'
 
@@ -16,16 +15,16 @@ export const templates: Array<{
   extraSteps?: ExtraSteps
 }> = [
   {
-    title: `Free - Expo + Next in a production ready monorepo`,
-    value: 'starter-free',
+    title: `${chalk.bold.underline(
+      `🥡 ${chalk.magenta('Takeout')} ${chalk.green('Free')}`
+    )} - Full stack starter: https://tamagui.dev/takeout`,
+    value: 'takeout-free',
     type: 'free',
     hidden: false,
     packageManager: 'yarn',
     repo: {
-      url:
-        process.env.STARTER_FREE_REPO_SOURCE ||
-        `https://github.com/tamagui/starter-free.git`,
-      sshFallback: `git@github.com:tamagui/starter-free.git`,
+      url: `https://github.com/tamagui/takeout-free`,
+      sshFallback: `git@github.com:tamagui/takeout-free.git`,
       dir: [],
       branch: 'main',
     },
@@ -34,9 +33,26 @@ export const templates: Array<{
 
   {
     title: `${chalk.bold.underline(
-      `🥡 ${chalk.magenta('Take')}${chalk.red('out')}`
-    )} - Supported stack with more to start: https://tamagui.dev/takeout`,
-    value: `takeout-starter`,
+      `🥡 ${chalk.magenta('Takeout')} ${chalk.red('Pro')}`
+    )} - Full featured starter: https://tamagui.dev/takeout`,
+    value: `takeout-pro`,
+    type: 'premium',
+    packageManager: 'yarn',
+    hidden: false,
+    repo: {
+      url: `https://github.com/tamagui/takeout2`,
+      sshFallback: `git@github.com:tamagui/takeout2.git`,
+      dir: [],
+      branch: 'main',
+    },
+    extraSteps: takeoutSteps,
+  },
+
+  {
+    title: `${chalk.bold.underline(
+      `🥡 ${chalk.magenta('Takeout')} ${chalk.yellow('Pro Classic')}`
+    )} - Original Pro starter: https://tamagui.dev/takeout`,
+    value: `takeout-pro-classic`,
     type: 'premium',
     packageManager: 'yarn',
     hidden: false,
@@ -50,17 +66,19 @@ export const templates: Array<{
   },
 
   {
-    title: `Expo Router - Expo Router starter with Tamagui`,
-    value: 'expo-router',
-    type: 'included-in-monorepo',
+    title: `Next + Expo - Production ready monorepo`,
+    value: 'starter-free',
+    type: 'free',
     hidden: false,
     packageManager: 'yarn',
     repo: {
-      url: process.env.TAMAGUI_REPO_SOURCE || `https://github.com/tamagui/tamagui.git`,
-      sshFallback: `git@github.com:tamagui/tamagui.git`,
-      dir: [`code`, `starters`, `expo-router`],
+      url:
+        process.env.STARTER_FREE_REPO_SOURCE ||
+        `https://github.com/tamagui/starter-free.git`,
+      sshFallback: `git@github.com:tamagui/starter-free.git`,
+      dir: [],
       branch: 'main',
     },
-    extraSteps: expoRouter,
+    extraSteps: starterFree,
   },
 ]
