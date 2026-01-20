@@ -311,11 +311,11 @@ internals - but for Tamagui-first apps, it's a nice optimization.
 
 #### Component Scoping
 
-Dialog, Popover, and Tooltip now support a `scope` prop that lets you mount a
-single instance at your app's root while placing triggers anywhere in your tree.
-This is a significant performance win - in testing with large apps, we found it
-greatly improved UX by eliminating the overhead of mounting full overlay
-components inline.
+Dialog, Popover, Sheet, and Tooltip now support a `scope` prop that lets you
+mount a single instance at your app's root while placing triggers anywhere in
+your tree. This is a significant performance win - in testing with large apps,
+we found it greatly improved UX by eliminating the overhead of mounting full
+overlay components inline.
 
 Instead of each Tooltip or Popover in a list rendering its own portal, content,
 and animation logic, you mount one instance at the root and scatter lightweight
@@ -323,16 +323,21 @@ triggers throughout your app. The triggers are just simple components that
 communicate with the shared instance via context.
 
 ```tsx
-// _layout.tsx - mount once at root
-<Tooltip scope="app">
-  <Tooltip.Content>
-    <Tooltip.Arrow />
-  </Tooltip.Content>
-  {children}
-</Tooltip>
+// _layout.tsx - mount once at root with your providers
+<TamaguiProvider>
+  <Tooltip scope="global">
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+      <Paragraph>{/* label set by trigger */}</Paragraph>
+    </Tooltip.Content>
 
-// anywhere else - just the trigger
-<Tooltip.Trigger scope="app" aria-label="Settings">
+    {/* rest of your app */}
+    <Slot />
+  </Tooltip>
+</TamaguiProvider>
+
+// anywhere in your app - just the trigger
+<Tooltip.Trigger scope="global" aria-label="Settings">
   <Button icon={Settings} />
 </Tooltip.Trigger>
 ```
@@ -340,6 +345,11 @@ communicate with the shared instance via context.
 This pattern is especially valuable for data-heavy views like tables, lists, or
 dashboards where you might have dozens or hundreds of interactive elements that
 need tooltips or popovers.
+
+Scoping also solves React context issues with portals - since the content lives
+at the root inside your providers, all context is available without needing to
+re-propagate it. For Sheet in particular, using scoping avoids needing a portal
+entirely on native.
 
 #### Colors
 

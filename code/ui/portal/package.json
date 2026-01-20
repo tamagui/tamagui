@@ -35,6 +35,18 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./native-portal": {
+      "react-native": {
+        "types": "./types/native-portal.d.ts",
+        "module": "./dist/esm/native-portal.js",
+        "import": "./dist/esm/native-portal.js",
+        "require": "./dist/cjs/native-portal.js"
+      },
+      "types": "./types/native-portal.d.ts",
+      "module": "./dist/esm/native-portal.mjs",
+      "import": "./dist/esm/native-portal.mjs",
+      "require": "./dist/cjs/native-portal.cjs"
     }
   },
   "dependencies": {
