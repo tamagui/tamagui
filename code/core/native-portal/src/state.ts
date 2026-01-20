@@ -12,3 +12,4 @@ export function setNativePortalState(newState: NativePortalState) {
 export function getNativePortalState(): NativePortalState {
   return state
 }
+// retrigger ci
