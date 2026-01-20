@@ -1,5 +1,7 @@
 - accept type not looking right?
 
+- Sheet scope prop (like Dialog/Popover/Tooltip have)
+
 ---
 
 AFTER v2 RC (nice to haves):

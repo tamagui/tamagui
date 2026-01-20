@@ -16,24 +16,31 @@ There are two approaches to handle this:
 
 ### 1. Use Component Scoping (Recommended)
 
-For components like Dialog, Popover, Sheet, and Tooltip, you can use the `scope` prop to hoist a single instance to your app root while placing triggers anywhere. This avoids context issues entirely since the content lives at the root:
+For components like Dialog, Popover, and Tooltip, you can use the `scope` prop to hoist a single instance to your app root while placing triggers anywhere. This avoids context issues entirely since the content lives at the root inside your providers:
 
 ```tsx
 // _layout.tsx - mount once at root with all your providers
-<Tooltip scope="app">
-  <Tooltip.Content>
-    <Tooltip.Arrow />
-  </Tooltip.Content>
-  {children}
-</Tooltip>
+<TamaguiProvider>
+  <Tooltip scope="global">
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+      <Paragraph>{/* label set by trigger */}</Paragraph>
+    </Tooltip.Content>
+
+    {/* rest of your app */}
+    <Slot />
+  </Tooltip>
+</TamaguiProvider>
 
 // anywhere in your app - just the trigger
-<Tooltip.Trigger scope="app" aria-label="Settings">
+<Tooltip.Trigger scope="global" aria-label="Settings">
   <Button icon={Settings} />
 </Tooltip.Trigger>
 ```
 
-This pattern is also a performance win for lists or tables with many interactive elements.
+This pattern is also a performance win for lists or tables with many interactive elements, and avoids needing portals entirely on native.
+
+For Sheet, scoping isn't yet available, but you can achieve a similar pattern by mounting a single Sheet at your app root and controlling it via context or a state emitter. This avoids portal context issues on native.
 
 ### 2. Re-propagate Context
 
