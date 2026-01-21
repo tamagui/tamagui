@@ -1,4 +1,4 @@
-import { Button, Paragraph, Tooltip, TooltipGroup, XStack, YStack, Text, Square } from 'tamagui'
+import { Button, Paragraph, Tooltip, TooltipGroup, XStack, YStack, SizableText, Square } from 'tamagui'
 import { useState, useEffect, useRef } from 'react'
 
 /**
@@ -113,10 +113,10 @@ export function TooltipPositionJumpCase() {
 
   return (
     <YStack flex={1} gap="$4" p="$4" bg="$background">
-      <Text fontWeight="bold">Tooltip Position Jump Test</Text>
-      <Text size="$2" color="$gray11">
+      <SizableText fontWeight="bold">Tooltip Position Jump Test</SizableText>
+      <SizableText size="$2" color="$gray11">
         Rapidly hover between buttons. Watch for position jumps.
-      </Text>
+      </SizableText>
 
       {/* row of tooltips similar to PromoLinksRow */}
       <TooltipGroup delay={{ open: 0, close: 100 }} timeoutMs={300}>
@@ -151,22 +151,22 @@ export function TooltipPositionJumpCase() {
       </TooltipGroup>
 
       {/* stats panel */}
-      <YStack gap="$2" p="$3" bg="$gray3" br="$3">
+      <YStack gap="$2" p="$3" bg="$gray3" borderRadius="$3">
         <XStack gap="$4">
-          <Text size="$2">Hover count: <Text fontWeight="bold" data-testid="hover-count">{hoverCount}</Text></Text>
-          <Text size="$2">Jumps detected: <Text fontWeight="bold" color={jumps.length > 0 ? '$red10' : '$green10'} data-testid="jump-count">{jumps.length}</Text></Text>
+          <SizableText size="$2">Hover count: <SizableText fontWeight="bold" data-testid="hover-count">{hoverCount}</SizableText></SizableText>
+          <SizableText size="$2">Jumps detected: <SizableText fontWeight="bold" color={jumps.length > 0 ? '$red10' : '$green10'} data-testid="jump-count">{jumps.length}</SizableText></SizableText>
         </XStack>
 
         {jumps.length > 0 && (
           <YStack gap="$1" mt="$2">
-            <Text size="$1" fontWeight="bold">Jump log:</Text>
+            <SizableText size="$1" fontWeight="bold">Jump log:</SizableText>
             {jumps.map((jump, i) => (
-              <Text key={i} size="$1" fontFamily="$mono" data-testid={`jump-log-${i}`}>
+              <SizableText key={i} size="$1" fontFamily="$mono" data-testid={`jump-log-${i}`}>
                 {jump.isJumpToOrigin ? '⚠️ ORIGIN ' : '⚡ '}
                 ({jump.from.x.toFixed(0)},{jump.from.y.toFixed(0)}) →
                 ({jump.to.x.toFixed(0)},{jump.to.y.toFixed(0)})
                 Δ({jump.dx.toFixed(0)},{jump.dy.toFixed(0)})
-              </Text>
+              </SizableText>
             ))}
           </YStack>
         )}
@@ -174,7 +174,7 @@ export function TooltipPositionJumpCase() {
 
       {/* additional test: rapid show/hide same tooltip */}
       <YStack gap="$2" mt="$4">
-        <Text fontWeight="bold">Single Tooltip Rapid Toggle</Text>
+        <SizableText fontWeight="bold">Single Tooltip Rapid Toggle</SizableText>
         <Tooltip placement="right" restMs={0} delay={0}>
           <Tooltip.Trigger data-testid="tooltip-jump-single-trigger">
             <Button>Hover rapidly on/off</Button>

@@ -289,7 +289,7 @@ export const AccountView = () => {
         flexDirection="column"
         size="$6"
       >
-        <Tabs.List disablePassBorderRadius>
+        <Tabs.List>
           <YStack width={'33.3333%'} flex={1}>
             <Tab isActive={currentTab === 'plan'} value="plan">
               Plan
