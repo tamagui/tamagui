@@ -29,7 +29,7 @@ export function FormsDemo(props: { size: SizeTokens }) {
       <H4>{status[0].toUpperCase() + status.slice(1)}</H4>
 
       <Form.Trigger asChild disabled={status !== 'off'}>
-        <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>
+        <Button theme="surface3" icon={status === 'submitting' ? () => <Spinner /> : undefined}>
           Submit
         </Button>
       </Form.Trigger>
