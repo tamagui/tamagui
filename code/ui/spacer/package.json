@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/spacer",
-  "version": "2.0.0-1768976374543",
+  "version": "2.0.0-1768976745317",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

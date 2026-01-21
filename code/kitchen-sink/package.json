@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "2.0.0-1768976374543",
+  "version": "2.0.0-1768976745317",
   "private": true,
   "main": "index.js",
   "scripts": {
