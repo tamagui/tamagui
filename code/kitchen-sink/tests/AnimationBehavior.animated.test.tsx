@@ -69,9 +69,9 @@ function isIntermediate(value: number, start: number, end: number, tolerance = T
 
 test.describe('Animation Behavior', () => {
   test.beforeEach(async ({ page }) => {
-    // Skip native and reanimated drivers - they have issues finding elements on web
+    // Skip native driver - it has issues with data-testid attributes on web
     const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native' || driver === 'reanimated', 'native/reanimated drivers have element issues on web')
+    test.skip(driver === 'native', 'native driver has element detection issues on web')
 
     await setupPage(page, {
       name: 'AnimationComprehensiveCase',
