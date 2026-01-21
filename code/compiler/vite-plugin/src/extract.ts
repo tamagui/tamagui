@@ -144,7 +144,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         return
       }
 
-      if (tamaguiOptions?.disableServerOptimization && isNotClient(this.environment)) {
+      if (isNotClient(this.environment)) {
         return
       }
 
@@ -164,7 +164,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
           return
         }
 
-        if (tamaguiOptions?.disableServerOptimization && isNotClient(this.environment)) {
+        if (isNotClient(this.environment)) {
           return
         }
 

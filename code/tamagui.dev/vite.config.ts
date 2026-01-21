@@ -176,10 +176,6 @@ export default {
     noExternal: true,
   },
 
-  build: {
-    cssTarget: 'safari15',
-  },
-
   plugins: [
     // Plugin to stub bento component imports when bento repo is not available
     !hasBento && {
