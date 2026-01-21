@@ -14,18 +14,8 @@ export function ProgressDemo() {
           Progress: {progress}
         </Paragraph>
 
-        <Progress key={key} theme="surface2" value={progress}>
-          <Progress.Indicator
-            backgroundColor="$color"
-            transition={[
-              'quicker',
-              {
-                transform: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-          />
+        <Progress key={key} value={progress}>
+          <Progress.Indicator transition="200ms" />
         </Progress>
       </YStack>
 
