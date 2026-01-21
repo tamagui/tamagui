@@ -36,14 +36,6 @@ test(`button + focusVisibleStyle`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  // If focus-visible is supported and applied, expect 2px
-  // Otherwise, this might be a browser/environment issue
-  if (hasFocusVisible) {
-    expect(styles.borderWidth).toBe(`2px`)
-  } else {
-    // Focus-visible not applied, might need different approach
-    console.warn(':focus-visible pseudo-class not applied in test environment')
-    // For now, skip the assertion if focus-visible isn't working
-    test.skip()
-  }
+  expect(hasFocusVisible).toBe(true)
+  expect(styles.borderWidth).toBe(`2px`)
 })
