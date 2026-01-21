@@ -184,6 +184,7 @@ export function AnimationComprehensiveCase() {
       <Scenario38_PerPropertyWithTransform />
       <Scenario39_ObjectFormatPerProperty />
       <Scenario40_ObjectFormatNoDefault />
+      <Scenario41_PerPropertyWithDelay />
     </YStack>
   )
 }
@@ -1226,6 +1227,37 @@ function Scenario40_ObjectFormatNoDefault() {
         testID="scenario-40-target" data-testid="scenario-40-target"
       />
       <Paragraph size="$1">only opacity animates (500ms)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 41: Per-Property Config with Delay
+// Tests: transition={['quick', { delay: 300, opacity: '500ms' }]}
+// Delay should apply to all properties, opacity uses custom timing
+// ============================================================================
+function Scenario41_PerPropertyWithDelay() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('41-per-prop-delay', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-41-trigger" data-testid="scenario-41-trigger">
+        41: PerProp+Delay
+      </Button>
+      <Square
+        ref={ref as any}
+        // delay + per-property: 300ms delay, then opacity=500ms, scale=quick
+        transition={['quick', { delay: 300, opacity: '500ms' }] as any}
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        testID="scenario-41-target" data-testid="scenario-41-target"
+      />
+      <Paragraph size="$1">300ms delay, opacity=500ms, scale=quick</Paragraph>
     </XStack>
   )
 }

@@ -290,6 +290,9 @@ test.describe('Animation Behavior', () => {
     const OPACITY_END = 0.5
     const SCALE_END = 1.3
 
+    // scroll to the element first (it's at the bottom of the page)
+    await page.getByTestId('scenario-38-trigger').scrollIntoViewIfNeeded()
+
     // initial state
     const initialOpacity = await getOpacity(page, 'scenario-38-target')
     const initialScale = await getScale(page, 'scenario-38-target')
@@ -354,5 +357,31 @@ test.describe('Animation Behavior', () => {
     await page.waitForTimeout(800)
     const endOpacity = await getOpacity(page, 'scenario-40-target')
     expect(endOpacity, 'Opacity should animate to end').toBeCloseTo(OPACITY_END, 1)
+  })
+
+  test('per-property config with delay: both delay and per-property work together', async ({ page }) => {
+    // transition={['quick', { delay: 300, opacity: '500ms' }]}
+    // 300ms delay, then opacity=500ms, scale=quick
+    const OPACITY_START = 1, OPACITY_END = 0.5
+    const SCALE_END = 1.3
+
+    const initialOpacity = await getOpacity(page, 'scenario-41-target')
+    expect(initialOpacity, 'Initial opacity').toBeCloseTo(OPACITY_START, 1)
+
+    await page.getByTestId('scenario-41-trigger').click()
+
+    // at 150ms (before delay ends), values should still be at start
+    await page.waitForTimeout(150)
+    const duringDelay = await getOpacity(page, 'scenario-41-target')
+    expect(duringDelay, 'During delay, opacity should be near start').toBeCloseTo(OPACITY_START, 0)
+
+    // wait for delay + animations to complete (300ms delay + 500ms opacity + buffer)
+    await page.waitForTimeout(1000)
+
+    const endOpacity = await getOpacity(page, 'scenario-41-target')
+    const endScale = await getScale(page, 'scenario-41-target')
+
+    expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 1)
+    expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 })
