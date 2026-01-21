@@ -52,7 +52,10 @@ describe('create-tamagui CLI', () => {
       // Simulate user input
       await writeWithDelay(`${projectName}`, 300)
       await writeWithDelay('\r', 300) // Enter
-      // Select first template (Takeout Free) - just press enter
+      // Select starter-free template (4th option) - arrow down 3 times then enter
+      await writeWithDelay('\x1B[B', 300) // Arrow down
+      await writeWithDelay('\x1B[B', 300) // Arrow down
+      await writeWithDelay('\x1B[B', 300) // Arrow down
       await writeWithDelay('\r', 500) // Enter
 
       // Wait for the process to finish
@@ -85,8 +88,8 @@ describe('create-tamagui CLI', () => {
     const essentialFiles = [
       'package.json',
       'tsconfig.json',
-      'app.json',
-      'tamagui.config.ts',
+      'apps/expo/app.json',
+      'packages/config/src/tamagui.config.ts',
     ]
 
     essentialFiles.forEach((file) => {
@@ -99,7 +102,7 @@ describe('create-tamagui CLI', () => {
   })
 
   it('should display the selected template', () => {
-    expect(output).toContain('Takeout Free')
+    expect(output).toContain('Next + Expo')
   })
 
   it('should provide instructions to visit the project', () => {
@@ -195,7 +198,7 @@ describe('create-tamagui CLI with --template flag', () => {
     const essentialFiles = [
       'package.json',
       'tsconfig.json',
-      'tamagui.config.ts',
+      'packages/config/src/tamagui.config.ts',
     ]
 
     essentialFiles.forEach((file) => {

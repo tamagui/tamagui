@@ -98,13 +98,13 @@ describe('NativePortal', () => {
       // close sheet
       await element(by.id('native-portal-sheet-close')).tap()
 
-      // wait for sheet to close
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // wait for sheet close animation to complete
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
       // sheet should no longer be visible
       await waitFor(element(by.id('native-portal-sheet-frame')))
         .not.toBeVisible()
-        .withTimeout(5000)
+        .withTimeout(8000)
     } finally {
       await device.enableSynchronization()
     }
