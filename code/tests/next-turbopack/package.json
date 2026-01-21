@@ -1,13 +1,13 @@
 {
   "name": "test-next-turbopack",
   "private": true,
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "scripts": {
     "dev": "next dev --turbopack --port 3456",
     "next-build": "next build",
     "start": "next start --port 3456",
-    "test": "bun test:unit && bun test:integration",
-    "test:web": "bun test:unit && bun test:integration",
+    "test": "yarn test:unit && yarn test:integration",
+    "test:web": "yarn test:unit && yarn test:integration",
     "test:unit": "vitest run",
     "test:integration": "playwright test",
     "test:clean": "git checkout src/ public/ && git clean -fd src/"
@@ -17,8 +17,8 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
     "next": "16.1.1",
-    "react": ">=19",
-    "react-dom": ">=19",
+    "react": "*",
+    "react-dom": "*",
     "react-native-web": "^0.21.0"
   },
   "devDependencies": {

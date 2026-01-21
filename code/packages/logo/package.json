@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "type": "module",
@@ -48,10 +48,10 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "*"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

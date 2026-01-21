@@ -20,7 +20,6 @@ const VersionBadge = styled(SizableText, {
   rounded: '$3',
   fontSize: '$2',
   fontWeight: '600',
-  letterSpacing: 1,
   borderWidth: 0.5,
 
   variants: {
@@ -28,17 +27,17 @@ const VersionBadge = styled(SizableText, {
       new: {
         bg: '$green2',
         color: '$green11',
-        borderColor: '$green5',
+        borderColor: '$green4',
       },
       free: {
         bg: '$blue2',
         color: '$blue11',
-        borderColor: '$blue5',
+        borderColor: '$blue4',
       },
       legacy: {
         bg: '$gray2',
         color: '$gray11',
-        borderColor: '$gray5',
+        borderColor: '$gray4',
       },
     },
   } as const,
@@ -171,7 +170,7 @@ export function VersionComparison() {
             </YStack>
             <XStack flex={1} justify="center" items="center" gap="$2">
               <SizableText
-                size="$2"
+                size="$4"
                 fontWeight="600"
                 color="$yellow10"
                 fontFamily="$mono"
@@ -183,7 +182,7 @@ export function VersionComparison() {
               </Theme>
             </XStack>
             <XStack flex={1} justify="center" items="center" gap="$2">
-              <SizableText size="$2" fontWeight="600" color="$green10" fontFamily="$mono">
+              <SizableText size="$4" fontWeight="600" color="$green10" fontFamily="$mono">
                 v2
               </SizableText>
               <Theme name="green">
@@ -191,7 +190,7 @@ export function VersionComparison() {
               </Theme>
             </XStack>
             <XStack flex={1} justify="center" items="center" gap="$2">
-              <SizableText size="$2" fontWeight="600" color="$blue10" fontFamily="$mono">
+              <SizableText size="$4" fontWeight="600" color="$blue10" fontFamily="$mono">
                 v2-free
               </SizableText>
               <Theme name="blue">

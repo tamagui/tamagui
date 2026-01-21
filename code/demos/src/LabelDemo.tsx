@@ -14,8 +14,8 @@ export function LabelDemo() {
         <Label width={90} htmlFor="notify">
           Notifications
         </Label>
-        <Switch id="notify">
-          <Switch.Thumb transition="quickest" />
+        <Switch theme="surface2" id="notify">
+          <Switch.Thumb theme="accent" transition="quickest" />
         </Switch>
       </XStack>
     </YStack>

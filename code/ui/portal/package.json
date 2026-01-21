@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/portal",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -22,6 +22,16 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "typesVersions": {
+    "*": {
+      "setup-native": [
+        "./types/setup-native.d.ts"
+      ],
+      "native-portal": [
+        "./types/native-portal.d.ts"
+      ]
+    }
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -36,22 +46,23 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
-    "./native-portal": {
+    "./setup-native": {
       "react-native": {
-        "types": "./types/native-portal.d.ts",
-        "module": "./dist/esm/native-portal.js",
-        "import": "./dist/esm/native-portal.js",
-        "require": "./dist/cjs/native-portal.js"
+        "types": "./types/setup-native.d.ts",
+        "module": "./dist/esm/setup-native.js",
+        "import": "./dist/esm/setup-native.js",
+        "require": "./dist/cjs/setup-native.js"
       },
-      "types": "./types/native-portal.d.ts",
-      "module": "./dist/esm/native-portal.mjs",
-      "import": "./dist/esm/native-portal.mjs",
-      "require": "./dist/cjs/native-portal.cjs"
+      "types": "./types/setup-native.d.ts",
+      "module": "./dist/esm/setup-native.mjs",
+      "import": "./dist/esm/setup-native.mjs",
+      "require": "./dist/cjs/setup-native.cjs"
     }
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/native-portal": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/web": "workspace:*",
@@ -59,16 +70,16 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
-    "react-dom": ">=19",
+    "react": "*",
+    "react-dom": "*",
     "react-native": "0.81.5"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-dom": ">=19",
+    "react": "*",
+    "react-dom": "*",
     "react-native": "*"
   }
 }

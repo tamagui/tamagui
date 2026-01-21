@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-event",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "*"
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*"
@@ -45,6 +45,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": "*"
   }
 }

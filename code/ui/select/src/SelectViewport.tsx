@@ -2,7 +2,7 @@ import { FloatingFocusManager } from '@floating-ui/react'
 import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import { VIEWPORT_NAME } from './constants'
@@ -12,7 +12,7 @@ import {
   useSelectItemParentContext,
 } from './context'
 import type { SelectViewportExtraProps } from './types'
-import { USE_NATIVE_PORTAL } from '@tamagui/portal'
+import { needsPortalRepropagation } from '@tamagui/portal'
 import { useId } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ export const SelectViewportFrame = styled(YStack, {
   },
 })
 
-const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL)
+const needsRepropagation = needsPortalRepropagation()
 
 export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraProps>(
   function SelectViewport(props, forwardedRef) {

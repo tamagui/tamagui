@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/spacer",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -39,14 +39,14 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
+    "react": "*",
     "react-native": "0.81.5"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "react": ">=19",
+    "react": "*",
     "react-native": "*"
   }
 }

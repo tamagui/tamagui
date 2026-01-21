@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "sideEffects": true,
   "source": "src/index.ts",
@@ -45,12 +45,12 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": "*"
   }
 }

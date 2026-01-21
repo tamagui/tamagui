@@ -15,25 +15,8 @@ import { interpolateColor, opacify } from './opacify'
 import { v5Templates } from './v5-templates'
 
 export const defaultComponentThemes = {
-  ListItem: { template: 'surface1' },
-  SelectItem: { template: 'surface1' },
-  SelectTrigger: { template: 'surface1' },
-  Card: { template: 'surface1' },
   Button: { template: 'surface3' },
-  Checkbox: { template: 'surface2' },
-  Switch: { template: 'surface2' },
-  SwitchThumb: { template: 'inverse' },
-  TooltipContent: { template: 'surface2' },
-  Progress: { template: 'surface1' },
-  RadioGroupItem: { template: 'surface2' },
-  TooltipArrow: { template: 'surface1' },
-  SliderTrackActive: { template: 'surface2' },
-  SliderTrack: { template: 'inverse' },
-  SliderThumb: { template: 'inverse' },
   Tooltip: { template: 'inverse' },
-  ProgressIndicator: { template: 'inverse' },
-  Input: { template: 'surface1' },
-  TextArea: { template: 'surface1' },
 } as const
 
 /** Generate named colors from a palette: ['#fff', ...] -> { name1: '#fff', name2: ... } */
@@ -53,9 +36,9 @@ const darkPalette = [
   '#444',
   '#666',
   '#777',
-  '#999',
-  '#bbb',
-  '#ddd',
+  '#858585',
+  '#aaa',
+  '#ccc',
   '#ffffff',
 ]
 
@@ -148,12 +131,11 @@ export const defaultChildrenThemes = {
 /** Default grandchildren themes available in v5 */
 export const defaultGrandChildrenThemes = {
   accent: { template: 'inverse' },
-  // simplified and removed:
-  // alt1: { template: 'alt1' },
-  // alt2: { template: 'alt2' },
-  // surface1: { template: 'surface1' },
-  // surface2: { template: 'surface2' },
-  // surface3: { template: 'surface3' },
+  alt1: { template: 'alt1' },
+  alt2: { template: 'alt2' },
+  surface1: { template: 'surface1' },
+  surface2: { template: 'surface2' },
+  surface3: { template: 'surface3' },
 } satisfies Record<string, GrandChildrenThemeDefinition>
 
 /** Union of all color values from children themes (for light or dark) */
@@ -207,7 +189,9 @@ export type CreateV5ThemeOptions<
    * Pass undefined or omit to use defaultGrandChildrenThemes
    */
   grandChildrenThemes?: GrandChildren
-  /** Override component themes. Pass false to disable, or provide custom component themes. Defaults to defaultComponentThemes */
+  /**
+   * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+   */
   componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes']
 }
 

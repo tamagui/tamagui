@@ -2,7 +2,10 @@ const os = require('os')
 
 // ~2.5GB per simulator, leave 2GB for system overhead
 const totalMemGB = os.totalmem() / 1024 / 1024 / 1024
-const maxWorkers = Math.max(1, Math.floor((totalMemGB - 2) / 2.5))
+// force single worker in CI to avoid proper-lockfile ECOMPROMISED errors
+// see: https://github.com/wix/Detox/issues/4210
+const isCI = !!process.env.CI
+const maxWorkers = isCI ? 1 : Math.max(1, Math.floor((totalMemGB - 2) / 2.5))
 
 /** @type {Detox.DetoxConfig} */
 module.exports = {

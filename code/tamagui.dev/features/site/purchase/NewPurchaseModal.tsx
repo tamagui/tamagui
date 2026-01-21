@@ -1,6 +1,6 @@
 import type { StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons'
-import { lazy, startTransition, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   Button,
@@ -49,18 +49,6 @@ import { FaqTabContent } from './FaqTabContent'
 import { calculatePromoPrice } from './promoConfig'
 
 export const NewPurchaseModal = () => {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    startTransition(() => {
-      setMounted(true)
-    })
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
-
   return <PurchaseModalContents />
 }
 

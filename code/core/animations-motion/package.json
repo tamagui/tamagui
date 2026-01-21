@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-motion",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "source": "src/index.ts",
   "license": "MIT",
@@ -33,13 +33,13 @@
   },
   "dependencies": {
     "@tamagui/animation-helpers": "workspace:*",
-    "@tamagui/core": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
+    "@tamagui/web": "workspace:*",
     "motion": "^12.23.26"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "*"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -50,7 +50,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

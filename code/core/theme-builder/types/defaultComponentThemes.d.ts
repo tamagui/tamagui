@@ -1,3 +1,6 @@
+/**
+ * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+ */
 export declare const defaultComponentThemes: {
     ListItem: {
         template: string;

@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
@@ -85,6 +85,18 @@
       "module": "./dist/esm/linear-gradient.mjs",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs"
+    },
+    "./setup-native-portal": {
+      "react-native": {
+        "types": "./types/setup-native-portal.d.ts",
+        "module": "./dist/esm/setup-native-portal.js",
+        "import": "./dist/esm/setup-native-portal.js",
+        "require": "./dist/cjs/setup-native-portal.js"
+      },
+      "types": "./types/setup-native-portal.d.ts",
+      "module": "./dist/esm/setup-native-portal.mjs",
+      "import": "./dist/esm/setup-native-portal.mjs",
+      "require": "./dist/cjs/setup-native-portal.cjs"
     }
   },
   "dependencies": {
@@ -146,7 +158,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
+    "react": "*",
     "react-native": "0.81.5",
     "react-native-web": "^0.21.0"
   },
@@ -157,7 +169,7 @@
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": ">=19",
+    "react": "*",
     "react-native": "*"
   }
 }

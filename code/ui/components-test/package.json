@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/components-test",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "module": "dist/esm",
   "type": "module",
   "sideEffects": [
@@ -9,27 +9,21 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test:run": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts",
-    "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web bun test:run web.test",
-    "test:native": "TAMAGUI_TARGET=native bun test:run native.test",
-    "test": "bun test:native"
+    "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
+    "test": "yarn test:native"
   },
   "devDependencies": {
-    "@tamagui/button": "workspace:*",
-    "@tamagui/config-default": "workspace:*",
-    "@tamagui/core": "workspace:*",
-    "@tamagui/stacks": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "jsdom": "^25.0.1",
-    "react": ">=19",
-    "tamagui": "workspace:*",
+    "react": "*",
     "typescript": "~5.9.2",
     "vitest": "^4.0.4",
     "vitest-axe": "^0.1.0"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": "*"
   }
 }

@@ -9,6 +9,7 @@ export {
 } from './createThemes'
 
 export { defaultTemplates } from './defaultTemplates'
+/** @deprecated component themes are no longer recommended */
 export { defaultComponentThemes } from './defaultComponentThemes'
 
 export { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from './getThemeSuitePalettes'

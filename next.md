@@ -59,8 +59,11 @@ uniswap:
 
 # v3 cleanups
 
+- always dynamic optimize no need for special "components"
 - remove `usePropsAndStyle` from icon `themed` somehow / pattern for that
 - remove getToken + shift weirdness in general
+- react compiler on internals / concurrent friendly internals
+- eject from floating-ui if possible (its huge)
 
 ---
 

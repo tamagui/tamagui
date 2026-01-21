@@ -31,6 +31,11 @@ export declare function parseDetoxArgs(platform: Platform): {
  */
 export declare function buildDetoxArgs(options: DetoxRunnerOptions): string[];
 /**
+ * Reset Detox lock file to prevent ECOMPROMISED errors in CI
+ * See: https://github.com/wix/Detox/issues/4210
+ */
+export declare function resetDetoxLockFile(): Promise<void>;
+/**
  * Run Detox tests with the given options
  *
  * @returns Exit code from Detox

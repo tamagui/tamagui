@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tabs-headless",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
@@ -42,11 +42,11 @@
     "@tamagui/use-direction": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

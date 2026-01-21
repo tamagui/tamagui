@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "sideEffects": false,
   "description": "Utilities for icon packages",
@@ -40,12 +40,12 @@
     }
   },
   "peerDependencies": {
-    "react": ">=19",
+    "react": "*",
     "react-native-svg": ">=12"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
+    "react": "*",
     "react-native-svg": "15.12.1"
   }
 }

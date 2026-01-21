@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Paragraph, Progress, Slider, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, Progress, Slider, Theme, XStack, YStack } from 'tamagui'
 import { Play, RotateCcw } from '@tamagui/lucide-icons'
 
 export function ProgressDemo() {
@@ -13,8 +13,10 @@ export function ProgressDemo() {
         <Paragraph height={30} opacity={0.5}>
           Progress: {progress}
         </Paragraph>
-        <Progress key={key} value={progress} bg="$color5">
+
+        <Progress key={key} theme="surface2" value={progress}>
           <Progress.Indicator
+            backgroundColor="$color"
             transition={[
               'quicker',
               {
@@ -23,7 +25,6 @@ export function ProgressDemo() {
                 },
               },
             ]}
-            bg="$background"
           />
         </Progress>
       </YStack>
@@ -38,6 +39,7 @@ export function ProgressDemo() {
       >
         <Slider
           size="$2"
+          theme="surface2"
           width={130}
           value={slider}
           min={0}
@@ -51,7 +53,7 @@ export function ProgressDemo() {
           <Slider.Track borderWidth={1} borderColor="$color5">
             <Slider.TrackActive />
           </Slider.Track>
-          <Slider.Thumb circular index={0} />
+          <Slider.Thumb theme="accent" circular index={0} />
         </Slider>
 
         <Button

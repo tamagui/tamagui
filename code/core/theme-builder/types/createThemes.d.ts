@@ -47,6 +47,9 @@ export type CreateThemesProps<Accent extends BaseThemeDefinition<Extra> | undefi
     childrenThemes?: ChildrenThemes;
     grandChildrenThemes?: GrandChildrenThemes;
     templates?: Templates;
+    /**
+     * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+     */
     componentThemes?: ComponentThemes;
     getTheme?: (props: GetThemeProps) => GetThemeReturn;
 };
@@ -82,6 +85,7 @@ export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesB
     templates?: Templates;
     childrenThemes?: ChildrenThemes;
     grandChildrenThemes?: GrandChildrenThemes;
+    /** @deprecated component themes are no longer recommended */
     componentThemes?: ComponentThemes;
     extra?: Extra;
     accentExtra?: Extra;

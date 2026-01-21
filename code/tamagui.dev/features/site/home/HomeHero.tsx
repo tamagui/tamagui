@@ -10,7 +10,6 @@ import {
   Theme,
   TooltipSimple,
   VisuallyHidden,
-  XGroup,
   XStack,
   YStack,
   styled,
@@ -21,9 +20,8 @@ import { DiscordIcon } from '~/features/icons/DiscordIcon'
 import { TwitterIcon } from '~/features/icons/TwitterIcon'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 
-import { BentoButton } from '../BentoButton'
-import { TakeoutButton } from '../TakeoutButton'
 import { InstallInput } from './InstallInput'
+import { PromoLinksRow } from './PromoLinksRow'
 import { useHeroHovered } from './useHeroHovered'
 
 export function Hero() {
@@ -102,23 +100,7 @@ const HeroContents = memo(function HeroContents() {
           pb: '$4',
         }}
       >
-        <>
-          <XGroup elevation="$0.5" position="absolute" self="center" y={-80} rounded="$8">
-            <Link href="/takeout">
-              <XGroup.Item>
-                <TakeoutButton />
-              </XGroup.Item>
-            </Link>
-
-            <Theme name="green">
-              <Link href="/bento">
-                <XGroup.Item>
-                  <BentoButton />
-                </XGroup.Item>
-              </Link>
-            </Theme>
-          </XGroup>
-        </>
+        <PromoLinksRow />
 
         <YStack items="center" gap="$4">
           <H1

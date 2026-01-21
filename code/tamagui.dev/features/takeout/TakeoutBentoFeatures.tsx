@@ -183,7 +183,8 @@ export function TakeoutBentoFeatures() {
           Modern, robust, maintained
         </H2>
         <SubTitle maxW={680} text="center">
-          A complete startup stack for production apps, not a boilerplate.
+          We get it, starter kits are a dime a dozen. Takeout is built by industry
+          veterans, and extracted out of real-world large apps.
         </SubTitle>
       </YStack>
 

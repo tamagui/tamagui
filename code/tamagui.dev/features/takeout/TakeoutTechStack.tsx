@@ -175,14 +175,12 @@ export function TakeoutTechStack() {
           style={{ lineHeight: '1.2' }}
           $sm={{ fontSize: 40 }}
         >
-          A brand new{' '}
-          <ThemeTintAlt offset={-1}>
-            <HighlightText render="span">stack</HighlightText>
-          </ThemeTintAlt>
+          Designed for moving fast
         </H2>
         <SubTitle maxW={680} text="center">
-          Combining three libraries aimed at solving cross-platform in the best way
-          possible.
+          Vibe coding works best when you're building on a solid base. Takeout combines
+          three libraries that solve the hardest problems in cross-platform development
+          with a ton of AI agent harnessing.
         </SubTitle>
       </YStack>
 

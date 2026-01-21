@@ -59,6 +59,9 @@ export type CreateThemesProps<
   childrenThemes?: ChildrenThemes
   grandChildrenThemes?: GrandChildrenThemes
   templates?: Templates
+  /**
+   * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+   */
   componentThemes?: ComponentThemes
   getTheme?: (props: GetThemeProps) => GetThemeReturn
 }
@@ -277,6 +280,7 @@ export function createSimpleThemeBuilder<
   templates?: Templates
   childrenThemes?: ChildrenThemes
   grandChildrenThemes?: GrandChildrenThemes
+  /** @deprecated component themes are no longer recommended */
   componentThemes?: ComponentThemes
   extra?: Extra
   accentExtra?: Extra
@@ -350,18 +354,6 @@ export function createSimpleThemeBuilder<
       },
     })
 
-  if (childrenThemes) {
-    themeBuilder = themeBuilder.addChildThemes(childrenThemes, {
-      avoidNestingWithin: ['accent'],
-    }) as any
-  }
-
-  if (grandChildrenThemes) {
-    themeBuilder = themeBuilder.addChildThemes(grandChildrenThemes, {
-      avoidNestingWithin: ['accent'],
-    }) as any
-  }
-
   // Add top-level accent AFTER grandChildren
   // Avoid nesting within color children (blue, red, etc.) so grandChildren accent can handle those
   if (palettes.light_accent) {
@@ -381,11 +373,23 @@ export function createSimpleThemeBuilder<
             nonInheritedValues: accentExtra?.dark,
           },
         ],
-      },
-      {
-        avoidNestingWithin: Object.keys(childrenThemes || {}),
       }
+      // {
+      //   avoidNestingWithin: Object.keys(childrenThemes || {}),
+      // }
     ) as any
+  }
+
+  if (childrenThemes) {
+    themeBuilder = themeBuilder.addChildThemes(childrenThemes, {
+      avoidNestingWithin: ['accent'],
+    }) as any
+  }
+
+  if (grandChildrenThemes) {
+    themeBuilder = themeBuilder.addChildThemes(grandChildrenThemes, {
+      avoidNestingWithin: ['accent'],
+    }) as any
   }
 
   if (componentThemes) {

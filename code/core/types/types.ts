@@ -111,12 +111,6 @@ export interface TamaguiBuildOptions {
   disableInitialBuild?: boolean
 
   /**
-   * This can speed up dev builds by only optimizing the client side generated code,
-   * but can cause hydration mis-matches
-   */
-  disableServerOptimization?: boolean
-
-  /**
    * If you have a tamagui.build.ts file that describes your compiler setup, you can set it here
    */
   buildFile?: string

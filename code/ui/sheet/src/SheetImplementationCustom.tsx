@@ -16,7 +16,7 @@ import {
   useEvent,
   useThemeName,
 } from '@tamagui/core'
-import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
+import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
 import type {
   Animated,
@@ -112,12 +112,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
      * This is a hacky workaround for native:
      */
     const [isShowingInnerSheet, setIsShowingInnerSheet] = React.useState(false)
+    // when using Gorhom portal (no teleport), inner sheets need to hide parent
     const shouldHideParentSheet =
-      !isWeb &&
-      modal &&
-      isShowingInnerSheet &&
-      // if not using weird portal limitation we dont need to hide parent sheet
-      USE_NATIVE_PORTAL
+      !isWeb && modal && isShowingInnerSheet && needsPortalRepropagation()
 
     const sheetInsideSheet = React.useContext(SheetInsideSheetContext)
     const onInnerSheet = React.useCallback((hasChild: boolean) => {
@@ -577,7 +574,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       </LayoutMeasurementController>
     )
 
-    if (process.env.TAMAGUI_TARGET === 'native' && !USE_NATIVE_PORTAL) {
+    if (process.env.TAMAGUI_TARGET === 'native' && needsPortalRepropagation()) {
       // TODO alongside sheet scope="" need to pass scope here
       const adaptContext = useAdaptContext()
       contents = (

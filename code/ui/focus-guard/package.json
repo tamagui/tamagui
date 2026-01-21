@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-guard",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -25,11 +25,11 @@
     "@tamagui/use-event": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

@@ -1,0 +1,4 @@
+// re-export for convenience
+// usage: import { setupNativePortal } from 'tamagui/setup-native-portal'
+
+export { setupNativePortal } from '@tamagui/portal/setup-native'

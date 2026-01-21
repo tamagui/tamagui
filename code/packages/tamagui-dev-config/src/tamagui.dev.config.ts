@@ -21,7 +21,7 @@ const fonts = {
 // Use v5 config as base, but with tamagui.dev custom themes
 export const config = {
   ...defaultConfig,
-  themes,
+  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
   fonts,
   animations: {
     default: animationsMotion,

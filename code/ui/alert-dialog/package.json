@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/alert-dialog",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -57,14 +57,14 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
+    "react": "*",
     "react-native": "0.81.5"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "react": ">=19",
+    "react": "*",
     "react-native": "*"
   }
 }

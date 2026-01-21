@@ -1,5 +1,8 @@
 import type { SimpleThemesDefinition } from './createThemes'
 
+/**
+ * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+ */
 export const defaultComponentThemes = {
   ListItem: { template: 'surface1' },
   SelectItem: { template: 'surface1' },

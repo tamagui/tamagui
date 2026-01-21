@@ -1,12 +1,14 @@
 import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons'
-import { ListItem, Separator, XStack, YGroup } from 'tamagui'
+import { ListItem, Separator, Theme, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
   return (
-    <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
-      <ListItemDemo1 />
-      <ListItemDemo2 />
-    </XStack>
+    <Theme name="surface1">
+      <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
+        <ListItemDemo1 />
+        <ListItemDemo2 />
+      </XStack>
+    </Theme>
   )
 }
 

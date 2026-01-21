@@ -165,7 +165,7 @@ export const TakeoutFaqModal = () => {
                     You will see the full instructions after purchase. You can gain access
                     to the source code repository on GitHub, which allows you to install
                     the starter through the create-tamagui CLI. Simply run `yarn create
-                    tamagui --template=takeout-starter` and follow the steps.
+                    tamagui --template=takeout-pro` and follow the steps.
                   </Paragraph>
                 </YStack>
 

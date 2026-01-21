@@ -8,7 +8,7 @@ import {
 } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledContext,
@@ -25,7 +25,12 @@ import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { Portal, PortalItem, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
+import {
+  needsPortalRepropagation,
+  Portal,
+  PortalItem,
+  resolveViewZIndex,
+} from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { SheetController } from '@tamagui/sheet/controller'
 import type { YStackProps } from '@tamagui/stacks'
@@ -161,7 +166,7 @@ export const DialogPortalFrame = styled(YStack, {
   },
 })
 
-const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL)
+const needsRepropagation = needsPortalRepropagation()
 
 const DialogPortalItem = ({
   context,

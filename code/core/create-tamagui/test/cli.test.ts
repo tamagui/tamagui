@@ -52,9 +52,11 @@ describe('create-tamagui CLI', () => {
       // Simulate user input
       await writeWithDelay(`${projectName}`, 300)
       await writeWithDelay('\r', 300) // Enter
-      await writeWithDelay('\x1B\x5B\x42', 500) // Down arrow
-      await writeWithDelay('\x1B\x5B\x42', 500) // Down arrow
-      await writeWithDelay('\r', 300) // Enter
+      // Select starter-free template (4th option) - arrow down 3 times then enter
+      await writeWithDelay('\x1B[B', 300) // Arrow down
+      await writeWithDelay('\x1B[B', 300) // Arrow down
+      await writeWithDelay('\x1B[B', 300) // Arrow down
+      await writeWithDelay('\r', 500) // Enter
 
       // Wait for the process to finish
       await new Promise<void>((resolve, reject) => {
@@ -86,8 +88,8 @@ describe('create-tamagui CLI', () => {
     const essentialFiles = [
       'package.json',
       'tsconfig.json',
-      'app.json',
-      'tamagui.config.ts',
+      'apps/expo/app.json',
+      'packages/config/src/tamagui.config.ts',
     ]
 
     essentialFiles.forEach((file) => {
@@ -100,7 +102,7 @@ describe('create-tamagui CLI', () => {
   })
 
   it('should display the selected template', () => {
-    expect(output).toContain('Free - Expo + Next in a production ready monorepo')
+    expect(output).toContain('Next + Expo')
   })
 
   it('should provide instructions to visit the project', () => {
@@ -133,11 +135,11 @@ describe('create-tamagui CLI with --template flag', () => {
 
   beforeAll(async () => {
     tempDir = temporaryDirectory()
-    projectName = 'expo-router-project'
+    projectName = 'starter-free-project'
     const cliPath = path.join(__dirname, '../dist/index.cjs')
     projectPath = path.join(tempDir, projectName)
 
-    cli = spawn('node', [cliPath, '--template', 'expo-router'], {
+    cli = spawn('node', [cliPath, '--template', 'starter-free'], {
       cwd: tempDir,
       stdio: ['pipe', 'pipe', 'pipe'],
     })
@@ -184,22 +186,19 @@ describe('create-tamagui CLI with --template flag', () => {
     }
   })
 
-  it('should create the expo-router project directory', () => {
+  it('should create the project directory', () => {
     expect(fs.existsSync(projectPath)).toBe(true)
   })
 
   it('should skip the template picker step', () => {
-    expect(output).not.toContain('Select a template:')
-    expect(output).not.toContain('Free - Expo + Next in a production ready monorepo')
+    expect(output).not.toContain('Pick a template:')
   })
 
-  it('should create essential files for expo-router project', () => {
+  it('should create essential files for starter-free project', () => {
     const essentialFiles = [
       'package.json',
       'tsconfig.json',
-      'app.json',
-      'tamagui.config.ts',
-      'app/_layout.tsx',
+      'packages/config/src/tamagui.config.ts',
     ]
 
     essentialFiles.forEach((file) => {
@@ -207,16 +206,12 @@ describe('create-tamagui CLI with --template flag', () => {
     })
   })
 
-  it('should indicate successful expo-router project creation', () => {
+  it('should indicate successful project creation', () => {
     expect(output).toContain(`Done! created a new project`)
     expect(output).toContain(`cd ${projectName}`)
   })
 
   it('should not contain any errors', () => {
     expect(output).not.toContain('Error:')
-  })
-
-  it('should contain expo-router specific instructions', () => {
-    expect(output).toContain('expo-router')
   })
 })

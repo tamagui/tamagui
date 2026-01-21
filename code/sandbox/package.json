@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "private": true,
   "type": "module",
   "scripts": {
@@ -30,7 +30,7 @@
     "@vxrn/color-scheme": "^1.2.66",
     "expo": "^54.0.23",
     "one": "1.2.66",
-    "react": ">=19",
+    "react": "*",
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",

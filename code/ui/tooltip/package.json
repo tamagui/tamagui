@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "2.0.0-1768883422398",
+  "version": "2.0.0-1768983999155",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -54,12 +54,12 @@
     "@tamagui/use-controllable-state": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=19",
+    "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": ">=19",
+    "react": "*",
     "react-native": "0.81.5"
   },
   "publishConfig": {

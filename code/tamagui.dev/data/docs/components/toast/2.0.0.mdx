@@ -39,6 +39,10 @@ Then, if targeting native, rebuild your React Native app. React Native requires 
 
 We're open to a refactor that moves the burnt dependency into a sub-path like `@tamagui/toast/burnt` and forces setup through there, that likely fixes the Metro issue and allow us to include it by default.
 
+<Notice theme="blue">
+  For native apps, we recommend [setting up native portals](/docs/components/portal#native-portal-setup-recommended) to preserve React context inside Toast content.
+</Notice>
+
 ## Anatomy
 
 ```tsx

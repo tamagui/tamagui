@@ -58,8 +58,8 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
           shadowRadius={3}
           shadowOffset={{ height: 4, width: 0 }}
           hoverStyle={{
-            borderColor: '$black7',
-            bg: '$black6',
+            borderColor: '$black6',
+            bg: '$black3',
           }}
           pressStyle={{
             bg: '$black2',
@@ -124,34 +124,6 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
                 >
                   Tamagui Pro
                 </H5>
-              )}
-
-              {!isProUser && (
-                <Paragraph
-                  bg="$color3"
-                  p="$4"
-                  rounded="$4"
-                  lineHeight="$2"
-                  color="$color11"
-                  borderWidth={0.5}
-                  borderColor="$color3"
-                  cursor="pointer"
-                  transition="lazy"
-                  hoverStyle={{
-                    y: -2,
-                    color: '$color12',
-                  }}
-                  pressStyle={{
-                    transition: '100ms',
-                    y: -2,
-                  }}
-                  onPress={() => {
-                    showAppropriateModal()
-                    setOpen(false)
-                  }}
-                >
-                  Pro is how we fund the OSS development of Tamagui.
-                </Paragraph>
               )}
 
               <PromoCards less />
