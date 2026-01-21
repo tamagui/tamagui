@@ -3,11 +3,12 @@ import { createAnimations as createAnimationsMotion } from '@tamagui/animations-
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
 import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
-import { config } from '@tamagui/config/v3'
-import { tamaguiThemes } from '@tamagui/themes/v4'
+// import { config } from '@tamagui/config/v3'
+// import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
-// TODO just move this into this folder
-import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
+// // TODO just move this into this folder
+// import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
+import { config } from '../../packages/tamagui-dev-config/src/index'
 
 export const animationsCSS = createAnimationsCSS({
   '100ms': 'ease-in 100ms',
@@ -241,59 +242,23 @@ config.themes = {
 
 const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
 
-const useV4Themes = search.includes('v4theme=true')
+// const useV4Themes = search.includes('v4theme=true')
 
-const tokens = {
-  ...config.tokens,
-  color: {
-    ...config.tokens.color,
-    testsomethingdifferent: '#ff0000',
-    customRed: '#ff0000',
-    customBlue: '#0000ff',
-    customGreen: '#00ff00',
-  },
-  // size: {
-  //   0: 10,
-  // },
-}
+// const tokens = {
+//   ...config.tokens,
+//   color: {
+//     ...config.tokens.color,
+//     testsomethingdifferent: '#ff0000',
+//     customRed: '#ff0000',
+//     customBlue: '#0000ff',
+//     customGreen: '#00ff00',
+//   },
+//   // size: {
+//   //   0: 10,
+//   // },
+// }
 
-const tamaConf = createTamagui({
-  ...config,
-  // Use v4 themes when ?v4theme=true is in the URL
-  themes: useV4Themes
-    ? tamaguiThemes
-    : {
-        ...config.themes,
-        ...themeDev,
-      },
-  shorthands: shorthands,
-  defaultFont: undefined,
-  settings: {
-    defaultFont: '$body',
-    allowedStyleValues: 'somewhat-strict',
-    autocompleteSpecificTokens: 'except-special',
-    fastSchemeChange: true,
-  },
-  tokens,
-  media: {
-    ...configV4.media, // adds max queries
-    ...config.media,
-  },
-  animations: search.includes('animationDriver=css')
-    ? animationsCSS
-    : search.includes('animationDriver=native')
-      ? animationsNative
-      : search.includes('animationDriver=motion')
-        ? animationsMotion
-        : animationsReanimated, // default reanimated
-  themeClassNameOnRoot: false,
-
-  defaultProps: {
-    Square: {
-      backgroundColor: 'violet',
-    },
-  },
-})
+const tamaConf = createTamagui(config)
 
 export type Conf = typeof tamaConf
 
