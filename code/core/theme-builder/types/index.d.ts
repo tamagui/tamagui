@@ -1,7 +1,7 @@
 export * from './ThemeBuilder';
 export * from '@tamagui/create-theme';
 export { createStudioThemes } from './createStudioThemes';
-export { createThemes, createPalettes, type CreateThemesProps, } from './createThemes';
+export { createThemes, createV4Themes, createPalettes, createV4ThemeBuilder, type CreateThemesProps, } from './createThemes';
 export { defaultTemplates } from './defaultTemplates';
 /** @deprecated component themes are no longer recommended */
 export { defaultComponentThemes } from './defaultComponentThemes';
