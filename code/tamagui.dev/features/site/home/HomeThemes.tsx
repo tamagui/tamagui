@@ -58,14 +58,16 @@ export const HomeThemes = memo(function HomeThemes() {
   const getLock = useGet(scrollLock)
   const setTintIndexDebounce = useDebounce(setTintIndex, 100)
 
-  const updateActiveI = useEvent((to: SetStateAction<number[]>, lock: Lock = 'shouldAnimate') => {
-    setScrollLock(lock)
-    setActiveI_(to)
+  const updateActiveI = useEvent(
+    (to: SetStateAction<number[]>, lock: Lock = 'shouldAnimate') => {
+      setScrollLock(lock)
+      setActiveI_(to)
 
-    const val = typeof to === 'function' ? to(activeI) : to
-    const tintIndex = Math.floor(splitToFlat(val) / max)
-    setTintIndexDebounce(tintIndex)
-  })
+      const val = typeof to === 'function' ? to(activeI) : to
+      const tintIndex = Math.floor(splitToFlat(val) / max)
+      setTintIndexDebounce(tintIndex)
+    }
+  )
 
   const isIntersecting = useIsIntersecting(scrollView, {
     threshold: 0.5,
