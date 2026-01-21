@@ -102,11 +102,26 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const animatedProperties = getAnimatedProperties(normalized)
 
       // Determine which properties to animate
-      // If object format with properties specified, use those; otherwise use animateOnly or 'all'
-      const keys =
-        animatedProperties.length > 0
-          ? animatedProperties
-          : (props.animateOnly ?? ['all'])
+      // - animateOnly prop is an exclusive filter (only animate those properties)
+      // - per-property configs WITHOUT a default = only animate those specific properties
+      // - per-property configs WITH a default = per-property overrides + default for rest
+      const hasDefault = normalized.default !== null
+      const hasPerPropertyConfigs = animatedProperties.length > 0
+
+      let keys: string[]
+      if (props.animateOnly) {
+        // animateOnly is explicit filter
+        keys = props.animateOnly
+      } else if (hasPerPropertyConfigs && !hasDefault) {
+        // object format without default: { opacity: '200ms' } = only animate opacity
+        keys = animatedProperties
+      } else if (hasPerPropertyConfigs && hasDefault) {
+        // array format or object with default: per-property overrides + 'all' for rest
+        keys = [...animatedProperties, 'all']
+      } else {
+        // simple string format: 'quick' = animate all
+        keys = ['all']
+      }
 
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host
