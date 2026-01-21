@@ -55,11 +55,12 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       // 1. const isPseudoQuery = nextChar === '0'
       const styleKey = name.slice(1, name.indexOf('-'))
       // 2. isMediaQuery || isPseudoQuery
-      // extract just the media query name (e.g., 'lg' from '_pr-_lg_260px')
+      // extract just the media query name (e.g., 'lg' '_pr-_lg_260px')
       // by finding the underscore after the media key name
       const mediaStart = splitIndex + 2
       const mediaEnd = name.indexOf('_', mediaStart)
-      const mediaKey = isMediaQuery && mediaEnd > mediaStart ? name.slice(mediaStart, mediaEnd) : null
+      const mediaKey =
+        isMediaQuery && mediaEnd > mediaStart ? name.slice(mediaStart, mediaEnd) : null
       const uid = mediaKey ? styleKey + mediaKey : styleKey
       // 3. && !isPseudoQuery
 

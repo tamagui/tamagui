@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/native-bundle",
-  "version": "2.0.0-1768961315363",
+  "version": "2.0.0-1768976374543",
   "type": "module",
   "description": "Vite-based bundler for creating native CommonJS bundles for Tamagui packages",
   "main": "dist/index.js",

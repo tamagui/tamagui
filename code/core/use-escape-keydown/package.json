@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-escape-keydown",
-  "version": "2.0.0-1768961315363",
+  "version": "2.0.0-1768976374543",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
