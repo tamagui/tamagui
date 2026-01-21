@@ -207,7 +207,9 @@ export type CreateV5ThemeOptions<
    * Pass undefined or omit to use defaultGrandChildrenThemes
    */
   grandChildrenThemes?: GrandChildren
-  /** Override component themes. Pass false to disable, or provide custom component themes. Defaults to defaultComponentThemes */
+  /**
+   * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+   */
   componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes']
 }
 
