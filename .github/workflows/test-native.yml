@@ -123,10 +123,10 @@ jobs:
 
   build-android:
     name: Build Android App
-    # Only run on main/v* branches (not PRs) - uses WarpBuild for faster builds
+    # Only run on main/v* branches (not PRs)
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v')
-    runs-on: warp-ubuntu-latest-x64-8x
-    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
     outputs:
       android-cache-key: ${{ steps.final-cache-key.outputs.cache_key }}
       android-path: code/kitchen-sink/android
@@ -353,8 +353,11 @@ jobs:
       - name: Build Android App (Debug + Test APKs)
         if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
         working-directory: code/kitchen-sink
+        env:
+          # Limit Gradle memory to avoid OOM on free runners
+          GRADLE_OPTS: '-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError'
         run: |
-          cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle
+          cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle --no-daemon --max-workers=2
 
       - name: Cache Android Folder
         if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
@@ -375,12 +378,18 @@ jobs:
   test-android:
     name: Android Detox Tests
     needs: build-android
-    # Only run on main/v* branches (not PRs) - uses WarpBuild for reliable emulator
+    # Only run on main/v* branches (not PRs)
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v')
-    runs-on: warp-ubuntu-latest-x64-8x
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     # Android emulator in CI is flaky with window focus issues - don't block on failures
     continue-on-error: true
+    # Retry matrix - run up to 2 attempts sequentially to handle flakiness
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        attempt: [1, 2]
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -435,19 +444,24 @@ jobs:
         id: android-tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 33
+          api-level: 31
           target: google_apis
           arch: x86_64
-          profile: pixel_6
+          profile: pixel_4
           avd-name: test
-          ram-size: 4096M
-          heap-size: 1024M
+          ram-size: 2048M
+          heap-size: 512M
+          disk-size: 4G
           force-avd-creation: false
-          emulator-boot-timeout: 900
+          emulator-boot-timeout: 600
           disable-animations: true
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none -memory 2048
           working-directory: code/kitchen-sink
           script: |
+            # Free up memory before tests
+            sudo swapoff -a || true
+            sudo swapon -a || true
+
             # Verify emulator is ready
             adb devices
             adb wait-for-device
@@ -468,9 +482,8 @@ jobs:
             adb shell dumpsys window | grep -E "mAwake|mScreenOn" || true
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
-            # This mirrors what we do locally where it works
             # Android emulator is flaky - capture exit code but don't fail the job
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 3 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 2 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
 
       - name: Report Android Test Status
         if: always()
@@ -485,6 +498,6 @@ jobs:
         if: env.ANDROID_TESTS_FAILED == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: detox-artifacts-android
+          name: detox-artifacts-android-attempt-${{ matrix.attempt }}
           path: ${{ env.test_container_app_path }}/e2e/artifacts/
           retention-days: 7
