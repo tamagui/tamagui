@@ -10,11 +10,9 @@ export function ButtonDemo(props) {
         Large
       </Button>
       <XStack gap="$2" justify="center">
-        <Theme reset>
-          <Button size="$3" theme="accent">
-            Active
-          </Button>
-        </Theme>
+        <Button size="$3" theme="accent">
+          Active
+        </Button>
         <Button size="$3" variant="outlined">
           Outlined
         </Button>
@@ -25,9 +23,7 @@ export function ButtonDemo(props) {
             <Button.Icon>
               <Activity />
             </Button.Icon>
-            <Button.Text key={0} debug="verbose">
-              Inverse
-            </Button.Text>
+            <Button.Text>Inverse</Button.Text>
           </Button>
         </Theme>
         <Button iconAfter={Activity} size="$3">

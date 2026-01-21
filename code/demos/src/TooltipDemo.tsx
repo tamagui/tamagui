@@ -6,11 +6,12 @@ import {
   Circle,
 } from '@tamagui/lucide-icons'
 import type { TooltipProps } from 'tamagui'
-import { Button, Paragraph, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, Theme, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
 
 export function TooltipDemo() {
   return (
-    <TooltipGroup delay={{ open: 300, close: 100 }}>
+    <Theme name="surface2">
+      <TooltipGroup delay={{ open: 300, close: 100 }}>
       <YStack gap="$2" self="center">
         <XStack gap="$2">
           <Demo groupId="0" placement="top-end" Icon={Circle} />
@@ -27,8 +28,9 @@ export function TooltipDemo() {
           <Demo groupId="6" placement="bottom" Icon={ChevronDown} />
           <Demo groupId="7" placement="bottom-start" Icon={Circle} />
         </XStack>
-      </YStack>
-    </TooltipGroup>
+        </YStack>
+      </TooltipGroup>
+    </Theme>
   )
 }
 

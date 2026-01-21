@@ -1,9 +1,10 @@
 import type { CardProps } from 'tamagui'
-import { Button, Card, H2, Image, Paragraph, XStack } from 'tamagui'
+import { Button, Card, H2, Image, Paragraph, Theme, XStack } from 'tamagui'
 
 export function CardDemo() {
   return (
-    <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
+    <Theme name="surface1">
+      <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
       <DemoCard
         transition="bouncy"
         size="$4"
@@ -14,7 +15,8 @@ export function CardDemo() {
         pressStyle={{ scale: 0.875 }}
       />
       <DemoCard size="$5" width={250} height={300} />
-    </XStack>
+      </XStack>
+    </Theme>
   )
 }
 
