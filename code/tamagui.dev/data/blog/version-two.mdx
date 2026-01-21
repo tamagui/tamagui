@@ -108,6 +108,11 @@ The breaking changes outside of deprecations are:
 - Tabs `activationMode` now defaults to `'manual'` instead of `'automatic'`.
   This means focusing a tab no longer changes the active tab - you must click or
   press Enter/Space. This matches web standards.
+- Group component simplified: `Group.Item` is now required (no more auto-cloning
+  direct children). Removed props: `space`, `separator`, `scrollable`,
+  `showScrollIndicator`, `disablePassBorderRadius`, `forceUseItem`. Children now
+  control their own sizing - apply size/responsive props directly to child
+  components. Add `<Separator />` manually between items when needed.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
 - Native portals no longer auto-import React internals hack. If you want native
