@@ -100,8 +100,8 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         return
       }
 
+      // note: SSR still runs to add debug attrs, just skips CSS resolving
       if (isNotClient(this.environment)) {
-        // only optimize on client - server should produce identical styles anyway!
         return
       }
 
@@ -144,6 +144,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         return
       }
 
+      // note: SSR still runs transform to add debug attrs, just skips CSS loading
       if (isNotClient(this.environment)) {
         return
       }
@@ -156,15 +157,10 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       order: 'pre',
       async handler(code, id) {
         if (disableStatic) {
-          // only optimize on client - server should produce identical styles anyway!
           return
         }
 
         if (isNative(this.environment)) {
-          return
-        }
-
-        if (isNotClient(this.environment)) {
           return
         }
 
@@ -190,12 +186,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
           return
         }
 
-        const cacheEnv =
-          this.environment.name === 'client' || this.environment.name === 'ssr'
-            ? // same cache key for ssr and web since they are the same
-              'web'
-            : this.environment.name
-        const cacheKey = getHash(`${cacheEnv}${code}${id}`)
+        // for SSR: disable style extraction but keep debug attrs
+        // this ensures hydration consistency (both get data-at/data-in/data-is)
+        const isSSR = isNotClient(this.environment)
+
+        const cacheKey = getHash(`${this.environment.name}${code}${id}`)
         const cached = memoryCache[cacheKey]
         if (cached) {
           return cached
@@ -206,7 +201,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
           extracted = await Static!.extractToClassNames({
             source: code,
             sourcePath: validId,
-            options: tamaguiOptions!,
+            options: {
+              ...tamaguiOptions!,
+              // on SSR only add debug attrs, skip style extraction
+              disableExtraction: isSSR ? true : tamaguiOptions?.disableExtraction,
+            },
             shouldPrintDebug,
           })
         } catch (err) {
