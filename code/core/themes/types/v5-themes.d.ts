@@ -1,58 +1,10 @@
 import { createThemes } from '@tamagui/theme-builder';
 export declare const defaultComponentThemes: {
-    readonly SelectItem: {
-        readonly template: "surface1";
-    };
-    readonly SelectTrigger: {
-        readonly template: "surface1";
-    };
-    readonly Card: {
-        readonly template: "surface1";
-    };
     readonly Button: {
         readonly template: "surface3";
     };
-    readonly Checkbox: {
-        readonly template: "surface2";
-    };
-    readonly Switch: {
-        readonly template: "surface2";
-    };
-    readonly SwitchThumb: {
-        readonly template: "inverse";
-    };
-    readonly TooltipContent: {
-        readonly template: "surface2";
-    };
-    readonly Progress: {
-        readonly template: "surface1";
-    };
-    readonly RadioGroupItem: {
-        readonly template: "surface2";
-    };
-    readonly TooltipArrow: {
-        readonly template: "surface1";
-    };
-    readonly SliderTrackActive: {
-        readonly template: "surface2";
-    };
-    readonly SliderTrack: {
-        readonly template: "inverse";
-    };
-    readonly SliderThumb: {
-        readonly template: "inverse";
-    };
     readonly Tooltip: {
         readonly template: "inverse";
-    };
-    readonly ProgressIndicator: {
-        readonly template: "inverse";
-    };
-    readonly Input: {
-        readonly template: "surface1";
-    };
-    readonly TextArea: {
-        readonly template: "surface1";
     };
 };
 declare const darkPalette: string[];
@@ -254,6 +206,21 @@ export declare const defaultGrandChildrenThemes: {
     accent: {
         template: string;
     };
+    alt1: {
+        template: string;
+    };
+    alt2: {
+        template: string;
+    };
+    surface1: {
+        template: string;
+    };
+    surface2: {
+        template: string;
+    };
+    surface3: {
+        template: string;
+    };
 };
 /** Union of all color values from children themes (for light or dark) */
 type ChildrenColors<T extends Record<string, ChildTheme>, Mode extends 'light' | 'dark'> = {
@@ -319,7 +286,7 @@ export declare function createV5Theme<Children extends Record<string, ChildTheme
     background002: string;
     background001: string;
 }>;
-export declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "light_blue_accent" | "light_green_accent" | "light_red_accent" | "light_yellow_accent" | "light_black_accent" | "light_white_accent" | "dark_black" | "dark_white" | "dark_blue_accent" | "dark_green_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_black_accent" | "dark_white_accent" | "light_gray_accent" | "dark_gray_accent" | "light_neutral" | "light_neutral_accent" | "dark_neutral" | "dark_neutral_accent", {
+export declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_blue_alt1" | "light_blue_alt2" | "light_green_alt1" | "light_green_alt2" | "light_red_alt1" | "light_red_alt2" | "light_yellow_alt1" | "light_yellow_alt2" | "dark_blue_alt1" | "dark_blue_alt2" | "dark_green_alt1" | "dark_green_alt2" | "dark_red_alt1" | "dark_red_alt2" | "dark_yellow_alt1" | "dark_yellow_alt2" | "light_gray_alt1" | "light_gray_alt2" | "dark_gray_alt1" | "dark_gray_alt2" | "light_blue_surface1" | "light_blue_surface2" | "light_blue_surface3" | "light_gray_surface1" | "light_gray_surface2" | "light_gray_surface3" | "light_green_surface1" | "light_green_surface2" | "light_green_surface3" | "light_red_surface1" | "light_red_surface2" | "light_red_surface3" | "light_yellow_surface1" | "light_yellow_surface2" | "light_yellow_surface3" | "dark_blue_surface1" | "dark_blue_surface2" | "dark_blue_surface3" | "dark_gray_surface1" | "dark_gray_surface2" | "dark_gray_surface3" | "dark_green_surface1" | "dark_green_surface2" | "dark_green_surface3" | "dark_red_surface1" | "dark_red_surface2" | "dark_red_surface3" | "dark_yellow_surface1" | "dark_yellow_surface2" | "dark_yellow_surface3" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "light_blue_accent" | "light_green_accent" | "light_red_accent" | "light_yellow_accent" | "light_black_accent" | "light_white_accent" | "dark_black" | "dark_white" | "dark_blue_accent" | "dark_green_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_black_accent" | "dark_white_accent" | "light_gray_accent" | "light_black_alt1" | "light_white_alt1" | "light_black_alt2" | "light_white_alt2" | "light_black_surface1" | "light_white_surface1" | "light_black_surface2" | "light_white_surface2" | "light_black_surface3" | "light_white_surface3" | "dark_gray_accent" | "dark_black_alt1" | "dark_white_alt1" | "dark_black_alt2" | "dark_white_alt2" | "dark_black_surface1" | "dark_white_surface1" | "dark_black_surface2" | "dark_white_surface2" | "dark_black_surface3" | "dark_white_surface3" | "light_neutral" | "light_neutral_accent" | "light_neutral_alt1" | "light_neutral_alt2" | "light_neutral_surface1" | "light_neutral_surface2" | "light_neutral_surface3" | "dark_neutral" | "dark_neutral_accent" | "dark_neutral_alt1" | "dark_neutral_alt2" | "dark_neutral_surface1" | "dark_neutral_surface2" | "dark_neutral_surface3", {
     yellow1: string;
     yellow2: string;
     yellow3: string;

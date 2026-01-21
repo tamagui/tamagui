@@ -4,7 +4,6 @@ export { v5Templates } from './v5-templates'
 export {
   createV5Theme,
   defaultChildrenThemes,
-  defaultComponentThemes,
   defaultDarkPalette,
   defaultGrandChildrenThemes,
   defaultLightPalette,
