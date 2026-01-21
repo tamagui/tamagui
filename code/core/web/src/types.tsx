@@ -1331,7 +1331,7 @@ type AddWebOnlyStyleProps<A> = {
 }
 
 export type WebOnlyValidStyleValues = {
-  position: '-webkit-sticky' | 'fixed' | 'static' | 'sticky'
+  position: '-webkit-sticky'
 }
 
 export type MediaQueries = {
@@ -2242,6 +2242,8 @@ interface ExtendedBaseProps
     ExtraStyleProps,
     ExtraBaseProps {
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
+  // extends RN's position to include 'fixed' (converted to 'absolute' on native)
+  position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky'
 }
 
 export interface StackStyleBase
