@@ -33,7 +33,9 @@ export const SheetDemo = () => {
     <>
       <YStack gap="$4">
         <XStack gap="$4" $maxMd={{ flexDirection: 'column', items: 'center' }}>
-          <Button theme="surface3" onPress={() => setOpen(true)}>Open</Button>
+          <Button theme="surface3" onPress={() => setOpen(true)}>
+            Open
+          </Button>
           <Button theme="surface3" onPress={() => setModal((x) => !x)}>
             {modal ? 'Type: Modal' : 'Type: Inline'}
           </Button>
@@ -98,7 +100,13 @@ const SheetContents = memo(
   ({ modal, isPercent, innerOpen, setInnerOpen, setOpen }: any) => {
     return (
       <>
-        <Button theme="surface3" size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+        <Button
+          theme="surface3"
+          size="$6"
+          circular
+          icon={ChevronDown}
+          onPress={() => setOpen(false)}
+        />
         <Input width={200} />
         {modal && isPercent && (
           <>

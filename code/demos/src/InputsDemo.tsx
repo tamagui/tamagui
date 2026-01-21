@@ -15,7 +15,12 @@ export function InputsDemo() {
 function InputDemo(props: { size: SizeTokens }) {
   return (
     <XStack items="center" gap="$2">
-      <Input theme="surface1" flex={1} size={props.size} placeholder={`Size ${props.size}...`} />
+      <Input
+        theme="surface1"
+        flex={1}
+        size={props.size}
+        placeholder={`Size ${props.size}...`}
+      />
       <Button theme="surface3" size={props.size}>
         Go
       </Button>
