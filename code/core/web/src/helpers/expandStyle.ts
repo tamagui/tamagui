@@ -56,8 +56,8 @@ export function expandStyle(key: string, value: any): PropMappedValue {
         return [['textAlignVertical', verticalAlignMap[value] || 'auto']]
       }
       case 'position': {
-        // position: fixed -> absolute on native
-        if (value === 'fixed') {
+        // position: fixed|sticky -> absolute on native
+        if (value === 'fixed' || value === 'sticky') {
           return [['position', 'absolute']]
         }
         return

@@ -235,7 +235,8 @@ export type CreateV5ThemeOptions<Children extends Record<string, ChildTheme> = t
      */
     grandChildrenThemes?: GrandChildren;
     /**
-     * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+     * @deprecated component themes are no longer recommended -
+     * configure component styles directly via themes or component defaultProps instead
      */
     componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes'];
 };

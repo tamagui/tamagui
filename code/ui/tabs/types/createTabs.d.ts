@@ -83,14 +83,7 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
         fullscreen?: boolean | undefined;
         size?: any;
         unstyled?: boolean | undefined;
-    }>> & import("@tamagui/spacer").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "end" | "start" | "top";
-        forceUseItem?: boolean;
-    } & {
+    }>> & import("@tamagui/group").GroupExtraProps & {
         /**
          * Whether to loop over after reaching the end or start of the items
          * @default true

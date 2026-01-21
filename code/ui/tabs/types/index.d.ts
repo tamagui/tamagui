@@ -124,14 +124,7 @@ export declare const Tabs: import("react").ForwardRefExoticComponent<Omit<import
         fullscreen?: boolean | undefined;
         size?: any;
         unstyled?: boolean | undefined;
-    }>> & import("@tamagui/spacer").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "end" | "start" | "top";
-        forceUseItem?: boolean;
-    } & {
+    }>> & import("@tamagui/group").GroupExtraProps & {
         loop?: boolean;
     } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>>;
     Trigger: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {

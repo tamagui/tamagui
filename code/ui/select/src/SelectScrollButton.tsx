@@ -108,7 +108,6 @@ const SelectScrollButtonImpl = React.memo(
           aria-hidden
           {...scrollIndicatorProps}
           zIndex={1000}
-          // @ts-expect-error
           position={strategy}
           left={x || 0}
           top={y || 0}

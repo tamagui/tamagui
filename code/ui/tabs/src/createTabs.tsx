@@ -161,7 +161,6 @@ export function createTabs<
             aria-controls={contentId}
             data-state={isSelected ? 'active' : 'inactive'}
             data-disabled={disabled ? '' : undefined}
-            disabled={disabled}
             id={triggerId}
             theme={activeTheme ?? null}
             {...(!unstyled && {
@@ -175,6 +174,7 @@ export function createTabs<
               ...(activeStyle as object),
             })}
             {...groupItemProps}
+            disabled={disabled ?? groupItemProps.disabled}
             {...triggerProps}
             ref={composeRefs(forwardedRef, triggerRef)}
             onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
