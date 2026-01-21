@@ -95,7 +95,7 @@ const findTitle = (rr: RR, title: string) => getLastByTitle(rr, title).innerHTML
 describe('basic tests', () => {
   afterEach(cleanup)
 
-  it.skip('works as singleton creating a global store', () => {
+  it('works as singleton creating a global store', () => {
     class Store3 extends Store<{ id: number }> {
       y = 0
       mount() {
@@ -154,11 +154,11 @@ describe('basic tests', () => {
   // you can see it return the new value there so it seems right, but for some
   // reason react doesn't re-render the last time, even though it was told to/snapshot changed
 
-  it.skip('creates a simple store and action works', async () => {
+  it('creates a simple store and action works', async () => {
     await testSimpleStore(0)
   })
 
-  it.skip('creates a second store under diff namespace both work', async () => {
+  it('creates a second store under diff namespace both work', async () => {
     await testSimpleStore(1)
     await testSimpleStore(2)
   })
