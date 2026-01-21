@@ -156,6 +156,9 @@ full reference.
 - **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
 - **`boxSizing`** - Box model (`border-box` | `content-box`).
 - **`display`** - Pass-through with `contents`.
+- **`position`** - Now accepts `fixed` on native, automatically converted to
+  `absolute`. This lets you write cross-platform code with media queries like
+  `$md={{ position: 'fixed' }}` that works everywhere.
 - **`borderCurve`** - Corner curve style (`circular` | `continuous` for Apple's
   "squircle"). iOS 13+ only.
 - **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS

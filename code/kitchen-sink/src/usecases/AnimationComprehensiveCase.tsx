@@ -178,6 +178,13 @@ export function AnimationComprehensiveCase() {
       {/* SECTION 11: scaleX EnterStyle (BenchmarkChart reproduction) */}
       <SectionHeader>11. scaleX EnterStyle</SectionHeader>
       <Scenario37_EnterStyleScaleX />
+
+      {/* SECTION 12: Per-Property with Transform (animationClamped fix) */}
+      <SectionHeader>12. Per-Property with Transform</SectionHeader>
+      <Scenario38_PerPropertyWithTransform />
+      <Scenario39_ObjectFormatPerProperty />
+      <Scenario40_ObjectFormatNoDefault />
+      <Scenario41_PerPropertyWithDelay />
     </YStack>
   )
 }
@@ -1124,6 +1131,133 @@ function Scenario37_EnterStyleScaleX() {
         />
       )}
       <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 38: Per-Property Config with Transform (animationClamped pattern)
+// Tests: transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }]}
+// The key test: scale/y should STILL animate with the default 'quick' animation
+// even though they're not explicitly listed in the per-property config
+// ============================================================================
+function Scenario38_PerPropertyWithTransform() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('38-per-prop-transform', ref, ['opacity', 'transform', 'backgroundColor'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-38-trigger" data-testid="scenario-38-trigger">
+        38: PerProp+Transform
+      </Button>
+      <Square
+        ref={ref as any}
+        // this is the "animationClamped" pattern - opacity/backgroundColor have specific timing
+        // but scale/y should STILL animate with the default 'quick' animation
+        transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }] as any}
+        size={40}
+        bg={active ? '$red10' : '$blue10'}
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        y={active ? -10 : 0}
+        testID="scenario-38-target" data-testid="scenario-38-target"
+      />
+      <Paragraph size="$1">opacity/bg=200ms, scale/y=quick</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 39: Object Format Per-Property with Transform
+// Tests: transition={{ opacity: '200ms', backgroundColor: '200ms', default: 'quick' }}
+// Same as 38 but using object format instead of array format
+// ============================================================================
+function Scenario39_ObjectFormatPerProperty() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('39-object-per-prop', ref, ['opacity', 'transform', 'backgroundColor'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-39-trigger" data-testid="scenario-39-trigger">
+        39: Object Format
+      </Button>
+      <Square
+        ref={ref as any}
+        // object format - same as array but different syntax
+        transition={{ opacity: '200ms', backgroundColor: '200ms', default: 'quick' } as any}
+        size={40}
+        bg={active ? '$red10' : '$blue10'}
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        y={active ? -10 : 0}
+        testID="scenario-39-target" data-testid="scenario-39-target"
+      />
+      <Paragraph size="$1">object: opacity/bg=200ms, default=quick</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 40: Object Format WITHOUT Default (only specified properties animate)
+// Tests: transition={{ opacity: '200ms' }} - scale should NOT animate
+// ============================================================================
+function Scenario40_ObjectFormatNoDefault() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('40-object-no-default', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
+        testID="scenario-40-trigger" data-testid="scenario-40-trigger">
+        40: No Default
+      </Button>
+      <Square
+        ref={ref as any}
+        // NO default key - only opacity should animate, scale should snap instantly
+        transition={{ opacity: '500ms' } as any}
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        testID="scenario-40-target" data-testid="scenario-40-target"
+      />
+      <Paragraph size="$1">only opacity animates (500ms)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 41: Per-Property Config with Delay
+// Tests: transition={['quick', { delay: 300, opacity: '500ms' }]}
+// Delay should apply to all properties, opacity uses custom timing
+// ============================================================================
+function Scenario41_PerPropertyWithDelay() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('41-per-prop-delay', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-41-trigger" data-testid="scenario-41-trigger">
+        41: PerProp+Delay
+      </Button>
+      <Square
+        ref={ref as any}
+        // delay + per-property: 300ms delay, then opacity=500ms, scale=quick
+        transition={['quick', { delay: 300, opacity: '500ms' }] as any}
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        testID="scenario-41-target" data-testid="scenario-41-target"
+      />
+      <Paragraph size="$1">300ms delay, opacity=500ms, scale=quick</Paragraph>
     </XStack>
   )
 }

@@ -47,7 +47,7 @@ export function PopoverDemo() {
       </XStack>
 
       {!isWeb && (
-        <Button onPress={() => setShouldAdapt(!shouldAdapt)}>
+        <Button theme="surface3" onPress={() => setShouldAdapt(!shouldAdapt)}>
           Adapt to Sheet: {`${shouldAdapt}`}
         </Button>
       )}
@@ -64,7 +64,7 @@ export function Demo({
   return (
     <Popover size="$5" allowFlip stayInFrame offset={15} resize {...props}>
       <Popover.Trigger asChild>
-        <Button icon={Icon} />
+        <Button theme="surface3" icon={Icon} />
       </Popover.Trigger>
 
       {shouldAdapt && (
@@ -111,6 +111,7 @@ export function Demo({
 
         <Popover.Close asChild>
           <Button
+            theme="surface3"
             size="$3"
             onPress={() => {
               /* Custom code goes here, does not interfere with popover closure */

@@ -197,9 +197,9 @@ export const config = createTamagui({
     {
       name: 'componentThemes',
       type: 'false | ComponentThemes',
-      default: '{ Button, Tooltip }',
+      default: 'false',
       description:
-        'Component themes. V5 includes only Button and Tooltip by default. Pass false to disable.',
+        'Component themes (defaults to false in v5). You can still pass custom component themes, but we recommend using defaultProps instead.',
     },
   ]}
 />
@@ -320,34 +320,81 @@ indices. Available templates: `base`, `surface1`, `surface2`, `surface3`,
 For more details on how templates work, see the
 [Creating Custom Themes Guide](/docs/guides/theme-builder).
 
-## Component Themes
+## Component Themes (Removed in V5)
 
-V5 includes only **Button** and **Tooltip** component themes by default, a
-significant reduction from v4. We plan to remove component themes entirely in
-Tamagui v3, as they can be confusing and it's easier to style components
-directly using the `theme` prop.
+V5 removes all component themes. Previously, components like Button, Card, and
+Input had automatic theme styling applied. This was convenient but caused
+"action at a distance" - components would look different than expected when
+copy-pasting code.
 
-The default component themes in v5:
+V5 embraces **WYSIWYG styling**: what you write is what you get. If you want a
+Button with a different background, set `theme="surface3"` explicitly.
 
-- **Button**: `surface3` template
-- **Tooltip**: `inverse` template
+### Migrating from Component Themes {#migrating-from-component-themes}
 
-You can disable component themes entirely or customize them:
+If you're upgrading from v4 and want to preserve the old visual behavior, use
+`defaultProps` in your config:
 
-```tsx
-// Disable component themes
-const themes = createV5Theme({
-  componentThemes: false,
-})
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v5'
+import { createTamagui } from 'tamagui'
 
-// Or customize them
-const themes = createV5Theme({
-  componentThemes: {
-    Button: { template: 'surface2' },
-    Card: { template: 'surface1' },
+export const config = createTamagui({
+  ...defaultConfig,
+
+  // Restore v4-style component theming via defaultProps
+  defaultProps: {
+    Button: { theme: 'surface3' },
+    Card: { theme: 'surface1' },
+    Checkbox: { theme: 'surface2' },
+    Input: { theme: 'surface1' },
+    ListItem: { theme: 'surface1' },
+    Progress: { theme: 'surface1' },
+    ProgressIndicator: { theme: 'accent' },
+    RadioGroupItem: { theme: 'surface2' },
+    SelectTrigger: { theme: 'surface1' },
+    SelectItem: { theme: 'surface1' },
+    SliderTrack: { theme: 'accent' },
+    SliderTrackActive: { theme: 'surface2' },
+    SliderThumb: { theme: 'accent' },
+    Switch: { theme: 'surface2' },
+    SwitchThumb: { theme: 'accent' },
+    TextArea: { theme: 'surface1' },
+    Tooltip: { theme: 'accent' },
+    TooltipContent: { theme: 'surface2' },
+    TooltipArrow: { theme: 'surface1' },
   },
 })
 ```
+
+This approach is cleaner than the old component themes system because:
+
+1. **Explicit**: You see exactly what defaults are being applied
+2. **Customizable**: Easy to add or remove component defaults
+3. **No magic**: No hidden theme generation happening at build time
+
+### Recommended Long-Term Approach
+
+For new code, we recommend setting themes explicitly on components:
+
+```tsx
+// Explicit is better than implicit
+<Button theme="surface3">Click me</Button>
+<Input theme="surface1" placeholder="Enter text..." />
+<Card theme="surface1">Content</Card>
+```
+
+Or create your own wrapper components with your preferred defaults:
+
+```tsx fileName="components/ui/Button.tsx"
+import { Button as TamaguiButton, type ButtonProps } from 'tamagui'
+
+export function Button(props: ButtonProps) {
+  return <TamaguiButton theme="surface3" {...props} />
+}
+```
+
+This gives you full control over your component library's look and feel.
 
 ---
 
@@ -514,5 +561,6 @@ Key differences when migrating:
    React Native
 3. **Color palettes**: v5 uses Radix colors with darker grays for dark mode
 4. **`createV5Theme`**: New helper function for customizing themes
-5. **Component themes** v5 has less component themes, you can bring them back by
-   copying the v5 componentThemes templates.
+5. **Component themes removed**: v5 removes all component themes for WYSIWYG
+   styling. Use `defaultProps` in your config to restore old behavior - see
+   [Migrating from Component Themes](#migrating-from-component-themes) above.

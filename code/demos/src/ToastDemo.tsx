@@ -47,7 +47,7 @@ const CurrentToast = () => {
           )}
         </YStack>
         <Toast.Action asChild altText="Dismiss toast">
-          <Button size="$2">Dismiss</Button>
+          <Button theme="surface3" size="$2">Dismiss</Button>
         </Toast.Action>
       </XStack>
     </Toast>
@@ -60,6 +60,7 @@ const ToastControl = ({ native }: { native: boolean }) => {
   return (
     <XStack gap="$2" justify="center">
       <Button
+        theme="surface3"
         onPress={() => {
           toast.show('Successfully saved!', {
             message: "Don't worry, we've got your data.",
@@ -71,6 +72,7 @@ const ToastControl = ({ native }: { native: boolean }) => {
         Show
       </Button>
       <Button
+        theme="surface3"
         onPress={() => {
           toast.hide()
         }}
@@ -94,12 +96,14 @@ const NativeOptions = ({
         Custom
       </Label>
       <Switch
+        theme="surface2"
         id="native-toggle"
         size="$1"
         checked={!!native}
         onCheckedChange={(val) => setNative(val)}
       >
         <Switch.Thumb
+          theme="accent"
           transition={[
             'quickest',
             {

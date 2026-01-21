@@ -1,12 +1,4 @@
 import { createThemes } from '@tamagui/theme-builder';
-export declare const defaultComponentThemes: {
-    readonly Button: {
-        readonly template: "surface3";
-    };
-    readonly Tooltip: {
-        readonly template: "inverse";
-    };
-};
 declare const darkPalette: string[];
 declare const lightPalette: string[];
 export { darkPalette as defaultDarkPalette, lightPalette as defaultLightPalette };
