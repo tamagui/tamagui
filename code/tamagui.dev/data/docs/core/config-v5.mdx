@@ -82,7 +82,10 @@ All v5 animation drivers include these preset animations:
     { name: 'quicker', description: 'Faster spring' },
     { name: 'quickerLessBouncy', description: 'Faster with minimal overshoot' },
     { name: 'quickest', description: 'Fastest spring' },
-    { name: 'quickestLessBouncy', description: 'Fastest with minimal overshoot' },
+    {
+      name: 'quickestLessBouncy',
+      description: 'Fastest with minimal overshoot',
+    },
     { name: 'tooltip', description: 'Tuned for tooltip enter/exit' },
   ]}
 />
@@ -194,66 +197,157 @@ export const config = createTamagui({
     {
       name: 'componentThemes',
       type: 'false | ComponentThemes',
-      default: 'defaultComponentThemes',
+      default: '{ Button, Tooltip }',
       description:
-        'Override component themes. Pass false to disable, or provide custom component themes.',
+        'Component themes. V5 includes only Button and Tooltip by default. Pass false to disable.',
     },
   ]}
 />
 
-### Disabling Component Themes
+---
 
-If you prefer to style components yourself without the default component themes:
+## Theme Values
+
+V5 themes include a rich set of color values accessible via `$theme-*` tokens.
+
+### Base Colors (color1-12)
+
+Every theme includes 12 base colors that shift based on the theme:
 
 ```tsx
-const themes = createV5Theme({
-  componentThemes: false,
-})
+<View bg="$color1" />  // Lightest in light mode, darkest in dark mode
+<View bg="$color6" />  // Mid-range
+<View bg="$color12" /> // Darkest in light mode, lightest in dark mode
 ```
 
-### Custom Component Themes
+### Semantic Colors
 
-You can also provide your own component themes:
+Standard semantic values that adapt to each theme:
+
+- `background`, `backgroundHover`, `backgroundPress`, `backgroundFocus`
+- `color`, `colorHover`, `colorPress`, `colorFocus`
+- `borderColor`, `borderColorHover`, `borderColorPress`, `borderColorFocus`
+- `placeholderColor`, `outlineColor`
+
+### Opacity Variants
+
+Foreground color with opacity (useful for subtle overlays and borders):
+
+- `color01` (10% opacity), `color0075`, `color005`, `color0025`, `color002`,
+  `color001`
+
+Background color with opacity:
+
+- `background01` (10% opacity), `background0075`, `background005`,
+  `background0025`, `background002`, `background001`
+
+### Interpolated Colors
+
+In-between shades for fine-grained control:
+
+- `color0pt5` - Between color0 and color1
+- `color1pt5` - Between color1 and color2
+- `color2pt5` - Between color2 and color3
+
+### White & Black (Fixed)
+
+Always available regardless of theme, with opacity variants:
+
+- `white`, `white0` (transparent), `white02`, `white04`, `white06`, `white08`
+- `black`, `black0` (transparent), `black02`, `black04`, `black06`, `black08`
+- `white1`-`white12`, `black1`-`black12` (12-step scales)
+
+### Shadow Colors
+
+Pre-tuned shadow opacities for light and dark modes:
+
+- `shadow1` through `shadow6` (light shadows are subtler, dark are stronger)
+- `shadowColor` - Default shadow color for the theme
+
+### Radix Color Scales
+
+All color themes (gray, blue, red, etc.) expose their full 12-step scale:
 
 ```tsx
-const themes = createV5Theme({
-  componentThemes: {
-    Button: [{ parent: 'light', template: 'surface1' }],
-  },
-})
+<View bg="$blue5" />
+<Text color="$red11" />
+<View borderColor="$green7" />
+```
+
+Available scales: `gray1-12`, `blue1-12`, `red1-12`, `green1-12`, `yellow1-12`
+
+### Neutral Colors
+
+The `neutral` scale maintains sufficient contrast on both light and dark
+backgrounds - useful for text or UI that needs to work regardless of theme:
+
+- `neutral1`-`neutral12`
+
+### Accent Colors
+
+Every theme includes an inverted accent scale for contrast elements:
+
+- `accent1`-`accent12` - Inverted palette (light colors in dark mode, vice
+  versa)
+- `accentBackground`, `accentColor` - Quick access to accent bg/fg
+
+```tsx
+<Button theme="accent">Primary Action</Button>
+<View bg="$accentBackground" color="$accentColor" />
 ```
 
 ---
 
-## Default Colors
+## Color Themes
 
 V5 includes these color themes by default:
 
-- **Grayscale**: gray, neutral (same in light/dark for contrast on any
-  background)
-- **Colors**: blue, green, orange, pink, purple, red, tan, teal, yellow
+- **Grayscale**: gray, neutral
+- **Colors**: blue, green, red, yellow
 - **Fixed**: black, white (don't change between light/dark)
 
-Each color theme has 12 steps, following the Radix color scale pattern.
+Each color theme has 12 steps following the
+[Radix Colors](https://www.radix-ui.com/colors) pattern.
 
 ---
 
-## Templates and Component Themes
+## Templates
 
 V5 includes default templates that control how theme values map to palette
 indices. Available templates: `base`, `surface1`, `surface2`, `surface3`,
 `alt1`, `alt2`, `inverse`.
 
-The default component themes use these templates to create visual hierarchy:
-
-- **surface1**: Card, ListItem, Input, TextArea, SelectTrigger, Progress,
-  SliderTrack
-- **surface2**: Checkbox, Switch, RadioGroupItem, TooltipContent
-- **surface3**: Button, SliderTrackActive
-- **inverse**: SliderThumb, SwitchThumb, ProgressIndicator, Tooltip
-
 For more details on how templates work, see the
 [Creating Custom Themes Guide](/docs/guides/theme-builder).
+
+## Component Themes
+
+V5 includes only **Button** and **Tooltip** component themes by default, a
+significant reduction from v4. We plan to remove component themes entirely in
+Tamagui v3, as they can be confusing and it's easier to style components
+directly using the `theme` prop.
+
+The default component themes in v5:
+
+- **Button**: `surface3` template
+- **Tooltip**: `inverse` template
+
+You can disable component themes entirely or customize them:
+
+```tsx
+// Disable component themes
+const themes = createV5Theme({
+  componentThemes: false,
+})
+
+// Or customize them
+const themes = createV5Theme({
+  componentThemes: {
+    Button: { template: 'surface2' },
+    Card: { template: 'surface1' },
+  },
+})
+```
 
 ---
 
@@ -302,21 +396,6 @@ V5 config includes these default settings:
 V5 includes an expanded set of media queries with height-based, max-width, and
 min-width variants.
 
-### Breakpoints
-
-<PropsTable
-  data={[
-    { name: 'xxxs', description: '260' },
-    { name: 'xxs', description: '340' },
-    { name: 'xs', description: '460' },
-    { name: 'sm', description: '640' },
-    { name: 'md', description: '768' },
-    { name: 'lg', description: '1024' },
-    { name: 'xl', description: '1280' },
-    { name: 'xxl', description: '1536' },
-  ]}
-/>
-
 ### Min-Width (Mobile-First)
 
 <PropsTable
@@ -362,9 +441,7 @@ min-width variants.
 
 ### Other
 
-<PropsTable
-  data={[{ name: 'pointerTouch', description: 'pointer: coarse' }]}
-/>
+<PropsTable data={[{ name: 'pointerTouch', description: 'pointer: coarse' }]} />
 
 ---
 
@@ -405,14 +482,8 @@ export const config = createTamagui({
 })
 ```
 
-### Bundler Configuration
-
-You'll need to define the environment variable in your bundler.
-
-**One Framework:**
-
-[One](https://onestack.dev) sets `VITE_ENVIRONMENT` automatically - no
-configuration needed!
+[One](https://onestack.dev) sets `VITE_ENVIRONMENT` automatically, for other
+Vite apps:
 
 **Vite:**
 
@@ -443,11 +514,5 @@ Key differences when migrating:
    React Native
 3. **Color palettes**: v5 uses Radix colors with darker grays for dark mode
 4. **`createV5Theme`**: New helper function for customizing themes
-
-```tsx
-// v4
-import { defaultConfig } from '@tamagui/config/v4'
-
-// v5
-import { defaultConfig } from '@tamagui/config/v5'
-```
+5. **Component themes** v5 has less component themes, you can bring them back by
+   copying the v5 componentThemes templates.
