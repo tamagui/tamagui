@@ -15,7 +15,6 @@ import { interpolateColor, opacify } from './opacify'
 import { v5Templates } from './v5-templates'
 
 export const defaultComponentThemes = {
-  ListItem: { template: 'surface1' },
   SelectItem: { template: 'surface1' },
   SelectTrigger: { template: 'surface1' },
   Card: { template: 'surface1' },

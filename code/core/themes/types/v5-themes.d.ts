@@ -1,8 +1,5 @@
 import { createThemes } from '@tamagui/theme-builder';
 export declare const defaultComponentThemes: {
-    readonly ListItem: {
-        readonly template: "surface1";
-    };
     readonly SelectItem: {
         readonly template: "surface1";
     };
@@ -278,7 +275,9 @@ export type CreateV5ThemeOptions<Children extends Record<string, ChildTheme> = t
      * Pass undefined or omit to use defaultGrandChildrenThemes
      */
     grandChildrenThemes?: GrandChildren;
-    /** Override component themes. Pass false to disable, or provide custom component themes. Defaults to defaultComponentThemes */
+    /**
+     * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+     */
     componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes'];
 };
 /**

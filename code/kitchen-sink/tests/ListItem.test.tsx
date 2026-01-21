@@ -17,7 +17,7 @@ test('ListItem renders correctly with default theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(248, 248, 248)')
+  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
 })
 
 test('ListItem renders correctly with light theme', async ({ page }) => {
@@ -30,7 +30,7 @@ test('ListItem renders correctly with light theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(248, 248, 248)')
+  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
 })
 
 test('ListItem renders correctly with dark theme', async ({ page }) => {

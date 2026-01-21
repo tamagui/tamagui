@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "2.0.0-1768952492255",
+  "version": "2.0.0-1768961315363",
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "type": "module",
