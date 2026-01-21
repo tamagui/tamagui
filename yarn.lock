@@ -8191,6 +8191,7 @@ __metadata:
     "@tamagui/input": "workspace:*"
     "@tamagui/lucide-icons": "workspace:*"
     "@tamagui/menu": "workspace:*"
+    "@tamagui/metro-plugin": "workspace:*"
     "@tamagui/native-portal": "workspace:*"
     "@tamagui/portal": "workspace:*"
     "@tamagui/sandbox-ui": "workspace:*"
@@ -8348,7 +8349,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/metro-plugin@workspace:code/compiler/metro-plugin":
+"@tamagui/metro-plugin@workspace:*, @tamagui/metro-plugin@workspace:code/compiler/metro-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/metro-plugin@workspace:code/compiler/metro-plugin"
   dependencies:
