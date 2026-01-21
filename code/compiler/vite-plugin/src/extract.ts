@@ -40,11 +40,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     return normalizePath(path.join(config.root, filePath))
   }
 
-  function isVite6AndNotClient(environment?: Environment) {
+  function isNotClient(environment?: Environment) {
     return environment?.name && environment.name !== 'client'
   }
 
-  function isVite6Native(environment?: Environment) {
+  function isNative(environment?: Environment) {
     return (
       environment?.name && (environment.name === 'ios' || environment.name === 'android')
     )
@@ -96,14 +96,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     async resolveId(source) {
-      if (isVite6Native(this.environment)) {
+      if (isNative(this.environment)) {
         return
       }
 
-      if (
-        tamaguiOptions?.disableServerOptimization &&
-        isVite6AndNotClient(this.environment)
-      ) {
+      if (isNotClient(this.environment)) {
         // only optimize on client - server should produce identical styles anyway!
         return
       }
@@ -143,14 +140,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         return
       }
 
-      if (isVite6Native(this.environment)) {
+      if (isNative(this.environment)) {
         return
       }
 
-      if (
-        tamaguiOptions?.disableServerOptimization &&
-        isVite6AndNotClient(this.environment)
-      ) {
+      if (tamaguiOptions?.disableServerOptimization && isNotClient(this.environment)) {
         return
       }
 
@@ -166,14 +160,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
           return
         }
 
-        if (isVite6Native(this.environment)) {
+        if (isNative(this.environment)) {
           return
         }
 
-        if (
-          tamaguiOptions?.disableServerOptimization &&
-          isVite6AndNotClient(this.environment)
-        ) {
+        if (tamaguiOptions?.disableServerOptimization && isNotClient(this.environment)) {
           return
         }
 
