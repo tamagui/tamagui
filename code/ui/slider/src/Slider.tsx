@@ -440,6 +440,7 @@ export const SliderThumbFrame = styled(ThemeableStack, {
   variants: {
     size: {
       '...size': getThumbSize,
+      ':number': getThumbSize,
     },
 
     unstyled: {
@@ -470,14 +471,14 @@ export const SliderThumbFrame = styled(ThemeableStack, {
 })
 
 export interface SliderThumbExtraProps {
-  index: number
+  index?: number
 }
 
 export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {}
 
 const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
   function SliderThumb(props: ScopedProps<SliderThumbProps>, forwardedRef) {
-    const { __scopeSlider, index, circular, size: sizeProp, ...thumbProps } = props
+    const { __scopeSlider, index = 0, circular, size: sizeProp, ...thumbProps } = props
     const context = useSliderContext(__scopeSlider)
     const orientation = useSliderOrientationContext(__scopeSlider)
     const [thumb, setThumb] = React.useState<TamaguiElement | null>(null)
