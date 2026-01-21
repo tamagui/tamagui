@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*",
     "react-native": "0.81.5"
   },
@@ -78,7 +78,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*",
     "react-native": "*"
   }

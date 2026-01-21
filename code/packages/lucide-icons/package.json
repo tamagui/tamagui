@@ -27,7 +27,7 @@
     "@tamagui/helpers-icon": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native-svg": ">=12"
   },
   "exports": {
@@ -8853,7 +8853,7 @@
     "glob": "^7.1.6",
     "lucide-static": "^0.508.0",
     "prop-types": "^15.7.2",
-    "react": "*",
+    "react": ">=19",
     "react-native-svg": "15.12.1",
     "uppercamelcase": "^3.0.0"
   },

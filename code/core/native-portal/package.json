@@ -49,12 +49,12 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5",
     "react-native-teleport": "^0.5.6"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native": "*",
     "react-native-teleport": ">=0.5.0"
   },

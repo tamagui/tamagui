@@ -17,7 +17,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
     "next": "16.1.1",
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*",
     "react-native-web": "^0.21.0"
   },

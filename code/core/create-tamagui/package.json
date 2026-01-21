@@ -16,9 +16,9 @@
     "test": "bun run build:test && vitest run",
     "build:test": "bun run build",
     "prerelease": "rimraf ./dist/",
-    "prepublish": "yarn build",
+    "prepublish": "bun run build",
     "build": "tamagui-build --skip-types --bundle",
-    "watch": "yarn build --watch",
+    "watch": "bun run build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
