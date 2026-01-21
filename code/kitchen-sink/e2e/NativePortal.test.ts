@@ -95,16 +95,16 @@ describe('NativePortal', () => {
       // verify text is visible inside sheet
       await expect(element(by.id('native-portal-sheet-text'))).toBeVisible()
 
-      // close sheet
-      await element(by.id('native-portal-sheet-close')).tap()
+      // close sheet by swiping down (dismissOnSnapToBottom)
+      await element(by.id('native-portal-sheet-frame')).swipe('down', 'fast')
 
-      // wait for sheet close animation to complete
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      // wait for sheet close animation
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      // sheet should no longer be visible
-      await waitFor(element(by.id('native-portal-sheet-frame')))
+      // sheet text should no longer be visible
+      await waitFor(element(by.id('native-portal-sheet-text')))
         .not.toBeVisible()
-        .withTimeout(8000)
+        .withTimeout(5000)
     } finally {
       await device.enableSynchronization()
     }

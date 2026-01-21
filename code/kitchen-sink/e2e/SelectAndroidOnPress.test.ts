@@ -9,26 +9,40 @@
  * 1. The Select trigger can be tapped to open the sheet
  * 2. Tapping an item closes the sheet AND updates the selected value
  * 3. The change count increments (proving onValueChange was called)
+ *
+ * Note: This test is Android-specific - skip on iOS
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
 
+// helper to skip tests on iOS
+const skipOnIOS = () => {
+  if (device.getPlatform() === 'ios') {
+    return true
+  }
+  return false
+}
+
 describe('SelectAndroidOnPress (#3436)', () => {
   beforeAll(async () => {
+    if (skipOnIOS()) return
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
+    if (skipOnIOS()) return
     await device.reloadReactNative()
     await navigateToSelectAndroidOnPress()
   })
 
   it('should render the test case screen', async () => {
+    if (skipOnIOS()) return
     await expect(element(by.id('select-android-title'))).toBeVisible()
     await expect(element(by.id('select-android-trigger'))).toBeVisible()
   })
 
   it('should open the Select sheet when trigger is tapped', async () => {
+    if (skipOnIOS()) return
     // tap the select trigger
     await element(by.id('select-android-trigger')).tap()
 
@@ -42,6 +56,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
   })
 
   it('should update value when item is tapped - THIS IS THE BUG TEST', async () => {
+    if (skipOnIOS()) return
     // verify initial state: no value selected, change count is 0
     await expect(element(by.id('select-android-selected-value'))).toHaveText(
       'Selected value: (none)'
@@ -75,6 +90,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
   })
 
   it('should handle tap with slight movement (simulates physical device jitter)', async () => {
+    if (skipOnIOS()) return
     // This test simulates the physical device behavior where slight finger
     // movement during a tap can cause the responder to be stolen by the Sheet's ScrollView
     //
@@ -118,6 +134,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
   })
 
   it('should allow multiple selections', async () => {
+    if (skipOnIOS()) return
     // first selection
     await element(by.id('select-android-trigger')).tap()
     await waitFor(element(by.id('select-android-item-apple')))
