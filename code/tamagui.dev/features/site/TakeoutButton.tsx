@@ -21,15 +21,6 @@ export const TakeoutButton = (props: ButtonProps) => {
       <YStack y={-1} display="inline-flex" mx="$1.5">
         <TakeoutIcon scale={0.75} />
       </YStack>
-      <Button.Text
-        y={-0.5}
-        fontFamily="$mono"
-        fontSize="$4"
-        color="$color10"
-        $sm={{ display: 'none' }}
-      >
-        starter
-      </Button.Text>
     </Button.Frame>
   )
 }
