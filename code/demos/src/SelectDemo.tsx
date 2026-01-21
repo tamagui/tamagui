@@ -9,19 +9,19 @@ export function SelectDemo() {
   return (
     <Theme name="surface1">
       <YStack gap="$4">
-      <XStack width="100%" items="center" gap="$4">
-        <Label htmlFor="select-demo-1" flex={1} minW={80}>
-          Custom
-        </Label>
-        <SelectDemoContents id="select-demo-1" />
-      </XStack>
+        <XStack width="100%" items="center" gap="$4">
+          <Label htmlFor="select-demo-1" flex={1} minW={80}>
+            Custom
+          </Label>
+          <SelectDemoContents id="select-demo-1" />
+        </XStack>
 
-      <XStack width="100%" items="center" gap="$4">
-        <Label htmlFor="select-demo-2" flex={1} minW={80}>
-          Native
-        </Label>
-        <SelectDemoContents id="select-demo-2" native />
-      </XStack>
+        <XStack width="100%" items="center" gap="$4">
+          <Label htmlFor="select-demo-2" flex={1} minW={80}>
+            Native
+          </Label>
+          <SelectDemoContents id="select-demo-2" native />
+        </XStack>
       </YStack>
     </Theme>
   )

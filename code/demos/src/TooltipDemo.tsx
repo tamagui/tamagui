@@ -12,22 +12,22 @@ export function TooltipDemo() {
   return (
     <Theme name="surface2">
       <TooltipGroup delay={{ open: 300, close: 100 }}>
-      <YStack gap="$2" self="center">
-        <XStack gap="$2">
-          <Demo groupId="0" placement="top-end" Icon={Circle} />
-          <Demo groupId="1" placement="top" Icon={ChevronUp} />
-          <Demo groupId="2" placement="top-start" Icon={Circle} />
-        </XStack>
-        <XStack gap="$2">
-          <Demo groupId="3" placement="left" Icon={ChevronLeft} />
-          <YStack flex={1} />
-          <Demo groupId="4" placement="right" Icon={ChevronRight} />
-        </XStack>
-        <XStack gap="$2">
-          <Demo groupId="5" placement="bottom-end" Icon={Circle} />
-          <Demo groupId="6" placement="bottom" Icon={ChevronDown} />
-          <Demo groupId="7" placement="bottom-start" Icon={Circle} />
-        </XStack>
+        <YStack gap="$2" self="center">
+          <XStack gap="$2">
+            <Demo groupId="0" placement="top-end" Icon={Circle} />
+            <Demo groupId="1" placement="top" Icon={ChevronUp} />
+            <Demo groupId="2" placement="top-start" Icon={Circle} />
+          </XStack>
+          <XStack gap="$2">
+            <Demo groupId="3" placement="left" Icon={ChevronLeft} />
+            <YStack flex={1} />
+            <Demo groupId="4" placement="right" Icon={ChevronRight} />
+          </XStack>
+          <XStack gap="$2">
+            <Demo groupId="5" placement="bottom-end" Icon={Circle} />
+            <Demo groupId="6" placement="bottom" Icon={ChevronDown} />
+            <Demo groupId="7" placement="bottom-start" Icon={Circle} />
+          </XStack>
         </YStack>
       </TooltipGroup>
     </Theme>
