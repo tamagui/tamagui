@@ -81,11 +81,28 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
 const DETOX_TIMEOUT_MS = 30 * 60 * 1000
 
 /**
+ * Reset Detox lock file to prevent ECOMPROMISED errors in CI
+ * See: https://github.com/wix/Detox/issues/4210
+ */
+export async function resetDetoxLockFile(): Promise<void> {
+  console.info('Resetting Detox lock file...')
+  const proc = Bun.spawn(['npx', 'detox', 'reset-lock-file'], {
+    stdout: 'inherit',
+    stderr: 'inherit',
+  })
+  await proc.exited
+}
+
+/**
  * Run Detox tests with the given options
  *
  * @returns Exit code from Detox
  */
 export async function runDetoxTests(options: DetoxRunnerOptions): Promise<number> {
+  // Reset lock file to prevent ECOMPROMISED errors in CI
+  // This clears stale locks from previous runs that can cause "Unable to update lock within the stale threshold" errors
+  await resetDetoxLockFile()
+
   const detoxArgs = buildDetoxArgs(options)
 
   console.info('\n--- Running Detox tests ---')
