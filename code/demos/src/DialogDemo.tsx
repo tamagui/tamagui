@@ -136,7 +136,14 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button theme="surface3" position="absolute" r="$3" size="$2" circular icon={X} />
+                <Button
+                  theme="surface3"
+                  position="absolute"
+                  r="$3"
+                  size="$2"
+                  circular
+                  icon={X}
+                />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>

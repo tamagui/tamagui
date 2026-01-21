@@ -1,5 +1,6 @@
 import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { Button, Group, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui'
+
 export function GroupDemo() {
   return (
     <YStack p="$3" gap="$2" items="center">
@@ -15,28 +16,30 @@ export function GroupDemo() {
         </Group.Item>
       </Group>
 
-      {/* responsive + size */}
-      <XGroup size="$3" $gtSm={{ size: '$5' }}>
+      {/* responsive size - children control their own size/radius */}
+      <XGroup>
         <XGroup.Item>
-          <Button theme="surface3" size="$3" icon={Activity} gap="$3">
+          <Button theme="surface3" size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
             First
           </Button>
         </XGroup.Item>
         <XGroup.Item>
-          <Button theme="surface3" size="$3" icon={Airplay} gap="$3">
+          <Button theme="surface3" size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
             Second
           </Button>
         </XGroup.Item>
       </XGroup>
 
-      {/* Separator */}
-      <YGroup separator={<Separator />}>
+      {/* with separators - add them between items */}
+      <YGroup>
         <YGroup.Item>
           <ListItem theme="surface1" title="First" />
         </YGroup.Item>
+        <Separator />
         <YGroup.Item>
           <ListItem theme="surface1" title="Second" subTitle="Second subtitle" />
         </YGroup.Item>
+        <Separator />
         <YGroup.Item>
           <ListItem theme="surface1">Third</ListItem>
         </YGroup.Item>

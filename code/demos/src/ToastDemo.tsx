@@ -47,7 +47,9 @@ const CurrentToast = () => {
           )}
         </YStack>
         <Toast.Action asChild altText="Dismiss toast">
-          <Button theme="surface3" size="$2">Dismiss</Button>
+          <Button theme="surface3" size="$2">
+            Dismiss
+          </Button>
         </Toast.Action>
       </XStack>
     </Toast>
