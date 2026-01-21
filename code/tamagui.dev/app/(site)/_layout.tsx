@@ -5,30 +5,25 @@ import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
-import { useAccountModal } from '~/features/site/purchase/accountModalStore'
-import { usePurchaseModal } from '~/features/site/purchase/purchaseModalStore'
 
-// lazy load payment modals to avoid loading Stripe on every page
+// lazy load modals to avoid loading stripe on initial page load
 const NewAccountModal = lazy(() =>
-  import('../../features/site/purchase/NewAccountModal').then((mod) => ({
+  import('~/features/site/purchase/NewAccountModal').then((mod) => ({
     default: mod.NewAccountModal,
   }))
 )
+
 const NewPurchaseModal = lazy(() =>
-  import('../../features/site/purchase/NewPurchaseModal').then((mod) => ({
+  import('~/features/site/purchase/NewPurchaseModal').then((mod) => ({
     default: mod.NewPurchaseModal,
   }))
 )
 
-// only render modals when they're open to avoid loading Stripe
-function LazyModals() {
-  const accountModal = useAccountModal()
-  const purchaseModal = usePurchaseModal()
-
+function Modals() {
   return (
     <Suspense fallback={null}>
-      {purchaseModal.show && <NewPurchaseModal />}
-      {accountModal.show && <NewAccountModal />}
+      <NewPurchaseModal />
+      <NewAccountModal />
     </Suspense>
   )
 }
@@ -58,7 +53,7 @@ export default function SiteLayout() {
       <PromoBanner />
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />
-      <LazyModals />
+      <Modals />
       <LoadProgressBar />
       <Slot />
       {!hideFooter && <Footer />}
