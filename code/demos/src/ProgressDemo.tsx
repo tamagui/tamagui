@@ -15,7 +15,7 @@ export function ProgressDemo() {
         </Paragraph>
 
         <Progress key={key} value={progress}>
-          <Progress.Indicator transition="200ms" />
+          <Progress.Indicator backgroundColor="$color" transition="200ms" />
         </Progress>
       </YStack>
 
