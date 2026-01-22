@@ -1,8 +1,8 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { createStyledContext } from '@tamagui/core'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItem } from '@tamagui/list-item'
-import { createStyledContext } from '@tamagui/core'
 import * as React from 'react'
 import { useSelectItemParentContext } from './context'
 import type { SelectScopedProps } from './types'
@@ -77,7 +77,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
           onActiveChange(value, index)
 
           if (isWeb) {
-            // focus the item so focusStyle applies (works in Safari during drag)
+            // focus for focusStyles to apply
             listRef?.current[index]?.focus()
           }
         }
