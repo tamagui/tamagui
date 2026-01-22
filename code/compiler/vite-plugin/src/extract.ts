@@ -186,8 +186,8 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
           return
         }
 
-        // for SSR: disable style extraction but keep debug attrs
-        // this ensures hydration consistency (both get data-at/data-in/data-is)
+        // run compiler on both SSR and client to ensure hydration consistency
+        // SSR just skips CSS emission since it doesn't need the styles
         const isSSR = isNotClient(this.environment)
 
         const cacheKey = getHash(`${this.environment.name}${code}${id}`)
@@ -203,8 +203,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
             sourcePath: validId,
             options: {
               ...tamaguiOptions!,
-              // on SSR only add debug attrs, skip style extraction
-              disableExtraction: isSSR ? true : tamaguiOptions?.disableExtraction,
+              // run full extraction on both SSR and client for hydration parity
             },
             shouldPrintDebug,
           })
@@ -223,7 +222,8 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
 
         let source = extracted.js
 
-        if (extracted.styles) {
+        // only emit CSS for client, SSR doesn't need it
+        if (extracted.styles && !isSSR) {
           this.addWatchFile(rootRelativeId)
 
           if (server && cssMap.has(absoluteId)) {
