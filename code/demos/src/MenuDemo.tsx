@@ -43,7 +43,7 @@ export function MenuDemo() {
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
-            transition="200ms"
+            transition="100ms"
             borderRadius="$4"
             enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
             exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
@@ -109,7 +109,7 @@ export function MenuDemo() {
                 <Menu.SubContent
                   enterStyle={{ scale: 0.9, opacity: 0, x: -5 }}
                   exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
-                  transition="200ms"
+                  transition="100ms"
                   transformOrigin="left top"
                   elevation="$3"
                   minW={160}
