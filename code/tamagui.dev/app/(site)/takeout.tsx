@@ -1,5 +1,5 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { YStack } from 'tamagui'
+import { Image, YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Footer } from '~/features/site/Footer'
@@ -39,57 +39,7 @@ export default function TakeoutPageNew() {
 
       {/* <PageThemeCarousel /> */}
 
-      {/* Glassmorphism background layers */}
       <ThemeTintAlt>
-        <YStack
-          position="absolute"
-          l={0}
-          r={0}
-          t={0}
-          b={0}
-          style={{
-            background:
-              'linear-gradient(180deg, var(--color0) 0%, var(--color2) 50%, var(--color1) 100%)',
-          }}
-          z={-3}
-        />
-      </ThemeTintAlt>
-
-      {/* Subtle ambient glow */}
-      {/* <ThemeTintAlt offset={3}>
-        <YStack
-          position="absolute"
-          l="10%"
-          t={100}
-          width={500}
-          height={500}
-          rounded={999}
-          opacity={0.15}
-          style={{
-            background: 'var(--color8)',
-            filter: 'blur(120px)',
-          }}
-          z={-2}
-          pointerEvents="none"
-        />
-      </ThemeTintAlt> */}
-
-      <ThemeTintAlt offset={0}>
-        <YStack
-          position="absolute"
-          l={0}
-          r={0}
-          t={-100}
-          // mixBlendMode="color-burn"
-          b={0}
-          style={{
-            background: 'linear-gradient(0deg, var(--color5), var(--color1))',
-          }}
-          z={-3}
-        />
-      </ThemeTintAlt>
-
-      {/* <ThemeTintAlt offset={3}>
         <YStack
           position="absolute"
           l={0}
@@ -102,19 +52,69 @@ export default function TakeoutPageNew() {
           }}
           z={-3}
         />
-      </ThemeTintAlt> */}
+      </ThemeTintAlt>
 
       <YStack
-        fullscreen
         className="grain"
-        opacity={0.2}
+        fullscreen
+        t={-60}
+        b={0}
+        opacity={0.5}
+        z={0}
         style={{
-          maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
+          imageRendering: 'pixelated',
         }}
       />
 
-      {/* Gradient fade at bottom */}
-      {/* <ThemeTint>
+      <ThemeTintAlt offset={0}>
+        <YStack
+          position="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          mixBlendMode="color-burn"
+          b={0}
+          style={{
+            background: 'linear-gradient(10deg, var(--color5), var(--color1))',
+          }}
+          z={-3}
+        />
+      </ThemeTintAlt>
+
+      <ThemeTintAlt offset={3}>
+        <YStack
+          position="absolute"
+          l={0}
+          r={0}
+          t={-100}
+          b={0}
+          style={{
+            background:
+              'linear-gradient(140deg, var(--color02), var(--color0), var(--color0), var(--color0))',
+          }}
+          z={-3}
+        />
+      </ThemeTintAlt>
+
+      <YStack
+        pointerEvents="none"
+        position="absolute"
+        t={-950}
+        l="50%"
+        x={-300}
+        scale={1}
+        rotate="120deg"
+        opacity={0.02}
+        $theme-light={{
+          opacity: 0.12,
+        }}
+        z={-1}
+      >
+        <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
+      </YStack>
+
+      {/* gradient on the end of the page */}
+      <ThemeTint>
         <YStack
           z={-1}
           fullscreen
@@ -122,7 +122,7 @@ export default function TakeoutPageNew() {
             background: `linear-gradient(to bottom, transparent, transparent, var(--color2))`,
           }}
         />
-      </ThemeTint> */}
+      </ThemeTint>
 
       <ContainerLarge px={0}>
         {/* Hero Section */}
