@@ -9,7 +9,6 @@ import {
   H6,
   Paragraph,
   Separator,
-  Spacer,
   View,
   XStack,
   YStack,
@@ -108,12 +107,6 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           </YStack>
         </XStack>
       </Container>
-
-      <Spacer />
-
-      <Separator />
-
-      <Spacer />
     </YStack>
   )
 }

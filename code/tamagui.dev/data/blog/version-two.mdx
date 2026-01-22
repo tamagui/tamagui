@@ -188,18 +188,12 @@ native, continue using the individual props (`borderWidth`, `borderColor`,
 
 We've added a new [animation driver](/docs/core/animations) powered by
 [Motion](https://motion.dev), and it's our recommended choice for web. The
-`@tamagui/animations-motion` package brings excellent performance through some
-key architectural decisions.
+`@tamagui/animations-motion` package is fast thanks to two optimizations:
 
-The Motion driver avoids React re-renders entirely during animations. When
-styles change, instead of triggering a re-render cycle, it directly mutates the
-DOM through Motion's `useAnimate` hook. This is enabled by a rewrite of Tamagui
-internals to allow a new `avoidReRenders` setting for animation drivers, which
-tells Tamagui's core to emit style changes via a callback rather than through
-state updates. Further, Motion leverages the
-[Web Animations API (WAAPI)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
-which runs animations off the main thread. Both together make for much smoother
-web animations with springs.
+- **No re-renders**: Tamagui now supports an `avoidReRenders` mode for animation drivers. Instead of updating state, style changes flow through a callback that mutates the DOM directly.
+- **Off main thread**: Motion uses the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API), which runs animations off the main JavaScript thread.
+
+Together these make for much smoother spring animations on web.
 
 #### Reanimated Driver Improvements
 
@@ -350,7 +344,7 @@ internals - but for Tamagui-first apps, it's a nice optimization.
 
 Dialog, Popover, Sheet, and Tooltip now support a `scope` prop that lets you
 mount a single instance at your app's root while placing triggers anywhere in
-your tree. This is a significant performance win - in testing with large apps,
+your tree. **This is a significant performance win** - in testing with large apps,
 we found it greatly improved UX by eliminating the overhead of mounting full
 overlay components inline.
 
@@ -383,11 +377,6 @@ This pattern is especially valuable for data-heavy views like tables, lists, or
 dashboards where you might have dozens or hundreds of interactive elements that
 need tooltips or popovers.
 
-Scoping also solves React context issues with portals - since the content lives
-at the root inside your providers, all context is available without needing to
-re-propagate it. For Sheet in particular, using scoping avoids needing a portal
-entirely on native.
-
 #### Colors
 
 `@tamagui/colors` has been updated to Radix v3, old colors are available at
@@ -396,9 +385,7 @@ entirely on native.
 #### Native Compiler Improvements
 
 The native compiler has been significantly improved in v2. Most notably, the
-experimental theme optimization setting has been removed - theme optimization
-now works automatically and much more effectively. This means better performance
-on native without any configuration needed.
+experimental theme optimization setting is now on by default, and stable. This means better performance on native without any configuration needed.
 
 #### Native Portals
 
@@ -419,10 +406,7 @@ import { setupNativePortal } from '@tamagui/portal/setup-native'
 setupNativePortal()
 ```
 
-This uses React Native's native `createPortal` API (Fabric or Paper) to preserve
-the React fiber tree, so all context flows through automatically. No more
-manually re-propagating theme context or navigation state into your sheets and
-dialogs.
+This tells Tamagui to use the teleport package for true native portal functionality, preserving the React fiber tree so all context flows through automatically. No more manually re-propagating theme context or navigation state into your sheets and dialogs.
 
 See the [Portal docs](/docs/components/portal) for full details and alternative
 approaches like component scoping.
@@ -439,9 +423,7 @@ approaches like component scoping.
 
 ```
 
-The v2 Input takes a web-first approach - you write standard HTML input
-attributes and Tamagui automatically converts them to React Native equivalents
-on native platforms:
+Input has been rewritten from scratch with a web-first approach - you write standard HTML input attributes and Tamagui automatically converts them to React Native equivalents on native platforms:
 
 ```tsx
 // Web-standard API that works everywhere
