@@ -2,14 +2,13 @@ import { Button } from '@tamagui/button'
 import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { Theme, XGroup, XStack, YStack } from 'tamagui'
 
-export function ButtonDemo(props) {
+export function ButtonDemo() {
   return (
-    <YStack p="$3" gap="$3" {...props}>
-      {/* note - the new v5 config does not bundle component themes */}
-      {/* so we are setting surface3 here to "brighten" buttons like in v4 */}
+    <YStack p="$3" gap="$3">
+      {/* v5 config comes with surface1 => 4 setting surface3 here to "brighten" buttons like in v4 */}
       {/* you could also do this yourself by just wrapping Button */}
       <Theme name="surface3">
-        <Button debug="verbose">Plain</Button>
+        <Button>Plain</Button>
         <Button self="center" icon={Airplay} size="$6">
           Large
         </Button>

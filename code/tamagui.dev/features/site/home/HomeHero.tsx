@@ -82,12 +82,13 @@ const HeroContents = memo(function HeroContents() {
           className="bg-grid"
           fullscreen
           pointerEvents="none"
-          opacity={0.125}
+          opacity={0.18}
           style={{
-            maskImage: `radial-gradient(ellipse at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 50%)`,
+            maskImage: `radial-gradient(ellipse at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)`,
           }}
         />
       </YStack>
+
       <YStack
         overflow="hidden"
         gap="$3"
@@ -95,9 +96,8 @@ const HeroContents = memo(function HeroContents() {
         pt="$16"
         mb="$4"
         $sm={{
-          maxW: '100%',
-          mx: 'auto',
           pb: '$4',
+          mx: '$-4',
         }}
       >
         <PromoLinksRow />
@@ -106,7 +106,7 @@ const HeroContents = memo(function HeroContents() {
           <H1
             text="center"
             size="$11"
-            lineHeight={61}
+            lineHeight={52}
             maxW={500}
             maxH={400}
             position="relative"
