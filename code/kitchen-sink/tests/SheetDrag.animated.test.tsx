@@ -148,7 +148,7 @@ test.describe('Sheet drag interactions', () => {
     await expect(positionIndicator).toContainText('0')
   })
 
-  // TODO: flaky with Playwright mouse events - subsequent drags don't trigger PanResponder consistently
+  // flaky: Playwright mouse events don't trigger PanResponder consistently for subsequent drags
   test.skip('dragging up from lower snap point returns to higher', async ({ page }) => {
     const trigger = page.getByTestId('drag-percent-trigger')
     const frame = page.getByTestId('drag-percent-frame')
