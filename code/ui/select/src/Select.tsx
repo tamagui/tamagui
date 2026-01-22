@@ -1,7 +1,7 @@
 import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
+import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
   getVariableValue,
@@ -13,7 +13,6 @@ import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ListItem, type ListItemProps } from '@tamagui/list-item'
 import { Separator } from '@tamagui/separator'
 import { SheetController } from '@tamagui/sheet/controller'
 import { XStack, YStack } from '@tamagui/stacks'
@@ -352,14 +351,42 @@ SelectGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'SelectLabel'
 
-export type SelectLabelProps = SelectScopedProps<ListItemProps>
+const SelectLabelFrame = styled(SizableText, {
+  name: LABEL_NAME,
 
-const SelectLabelText = styled(ListItem.Text, {
-  fontWeight: '800',
+  variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        ellipsis: true,
+        maxWidth: '100%',
+        cursor: 'default',
+        fontWeight: '800',
+      },
+    },
+
+    size: {
+      '...size': (val: SizeTokens, { tokens }) => {
+        return {
+          minHeight: tokens.size[val],
+          paddingHorizontal: tokens.space[val],
+          paddingVertical: getSpace(tokens.space[val], {
+            shift: -4,
+          }),
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
-const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
-  (props: SelectScopedProps<SelectLabelProps>, forwardedRef) => {
+export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
+
+const SelectLabel = SelectLabelFrame.styleable<{ scope?: any }>(
+  (props: SelectLabelProps, forwardedRef) => {
     const { scope, ...labelProps } = props
     const context = useSelectItemParentContext(scope)
     const groupContext = useSelectGroupContext(scope)
@@ -369,10 +396,8 @@ const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
     }
 
     return (
-      <ListItem
+      <SelectLabelFrame
         render="div"
-        componentName={LABEL_NAME}
-        fontWeight="800"
         id={groupContext.id}
         size={context.size}
         {...labelProps}
@@ -381,12 +406,6 @@ const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
     )
   }
 )
-
-const SelectLabel = withStaticProperties(SelectLabelFrame, {
-  Text: SelectLabelText,
-})
-
-SelectLabel.displayName = LABEL_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectSeparator
