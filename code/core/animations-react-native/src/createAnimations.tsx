@@ -203,6 +203,15 @@ export function createAnimations<A extends AnimationsConfig>(
       const animateOnly = (props.animateOnly as string[]) || []
       const hasTransitionOnly = !!props.animateOnly
 
+      // Track if we just finished entering (transition from entering to not entering)
+      // must be declared before args array that uses justFinishedEntering
+      const isEntering = !!componentState.unmounted
+      const wasEnteringRef = React.useRef(isEntering)
+      const justFinishedEntering = wasEnteringRef.current && !isEntering
+      React.useEffect(() => {
+        wasEnteringRef.current = isEntering
+      })
+
       const args = [
         JSON.stringify(style),
         componentState,
@@ -222,14 +231,6 @@ export function createAnimations<A extends AnimationsConfig>(
           return !animatedStyleKey[key]
         })
       }, args)
-
-      // Track if we just finished entering (transition from entering to not entering)
-      const isEntering = !!componentState.unmounted
-      const wasEnteringRef = React.useRef(isEntering)
-      const justFinishedEntering = wasEnteringRef.current && !isEntering
-      React.useEffect(() => {
-        wasEnteringRef.current = isEntering
-      })
 
       const res = React.useMemo(() => {
         const runners: Function[] = []
