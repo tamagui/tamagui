@@ -1,6 +1,6 @@
 export { shorthands } from '@tamagui/shorthands/v5';
 export { createThemes } from '@tamagui/theme-builder';
-export { themes, tokens, createV5Theme, adjustPalettes, adjustPalette, parseHSL, hslToString, defaultChildrenThemes, defaultGrandChildrenThemes, defaultDarkPalette, defaultLightPalette, interpolateColor, opacify, type HSL, type AdjustFn, type PaletteAdjustments, } from '@tamagui/themes/v5';
+export { adjustPalette, adjustPalettes, createV5Theme, defaultChildrenThemes, defaultDarkPalette, defaultGrandChildrenThemes, defaultLightPalette, hslToString, interpolateColor, opacify, parseHSL, tokens, type AdjustFn, type HSL, type PaletteAdjustments, } from '@tamagui/themes/v5';
 export { createSystemFont, fonts } from './v5-fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media';
 export declare const selectionStyles: (theme: any) => {
@@ -41,7 +41,7 @@ export declare const settings: {
     onlyAllowShorthands: true;
     styleCompat: "react-native";
 };
-export declare const defaultConfigBase: {
+export declare const defaultConfig: {
     media: {
         readonly pointerTouch: {
             readonly pointer: "coarse";
