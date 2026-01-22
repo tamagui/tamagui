@@ -3,9 +3,10 @@ import type { AnimationConfig, NormalizedTransition, TransitionPropInput } from 
 * Normalizes the various transition prop formats into a consistent structure.
 *
 * Supported input formats:
-* - String: "bouncy" -> { default: "bouncy", properties: {} }
-* - Object: { x: 'quick', default: 'slow' } -> { default: "slow", properties: { x: "quick" } }
-* - Array: ['bouncy', { delay: 100, x: 'quick' }] -> { default: "bouncy", delay: 100, properties: { x: "quick" } }
+* - String: "bouncy" -> { default: "bouncy", enter: null, exit: null, properties: {} }
+* - Object: { x: 'quick', default: 'slow' } -> { default: "slow", enter: null, exit: null, properties: { x: "quick" } }
+* - Object with enter/exit: { enter: 'bouncy', exit: 'quick' } -> { default: null, enter: "bouncy", exit: "quick", properties: {} }
+* - Array: ['bouncy', { delay: 100, x: 'quick' }] -> { default: "bouncy", enter: null, exit: null, delay: 100, properties: { x: "quick" } }
 *
 * @param transition - The transition prop value in any supported format
 * @returns Normalized transition object with consistent structure
@@ -29,5 +30,14 @@ export declare function hasAnimation(normalized: NormalizedTransition): boolean;
 * Does not include 'default' in the list.
 */
 export declare function getAnimatedProperties(normalized: NormalizedTransition): string[];
+/**
+* Gets the effective animation key based on the current animation state.
+* Priority: enter/exit specific > default > null
+*
+* @param normalized - The normalized transition object
+* @param state - The animation state: 'enter', 'exit', or 'default'
+* @returns The effective animation key or null
+*/
+export declare function getEffectiveAnimation(normalized: NormalizedTransition, state: "enter" | "exit" | "default"): string | null;
 
 //# sourceMappingURL=normalizeTransition.d.ts.map

@@ -185,6 +185,15 @@ export function AnimationComprehensiveCase() {
       <Scenario39_ObjectFormatPerProperty />
       <Scenario40_ObjectFormatNoDefault />
       <Scenario41_PerPropertyWithDelay />
+
+      {/* SECTION 13: Enter/Exit Transition Props */}
+      <SectionHeader>13. Enter/Exit Transition Props</SectionHeader>
+      <Scenario42_TransitionEnterExit />
+      <Scenario43_TransitionEnterOnly />
+      <Scenario44_TransitionExitOnly />
+      <Scenario45_TransitionEnterExitWithDefault />
+      <Scenario46_TransitionEnterExitPerProperty />
+      <Scenario47_TransitionEnterExitWithDelay />
     </YStack>
   )
 }
@@ -1258,6 +1267,227 @@ function Scenario41_PerPropertyWithDelay() {
         testID="scenario-41-target" data-testid="scenario-41-target"
       />
       <Paragraph size="$1">300ms delay, opacity=500ms, scale=quick</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 42: Different Enter/Exit Transitions
+// Tests: transition={{ enter: 'lazy', exit: 'quick' }}
+// Enter animation should be slow (lazy), exit should be fast (quick)
+// ============================================================================
+function Scenario42_TransitionEnterExit() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('42-enter-exit', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-42-trigger" data-testid="scenario-42-trigger">
+        42: Enter/Exit
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-exit-42"
+            ref={ref as any}
+            // enter should be slow (lazy ~500ms), exit should be fast (quick ~150ms)
+            transition={{ enter: 'lazy', exit: 'quick' } as any}
+            size={40}
+            bg="$blue10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-42-target" data-testid="scenario-42-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=lazy, exit=quick)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 43: Enter Transition Only (exit uses default)
+// Tests: transition={{ enter: 'lazy', default: 'quick' }}
+// Enter uses lazy, exit/other uses quick
+// ============================================================================
+function Scenario43_TransitionEnterOnly() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('43-enter-only', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-43-trigger" data-testid="scenario-43-trigger">
+        43: Enter Only
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-only-43"
+            ref={ref as any}
+            // enter=lazy, exit falls back to default=quick
+            transition={{ enter: 'lazy', default: 'quick' } as any}
+            size={40}
+            bg="$green10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-43-target" data-testid="scenario-43-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=lazy, default=quick)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 44: Exit Transition Only (enter uses default)
+// Tests: transition={{ exit: 'lazy', default: 'quick' }}
+// Exit uses lazy, enter/other uses quick
+// ============================================================================
+function Scenario44_TransitionExitOnly() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('44-exit-only', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-44-trigger" data-testid="scenario-44-trigger">
+        44: Exit Only
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="exit-only-44"
+            ref={ref as any}
+            // exit=lazy (slow), enter falls back to default=quick (fast)
+            transition={{ exit: 'lazy', default: 'quick' } as any}
+            size={40}
+            bg="$yellow10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-44-target" data-testid="scenario-44-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (exit=lazy, default=quick)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 45: Enter/Exit with Default Fallback
+// Tests: transition={{ enter: 'bouncy', exit: 'quick', default: 'lazy' }}
+// Enter=bouncy, exit=quick, property changes while visible use lazy
+// ============================================================================
+function Scenario45_TransitionEnterExitWithDefault() {
+  const [visible, setVisible] = useState(true)
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('45-enter-exit-default', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-45-trigger" data-testid="scenario-45-trigger">
+        45: Toggle
+      </Button>
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-45-trigger-prop" data-testid="scenario-45-trigger-prop">
+        Prop
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-exit-default-45"
+            ref={ref as any}
+            // enter=bouncy, exit=quick, property changes while visible=lazy
+            transition={{ enter: 'bouncy', exit: 'quick', default: 'lazy' } as any}
+            size={40}
+            bg="$red10"
+            opacity={active ? 0.5 : 1}
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-45-target" data-testid="scenario-45-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=bouncy, exit=quick, default=lazy)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 46: Enter/Exit with Per-Property Configs
+// Tests: transition={{ enter: 'bouncy', exit: 'quick', opacity: 'lazy' }}
+// Enter=bouncy, exit=quick, but opacity always uses lazy regardless
+// ============================================================================
+function Scenario46_TransitionEnterExitPerProperty() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('46-enter-exit-per-prop', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-46-trigger" data-testid="scenario-46-trigger">
+        46: PerProp
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-exit-per-prop-46"
+            ref={ref as any}
+            // enter=bouncy for scale, exit=quick for scale, but opacity always=lazy
+            transition={{ enter: 'bouncy', exit: 'quick', opacity: 'lazy' } as any}
+            size={40}
+            bg="$blue10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-46-target" data-testid="scenario-46-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter/exit + opacity=lazy)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 47: Enter/Exit Transitions with Delay
+// Tests: transition={{ enter: 'bouncy', exit: 'quick', delay: 200 }}
+// Both enter and exit have 200ms delay
+// ============================================================================
+function Scenario47_TransitionEnterExitWithDelay() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('47-enter-exit-delay', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-47-trigger" data-testid="scenario-47-trigger">
+        47: Delay
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-exit-delay-47"
+            ref={ref as any}
+            transition={{ enter: 'bouncy', exit: 'quick', delay: 200 } as any}
+            size={40}
+            bg="$color10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-47-target" data-testid="scenario-47-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=bouncy, exit=quick, delay=200ms)</Paragraph>
     </XStack>
   )
 }
