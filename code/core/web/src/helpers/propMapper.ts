@@ -33,17 +33,6 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   }
 
   const { conf, styleProps, staticConfig } = styleState
-
-  if (value === 'unset') {
-    const unsetVal = conf.unset?.[key]
-    if (unsetVal != null) {
-      value = unsetVal
-    } else {
-      // if no unset found, do nothing
-      return
-    }
-  }
-
   const { variants } = staticConfig
 
   if (!styleProps.noExpand) {

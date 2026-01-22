@@ -2,19 +2,18 @@ import React from 'react'
 
 import type { StaticConfig, ThemeableProps, ThemeProps } from '../types'
 import { Theme } from '../views/Theme'
-import { getUserDefaultProps } from './getUserDefaultProps'
-import { getConfig } from '../config'
+import { getDefaultProps } from './getDefaultProps'
 
 export function themeable<ComponentType extends (props: any) => any>(
   Component: ComponentType,
-  staticConfig?: Partial<StaticConfig>,
+  staticConfig: Partial<StaticConfig>,
   optimize = false
 ) {
   const withThemeComponent = React.forwardRef(function WithTheme(
     props: ThemeableProps,
     ref
   ) {
-    const userDefaults = getUserDefaultProps(props, staticConfig)
+    const userDefaults = getDefaultProps(props, staticConfig)
     const defaultTheme = userDefaults?.theme
     const defaultResetTheme = userDefaults?.themeReset
     const { theme, componentName, themeReset, ...rest } = props

@@ -5,6 +5,7 @@ export * from './_withStableStyle';
 export * from './createComponent';
 export * from './helpers/createMediaStyle';
 export * from './helpers/createStyledContext';
+export * from './helpers/getDefaultProps';
 export * from './helpers/expandStyles';
 export * from './helpers/getCSSStylesAtomic';
 export * from './helpers/getExpandedShorthands';

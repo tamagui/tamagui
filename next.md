@@ -59,6 +59,7 @@ uniswap:
 
 # v3 cleanups
 
+- may want to align flexShrink = 1 by default to align with web default?
 - styleable shouldnt forwardRef, remove it in general
 - remove inlineWhenUnflattened i think
 - basically we need a style() helper because:

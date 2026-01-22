@@ -1,5 +1,4 @@
 import { type useEffect } from "react";
-export declare const IS_REACT_19: boolean;
 export declare const isWeb: boolean;
 export declare const isWindowDefined: boolean;
 export declare const isServer: boolean;

@@ -9,8 +9,8 @@ import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
+import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
-import { getUserDefaultProps } from './helpers/getUserDefaultProps'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
@@ -295,35 +295,17 @@ export function createComponent<
     const componentName = props.componentName || staticConfig.componentName
 
     // merge both default props and styled context props - ensure order is preserved
-    const ogDP = staticConfig.defaultProps
-    if (styledContextValue || ogDP) {
-      let defaultProps = ogDP
+    const defaultProps = getDefaultProps(props, staticConfig, isText && hasTextAncestor)
 
-      const userDefaultProps = getUserDefaultProps(props, staticConfig)
-      if (userDefaultProps) {
-        defaultProps = { ...ogDP, ...userDefaultProps }
-      }
+    // merge styled context props over defaults, ensure order is preserved
+    const [nextProps, overrides] = mergeComponentProps(
+      defaultProps,
+      styledContextValue,
+      propsIn
+    )
 
-      if (process.env.TAMAGUI_TARGET === 'web' && isText && hasTextAncestor && ogDP) {
-        defaultProps = {
-          fontFamily: 'inherit',
-          color: 'inherit',
-          ...ogDP,
-        }
-        if (ogDP.whiteSpace === 'pre-wrap') defaultProps.whiteSpace = 'inherit'
-        if (ogDP.wordWrap === 'break-word') defaultProps.wordWrap = 'inherit'
-      }
-
-      const [nextProps, overrides] = mergeComponentProps(
-        defaultProps,
-        styledContextValue,
-        propsIn
-      )
-      if (nextProps) {
-        props = nextProps as StackProps | TextProps
-      }
-      overriddenContextProps = overrides
-    }
+    props = nextProps as StackProps | TextProps
+    overriddenContextProps = overrides
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {

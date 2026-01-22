@@ -1171,7 +1171,6 @@ export type AnimationsConfigObject = {
 }
 
 export type CreateTamaguiProps = {
-  unset?: BaseStyleProps
   reactNative?: any
   shorthands?: CreateShorthands
   media?: GenericTamaguiConfig['media']

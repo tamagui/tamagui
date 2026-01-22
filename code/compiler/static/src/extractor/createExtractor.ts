@@ -189,6 +189,7 @@ export function createExtractor(
       mediaQueryConfig,
       propMapper,
       proxyThemeVariables,
+      getDefaultProps,
       pseudoDescriptors,
     } = requireTamaguiCore(platform)
 
@@ -824,7 +825,10 @@ export function createExtractor(
 
         try {
           const { staticConfig } = component
-          const defaultProps = { ...(staticConfig.defaultProps || {}) }
+
+          const defaultProps = {
+            ...(getDefaultProps({}, staticConfig) || {}),
+          }
           const variants = staticConfig.variants || {}
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}

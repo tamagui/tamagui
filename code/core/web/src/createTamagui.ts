@@ -274,13 +274,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const defaultPositionSetting = configIn.settings?.defaultPosition || 'static'
 
   const defaultProps = configIn.defaultProps || {}
-  // Apply defaultPosition to stackDefaultStyles directly
+  // Apply defaultPosition to viewDefaultStyles directly
   // This avoids the deprecated defaultProps pattern in createComponent
   if (process.env.TAMAGUI_TARGET === 'web') {
-    defaultProps.Stack = {
-      ...defaultProps.Stack,
-      position: defaultPositionSetting,
-    }
     defaultProps.View = {
       ...defaultProps.View,
       position: defaultPositionSetting,
@@ -290,9 +286,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // ensure prefixed with $
   const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
 
-  const unset = { ...configIn.unset }
-  if (!unset.fontFamily && defaultFont) {
-    unset.fontFamily = defaultFontToken
+  if (defaultFont) {
+    defaultProps.Text = {
+      ...defaultProps.Text,
+      fontFamily: defaultFontToken,
+    }
   }
 
   const config: TamaguiInternalConfig = {
@@ -303,7 +301,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     media: {},
     ...configIn,
     defaultProps,
-    unset,
     settings: {
       webContainerType: 'inline-size',
       ...configIn.settings,

@@ -697,7 +697,6 @@ export type AnimationsConfigObject = {
     [key: string]: AnimationDriver<any>;
 };
 export type CreateTamaguiProps = {
-    unset?: BaseStyleProps;
     reactNative?: any;
     shorthands?: CreateShorthands;
     media?: GenericTamaguiConfig['media'];

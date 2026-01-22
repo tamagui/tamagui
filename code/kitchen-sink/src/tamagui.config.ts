@@ -265,43 +265,35 @@ const animations = search.includes('animationDriver=css')
       ? animationsMotion
       : animationsReanimated
 
-const tamaconf = tamav5Config
-  ? tamaguiDevConfig
-  : v5config
-    ? ({ ...defaultConfig, animations } satisfies CreateTamaguiProps)
-    : ({
-        ...config,
-        // Use v4 themes when ?v4theme=true is in the URL
-        themes: useV4Themes
-          ? tamaguiThemes
-          : {
-              ...config.themes,
-              ...themeDev,
-            },
-        shorthands: shorthands,
-        settings: {
-          defaultFont: '$body',
-          allowedStyleValues: 'somewhat-strict',
-          autocompleteSpecificTokens: 'except-special',
-          fastSchemeChange: true,
-        },
-        tokens,
-        media: {
-          ...configV4.media, // adds max queries
-          ...config.media,
-        },
-        animations, // default reanimated
+const tamaConf = createTamagui({
+  ...config,
+  // Use v4 themes when ?v4theme=true is in the URL
+  themes: useV4Themes
+    ? tamaguiThemes
+    : {
+        ...config.themes,
+        ...themeDev,
+      },
+  shorthands: shorthands,
+  settings: {
+    defaultFont: '$body',
+    allowedStyleValues: 'somewhat-strict',
+    autocompleteSpecificTokens: 'except-special',
+    fastSchemeChange: true,
+  },
+  tokens,
+  media: {
+    ...configV4.media, // adds max queries
+    ...config.media,
+  },
+  animations, // default reanimated
 
-        defaultProps: {
-          Square: {
-            backgroundColor: 'violet',
-          },
-        },
-      } satisfies CreateTamaguiProps)
-
-console.info(`tamaconf`, tamaconf)
-
-const tamaConf = createTamagui(tamaconf)
+  defaultProps: {
+    Square: {
+      backgroundColor: 'violet',
+    },
+  },
+})
 
 export type Conf = typeof tamaConf
 
@@ -313,4 +305,8 @@ declare module 'tamagui' {
   }
 }
 
-export default tamaConf
+export default tamav5Config
+  ? createTamagui(tamaguiDevConfig)
+  : v5config
+    ? createTamagui({ ...defaultConfig, animations })
+    : tamaConf

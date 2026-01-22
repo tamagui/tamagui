@@ -573,7 +573,7 @@ test('conditional spread with hoverStyle preserves ternary', async () => {
 // Verifies Text with hoverStyle and conditional spread preserves ternary
 test('Text with hoverStyle and conditional spread preserves ternary', async () => {
   const output = await extractForWeb(
-    `
+    `// debug
     import { Text } from '@tamagui/core'
 
     export function Test({ isActive }) {
