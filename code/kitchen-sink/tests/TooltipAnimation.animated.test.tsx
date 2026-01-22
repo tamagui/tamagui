@@ -223,7 +223,7 @@ test.describe('Tooltip animation', () => {
     expect(await elementExists(page, 'tooltip-content'), 'Hidden after exit').toBe(false)
   })
 
-  // TEST 5: Arrow size validation - SKIPPED pending separate investigation
+  // TEST 5: Arrow size validation - SKIPPED pending Tooltip arrow sizing fix
   test.skip('arrow has proper size (not tiny)', async ({ page }) => {
     // Show tooltip
     await page.getByTestId('tooltip-trigger').hover()
