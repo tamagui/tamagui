@@ -1,30 +1,23 @@
 export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
     '0ms': {
-        type: "tween";
         duration: number;
     };
     '30ms': {
-        type: "tween";
         duration: number;
     };
     '50ms': {
-        type: "tween";
         duration: number;
     };
     '75ms': {
-        type: "tween";
         duration: number;
     };
     '100ms': {
-        type: "tween";
         duration: number;
     };
     '200ms': {
-        type: "tween";
         duration: number;
     };
     '300ms': {
-        type: "tween";
         duration: number;
     };
     superBouncy: {

@@ -24,20 +24,16 @@ export const animationsCSS = createAnimationsCSS({
 
 export const animationsMotion = createAnimationsMotion({
   '75ms': {
-    type: 'tween',
-    duration: 0.075,
+    duration: 75,
   },
   '100ms': {
-    type: 'tween',
-    duration: 0.1,
+    duration: 100,
   },
   '200ms': {
-    type: 'tween',
-    duration: 0.2,
+    duration: 200,
   },
   '1000ms': {
-    type: 'tween',
-    duration: 1,
+    duration: 1000,
   },
   bouncy: {
     type: 'spring',

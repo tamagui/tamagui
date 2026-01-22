@@ -2,32 +2,25 @@ import { createAnimations } from '@tamagui/animations-motion'
 
 export const animationsMotion = createAnimations({
   '0ms': {
-    type: 'tween',
     duration: 0,
   },
   '30ms': {
-    type: 'tween',
-    duration: 0.03,
+    duration: 30,
   },
   '50ms': {
-    type: 'tween',
-    duration: 0.05,
+    duration: 50,
   },
   '75ms': {
-    type: 'tween',
-    duration: 0.075,
+    duration: 75,
   },
   '100ms': {
-    type: 'tween',
-    duration: 0.1,
+    duration: 100,
   },
   '200ms': {
-    type: 'tween',
-    duration: 0.2,
+    duration: 200,
   },
   '300ms': {
-    type: 'tween',
-    duration: 0.3,
+    duration: 300,
   },
   superBouncy: {
     type: 'spring',

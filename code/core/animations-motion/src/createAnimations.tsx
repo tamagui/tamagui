@@ -76,10 +76,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       config.mass === undefined
     animations[key] = {
       type: isTimingBased ? 'tween' : 'spring',
-      // Convert duration from ms to seconds for motion library
-      ...(isTimingBased && config.duration
-        ? { ...config, duration: config.duration / 1000 }
-        : config),
+      ...config,
+      // Convert duration/delay from ms to seconds for motion library
+      ...(config.duration ? { duration: config.duration / 1000 } : null),
+      ...(config.delay ? { delay: config.delay / 1000 } : null),
     }
   }
 
