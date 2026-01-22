@@ -163,6 +163,7 @@ export function createTabs<
             data-disabled={disabled ? '' : undefined}
             id={triggerId}
             theme={activeTheme ?? null}
+            unstyled={unstyled}
             {...(!unstyled && {
               size: context.size,
             })}
