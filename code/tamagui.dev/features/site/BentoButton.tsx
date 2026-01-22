@@ -1,15 +1,15 @@
-import { Button, type ButtonProps, YStack } from 'tamagui'
+import { Button, type ButtonProps } from 'tamagui'
 import { BentoIcon } from '../icons/BentoIcon'
 
 export const BentoButton = (props: ButtonProps) => {
   return (
-    <Button.Frame size="$3" rounded="$10" {...props}>
+    <Button size="$3" rounded="$10" {...props}>
       <Button.Text fontFamily="$silkscreen" fontSize={12}>
-        Bento
+        Copy-Paste UI
       </Button.Text>
-      <YStack display="inline-flex" mx="$2">
-        <BentoIcon scale={0.75} />
-      </YStack>
-    </Button.Frame>
+      <Button.Icon>
+        <BentoIcon scale={0.8} />
+      </Button.Icon>
+    </Button>
   )
 }

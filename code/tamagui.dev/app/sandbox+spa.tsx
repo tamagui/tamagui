@@ -47,19 +47,7 @@ function SandboxContent() {
 
   return (
     <View>
-      <YStack
-        transition="lazy"
-        width={500}
-        height={500}
-        bg="red"
-        hoverStyle={{
-          y: 100,
-        }}
-      >
-        <TooltipSimple label="test tooltip">
-          <Button>Close</Button>
-        </TooltipSimple>
-      </YStack>
+      <Button>Close</Button>
     </View>
   )
   // return <StyledText customProp="ok">hello world</StyledText>

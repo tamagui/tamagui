@@ -13,11 +13,11 @@ export const PromoLinksRow = () => {
   return (
     <TooltipGroup delay={tooltipDelay}>
       <Tooltip scope="promo-tooltip" offset={12} placement="bottom">
-        <XGroup elevation="$0.5" position="absolute" self="center" y={-80} rounded="$8">
+        <XGroup position="absolute" self="center" y={-80} rounded="$8">
           <Tooltip.Trigger
             scope="promo-tooltip"
             asChild
-            onMouseEnter={() => setLabel('Universal starter kit')}
+            onMouseEnter={() => setLabel('Takeout — universal RN starter kit')}
           >
             <Link href="/takeout">
               <XGroup.Item>
@@ -30,7 +30,7 @@ export const PromoLinksRow = () => {
             <Tooltip.Trigger
               scope="promo-tooltip"
               asChild
-              onMouseEnter={() => setLabel('Copy-paste components')}
+              onMouseEnter={() => setLabel('Bento — Free + paid pre-made UI')}
             >
               <Link href="/bento">
                 <XGroup.Item>
@@ -43,7 +43,7 @@ export const PromoLinksRow = () => {
           <Tooltip.Trigger
             scope="promo-tooltip"
             asChild
-            onMouseEnter={() => setLabel('Expert React Native help')}
+            onMouseEnter={() => setLabel('AddEven — Expert React Native developers')}
           >
             <Link href="https://addeven.com" target="_blank">
               <XGroup.Item>
