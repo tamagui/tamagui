@@ -646,7 +646,6 @@ function Tab({
       justify="center"
       overflow="hidden"
       py="$1"
-      bg="$color1"
       height={60}
       value=""
       borderBottomWidth={1}
@@ -677,6 +676,7 @@ function Tab({
         $gtMd={{ size: '$7' }}
         color={isActive ? '$color12' : '$color10'}
         fontWeight={isActive ? 'bold' : 'normal'}
+        cursor="default"
       >
         {children}
       </Paragraph>

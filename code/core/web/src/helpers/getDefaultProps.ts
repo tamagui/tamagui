@@ -19,7 +19,7 @@ export const getDefaultProps = (
   const userDefaultProps = name ? conf?.defaultProps?.[name] : null
 
   if (userDefaultProps) {
-    defaultProps = { ...defaultProps, ...userDefaultProps }
+    defaultProps = { ...userDefaultProps, ...defaultProps }
   }
 
   if (process.env.TAMAGUI_TARGET === 'web' && isSubText) {
