@@ -59,6 +59,11 @@ uniswap:
 
 # v3 cleanups
 
+- remove inlineWhenUnflattened i think
+- basically we need a style() helper because:
+  - then we can pre-compile styles like text defaults, view default, text-nested default
+  - then we can get rid of defaultProps
+  - then get rid of expensive statiConfig.defaultProps merging every render
 - always dynamic optimize no need for special "components"
 - remove `usePropsAndStyle` from icon `themed` somehow / pattern for that
 - remove getToken + shift weirdness in general

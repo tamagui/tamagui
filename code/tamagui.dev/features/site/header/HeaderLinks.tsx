@@ -24,7 +24,6 @@ export const HeadAnchor = styled(Paragraph, {
       true: {
         fow: '200',
         ls: 1,
-        textTransform: 'unset',
         w: '100%',
         f: 1,
         p: '$2',

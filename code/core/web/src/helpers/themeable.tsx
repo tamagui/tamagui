@@ -12,7 +12,12 @@ export function themeable<ComponentType extends (props: any) => any>(
     props: ThemeableProps,
     ref
   ) {
-    const { theme, componentName, themeReset, ...rest } = props
+    const {
+      theme = staticConfig?.defaultProps?.theme,
+      componentName,
+      themeReset = staticConfig?.defaultProps?.themeReset,
+      ...rest
+    } = props
 
     let overriddenContextProps: Object | undefined
     const context = staticConfig?.context

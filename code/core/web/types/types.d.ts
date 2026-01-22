@@ -616,7 +616,7 @@ export interface GenericTamaguiSettings {
      * On Web, this allows changing the behavior of container groups which by
      * default uses `container-type: inline-size`.
      */
-    webContainerType?: 'normal' | 'size' | 'inline-size' | 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
+    webContainerType?: 'normal' | 'size' | 'inline-size' | 'inherit' | 'initial' | 'revert' | 'revert-layer';
     /**
      * Only allow shorthands when enabled. Recommended to be true to avoid having
      * two ways to style the same property.

@@ -330,7 +330,6 @@ test('double ternary + spread', async () => {
           alignItems="center"
           {...(isVertical && {
             flexDirection: 'column',
-            flex: 'unset',
             alignItems: 'flex-start',
           })}
         >
@@ -736,4 +735,3 @@ test('boxShadow with multiple $variables extracts correctly', async () => {
   const varMatches = output?.styles?.match(/var\(--/g)
   expect(varMatches?.length).toBeGreaterThanOrEqual(2)
 })
-

@@ -50,7 +50,6 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
       {...(props.id && { htmlFor: props.id })}
       p="$4"
       className="3d"
-      height="unset"
       display="flex"
       borderWidth="$0.25"
       bg={props.checked ? '$color2' : '$color1'}
@@ -100,7 +99,7 @@ export const RadioGroupItem = ({
       flex={1}
       {...(props.id && { htmlFor: props.id })}
       p="$4"
-      height="unset"
+      height="auto"
       display="flex"
       borderWidth="$0.25"
       borderColor={active ? '$color9' : '$color5'}

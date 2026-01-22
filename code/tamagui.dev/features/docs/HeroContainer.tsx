@@ -69,13 +69,7 @@ export function HeroContainer({
     >
       <AnimationDriverTogglerContextProvider>
         {demoMultiple ? (
-          <XStack
-            maxH="100%"
-            maxW="100%"
-            minW="100%"
-            position="unset"
-            justify="flex-start"
-          >
+          <XStack maxH="100%" maxW="100%" minW="100%" justify="flex-start">
             {demo}
           </XStack>
         ) : (

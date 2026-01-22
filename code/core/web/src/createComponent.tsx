@@ -232,8 +232,6 @@ export function createComponent<
 
   let config: TamaguiInternalConfig | null = null
 
-  let defaultProps = staticConfig.defaultProps
-
   onConfiguredOnce((conf) => {
     config = conf
 
@@ -241,22 +239,15 @@ export function createComponent<
       // TODO this should be deprecated and removed likely or at least done differently
       const defaultForComponent = conf.defaultProps?.[componentName]
       if (defaultForComponent) {
-        defaultProps = { ...defaultForComponent, ...defaultProps }
+        staticConfig.defaultProps = {
+          ...defaultForComponent,
+          ...staticConfig.defaultProps,
+        }
       }
     }
   })
 
   const { Component, isText, isZStack, isHOC } = staticConfig
-
-  if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
-    if (process.env.IS_STATIC !== 'is_static') {
-      log(`🐛 [${componentName || 'Component'}]`, {
-        staticConfig,
-        defaultProps,
-        defaultPropsKeyOrder: defaultProps ? Object.keys(defaultProps) : [],
-      })
-    }
-  }
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
@@ -318,28 +309,22 @@ export function createComponent<
     let props: StackProps | TextProps = propsIn
 
     // merge both default props and styled context props - ensure order is preserved
-    if (styledContextValue || defaultProps) {
-      // For nested text, override base Text defaults to use CSS inheritance
-      // Only override if using base defaults, not styled component explicit values
-      let effectiveDefaults = defaultProps
-      if (
-        process.env.TAMAGUI_TARGET === 'web' &&
-        isText &&
-        hasTextAncestor &&
-        defaultProps
-      ) {
-        effectiveDefaults = { ...defaultProps }
-        if (effectiveDefaults.fontFamily === 'unset')
-          effectiveDefaults.fontFamily = 'inherit'
-        if (effectiveDefaults.whiteSpace === 'pre-wrap')
-          effectiveDefaults.whiteSpace = 'inherit'
-        if (!effectiveDefaults.color) effectiveDefaults.color = 'inherit'
-        if (!effectiveDefaults.letterSpacing) effectiveDefaults.letterSpacing = 'inherit'
-        if (!effectiveDefaults.textTransform) effectiveDefaults.textTransform = 'inherit'
+    const ogDP = staticConfig.defaultProps
+    if (styledContextValue || ogDP) {
+      let defaultProps = ogDP
+
+      if (process.env.TAMAGUI_TARGET === 'web' && isText && hasTextAncestor && ogDP) {
+        defaultProps = {
+          fontFamily: 'inherit',
+          color: 'inherit',
+          ...ogDP,
+        }
+        if (ogDP.whiteSpace === 'pre-wrap') defaultProps.whiteSpace = 'inherit'
+        if (ogDP.wordWrap === 'break-word') defaultProps.wordWrap = 'inherit'
       }
 
       const [nextProps, overrides] = mergeComponentProps(
-        effectiveDefaults,
+        defaultProps,
         styledContextValue,
         propsIn
       )

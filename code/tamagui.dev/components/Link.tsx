@@ -1,6 +1,6 @@
-import { Button, Paragraph, Text } from 'tamagui'
-import type { ViewProps, ButtonProps } from 'tamagui'
 import { router, useLinkTo, type LinkProps as OneLinkProps } from 'one'
+import type { ButtonProps, ViewProps } from 'tamagui'
+import { Button, Paragraph, Text } from 'tamagui'
 
 export type LinkProps = ViewProps &
   OneLinkProps<any> & {
@@ -18,9 +18,6 @@ export const Link = ({ href, replace, asChild, delayNavigate, ...props }: LinkPr
       asChild={asChild ? 'except-style' : false}
       className="t_Link"
       cursor="pointer"
-      color="inherit"
-      fontSize="unset"
-      lineHeight="unset"
       {...props}
       {...linkProps}
       {...(delayNavigate && {

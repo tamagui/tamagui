@@ -325,7 +325,7 @@ function getScheme(name: string) {
 
 function getNewThemeName(
   parentName = '',
-  { name, reset, componentName, debug }: UseThemeWithStateProps,
+  { name, reset, componentName }: UseThemeWithStateProps,
   forceUpdate = false
 ): string | null {
   if (name && reset) {

@@ -45,7 +45,6 @@ function TabsComponent(props: TabsProps) {
       orientation="horizontal"
       flexDirection="column"
       borderWidth={0}
-      position="unset"
       {...props}
       value={value ?? ''}
     />

@@ -1077,7 +1077,6 @@ export interface GenericTamaguiSettings {
     | 'initial'
     | 'revert'
     | 'revert-layer'
-    | 'unset'
 
   /**
    * Only allow shorthands when enabled. Recommended to be true to avoid having
@@ -2335,7 +2334,6 @@ export type TextProps = TextNonStyleProps & TextStyle
 
 export interface ThemeableProps {
   theme?: ThemeName | null
-  // themeInverse?: boolean
   themeReset?: boolean
   componentName?: string
   debug?: DebugProp

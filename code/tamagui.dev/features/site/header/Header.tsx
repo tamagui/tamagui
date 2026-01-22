@@ -1003,7 +1003,6 @@ const HeadAnchor = styled(Paragraph, {
       true: {
         fontWeight: '200',
         letterSpacing: 1,
-        textTransform: 'unset',
         width: '100%',
         flex: 1,
         flexBasis: 'auto',

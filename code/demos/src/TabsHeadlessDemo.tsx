@@ -73,7 +73,7 @@ export function TabsHeadlessDemo() {
     <YStack
       px="$4"
       {...(isWeb && {
-        position: 'unset' as any,
+        position: 'static',
       })}
     >
       <TabsView flexDirection={demo === 'horizontal' ? 'row' : 'column'} />
