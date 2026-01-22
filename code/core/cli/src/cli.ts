@@ -63,6 +63,35 @@ const COMMAND_MAP = {
     },
   },
 
+  'generate-css': {
+    shorthands: [],
+    description: `Generate the tamagui.css file from your config`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+      '--output': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        loadTamaguiOptions: true,
+      })
+
+      const outputPath = flags['--output'] || options.tamaguiOptions.outputCSS || './tamagui.css'
+
+      process.env.TAMAGUI_KEEP_THEMES = '1'
+      await loadTamagui({
+        ...options.tamaguiOptions,
+        outputCSS: outputPath,
+        platform: 'web',
+      })
+
+      console.info(`Generated CSS to ${outputPath}`)
+    },
+  },
+
   'generate-themes': {
     shorthands: [],
     description: `Use to pre-build your themes`,

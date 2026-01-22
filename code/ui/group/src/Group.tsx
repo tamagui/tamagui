@@ -1,23 +1,14 @@
-import type { GetProps, UnionableString, Variable } from '@tamagui/core'
-import { getTokens, getVariableValue, styled, useProps } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
-import { useControllableState } from '@tamagui/use-controllable-state'
 import React from 'react'
-import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from './useIndexedChildren'
-import { spacedChildren, type SpaceProps } from '@tamagui/spacer'
-
-type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end'
 
 interface GroupContextValue {
   vertical: boolean
-  disablePassBorderRadius: DisablePassBorderRadius
-  onItemMount: () => void
-  onItemUnmount: () => void
-  radius?: number | UnionableString | Variable<any>
   disabled?: boolean
 }
 
@@ -50,19 +41,9 @@ export const GroupFrame = styled(YStack, {
   },
 })
 
-export type GroupExtraProps = SpaceProps & {
+export type GroupExtraProps = {
   orientation?: 'horizontal' | 'vertical'
-  scrollable?: boolean
-  /**
-   * @default false
-   */
-  showScrollIndicator?: boolean
   disabled?: boolean
-  disablePassBorderRadius?: DisablePassBorderRadius
-  /**
-   * forces the group to use the Group.Item API
-   */
-  forceUseItem?: boolean
 }
 
 export type GroupProps = GetProps<typeof GroupFrame> & GroupExtraProps
@@ -70,114 +51,25 @@ export type GroupProps = GetProps<typeof GroupFrame> & GroupExtraProps
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
     GroupFrame.styleable<ScopedProps<GroupExtraProps>>((props, ref) => {
-      const activeProps = useProps(props)
-
       const {
         __scopeGroup,
         children: childrenProp,
-        space,
-        size = '$true',
-        flex,
-        spaceDirection,
-        separator,
-        scrollable,
         orientation = verticalDefault ? 'vertical' : 'horizontal',
-        disabled: disabledProp,
-        disablePassBorderRadius: disablePassBorderRadiusProp,
-        borderRadius,
-        forceUseItem,
+        disabled,
         ...restProps
-      } = activeProps
+      } = props
 
       const vertical = orientation === 'vertical'
-      const [itemChildrenCount, setItemChildrenCount] = useControllableState({
-        defaultProp: forceUseItem ? 1 : 0,
-      })
-
-      const isUsingItems = itemChildrenCount > 0
-
-      const radius =
-        borderRadius ?? (size ? getVariableValue(getTokens().radius[size]) : undefined)
-
-      const hasRadius = radius !== undefined
-      const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
-
-      const childrenArray = React.Children.toArray(childrenProp)
-      const children = isUsingItems
-        ? React.Children.toArray(childrenProp).filter(React.isValidElement)
-        : childrenArray.map((child, i) => {
-            if (!React.isValidElement(child) || child.type === React.Fragment) {
-              return child
-            }
-            const disabled =
-              (child.props as Record<string, unknown>).disabled ?? disabledProp
-
-            const isFirst = i === 0
-            const isLast = i === childrenArray.length - 1
-
-            const radiusStyles =
-              disablePassBorderRadius === true
-                ? null
-                : getBorderRadius({
-                    isFirst,
-                    isLast,
-                    radius,
-                    vertical,
-                    disable: disablePassBorderRadius,
-                  })
-
-            const props = {
-              disabled,
-              ...radiusStyles,
-            }
-
-            return cloneElementWithPropOrder(child, props)
-          })
-
-      const indexedChildren = useIndexedChildren(
-        spacedChildren({
-          direction: spaceDirection,
-          separator,
-          space,
-          children,
-        })
-      )
-
-      const onItemMount = React.useCallback(
-        () => setItemChildrenCount((prev) => prev + 1),
-        []
-      )
-      const onItemUnmount = React.useCallback(
-        () => setItemChildrenCount((prev) => prev - 1),
-        []
-      )
-
-      // TODO improve type
-      const flexValue = (flex === true ? 1 : flex === false ? 0 : flex) as any
+      const indexedChildren = useIndexedChildren(React.Children.toArray(childrenProp))
 
       return (
-        <GroupProvider
-          disablePassBorderRadius={disablePassBorderRadius}
-          vertical={orientation === 'vertical'}
-          // @ts-ignore this just popped up since new version expo 49
-          radius={radius}
-          disabled={disabledProp}
-          onItemMount={onItemMount}
-          onItemUnmount={onItemUnmount}
-          scope={__scopeGroup}
-        >
+        <GroupProvider vertical={vertical} disabled={disabled} scope={__scopeGroup}>
           <GroupFrame
             ref={ref}
-            size={size}
-            flexDirection={orientation === 'horizontal' ? 'row' : 'column'}
-            borderRadius={borderRadius}
-            flex={flexValue}
+            flexDirection={vertical ? 'column' : 'row'}
             {...restProps}
           >
-            {wrapScroll(
-              { ...activeProps, flex: flexValue, orientation },
-              indexedChildren
-            )}
+            {indexedChildren}
           </GroupFrame>
         </GroupProvider>
       )
@@ -196,48 +88,17 @@ export type GroupItemProps = {
   forcePlacement?: 'first' | 'center' | 'last'
 }
 
-const GroupItem = React.forwardRef(
-  (
-    props: ScopedProps<GroupItemProps>,
-    // Note unused, breaks popper targets even if i try and compose it
-    _ref
-  ) => {
-    const { __scopeGroup, children, forcePlacement } = props
-    const groupItemProps = useGroupItem(
-      {
-        disabled: React.isValidElement(children)
-          ? ((children.props as Record<string, unknown>).disabled as boolean)
-          : false,
-      },
-      forcePlacement,
-      __scopeGroup
-    )
-
-    if (!React.isValidElement(children) || children.type === React.Fragment) {
-      return children as any
-    }
-
-    return React.cloneElement(children, groupItemProps)
-  }
-)
-
-export const useGroupItem = (
-  childrenProps: { disabled: boolean; ref?: any },
-  forcePlacement?: GroupItemProps['forcePlacement'],
-  __scopeGroup?: Scope
-) => {
-  const treeIndex = useIndex()
+function GroupItem(props: ScopedProps<GroupItemProps>) {
+  const { __scopeGroup, children, forcePlacement } = props
   const context = useGroupContext('GroupItem', __scopeGroup)
-
-  React.useEffect(() => {
-    context.onItemMount()
-    return () => {
-      context.onItemUnmount()
-    }
-  }, [])
+  const treeIndex = useIndex()
 
   if (!treeIndex) {
     throw Error('<Group.Item/> should only be used within a <Group/>')
+  }
+
+  if (!React.isValidElement(children)) {
+    return children as any
   }
 
   const isFirst =
@@ -246,84 +107,67 @@ export const useGroupItem = (
     forcePlacement === 'last' ||
     (forcePlacement !== 'first' && treeIndex.index === treeIndex.maxIndex)
 
-  const disabled = childrenProps.disabled ?? context.disabled
+  // zero out border radius on connecting sides
+  const radiusStyles = getZeroedRadius(isFirst, isLast, context.vertical)
 
-  let propsToPass: Record<string, any> = {
-    disabled,
+  const childProps: Record<string, any> = {
+    ...radiusStyles,
   }
 
-  if (context.disablePassBorderRadius !== true) {
-    const borderRadius = getBorderRadius({
-      radius: context.radius,
-      isFirst,
-      isLast,
-      vertical: context.vertical,
-      disable: context.disablePassBorderRadius,
-    })
-    return { ...propsToPass, ...borderRadius }
+  if (context.disabled != null) {
+    childProps.disabled = (children.props as any).disabled ?? context.disabled
   }
-  return propsToPass
+
+  return React.cloneElement(children, childProps)
+}
+
+export const useGroupItem = (
+  childrenProps: { disabled?: boolean },
+  forcePlacement?: GroupItemProps['forcePlacement'],
+  __scopeGroup?: Scope
+) => {
+  const treeIndex = useIndex()
+  const context = useGroupContext('GroupItem', __scopeGroup)
+
+  if (!treeIndex) {
+    throw Error('useGroupItem should only be used within a <Group/>')
+  }
+
+  const isFirst =
+    forcePlacement === 'first' || (forcePlacement !== 'last' && treeIndex.index === 0)
+  const isLast =
+    forcePlacement === 'last' ||
+    (forcePlacement !== 'first' && treeIndex.index === treeIndex.maxIndex)
+
+  const radiusStyles = getZeroedRadius(isFirst, isLast, context.vertical)
+
+  return {
+    disabled: childrenProps.disabled ?? context.disabled,
+    ...radiusStyles,
+  }
 }
 
 export const Group = createGroup(true)
 export const YGroup = Group
 export const XGroup = createGroup(false)
 
-const wrapScroll = (
-  { scrollable, orientation, showScrollIndicator = false }: GroupProps,
-  children: any
-) => {
-  if (scrollable)
-    return (
-      <ScrollView
-        {...(orientation === 'vertical' && {
-          showsVerticalScrollIndicator: showScrollIndicator,
-        })}
-        {...(orientation === 'horizontal' && {
-          horizontal: true,
-          showsHorizontalScrollIndicator: showScrollIndicator,
-        })}
-      >
-        {children}
-      </ScrollView>
-    )
-
-  return children
-}
-
-const getBorderRadius = ({
-  isFirst,
-  isLast,
-  radius,
-  vertical,
-  disable,
-}: {
-  radius: any
-  vertical: boolean
-  isFirst: boolean
-  isLast: boolean
-  disable: DisablePassBorderRadius
-}) => {
-  // TODO: RTL support would be nice here
+/**
+ * returns styles that zero out border radius on the connecting/interior sides
+ * children keep their own border radius on the exterior sides
+ */
+function getZeroedRadius(isFirst: boolean, isLast: boolean, vertical: boolean) {
+  if (vertical) {
+    // vertical: zero bottom radius of non-last items, zero top radius of non-first items
+    return {
+      ...(isFirst ? null : { borderTopLeftRadius: 0, borderTopRightRadius: 0 }),
+      ...(isLast ? null : { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }),
+    }
+  }
+  // horizontal: zero right radius of non-last items, zero left radius of non-first items
   return {
-    borderTopLeftRadius: isFirst && disable !== 'top' && disable !== 'start' ? radius : 0,
-    borderTopRightRadius:
-      disable !== 'top' &&
-      disable !== 'end' &&
-      ((vertical && isFirst) || (!vertical && isLast))
-        ? radius
-        : 0,
-    borderBottomLeftRadius:
-      disable !== 'bottom' &&
-      disable !== 'start' &&
-      ((vertical && isLast) || (!vertical && isFirst))
-        ? radius
-        : 0,
-    borderBottomRightRadius:
-      isLast && disable !== 'bottom' && disable !== 'end' ? radius : 0,
+    ...(isFirst ? null : { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }),
+    ...(isLast ? null : { borderTopRightRadius: 0, borderBottomRightRadius: 0 }),
   }
 }
 
-const cloneElementWithPropOrder = (child: any, props: Object) => {
-  return React.cloneElement({ ...child, props: null }, { ...child.props, ...props })
-}
+export { createGroupScope }

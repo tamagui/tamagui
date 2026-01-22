@@ -42,6 +42,23 @@ export const config = {
     // Allow both shorthands and longhand names for flexibility
     onlyAllowShorthands: false,
   },
+
+  // v5 removed component themes - restore old visual behavior via defaultProps
+  // this keeps the site looking the same while demos show explicit theme usage
+  // see: https://tamagui.dev/docs/core/config-v5#migrating-from-component-themes
+  defaultProps: {
+    Button: { theme: 'surface3' },
+    Input: { theme: 'surface1' },
+    Progress: { theme: 'surface1' },
+    ProgressIndicator: { theme: 'accent' },
+    SliderTrack: { theme: 'surface3' },
+    SliderTrackActive: { theme: 'accent' },
+    SliderThumb: { theme: 'accent' },
+    Switch: { theme: 'surface2' },
+    SwitchThumb: { theme: 'accent' },
+    TextArea: { theme: 'surface1' },
+    Tooltip: { theme: 'accent' },
+  },
 } satisfies CreateTamaguiProps
 
 // for site responsive demo, but we want no types

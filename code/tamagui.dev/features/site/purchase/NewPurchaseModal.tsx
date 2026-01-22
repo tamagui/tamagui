@@ -301,7 +301,7 @@ export function PurchaseModalContents() {
                 value={currentTab}
                 onValueChange={changeTab}
               >
-                <Tabs.List disablePassBorderRadius>
+                <Tabs.List>
                   <YStack width={'33.3333%'} flex={1}>
                     <Tab isActive={currentTab === 'purchase'} value="purchase">
                       Pro

@@ -150,8 +150,9 @@ const AnimationControl = () => {
           onCheckedChange={(val) =>
             animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
           }
+          bg="$color4"
         >
-          <Switch.Thumb transition="quickest" />
+          <Switch.Thumb transition="medium" bg="$color" />
         </Switch>
         <Waves size={14} opacity={0.6} />
       </XStack>

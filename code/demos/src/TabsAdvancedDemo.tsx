@@ -32,7 +32,11 @@ export const TabsAdvancedDemo = () => {
         l="$4"
         $xxs={{ display: 'none' }}
       >
-        <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button
+          theme="surface3"
+          size="$2"
+          onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}
+        >
           {demosTitle[demo]}
         </Button>
       </XStack>
@@ -122,7 +126,6 @@ const TabsAdvancedBackground = () => {
       </AnimatePresence>
       <YStack position="relative">
         <Tabs.List
-          disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
           gap="$2"
@@ -249,7 +252,6 @@ const TabsAdvancedUnderline = () => {
           )}
         </AnimatePresence>
         <Tabs.List
-          disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
           borderBottomLeftRadius={0}

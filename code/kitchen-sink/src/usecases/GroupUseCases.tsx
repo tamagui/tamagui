@@ -23,10 +23,7 @@ export function GroupUseCases() {
         <Button>api</Button>
       </XGroup>
 
-      <XGroup
-        disablePassBorderRadius
-        testID="simple-api-disabled-border-radius-pass-group"
-      >
+      <XGroup testID="simple-api-group-no-radius-pass">
         <Button>this</Button>
         <Button>is</Button>
         <Button>simple</Button>
@@ -78,7 +75,7 @@ export function GroupUseCases() {
         </XGroup.Item>
       </XGroup>
 
-      <XGroup disablePassBorderRadius testID="composite-api-disabled-border-radius-group">
+      <XGroup testID="composite-api-group-no-radius-pass">
         <XGroup.Item>
           <Button>this</Button>
         </XGroup.Item>

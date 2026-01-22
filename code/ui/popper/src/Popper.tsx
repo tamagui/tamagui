@@ -609,10 +609,16 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       setDisableAnimation(disableAnimationProp)
     }, [disableAnimationProp])
 
+    // when position not calculated yet (hide=true means x===0 && y===0),
+    // don't pass x/y to avoid motion driver capturing 0,0 as starting position
+    // and then animating from 0,0 to the real position (causes visual jump)
+    const positionProps = hide
+      ? {} // omit x/y when hiding - prevents motion from animating from origin
+      : { x: x || 0, y: y || 0 }
+
     const frameProps = {
       ref: contentRefs,
-      x: x || 0,
-      y: y || 0,
+      ...positionProps,
       top: 0,
       left: 0,
       position: strategy,

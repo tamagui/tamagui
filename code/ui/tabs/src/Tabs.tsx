@@ -13,7 +13,7 @@ export const DefaultTabsTabFrame = styled(
   ThemeableStack,
   {
     name: TRIGGER_NAME,
-    render: 'button',
+    role: 'tab',
 
     variants: {
       size: {

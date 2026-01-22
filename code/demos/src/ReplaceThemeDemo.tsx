@@ -36,6 +36,7 @@ export function ReplaceThemeDemo() {
       </XStack>
 
       <Button
+        theme="surface3"
         onPress={() => {
           replaceTheme({
             name: 'mytheme',

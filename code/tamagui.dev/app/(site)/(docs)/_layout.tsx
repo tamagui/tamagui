@@ -53,10 +53,10 @@ export default function DocsLayout() {
         height="100%"
         maxH={1000}
         z={0}
-        colors={['$color1', '$color1']}
+        colors={['$color1', '$accent12']}
       />
 
-      <YStack z={-1} fullscreen bg="$color1" />
+      <YStack z={-1} fullscreen bg="$accent12" />
 
       {/* Sidebar container - no transform wrapper to preserve position:fixed */}
       <YStack
@@ -85,16 +85,6 @@ export default function DocsLayout() {
             width: 245,
           }}
         >
-          <LinearGradient
-            position="absolute"
-            t={0}
-            l={0}
-            r={0}
-            height={100}
-            width={300}
-            z={100}
-            colors={['$background', '$background', '$background0']}
-          />
           <ScrollView>
             <YStack
               display="none"

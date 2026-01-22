@@ -14,10 +14,8 @@ import { createThemes } from '@tamagui/theme-builder'
 import { interpolateColor, opacify } from './opacify'
 import { v5Templates } from './v5-templates'
 
-export const defaultComponentThemes = {
-  Button: { template: 'surface3' },
-  Tooltip: { template: 'inverse' },
-} as const
+// component themes removed in v5 - use defaultProps in your config instead
+// see: https://tamagui.dev/docs/core/config-v5#migrating-from-component-themes
 
 /** Generate named colors from a palette: ['#fff', ...] -> { name1: '#fff', name2: ... } */
 function paletteToNamedColors<N extends string>(name: N, palette: readonly string[]) {
@@ -190,7 +188,8 @@ export type CreateV5ThemeOptions<
    */
   grandChildrenThemes?: GrandChildren
   /**
-   * @deprecated component themes are no longer recommended - configure component styles directly via themes or component defaultProps instead
+   * @deprecated component themes are no longer recommended -
+   * configure component styles directly via themes or component defaultProps instead
    */
   componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes']
 }
@@ -234,7 +233,7 @@ export function createV5Theme<
     lightPalette: customLightPalette = lightPalette,
     childrenThemes = defaultChildrenThemes as unknown as Children,
     grandChildrenThemes = defaultGrandChildrenThemes as unknown as GrandChildren,
-    componentThemes: customComponentThemes = defaultComponentThemes,
+    componentThemes: customComponentThemes = false,
   } = options
 
   // Generate black/white named colors from palettes

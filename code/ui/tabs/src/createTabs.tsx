@@ -161,7 +161,6 @@ export function createTabs<
             aria-controls={contentId}
             data-state={isSelected ? 'active' : 'inactive'}
             data-disabled={disabled ? '' : undefined}
-            disabled={disabled}
             id={triggerId}
             theme={activeTheme ?? null}
             {...(!unstyled && {
@@ -175,6 +174,7 @@ export function createTabs<
               ...(activeStyle as object),
             })}
             {...groupItemProps}
+            disabled={disabled ?? groupItemProps.disabled}
             {...triggerProps}
             ref={composeRefs(forwardedRef, triggerRef)}
             onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
@@ -187,13 +187,9 @@ export function createTabs<
                   (event as unknown as React.MouseEvent).ctrlKey === false)
               if (!disabled && !isSelected && webChecks) {
                 context.onChange(value)
-              } else {
-                // prevent focus to avoid accidental activation
-                event.preventDefault()
               }
             })}
             {...(isWeb && {
-              type: 'button',
               onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
                 if ([' ', 'Enter'].includes(event.key)) {
                   context.onChange(value)

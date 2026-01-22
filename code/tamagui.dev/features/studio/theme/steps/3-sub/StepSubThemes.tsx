@@ -5,7 +5,6 @@ import {
   H6,
   ListItem,
   Paragraph,
-  Separator,
   SizableText,
   XStack,
   YGroup,
@@ -365,12 +364,7 @@ export function BaseThemesStepPreview2() {
         We've now generated the following themes:
       </Paragraph>
 
-      <YGroup
-        separator={<Separator borderWidth={0.5} opacity={0.25} />}
-        borderWidth={1}
-        borderColor="$borderColor"
-        my="$2"
-      >
+      <YGroup borderWidth={1} borderColor="$borderColor" my="$2">
         {fullThemes.map((theme) => {
           return (
             <ListItem

@@ -579,16 +579,23 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
 const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
-  const [height, setHeight] = React.useState(0)
+  const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)
+  const hasMeasured = measuredHeight > 0
+
+  // when open and not measured yet, use auto so SSR shows content
+  // once measured, use numeric height for animations
+  const height = itemContext.open ? (hasMeasured ? measuredHeight : 'auto') : 0
 
   return (
-    <View ref={ref} height={itemContext.open ? height : 0} position="relative" {...rest}>
+    <View ref={ref} height={height} position="relative" {...rest}>
       <View
         position="absolute"
-        width="100%"
+        top={0}
+        left={0}
+        right={0}
         onLayout={({ nativeEvent }) => {
-          if (nativeEvent.layout.height) {
-            setHeight(nativeEvent.layout.height)
+          if (nativeEvent.layout.height && nativeEvent.layout.height !== measuredHeight) {
+            setMeasuredHeight(nativeEvent.layout.height)
           }
         }}
       >

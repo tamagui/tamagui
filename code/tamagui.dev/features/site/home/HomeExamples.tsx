@@ -56,7 +56,6 @@ export const HomeExamples = memo(
 
           <ThemeTint>
             <XGroup
-              scrollable
               borderWidth={1}
               borderColor="$borderColor"
               bg="$color2"

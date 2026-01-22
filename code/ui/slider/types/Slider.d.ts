@@ -71,7 +71,7 @@ declare const SliderTrackActive: React.ForwardRefExoticComponent<Omit<import("@t
 }>> & React.RefAttributes<View>>;
 export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-    size?: SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -81,13 +81,13 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export interface SliderThumbExtraProps {
-    index: number;
+    index?: number;
 }
 export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {
 }
 declare const SliderThumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-    size?: SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -97,7 +97,7 @@ declare const SliderThumb: import("@tamagui/core").TamaguiComponent<Omit<import(
     unstyled?: boolean | undefined;
 }>, "index"> & SliderThumbExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-    size?: SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -161,7 +161,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
     }>> & React.RefAttributes<View>>;
     Thumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
-        size?: SizeTokens | undefined;
+        size?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -171,7 +171,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
         unstyled?: boolean | undefined;
     }>, "index"> & SliderThumbExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbExtraProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
-        size?: SizeTokens | undefined;
+        size?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
@@ -233,7 +233,7 @@ declare const Range: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
 }>> & React.RefAttributes<View>>;
 declare const Thumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-    size?: SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
@@ -243,7 +243,7 @@ declare const Thumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tama
     unstyled?: boolean | undefined;
 }>, "index"> & SliderThumbExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SliderThumbExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-    size?: SizeTokens | undefined;
+    size?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;

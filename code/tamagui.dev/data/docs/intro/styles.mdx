@@ -52,6 +52,8 @@ type CrossPlatformStyles = {
   mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | ... // blend modes
   isolation?: 'auto' | 'isolate'
   boxSizing?: 'border-box' | 'content-box'
+  display?: 'flex' | 'none' | 'contents' | ...  // RN 0.77 adds 'contents' support
+  position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky'  // 'fixed' converts to 'absolute' on native
   outlineColor?: ColorValue
   outlineOffset?: SpaceValue
   outlineStyle?: 'solid' | 'dotted' | 'dashed'

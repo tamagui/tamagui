@@ -4,16 +4,21 @@ import {
   Button,
   Circle,
   type ColorTokens,
+  ListItem,
   Paragraph,
+  Separator,
   Sheet,
   styled,
   Switch as TamaguiSwitch,
   type SwitchProps as TamaguiSwitchProps,
   Text,
   View,
+  XGroup,
   XStack,
+  YGroup,
   YStack,
 } from 'tamagui'
+import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { TimedRender } from './components/TimedRender'
 
 const StyledButton = styled(Button, {
@@ -78,25 +83,74 @@ const RenderCountTest = () => {
 }
 
 export const Sandbox = () => {
-  const [mode, setMode] = useState<'sheet' | 'renderCount'>('renderCount')
+  const [mode, setMode] = useState<'sheet' | 'renderCount' | 'group'>('group')
 
-  if (mode === 'renderCount') {
-    return (
-      <YStack flex={1}>
-        <XStack padding="$2" gap="$2">
-          <Button size="$2" onPress={() => setMode('sheet')}>
-            Sheet Test
-          </Button>
-          <Button size="$2" onPress={() => setMode('renderCount')}>
-            Render Count Test
-          </Button>
-        </XStack>
-        <RenderCountTest />
-      </YStack>
-    )
-  }
+  return (
+    <YStack flex={1}>
+      <XStack padding="$2" gap="$2">
+        <Button size="$2" onPress={() => setMode('sheet')}>
+          Sheet Test
+        </Button>
+        <Button size="$2" onPress={() => setMode('renderCount')}>
+          Render Count Test
+        </Button>
+        <Button size="$2" onPress={() => setMode('group')}>
+          Group Test
+        </Button>
+      </XStack>
+      {mode === 'renderCount' && <RenderCountTest />}
+      {mode === 'sheet' && <SheetTest onBack={() => setMode('renderCount')} />}
+      {mode === 'group' && <GroupTest />}
+    </YStack>
+  )
+}
 
-  return <SheetTest onBack={() => setMode('renderCount')} />
+const GroupTest = () => {
+  return (
+    <YStack p="$3" gap="$4" items="center">
+      <Paragraph>XGroup with buttons:</Paragraph>
+      <XGroup>
+        <XGroup.Item>
+          <Button>First</Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button>Second</Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button>Third</Button>
+        </XGroup.Item>
+      </XGroup>
+
+      <Paragraph>XGroup with icons + responsive size on children:</Paragraph>
+      <XGroup>
+        <XGroup.Item>
+          <Button size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
+            First
+          </Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
+            Second
+          </Button>
+        </XGroup.Item>
+      </XGroup>
+
+      <Paragraph>YGroup with ListItems + Separators:</Paragraph>
+      <YGroup>
+        <YGroup.Item>
+          <ListItem title="First" />
+        </YGroup.Item>
+        <Separator />
+        <YGroup.Item>
+          <ListItem title="Second" subTitle="Second subtitle" />
+        </YGroup.Item>
+        <Separator />
+        <YGroup.Item>
+          <ListItem>Third</ListItem>
+        </YGroup.Item>
+      </YGroup>
+    </YStack>
+  )
 }
 
 const SheetTest = ({ onBack }: { onBack: () => void }) => {

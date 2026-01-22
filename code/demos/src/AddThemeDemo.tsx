@@ -15,6 +15,7 @@ export function AddThemeDemo() {
       </Theme>
 
       <Button
+        theme="surface3"
         disabled={theme === 'superblue'}
         onPress={() => {
           addTheme({

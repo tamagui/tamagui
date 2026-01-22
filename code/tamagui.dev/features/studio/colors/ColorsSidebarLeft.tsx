@@ -31,7 +31,7 @@ const ColorsSidebarPalettes = () => {
             onValueChange={(v) => state.colors.setScheme(v)}
             size="$3"
           >
-            <Tabs.List disablePassBorderRadius bg="transparent" gap="$3">
+            <Tabs.List bg="transparent" gap="$3">
               {Object.values(state.colors.palettesByScheme).map(({ id, name }) => (
                 <Tabs.Tab rounded="$2" value={id} key={id}>
                   <SizableText size="$3" color="$color">

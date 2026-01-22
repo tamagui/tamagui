@@ -171,7 +171,6 @@ export const HomeThemes = memo(function HomeThemes() {
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" gap="$2">
             <XGroup
-              disablePassBorderRadius
               borderWidth={1}
               borderColor="$borderColor"
               p="$2"
@@ -193,7 +192,6 @@ export const HomeThemes = memo(function HomeThemes() {
             </XGroup>
 
             <XGroup
-              disablePassBorderRadius
               borderWidth={1}
               borderColor="$borderColor"
               p="$2"

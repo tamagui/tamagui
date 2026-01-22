@@ -67,11 +67,14 @@ export function ComponentItem({
           shadowRadius={30}
           shadowOffset={{ height: 16, width: 0 }}
           hoverStyle={{
-            bg: '$color3',
+            bg: '$color4',
           }}
           pressStyle={{
             y: 2,
             scale: 0.99,
+          }}
+          $theme-dark={{
+            bg: '$color3',
           }}
         >
           <YStack fullscreen pointerEvents="none" justify="center" items="center" p="$6">
@@ -86,7 +89,7 @@ export function ComponentItem({
           />
         </YStack>
 
-        <YStack flex={1} p="$4" position="relative">
+        <YStack flex={1} flexBasis="auto" p="$4" position="relative">
           <H4 fontFamily="$mono" size="$5" color="$color12">
             {name}
           </H4>

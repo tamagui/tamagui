@@ -52,11 +52,11 @@ function ListItemDemo2() {
       rounded="$4"
       width={240}
       size="$5"
-      separator={<Separator />}
     >
       <YGroup.Item>
         <ListItem title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
       </YGroup.Item>
+      <Separator />
       <YGroup.Item>
         <ListItem title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
       </YGroup.Item>

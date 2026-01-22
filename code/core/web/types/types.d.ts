@@ -813,7 +813,7 @@ type AddWebOnlyStyleProps<A> = {
     [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
 };
 export type WebOnlyValidStyleValues = {
-    position: '-webkit-sticky' | 'fixed' | 'static' | 'sticky';
+    position: '-webkit-sticky';
 };
 export type MediaQueries = {
     [key in MediaQueryKey]: MediaQueryObject;
@@ -1347,6 +1347,7 @@ interface ExtraBaseProps {
 }
 interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, ExtendBaseStackProps, ExtraStyleProps, ExtraBaseProps {
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
+    position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky';
 }
 export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {
 }

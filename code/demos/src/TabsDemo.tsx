@@ -39,7 +39,11 @@ export function TabsDemo() {
         l="$4"
         $maxXs={{ display: 'none' }}
       >
-        <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button
+          theme="surface3"
+          size="$2"
+          onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}
+        >
           {demosTitle[demo]}
         </Button>
       </XStack>
@@ -61,7 +65,7 @@ const HorizontalTabs = () => {
       borderWidth="$0.25"
       borderColor="$borderColor"
     >
-      <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
+      <Tabs.List aria-label="Manage your account">
         <Tabs.Tab
           activeStyle={{
             backgroundColor: '$color3',
@@ -124,7 +128,7 @@ const VerticalTabs = () => {
       overflow="hidden"
       borderColor="$borderColor"
     >
-      <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
+      <Tabs.List aria-label="Manage your account">
         <Tabs.Tab activeStyle={{ backgroundColor: '$color3' }} value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>

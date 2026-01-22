@@ -65,7 +65,6 @@ export function Header(props: HeaderProps) {
   return (
     <>
       <XStack
-        // @ts-ignore
         position="fixed"
         t={0}
         l={0}
