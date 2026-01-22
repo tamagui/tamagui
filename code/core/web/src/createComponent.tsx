@@ -1629,6 +1629,12 @@ export function createComponent<
       neverFlatten: true,
       isHOC: true,
       isStyledHOC: false,
+      // why - because we mutate staticConfig.defaultProps if passed in by createTamagui
+      // BUT if you do ButtonFrame.styleable() now it extends and that mutation doesnt apply to parent
+      // the entire defaultProps pipeline is a mess and should be removed but this makes it work as youd expect
+      get defaultProps() {
+        return extended?.defaultProps || staticConfig?.defaultProps
+      },
     }
   }
 

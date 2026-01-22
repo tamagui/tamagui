@@ -12,8 +12,9 @@ export function themeable<ComponentType extends (props: any) => any>(
     props: ThemeableProps,
     ref
   ) {
+    const defaultTheme = staticConfig?.defaultProps?.theme
     const {
-      theme = staticConfig?.defaultProps?.theme,
+      theme = defaultTheme,
       componentName,
       themeReset = staticConfig?.defaultProps?.themeReset,
       ...rest
@@ -56,9 +57,9 @@ export function themeable<ComponentType extends (props: any) => any>(
       filteredProps ||= {}
       filteredProps.debug = props.debug
     }
-    if ('theme' in props) {
+    if ('theme' in props || defaultTheme) {
       filteredProps ||= {}
-      filteredProps.name = props.theme
+      filteredProps.name = 'theme' in props ? props.theme : defaultTheme
     }
     if ('themeReset' in props) {
       filteredProps ||= {}
