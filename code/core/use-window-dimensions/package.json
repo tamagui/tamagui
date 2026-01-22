@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-window-dimensions",
-  "version": "2.0.0-1769035103261",
+  "version": "2.0.0-1769041757506",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
