@@ -50,7 +50,8 @@ RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
       echo "Cloning bento repository..."; \
       unset GITHUB_TOKEN && \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
-      gh repo clone tamagui/bento && \
+      # TODO: change back to main branch once migrate-tamagui-v2 is merged
+      gh repo clone tamagui/bento -- --branch migrate-tamagui-v2 && \
       gh auth logout --hostname github.com && \
       echo "✅ Bento repository cloned" && \
       echo "REQUIRE_BENTO=true" > /tmp/bento_status; \
