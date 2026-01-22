@@ -32,7 +32,7 @@ We recommend starting with our default config which gives you media queries and
 other nice things:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
 const appConfig = createTamagui(defaultConfig)
@@ -219,7 +219,7 @@ import React, { useMemo } from 'react'
 import { TamaguiProvider, createTamagui } from 'tamagui'
 
 // you usually export this from a tamagui.config.ts file:
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 const tamaguiConfig = createTamagui(defaultConfig)
 
 // make TypeScript type everything based on your config

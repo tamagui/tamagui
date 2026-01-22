@@ -3,8 +3,8 @@ import { AnimatePresence, ResetPresence } from '@tamagui/animate-presence'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { GetProps, StackProps } from '@tamagui/web'
-import { Stack, createStyledContext, styled } from '@tamagui/web'
+import type { GetProps, StackProps, TamaguiElement } from '@tamagui/web'
+import { View, createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
 
 /* -------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ interface CollapsibleProps extends StackProps {
   onOpenChange?(open: boolean): void
 }
 
-const _Collapsible = React.forwardRef<Stack, ScopedProps<CollapsibleProps>>(
+const _Collapsible = React.forwardRef<TamaguiElement, ScopedProps<CollapsibleProps>>(
   (props, forwardedRef) => {
     const {
       __scopeCollapsible,
@@ -60,7 +60,7 @@ const _Collapsible = React.forwardRef<Stack, ScopedProps<CollapsibleProps>>(
           [setOpen]
         )}
       >
-        <Stack
+        <View
           data-state={getState(open)}
           data-disabled={disabled ? '' : undefined}
           {...collapsibleProps}
@@ -79,9 +79,9 @@ _Collapsible.displayName = COLLAPSIBLE_NAME
 
 const TRIGGER_NAME = 'CollapsibleTrigger'
 
-type CollapsibleTriggerProps = GetProps<typeof Stack>
+type CollapsibleTriggerProps = GetProps<typeof View>
 
-const CollapsibleTriggerFrame = styled(Stack, {
+const CollapsibleTriggerFrame = styled(View, {
   name: TRIGGER_NAME,
   render: 'button',
 })
@@ -126,7 +126,7 @@ interface CollapsibleContentProps extends CollapsibleContentExtraProps, YStackPr
 
 const CONTENT_NAME = 'CollapsibleContent'
 
-const CollapsibleContentFrame = styled(Stack, {
+const CollapsibleContentFrame = styled(View, {
   name: CONTENT_NAME,
 })
 

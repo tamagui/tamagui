@@ -23,7 +23,6 @@ import type {
   TextStylePropsBase,
 } from '@tamagui/web'
 import {
-  Stack as WebStack,
   TamaguiProvider as WebTamaguiProvider,
   Text as WebText,
   View as WebView,
@@ -258,7 +257,6 @@ const dontComposePressabilityKeys = {
 // overwrite web versions:
 // putting at the end ensures it overwrites in dist/cjs/index.js
 export const View = WebView as any as RNTamaguiView
-export const Stack = WebStack as any as RNTamaguiView
 export const Text = WebText as any as RNTamaguiText
 
 // easily test type declaration output and if it gets messy:

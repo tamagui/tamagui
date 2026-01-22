@@ -151,7 +151,7 @@ export default () => (
 Components can access theme values using `$` token syntax:
 
 ```tsx
-<Stack backgroundColor="$background" color="$color" />
+<View backgroundColor="$background" color="$color" />
 ```
 
 **Special props:**
@@ -287,16 +287,16 @@ Tokens can be used in component props with the `$` prefix:
 
 ```tsx
 // Space tokens - for margin, padding, gap
-<Stack padding="$4" gap="$2" margin="$3" />
+<View padding="$4" gap="$2" margin="$3" />
 
 // Size tokens - for width, height, dimensions
-<Stack width="$10" height="$6" />
+<View width="$10" height="$6" />
 
 // Color tokens - for colors and backgrounds
-<Stack backgroundColor="$blue5" color="$gray12" />
+<View backgroundColor="$blue5" color="$gray12" />
 
 // Radius tokens - for border-radius
-<Stack borderRadius="$4" />
+<View borderRadius="$4" />
 ```
 
 ## Media Queries
@@ -339,7 +339,7 @@ Media queries can be used as style props or with the `useMedia` hook:
 
 ```tsx
 // As style props (prefix with $)
-<Stack width="100%" $gtLarge={{ width: "50%" }} />
+<View width="100%" $gtLarge={{ width: "50%" }} />
 
 // Using the useMedia hook
 const media = useMedia()
@@ -471,8 +471,8 @@ The following components are available:
 - Spacer
 - Spinner
 - Square
-- Stack
-- Stack
+- View
+- View
 - Switch
   - Switch.Frame
   - Switch.Thumb

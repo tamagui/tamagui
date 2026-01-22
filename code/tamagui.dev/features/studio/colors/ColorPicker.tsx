@@ -6,7 +6,7 @@ import {
   Separator,
   SizableText,
   Slider,
-  Stack,
+  View,
   XStack,
   YStack,
   useDebounce,
@@ -130,7 +130,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
     <XStack ml={20} gap="$4" items="center">
       <Popover hoverable>
         <Popover.Trigger>
-          <Stack
+          <View
             y={4}
             width={24}
             height={24}
@@ -151,7 +151,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
               {!props.value && <Checkerboard rotate="45deg" />}
               <YStack fullscreen bg={hex as any} />
             </YStack>
-          </Stack>
+          </View>
         </Popover.Trigger>
 
         <Popover.Content

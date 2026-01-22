@@ -4,26 +4,26 @@ import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { render } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'
 
-import type { StackProps } from '@tamagui/core'
-import { Stack, TamaguiProvider, createTamagui } from '@tamagui/core'
+import type { ViewProps } from '@tamagui/core'
+import { View, TamaguiProvider, createTamagui } from '@tamagui/core'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 
-const TestStackRenders = ({
+const TestViewRenders = ({
   renderCount,
   ...props
-}: StackProps & { renderCount: { current: number } }) => {
+}: ViewProps & { renderCount: { current: number } }) => {
   return (
     <TamaguiProvider config={conf} defaultTheme="light">
-      <Stack data-test-renders={renderCount} {...props} />
+      <View data-test-renders={renderCount} {...props} />
     </TamaguiProvider>
   )
 }
 
-describe('Stack', () => {
+describe('View', () => {
   test('renders once on mount', async () => {
     const renderCount = { current: 0 }
-    render(<TestStackRenders renderCount={renderCount} />)
+    render(<TestViewRenders renderCount={renderCount} />)
     expect(renderCount.current).toBe(1)
   })
 
@@ -31,7 +31,7 @@ describe('Stack', () => {
   //   const renderCount = { current: 0 }
 
   //   render(
-  //     <TestStackRenders
+  //     <TestViewRenders
   //       renderCount={renderCount}
   //       backgroundColor="blue"
   //       $sm={{ backgroundColor: 'red' }}
@@ -50,7 +50,7 @@ describe('Stack', () => {
   //   const renderCount = { current: 0 }
 
   //   render(
-  //     <TestStackRenders
+  //     <TestViewRenders
   //       renderCount={renderCount}
   //       backgroundColor="blue"
   //       // @ts-ignore

@@ -1,7 +1,7 @@
 import { isWeb } from '@tamagui/constants'
-import { Stack, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
-export const Separator = styled(Stack, {
+export const Separator = styled(View, {
   name: 'Separator',
   borderColor: '$borderColor',
   flexShrink: 0,

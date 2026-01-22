@@ -17,7 +17,6 @@ import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
 import type { TamaguiComponent, TextProps } from '@tamagui/web'
 import {
-  type Stack,
   type ViewProps,
   Text,
   View,
@@ -270,8 +269,8 @@ interface MenuRadioItemProps extends MenuItemProps {
 
 type CheckboxContextValue = { checked: CheckedState }
 
-// type MenuItemIndicatorElement = React.ElementRef<typeof Stack>
-type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>
+// type MenuItemIndicatorElement = React.ElementRef<typeof View>
+type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>
 interface MenuItemIndicatorProps extends PrimitiveSpanProps {
   /**
    * Used to force mounting when more control is needed. Useful when

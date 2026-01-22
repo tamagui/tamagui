@@ -73,8 +73,8 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         l="$4"
         circular
-        elevation="$4"
         onPress={() => paginate(-1)}
+        boxShadow="0 0 10px rgba(0,0,0,0.5)"
         z={100}
       />
 
@@ -86,8 +86,8 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         r="$4"
         circular
-        elevation="$4"
         onPress={() => paginate(1)}
+        boxShadow="0 0 10px rgba(0,0,0,0.5)"
         z={100}
       />
     </XStack>

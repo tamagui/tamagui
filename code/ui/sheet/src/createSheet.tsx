@@ -7,7 +7,7 @@ import type {
   TamaguiComponentExpectingVariants,
   TamaguiElement,
 } from '@tamagui/core'
-import { Stack } from '@tamagui/core'
+import { View } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -15,7 +15,7 @@ import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
 import { forwardRef, memo, useMemo, useEffect, useRef } from 'react'
-import type { View } from 'react-native'
+import type { View as RNView } from 'react-native'
 import { Platform } from 'react-native'
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { getNativeSheet } from './nativeSheet'
@@ -178,7 +178,7 @@ export function createSheet<
             </StackZIndexContext>
 
             {adjustPaddingForOffscreenContent && (
-              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+              <View data-sheet-offscreen-pad height={offscreenSize} width="100%" />
             )}
           </Frame>
         )
@@ -228,7 +228,7 @@ export function createSheet<
     >
   >
 
-  const Sheet = forwardRef<View, SheetProps>(function Sheet(props, ref) {
+  const Sheet = forwardRef<RNView, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 
@@ -262,7 +262,7 @@ export function createSheet<
   }
 
   const Controlled = withStaticProperties(Sheet, components) as any as FunctionComponent<
-    Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<View>
+    Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<RNView>
   > &
     typeof components
 

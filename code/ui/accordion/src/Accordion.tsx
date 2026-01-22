@@ -2,7 +2,7 @@ import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/core'
+import type { GetProps, GetRef, TamaguiElement } from '@tamagui/core'
 import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
@@ -227,7 +227,7 @@ const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext }
   createStyledContext<AccordionImplContextValue>()
 
 type AccordionImplElement = TamaguiElement
-type PrimitiveDivProps = GetProps<typeof Stack>
+type PrimitiveDivProps = GetProps<typeof View>
 interface AccordionImplProps extends PrimitiveDivProps {
   /**
    * Whether or not an accordion is disabled from user interaction.

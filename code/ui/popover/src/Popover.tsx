@@ -16,7 +16,6 @@ import { isWeb } from '@tamagui/constants'
 import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
-  Stack,
   styled,
   Theme,
   useCreateShallowSetState,
@@ -260,7 +259,7 @@ export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>
         context={context}
         zIndex={zIndex}
       >
-        <Stack
+        <View
           passThrough={context.breakpointActive}
           pointerEvents={
             context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
@@ -306,7 +305,7 @@ export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>
               { checkDefaultPrevented: false }
             )}
           />
-        </Stack>
+        </View>
       </PopoverPortal>
     )
   }

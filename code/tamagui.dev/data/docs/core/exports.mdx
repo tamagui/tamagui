@@ -281,9 +281,9 @@ import { ClientOnly } from 'tamagui' // or '@tamagui/core'
 Fetches the type of props for a Tamagui component:
 
 ```tsx
-import { Stack, GetProps, styled } from '@tamagui/core'
+import { View, GetProps, styled } from '@tamagui/core'
 
-const X = styled(Stack, {})
+const X = styled(View, {})
 
 type XProps = GetProps<typeof X>
 ```
@@ -293,9 +293,9 @@ type XProps = GetProps<typeof X>
 Fetches the type of a ref for a Tamagui component, or any React component:
 
 ```tsx
-import { Stack, GetRef, styled } from '@tamagui/core'
+import { View, GetRef, styled } from '@tamagui/core'
 
-const X = styled(Stack, {})
+const X = styled(View, {})
 
 const MyComponent = () => {
   const ref = useRef<GetRef<typeof X>>()

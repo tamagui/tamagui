@@ -47,6 +47,26 @@ Available animation drivers:
   separately from one of the driver entry points above.
 </Notice>
 
+### Cross-Platform Animation Setup
+
+For apps targeting both web and native, you can use different animation drivers
+per platform:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v5'
+import { animations as animationsCSS } from '@tamagui/config/v5-css'
+import { animations as animationsReanimated } from '@tamagui/config/v5-reanimated'
+import { createTamagui, isWeb } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  animations: isWeb ? animationsCSS : animationsReanimated,
+})
+```
+
+This gives you CSS animations on web (smaller bundle, better performance) and
+Reanimated on native (smooth 60fps animations).
+
 ### Available Animations
 
 All v5 animation drivers include these preset animations:

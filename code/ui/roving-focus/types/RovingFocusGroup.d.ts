@@ -1,13 +1,13 @@
-import { Stack } from '@tamagui/core';
+import { View } from '@tamagui/core';
 import * as React from 'react';
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>;
+type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof View>;
 interface RovingFocusGroupImplProps extends Omit<PrimitiveDivProps, 'dir'>, RovingFocusGroupOptions {
     currentTabStopId?: string | null;
     defaultCurrentTabStopId?: string;
     onCurrentTabStopIdChange?: (tabStopId: string | null) => void;
     onEntryFocus?: (event: Event) => void;
 }
-type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>;
+type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>;
 interface RovingFocusItemProps extends PrimitiveSpanProps {
     tabStopId?: string;
     focusable?: boolean;

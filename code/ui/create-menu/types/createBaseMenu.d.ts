@@ -4,7 +4,7 @@ import type { PopperContentProps } from '@tamagui/popper';
 import * as PopperPrimitive from '@tamagui/popper';
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus';
 import type { TamaguiComponent, TextProps } from '@tamagui/web';
-import { type Stack, type ViewProps } from '@tamagui/web';
+import { type ViewProps, View } from '@tamagui/web';
 import type { TamaguiElement } from '@tamagui/web/types';
 import * as React from 'react';
 import type { Image, ImageProps } from 'react-native';
@@ -111,7 +111,7 @@ interface MenuRadioGroupProps extends MenuGroupProps {
 interface MenuRadioItemProps extends MenuItemProps {
     value: string;
 }
-type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>;
+type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>;
 interface MenuItemIndicatorProps extends PrimitiveSpanProps {
     /**
      * Used to force mounting when more control is needed. Useful when

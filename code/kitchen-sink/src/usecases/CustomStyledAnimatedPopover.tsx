@@ -1,4 +1,4 @@
-import { Popover, Stack, Text, Theme, styled } from 'tamagui'
+import { Popover, View, Text, Theme, styled } from 'tamagui'
 
 export const Content = styled(Popover.Content, {
   padding: 0,
@@ -21,8 +21,8 @@ export const Content = styled(Popover.Content, {
 
 export function CustomStyledAnimatedPopover() {
   return (
-    <Stack flex={1} items="center" justify="center" gap="$5">
-      <Stack theme="red">
+    <View flex={1} items="center" justify="center" gap="$5">
+      <View theme="red">
         <Popover>
           <Popover.Trigger>
             <Text>No animation with styled()</Text>
@@ -36,7 +36,7 @@ export function CustomStyledAnimatedPopover() {
             </Content>
           </Theme>
         </Popover>
-      </Stack>
-    </Stack>
+      </View>
+    </View>
   )
 }

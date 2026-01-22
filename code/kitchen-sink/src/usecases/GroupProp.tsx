@@ -1,10 +1,10 @@
-import { Square, Stack, XStack, styled } from 'tamagui'
+import { Square, View, XStack, styled } from 'tamagui'
 
-const GroupTest = styled(Stack, {
+const GroupTest = styled(View, {
   group: 'testy',
 })
 
-const GroupChild = styled(Stack, {
+const GroupChild = styled(View, {
   width: 100,
   height: 100,
   backgroundColor: 'pink',
@@ -70,7 +70,7 @@ const GroupChildMedia = styled(GroupChild, {
 
 export function GroupProp() {
   return (
-    <Stack margin={20}>
+    <View margin={20}>
       <GroupTest>
         <GroupChild id="styled" />
       </GroupTest>
@@ -91,6 +91,6 @@ export function GroupProp() {
           size={100}
         />
       </XStack>
-    </Stack>
+    </View>
   )
 }

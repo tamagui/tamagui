@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 import {
-  Stack,
+  View,
   StyleObjectProperty,
   StyleObjectRules,
   StyleObjectValue,
@@ -39,7 +39,7 @@ describe('getSplitStyles', () => {
 
   test(`prop "aria-required" is passed through`, () => {
     const { viewProps } = simplifiedGetSplitStyles(
-      Stack,
+      View,
       {
         'aria-required': true,
       },
@@ -53,7 +53,7 @@ describe('getSplitStyles', () => {
 
   test(`prop "paddingStart" value 10 becomes "10px"`, () => {
     const out = simplifiedGetSplitStyles(
-      Stack,
+      View,
       {
         paddingStart: 10,
       },
@@ -126,7 +126,7 @@ describe('getSplitStyles', () => {
 
   test(`$theme-light and $theme-dark styles generate the correct CSS selectors`, () => {
     // Test light theme styles
-    const lightThemeStyles = simplifiedGetSplitStyles(Stack, {
+    const lightThemeStyles = simplifiedGetSplitStyles(View, {
       '$theme-light': {
         backgroundColor: 'white',
         color: 'black',
@@ -150,7 +150,7 @@ describe('getSplitStyles', () => {
     expect(lightBgRule || lightThemeString.includes('white')).toBeTruthy()
 
     // Test dark theme styles
-    const darkThemeStyles = simplifiedGetSplitStyles(Stack, {
+    const darkThemeStyles = simplifiedGetSplitStyles(View, {
       '$theme-dark': {
         backgroundColor: 'black',
         color: 'white',
@@ -176,7 +176,7 @@ describe('getSplitStyles', () => {
 
   test(`$theme-light and $theme-dark styles are combined in the same component`, () => {
     // Test both light and dark theme styles in the same component
-    const combinedThemeStyles = simplifiedGetSplitStyles(Stack, {
+    const combinedThemeStyles = simplifiedGetSplitStyles(View, {
       '$theme-light': {
         backgroundColor: 'white',
         color: 'black',
@@ -198,7 +198,7 @@ describe('getSplitStyles', () => {
 
   test(`$theme conditional styles work with nested theme names`, () => {
     // Test more specific theme names like dark_blue
-    const nestedThemeStyles = simplifiedGetSplitStyles(Stack, {
+    const nestedThemeStyles = simplifiedGetSplitStyles(View, {
       '$theme-dark_blue': {
         backgroundColor: 'darkblue',
         color: 'lightblue',
@@ -413,7 +413,7 @@ describe('getSplitStyles', () => {
 })
 
 describe('getSplitStyles - pseudo prop merging', () => {
-  const StyledButton = styled(Stack, {
+  const StyledButton = styled(View, {
     name: 'StyledButton',
     pressStyle: { backgroundColor: 'green' },
     variants: {

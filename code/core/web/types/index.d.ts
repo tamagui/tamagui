@@ -56,7 +56,6 @@ export { forceUpdateThemes } from './hooks/useThemeState';
 export * from './views/Configuration';
 export * from './views/FontLanguage';
 export * from './views/Slot';
-export * from './views/Stack';
 export * from './views/TamaguiProvider';
 export * from './views/Text';
 export * from './views/Theme';

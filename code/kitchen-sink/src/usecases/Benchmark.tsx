@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, StyleSheet, View } from 'react-native'
-import { Stack, Text, styled } from 'tamagui'
+import { View as TamaguiView, Text, styled } from 'tamagui'
 import { ThemeProvider, createBox } from '@shopify/restyle'
 
 const Box = createBox<any>()
@@ -10,7 +10,7 @@ import { TimedRender } from '../components/TimedRender'
 export const Benchmark = () => {
   return (
     <>
-      <Stack
+      <TamaguiView
         // debug="verbose"
         style={[{ backgroundColor: 'red', width: 100, height: 100 }]}
       />
@@ -29,7 +29,7 @@ const BenchStyled = () => {
   )
 }
 
-const StyledStack = styled(Stack, {
+const StyledView = styled(TamaguiView, {
   backgroundColor: 'red',
   paddingTop: 5,
   paddingBottom: 5,
@@ -59,7 +59,7 @@ const BenchTama = () => {
     <BenchmarkFrame name="tamagui">
       <View style={{ flexDirection: 'row' }}>
         {iterArr.map((_, i) => (
-          <StyledStack key={i} />
+          <StyledView key={i} />
         ))}
       </View>
     </BenchmarkFrame>

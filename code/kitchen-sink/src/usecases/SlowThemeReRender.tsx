@@ -1,13 +1,13 @@
-import React from "react";import { Stack, Theme } from '@tamagui/core';
+import React from "react";import { View as TamaguiView, Theme } from '@tamagui/core';
 
-import { Button, View } from 'react-native';
+import { Button, View as RNView } from 'react-native';
 
 const newArray = Array.from(Array(10).keys());
 
 export function SlowThemeReRender() {
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
 
-  const [type, setType] = React.useState<'Stack' | 'View'>('Stack');
+  const [type, setType] = React.useState<'Tamagui' | 'RN'>('Tamagui');
   return (
     <Theme name={theme}>
       <Button
@@ -15,13 +15,13 @@ export function SlowThemeReRender() {
         title={`Toggle Theme ${theme}`}>
       </Button>
       <Button
-        onPress={() => setType(type === 'Stack' ? 'View' : 'Stack')}
+        onPress={() => setType(type === 'Tamagui' ? 'RN' : 'Tamagui')}
         title={
-        type === 'Stack' ? 'Using Stack from Tamagui' : 'Using View with inline styles'} />
+        type === 'Tamagui' ? 'Using View from Tamagui' : 'Using View with inline styles'} />
 
 
 
-      <View
+      <RNView
         style={{
           rowGap: 4,
           flexDirection: 'row',
@@ -29,12 +29,12 @@ export function SlowThemeReRender() {
           flexWrap: 'wrap'
         }}>
 
-        {type === 'Stack' ?
+        {type === 'Tamagui' ?
         newArray.map((item) =>
-        <Stack key={item} backgroundColor="$color" height={50} width={50} />
+        <TamaguiView key={item} backgroundColor="$color" height={50} width={50} />
         ) :
         newArray.map((item) =>
-        <View
+        <RNView
           key={item}
           style={{
             backgroundColor: theme === 'dark' ? 'red' : 'blue',
@@ -43,7 +43,7 @@ export function SlowThemeReRender() {
           }} />
 
         )}
-      </View>
+      </RNView>
     </Theme>);
 
 }

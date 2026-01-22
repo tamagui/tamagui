@@ -82,7 +82,6 @@ export const docsRoutes = [
         title: 'How to Build a Button',
         route: '/docs/guides/how-to-build-a-button',
       },
-      { title: 'Takeout', route: '/docs/guides/takeout' },
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
     ],

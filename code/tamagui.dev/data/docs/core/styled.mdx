@@ -109,7 +109,7 @@ The `render` prop lets you control which element or component is rendered. It ac
 Render as a specific HTML element on web while maintaining native View on mobile:
 
 ```tsx
-const Button = styled(Stack, {
+const Button = styled(View, {
   render: 'button',
   padding: '$4',
   backgroundColor: '$background',
@@ -120,7 +120,7 @@ const Anchor = styled(Text, {
   color: '$blue10',
 })
 
-const Nav = styled(Stack, {
+const Nav = styled(View, {
   render: 'nav',
 })
 ```
@@ -184,7 +184,7 @@ The state object includes:
 You can also override the render prop at runtime:
 
 ```tsx
-const Box = styled(Stack, {
+const Box = styled(View, {
   padding: '$4',
 })
 

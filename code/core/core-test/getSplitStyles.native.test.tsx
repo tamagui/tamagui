@@ -1,4 +1,4 @@
-import { Stack, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
+import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -161,7 +161,7 @@ describe('getSplitStyles', () => {
     }
 
     // Test with light theme
-    const lightResult = getThemeStylesStack(themeProps, 'light')
+    const lightResult = getThemeStylesView(themeProps, 'light')
 
     // Check if light theme values are present in the result
     const lightResultStr = JSON.stringify(lightResult)
@@ -169,7 +169,7 @@ describe('getSplitStyles', () => {
     expect(lightResultStr).toContain('black')
 
     // Test with dark theme
-    const darkResult = getThemeStylesStack(themeProps, 'dark')
+    const darkResult = getThemeStylesView(themeProps, 'dark')
 
     // Check if dark theme values are present in the result
     const darkResultStr = JSON.stringify(darkResult)
@@ -179,7 +179,7 @@ describe('getSplitStyles', () => {
 
   test(`$theme-light and $theme-dark styles don't apply if theme doesn't match`, () => {
     // When using a custom theme that isn't 'light' or 'dark'
-    const customResult = getThemeStylesStack(
+    const customResult = getThemeStylesView(
       {
         '$theme-light': {
           backgroundColor: 'white',
@@ -205,7 +205,7 @@ describe('getSplitStyles', () => {
 })
 
 describe.skip('getSplitStyles - pseudo prop merging', () => {
-  const StyledButton = styled(Stack, {
+  const StyledButton = styled(View, {
     name: 'StyledButton',
     pressStyle: { backgroundColor: 'green' },
     variants: {
@@ -250,7 +250,7 @@ describe.skip('getSplitStyles - pseudo prop merging', () => {
   })
 })
 
-function getSplitStylesFor(props: Record<string, any>, Component = Stack) {
+function getSplitStylesFor(props: Record<string, any>, Component = View) {
   return getSplitStyles(
     props,
     Component.staticConfig,
@@ -275,14 +275,14 @@ function getSplitStylesFor(props: Record<string, any>, Component = Stack) {
   )!
 }
 
-function getThemeStylesStack(
+function getThemeStylesView(
   props: Record<string, any>,
   themeName: string,
   tag?: string
 ) {
   return getSplitStyles(
     props,
-    Stack.staticConfig,
+    View.staticConfig,
     {} as any,
     themeName,
     {

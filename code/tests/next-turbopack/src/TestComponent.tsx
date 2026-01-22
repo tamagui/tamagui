@@ -1,9 +1,9 @@
-import { Stack, Text, styled } from '@tamagui/core'
+import { View, Text, styled } from '@tamagui/core'
 import { useState } from 'react'
 
-const YStack = styled(Stack, { flexDirection: 'column' })
-const Button = styled(Stack, {
-  tag: 'button',
+const YStack = styled(View, { flexDirection: 'column' })
+const Button = styled(View, {
+  render: 'button',
   padding: '$3',
   backgroundColor: '$blue10',
   borderRadius: '$4',

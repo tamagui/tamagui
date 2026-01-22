@@ -1,5 +1,6 @@
 import { Collapsible } from '@tamagui/collapsible';
-import type { GetProps, Stack, TamaguiElement } from '@tamagui/core';
+import type { GetProps, TamaguiElement } from '@tamagui/core';
+import { View } from '@tamagui/core';
 import { H1 } from '@tamagui/text';
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
@@ -51,7 +52,7 @@ interface AccordionImplMultipleProps extends AccordionImplProps {
     onValueChange?(value: string[]): void;
 }
 type AccordionImplElement = TamaguiElement;
-type PrimitiveDivProps = GetProps<typeof Stack>;
+type PrimitiveDivProps = GetProps<typeof View>;
 interface AccordionImplProps extends PrimitiveDivProps {
     /**
      * Whether or not an accordion is disabled from user interaction.

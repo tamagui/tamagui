@@ -1,64 +1,60 @@
-import type { ColorTokens, GetProps, RNExtraProps, SizeTokens } from '@tamagui/web';
+import type { ColorTokens, GetProps, SizeTokens } from '@tamagui/web';
+import type { FunctionComponent, JSX } from 'react';
 type ButtonVariant = 'outlined';
-export type ButtonProps = GetProps<typeof Frame>;
-declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: number | SizeTokens | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | SizeTokens | undefined;
-    circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    bordered?: boolean | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
 export declare const ButtonContext: import("@tamagui/web").StyledContext<{
     size?: SizeTokens;
     variant?: ButtonVariant;
     color?: ColorTokens | string;
 }>;
+type IconProp = JSX.Element | FunctionComponent<{
+    color?: any;
+    size?: any;
+}> | null;
+type ButtonExtraProps = {
+    icon?: IconProp;
+    iconAfter?: IconProp;
+    scaleIcon?: number;
+    iconSize?: SizeTokens;
+};
+declare const ButtonComponent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    size?: number | SizeTokens | undefined;
+    variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+    disabled?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}>, keyof ButtonExtraProps> & ButtonExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ButtonExtraProps, import("@tamagui/web").StackStyleBase, {
+    size?: number | SizeTokens | undefined;
+    variant?: "outlined" | undefined;
+    elevation?: number | SizeTokens | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+    disabled?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}, import("@tamagui/web").StaticConfigPublic>;
 export declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
-    icon?: any;
-    iconAfter?: any;
-    scaleIcon?: number;
-    iconSize?: SizeTokens;
-    onLayout?: RNExtraProps["onLayout"];
-} & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+}>, keyof ButtonExtraProps> & ButtonExtraProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}>, "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
-    icon?: any;
-    iconAfter?: any;
-    scaleIcon?: number;
-    iconSize?: SizeTokens;
-    onLayout?: RNExtraProps["onLayout"];
-}, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & {
-    icon?: any;
-    iconAfter?: any;
-    scaleIcon?: number;
-    iconSize?: SizeTokens;
-    onLayout?: RNExtraProps["onLayout"];
-}, import("@tamagui/web").StackStyleBase, {
+}>, keyof ButtonExtraProps> & ButtonExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ButtonExtraProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
@@ -68,28 +64,14 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        bordered?: boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }>, "onLayout" | "icon" | "iconAfter" | "scaleIcon" | "iconSize"> & {
-        icon?: any;
-        iconAfter?: any;
-        scaleIcon?: number;
-        iconSize?: SizeTokens;
-        onLayout?: RNExtraProps["onLayout"];
-    }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & {
-        icon?: any;
-        iconAfter?: any;
-        scaleIcon?: number;
-        iconSize?: SizeTokens;
-        onLayout?: RNExtraProps["onLayout"];
-    }, import("@tamagui/web").StackStyleBase, {
+    }>, keyof ButtonExtraProps> & ButtonExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ButtonExtraProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        bordered?: boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
@@ -114,7 +96,6 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        bordered?: boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
@@ -125,7 +106,9 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     Icon: (props: {
         children: React.ReactNode;
         scaleIcon?: number;
+        size?: SizeTokens;
     }) => any;
 };
+export type ButtonProps = GetProps<typeof ButtonComponent>;
 export {};
 //# sourceMappingURL=Button.d.ts.map

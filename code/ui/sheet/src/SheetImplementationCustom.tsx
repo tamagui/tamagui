@@ -9,7 +9,7 @@ import {
 } from '@tamagui/constants'
 import {
   LayoutMeasurementController,
-  Stack,
+  View as TamaguiView,
   Theme,
   useConfiguration,
   useDidFinishSSR,
@@ -147,7 +147,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
-    const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
+    const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
       if (!(sheetInsideSheet && open)) return

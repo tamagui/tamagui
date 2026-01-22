@@ -212,8 +212,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             <XStack
               bg="$color5"
               px="$2"
-              py="$1"
-              rounded="$4"
+              py="$0.5"
+              rounded="$3"
               hoverStyle={{
                 bg: '$color4',
               }}
@@ -221,7 +221,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 bg: '$color6',
               }}
             >
-              <SizableText size="$3" color="$color11">
+              <SizableText size="$3" color="$color11" fontWeight="700">
                 v2
               </SizableText>
             </XStack>

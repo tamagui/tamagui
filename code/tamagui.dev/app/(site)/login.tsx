@@ -156,8 +156,6 @@ function SignIn() {
                         disabled={emailAuthDisabledFlag}
                       />
                       <Button
-                        // @ts-expect-error
-                        type="submit"
                         icon={loading ? <Spinner size="small" /> : null}
                         disabled={!email.length || emailAuthDisabledFlag}
                       >

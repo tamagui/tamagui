@@ -2,15 +2,14 @@ import { getFontSize } from '@tamagui/font-size'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { useGetIcon } from '@tamagui/helpers-tamagui'
-import { themeableVariants, YStack } from '@tamagui/stacks'
-import { type SizableTextProps, SizableText, wrapChildrenInText } from '@tamagui/text'
+import { getIcon } from '@tamagui/helpers-tamagui'
+import { YStack } from '@tamagui/stacks'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledContext, styled, View } from '@tamagui/web'
-import type { FunctionComponent, ReactNode, JSX } from 'react'
+import type { FunctionComponent, JSX, ReactNode } from 'react'
 
-type ListItemIconProps = { color?: any; size?: any }
-type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
+type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
 
 type ListItemVariant = 'outlined'
 
@@ -21,7 +20,6 @@ export type ListItemExtraProps = {
   title?: ReactNode
   subTitle?: ReactNode
   iconSize?: SizeTokens
-  fontWeight?: SizableTextProps['fontWeight']
 }
 
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
@@ -204,8 +202,6 @@ const ListItemIcon = (props: {
 
   const iconSize = getFontSize(sizeToken as any) * scaleIcon
 
-  const getIcon = useGetIcon()
-
   return getIcon(children, {
     size: iconSize,
     color: styledContext.color,
@@ -223,13 +219,11 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
       subTitle,
       title,
       iconSize,
-      fontWeight,
       ...rest
     } = propsIn
 
     const size = propsIn.size || '$true'
     const styledContext = context.useStyledContext()
-    const getIcon = useGetIcon()
     const iconSizeNumber = getFontSize(iconSize || (size as any)) * scaleIcon
 
     const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon, i) => {
@@ -249,7 +243,6 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
         ? {
             unstyled: process.env.TAMAGUI_HEADLESS === '1',
             fontSize: propsIn.size,
-            fontWeight,
           }
         : undefined
     )

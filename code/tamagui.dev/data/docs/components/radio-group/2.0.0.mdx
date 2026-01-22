@@ -130,18 +130,18 @@ Use the `createRadioGroup` export to create a fully custom radio group that stil
 
 ```tsx
 import { createRadioGroup, RadioGroupContext } from '@tamagui/radio-group'
-import { styled } from 'tamagui'
+import { styled, View } from 'tamagui'
 
-const CustomFrame = styled(Stack, {
+const CustomFrame = styled(View, {
   // your styles
 })
 
-const CustomItem = styled(Stack, {
+const CustomItem = styled(View, {
   context: RadioGroupContext,
   // your styles
 })
 
-const CustomIndicator = styled(Stack, {
+const CustomIndicator = styled(View, {
   context: RadioGroupContext,
   // your styles
 })

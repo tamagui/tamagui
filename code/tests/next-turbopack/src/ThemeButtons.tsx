@@ -1,11 +1,11 @@
 'use client'
 
-import { Stack, Text, styled } from '@tamagui/core'
+import { View, Text, styled } from '@tamagui/core'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { useEffect, useState } from 'react'
 
-const XStack = styled(Stack, { flexDirection: 'row' })
-const Button = styled(Stack, {
+const XStack = styled(View, { flexDirection: 'row' })
+const Button = styled(View, {
   render: 'button',
   padding: '$3',
   backgroundColor: '$blue10',

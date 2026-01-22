@@ -83,8 +83,8 @@ function generateMarkdown(config: any): string {
       if (settings.onlyAllowShorthands) {
         sections.push('**You MUST use shorthand properties in this project.**\n\n')
         sections.push('Full property names are not allowed. For example:\n')
-        sections.push('- ✅ `<Stack w="$10" />` (correct)\n')
-        sections.push('- ❌ `<Stack width="$10" />` (will error)\n\n')
+        sections.push('- ✅ `<View w="$10" />` (correct)\n')
+        sections.push('- ❌ `<View width="$10" />` (will error)\n\n')
         sections.push(
           'See the Shorthand Properties section below for all available shorthands.\n\n'
         )
@@ -350,7 +350,7 @@ function generateMarkdown(config: any): string {
   sections.push('Components can access theme values using `$` token syntax:\n\n')
   sections.push('```tsx\n')
   sections.push(
-    `<Stack ${getPropName('backgroundColor')}="$background" ${getPropName('color')}="$color" />\n`
+    `<View ${getPropName('backgroundColor')}="$background" ${getPropName('color')}="$color" />\n`
   )
   sections.push('```\n\n')
 
@@ -463,18 +463,18 @@ function generateMarkdown(config: any): string {
   sections.push('```tsx\n')
   sections.push('// Space tokens - for margin, padding, gap\n')
   sections.push(
-    `<Stack ${getPropName('padding')}="$4" ${getPropName('gap')}="$2" ${getPropName('margin')}="$3" />\n\n`
+    `<View ${getPropName('padding')}="$4" ${getPropName('gap')}="$2" ${getPropName('margin')}="$3" />\n\n`
   )
   sections.push('// Size tokens - for width, height, dimensions\n')
   sections.push(
-    `<Stack ${getPropName('width')}="$10" ${getPropName('height')}="$6" />\n\n`
+    `<View ${getPropName('width')}="$10" ${getPropName('height')}="$6" />\n\n`
   )
   sections.push('// Color tokens - for colors and backgrounds\n')
   sections.push(
-    `<Stack ${getPropName('backgroundColor')}="$blue5" ${getPropName('color')}="$gray12" />\n\n`
+    `<View ${getPropName('backgroundColor')}="$blue5" ${getPropName('color')}="$gray12" />\n\n`
   )
   sections.push('// Radius tokens - for border-radius\n')
-  sections.push(`<Stack ${getPropName('borderRadius')}="$4" />\n`)
+  sections.push(`<View ${getPropName('borderRadius')}="$4" />\n`)
   sections.push('```\n\n')
 
   // Media queries
@@ -501,7 +501,7 @@ function generateMarkdown(config: any): string {
     const firstMediaName = mediaEntries[0]?.[0]
     if (firstMediaName) {
       sections.push(
-        `<Stack ${getPropName('width')}="100%" $${firstMediaName}={{ ${getPropName('width')}: "50%" }} />\n\n`
+        `<View ${getPropName('width')}="100%" $${firstMediaName}={{ ${getPropName('width')}: "50%" }} />\n\n`
       )
     }
 

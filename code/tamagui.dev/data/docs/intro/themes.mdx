@@ -92,9 +92,9 @@ Every Tamagui `styled()` component looks for its own specific theme if you pass
 it the `name` property. For example:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-const Circle = styled(Stack, {
+const Circle = styled(View, {
   name: 'Circle',
   backgroundColor: '$background',
 })
@@ -220,9 +220,9 @@ If you are building a component with more than one sub-components, you can
 follow this pattern:
 
 ```tsx
-import { GetProps, Stack, Text, styled } from 'tamagui' // or '@tamagui/core'
+import { GetProps, View, Text, styled } from 'tamagui' // or '@tamagui/core'
 
-const ButtonFrame = styled(Stack, {
+const ButtonFrame = styled(View, {
   name: 'Button',
   backgroundColor: '$background',
 })

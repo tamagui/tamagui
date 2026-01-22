@@ -219,15 +219,12 @@ const HeroContents = memo(function HeroContents() {
             <Link asChild href="/docs/intro/introduction">
               <Button
                 aria-label="Get started (docs)"
-                group="item"
-                containerType="normal"
-                componentName=""
                 size="$5"
                 rounded={1000}
-                bordered
+                variant="outlined"
                 borderWidth={2}
                 mx="$2"
-                tabIndex="0"
+                tabIndex={0}
                 elevation="$1"
                 pressStyle={{
                   elevation: '$0',

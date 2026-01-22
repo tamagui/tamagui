@@ -8,15 +8,10 @@ animations, shorthands, and settings.
 
 First, create a `tamagui.config.ts` file.
 
-We recommend
-[starting with our preset configuration, `@tamagui/config`](/docs/core/config-v4),
-the current version being `@tamagui/config/v4`:
-
 <Notice theme="blue">
-  **v5 config beta**: `@tamagui/config/v5` is now available in beta. It improves
-  themes and aligns default style values to modern React Native. Note that it
-  may not work perfectly with Bento or some docs examples until we move those to
-  v5 in the next major release.
+  We recommend starting with [`@tamagui/config/v5`](/docs/core/config-v5), our
+  preset configuration with sensible defaults, Tailwind-aligned shorthands, and
+  a complete theme system.
 </Notice>
 
 ```bash
@@ -24,7 +19,7 @@ npm install @tamagui/config
 ```
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import { createTamagui } from 'tamagui'
 
 export const config = createTamagui({
@@ -44,7 +39,7 @@ declare module 'tamagui' {
 
 We find most people are best off with this as it saves a lot of time, shares
 shorthands with Tailwind, and has a lot of refinement. For more on our default
-configuration, go to [the next page](/docs/core/config-v4).
+configuration, go to [the next page](/docs/core/config-v5).
 
 Here's an example of a stripped down configuration to get a feel for the most
 common concepts:

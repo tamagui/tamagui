@@ -136,7 +136,6 @@ export {
   GroupContext,
   FontLanguage,
   // components
-  Stack,
   Theme,
   View,
   createComponent,

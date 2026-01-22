@@ -1,10 +1,10 @@
-import { Stack } from 'tamagui'
+import { View } from 'tamagui'
 
 export function ShorthandVariables() {
   return (
-    <Stack gap="$4" padding="$4">
+    <View gap="$4" padding="$4">
       {/* boxShadow with $variable - works on web and native (RN 0.76+) */}
-      <Stack
+      <View
         testID="boxshadow-var"
         id="boxshadow-var"
         width={100}
@@ -14,7 +14,7 @@ export function ShorthandVariables() {
       />
 
       {/* boxShadow with multiple $variables */}
-      <Stack
+      <View
         testID="boxshadow-multi"
         id="boxshadow-multi"
         width={100}
@@ -24,7 +24,7 @@ export function ShorthandVariables() {
       />
 
       {/* border with $variable - use individual props for cross-platform */}
-      <Stack
+      <View
         testID="border-var"
         id="border-var"
         width={100}
@@ -36,7 +36,7 @@ export function ShorthandVariables() {
       />
 
       {/* boxShadow without variables (passthrough) */}
-      <Stack
+      <View
         testID="boxshadow-plain"
         id="boxshadow-plain"
         width={100}
@@ -44,6 +44,6 @@ export function ShorthandVariables() {
         backgroundColor="$background"
         boxShadow="0px 0px 10px rgba(0, 0, 0, 0.2)"
       />
-    </Stack>
+    </View>
   )
 }

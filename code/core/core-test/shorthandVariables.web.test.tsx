@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { Stack, createTamagui, StyleObjectValue } from '../web/src'
+import { View, createTamagui, StyleObjectValue } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -26,7 +26,7 @@ function getBoxShadowValue(styles: ReturnType<typeof simplifiedGetSplitStyles>):
 
 describe('shorthand variables - web', () => {
   test('boxShadow with $variable resolves to CSS var', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $white',
     })
     const value = getBoxShadowValue(styles)
@@ -37,7 +37,7 @@ describe('shorthand variables - web', () => {
   })
 
   test('boxShadow with color token resolves', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $black',
     })
     const value = getBoxShadowValue(styles)
@@ -46,7 +46,7 @@ describe('shorthand variables - web', () => {
   })
 
   test('boxShadow with multiple variables resolves all', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $white, 0 0 20px $black',
     })
     const value = getBoxShadowValue(styles)
@@ -56,7 +56,7 @@ describe('shorthand variables - web', () => {
   })
 
   test('boxShadow without variables passes through unchanged', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px red',
     })
     const value = getBoxShadowValue(styles)
@@ -70,7 +70,7 @@ describe('shorthand variables - web', () => {
   test.skip('borderTop with $variable resolves correctly (web-only)', () => {})
 
   test('unresolvable $variable stays as-is', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $nonexistent',
     })
     const value = getBoxShadowValue(styles)
@@ -80,7 +80,7 @@ describe('shorthand variables - web', () => {
   })
 
   test('$variable.with.dots resolves correctly', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $color.white',
     })
     const value = getBoxShadowValue(styles)

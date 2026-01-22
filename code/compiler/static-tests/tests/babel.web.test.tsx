@@ -29,10 +29,10 @@ import { View } from '@tamagui/core'
 test('theme + media queries + conditionals extract', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Stack
+        <View
           theme="surface1"
           $sm={{ flexDirection: 'column' }}
           {...(onlyDemo && {
@@ -62,10 +62,10 @@ test('theme + media queries + conditionals extract', async () => {
 test('conditional specific after generic style overrides', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Stack
+        <View
           p="$2"                              // base padding
           pb={floating ? 18 : 15}             // should override bottom
           mr={floating2 ? 2 : 1}              // unrelated ternary
@@ -93,10 +93,10 @@ test('conditional specific after generic style overrides', async () => {
 test('conditional styles get full base styles merged onto + shorthand', async () => {
   const output = await extractForWeb(
     `
-import { Stack } from '@tamagui/core'
+import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Stack width={10} bg={props.green ? 'red' : 'blue'} />
+        <View width={10} bg={props.green ? 'red' : 'blue'} />
       )
     }
   `,
@@ -115,10 +115,10 @@ import { Stack } from '@tamagui/core'
 test('className + conditional styles get full base styles merged onto + shorthand', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Stack width={10} bg={props.green ? 'red' : 'blue'} className={props.className} />
+        <View width={10} bg={props.green ? 'red' : 'blue'} className={props.className} />
       )
     }
   `,
@@ -543,11 +543,11 @@ test('conditional spread with local variable preserves ternary', async () => {
 test('conditional spread with hoverStyle preserves ternary', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
 
     export function Test({ isActive }) {
       return (
-        <Stack
+        <View
           backgroundColor="red"
           cursor="pointer"
           hoverStyle={{ backgroundColor: 'green' }}
@@ -672,10 +672,10 @@ test('role attribute is preserved during extraction', async () => {
 test('boxShadow with $variable extracts correctly', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
 
     export function Test() {
-      return <Stack boxShadow="0 0 10px $background" />
+      return <View boxShadow="0 0 10px $background" />
     }
   `,
     {
@@ -695,10 +695,10 @@ test('boxShadow with $variable extracts correctly', async () => {
 test.skip('border with $variable extracts correctly', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
 
     export function Test() {
-      return <Stack border="1px solid $background" />
+      return <View border="1px solid $background" />
     }
   `,
     {
@@ -717,10 +717,10 @@ test.skip('border with $variable extracts correctly', async () => {
 test('boxShadow with multiple $variables extracts correctly', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
 
     export function Test() {
-      return <Stack boxShadow="0 0 10px $background, 0 0 20px $color" />
+      return <View boxShadow="0 0 10px $background, 0 0 20px $color" />
     }
   `,
     {

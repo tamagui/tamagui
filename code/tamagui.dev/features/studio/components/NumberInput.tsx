@@ -43,7 +43,7 @@ export function NumberInput({
     <>
       <Button
         disabled={!canDecrease}
-        bordered
+        variant="outlined"
         size={size}
         icon={Minus}
         onPress={() => {
@@ -63,7 +63,7 @@ export function NumberInput({
       />
       <Button
         disabled={!canIncrease}
-        bordered
+        variant="outlined"
         size={size}
         icon={Plus}
         onPress={() => {

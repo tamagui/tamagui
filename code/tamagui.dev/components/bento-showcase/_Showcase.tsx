@@ -11,7 +11,6 @@ import {
   ScrollView,
   SizableText,
   Spinner,
-  Stack,
   Text,
   ThemeableStack,
   View,
@@ -460,7 +459,7 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
             justify="center"
             group
           >
-            <Stack
+            <View
               maxH="50%"
               width={8}
               bg="$background04"

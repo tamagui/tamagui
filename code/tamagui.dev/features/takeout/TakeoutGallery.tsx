@@ -373,7 +373,7 @@ const ImagesCarousel = () => {
         position="absolute"
         l="$4"
         circular
-        elevation="$2"
+        boxShadow="0 0 10px $shadowColor"
         onPress={() => store.paginateGallery(-1)}
       />
       <Button
@@ -383,7 +383,7 @@ const ImagesCarousel = () => {
         position="absolute"
         r="$4"
         circular
-        elevation="$2"
+        boxShadow="0 0 10px $shadowColor"
         onPress={() => store.paginateGallery(1)}
       />
     </XStack>

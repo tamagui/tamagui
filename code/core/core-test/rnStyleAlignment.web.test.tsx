@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { Stack, createTamagui, StyleObjectValue } from '../web/src'
+import { View, createTamagui, StyleObjectValue } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -31,7 +31,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
   // boxShadow and filter are string-only
   describe('boxShadow', () => {
     test('boxShadow string with tokens resolves', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         boxShadow: '0 0 10px $white',
       })
       const value = getStyleValue(styles, 'boxShadow')
@@ -40,7 +40,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('boxShadow string passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         boxShadow: '5px 5px 10px red',
       })
       const value = getStyleValue(styles, 'boxShadow')
@@ -48,7 +48,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('boxShadow multiple shadows', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         boxShadow: '0 0 10px red, 0 0 20px blue',
       })
       const value = getStyleValue(styles, 'boxShadow')
@@ -56,7 +56,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('boxShadow inset syntax', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         boxShadow: 'inset 0 2px 4px black',
       })
       const value = getStyleValue(styles, 'boxShadow')
@@ -64,7 +64,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('boxShadow with multiple tokens resolves all', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         boxShadow: '0 0 10px $white, 0 0 20px $black',
       })
       const value = getStyleValue(styles, 'boxShadow')
@@ -76,7 +76,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
   describe('filter', () => {
     test('filter string passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         filter: 'brightness(1.2)',
       })
       const value = getStyleValue(styles, 'filter')
@@ -84,7 +84,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('filter with embedded tokens resolves', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         filter: 'blur($2)',
       })
       const value = getStyleValue(styles, 'filter')
@@ -93,7 +93,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('filter multiple functions', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         filter: 'blur(10px) brightness(1.2)',
       })
       const value = getStyleValue(styles, 'filter')
@@ -101,7 +101,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('filter drop-shadow', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         filter: 'drop-shadow(5px 5px 10px red)',
       })
       const value = getStyleValue(styles, 'filter')
@@ -111,7 +111,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
   describe('mixBlendMode', () => {
     test('mixBlendMode passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         mixBlendMode: 'multiply',
       })
       const value = getStyleValue(styles, 'mixBlendMode')
@@ -121,7 +121,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
   describe('isolation', () => {
     test('isolation passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         isolation: 'isolate',
       })
       const value = getStyleValue(styles, 'isolation')
@@ -131,7 +131,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
   describe('boxSizing', () => {
     test('boxSizing passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         boxSizing: 'content-box',
       })
       const value = getStyleValue(styles, 'boxSizing')
@@ -141,7 +141,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
   describe('outline props', () => {
     test('outlineColor with token resolves', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         outlineColor: '$white',
       })
       const value = getStyleValue(styles, 'outlineColor')
@@ -149,7 +149,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('outlineWidth passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         outlineWidth: 2,
       })
       const value = getStyleValue(styles, 'outlineWidth')
@@ -157,7 +157,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('outlineStyle passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         outlineStyle: 'dashed',
       })
       const value = getStyleValue(styles, 'outlineStyle')
@@ -165,7 +165,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
     })
 
     test('outlineOffset passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         outlineOffset: 4,
       })
       const value = getStyleValue(styles, 'outlineOffset')
@@ -175,7 +175,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
   describe('display contents', () => {
     test('display contents passes through', () => {
-      const styles = simplifiedGetSplitStyles(Stack, {
+      const styles = simplifiedGetSplitStyles(View, {
         display: 'contents',
       })
       const value = getStyleValue(styles, 'display')

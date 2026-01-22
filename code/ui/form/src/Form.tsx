@@ -1,12 +1,12 @@
 import type { StackProps, TamaguiElement } from '@tamagui/core'
-import { Stack, View, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 
 const FORM_NAME = 'Form'
 
-export const FormFrame = styled(Stack, {
+export const FormFrame = styled(View, {
   name: FORM_NAME,
   render: 'form',
 })
