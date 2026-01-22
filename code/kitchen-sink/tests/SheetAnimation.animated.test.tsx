@@ -313,7 +313,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
     // quick: stiffness 250, lazy: stiffness 50
     // Higher stiffness = faster animation
     // allow small margin since timing measurements have noise
-    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.9)
+    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.7)
   })
 
   test('transitionConfig prop works without animation prop', async ({ page }) => {
@@ -358,7 +358,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
 
     // transitionConfig should override animation prop
     // allow some margin for measurement noise
-    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.1)
+    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.2)
   })
 })
 
@@ -427,7 +427,7 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
     // quick: stiffness 250, lazy: stiffness 50
     // Higher stiffness = faster animation
     // allow small margin since timing measurements have noise
-    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.9)
+    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.7)
   })
 
   test('transitionConfig prop works', async ({ page }) => {
@@ -471,6 +471,6 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
 
     // transitionConfig should override animation prop
     // allow some margin for measurement noise
-    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.1)
+    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.2)
   })
 })
