@@ -7,9 +7,14 @@ export type HSL = {
 };
 /** callback receives hsl and 1-based index, returns adjusted hsl */
 export type AdjustFn = (hsl: HSL, index: number) => HSL;
+/** parse hsl string to HSL object */
 export declare function parseHSL(str: string): HSL | null;
+/** parse hex color to HSL object */
+export declare function parseHex(str: string): HSL | null;
+/** parse any color format to HSL */
+export declare function parseColor(str: string): HSL | null;
 export declare function hslToString(hsl: HSL): string;
-/** adjust a palette of hsl colors using a callback */
+/** adjust a palette of colors (hsl or hex) using a callback */
 export declare function adjustPalette(palette: Record<string, string>, fn: AdjustFn): Record<string, string>;
 type SingleAdjustment = {
     light?: AdjustFn;

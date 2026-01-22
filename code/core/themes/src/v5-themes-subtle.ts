@@ -27,14 +27,19 @@ export const v5SubtlePaletteAdjustments: PaletteAdjustments<
     }),
   },
   yellow: {
-    light: (hsl) => ({
-      ...hsl,
-      s: hsl.s * 0.65,
-      l: hsl.l * 1.02,
-    }),
+    light: (hsl, i) => {
+      // progressively darken and desaturate toward text colors for better contrast
+      // i=1 is lightest bg, i=12 is darkest text
+      const t = (i - 1) / 11 // 0 to 1
+      return {
+        ...hsl,
+        s: hsl.s * (0.65 - t * 0.25), // 0.65 -> 0.4
+        l: hsl.l * (1.02 - t * 0.22), // 1.02 -> 0.8
+      }
+    },
     dark: (hsl, i) => ({
       ...hsl,
-      s: hsl.s * (i <= 7 ? 0.24 : 1),
+      s: hsl.s * (i <= 7 ? 0.24 : 0.6),
       l: hsl.l * (i <= 4 ? 0.65 : 1.1),
     }),
   },

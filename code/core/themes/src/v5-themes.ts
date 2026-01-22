@@ -32,16 +32,57 @@ export type HSL = { h: number; s: number; l: number }
 /** callback receives hsl and 1-based index, returns adjusted hsl */
 export type AdjustFn = (hsl: HSL, index: number) => HSL
 
+/** parse hsl string to HSL object */
 export function parseHSL(str: string): HSL | null {
   const m = str.match(/hsl\((\d+(?:\.\d+)?),\s*(\d+(?:\.\d+)?)%,\s*(\d+(?:\.\d+)?)%\)/)
   return m ? { h: +m[1]!, s: +m[2]!, l: +m[3]! } : null
+}
+
+/** parse hex color to HSL object */
+export function parseHex(str: string): HSL | null {
+  if (!str.startsWith('#')) return null
+  let hex = str.slice(1)
+  if (hex.length === 3) {
+    hex = hex
+      .split('')
+      .map((c) => c + c)
+      .join('')
+  }
+  if (hex.length !== 6) return null
+
+  const r = Number.parseInt(hex.slice(0, 2), 16) / 255
+  const g = Number.parseInt(hex.slice(2, 4), 16) / 255
+  const b = Number.parseInt(hex.slice(4, 6), 16) / 255
+
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  const l = (max + min) / 2
+
+  if (max === min) {
+    return { h: 0, s: 0, l: l * 100 }
+  }
+
+  const d = max - min
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+
+  let h = 0
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6
+  else if (max === g) h = ((b - r) / d + 2) / 6
+  else h = ((r - g) / d + 4) / 6
+
+  return { h: Math.round(h * 360), s: s * 100, l: l * 100 }
+}
+
+/** parse any color format to HSL */
+export function parseColor(str: string): HSL | null {
+  return parseHSL(str) ?? parseHex(str)
 }
 
 export function hslToString(hsl: HSL): string {
   return `hsl(${hsl.h}, ${Math.round(Math.min(100, Math.max(0, hsl.s)))}%, ${Math.round(Math.min(100, Math.max(0, hsl.l)))}%)`
 }
 
-/** adjust a palette of hsl colors using a callback */
+/** adjust a palette of colors (hsl or hex) using a callback */
 export function adjustPalette(
   palette: Record<string, string>,
   fn: AdjustFn
@@ -51,7 +92,7 @@ export function adjustPalette(
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]!
-    const parsed = parseHSL(palette[key]!)
+    const parsed = parseColor(palette[key]!)
     if (!parsed) {
       out[key] = palette[key]!
       continue
