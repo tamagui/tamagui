@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animation-helpers",
-  "version": "2.0.0-1769048466315",
+  "version": "2.0.0-1769080004701",
   "type": "module",
   "source": "src/index.ts",
   "sideEffects": false,
