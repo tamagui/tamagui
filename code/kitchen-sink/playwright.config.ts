@@ -44,7 +44,7 @@ export default defineConfig({
 
   // Run your local dev server before starting the tests.
   webServer: {
-    command: `PORT=${port} npm run start:web`,
+    command: `PORT=${port} bun run start:web`,
     url: `http://localhost:${port}`,
     reuseExistingServer: !process.env.CI,
   },

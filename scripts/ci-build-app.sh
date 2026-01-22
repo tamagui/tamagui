@@ -4,9 +4,9 @@ app="$APP_NAME"
 echo "Building $app"
 
 if [ "$app" = "takeout" ]; then
-  yarn takeout:build
+  bun run takeout:build
 elif [ "$app" = "docs" ]; then
-  yarn docs:build
+  bun run docs:build
 else
-  yarn dev:build
+  bun run dev:build
 fi

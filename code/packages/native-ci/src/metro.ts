@@ -103,7 +103,7 @@ export function startMetro(): MetroProcess {
 
   // Use --clear to reset the Metro cache - ensures fresh transforms
   // This is important for CI where cache from previous runs might cause issues
-  const proc = Bun.spawn(['yarn', 'expo', 'start', '--dev-client', '--offline', '--clear'], {
+  const proc = Bun.spawn(['bun', 'expo', 'start', '--dev-client', '--offline', '--clear'], {
     env: { ...process.env, EXPO_NO_TELEMETRY: 'true' },
     stdout: 'inherit',
     stderr: 'inherit',

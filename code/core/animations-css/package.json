@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "2.0.0-1769048466315",
+  "version": "2.0.0-1768992908401",
   "type": "module",
   "source": "src/index.ts",
   "sideEffects": false,
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*"
   },
   "scripts": {
@@ -53,7 +53,7 @@
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*"
   }
 }

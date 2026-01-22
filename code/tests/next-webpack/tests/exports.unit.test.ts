@@ -8,7 +8,7 @@ const APP_SCREEN_PATH = join(ROOT_DIR, 'packages/app/features/home/screen.tsx')
 
 function resetAppPackage() {
   try {
-    execSync(`yarn test:clean`, {
+    execSync(`bun run test:clean`, {
       cwd: ROOT_DIR,
       stdio: 'pipe',
     })
@@ -29,7 +29,7 @@ describe('Package.json exports support', () => {
   it('should build app package for both web and native targets', () => {
     // Build the features directory (contains screen.tsx for testing)
     // Note: Building whole packages/app hangs due to expo-constants issues in provider/
-    const result = execSync(`yarn tamagui build ./packages/app/features`, {
+    const result = execSync(`bun tamagui build ./packages/app/features`, {
       cwd: ROOT_DIR,
       encoding: 'utf-8',
       stdio: 'pipe',
@@ -84,7 +84,7 @@ describe('Package.json exports support', () => {
   it('should recognize imports from path-specific exports during optimization', () => {
     // Build just the screen.tsx which uses path-specific imports
     const result = execSync(
-      `yarn tamagui build ./packages/app/features/home/screen.tsx`,
+      `bun tamagui build ./packages/app/features/home/screen.tsx`,
       {
         cwd: ROOT_DIR,
         encoding: 'utf-8',

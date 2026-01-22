@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "2.0.0-1769048466315",
+  "version": "2.0.0-1768992908401",
   "private": true,
   "type": "module",
   "scripts": {
@@ -29,8 +29,8 @@
     "@tamagui/toast": "workspace:*",
     "@vxrn/color-scheme": "^1.2.66",
     "expo": "^54.0.23",
-    "one": "1.2.72",
-    "react": "*",
+    "one": "1.2.66",
+    "react": ">=19",
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
