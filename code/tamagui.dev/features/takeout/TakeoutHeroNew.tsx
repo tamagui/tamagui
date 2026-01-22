@@ -1,5 +1,5 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { Check, Copy } from '@tamagui/lucide-icons'
+import { Check, Copy, ExternalLink } from '@tamagui/lucide-icons'
 import { Suspense, lazy } from 'react'
 import { Button, Paragraph, Theme, XStack, YStack, styled } from 'tamagui'
 
@@ -125,6 +125,7 @@ export function TakeoutHeroNew({
             size="$4"
           >
             Free
+            <ExternalLink size={10} opacity={0.5} />
           </ButtonLink>
           <PurchaseButton onPress={onBuyPress} size="$4" theme="accent">
             Pro

@@ -1,5 +1,5 @@
 export { createThemes } from '@tamagui/theme-builder'
-export { themes } from './generated-v5'
+export { themes } from './generated-v5-subtle'
 export { v5Templates } from './v5-templates'
 export {
   createV5Theme,

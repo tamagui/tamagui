@@ -1,0 +1,55 @@
+/**
+ * Subtle v5 themes - pre-built desaturated color themes
+ */
+
+import {
+  adjustPalettes,
+  createV5Theme,
+  defaultChildrenThemes,
+  type PaletteAdjustments,
+} from './v5-themes'
+
+export const v5SubtlePaletteAdjustments: PaletteAdjustments<
+  typeof defaultChildrenThemes
+> = {
+  default: {
+    light: (hsl) => ({
+      ...hsl,
+      s: hsl.s * 0.9,
+      l: hsl.l * 1.02,
+    }),
+    dark: (hsl, i) => ({
+      ...hsl,
+      s: hsl.s * (i <= 4 ? 0.5 : 0.9),
+      l: hsl.l * (i <= 4 ? 0.65 : 0.88),
+    }),
+  },
+  yellow: {
+    light: (hsl) => ({
+      ...hsl,
+      s: hsl.s * 0.65,
+      l: hsl.l * 1.02,
+    }),
+    dark: (hsl, i) => ({
+      ...hsl,
+      s: hsl.s * (i <= 7 ? 0.24 : 1),
+      l: hsl.l * (i <= 4 ? 0.65 : 1.1),
+    }),
+  },
+}
+
+export const subtleChildrenThemes = adjustPalettes(defaultChildrenThemes, {
+  ...v5SubtlePaletteAdjustments,
+  gray: undefined, // skip
+  neutral: undefined, // skip
+})
+
+export const themes = createV5Theme({ childrenThemes: subtleChildrenThemes })
+
+// type checks - don't remove
+themes.dark.background0075
+themes.dark_yellow.background0075
+themes.dark.background
+themes.dark.accent1
+// @ts-expect-error
+themes.dark.nonValid

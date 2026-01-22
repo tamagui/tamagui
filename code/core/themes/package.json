@@ -7,8 +7,9 @@
   "module": "dist/esm",
   "sideEffects": false,
   "scripts": {
-    "generate": "yarn generate:v1 && yarn generate:v3 && yarn generate:v4 && yarn generate:v4-tamagui && yarn generate:v5",
+    "generate": "yarn generate:v1 && yarn generate:v3 && yarn generate:v4 && yarn generate:v4-tamagui && yarn generate:v5 && yarn generate:v5-subtle",
     "generate:v5": "tamagui generate-themes ./src/v5-themes.ts ./src/generated-v5.ts",
+    "generate:v5-subtle": "tamagui generate-themes ./src/v5-themes-subtle.ts ./src/generated-v5-subtle.ts",
     "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
     "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
@@ -79,6 +80,17 @@
       "module": "./dist/esm/v5.mjs",
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs"
+    },
+    "./v5-subtle": {
+      "react-native": {
+        "module": "./dist/esm/v5-subtle.native.js",
+        "import": "./dist/esm/v5-subtle.native.js",
+        "require": "./dist/cjs/v5-subtle.native.js"
+      },
+      "types": "./types/v5-subtle.d.ts",
+      "module": "./dist/esm/v5-subtle.mjs",
+      "import": "./dist/esm/v5-subtle.mjs",
+      "require": "./dist/cjs/v5-subtle.cjs"
     }
   },
   "dependencies": {

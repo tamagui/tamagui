@@ -131,45 +131,20 @@ All settings can be overridden - if you prefer v4 behavior, set
 
 ## Customizing Themes with createV5Theme
 
-The `createV5Theme` function lets you customize the default v5 themes:
+The `createV5Theme` function lets you customize the default v5 themes. The easiest way to add or change colors is using `@tamagui/colors` which provides Radix color palettes:
 
 ```tsx fileName="tamagui.config.ts"
-import { createV5Theme, defaultConfig } from '@tamagui/config/v5'
+import { createV5Theme, defaultChildrenThemes, defaultConfig } from '@tamagui/config/v5'
+import { cyan, cyanDark, amber, amberDark } from '@tamagui/colors'
 import { createTamagui } from 'tamagui'
 
 const themes = createV5Theme({
-  // Add a custom brand color
-  colors: {
-    brand: {
-      light: [
-        '#fff',
-        '#fef',
-        '#fdf',
-        '#fcf',
-        '#fbf',
-        '#faf',
-        '#f9f',
-        '#f8f',
-        '#f7f',
-        '#f6f',
-        '#f5f',
-        '#f0f',
-      ],
-      dark: [
-        '#101',
-        '#202',
-        '#303',
-        '#404',
-        '#505',
-        '#606',
-        '#707',
-        '#808',
-        '#909',
-        '#a0a',
-        '#b0b',
-        '#c0c',
-      ],
-    },
+  childrenThemes: {
+    // include defaults (blue, red, green, yellow, etc.)
+    ...defaultChildrenThemes,
+    // add new colors
+    cyan: { light: cyan, dark: cyanDark },
+    amber: { light: amber, dark: amberDark },
   },
 })
 
@@ -179,10 +154,31 @@ export const config = createTamagui({
 })
 ```
 
+Or use only the colors you need:
+
+```tsx fileName="tamagui.config.ts"
+import { createV5Theme } from '@tamagui/config/v5'
+import { blue, blueDark, gray, grayDark } from '@tamagui/colors'
+
+// minimal theme with just blue and gray
+const themes = createV5Theme({
+  childrenThemes: {
+    blue: { light: blue, dark: blueDark },
+    gray: { light: gray, dark: grayDark },
+  },
+})
+```
+
 ### createV5Theme Options
 
 <PropsTable
   data={[
+    {
+      name: 'childrenThemes',
+      type: 'Record<string, { light: ColorObject, dark: ColorObject }>',
+      description:
+        'Color themes to include. Use defaultChildrenThemes to include defaults, or pass only the colors you need. Works directly with @tamagui/colors.',
+    },
     {
       name: 'darkPalette',
       type: 'string[]',
@@ -196,30 +192,17 @@ export const config = createTamagui({
         'Override the light base palette (12 colors from lightest to darkest)',
     },
     {
-      name: 'colors',
-      type: 'Record<string, { dark: string[], light: string[] }>',
-      description:
-        'Add or override color themes (e.g., { brand: { dark: [...], light: [...] } })',
-    },
-    {
-      name: 'includeDefaultColors',
-      type: 'boolean',
-      default: 'true',
-      description:
-        'Whether to include default color themes (blue, red, green, etc.)',
-    },
-    {
       name: 'grandChildrenThemes',
       type: 'Record<string, { template: string }>',
       description:
-        'Add or override grandChildrenThemes (e.g., { alt1: { template: "alt1" } })',
+        'Override grandChildren themes (alt1, alt2, surface1, etc.)',
     },
     {
       name: 'componentThemes',
       type: 'false | ComponentThemes',
       default: 'false',
       description:
-        'Component themes (defaults to false in v5). You can still pass custom component themes, but we recommend using defaultProps instead.',
+        'Component themes (defaults to false in v5). We recommend using defaultProps instead.',
     },
   ]}
 />

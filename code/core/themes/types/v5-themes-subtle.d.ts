@@ -1,57 +1,13 @@
-import { createThemes } from '@tamagui/theme-builder';
-export { interpolateColor, opacify } from './opacify';
-export type HSL = {
-    h: number;
-    s: number;
-    l: number;
-};
-/** callback receives hsl and 1-based index, returns adjusted hsl */
-export type AdjustFn = (hsl: HSL, index: number) => HSL;
-export declare function parseHSL(str: string): HSL | null;
-export declare function hslToString(hsl: HSL): string;
-/** adjust a palette of hsl colors using a callback */
-export declare function adjustPalette(palette: Record<string, string>, fn: AdjustFn): Record<string, string>;
-type SingleAdjustment = {
-    light?: AdjustFn;
-    dark?: AdjustFn;
-};
-export type PaletteAdjustments<T extends Record<string, any>> = {
-    [K in keyof T]?: SingleAdjustment;
-} & {
-    /** fallback for themes not explicitly listed */
-    default?: SingleAdjustment;
-};
 /**
- * Adjust color palettes using callback functions.
- *
- * @example
- * const adjusted = adjustPalettes(defaultChildrenThemes, {
- *   default: {
- *     light: (hsl, i) => ({ ...hsl, s: hsl.s * 0.8 }),
- *     dark: (hsl, i) => ({ ...hsl, s: hsl.s * 0.5, l: hsl.l * 0.9 }),
- *   },
- *   yellow: {
- *     light: (hsl, i) => ({ ...hsl, s: hsl.s * 0.5 }),
- *   },
- * })
+ * Subtle v5 themes - pre-built desaturated color themes
  */
-export declare function adjustPalettes<T extends Record<string, {
-    light: Record<string, string>;
-    dark: Record<string, string>;
-}>>(themes: T, adjustments: PaletteAdjustments<T>): T;
-declare const darkPalette: string[];
-declare const lightPalette: string[];
-export { darkPalette as defaultDarkPalette, lightPalette as defaultLightPalette };
-type NamedColors = Record<string, string>;
-type ChildTheme<T extends NamedColors = NamedColors> = {
-    light: T;
-    dark: T;
-};
-type GrandChildrenThemeDefinition = {
-    template: string;
-};
-/** Default children themes - accepts radix colors directly */
-export declare const defaultChildrenThemes: {
+import { defaultChildrenThemes, type PaletteAdjustments } from './v5-themes';
+export * from './v5-themes';
+export { tokens } from './v5-tokens';
+/** Adjustments to make colors more subtle/desaturated */
+export declare const v5SubtlePaletteAdjustments: PaletteAdjustments<typeof defaultChildrenThemes>;
+/** Pre-subtlized children themes */
+export declare const subtleChildrenThemes: {
     gray: {
         light: {
             gray1: string;
@@ -353,93 +309,8 @@ export declare const defaultChildrenThemes: {
         };
     };
 };
-/** Default grandchildren themes available in v5 */
-export declare const defaultGrandChildrenThemes: {
-    accent: {
-        template: string;
-    };
-    alt1: {
-        template: string;
-    };
-    alt2: {
-        template: string;
-    };
-    surface1: {
-        template: string;
-    };
-    surface2: {
-        template: string;
-    };
-    surface3: {
-        template: string;
-    };
-};
-/** Union of all color values from children themes (for light or dark) */
-type ChildrenColors<T extends Record<string, ChildTheme>, Mode extends 'light' | 'dark'> = {
-    [K in keyof T]: T[K][Mode];
-}[keyof T];
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
-export type CreateV5ThemeOptions<Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes, GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof defaultGrandChildrenThemes> = {
-    /** Override the dark base palette (12 colors from darkest to lightest) */
-    darkPalette?: string[];
-    /** Override the light base palette (12 colors from lightest to darkest) */
-    lightPalette?: string[];
-    /**
-     * Override children themes (color themes like blue, red, etc.)
-     * Accepts radix color objects directly: { blue: { light: blue, dark: blueDark } }
-     */
-    childrenThemes?: Children;
-    /**
-     * Override grandChildren themes (alt1, alt2, surface1, etc.)
-     * Pass undefined or omit to use defaultGrandChildrenThemes
-     */
-    grandChildrenThemes?: GrandChildren;
-    /**
-     * @deprecated component themes are no longer recommended -
-     * configure component styles directly via themes or component defaultProps instead
-     */
-    componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes'];
-};
-/**
- * Creates v5 themes with optional customizations.
- *
- * @example
- * Use default themes
- * const themes = createV5Theme()
- *
- * @example
- * Custom children themes with brand color (accepts radix colors directly)
- * const themes = createV5Theme({
- *   childrenThemes: {
- *     ...defaultChildrenThemes,
- *     brand: { light: brandLight, dark: brandDark },
- *   },
- * })
- *
- * @example
- * Minimal - no color themes
- * const themes = createV5Theme({
- *   childrenThemes: {},
- * })
- */
-export declare function createV5Theme<Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes, GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof defaultGrandChildrenThemes>(options?: CreateV5ThemeOptions<Children, GrandChildren>): Record<"light" | "dark" | "light_accent" | "dark_accent" | ("black" | "white" | keyof Children extends string ? `light_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T ? T extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (string & keyof Children) | (keyof T extends infer T_1 ? T_1 extends keyof T ? T_1 extends string ? `black_${T_1}` | `white_${T_1}` | `${string & keyof Children}_${T_1}` : never : never : never) : never : never}` | `dark_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T_2 ? T_2 extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T_2 extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (string & keyof Children) | (keyof T_2 extends infer T_3 ? T_3 extends keyof T_2 ? T_3 extends string ? `black_${T_3}` | `white_${T_3}` | `${string & keyof Children}_${T_3}` : never : never : never) : never : never}` : never), { [ThemeKey in "color" | "shadowColor" | "borderColor" | "borderColorHover" | "colorHover" | "colorFocus" | "colorPress" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "background" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "colorTransparent" | "borderColorFocus" | "borderColorPress" | "placeholderColor" | "accentBackground" | "accentColor" | "background0" | "color0" | "outlineColor" | "white0" | "black0" | "white1" | "white2" | "white3" | "white4" | "white5" | "white6" | "white7" | "white8" | "white9" | "white10" | "white11" | "white12" | "black1" | "black2" | "black3" | "black4" | "black5" | "black6" | "black7" | "black8" | "black9" | "black10" | "black11" | "black12" | "black" | "white" | "shadow1" | "shadow2" | "shadow3" | "shadow4" | "shadow5" | "shadow6" | "background02" | "background04" | "background06" | "background08" | "color02" | "color04" | "color06" | "color08" | "accent0" | "accent2" | "accent1" | "accent4" | "accent8" | "accent12" | "accent3" | "accent5" | "accent7" | "accent9" | "accent10" | "accent6" | "accent11" | "white02" | "white04" | "white06" | "white08" | "black02" | "black04" | "black06" | "black08" | keyof UnionToIntersection<ChildrenColors<Children, "dark">>]: string; } & {
-    color0pt5: string;
-    color1pt5: string;
-    color2pt5: string;
-    color01: string;
-    color0075: string;
-    color005: string;
-    color0025: string;
-    color002: string;
-    color001: string;
-    background01: string;
-    background0075: string;
-    background005: string;
-    background0025: string;
-    background002: string;
-    background001: string;
-}>;
-export declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "light_orange" | "light_pink" | "light_purple" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_orange" | "dark_pink" | "dark_purple" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_blue_alt1" | "light_blue_alt2" | "light_green_alt1" | "light_green_alt2" | "light_orange_alt1" | "light_orange_alt2" | "light_pink_alt1" | "light_pink_alt2" | "light_purple_alt1" | "light_purple_alt2" | "light_red_alt1" | "light_red_alt2" | "light_yellow_alt1" | "light_yellow_alt2" | "dark_blue_alt1" | "dark_blue_alt2" | "dark_green_alt1" | "dark_green_alt2" | "dark_orange_alt1" | "dark_orange_alt2" | "dark_pink_alt1" | "dark_pink_alt2" | "dark_purple_alt1" | "dark_purple_alt2" | "dark_red_alt1" | "dark_red_alt2" | "dark_yellow_alt1" | "dark_yellow_alt2" | "light_gray_alt1" | "light_gray_alt2" | "dark_gray_alt1" | "dark_gray_alt2" | "light_blue_surface1" | "light_blue_surface2" | "light_blue_surface3" | "light_gray_surface1" | "light_gray_surface2" | "light_gray_surface3" | "light_green_surface1" | "light_green_surface2" | "light_green_surface3" | "light_orange_surface1" | "light_orange_surface2" | "light_orange_surface3" | "light_pink_surface1" | "light_pink_surface2" | "light_pink_surface3" | "light_purple_surface1" | "light_purple_surface2" | "light_purple_surface3" | "light_red_surface1" | "light_red_surface2" | "light_red_surface3" | "light_yellow_surface1" | "light_yellow_surface2" | "light_yellow_surface3" | "dark_blue_surface1" | "dark_blue_surface2" | "dark_blue_surface3" | "dark_gray_surface1" | "dark_gray_surface2" | "dark_gray_surface3" | "dark_green_surface1" | "dark_green_surface2" | "dark_green_surface3" | "dark_orange_surface1" | "dark_orange_surface2" | "dark_orange_surface3" | "dark_pink_surface1" | "dark_pink_surface2" | "dark_pink_surface3" | "dark_purple_surface1" | "dark_purple_surface2" | "dark_purple_surface3" | "dark_red_surface1" | "dark_red_surface2" | "dark_red_surface3" | "dark_yellow_surface1" | "dark_yellow_surface2" | "dark_yellow_surface3" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "light_blue_accent" | "light_green_accent" | "light_red_accent" | "light_yellow_accent" | "light_black_accent" | "light_white_accent" | "dark_black" | "dark_white" | "dark_blue_accent" | "dark_green_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_black_accent" | "dark_white_accent" | "light_gray_accent" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "light_black_alt1" | "light_white_alt1" | "light_black_alt2" | "light_white_alt2" | "light_black_surface1" | "light_white_surface1" | "light_black_surface2" | "light_white_surface2" | "light_black_surface3" | "light_white_surface3" | "dark_gray_accent" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent" | "dark_black_alt1" | "dark_white_alt1" | "dark_black_alt2" | "dark_white_alt2" | "dark_black_surface1" | "dark_white_surface1" | "dark_black_surface2" | "dark_white_surface2" | "dark_black_surface3" | "dark_white_surface3" | "light_neutral" | "light_teal" | "light_neutral_accent" | "light_teal_accent" | "light_neutral_alt1" | "light_teal_alt1" | "light_neutral_alt2" | "light_teal_alt2" | "light_neutral_surface1" | "light_teal_surface1" | "light_neutral_surface2" | "light_teal_surface2" | "light_neutral_surface3" | "light_teal_surface3" | "dark_neutral" | "dark_teal" | "dark_neutral_accent" | "dark_teal_accent" | "dark_neutral_alt1" | "dark_teal_alt1" | "dark_neutral_alt2" | "dark_teal_alt2" | "dark_neutral_surface1" | "dark_teal_surface1" | "dark_neutral_surface2" | "dark_teal_surface2" | "dark_neutral_surface3" | "dark_teal_surface3", {
+/** Pre-built subtle themes */
+export declare const subtleThemes: Record<"light_blue" | "light_gray" | "light_green" | "light_orange" | "light_pink" | "light_purple" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_orange" | "dark_pink" | "dark_purple" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_blue_alt1" | "light_blue_alt2" | "light_green_alt1" | "light_green_alt2" | "light_orange_alt1" | "light_orange_alt2" | "light_pink_alt1" | "light_pink_alt2" | "light_purple_alt1" | "light_purple_alt2" | "light_red_alt1" | "light_red_alt2" | "light_yellow_alt1" | "light_yellow_alt2" | "dark_blue_alt1" | "dark_blue_alt2" | "dark_green_alt1" | "dark_green_alt2" | "dark_orange_alt1" | "dark_orange_alt2" | "dark_pink_alt1" | "dark_pink_alt2" | "dark_purple_alt1" | "dark_purple_alt2" | "dark_red_alt1" | "dark_red_alt2" | "dark_yellow_alt1" | "dark_yellow_alt2" | "light_gray_alt1" | "light_gray_alt2" | "dark_gray_alt1" | "dark_gray_alt2" | "light_blue_surface1" | "light_blue_surface2" | "light_blue_surface3" | "light_gray_surface1" | "light_gray_surface2" | "light_gray_surface3" | "light_green_surface1" | "light_green_surface2" | "light_green_surface3" | "light_orange_surface1" | "light_orange_surface2" | "light_orange_surface3" | "light_pink_surface1" | "light_pink_surface2" | "light_pink_surface3" | "light_purple_surface1" | "light_purple_surface2" | "light_purple_surface3" | "light_red_surface1" | "light_red_surface2" | "light_red_surface3" | "light_yellow_surface1" | "light_yellow_surface2" | "light_yellow_surface3" | "dark_blue_surface1" | "dark_blue_surface2" | "dark_blue_surface3" | "dark_gray_surface1" | "dark_gray_surface2" | "dark_gray_surface3" | "dark_green_surface1" | "dark_green_surface2" | "dark_green_surface3" | "dark_orange_surface1" | "dark_orange_surface2" | "dark_orange_surface3" | "dark_pink_surface1" | "dark_pink_surface2" | "dark_pink_surface3" | "dark_purple_surface1" | "dark_purple_surface2" | "dark_purple_surface3" | "dark_red_surface1" | "dark_red_surface2" | "dark_red_surface3" | "dark_yellow_surface1" | "dark_yellow_surface2" | "dark_yellow_surface3" | "light_accent" | "dark_accent" | "light_black" | "light_white" | "light_blue_accent" | "light_green_accent" | "light_red_accent" | "light_yellow_accent" | "light_black_accent" | "light_white_accent" | "dark_black" | "dark_white" | "dark_blue_accent" | "dark_green_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_black_accent" | "dark_white_accent" | "light_gray_accent" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "light_black_alt1" | "light_white_alt1" | "light_black_alt2" | "light_white_alt2" | "light_black_surface1" | "light_white_surface1" | "light_black_surface2" | "light_white_surface2" | "light_black_surface3" | "light_white_surface3" | "dark_gray_accent" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent" | "dark_black_alt1" | "dark_white_alt1" | "dark_black_alt2" | "dark_white_alt2" | "dark_black_surface1" | "dark_white_surface1" | "dark_black_surface2" | "dark_white_surface2" | "dark_black_surface3" | "dark_white_surface3" | "light_neutral" | "light_teal" | "light_neutral_accent" | "light_teal_accent" | "light_neutral_alt1" | "light_teal_alt1" | "light_neutral_alt2" | "light_teal_alt2" | "light_neutral_surface1" | "light_teal_surface1" | "light_neutral_surface2" | "light_teal_surface2" | "light_neutral_surface3" | "light_teal_surface3" | "dark_neutral" | "dark_teal" | "dark_neutral_accent" | "dark_teal_accent" | "dark_neutral_alt1" | "dark_teal_alt1" | "dark_neutral_alt2" | "dark_teal_alt2" | "dark_neutral_surface1" | "dark_teal_surface1" | "dark_neutral_surface2" | "dark_teal_surface2" | "dark_neutral_surface3" | "dark_teal_surface3", {
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -672,4 +543,4 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     background002: string;
     background001: string;
 }>;
-//# sourceMappingURL=v5-themes.d.ts.map
+//# sourceMappingURL=v5-themes-subtle.d.ts.map

@@ -115,6 +115,17 @@
       "module": "./dist/esm/v5-motion.mjs",
       "import": "./dist/esm/v5-motion.mjs",
       "require": "./dist/cjs/v5-motion.cjs"
+    },
+    "./v5-subtle": {
+      "react-native": {
+        "module": "./dist/esm/v5-subtle.native.js",
+        "import": "./dist/esm/v5-subtle.native.js",
+        "require": "./dist/cjs/v5-subtle.native.js"
+      },
+      "types": "./types/v5-subtle.d.ts",
+      "module": "./dist/esm/v5-subtle.mjs",
+      "import": "./dist/esm/v5-subtle.mjs",
+      "require": "./dist/cjs/v5-subtle.cjs"
     }
   },
   "dependencies": {
