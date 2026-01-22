@@ -75,7 +75,11 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
 
         if (isActive) {
           onActiveChange(value, index)
-          listRef?.current[index]?.focus()
+
+          if (isWeb) {
+            // focus the item so focusStyle applies (works in Safari during drag)
+            listRef?.current[index]?.focus()
+          }
         }
       })
     }, [index])
@@ -195,6 +199,10 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
 
               pressStyle: {
                 backgroundColor: '$backgroundPress',
+              },
+
+              focusStyle: {
+                backgroundColor: '$backgroundFocus',
               },
 
               focusVisibleStyle: {

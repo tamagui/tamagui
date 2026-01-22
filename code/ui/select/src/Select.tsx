@@ -18,7 +18,6 @@ import { SheetController } from '@tamagui/sheet/controller'
 import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { useDebounce } from '@tamagui/use-debounce'
 import * as React from 'react'
 import {
   SelectItemParentProvider,
@@ -200,8 +199,9 @@ const SelectIndicator = SelectIndicatorFrame.styleable<
       })
     }
 
-    if (context.open && context.activeIndex !== null) {
-      update(context.activeIndex)
+    // use ref for initial read to avoid depending on state
+    if (context.open && context.activeIndexRef.current !== null) {
+      update(context.activeIndexRef.current)
     }
 
     return itemContext.activeIndexSubscribe(update)
@@ -558,20 +558,24 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
     }, [props.id])
   }
 
-  const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
+  // activeIndex is stored in a ref to avoid re-renders on every hover
+  // we have two setters:
+  // - setActiveIndexFast: updates ref + emits to subscribers (no re-render) - use for hover/navigation
+  // - setActiveIndex: updates ref + emits + triggers re-render - use when UI needs to update
+  // initialize to null so floating-ui starts from selectedIndex on first open
+  const activeIndexRef = React.useRef<number | null>(null)
+  const [activeIndex, setActiveIndexState] = React.useState<number | null>(null)
 
   const [emitValue, valueSubscribe] = useEmitter<any>()
   const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
 
   const selectedIndexRef = React.useRef<number | null>(null)
-  const activeIndexRef = React.useRef<number | null>(null)
   const listContentRef = React.useRef<string[]>([])
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
 
   useIsomorphicLayoutEffect(() => {
     selectedIndexRef.current = selectedIndex
-    activeIndexRef.current = activeIndex
   })
 
   const shouldRenderWebNative =
@@ -580,23 +584,28 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
       native === 'web' ||
       (Array.isArray(native) && native.includes('web')))
 
-  // TODO its calling this a bunch if you move mouse around on select items fast
-  // using a debounce for now but need to fix root issue
-  const setActiveIndexDebounced = useDebounce(
+  // fast setter: updates ref + emits to subscribers without causing re-renders
+  // use this for mouse hover / keyboard navigation where we don't need parent re-renders
+  const setActiveIndexFast = React.useCallback(
     (index: number | null) => {
-      setActiveIndex((prev) => {
-        if (prev !== index) {
-          if (typeof index === 'number') {
-            emitActiveIndex(index)
-          }
-          return index
+      if (activeIndexRef.current !== index) {
+        activeIndexRef.current = index
+        if (typeof index === 'number') {
+          emitActiveIndex(index)
         }
-        return prev
-      })
+      }
     },
-    0,
-    {},
-    []
+    [emitActiveIndex]
+  )
+
+  // slow setter: also triggers a re-render for components that need the state value
+  // use this sparingly, e.g., when controlled scrolling needs to scroll item into view
+  const setActiveIndex = React.useCallback(
+    (index: number | null) => {
+      setActiveIndexFast(index)
+      setActiveIndexState(index)
+    },
+    [setActiveIndexFast]
   )
 
   return (
@@ -637,8 +646,9 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
         activeIndex={activeIndex}
+        activeIndexRef={activeIndexRef}
         selectedIndex={selectedIndex}
-        setActiveIndex={setActiveIndexDebounced}
+        setActiveIndex={setActiveIndex}
         value={value}
         open={open}
         native={native}
@@ -652,6 +662,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
               activeIndexRef={activeIndexRef}
               listContentRef={listContentRef}
               selectedIndexRef={selectedIndexRef}
+              setActiveIndexFast={setActiveIndexFast}
               {...props}
               open={open}
               value={value}

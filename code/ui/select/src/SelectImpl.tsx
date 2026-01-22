@@ -30,11 +30,11 @@ import type { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
-  const { scope, children, open = false, listContentRef } = props
+  const { scope, children, open = false, listContentRef, setActiveIndexFast } = props
 
   const selectContext = useSelectContext(scope)
   const selectItemParentContext = useSelectItemParentContext(scope)
-  const { setActiveIndex, selectedIndex, activeIndex } = selectContext
+  const { setActiveIndex, selectedIndex, activeIndexRef } = selectContext
 
   const { setOpen, setSelectedIndex } = selectItemParentContext
 
@@ -183,16 +183,18 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }),
     useListNavigation(context, {
       listRef: listItemsRef,
-      activeIndex: activeIndex || 0,
+      // read from ref for current value, use fast setter for navigation (no re-renders)
+      // pass null when closed so floating-ui starts from selectedIndex on open
+      activeIndex: activeIndexRef.current,
       selectedIndex,
-      onNavigate: setActiveIndex,
+      onNavigate: setActiveIndexFast,
       scrollItemIntoView: false,
     }),
     useTypeahead(context, {
       listRef: listContentRef,
       onMatch,
       selectedIndex,
-      activeIndex,
+      activeIndex: activeIndexRef.current,
       onTypingChange: (e) => {
         state.current.isTyping = e
       },
@@ -323,16 +325,23 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }, [open, refs, setOpen])
 
   // Scroll the `activeIndex` item into view only in "controlledScrolling"
-  // (keyboard nav) mode.
+  // (keyboard nav) mode. Use subscription to avoid re-renders on every activeIndex change.
   React.useEffect(() => {
-    if (open && controlledScrolling) {
-      if (activeIndex != null) {
-        listItemsRef.current[activeIndex]?.scrollIntoView({ block: 'nearest' })
+    if (!open) return
+
+    const scrollActiveIntoView = (index: number | null) => {
+      if (controlledScrolling && index != null) {
+        listItemsRef.current[index]?.scrollIntoView({ block: 'nearest' })
       }
+      setScrollTop(refs.floating.current?.scrollTop ?? 0)
     }
 
-    setScrollTop(refs.floating.current?.scrollTop ?? 0)
-  }, [open, refs, controlledScrolling, activeIndex])
+    // initial scroll
+    scrollActiveIntoView(activeIndexRef.current)
+
+    // subscribe to future changes
+    return selectItemParentContext.activeIndexSubscribe(scrollActiveIntoView)
+  }, [open, refs, controlledScrolling, selectItemParentContext.activeIndexSubscribe])
 
   // Scroll the `selectedIndex` into view upon opening the floating element.
   React.useEffect(() => {
@@ -364,7 +373,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       setInnerOffset={setInnerOffset}
       fallback={fallback}
       floatingContext={context}
-      activeIndex={activeIndex}
       canScrollDown={!!showDownArrow}
       canScrollUp={!!showUpArrow}
       controlledScrolling={controlledScrolling}
