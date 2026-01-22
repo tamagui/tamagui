@@ -1,5 +1,5 @@
 import { shorthands } from '@tamagui/shorthands/v5'
-import { subtleThemes, tokens } from '@tamagui/themes/v5-subtle'
+import { themes, tokens } from '@tamagui/themes/v5-subtle'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts } from './v5-fonts'
 import { media, mediaQueryDefaultActive } from './v5-media'
@@ -8,8 +8,7 @@ export { shorthands } from '@tamagui/shorthands/v5'
 export { createThemes } from '@tamagui/theme-builder'
 export {
   // subtle-specific
-  subtleThemes as themes,
-  subtleThemes,
+  themes,
   subtleChildrenThemes,
   v5SubtlePaletteAdjustments,
   // re-exported from v5-themes
@@ -56,7 +55,7 @@ export const settings = {
 export const defaultConfigBase = {
   media,
   shorthands,
-  themes: subtleThemes,
+  themes,
   tokens,
   fonts,
   selectionStyles,

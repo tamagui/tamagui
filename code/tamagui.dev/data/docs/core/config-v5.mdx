@@ -1,11 +1,12 @@
 ---
-title: '@tamagui/config'
+title: 'Config v5'
 description: Modern config and themes with @tamagui/config/v5
 ---
 
 <IntroParagraph>
-  The recommended Tamagui configuration with a complete theme system, sensible
-  defaults, and easy customization.
+  The recommended Tamagui configuration gives you a complete design system,
+  flexible theme generation, Tailwind aligned shorthands, multiple animation
+  drivers, and easy customization.
 </IntroParagraph>
 
 V5 is largely compatible with v4 - it's a superset that adds more colors/tokens
@@ -131,10 +132,16 @@ All settings can be overridden - if you prefer v4 behavior, set
 
 ## Customizing Themes with createV5Theme
 
-The `createV5Theme` function lets you customize the default v5 themes. The easiest way to add or change colors is using `@tamagui/colors` which provides Radix color palettes:
+The `createV5Theme` function lets you customize the default v5 themes. The
+easiest way to add or change colors is using `@tamagui/colors` which provides
+Radix color palettes:
 
 ```tsx fileName="tamagui.config.ts"
-import { createV5Theme, defaultChildrenThemes, defaultConfig } from '@tamagui/config/v5'
+import {
+  createV5Theme,
+  defaultChildrenThemes,
+  defaultConfig,
+} from '@tamagui/config/v5'
 import { cyan, cyanDark, amber, amberDark } from '@tamagui/colors'
 import { createTamagui } from 'tamagui'
 
@@ -194,8 +201,7 @@ const themes = createV5Theme({
     {
       name: 'grandChildrenThemes',
       type: 'Record<string, { template: string }>',
-      description:
-        'Override grandChildren themes (alt1, alt2, surface1, etc.)',
+      description: 'Override grandChildren themes (alt1, alt2, surface1, etc.)',
     },
     {
       name: 'componentThemes',
@@ -206,6 +212,68 @@ const themes = createV5Theme({
     },
   ]}
 />
+
+### Subtle Theme Variant
+
+For a more muted look, use the subtle variant which has desaturated colors:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig, themes } from '@tamagui/config/v5-subtle'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  themes,
+})
+```
+
+### Custom Color Adjustments
+
+Use `adjustPalette` to transform colors with a callback function. The callback
+receives each color's HSL values and its 1-based index (1-12):
+
+```tsx fileName="tamagui.config.ts"
+import {
+  adjustPalette,
+  adjustPalettes,
+  defaultChildrenThemes,
+  createV5Theme,
+} from '@tamagui/config/v5'
+
+// adjust a single palette - desaturate and lighten
+const mutedBlue = adjustPalette(blue, (hsl, i) => ({
+  ...hsl,
+  s: hsl.s * 0.7,
+  l: Math.min(100, hsl.l * 1.1),
+}))
+
+// adjust multiple palettes at once with adjustPalettes
+const mutedThemes = adjustPalettes(defaultChildrenThemes, {
+  // 'default' applies to all colors not explicitly listed
+  default: {
+    light: (hsl, i) => ({ ...hsl, s: hsl.s * 0.8 }),
+    dark: (hsl, i) => ({ ...hsl, s: hsl.s * 0.6, l: hsl.l * 0.9 }),
+  },
+  // override specific colors
+  yellow: {
+    light: (hsl) => ({ ...hsl, s: hsl.s * 0.5 }),
+    dark: (hsl, i) => ({ ...hsl, s: hsl.s * (i <= 4 ? 0.3 : 0.8) }),
+  },
+  // skip adjustment for specific colors
+  gray: undefined,
+})
+
+const themes = createV5Theme({ childrenThemes: mutedThemes })
+```
+
+The callback receives:
+
+- `hsl` - object with `h` (hue 0-360), `s` (saturation 0-100), `l` (lightness
+  0-100)
+- `i` - 1-based index in the palette (1-12)
+
+Use the index to apply different adjustments to background colors (1-4),
+mid-tones (5-8), and foreground colors (9-12).
 
 ---
 
@@ -335,8 +403,8 @@ Button with a different background, set `theme="surface3"` explicitly.
 
 ### Migrating from Component Themes
 
-If you're upgrading from v4 and want to preserve the old visual behavior, use
-`defaultProps` in your config:
+As a temporary measure while you're upgrading from v4 and want to preserve the
+old visual behavior, use `defaultProps` in your config:
 
 ```tsx fileName="tamagui.config.ts"
 import { defaultConfig } from '@tamagui/config/v5'
@@ -370,34 +438,11 @@ export const config = createTamagui({
 })
 ```
 
-This approach is cleaner than the old component themes system because:
-
-1. **Explicit**: You see exactly what defaults are being applied
-2. **Customizable**: Easy to add or remove component defaults
-3. **No magic**: No hidden theme generation happening at build time
-
-### Recommended Long-Term Approach
-
-For new code, we recommend setting themes explicitly on components:
-
-```tsx
-// Explicit is better than implicit
-<Button theme="surface3">Click me</Button>
-<Input theme="surface1" placeholder="Enter text..." />
-<Card theme="surface1">Content</Card>
-```
-
-Or create your own wrapper components with your preferred defaults:
-
-```tsx fileName="components/ui/Button.tsx"
-import { Button as TamaguiButton, type ButtonProps } from 'tamagui'
-
-export function Button(props: ButtonProps) {
-  return <TamaguiButton theme="surface3" {...props} />
-}
-```
-
-This gives you full control over your component library's look and feel.
+We want to move away from component themes in general as they just are a bit too
+tricky to understand. Likewise, we'd like to move away from defaultProps
+eventually as well. In the long run what we recommend is just setting colors or
+the `theme` props directly on your components. And if you need to share them,
+then creating your own abstracted component you re-use.
 
 ---
 
@@ -513,37 +558,15 @@ client, it reads these from the DOM instead of needing the JS object.
 
 ### Setup
 
-Use your bundler's environment variables to conditionally exclude themes on the
-client:
-
 ```tsx fileName="tamagui.config.ts"
-import { createV5Theme, defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig, themes } from '@tamagui/config/v5'
 import { createTamagui } from 'tamagui'
-
-const themesJS = createV5Theme()
 
 export const config = createTamagui({
   ...defaultConfig,
-  // Tree shake themes JS on client - Tamagui hydrates from CSS instead
-  themes:
-    process.env.VITE_ENVIRONMENT === 'client'
-      ? ({} as typeof themesJS)
-      : themesJS,
-})
-```
-
-[One](https://onestack.dev) sets `VITE_ENVIRONMENT` automatically, for other
-Vite apps:
-
-**Vite:**
-
-```ts fileName="vite.config.ts"
-export default defineConfig({
-  define: {
-    'process.env.VITE_ENVIRONMENT': JSON.stringify(
-      process.env.SSR ? 'server' : 'client',
-    ),
-  },
+  // only load themes on server - client hydrates from CSS
+  // for non-One Vite apps, use import.meta.env.SSR instead
+  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
 })
 ```
 

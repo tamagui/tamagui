@@ -2,6 +2,8 @@
  * Subtle v5 themes - pre-built desaturated color themes
  */
 
+export * from './v5-themes'
+
 import {
   adjustPalettes,
   createV5Theme,

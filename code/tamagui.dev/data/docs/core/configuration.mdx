@@ -844,16 +844,31 @@ You should be sure to either use the Vite or Webpack Tamagui plugins, or
 configure your bundler to define the environment variables for tree shaking. On
 native, it is not a concern as the extra size is minimal.
 
-#### React 19
+## Tree Shaking Themes (Production Optimization)
 
-We have early support for React 19, which mostly does a single thing: it moves
-our runtime CSS insertion from
-[`useInsertionEffect`](https://react.dev/reference/react/useInsertionEffect) to
-using inline `<style />` tags. React 19 supports hoisting and de-duplicating
-style tags, which simplifies our implementation and should improve performance.
+Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS
+variables, you can remove the themes JS from your client bundle for better
+Lighthouse scores.
 
-To enable set the `TAMAGUI_REACT_19` variable to `"1"`:
+This works because Tamagui generates CSS variables for all theme values. On the
+client, it reads these from the DOM instead of needing the JS object.
 
+### Setup
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig, themes } from '@tamagui/config/v5'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  // only load themes on server - client hydrates from CSS
+  // for non-One Vite apps, use import.meta.env.SSR instead
+  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+})
 ```
-TAMAGUI_REACT_19=1
-```
+
+<Notice theme="green">
+  This optimization requires server-side rendering. The CSS must be rendered on
+  the server for the client to hydrate from it. Make sure you're using
+  `config.getCSS()` or the bundler plugin's `outputCSS` option.
+</Notice>
