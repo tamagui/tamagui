@@ -187,13 +187,9 @@ export function createTabs<
                   (event as unknown as React.MouseEvent).ctrlKey === false)
               if (!disabled && !isSelected && webChecks) {
                 context.onChange(value)
-              } else {
-                // prevent focus to avoid accidental activation
-                event.preventDefault()
               }
             })}
             {...(isWeb && {
-              type: 'button',
               onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
                 if ([' ', 'Enter'].includes(event.key)) {
                   context.onChange(value)
