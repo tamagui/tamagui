@@ -1,11 +1,5 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import {
-  IS_REACT_19,
-  isClient,
-  isServer,
-  isWeb,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/constants'
+import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { useMemo } from 'react'
@@ -16,6 +10,7 @@ import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import { getUserDefaultProps } from './helpers/getUserDefaultProps'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
@@ -234,20 +229,9 @@ export function createComponent<
 
   onConfiguredOnce((conf) => {
     config = conf
-
-    if (componentName) {
-      // TODO this should be deprecated and removed likely or at least done differently
-      const defaultForComponent = conf.defaultProps?.[componentName]
-      if (defaultForComponent) {
-        staticConfig.defaultProps = {
-          ...defaultForComponent,
-          ...staticConfig.defaultProps,
-        }
-      }
-    }
   })
 
-  const { Component, isText, isZStack, isHOC } = staticConfig
+  const { Component, isText, isHOC } = staticConfig
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
@@ -308,10 +292,17 @@ export function createComponent<
     // order important so we do loops, you can't just spread because JS does weird things
     let props: StackProps | TextProps = propsIn
 
+    const componentName = props.componentName || staticConfig.componentName
+
     // merge both default props and styled context props - ensure order is preserved
     const ogDP = staticConfig.defaultProps
     if (styledContextValue || ogDP) {
       let defaultProps = ogDP
+
+      const userDefaultProps = getUserDefaultProps(props, staticConfig)
+      if (userDefaultProps) {
+        defaultProps = { ...ogDP, ...userDefaultProps }
+      }
 
       if (process.env.TAMAGUI_TARGET === 'web' && isText && hasTextAncestor && ogDP) {
         defaultProps = {
@@ -333,8 +324,6 @@ export function createComponent<
       }
       overriddenContextProps = overrides
     }
-
-    const componentName = props.componentName || staticConfig.componentName
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
@@ -1536,7 +1525,6 @@ export function createComponent<
                 animationStyles,
                 classNames,
                 content,
-                defaultProps,
                 elementType,
                 events,
                 isAnimated,
@@ -1629,19 +1617,11 @@ export function createComponent<
       neverFlatten: true,
       isHOC: true,
       isStyledHOC: false,
-      // why - because we mutate staticConfig.defaultProps if passed in by createTamagui
-      // BUT if you do ButtonFrame.styleable() now it extends and that mutation doesnt apply to parent
-      // the entire defaultProps pipeline is a mess and should be removed but this makes it work as youd expect
-      get defaultProps() {
-        return extended?.defaultProps || staticConfig?.defaultProps
-      },
     }
   }
 
   function styleable(Component: any, options?: StyleableOptions) {
-    const skipForwardRef =
-      (IS_REACT_19 && typeof Component === 'function' && Component.length === 1) ||
-      Component.render?.length === 2
+    const skipForwardRef = typeof Component === 'function' && Component.length === 1
 
     let out = skipForwardRef ? Component : React.forwardRef(Component)
 

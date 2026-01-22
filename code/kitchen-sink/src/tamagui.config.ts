@@ -2,11 +2,13 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
-import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
+import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import { tamaguiThemes } from '@tamagui/themes/v4'
-import { createTamagui } from 'tamagui'
+import { createTamagui, type CreateTamaguiProps } from 'tamagui'
 // TODO just move this into this folder
+import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
 
 export const animationsCSS = createAnimationsCSS({
@@ -238,6 +240,8 @@ config.themes = {
 const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
 
 const useV4Themes = search.includes('v4theme=true')
+const v5config = search.includes('v5config')
+const tamav5Config = search.includes('tamav5config')
 
 const tokens = {
   ...config.tokens,
@@ -253,43 +257,51 @@ const tokens = {
   // },
 }
 
-const tamaConf = createTamagui({
-  ...config,
-  // Use v4 themes when ?v4theme=true is in the URL
-  themes: useV4Themes
-    ? tamaguiThemes
-    : {
-        ...config.themes,
-        ...themeDev,
-      },
-  shorthands: shorthands,
-  defaultFont: undefined,
-  settings: {
-    defaultFont: '$body',
-    allowedStyleValues: 'somewhat-strict',
-    autocompleteSpecificTokens: 'except-special',
-    fastSchemeChange: true,
-  },
-  tokens,
-  media: {
-    ...configV4.media, // adds max queries
-    ...config.media,
-  },
-  animations: search.includes('animationDriver=css')
-    ? animationsCSS
-    : search.includes('animationDriver=native')
-      ? animationsNative
-      : search.includes('animationDriver=motion')
-        ? animationsMotion
-        : animationsReanimated, // default reanimated
-  themeClassNameOnRoot: false,
+const animations = search.includes('animationDriver=css')
+  ? animationsCSS
+  : search.includes('animationDriver=native')
+    ? animationsNative
+    : search.includes('animationDriver=motion')
+      ? animationsMotion
+      : animationsReanimated
 
-  defaultProps: {
-    Square: {
-      backgroundColor: 'violet',
-    },
-  },
-})
+const tamaconf = tamav5Config
+  ? tamaguiDevConfig
+  : v5config
+    ? ({ ...defaultConfig, animations } satisfies CreateTamaguiProps)
+    : ({
+        ...config,
+        // Use v4 themes when ?v4theme=true is in the URL
+        themes: useV4Themes
+          ? tamaguiThemes
+          : {
+              ...config.themes,
+              ...themeDev,
+            },
+        shorthands: shorthands,
+        settings: {
+          defaultFont: '$body',
+          allowedStyleValues: 'somewhat-strict',
+          autocompleteSpecificTokens: 'except-special',
+          fastSchemeChange: true,
+        },
+        tokens,
+        media: {
+          ...configV4.media, // adds max queries
+          ...config.media,
+        },
+        animations, // default reanimated
+
+        defaultProps: {
+          Square: {
+            backgroundColor: 'violet',
+          },
+        },
+      } satisfies CreateTamaguiProps)
+
+console.info(`tamaconf`, tamaconf)
+
+const tamaConf = createTamagui(tamaconf)
 
 export type Conf = typeof tamaConf
 

@@ -2,6 +2,8 @@ import React from 'react'
 
 import type { StaticConfig, ThemeableProps, ThemeProps } from '../types'
 import { Theme } from '../views/Theme'
+import { getUserDefaultProps } from './getUserDefaultProps'
+import { getConfig } from '../config'
 
 export function themeable<ComponentType extends (props: any) => any>(
   Component: ComponentType,
@@ -12,13 +14,10 @@ export function themeable<ComponentType extends (props: any) => any>(
     props: ThemeableProps,
     ref
   ) {
-    const defaultTheme = staticConfig?.defaultProps?.theme
-    const {
-      theme = defaultTheme,
-      componentName,
-      themeReset = staticConfig?.defaultProps?.themeReset,
-      ...rest
-    } = props
+    const userDefaults = getUserDefaultProps(props, staticConfig)
+    const defaultTheme = userDefaults?.theme
+    const defaultResetTheme = userDefaults?.themeReset
+    const { theme, componentName, themeReset, ...rest } = props
 
     let overriddenContextProps: Object | undefined
     const context = staticConfig?.context
@@ -61,9 +60,9 @@ export function themeable<ComponentType extends (props: any) => any>(
       filteredProps ||= {}
       filteredProps.name = 'theme' in props ? props.theme : defaultTheme
     }
-    if ('themeReset' in props) {
+    if ('themeReset' in props || defaultResetTheme) {
       filteredProps ||= {}
-      filteredProps.reset = themeReset
+      filteredProps.reset = 'themeReset' in props ? themeReset : defaultResetTheme
     }
 
     if (optimize && !filteredProps) {

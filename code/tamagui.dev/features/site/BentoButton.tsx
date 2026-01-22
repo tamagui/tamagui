@@ -3,7 +3,7 @@ import { BentoIcon } from '../icons/BentoIcon'
 
 export const BentoButton = (props: ButtonProps) => {
   return (
-    <Button size="$3" rounded="$10" {...props}>
+    <Button theme="green" size="$3" rounded="$10" {...props}>
       <Button.Text fontFamily="$silkscreen" fontSize={12}>
         Copy-Paste UI
       </Button.Text>

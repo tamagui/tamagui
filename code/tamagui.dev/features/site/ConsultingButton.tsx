@@ -3,7 +3,7 @@ import { AddevenIcon } from '~/features/icons/AddevenIcon'
 
 export const ConsultingButton = (props: ButtonProps) => {
   return (
-    <Button size="$3" rounded="$10" {...props}>
+    <Button theme="black" size="$3" rounded="$10" {...props}>
       <Button.Text fontFamily="$silkscreen" fontSize={12}>
         Hire Us!
       </Button.Text>

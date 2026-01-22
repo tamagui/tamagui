@@ -1,6 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react'
-
-export const IS_REACT_19: boolean = typeof React.use !== 'undefined'
+import { useEffect, useLayoutEffect } from 'react'
 
 export const isWeb: boolean = true
 export const isWindowDefined: boolean = typeof window !== 'undefined'

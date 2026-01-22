@@ -26,19 +26,17 @@ export const PromoLinksRow = () => {
             </Link>
           </Tooltip.Trigger>
 
-          <Theme name="green">
-            <Tooltip.Trigger
-              scope="promo-tooltip"
-              asChild
-              onMouseEnter={() => setLabel('Bento — Free + paid pre-made UI')}
-            >
-              <Link href="/bento">
-                <XGroup.Item>
-                  <BentoButton />
-                </XGroup.Item>
-              </Link>
-            </Tooltip.Trigger>
-          </Theme>
+          <Tooltip.Trigger
+            scope="promo-tooltip"
+            asChild
+            onMouseEnter={() => setLabel('Bento — Free + paid pre-made UI')}
+          >
+            <Link href="/bento">
+              <XGroup.Item>
+                <BentoButton />
+              </XGroup.Item>
+            </Link>
+          </Tooltip.Trigger>
 
           <Tooltip.Trigger
             scope="promo-tooltip"

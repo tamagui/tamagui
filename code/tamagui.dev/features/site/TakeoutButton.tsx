@@ -3,7 +3,7 @@ import { TakeoutIcon } from '../icons/TakeoutIcon'
 
 export const TakeoutButton = (props: ButtonProps) => {
   return (
-    <Button theme="blue" size="$3" rounded="$10" {...props}>
+    <Button theme="red" size="$3" rounded="$10" {...props}>
       <Button.Text fontFamily="$silkscreen" fontSize={12}>
         Starter Kit
       </Button.Text>

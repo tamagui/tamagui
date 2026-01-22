@@ -46,7 +46,7 @@ const Frame = styled(View, {
         flexDirection: 'row',
         cursor: 'pointer',
         backgroundColor: '$background',
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: 'transparent',
 
         hoverStyle: {

@@ -1,7 +1,5 @@
-import React, { useLayoutEffect, type useEffect } from 'react'
+import { useLayoutEffect, type useEffect } from 'react'
 import { Platform } from 'react-native'
-
-export const IS_REACT_19: boolean = typeof React.use !== 'undefined'
 
 export const isWeb: boolean = false
 export const isWindowDefined: boolean = false

@@ -59,6 +59,7 @@ uniswap:
 
 # v3 cleanups
 
+- styleable shouldnt forwardRef, remove it in general
 - remove inlineWhenUnflattened i think
 - basically we need a style() helper because:
   - then we can pre-compile styles like text defaults, view default, text-nested default
