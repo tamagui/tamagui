@@ -80,6 +80,8 @@ export interface SelectItemParentContextValue {
     };
     shouldRenderWebNative?: boolean;
     size?: SizeTokens;
+    /** fast setter: updates ref + emits to subscribers (no re-render) - use for keyboard navigation */
+    setActiveIndexFast?: (index: number | null) => void;
 }
 export interface SelectContextValue {
     dir?: SelectDirection;
