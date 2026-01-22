@@ -375,7 +375,8 @@ async function run() {
       if (!canary && !skipStarters) {
         const starterFreeDir = join(process.cwd(), '../starter-free')
         if (!dirty) {
-          await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
+          const starterBranch = (await exec(`git rev-parse --abbrev-ref HEAD`, { cwd: starterFreeDir })).stdout.trim()
+          await spawnify(`git pull --rebase origin ${starterBranch}`, { cwd: starterFreeDir })
         }
 
         await spawnify(`yarn upgrade:starters`)
@@ -399,7 +400,8 @@ async function run() {
 
           if (!dirty) {
             // pull once more before pushing so if there was a push in interim we get it
-            await spawnify(`git pull --rebase origin HEAD`, { cwd })
+            const currentBranch = (await exec(`git rev-parse --abbrev-ref HEAD`, { cwd })).stdout.trim()
+            await spawnify(`git pull --rebase origin ${currentBranch}`, { cwd })
           }
 
           await spawnify(`git push origin head`, { cwd })
