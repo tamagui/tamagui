@@ -17,7 +17,7 @@ import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { VideoSection } from '~/features/takeout/VideoSection'
 
 export default function TakeoutPageNew() {
-  const { showAppropriateModal, showWithActivePromo } = useSubscriptionModal()
+  const { showAppropriateModal } = useSubscriptionModal()
   const activePromo = getActivePromo()
 
   return (
@@ -128,7 +128,6 @@ export default function TakeoutPageNew() {
         {/* Hero Section */}
         <TakeoutHeroNew
           onBuyPress={() => showAppropriateModal()}
-          onPromoPress={() => showWithActivePromo()}
           activePromo={activePromo}
         />
 

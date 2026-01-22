@@ -1,7 +1,7 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, Copy } from '@tamagui/lucide-icons'
 import { Suspense, lazy } from 'react'
-import { Button, Paragraph, Theme, XGroup, XStack, YStack, styled } from 'tamagui'
+import { Button, Paragraph, Theme, XStack, YStack, styled } from 'tamagui'
 
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { ButtonLink, Link } from '~/components/Link'
@@ -88,20 +88,18 @@ function InstallCommand() {
 
 export function TakeoutHeroNew({
   onBuyPress,
-  onPromoPress,
   activePromo,
 }: {
   onBuyPress?: () => void
-  onPromoPress?: () => void
   activePromo?: PromoConfig | null
 }) {
   return (
     <YStack items="center" gap="$8" pt="$10" pb="$8" px="$4" position="relative">
-      {/* Promo badge - floating pill at top center */}
-      {activePromo && onPromoPress && (
+      {/* Promo badge - floating pill at top center, opens same modal as buy button */}
+      {activePromo && onBuyPress && (
         <Theme name={activePromo.theme || 'green'}>
           <PromoBadgeContainer
-            onPress={onPromoPress}
+            onPress={onBuyPress}
             bg="$color3"
             borderColor="$color5"
             style={{
