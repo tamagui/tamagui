@@ -224,13 +224,12 @@ const HeroContents = memo(function HeroContents() {
                 variant="outlined"
                 borderWidth={2}
                 mx="$2"
-                tabIndex={0}
-                elevation="$1"
+                elevation="$4"
                 pressStyle={{
                   elevation: '$0',
                 }}
               >
-                <Button.Text fontFamily="$silkscreen" fontSize="$2">
+                <Button.Text fontFamily="$silkscreen" fontSize="$6">
                   Start
                 </Button.Text>
                 {/* <YStack $group-item-press={{ scaleX: -1 }}>
