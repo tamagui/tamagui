@@ -314,17 +314,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
             if (diff) {
-              // FIX: Handle animation interruption for transform animations
-              // When a new position animation starts while one is running,
-              // motion needs to know where to start FROM (current animated position)
-              // not from the previous target value
-              if (diff.transform && controls.current) {
-                // Get the current computed transform (where the animation currently is)
+              // FIX: Handle animation interruption for position animations
+              // Only do expensive getComputedStyle when:
+              // 1. There's a transform with translate (position change)
+              // 2. There's a running animation (controls.current exists)
+              // 3. Animation started recently (within 500ms - likely still animating)
+              const isPositionChange =
+                typeof diff.transform === 'string' && diff.transform.includes('translate')
+              const hasRecentAnimation =
+                lastAnimateAt.current && Date.now() - lastAnimateAt.current < 50
+
+              if (isPositionChange && controls.current && hasRecentAnimation) {
                 const currentTransform = getComputedStyle(node).transform
 
-                // If there's a running animation and the transform has x/y values
                 if (currentTransform && currentTransform !== 'none') {
-                  // Parse the current matrix to get x/y position
                   const matrixMatch = currentTransform.match(
                     /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
                   )
@@ -333,20 +336,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                     const currentX = Number.parseFloat(matrixMatch[1])
                     const currentY = Number.parseFloat(matrixMatch[2])
 
-                    // Stop the current animation
                     controls.current.stop()
-
-                    // Immediately set the element to its current animated position
-                    // This prevents the visual jump
                     node.style.transform = currentTransform
 
-                    // Build keyframes: animate FROM current position TO new target
                     const startTransform = `translateX(${currentX}px) translateY(${currentY}px)`
-                    const targetTransform = diff.transform as string
-
-                    // Use keyframes to explicitly tell motion where to start
-                    const keyframeDiff = { ...diff }
-                    keyframeDiff.transform = [startTransform, targetTransform]
+                    const keyframeDiff = {
+                      ...diff,
+                      transform: [startTransform, diff.transform as string],
+                    }
 
                     controls.current = animate(
                       scope.current,

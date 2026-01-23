@@ -23,9 +23,9 @@ export function TooltipPositionJumpCase() {
   const [label, setLabel] = useState('')
 
   return (
-    <YStack flex={1} gap="$4" p="$4" bg="$background" ai="center" jc="center">
+    <YStack flex={1} gap="$4" p="$4" bg="$background" alignItems="center" justifyContent="center">
       <SizableText fontWeight="bold">Tooltip Position Jump Test</SizableText>
-      <SizableText size="$2" color="$gray11" ta="center">
+      <SizableText size="$2" color="$gray11" textAlign="center">
         1. Hover rightmost button, wait for tooltip{'\n'}
         2. Move mouse QUICKLY left across all buttons{'\n'}
         3. Watch for tooltip jumping to wrong position
@@ -45,7 +45,6 @@ export function TooltipPositionJumpCase() {
                 <Button
                   data-testid={`tooltip-trigger-${btn.id}`}
                   size="$4"
-                  themeInverse
                 >
                   {btn.id.toUpperCase()}
                 </Button>
