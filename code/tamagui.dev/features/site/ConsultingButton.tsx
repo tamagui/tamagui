@@ -1,5 +1,5 @@
 import { Button, type ButtonProps } from 'tamagui'
-import { AddevenIcon } from '~/features/icons/AddevenIcon'
+import { AddEvenBrandIcon } from '~/features/icons/AddEvenBrandIcon'
 
 export const ConsultingButton = (props: ButtonProps) => {
   return (
@@ -15,7 +15,7 @@ export const ConsultingButton = (props: ButtonProps) => {
         Hire Us!
       </Button.Text>
       <Button.Icon>
-        <AddevenIcon scale={0.75} />
+        <AddEvenBrandIcon scale={0.75} />
       </Button.Icon>
     </Button>
   )

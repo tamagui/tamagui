@@ -16,7 +16,7 @@ import { useState } from 'react'
 const buttons = [
   { id: 'takeout', label: 'Takeout — universal RN starter kit' },
   { id: 'bento', label: 'Bento — Free + paid pre-made UI' },
-  { id: 'hire', label: 'AddEven — Expert React Native developers' },
+  { id: 'hire', label: 'Add Even — Expert React Native developers' },
 ]
 
 export function TooltipPositionJumpCase() {

@@ -1,7 +1,7 @@
 import { YStack } from 'tamagui'
 import { forwardRef } from 'react'
 
-export const AddevenIcon = forwardRef(({ scale = 1 }: { scale?: number }, ref) => (
+export const AddEvenBrandIcon = forwardRef(({ scale = 1 }: { scale?: number }, ref) => (
   <YStack render="span" ref={ref as any} p="$4" m="$-4">
     <svg
       width={20 * scale}

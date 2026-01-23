@@ -41,7 +41,7 @@ export const PromoLinksRow = () => {
           <Tooltip.Trigger
             scope="promo-tooltip"
             asChild
-            onMouseEnter={() => setLabel('AddEven — Expert React Native developers')}
+            onMouseEnter={() => setLabel('Add Even — Expert React Native developers')}
           >
             <Link href="https://addeven.com" target="_blank">
               <XGroup.Item>
