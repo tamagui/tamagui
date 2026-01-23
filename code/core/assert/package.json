@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/assert",
-  "version": "2.0.0-1769080004701",
+  "version": "2.0.0-1769144929270",
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
