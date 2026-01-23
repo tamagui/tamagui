@@ -29,6 +29,27 @@ export declare const defaultComponentThemes: {
         readonly template: "surface1";
     };
 };
+/** Default grandchildren themes available in v5 */
+export declare const defaultGrandChildrenThemes: {
+    accent: {
+        template: string;
+    };
+    alt1: {
+        template: string;
+    };
+    alt2: {
+        template: string;
+    };
+    surface1: {
+        template: string;
+    };
+    surface2: {
+        template: string;
+    };
+    surface3: {
+        template: string;
+    };
+};
 export type HSL = {
     h: number;
     s: number;
@@ -385,27 +406,6 @@ export declare const defaultChildrenThemes: {
             neutral6: string;
             neutral11: string;
         };
-    };
-};
-/** Default grandchildren themes available in v5 */
-export declare const defaultGrandChildrenThemes: {
-    accent: {
-        template: string;
-    };
-    alt1: {
-        template: string;
-    };
-    alt2: {
-        template: string;
-    };
-    surface1: {
-        template: string;
-    };
-    surface2: {
-        template: string;
-    };
-    surface3: {
-        template: string;
     };
 };
 /** Union of all color values from children themes (for light or dark) */
