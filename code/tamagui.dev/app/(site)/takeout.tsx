@@ -29,10 +29,10 @@ export default function TakeoutPageNew() {
         title="Tamagui Takeout"
         description="Ship apps everywhere - iOS, Android, and web with one codebase"
         openGraph={{
-          url: 'https://tamagui.dev/takeout',
+          url: '/takeout',
           images: [
             {
-              url: 'https://tamagui.dev/takeout/social.png',
+              url: '/takeout/social.png',
             },
           ],
         }}

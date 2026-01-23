@@ -2,6 +2,8 @@
 
 import { Fragment } from 'react'
 
+const SITE_URL = process.env.ONE_SERVER_URL || 'https://tamagui.dev'
+
 export function HeadInfo({
   title,
   description,
@@ -39,15 +41,25 @@ export function HeadInfo({
         <>
           {openGraph.url && (
             <>
-              <meta property="og:url" content={openGraph.url} />
+              <meta
+                property="og:url"
+                content={
+                  openGraph.url.startsWith('http')
+                    ? openGraph.url
+                    : `${SITE_URL}${openGraph.url}`
+                }
+              />
               <meta property="og:type" content="website" />
             </>
           )}
 
           {openGraph.images?.map((image) => {
+            const imageUrl = image.url.startsWith('http')
+              ? image.url
+              : `${SITE_URL}${image.url}`
             return (
               <Fragment key={image.url}>
-                <meta property="og:image" content={image.url} />
+                <meta property="og:image" content={imageUrl} />
                 {image.width && (
                   <meta property="og:image:width" content={`${image.width}`} />
                 )}

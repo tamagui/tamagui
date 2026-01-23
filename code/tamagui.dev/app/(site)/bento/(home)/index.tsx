@@ -36,10 +36,10 @@ export default function BentoPage() {
         title="Copy-paste UI for React Native and Web - Tamagui Bento"
         description="Tamagui Bento - Copy-paste components and screens for React and React Native"
         openGraph={{
-          url: 'https://tamagui.dev/bento',
+          url: '/bento',
           images: [
             {
-              url: 'https://tamagui.dev/bento/social.png',
+              url: '/bento/social.png',
             },
           ],
         }}

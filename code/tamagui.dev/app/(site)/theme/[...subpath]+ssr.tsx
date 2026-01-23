@@ -35,10 +35,10 @@ export default function ThemeLayout() {
           data.search ? `Tamagui Theme for ${data.search}` : `Tamagui Theme Builder`
         }
         openGraph={{
-          url: `https://tamagui.dev/api/theme/open-graph?id=${data.id || '0'}`,
+          url: `/api/theme/open-graph?id=${data.id || '0'}`,
           images: [
             {
-              url: `https://tamagui.dev/api/theme/open-graph?id=${data.id || '0'}`,
+              url: `/api/theme/open-graph?id=${data.id || '0'}`,
             },
           ],
         }}

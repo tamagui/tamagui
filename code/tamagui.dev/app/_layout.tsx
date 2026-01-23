@@ -81,7 +81,7 @@ export default function Layout() {
               siteName: 'Tamagui',
               images: [
                 {
-                  url: 'https://tamagui.dev/social.png',
+                  url: '/social.png',
                 },
               ],
             }}
