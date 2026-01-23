@@ -33,6 +33,7 @@ import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { DocsMenuContents } from '../../docs/DocsMenuContents'
 import { useDocsMenu } from '../../docs/useDocsMenu'
+import { AddevenIcon } from '../../icons/AddevenIcon'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
@@ -909,12 +910,34 @@ const HeaderMenuMoreContents = () => {
             </SizableText>
           </HeadAnchor>
         </Link>
+
       </XStack>
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
       <Link asChild href="/community">
         <HeadAnchor grid render="a">
           Community
+        </HeadAnchor>
+      </Link>
+
+      <Link asChild href="https://addeven.com" target="_blank">
+        <HeadAnchor grid render="a">
+          <XStack items="center">
+            Add Even
+            <YStack
+              ml={3}
+              display={'inline-block' as any}
+              x={6}
+              y={-1}
+              my={-10}
+              opacity={0.8}
+            >
+              <AddevenIcon scale={0.65} />
+            </YStack>
+          </XStack>
+          <SizableText size="$2" color="$color9">
+            Expert Consulting
+          </SizableText>
         </HeadAnchor>
       </Link>
 
