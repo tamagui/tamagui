@@ -71,6 +71,17 @@ export const docsRoutes = [
     ],
   },
 
+  // Compiler section
+  {
+    section: 'core',
+    title: 'Compiler',
+    pages: [
+      { title: 'Installation', route: '/docs/intro/compiler-install' },
+      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
+      { title: 'Background', route: '/docs/intro/why-a-compiler' },
+    ],
+  },
+
   // Bundlers section
   {
     title: 'Bundlers',
@@ -99,17 +110,6 @@ export const docsRoutes = [
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
       { title: 'Server Rendering', route: '/docs/core/server-rendering' },
       { title: 'Extras', route: '/docs/core/exports' },
-    ],
-  },
-
-  // Compiler section
-  {
-    section: 'compiler',
-    title: 'Compiler',
-    pages: [
-      { title: 'Installation', route: '/docs/intro/compiler-install' },
-      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
-      { title: 'Background', route: '/docs/intro/why-a-compiler' },
     ],
   },
 
