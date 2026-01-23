@@ -314,49 +314,37 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
             if (diff) {
-              // FIX for tooltip position jump bug:
-              // When rapidly changing position via CSS transform with translate,
-              // we need to properly interrupt the current animation and capture its position.
-              // Direct x/y prop changes are handled correctly by motion library.
-              const hasTransformWithTranslate =
-                typeof diff.transform === 'string' && diff.transform.includes('translate')
+              // FIX: Handle animation interruption for transform animations
+              // When a new position animation starts while one is running,
+              // motion needs to know where to start FROM (current animated position)
+              // not from the previous target value
+              if (diff.transform && controls.current) {
+                // Get the current computed transform (where the animation currently is)
+                const currentTransform = getComputedStyle(node).transform
 
-              if (hasTransformWithTranslate && controls.current) {
-                // FIX: when interrupting a position animation that uses CSS transform,
-                // we need to capture the current animated position and use keyframes
-                // to animate FROM that position to the new target.
-                // This fixes the tooltip position jump bug.
-                //
-                // Note: Only handle transform-based position changes here.
-                // Direct x/y prop changes are handled correctly by motion library.
-
-                // IMPORTANT: Read transform BEFORE stopping - stop() may reset it!
-                const computedStyle = getComputedStyle(node)
-                const currentTransform = computedStyle.transform
-
-                controls.current.stop()
-
-                // After stop(), motion may have left inline styles on the element.
-                // We need to set the transform to the captured value before animating.
-                node.style.transform = currentTransform
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                node.offsetHeight // force reflow
-
-                // use keyframes to explicitly tell motion WHERE to start from
+                // If there's a running animation and the transform has x/y values
                 if (currentTransform && currentTransform !== 'none') {
-                  // extract current position from matrix(1, 0, 0, 1, tx, ty)
+                  // Parse the current matrix to get x/y position
                   const matrixMatch = currentTransform.match(
                     /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
                   )
+
                   if (matrixMatch) {
                     const currentX = parseFloat(matrixMatch[1])
                     const currentY = parseFloat(matrixMatch[2])
 
-                    // build start transform from current animated position
+                    // Stop the current animation
+                    controls.current.stop()
+
+                    // Immediately set the element to its current animated position
+                    // This prevents the visual jump
+                    node.style.transform = currentTransform
+
+                    // Build keyframes: animate FROM current position TO new target
                     const startTransform = `translateX(${currentX}px) translateY(${currentY}px)`
                     const targetTransform = diff.transform as string
 
-                    // use keyframes to animate from current position to target
+                    // Use keyframes to explicitly tell motion where to start
                     const keyframeDiff = { ...diff }
                     keyframeDiff.transform = [startTransform, targetTransform]
 
