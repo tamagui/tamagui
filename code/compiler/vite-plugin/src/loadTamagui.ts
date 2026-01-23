@@ -1,51 +1,47 @@
 import * as StaticWorker from '@tamagui/static-worker'
 import type { TamaguiOptions } from '@tamagui/types'
 
-export let tamaguiOptions: TamaguiOptions | null = null
-export let disableStatic = false
+let loadPromise: Promise<TamaguiOptions> | null = null
+let loadedOptions: TamaguiOptions | null = null
 
-// Keep a reference to the watcher dispose function
-let watcherDispose: (() => void) | null = null
-let isLoading: null | Promise<void> = null
+export function getTamaguiOptions(): TamaguiOptions | null {
+  return loadedOptions
+}
 
-export async function loadTamaguiBuildConfig(optionsIn?: Partial<TamaguiOptions>) {
-  if (tamaguiOptions) return
-  if (isLoading) return await isLoading
+export function getLoadPromise(): Promise<TamaguiOptions> | null {
+  return loadPromise
+}
 
-  let resolve: () => void
-  isLoading = new Promise((res) => {
-    resolve = res!
-  })
+export async function loadTamaguiBuildConfig(
+  optionsIn?: Partial<TamaguiOptions>
+): Promise<TamaguiOptions> {
+  if (loadedOptions) return loadedOptions
+  if (loadPromise) return loadPromise
 
-  try {
-    tamaguiOptions = await StaticWorker.loadTamaguiBuildConfig({
+  loadPromise = (async () => {
+    const options = await StaticWorker.loadTamaguiBuildConfig({
       ...optionsIn,
       platform: 'web',
     })
 
-    disableStatic = Boolean(tamaguiOptions.disable)
-
-    // Load full Tamagui config in worker (asynchronous)
-    if (!optionsIn?.disableWatchTamaguiConfig && !disableStatic) {
+    // load full tamagui config in worker (asynchronous)
+    if (!optionsIn?.disableWatchTamaguiConfig && !options.disable) {
       await StaticWorker.loadTamagui({
         components: ['tamagui'],
         platform: 'web',
-        ...tamaguiOptions,
+        ...options,
       })
     }
-  } finally {
-    resolve!()
-    isLoading = null
-  }
+
+    loadedOptions = options
+    return options
+  })()
+
+  return loadPromise
 }
 
-/**
- * Clean up resources on shutdown
- */
 export async function cleanup() {
-  if (watcherDispose) {
-    watcherDispose()
-    watcherDispose = null
-  }
   await StaticWorker.destroyPool()
+  loadPromise = null
+  loadedOptions = null
 }
