@@ -69,9 +69,9 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     const isEmptyValue = context.value == null || context.value === ''
 
     // Use renderValue for SSR support - called synchronously during render
-    // Falls back to the portal-based selectedItem for backward compatibility
+    // Falls back to the portal-based selectedItem, then to the raw value for SSR
     const renderedValue = context.renderValue?.(context.value)
-    const children = childrenProp ?? renderedValue ?? context.selectedItem
+    const children = childrenProp ?? renderedValue ?? context.selectedItem ?? context.value
     const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (

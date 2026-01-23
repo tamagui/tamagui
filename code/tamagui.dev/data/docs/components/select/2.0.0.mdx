@@ -137,6 +137,11 @@ Contains every component for the select:
       type: 'NativeValue',
       description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
     },
+    {
+      name: 'renderValue',
+      type: '(value: string) => ReactNode',
+      description: `Render function for the selected value. Useful for SSR when you need custom display text. By default, Select falls back to showing the raw value for SSR compatibility.`,
+    },
   ]}
 />
 
