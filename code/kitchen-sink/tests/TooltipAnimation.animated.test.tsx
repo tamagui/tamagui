@@ -31,7 +31,21 @@ async function getTranslateY(page: Page, testId: string): Promise<number> {
     (id) => {
       const el = document.querySelector(`[data-testid="${id}"]`)
       if (!el) return -9999
-      const transform = getComputedStyle(el).transform
+      const styles = getComputedStyle(el)
+      // check individual CSS translate property first
+      const translate = styles.translate
+      if (translate && translate !== 'none') {
+        // translate can be "100px" or "100px 50px" or "100px 50px 0px"
+        // Y is the second value
+        const parts = translate.split(/\s+/)
+        if (parts.length >= 2) {
+          const yMatch = parts[1].match(/^(-?[\d.]+)px/)
+          return yMatch ? Number.parseFloat(yMatch[1]) : 0
+        }
+        return 0 // only X value, Y is 0
+      }
+      // fall back to parsing transform matrix
+      const transform = styles.transform
       if (transform === 'none') return 0
       // matrix(a, b, c, d, tx, ty) - translateY is in the 'ty' position (6th value)
       const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^)]+)\)/)

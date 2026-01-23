@@ -221,6 +221,11 @@ export const getSplitStyles: StyleSplitter = (
     time`split-styles-setup`
   }
 
+  // determine early if we should use individual CSS transform props (scale, translateX, etc.)
+  // instead of merging them into a transform array
+  const useIndividualTransforms =
+    isWeb && !staticConfig.isReactNative && !!animationDriver?.supportsCSS
+
   /**
    * Not the biggest fan of creating an object but it is a nice API
    */
@@ -237,6 +242,7 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     context: componentContext,
     debug,
+    useIndividualTransforms,
   }
 
   // only used by compiler
@@ -1059,17 +1065,48 @@ export const getSplitStyles: StyleSplitter = (
     // always do this at the very end to preserve the order strictly (animations, origin)
     // and allow proper merging of all pseudos before applying
     if (styleState.flatTransforms) {
-      // we need to match the order for animations to work because it needs consistent order
-      // was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
-      // but if we just handle it here its not a big cost and avoids having stateful things
-      // so the strategy is: always sort by a consistent order, until you run into a "duplicate"
-      // because you can have something like:
-      //   [{ translateX: 0 }, { scale: 1 }, { translateX: 10 }]
-      // so basically we sort until we get to a duplicate... we could sort even smarter but
-      // this should work for most (all?) of our cases since the order preservation really only needs to apply
-      // to the "flat" transform props
       styleState.style ||= {}
-      mergeFlatTransforms(styleState.style, styleState.flatTransforms)
+
+      // on web with CSS-compatible driver, use individual CSS transform props
+      // (translate, scale, rotate) instead of merging into a transform array
+      // native and RN-based drivers need the array format
+      if (styleState.useIndividualTransforms) {
+        // CSS has individual transform properties: translate, scale, rotate
+        // but NOT translateX, translateY - those are functions for the transform property
+        // so we need to combine x/y/translateX/translateY into the translate property
+        const ft = styleState.flatTransforms
+        const hasX = 'x' in ft || 'translateX' in ft
+        const hasY = 'y' in ft || 'translateY' in ft
+
+        if (hasX || hasY) {
+          const xVal = ft.x ?? ft.translateX ?? 0
+          const yVal = ft.y ?? ft.translateY ?? 0
+          const xStr = typeof xVal === 'number' ? `${xVal}px` : xVal
+          const yStr = typeof yVal === 'number' ? `${yVal}px` : yVal
+          // CSS translate property: single value = X only, two values = X Y
+          // cast to any since TextStyle doesn't include CSS individual transform props
+          ;(styleState.style as any).translate = hasY ? `${xStr} ${yStr}` : xStr
+        }
+
+        // copy other transform props (scale, rotate, etc.) directly
+        for (const key in ft) {
+          if (key === 'x' || key === 'y' || key === 'translateX' || key === 'translateY') {
+            continue // already handled above
+          }
+          styleState.style[key] = ft[key]
+        }
+      } else {
+        // we need to match the order for animations to work because it needs consistent order
+        // was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
+        // but if we just handle it here its not a big cost and avoids having stateful things
+        // so the strategy is: always sort by a consistent order, until you run into a "duplicate"
+        // because you can have something like:
+        //   [{ translateX: 0 }, { scale: 1 }, { translateX: 10 }]
+        // so basically we sort until we get to a duplicate... we could sort even smarter but
+        // this should work for most (all?) of our cases since the order preservation really only needs to apply
+        // to the "flat" transform props
+        mergeFlatTransforms(styleState.style, styleState.flatTransforms)
+      }
     }
 
     // add in defaults if not set:
@@ -1119,17 +1156,29 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const [key, value, identifier] = atomicStyle
+
+          // check if key matches animateOnly, expanding 'transform' to include individual transform props
+          const matchesAnimateOnly = (animateOnly: string[] | undefined, k: string) => {
+            if (!animateOnly) return false
+            if (animateOnly.includes(k)) return true
+            // when animateOnly includes 'transform', also match individual transform props
+            if (animateOnly.includes('transform') && individualTransformProps.has(k)) {
+              return true
+            }
+            return false
+          }
+
           const isAnimatedAndTransitionOnly =
             styleProps.isAnimated &&
             styleProps.noClass &&
-            props.animateOnly?.includes(key)
+            matchesAnimateOnly(props.animateOnly, key)
 
           // or not animated but you have animateOnly
           // (moves it to style={}, nice to avoid generating lots of classnames)
           const nonAnimatedTransitionOnly =
             !isAnimatedAndTransitionOnly &&
             !styleProps.isAnimated &&
-            props.animateOnly?.includes(key)
+            matchesAnimateOnly(props.animateOnly, key)
 
           if (isAnimatedAndTransitionOnly) {
             retainedStyles ||= {}
@@ -1416,7 +1465,15 @@ export const getSubStyle = (
         sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
       }
       if (!avoidMergeTransform && skey in stylePropsTransform) {
-        mergeTransform(styleOut, skey, sval)
+        // when using individual CSS transform props, collect them for later processing
+        // we need to combine x/y into the CSS translate property
+        if (styleState.useIndividualTransforms) {
+          // store in styleOut temporarily with original key (x, y, translateX, translateY, scale, etc.)
+          // we'll process them after the loop to combine x/y into translate
+          styleOut[skey] = sval
+        } else {
+          mergeTransform(styleOut, skey, sval)
+        }
       } else {
         styleOut[skey] = styleProps.noNormalize
           ? sval
@@ -1430,7 +1487,29 @@ export const getSubStyle = (
     const flatTransforms = styleState.flatTransforms
     const styleOutTransform = styleOut.transform
 
-    if (Array.isArray(styleOutTransform) && styleOutTransform.length) {
+    // when using individual CSS transform props, convert to valid CSS properties
+    if (styleState.useIndividualTransforms) {
+      // transform props were collected in the loop above with their original keys
+      // now we need to convert them to valid CSS properties:
+      // - x, y, translateX, translateY -> combine into CSS translate property
+      // - scale, rotate, etc. -> keep as-is (valid CSS props)
+      const hasX = 'x' in styleOut || 'translateX' in styleOut
+      const hasY = 'y' in styleOut || 'translateY' in styleOut
+
+      if (hasX || hasY) {
+        const xVal = styleOut.x ?? styleOut.translateX ?? 0
+        const yVal = styleOut.y ?? styleOut.translateY ?? 0
+        const xStr = typeof xVal === 'number' ? `${xVal}px` : xVal
+        const yStr = typeof yVal === 'number' ? `${yVal}px` : yVal
+        // cast to any since TextStyle doesn't include CSS individual transform props
+        ;(styleOut as any).translate = hasY ? `${xStr} ${yStr}` : xStr
+        // clean up temporary keys
+        delete styleOut.x
+        delete styleOut.y
+        delete styleOut.translateX
+        delete styleOut.translateY
+      }
+    } else if (Array.isArray(styleOutTransform) && styleOutTransform.length) {
       // Inline conflict check - faster than building lookup object for small arrays
       const len = styleOutTransform.length
 
@@ -1513,6 +1592,24 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
 }
 
 const defaultColor = process.env.TAMAGUI_DEFAULT_COLOR || 'rgba(0,0,0,0)'
+
+// individual CSS transform properties that can be animated
+// used to expand animateOnly: ['transform'] to include these
+// note: CSS has translate, scale, rotate as valid individual properties
+// translateX/translateY are NOT valid CSS properties (they're functions for transform)
+const individualTransformProps = new Set([
+  'translate', // CSS translate property (combines x/y)
+  'scale',
+  'scaleX',
+  'scaleY',
+  'rotate',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'skewX',
+  'skewY',
+  'perspective',
+])
 const animatableDefaults = {
   ...Object.fromEntries(
     Object.entries(tokenCategories.color).map(([k, v]) => [k, defaultColor])

@@ -314,56 +314,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
             if (diff) {
-              // FIX: Handle animation interruption for position animations
-              // Only do expensive getComputedStyle when:
-              // 1. There's a transform with translate (position change)
-              // 2. There's a running animation (controls.current exists)
-              // 3. Animation started recently (within 500ms - likely still animating)
-
-              // TODO this is not a good fix, getComputedStyle breaks a lot of
-              // the point of motion staying off main thread
-
-              const isRunning = controls.current?.state === 'running'
-
-              if (
-                isRunning &&
-                controls.current &&
-                typeof diff.transform === 'string' &&
-                diff.transform.includes('translate')
-              ) {
-                const currentTransform = getComputedStyle(node).transform
-
-                if (currentTransform && currentTransform !== 'none') {
-                  const matrixMatch = currentTransform.match(
-                    /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
-                  )
-
-                  if (matrixMatch) {
-                    const currentX = Number.parseFloat(matrixMatch[1])
-                    const currentY = Number.parseFloat(matrixMatch[2])
-
-                    controls.current.stop()
-                    node.style.transform = currentTransform
-
-                    const startTransform = `translateX(${currentX}px) translateY(${currentY}px)`
-                    const keyframeDiff = {
-                      ...diff,
-                      transform: [startTransform, diff.transform as string],
-                    }
-
-                    controls.current = animate(
-                      scope.current,
-                      keyframeDiff,
-                      animationOptions
-                    )
-                    lastAnimateAt.current = Date.now()
-                    lastDontAnimate.current = dontAnimate || {}
-                    lastDoAnimate.current = doAnimate
-                    return
-                  }
+              // motion animates transform props via its own mechanism (WAAPI, CSS variables),
+              // but React may have set individual CSS transform props (scale, translate, etc.)
+              // which would conflict. Clear them from the inline style before animating.
+              // note: CSS has translate, scale, rotate as individual properties
+              const cssTransformProps = ['translate', 'scale', 'scaleX', 'scaleY', 'x', 'y', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'skewX', 'skewY']
+              for (const prop of cssTransformProps) {
+                if (prop in diff) {
+                  // clear the individual CSS property so motion's transform takes effect
+                  node.style[prop as any] = ''
                 }
               }
 
+              // motion handles individual transform props (translateX, translateY, scale, etc.) natively
+              // no need for matrix parsing since getSplitStyles now outputs individual props when supportsCSS is true
               controls.current = animate(scope.current, diff, animationOptions)
               lastAnimateAt.current = Date.now()
             }
@@ -433,9 +397,19 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         console.groupEnd()
       }
 
+      // motion handles transform props via animate(), so we need to exclude them
+      // from the React style to avoid conflicts (both setting scale would cause issues)
+      const styleWithoutMotionProps = { ...firstRenderStyle }
+      // remove transform props that motion animates - these should only be controlled by motion
+      // note: CSS has translate (not translateX/Y), scale, rotate as individual properties
+      const motionTransformProps = ['translate', 'scale', 'scaleX', 'scaleY', 'x', 'y', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'skewX', 'skewY']
+      for (const prop of motionTransformProps) {
+        delete styleWithoutMotionProps[prop]
+      }
+
       return {
         // we never change this, after first render on
-        style: firstRenderStyle,
+        style: styleWithoutMotionProps,
         ref: scope,
         render: 'div',
       }

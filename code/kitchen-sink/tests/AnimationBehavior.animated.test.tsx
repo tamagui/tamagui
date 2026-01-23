@@ -28,10 +28,25 @@ async function getScale(page: Page, testId: string): Promise<number> {
     (id) => {
       const el = document.querySelector(`[data-testid="${id}"]`)
       if (!el) return -1
-      const transform = getComputedStyle(el).transform
-      if (transform === 'none') return 1
-      const match = transform.match(/matrix\(([^,]+),/)
-      return match ? Number.parseFloat(match[1]) : 1
+      const styles = getComputedStyle(el)
+
+      // check transform matrix first - motion uses transform: scale()
+      // which shows up in the computed transform matrix
+      const transform = styles.transform
+      if (transform && transform !== 'none') {
+        const match = transform.match(/matrix\(([^,]+),/)
+        if (match) {
+          return Number.parseFloat(match[1])
+        }
+      }
+
+      // fall back to individual CSS scale property
+      const scale = styles.scale
+      if (scale && scale !== 'none') {
+        return Number.parseFloat(scale)
+      }
+
+      return 1
     },
     testId
   )
@@ -42,7 +57,16 @@ async function getTranslateX(page: Page, testId: string): Promise<number> {
     (id) => {
       const el = document.querySelector(`[data-testid="${id}"]`)
       if (!el) return -1
-      const transform = getComputedStyle(el).transform
+      const styles = getComputedStyle(el)
+      // check individual CSS translate property first
+      const translate = styles.translate
+      if (translate && translate !== 'none') {
+        // translate can be "100px" or "100px 50px" or "100px 50px 0px"
+        const match = translate.match(/^(-?[\d.]+)px/)
+        return match ? Number.parseFloat(match[1]) : 0
+      }
+      // fall back to parsing transform matrix
+      const transform = styles.transform
       if (transform === 'none') return 0
       const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+),/)
       return match ? Number.parseFloat(match[1]) : 0
@@ -161,6 +185,14 @@ test.describe('Animation Behavior', () => {
   })
 
   test('enterStyle animates on mount', async ({ page }) => {
+    // capture browser console logs
+    const consoleLogs: string[] = []
+    page.on('console', msg => {
+      if (msg.text().includes('MOTION 21')) {
+        consoleLogs.push(msg.text())
+      }
+    })
+
     const trigger = page.getByTestId('scenario-21-trigger')
     await trigger.click() // Hide
     await page.waitForTimeout(1000)
@@ -168,7 +200,39 @@ test.describe('Animation Behavior', () => {
     expect(await elementExists(page, 'scenario-21-target'), 'Hidden').toBe(false)
 
     await trigger.click() // Show
-    await page.waitForTimeout(2000)
+
+    // debug: check styles immediately after show
+    await page.waitForTimeout(100)
+    const earlyStyles = await page.evaluate(() => {
+      const el = document.querySelector('[data-testid="scenario-21-target"]')
+      if (!el) return null
+      const styles = getComputedStyle(el)
+      return {
+        scale: styles.scale,
+        transform: styles.transform,
+        opacity: styles.opacity,
+      }
+    })
+    console.log('[TEST DEBUG enterStyle] early styles (100ms):', earlyStyles)
+
+    await page.waitForTimeout(1900)
+
+    // debug: check styles after animation should complete
+    const finalStyles = await page.evaluate(() => {
+      const el = document.querySelector('[data-testid="scenario-21-target"]')
+      if (!el) return null
+      const styles = getComputedStyle(el)
+      const inline = (el as HTMLElement).style
+      return {
+        scale: styles.scale,
+        transform: styles.transform,
+        opacity: styles.opacity,
+        inlineScale: inline.scale,
+        inlineTransform: inline.transform,
+      }
+    })
+    console.log('[TEST DEBUG enterStyle] final styles (2000ms):', finalStyles)
+    console.log('[TEST DEBUG enterStyle] motion logs:', consoleLogs)
 
     expect(await elementExists(page, 'scenario-21-target'), 'Shown').toBe(true)
     expect(await getOpacity(page, 'scenario-21-target'), 'End opacity').toBeCloseTo(1, 0)
@@ -248,12 +312,21 @@ test.describe('Animation Behavior', () => {
     // Element should exist now
     expect(await elementExists(page, 'scenario-37-target'), 'Should exist after click').toBe(true)
 
-    // Get scaleX value (first value in matrix transform)
+    // Get scaleX value
     const getScaleX = async () => {
       return page.evaluate(() => {
         const el = document.querySelector('[data-testid="scenario-37-target"]')
         if (!el) return -1
-        const transform = getComputedStyle(el).transform
+        const styles = getComputedStyle(el)
+        // check individual CSS scale property first
+        const scale = styles.scale
+        if (scale && scale !== 'none') {
+          // scale can be "1.5" or "1.5 1" (scaleX scaleY)
+          const parts = scale.split(' ')
+          return Number.parseFloat(parts[0])
+        }
+        // fall back to parsing transform matrix
+        const transform = styles.transform
         if (transform === 'none') return 1
         // matrix(a, b, c, d, tx, ty) - scaleX is in the 'a' position
         const match = transform.match(/matrix\(([^,]+),/)

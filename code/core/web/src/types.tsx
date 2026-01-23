@@ -2529,6 +2529,8 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  // when true, use individual CSS transform props (scale, translateX, etc.) instead of transform array
+  useIndividualTransforms?: boolean
   // Track style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
   // Track original token values (like '$8') before they get resolved to CSS vars
