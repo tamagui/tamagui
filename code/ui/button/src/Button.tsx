@@ -73,7 +73,7 @@ const Frame = styled(View, {
           ? {}
           : {
               backgroundColor: 'transparent',
-              borderWidth: 2,
+              borderWidth: 1,
               borderColor: '$borderColor',
 
               hoverStyle: {
@@ -84,14 +84,6 @@ const Frame = styled(View, {
               pressStyle: {
                 backgroundColor: 'transparent',
                 borderColor: '$borderColorPress',
-              },
-
-              focusVisibleStyle: {
-                backgroundColor: 'transparent',
-                borderColor: '$borderColorFocus',
-                outlineColor: '$outlineColor',
-                outlineStyle: 'solid',
-                outlineWidth: 2,
               },
             },
     },

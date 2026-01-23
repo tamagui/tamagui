@@ -832,7 +832,6 @@ export function createComponent<
       pseudos,
       style: splitStylesStyle,
       classNames,
-      space,
       pseudoGroups,
       mediaGroups,
     } = splitStyles || {}
@@ -1413,7 +1412,7 @@ export function createComponent<
     }
 
     // Text components set inText context for children so nested Text can inherit styles
-    if (process.env.TAMAGUI_TARGET === 'web' && isText && !hasTextAncestor) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !asChild && isText && !hasTextAncestor) {
       content = (
         <ComponentContext.Provider {...componentContext} inText={true}>
           {content}
@@ -1480,7 +1479,7 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         const title = `render <${element} /> (${internalID}) with props`
-        if (!isWeb) {
+        if (!isWeb || !isClient) {
           log(title)
           log(`state: `, state)
           if (isDevTools) {

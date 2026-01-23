@@ -215,29 +215,26 @@ const HeroContents = memo(function HeroContents() {
             </TooltipSimple>
           </Link>
 
-          <Theme name="black">
-            <Link asChild href="/docs/intro/introduction">
-              <Button
-                aria-label="Get started (docs)"
-                size="$5"
-                rounded={1000}
-                variant="outlined"
-                borderWidth={2}
-                mx="$2"
-                elevation="$4"
-                pressStyle={{
-                  elevation: '$0',
-                }}
-              >
-                <Button.Text fontFamily="$silkscreen" fontSize="$6">
-                  Start
-                </Button.Text>
-                {/* <YStack $group-item-press={{ scaleX: -1 }}>
+          <Link asChild href="/docs/intro/introduction">
+            <Button
+              aria-label="Get started (docs)"
+              size="$5"
+              rounded={1000}
+              variant="outlined"
+              mx="$2"
+              elevation="$4"
+              pressStyle={{
+                elevation: '$0',
+              }}
+            >
+              <Button.Text debug="verbose" fontFamily="$silkscreen" fontSize="$6">
+                Start
+              </Button.Text>
+              {/* <YStack $group-item-press={{ scaleX: -1 }}>
                   <LogoIcon downscale={3} />
                 </YStack> */}
-              </Button>
-            </Link>
-          </Theme>
+            </Button>
+          </Link>
 
           <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
             <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
