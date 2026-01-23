@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-nohemi",
-  "version": "2.0.0-1769154615570",
+  "version": "2.0.0-1769189735283",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
