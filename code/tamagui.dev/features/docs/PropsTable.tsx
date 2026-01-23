@@ -39,7 +39,7 @@ export function PropsTable({
         mx: 0,
       }}
     >
-      <XStack items="center" py="$2" px="$4" bg="$borderColor">
+      <XStack items="center" py="$2" px="$4" bg="$color1">
         <H3 size="$3">{title}</H3>
       </XStack>
       {data.map(
@@ -51,6 +51,7 @@ export function PropsTable({
             borderBottomColor="$color4"
             py="$3"
             pointerEvents="none"
+            bg={i % 2 === 1 ? '$color0025' : 'transparent'}
           >
             <YStack width="100%">
               <XStack
@@ -59,7 +60,6 @@ export function PropsTable({
                 px="$4"
                 $sm={{ flexDirection: 'column' }}
               >
-                <YStack fullscreen bg="$background" z={1} opacity={0.5} />
                 <XStack minW="30%" items="center" justify="space-between">
                   <H4
                     color="$color"

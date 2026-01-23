@@ -453,6 +453,8 @@ const componentsIn = {
       pt="$6"
       mb="$3"
       data-heading
+      size="$9"
+      color="$color12"
       {...props}
     >
       {children}
@@ -466,10 +468,10 @@ const componentsIn = {
         position="relative"
         width={`fit-content` as any}
         id={id}
-        opacity={0.7}
         data-heading
-        fontSize={25}
-        fontWeight="700"
+        size="$7"
+        color="$color11"
+        fontWeight="600"
         {...props}
       >
         {children}
