@@ -255,10 +255,11 @@ export function DocsQuickNav({ headings: propsHeadings }: { headings?: Heading[]
         display: 'flex',
         width: 280,
         z: 1,
-        position: 'fixed' as any,
-        right: 'max(40px, calc((100vw - 1400px) / 2 + 20px))',
-        t: 30,
-        height: 'calc(100vh - 30px)',
+        position: 'sticky',
+        t: 20,
+        height: 'calc(100vh - 20px)',
+        alignSelf: 'flex-start',
+        shrink: 0,
       }}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -358,16 +359,16 @@ export function DocsQuickNav({ headings: propsHeadings }: { headings?: Heading[]
           <YStack gap="$2">
             <Theme name="green">
               <Link width="100%" href="/bento">
-                <BentoButton bg="transparent" />
+                <BentoButton />
               </Link>
             </Theme>
             <Theme name="gray">
               <Link width="100%" href="/takeout">
-                <TakeoutButton bg="transparent" />
+                <TakeoutButton />
               </Link>
             </Theme>
             <Link width="100%" href="https://addeven.com" target="_blank">
-              <ConsultingButton bg="transparent" />
+              <ConsultingButton />
             </Link>
           </YStack>
         </YStack>

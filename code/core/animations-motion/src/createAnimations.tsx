@@ -330,8 +330,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   )
 
                   if (matrixMatch) {
-                    const currentX = parseFloat(matrixMatch[1])
-                    const currentY = parseFloat(matrixMatch[2])
+                    const currentX = Number.parseFloat(matrixMatch[1])
+                    const currentY = Number.parseFloat(matrixMatch[2])
 
                     // Stop the current animation
                     controls.current.stop()
@@ -348,7 +348,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                     const keyframeDiff = { ...diff }
                     keyframeDiff.transform = [startTransform, targetTransform]
 
-                    controls.current = animate(scope.current, keyframeDiff, animationOptions)
+                    controls.current = animate(
+                      scope.current,
+                      keyframeDiff,
+                      animationOptions
+                    )
                     lastAnimateAt.current = Date.now()
                     lastDontAnimate.current = dontAnimate || {}
                     lastDoAnimate.current = doAnimate
