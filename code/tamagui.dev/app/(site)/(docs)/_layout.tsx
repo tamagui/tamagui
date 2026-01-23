@@ -7,7 +7,6 @@ import { Paragraph, View, XStack, YStack } from 'tamagui'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
-import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { Footer } from '~/features/site/Footer'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
@@ -30,13 +29,11 @@ export default function DocsLayout() {
   const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${getMDXPath(currentPath)}.mdx`
 
   const themeName =
-    section === 'core'
+    section === 'core' || section === 'compiler'
       ? 'red'
       : section === 'ui'
         ? 'blue'
-        : section === 'compiler'
-          ? 'green'
-          : null
+        : null
 
   return (
     <ThemeNameEffect theme={themeName} colorKey="$color1">
@@ -64,22 +61,22 @@ export default function DocsLayout() {
             $gtMd={{
               display: 'flex',
               position: 'sticky' as any,
-              t: 0,
-              height: '100vh',
+              t: 20,
+              height: 'calc(100vh - 20px)',
               width: 245,
               shrink: 0,
               alignSelf: 'flex-start',
             }}
           >
             <ScrollView showsVerticalScrollIndicator={false}>
-              <YStack pt={108} pb="$18" px="$2">
+              <YStack pt={55} pb="$18" px="$2">
                 <DocsMenuContents />
               </YStack>
             </ScrollView>
           </View>
 
           {/* main content */}
-          <YStack flex={1} flexBasis="auto" py="$8" px="$4">
+          <YStack flex={1} flexBasis="auto" py="$8" px="$4" $gtLg={{ mr: 280 }}>
             <YStack render="article">
               <Container position="relative">
                 <Slot />
@@ -199,8 +196,6 @@ export default function DocsLayout() {
             </YStack>
           </YStack>
 
-          {/* right sidebar - sticky */}
-          <DocsQuickNav />
         </XStack>
       </YStack>
 
