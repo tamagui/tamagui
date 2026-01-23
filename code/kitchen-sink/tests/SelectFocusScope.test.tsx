@@ -19,15 +19,8 @@ test.describe('Select Focus Scope', () => {
 
     // Wait for focus to settle
     await page.waitForTimeout(300)
-    
-    // Focus starts on the viewport/listbox itself
-    const isViewportFocused = await selectViewport.evaluate(el => el === document.activeElement)
-    expect(isViewportFocused).toBe(true)
-    
-    // Use arrow keys to navigate - this moves focus to first item
-    await page.keyboard.press('ArrowDown')
-    await page.waitForTimeout(100)
-    
+
+    // Focus starts on the first item immediately when opened
     const firstItem = page.getByTestId('select-apple')
     const isFirstFocused = await firstItem.evaluate(el => el === document.activeElement)
     expect(isFirstFocused).toBe(true)
@@ -35,7 +28,7 @@ test.describe('Select Focus Scope', () => {
     // Arrow down to second item
     await page.keyboard.press('ArrowDown')
     await page.waitForTimeout(100)
-    
+
     const secondItem = page.getByTestId('select-banana')
     const isSecondFocused = await secondItem.evaluate(el => el === document.activeElement)
     expect(isSecondFocused).toBe(true)
@@ -64,13 +57,12 @@ test.describe('Select Focus Scope', () => {
 
     const selectViewport = page.getByTestId('basic-select-viewport')
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
+    await page.waitForTimeout(300)
 
-    // Navigate to first item then to banana
-    await page.keyboard.press('ArrowDown') // Focus apple
+    // apple is focused initially, navigate to banana
+    await page.keyboard.press('ArrowDown')
     await page.waitForTimeout(100)
-    await page.keyboard.press('ArrowDown') // Focus banana
-    await page.waitForTimeout(100)
-    
+
     // Select with Enter
     await page.keyboard.press('Enter')
     await page.waitForTimeout(200)
@@ -167,19 +159,17 @@ test.describe('Select Focus Scope', () => {
 
     const selectViewport = page.getByTestId('basic-select-viewport')
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
+    await page.waitForTimeout(300)
 
-    // Navigate down to first item (apple)
-    await page.keyboard.press('ArrowDown')
-    await page.waitForTimeout(100)
-    
+    // first item (apple) is focused on open
     const apple = page.getByTestId('select-apple')
     const isAppleFocused = await apple.evaluate(el => el === document.activeElement)
     expect(isAppleFocused).toBe(true)
 
-    // Navigate down through more items
+    // Navigate down through all items
     await page.keyboard.press('ArrowDown') // banana
     await page.waitForTimeout(50)
-    await page.keyboard.press('ArrowDown') // orange  
+    await page.keyboard.press('ArrowDown') // orange
     await page.waitForTimeout(50)
     await page.keyboard.press('ArrowDown') // carrot
     await page.waitForTimeout(50)

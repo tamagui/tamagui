@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { configListeners, getConfigMaybe, setConfig, setTokens } from './config'
+import { getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
@@ -329,11 +329,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   setConfig(config)
   configureMedia(config)
-
-  if (configListeners.size) {
-    configListeners.forEach((cb) => cb(config))
-    configListeners.clear()
-  }
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {

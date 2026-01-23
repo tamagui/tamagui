@@ -6,56 +6,74 @@ test.describe('Select Keyboard Navigation', () => {
     await setupPage(page, { name: 'SelectFocusScopeCase', type: 'useCase' })
   })
 
-  test('first arrow down focuses first item when no selection', async ({ page }) => {
+  test('first item is focused on open', async ({ page }) => {
     const trigger = page.getByTestId('basic-select-trigger')
-
-    // open fresh select (no selection)
     await trigger.click()
     await page.waitForTimeout(300)
 
-    const selectViewport = page.getByTestId('basic-select-viewport')
-    await expect(selectViewport).toBeVisible()
+    // first item should be focused immediately on open
+    const appleItem = page.getByTestId('select-apple')
+    await expect(appleItem).toBeFocused()
+  })
 
-    // first arrow down should go to apple (first item)
+  test('arrow down moves to next item', async ({ page }) => {
+    const trigger = page.getByTestId('basic-select-trigger')
+    await trigger.click()
+    await page.waitForTimeout(300)
+
+    // first item focused on open
+    const appleItem = page.getByTestId('select-apple')
+    await expect(appleItem).toBeFocused()
+
+    // arrow down should move to banana (second item)
     await page.keyboard.press('ArrowDown')
     await page.waitForTimeout(100)
 
-    const appleItem = page.getByTestId('select-apple')
-    const isAppleFocused = await appleItem.evaluate((el) => el === document.activeElement)
-    expect(isAppleFocused).toBe(true)
+    const bananaItem = page.getByTestId('select-banana')
+    await expect(bananaItem).toBeFocused()
   })
 
-  test('selection persists after close and reopen', async ({ page }) => {
+  test('arrow up moves to previous item', async ({ page }) => {
+    const trigger = page.getByTestId('basic-select-trigger')
+    await trigger.click()
+    await page.waitForTimeout(300)
+
+    // navigate down first
+    await page.keyboard.press('ArrowDown')
+    await page.waitForTimeout(100)
+
+    const bananaItem = page.getByTestId('select-banana')
+    await expect(bananaItem).toBeFocused()
+
+    // arrow up should go back to apple
+    await page.keyboard.press('ArrowUp')
+    await page.waitForTimeout(100)
+
+    const appleItem = page.getByTestId('select-apple')
+    await expect(appleItem).toBeFocused()
+  })
+
+  test('selected item is focused on re-open', async ({ page }) => {
     const trigger = page.getByTestId('basic-select-trigger')
 
-    // open and select banana
+    // open and select banana (index 1)
     await trigger.click()
     await page.waitForTimeout(300)
     const bananaItem = page.getByTestId('select-banana')
     await bananaItem.click()
     await page.waitForTimeout(200)
 
-    // verify selection in trigger
-    const triggerText = await trigger.textContent()
-    expect(triggerText).toContain('Banana')
-
-    // re-open - banana should still be the selected value
+    // re-open - banana should be focused
     await trigger.click()
     await page.waitForTimeout(300)
 
-    // select with enter should select banana (the focused/selected item)
-    await page.keyboard.press('Enter')
-    await page.waitForTimeout(200)
-
-    // should still be banana
-    const newTriggerText = await trigger.textContent()
-    expect(newTriggerText).toContain('Banana')
+    await expect(bananaItem).toBeFocused()
   })
 
-  test('can navigate and select different item after reopen', async ({ page }) => {
+  test('arrow down from selected item goes to next', async ({ page }) => {
     const trigger = page.getByTestId('basic-select-trigger')
 
-    // select banana first
+    // select banana
     await trigger.click()
     await page.waitForTimeout(300)
     const bananaItem = page.getByTestId('select-banana')
@@ -66,16 +84,39 @@ test.describe('Select Keyboard Navigation', () => {
     await trigger.click()
     await page.waitForTimeout(300)
 
-    // navigate down multiple times and select
+    // banana should be focused
+    await expect(bananaItem).toBeFocused()
+
+    // arrow down should go to orange (next after banana)
     await page.keyboard.press('ArrowDown')
-    await page.waitForTimeout(50)
-    await page.keyboard.press('ArrowDown')
-    await page.waitForTimeout(50)
-    await page.keyboard.press('Enter')
+    await page.waitForTimeout(100)
+
+    const orangeItem = page.getByTestId('select-orange')
+    await expect(orangeItem).toBeFocused()
+  })
+
+  test('arrow up from selected item goes to previous', async ({ page }) => {
+    const trigger = page.getByTestId('basic-select-trigger')
+
+    // select banana
+    await trigger.click()
+    await page.waitForTimeout(300)
+    const bananaItem = page.getByTestId('select-banana')
+    await bananaItem.click()
     await page.waitForTimeout(200)
 
-    // should have selected a different item (not banana)
-    const triggerText = await trigger.textContent()
-    expect(triggerText).not.toContain('Banana')
+    // re-open
+    await trigger.click()
+    await page.waitForTimeout(300)
+
+    // banana should be focused
+    await expect(bananaItem).toBeFocused()
+
+    // arrow up should go to apple (before banana)
+    await page.keyboard.press('ArrowUp')
+    await page.waitForTimeout(100)
+
+    const appleItem = page.getByTestId('select-apple')
+    await expect(appleItem).toBeFocused()
   })
 })

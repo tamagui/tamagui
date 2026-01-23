@@ -65,6 +65,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
       size,
       onActiveChange,
       initialValue,
+      setActiveIndexFast,
     } = context
 
     const [isSelected, setSelected] = React.useState(initialValue === value)
@@ -77,7 +78,6 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
           onActiveChange(value, index)
 
           if (isWeb) {
-            // focus for focusStyles to apply
             listRef?.current[index]?.focus()
           }
         }
@@ -131,6 +131,21 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
               ) {
                 event.preventDefault()
                 handleSelect()
+              } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                // prevent default and stop propagation so floating-ui doesn't also handle
+                event.preventDefault()
+                event.stopPropagation()
+                const itemCount = listRef?.current.length ?? 0
+                if (itemCount === 0) return
+
+                let nextIndex: number
+                if (event.key === 'ArrowDown') {
+                  nextIndex = index + 1 >= itemCount ? 0 : index + 1
+                } else {
+                  nextIndex = index - 1 < 0 ? itemCount - 1 : index - 1
+                }
+                // use fast setter to avoid triggering state updates that reset activeIndex
+                setActiveIndexFast?.(nextIndex)
               } else {
                 allowSelectRef!.current = true
               }
@@ -165,7 +180,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
         : {
             onPress: handleSelect,
           }
-    }, [handleSelect])
+    }, [handleSelect, index, listRef, setActiveIndexFast])
 
     return (
       <SelectItemContextProvider

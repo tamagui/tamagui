@@ -25,6 +25,28 @@ import { v5Templates } from './v5-templates'
 // re-export color utilities for users
 export { interpolateColor, opacify } from './opacify'
 
+export const defaultComponentThemes = {
+  Button: { template: 'surface3' },
+  Switch: { template: 'surface2' },
+  SwitchThumb: { template: 'inverse' },
+  Progress: { template: 'surface1' },
+  SliderThumb: { template: 'inverse' },
+  Tooltip: { template: 'inverse' },
+  ProgressIndicator: { template: 'inverse' },
+  Input: { template: 'surface1' },
+  TextArea: { template: 'surface1' },
+} as const
+
+/** Default grandchildren themes available in v5 */
+export const defaultGrandChildrenThemes = {
+  accent: { template: 'inverse' },
+  alt1: { template: 'alt1' },
+  alt2: { template: 'alt2' },
+  surface1: { template: 'surface1' },
+  surface2: { template: 'surface2' },
+  surface3: { template: 'surface3' },
+} satisfies Record<string, GrandChildrenThemeDefinition>
+
 // ---- adjustPalette: generic HSL color adjustment ----
 
 export type HSL = { h: number; s: number; l: number }
@@ -269,16 +291,6 @@ export const defaultChildrenThemes = {
   neutral: { light: neutral, dark: neutral },
 }
 
-/** Default grandchildren themes available in v5 */
-export const defaultGrandChildrenThemes = {
-  accent: { template: 'inverse' },
-  alt1: { template: 'alt1' },
-  alt2: { template: 'alt2' },
-  surface1: { template: 'surface1' },
-  surface2: { template: 'surface2' },
-  surface3: { template: 'surface3' },
-} satisfies Record<string, GrandChildrenThemeDefinition>
-
 /** Union of all color values from children themes (for light or dark) */
 type ChildrenColors<
   T extends Record<string, ChildTheme>,
@@ -376,7 +388,7 @@ export function createV5Theme<
     lightPalette: customLightPalette = lightPalette,
     childrenThemes = defaultChildrenThemes as unknown as Children,
     grandChildrenThemes = defaultGrandChildrenThemes as unknown as GrandChildren,
-    componentThemes: customComponentThemes = false,
+    componentThemes: customComponentThemes = defaultComponentThemes,
   } = options
 
   // Generate black/white named colors from palettes

@@ -3,7 +3,7 @@ import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/c
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { useMemo } from 'react'
-import { devConfig, onConfiguredOnce } from './config'
+import { devConfig, getConfig } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
@@ -223,17 +223,13 @@ export function createComponent<
   BaseProps = never,
   BaseStyles extends Object = never,
 >(staticConfig: StaticConfig) {
-  const { componentName } = staticConfig
-
   let config: TamaguiInternalConfig | null = null
-
-  onConfiguredOnce((conf) => {
-    config = conf
-  })
 
   const { Component, isText, isHOC } = staticConfig
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+    config ||= getConfig()
+
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
     if (process.env.NODE_ENV === 'development') {
@@ -836,7 +832,6 @@ export function createComponent<
       pseudos,
       style: splitStylesStyle,
       classNames,
-      space,
       pseudoGroups,
       mediaGroups,
     } = splitStyles || {}
@@ -1417,7 +1412,7 @@ export function createComponent<
     }
 
     // Text components set inText context for children so nested Text can inherit styles
-    if (process.env.TAMAGUI_TARGET === 'web' && isText && !hasTextAncestor) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !asChild && isText && !hasTextAncestor) {
       content = (
         <ComponentContext.Provider {...componentContext} inText={true}>
           {content}
@@ -1484,7 +1479,7 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         const title = `render <${element} /> (${internalID}) with props`
-        if (!isWeb) {
+        if (!isWeb || !isClient) {
           log(title)
           log(`state: `, state)
           if (isDevTools) {

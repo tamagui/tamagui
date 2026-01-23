@@ -21,7 +21,7 @@ export const PromoLinksRow = () => {
           >
             <Link href="/takeout">
               <XGroup.Item>
-                <TakeoutButton />
+                <TakeoutButton mr={-1} />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -33,7 +33,7 @@ export const PromoLinksRow = () => {
           >
             <Link href="/bento">
               <XGroup.Item>
-                <BentoButton />
+                <BentoButton mr={-1} />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>

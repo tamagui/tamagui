@@ -125,8 +125,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               size="$3"
               z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
-              // theme="surface3"
-              debug="verbose"
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>

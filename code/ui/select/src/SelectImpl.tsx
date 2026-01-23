@@ -59,18 +59,19 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const [blockSelection, setBlockSelection] = React.useState(false)
   const floatingStyle = React.useRef({})
 
-  // Wait for scroll position to settle before showing arrows to prevent
-  // interference with pointer events.
+  // sync activeIndex on open/close - use fast setter to avoid deps causing re-runs
   useIsomorphicLayoutEffect(() => {
-    queueMicrotask(() => {
-      if (!open) {
-        setScrollTop(0)
-        setFallback(false)
-        setActiveIndex(null)
-        setControlledScrolling(false)
-      }
-    })
-  }, [open, setActiveIndex])
+    if (open) {
+      // use fast setter for initial focus - doesn't trigger re-render
+      setActiveIndexFast(selectedIndex ?? 0)
+    } else {
+      // reset state when closed
+      setScrollTop(0)
+      setFallback(false)
+      setActiveIndexFast(null)
+      setControlledScrolling(false)
+    }
+  }, [open, selectedIndex, setActiveIndexFast])
 
   // close when mouseup outside select
   if (isWeb && isClient) {
@@ -183,18 +184,21 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }),
     useListNavigation(context, {
       listRef: listItemsRef,
-      // read from ref for current value, use fast setter for navigation (no re-renders)
-      // pass null when closed so floating-ui starts from selectedIndex on open
-      activeIndex: activeIndexRef.current,
+      activeIndex: selectContext.activeIndex ?? 0,
       selectedIndex,
-      onNavigate: setActiveIndexFast,
+      // wrap onNavigate to prevent floating-ui from resetting activeIndex to null on focus loss
+      onNavigate: (index) => {
+        if (index !== null) {
+          setActiveIndex(index)
+        }
+      },
       scrollItemIntoView: false,
     }),
     useTypeahead(context, {
       listRef: listContentRef,
       onMatch,
       selectedIndex,
-      activeIndex: activeIndexRef.current,
+      activeIndex: selectContext.activeIndex,
       onTypingChange: (e) => {
         state.current.isTyping = e
       },

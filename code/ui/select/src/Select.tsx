@@ -481,17 +481,14 @@ export const Select = withStaticProperties(
 )
 
 function useEmitter<A>() {
-  const listeners = React.useRef<Set<Function>>(null)
-  if (!listeners.current) {
-    listeners.current = new Set()
-  }
-  const emit = (value: A) => {
-    listeners.current!.forEach((l) => l(value))
-  }
+  const listenersRef = React.useRef<Set<Function>>(new Set())
+  const emit = React.useCallback((value: A) => {
+    listenersRef.current.forEach((l) => l(value))
+  }, [])
   const subscribe = React.useCallback((listener: (val: A) => void) => {
-    listeners.current!.add(listener)
+    listenersRef.current.add(listener)
     return () => {
-      listeners.current!.delete(listener)
+      listenersRef.current.delete(listener)
     }
   }, [])
   return [emit, subscribe] as const
@@ -631,6 +628,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         listContentRef.current[index] = value
       }, [])}
       shouldRenderWebNative={shouldRenderWebNative}
+      setActiveIndexFast={setActiveIndexFast}
     >
       <SelectProvider
         scope={scope}

@@ -393,56 +393,23 @@ For more details on how templates work, see the
 
 ## Component Themes (Removed in V5)
 
-V5 removes all component themes. Previously, components like Button, Card, and
-Input had automatic theme styling applied. This was convenient but caused
-"action at a distance" - components would look different than expected when
-copy-pasting code.
+V5 removes keeps our component themes as they solve a hard problem — how do you
+change the theme of an entire area (like from `dark` to `dark_green`) but have
+the component inside it still keep their relative shades?
 
-V5 embraces **WYSIWYG styling**: what you write is what you get. If you want a
-Button with a different background, set `theme="surface3"` explicitly.
+One of the great things in Tamagui is being able to set component themes, and
+sub-themes, and have an entire area of your UI re-theme and look perfect.
 
-### Migrating from Component Themes
+We'd exported just having the ability to set a default theme, like "surface1 =>
+4", but then if you try and re-theme a component to `green`, that would
+conflict. For example, if you made your default `<Button theme="surface3" />`,
+then if someone uses it `<Button theme="green" />` now it's green, but not the
+Button green that is typically stronger than your base green.
 
-As a temporary measure while you're upgrading from v4 and want to preserve the
-old visual behavior, use `defaultProps` in your config:
-
-```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v5'
-import { createTamagui } from 'tamagui'
-
-export const config = createTamagui({
-  ...defaultConfig,
-
-  // Restore v4-style component theming via defaultProps
-  defaultProps: {
-    Button: { theme: 'surface3' },
-    Card: { theme: 'surface1' },
-    Checkbox: { theme: 'surface2' },
-    Input: { theme: 'surface1' },
-    ListItem: { theme: 'surface1' },
-    Progress: { theme: 'surface1' },
-    ProgressIndicator: { theme: 'accent' },
-    RadioGroupItem: { theme: 'surface2' },
-    SelectTrigger: { theme: 'surface1' },
-    SelectItem: { theme: 'surface1' },
-    SliderTrack: { theme: 'accent' },
-    SliderTrackActive: { theme: 'surface2' },
-    SliderThumb: { theme: 'accent' },
-    Switch: { theme: 'surface2' },
-    SwitchThumb: { theme: 'accent' },
-    TextArea: { theme: 'surface1' },
-    Tooltip: { theme: 'accent' },
-    TooltipContent: { theme: 'surface2' },
-    TooltipArrow: { theme: 'surface1' },
-  },
-})
-```
-
-We want to move away from component themes in general as they just are a bit too
-tricky to understand. Likewise, we'd like to move away from defaultProps
-eventually as well. In the long run what we recommend is just setting colors or
-the `theme` props directly on your components. And if you need to share them,
-then creating your own abstracted component you re-use.
+So for now we've left them on! We do want to move away from component themes in
+general as they can be tricky to understand. But the benefits are also strong,
+and until we find a great solution we're leaving them. You can always set
+`componentThemes: false` in your `createV5Themes` function to turn it off.
 
 ---
 
@@ -566,7 +533,8 @@ export const config = createTamagui({
   ...defaultConfig,
   // only load themes on server - client hydrates from CSS
   // for non-One Vite apps, use import.meta.env.SSR instead
-  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+  themes:
+    process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
 })
 ```
 
@@ -587,6 +555,3 @@ Key differences when migrating:
    React Native
 3. **Color palettes**: v5 uses Radix colors with darker grays for dark mode
 4. **`createV5Theme`**: New helper function for customizing themes
-5. **Component themes removed**: v5 removes all component themes for WYSIWYG
-   styling. Use `defaultProps` in your config to restore old behavior, see
-   [Migrating from Component Themes](#migrating-from-component-themes) above.
