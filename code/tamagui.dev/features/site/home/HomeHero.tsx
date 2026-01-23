@@ -227,7 +227,7 @@ const HeroContents = memo(function HeroContents() {
                 elevation: '$0',
               }}
             >
-              <Button.Text debug="verbose" fontFamily="$silkscreen" fontSize="$6">
+              <Button.Text fontFamily="$silkscreen" fontSize="$6">
                 Start
               </Button.Text>
               {/* <YStack $group-item-press={{ scaleX: -1 }}>
