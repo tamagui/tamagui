@@ -314,6 +314,61 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
             if (diff) {
+              // FIX for tooltip position jump bug:
+              // When rapidly changing position via CSS transform with translate,
+              // we need to properly interrupt the current animation and capture its position.
+              // Direct x/y prop changes are handled correctly by motion library.
+              const hasTransformWithTranslate =
+                typeof diff.transform === 'string' && diff.transform.includes('translate')
+
+              if (hasTransformWithTranslate && controls.current) {
+                // FIX: when interrupting a position animation that uses CSS transform,
+                // we need to capture the current animated position and use keyframes
+                // to animate FROM that position to the new target.
+                // This fixes the tooltip position jump bug.
+                //
+                // Note: Only handle transform-based position changes here.
+                // Direct x/y prop changes are handled correctly by motion library.
+
+                // IMPORTANT: Read transform BEFORE stopping - stop() may reset it!
+                const computedStyle = getComputedStyle(node)
+                const currentTransform = computedStyle.transform
+
+                controls.current.stop()
+
+                // After stop(), motion may have left inline styles on the element.
+                // We need to set the transform to the captured value before animating.
+                node.style.transform = currentTransform
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                node.offsetHeight // force reflow
+
+                // use keyframes to explicitly tell motion WHERE to start from
+                if (currentTransform && currentTransform !== 'none') {
+                  // extract current position from matrix(1, 0, 0, 1, tx, ty)
+                  const matrixMatch = currentTransform.match(
+                    /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
+                  )
+                  if (matrixMatch) {
+                    const currentX = parseFloat(matrixMatch[1])
+                    const currentY = parseFloat(matrixMatch[2])
+
+                    // build start transform from current animated position
+                    const startTransform = `translateX(${currentX}px) translateY(${currentY}px)`
+                    const targetTransform = diff.transform as string
+
+                    // use keyframes to animate from current position to target
+                    const keyframeDiff = { ...diff }
+                    keyframeDiff.transform = [startTransform, targetTransform]
+
+                    controls.current = animate(scope.current, keyframeDiff, animationOptions)
+                    lastAnimateAt.current = Date.now()
+                    lastDontAnimate.current = dontAnimate || {}
+                    lastDoAnimate.current = doAnimate
+                    return
+                  }
+                }
+              }
+
               controls.current = animate(scope.current, diff, animationOptions)
               lastAnimateAt.current = Date.now()
             }
