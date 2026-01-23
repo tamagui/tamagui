@@ -1,4 +1,4 @@
-import type { AnimationDriver, ConfigListener, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensMerged } from './types';
+import type { AnimationDriver, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensMerged } from './types';
 export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key: Key) => GenericTamaguiSettings[Key];
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
@@ -44,8 +44,6 @@ export declare const getThemes: () => {
         shadowColorFocus?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
     };
 };
-export declare const configListeners: Set<ConfigListener>;
-export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare const updateConfig: (key: string, value: any) => void;
 export declare const getFont: (name: string) => import("./types").GenericFont<string | number | symbol>;
 type DevConfig = {

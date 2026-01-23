@@ -3,7 +3,7 @@ import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/c
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { useMemo } from 'react'
-import { devConfig, onConfiguredOnce } from './config'
+import { devConfig, getConfig } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
@@ -223,17 +223,13 @@ export function createComponent<
   BaseProps = never,
   BaseStyles extends Object = never,
 >(staticConfig: StaticConfig) {
-  const { componentName } = staticConfig
-
   let config: TamaguiInternalConfig | null = null
-
-  onConfiguredOnce((conf) => {
-    config = conf
-  })
 
   const { Component, isText, isHOC } = staticConfig
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+    config ||= getConfig()
+
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
     if (process.env.NODE_ENV === 'development') {

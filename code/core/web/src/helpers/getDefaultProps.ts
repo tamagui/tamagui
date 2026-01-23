@@ -16,9 +16,10 @@ export const getDefaultProps = (
     // important: this is how we end up getting the defaultProps we set in createTamagui
     (staticConfig.isText ? 'Text' : 'View')
 
-  const userDefaultProps = name ? conf?.defaultProps?.[name] : null
+  const userDefaultProps = conf?.defaultProps?.[name]
 
   if (userDefaultProps) {
+    // can avoid doing this every render with a cache but need to profile first
     defaultProps = { ...userDefaultProps, ...defaultProps }
   }
 

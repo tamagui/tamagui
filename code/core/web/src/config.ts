@@ -153,17 +153,6 @@ export const useTokens = getTokens
 
 export const getThemes = () => getConfigFromGlobalOrLocal()!.themes
 
-export const configListeners = new Set<ConfigListener>()
-
-export const onConfiguredOnce = (cb: ConfigListener) => {
-  const config = getConfigFromGlobalOrLocal()
-  if (config) {
-    cb(config)
-  } else {
-    configListeners.add(cb)
-  }
-}
-
 export const updateConfig = (key: string, value: any) => {
   // for usage internally only
   const config = getConfigFromGlobalOrLocal()
