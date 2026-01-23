@@ -119,4 +119,53 @@ test.describe('Select Keyboard Navigation', () => {
     const appleItem = page.getByTestId('select-apple')
     await expect(appleItem).toBeFocused()
   })
+
+  // tests for selects with default/initial values (like the demo page)
+  test('default value select: selected item is focused on first open', async ({ page }) => {
+    const trigger = page.getByTestId('default-select-trigger')
+    await trigger.click()
+    await page.waitForTimeout(300)
+
+    // banana is the default value (index 1), should be focused on open
+    const bananaItem = page.getByTestId('default-select-banana')
+    await expect(bananaItem).toBeFocused()
+  })
+
+  test('default value select: arrow down from default selected item goes to next', async ({
+    page,
+  }) => {
+    const trigger = page.getByTestId('default-select-trigger')
+    await trigger.click()
+    await page.waitForTimeout(300)
+
+    // banana is default selected (index 1)
+    const bananaItem = page.getByTestId('default-select-banana')
+    await expect(bananaItem).toBeFocused()
+
+    // arrow down should go to orange (next after banana)
+    await page.keyboard.press('ArrowDown')
+    await page.waitForTimeout(100)
+
+    const orangeItem = page.getByTestId('default-select-orange')
+    await expect(orangeItem).toBeFocused()
+  })
+
+  test('default value select: arrow up from default selected item goes to previous', async ({
+    page,
+  }) => {
+    const trigger = page.getByTestId('default-select-trigger')
+    await trigger.click()
+    await page.waitForTimeout(300)
+
+    // banana is default selected (index 1)
+    const bananaItem = page.getByTestId('default-select-banana')
+    await expect(bananaItem).toBeFocused()
+
+    // arrow up should go to apple (before banana)
+    await page.keyboard.press('ArrowUp')
+    await page.waitForTimeout(100)
+
+    const appleItem = page.getByTestId('default-select-apple')
+    await expect(appleItem).toBeFocused()
+  })
 })

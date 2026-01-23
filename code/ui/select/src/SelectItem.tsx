@@ -70,6 +70,13 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
 
     const [isSelected, setSelected] = React.useState(initialValue === value)
 
+    // set initial selectedIndex when this item matches the initial value
+    useIsomorphicLayoutEffect(() => {
+      if (initialValue === value) {
+        setSelectedIndex(index)
+      }
+    }, [])
+
     React.useEffect(() => {
       return activeIndexSubscribe((i) => {
         const isActive = index === i

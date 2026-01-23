@@ -27,6 +27,8 @@ export function SelectFocusScopeCase() {
   const [value1, setValue1] = React.useState('')
   const [value2, setValue2] = React.useState('')
   const [value3, setValue3] = React.useState('')
+  // default value scenario - like the demo page
+  const [value4, setValue4] = React.useState('banana')
 
   return (
     <YStack padding="$4" gap="$4">
@@ -171,6 +173,51 @@ export function SelectFocusScopeCase() {
 
           <Button data-testid="external-button">External Button</Button>
         </XStack>
+      </YStack>
+
+      {/* Select with Default Value - tests keyboard nav with pre-selected item */}
+      <YStack gap="$2">
+        <Label htmlFor="default-value-select">Select with Default Value</Label>
+        <Select
+          id="default-value-select"
+          value={value4}
+          onValueChange={setValue4}
+          renderValue={(v) => fruitsAndVeggiesLabels[v]}
+        >
+          <Select.Trigger data-testid="default-select-trigger" iconAfter={ChevronDown}>
+            <Select.Value placeholder="Select an option" />
+          </Select.Trigger>
+
+          <Select.Content data-testid="default-select-content">
+            <Select.ScrollUpButton />
+            <Select.Viewport data-testid="default-select-viewport">
+              <Select.Group>
+                <Select.Label>Fruits</Select.Label>
+                <Select.Item data-testid="default-select-apple" value="apple" index={0}>
+                  <Select.ItemText>Apple</Select.ItemText>
+                  <Select.ItemIndicator />
+                </Select.Item>
+                <Select.Item data-testid="default-select-banana" value="banana" index={1}>
+                  <Select.ItemText>Banana</Select.ItemText>
+                  <Select.ItemIndicator />
+                </Select.Item>
+                <Select.Item data-testid="default-select-orange" value="orange" index={2}>
+                  <Select.ItemText>Orange</Select.ItemText>
+                  <Select.ItemIndicator />
+                </Select.Item>
+                <Select.Item data-testid="default-select-carrot" value="carrot" index={3}>
+                  <Select.ItemText>Carrot</Select.ItemText>
+                  <Select.ItemIndicator />
+                </Select.Item>
+                <Select.Item data-testid="default-select-broccoli" value="broccoli" index={4}>
+                  <Select.ItemText>Broccoli</Select.ItemText>
+                  <Select.ItemIndicator />
+                </Select.Item>
+              </Select.Group>
+            </Select.Viewport>
+            <Select.ScrollDownButton />
+          </Select.Content>
+        </Select>
       </YStack>
     </YStack>
   )
