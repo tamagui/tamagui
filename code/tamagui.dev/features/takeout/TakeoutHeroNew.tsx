@@ -1,7 +1,7 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, Copy, ExternalLink } from '@tamagui/lucide-icons'
 import { Suspense, lazy } from 'react'
-import { Button, Paragraph, Theme, XStack, YStack, styled } from 'tamagui'
+import { Button, Paragraph, SizableText, Theme, XStack, YStack, styled } from 'tamagui'
 
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { ButtonLink, Link } from '~/components/Link'
@@ -118,13 +118,15 @@ export function TakeoutHeroNew({
 
       {/* Buy buttons */}
       {onBuyPress && (
-        <XStack gap="$3" position="absolute" t={30} r="2%" z={10}>
+        <XStack gap="$3" position="absolute" items="center" t={30} r="2%" z={10}>
           <ButtonLink
             href="https://github.com/tamagui/takeout-free"
             target="_blank"
             size="$3"
           >
-            Free
+            <SizableText fontFamily="$mono" color="$color10">
+              Free
+            </SizableText>
             <ExternalLink size={12} opacity={0.5} />
           </ButtonLink>
           <PurchaseButton onPress={onBuyPress} size="$4" theme="accent">
