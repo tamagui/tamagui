@@ -207,21 +207,21 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <UpgradeToProPopover />
 
-        <Theme name="green">
+        <Theme name="teal">
           <Link href="/blog/version-two">
             <XStack
-              bg="$color5"
-              px="$2"
+              bg="$color4"
+              px="$2.5"
               py="$0.5"
               rounded="$3"
               hoverStyle={{
-                bg: '$color4',
+                bg: '$color3',
               }}
               pressStyle={{
-                bg: '$color6',
+                bg: '$color5',
               }}
             >
-              <SizableText size="$3" color="$color11" fontWeight="700">
+              <SizableText size="$3" color="$color11" fontWeight="600">
                 v2
               </SizableText>
             </XStack>

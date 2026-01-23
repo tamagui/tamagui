@@ -362,7 +362,7 @@ export function DocsQuickNav() {
             </Link>
           </Theme>
           <Link width="100%" href="https://addeven.com" target="_blank">
-            <ConsultingButton bg="transparent" />
+            <ConsultingButton />
           </Link>
         </YStack>
       </YStack>
