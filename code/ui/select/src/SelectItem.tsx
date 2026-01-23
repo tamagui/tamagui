@@ -78,11 +78,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
           onActiveChange(value, index)
 
           if (isWeb) {
-            // focus for focusStyles to apply
-            // use setTimeout to ensure focus happens after floating-ui's focus management
-            setTimeout(() => {
-              listRef?.current[index]?.focus()
-            }, 0)
+            listRef?.current[index]?.focus()
           }
         }
       })
