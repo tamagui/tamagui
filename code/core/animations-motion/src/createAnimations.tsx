@@ -319,12 +319,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // 1. There's a transform with translate (position change)
               // 2. There's a running animation (controls.current exists)
               // 3. Animation started recently (within 500ms - likely still animating)
-              const isPositionChange =
-                typeof diff.transform === 'string' && diff.transform.includes('translate')
-              const hasRecentAnimation =
-                lastAnimateAt.current && Date.now() - lastAnimateAt.current < 50
 
-              if (isPositionChange && controls.current && hasRecentAnimation) {
+              // TODO this is not a good fix, getComputedStyle breaks a lot of
+              // the point of motion staying off main thread
+
+              const isRunning = controls.current?.state === 'running'
+
+              if (
+                isRunning &&
+                controls.current &&
+                typeof diff.transform === 'string' &&
+                diff.transform.includes('translate')
+              ) {
                 const currentTransform = getComputedStyle(node).transform
 
                 if (currentTransform && currentTransform !== 'none') {
