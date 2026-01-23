@@ -141,7 +141,7 @@ export function Header(props: HeaderProps) {
               $gtSm: {
                 py: '$2',
                 y: 5,
-                elevation: '$10',
+                elevation: '$5',
               },
             })}
           />

@@ -122,10 +122,10 @@ export function TakeoutHeroNew({
           <ButtonLink
             href="https://github.com/tamagui/takeout-free"
             target="_blank"
-            size="$4"
+            size="$3"
           >
             Free
-            <ExternalLink size={10} opacity={0.5} />
+            <ExternalLink size={12} opacity={0.5} />
           </ButtonLink>
           <PurchaseButton onPress={onBuyPress} size="$4" theme="accent">
             Pro

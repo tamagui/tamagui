@@ -7,11 +7,11 @@ export const HeadAnchor = styled(Paragraph, {
   py: '$4',
   cursor: 'pointer',
   fontSize: 14,
-  color: '$color11',
+  color: '$color10',
   tabIndex: -1,
 
   hoverStyle: {
-    color: '$color',
+    color: '$color12',
     rounded: '$3',
   },
 
