@@ -1,4 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { startTransition } from '@tamagui/start-transition'
 import { idle, useAsyncEffect } from '@tamagui/use-async'
 import { useEvent } from '@tamagui/use-event'
@@ -76,18 +77,15 @@ export function useFocusScope(
     ...scopeProps
   } = props
   const [container, setContainer] = React.useState<HTMLElement | null>(null)
+  const containerRef = React.useRef<HTMLElement | null>(null)
   const onMountAutoFocus = useEvent(onMountAutoFocusProp)
   const onUnmountAutoFocus = useEvent(onUnmountAutoFocusProp)
   const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
-  const setContainerTransition = React.useCallback(
-    (node) => {
-      startTransition(() => {
-        setContainer(node)
-      })
-    },
-    [setContainer]
-  )
-  const composedRefs = useComposedRefs(forwardedRef, setContainerTransition)
+  const setContainerRef = React.useCallback((node: HTMLElement | null) => {
+    containerRef.current = node
+    setContainer(node)
+  }, [])
+  const composedRefs = useComposedRefs(forwardedRef, setContainerRef)
 
   const focusScope = React.useRef({
     paused: false,
@@ -100,16 +98,19 @@ export function useFocusScope(
   }).current
 
   // Takes care of trapping focus if focus is moved outside programmatically for example
-  React.useEffect(() => {
+  // Use useIsomorphicLayoutEffect so trap is ready before any focus calls in useEffect
+  // Use containerRef.current instead of container state to avoid timing issues
+  useIsomorphicLayoutEffect(() => {
     if (!enabled) return
     if (!trapped) return
     const controller = new AbortController()
 
     function handleFocusIn(event: FocusEvent) {
-      if (focusScope.paused || !container) return
+      const currentContainer = containerRef.current
+      if (focusScope.paused || !currentContainer) return
       const target = event.target as HTMLElement | null
 
-      if (container.contains(target)) {
+      if (currentContainer.contains(target)) {
         // Set container as lastFocusedElement to prevent inputs
         // to be refocused on blur events
         target?.addEventListener('blur', handleBlur, { signal: controller.signal })
@@ -122,15 +123,16 @@ export function useFocusScope(
 
     function handleFocusOut(event: FocusEvent) {
       controller.abort()
-      if (focusScope.paused || !container) return
-      if (!container.contains(event.relatedTarget as HTMLElement | null)) {
+      const currentContainer = containerRef.current
+      if (focusScope.paused || !currentContainer) return
+      if (!currentContainer.contains(event.relatedTarget as HTMLElement | null)) {
         // Don't select text when refocusing for focus trap - only refocus
         focus(lastFocusedElementRef.current)
       }
     }
 
     function handleBlur() {
-      lastFocusedElementRef.current = container
+      lastFocusedElementRef.current = containerRef.current
     }
 
     document.addEventListener('focusin', handleFocusIn)
@@ -140,7 +142,7 @@ export function useFocusScope(
       document.removeEventListener('focusin', handleFocusIn)
       document.removeEventListener('focusout', handleFocusOut)
     }
-  }, [trapped, forceUnmount, container, focusScope.paused])
+  }, [trapped, forceUnmount, focusScope.paused, enabled])
 
   useAsyncEffect(
     async (signal) => {
