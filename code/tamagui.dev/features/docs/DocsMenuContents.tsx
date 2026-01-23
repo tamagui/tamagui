@@ -239,7 +239,11 @@ const AccordionSection = ({
                 {section.title}
               </Paragraph>
 
-              <YStack rotate={open ? '180deg' : '0deg'} transition="lazy">
+              <YStack
+                transition="quick"
+                rotate={open ? '180deg' : '0deg'}
+                animateOnly={['transform']}
+              >
                 <ChevronDown color="$color8" size="$1" />
               </YStack>
             </XStack>
@@ -247,10 +251,10 @@ const AccordionSection = ({
         }}
       </Accordion.Trigger>
 
-      <Accordion.HeightAnimator overflow="hidden" transition="75ms">
+      <Accordion.HeightAnimator overflow="hidden" transition="200ms">
         <Accordion.Content
           unstyled
-          transition="75ms"
+          transition="200ms"
           backgroundColor="transparent"
           exitStyle={{ opacity: 0 }}
         >
