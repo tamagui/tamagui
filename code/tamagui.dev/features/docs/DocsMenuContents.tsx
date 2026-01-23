@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Accordion, H4, Paragraph, XStack, YStack } from 'tamagui'
-import { ChevronDown } from '@tamagui/lucide-icons'
+import { Accordion, Button, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/lucide-icons'
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'
@@ -21,20 +21,15 @@ for (const item of allItems) {
   itemsGroupedByTitle[key].push(item)
 }
 
-// also group by section (core/ui/compiler) for the section filter
+// also group by section (core/ui) for the section filter
 const sections = {
   core: docsRoutes
-    .filter((x) => x.section === 'core' || x.section === 'compiler')
+    .filter((x) => x.section === 'core')
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
   ui: docsRoutes
     .filter((x) => x.section === 'ui')
-    .flatMap((section, sectionIndex) =>
-      section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
-    ),
-  compiler: docsRoutes
-    .filter((x) => x.section === 'compiler')
     .flatMap((section, sectionIndex) =>
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
@@ -45,13 +40,15 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   inMenu,
 }: { inMenu?: boolean; section?: keyof typeof sections }) {
   const { currentPath, section: docsSection } = useDocsMenu()
-  const section = propsSection ?? docsSection
+  // compiler pages now show core section (merged)
+  const rawSection = propsSection ?? docsSection
+  const section = rawSection === 'compiler' ? 'core' : rawSection
 
-  // track open section - start collapsed, user opens what they want
-  const [openSection, setOpenSection] = React.useState('')
+  // track open sections - now supports multiple
+  const [openSections, setOpenSections] = React.useState<string[]>([])
 
   // filter items based on section prop
-  const filteredItems = section ? sections[section] : allItems
+  const filteredItems = section ? sections[section as keyof typeof sections] : allItems
 
   // group filtered items by title
   const groupedItems: Record<string, Item[]> = {}
@@ -62,21 +59,75 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
     groupedItems[key].push(item)
   }
 
-  // for UI section, keep the flat list with labels (existing behavior)
+  // get all section keys for toggle all
+  const allSectionKeys = Object.keys(groupedItems).filter((k) => k !== '')
+
+  // for UI section, group by label and use accordions
   if (section === 'ui') {
+    // group UI items by label
+    const uiGroupedItems: Record<string, Item[]> = {}
+    for (const item of filteredItems) {
+      if (!item) continue
+      const key = item.section.label || ''
+      uiGroupedItems[key] ||= []
+      uiGroupedItems[key].push(item)
+    }
+
+    const uiSectionKeys = Object.keys(uiGroupedItems).filter((k) => k !== '')
+    const allExpanded =
+      uiSectionKeys.length > 0 && uiSectionKeys.every((k) => openSections.includes(k))
+
+    const toggleAll = () => {
+      if (allExpanded) {
+        setOpenSections([])
+      } else {
+        setOpenSections(uiSectionKeys)
+      }
+    }
+
     return (
-      <UIMenuContents items={filteredItems} currentPath={currentPath} inMenu={inMenu} />
+      <div
+        style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }}
+        aria-label="Docs Menu"
+      >
+        <XStack justifyContent="flex-end" pr="$2" mb="$2">
+          <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
+        </XStack>
+        <Accordion value={openSections} onValueChange={setOpenSections} type="multiple">
+          {Object.keys(uiGroupedItems).map((label) => {
+            const items = uiGroupedItems[label]
+            return (
+              <AccordionSection
+                key={label}
+                inMenu={inMenu}
+                section={{ ...items?.[0]?.section, title: label } as Section}
+                items={items}
+                currentPath={currentPath}
+              />
+            )
+          })}
+        </Accordion>
+      </div>
     )
+  }
+
+  const allExpanded =
+    allSectionKeys.length > 0 && allSectionKeys.every((k) => openSections.includes(k))
+
+  const toggleAll = () => {
+    if (allExpanded) {
+      setOpenSections([])
+    } else {
+      setOpenSections(allSectionKeys)
+    }
   }
 
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
-      <Accordion
-        value={openSection}
-        onValueChange={setOpenSection}
-        type="single"
-        collapsible
-      >
+      <XStack justifyContent="flex-end" pr="$2" mb="$2">
+        <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
+      </XStack>
+      <Accordion value={openSections} onValueChange={setOpenSections} type="multiple">
         {Object.keys(groupedItems).map((sectionTitle) => {
           const items = groupedItems[sectionTitle]
           return (
@@ -93,6 +144,36 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
     </div>
   )
 })
+
+// toggle all button component
+const ToggleAllButton = ({
+  expanded,
+  onPress,
+}: {
+  expanded: boolean
+  onPress: () => void
+}) => {
+  return (
+    <TooltipSimple label={expanded ? 'Collapse all' : 'Expand all'} placement="right">
+      <Button
+        circular
+        size="$2"
+        chromeless
+        opacity={0.5}
+        hoverStyle={{ opacity: 1, backgroundColor: '$color3' }}
+        pressStyle={{ opacity: 0.8, backgroundColor: '$color2' }}
+        onPress={onPress}
+        aria-label={expanded ? 'Collapse all sections' : 'Expand all sections'}
+      >
+        {expanded ? (
+          <ChevronsDownUp size={14} color="$color10" />
+        ) : (
+          <ChevronsUpDown size={14} color="$color10" />
+        )}
+      </Button>
+    </TooltipSimple>
+  )
+}
 
 // accordion section for core docs
 const AccordionSection = ({
@@ -137,7 +218,10 @@ const AccordionSection = ({
         backgroundColor="transparent"
         borderWidth={0}
         hoverStyle={{
-          backgroundColor: '$background02',
+          backgroundColor: '$color2',
+        }}
+        pressStyle={{
+          backgroundColor: '$color1',
         }}
         borderRadius="$4"
         marginHorizontal="$2"
@@ -145,17 +229,17 @@ const AccordionSection = ({
         {({ open }) => {
           return (
             <XStack
-              paddingVertical="$2"
+              paddingVertical="$3"
               paddingHorizontal="$3"
               justifyContent="space-between"
               alignItems="center"
               width="100%"
             >
-              <Paragraph size="$4" fontWeight="600" color="$color11">
+              <Paragraph size="$5" fontWeight="600" color="$color12">
                 {section.title}
               </Paragraph>
 
-              <YStack rotate={open ? '180deg' : '0deg'} transition="quick">
+              <YStack rotate={open ? '180deg' : '0deg'} transition="lazy">
                 <ChevronDown color="$color8" size="$1" />
               </YStack>
             </XStack>
@@ -163,10 +247,10 @@ const AccordionSection = ({
         }}
       </Accordion.Trigger>
 
-      <Accordion.HeightAnimator overflow="hidden" transition="slow">
+      <Accordion.HeightAnimator overflow="hidden" transition="75ms">
         <Accordion.Content
           unstyled
-          transition="slow"
+          transition="75ms"
           backgroundColor="transparent"
           exitStyle={{ opacity: 0 }}
         >
@@ -174,72 +258,5 @@ const AccordionSection = ({
         </Accordion.Content>
       </Accordion.HeightAnimator>
     </Accordion.Item>
-  )
-}
-
-// flat list for UI section (keeps existing label-based grouping)
-const UIMenuContents = ({
-  items,
-  currentPath,
-  inMenu,
-}: {
-  items: Item[]
-  currentPath: string
-  inMenu?: boolean
-}) => {
-  return (
-    <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
-      <H4
-        size="$4"
-        opacity={0.5}
-        display="inline-flex"
-        paddingHorizontal="$3"
-        marginTop="$4"
-        paddingBottom="$3"
-      >
-        UI
-      </H4>
-      {items.map((item, index) => {
-        if (!item) return null
-
-        const { section, page } = item
-        const lastItem = items[index - 1]
-        const isStartingSection = !lastItem || item.section !== lastItem['section']
-
-        const contents = (
-          <DocsRouteNavItem
-            inMenu={inMenu ?? false}
-            href={page.route}
-            active={currentPath === page.route}
-            pending={page['pending']}
-            key={`${page.route}${index}`}
-            icon={(page as any).icon}
-          >
-            {page.title}
-          </DocsRouteNavItem>
-        )
-
-        if (isStartingSection && section.label) {
-          return (
-            <YStack key={`${page.route}${index}`} marginTop="$4">
-              <Paragraph
-                fontFamily="$mono"
-                size="$2"
-                paddingHorizontal="$4"
-                paddingVertical="$2"
-                color="$color9"
-                textTransform="uppercase"
-                letterSpacing={1}
-              >
-                {section.label}
-              </Paragraph>
-              {contents}
-            </YStack>
-          )
-        }
-
-        return contents
-      })}
-    </div>
   )
 }
