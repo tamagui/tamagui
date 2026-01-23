@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Motion Animation Jump Test</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "motion": "https://esm.sh/motion@11.18.2"
+    }
+  }
+  </script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .box {
+      width: 100px;
+      height: 100px;
+      background: #3b82f6;
+      border-radius: 8px;
+      position: absolute;
+      top: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .buttons { margin-bottom: 20px; }
+    button { margin-right: 8px; padding: 8px 16px; cursor: pointer; }
+    #log {
+      background: #f1f5f9;
+      padding: 12px;
+      margin-top: 300px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .jump { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Motion Animation Jump Test</h2>
+  <p>This tests rapid x/y position changes with the motion library to reproduce the tooltip jump bug.</p>
+
+  <div class="buttons">
+    <button id="pos1">Position 1 (x: 100)</button>
+    <button id="pos2">Position 2 (x: 400)</button>
+    <button id="pos3">Position 3 (x: 700)</button>
+    <button id="rapid">Rapid: 3 → 2 → 1</button>
+    <button id="clear">Clear Log</button>
+  </div>
+
+  <div class="box" id="box">Box</div>
+
+  <div id="log"></div>
+
+  <script type="module">
+    import { animate, createAnimate } from 'motion'
+
+    const box = document.getElementById('box')
+    const log = document.getElementById('log')
+
+    let lastX = 0
+    let controls = null
+
+    function logMsg(msg, isJump = false) {
+      const div = document.createElement('div')
+      div.textContent = `[${Date.now() % 100000}] ${msg}`
+      if (isJump) div.className = 'jump'
+      log.insertBefore(div, log.firstChild)
+    }
+
+    function trackPosition() {
+      const rect = box.getBoundingClientRect()
+      const x = rect.left
+
+      if (lastX > 0) {
+        const dx = Math.abs(x - lastX)
+        if (dx > 200) {
+          logMsg(`JUMP DETECTED! ${lastX.toFixed(0)} → ${x.toFixed(0)} (Δ${dx.toFixed(0)})`, true)
+        }
+      }
+      lastX = x
+      requestAnimationFrame(trackPosition)
+    }
+    requestAnimationFrame(trackPosition)
+
+    const positions = [100, 400, 700]
+    const springConfig = { type: 'spring', damping: 20, stiffness: 250, mass: 1.2 }
+
+    // mimic tamagui's getDiff function
+    let lastAnimateValues = { x: 0 }
+
+    function getDiff(prev, next) {
+      let diff = null
+      for (const key in next) {
+        if (next[key] !== prev[key]) {
+          diff = diff || {}
+          diff[key] = next[key]
+        }
+      }
+      return diff
+    }
+
+    function moveTo(targetX) {
+      const style = getComputedStyle(box)
+      const newValues = { x: targetX }
+
+      // calculate diff like tamagui does
+      const diff = getDiff(lastAnimateValues, newValues)
+
+      logMsg(`Moving to x:${targetX}, current transform: ${style.transform}, diff: ${JSON.stringify(diff)}`)
+
+      if (diff) {
+        // this is how tamagui motion driver calls it - with the diff, not the full values
+        controls = animate(box, diff, { default: springConfig })
+      }
+
+      lastAnimateValues = newValues
+    }
+
+    document.getElementById('pos1').onclick = () => moveTo(positions[0])
+    document.getElementById('pos2').onclick = () => moveTo(positions[1])
+    document.getElementById('pos3').onclick = () => moveTo(positions[2])
+
+    document.getElementById('rapid').onclick = async () => {
+      logMsg('--- RAPID TEST: 700 → 400 → 100 ---')
+      moveTo(700)
+      await new Promise(r => setTimeout(r, 100))
+      moveTo(400)
+      await new Promise(r => setTimeout(r, 35)) // brief pause like in the bug
+      moveTo(100)
+    }
+
+    document.getElementById('clear').onclick = () => {
+      log.innerHTML = ''
+      logMsg('Log cleared')
+    }
+
+    logMsg('Ready - click buttons to test animation')
+  </script>
+</body>
+</html>
