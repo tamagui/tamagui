@@ -2,6 +2,7 @@ import {
   normalizeTransition,
   getAnimatedProperties,
   hasAnimation as hasNormalizedAnimation,
+  getEffectiveAnimation,
 } from '@tamagui/animation-helpers'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
@@ -96,16 +97,39 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+
+      // Track if we just finished entering (transition from entering to not entering)
+      // This is needed because the CSS transition happens on the render AFTER t_unmounted is removed
+      const wasEnteringRef = React.useRef(isEntering)
+      const justFinishedEntering = wasEnteringRef.current && !isEntering
+      React.useEffect(() => {
+        wasEnteringRef.current = isEntering
+      })
+
       // Normalize the transition prop to a consistent format
       const normalized = normalizeTransition(props.transition)
-      const defaultAnimation = normalized.default ? animations[normalized.default] : null
+
+      // Determine animation state and get effective animation
+      // Use 'enter' if we're entering OR if we just finished entering (transition is happening)
+      const animationState = isExiting
+        ? 'exit'
+        : isEntering || justFinishedEntering
+          ? 'enter'
+          : 'default'
+      const effectiveAnimationKey = getEffectiveAnimation(normalized, animationState)
+      const defaultAnimation = effectiveAnimationKey
+        ? animations[effectiveAnimationKey]
+        : null
       const animatedProperties = getAnimatedProperties(normalized)
 
       // Determine which properties to animate
       // - animateOnly prop is an exclusive filter (only animate those properties)
       // - per-property configs WITHOUT a default = only animate those specific properties
       // - per-property configs WITH a default = per-property overrides + default for rest
-      const hasDefault = normalized.default !== null
+      const hasDefault =
+        normalized.default !== null ||
+        normalized.enter !== null ||
+        normalized.exit !== null
       const hasPerPropertyConfigs = animatedProperties.length > 0
 
       let keys: string[]
@@ -116,8 +140,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         // object format without default: { opacity: '200ms' } = only animate opacity
         keys = animatedProperties
       } else if (hasPerPropertyConfigs && hasDefault) {
-        // array format or object with default: per-property overrides + 'all' for rest
-        keys = [...animatedProperties, 'all']
+        // array format or object with default: 'all' first, then per-property overrides
+        // CSS transition specificity: later declarations override earlier ones for the same property
+        keys = ['all', ...animatedProperties]
       } else {
         // simple string format: 'quick' = animate all
         keys = ['all']

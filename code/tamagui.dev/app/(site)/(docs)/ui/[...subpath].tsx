@@ -96,8 +96,7 @@ export function DocComponentsPage() {
           </MDXTabs>
         </DocsThemeTint>
       </MDXProvider>
-
-      <DocsQuickNav key={frontmatter.slug} />
+      <DocsQuickNav headings={frontmatter.headings} />
     </>
   )
 }

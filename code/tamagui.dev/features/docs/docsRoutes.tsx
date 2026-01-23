@@ -1,15 +1,11 @@
-import { Figma } from '@tamagui/lucide-icons'
-import { GithubIcon } from '~/features/icons/GithubIcon'
-
 export const docsRoutes = [
+  // top area - always visible, no accordion
   {
     section: 'core',
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
       { title: 'CLI', route: '/docs/guides/cli' },
-      // { title: 'Thinking in Tamagui', route: '/docs/intro/thinking-in-tamagui' },
-      // { title: 'Comparison', route: '/docs/intro/comparison' },
       {
         title: 'Releases',
         route: 'https://github.com/tamagui/tamagui/releases',
@@ -17,30 +13,68 @@ export const docsRoutes = [
     ],
   },
 
+  // Configuration section
   {
     section: 'core',
-    title: 'Core',
+    title: 'Configuration',
     pages: [
-      { title: 'Configuration', route: '/docs/core/configuration' },
+      { title: 'createTamagui', route: '/docs/core/configuration' },
       { title: 'Config v5', route: '/docs/core/config-v5' },
       { title: 'Tokens', route: '/docs/core/tokens' },
-      { title: 'View & Text', route: '/docs/core/stack-and-text' },
-      { title: 'Props', route: '/docs/intro/props' },
-      { title: 'Styles', route: '/docs/intro/styles' },
-      { title: 'styled()', route: '/docs/core/styled' },
-      { title: 'Variants', route: '/docs/core/variants' },
       { title: 'Themes', route: '/docs/intro/themes' },
-      { title: 'Theme', route: '/docs/core/theme' },
-      { title: 'useMedia', route: '/docs/core/use-media' },
-      { title: 'useTheme', route: '/docs/core/use-theme' },
-      { title: 'Server Rendering', route: '/docs/core/server-rendering' },
-      { title: 'FontLanguage', route: '/docs/core/font-language' },
-      { title: 'Extras', route: '/docs/core/exports' },
     ],
   },
 
+  // Styling section
   {
-    section: 'compiler',
+    section: 'core',
+    title: 'Styling',
+    pages: [
+      { title: 'Styles', route: '/docs/intro/styles' },
+      { title: 'Props', route: '/docs/intro/props' },
+      { title: 'styled()', route: '/docs/core/styled' },
+      { title: 'Variants', route: '/docs/core/variants' },
+    ],
+  },
+
+  // Components section
+  {
+    section: 'core',
+    title: 'Components',
+    pages: [
+      { title: 'View & Text', route: '/docs/core/stack-and-text' },
+      { title: 'Theme', route: '/docs/core/theme' },
+      { title: 'FontLanguage', route: '/docs/core/font-language' },
+    ],
+  },
+
+  // Hooks section
+  {
+    section: 'core',
+    title: 'Hooks',
+    pages: [
+      { title: 'useMedia', route: '/docs/core/use-media' },
+      { title: 'useTheme', route: '/docs/core/use-theme' },
+    ],
+  },
+
+  // Animations section
+  {
+    title: 'Animations',
+    section: 'core',
+    pages: [
+      { title: 'Overview', route: '/docs/core/animations' },
+      { title: 'CSS Driver', route: '/docs/core/animations-css' },
+      { title: 'React Native Driver', route: '/docs/core/animations-react-native' },
+      { title: 'Reanimated Driver', route: '/docs/core/animations-reanimated' },
+      { title: 'Motion Driver', route: '/docs/core/animations-motion' },
+    ],
+  },
+
+  // Compiler section
+  {
+    section: 'core',
+    title: 'Compiler',
     pages: [
       { title: 'Installation', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
@@ -48,18 +82,7 @@ export const docsRoutes = [
     ],
   },
 
-  {
-    title: 'Animations',
-    section: 'core',
-    pages: [
-      { title: 'Introduction', route: '/docs/core/animations' },
-      { title: 'CSS', route: '/docs/core/animations-css' },
-      { title: 'React Native', route: '/docs/core/animations-react-native' },
-      { title: 'Reanimated', route: '/docs/core/animations-reanimated' },
-      { title: 'Motion', route: '/docs/core/animations-motion' },
-    ],
-  },
-
+  // Bundlers section
   {
     title: 'Bundlers',
     section: 'core',
@@ -73,6 +96,7 @@ export const docsRoutes = [
     ],
   },
 
+  // Guides section
   {
     title: 'Guides',
     section: 'core',
@@ -84,29 +108,8 @@ export const docsRoutes = [
       },
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
-    ],
-  },
-
-  {
-    section: 'core',
-    title: 'Community',
-    pages: [
-      { title: `Community`, route: '/community' },
-      { title: `Blog`, route: '/blog' },
-      {
-        title: 'Figma',
-        icon: Figma,
-        route: 'https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1',
-      },
-      {
-        title: `GitHub`,
-        icon: () => (
-          <GithubIcon width={16} height={16} style={{ margin: '0 0 -2.5px 2px' }} />
-        ),
-        route: 'https://github.com/tamagui/tamagui',
-      },
-      { title: `X`, route: 'https://x.com/tamagui_js' },
-      { title: `Discord`, route: 'https://discord.gg/4qh6tdcVDa' },
+      { title: 'Server Rendering', route: '/docs/core/server-rendering' },
+      { title: 'Extras', route: '/docs/core/exports' },
     ],
   },
 

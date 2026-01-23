@@ -54,8 +54,7 @@ export default function DocGuidesPage() {
       <ThemeTint>
         <Component components={components as any} />
       </ThemeTint>
-      {/* frontmatter.slug */}
-      <DocsQuickNav key={'ok'} />
+      <DocsQuickNav headings={frontmatter.headings} />
     </>
   )
 }

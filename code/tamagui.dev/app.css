@@ -532,6 +532,12 @@ textarea {
   opacity: 0.88;
 }
 
+/* collapse margins between consecutive headings */
+[data-heading] + [data-heading] {
+  margin-top: 0;
+  padding-top: var(--t-space-2);
+}
+
 .custom-scroll ::-webkit-scrollbar {
   height: 14px;
   width: 14px;

@@ -161,8 +161,8 @@ test.describe('Dialog Focus Scope', () => {
     await expect(firstInput).toBeFocused()
   })
 
-  test.skip('returns focus to trigger on close', async ({ page }) => {
-    // TODO: This test is flaky - the cancel button click executes but dialog doesn't close properly
+  test('returns focus to trigger on close', async ({ page }) => {
+    // note: test may be flaky if animations don't complete
     // Manual testing shows the focus return works correctly
     await page.waitForLoadState('networkidle')
 
@@ -175,10 +175,11 @@ test.describe('Dialog Focus Scope', () => {
     // Wait for animations to complete
     await page.waitForTimeout(500)
     
-    // Scroll cancel button into view and click
-    const cancelButton = page.getByTestId('cancel-button')
-    await cancelButton.scrollIntoViewIfNeeded()
-    await cancelButton.click()
+    // Click cancel button via JavaScript (since it may be outside viewport in dialog scroll container)
+    await page.evaluate(() => {
+      const button = document.querySelector('[data-testid="cancel-button"]') as HTMLElement
+      if (button) button.click()
+    })
     
     // Wait for dialog to close with animation
     await expect(dialogContent).not.toBeVisible({ timeout: 5000 })

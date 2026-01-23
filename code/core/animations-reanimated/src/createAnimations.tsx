@@ -1,4 +1,4 @@
-import { normalizeTransition } from '@tamagui/animation-helpers'
+import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
 import {
   getSplitStyles,
   hooks,
@@ -389,21 +389,38 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const { props, presence, style, componentState, useStyleEmitter, themeName } =
         animationProps
 
-      // Extract animation key from normalized transition
-      // props.transition can be: string | [string, config] | { default: string, ... }
-      const normalized = normalizeTransition(props.transition)
-      const animationKey = normalized.default
-
       // State flags
       const isHydrating = componentState.unmounted === true
       const isMounting = componentState.unmounted === 'should-enter'
+      const isEntering = !!componentState.unmounted
+
+      // Presence state for exit animations
+      const isExiting = presence?.[0] === false
+
+      // Track if we just finished entering (transition from entering to not entering)
+      const wasEnteringRef = useRef(isEntering)
+      const justFinishedEntering = wasEnteringRef.current && !isEntering
+      React.useEffect(() => {
+        wasEnteringRef.current = isEntering
+      })
+
+      // Extract animation key from normalized transition using enter/exit state
+      // props.transition can be: string | [string, config] | { default: string, enter: string, exit: string, ... }
+      const normalized = normalizeTransition(props.transition)
+      // Use 'enter' if we're mounting OR if we just finished entering
+      const animationState: 'enter' | 'exit' | 'default' = isExiting
+        ? 'exit'
+        : isMounting || justFinishedEntering
+          ? 'enter'
+          : 'default'
+      const animationKey = getEffectiveAnimation(normalized, animationState)
+
       const disableAnimation = isHydrating || !animationKey
 
       // Theme state for dynamic values - use themeName from props instead of hook
       const isDark = themeName?.startsWith('dark') || false
 
-      // Presence state for exit animations
-      const isExiting = presence?.[0] === false
+      // Get sendExitComplete callback from presence
       const sendExitComplete = presence?.[1]
 
       // Track exit animation progress (0 = not started, 1 = complete)
@@ -464,9 +481,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // Normalize the transition prop to a consistent format
         const normalized = normalizeTransition(props.transition)
 
-        // Get base animation config from default animation key
-        let base = normalized.default
-          ? (animations[normalized.default as keyof typeof animations] ??
+        // Get base animation config using the effective animation key (enter/exit/default)
+        const effectiveKey = getEffectiveAnimation(normalized, animationState)
+        let base = effectiveKey
+          ? (animations[effectiveKey as keyof typeof animations] ??
             ({ type: 'spring' } as TransitionConfig))
           : ({ type: 'spring' } as TransitionConfig)
 
@@ -514,7 +532,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         return { baseConfig: base, propertyConfigs: configs }
-      }, [isHydrating, props.transition, animatedStyles])
+      }, [isHydrating, props.transition, animatedStyles, animationState])
 
       // Store config in SharedValue for worklet access (concurrent-safe)
       // Using useEffect to avoid writing to shared value during render

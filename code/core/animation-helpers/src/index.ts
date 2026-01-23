@@ -3,6 +3,7 @@ export {
   getAnimationForProperty,
   hasAnimation,
   getAnimatedProperties,
+  getEffectiveAnimation,
 } from './normalizeTransition'
 
 export type {

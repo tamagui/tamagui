@@ -29,30 +29,28 @@ const MyView = () => (
 The types for the full set of styles accepted by styled, View and Text are
 exported as `ViewStyle` and `TextStyle`.
 
-For the full base styles, see the React Native docs:
+For the full base styles, see the React Native docs (version 2 targets React Native 0.82):
 
 - [React Native View style props](https://reactnative.dev/docs/view-style-props)
 - [React Native Text style props](https://reactnative.dev/docs/text-style-props)
 
 The full Tamagui typed style props can be simplified to something like this,
-except the values can accept `"unset"` or one of your design tokens:
+except the values can also accept one of your design tokens:
 
 ```tsx
 import { ViewStyle as RNViewStyle } from 'react-native'
 
 type BaseViewStyle = RNViewStyle & FlatTransformStyles & CrossPlatformStyles & WebOnlyStyles
 
-// Cross-platform styles (RN 0.76+ with New Architecture):
+// Cross-platform styles:
 type CrossPlatformStyles = {
-  // RN 0.76+
   boxShadow?: BoxShadowValue  // string, object, or array
   filter?: FilterValue        // brightness, opacity cross-platform; blur, contrast, etc. Android 12+
   cursor?: Properties['cursor'] // web + iOS 17+ (trackpad/stylus/gaze)
-  // RN 0.77+
   mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | ... // blend modes
   isolation?: 'auto' | 'isolate'
   boxSizing?: 'border-box' | 'content-box'
-  display?: 'flex' | 'none' | 'contents' | ...  // RN 0.77 adds 'contents' support
+  display?: 'flex' | 'none' | 'contents' | ...
   position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky'  // 'fixed' converts to 'absolute' on native
   outlineColor?: ColorValue
   outlineOffset?: SpaceValue
@@ -205,13 +203,13 @@ colors:
 // On web: resolves to CSS custom properties
 // boxShadow: "0 0 10px var(--t-shadow-shadowColor)"
 
-// On native (RN 0.76+): resolves to raw values
+// On native: resolves to raw values
 // boxShadow: "0 0 10px rgba(0,0,0,0.2)"
 ```
 
 Supported shorthand properties with variable resolution:
 
-- `boxShadow` - Works on both web and native (RN 0.76+)
+- `boxShadow` - Works on both web and native
 - `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
 - `background` - Web only
 

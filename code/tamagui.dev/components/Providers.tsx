@@ -11,7 +11,7 @@ export const Providers = (props: { children: any }) => {
   const section = getDocsSection(pathname)
   let initial = 3
   if (section) {
-    initial = section === 'compiler' ? 5 : section === 'core' ? 4 : 6
+    initial = section === 'compiler' || section === 'core' ? 4 : 6
   }
 
   return (

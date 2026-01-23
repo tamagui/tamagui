@@ -1,4 +1,4 @@
-import { normalizeTransition } from '@tamagui/animation-helpers'
+import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
 import {
   type AnimatedNumberStrategy,
   type AnimationDriver,
@@ -105,11 +105,28 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const isHydrating = componentState.unmounted === true
       const isMounting = componentState.unmounted === 'should-enter'
+      const isEntering = !!componentState.unmounted
+      const isExiting = presence?.[0] === false
+      const sendExitComplete = presence?.[1]
+
+      // Track if we just finished entering (transition from entering to not entering)
+      const wasEnteringRef = useRef(isEntering)
+      const justFinishedEntering = wasEnteringRef.current && !isEntering
+      useEffect(() => {
+        wasEnteringRef.current = isEntering
+      })
+
+      // Determine animation state for enter/exit transitions
+      // Use 'enter' if we're mounting OR if we just finished entering
+      const animationState: 'enter' | 'exit' | 'default' = isExiting
+        ? 'exit'
+        : isMounting || justFinishedEntering
+          ? 'enter'
+          : 'default'
+
       // Disable animation during hydration AND during mounting (should-enter phase)
       // This prevents the "flying across the page" effect on initial render
       const disableAnimation = isHydrating || isMounting || !animationKey
-      const isExiting = presence?.[0] === false
-      const sendExitComplete = presence?.[1]
 
       const isFirstRender = useRef(true)
       const [scope, animate] = useAnimate()
@@ -130,10 +147,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const motionAnimationState = getMotionAnimatedProps(
           props as any,
           style,
-          disableAnimation
+          disableAnimation,
+          animationState
         )
         return motionAnimationState
-      }, [isExiting, animationKey, styleKey])
+      }, [isExiting, animationKey, styleKey, animationState])
 
       const debugId = process.env.NODE_ENV === 'development' ? useId() : ''
       const lastAnimateAt = useRef(0)
@@ -320,7 +338,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
-          disableAnimation
+          disableAnimation,
+          animationState
         )
 
         flushAnimation(animationProps)
@@ -441,7 +460,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   function getMotionAnimatedProps(
     props: { transition: TransitionProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
-    disable: boolean
+    disable: boolean,
+    animationState: 'enter' | 'exit' | 'default' = 'default'
   ): AnimationProps {
     if (disable) {
       return {
@@ -449,7 +469,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = transitionPropToAnimationConfig(props.transition)
+    const animationOptions = transitionPropToAnimationConfig(
+      props.transition,
+      animationState
+    )
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
@@ -486,16 +509,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 
   function transitionPropToAnimationConfig(
-    transitionProp: TransitionProp | null
+    transitionProp: TransitionProp | null,
+    animationState: 'enter' | 'exit' | 'default' = 'default'
   ): TransitionAnimationOptions {
     const normalized = normalizeTransition(transitionProp)
 
+    // Get the effective animation key based on enter/exit/default state
+    const effectiveKey = getEffectiveAnimation(normalized, animationState)
+
     // If no animation defined, return empty config
-    if (!normalized.default && Object.keys(normalized.properties).length === 0) {
+    if (!effectiveKey && Object.keys(normalized.properties).length === 0) {
       return {}
     }
 
-    const defaultConfig = normalized.default ? animations[normalized.default] : null
+    const defaultConfig = effectiveKey ? animations[effectiveKey] : null
 
     // Framer Motion uses seconds, so convert from ms
     const delay =

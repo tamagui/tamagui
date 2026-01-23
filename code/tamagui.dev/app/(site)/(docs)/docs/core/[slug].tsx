@@ -53,7 +53,7 @@ export default function DocCorePage() {
       <ThemeTint>
         <Component components={components as any} />
       </ThemeTint>
-      <DocsQuickNav />
+      <DocsQuickNav headings={frontmatter.headings} />
     </>
   )
 }

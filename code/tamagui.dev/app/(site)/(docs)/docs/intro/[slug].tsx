@@ -65,7 +65,7 @@ export default function DocIntroPage() {
           <Component components={components as any} />
         </TamaguiExamples.Provider>
       </ThemeTint>
-      <DocsQuickNav />
+      <DocsQuickNav headings={frontmatter.headings} />
     </>
   )
 }

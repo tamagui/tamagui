@@ -279,10 +279,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               Core
             </HeaderLink>
 
-            <HeaderLink id="compiler" href="/docs/intro/compiler-install">
-              Compiler
-            </HeaderLink>
-
             <HeaderLink id="ui" href="/ui/intro">
               UI
             </HeaderLink>
@@ -428,7 +424,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
   )
 }
 
-type ID = 'core' | 'compiler' | 'ui' | 'theme' | 'menu'
+type ID = 'core' | 'ui' | 'theme' | 'menu'
 
 export const HeaderLink = (props: {
   id: ID
@@ -529,7 +525,7 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
   }
 )
 
-const order = ['', 'core', 'compiler', 'ui', 'theme', 'menu']
+const order = ['', 'core', 'ui', 'theme', 'menu']
 
 const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const { data } = useUser()
@@ -630,15 +626,9 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   )
 })
 
-const getDocsSectionFromPath = (pathName: string): 'core' | 'compiler' | 'ui' | null => {
+const getDocsSectionFromPath = (pathName: string): 'core' | 'ui' | null => {
   if (!pathName || pathName === '/' || pathName === '') return null
   if (pathName.startsWith('/ui/')) return 'ui'
-  if (
-    pathName.startsWith('/docs/intro/compiler') ||
-    pathName.startsWith('/docs/intro/benchmarks') ||
-    pathName.startsWith('/docs/intro/why-a-compiler')
-  )
-    return 'compiler'
   if (
     pathName.startsWith('/docs') ||
     pathName.startsWith('/community') ||

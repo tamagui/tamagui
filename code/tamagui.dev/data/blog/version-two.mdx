@@ -246,6 +246,31 @@ All animation drivers now support delays:
 
 This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
+#### Enter/Exit Transitions
+
+The `transition` prop now supports different animations for enter and exit. This is useful for creating asymmetric animations where elements enter slowly but exit quickly, or vice versa:
+
+```tsx
+// slow enter, fast exit
+<View
+  transition={{ enter: 'lazy', exit: 'quick' }}
+  enterStyle={{ opacity: 0 }}
+  exitStyle={{ opacity: 0 }}
+/>
+
+// with a default for property changes while mounted
+<View
+  transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
+/>
+
+// array syntax with delay and per-property config
+<View
+  transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200 }]}
+/>
+```
+
+This works across all four animation drivers. See the [animation docs](/docs/core/animations#enterexittransitions) for more details.
+
 #### Popover Transform Origin
 
 [Popover](/docs/components/popover) and [Tooltip](/docs/components/tooltip) now
