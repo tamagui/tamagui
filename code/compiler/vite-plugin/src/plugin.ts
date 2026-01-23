@@ -34,11 +34,14 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
   }
 
   if (options.rnwLite) {
+    // entry point for main import (may be without-animated variant)
     const rnwl = resolve(
       options.rnwLite === 'without-animated'
         ? '@tamagui/react-native-web-lite/without-animated'
         : '@tamagui/react-native-web-lite'
     )
+    // base package path for subpath imports (always the package root)
+    const rnwlBase = resolve('@tamagui/react-native-web-lite')
     const rnwlSS = resolve(
       '@tamagui/react-native-web-lite/dist/exports/StyleSheet/compiler/createReactDOMStyle'
     )
@@ -54,7 +57,7 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
       },
       {
         find: /^react-native\/(.+)$/,
-        replacement: `${rnwl}/$1`,
+        replacement: `${rnwlBase}/$1`,
       },
       {
         find: 'react-native/package.json',
@@ -66,7 +69,7 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
       },
       {
         find: /^react-native-web\/(.+)$/,
-        replacement: `${rnwl}/$1`,
+        replacement: `${rnwlBase}/$1`,
       }
     )
   }
@@ -266,39 +269,9 @@ export function tamaguiPlugin({
         return {}
       }
 
-      const rnwl = resolve(
-        options.useReactNativeWebLite === 'without-animated'
-          ? '@tamagui/react-native-web-lite/without-animated'
-          : '@tamagui/react-native-web-lite'
-      )
-      const rnwlSS = resolve(
-        '@tamagui/react-native-web-lite/dist/exports/StyleSheet/compiler/createReactDOMStyle'
-      )
-
       return {
         resolve: {
-          alias: [
-            {
-              find: /react-native.*\/dist\/exports\/StyleSheet\/compiler\/createReactDOMStyle/,
-              replacement: rnwlSS,
-            },
-            {
-              find: /^react-native$/,
-              replacement: rnwl,
-            },
-            {
-              find: /^react-native\/(.+)$/,
-              replacement: `${rnwl}/$1`,
-            },
-            {
-              find: /^react-native-web$/,
-              replacement: rnwl,
-            },
-            {
-              find: /^react-native-web\/(.+)$/,
-              replacement: `${rnwl}/$1`,
-            },
-          ],
+          alias: tamaguiAliases({ rnwLite: options.useReactNativeWebLite }),
         },
       }
     },
