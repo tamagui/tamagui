@@ -261,12 +261,12 @@ const darkShadows = {
 }
 
 const lightShadows = {
-  shadow1: 'rgba(0,0,0,0.025)',
-  shadow2: 'rgba(0,0,0,0.04)',
-  shadow3: 'rgba(0,0,0,0.06)',
-  shadow4: 'rgba(0,0,0,0.095)',
-  shadow5: 'rgba(0,0,0,0.195)',
-  shadow6: 'rgba(0,0,0,0.3)',
+  shadow1: 'rgba(0,0,0,0.06)',
+  shadow2: 'rgba(0,0,0,0.09)',
+  shadow3: 'rgba(0,0,0,0.12)',
+  shadow4: 'rgba(0,0,0,0.16)',
+  shadow5: 'rgba(0,0,0,0.22)',
+  shadow6: 'rgba(0,0,0,0.32)',
 }
 
 // Export palettes for customization
