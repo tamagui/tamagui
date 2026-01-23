@@ -54,7 +54,16 @@ export const SelectContent = ({
         style={overlayStyle}
         lockScroll={!context.disablePreventBodyScroll && !!context.open && !touch}
       >
-        <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}>
+        <FocusScope
+          {...focusScopeProps}
+          loop
+          enabled={!!context.open}
+          trapped
+          onMountAutoFocus={(e) => {
+            // prevent FocusScope from auto-focusing - we handle focus in SelectItem
+            e.preventDefault()
+          }}
+        >
           {contents}
         </FocusScope>
       </FloatingOverlay>

@@ -59,8 +59,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const [blockSelection, setBlockSelection] = React.useState(false)
   const floatingStyle = React.useRef({})
 
-  // sync activeIndex on open/close - use fast setter to avoid deps causing re-runs
-  useIsomorphicLayoutEffect(() => {
+  // sync activeIndex on open/close
+  // use useEffect (not layout effect) so this runs AFTER SelectItem children have subscribed
+  React.useEffect(() => {
     if (open) {
       // use fast setter for initial focus - doesn't trigger re-render
       setActiveIndexFast(selectedIndex ?? 0)

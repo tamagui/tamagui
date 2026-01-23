@@ -115,7 +115,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
         )}
         <AnimatePresence>
           {context.open ? (
-            <FloatingFocusManager context={context.floatingContext!} modal={false}>
+            <FloatingFocusManager context={context.floatingContext!} modal={false} initialFocus={-1}>
               <SelectViewportFrame
                 key="select-viewport"
                 size={itemContext.size}

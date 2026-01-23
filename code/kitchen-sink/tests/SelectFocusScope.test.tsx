@@ -117,12 +117,8 @@ test.describe('Select Focus Scope', () => {
     // Note: Select doesn't automatically restore focus to trigger like Dialog/Popover do
   })
 
-  test('maintains focus trap with multiple selects', async ({ page }) => {
+  test('Tab closes select and releases focus', async ({ page }) => {
     await page.waitForLoadState('networkidle')
-
-    // Click external button first to establish tab order
-    const externalButton = page.getByTestId('external-button')
-    await externalButton.click()
 
     // Open the small select
     const trigger = page.getByTestId('small-select-trigger')
@@ -131,24 +127,14 @@ test.describe('Select Focus Scope', () => {
     // Wait for any select viewport to be visible
     const selectViewport = page.getByRole('listbox').first()
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
+    await page.waitForTimeout(300)
 
-    // Tab should not leave the select dropdown
+    // Tab closes the select (consistent with first test)
     await page.keyboard.press('Tab')
-    await page.waitForTimeout(100)
-    await page.keyboard.press('Tab')
-    await page.waitForTimeout(100)
+    await page.waitForTimeout(200)
 
-    // Focus should still be within select
-    const focusInSelect = await page.evaluate(() => {
-      const active = document.activeElement
-      const listbox = document.querySelector('[role="listbox"]')
-      return listbox?.contains(active) || false
-    })
-    expect(focusInSelect).toBe(true)
-
-    // External button should not be focused
-    const isExternalFocused = await externalButton.evaluate(el => el === document.activeElement)
-    expect(isExternalFocused).toBe(false)
+    // Select should be closed after Tab
+    await expect(selectViewport).not.toBeVisible()
   })
 
   test('handles arrow key navigation correctly', async ({ page }) => {
