@@ -48,6 +48,7 @@ The compiler optimizes most and ultimately flattens a majority of styled compone
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
+---
 
 ## Contributing
 
