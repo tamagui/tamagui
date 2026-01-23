@@ -18,14 +18,13 @@ export const v5SubtlePaletteAdjustments: PaletteAdjustments<
     light: (hsl) => ({
       ...hsl,
       s: hsl.s * 0.9,
-      l: hsl.l * 1.02,
     }),
     dark: (hsl, i) => ({
       ...hsl,
-      s: hsl.s * (i <= 4 ? 0.5 : 0.9),
-      l: hsl.l * (i <= 4 ? 0.65 : 0.88),
+      s: hsl.s * (i <= 4 ? 0.7 : 0.9),
     }),
   },
+  // yellow palette in radix is especially off from the rest
   yellow: {
     light: (hsl, i) => {
       // progressively darken and desaturate toward text colors for better contrast
