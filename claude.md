@@ -15,10 +15,20 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
 1. **Start the web server** (in the background):
    ```bash
    cd code/kitchen-sink
-   yarn kitchen-sink:web
-   # or
-   npm run start:web
+   yarn start:web
    ```
+
+   To open a specific test case in the browser:
+   ```bash
+   open "http://localhost:9000/?test=YourTestCaseName"
+   ```
+   Test case names match the file names in `code/kitchen-sink/src/usecases/` (e.g., `SelectFocusScopeCase`).
+
+   To open a component demo:
+   ```bash
+   open "http://localhost:9000/?demo=Select"
+   ```
+   Demo names match files in `code/demos/src/` without the `Demo` suffix (e.g., `Select` for `SelectDemo.tsx`).
 
 2. **Run all web tests** with different animation drivers:
    ```bash
