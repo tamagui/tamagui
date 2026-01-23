@@ -20,6 +20,23 @@ First install the config package:
 npm install @tamagui/config
 ```
 
+## What's Different from v4
+
+- **More color themes** out of the box: blue, gray, green, orange, pink, purple,
+  red, tan, teal, yellow, neutral
+- **`createV5Theme` helper** for easy customization of themes without manually
+  calling `createThemes`
+- **`styleCompat: 'react-native'`** is the default, so `flex` uses
+  `flexBasis: 0` (matches React Native behavior)
+- **`defaultPosition: 'static'`** instead of `'relative'` (modern web default)
+- **Improved color palettes** using
+  [Radix Colors](https://www.radix-ui.com/colors) for better accessibility
+
+All settings can be overridden - if you prefer v4 behavior, set
+`styleCompat: 'legacy'` and `defaultPosition: 'relative'` in your settings.
+
+---
+
 ## Choosing an Animation Driver
 
 V5 provides separate entry points for different animation drivers, so you only
@@ -110,23 +127,6 @@ All v5 animation drivers include these preset animations:
     { name: 'tooltip', description: 'Tuned for tooltip enter/exit' },
   ]}
 />
-
----
-
-## What's Different from v4
-
-- **More color themes** out of the box: blue, gray, green, orange, pink, purple,
-  red, tan, teal, yellow, neutral
-- **`createV5Theme` helper** for easy customization of themes without manually
-  calling `createThemes`
-- **`styleCompat: 'react-native'`** is the default, so `flex` uses
-  `flexBasis: 0` (matches React Native behavior)
-- **`defaultPosition: 'static'`** instead of `'relative'` (modern web default)
-- **Improved color palettes** using
-  [Radix Colors](https://www.radix-ui.com/colors) for better accessibility
-
-All settings can be overridden - if you prefer v4 behavior, set
-`styleCompat: 'legacy'` and `defaultPosition: 'relative'` in your settings.
 
 ---
 

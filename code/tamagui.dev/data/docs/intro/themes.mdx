@@ -10,14 +10,14 @@ directly. Tamagui allows nesting themes - both the definition and at runtime. At
 runtime Tamagui resolves theme values upwards, ultimately all the way back to
 tokens.
 
-If you learn faster through example, skip to [the Quick Start](#quick-start).
-
-If you want to style `bento` or `tamagui` components: see
-[Styling `tamagui` UI components](#styling-tamagui-components).
+For the recommended theme setup, see the [Config v5 docs](/docs/core/config-v5).
 
 Once you've learned the basics here, be sure to
 [check out the ThemeBuilder guide](/docs/guides/theme-builder) for generating
 more interesting theme suites.
+
+If you want to style `bento` or `tamagui` components: see
+[Styling `tamagui` UI components](#styling-tamagui-components).
 
 <Notice theme="green">
   If you want a copy-paste theme generation setup, [try this
@@ -248,48 +248,6 @@ export const Button = ButtonFrame.styleable<ButtonProps>(
 
 And now you can add two themes: `dark_Button` and `dark_ButtonText`, and
 override their default styles.
-
-## Quick start
-
-To get started quickly, you can use the themes we've developed alongside this
-site and with other apps, `@tamagui/themes`. It's even easier to see how it all
-comes together by using
-[create-tamagui to bootstrap](/docs/guides/create-tamagui-app).
-
-To install, just add import it and add it to your `tamagui.config.ts`:
-
-```tsx
-import { color, radius, size, space, themes, zIndex } from '@tamagui/themes'
-import { createTamagui, createTokens } from 'tamagui'
-
-const tokens = createTokens({
-  size,
-  space,
-  zIndex,
-  color,
-  radius,
-})
-
-const config = createTamagui({
-  themes,
-  tokens,
-  // ... see Configuration
-})
-
-export type Conf = typeof config
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
-}
-
-export default config
-```
-
-<Notice theme="green">
-  If you want to customize the starter themes, we recommend you just grab the
-  `src` for `@tamagui/themes` and copy/paste it into your app, and customize
-  from there.
-</Notice>
 
 ## Full Example
 

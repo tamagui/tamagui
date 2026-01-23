@@ -18,7 +18,7 @@ export const docsRoutes = [
     section: 'core',
     title: 'Configuration',
     pages: [
-      { title: 'createTamagui', route: '/docs/core/configuration' },
+      { title: 'Configuration', route: '/docs/core/configuration' },
       { title: 'Config v5', route: '/docs/core/config-v5' },
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'Themes', route: '/docs/intro/themes' },
@@ -30,10 +30,11 @@ export const docsRoutes = [
     section: 'core',
     title: 'Styling',
     pages: [
-      { title: 'Styles', route: '/docs/intro/styles' },
+      { title: 'Style Props', route: '/docs/intro/styles' },
       { title: 'Props', route: '/docs/intro/props' },
       { title: 'styled()', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
+      { title: 'createStyledContext', route: '/docs/core/create-styled-context' },
     ],
   },
 
@@ -64,10 +65,8 @@ export const docsRoutes = [
     section: 'core',
     pages: [
       { title: 'Overview', route: '/docs/core/animations' },
-      { title: 'CSS Driver', route: '/docs/core/animations-css' },
-      { title: 'React Native Driver', route: '/docs/core/animations-react-native' },
-      { title: 'Reanimated Driver', route: '/docs/core/animations-reanimated' },
-      { title: 'Motion Driver', route: '/docs/core/animations-motion' },
+      { title: 'AnimatePresence', route: '/docs/core/animate-presence' },
+      { title: 'Animation Drivers', route: '/docs/core/animation-drivers' },
     ],
   },
 

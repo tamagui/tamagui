@@ -453,7 +453,7 @@ const componentsIn = {
       pt="$6"
       mb="$3"
       data-heading
-      size="$9"
+      size="$8"
       color="$color12"
       {...props}
     >
