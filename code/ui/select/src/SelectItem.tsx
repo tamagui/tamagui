@@ -71,19 +71,14 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
     const [isSelected, setSelected] = React.useState(initialValue === value)
 
     React.useEffect(() => {
-      console.log(`[SelectItem ${value}] subscribing to activeIndexSubscribe`)
       return activeIndexSubscribe((i) => {
         const isActive = index === i
-        console.log(`[SelectItem ${value}] activeIndex changed to ${i}, isActive=${isActive}, ref exists=${!!listRef?.current[index]}`)
 
         if (isActive) {
           onActiveChange(value, index)
 
           if (isWeb) {
-            const element = listRef?.current[index]
-            console.log(`[SelectItem ${value}] about to focus, element=${element?.tagName}, activeElement=${document.activeElement?.tagName}`)
-            element?.focus()
-            console.log(`[SelectItem ${value}] after focus, activeElement=${document.activeElement?.tagName}, is focused=${document.activeElement === element}`)
+            listRef?.current[index]?.focus()
           }
         }
       })

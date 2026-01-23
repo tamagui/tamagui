@@ -9,44 +9,38 @@ test.describe('Select Focus Scope', () => {
   test('traps focus within select dropdown when open', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
-    // Open the basic select
+    // open the basic select
     const trigger = page.getByTestId('basic-select-trigger')
     await trigger.click()
 
-    // Wait for select viewport to be visible
+    // wait for select viewport to be visible
     const selectViewport = page.getByTestId('basic-select-viewport')
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
 
-    // Wait for focus to settle
-    await page.waitForTimeout(300)
+    // wait for focus trap to settle (rAF-based)
+    await page.waitForTimeout(50)
 
-    // Focus starts on the first item immediately when opened
+    // first item should be focused
     const firstItem = page.getByTestId('select-apple')
-    const isFirstFocused = await firstItem.evaluate(el => el === document.activeElement)
-    expect(isFirstFocused).toBe(true)
+    await expect(firstItem).toBeFocused()
 
-    // Arrow down to second item
+    // arrow down to second item
     await page.keyboard.press('ArrowDown')
-    await page.waitForTimeout(100)
+    await page.waitForTimeout(50)
 
     const secondItem = page.getByTestId('select-banana')
-    const isSecondFocused = await secondItem.evaluate(el => el === document.activeElement)
-    expect(isSecondFocused).toBe(true)
+    await expect(secondItem).toBeFocused()
 
-    // Tab closes the select and moves to next element
+    // tab closes the select and moves to next element
     await page.keyboard.press('Tab')
-    await page.waitForTimeout(200)
-    
-    // Select should be closed after Tab
+    await page.waitForTimeout(100)
+
+    // select should be closed after tab
     await expect(selectViewport).not.toBeVisible()
-    
-    // Focus should have moved to the next trigger
+
+    // focus should have moved to the next trigger
     const nextTrigger = page.getByTestId('custom-select-trigger')
     await expect(nextTrigger).toBeFocused()
-
-    // Escape to close
-    await page.keyboard.press('Escape')
-    await expect(selectViewport).not.toBeVisible()
   })
 
   test('allows selection with Enter key', async ({ page }) => {

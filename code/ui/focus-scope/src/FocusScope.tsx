@@ -1,14 +1,10 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { startTransition } from '@tamagui/start-transition'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { idle, useAsyncEffect } from '@tamagui/use-async'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 import { useFocusScopeControllerContext } from './FocusScopeController'
 import type { FocusScopeProps, ScopedProps } from './types'
-
-// We'll define the controller context hook here to avoid circular imports
-let useFocusScopeControllerContextInternal: any = null
 
 const AUTOFOCUS_ON_MOUNT = 'focusScope.autoFocusOnMount'
 const AUTOFOCUS_ON_UNMOUNT = 'focusScope.autoFocusOnUnmount'
@@ -58,6 +54,81 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>(
 )
 
 /* -------------------------------------------------------------------------------------------------
+ * setupFocusTrap - extracted function to set up trap immediately in ref callback
+ * -----------------------------------------------------------------------------------------------*/
+
+type FocusScopeAPI = { paused: boolean; stopped: boolean; pause(): void; resume(): void; stop(): void }
+
+function setupFocusTrap(
+  container: HTMLElement,
+  lastFocusedElementRef: React.MutableRefObject<HTMLElement | null>,
+  focusScope: FocusScopeAPI
+): () => void {
+  const controller = new AbortController()
+
+  // use rAF to schedule refocus after browser's event handling completes
+  // this prevents a loop where we try to refocus but the browser keeps overriding
+  let rafId: number | null = null
+
+  function scheduleRefocus() {
+    if (rafId) return // already scheduled
+    const elementToFocus = lastFocusedElementRef.current
+    rafId = requestAnimationFrame(() => {
+      rafId = null
+      if (focusScope.paused) return
+      // check if scope has been stopped (cleanup started)
+      if (focusScope.stopped) return
+      // check if container is still in DOM (might be unmounting)
+      if (!container.isConnected) return
+      // check if focus is still outside container
+      if (!container.contains(document.activeElement)) {
+        focus(elementToFocus)
+      }
+    })
+  }
+
+  function handleFocusIn(event: FocusEvent) {
+    if (focusScope.paused) return
+    const target = event.target as HTMLElement | null
+
+    if (container.contains(target)) {
+      // track the last focused element inside the container
+      target?.addEventListener('blur', handleBlur, { signal: controller.signal })
+      lastFocusedElementRef.current = target
+    } else {
+      // focus went outside container, schedule refocus after browser settles
+      scheduleRefocus()
+    }
+  }
+
+  function handleFocusOut(event: FocusEvent) {
+    controller.abort()
+    if (focusScope.paused) return
+    if (!container.contains(event.relatedTarget as HTMLElement | null)) {
+      // focus leaving container, schedule refocus after browser settles
+      scheduleRefocus()
+    }
+  }
+
+  // blur handler is a no-op - we keep track of the last focused element
+  // and don't reset to container when an element blurs
+  function handleBlur() {}
+
+  document.addEventListener('focusin', handleFocusIn)
+  document.addEventListener('focusout', handleFocusOut)
+
+  return () => {
+    if (rafId) {
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
+    controller.abort()
+    document.removeEventListener('focusin', handleFocusIn)
+    document.removeEventListener('focusout', handleFocusOut)
+  }
+}
+
+/* -------------------------------------------------------------------------------------------------
  * useFocusScope
  * -----------------------------------------------------------------------------------------------*/
 
@@ -81,68 +152,51 @@ export function useFocusScope(
   const onMountAutoFocus = useEvent(onMountAutoFocusProp)
   const onUnmountAutoFocus = useEvent(onUnmountAutoFocusProp)
   const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
-  const setContainerRef = React.useCallback((node: HTMLElement | null) => {
-    containerRef.current = node
-    setContainer(node)
-  }, [])
-  const composedRefs = useComposedRefs(forwardedRef, setContainerRef)
 
-  const focusScope = React.useRef({
+  const focusScopeRef = React.useRef({
     paused: false,
+    stopped: false, // set to true when cleanup starts, signals trap to stop
     pause() {
       this.paused = true
     },
     resume() {
       this.paused = false
     },
-  }).current
+    stop() {
+      this.stopped = true
+    },
+  })
+  const focusScope = focusScopeRef.current
 
-  // Takes care of trapping focus if focus is moved outside programmatically for example
-  // Use useIsomorphicLayoutEffect so trap is ready before any focus calls in useEffect
-  // Use containerRef.current instead of container state to avoid timing issues
+  const trapCleanupRef = React.useRef<(() => void) | null>(null)
+  const setContainerRef = React.useCallback((node: HTMLElement | null) => {
+    // clean up previous trap if any
+    if (trapCleanupRef.current) {
+      trapCleanupRef.current()
+      trapCleanupRef.current = null
+    }
+
+    containerRef.current = node
+
+    // set up trap immediately when node is set (not waiting for effect)
+    // only on web - native doesn't have document focus events
+    if (isWeb && node && enabled && trapped) {
+      trapCleanupRef.current = setupFocusTrap(node, lastFocusedElementRef, focusScopeRef.current)
+    }
+
+    setContainer(node)
+  }, [enabled, trapped])
+  const composedRefs = useComposedRefs(forwardedRef, setContainerRef)
+
+  // Clean up trap on unmount only - trap setup is handled in ref callback
   useIsomorphicLayoutEffect(() => {
-    if (!enabled) return
-    if (!trapped) return
-    const controller = new AbortController()
-
-    function handleFocusIn(event: FocusEvent) {
-      const currentContainer = containerRef.current
-      if (focusScope.paused || !currentContainer) return
-      const target = event.target as HTMLElement | null
-
-      if (currentContainer.contains(target)) {
-        // Set container as lastFocusedElement to prevent inputs
-        // to be refocused on blur events
-        target?.addEventListener('blur', handleBlur, { signal: controller.signal })
-        lastFocusedElementRef.current = target
-      } else {
-        // Don't select text when refocusing for focus trap - only refocus
-        focus(lastFocusedElementRef.current)
-      }
-    }
-
-    function handleFocusOut(event: FocusEvent) {
-      controller.abort()
-      const currentContainer = containerRef.current
-      if (focusScope.paused || !currentContainer) return
-      if (!currentContainer.contains(event.relatedTarget as HTMLElement | null)) {
-        // Don't select text when refocusing for focus trap - only refocus
-        focus(lastFocusedElementRef.current)
-      }
-    }
-
-    function handleBlur() {
-      lastFocusedElementRef.current = containerRef.current
-    }
-
-    document.addEventListener('focusin', handleFocusIn)
-    document.addEventListener('focusout', handleFocusOut)
     return () => {
-      controller.abort()
-      document.removeEventListener('focusin', handleFocusIn)
-      document.removeEventListener('focusout', handleFocusOut)
+      if (trapCleanupRef.current) {
+        trapCleanupRef.current()
+        trapCleanupRef.current = null
+      }
     }
-  }, [trapped, forceUnmount, focusScope.paused, enabled])
+  }, [])
 
   useAsyncEffect(
     async (signal) => {
@@ -150,6 +204,8 @@ export function useFocusScope(
       if (!container) return
       if (forceUnmount) return
 
+      // reset stopped flag when effect starts
+      focusScope.stopped = false
       focusScopesStack.add(focusScope)
       const previouslyFocusedElement = document.activeElement as HTMLElement | null
       const hasFocusedCandidate = container.contains(previouslyFocusedElement)
@@ -200,6 +256,9 @@ export function useFocusScope(
       }
 
       return () => {
+        // signal trap to stop before cleanup runs
+        focusScope.stop()
+
         container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
 
         const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS)
@@ -401,7 +460,6 @@ function focus(element?: FocusableTarget | null, { select = false } = {}) {
  * FocusScope stack
  * -----------------------------------------------------------------------------------------------*/
 
-type FocusScopeAPI = { paused: boolean; pause(): void; resume(): void }
 const focusScopesStack = createFocusScopesStack()
 
 function createFocusScopesStack() {

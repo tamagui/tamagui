@@ -64,7 +64,8 @@ export const SelectContent = ({
             e.preventDefault()
           }}
         >
-          {contents}
+          {/* wrap in div so FocusScope has a DOM element to attach ref to */}
+          <div style={{ display: 'contents' }}>{contents}</div>
         </FocusScope>
       </FloatingOverlay>
     </FloatingPortal>
