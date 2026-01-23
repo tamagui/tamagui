@@ -195,12 +195,8 @@ export default function DocsLayout() {
               </Container>
             </YStack>
           </YStack>
-
         </XStack>
       </YStack>
-
-      {/* footer outside the main layout */}
-      <Footer />
     </ThemeNameEffect>
   )
 }
