@@ -27,16 +27,6 @@ const hoveredColors = [
   'var(--blue9)',
 ]
 
-const defaultCircleColors = [
-  '$color12',
-  '$color12',
-  '$color12',
-  '$color12',
-  '$red9',
-  '$green9',
-  '$blue9',
-]
-
 export const LogoWords: React.MemoExoticComponent<
   ({
     downscale,
@@ -52,17 +42,6 @@ export const LogoWords: React.MemoExoticComponent<
   const [mounted, setMounted] = React.useState<'start' | 'animate' | 'done'>('start')
 
   const { tintIndex: index } = Tint
-
-  const hoveredCircleColors = [
-    '$yellow9',
-    '$yellow9',
-    '$yellow9',
-    '$color12',
-    '$red9',
-    '$green9',
-    '$blue9',
-  ]
-  const circleTints = hovered ? hoveredCircleColors : defaultCircleColors
 
   useEffect(() => {
     const idle = window.requestIdleCallback || setTimeout
@@ -137,7 +116,7 @@ export const LogoWords: React.MemoExoticComponent<
           // the last i is less wide
           x={x}
           size={4}
-          backgroundColor={circleTints[index]}
+          backgroundColor="$color12"
         />
       )}
 

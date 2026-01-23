@@ -5,9 +5,10 @@ import React, { memo } from 'react'
 import type { LoaderProps } from 'one'
 import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
-import { SetDocsHeadings } from '~/features/docs/DocsHeadingsContext'
+import { DocsPageFrame } from '~/features/docs/DocsPageFrame'
 import { MDXProvider } from '~/features/docs/MDXProvider'
 import { MDXTabs } from '~/features/docs/MDXTabs'
+import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { useIsDocsTinted } from '~/features/docs/docsTint'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
@@ -60,10 +61,29 @@ export async function loader(props: LoaderProps) {
 
 export function DocComponentsPage() {
   const { frontmatter, code } = useLoader(loader)
+  const { next, previous, currentPath, documentVersionPath } = useDocsMenu()
   const Component = React.useMemo(() => getMDXComponent(code), [code])
 
+  const getMDXPath = (path: string) => {
+    if (path.startsWith('/ui/')) {
+      const parts = path.split('/')
+      const componentName = parts[2]
+      return `/docs/components/${componentName}`
+    }
+    return `${path}${documentVersionPath}`
+  }
+
+  const GITHUB_URL = 'https://github.com'
+  const REPO_NAME = 'tamagui/tamagui'
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${getMDXPath(currentPath)}.mdx`
+
   return (
-    <>
+    <DocsPageFrame
+      headings={frontmatter.headings}
+      editUrl={editUrl}
+      next={next}
+      previous={previous}
+    >
       <HeadInfo
         title={`${frontmatter.title} | Tamagui — style library and UI kit for React Native and React Web`}
         description={frontmatter.description || 'UI Kit'}
@@ -96,8 +116,7 @@ export function DocComponentsPage() {
           </MDXTabs>
         </DocsThemeTint>
       </MDXProvider>
-      <SetDocsHeadings headings={frontmatter.headings} />
-    </>
+    </DocsPageFrame>
   )
 }
 

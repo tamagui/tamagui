@@ -15,7 +15,6 @@ import { Link } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
 import { ConsultingButton } from '../site/ConsultingButton'
 import { TakeoutButton } from '../site/TakeoutButton'
-import { useDocsHeadings } from './DocsHeadingsContext'
 
 export type Heading = {
   id: string
@@ -142,9 +141,7 @@ const NavLineIndicator = ({
   )
 }
 
-export function DocsQuickNav({ headings: propsHeadings }: { headings?: Heading[] }) {
-  const contextHeadings = useDocsHeadings()
-  const headings = propsHeadings ?? contextHeadings
+export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [itemData, setItemData] = useState<
     Array<{ top: number; height: number; level: number }>

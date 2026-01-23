@@ -55,6 +55,15 @@ const resolve = (path: string) => {
 }
 
 const include = [
+  // pre-bundle common web deps to avoid mid-navigation optimization in dev mode
+  'react-native',
+  'react-dom',
+  'zod',
+  '@stripe/react-stripe-js',
+  '@stripe/stripe-js',
+  'swr/mutation',
+  'mdx-bundler/client',
+  // existing
   '@ai-sdk/deepseek',
   'secure-json-parse',
   '@supabase/postgres-js',
@@ -216,12 +225,12 @@ export const LocationNotification = BentoComponentStub
     },
     tamaguiPlugin({
       // see tamagui.build.ts
-      optimize: true,
+      optimize: process.env.NODE_ENV === 'production',
     }),
 
     one({
       react: {
-        compiler: true,
+        compiler: process.env.NODE_ENV === 'production',
       },
 
       ssr: {
