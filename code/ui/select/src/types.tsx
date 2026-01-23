@@ -90,6 +90,10 @@ export interface SelectItemParentContextValue {
   size?: SizeTokens
   /** fast setter: updates ref + emits to subscribers (no re-render) - use for keyboard navigation */
   setActiveIndexFast?: (index: number | null) => void
+  /** the rendered content of the currently selected item (for portaling to SelectValue) */
+  selectedItem: ReactNode
+  /** sets the selected item content */
+  setSelectedItem: (item: ReactNode) => void
 }
 
 export interface SelectContextValue {
@@ -97,8 +101,6 @@ export interface SelectContextValue {
   scopeName: string
   adaptScope: string
   value: any
-  selectedItem: ReactNode
-  setSelectedItem: (item: ReactNode) => void
   selectedIndex: number
   /** current active index state - use for rendering, may lag behind ref */
   activeIndex: number | null

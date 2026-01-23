@@ -57,7 +57,13 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>(
  * setupFocusTrap - extracted function to set up trap immediately in ref callback
  * -----------------------------------------------------------------------------------------------*/
 
-type FocusScopeAPI = { paused: boolean; stopped: boolean; pause(): void; resume(): void; stop(): void }
+type FocusScopeAPI = {
+  paused: boolean
+  stopped: boolean
+  pause(): void
+  resume(): void
+  stop(): void
+}
 
 function setupFocusTrap(
   container: HTMLElement,
@@ -169,23 +175,30 @@ export function useFocusScope(
   const focusScope = focusScopeRef.current
 
   const trapCleanupRef = React.useRef<(() => void) | null>(null)
-  const setContainerRef = React.useCallback((node: HTMLElement | null) => {
-    // clean up previous trap if any
-    if (trapCleanupRef.current) {
-      trapCleanupRef.current()
-      trapCleanupRef.current = null
-    }
+  const setContainerRef = React.useCallback(
+    (node: HTMLElement | null) => {
+      // clean up previous trap if any
+      if (trapCleanupRef.current) {
+        trapCleanupRef.current()
+        trapCleanupRef.current = null
+      }
 
-    containerRef.current = node
+      containerRef.current = node
 
-    // set up trap immediately when node is set (not waiting for effect)
-    // only on web - native doesn't have document focus events
-    if (isWeb && node && enabled && trapped) {
-      trapCleanupRef.current = setupFocusTrap(node, lastFocusedElementRef, focusScopeRef.current)
-    }
+      // set up trap immediately when node is set (not waiting for effect)
+      // only on web - native doesn't have document focus events
+      if (isWeb && node && enabled && trapped) {
+        trapCleanupRef.current = setupFocusTrap(
+          node,
+          lastFocusedElementRef,
+          focusScopeRef.current
+        )
+      }
 
-    setContainer(node)
-  }, [enabled, trapped])
+      setContainer(node)
+    },
+    [enabled, trapped]
+  )
   const composedRefs = useComposedRefs(forwardedRef, setContainerRef)
 
   // Clean up trap on unmount only - trap setup is handled in ref callback

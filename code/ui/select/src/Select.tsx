@@ -71,7 +71,8 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     // Use renderValue for SSR support - called synchronously during render
     // Falls back to the portal-based selectedItem, then to the raw value for SSR
     const renderedValue = context.renderValue?.(context.value)
-    const children = childrenProp ?? renderedValue ?? context.selectedItem ?? context.value
+    const children =
+      childrenProp ?? renderedValue ?? itemParentContext.selectedItem ?? context.value
     const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
@@ -629,6 +630,8 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
       }, [])}
       shouldRenderWebNative={shouldRenderWebNative}
       setActiveIndexFast={setActiveIndexFast}
+      selectedItem={selectedItem}
+      setSelectedItem={setSelectedItem}
     >
       <SelectProvider
         scope={scope}
@@ -638,8 +641,6 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         dir={dir}
         blockSelection={false}
         fallback={false}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
         forceUpdate={forceUpdate}
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
