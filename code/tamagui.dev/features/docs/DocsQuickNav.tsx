@@ -245,127 +245,130 @@ export function DocsQuickNav() {
   return (
     <YStack
       render="aside"
+      className="is-sticky"
       display="none"
       $gtLg={{
         display: 'flex',
         width: 280,
         shrink: 0,
         z: 1,
-        position: 'fixed' as any,
-        l: '50%',
-        t: 140,
-        ml: 450,
+        position: 'sticky' as any,
+        t: 0,
+        height: '100vh',
+        alignSelf: 'flex-start',
       }}
     >
-      <YStack gap="$5">
-        <XStack items="center" gap="$5">
-          <Link
-            target="_blank"
-            href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <YStack gap="$5" pt={108} pb="$10">
+          <XStack items="center" gap="$5">
+            <Link
+              target="_blank"
+              href={href(`${process.env.ONE_SERVER_URL}${pathname}.md` as any)}
+            >
+              <SizableText size="$3" fontFamily="$mono">
+                .md
+              </SizableText>
+            </Link>
+
+            <Separator minH={20} vertical />
+
+            <Link
+              target="_blank"
+              href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
+            >
+              <SizableText size="$3" fontFamily="$mono">
+                llms.txt
+              </SizableText>
+            </Link>
+          </XStack>
+
+          <Separator />
+
+          <YStack
+            render="nav"
+            aria-labelledby="site-quick-nav-heading"
+            mb="$10"
+            mt="$2"
+            display={headings.length === 0 ? 'none' : 'flex'}
+            gap="$2"
           >
-            <SizableText size="$3" fontFamily="$mono">
-              .md
-            </SizableText>
-          </Link>
+            <H4
+              fontFamily="$mono"
+              size="$5"
+              mb="$2"
+              color="$color10"
+              id="site-quick-nav-heading"
+            >
+              Contents
+            </H4>
 
-          <Separator minH={20} vertical />
+            <ScrollView maxH="calc(100vh - 300px)">
+              <YStack ref={containerRef as any} py="$2" pl={24} position="relative">
+                <NavLineIndicator
+                  items={itemData}
+                  activeIndex={activeIndex}
+                  totalHeight={containerHeight}
+                />
 
-          <Link
-            target="_blank"
-            href={href(`${process.env.ONE_SERVER_URL}/llms.txt` as any)}
-          >
-            <SizableText size="$3" fontFamily="$mono">
-              llms.txt
-            </SizableText>
-          </Link>
-        </XStack>
+                {headings.map(({ id, nodeName, innerText }, index) => {
+                  const level = getLevel(nodeName)
 
-        <Separator />
-
-        <YStack
-          render="nav"
-          aria-labelledby="site-quick-nav-heading"
-          mb="$10"
-          mt="$2"
-          display={headings.length === 0 ? 'none' : 'flex'}
-          gap="$2"
-        >
-          <H4
-            fontFamily="$mono"
-            size="$5"
-            mb="$2"
-            color="$color10"
-            id="site-quick-nav-heading"
-          >
-            Contents
-          </H4>
-
-          <ScrollView maxH="calc(100vh - 300px)">
-            <YStack ref={containerRef as any} py="$2" pl={24} position="relative">
-              <NavLineIndicator
-                items={itemData}
-                activeIndex={activeIndex}
-                totalHeight={containerHeight}
-              />
-
-              {headings.map(({ id, nodeName, innerText }, index) => {
-                const level = getLevel(nodeName)
-
-                return (
-                  <XStack
-                    key={`${id}-${index}`}
-                    data-nav-item
-                    pl={Math.max(0, level - 2) * 12}
-                    py="$1"
-                  >
-                    <a
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setActiveIndex(index)
-                      }}
-                      href={`#${id}`}
-                      style={{ textDecoration: 'none' }}
+                  return (
+                    <XStack
+                      key={`${id}-${index}`}
+                      data-nav-item
+                      pl={Math.max(0, level - 2) * 12}
+                      py="$1"
                     >
-                      <Paragraph
-                        render="span"
-                        size={level === 2 ? '$3' : '$2'}
-                        color={
-                          index === activeIndex
-                            ? '$color12'
-                            : level === 2
-                              ? '$color11'
-                              : '$color10'
-                        }
-                        cursor="pointer"
-                        fontWeight={level === 2 ? '500' : '400'}
-                        hoverStyle={{ color: '$color12' }}
+                      <a
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setActiveIndex(index)
+                        }}
+                        href={`#${id}`}
+                        style={{ textDecoration: 'none' }}
                       >
-                        {innerText}
-                      </Paragraph>
-                    </a>
-                  </XStack>
-                )
-              })}
-            </YStack>
-          </ScrollView>
-        </YStack>
+                        <Paragraph
+                          render="span"
+                          size={level === 2 ? '$3' : '$2'}
+                          color={
+                            index === activeIndex
+                              ? '$color12'
+                              : level === 2
+                                ? '$color11'
+                                : '$color10'
+                          }
+                          cursor="pointer"
+                          fontWeight={level === 2 ? '500' : '400'}
+                          hoverStyle={{ color: '$color12' }}
+                        >
+                          {innerText}
+                        </Paragraph>
+                      </a>
+                    </XStack>
+                  )
+                })}
+              </YStack>
+            </ScrollView>
+          </YStack>
 
-        <YStack gap="$2">
-          <Theme name="green">
-            <Link width="100%" href="/bento">
-              <BentoButton bg="transparent" />
+          <YStack gap="$2">
+            <Theme name="green">
+              <Link width="100%" href="/bento">
+                <BentoButton bg="transparent" />
+              </Link>
+            </Theme>
+            <Theme name="gray">
+              <Link width="100%" href="/takeout">
+                <TakeoutButton bg="transparent" />
+              </Link>
+            </Theme>
+            <Link width="100%" href="https://addeven.com" target="_blank">
+              <ConsultingButton bg="transparent" />
             </Link>
-          </Theme>
-          <Theme name="gray">
-            <Link width="100%" href="/takeout">
-              <TakeoutButton bg="transparent" />
-            </Link>
-          </Theme>
-          <Link width="100%" href="https://addeven.com" target="_blank">
-            <ConsultingButton bg="transparent" />
-          </Link>
+          </YStack>
         </YStack>
-      </YStack>
+      </ScrollView>
     </YStack>
   )
 }

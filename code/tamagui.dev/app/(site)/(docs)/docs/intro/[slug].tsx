@@ -5,7 +5,6 @@ import { useMemo } from 'react'
 import { HeadInfo } from '~/components/HeadInfo'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'
 import { TamaguiExamples } from '~/components/TamaguiExamples'
-import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
@@ -65,7 +64,6 @@ export default function DocIntroPage() {
           <Component components={components as any} />
         </TamaguiExamples.Provider>
       </ThemeTint>
-      <DocsQuickNav />
     </>
   )
 }

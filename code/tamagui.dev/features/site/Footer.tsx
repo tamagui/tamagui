@@ -93,6 +93,15 @@ export const Footer = memo(() => {
               <ExternalIcon />
             </XStack>
             <XStack gap="$1" items="center">
+              <ParagraphLink
+                href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
+                target="_blank"
+              >
+                Figma
+              </ParagraphLink>
+              <ExternalIcon />
+            </XStack>
+            <XStack gap="$1" items="center">
               <ParagraphLink href="https://x.com/tamagui_js" target="_blank">
                 X
               </ParagraphLink>

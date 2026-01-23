@@ -5,7 +5,6 @@ import React, { memo } from 'react'
 import type { LoaderProps } from 'one'
 import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
-import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { MDXProvider } from '~/features/docs/MDXProvider'
 import { MDXTabs } from '~/features/docs/MDXTabs'
 import { useIsDocsTinted } from '~/features/docs/docsTint'
@@ -96,8 +95,6 @@ export function DocComponentsPage() {
           </MDXTabs>
         </DocsThemeTint>
       </MDXProvider>
-
-      <DocsQuickNav key={frontmatter.slug} />
     </>
   )
 }
