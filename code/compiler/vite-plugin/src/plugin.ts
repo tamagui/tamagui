@@ -40,23 +40,21 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
         ? '@tamagui/react-native-web-lite/without-animated'
         : '@tamagui/react-native-web-lite'
     )
-    // base package path for subpath imports (always the package root)
-    const rnwlBase = resolve('@tamagui/react-native-web-lite')
-    const rnwlSS = resolve(
-      '@tamagui/react-native-web-lite/dist/exports/StyleSheet/compiler/createReactDOMStyle'
-    )
-
+    // base package path for subpath imports (package directory, not entry file)
+    const rnwlBase = path.dirname(resolve('@tamagui/react-native-web-lite/package.json'))
     aliases.push(
       {
-        find: /react-native.*\/dist\/exports\/StyleSheet\/compiler\/createReactDOMStyle/,
-        replacement: rnwlSS,
+        // map deep RNW paths like dist/exports/StyleSheet/preprocess to rnw-lite's flat structure
+        // extracts the final path segment (e.g. "preprocess" or "createReactDOMStyle")
+        find: /^react-native(?:-web)?\/dist\/(?:exports|modules)\/.*\/([^/]+)$/,
+        replacement: `${rnwlBase}/dist/esm/$1.mjs`,
       },
       {
         find: /^react-native$/,
         replacement: rnwl,
       },
       {
-        find: /^react-native\/(.+)$/,
+        find: /^react-native\/(Libraries\/Utilities\/codegenNativeComponent|Libraries\/Utilities\/codegenNativeCommand)$/,
         replacement: `${rnwlBase}/$1`,
       },
       {
@@ -66,10 +64,6 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
       {
         find: /^react-native-web$/,
         replacement: rnwl,
-      },
-      {
-        find: /^react-native-web\/(.+)$/,
-        replacement: `${rnwlBase}/$1`,
       }
     )
   }
