@@ -1,7 +1,6 @@
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { ThemeTintAlt } from '@tamagui/logo'
 import { H1, YStack } from 'tamagui'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
-import { isSafari } from './helpers'
 
 export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
@@ -59,7 +58,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           <TAKEOUT className="font-outlined" zi={1000} color="transparent" />
         </ThemeTintAlt>
 
-        {!disableMotion && !isSafari() && (
+        {!disableMotion && (
           <YStack
             fullscreen
             $theme-dark={{

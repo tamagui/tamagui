@@ -18,6 +18,8 @@
     "v4.cjs",
     "v5.d.ts",
     "v5.cjs",
+    "v5-subtle.d.ts",
+    "v5-subtle.cjs",
     "dist",
     "**/__tests__"
   ],

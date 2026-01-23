@@ -327,6 +327,51 @@ export default () => (
 
 This creates a staggered animation effect where each square animates 100ms after the previous one. The delay works with all animation drivers and applies to enter, exit, and style change animations.
 
+### Enter/Exit Transitions
+
+You can specify different animations for enter (mount) and exit (unmount) transitions. This is useful when you want elements to enter slowly but exit quickly, or vice versa:
+
+```tsx
+import { AnimatePresence, View } from 'tamagui'
+
+export default ({ show }) => (
+  <AnimatePresence>
+    {show && (
+      <View
+        key="panel"
+        transition={{ enter: 'lazy', exit: 'quick' }}
+        enterStyle={{ opacity: 0, y: 20 }}
+        exitStyle={{ opacity: 0, y: -20 }}
+      />
+    )}
+  </AnimatePresence>
+)
+```
+
+The `enter` and `exit` keys accept any animation name from your config. You can also combine them with a `default` for property changes that happen while the element is mounted:
+
+```tsx
+// enter slowly, exit quickly, property changes use medium speed
+<View
+  transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
+  enterStyle={{ opacity: 0 }}
+  exitStyle={{ opacity: 0 }}
+/>
+```
+
+Or use enter/exit with the array syntax to include delay and per-property animations:
+
+```tsx
+// enter with lazy, exit with quick, delay 200ms, x uses its own animation
+<View
+  transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200, x: 'slow' }]}
+  enterStyle={{ opacity: 0, x: -100 }}
+  exitStyle={{ opacity: 0, x: 100 }}
+/>
+```
+
+This works with all four animation drivers (CSS, React Native, Reanimated, Motion).
+
 ### animateOnly
 
 The `animateOnly` prop will limit your animation config to certain keys. It

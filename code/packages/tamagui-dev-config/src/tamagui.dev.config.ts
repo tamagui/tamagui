@@ -1,4 +1,4 @@
-import { defaultConfig, themes } from '@tamagui/config/v5'
+import { defaultConfig, themes } from '@tamagui/config/v5-subtle'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { animationsCSS } from './animations.css'

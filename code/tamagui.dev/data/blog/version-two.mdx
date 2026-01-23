@@ -15,7 +15,7 @@ image: /blog/version-two.webp
 
 We're excited to announce that the release candidate of **Tamagui v2 is here**!
 
-If you want to skip to the good stuff: [what's new in version two](#new-in-v2).
+If you want to: [skip to what's new](#new-in-v2)...
 
 ### Background
 
@@ -186,27 +186,20 @@ native, continue using the individual props (`borderWidth`, `borderColor`,
 
 #### Motion Animation Driver
 
+![Motion animation library banner](/blog/motion-banner.webp)
+
 We've added a new [animation driver](/docs/core/animations) powered by
 [Motion](https://motion.dev), and it's our recommended choice for web. The
-`@tamagui/animations-motion` package brings excellent performance through some
-key architectural decisions.
+`@tamagui/animations-motion` package is fast thanks to two optimizations:
 
-The Motion driver avoids React re-renders entirely during animations. When
-styles change, instead of triggering a re-render cycle, it directly mutates the
-DOM through Motion's `useAnimate` hook. This is enabled by a rewrite of Tamagui
-internals to allow a new `avoidReRenders` setting for animation drivers, which
-tells Tamagui's core to emit style changes via a callback rather than through
-state updates. Further, Motion leverages the
-[Web Animations API (WAAPI)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
-which runs animations off the main thread. Both together make for much smoother
-web animations with springs.
+- **No re-renders**: Tamagui now supports an `avoidReRenders` mode for animation drivers. Instead of updating state, style changes flow through a callback that mutates the DOM directly.
+- **Off main thread**: Motion uses the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API), which runs animations off the main JavaScript thread.
+
+Together these make for much smoother spring animations on web.
 
 #### Reanimated Driver Improvements
 
-The Reanimated animation driver now supports `avoidReRenders`, matching the
-Motion driver. This means animations run entirely on the UI thread without
-triggering React re-renders, giving you much better performance for complex
-animations on both web and native.
+The [Reanimated](https://docs.swmansion.com/react-native-reanimated/) driver comes back in style with `worklet` and `avoidReRenders` support. This means animations run entirely on the UI thread without triggering React re-renders, giving you much better performance for complex animations on both web and native.
 
 The Moti driver (`@tamagui/animations-moti`) is now deprecated in favor of the
 Reanimated driver (`@tamagui/animations-reanimated`). This removes a dependency
@@ -252,6 +245,31 @@ All animation drivers now support delays:
 ```
 
 This works with CSS, React Native Animated, Reanimated, and Motion drivers.
+
+#### Enter/Exit Transitions
+
+The `transition` prop now supports different animations for enter and exit. This is useful for creating asymmetric animations where elements enter slowly but exit quickly, or vice versa:
+
+```tsx
+// slow enter, fast exit
+<View
+  transition={{ enter: 'lazy', exit: 'quick' }}
+  enterStyle={{ opacity: 0 }}
+  exitStyle={{ opacity: 0 }}
+/>
+
+// with a default for property changes while mounted
+<View
+  transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
+/>
+
+// array syntax with delay and per-property config
+<View
+  transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200 }]}
+/>
+```
+
+This works across all four animation drivers. See the [animation docs](/docs/core/animations#enterexittransitions) for more details.
 
 #### Popover Transform Origin
 
@@ -350,7 +368,7 @@ internals - but for Tamagui-first apps, it's a nice optimization.
 
 Dialog, Popover, Sheet, and Tooltip now support a `scope` prop that lets you
 mount a single instance at your app's root while placing triggers anywhere in
-your tree. This is a significant performance win - in testing with large apps,
+your tree. **This is a significant performance win** - in testing with large apps,
 we found it greatly improved UX by eliminating the overhead of mounting full
 overlay components inline.
 
@@ -383,11 +401,6 @@ This pattern is especially valuable for data-heavy views like tables, lists, or
 dashboards where you might have dozens or hundreds of interactive elements that
 need tooltips or popovers.
 
-Scoping also solves React context issues with portals - since the content lives
-at the root inside your providers, all context is available without needing to
-re-propagate it. For Sheet in particular, using scoping avoids needing a portal
-entirely on native.
-
 #### Colors
 
 `@tamagui/colors` has been updated to Radix v3, old colors are available at
@@ -396,9 +409,7 @@ entirely on native.
 #### Native Compiler Improvements
 
 The native compiler has been significantly improved in v2. Most notably, the
-experimental theme optimization setting has been removed - theme optimization
-now works automatically and much more effectively. This means better performance
-on native without any configuration needed.
+experimental theme optimization setting is now on by default, and stable. This means better performance on native without any configuration needed.
 
 #### Native Portals
 
@@ -419,10 +430,7 @@ import { setupNativePortal } from '@tamagui/portal/setup-native'
 setupNativePortal()
 ```
 
-This uses React Native's native `createPortal` API (Fabric or Paper) to preserve
-the React fiber tree, so all context flows through automatically. No more
-manually re-propagating theme context or navigation state into your sheets and
-dialogs.
+This tells Tamagui to use the teleport package for true native portal functionality, preserving the React fiber tree so all context flows through automatically. No more manually re-propagating theme context or navigation state into your sheets and dialogs.
 
 See the [Portal docs](/docs/components/portal) for full details and alternative
 approaches like component scoping.
@@ -439,9 +447,7 @@ approaches like component scoping.
 
 ```
 
-The v2 Input takes a web-first approach - you write standard HTML input
-attributes and Tamagui automatically converts them to React Native equivalents
-on native platforms:
+Input has been rewritten from scratch with a web-first approach - you write standard HTML input attributes and Tamagui automatically converts them to React Native equivalents on native platforms:
 
 ```tsx
 // Web-standard API that works everywhere
@@ -494,53 +500,6 @@ content on iOS.
 
 ```
 
-### Goals
-
-Our main goal with version two is **stability**. Tamagui started as a side
-project with incredible scope and maintained an ambitious stance towards landing
-large features and internal improvements.
-
-Speaking for myself now: I personally pushed releases too fast, and as a result
-burned too many of our users with regressions. We generally fast-followed with
-fixes, but that isn't good enough.
-
-I'd like to sincerely apologize for the lack of rigor in our releases. We had a
-version two nearly ready over a year ago and I felt we'd finally reached
-maturity in terms of API, internals, performance, and general repo tooling, but
-honestly, I just wanted to slow down, fix as many issues as possible, and find a
-better balance.
-
-I love Tamagui, it's always been something I do for the love of the game and not
-profit. The company has made nearly half a million dollars to date and
-re-invested all of it into paying our team. We get amazing support, and I really
-appreciate our community.
-
-We've changed a lot over the last couple years to improve stability:
-
-- Landed many new tests and far more robust native test suite that tests both
-  functionality and style.
-- Slowed down releases and added a many more code-quality and package-quality
-  checks to releases.
-- Made our canary release easier, and now use it much more often.
-- Generally completed many major re-writes we wanted to do.
-
-#### Testing
-
-The testing infrastructure has been completely rebuilt since v1. At the v1.0
-release we had 13 test files and a single CI workflow. Today we have 127 test
-files across 5 testing frameworks with dedicated native testing infrastructure.
-
-**Frameworks added:**
-
-- **Playwright** for E2E and integration tests
-- **Vitest** for unit and integration tests
-- **Jest + Detox** for iOS and Android native E2E testing
-- **Maestro** for iOS flow-based testing
-
-**Multi-driver testing:** Every Playwright UI test runs four times, once for
-each animation driver. This catches driver-specific regressions that would
-otherwise slip through.
-
 #### CLI Improvements / Agent Docs Generation
 
 The [Tamagui CLI](/docs/guides/cli) has new commands for building and working
@@ -560,6 +519,37 @@ with your design system:
 We recommend generating your prompt and committing to your repo, even before you
 do your full upgrade to version 2, as it will help agents understand your
 Tamagui config better.
+
+### Goals
+
+Our main goal with version two is **stability**. Tamagui started as a side
+project with incredible scope and maintained an ambitious stance towards landing
+large features and internal improvements.
+
+Speaking for myself now: I personally pushed releases too fast, and as a result
+burned too many of our users with regressions. We generally fast-followed with
+fixes, but that isn't good enough.
+
+I'd like to apologize for that, sincerely. We had a v2 nearly ready over a year ago, but it felt right to push back the release until we felt confident we'd fixed nearly every major issue, and overhauled our testing setup.
+
+React Native is difficult to test, so it took us a while to build it out, but I'm incredibly happy with where we're at now. On every commit we're running integration tests on iOS and Android across every complex component, alongside a few thousand web and core tests.
+
+#### Testing
+
+The testing infrastructure has been completely rebuilt since v1. At the v1.0
+release we had 13 test files and a single CI workflow. Today we have 127 test
+files across 5 testing frameworks with dedicated native testing infrastructure.
+
+**Frameworks added:**
+
+- **Playwright** for E2E and integration tests
+- **Vitest** for unit and integration tests
+- **Jest + Detox** for iOS and Android native E2E testing
+- **Maestro** for iOS flow-based testing
+
+**Multi-driver testing:** Every Playwright UI test runs four times, once for
+each animation driver. This catches driver-specific regressions that would
+otherwise slip through.
 
 ### What's next
 

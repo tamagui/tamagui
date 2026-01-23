@@ -350,7 +350,12 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (value) {
-            const animationConfig = getAnimationConfig(key, animations, props.transition, animationState)
+            const animationConfig = getAnimationConfig(
+              key,
+              animations,
+              props.transition,
+              animationState
+            )
 
             let resolve
             const promise = new Promise<void>((res) => {
@@ -484,7 +489,8 @@ function getAnimationConfig(
   } else if (propAnimation && typeof propAnimation === 'object') {
     // Config object: { x: { type: 'quick', delay: 100 } }
     // Use effective animation based on state if no explicit type in config
-    animationType = propAnimation.type || getEffectiveAnimation(normalized, animationState)
+    animationType =
+      propAnimation.type || getEffectiveAnimation(normalized, animationState)
     extraConf = propAnimation
   } else {
     // Fall back to effective animation based on state (enter/exit/default)

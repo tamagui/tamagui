@@ -1,3 +1,5 @@
+⚠️ When bento `migrate-tamagui-v2` branch is merged to main, update Dockerfile to remove the branch specifier
+
 - accept type not looking right?
 
 - Sheet scope prop (like Dialog/Popover/Tooltip have)

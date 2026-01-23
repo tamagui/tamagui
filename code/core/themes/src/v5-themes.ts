@@ -5,14 +5,153 @@ import {
   grayDark,
   green,
   greenDark,
+  orange,
+  orangeDark,
+  pink,
+  pinkDark,
+  purple,
+  purpleDark,
   red,
   redDark,
+  teal,
+  tealDark,
   yellow,
   yellowDark,
 } from '@tamagui/colors'
 import { createThemes } from '@tamagui/theme-builder'
 import { interpolateColor, opacify } from './opacify'
 import { v5Templates } from './v5-templates'
+
+// re-export color utilities for users
+export { interpolateColor, opacify } from './opacify'
+
+// ---- adjustPalette: generic HSL color adjustment ----
+
+export type HSL = { h: number; s: number; l: number }
+
+/** callback receives hsl and 1-based index, returns adjusted hsl */
+export type AdjustFn = (hsl: HSL, index: number) => HSL
+
+/** parse hsl string to HSL object */
+export function parseHSL(str: string): HSL | null {
+  const m = str.match(/hsl\((\d+(?:\.\d+)?),\s*(\d+(?:\.\d+)?)%,\s*(\d+(?:\.\d+)?)%\)/)
+  return m ? { h: +m[1]!, s: +m[2]!, l: +m[3]! } : null
+}
+
+/** parse hex color to HSL object */
+export function parseHex(str: string): HSL | null {
+  if (!str.startsWith('#')) return null
+  let hex = str.slice(1)
+  if (hex.length === 3) {
+    hex = hex
+      .split('')
+      .map((c) => c + c)
+      .join('')
+  }
+  if (hex.length !== 6) return null
+
+  const r = Number.parseInt(hex.slice(0, 2), 16) / 255
+  const g = Number.parseInt(hex.slice(2, 4), 16) / 255
+  const b = Number.parseInt(hex.slice(4, 6), 16) / 255
+
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  const l = (max + min) / 2
+
+  if (max === min) {
+    return { h: 0, s: 0, l: l * 100 }
+  }
+
+  const d = max - min
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+
+  let h = 0
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6
+  else if (max === g) h = ((b - r) / d + 2) / 6
+  else h = ((r - g) / d + 4) / 6
+
+  return { h: Math.round(h * 360), s: s * 100, l: l * 100 }
+}
+
+/** parse any color format to HSL */
+export function parseColor(str: string): HSL | null {
+  return parseHSL(str) ?? parseHex(str)
+}
+
+export function hslToString(hsl: HSL): string {
+  return `hsl(${hsl.h}, ${Math.round(Math.min(100, Math.max(0, hsl.s)))}%, ${Math.round(Math.min(100, Math.max(0, hsl.l)))}%)`
+}
+
+/** adjust a palette of colors (hsl or hex) using a callback */
+export function adjustPalette(
+  palette: Record<string, string>,
+  fn: AdjustFn
+): Record<string, string> {
+  const out: Record<string, string> = {}
+  const keys = Object.keys(palette)
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]!
+    const parsed = parseColor(palette[key]!)
+    if (!parsed) {
+      out[key] = palette[key]!
+      continue
+    }
+    out[key] = hslToString(fn(parsed, i + 1))
+  }
+  return out
+}
+
+type SingleAdjustment = {
+  light?: AdjustFn
+  dark?: AdjustFn
+}
+
+export type PaletteAdjustments<T extends Record<string, any>> = {
+  [K in keyof T]?: SingleAdjustment
+} & {
+  /** fallback for themes not explicitly listed */
+  default?: SingleAdjustment
+}
+
+const identity: AdjustFn = (hsl) => hsl
+
+/**
+ * Adjust color palettes using callback functions.
+ *
+ * @example
+ * const adjusted = adjustPalettes(defaultChildrenThemes, {
+ *   default: {
+ *     light: (hsl, i) => ({ ...hsl, s: hsl.s * 0.8 }),
+ *     dark: (hsl, i) => ({ ...hsl, s: hsl.s * 0.5, l: hsl.l * 0.9 }),
+ *   },
+ *   yellow: {
+ *     light: (hsl, i) => ({ ...hsl, s: hsl.s * 0.5 }),
+ *   },
+ * })
+ */
+export function adjustPalettes<
+  T extends Record<
+    string,
+    { light: Record<string, string>; dark: Record<string, string> }
+  >,
+>(themes: T, adjustments: PaletteAdjustments<T>): T {
+  const result = {} as T
+
+  for (const [name, theme] of Object.entries(themes)) {
+    const adj = adjustments[name as keyof T] ?? adjustments.default
+    if (!adj) {
+      ;(result as any)[name] = theme
+      continue
+    }
+    ;(result as any)[name] = {
+      light: adjustPalette(theme.light, adj.light ?? identity),
+      dark: adjustPalette(theme.dark, adj.dark ?? identity),
+    }
+  }
+
+  return result
+}
 
 // component themes removed in v5 - use defaultProps in your config instead
 // see: https://tamagui.dev/docs/core/config-v5#migrating-from-component-themes
@@ -123,6 +262,10 @@ export const defaultChildrenThemes = {
   red: { light: red, dark: redDark },
   yellow: { light: yellow, dark: yellowDark },
   green: { light: green, dark: greenDark },
+  orange: { light: orange, dark: orangeDark },
+  pink: { light: pink, dark: pinkDark },
+  purple: { light: purple, dark: purpleDark },
+  teal: { light: teal, dark: tealDark },
   neutral: { light: neutral, dark: neutral },
 }
 
@@ -357,7 +500,10 @@ export function createV5Theme<
 // Default themes using the createV5Theme function
 export const themes = createV5Theme()
 
-// type sanity checks - these should not cause type errors:
+// don't remove this - type sanity checks - these should not cause type errors:
 themes.dark.background0075
+themes.dark_yellow.background0075
 themes.dark.background
 themes.dark.accent1
+// @ts-expect-error
+themes.dark.nonValid

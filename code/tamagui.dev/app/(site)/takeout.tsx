@@ -10,6 +10,7 @@ import { ThemeNameEffect } from '../../features/site/theme/ThemeNameEffect'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { ScreenshotGallery } from '~/features/takeout/ScreenshotGallery'
 import { TakeoutBentoFeatures } from '~/features/takeout/TakeoutBentoFeatures'
+import { TakeoutGlow } from '~/features/takeout/TakeoutGlow'
 import { TakeoutHeroNew } from '~/features/takeout/TakeoutHeroNew'
 import { TakeoutMenuShowcase } from '~/features/takeout/TakeoutMenuShowcase'
 import { TakeoutTechStack } from '~/features/takeout/TakeoutTechStack'
@@ -17,7 +18,7 @@ import { VersionComparison } from '~/features/takeout/VersionComparison'
 import { VideoSection } from '~/features/takeout/VideoSection'
 
 export default function TakeoutPageNew() {
-  const { showAppropriateModal, showWithActivePromo } = useSubscriptionModal()
+  const { showAppropriateModal } = useSubscriptionModal()
   const activePromo = getActivePromo()
 
   return (
@@ -38,6 +39,8 @@ export default function TakeoutPageNew() {
       />
 
       {/* <PageThemeCarousel /> */}
+
+      <TakeoutGlow />
 
       <ThemeTintAlt>
         <YStack
@@ -128,7 +131,6 @@ export default function TakeoutPageNew() {
         {/* Hero Section */}
         <TakeoutHeroNew
           onBuyPress={() => showAppropriateModal()}
-          onPromoPress={() => showWithActivePromo()}
           activePromo={activePromo}
         />
 

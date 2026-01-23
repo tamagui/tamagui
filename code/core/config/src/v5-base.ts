@@ -6,7 +6,25 @@ import { media, mediaQueryDefaultActive } from './v5-media'
 
 export { shorthands } from '@tamagui/shorthands/v5'
 export { createThemes } from '@tamagui/theme-builder'
-export { themes, tokens, createV5Theme } from '@tamagui/themes/v5'
+export {
+  adjustPalette,
+  adjustPalettes,
+  createV5Theme,
+  defaultChildrenThemes,
+  defaultDarkPalette,
+  defaultGrandChildrenThemes,
+  defaultLightPalette,
+  hslToString,
+  // helpers
+  interpolateColor,
+  opacify,
+  parseHSL,
+  tokens,
+  type AdjustFn,
+  // types
+  type HSL,
+  type PaletteAdjustments,
+} from '@tamagui/themes/v5'
 export { createSystemFont, fonts } from './v5-fonts'
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media'
 
@@ -30,7 +48,7 @@ export const settings = {
 } satisfies CreateTamaguiProps['settings']
 
 // base config without animations - users must provide their own
-export const defaultConfigBase = {
+export const defaultConfig = {
   media,
   shorthands,
   themes,

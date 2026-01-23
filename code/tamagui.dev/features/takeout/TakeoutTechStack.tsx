@@ -179,7 +179,7 @@ export function TakeoutTechStack() {
         </H2>
         <SubTitle maxW={680} text="center">
           Vibe coding works best when you're building on a solid base. Takeout combines
-          three libraries that solve the hardest problems in cross-platform development
+          three libraries that solve the hardest problems in cross-platform development,
           with a ton of AI agent harnessing.
         </SubTitle>
       </YStack>

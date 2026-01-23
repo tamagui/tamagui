@@ -469,7 +469,7 @@ const componentsIn = {
         opacity={0.7}
         data-heading
         fontSize={25}
-        fontWeight="500"
+        fontWeight="700"
         {...props}
       >
         {children}
@@ -485,7 +485,7 @@ const componentsIn = {
       mt="$5"
       mb="$2"
       {...props}
-      fontWeight="500"
+      fontWeight="700"
     />
   ),
 
@@ -549,7 +549,7 @@ const componentsIn = {
       <LI
         render="li"
         size="$6"
-        my="$1.5"
+        mb="$1.5"
         className="docs-paragraph"
         style={{
           listStyleType: 'disc',

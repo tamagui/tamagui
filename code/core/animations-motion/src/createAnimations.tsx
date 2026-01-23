@@ -469,7 +469,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = transitionPropToAnimationConfig(props.transition, animationState)
+    const animationOptions = transitionPropToAnimationConfig(
+      props.transition,
+      animationState
+    )
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined

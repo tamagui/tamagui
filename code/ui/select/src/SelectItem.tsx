@@ -1,8 +1,8 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { createStyledContext } from '@tamagui/core'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItem } from '@tamagui/list-item'
-import { createStyledContext } from '@tamagui/core'
 import * as React from 'react'
 import { useSelectItemParentContext } from './context'
 import type { SelectScopedProps } from './types'
@@ -75,7 +75,11 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
 
         if (isActive) {
           onActiveChange(value, index)
-          listRef?.current[index]?.focus()
+
+          if (isWeb) {
+            // focus for focusStyles to apply
+            listRef?.current[index]?.focus()
+          }
         }
       })
     }, [index])
@@ -195,6 +199,10 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
 
               pressStyle: {
                 backgroundColor: '$backgroundPress',
+              },
+
+              focusStyle: {
+                backgroundColor: '$backgroundFocus',
               },
 
               focusVisibleStyle: {
