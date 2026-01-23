@@ -15,6 +15,13 @@ import { Link } from '~/components/Link'
 import { BentoButton } from '../site/BentoButton'
 import { ConsultingButton } from '../site/ConsultingButton'
 import { TakeoutButton } from '../site/TakeoutButton'
+import { useDocsHeadings } from './DocsHeadingsContext'
+
+export type Heading = {
+  id: string
+  title: string
+  priority: number
+}
 
 // SVG tree line indicator component with path-based animation
 const NavLineIndicator = ({
@@ -116,13 +123,13 @@ const NavLineIndicator = ({
       }}
     >
       {/* Background path (gray) */}
-      <path d={path} fill="none" stroke="var(--color6)" strokeWidth="1" />
+      <path d={path} fill="none" stroke="var(--color4)" strokeWidth="1" />
 
       {/* Active indicator (animated along path) */}
       <path
         d={path}
         fill="none"
-        stroke="var(--color12)"
+        stroke="var(--color9)"
         strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray={`${segmentHalf * 2} ${totalLength}`}
@@ -135,8 +142,9 @@ const NavLineIndicator = ({
   )
 }
 
-export function DocsQuickNav() {
-  const [headings, setHeadings] = useState<HTMLHeadingElement[]>([])
+export function DocsQuickNav({ headings: propsHeadings }: { headings?: Heading[] }) {
+  const contextHeadings = useDocsHeadings()
+  const headings = propsHeadings ?? contextHeadings
   const [activeIndex, setActiveIndex] = useState(0)
   const [itemData, setItemData] = useState<
     Array<{ top: number; height: number; level: number }>
@@ -145,19 +153,11 @@ export function DocsQuickNav() {
   const containerRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
-  // Function to determine the Heading Level based on `nodeName` (H2, H3, etc)
-  const getLevel = (nodeName: string): number => {
-    return Number(nodeName.replace('H', ''))
-  }
-
   // Track all currently intersecting headings to pick the best one
   const intersectingHeadings = useRef<Set<string>>(new Set())
 
+  // Reset active index on route change
   useEffect(() => {
-    const headingElements: HTMLHeadingElement[] = Array.from(
-      document.querySelectorAll('[data-heading]')
-    )
-    setHeadings(headingElements)
     setActiveIndex(0)
     setItemData([])
     intersectingHeadings.current.clear()
@@ -190,7 +190,7 @@ export function DocsQuickNav() {
           if (maxIndex !== -1) {
             setActiveIndex(maxIndex)
           }
-        } else if (window.scrollY < 100) {
+        } else if (typeof window !== 'undefined' && window.scrollY < 100) {
           setActiveIndex(0)
         }
       },
@@ -203,7 +203,11 @@ export function DocsQuickNav() {
       }
     )
 
-    headings.forEach((heading) => observer.observe(heading))
+    // Observe heading elements by ID
+    headings.forEach(({ id }) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
 
     return () => observer.disconnect()
   }, [headings])
@@ -222,7 +226,7 @@ export function DocsQuickNav() {
       items.forEach((item, index) => {
         const rect = item.getBoundingClientRect()
         const containerRect = container.getBoundingClientRect()
-        const level = headings[index] ? getLevel(headings[index].nodeName) : 2
+        const level = headings[index]?.priority ?? 2
         data.push({
           top: rect.top - containerRect.top,
           height: rect.height,
@@ -250,16 +254,15 @@ export function DocsQuickNav() {
       $gtLg={{
         display: 'flex',
         width: 280,
-        shrink: 0,
         z: 1,
-        position: 'sticky' as any,
-        t: 0,
-        height: '100vh',
-        alignSelf: 'flex-start',
+        position: 'fixed' as any,
+        right: 'max(40px, calc((100vw - 1400px) / 2 + 20px))',
+        t: 30,
+        height: 'calc(100vh - 30px)',
       }}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <YStack gap="$5" pt={108} pb="$10">
+        <YStack gap="$5" pt={68} pb="$10">
           <XStack items="center" gap="$5">
             <Link
               target="_blank"
@@ -282,7 +285,7 @@ export function DocsQuickNav() {
             </Link>
           </XStack>
 
-          <Separator />
+          <Separator opacity={0.5} mr="$6" />
 
           <YStack
             render="nav"
@@ -310,8 +313,8 @@ export function DocsQuickNav() {
                   totalHeight={containerHeight}
                 />
 
-                {headings.map(({ id, nodeName, innerText }, index) => {
-                  const level = getLevel(nodeName)
+                {headings.map(({ id, title, priority }, index) => {
+                  const level = priority
 
                   return (
                     <XStack
@@ -342,7 +345,7 @@ export function DocsQuickNav() {
                           fontWeight={level === 2 ? '500' : '400'}
                           hoverStyle={{ color: '$color12' }}
                         >
-                          {innerText}
+                          {title}
                         </Paragraph>
                       </a>
                     </XStack>

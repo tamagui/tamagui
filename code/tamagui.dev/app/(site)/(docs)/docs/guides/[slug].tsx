@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'
+import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
@@ -53,6 +54,7 @@ export default function DocGuidesPage() {
       <ThemeTint>
         <Component components={components as any} />
       </ThemeTint>
+      <DocsQuickNav headings={frontmatter.headings} />
     </>
   )
 }
