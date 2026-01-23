@@ -68,8 +68,11 @@ Some highlights:
   queries combined, and platform/theme selectors.
 - New compound components like Tabs, Accordion, and ToggleGroup.
 - Unstyled versions of most components.
-- Improved theme generation packages, and the
+- Improved theme generation packages, and the amazing
   [free and paid theme builder](/theme).
+
+[![Theme Generator examples](/blog/theme-generator-showcase.webp)](/theme/37/nike-neon)
+
 - The Takeout starter kit, and Bento copy-paste components and patterns.
 - A lot of low level work on performance, documentation, our CLI, and more.
 
@@ -192,14 +195,22 @@ We've added a new [animation driver](/docs/core/animations) powered by
 [Motion](https://motion.dev), and it's our recommended choice for web. The
 `@tamagui/animations-motion` package is fast thanks to two optimizations:
 
-- **No re-renders**: Tamagui now supports an `avoidReRenders` mode for animation drivers. Instead of updating state, style changes flow through a callback that mutates the DOM directly.
-- **Off main thread**: Motion uses the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API), which runs animations off the main JavaScript thread.
+- **No re-renders**: Tamagui now supports an `avoidReRenders` mode for animation
+  drivers. Instead of updating state, style changes flow through a callback that
+  mutates the DOM directly.
+- **Off main thread**: Motion uses the
+  [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
+  which runs animations off the main JavaScript thread.
 
 Together these make for much smoother spring animations on web.
 
 #### Reanimated Driver Improvements
 
-The [Reanimated](https://docs.swmansion.com/react-native-reanimated/) driver comes back in style with `worklet` and `avoidReRenders` support. This means animations run entirely on the UI thread without triggering React re-renders, giving you much better performance for complex animations on both web and native.
+The [Reanimated](https://docs.swmansion.com/react-native-reanimated/) driver
+comes back in style with `worklet` and `avoidReRenders` support. This means
+animations run entirely on the UI thread without triggering React re-renders,
+giving you much better performance for complex animations on both web and
+native.
 
 The Moti driver (`@tamagui/animations-moti`) is now deprecated in favor of the
 Reanimated driver (`@tamagui/animations-reanimated`). This removes a dependency
@@ -248,7 +259,9 @@ This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
 #### Enter/Exit Transitions
 
-The `transition` prop now supports different animations for enter and exit. This is useful for creating asymmetric animations where elements enter slowly but exit quickly, or vice versa:
+The `transition` prop now supports different animations for enter and exit. This
+is useful for creating asymmetric animations where elements enter slowly but
+exit quickly, or vice versa:
 
 ```tsx
 // slow enter, fast exit
@@ -269,7 +282,8 @@ The `transition` prop now supports different animations for enter and exit. This
 />
 ```
 
-This works across all four animation drivers. See the [animation docs](/docs/core/animations#enterexittransitions) for more details.
+This works across all four animation drivers. See the
+[animation docs](/docs/core/animations#enterexittransitions) for more details.
 
 #### Popover Transform Origin
 
@@ -324,8 +338,8 @@ Defaults to `type="button"` to prevent accidental form submissions.
 `scaleSpace`) for composable component API. Much faster rendering.
 
 **Select** - SelectItem is based on ListItem so is likewise much faster, and
-gains an optional floating indicator. SelectLabel is now a simpler SizableText-based
-component instead of depending on ListItem.
+gains an optional floating indicator. SelectLabel is now a simpler
+SizableText-based component instead of depending on ListItem.
 
 **Tabs** - `activeStyle` and `activeTheme` props replace the old `Theme` wrapper
 approach. `activationMode` now defaults to `'manual'` (click/Enter to activate)
@@ -368,9 +382,9 @@ internals - but for Tamagui-first apps, it's a nice optimization.
 
 Dialog, Popover, Sheet, and Tooltip now support a `scope` prop that lets you
 mount a single instance at your app's root while placing triggers anywhere in
-your tree. **This is a significant performance win** - in testing with large apps,
-we found it greatly improved UX by eliminating the overhead of mounting full
-overlay components inline.
+your tree. **This is a significant performance win** - in testing with large
+apps, we found it greatly improved UX by eliminating the overhead of mounting
+full overlay components inline.
 
 Instead of each Tooltip or Popover in a list rendering its own portal, content,
 and animation logic, you mount one instance at the root and scatter lightweight
@@ -409,7 +423,8 @@ need tooltips or popovers.
 #### Native Compiler Improvements
 
 The native compiler has been significantly improved in v2. Most notably, the
-experimental theme optimization setting is now on by default, and stable. This means better performance on native without any configuration needed.
+experimental theme optimization setting is now on by default, and stable. This
+means better performance on native without any configuration needed.
 
 #### Native Portals
 
@@ -430,7 +445,10 @@ import { setupNativePortal } from '@tamagui/portal/setup-native'
 setupNativePortal()
 ```
 
-This tells Tamagui to use the teleport package for true native portal functionality, preserving the React fiber tree so all context flows through automatically. No more manually re-propagating theme context or navigation state into your sheets and dialogs.
+This tells Tamagui to use the teleport package for true native portal
+functionality, preserving the React fiber tree so all context flows through
+automatically. No more manually re-propagating theme context or navigation state
+into your sheets and dialogs.
 
 See the [Portal docs](/docs/components/portal) for full details and alternative
 approaches like component scoping.
@@ -447,7 +465,9 @@ approaches like component scoping.
 
 ```
 
-Input has been rewritten from scratch with a web-first approach - you write standard HTML input attributes and Tamagui automatically converts them to React Native equivalents on native platforms:
+Input has been rewritten from scratch with a web-first approach - you write
+standard HTML input attributes and Tamagui automatically converts them to React
+Native equivalents on native platforms:
 
 ```tsx
 // Web-standard API that works everywhere
@@ -532,9 +552,14 @@ Speaking for myself now: I personally pushed releases too fast, and as a result
 burned too many of our users with regressions. We generally fast-followed with
 fixes, but that isn't good enough.
 
-I'd like to apologize for that, sincerely. We had a v2 nearly ready over a year ago, but it felt right to push back the release until we felt confident we'd fixed nearly every major issue, and overhauled our testing setup.
+I'd like to apologize for that, sincerely. We had a v2 nearly ready over a year
+ago, but it felt right to push back the release until we felt confident we'd
+fixed nearly every major issue, and overhauled our testing setup.
 
-React Native is difficult to test, so it took us a while to build it out, but I'm incredibly happy with where we're at now. On every commit we're running integration tests on iOS and Android across every complex component, alongside a few thousand web and core tests.
+React Native is difficult to test, so it took us a while to build it out, but
+I'm incredibly happy with where we're at now. On every commit we're running
+integration tests on iOS and Android across every complex component, alongside a
+few thousand web and core tests.
 
 #### Testing
 

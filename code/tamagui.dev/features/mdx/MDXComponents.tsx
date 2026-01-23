@@ -568,8 +568,9 @@ const componentsIn = {
 
   img: ({ ...props }) => (
     <YStack render="span" my="$6">
-      {/* TODO make this a proper <Image /> component */}
-      <YStack render="img" {...props} maxW="100%" />
+      <Link href={props.src as Href} target="_blank">
+        <YStack render="img" {...props} maxW="100%" cursor="pointer" />
+      </Link>
     </YStack>
   ),
 
