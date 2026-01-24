@@ -1,17 +1,50 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
+import { isGestureHandlerEnabled } from '@tamagui/native'
 import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { H1, ListItem, YGroup, YStack } from 'tamagui'
+import { H1, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
 
 export function HomeScreen() {
+  const gestureHandlerEnabled = isGestureHandlerEnabled()
+  console.log('[HomeScreen] isGestureHandlerEnabled returned:', gestureHandlerEnabled)
+
   return (
     <ScrollView testID="home-scroll-view">
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
+
+        <Paragraph size="$2" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
+          RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
+        </Paragraph>
+
+        {/* Quick access to RNGH test case */}
+        <YGroup size="$4">
+          <YGroup.Item>
+            <LinkListItem
+              bg="$blue3"
+              href="/test/SheetScrollableDrag"
+              pressStyle={{ backgroundColor: '$blue4' }}
+              size="$5"
+              testID="home-sheet-scroll-test"
+            >
+              🧪 Sheet + ScrollView Test (RNGH)
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
+              bg="$purple3"
+              href="/test/ActionsSheetComparison"
+              pressStyle={{ backgroundColor: '$purple4' }}
+              size="$5"
+            >
+              🔄 Actions Sheet Comparison
+            </LinkListItem>
+          </YGroup.Item>
+        </YGroup>
 
         <YStack gap="$4" maxW={600}>
           {demos.map(({ pages }, i) => {

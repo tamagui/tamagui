@@ -1,5 +1,8 @@
-import 'react-native-gesture-handler'
-import { setupNativePortal } from '@tamagui/portal/setup-native'
+// setup native features - just import, no function calls needed
+import '@tamagui/native/setup-portal'
+import '@tamagui/native/setup-gesture-handler'
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import React from 'react'
@@ -10,10 +13,6 @@ import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext, type ThemeMode } from './useKitchenSinkTheme'
 import * as SplashScreen from 'expo-splash-screen'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-
-// setup native portal - will use teleport if available, otherwise fall back to legacy
-setupNativePortal()
 
 // Disable LogBox warnings to prevent them from blocking E2E tests
 // These are typically deep import warnings from react-native internals
