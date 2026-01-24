@@ -632,6 +632,8 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
         aria-describedby={context.descriptionId}
         aria-labelledby={context.titleId}
         data-state={getState(context.open)}
+        // allow clicking through content during exit animation
+        pointerEvents={context.open ? 'auto' : 'none'}
         {...contentProps}
       />
     )
