@@ -1332,7 +1332,15 @@ export function createBaseMenu({
     createStyledContext<MenuSubContextValue>()
 
   const MenuSub: React.FC<ScopedProps<MenuSubProps>> = (props) => {
-    const { scope = MENU_CONTEXT, children, open = false, onOpenChange, ...rest } = props
+    const {
+      scope = MENU_CONTEXT,
+      children,
+      open = false,
+      onOpenChange,
+      allowFlip = { padding: 10 },
+      stayInFrame = { padding: 10 },
+      ...rest
+    } = props
     const parentMenuContext = useMenuContext(scope)
     const [trigger, setTrigger] = React.useState<MenuSubTriggerElement | null>(null)
     const [content, setContent] = React.useState<MenuContentElement | null>(null)
@@ -1345,7 +1353,12 @@ export function createBaseMenu({
     }, [parentMenuContext.open, handleOpenChange])
 
     return (
-      <PopperPrimitive.Popper {...rest} scope={scope}>
+      <PopperPrimitive.Popper
+        allowFlip={allowFlip}
+        stayInFrame={stayInFrame}
+        {...rest}
+        scope={scope}
+      >
         <MenuProvider
           scope={scope}
           open={open}
