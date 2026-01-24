@@ -17,20 +17,23 @@ export function CheckboxDemo() {
 export function CheckboxWithLabel({
   size,
   label = 'Accept terms and conditions',
+  disabled,
   ...checkboxProps
 }: CheckboxProps & { label?: string }) {
   const id = `checkbox-${(size || '').toString().slice(1)}`
   return (
-    <XStack width={300} items="center" gap="$4">
-      <Checkbox id={id} size={size} {...checkboxProps}>
-        <Checkbox.Indicator>
-          <CheckIcon />
-        </Checkbox.Indicator>
-      </Checkbox>
+    <Theme name={disabled ? 'gray' : null}>
+      <XStack width={300} items="center" gap="$4">
+        <Checkbox id={id} size={size} disabled={disabled} {...checkboxProps}>
+          <Checkbox.Indicator>
+            <CheckIcon />
+          </Checkbox.Indicator>
+        </Checkbox>
 
-      <Label size={size} htmlFor={id}>
-        {label}
-      </Label>
-    </XStack>
+        <Label size={size} htmlFor={id} opacity={disabled ? 0.5 : 1}>
+          {label}
+        </Label>
+      </XStack>
+    </Theme>
   )
 }
