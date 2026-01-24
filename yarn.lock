@@ -8203,6 +8203,7 @@ __metadata:
     "@tamagui/toast": "workspace:*"
     "@tamagui/web": "workspace:*"
     "@types/jest": "npm:^30.0.0"
+    "@types/pngjs": "npm:^6.0.5"
     babel-plugin-module-resolver: "npm:^5.0.2"
     burnt: "npm:^0.12.2"
     detox: "npm:^20.46.0"
@@ -8218,6 +8219,7 @@ __metadata:
     jest: "npm:^29"
     mini-css-extract-plugin: "npm:^2.9.1"
     one: "npm:1.2.73"
+    pngjs: "npm:^7.0.0"
     pod-install: "npm:^0.3.2"
     react: "npm:*"
     react-dom: "npm:*"
@@ -10459,6 +10461,15 @@ __metadata:
   version: 1.6.6
   resolution: "@types/phoenix@npm:1.6.6"
   checksum: 10/9dc897cb9a4cd62f7a0de48855e6cafded5c676e7d78c4d3a9ade4f21ec82b95eb7195caada26a9a3a5d9aba14f0fd875bc3898e086234b20da63991a033f6e8
+  languageName: node
+  linkType: hard
+
+"@types/pngjs@npm:^6.0.5":
+  version: 6.0.5
+  resolution: "@types/pngjs@npm:6.0.5"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/132fce25817d47a784ed48aa678332521b0f7e6edbaa76f3fa4e9ca1228078788ae712f99ad4d1a324d9ba0b14829958677eabf3ebef1fb6e120816f433f0cd8
   languageName: node
   linkType: hard
 

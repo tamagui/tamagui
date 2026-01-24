@@ -691,6 +691,19 @@ export function createComponent<
       const ogSetStateShallow = setStateShallow
 
       stateRef.current.updateStyleListener = () => {
+        const useStyleListener = stateRef.current.useStyleListener
+
+        // if no animation driver is listening for style updates, fall back to normal re-render
+        // this happens when a component has group prop but no transition/animation prop
+        if (!useStyleListener) {
+          const pendingState = stateRef.current.nextState
+          if (pendingState) {
+            stateRef.current.nextState = undefined
+            ogSetStateShallow(pendingState)
+          }
+          return
+        }
+
         const updatedState = stateRef.current.nextState || state
         const mediaState = stateRef.current.nextMedia
 
@@ -709,9 +722,7 @@ export function createComponent<
           debugProp
         )
 
-        const useStyleListener = stateRef.current.useStyleListener
-
-        useStyleListener?.((nextStyles?.style || {}) as any)
+        useStyleListener((nextStyles?.style || {}) as any)
       }
 
       function updateGroupListeners() {

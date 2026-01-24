@@ -209,17 +209,22 @@ setupHooks({
         const pressability = usePressability(events)
 
         if (events) {
+          // apply pressability when any press event exists, not just onPress
+          // this ensures drag-off unpress works for elements with only onPressIn/onPressOut
+          const hasPressEvents =
+            events.onPress || events.onPressIn || events.onPressOut || events.onLongPress
+
           if (process.env.NODE_ENV === 'development') {
             if (viewProps['debug']) {
               console.info(
-                `Checking for press ${!!events.onPress} then applying pressability props: ${Object.keys(
+                `Checking for press ${!!hasPressEvents} then applying pressability props: ${Object.keys(
                   pressability || {}
                 )}`
               )
             }
           }
 
-          if (events.onPress) {
+          if (hasPressEvents) {
             for (const key in pressability) {
               const og = viewProps[key]
               const val = pressability[key]
