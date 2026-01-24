@@ -21,7 +21,7 @@ export function HomeScreen() {
           RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
         </Paragraph>
 
-        {/* Quick access to RNGH test case */}
+        {/* Quick access to RNGH test cases */}
         <YGroup size="$4">
           <YGroup.Item>
             <LinkListItem
@@ -32,6 +32,17 @@ export function HomeScreen() {
               testID="home-sheet-scroll-test"
             >
               🧪 Sheet + ScrollView Test (RNGH)
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
+              bg="$orange3"
+              href="/test/SheetDragResistCase"
+              pressStyle={{ backgroundColor: '$orange4' }}
+              size="$5"
+              testID="home-sheet-drag-resist-test"
+            >
+              🧪 Sheet Drag Resistance Test
             </LinkListItem>
           </YGroup.Item>
           <YGroup.Item>
