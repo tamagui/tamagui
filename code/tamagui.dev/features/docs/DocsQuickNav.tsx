@@ -16,14 +16,6 @@ import { BentoButton } from '../site/BentoButton'
 import { ConsultingButton } from '../site/ConsultingButton'
 import { TakeoutButton } from '../site/TakeoutButton'
 
-// normalize IDs to match rehype-slug output (removes special chars, collapses hyphens)
-const slugify = (id: string) =>
-  id
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-
 export type Heading = {
   id: string
   title: string
@@ -335,7 +327,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
                           e.stopPropagation()
                           setActiveIndex(index)
                         }}
-                        href={`#${slugify(id)}`}
+                        href={`#${id}`}
                         style={{ textDecoration: 'none' }}
                       >
                         <Paragraph
