@@ -1,0 +1,110 @@
+{
+  "name": "@tamagui/native",
+  "version": "2.0.0-1769200478218",
+  "description": "Native setup modules for Tamagui - portals, gesture handler, worklets, and more",
+  "type": "module",
+  "sideEffects": true,
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "typesVersions": {
+    "*": {
+      "setup-portal": [
+        "./types/setup-portal.d.ts"
+      ],
+      "setup-gesture-handler": [
+        "./types/setup-gesture-handler.d.ts"
+      ],
+      "setup-worklets": [
+        "./types/setup-worklets.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./setup-portal": {
+      "react-native": {
+        "types": "./types/setup-portal.d.ts",
+        "module": "./dist/esm/setup-portal.native.js",
+        "import": "./dist/esm/setup-portal.native.js",
+        "require": "./dist/cjs/setup-portal.native.js"
+      },
+      "types": "./types/setup-portal.d.ts",
+      "module": "./dist/esm/setup-portal.mjs",
+      "import": "./dist/esm/setup-portal.mjs",
+      "require": "./dist/cjs/setup-portal.cjs"
+    },
+    "./setup-gesture-handler": {
+      "react-native": {
+        "types": "./types/setup-gesture-handler.d.ts",
+        "module": "./dist/esm/setup-gesture-handler.native.js",
+        "import": "./dist/esm/setup-gesture-handler.native.js",
+        "require": "./dist/cjs/setup-gesture-handler.native.js"
+      },
+      "types": "./types/setup-gesture-handler.d.ts",
+      "module": "./dist/esm/setup-gesture-handler.mjs",
+      "import": "./dist/esm/setup-gesture-handler.mjs",
+      "require": "./dist/cjs/setup-gesture-handler.cjs"
+    },
+    "./setup-worklets": {
+      "react-native": {
+        "types": "./types/setup-worklets.d.ts",
+        "module": "./dist/esm/setup-worklets.native.js",
+        "import": "./dist/esm/setup-worklets.native.js",
+        "require": "./dist/cjs/setup-worklets.native.js"
+      },
+      "types": "./types/setup-worklets.d.ts",
+      "module": "./dist/esm/setup-worklets.mjs",
+      "import": "./dist/esm/setup-worklets.mjs",
+      "require": "./dist/cjs/setup-worklets.cjs"
+    }
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": "*",
+    "react-native": "0.81.5",
+    "react-native-gesture-handler": "~2.28.0",
+    "react-native-teleport": "^0.5.6",
+    "react-native-worklets-core": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-gesture-handler": ">=2.0.0",
+    "react-native-teleport": ">=0.5.0",
+    "react-native-worklets-core": ">=1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-teleport": {
+      "optional": true
+    },
+    "react-native-worklets-core": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

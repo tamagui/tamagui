@@ -1,5 +1,5 @@
 import { isAndroid, isIos, isWeb } from '@tamagui/constants'
-import { getNativePortalState } from '@tamagui/native-portal'
+import { getNativePortalState } from '@tamagui/native'
 
 /**
  * Check if teleport is enabled (best portal option - preserves React context)

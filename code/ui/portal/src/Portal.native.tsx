@@ -1,5 +1,5 @@
 import { View } from '@tamagui/core'
-import { getNativePortalState, NativePortal } from '@tamagui/native-portal'
+import { getNativePortalState, NativePortal } from '@tamagui/native'
 import { useStackedZIndex } from '@tamagui/z-index-stack'
 import { GorhomPortalItem } from './GorhomPortalItem'
 import { getStackedZIndexProps } from './helpers'

@@ -5,4 +5,4 @@ export type NativePortalState = {
 export declare function setNativePortalState(newState: NativePortalState);
 export declare function getNativePortalState(): NativePortalState;
 
-//# sourceMappingURL=state.d.ts.map
+//# sourceMappingURL=portalState.d.ts.map

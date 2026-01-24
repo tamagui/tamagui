@@ -1,4 +1,4 @@
-// native-only setup - re-exports from @tamagui/native-portal/setup
+// native-only setup - re-exports from @tamagui/native/setup-portal
 // usage: import { setupNativePortal } from '@tamagui/portal/setup-native'
 
-export { setupNativePortal } from '@tamagui/native-portal/setup'
+export { setupNativePortal } from '@tamagui/native/setup-portal'
