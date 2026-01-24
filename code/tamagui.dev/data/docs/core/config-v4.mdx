@@ -68,7 +68,7 @@ Config v4 has a new helper function `createThemes`, an opinionated way to
 generate a suite of themes. It also comes with default themes that include
 minimal grayscale light and dark themes, and an inverted "accent" theme.
 
-It's easiest to get a feel for both createThemes the default themes by reading
+It's easiest to get a feel for both createThemes and the default themes by reading
 the source for how `defaultThemes` are defined:
 
 ```tsx fileName=themes.ts
@@ -260,36 +260,31 @@ So what have we done?
 <PropsTable
   data={[
     { name: 'mediaQueryDefaultActive', description: 'See Media' },
-    { name: 'defaultFont', description: 'body' },
+    { name: 'defaultFont', description: '"body"' },
     {
       name: 'fastSchemeChange',
-      description: true,
       description:
-        'On iOS, leverages DynamicColorIOS for fast light/dark theme changes.',
+        'true - On iOS, leverages DynamicColorIOS for fast light/dark theme changes.',
     },
     {
       name: 'shouldAddPrefersColorThemes',
-      description: true,
       description:
-        'Generates CSS for prefers-color-scheme, so even with JS off you have proper light/dark styling.',
+        'true - Generates CSS for prefers-color-scheme, so even with JS off you have proper light/dark styling.',
     },
     {
-      name: 'allowedStyleDescriptions',
-      description: 'somewhat-strict-web',
+      name: 'allowedStyleValues',
       description:
-        'More strict than just a string, but still allows web-only style descriptions like vh, vw.',
+        '"somewhat-strict-web" - More strict than just a string, but still allows web-only style values like vh, vw.',
     },
     {
       name: 'themeClassNameOnRoot',
-      description: true,
       description:
-        'Defaults to putting your root theme className onto the root html tag so you can use your CSS variables on your body tag.',
+        'true - Defaults to putting your root theme className onto the root html tag so you can use your CSS variables on your body tag.',
     },
     {
       name: 'onlyAllowShorthands',
-      description: true,
       description:
-        'For any shorthand defined, remove the types for the longhand.',
+        'true - For any shorthand defined, remove the types for the longhand.',
     },
   ]}
 />
@@ -362,7 +357,7 @@ familiarity:
 
 #### Tokens
 
-Tokens default tokens are defined as:
+Default tokens are defined as:
 
 ```tsx
 export const size = {

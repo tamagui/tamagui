@@ -82,7 +82,7 @@ const App = () => {
 
 You can mix and match `useMedia` and `useTheme`, and the compiler understands
 most basic usages, even with nested logic or constants within the file or
-imports [white-listed in your build setup](/docs/compiler/install):
+imports [whitelisted in your build setup](/docs/intro/compiler-install):
 
 ```tsx
 import { YStack, useMedia, useTheme } from 'tamagui'
@@ -195,7 +195,7 @@ If you access `theme.bg.val` in your render function, the component will only
 re-render when theme.bg changes.
 
 ```tsx
-import { theme, View } from '@tamagui/core'
+import { useTheme, View } from '@tamagui/core'
 
 export default () => {
   const theme = useTheme()

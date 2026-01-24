@@ -9,7 +9,7 @@ Tamagui supports four animation drivers, each with different strengths. The anim
   headers={['Driver', 'Platform', 'Bundle Impact', 'Performance', 'Spring Physics']}
   rows={[
     ['**CSS**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'No (easing only)'],
-    ['**React Native**', 'Web + Native', 'No extra hit beyond RNW', 'On-thread', 'Yes (basic)'],
+    ['**React Native**', 'Web + Native', 'No extra beyond RNW', 'On-thread', 'Yes (basic)'],
     ['**Reanimated**', 'Web + Native', 'Larger', 'Off-thread (native), slower (web)', 'Yes (advanced)'],
     ['**Motion**', 'Web only', 'Medium', 'Off-thread (WAAPI)', 'Yes (excellent)'],
   ]}
@@ -17,7 +17,7 @@ Tamagui supports four animation drivers, each with different strengths. The anim
 
 ## CSS Driver
 
-Lightest bundle size, but lacks spring physics (easing curves only). Best for simple web-only apps.
+The lightest bundle size, but lacks spring physics (easing curves only). Best for simple web-only apps.
 
 ### Installation
 
@@ -50,7 +50,7 @@ The format is: `<easing-function> <duration>`
 
 ## React Native Driver
 
-No extra bundle hit beyond React Native Web, but runs on-thread. Good for basic cross-platform animations.
+No extra bundle size beyond React Native Web, but runs on-thread. Good for basic cross-platform animations.
 
 ### Installation
 
@@ -94,7 +94,7 @@ export default createTamagui({
 
 ## Reanimated Driver
 
-Wide support for both native and web with advanced features, but larger bundle size. Best performance on native platforms with off-thread animations.
+Supports both native and web with advanced features, but has a larger bundle size. Best performance on native platforms with off-thread animations.
 
 ### Installation
 
@@ -138,7 +138,7 @@ export default createTamagui({
 
 ## Motion Driver
 
-Off-thread performance via WAAPI with excellent spring physics, medium bundle hit. Best for web-only apps that need smooth, physics-based animations.
+Off-thread performance via WAAPI with excellent spring physics and a medium bundle size. Best for web-only apps that need smooth, physics-based animations.
 
 ### Installation
 
@@ -225,7 +225,7 @@ Configure multiple drivers at the root and select per-component with `animatedBy
 
 ```tsx
 import { createAnimations as createCSS } from '@tamagui/animations-css'
-import { createAnimations as createSpring } from '@tamagui/animations-moti'
+import { createAnimations as createSpring } from '@tamagui/animations-motion'
 
 export default createTamagui({
   animations: {
@@ -248,7 +248,7 @@ For apps that start static but need richer animations later, you can lazy load d
 
 ```tsx
 import { Configuration } from 'tamagui'
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-motion'
 
 const springDriver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
 
@@ -265,7 +265,7 @@ export function AuthenticatedLayout({ children }) {
 
 ```tsx
 import { loadAnimationDriver } from 'tamagui'
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-motion'
 
 const driver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
 loadAnimationDriver('spring', driver)

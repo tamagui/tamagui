@@ -169,7 +169,7 @@ export default () => (
 )
 ```
 
-This may only be a ~hundred lines of code, but there's a lot to take in. And
+This may only be about a hundred lines of code, but there's a lot to take in. And
 behind the scenes, there's a lot going on to make this possible.
 
 ### From the Start
@@ -177,7 +177,7 @@ behind the scenes, there's a lot going on to make this possible.
 This guide will build up to this complete example from the ground up, which
 should help explain both why many patterns exist, and also how they work.
 
-We start with the assumption that we have a design system set up with a tokens
+We start with the assumption that we have a design system set up with tokens
 that use keys `sm`, `md`, and `lg` and a few themes:
 
 ```tsx
@@ -343,10 +343,9 @@ const ButtonFrame = styled(View, {
 
 ```
 
-Still, this is somewhat repetitive and prone to mistakes via typo. To allow us
-to avoid duplication while also always working even if we add a new sizes to our
-design system in the future, we can use the handy Tamagui
-[Spread Variants](/docs/core/variants#spread-variants):
+Still, this is somewhat repetitive and prone to typos. To avoid duplication while
+also working even if we add new sizes to our design system in the future, we can
+use the handy Tamagui [Spread Variants](/docs/core/variants#spread-variants):
 
 ```tsx
 import { View, styled } from '@tamagui/core'
@@ -398,7 +397,7 @@ So now we can pass in our new `size` property:
 </ButtonFrame>
 ```
 
-Lets just clean up these two components so they are more clearly meant to be
+Let's clean up these two components so they are more clearly meant to be
 used together (and are easier to import for users):
 
 ```tsx
@@ -545,9 +544,9 @@ export const NewButton = withStaticProperties(ButtonFrame, {
 
 What the hell is `ButtonText.styleable` and `ButtonFrame.styleable`?
 
-Well, while it's explained in [the styled docs](/docs/core/styled#styleable) but
-the short of it is if you want a functional component that returns a styled
-component _to then be able to be styled again_, well, you need `styleable`.
+While it's explained in [the styled docs](/docs/core/styled#styleable),
+the short of it is: if you want a functional component that returns a styled
+component _to then be able to be styled again_, you need `styleable`.
 
 That's because merging things like themes, animations, variants, media queries,
 and pseudo queries is quite complex, and if Tamagui doesn't know that there is a
@@ -573,8 +572,8 @@ export const ButtonContext = createStyledContext({
 })
 ```
 
-This in fact it returns a slightly modified `React.Context` just like
-`createContext` does, so you can use it with `useContext` later on - though we
+This returns a slightly modified `React.Context` just like
+`createContext` does, so you can use it with `useContext` later on. We
 still export a `.context` object with the original type just in case there's any
 issue.
 
@@ -679,8 +678,8 @@ course the memoization comes for free).
 Are we done?
 
 Not quite. One final common piece of a Button is having an icon that sizes and
-colors properly as well. But an icon usually comes from some third-party
-library, an SVG or perhaps an icon font.
+colors properly as well. But an icon usually comes from a third-party
+library, an SVG, or perhaps an icon font.
 
 Let's add a new component, `Button.Icon` and make this work.
 

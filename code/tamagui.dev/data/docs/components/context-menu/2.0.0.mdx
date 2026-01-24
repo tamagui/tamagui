@@ -1,11 +1,10 @@
 ---
 title: Context Menu
-description:
-  A menu component that is triggered by a right-click on the web and a long
-  press on touch devices.
-name: context menu
+description: A menu component triggered by right-click on web and long press on touch devices
+name: context-menu
 component: ContextMenu
 package: context-menu
+demoName: ContextMenu
 ---
 
 <HeroContainer>
@@ -31,8 +30,7 @@ package: context-menu
 
 ## Installation
 
-ContextMenu is already installed in `tamagui`, or you can install it
-independently:
+ContextMenu is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 yarn add @tamagui/context-menu
@@ -109,9 +107,9 @@ export default () => (
 
 ## API Reference
 
-### Context Menu
+### ContextMenu
 
-Contains every component for the Context Menu.
+Contains every component for the ContextMenu.
 
 <PropsTable
   data={[
@@ -188,9 +186,9 @@ Contains every component for the Context Menu.
   ]}
 />
 
-### Portal
+### ContextMenu.Portal
 
-This is necessary for the Context Menu.
+This is necessary for the ContextMenu.
 
 <PropsTable
   data={[
@@ -216,7 +214,7 @@ This is necessary for the Context Menu.
   ]}
 />
 
-### Trigger
+### ContextMenu.Trigger
 
 The ContextMenu will only be triggered when the user right-clicks or
 long-presses within the Trigger area.
@@ -235,9 +233,9 @@ long-presses within the Trigger area.
   ]}
 />
 
-### Content
+### ContextMenu.Content
 
-Contains the content of the Context Menu.
+Contains the content of the ContextMenu.
 
 <PropsTable
   data={[
@@ -288,7 +286,7 @@ Contains the content of the Context Menu.
   ]}
 />
 
-### Item
+### ContextMenu.Item
 
 A selectable menu item that triggers an action when selected.
 
@@ -350,7 +348,7 @@ A selectable menu item that triggers an action when selected.
   ]}
 />
 
-### ItemTitle
+### ContextMenu.ItemTitle
 
 Renders the title of the menu item.
 
@@ -370,7 +368,7 @@ Renders the title of the menu item.
   works with native menus.
 </Notice>
 
-### ItemIcon
+### ContextMenu.ItemIcon
 
 A component to render an icon. For non-native menus, you can pass an icon
 component. For native menus, you can pass platform-specific icons to the
@@ -430,12 +428,12 @@ On iOS, it renders the native
 </ContextMenu.ItemIcon>
 ```
 
-### ItemImage
+### ContextMenu.ItemImage
 
 A component to render an item image. For native menus, it only works on iOS. It
 takes the same properties as `@tamagui/image`.
 
-### ItemSubtitle
+### ContextMenu.ItemSubtitle
 
 A component to render a subtitle for the menu item. For native menus, it only
 works on iOS.
@@ -451,7 +449,7 @@ works on iOS.
   ]}
 />
 
-### Group
+### ContextMenu.Group
 
 A component that groups multiple menu items together.
 
@@ -466,7 +464,7 @@ A component that groups multiple menu items together.
   ]}
 />
 
-### CheckboxItem
+### ContextMenu.CheckboxItem
 
 A menu item with a checkbox that can be toggled on/off.
 
@@ -548,7 +546,7 @@ A menu item with a checkbox that can be toggled on/off.
   ]}
 />
 
-### ItemIndicator
+### ContextMenu.ItemIndicator
 
 Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
 This allows you to conditionally render a checkmark.
@@ -577,7 +575,7 @@ This allows you to conditionally render a checkmark.
   ]}
 />
 
-### Label
+### ContextMenu.Label
 
 Renders a non-focusable label for a group of items. On native menus, only one
 label is supported per menu and submenu.
@@ -600,7 +598,7 @@ label is supported per menu and submenu.
   ]}
 />
 
-### Arrow
+### ContextMenu.Arrow
 
 Renders an arrow pointing to the trigger.
 
@@ -621,11 +619,11 @@ Renders an arrow pointing to the trigger.
   ]}
 />
 
-### Separator
+### ContextMenu.Separator
 
 Renders a visual divider between menu items. Web only.
 
-### Sub
+### ContextMenu.Sub
 
 A container for nested sub-menu components.
 
@@ -652,24 +650,23 @@ A container for nested sub-menu components.
   ]}
 />
 
-### SubContent
+### ContextMenu.SubContent
 
 Renders the content of a sub-menu. Same props as `Content`, excluding `side` and
 `align`.
 
-### SubTrigger
+### ContextMenu.SubTrigger
 
 A menu item that opens a sub-menu on hover/focus. Accepts the same props as
 `Item`.
 
-### Preview (iOS only)
+### ContextMenu.Preview
 
-When the Context Menu is visible, this renders a custom preview component. Only
+When the ContextMenu is visible, this renders a custom preview component. Only
 works with native iOS menus.
 
 <Notice>
-  Should be rendered as a child of `<ContextMenu.Content />
-  `.
+  Should be rendered as a child of `ContextMenu.Content`.
 </Notice>
 
 <PropsTable

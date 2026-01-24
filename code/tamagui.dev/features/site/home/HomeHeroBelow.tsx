@@ -44,8 +44,8 @@ export const HeroBelowContent = memo(() => {
             <TitleLink href="/docs/core/configuration">Core</TitleLink>
           </XStack>
           <Paragraph opacity={0.7} size="$5">
-            A style library for React and/or React Native with a large typed superset of
-            the React Native style API, with no outside dependencies in about 24Kb.
+            A style library for React and React Native with a large typed superset of the
+            React Native style API, with no outside dependencies in ~24KB.
           </Paragraph>
         </Section>
 
@@ -70,8 +70,8 @@ export const HeroBelowContent = memo(() => {
             <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           </XStack>
           <Paragraph opacity={0.7} size="$5">
-            All the components you'd want, cross platform and adaptable to each other.
-            Compound Component APIs, styled or unstyled, easy to size, theme, and more.
+            All the components you need, cross-platform and composable. Compound Component
+            APIs, styled or unstyled, easy to size, theme, and more.
           </Paragraph>
         </Section>
       </XStack>

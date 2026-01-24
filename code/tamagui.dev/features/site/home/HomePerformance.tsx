@@ -52,7 +52,7 @@ export function HomePerformance() {
             size="$2"
             $sm={{ display: 'none' }}
           >
-            Lower is better. As of February 2022.
+            Lower is better.
           </Paragraph>
 
           {show && <BenchmarkChartWeb />}

@@ -1,8 +1,9 @@
 ---
 title: Group
-description: Render horizontal or vertical groups easily.
+description: Render horizontal or vertical groups easily
 name: group
 component: Group
+package: group
 demoName: Group
 ---
 
@@ -224,7 +225,7 @@ export default () => (
       name: 'disabled',
       required: false,
       type: 'boolean',
-      description: `Pass disabled down to children.`,
+      description: `Passes disabled state down to children.`,
     },
     {
       name: 'unstyled',
@@ -245,12 +246,13 @@ Wrap each of `XGroup` or `YGroup`'s children in one of these. It lets Tamagui ap
       name: 'children',
       required: true,
       type: 'ReactNode',
+      description: `The child element to wrap.`,
     },
     {
       name: 'forcePlacement',
       required: false,
       type: '"first" | "center" | "last"',
-      description: `Forces the item to be a starting, center or ending item and gets the respective styles`,
+      description: `Forces the item to be a starting, center, or ending item and applies the respective styles.`,
     },
   ]}
 />

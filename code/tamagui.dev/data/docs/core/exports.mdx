@@ -49,7 +49,7 @@ The same as insertFont, but will update an existing font.
 ### isTamaguiComponent
 
 ```tsx
-type isTamaguiComponent (component: any; name?: string) => boolean
+type isTamaguiComponent = (component: any, name?: string) => boolean
 ```
 
 If no name given, true if a Tamagui component, if name given ensures it's the
@@ -58,7 +58,7 @@ specific named Tamagui component.
 ### isTamaguiElement
 
 ```tsx
-type isTamaguiElement (child: any; name?: string) => boolean
+type isTamaguiElement = (child: any, name?: string) => boolean
 ```
 
 If no name given, true if a Tamagui ReactElement, if name given ensures it's the
@@ -244,7 +244,7 @@ Returns the string name of the current theme.
 
 ### useIsTouchDevice
 
-SSR-friendly, only true on if native touchable or web touchable device (client
+SSR-friendly, only true if native touchable or web touchable device (client
 side, not server side).
 
 ### useDidFinishSSR

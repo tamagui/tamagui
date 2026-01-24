@@ -81,7 +81,7 @@ pass false, null or even undefined if it suits you.
 
 The spring-based animation drivers have expensive hooks that would degrade runtime
 performance if present on every component. As a workaround, the animation hooks
-are called conditionally on whether the transition key is present in the props object.
+are called conditionally based on whether the `transition` key is present in the props object.
 
 So, `<Square transition={isActive ? 'bouncy' : null} />` rather than
 `<Square {...isActive && { transition: 'bouncy' }} />`.
@@ -91,8 +91,8 @@ to change the key.
 
 ### enterStyle
 
-Setting `enterStyle` styles on any component tell it to start with those styles,
-and after mount animate to their flat styles:
+Setting `enterStyle` on a component tells it to start with those styles,
+then animate to the base styles after mount:
 
 <HeroContainer>
   <AnimationsEnterDemo />
@@ -129,7 +129,7 @@ export default () => (
 Note that values can either map to `AnimationKey` as a string, or to
 `{ type: AnimationKey, ...configuration }`
 
-You can set a default value using a two-arity array with the default in the
+You can set a default animation using a two-element array with the default in the
 first position:
 
 ```tsx
@@ -232,9 +232,9 @@ accepts an array of strings that correspond to style property names.
 ### Conditional animations and HMR
 
 The animation hooks are heavy, which initially meant we either had to choose
-great performance or animations. We've settled on a trade-off. We track if the
-`transition` prop is set, and if so, we enable the hook. If it _is ever set, even
-just once_, then the hooks will continue to run for the remainder of the
+great performance or animations. We settled on a trade-off: we track if the
+`transition` prop is set, and if so, we enable the hook. If it is ever set, even
+just once, then the hooks will continue to run for the remainder of the
 component lifecycle. This means if you ever plan to animate a component you
 should keep `transition` always set on the component props. You can disable it
 like so:
@@ -243,8 +243,8 @@ like so:
 <View transition={condition ? 'animation-name' : null} />
 ```
 
-Note that because of this constraint, you also will see an error if you add the
-`transition` prop to a component in dev mode during an HMR. Often just saving once more will remove the error, or reloading at worst.
+Note that because of this constraint, you may see an error if you add the
+`transition` prop to a component in dev mode during HMR. Often just saving once more will remove the error, or reload the page if needed.
 
 ## See Also
 

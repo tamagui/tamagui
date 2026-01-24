@@ -3,7 +3,7 @@ title: AnimatePresence
 description: Animate components as they mount and unmount
 ---
 
-AnimatePresence animates direct children before they unmount. It's inspired by and forked from [Framer Motion](https://github.com/framer/motion), but works with any animation driver in Tamagui.
+AnimatePresence animates direct children before they unmount. It is inspired by and forked from [Framer Motion](https://github.com/framer/motion), but works with any animation driver in Tamagui.
 
 To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It's already bundled and exported from `tamagui`.
 
@@ -44,7 +44,7 @@ export const MyComponent = ({ isVisible }) => (
   on the base styles but is defined on `enterStyle` or `exitStyle`.
 </Notice>
 
-Wrap one or more tamagui components with AnimatePresence. This component will animate on enter and exit.
+Wrap one or more Tamagui components with AnimatePresence. The child components will animate on enter and exit.
 
 <Notice theme="blue">
   Animated child components must each have a unique key prop so AnimatePresence
@@ -106,7 +106,7 @@ This works with all four animation drivers (CSS, React Native, Reanimated, Motio
 
 ```
 
-AnimatePresence takes a `custom` property that allows you to update a variant of the animated child before it runs its exit animation. This is useful for animating a child out of the screen before it unmounts in a different direction, like the example above:
+AnimatePresence takes a `custom` prop that allows you to update a variant of the animated child before it runs its exit animation. This is useful for animating a child out of the screen in a different direction before it unmounts, as shown in the example above:
 
 ```tsx
 import { AnimatePresence } from '@tamagui/animate-presence'

@@ -1,6 +1,6 @@
 ---
 title: Sheet
-description: A bottom sheet that animates.
+description: A bottom sheet that animates
 name: sheet
 component: Sheet
 package: sheet
@@ -36,7 +36,7 @@ npm install @tamagui/sheet
   For native apps, we recommend [setting up native portals](/docs/components/portal#native-portal-setup-recommended) to preserve React context inside Sheet content.
 </Notice>
 
-### Anatomy
+## Anatomy
 
 ```tsx
 import { Sheet } from 'tamagui' // or '@tamagui/sheet'
@@ -50,9 +50,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### &lt;Sheet /&gt;
+### Sheet
 
 Contains every component for the sheet.
 
@@ -160,27 +160,27 @@ Contains every component for the sheet.
   ]}
 />
 
-#### &lt;Overlay /&gt;
+### Sheet.Overlay
 
 Displays behind Frame. Extends [YStack](/docs/components/stacks).
 
-#### &lt;Frame /&gt;
+### Sheet.Frame
 
 Contains the content. Extends [YStack](/docs/components/stacks).
 
-#### &lt;Handle /&gt;
+### Sheet.Handle
 
-Shows a handle above the frame by default, on tap it will cycle between
-`snapPoints` but this can be overridden with `onPress`.
+Shows a handle above the frame by default. On tap, it will cycle between
+`snapPoints`, but this can be overridden with `onPress`.
 
 Extends [XStack](/docs/components/stacks).
 
-#### &lt;ScrollView /&gt;
+### Sheet.ScrollView
 
 Allows scrolling within Sheet. Extends
-[Scrollview](/docs/components/scroll-view).
+[ScrollView](/docs/components/scroll-view).
 
-### Native Gesture Handler Integration
+## Native Gesture Handler Integration
 
 For the best gesture experience on iOS and Android, Sheet supports optional integration with `react-native-gesture-handler`. This provides:
 
@@ -238,11 +238,11 @@ This ensures:
 
 If you don't set up `react-native-gesture-handler`, Sheet falls back to React Native's built-in `PanResponder`. This works well for basic use cases but has some limitations on iOS where scroll and pan gestures can occasionally conflict.
 
-### Notes
+## Notes
 
 For Android you need to manually re-propagate any context when using `modal`.
 This is because React Native doesn't support portals yet.
 
-### Native support
+## Native Support
 
 We've deprecated the `native` prop in favor of using Adapt.

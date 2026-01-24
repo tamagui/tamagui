@@ -48,7 +48,7 @@ export const HomeTypography = memo(() => {
   return (
     <>
       <YStack fullscreen className="" opacity={0.1} />
-      {/* -5 my to fir grid nicely */}
+      {/* -5 my to fit grid nicely */}
       <ContainerLarge my={-5} position="relative" gap="$8">
         <YStack ref={ref} items="center" gap="$3">
           <HomeH2>

@@ -24,7 +24,15 @@ demoName: Button
   ]}
 />
 
-### Usage
+## Installation
+
+Button is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/button
+```
+
+## Usage
 
 ```tsx
 import { Button } from 'tamagui'
@@ -32,7 +40,7 @@ import { Button } from 'tamagui'
 export default () => <Button>Lorem ipsum</Button>
 ```
 
-### Sizing
+## Sizing
 
 Sizing buttons provides a unique challenge especially for a compiler, because
 you need to adjust many different properties - not just on the outer frame, but
@@ -49,7 +57,7 @@ Given your theme defines a size `6`, the button will adjust all of the
 properties appropriately. You can also pass a plain number to get an arbitrary
 size.
 
-### Variants
+## Variants
 
 The Button component supports different visual styles through the `variant`
 prop. Currently, the primary available variant is `"outlined"`.
@@ -70,7 +78,7 @@ background with a visible border. The exact appearance (border color,
 hover/press states) is determined by your theme's definitions for an outlined
 button.
 
-### Icon Theming
+## Icon Theming
 
 You can pass icons as either elements or components. If passing components,
 Tamagui will automatically theme them (passing `size`). The icon size is
@@ -105,7 +113,7 @@ You can
 to see in more detail what variants you can override, and how we use this
 pattern internally to create our Button component.
 
-### Group Theming
+## Group Theming
 
 You can use `Button.Apply` to theme a group of Buttons using a shared context.
 This is useful for applying consistent sizing or variants to multiple buttons
@@ -130,7 +138,7 @@ export default () => (
 )
 ```
 
-### Web Form Props
+## Web Form Props
 
 Button supports all standard HTML `<button>` attributes for form integration.
 These props are web-only and ignored on native:
@@ -161,13 +169,13 @@ export default () => (
   Use `type="submit"` explicitly when you want form submission behavior.
 </Notice>
 
-### Creating your own Button
+## Creating Your Own Button
 
 Tamagui now has all the features necessary to make creating a custom Button easy
 enough that you may want to roll your own button. Learn how to do it with our
 dedicated guide, [How to Build a Button](/docs/guides/how-to-build-a-button).
 
-### Button props
+## API Reference
 
 Buttons extend Stack views inheriting all the
 [Tamagui standard props](/docs/intro/props), plus:
@@ -317,4 +325,4 @@ Buttons extend Stack views inheriting all the
       type: '---',
     },
   ]}
-/>{' '}
+/>

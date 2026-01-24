@@ -48,7 +48,7 @@ npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
 - `--target <platform>` - Target platform: `web`, `native`, or `both` (default: `both`)
 - `--include <pattern>` - Glob pattern to include files
 - `--exclude <pattern>` - Glob pattern to exclude files
-- `--expect-optimizations <number>` - Fail if fewer than this minimum number of components are optimized (useful for CI)
+- `--expect-optimizations <number>` - Fail if fewer than this many components are optimized (useful for CI)
 - `--debug` - Enable debug output
 - `--verbose` - Enable verbose debug output
 
@@ -106,7 +106,7 @@ For more details, see the [Compiler Installation guide](/docs/intro/compiler-ins
 
 ### check
 
-Checks your dependencies for inconsistent versions across your project. This helps identify version mismatches that can cause issues, especially in monorepos.
+Check your dependencies for inconsistent versions across your project. This helps identify version mismatches that can cause issues, especially in monorepos.
 
 ```bash
 npx tamagui check
@@ -123,7 +123,7 @@ The command will scan your project and report any packages with mismatched versi
 
 ### generate
 
-Builds your entire Tamagui configuration and outputs any CSS. This is useful for pre-generating your design system's CSS and validating your configuration.
+Build your entire Tamagui configuration and output CSS. This is useful for pre-generating your design system's CSS and validating your configuration.
 
 ```bash
 npx tamagui generate
@@ -143,7 +143,7 @@ npx tamagui generate
 
 ### generate-themes
 
-Pre-builds your theme configuration for faster runtime performance. This generates optimized theme objects from your theme definitions.
+Pre-build your theme configuration for faster runtime performance. This generates optimized theme objects from your theme definitions.
 
 ```bash
 npx tamagui generate-themes <input-path> <output-path>
@@ -196,7 +196,7 @@ The command will present an interactive menu where you can search and select fro
 
 ### generate-prompt
 
-Generate an LLM-friendly markdown file from your Tamagui configuration. This creates comprehensive documentation of your design system that can be used with AI assistants.
+Generate an LLM-friendly markdown file from your Tamagui configuration. This creates comprehensive documentation of your design system for use with AI assistants.
 
 ```bash
 npx tamagui generate-prompt

@@ -1,6 +1,6 @@
 ---
 title: Dialog
-description: Show a modal with configurable layout and accessible actions.
+description: Show a modal with configurable layout and accessible actions
 name: dialog
 component: Dialog
 package: dialog
@@ -191,21 +191,23 @@ Contains every component for the dialog. Beyond
     {
       name: 'open',
       type: 'boolean',
-      description: ``,
+      description: `Controlled open state of the dialog.`,
     },
     {
       name: 'defaultOpen',
       type: 'boolean',
+      description: `Initial open state when uncontrolled.`,
     },
     {
       name: 'onOpenChange',
       type: '(open: boolean) => void',
+      description: `Called when the dialog opens or closes.`,
     },
     {
       name: 'modal',
       type: 'boolean',
       default: 'true',
-      description: `Renders into root of app instead of inline`,
+      description: `Renders into root of app instead of inline.`,
     },
     {
       name: 'disableRemoveScroll',

@@ -1,6 +1,6 @@
 ---
 title: Label
-description: Label form elements with accessibility.
+description: Label form elements with accessibility
 name: label
 component: Label
 package: label
@@ -91,7 +91,7 @@ Labels extend SizableText inheriting all the [Tamagui standard props](/docs/intr
       name: 'htmlFor',
       type: 'string',
       required: true,
-      description: `Matches the id of a form element to associate with.`,
+      description: `Matches the \`id\` of a form element to associate with.`,
     },
     {
       name: 'unstyled',
@@ -111,12 +111,12 @@ Label passes through all ARIA attributes. These are the most commonly used for f
     {
       name: 'aria-required',
       type: 'boolean',
-      description: `Indicates that user input is required before form submission.`,
+      description: `Indicates user input is required before form submission.`,
     },
     {
       name: 'aria-invalid',
       type: 'boolean',
-      description: `Indicates the field has a validation error.`,
+      description: `Indicates the associated field has a validation error.`,
     },
     {
       name: 'aria-disabled',
@@ -126,12 +126,12 @@ Label passes through all ARIA attributes. These are the most commonly used for f
     {
       name: 'aria-describedby',
       type: 'string',
-      description: `References an element that provides additional description (hint text, error messages).`,
+      description: `References an element providing additional description such as hint text or error messages.`,
     },
     {
       name: 'aria-labelledby',
       type: 'string',
-      description: `References another element that labels this one. Label sets this automatically on the target input.`,
+      description: `References another element that labels this one. \`Label\` sets this automatically on the target input.`,
     },
     {
       name: 'aria-details',

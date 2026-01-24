@@ -164,16 +164,16 @@ configuration issues in CI.
 
 ## Themes
 
-We've created a package that works with Tamagui to properly support SSR
-light/dark themes that also respect user system preference, called
-`@tamagui/next-theme`. It assumes your `light`/`dark` themes are named as such,
-but you can override it. This is pre-configured in the create-tamagui starter.
+We've created a package called `@tamagui/next-theme` that properly supports SSR
+light/dark themes while respecting user system preferences. It assumes your
+themes are named `light` and `dark`, but you can override this. This is
+pre-configured in the create-tamagui starter.
 
 ```bash
 yarn add @tamagui/next-theme
 ```
 
-Here's how you'd set up your `NextTamaguiProvider.tsx`:
+Here's how to set up your `NextTamaguiProvider.tsx`:
 
 ```tsx fileName="NextTamaguiProvider.tsx"
 'use client'
@@ -237,9 +237,8 @@ export default function RootLayout({
 
 ## NextThemeProvider
 
-The `NextThemeProvider` is a provider that allows you to set the theme for your
-app. It also provides a hook to access the current theme and a function to
-change the theme.
+`NextThemeProvider` lets you set the theme for your app and provides a hook to
+access the current theme and toggle between themes.
 
 ```bash
 yarn add @tamagui/next-theme
@@ -349,12 +348,12 @@ export const SwitchThemeButton = () => {
 
 ## For Older Versions
 
-The following sections cover setup for older Next.js versions using Webpack.
+The following sections cover setup for older Next.js versions using Webpack instead of Turbopack.
 
 ### Webpack Plugin
 
-If you aren't using Turbopack, you may want the optional `@tamagui/next-plugin`
-which helps smooth out a few settings. See the
+If you aren't using Turbopack, you may want the optional `@tamagui/next-plugin`,
+which smooths out a few settings. See the
 [compiler install docs](/docs/intro/compiler-install) for more options.
 
 Add `@tamagui/next-plugin` to your project:
@@ -367,7 +366,7 @@ yarn add @tamagui/next-plugin
 
 ### next.config.js
 
-Set up the optional Tamagui plugin to `next.config.js`:
+Set up the optional Tamagui plugin in `next.config.js`:
 
 ```tsx showMore fileName="next.config.js"
 const { withTamagui } = require('@tamagui/next-plugin')
@@ -390,8 +389,8 @@ module.exports = function (name, { defaultConfig }) {
 
 ### pages/\_document.tsx
 
-If you're using React Native Web components, you'll want to gather the
-`react-native-web` styles in \_document:
+If you're using React Native Web components, gather the
+`react-native-web` styles in `_document.tsx`:
 
 ```tsx fileName="_document.tsx"
 import NextDocument, {
@@ -487,16 +486,16 @@ export default function App({ Component, pageProps }: AppProps) {
 
 ### Themes (Pages Router)
 
-We've created a package that works with Tamagui to properly support SSR
-light/dark themes that also respect user system preference, called
-`@tamagui/next-theme`. It assumes your `light`/`dark` themes are named as such,
-but you can override it. This is pre-configured in the create-tamagui starter.
+We've created a package called `@tamagui/next-theme` that properly supports SSR
+light/dark themes while respecting user system preferences. It assumes your
+themes are named `light` and `dark`, but you can override this. This is
+pre-configured in the create-tamagui starter.
 
 ```bash
 yarn add @tamagui/next-theme
 ```
 
-Here's how you'd set up your `_app.tsx`:
+Here's how to set up your `_app.tsx`:
 
 ```tsx fileName="_app.tsx"
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
@@ -613,17 +612,16 @@ Tamagui includes Server Components support for the Next.js app directory with
 [`use client`](https://nextjs.org/docs/app/building-your-application/rendering/client-components#using-client-components-in-nextjs)
 support.
 
-Note that "use client" does render on the server, and since Tamagui extracts to
-CSS statically and uses inline `<style />` tags for non-static styling, we get
-excellent performance as-is.
+Note that `"use client"` components do render on the server, and since Tamagui extracts to
+CSS statically and uses inline `<style />` tags for non-static styling, you get
+excellent performance out of the box.
 
 ### next.config.js
 
 The Tamagui plugin is optional but helps with compatibility with the rest of the
-React Native ecosystem. It requires CommonJS for now as the optimizing compiler
-makes use of a variety of resolving features that haven't been ported to ESM
-yet. Be sure to rename your `next.config.mjs` to `next.config.js` before adding
-it:
+React Native ecosystem. It requires CommonJS for now because the optimizing compiler
+uses various resolving features that haven't been ported to ESM yet. Rename your
+`next.config.mjs` to `next.config.js` before adding it:
 
 ```tsx fileName="next.config.js"
 const { withTamagui } = require('@tamagui/next-plugin')
@@ -747,16 +745,16 @@ export default function Home() {
 
 ### Themes (App Router Webpack)
 
-We've created a package that works with Tamagui to properly support SSR
-light/dark themes that also respect user system preference, called
-`@tamagui/next-theme`. It assumes your `light`/`dark` themes are named as such,
-but you can override it. This is pre-configured in the create-tamagui starter.
+We've created a package called `@tamagui/next-theme` that properly supports SSR
+light/dark themes while respecting user system preferences. It assumes your
+themes are named `light` and `dark`, but you can override this. This is
+pre-configured in the create-tamagui starter.
 
 ```bash
 yarn add @tamagui/next-theme
 ```
 
-Here's how you'd set up your `NextTamaguiProvider.tsx`:
+Here's how to set up your `NextTamaguiProvider.tsx`:
 
 ```tsx fileName="NextTamaguiProvider.tsx"
 'use client'

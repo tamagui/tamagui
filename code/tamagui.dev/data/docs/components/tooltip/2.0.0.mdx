@@ -1,6 +1,6 @@
 ---
 title: Tooltip
-description: A tooltip on web, with only accessibility output on native.
+description: A tooltip on web, with only accessibility output on native
 name: tooltip
 component: Tooltip
 package: tooltip
@@ -135,36 +135,38 @@ Contains every component for the tooltip.
       name: 'open',
       type: 'boolean',
       required: false,
-      description: ``,
+      description: `The controlled open state of the tooltip.`,
     },
     {
       name: 'defaultOpen',
       type: 'boolean',
       required: false,
+      description: `The open state when initially rendered.`,
     },
     {
       name: 'onOpenChange',
       type: '(open: boolean) => void',
       required: false,
+      description: `Event handler called when the open state changes.`,
     },
     {
       name: 'modal',
       type: 'boolean',
       default: 'true',
       required: false,
-      description: `Renders into root of app instead of inline`,
+      description: `Renders into root of app instead of inline.`,
     },
     {
       name: 'stayInFrame',
       type: 'ShiftProps',
       required: false,
-      description: `See floating-ui shift()`,
+      description: `See floating-ui shift().`,
     },
     {
       name: 'allowFlip',
       type: 'FlipProps',
       required: false,
-      description: `See floating-ui flip`,
+      description: `See floating-ui flip().`,
     },
     {
       name: 'offset',

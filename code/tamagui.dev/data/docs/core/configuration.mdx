@@ -244,7 +244,7 @@ const config = createTamagui({
 
   // Change the default props for any styled() component with a name.
   // We are discouraging the use of this and have deprecated it, prefer to use
-  // styled() on any component to change it's styles.
+  // styled() on any component to change its styles.
   defaultProps: {
     Text: {
       color: 'green',
@@ -356,7 +356,7 @@ export default function App() {
 
 By default, Tamagui injects the CSS for your configuration on the client-side
 into `document.head`, but you probably will want something better for
-production. To do this, pass true to `disableInjectCSS` on `TamaguProvider`, and
+production. To do this, pass true to `disableInjectCSS` on `TamaguiProvider`, and
 then do one of the following three options:
 
 If your framework has server-side layouts, you can just render it inline:
@@ -576,10 +576,10 @@ const config = createTamagui({
 })
 ```
 
-Passing tokens to themes will be smart about sharing CSS, but is not requred.
+Passing tokens to themes will be smart about sharing CSS, but is not required.
 
 You can then access theme values for any style value, either through styled() or
-through a Styled Compoent like View or Text:
+through a Styled Component like View or Text:
 
 ```tsx
 const P = styled(Text, {
@@ -837,9 +837,9 @@ color.
 
 ### Environment Settings
 
-A few things in Tamagui can be configuring via environment variables. Doing it
-this way lets us avoid extra code being shipped to the client, as we your
-bundler can tree shake the unused code easily when using envronment variables.
+A few things in Tamagui can be configured via environment variables. Doing it
+this way lets us avoid extra code being shipped to the client, as your
+bundler can tree shake the unused code easily when using environment variables.
 You should be sure to either use the Vite or Webpack Tamagui plugins, or
 configure your bundler to define the environment variables for tree shaking. On
 native, it is not a concern as the extra size is minimal.

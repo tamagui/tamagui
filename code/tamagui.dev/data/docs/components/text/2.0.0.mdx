@@ -1,6 +1,6 @@
 ---
 title: Text
-description: Text primitives with themes custom to each font.
+description: Text primitives with themes custom to each font
 name: text
 component: Paragraph
 package: text
@@ -49,9 +49,9 @@ export default () => (
 
 ## Text
 
-Text in Tamagui matches to Text in react-native-web, just with the added [Tamagui Props](/docs/intro/props).
+Text in Tamagui matches Text in react-native-web, with the added [Tamagui props](/docs/intro/props).
 
-It explicitly doesn't inherit your theme color or other font properties, as it's meant to be plain and used for extension. Below, we'll show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful view as it will use theme values, while you can extend Text if you'd like to derive your own design system.
+It explicitly does not inherit your theme color or other font properties, as it is meant to be plain and used for extension. Below, we show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful component as it uses theme values, while you can extend Text if you want to derive your own design system.
 
 ```tsx
 import { Text, XStack, YStack } from 'tamagui'
@@ -78,7 +78,7 @@ export default () => (
 
 Tamagui lets you define font sizing, spacing, line height, letter spacing and other properties with `createFont`, of which you can have many different configurations. We've found a nice pattern is to "align" all your keys across these sub-objects.
 
-SizableText adds a `size` property thats defined using a [spread variant](/docs/core/styled#spread-variants) which looks for a matching key on each of these properties (using `@tamagui/get-font-sized`):
+SizableText adds a `size` property that is defined using a [spread variant](/docs/core/styled#spread-variants) which looks for a matching key on each of these properties (using `@tamagui/get-font-sized`):
 
 - color
 - fontStyle

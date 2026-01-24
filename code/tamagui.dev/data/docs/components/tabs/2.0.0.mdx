@@ -1,6 +1,6 @@
 ---
 title: Tabs
-description: Use in pages to manage sub-pages.
+description: Use in pages to manage sub-pages
 name: tabs
 component: Tabs
 package: tabs
@@ -243,40 +243,40 @@ The `useTabs` hook accepts these options and returns props/helpers:
     {
       name: "value",
       type: "string",
-      description: `The value for the selected tab, if controlled`,
+      description: `The value for the selected tab, if controlled.`,
     },
     {
       name: "defaultValue",
       type: "string",
-      description: `The value of the tab to select by default, if uncontrolled`,
+      description: `The value of the tab to select by default, if uncontrolled.`,
     },
     {
       name: "onValueChange",
       type: "(value: string) => void",
-      description: `A function called when a new tab is selected`,
+      description: `A function called when a new tab is selected.`,
     },
     {
       name: "orientation",
       type: '"horizontal" | "vertical"',
       default: "horizontal",
-      description: `The orientation the tabs are laid out.`,
+      description: `The orientation the tabs are laid out in.`,
     },
     {
       name: "dir",
       type: '"ltr" | "rtl"',
-      description: `The direction of navigation between toolbar items`,
+      description: `The direction of navigation between toolbar items.`,
     },
     {
       name: "activationMode",
       type: '"manual" | "automatic"',
       default: "manual",
-      description: `Whether a tab is activated automatically (on focus) or manually (on click/enter)`,
+      description: `Whether a tab is activated automatically (on focus) or manually (on click/enter).`,
     },
     {
       name: "loop",
       type: "boolean",
       default: "true",
-      description: `Whether keyboard navigation should loop from last to first and vice versa`,
+      description: `Whether keyboard navigation should loop from last to first and vice versa.`,
     },
   ]}
 />
@@ -335,7 +335,7 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
       name: "loop",
       type: "boolean",
       default: "true",
-      description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation`,
+      description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation.`,
     },
   ]}
 />
@@ -353,27 +353,27 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
     {
       name: "value",
       type: "string",
-      description: `The value for the tabs state to be changed to after activation of the trigger`,
+      description: `The value for the tabs state to be changed to after activation of the trigger.`,
     },
     {
       name: "onInteraction",
       type: `(type: InteractionType, layout: TabLayout | null) => void`,
-      description: `Used for making custom indicators when trigger interacted with`,
+      description: `Used for making custom indicators when trigger is interacted with.`,
     },
     {
       name: "disabled",
       type: `boolean`,
-      description: `Whether the tab is disabled`,
+      description: `Whether the tab is disabled.`,
     },
     {
       name: "unstyled",
       type: `boolean`,
-      description: `When true, remove all default tamagui styling`,
+      description: `When true, removes all default Tamagui styling.`,
     },
     {
       name: "activeStyle",
       type: `StyleProp`,
-      description: `Styles to apply when the tab is selected`,
+      description: `Styles to apply when the tab is selected.`,
     },
     {
       name: "activeTheme",
@@ -392,13 +392,13 @@ Where each tab's content will be shown. Extends [ThemeableStack](/docs/component
     {
       name: "value",
       type: "string",
-      description: `Will show the content when the value matches the state of Tabs root`,
+      description: `Will show the content when the value matches the state of Tabs root.`,
     },
     {
       name: "forceMount",
       type: "boolean",
       default: "false",
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations`,
+      description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations.`,
     },
   ]}
 />
