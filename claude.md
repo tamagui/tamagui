@@ -94,3 +94,7 @@ When writing tests for focus behavior or component interactions:
 - Use `site:` prefix (not `fix(site):`) for tamagui.dev changes since they don't go in the changelog
 - Use `ci:` prefix (not `fix(ci):`) for CI/workflow changes since they don't go in the changelog
 - Keep commit messages to a single line
+
+## iOS Development
+
+See [docs/using-ios.md](./docs/using-ios.md) for iOS native development and Detox testing tips.

@@ -125,9 +125,8 @@ The breaking changes outside of deprecations are:
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
 - Native portals no longer auto-import React internals hack. If you want native
-  portals for better context preservation, call `setupNativePortal()` from
-  `@tamagui/portal/setup-native` at app startup. See
-  [Portal docs](/docs/components/portal).
+  portals for better context preservation, add `import '@tamagui/native/setup-portal'`
+  at app startup. See [Portal docs](/docs/components/portal).
 - Removed React Native accessibility props in favor of web-standard props:
   - `accessibilityLabel` → `aria-label`
   - `accessibilityRole` → `role`
@@ -463,17 +462,9 @@ approaches like component scoping.
 #### Sheet Native Gesture Handler
 
 [Sheet](/docs/components/sheet) now supports optional integration with
-`react-native-gesture-handler` for native-quality gesture coordination between
-the sheet and scrollable content. This provides:
-
-- **Smooth scroll-to-drag handoffs** - Seamlessly transition between scrolling
-  content and dragging the sheet without lifting your finger
-- **No gesture conflicts** - Sheet and ScrollView gestures coordinate properly
-- **Native-quality feel** - Matches the behavior of system sheets like Apple
-  Maps or Google Maps
-
-To enable, install `react-native-gesture-handler` and add the setup import
-before any Tamagui imports:
+`react-native-gesture-handler` for smooth scroll-to-drag gesture coordination.
+Install `react-native-gesture-handler` and add the setup import before any
+Tamagui imports:
 
 ```tsx
 // App.tsx or index.js
@@ -489,22 +480,7 @@ export default function App() {
 }
 ```
 
-Then use `Sheet.ScrollView` for scrollable content inside sheets:
-
-```tsx
-<Sheet>
-  <Sheet.Handle />
-  <Sheet.Frame>
-    <Sheet.ScrollView>
-      {/* Scrollable content with smooth gesture handoff */}
-    </Sheet.ScrollView>
-  </Sheet.Frame>
-</Sheet>
-```
-
-Without the gesture handler setup, Sheet falls back to React Native's built-in
-PanResponder which works well for basic use cases. See the
-[Sheet docs](/docs/components/sheet) for more details.
+See the [Sheet docs](/docs/components/sheet) for full details.
 
 ### New Components
 

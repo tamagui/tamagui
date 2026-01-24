@@ -85,18 +85,6 @@
       "module": "./dist/esm/linear-gradient.mjs",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs"
-    },
-    "./setup-native-portal": {
-      "react-native": {
-        "types": "./types/setup-native-portal.d.ts",
-        "module": "./dist/esm/setup-native-portal.js",
-        "import": "./dist/esm/setup-native-portal.js",
-        "require": "./dist/cjs/setup-native-portal.js"
-      },
-      "types": "./types/setup-native-portal.d.ts",
-      "module": "./dist/esm/setup-native-portal.mjs",
-      "import": "./dist/esm/setup-native-portal.mjs",
-      "require": "./dist/cjs/setup-native-portal.cjs"
     }
   },
   "dependencies": {

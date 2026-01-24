@@ -122,6 +122,7 @@ export const docsRoutes = [
       { title: 'Stacks', route: '/ui/stacks' },
       { title: 'Headings', route: '/ui/headings' },
       { title: 'Text', route: '/ui/text' },
+      { title: 'Native', route: '/ui/native' },
     ],
   },
 
