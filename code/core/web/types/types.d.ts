@@ -270,6 +270,7 @@ export type TamaguiComponentStateRef = {
     themeShallow?: boolean;
     hasEverThemed?: boolean | 'wrapped';
     hasEverResetPresence?: boolean;
+    hasHadEvents?: boolean;
     isListeningToTheme?: boolean;
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;

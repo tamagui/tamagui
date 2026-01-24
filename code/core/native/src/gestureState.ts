@@ -54,24 +54,33 @@ export function getGestureHandler(): GestureHandlerAccessor {
       const { Gesture } = getGlobalState()
       if (!Gesture) return null
 
+      const longPressDuration = config.delayLongPress ?? 500
+
+      // Tap gesture for regular presses
+      // Use long maxDuration to not cancel during long presses
       const tap = Gesture.Tap()
-        .runOnJS(true) // run callbacks on JS thread
+        .runOnJS(true)
+        .maxDuration(10000) // allow very long presses
         .onBegin((e: any) => config.onPressIn?.(e))
         .onEnd((e: any) => config.onPress?.(e))
         .onFinalize((e: any) => config.onPressOut?.(e))
 
       if (config.hitSlop) tap.hitSlop(config.hitSlop)
 
+      // if no long press handler, just use tap
       if (!config.onLongPress) return tap
 
+      // LongPress gesture for long press handling
       const longPress = Gesture.LongPress()
-        .runOnJS(true) // run callbacks on JS thread
-        .minDuration(config.delayLongPress ?? 500)
+        .runOnJS(true)
+        .minDuration(longPressDuration)
+        .onBegin((e: any) => config.onPressIn?.(e))
         .onStart((e: any) => config.onLongPress?.(e))
         .onFinalize((e: any) => config.onPressOut?.(e))
 
       if (config.hitSlop) longPress.hitSlop(config.hitSlop)
 
+      // exclusive: longPress has priority, tap is fallback for quick presses
       return Gesture.Exclusive(longPress, tap)
     },
   }
