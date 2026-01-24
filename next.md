@@ -35,7 +35,7 @@ AFTER v2 RC (nice to haves):
   - react native 78 dialogs not working
     - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
 
-uniswap:
+- could make option automaticlaly handle overshootClamping just by esimtating length of animations and converting to timing?
 
 - enter/exit in media not overriding
 

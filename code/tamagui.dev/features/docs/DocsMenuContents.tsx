@@ -251,10 +251,10 @@ const AccordionSection = ({
         }}
       </Accordion.Trigger>
 
-      <Accordion.HeightAnimator overflow="hidden" transition="100ms">
+      <Accordion.HeightAnimator overflow="hidden" transition="200ms">
         <Accordion.Content
           unstyled
-          transition="100ms"
+          transition="200ms"
           backgroundColor="transparent"
           exitStyle={{ opacity: 0 }}
         >

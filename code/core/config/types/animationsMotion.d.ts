@@ -97,11 +97,13 @@ export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
         stiffness: number;
     };
     quickest: {
+        type: "spring";
         damping: number;
         mass: number;
         stiffness: number;
     };
     quickestLessBouncy: {
+        type: "spring";
         damping: number;
         mass: number;
         stiffness: number;
