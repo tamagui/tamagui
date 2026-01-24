@@ -2,9 +2,11 @@
  * Legacy setup - prefer `import '@tamagui/native/setup-gesture-handler'` instead.
  */
 
-import { setGestureHandlerState, isGestureHandlerEnabled } from '@tamagui/native'
+import { getGestureHandler } from '@tamagui/native'
 
-export { isGestureHandlerEnabled }
+export function isGestureHandlerEnabled(): boolean {
+  return getGestureHandler().isEnabled
+}
 
 export interface SetupGestureHandlerConfig {
   Gesture: any
@@ -22,7 +24,7 @@ export function setupGestureHandler(config: SetupGestureHandlerConfig): void {
   const { Gesture, GestureDetector, ScrollView } = config
 
   if (Gesture && GestureDetector) {
-    setGestureHandlerState({
+    getGestureHandler().set({
       enabled: true,
       Gesture,
       GestureDetector,

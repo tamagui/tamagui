@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { ScrollView as RNScrollView } from 'react-native'
 import { Button, Sheet, Text, YStack } from 'tamagui'
-import { isGestureHandlerEnabled } from '@tamagui/native'
+import { getGestureHandler } from '@tamagui/native'
 
 /**
  * Test case for Sheet + ScrollView drag interaction
@@ -22,7 +22,7 @@ export function SheetScrollableDrag() {
   const [itemCount, setItemCount] = useState(20)
   const lastScrollY = useRef(0)
 
-  const rnghEnabled = isGestureHandlerEnabled()
+  const rnghEnabled = getGestureHandler().isEnabled
 
   useEffect(() => {
     console.log('[SheetScrollableDrag] RNGH enabled:', rnghEnabled)

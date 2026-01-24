@@ -1,15 +1,23 @@
-export type NativePortalState = {
-  enabled: boolean
-  type: 'teleport' | 'legacy' | null
-}
+import type { NativePortalState } from './types'
 
 let state: NativePortalState = { enabled: false, type: null }
 
-export function setNativePortalState(newState: NativePortalState) {
-  state = newState
+export interface PortalAccessor {
+  readonly isEnabled: boolean
+  readonly state: NativePortalState
+  set(newState: NativePortalState): void
 }
 
-export function getNativePortalState(): NativePortalState {
-  return state
+export function getPortal(): PortalAccessor {
+  return {
+    get isEnabled(): boolean {
+      return state.enabled
+    },
+    get state(): NativePortalState {
+      return state
+    },
+    set(newState: NativePortalState): void {
+      state = newState
+    },
+  }
 }
-// retrigger ci

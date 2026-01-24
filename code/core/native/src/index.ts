@@ -6,7 +6,7 @@
  * @example
  * ```tsx
  * // In your app entry (index.js or App.tsx)
- * import '@tamagui/native/setup-portal'
+ * import '@tamagui/native/setup-teleport'
  * import '@tamagui/native/setup-gesture-handler'
  * import '@tamagui/native/setup-worklets'
  *
@@ -15,25 +15,27 @@
  * ```
  */
 
-// portal state exports (safe - no side effects)
-export { getNativePortalState, setNativePortalState } from './portalState'
-export type { NativePortalState } from './portalState'
-
-export { NativePortal, NativePortalHost, NativePortalProvider } from './components'
+// types
 export type {
+  NativePortalState,
+  GestureState,
+  WorkletsState,
   NativePortalProps,
   NativePortalHostProps,
   NativePortalProviderProps,
-} from './components'
+} from './types'
 
-// gesture handler state exports (safe - no side effects)
-export {
-  isGestureHandlerEnabled,
-  getGestureHandlerState,
-  setGestureHandlerState,
-} from './gestureState'
-export type { GestureState } from './gestureState'
+// portal
+export { getPortal } from './portalState'
+export type { PortalAccessor } from './portalState'
 
-// worklets state exports (safe - no side effects)
-export { isWorkletsEnabled, getWorkletsState } from './workletsState'
-export type { WorkletsState } from './workletsState'
+// gesture handler
+export { getGestureHandler } from './gestureState'
+export type { GestureHandlerAccessor } from './gestureState'
+
+// worklets
+export { getWorklets } from './workletsState'
+export type { WorkletsAccessor } from './workletsState'
+
+// components
+export { NativePortal, NativePortalHost, NativePortalProvider } from './components'

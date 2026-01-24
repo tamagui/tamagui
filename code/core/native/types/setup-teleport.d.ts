@@ -1,3 +1,3 @@
 export declare const setupNativePortal: unknown;
 
-//# sourceMappingURL=setup-portal.d.ts.map
+//# sourceMappingURL=setup-teleport.d.ts.map

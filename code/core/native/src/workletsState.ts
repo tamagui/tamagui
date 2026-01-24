@@ -1,12 +1,6 @@
-const GLOBAL_KEY = '__tamagui_native_worklets_state__'
+import type { WorkletsState } from './types'
 
-export interface WorkletsState {
-  enabled: boolean
-  Worklets: any
-  useRunOnJS: any
-  useWorklet: any
-  createWorkletContextValue: any
-}
+const GLOBAL_KEY = '__tamagui_native_worklets_state__'
 
 function getGlobalState(): WorkletsState {
   const g = globalThis as any
@@ -22,15 +16,23 @@ function getGlobalState(): WorkletsState {
   return g[GLOBAL_KEY]
 }
 
-export function isWorkletsEnabled(): boolean {
-  return getGlobalState().enabled
+export interface WorkletsAccessor {
+  readonly isEnabled: boolean
+  readonly state: WorkletsState
+  set(updates: Partial<WorkletsState>): void
 }
 
-export function getWorkletsState(): WorkletsState {
-  return getGlobalState()
-}
-
-export function setWorkletsState(updates: Partial<WorkletsState>): void {
-  const state = getGlobalState()
-  Object.assign(state, updates)
+export function getWorklets(): WorkletsAccessor {
+  return {
+    get isEnabled(): boolean {
+      return getGlobalState().enabled
+    },
+    get state(): WorkletsState {
+      return getGlobalState()
+    },
+    set(updates: Partial<WorkletsState>): void {
+      const state = getGlobalState()
+      Object.assign(state, updates)
+    },
+  }
 }

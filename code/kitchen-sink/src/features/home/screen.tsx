@@ -1,63 +1,43 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { isGestureHandlerEnabled } from '@tamagui/native'
 import { useState } from 'react'
 import { ScrollView, TouchableOpacity, View } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { Button, H1, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
+import { Button, H1, ListItem, YGroup, YStack } from 'tamagui'
 import * as TestCases from '../../usecases'
 
 const testCaseNames = Object.keys(TestCases)
 
-// hidden grid of all test cases for detox fast navigation
-// allows tests to immediately tap the target test case without scrolling
+// grid of test case buttons for fast detox navigation
 // uses 44x44 buttons (iOS recommended min tap target) for reliable tap detection
 const BUTTON_SIZE = 44
 const BUTTONS_PER_ROW = 8
 
-// check if running in test mode (detox sets this)
-const IS_TEST_MODE = process.env.DETOX_TEST === 'true' || process.env.NODE_ENV === 'test'
-
-function DetoxQuickNav() {
-  const rows = Math.ceil(testCaseNames.length / BUTTONS_PER_ROW)
-
-  return (
-    <View
-      testID="detox-quick-nav"
-      style={{
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: BUTTONS_PER_ROW * BUTTON_SIZE,
-        height: rows * BUTTON_SIZE,
-        opacity: 0.01,
-      }}
-    >
-      {testCaseNames.map((name) => (
-        <QuickNavItem key={name} name={name} />
-      ))}
-    </View>
-  )
-}
-
-function QuickNavItem({ name }: { name: string }) {
+function QuickNavItem({ name, index }: { name: string; index: number }) {
   const linkProps = useLink({ href: `/test/${name}` })
+  // alternate colors for visibility
+  const colors = ['#93c5fd', '#86efac', '#fdba74', '#c4b5fd', '#f9a8d4', '#fde047']
+  const bg = colors[index % colors.length]
 
   return (
     <TouchableOpacity
       testID={`detox-nav-${name}`}
-      style={{ width: BUTTON_SIZE, height: BUTTON_SIZE }}
+      style={{
+        width: BUTTON_SIZE,
+        height: BUTTON_SIZE,
+        backgroundColor: bg,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.1)',
+      }}
       onPress={linkProps.onPress}
-      activeOpacity={0.01}
+      activeOpacity={0.7}
     />
   )
 }
 
 function TestCasesSection() {
-  const [expanded, setExpanded] = useState(IS_TEST_MODE)
+  const [expanded, setExpanded] = useState(false)
 
   return (
     <YStack gap="$2">
@@ -67,64 +47,34 @@ function TestCasesSection() {
         onPress={() => setExpanded(!expanded)}
         theme="gray"
       >
-        {expanded ? 'Hide' : 'Show'} Quick Test Links ({testCaseNames.length})
+        {`${expanded ? 'Hide' : 'Show'} Quick Test Links (${testCaseNames.length})`}
       </Button>
 
       {expanded && (
-        <YGroup size="$4">
-          <YGroup.Item>
-            <LinkListItem
-              bg="$blue3"
-              href="/test/SheetScrollableDrag"
-              pressStyle={{ backgroundColor: '$blue4' }}
-              size="$5"
-              testID="home-sheet-scroll-test"
-            >
-              🧪 Sheet + ScrollView Test (RNGH)
-            </LinkListItem>
-          </YGroup.Item>
-          <YGroup.Item>
-            <LinkListItem
-              bg="$orange3"
-              href="/test/SheetDragResistCase"
-              pressStyle={{ backgroundColor: '$orange4' }}
-              size="$5"
-              testID="home-sheet-drag-resist-test"
-            >
-              🧪 Sheet Drag Resistance Test
-            </LinkListItem>
-          </YGroup.Item>
-          <YGroup.Item>
-            <LinkListItem
-              bg="$purple3"
-              href="/test/ActionsSheetComparison"
-              pressStyle={{ backgroundColor: '$purple4' }}
-              size="$5"
-            >
-              🔄 Actions Sheet Comparison
-            </LinkListItem>
-          </YGroup.Item>
-        </YGroup>
+        <View
+          testID="detox-quick-nav"
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            width: BUTTONS_PER_ROW * BUTTON_SIZE,
+          }}
+        >
+          {testCaseNames.map((name, index) => (
+            <QuickNavItem key={name} name={name} index={index} />
+          ))}
+        </View>
       )}
     </YStack>
   )
 }
 
 export function HomeScreen() {
-  const gestureHandlerEnabled = isGestureHandlerEnabled()
-  console.log('[HomeScreen] isGestureHandlerEnabled returned:', gestureHandlerEnabled)
-
   return (
     <ScrollView testID="home-scroll-view">
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
-        <DetoxQuickNav />
-        <H1 fontFamily="$heading" size="$9">
+      <YStack bg="$color2" p="$3" pt="$4" pb="$8" flex={1} gap="$2">
+        <H1 fontFamily="$heading" size="$3">
           Kitchen Sink
         </H1>
-
-        <Paragraph size="$2" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
-          RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
-        </Paragraph>
 
         {/* Collapsible quick access to test cases */}
         <TestCasesSection />
@@ -141,6 +91,7 @@ export function HomeScreen() {
                   return (
                     <YGroup.Item key={route}>
                       <LinkListItem
+                        rounded="$4"
                         bg="$color1"
                         href={route}
                         pressStyle={{ backgroundColor: '$color2' }}

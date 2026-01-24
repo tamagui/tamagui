@@ -11,6 +11,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
 
 // only run on iOS - Android behavior is different
 const isAndroid = () => device.getPlatform() === 'android'
@@ -411,21 +412,5 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
 })
 
 async function navigateToSheetScrollableDrag() {
-  // wait for app to load
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(30000)
-
-  await new Promise(r => setTimeout(r, 500))
-
-  // use quick access link from home screen
-  await waitFor(element(by.id('home-sheet-scroll-test')))
-    .toBeVisible()
-    .withTimeout(5000)
-  await element(by.id('home-sheet-scroll-test')).tap()
-
-  // wait for test screen
-  await waitFor(element(by.id('sheet-scrollable-drag-trigger')))
-    .toExist()
-    .withTimeout(5000)
+  await navigateToTestCase('SheetScrollableDrag', 'sheet-scrollable-drag-trigger')
 }

@@ -12,6 +12,7 @@ import { by, device, element, expect, waitFor } from 'detox'
 import * as fs from 'fs'
 import * as assert from 'assert'
 import { PNG } from 'pngjs'
+import { navigateToTestCase } from './utils/navigation'
 
 // helper to get the dominant color from a PNG screenshot
 // samples pixels from the center region to avoid edges/text
@@ -224,31 +225,5 @@ describe('PressStyleNative', () => {
 })
 
 async function navigateToPressStyleNative() {
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(60000)
-
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  await waitFor(element(by.id('home-test-cases-link')))
-    .toBeVisible()
-    .withTimeout(10000)
-  await element(by.id('home-test-cases-link')).tap()
-
-  await waitFor(element(by.text('All Test Cases')))
-    .toExist()
-    .withTimeout(10000)
-
-  await new Promise((resolve) => setTimeout(resolve, 500))
-
-  await waitFor(element(by.id('test-case-PressStyleNative')))
-    .toBeVisible()
-    .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(600, 'down', Number.NaN, Number.NaN)
-
-  await element(by.id('test-case-PressStyleNative')).tap()
-
-  await waitFor(element(by.id('color-test-pressable')))
-    .toExist()
-    .withTimeout(10000)
+  await navigateToTestCase('PressStyleNative', 'color-test-pressable')
 }

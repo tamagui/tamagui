@@ -1,5 +1,5 @@
 import { View } from '@tamagui/core'
-import { getNativePortalState, NativePortal } from '@tamagui/native'
+import { getPortal, NativePortal } from '@tamagui/native'
 import { useStackedZIndex } from '@tamagui/z-index-stack'
 import { GorhomPortalItem } from './GorhomPortalItem'
 import { getStackedZIndexProps } from './helpers'
@@ -22,7 +22,7 @@ export const Portal = (propsIn: PortalProps) => {
     </View>
   )
 
-  const portalState = getNativePortalState()
+  const portalState = getPortal().state
 
   // use teleport if available (best option - preserves context)
   if (portalState.type === 'teleport') {

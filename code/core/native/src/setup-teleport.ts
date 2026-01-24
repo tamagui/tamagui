@@ -5,14 +5,14 @@
  *
  * @example
  * ```tsx
- * import '@tamagui/native/setup-portal'
+ * import '@tamagui/native/setup-teleport'
  * ```
  *
  * This automatically detects and configures react-native-teleport for portals.
  * Falls back to legacy RN shims if teleport is not installed.
  */
 
-import { setNativePortalState } from './portalState'
+import { getPortal } from './portalState'
 
 const IS_FABRIC =
   typeof global !== 'undefined' &&
@@ -28,7 +28,7 @@ function setup() {
     const teleport = require('react-native-teleport')
     if (teleport?.Portal && teleport?.PortalHost && teleport?.PortalProvider) {
       g.__tamagui_teleport = teleport
-      setNativePortalState({ enabled: true, type: 'teleport' })
+      getPortal().set({ enabled: true, type: 'teleport' })
       return
     }
   } catch {
@@ -40,7 +40,7 @@ function setup() {
     try {
       const mod = require('react-native/Libraries/Renderer/shims/ReactFabric')
       g.__tamagui_portal_create = mod?.default?.createPortal ?? mod.createPortal
-      setNativePortalState({ enabled: true, type: 'legacy' })
+      getPortal().set({ enabled: true, type: 'legacy' })
     } catch (err) {
       console.info(`Note: error importing fabric portal, native portals disabled`, err)
     }
@@ -50,7 +50,7 @@ function setup() {
   try {
     const mod = require('react-native/Libraries/Renderer/shims/ReactNative')
     g.__tamagui_portal_create = mod?.default?.createPortal ?? mod.createPortal
-    setNativePortalState({ enabled: true, type: 'legacy' })
+    getPortal().set({ enabled: true, type: 'legacy' })
   } catch (err) {
     console.info(`Note: error importing native portal, native portals disabled`, err)
   }

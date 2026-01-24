@@ -1,11 +1,6 @@
-const GLOBAL_KEY = '__tamagui_native_gesture_state__'
+import type { GestureState } from './types'
 
-export interface GestureState {
-  enabled: boolean
-  Gesture: any
-  GestureDetector: any
-  ScrollView: any
-}
+const GLOBAL_KEY = '__tamagui_native_gesture_state__'
 
 function getGlobalState(): GestureState {
   const g = globalThis as any
@@ -20,15 +15,23 @@ function getGlobalState(): GestureState {
   return g[GLOBAL_KEY]
 }
 
-export function isGestureHandlerEnabled(): boolean {
-  return getGlobalState().enabled
+export interface GestureHandlerAccessor {
+  readonly isEnabled: boolean
+  readonly state: GestureState
+  set(updates: Partial<GestureState>): void
 }
 
-export function getGestureHandlerState(): GestureState {
-  return getGlobalState()
-}
-
-export function setGestureHandlerState(updates: Partial<GestureState>): void {
-  const state = getGlobalState()
-  Object.assign(state, updates)
+export function getGestureHandler(): GestureHandlerAccessor {
+  return {
+    get isEnabled(): boolean {
+      return getGlobalState().enabled
+    },
+    get state(): GestureState {
+      return getGlobalState()
+    },
+    set(updates: Partial<GestureState>): void {
+      const state = getGlobalState()
+      Object.assign(state, updates)
+    },
+  }
 }

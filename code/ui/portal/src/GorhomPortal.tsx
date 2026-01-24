@@ -4,7 +4,7 @@
 
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
-  getNativePortalState,
+  getPortal,
   NativePortalHost,
   NativePortalProvider,
 } from '@tamagui/native'
@@ -245,7 +245,7 @@ const PortalProviderComponent = ({
     return next as typeof dispatch
   }, [dispatch])
 
-  const portalState = getNativePortalState()
+  const portalState = getPortal().state
 
   // when teleport is enabled, use NativePortalProvider as the wrapper
   // the Gorhom context is still needed for fallback cases
@@ -292,7 +292,7 @@ export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
     return <PortalHostWeb {...props} />
   }
 
-  const portalState = getNativePortalState()
+  const portalState = getPortal().state
 
   // use teleport's PortalHost when available
   if (portalState.type === 'teleport') {

@@ -1,5 +1,5 @@
 // setup native features - just import, no function calls needed
-import '@tamagui/native/setup-portal'
+import '@tamagui/native/setup-teleport'
 import '@tamagui/native/setup-gesture-handler'
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler'

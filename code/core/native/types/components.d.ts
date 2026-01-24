@@ -1,14 +1,6 @@
 import type { ReactNode } from "react";
-export type NativePortalProps = {
-	hostName?: string;
-	children: ReactNode;
-};
-export type NativePortalHostProps = {
-	name: string;
-};
-export type NativePortalProviderProps = {
-	children: ReactNode;
-};
+import type { NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
+export type { NativePortalProps, NativePortalHostProps, NativePortalProviderProps };
 /**
 * Renders children into a teleport Portal when available.
 * Returns null when teleport is not set up (allows fallback handling by caller).

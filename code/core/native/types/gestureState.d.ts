@@ -1,11 +1,9 @@
-export interface GestureState {
-	enabled: boolean;
-	Gesture: any;
-	GestureDetector: any;
-	ScrollView: any;
+import type { GestureState } from "./types";
+export interface GestureHandlerAccessor {
+	readonly isEnabled: boolean;
+	readonly state: GestureState;
+	set(updates: Partial<GestureState>): void;
 }
-export declare function isGestureHandlerEnabled(): boolean;
-export declare function getGestureHandlerState(): GestureState;
-export declare function setGestureHandlerState(updates: Partial<GestureState>): void;
+export declare function getGestureHandler(): GestureHandlerAccessor;
 
 //# sourceMappingURL=gestureState.d.ts.map

@@ -12,7 +12,7 @@
  * for use with Sheet and other gesture-aware components.
  */
 
-import { setGestureHandlerState } from './gestureState'
+import { getGestureHandler } from './gestureState'
 
 function setup() {
   const g = globalThis as any
@@ -27,7 +27,7 @@ function setup() {
     const { Gesture, GestureDetector, ScrollView } = rngh
 
     if (Gesture && GestureDetector) {
-      setGestureHandlerState({
+      getGestureHandler().set({
         enabled: true,
         Gesture,
         GestureDetector,

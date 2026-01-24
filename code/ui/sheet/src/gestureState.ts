@@ -3,15 +3,22 @@
  * Sheet uses this for backward compatibility with existing code.
  */
 
-export {
-  isGestureHandlerEnabled,
-  getGestureHandlerState,
-} from '@tamagui/native'
+import { getGestureHandler, type GestureState } from '@tamagui/native'
 
 export type { GestureState as GestureHandlerState } from '@tamagui/native'
 
-// re-export setGestureHandlerState for backward compat with setupGestureHandler
-export { setGestureHandlerState } from '@tamagui/native'
+// backward compat helpers
+export function isGestureHandlerEnabled(): boolean {
+  return getGestureHandler().isEnabled
+}
+
+export function getGestureHandlerState(): GestureState {
+  return getGestureHandler().state
+}
+
+export function setGestureHandlerState(updates: Partial<GestureState>): void {
+  getGestureHandler().set(updates)
+}
 
 // alias for backward compatibility
-export { setGestureHandlerState as setGestureState } from '@tamagui/native'
+export const setGestureState = setGestureHandlerState

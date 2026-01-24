@@ -1,19 +1,12 @@
 import type { ReactNode } from 'react'
-import { getNativePortalState } from './portalState'
+import { getPortal } from './portalState'
+import type {
+  NativePortalProps,
+  NativePortalHostProps,
+  NativePortalProviderProps,
+} from './types'
 
-// types matching react-native-teleport's API
-export type NativePortalProps = {
-  hostName?: string
-  children: ReactNode
-}
-
-export type NativePortalHostProps = {
-  name: string
-}
-
-export type NativePortalProviderProps = {
-  children: ReactNode
-}
+export type { NativePortalProps, NativePortalHostProps, NativePortalProviderProps }
 
 /**
  * Renders children into a teleport Portal when available.
@@ -23,7 +16,7 @@ export function NativePortal({
   hostName = 'root',
   children,
 }: NativePortalProps): ReactNode {
-  const state = getNativePortalState()
+  const state = getPortal().state
   if (state.type !== 'teleport') return null
 
   const { Portal } = (globalThis as any).__tamagui_teleport
@@ -35,7 +28,7 @@ export function NativePortal({
  * Returns null when teleport is not set up.
  */
 export function NativePortalHost({ name }: NativePortalHostProps): ReactNode {
-  const state = getNativePortalState()
+  const state = getPortal().state
   if (state.type !== 'teleport') return null
 
   const { PortalHost } = (globalThis as any).__tamagui_teleport
@@ -47,7 +40,7 @@ export function NativePortalHost({ name }: NativePortalHostProps): ReactNode {
  * Returns children as-is when teleport is not set up.
  */
 export function NativePortalProvider({ children }: NativePortalProviderProps): ReactNode {
-  const state = getNativePortalState()
+  const state = getPortal().state
   if (state.type !== 'teleport') return <>{children}</>
 
   const { PortalProvider } = (globalThis as any).__tamagui_teleport

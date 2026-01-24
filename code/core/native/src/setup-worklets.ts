@@ -18,7 +18,7 @@
  * @see https://docs.swmansion.com/react-native-worklets/docs/
  */
 
-import { setWorkletsState } from './workletsState'
+import { getWorklets } from './workletsState'
 
 function setup() {
   const g = globalThis as any
@@ -32,7 +32,7 @@ function setup() {
     const worklets = require('react-native-worklets-core')
 
     if (worklets) {
-      setWorkletsState({
+      getWorklets().set({
         enabled: true,
         Worklets: worklets.Worklets,
         useRunOnJS: worklets.useRunOnJS,

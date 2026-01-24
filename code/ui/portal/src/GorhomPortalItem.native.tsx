@@ -3,7 +3,7 @@
 
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent } from '@tamagui/core'
-import { getNativePortalState, NativePortal } from '@tamagui/native'
+import { getPortal, NativePortal } from '@tamagui/native'
 import { useEffect, useId } from 'react'
 import { usePortal } from './GorhomPortal'
 import type { PortalItemProps } from './types'
@@ -19,7 +19,7 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     passThrough,
   } = props
 
-  const portalState = getNativePortalState()
+  const portalState = getPortal().state
 
   // use teleport if available - it preserves context so we can skip the Gorhom system
   if (portalState.type === 'teleport') {

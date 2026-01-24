@@ -22,8 +22,8 @@
   },
   "typesVersions": {
     "*": {
-      "setup-portal": [
-        "./types/setup-portal.d.ts"
+      "setup-teleport": [
+        "./types/setup-teleport.d.ts"
       ],
       "setup-gesture-handler": [
         "./types/setup-gesture-handler.d.ts"
@@ -41,17 +41,17 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
     },
-    "./setup-portal": {
+    "./setup-teleport": {
       "react-native": {
-        "types": "./types/setup-portal.d.ts",
-        "module": "./dist/esm/setup-portal.native.js",
-        "import": "./dist/esm/setup-portal.native.js",
-        "require": "./dist/cjs/setup-portal.native.js"
+        "types": "./types/setup-teleport.d.ts",
+        "module": "./dist/esm/setup-teleport.native.js",
+        "import": "./dist/esm/setup-teleport.native.js",
+        "require": "./dist/cjs/setup-teleport.native.js"
       },
-      "types": "./types/setup-portal.d.ts",
-      "module": "./dist/esm/setup-portal.mjs",
-      "import": "./dist/esm/setup-portal.mjs",
-      "require": "./dist/cjs/setup-portal.cjs"
+      "types": "./types/setup-teleport.d.ts",
+      "module": "./dist/esm/setup-teleport.mjs",
+      "import": "./dist/esm/setup-teleport.mjs",
+      "require": "./dist/cjs/setup-teleport.cjs"
     },
     "./setup-gesture-handler": {
       "react-native": {
