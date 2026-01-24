@@ -1,4 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
+import { View, Text as RNText, StyleSheet } from 'react-native'
+import ActionSheet, { type ActionSheetRef, ScrollView as ActionScrollView } from 'react-native-actions-sheet'
 import { Button, Sheet, Text, YStack, Paragraph } from 'tamagui'
 
 /**
@@ -18,6 +20,7 @@ export function SheetDragResistCase() {
       <NoScrollViewSheet />
       <NonScrollableContentSheet />
       <ScrollableContentSheet />
+      <ActionsSheetComparison />
     </YStack>
   )
 }
@@ -275,6 +278,17 @@ function ScrollableContentSheet() {
               <Paragraph testID="scrollable-snap-indicator">
                 Position: {position} | Scroll Y: {scrollY.toFixed(0)}
               </Paragraph>
+              <Paragraph testID="scrollable-status" bg="$blue3" padding="$2" borderRadius="$2">
+                Max upward drag (at top): {maxDragUp.toFixed(0)}px
+              </Paragraph>
+              <Button
+                testID="scrollable-reset"
+                onPress={() => setMaxDragUp(0)}
+                theme="red"
+                size="$3"
+              >
+                Reset Drag Tracking
+              </Button>
               <Paragraph>
                 This content IS scrollable. When at the top of scroll
                 and top snap point, dragging UP should show resistance.
@@ -285,9 +299,6 @@ function ScrollableContentSheet() {
                 <Text>• At scroll top, drag up: resistance effect</Text>
                 <Text>• Drag down from scroll top: sheet moves</Text>
               </YStack>
-              <Paragraph testID="scrollable-status" bg="$blue3" padding="$2" borderRadius="$2">
-                Max upward drag (at top): {maxDragUp.toFixed(0)}px
-              </Paragraph>
 
               {/* lots of items to make it scrollable */}
               {Array.from({ length: 20 }).map((_, i) => (
@@ -304,14 +315,6 @@ function ScrollableContentSheet() {
                 </YStack>
               ))}
 
-              <Button
-                testID="scrollable-reset"
-                onPress={() => setMaxDragUp(0)}
-                theme="red"
-                size="$3"
-              >
-                Reset Drag Tracking
-              </Button>
               <Button testID="scrollable-close" onPress={() => setOpen(false)}>
                 Close
               </Button>
@@ -322,3 +325,72 @@ function ScrollableContentSheet() {
     </YStack>
   )
 }
+
+/**
+ * Comparison: react-native-actions-sheet with non-scrollable content
+ * Used to verify Detox can trigger RNGH gestures properly
+ */
+function ActionsSheetComparison() {
+  const actionsSheetRef = useRef<ActionSheetRef>(null)
+  const [snapIndex, setSnapIndex] = useState(0)
+
+  return (
+    <YStack gap="$2">
+      <Button testID="actions-sheet-trigger" onPress={() => actionsSheetRef.current?.show()}>
+        Actions Sheet (Comparison)
+      </Button>
+      <Paragraph testID="actions-sheet-snap">Actions Sheet snap: {snapIndex}</Paragraph>
+
+      <ActionSheet
+        ref={actionsSheetRef}
+        snapPoints={[70, 40]}
+        initialSnapIndex={0}
+        gestureEnabled
+        onSnapIndexChange={setSnapIndex}
+        containerStyle={{ maxHeight: '100%' }}
+        testIDs={{
+          root: 'actions-sheet-root',
+          backdrop: 'actions-sheet-backdrop',
+          handle: 'actions-sheet-handle',
+          sheet: 'actions-sheet-frame',
+        }}
+      >
+        <View style={styles.actionsContent} testID="actions-sheet-content">
+          <RNText style={styles.title} testID="actions-sheet-snap-indicator">
+            Snap index: {snapIndex}
+          </RNText>
+          <RNText style={styles.description}>
+            This content FITS (not scrollable). Swiping down should move the sheet.
+          </RNText>
+          <View style={styles.infoBox}>
+            <RNText style={styles.infoText}>Expected: swipe down moves to snap 1</RNText>
+          </View>
+        </View>
+      </ActionSheet>
+    </YStack>
+  )
+}
+
+const styles = StyleSheet.create({
+  actionsContent: {
+    padding: 20,
+    gap: 12,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  description: {
+    fontSize: 14,
+    color: '#666',
+  },
+  infoBox: {
+    backgroundColor: '#e8f4e8',
+    padding: 12,
+    borderRadius: 8,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#2d5a2d',
+  },
+})
