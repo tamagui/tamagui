@@ -3,6 +3,8 @@ import type { TamaguiOptions } from '@tamagui/types'
 
 let loadPromise: Promise<TamaguiOptions> | null = null
 let loadedOptions: TamaguiOptions | null = null
+let fullConfigLoaded = false
+let fullConfigLoadPromise: Promise<void> | null = null
 
 export function getTamaguiOptions(): TamaguiOptions | null {
   return loadedOptions
@@ -12,6 +14,10 @@ export function getLoadPromise(): Promise<TamaguiOptions> | null {
   return loadPromise
 }
 
+/**
+ * Load just the tamagui.build.ts config (lightweight)
+ * This doesn't bundle the full tamagui config - call ensureFullConfigLoaded() for that
+ */
 export async function loadTamaguiBuildConfig(
   optionsIn?: Partial<TamaguiOptions>
 ): Promise<TamaguiOptions> {
@@ -24,15 +30,6 @@ export async function loadTamaguiBuildConfig(
       platform: 'web',
     })
 
-    // load full tamagui config in worker (asynchronous)
-    if (!optionsIn?.disableWatchTamaguiConfig && !options.disable) {
-      await StaticWorker.loadTamagui({
-        components: ['tamagui'],
-        platform: 'web',
-        ...options,
-      })
-    }
-
     loadedOptions = options
     return options
   })()
@@ -40,8 +37,35 @@ export async function loadTamaguiBuildConfig(
   return loadPromise
 }
 
+/**
+ * Ensure the full tamagui config is loaded (heavy - bundles config + components)
+ * Call this lazily when transform/extraction is actually needed
+ */
+export async function ensureFullConfigLoaded(): Promise<void> {
+  if (fullConfigLoaded) return
+  if (fullConfigLoadPromise) return fullConfigLoadPromise
+
+  const options = await loadTamaguiBuildConfig()
+
+  fullConfigLoadPromise = (async () => {
+    // load full tamagui config in worker (asynchronous)
+    if (!options.disableWatchTamaguiConfig && !options.disable) {
+      await StaticWorker.loadTamagui({
+        components: ['tamagui'],
+        platform: 'web',
+        ...options,
+      })
+    }
+    fullConfigLoaded = true
+  })()
+
+  return fullConfigLoadPromise
+}
+
 export async function cleanup() {
   await StaticWorker.destroyPool()
   loadPromise = null
   loadedOptions = null
+  fullConfigLoaded = false
+  fullConfigLoadPromise = null
 }
