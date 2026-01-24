@@ -89,6 +89,14 @@ export type ScrollBridge = {
     onParentDragging: (props: (val: boolean) => void) => () => void;
     setParentDragging: (val: boolean) => void;
     onFinishAnimate?: () => void;
+    blockPan?: boolean;
+    initialPosition?: number;
+    isScrollablePositionLocked?: boolean;
+    setScrollEnabled?: (enabled: boolean, lockTo?: number) => void;
+    _lastTouchY?: number;
+    scrollLockY?: number;
+    forceScrollTo?: (y: number) => void;
+    isAtTop?: boolean;
 };
 export {};
 //# sourceMappingURL=types.d.ts.map

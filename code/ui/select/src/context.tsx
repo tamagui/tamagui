@@ -1,5 +1,5 @@
 import { createStyledContext } from '@tamagui/core'
-import { getNativePortalState } from '@tamagui/native-portal'
+import { getNativePortalState } from '@tamagui/native'
 import type { SelectContextValue, SelectItemParentContextValue } from './types'
 
 export const { Provider: SelectProvider, useStyledContext: useSelectContext } =

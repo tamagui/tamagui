@@ -26,9 +26,12 @@ import type {
 } from 'react-native'
 import { Dimensions, Keyboard, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
+import { GestureDetectorWrapper } from './GestureDetectorWrapper'
+import { GestureSheetProvider } from './GestureSheetContext'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
+import { useGestureHandlerPan } from './useGestureHandlerPan'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -131,18 +134,16 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     }, [open, frameSize])
 
+    // use stableFrameSize when closing to prevent position jumps during exit animation
+    // but when opening, always use the current frameSize so positions update correctly
+    const effectiveFrameSize = open ? frameSize : stableFrameSize.current || frameSize
+
     const positions = React.useMemo(
       () =>
         snapPoints.map((point) =>
-          // FIX: Use stable frameSize when closing to prevent position jumps
-          getYPositions(
-            snapPointsMode,
-            point,
-            screenSize,
-            open ? frameSize : stableFrameSize.current
-          )
+          getYPositions(snapPointsMode, point, screenSize, effectiveFrameSize)
         ),
-      [screenSize, frameSize, snapPoints, snapPointsMode, open]
+      [screenSize, effectiveFrameSize, snapPoints, snapPointsMode]
     )
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
@@ -182,8 +183,25 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         (value) => {
           at.current = value
           scrollBridge.paneY = value
+          // update isAtTop for scroll enable/disable
+          // positions[0] is the top snap point (minY)
+          const minY = positions[0]
+          const wasAtTop = scrollBridge.isAtTop
+          const nowAtTop = value <= minY + 5
+          if (wasAtTop !== nowAtTop) {
+            scrollBridge.isAtTop = nowAtTop
+            // when reaching top, enable scroll; when leaving top, disable scroll
+            // this preemptively sets scroll state before any gestures start
+            if (nowAtTop) {
+              scrollBridge.scrollLockY = undefined
+              scrollBridge.setScrollEnabled?.(true)
+            } else {
+              scrollBridge.scrollLockY = 0
+              scrollBridge.setScrollEnabled?.(false)
+            }
+          }
         },
-        [animationDriver]
+        [animationDriver, positions]
       )
     )
 
@@ -251,11 +269,26 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         scrollBridge.scrollLock = false
         scrollBridge.scrollStartY = -1
       }
+
+      // set initial isAtTop state when sheet opens
+      // position 0 = top snap point, so isAtTop = true
+      if (open && position >= 0) {
+        const isTopPosition = position === 0
+        scrollBridge.isAtTop = isTopPosition
+        if (isTopPosition) {
+          scrollBridge.scrollLockY = undefined
+          scrollBridge.setScrollEnabled?.(true)
+        } else {
+          scrollBridge.scrollLockY = 0
+          scrollBridge.setScrollEnabled?.(false)
+        }
+      }
     }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
     const [isDragging, setIsDragging] = React.useState(false)
+    const [blockPan, setBlockPan] = React.useState(false)
 
     const panResponder = React.useMemo(() => {
       if (disableDrag) return
@@ -414,6 +447,26 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
+    // gesture handler hook for RNGH-based gesture coordination
+    const { panGesture, panGestureRef, gestureHandlerEnabled } = useGestureHandlerPan({
+      positions,
+      frameSize,
+      setPosition,
+      animateTo,
+      stopSpring,
+      scrollBridge,
+      setIsDragging,
+      getCurrentPosition: () => at.current,
+      resisted,
+      disableDrag,
+      isShowingInnerSheet,
+      setAnimatedPosition: (val: number) => {
+        // directly set the animated value for smooth dragging
+        // console.warn('[RNGH-Sheet] setAnimatedPosition:', val.toFixed(1))
+        animatedNumber.setValue(val, { type: 'direct' })
+      },
+    })
+
     const handleAnimationViewLayout = React.useCallback(
       (e: LayoutChangeEvent) => {
         // FIX: Don't update frameSize during exit animation to prevent position jumps
@@ -523,52 +576,65 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       <LayoutMeasurementController disable={!open}>
         <ParentSheetContext.Provider value={nextParentContext}>
           <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
-            <AnimatePresence custom={{ open }}>
-              {shouldHideParentSheet || !open ? null : overlayComponent}
-            </AnimatePresence>
-
-            {snapPointsMode !== 'percent' && (
-              <View
-                style={{
-                  opacity: 0,
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  pointerEvents: 'none',
-                }}
-                onLayout={handleMaxContentViewLayout}
-              />
-            )}
-
-            <AnimatedView
-              ref={ref}
-              {...panResponder?.panHandlers}
-              onLayout={handleAnimationViewLayout}
-              // @ts-ignore for CSS driver this is necessary to attach the transition
-              // also motion driver at least though i suspect all drivers?
-              transition={isDragging || disableAnimation ? null : transition}
-              // @ts-ignore
-              disableClassName
-              style={[
-                {
-                  position: 'absolute',
-                  zIndex,
-                  width: '100%',
-                  height: forcedContentHeight,
-                  minHeight: forcedContentHeight,
-                  opacity: !shouldHideParentSheet ? opacity : 0,
-                  ...((shouldHideParentSheet || !open) && {
-                    pointerEvents: 'none',
-                  }),
-                },
-                animatedStyle,
-              ]}
+            <GestureSheetProvider
+              isDragging={isDragging}
+              blockPan={blockPan}
+              setBlockPan={setBlockPan}
+              panGesture={panGesture}
+              panGestureRef={panGestureRef}
             >
-              {/* <AdaptProvider>{props.children}</AdaptProvider> */}
-              {props.children}
-            </AnimatedView>
+              <AnimatePresence custom={{ open }}>
+                {shouldHideParentSheet || !open ? null : overlayComponent}
+              </AnimatePresence>
+
+              {snapPointsMode !== 'percent' && (
+                <View
+                  style={{
+                    opacity: 0,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    pointerEvents: 'none',
+                  }}
+                  onLayout={handleMaxContentViewLayout}
+                />
+              )}
+
+              <AnimatedView
+                ref={ref}
+                {...(!gestureHandlerEnabled && panResponder?.panHandlers)}
+                onLayout={handleAnimationViewLayout}
+                // @ts-ignore for CSS driver this is necessary to attach the transition
+                // also motion driver at least though i suspect all drivers?
+                transition={isDragging || disableAnimation ? null : transition}
+                // @ts-ignore
+                disableClassName
+                style={[
+                  {
+                    position: 'absolute',
+                    zIndex,
+                    width: '100%',
+                    height: forcedContentHeight,
+                    minHeight: forcedContentHeight,
+                    opacity: !shouldHideParentSheet ? opacity : 0,
+                    ...((shouldHideParentSheet || !open) && {
+                      pointerEvents: 'none',
+                    }),
+                  },
+                  animatedStyle,
+                ]}
+              >
+                {gestureHandlerEnabled && panGesture ? (
+                  <GestureDetectorWrapper gesture={panGesture} style={{ flex: 1 }}>
+                    {props.children}
+                  </GestureDetectorWrapper>
+                ) : (
+                  props.children
+                )}
+              </AnimatedView>
+            </GestureSheetProvider>
           </SheetProvider>
         </ParentSheetContext.Provider>
       </LayoutMeasurementController>
@@ -623,7 +689,9 @@ function getYPositions(
   screenSize?: number,
   frameSize?: number
 ) {
-  if (!screenSize || !frameSize) return 0
+  if (!screenSize || !frameSize) {
+    return 0
+  }
 
   if (mode === 'mixed') {
     if (typeof point === 'number') {
@@ -638,8 +706,7 @@ function getYPositions(
         console.warn('Invalid snapPoint percentage string')
         return 0
       }
-      const next = Math.round(screenSize - pct * screenSize)
-      return next
+      return Math.round(screenSize - pct * screenSize)
     }
     console.warn('Invalid snapPoint unknown value')
     return 0

@@ -109,4 +109,19 @@ export type ScrollBridge = {
   onParentDragging: (props: (val: boolean) => void) => () => void
   setParentDragging: (val: boolean) => void
   onFinishAnimate?: () => void
+  // gesture handler state for RNGH integration
+  blockPan?: boolean
+  initialPosition?: number
+  isScrollablePositionLocked?: boolean
+  // control scroll enabled state for RNGH coordination
+  // lockTo parameter: when disabling, lock scroll to this position (undefined = current position)
+  setScrollEnabled?: (enabled: boolean, lockTo?: number) => void
+  // track touch position for direction detection in RNGH
+  _lastTouchY?: number
+  // scroll lock position for forcing scroll back when pan handles
+  scrollLockY?: number
+  // force scroll to position (compensates for async setNativeProps)
+  forceScrollTo?: (y: number) => void
+  // whether sheet is at top position (for scroll enable/disable)
+  isAtTop?: boolean
 }
