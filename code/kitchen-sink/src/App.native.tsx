@@ -2,6 +2,19 @@
 import '@tamagui/native/setup-teleport'
 import '@tamagui/native/setup-gesture-handler'
 
+// check launch args for disabling RNGH (for testing without gesture handler)
+import { LaunchArguments } from 'react-native-launch-arguments'
+import { getGestureHandler } from '@tamagui/native'
+
+interface TestLaunchArgs {
+  disableGestureHandler?: boolean
+}
+
+const launchArgs = LaunchArguments.value<TestLaunchArgs>()
+if (launchArgs.disableGestureHandler) {
+  getGestureHandler().disable()
+}
+
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'

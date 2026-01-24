@@ -31,7 +31,7 @@ export type { PortalAccessor } from './portalState'
 
 // gesture handler
 export { getGestureHandler } from './gestureState'
-export type { GestureHandlerAccessor } from './gestureState'
+export type { GestureHandlerAccessor, PressGestureConfig } from './gestureState'
 
 // worklets
 export { getWorklets } from './workletsState'

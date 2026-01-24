@@ -1,6 +1,6 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { ScrollView, TouchableOpacity, View } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
@@ -29,10 +29,14 @@ function QuickNavItem({ name, index }: { name: string; index: number }) {
         backgroundColor: bg,
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.1)',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
       onPress={linkProps.onPress}
       activeOpacity={0.7}
-    />
+    >
+      <Text style={{ fontSize: 16, fontWeight: '700', color: '#333' }}>{index + 1}</Text>
+    </TouchableOpacity>
   )
 }
 
@@ -72,9 +76,7 @@ export function HomeScreen() {
   return (
     <ScrollView testID="home-scroll-view">
       <YStack bg="$color2" p="$3" pt="$4" pb="$8" flex={1} gap="$2">
-        <H1 fontFamily="$heading" size="$3">
-          Kitchen Sink
-        </H1>
+        <H1 fontFamily="$heading">Kitchen Sink</H1>
 
         {/* Collapsible quick access to test cases */}
         <TestCasesSection />

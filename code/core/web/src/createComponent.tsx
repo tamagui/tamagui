@@ -48,6 +48,7 @@ import type {
 } from './types'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
+import { getWebEvents, usePressHandling, wrapWithGestureDetector } from './eventHandling'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -1307,7 +1308,12 @@ export function createComponent<
       log(`events`, { events, attachHover, attachPress })
     }
 
-    // EVENTS native
+    // EVENTS native - use RNGH press handling if available
+    const pressGesture =
+      process.env.TAMAGUI_TARGET === 'native'
+        ? usePressHandling(events, viewProps, stateRef)
+        : null
+
     hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow, staticConfig)
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
@@ -1377,6 +1383,11 @@ export function createComponent<
       } else {
         content = React.createElement(elementType, viewProps, content)
       }
+    }
+
+    // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      content = wrapWithGestureDetector(content, pressGesture, stateRef)
     }
 
     // needs to reset the presence state for nested children
@@ -1629,23 +1640,6 @@ export function createComponent<
   res.styleable = styleable
 
   return res
-}
-
-type EventKeys = keyof (TamaguiComponentEvents & WebOnlyPressEvents)
-type EventLikeObject = { [key in EventKeys]?: any }
-
-function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
-  return {
-    onMouseEnter: events.onMouseEnter,
-    onMouseLeave: events.onMouseLeave,
-    [webStyle ? 'onClick' : 'onPress']: events.onPress,
-    onMouseDown: events.onPressIn,
-    onMouseUp: events.onPressOut,
-    onTouchStart: events.onPressIn,
-    onTouchEnd: events.onPressOut,
-    onFocus: events.onFocus,
-    onBlur: events.onBlur,
-  }
 }
 
 const fromPx = (val?: any): number => {

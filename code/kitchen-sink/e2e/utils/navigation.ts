@@ -3,7 +3,7 @@
  * Uses the quick-nav grid in the collapsible section on home screen
  */
 
-import { by, element, waitFor } from 'detox'
+import { by, device, element, waitFor } from 'detox'
 
 /**
  * Fast navigation to any test case using the quick-nav grid
@@ -16,18 +16,22 @@ export async function navigateToTestCase(
   testCaseName: string,
   waitForElementId?: string
 ) {
+  // disable sync to avoid animation driver blocking
+  await device.disableSynchronization()
+
   // wait for home screen to load
   await waitFor(element(by.text('Kitchen Sink')))
     .toExist()
     .withTimeout(60000)
 
+  // small delay for UI to settle before tapping
+  await new Promise((r) => setTimeout(r, 500))
+
   // tap toggle button to expand the quick-nav section
   await element(by.id('toggle-test-cases')).tap()
 
-  // wait for grid to exist then tap the target
-  await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
-    .toExist()
-    .withTimeout(3000)
+  // small delay for expansion
+  await new Promise((r) => setTimeout(r, 300))
 
   // tap the quick-nav element for this test case
   await element(by.id(`detox-nav-${testCaseName}`)).tap()
@@ -38,4 +42,7 @@ export async function navigateToTestCase(
       .toExist()
       .withTimeout(10000)
   }
+
+  // re-enable sync
+  await device.enableSynchronization()
 }

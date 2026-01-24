@@ -34,7 +34,6 @@ import {
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
-import { usePressability } from './vendor/Pressability'
 
 // helpful for usage outside of tamagui
 export {
@@ -176,6 +175,7 @@ setupHooks({
 
   useEvents(viewProps, events, splitStyles, setStateShallow, staticConfig) {
     if (process.env.TAMAGUI_TARGET === 'native') {
+      // focus/blur events still need to be attached directly
       if (events) {
         if (events.onFocus) {
           viewProps['onFocus'] = events.onFocus
@@ -185,57 +185,22 @@ setupHooks({
         }
       }
 
-      if (staticConfig.isInput) {
-        if (events) {
-          const { onPressIn, onPressOut, onPress } = events
-          const inputEvents = {
-            onPressIn,
-            onPressOut: onPressOut || onPress,
-          }
-          if (onPressOut && onPress) {
-            // only supports onPressIn and onPressOut so combine them
-            inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
-          }
-          Object.assign(viewProps, inputEvents)
+      // input special case - TextInput needs press events attached directly
+      if (staticConfig.isInput && events) {
+        const { onPressIn, onPressOut, onPress } = events
+        const inputEvents = {
+          onPressIn,
+          onPressOut: onPressOut || onPress,
         }
-      } else {
-        // use Pressability to get smooth unPress when you press + hold + move out
-        // only ever create once, use .configure() to update later
-        if (events && viewProps.hitSlop) {
-          events.hitSlop = viewProps.hitSlop
+        if (onPressOut && onPress) {
+          // only supports onPressIn and onPressOut so combine them
+          inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
         }
-
-        // note we do events checks more than we should because we need this hook to always run
-        const pressability = usePressability(events)
-
-        if (events) {
-          // apply pressability when any press event exists, not just onPress
-          // this ensures drag-off unpress works for elements with only onPressIn/onPressOut
-          const hasPressEvents =
-            events.onPress || events.onPressIn || events.onPressOut || events.onLongPress
-
-          if (process.env.NODE_ENV === 'development') {
-            if (viewProps['debug']) {
-              console.info(
-                `Checking for press ${!!hasPressEvents} then applying pressability props: ${Object.keys(
-                  pressability || {}
-                )}`
-              )
-            }
-          }
-
-          if (hasPressEvents) {
-            for (const key in pressability) {
-              const og = viewProps[key]
-              const val = pressability[key]
-              viewProps[key] =
-                og && !dontComposePressabilityKeys[key]
-                  ? composeEventHandlers(og, val)
-                  : val
-            }
-          }
-        }
+        Object.assign(viewProps, inputEvents)
       }
+
+      // press handling is now done by usePressHandling in createComponent
+      // which uses RNGH when available, otherwise falls back to usePressability
     }
   },
 
@@ -254,10 +219,6 @@ setupHooks({
     },
   }),
 })
-
-const dontComposePressabilityKeys = {
-  onClick: true,
-}
 
 // overwrite web versions:
 // putting at the end ensures it overwrites in dist/cjs/index.js

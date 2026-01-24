@@ -18,7 +18,7 @@ export type { NativePortalState, GestureState, WorkletsState, NativePortalProps,
 export { getPortal } from "./portalState";
 export type { PortalAccessor } from "./portalState";
 export { getGestureHandler } from "./gestureState";
-export type { GestureHandlerAccessor } from "./gestureState";
+export type { GestureHandlerAccessor, PressGestureConfig } from "./gestureState";
 export { getWorklets } from "./workletsState";
 export type { WorkletsAccessor } from "./workletsState";
 export { NativePortal, NativePortalHost, NativePortalProvider } from "./components";
