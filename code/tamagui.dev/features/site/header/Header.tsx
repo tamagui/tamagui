@@ -910,7 +910,6 @@ const HeaderMenuMoreContents = () => {
             </SizableText>
           </HeadAnchor>
         </Link>
-
       </XStack>
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
