@@ -33,7 +33,7 @@ import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { DocsMenuContents } from '../../docs/DocsMenuContents'
 import { useDocsMenu } from '../../docs/useDocsMenu'
-import { AddevenIcon } from '../../icons/AddevenIcon'
+import { AddEvenBrandIcon } from '../../icons/AddEvenBrandIcon'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
@@ -932,7 +932,7 @@ const HeaderMenuMoreContents = () => {
               my={-10}
               opacity={0.8}
             >
-              <AddevenIcon scale={0.65} />
+              <AddEvenBrandIcon scale={0.65} />
             </YStack>
           </XStack>
           <SizableText size="$2" color="$color9">
