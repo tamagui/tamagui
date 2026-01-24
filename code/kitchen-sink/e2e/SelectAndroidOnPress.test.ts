@@ -14,6 +14,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
 
 // helper to skip tests on iOS
 const skipOnIOS = () => {
@@ -32,7 +33,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
   beforeEach(async () => {
     if (skipOnIOS()) return
     await device.reloadReactNative()
-    await navigateToSelectAndroidOnPress()
+    await navigateToTestCase('SelectAndroidOnPress', 'select-android-trigger')
   })
 
   it('should render the test case screen', async () => {
@@ -167,38 +168,3 @@ describe('SelectAndroidOnPress (#3436)', () => {
   })
 })
 
-async function navigateToSelectAndroidOnPress() {
-  // wait for app to load
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(60000)
-
-  // give the app a moment to settle
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  // tap "Test Cases"
-  await waitFor(element(by.id('home-test-cases-link')))
-    .toBeVisible()
-    .withTimeout(10000)
-  await element(by.id('home-test-cases-link')).tap()
-
-  // wait for test cases screen
-  await waitFor(element(by.text('All Test Cases')))
-    .toExist()
-    .withTimeout(10000)
-
-  await new Promise((resolve) => setTimeout(resolve, 500))
-
-  // find and tap SelectAndroidOnPress test case
-  await waitFor(element(by.id('test-case-SelectAndroidOnPress')))
-    .toBeVisible()
-    .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(600, 'down', Number.NaN, Number.NaN)
-
-  await element(by.id('test-case-SelectAndroidOnPress')).tap()
-
-  // wait for test screen to load
-  await waitFor(element(by.id('select-android-trigger')))
-    .toExist()
-    .withTimeout(10000)
-}

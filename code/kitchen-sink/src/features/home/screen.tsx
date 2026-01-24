@@ -1,27 +1,76 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { isGestureHandlerEnabled } from '@tamagui/native'
-import { ScrollView } from 'react-native'
+import { useState } from 'react'
+import { ScrollView, TouchableOpacity, View } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { H1, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
+import { Button, H1, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
+import * as TestCases from '../../usecases'
 
-export function HomeScreen() {
-  const gestureHandlerEnabled = isGestureHandlerEnabled()
-  console.log('[HomeScreen] isGestureHandlerEnabled returned:', gestureHandlerEnabled)
+const testCaseNames = Object.keys(TestCases)
+
+// hidden grid of all test cases for detox fast navigation
+// allows tests to immediately tap the target test case without scrolling
+// uses 44x44 buttons (iOS recommended min tap target) for reliable tap detection
+const BUTTON_SIZE = 44
+const BUTTONS_PER_ROW = 8
+
+// check if running in test mode (detox sets this)
+const IS_TEST_MODE = process.env.DETOX_TEST === 'true' || process.env.NODE_ENV === 'test'
+
+function DetoxQuickNav() {
+  const rows = Math.ceil(testCaseNames.length / BUTTONS_PER_ROW)
 
   return (
-    <ScrollView testID="home-scroll-view">
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
-        <H1 fontFamily="$heading" size="$9">
-          Kitchen Sink
-        </H1>
+    <View
+      testID="detox-quick-nav"
+      style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: BUTTONS_PER_ROW * BUTTON_SIZE,
+        height: rows * BUTTON_SIZE,
+        opacity: 0.01,
+      }}
+    >
+      {testCaseNames.map((name) => (
+        <QuickNavItem key={name} name={name} />
+      ))}
+    </View>
+  )
+}
 
-        <Paragraph size="$2" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
-          RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
-        </Paragraph>
+function QuickNavItem({ name }: { name: string }) {
+  const linkProps = useLink({ href: `/test/${name}` })
 
-        {/* Quick access to RNGH test cases */}
+  return (
+    <TouchableOpacity
+      testID={`detox-nav-${name}`}
+      style={{ width: BUTTON_SIZE, height: BUTTON_SIZE }}
+      onPress={linkProps.onPress}
+      activeOpacity={0.01}
+    />
+  )
+}
+
+function TestCasesSection() {
+  const [expanded, setExpanded] = useState(IS_TEST_MODE)
+
+  return (
+    <YStack gap="$2">
+      <Button
+        testID="toggle-test-cases"
+        size="$3"
+        onPress={() => setExpanded(!expanded)}
+        theme="gray"
+      >
+        {expanded ? 'Hide' : 'Show'} Quick Test Links ({testCaseNames.length})
+      </Button>
+
+      {expanded && (
         <YGroup size="$4">
           <YGroup.Item>
             <LinkListItem
@@ -56,6 +105,29 @@ export function HomeScreen() {
             </LinkListItem>
           </YGroup.Item>
         </YGroup>
+      )}
+    </YStack>
+  )
+}
+
+export function HomeScreen() {
+  const gestureHandlerEnabled = isGestureHandlerEnabled()
+  console.log('[HomeScreen] isGestureHandlerEnabled returned:', gestureHandlerEnabled)
+
+  return (
+    <ScrollView testID="home-scroll-view">
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
+        <DetoxQuickNav />
+        <H1 fontFamily="$heading" size="$9">
+          Kitchen Sink
+        </H1>
+
+        <Paragraph size="$2" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
+          RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
+        </Paragraph>
+
+        {/* Collapsible quick access to test cases */}
+        <TestCasesSection />
 
         <YStack gap="$4" maxW={600}>
           {demos.map(({ pages }, i) => {
