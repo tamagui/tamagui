@@ -44,11 +44,29 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   const rawSection = propsSection ?? docsSection
   const section = rawSection === 'compiler' ? 'core' : rawSection
 
+  // filter items based on section prop
+  const filteredItems = section ? sections[section as keyof typeof sections] : allItems
+
   // track open sections - now supports multiple
   const [openSections, setOpenSections] = React.useState<string[]>([])
 
-  // filter items based on section prop
-  const filteredItems = section ? sections[section as keyof typeof sections] : allItems
+  // auto-open the section containing the current path
+  React.useEffect(() => {
+    if (!currentPath) return
+
+    // find the section that contains the current path
+    for (const item of filteredItems) {
+      if (!item) continue
+      if (item.page.route === currentPath) {
+        // for UI section, use label; for core section, use title
+        const sectionKey = section === 'ui' ? item.section.label : item.section.title
+        if (sectionKey && !openSections.includes(sectionKey)) {
+          setOpenSections((prev) => [...prev, sectionKey])
+        }
+        break
+      }
+    }
+  }, [currentPath])
 
   // group filtered items by title
   const groupedItems: Record<string, Item[]> = {}
