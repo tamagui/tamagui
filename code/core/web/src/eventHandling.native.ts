@@ -1,20 +1,17 @@
 /**
- * Native event handling using RN's usePressability
- * RNGH infrastructure is in place for future use (sheet gestures, etc.)
+ * Native event handling - uses RNGH when available, falls back to usePressability
  */
 
+import React from 'react'
 import { composeEventHandlers } from '@tamagui/helpers'
-
-// RN's pressability for press handling
-const usePressability =
-  require('react-native/Libraries/Pressability/usePressability').default
+import { getGestureHandler } from '@tamagui/native'
+import type { TamaguiComponentStateRef } from './types'
 
 // web events not used on native
 export function getWebEvents() {
   return {}
 }
 
-// keys that should not be composed with existing handlers
 const dontComposePressabilityKeys: Record<string, boolean> = {
   onBlur: true,
   onFocus: true,
@@ -23,36 +20,73 @@ const dontComposePressabilityKeys: Record<string, boolean> = {
 export function usePressHandling(
   events: any,
   viewProps: any,
-  _stateRef: { current: any }
+  stateRef: { current: TamaguiComponentStateRef }
 ) {
   const hasPressEvents =
     events?.onPress || events?.onPressIn || events?.onPressOut || events?.onLongPress
 
-  // use usePressability for press handling
-  // handles all press scenarios including drag-off correctly
-  const pressability = usePressability(events)
+  const gh = getGestureHandler()
 
-  if (hasPressEvents && pressability) {
-    if (events && viewProps.hitSlop) {
-      events.hitSlop = viewProps.hitSlop
-    }
-    for (const key in pressability) {
-      const og = viewProps[key]
-      const val = pressability[key]
-      viewProps[key] =
-        og && !dontComposePressabilityKeys[key] ? composeEventHandlers(og, val) : val
+  // track if we ever had press events to avoid re-parenting
+  if (hasPressEvents) {
+    stateRef.current.hasHadEvents = true
+  }
+
+  if (gh.isEnabled && hasPressEvents) {
+    // RNGH path - return gesture for wrapping
+    return gh.createPressGesture({
+      onPressIn: events.onPressIn,
+      onPressOut: events.onPressOut,
+      onPress: events.onPress,
+      onLongPress: events.onLongPress,
+      delayLongPress: events.delayLongPress,
+      hitSlop: viewProps.hitSlop,
+    })
+  }
+
+  if (hasPressEvents) {
+    // fallback - inline require usePressability only when needed
+    const usePressability =
+      require('react-native/Libraries/Pressability/usePressability').default
+    const pressability = usePressability(events)
+
+    if (pressability) {
+      if (viewProps.hitSlop) {
+        events.hitSlop = viewProps.hitSlop
+      }
+      for (const key in pressability) {
+        const og = viewProps[key]
+        const val = pressability[key]
+        viewProps[key] =
+          og && !dontComposePressabilityKeys[key] ? composeEventHandlers(og, val) : val
+      }
     }
   }
 
-  // return null - no gesture wrapping needed for press handling
   return null
 }
 
-// no-op for press handling - gesture wrapping not used
 export function wrapWithGestureDetector(
   content: any,
-  _gesture: any,
-  _stateRef: { current: any }
+  gesture: any,
+  stateRef: { current: TamaguiComponentStateRef }
 ) {
-  return content
+  const gh = getGestureHandler()
+  const { GestureDetector, Gesture } = gh.state
+
+  // avoid re-parenting: only wrap if we ever had press events
+  const shouldWrap = stateRef.current.hasHadEvents
+
+  if (!GestureDetector || !shouldWrap) {
+    return content
+  }
+
+  // use actual gesture or no-op Manual gesture to maintain tree structure
+  const gestureToUse = gesture || Gesture?.Manual()
+
+  if (!gestureToUse) {
+    return content
+  }
+
+  return React.createElement(GestureDetector, { gesture: gestureToUse }, content)
 }
