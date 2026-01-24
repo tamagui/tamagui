@@ -174,17 +174,12 @@ export const ScreenshotGallery = () => {
         </H2>
 
         <SubTitle maxW={500} text="center">
-          Real screenshots from the starter. iOS, Android, and web - all from one codebase.
+          Real screenshots from the starter. iOS, Android, and web - all from one
+          codebase.
         </SubTitle>
       </YStack>
 
-      <XStack
-        gap="$4"
-        justify="center"
-        flexWrap="wrap"
-        z={1}
-        $sm={{ gap: '$3' }}
-      >
+      <XStack gap="$4" justify="center" flexWrap="wrap" z={1} $sm={{ gap: '$3' }}>
         {screenshotImages.map((img, i) => (
           <ScreenshotItem
             key={img.label}
