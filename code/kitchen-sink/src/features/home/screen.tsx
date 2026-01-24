@@ -8,9 +8,15 @@ import * as TestCases from '../../usecases'
 
 const testCaseNames = Object.keys(TestCases)
 
-// tiny 2x2 pixel grid of all test cases for detox fast navigation
+// hidden grid of all test cases for detox fast navigation
 // allows tests to immediately tap the target test case without scrolling
+// uses 10x10 buttons arranged in rows for reliable tap detection
+const BUTTON_SIZE = 10
+const BUTTONS_PER_ROW = 20
+
 function DetoxQuickNav() {
+  const rows = Math.ceil(testCaseNames.length / BUTTONS_PER_ROW)
+
   return (
     <View
       testID="detox-quick-nav"
@@ -20,8 +26,8 @@ function DetoxQuickNav() {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: testCaseNames.length * 2,
-        height: 2,
+        width: BUTTONS_PER_ROW * BUTTON_SIZE,
+        height: rows * BUTTON_SIZE,
         opacity: 0.01,
       }}
       pointerEvents="box-none"
@@ -39,7 +45,7 @@ function QuickNavItem({ name }: { name: string }) {
   return (
     <TouchableOpacity
       testID={`detox-nav-${name}`}
-      style={{ width: 2, height: 2 }}
+      style={{ width: BUTTON_SIZE, height: BUTTON_SIZE }}
       onPress={linkProps.onPress}
     />
   )
