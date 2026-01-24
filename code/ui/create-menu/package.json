@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-menu",
-  "version": "2.0.0-1769233344020",
+  "version": "2.0.0-1769256574467",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -69,9 +69,9 @@
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
+    "@react-native-menu/menu": "^2.0.0",
     "react": "*",
     "react-native": "*",
-    "@react-native-menu/menu": "^2.0.0",
     "react-native-ios-context-menu": "^3.2.1",
     "react-native-ios-utilities": "^5.2.0",
     "sf-symbols-typescript": "*",
