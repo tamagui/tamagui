@@ -105,11 +105,45 @@ export default () => (
   ]}
 />
 
+## Accessibility
+
+Always provide an `alt` attribute describing the image content. For decorative images, use an empty string (`alt=""`).
+
+```tsx
+// meaningful image
+<Image
+  src="/team-photo.jpg"
+  alt="The Tamagui team at React Conf 2024"
+  width={400}
+  height={300}
+/>
+
+// decorative image
+<Image
+  src="/decorative-bg.jpg"
+  alt=""
+  width={400}
+  height={300}
+/>
+```
+
+On React Native, use `accessible` and `accessibilityLabel` for screen reader support. See the [React Native Accessibility docs](https://reactnative.dev/docs/accessibility) for details.
+
+```tsx
+<Image
+  src="/avatar.jpg"
+  accessible
+  accessibilityLabel="User profile photo"
+  width={64}
+  height={64}
+/>
+```
+
 ## API Reference
 
 ### Image
 
-[Tamagui props](/docs/intro/props).
+Extends View with [Tamagui props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -117,6 +151,11 @@ export default () => (
       name: 'src',
       type: 'string',
       description: 'The image URL. Preferred over source for better web alignment.',
+    },
+    {
+      name: 'alt',
+      type: 'string',
+      description: 'Alternative text describing the image for accessibility. Use empty string for decorative images.',
     },
     {
       name: 'objectFit',
@@ -140,3 +179,93 @@ export default () => (
     },
   ]}
 />
+
+### Web-only Props
+
+These props pass through to the native `<img>` element on web:
+
+<PropsTable
+  data={[
+    {
+      name: 'loading',
+      type: "'lazy' | 'eager'",
+      description: 'Lazy load images below the fold. Use eager (default) for above-the-fold images.',
+    },
+    {
+      name: 'decoding',
+      type: "'async' | 'sync' | 'auto'",
+      description: 'Hint for how the browser should decode the image. Use async for non-blocking decode.',
+    },
+    {
+      name: 'fetchPriority',
+      type: "'high' | 'low' | 'auto'",
+      description: 'Hint for fetch priority. Use high for LCP (largest contentful paint) images.',
+    },
+    {
+      name: 'srcSet',
+      type: 'string',
+      description: 'Comma-separated list of image sources with width descriptors for responsive images.',
+    },
+    {
+      name: 'sizes',
+      type: 'string',
+      description: 'Media conditions describing the image display size, used with srcSet.',
+    },
+    {
+      name: 'crossOrigin',
+      type: "'anonymous' | 'use-credentials'",
+      description: 'CORS setting for the image request.',
+    },
+    {
+      name: 'referrerPolicy',
+      type: 'string',
+      description: 'Referrer policy for the image request.',
+    },
+  ]}
+/>
+
+### Accessibility Props
+
+<PropsTable
+  data={[
+    {
+      name: 'alt',
+      type: 'string',
+      description: 'Alternative text for screen readers. Required for meaningful images, use empty string for decorative.',
+    },
+    {
+      name: 'accessible',
+      type: 'boolean',
+      description: 'Native only. Marks the image as an accessible element.',
+    },
+    {
+      name: 'accessibilityLabel',
+      type: 'string',
+      description: 'Native only. Label read by screen readers. Use with accessible={true}.',
+    },
+    {
+      name: 'aria-label',
+      type: 'string',
+      description: 'Overrides alt as the accessible name. Prefer using alt instead.',
+    },
+    {
+      name: 'aria-describedby',
+      type: 'string',
+      description: 'References an element providing extended description.',
+    },
+    {
+      name: 'aria-hidden',
+      type: 'boolean',
+      description: 'Hides the image from assistive technology. Alternative to alt="".',
+    },
+    {
+      name: 'role',
+      type: 'string',
+      description: "Set to 'presentation' or 'none' for decorative images, or 'img' (default).",
+    },
+  ]}
+/>
+
+<Notice theme="green">
+  Web props like `loading`, `srcSet`, and `fetchPriority` only apply on web. On native, use expo-image via `createImage` for advanced features like blurhash placeholders and priority loading.
+</Notice>
