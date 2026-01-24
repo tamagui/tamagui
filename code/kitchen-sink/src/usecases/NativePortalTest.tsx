@@ -15,7 +15,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { getNativePortalState } from '@tamagui/native-portal'
+import { getNativePortalState } from '@tamagui/native'
 
 const items = [
   { name: 'Apple' },

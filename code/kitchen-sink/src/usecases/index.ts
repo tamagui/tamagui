@@ -1,3 +1,4 @@
+export { ActionsSheetComparison } from './ActionsSheetComparison'
 export { AnimatedByProp } from './AnimatedByProp'
 export { AnimationComprehensiveCase } from './AnimationComprehensiveCase'
 export { Benchmark } from './Benchmark'
@@ -49,7 +50,7 @@ export { Shadows } from './Shadows'
 export { ShorthandVariables } from './ShorthandVariables'
 export { SheetAnimationCase } from './SheetAnimationCase'
 export { SheetDragCase } from './SheetDragCase'
-// SheetScrollableDrag not exported - kept for testing gesture handler integration (see sheet/next.md)
+export { SheetScrollableDrag } from './SheetScrollableDrag'
 export { SheetScrollLockCase } from './SheetScrollLockCase'
 export { SheetSnapPointsFitCase } from './SheetSnapPointsFitCase'
 export { SlowThemeReRender } from './SlowThemeReRender'
