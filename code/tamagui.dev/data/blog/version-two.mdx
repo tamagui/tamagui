@@ -346,6 +346,10 @@ Defaults to `type="button"` to prevent accidental form submissions.
 gains an optional floating indicator. SelectLabel is now a simpler
 SizableText-based component instead of depending on ListItem.
 
+**Progress** - Now SSR-friendly with percentage-based transforms on web that
+render correctly without client-side hydration. Bouncy animations no longer
+overshoot past the container edges.
+
 **Tabs** - `activeStyle` and `activeTheme` props replace the old `Theme` wrapper
 approach. `activationMode` now defaults to `'manual'` (click/Enter to activate)
 matching web standards.
