@@ -119,6 +119,7 @@ const NavLineIndicator = ({
         width: 60,
         height: totalHeight,
         overflow: 'visible',
+        pointerEvents: 'none',
       }}
     >
       {/* Background path (gray) */}

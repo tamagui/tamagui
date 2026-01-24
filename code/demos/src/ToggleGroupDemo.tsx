@@ -44,11 +44,11 @@ function ToggleGroupComponent(props: {
         size={props.size}
       >
         {/* Using styled() component */}
-        <StyledItem value="left" aria-label="Left aligned">
+        <StyledItem value="left" aria-label="Left aligned" rounded="$4">
           <AlignLeft size={16} />
         </StyledItem>
 
-        <ToggleGroup.Item value="center" aria-label="Center aligned">
+        <ToggleGroup.Item value="center" aria-label="Center aligned" rounded="$4">
           <AlignCenter size={16} />
         </ToggleGroup.Item>
 
@@ -57,6 +57,7 @@ function ToggleGroupComponent(props: {
           value="right"
           aria-label="Right aligned"
           activeStyle={{ backgroundColor: '$green5' }}
+          rounded="$4"
         >
           <AlignRight size={16} />
         </ToggleGroup.Item>
