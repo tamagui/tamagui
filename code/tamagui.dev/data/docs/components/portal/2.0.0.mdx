@@ -13,8 +13,7 @@ Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet),
 ## Native Portal Setup (Recommended)
 
 On web, React's built-in `createPortal` preserves context automatically. On
-native, the default default portal implementation implementation doesn't
-preserve React context. Tamagui automatically re-propagates its own contexts
+native, the default portal implementation doesn't preserve React context. Tamagui automatically re-propagates its own contexts
 (theme, configuration), but your custom contexts like navigation or app state
 won't be available inside portaled content. The re-propagation also adds some
 overhead.
@@ -30,14 +29,12 @@ automatically.
 npm install react-native-teleport
 ```
 
-### Step 2: Call setupNativePortal
+### Step 2: Import the setup module
 
-In your app's entry file (index.js or App.tsx), before rendering:
+In your app's entry file (index.js or App.tsx), before any Tamagui imports:
 
 ```tsx
-import { setupNativePortal } from '@tamagui/portal/setup-native'
-
-setupNativePortal()
+import '@tamagui/native/setup-portal'
 ```
 
 That's it! All portal-using components will now preserve context automatically

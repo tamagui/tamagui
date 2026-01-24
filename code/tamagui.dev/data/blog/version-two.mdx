@@ -438,12 +438,10 @@ context. Tamagui automatically re-propagates its own contexts (theme,
 configuration), but your custom contexts like navigation or app state aren't
 available inside portaled content. The re-propagation also adds overhead.
 
-The solution: call `setupNativePortal()` once at app startup:
+The solution: import the setup module once at app startup, before any Tamagui imports:
 
 ```tsx
-import { setupNativePortal } from '@tamagui/portal/setup-native'
-
-setupNativePortal()
+import '@tamagui/native/setup-portal'
 ```
 
 This tells Tamagui to use the teleport package for true native portal
@@ -453,6 +451,52 @@ into your sheets and dialogs.
 
 See the [Portal docs](/docs/components/portal) for full details and alternative
 approaches like component scoping.
+
+#### Sheet Native Gesture Handler
+
+[Sheet](/docs/components/sheet) now supports optional integration with
+`react-native-gesture-handler` for native-quality gesture coordination between
+the sheet and scrollable content. This provides:
+
+- **Smooth scroll-to-drag handoffs** - Seamlessly transition between scrolling
+  content and dragging the sheet without lifting your finger
+- **No gesture conflicts** - Sheet and ScrollView gestures coordinate properly
+- **Native-quality feel** - Matches the behavior of system sheets like Apple
+  Maps or Google Maps
+
+To enable, install `react-native-gesture-handler` and add the setup import
+before any Tamagui imports:
+
+```tsx
+// App.tsx or index.js
+import '@tamagui/native/setup-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {/* Your app */}
+    </GestureHandlerRootView>
+  )
+}
+```
+
+Then use `Sheet.ScrollView` for scrollable content inside sheets:
+
+```tsx
+<Sheet>
+  <Sheet.Handle />
+  <Sheet.Frame>
+    <Sheet.ScrollView>
+      {/* Scrollable content with smooth gesture handoff */}
+    </Sheet.ScrollView>
+  </Sheet.Frame>
+</Sheet>
+```
+
+Without the gesture handler setup, Sheet falls back to React Native's built-in
+PanResponder which works well for basic use cases. See the
+[Sheet docs](/docs/components/sheet) for more details.
 
 ### New Components
 
