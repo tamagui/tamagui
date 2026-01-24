@@ -10,9 +10,9 @@ const testCaseNames = Object.keys(TestCases)
 
 // hidden grid of all test cases for detox fast navigation
 // allows tests to immediately tap the target test case without scrolling
-// uses 10x10 buttons arranged in rows for reliable tap detection
-const BUTTON_SIZE = 10
-const BUTTONS_PER_ROW = 20
+// uses 44x44 buttons (iOS recommended min tap target) for reliable tap detection
+const BUTTON_SIZE = 44
+const BUTTONS_PER_ROW = 8
 
 function DetoxQuickNav() {
   const rows = Math.ceil(testCaseNames.length / BUTTONS_PER_ROW)
@@ -30,7 +30,6 @@ function DetoxQuickNav() {
         height: rows * BUTTON_SIZE,
         opacity: 0.01,
       }}
-      pointerEvents="box-none"
     >
       {testCaseNames.map((name) => (
         <QuickNavItem key={name} name={name} />
@@ -47,6 +46,7 @@ function QuickNavItem({ name }: { name: string }) {
       testID={`detox-nav-${name}`}
       style={{ width: BUTTON_SIZE, height: BUTTON_SIZE }}
       onPress={linkProps.onPress}
+      activeOpacity={0.01}
     />
   )
 }
