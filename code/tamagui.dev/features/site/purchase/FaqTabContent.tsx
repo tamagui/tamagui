@@ -16,7 +16,7 @@ export const FaqTabContent = () => {
       <Question>Why the high price?</Question>
       <P>
         The new Takeout stack took immense, loving effort. We considered not selling it
-        all and keeping it a trade secret, especially as it's AI integration + docs +
+        all and keeping it a trade secret, especially as its AI integration + docs +
         scripting + setup makes it incredible at moving fast. Still, we do like the idea
         that Tamagui supports itself, and we hope the stack leads to{' '}
         <Link target="_blank" href="https://addeven.com">
