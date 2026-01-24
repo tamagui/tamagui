@@ -173,12 +173,17 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         // This allows seamless handoffs between pan and scroll
         let panHandles = false
 
+        // BUG #1 FIX: Check if scroll content is actually scrollable
+        // If content doesn't fill the ScrollView, gestures should pass through to sheet
+        const hasScrollableContent = scrollBridge.hasScrollableContent !== false
+
         if (!isCurrentlyAtTop) {
           // sheet not at top position
           if (isSwipingDown) {
             // swiping down while sheet not at top
-            // only scroll if scrollY > 0, otherwise pan handles
-            panHandles = !nodeIsScrolling
+            // BUG #1 FIX: if content not scrollable, pan always handles
+            // only scroll if scrollY > 0 AND content is scrollable, otherwise pan handles
+            panHandles = !nodeIsScrolling || !hasScrollableContent
           } else {
             // swiping up while sheet not at top -> pan drags sheet up
             panHandles = true
@@ -187,25 +192,33 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
           // sheet is at top position
           if (isSwipingDown) {
             // swiping down at top
-            if (nodeIsScrolling) {
-              // scroll > 0, let scroll handle (scroll back towards 0)
+            if (nodeIsScrolling && hasScrollableContent) {
+              // scroll > 0 and content scrollable, let scroll handle (scroll back towards 0)
               panHandles = false
-            } else if (gs.scrollEngaged) {
+            } else if (gs.scrollEngaged && hasScrollableContent) {
               // scroll WAS > 0 but now is 0 -> handoff from scroll to pan
               // pan takes over to drag sheet down
               // console.warn('[RNGH-Pan] *** HANDOFF FROM SCROLL TO PAN ***')
               panHandles = true
             } else {
-              // scroll never engaged, just drag sheet down
+              // scroll never engaged OR content not scrollable, just drag sheet down
               panHandles = true
             }
           } else {
-            // swiping up at top -> scroll handles (scroll content)
-            panHandles = false
+            // swiping up at top
+            // if there's scrollable content, let scroll handle so user can scroll into content
+            // resistance only applies when there's NO scrollable content
+            if (hasScrollableContent) {
+              // content is scrollable - let scroll handle (user wants to scroll down into content)
+              panHandles = false
+            } else {
+              // no scrollable content -> pan handles for resistance effect
+              panHandles = true
+            }
           }
         }
 
-        // console.warn('[RNGH-Pan] decision', { panHandles, isCurrentlyAtTop, isSwipingDown, nodeIsScrolling, scrollEngaged: gs.scrollEngaged, currentPos: currentPos.toFixed(1), minY })
+        // console.warn('[RNGH-Pan] decision', { panHandles, isCurrentlyAtTop, isSwipingDown, nodeIsScrolling, scrollEngaged: gs.scrollEngaged, hasScrollableContent, currentPos: currentPos.toFixed(1), minY })
 
         if (panHandles) {
           // pan handles - disable scroll and move sheet

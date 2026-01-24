@@ -212,7 +212,8 @@ export const SheetScrollView = React.forwardRef<
 
     const setIsScrollable = () => {
       if (parentHeight.current && contentHeight.current) {
-        setHasScrollableContent(contentHeight.current > parentHeight.current)
+        const isScrollable = contentHeight.current > parentHeight.current
+        setHasScrollableContent(isScrollable)
       }
     }
 
@@ -280,18 +281,19 @@ export const SheetScrollView = React.forwardRef<
           bounces={false}
           {...props}
         >
-          {/* content height measurer */}
+          {/* wrapper to measure actual content height (not min-height expanded) */}
           <View
-            position="absolute"
-            inset={0}
-            pointerEvents="none"
-            zIndex={-1}
             onLayout={(e) => {
-              contentHeight.current = Math.floor(e.nativeEvent.layout.height)
-              setIsScrollable()
+              const height = Math.floor(e.nativeEvent.layout.height)
+              // only update if different to avoid loops
+              if (height !== contentHeight.current) {
+                contentHeight.current = height
+                setIsScrollable()
+              }
             }}
-          />
-          {children}
+          >
+            {children}
+          </View>
         </RNGHComponent>
       )
     }
@@ -403,20 +405,18 @@ export const SheetScrollView = React.forwardRef<
         }}
         {...props}
       >
-        {/* content height measurer */}
+        {/* wrapper to measure actual content height */}
         <View
-          position="absolute"
-          inset={0}
-          pointerEvents="none"
-          zIndex={-1}
           onLayout={(e) => {
-            // found that contentHeight can be 0.x higher than parent when not scrollable
-            contentHeight.current = Math.floor(e.nativeEvent.layout.height)
-            setIsScrollable()
+            const height = Math.floor(e.nativeEvent.layout.height)
+            if (height !== contentHeight.current) {
+              contentHeight.current = height
+              setIsScrollable()
+            }
           }}
-        />
-
-        {children}
+        >
+          {children}
+        </View>
       </ScrollView>
     )
 
