@@ -13,11 +13,13 @@ import * as React from 'react'
 const PROGRESS_NAME = 'Progress'
 
 const [createProgressContext, createProgressScope] = createContextScope(PROGRESS_NAME)
+
 type ProgressContextValue = {
   value: number | null
   max: number
   width: number
 }
+
 const [ProgressProvider, useProgressContext] =
   createProgressContext<ProgressContextValue>(PROGRESS_NAME)
 
@@ -53,9 +55,14 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
 ) {
   const { __scopeProgress, transition, ...indicatorProps } = props
   const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
-  const pct = context.max - (context.value ?? 0)
-  // default somewhat far off
-  const x = -(context.width === 0 ? 300 : context.width) * (pct / context.max)
+
+  // indicator is 2x container width so bouncy animations can overshoot
+  // without visually extending past the right edge (parent has overflow:hidden)
+  // at 0%: x = -2*width (fully hidden left)
+  // at 100%: x = -width (right half visible, left half absorbs bounce overshoot)
+  const baseWidth = context.width === 0 ? 300 : context.width
+  const progressRatio = (context.value ?? 0) / context.max
+  const x = -baseWidth * (2 - progressRatio)
 
   return (
     <ProgressIndicatorFrame
@@ -63,14 +70,13 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
       data-value={context.value ?? undefined}
       data-max={context.max}
       x={x}
-      width={context.width}
+      width="200%"
       {...(!props.unstyled && {
         animateOnly: ['transform'],
         opacity: context.width === 0 ? 0 : 1,
       })}
       {...indicatorProps}
       ref={forwardedRef}
-      // avoid animation on first render so the progress doesn't bounce to initial location
       transition={!context.width ? null : transition}
     />
   )
