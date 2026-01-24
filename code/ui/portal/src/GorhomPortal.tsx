@@ -3,11 +3,7 @@
 // fixing SSR issue
 
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
-  getPortal,
-  NativePortalHost,
-  NativePortalProvider,
-} from '@tamagui/native'
+import { getPortal, NativePortalHost, NativePortalProvider } from '@tamagui/native'
 import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
 import React, {

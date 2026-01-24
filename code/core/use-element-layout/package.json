@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-element-layout",
-  "version": "2.0.0-1769256574467",
+  "version": "2.0.0-1769288527117",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
