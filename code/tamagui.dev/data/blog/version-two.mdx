@@ -90,6 +90,10 @@ The breaking changes outside of deprecations are:
   not to be confused with Tamagui v2 itself. The current config is now at v5. If
   you were using `@tamagui/config/v2`, migrate to `@tamagui/config/v5` or the
   default export.
+- **Config v5 changes from v4.** Animations are now imported separately
+  (`@tamagui/config/v5-css` etc.), media query names changed (`2xl` → `xxl`,
+  `2xs` → `xxs`), and style defaults align with React Native. Migration is
+  straightforward - see [Config v5 docs](/docs/core/config-v5).
 
 - **React Native 0.82+, React 19+, and TypeScript 5+ required.** Tamagui 2
   targets React Native 0.82, React 19, and TypeScript 5 and above with New

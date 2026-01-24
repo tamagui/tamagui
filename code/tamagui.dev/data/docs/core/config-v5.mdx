@@ -9,10 +9,8 @@ description: Modern config and themes with @tamagui/config/v5
   drivers, and easy customization.
 </IntroParagraph>
 
-V5 is largely compatible with v4 - it's a superset that adds more colors/tokens
-and makes theme customization easier. The main differences are modern defaults
-for `styleCompat` and `position`, but everything can be customized to your
-preferences.
+V5 builds on v4 with more colors, theme helpers, and expanded media queries.
+Migration from v4 is straightforward - see [what's changed](#whats-different-from-v4).
 
 First install the config package:
 
@@ -22,18 +20,50 @@ npm install @tamagui/config
 
 ## What's Different from v4
 
-- **More color themes** out of the box: blue, gray, green, orange, pink, purple,
-  red, tan, teal, yellow, neutral
-- **`createV5Theme` helper** for easy customization of themes without manually
-  calling `createThemes`
-- **`styleCompat: 'react-native'`** is the default, so `flex` uses
-  `flexBasis: 0` (matches React Native behavior)
-- **`defaultPosition: 'static'`** instead of `'relative'` (modern web default)
-- **Improved color palettes** using
-  [Radix Colors](https://www.radix-ui.com/colors) for better accessibility
+### Changes
 
-All settings can be overridden - if you prefer v4 behavior, set
-`styleCompat: 'legacy'` and `defaultPosition: 'relative'` in your settings.
+- **Animations not bundled** - Import separately from `v5-css`, `v5-rn`,
+  `v5-reanimated`, or `v5-motion`. See
+  [Choosing an Animation Driver](#choosing-an-animation-driver).
+- **Media query naming** - `2xl`/`2xs` → `xxl`/`xxs`/`xxxs`. Max queries use
+  different casing: `max2Xl` → `maxXXL`.
+- **`styleCompat: 'react-native'`** - `flex` now uses `flexBasis: 0` by default
+  (v4 used `'legacy'` with `flexBasis: auto`).
+- **`defaultPosition` not set** - Defaults to browser `static` instead of
+  v4's `'relative'`. You can still set it in your config.
+
+### New Features
+
+- **More color themes**: gray, blue, red, yellow, green, orange, pink, purple,
+  teal, neutral (v4 had blue, red, yellow, green, black, white)
+- **`createV5Theme` helper** for easy theme customization
+- **Height-based media queries**: `heightXXXS`, `heightXXS`, `heightXS`, etc.
+- **`pointerTouch`** media query for touch device detection
+- **Color utilities**: `adjustPalette`, `adjustPalettes` for transforming palettes
+- **Radix Colors v3** with improved accessibility (v4 used legacy Radix)
+
+### Migrating from v4
+
+To restore v4 behavior while using v5:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v5'
+import { animations } from '@tamagui/config/v5-css'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  animations,
+  settings: {
+    ...defaultConfig.settings,
+    styleCompat: 'legacy',
+    defaultPosition: 'relative',
+  },
+})
+```
+
+Update media query names in your code: `$2xl` → `$xxl`, `$2xs` → `$xxs`,
+`$max2Xl` → `$maxXXL`.
 
 ---
 
@@ -546,12 +576,13 @@ export const config = createTamagui({
 
 ---
 
-## Migrating from v4
+## Summary: v4 to v5 Migration Checklist
 
-Key differences when migrating:
-
-1. **More colors**: v5 includes many more color themes out of the box
-2. **`styleCompat`**: v5 defaults to `'react-native'`, so `flex` behaves like
-   React Native
-3. **Color palettes**: v5 uses Radix colors with darker grays for dark mode
-4. **`createV5Theme`**: New helper function for customizing themes
+1. **Add animations import** - v5 doesn't bundle animations:
+   ```tsx
+   import { animations } from '@tamagui/config/v5-css'
+   ```
+2. **Update media query names** - `2xl` → `xxl`, `2xs` → `xxs`, `max2Xl` → `maxXXL`
+3. **Review flex behavior** - v5 uses `flexBasis: 0` by default (React Native style)
+4. **Review position** - v5 doesn't set `defaultPosition` (defaults to `static`)
+5. **Review theme colors** - v5 uses Radix Colors v3 with slightly different values
