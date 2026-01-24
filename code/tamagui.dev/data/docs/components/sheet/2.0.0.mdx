@@ -180,6 +180,64 @@ Extends [XStack](/docs/components/stacks).
 Allows scrolling within Sheet. Extends
 [Scrollview](/docs/components/scroll-view).
 
+### Native Gesture Handler Integration
+
+For the best gesture experience on iOS and Android, Sheet supports optional integration with `react-native-gesture-handler`. This provides:
+
+- **Smooth scroll-to-drag handoffs** - Seamlessly transition between scrolling content and dragging the sheet
+- **No gesture conflicts** - Sheet and ScrollView gestures coordinate properly
+- **Native-quality feel** - Matches the behavior of system sheets
+
+#### Setup
+
+1. Install `react-native-gesture-handler`:
+
+```bash
+npm install react-native-gesture-handler
+```
+
+2. Add the setup import to your app entry point (before any Tamagui imports):
+
+```tsx
+// App.tsx or index.js
+import '@tamagui/native/setup-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {/* Your app */}
+    </GestureHandlerRootView>
+  )
+}
+```
+
+That's it! Sheet will automatically detect and use the native gesture handler when available.
+
+#### Using Sheet.ScrollView
+
+When using scrollable content inside a Sheet, use `Sheet.ScrollView` for proper gesture coordination:
+
+```tsx
+<Sheet>
+  <Sheet.Handle />
+  <Sheet.Frame>
+    <Sheet.ScrollView>
+      {/* Scrollable content */}
+    </Sheet.ScrollView>
+  </Sheet.Frame>
+</Sheet>
+```
+
+This ensures:
+- Scrolling up at the top of content works naturally
+- Dragging down when scroll is at top drags the sheet
+- Direction changes mid-gesture work smoothly
+
+#### Without Gesture Handler
+
+If you don't set up `react-native-gesture-handler`, Sheet falls back to React Native's built-in `PanResponder`. This works well for basic use cases but has some limitations on iOS where scroll and pan gestures can occasionally conflict.
+
 ### Notes
 
 For Android you need to manually re-propagate any context when using `modal`.
