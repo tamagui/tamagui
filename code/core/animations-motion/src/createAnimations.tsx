@@ -53,6 +53,10 @@ type TransitionAnimationOptions = AnimationOptions & {
 
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 
+// regex to detect non-position transform operations (scale, rotate, skew, matrix, perspective)
+// used to identify position-only transforms for the popper animation fix
+const nonPositionTransformRe = /scale|rotate|skew|matrix|perspective/
+
 type AnimationProps = {
   doAnimate?: Record<string, unknown>
   dontAnimate?: Record<string, unknown>
@@ -257,24 +261,47 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // Only apply this fix when:
               // 1. There's a running animation
               // 2. The transform change is POSITION-ONLY (just translate, no scale/rotate/skew)
+              // 3. enableAnimationForPositionChange is being used (Popper/Tooltip pattern)
               // This fixes tooltip position jumping without breaking AnimatePresence scale/rotate animations
+              // NOTE: We check for enableAnimationForPositionChange to avoid this fix causing jitter
+              // on components like the TAMAGUI logo dot indicator which also use translate-only transforms
 
               const isRunning = controls.current?.state === 'running'
               const targetTransform =
                 typeof diff.transform === 'string' ? diff.transform : null
 
-              // Only apply position fix for translate-only transforms
-              // Skip if transform contains scale, rotate, skew, matrix, or perspective
+              // only apply position fix for translate-only transforms
               const isPositionOnlyTransform =
                 targetTransform &&
                 targetTransform.includes('translate') &&
-                !targetTransform.includes('scale') &&
-                !targetTransform.includes('rotate') &&
-                !targetTransform.includes('skew') &&
-                !targetTransform.includes('matrix') &&
-                !targetTransform.includes('perspective')
+                !nonPositionTransformRe.test(targetTransform)
 
-              if (isRunning && controls.current && isPositionOnlyTransform) {
+              // Position fix for Popper/Tooltip elements with enableAnimationForPositionChange.
+              // Only apply when:
+              // 1. Animation is actively running
+              // 2. Transform is position-only (translate without scale/rotate/etc)
+              // 3. Element has data-popper-animate-position attribute (set by Popper when
+              //    enableAnimationForPositionChange is true)
+              //
+              // The issue: when a Popper animation is interrupted mid-flight, motion's
+              // animate() may start from wrong position causing jumps to origin.
+              //
+              // Why check data-popper-animate-position: This attribute is ONLY set on Popper
+              // elements that explicitly use enableAnimationForPositionChange. Regular
+              // components like the logo Circle don't have this attribute, so they won't
+              // get this fix applied (which would cause jitter due to getComputedStyle
+              // overhead on rapid updates).
+
+              // check if this is a Popper element with animated position
+              const isPopperElement = node.hasAttribute('data-popper-animate-position')
+
+              if (
+                isRunning &&
+                controls.current &&
+                isPositionOnlyTransform &&
+                isPopperElement
+              ) {
+                // get current visual position BEFORE stopping animation
                 const currentTransform = getComputedStyle(node).transform
 
                 if (currentTransform && currentTransform !== 'none') {
@@ -283,16 +310,19 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   )
 
                   if (matrixMatch) {
-                    const currentX = Number.parseFloat(matrixMatch[1])
-                    const currentY = Number.parseFloat(matrixMatch[2])
-
+                    // stop animation and preserve current position
                     controls.current.stop()
                     node.style.transform = currentTransform
 
-                    const startTransform = `translateX(${currentX}px) translateY(${currentY}px)`
+                    // animate from current matrix position to target
+                    const currentX = Number.parseFloat(matrixMatch[1])
+                    const currentY = Number.parseFloat(matrixMatch[2])
                     const keyframeDiff = {
                       ...diff,
-                      transform: [startTransform, targetTransform],
+                      transform: [
+                        `translateX(${currentX}px) translateY(${currentY}px)`,
+                        targetTransform,
+                      ],
                     }
 
                     controls.current = animate(
@@ -301,7 +331,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                       animationOptions
                     )
                     lastAnimateAt.current = Date.now()
-                    // IMPORTANT: Spread to create mutable copies - objects may be frozen
                     lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
                     lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
                     return

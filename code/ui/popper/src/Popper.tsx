@@ -653,6 +653,12 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         ref={contentRefs}
         contain="layout style"
         {...(passThrough ? null : floatingProps)}
+        {...(!passThrough &&
+          enableAnimationForPositionChange && {
+            // marker for animation driver to know this is a popper element
+            // that needs special handling for position animation interruption
+            'data-popper-animate-position': 'true',
+          })}
       >
         <PopperContentFrame
           key="popper-content-frame"

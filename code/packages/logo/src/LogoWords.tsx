@@ -108,11 +108,11 @@ export const LogoWords: React.MemoExoticComponent<
     >
       {animated && (
         <Circle
-          transition="quicker"
+          transition="medium"
           position="absolute"
           top={0}
           left={0}
-          y={mounted === 'start' ? -30 : -3}
+          y={mounted === 'start' ? -30 : -4}
           // the last i is less wide
           x={x}
           size={4}
