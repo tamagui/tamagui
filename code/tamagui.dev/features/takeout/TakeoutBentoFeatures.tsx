@@ -10,26 +10,18 @@ import {
   Zap,
 } from '@tamagui/lucide-icons'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import {
-  composeRefs,
-  H2,
-  H3,
-  Paragraph,
-  styled,
-  useThemeName,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H2, H3, Paragraph, styled, useThemeName, XStack, YStack } from 'tamagui'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { SubTitle } from '../../components/SubTitle'
 
 const IconWrapper = styled(YStack, {
-  width: 44,
-  height: 44,
-  rounded: '$4',
+  width: 52,
+  height: 52,
+  rounded: '$5',
   items: 'center',
   justify: 'center',
   mb: '$3',
+  transition: 'medium',
 })
 
 const features = [
@@ -37,11 +29,13 @@ const features = [
     title: 'Universal Apps',
     description: 'One codebase. iOS, Android, & Web. 90%+ shared code.',
     Icon: Globe,
+    featured: true,
   },
   {
     title: 'Real-time Sync',
     description: 'Zero provides instant sync with optimistic updates.',
     Icon: Zap,
+    featured: true,
   },
   {
     title: 'Native Feel',
@@ -79,52 +73,49 @@ function BentoCard({
   title,
   description,
   Icon,
+  featured = false,
 }: {
   title: string
   description: string
   Icon: typeof Globe
+  featured?: boolean
 }) {
   const isDark = useThemeName().startsWith('dark')
   const isHydrated = useDidFinishSSR()
+
   const innerGlow = useHoverGlow({
-    resist: 80,
-    size: 200,
+    resist: 65,
+    size: featured ? 280 : 220,
     strategy: 'blur',
-    blurPct: 60,
-    color: isDark ? 'var(--red3)' : 'var(--red4)',
-    opacity: isDark ? 0.3 : 0.35,
+    blurPct: 50,
+    color: isDark ? 'var(--color8)' : 'var(--color6)',
+    opacity: 0.4,
     background: 'transparent',
-    style: {
-      transition: `all ease-out 300ms`,
-    },
   })
 
   return (
     <YStack
-      ref={composeRefs(innerGlow.parentRef) as any}
+      ref={innerGlow.parentRef as any}
       height="100%"
-      gap="$2"
-      rounded="$5"
+      gap="$3"
+      rounded="$6"
       p="$5"
-      bg="$background04"
-      borderWidth={0.5}
-      borderColor="$color4"
+      bg={isDark ? '$background02' : '$background04'}
+      borderWidth={1}
+      borderColor="$borderColor"
       overflow="hidden"
       position="relative"
-      style={{
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-      }}
+      transition="medium"
     >
       {isHydrated && <innerGlow.Component />}
 
-      <IconWrapper bg="$color5" z={1} position="relative">
-        <Icon size={22} color="$color12" />
+      <IconWrapper bg="$color4" z={1} position="relative">
+        <Icon size={featured ? 26 : 24} color="$color11" transition="200ms" />
       </IconWrapper>
 
       <H3
-        fontSize={16}
-        fontWeight="600"
+        fontSize={featured ? 18 : 16}
+        fontWeight="700"
         color="$color12"
         z={1}
         position="relative"
@@ -133,73 +124,173 @@ function BentoCard({
         {title}
       </H3>
 
-      <Paragraph size="$3" color="$color11" z={1} position="relative">
+      <Paragraph
+        size={featured ? '$4' : '$3'}
+        color="$color11"
+        z={1}
+        position="relative"
+        transition="quick"
+      >
         {description}
       </Paragraph>
     </YStack>
   )
 }
 
-export function TakeoutBentoFeatures() {
+// Animated background orbs
+function BackgroundOrbs() {
   return (
-    <YStack
-      id="features"
-      gap="$6"
-      py="$8"
-      px="$4"
-      maxW={1100}
-      self="center"
-      width="100%"
-      position="relative"
-    >
-      {/* Large ambient glow behind the entire section */}
+    <>
+      {/* Primary large glow */}
       <ThemeTintAlt>
         <YStack
           position="absolute"
-          t="20%"
+          t="10%"
           l="50%"
-          x={-300}
-          width={600}
-          height={600}
+          x={-350}
+          width={700}
+          height={700}
+          rounded={999}
+          bg="$color7"
+          opacity={0.06}
+          pointerEvents="none"
+          transition="superLazy"
+          style={{
+            filter: 'blur(100px)',
+          }}
+        />
+      </ThemeTintAlt>
+
+      {/* Secondary accent glow */}
+      <ThemeTintAlt offset={2}>
+        <YStack
+          position="absolute"
+          t="40%"
+          r="-10%"
+          width={500}
+          height={500}
           rounded={999}
           bg="$color8"
-          opacity={0.08}
+          opacity={0.04}
           pointerEvents="none"
+          transition="superLazy"
           style={{
             filter: 'blur(120px)',
           }}
         />
       </ThemeTintAlt>
 
+      {/* Tertiary glow */}
+      <ThemeTintAlt offset={4}>
+        <YStack
+          position="absolute"
+          b="10%"
+          l="-5%"
+          width={400}
+          height={400}
+          rounded={999}
+          bg="$color6"
+          opacity={0.05}
+          pointerEvents="none"
+          transition="superLazy"
+          style={{
+            filter: 'blur(100px)',
+          }}
+        />
+      </ThemeTintAlt>
+    </>
+  )
+}
+
+export function TakeoutBentoFeatures() {
+  const isHydrated = useDidFinishSSR()
+
+  // Separate featured (first 2) from regular features
+  const featuredFeatures = features.slice(0, 2)
+  const regularFeatures = features.slice(2)
+
+  return (
+    <YStack
+      id="features"
+      gap="$4"
+      py="$10"
+      px="$4"
+      maxW={1200}
+      self="center"
+      width="100%"
+      position="relative"
+      $gtMd={{
+        gap: '$6',
+      }}
+    >
+      {isHydrated && <BackgroundOrbs />}
+
+      {/* Header section */}
       <YStack items="center" gap="$4" z={1}>
+        <ThemeTintAlt>
+          <Paragraph
+            fontFamily="$mono"
+            fontSize={12}
+            fontWeight="600"
+            color="$color10"
+            textTransform="uppercase"
+            letterSpacing={2}
+            opacity={0.8}
+          >
+            Why Takeout
+          </Paragraph>
+        </ThemeTintAlt>
+
         <H2
-          fontSize={32}
-          fontWeight="700"
+          fontSize={36}
+          fontWeight="800"
           text="center"
           color="$color12"
-          style={{ lineHeight: '1.2' }}
-          $sm={{ fontSize: 40 }}
+          style={{ lineHeight: '1.15' }}
+          $sm={{ fontSize: 44 }}
         >
           Modern, robust, maintained
         </H2>
-        <SubTitle maxW={680} text="center">
+
+        <SubTitle maxW={680} text="center" size="$5">
           We get it, starter kits are a dime a dozen. Takeout is built by industry
           veterans, and extracted out of real-world large apps.
         </SubTitle>
       </YStack>
 
-      {/* 4 cards per row on desktop, 2 on tablet, 1 on mobile */}
+      {/* Featured cards - larger, 2 per row */}
       <XStack flexWrap="wrap" gap="$4" justify="center" z={1}>
-        {features.map((feature, index) => (
+        {featuredFeatures.map((feature, index) => (
           <YStack
             key={feature.title}
-            width="calc(25% - 40px)"
-            minW={240}
-            $md={{ width: 'calc(25% - 12px)' }}
-            $sm={{ width: 'calc(50% - 8px)' }}
-            $xs={{ width: '100%' }}
+            width="calc(50% - 16px)"
+            minW={280}
+            $md={{ width: 'calc(50% - 8px)' }}
+            $sm={{ width: '100%' }}
           >
             <ThemeTintAlt offset={index}>
+              <BentoCard
+                title={feature.title}
+                description={feature.description}
+                Icon={feature.Icon}
+                featured
+              />
+            </ThemeTintAlt>
+          </YStack>
+        ))}
+      </XStack>
+
+      {/* Regular cards - 3 per row on desktop */}
+      <XStack flexWrap="wrap" gap="$4" justify="center" z={1}>
+        {regularFeatures.map((feature, index) => (
+          <YStack
+            key={feature.title}
+            width="calc(33.333% - 22px)"
+            minW={240}
+            $md={{ width: 'calc(50% - 8px)' }}
+            $sm={{ width: '100%' }}
+          >
+            <ThemeTintAlt offset={index + 2}>
               <BentoCard
                 title={feature.title}
                 description={feature.description}

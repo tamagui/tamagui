@@ -12,7 +12,7 @@ export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props
     whiteSpace="nowrap"
     minW={900}
     $sm={{
-      scale: 0.7,
+      scale: 0.5,
       m: -75,
     }}
     text="center"
