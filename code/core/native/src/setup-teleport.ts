@@ -18,7 +18,7 @@ const IS_FABRIC =
   typeof global !== 'undefined' &&
   Boolean((global as any)._IS_FABRIC ?? (global as any).nativeFabricUIManager)
 
-function setup() {
+function setup(): void {
   const g = globalThis as any
   if (g.__tamagui_native_portal_setup) return
   g.__tamagui_native_portal_setup = true
@@ -58,6 +58,3 @@ function setup() {
 
 // run setup immediately on import
 setup()
-
-// keep the function export for backward compatibility
-export const setupNativePortal = setup

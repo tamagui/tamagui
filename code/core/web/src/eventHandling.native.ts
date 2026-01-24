@@ -40,9 +40,7 @@ export function usePressHandling(
       const og = viewProps[key]
       const val = pressability[key]
       viewProps[key] =
-        og && !dontComposePressabilityKeys[key]
-          ? composeEventHandlers(og, val)
-          : val
+        og && !dontComposePressabilityKeys[key] ? composeEventHandlers(og, val) : val
     }
   }
 

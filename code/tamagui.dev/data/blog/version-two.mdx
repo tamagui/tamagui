@@ -125,8 +125,9 @@ The breaking changes outside of deprecations are:
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
 - Moved all settings on `createTamagui` to the `settings` object.
 - Native portals no longer auto-import React internals hack. If you want native
-  portals for better context preservation, add `import '@tamagui/native/setup-portal'`
-  at app startup. See [Portal docs](/docs/components/portal).
+  portals for better context preservation, add
+  `import '@tamagui/native/setup-teleport'` at app startup. See
+  [Portal docs](/docs/components/portal).
 - Removed React Native accessibility props in favor of web-standard props:
   - `accessibilityLabel` → `aria-label`
   - `accessibilityRole` → `role`
@@ -440,47 +441,29 @@ Tamagui's portal-based components (Sheet, Dialog, Popover, Select, and Toast)
 now support true native portals via
 [react-native-teleport](https://github.com/nicksrandall/react-native-teleport).
 
-The problem: on native, the default portal implementation doesn't preserve React
-context. Tamagui automatically re-propagates its own contexts (theme,
-configuration), but your custom contexts like navigation or app state aren't
-available inside portaled content. The re-propagation also adds overhead.
+Native doesn't support portal. Tamagui v1 found a workaround for this abusing
+private APIs, and fell back to automatically re-propagating its own contexts ,
+but your custom contexts would break. This also added lots of overhead.
 
-The solution: import the setup module once at app startup, before any Tamagui imports:
+In v2 you can now add `react-native-teleport`, then import:
 
 ```tsx
-import '@tamagui/native/setup-portal'
+import '@tamagui/native/setup-teleport'
 ```
 
-This tells Tamagui to use the teleport package for true native portal
-functionality, preserving the React fiber tree so all context flows through
-automatically. No more manually re-propagating theme context or navigation state
-into your sheets and dialogs.
-
-See the [Portal docs](/docs/components/portal) for full details and alternative
-approaches like component scoping.
+Now all components that portal work better and faster. See the
+[Portal docs](/docs/components/portal) for details and alternative approaches
+like component scoping.
 
 #### Sheet Native Gesture Handler
 
-[Sheet](/docs/components/sheet) now supports optional integration with
-`react-native-gesture-handler` for smooth scroll-to-drag gesture coordination.
-Install `react-native-gesture-handler` and add the setup import before any
-Tamagui imports:
+You can make all your press events and [Sheet](/docs/components/sheet) now
+optional integration with `react-native-gesture-handler` for much smoother
+performance on native. Install `react-native-gesture-handler` and add the setup
+import before any Tamagui imports:
 
-```tsx
-// App.tsx or index.js
-import '@tamagui/native/setup-gesture-handler'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-
-export default function App() {
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* Your app */}
-    </GestureHandlerRootView>
-  )
-}
-```
-
-See the [Sheet docs](/docs/components/sheet) for full details.
+See the [`@tamagui/native` docs](/ui/native) or
+[Sheet docs](/docs/components/sheet) for full details.
 
 ### New Components
 

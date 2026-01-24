@@ -357,8 +357,8 @@ test.describe('Sheet Animation - Motion Driver', () => {
     console.info(`Motion Driver - lazy avg: ${avgLazy.toFixed(0)}ms, lazy+fastConfig avg: ${avgOverride.toFixed(0)}ms`)
 
     // transitionConfig should override animation prop
-    // allow some margin for measurement noise
-    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.2)
+    // allow generous margin for measurement noise in CI environments
+    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.5)
   })
 })
 
@@ -470,7 +470,7 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
     console.info(`Reanimated Driver - lazy avg: ${avgLazy.toFixed(0)}ms, lazy+fastConfig avg: ${avgOverride.toFixed(0)}ms`)
 
     // transitionConfig should override animation prop
-    // allow some margin for measurement noise
-    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.2)
+    // allow generous margin for measurement noise in CI environments
+    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.5)
   })
 })

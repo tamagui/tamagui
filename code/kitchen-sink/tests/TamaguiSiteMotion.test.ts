@@ -5,6 +5,8 @@ import { expect, test } from '@playwright/test'
  *
  * These tests run against the actual tamagui.dev site (localhost:4444)
  * to test motion driver behavior on the real site components.
+ *
+ * SKIPPED: requires tamagui.dev running on localhost:4444
  */
 
 const SITE_URL = 'http://localhost:4444'
@@ -13,7 +15,7 @@ test.use({
   video: 'on',
 })
 
-test.describe('Tamagui.dev Motion Issues', () => {
+test.describe.skip('Tamagui.dev Motion Issues', () => {
   test.beforeAll(async () => {
     // verify site is running
   })

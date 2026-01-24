@@ -6,7 +6,7 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
  *
  * 1. $group-press WITHOUT transition
  * 2. $group-press WITH transition
- * 3. Named group ($group-mygroup-press)
+ * 3. Named group ($group-testy-press)
  * 4. Press and drag off behavior - should unpress correctly
  *
  * Colors:
@@ -52,7 +52,7 @@ const NamedGroupPressChild = styled(View, {
   alignItems: 'center',
   justifyContent: 'center',
 
-  '$group-mygroup-press': {
+  '$group-testy-press': {
     backgroundColor: '$red10',
   },
 })
@@ -67,7 +67,7 @@ const NamedGroupPressChildAnimated = styled(View, {
   justifyContent: 'center',
   transition: 'quick',
 
-  '$group-mygroup-press': {
+  '$group-testy-press': {
     backgroundColor: '$red10',
   },
 })
@@ -92,7 +92,9 @@ export function GroupPressNative() {
           testID="group-no-transition"
           backgroundColor="$gray5"
           padding="$2"
-          onPressIn={() => setState1((s) => ({ ...s, pressIn: s.pressIn + 1, isPressed: true }))}
+          onPressIn={() =>
+            setState1((s) => ({ ...s, pressIn: s.pressIn + 1, isPressed: true }))
+          }
           onPressOut={() =>
             setState1((s) => ({ ...s, pressOut: s.pressOut + 1, isPressed: false }))
           }
@@ -118,7 +120,9 @@ export function GroupPressNative() {
           testID="group-with-transition"
           backgroundColor="$gray5"
           padding="$2"
-          onPressIn={() => setState2((s) => ({ ...s, pressIn: s.pressIn + 1, isPressed: true }))}
+          onPressIn={() =>
+            setState2((s) => ({ ...s, pressIn: s.pressIn + 1, isPressed: true }))
+          }
           onPressOut={() =>
             setState2((s) => ({ ...s, pressOut: s.pressOut + 1, isPressed: false }))
           }
@@ -136,16 +140,17 @@ export function GroupPressNative() {
         </XStack>
       </YStack>
 
-      {/* test 3: named $group-mygroup-press WITHOUT transition */}
+      {/* test 3: named $group-testy-press WITHOUT transition */}
       <YStack gap="$1">
         <Text fontSize="$2">3. Named group (no transition)</Text>
         <YStack
-          // @ts-expect-error - named group
-          group="mygroup"
+          group="testy"
           testID="named-group-no-transition"
           backgroundColor="$gray5"
           padding="$2"
-          onPressIn={() => setState3((s) => ({ ...s, pressIn: s.pressIn + 1, isPressed: true }))}
+          onPressIn={() =>
+            setState3((s) => ({ ...s, pressIn: s.pressIn + 1, isPressed: true }))
+          }
           onPressOut={() =>
             setState3((s) => ({ ...s, pressOut: s.pressOut + 1, isPressed: false }))
           }
@@ -163,16 +168,17 @@ export function GroupPressNative() {
         </XStack>
       </YStack>
 
-      {/* test 4: named $group-mygroup-press WITH transition */}
+      {/* test 4: named $group-testy-press WITH transition */}
       <YStack gap="$1">
         <Text fontSize="$2">4. Named group (with transition)</Text>
         <YStack
-          // @ts-expect-error - named group
-          group="mygroup"
+          group="testy"
           testID="named-group-with-transition"
           backgroundColor="$gray5"
           padding="$2"
-          onPressIn={() => setState4((s) => ({ ...s, pressIn: s.pressIn + 1, isPressed: true }))}
+          onPressIn={() =>
+            setState4((s) => ({ ...s, pressIn: s.pressIn + 1, isPressed: true }))
+          }
           onPressOut={() =>
             setState4((s) => ({ ...s, pressOut: s.pressOut + 1, isPressed: false }))
           }

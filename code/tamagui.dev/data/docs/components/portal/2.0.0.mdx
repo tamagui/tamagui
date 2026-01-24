@@ -13,10 +13,10 @@ Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet),
 ## Native Portal Setup (Recommended)
 
 On web, React's built-in `createPortal` preserves context automatically. On
-native, the default portal implementation doesn't preserve React context. Tamagui automatically re-propagates its own contexts
-(theme, configuration), but your custom contexts like navigation or app state
-won't be available inside portaled content. The re-propagation also adds some
-overhead.
+native, the default portal implementation doesn't preserve React context.
+Tamagui automatically re-propagates its own contexts (theme, configuration), but
+your custom contexts like navigation or app state won't be available inside
+portaled content. The re-propagation also adds some overhead.
 
 We recommend using
 [react-native-teleport](https://github.com/nicksrandall/react-native-teleport)
@@ -34,16 +34,12 @@ npm install react-native-teleport
 In your app's entry file (index.js or App.tsx), before any Tamagui imports:
 
 ```tsx
-import '@tamagui/native/setup-portal'
+import '@tamagui/native/setup-teleport'
 ```
 
 That's it! All portal-using components will now preserve context automatically
-on native.
-
-### Why This Matters
-
-Without native portals, your custom context from parent components won't be
-available inside portaled content:
+on native. Without native portals, your custom context from parent components
+won't be available inside portaled content:
 
 ```tsx
 const MyContext = createContext('default')
@@ -53,7 +49,7 @@ function App() {
     <MyContext.Provider value="from-provider">
       <Sheet modal open>
         <Sheet.Frame>
-          {/* Without native portal: logs "default" instead of "from-provider" */}
+          {/* Without native portal: you'd not have context here on native */}
           <MyConsumer />
         </Sheet.Frame>
       </Sheet>
@@ -61,9 +57,6 @@ function App() {
   )
 }
 ```
-
-With `setupNativePortal()`, all context flows through correctly - and it's
-faster since Tamagui no longer needs to manually re-propagate its own contexts.
 
 ## Alternative Approaches
 

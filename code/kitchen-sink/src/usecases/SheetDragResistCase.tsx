@@ -1,6 +1,9 @@
 import { useState, useRef, useCallback } from 'react'
 import { View, Text as RNText, StyleSheet } from 'react-native'
-import ActionSheet, { type ActionSheetRef, ScrollView as ActionScrollView } from 'react-native-actions-sheet'
+import ActionSheet, {
+  type ActionSheetRef,
+  ScrollView as ActionScrollView,
+} from 'react-native-actions-sheet'
 import { Button, Sheet, Text, YStack, Paragraph } from 'tamagui'
 
 /**
@@ -42,8 +45,12 @@ function NoScrollViewSheet() {
         Test 1: No ScrollView
       </Button>
       <Paragraph testID="no-scroll-position">Position: {position}</Paragraph>
-      <Paragraph testID="no-scroll-max-drag">Max drag up: {maxDragUp.toFixed(0)}px</Paragraph>
-      <Paragraph testID="no-scroll-last-drag">Last drag Y: {lastDragY.toFixed(0)}px</Paragraph>
+      <Paragraph testID="no-scroll-max-drag">
+        Max drag up: {maxDragUp.toFixed(0)}px
+      </Paragraph>
+      <Paragraph testID="no-scroll-last-drag">
+        Last drag Y: {lastDragY.toFixed(0)}px
+      </Paragraph>
       <Sheet
         modal
         open={open}
@@ -85,10 +92,15 @@ function NoScrollViewSheet() {
             Current snap point: {position}
           </Paragraph>
           <Paragraph>
-            Drag UP on this sheet when at top position (0).
-            The sheet should resist and show visual feedback.
+            Drag UP on this sheet when at top position (0). The sheet should resist and
+            show visual feedback.
           </Paragraph>
-          <Paragraph testID="no-scroll-drag-indicator" bg="$blue3" padding="$2" borderRadius="$2">
+          <Paragraph
+            testID="no-scroll-drag-indicator"
+            bg="$blue3"
+            padding="$2"
+            borderRadius="$2"
+          >
             Max upward drag detected: {maxDragUp.toFixed(0)}px
           </Paragraph>
           <YStack flex={1} justifyContent="center" alignItems="center">
@@ -131,9 +143,15 @@ function NonScrollableContentSheet() {
         Test 2: Non-Scrollable ScrollView
       </Button>
       <Paragraph testID="non-scrollable-position">Position: {position}</Paragraph>
-      <Paragraph testID="non-scrollable-scroll-y">Scroll Y: {scrollY.toFixed(0)}</Paragraph>
-      <Paragraph testID="non-scrollable-scroll-count">Scroll events: {scrollEventCount}</Paragraph>
-      <Paragraph testID="non-scrollable-drag-count">Drag events: {dragEventCount}</Paragraph>
+      <Paragraph testID="non-scrollable-scroll-y">
+        Scroll Y: {scrollY.toFixed(0)}
+      </Paragraph>
+      <Paragraph testID="non-scrollable-scroll-count">
+        Scroll events: {scrollEventCount}
+      </Paragraph>
+      <Paragraph testID="non-scrollable-drag-count">
+        Drag events: {dragEventCount}
+      </Paragraph>
       <Sheet
         modal
         open={open}
@@ -172,8 +190,8 @@ function NonScrollableContentSheet() {
                 Current snap point: {position}
               </Paragraph>
               <Paragraph>
-                This content FITS in the sheet (not scrollable).
-                Dragging should move the SHEET, not scroll.
+                This content FITS in the sheet (not scrollable). Dragging should move the
+                SHEET, not scroll.
               </Paragraph>
               <YStack bg="$yellow3" padding="$3" borderRadius="$2">
                 <Text fontWeight="bold">Expected behavior:</Text>
@@ -181,7 +199,12 @@ function NonScrollableContentSheet() {
                 <Text>• Dragging up: sheet resists at top</Text>
                 <Text>• ScrollView should NOT capture gestures</Text>
               </YStack>
-              <Paragraph testID="non-scrollable-status" bg="$blue3" padding="$2" borderRadius="$2">
+              <Paragraph
+                testID="non-scrollable-status"
+                bg="$blue3"
+                padding="$2"
+                borderRadius="$2"
+              >
                 Scroll events: {scrollEventCount} | Position changes: {dragEventCount}
               </Paragraph>
               <Button
@@ -218,15 +241,18 @@ function ScrollableContentSheet() {
   const [isAtScrollTop, setIsAtScrollTop] = useState(true)
   const startY = useRef(0)
 
-  const handleScrollViewTouch = useCallback((pageY: number) => {
-    if (!isAtScrollTop) return
-    if (position !== 0) return
+  const handleScrollViewTouch = useCallback(
+    (pageY: number) => {
+      if (!isAtScrollTop) return
+      if (position !== 0) return
 
-    const dy = startY.current - pageY
-    if (dy > maxDragUp) {
-      setMaxDragUp(dy)
-    }
-  }, [isAtScrollTop, position, maxDragUp])
+      const dy = startY.current - pageY
+      if (dy > maxDragUp) {
+        setMaxDragUp(dy)
+      }
+    },
+    [isAtScrollTop, position, maxDragUp]
+  )
 
   return (
     <YStack gap="$2">
@@ -235,8 +261,12 @@ function ScrollableContentSheet() {
       </Button>
       <Paragraph testID="scrollable-position">Position: {position}</Paragraph>
       <Paragraph testID="scrollable-scroll-y">Scroll Y: {scrollY.toFixed(0)}</Paragraph>
-      <Paragraph testID="scrollable-max-drag">Max drag up (at top): {maxDragUp.toFixed(0)}px</Paragraph>
-      <Paragraph testID="scrollable-at-top">At scroll top: {isAtScrollTop ? 'YES' : 'NO'}</Paragraph>
+      <Paragraph testID="scrollable-max-drag">
+        Max drag up (at top): {maxDragUp.toFixed(0)}px
+      </Paragraph>
+      <Paragraph testID="scrollable-at-top">
+        At scroll top: {isAtScrollTop ? 'YES' : 'NO'}
+      </Paragraph>
       <Sheet
         modal
         open={open}
@@ -278,7 +308,12 @@ function ScrollableContentSheet() {
               <Paragraph testID="scrollable-snap-indicator">
                 Position: {position} | Scroll Y: {scrollY.toFixed(0)}
               </Paragraph>
-              <Paragraph testID="scrollable-status" bg="$blue3" padding="$2" borderRadius="$2">
+              <Paragraph
+                testID="scrollable-status"
+                bg="$blue3"
+                padding="$2"
+                borderRadius="$2"
+              >
                 Max upward drag (at top): {maxDragUp.toFixed(0)}px
               </Paragraph>
               <Button
@@ -290,8 +325,8 @@ function ScrollableContentSheet() {
                 Reset Drag Tracking
               </Button>
               <Paragraph>
-                This content IS scrollable. When at the top of scroll
-                and top snap point, dragging UP should show resistance.
+                This content IS scrollable. When at the top of scroll and top snap point,
+                dragging UP should show resistance.
               </Paragraph>
               <YStack bg="$green3" padding="$3" borderRadius="$2">
                 <Text fontWeight="bold">Expected behavior:</Text>
@@ -336,7 +371,10 @@ function ActionsSheetComparison() {
 
   return (
     <YStack gap="$2">
-      <Button testID="actions-sheet-trigger" onPress={() => actionsSheetRef.current?.show()}>
+      <Button
+        testID="actions-sheet-trigger"
+        onPress={() => actionsSheetRef.current?.show()}
+      >
         Actions Sheet (Comparison)
       </Button>
       <Paragraph testID="actions-sheet-snap">Actions Sheet snap: {snapIndex}</Paragraph>
@@ -351,7 +389,6 @@ function ActionsSheetComparison() {
         testIDs={{
           root: 'actions-sheet-root',
           backdrop: 'actions-sheet-backdrop',
-          handle: 'actions-sheet-handle',
           sheet: 'actions-sheet-frame',
         }}
       >
