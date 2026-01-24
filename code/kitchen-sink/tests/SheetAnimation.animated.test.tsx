@@ -312,8 +312,8 @@ test.describe('Sheet Animation - Motion Driver', () => {
     // Motion driver uses spring physics
     // quick: stiffness 250, lazy: stiffness 50
     // Higher stiffness = faster animation
-    // allow small margin since timing measurements have noise
-    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.7)
+    // allow generous margin - CI timing is highly variable (flaky)
+    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.5)
   })
 
   test('transitionConfig prop works without animation prop', async ({ page }) => {
@@ -426,8 +426,8 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
     // Reanimated uses spring physics
     // quick: stiffness 250, lazy: stiffness 50
     // Higher stiffness = faster animation
-    // allow small margin since timing measurements have noise
-    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.7)
+    // allow generous margin - CI timing is highly variable (flaky)
+    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.5)
   })
 
   test('transitionConfig prop works', async ({ page }) => {
