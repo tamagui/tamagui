@@ -47,26 +47,31 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   // filter items based on section prop
   const filteredItems = section ? sections[section as keyof typeof sections] : allItems
 
-  // track open sections - now supports multiple
-  const [openSections, setOpenSections] = React.useState<string[]>([])
-
-  // auto-open the section containing the current path
-  React.useEffect(() => {
-    if (!currentPath) return
-
-    // find the section that contains the current path
+  // find section key for a given path
+  const getSectionKeyForPath = (path: string) => {
     for (const item of filteredItems) {
       if (!item) continue
-      if (item.page.route === currentPath) {
-        // for UI section, use label; for core section, use title
-        const sectionKey = section === 'ui' ? item.section.label : item.section.title
-        if (sectionKey && !openSections.includes(sectionKey)) {
-          setOpenSections((prev) => [...prev, sectionKey])
-        }
-        break
+      if (item.page.route === path) {
+        return section === 'ui' ? item.section.label : item.section.title
       }
     }
-  }, [currentPath])
+    return ''
+  }
+
+  // compute initial open section synchronously (SSR-safe)
+  const currentSectionKey = currentPath ? getSectionKeyForPath(currentPath) : ''
+
+  // track open sections - initialized with current section
+  const [openSections, setOpenSections] = React.useState<string[]>(
+    currentSectionKey ? [currentSectionKey] : []
+  )
+
+  // update when navigating to a different section
+  React.useEffect(() => {
+    if (currentSectionKey && !openSections.includes(currentSectionKey)) {
+      setOpenSections((prev) => [...prev, currentSectionKey])
+    }
+  }, [currentSectionKey])
 
   // group filtered items by title
   const groupedItems: Record<string, Item[]> = {}
