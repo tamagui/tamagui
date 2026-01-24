@@ -135,7 +135,11 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       let keys: string[]
       if (props.animateOnly) {
         // animateOnly is explicit filter
-        keys = props.animateOnly
+        // expand 'transform' to include individual CSS transform properties
+        // since we now output translate, scale, rotate instead of a combined transform
+        keys = props.animateOnly.flatMap((key) =>
+          key === 'transform' ? ['translate', 'scale', 'rotate'] : key
+        )
       } else if (hasPerPropertyConfigs && !hasDefault) {
         // object format without default: { opacity: '200ms' } = only animate opacity
         keys = animatedProperties

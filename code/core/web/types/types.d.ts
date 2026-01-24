@@ -1448,6 +1448,7 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
+    useIndividualTransforms?: boolean;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
 };

@@ -28,10 +28,25 @@ async function getScale(page: Page, testId: string): Promise<number> {
     (id) => {
       const el = document.querySelector(`[data-testid="${id}"]`)
       if (!el) return -1
-      const transform = getComputedStyle(el).transform
-      if (transform === 'none') return 1
-      const match = transform.match(/matrix\(([^,]+),/)
-      return match ? Number.parseFloat(match[1]) : 1
+      const styles = getComputedStyle(el)
+
+      // check transform matrix first - motion uses transform: scale()
+      // which shows up in the computed transform matrix
+      const transform = styles.transform
+      if (transform && transform !== 'none') {
+        const match = transform.match(/matrix\(([^,]+),/)
+        if (match) {
+          return Number.parseFloat(match[1])
+        }
+      }
+
+      // fall back to individual CSS scale property
+      const scale = styles.scale
+      if (scale && scale !== 'none') {
+        return Number.parseFloat(scale)
+      }
+
+      return 1
     },
     testId
   )
