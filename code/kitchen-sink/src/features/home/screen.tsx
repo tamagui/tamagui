@@ -1,14 +1,55 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { ScrollView } from 'react-native'
+import { ScrollView, TouchableOpacity, View } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
 import { H1, ListItem, YGroup, YStack } from 'tamagui'
+import * as TestCases from '../../usecases'
+
+const testCaseNames = Object.keys(TestCases)
+
+// tiny 2x2 pixel grid of all test cases for detox fast navigation
+// allows tests to immediately tap the target test case without scrolling
+function DetoxQuickNav() {
+  return (
+    <View
+      testID="detox-quick-nav"
+      style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: testCaseNames.length * 2,
+        height: 2,
+        opacity: 0.01,
+      }}
+      pointerEvents="box-none"
+    >
+      {testCaseNames.map((name) => (
+        <QuickNavItem key={name} name={name} />
+      ))}
+    </View>
+  )
+}
+
+function QuickNavItem({ name }: { name: string }) {
+  const linkProps = useLink({ href: `/test/${name}` })
+
+  return (
+    <TouchableOpacity
+      testID={`detox-nav-${name}`}
+      style={{ width: 2, height: 2 }}
+      onPress={linkProps.onPress}
+    />
+  )
+}
 
 export function HomeScreen() {
   return (
     <ScrollView testID="home-scroll-view">
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
+        <DetoxQuickNav />
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
