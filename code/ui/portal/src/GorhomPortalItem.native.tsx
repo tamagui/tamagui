@@ -3,7 +3,7 @@
 
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent } from '@tamagui/core'
-import { getNativePortalState, NativePortal } from '@tamagui/native-portal'
+import { getNativePortalState, NativePortal } from '@tamagui/native'
 import { useEffect, useId } from 'react'
 import { usePortal } from './GorhomPortal'
 import type { PortalItemProps } from './types'

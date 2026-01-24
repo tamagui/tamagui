@@ -1,17 +1,24 @@
-import { setNativePortalState } from './state'
+/**
+ * Setup native portal support for Tamagui.
+ *
+ * Simply import this module at the top of your app entry point:
+ *
+ * @example
+ * ```tsx
+ * import '@tamagui/native/setup-portal'
+ * ```
+ *
+ * This automatically detects and configures react-native-teleport for portals.
+ * Falls back to legacy RN shims if teleport is not installed.
+ */
+
+import { setNativePortalState } from './portalState'
 
 const IS_FABRIC =
   typeof global !== 'undefined' &&
   Boolean((global as any)._IS_FABRIC ?? (global as any).nativeFabricUIManager)
 
-/**
- * Sets up native portal support for React Native.
- * Call this function early in your app (e.g., in index.js) to enable native portals.
- *
- * If react-native-teleport is installed, it will be used automatically (recommended).
- * Otherwise falls back to legacy RN shims approach.
- */
-export const setupNativePortal = (): void => {
+function setup() {
   const g = globalThis as any
   if (g.__tamagui_native_portal_setup) return
   g.__tamagui_native_portal_setup = true
@@ -48,3 +55,9 @@ export const setupNativePortal = (): void => {
     console.info(`Note: error importing native portal, native portals disabled`, err)
   }
 }
+
+// run setup immediately on import
+setup()
+
+// keep the function export for backward compatibility
+export const setupNativePortal = setup

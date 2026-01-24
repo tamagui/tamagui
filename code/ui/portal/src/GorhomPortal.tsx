@@ -7,7 +7,7 @@ import {
   getNativePortalState,
   NativePortalHost,
   NativePortalProvider,
-} from '@tamagui/native-portal'
+} from '@tamagui/native'
 import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
 import React, {

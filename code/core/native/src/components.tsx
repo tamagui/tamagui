@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { getNativePortalState } from './state'
+import { getNativePortalState } from './portalState'
 
 // types matching react-native-teleport's API
 export type NativePortalProps = {
