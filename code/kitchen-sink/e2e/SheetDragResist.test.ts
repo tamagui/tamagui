@@ -65,19 +65,19 @@ describe('SheetDragResist', () => {
         .toBeVisible()
         .withTimeout(5000)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify we're at position 0 (top snap point)
       await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText('Current snap point: 0')
 
-      await device.takeScreenshot('bug3-handle-before-drag')
+      // screenshot removed for CI speed
 
       // drag UP on handle - this should show resistance and spring back
       await element(by.id('no-scroll-handle')).swipe('up', 'slow', 0.8)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
-      await device.takeScreenshot('bug3-handle-after-drag')
+      // screenshot removed for CI speed
 
       // sheet should still be at position 0 (didn't dismiss or change snap)
       await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText('Current snap point: 0')
@@ -94,7 +94,7 @@ describe('SheetDragResist', () => {
         .toBeVisible()
         .withTimeout(5000)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify at position 0
       await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText('Current snap point: 0')
@@ -102,14 +102,14 @@ describe('SheetDragResist', () => {
       // reset tracking
       await element(by.id('no-scroll-reset')).tap()
 
-      await device.takeScreenshot('bug3-frame-before-drag')
+      // screenshot removed for CI speed
 
       // drag UP on frame content - should show resistance
       await element(by.id('no-scroll-frame')).swipe('up', 'slow', 0.9)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
-      await device.takeScreenshot('bug3-frame-after-drag')
+      // screenshot removed for CI speed
 
       // sheet should snap back to position 0
       await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText('Current snap point: 0')
@@ -144,7 +144,7 @@ describe('SheetDragResist', () => {
         .toBeVisible()
         .withTimeout(5000)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       // reset counters
       await element(by.id('non-scrollable-reset')).tap()
@@ -152,15 +152,15 @@ describe('SheetDragResist', () => {
       // verify we start at position 0
       await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText('Current snap point: 0')
 
-      await device.takeScreenshot('bug1-before-drag')
+      // screenshot removed for CI speed
 
       // swipe DOWN on the scrollview (matching SheetScrollableDrag.test.ts pattern)
       // at scrollY=0 with non-scrollable content, this should drag the sheet
       await element(by.id('non-scrollable-scrollview')).swipe('down', 'slow', 0.5)
 
-      await new Promise((resolve) => setTimeout(resolve, 600))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
-      await device.takeScreenshot('bug1-after-drag')
+      // screenshot removed for CI speed
 
       // check results
       const posAttr = await element(by.id('non-scrollable-snap-indicator')).getAttributes()
@@ -182,20 +182,20 @@ describe('SheetDragResist', () => {
         .toBeVisible()
         .withTimeout(5000)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify we start at position 0
       await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText('Current snap point: 0')
 
-      await device.takeScreenshot('bug1-handle-before')
+      // screenshot removed for CI speed
 
       // swipe down on handle - this should ALWAYS work
       // using 'fast' speed like Case 8 in SheetScrollableDrag.test.ts
       await element(by.id('non-scrollable-handle')).swipe('down', 'fast', 0.5)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
-      await device.takeScreenshot('bug1-handle-after')
+      // screenshot removed for CI speed
 
       // handle drag should move the sheet
       await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText('Current snap point: 1')
@@ -220,7 +220,7 @@ describe('SheetDragResist', () => {
         .toBeVisible()
         .withTimeout(5000)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       // reset tracking
       await element(by.id('scrollable-reset')).tap()
@@ -228,14 +228,14 @@ describe('SheetDragResist', () => {
       // ensure we're at scroll top and position 0
       await expect(element(by.id('scrollable-at-top'))).toHaveText('At scroll top: YES')
 
-      await device.takeScreenshot('bug2-before')
+      // screenshot removed for CI speed
 
       // drag UP on handle - at scroll top + sheet top, should show resistance
       await element(by.id('scrollable-handle')).swipe('up', 'slow', 0.8)
 
-      await new Promise((resolve) => setTimeout(resolve, 600))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
-      await device.takeScreenshot('bug2-after')
+      // screenshot removed for CI speed
 
       // after rubber band, should still be at scroll top (no scroll happened)
       await expect(element(by.id('scrollable-at-top'))).toHaveText('At scroll top: YES')
@@ -257,7 +257,7 @@ describe('SheetDragResist', () => {
         .toBeVisible()
         .withTimeout(5000)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify starting state - at scroll top
       await expect(element(by.id('scrollable-at-top'))).toHaveText('At scroll top: YES')
@@ -265,7 +265,7 @@ describe('SheetDragResist', () => {
       // swipe UP on scrollview content - should scroll content (not move sheet)
       await element(by.id('scrollable-scrollview')).swipe('up', 'slow', 0.5)
 
-      await new Promise((resolve) => setTimeout(resolve, 400))
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
       // scroll Y should now be > 0
       await expect(element(by.id('scrollable-at-top'))).toHaveText('At scroll top: NO')
@@ -280,23 +280,23 @@ describe('SheetDragResist', () => {
         .toBeVisible()
         .withTimeout(5000)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify at scroll top
       await expect(element(by.id('scrollable-at-top'))).toHaveText('At scroll top: YES')
 
-      await device.takeScreenshot('scrollable-handle-before')
+      // screenshot removed for CI speed
 
       // drag DOWN on handle - should move sheet to position 1
       await element(by.id('scrollable-handle')).swipe('down', 'slow', 0.8)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
-      await device.takeScreenshot('scrollable-handle-after')
+      // screenshot removed for CI speed
 
       // sheet should be at lower snap point (or dismissed)
       // verify animation completes without crash
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
     })
   })
 
@@ -318,19 +318,19 @@ describe('SheetDragResist', () => {
         .toBeVisible()
         .withTimeout(5000)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify at snap index 0
       await expect(element(by.id('actions-sheet-snap-indicator'))).toHaveText('Snap index: 0')
 
-      await device.takeScreenshot('actions-sheet-before')
+      // screenshot removed for CI speed
 
       // swipe DOWN on content - should move sheet
       await element(by.id('actions-sheet-content')).swipe('down', 'slow', 0.5)
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
-      await device.takeScreenshot('actions-sheet-after')
+      // screenshot removed for CI speed
 
       // if actions-sheet can move via Detox swipe, expect snap index 1
       await expect(element(by.id('actions-sheet-snap-indicator'))).toHaveText('Snap index: 1')
