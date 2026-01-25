@@ -13,7 +13,7 @@ const screenshotImages = [
     galleryIdx: 0,
   },
   {
-    src: '/takeout/starter-screenshots/web.jpg',
+    src: '/takeout/starter-screenshots/web.png',
     alt: 'Web',
     label: 'Web',
     galleryIdx: 15,
@@ -31,16 +31,10 @@ const screenshotImages = [
     galleryIdx: 1,
   },
   {
-    src: '/takeout/starter-screenshots/ios-002.jpeg',
+    src: '/takeout/starter-screenshots/ios-007.jpeg',
     alt: 'Feed',
     label: 'Feed',
     galleryIdx: 2,
-  },
-  {
-    src: '/takeout/starter-screenshots/web-001.jpeg',
-    alt: 'Dashboard',
-    label: 'Dashboard',
-    galleryIdx: 16,
   },
 ]
 

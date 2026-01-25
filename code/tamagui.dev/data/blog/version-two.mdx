@@ -261,6 +261,10 @@ rendering.
 likewise much faster, and gains an optional floating indicator. SelectLabel is
 now a simpler SizableText-based component instead of depending on ListItem.
 
+**Icons** - Themed icons now use a fast path that skips the heavy style
+resolution when no media queries are used, significantly reducing re-renders in
+apps with many icons.
+
 [**Progress**](/docs/components/progress) - Now SSR-friendly with
 percentage-based transforms on web that render correctly without client-side
 hydration. Bouncy animations no longer overshoot past the container edges.
