@@ -107,7 +107,8 @@ jobs:
           # Point Detox to the cached app (CI uses different path than local dev)
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
         run: |
-          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 2 --workers 3
+          # Note: parallel workers require multiple simulators, keeping single worker for now
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 2
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
