@@ -1,16 +1,16 @@
 import type { GroupProps } from '@tamagui/group';
 import { type RovingFocusGroupProps } from '@tamagui/roving-focus';
-import type { GetProps, StackProps, TamaguiElement } from '@tamagui/web';
+import type { GetProps, ViewProps, TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
 import type { LayoutRectangle } from 'react-native';
 import { DefaultTabsContentFrame, DefaultTabsFrame, DefaultTabsTabFrame } from './Tabs';
 type TabsComponent = (props: {
     direction: 'horizontal' | 'vertical';
-} & StackProps) => any;
+} & ViewProps) => any;
 type TabComponent = (props: {
     active?: boolean;
-} & StackProps) => any;
-type ContentComponent = (props: StackProps) => any;
+} & ViewProps) => any;
+type ContentComponent = (props: ViewProps) => any;
 export declare function createTabs<C extends TabsComponent, T extends TabComponent, F extends ContentComponent>(createProps: {
     ContentFrame: F;
     TabFrame: T;

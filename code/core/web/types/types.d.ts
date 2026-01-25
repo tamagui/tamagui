@@ -727,9 +727,8 @@ export type CreateTamaguiProps = {
         color?: any;
     };
     defaultProps?: Record<string, any> & {
-        Stack?: StackProps;
         Text?: TextProps;
-        View?: StackProps;
+        View?: StackNonStyleProps & StackStyle;
     };
 };
 export type GetCSS = (opts?: {
@@ -1363,7 +1362,6 @@ export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointer
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
-export type StackProps = StackNonStyleProps & StackStyle;
 export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
@@ -1583,8 +1581,8 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? 
         [Key in VariantTypeKeys]?: Key extends ':number' ? VariantSpreadFunction<MyProps, number> : Key extends ':boolean' ? VariantSpreadFunction<MyProps, boolean> : Key extends ':string' ? VariantSpreadFunction<MyProps, string> : never;
     });
 } : {};
-export type GenericStackVariants = VariantDefinitionFromProps<StackProps, any>;
-export type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>;
+export type GenericStackVariants = VariantDefinitionFromProps<StackNonStyleProps & StackStyle, any>;
+export type GenericTextVariants = VariantDefinitionFromProps<TextProps, any>;
 export type VariantSpreadExtras<Props> = {
     fonts: TamaguiConfig['fonts'];
     tokens: TokensParsed;
@@ -1736,7 +1734,7 @@ export type GetStyleResult = {
     style: ViewStyle | null;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
-    viewProps: StackProps & Record<string, any>;
+    viewProps: (StackNonStyleProps & StackStyle) & Record<string, any>;
     fontFamily: string | undefined;
     space?: any;
     hasMedia: boolean | Set<string>;

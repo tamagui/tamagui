@@ -1204,9 +1204,8 @@ export type CreateTamaguiProps = {
   }
 
   defaultProps?: Record<string, any> & {
-    Stack?: StackProps
     Text?: TextProps
-    View?: StackProps
+    View?: StackNonStyleProps & StackStyle
   }
 }
 
@@ -2306,8 +2305,6 @@ export interface StackNonStyleProps
 
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
 
-export type StackProps = StackNonStyleProps & StackStyle
-
 //
 // Text props
 //
@@ -2789,8 +2786,11 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
     }
   : {}
 
-export type GenericStackVariants = VariantDefinitionFromProps<StackProps, any>
-export type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>
+export type GenericStackVariants = VariantDefinitionFromProps<
+  StackNonStyleProps & StackStyle,
+  any
+>
+export type GenericTextVariants = VariantDefinitionFromProps<TextProps, any>
 
 export type VariantSpreadExtras<Props> = {
   fonts: TamaguiConfig['fonts']
@@ -3032,7 +3032,7 @@ export type GetStyleResult = {
   style: ViewStyle | null
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert
-  viewProps: StackProps & Record<string, any>
+  viewProps: (StackNonStyleProps & StackStyle) & Record<string, any>
   fontFamily: string | undefined
   space?: any // SpaceTokens?
   hasMedia: boolean | Set<string>

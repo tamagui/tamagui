@@ -1,5 +1,5 @@
 import React from 'react';
-import type { GetProps, RadiusTokens, SizeTokens, StackProps, ThemeValueFallback } from '@tamagui/web';
+import type { GetProps, RadiusTokens, SizeTokens, ViewProps, ThemeValueFallback } from '@tamagui/web';
 import type { FC } from 'react';
 import { Image as RNImage } from 'react-native';
 declare const StyledImage: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, RNImage, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ImageProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
@@ -17,7 +17,7 @@ type BaseProps = Omit<StyledImageProps, 'width' | 'height' | 'style' | 'onLayout
     resizeMode?: StyledImageProps['resizeMode'];
     objectFit?: React.CSSProperties['objectFit'];
 };
-export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;
+export type ImageProps = BaseProps & Omit<ViewProps, keyof BaseProps>;
 type RNImageType = typeof RNImage;
 type ImageType = FC<ImageProps> & {
     getSize: RNImageType['getSize'];

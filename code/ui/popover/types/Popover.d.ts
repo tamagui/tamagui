@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev';
 import type { UseHoverProps } from '@floating-ui/react';
-import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
+import type { SizeTokens, ViewProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import { type PopperArrowExtraProps, type PopperArrowProps, type PopperContentProps, type PopperProps } from '@tamagui/popper';
@@ -58,8 +58,8 @@ export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<import(
 }>, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
-export type PopoverTriggerProps = ScopedPopoverProps<StackProps>;
-export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<StackProps, "scope"> & {
+export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>;
+export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<ViewProps, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
@@ -175,7 +175,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Trigger: React.ForwardRefExoticComponent<Omit<StackProps, "scope"> & {
+    Trigger: React.ForwardRefExoticComponent<Omit<ViewProps, "scope"> & {
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

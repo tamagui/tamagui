@@ -1,7 +1,7 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
+import type { SizeTokens, ViewProps, TamaguiElement } from '@tamagui/core'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
@@ -768,9 +768,9 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
 
     const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
-    const arrowStyle: StackProps = { x, y, width: size, height: size }
+    const arrowStyle: ViewProps = { x, y, width: size, height: size }
 
-    const innerArrowStyle: StackProps = {}
+    const innerArrowStyle: ViewProps = {}
     const isVertical = primaryPlacement === 'bottom' || primaryPlacement === 'top'
 
     if (primaryPlacement) {

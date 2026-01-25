@@ -9,6 +9,7 @@ import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
+import { getWebEvents, usePressHandling, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
@@ -32,7 +33,6 @@ import type {
   LayoutEvent,
   PseudoGroupState,
   SingleGroupContext,
-  StackProps,
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
@@ -44,11 +44,10 @@ import type {
   UseAnimationProps,
   UseStyleEmitter,
   UseThemeWithStateProps,
-  WebOnlyPressEvents,
 } from './types'
+import type { ViewProps } from './views/View'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
-import { getWebEvents, usePressHandling, wrapWithGestureDetector } from './eventHandling'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -287,7 +286,7 @@ export function createComponent<
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
-    let props: StackProps | TextProps = propsIn
+    let props: ViewProps | TextProps = propsIn
 
     const componentName = props.componentName || staticConfig.componentName
 
@@ -301,7 +300,7 @@ export function createComponent<
       propsIn
     )
 
-    props = nextProps as StackProps | TextProps
+    props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
 
     if (process.env.NODE_ENV === 'development' && isClient) {

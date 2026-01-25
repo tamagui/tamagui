@@ -1,4 +1,4 @@
-import type { StackProps, TamaguiElement } from '@tamagui/core';
+import type { ViewProps, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 export declare const FormFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 type FormContextValue = {
@@ -14,8 +14,8 @@ export declare const FormProvider: (props: FormContextValue & {
 type FormExtraProps = {
     onSubmit?: () => void;
 };
-export type FormProps = StackProps & FormExtraProps;
-export interface FormTriggerProps extends StackProps {
+export type FormProps = ViewProps & FormExtraProps;
+export interface FormTriggerProps extends ViewProps {
 }
 export declare const FormTrigger: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof FormTriggerProps | "__scopeForm"> & FormTriggerProps & {
     __scopeForm?: Scope;

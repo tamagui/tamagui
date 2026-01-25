@@ -12,7 +12,6 @@ import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
-  StackProps,
   StaticConfig,
   TamaguiComponentState,
   TamaguiComponentStateRef,
@@ -20,9 +19,10 @@ import type {
   TextProps,
   UseAnimationHook,
 } from '../types'
+import type { ViewProps } from '../views/View'
 
 export const useComponentState = (
-  props: StackProps | TextProps | Record<string, any>,
+  props: ViewProps | TextProps | Record<string, any>,
   animationDriver: ComponentContextI['animationDriver'],
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig

@@ -3,7 +3,7 @@ import { AnimatePresence, ResetPresence } from '@tamagui/animate-presence'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import type { GetProps, StackProps, TamaguiElement } from '@tamagui/web'
+import type { GetProps, ViewProps, TamaguiElement } from '@tamagui/web'
 import { View, createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
 
@@ -25,7 +25,7 @@ type CollapsibleContextValue = {
 const { Provider: CollapsibleProvider, useStyledContext: useCollapsibleContext } =
   createStyledContext<CollapsibleContextValue>()
 
-interface CollapsibleProps extends StackProps {
+interface CollapsibleProps extends ViewProps {
   defaultOpen?: boolean
   open?: boolean
   disabled?: boolean

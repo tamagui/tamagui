@@ -13,7 +13,7 @@ import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
+import type { SizeTokens, ViewProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
   styled,
@@ -142,7 +142,7 @@ export const PopoverAnchor = React.forwardRef<TamaguiElement, PopoverAnchorProps
  * PopoverTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopoverTriggerProps = ScopedPopoverProps<StackProps>
+export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>
 
 export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerProps>(
   function PopoverTrigger(props, forwardedRef) {

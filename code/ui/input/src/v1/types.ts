@@ -1,6 +1,6 @@
 import type {
   ColorTokens,
-  StackProps,
+  ViewProps,
   TamaguiComponentPropsBase,
   TextProps,
 } from '@tamagui/web'
@@ -11,10 +11,10 @@ type DetailedInputProps = React.DetailedHTMLProps<
   HTMLInputElement
 >
 
-export type InputProps = StackProps &
+export type InputProps = ViewProps &
   Omit<
     DetailedInputProps,
-    'className' | 'children' | 'value' | 'size' | keyof StackProps
+    'className' | 'children' | 'value' | 'size' | keyof ViewProps
   > &
   Pick<TextProps, 'color'> &
   Omit<DetailedInputProps['style'], 'color'> &

@@ -2,7 +2,7 @@ import { Image, type ImageProps } from '@tamagui/image'
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
-import type { StackProps } from 'tamagui'
+import type { ViewProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -405,7 +405,7 @@ const wrap = (min: number, max: number, v: number) => {
 const TakeoutImage = ({
   wrapperProps,
   ...props
-}: ImageProps & { index: number; wrapperProps?: StackProps }) => {
+}: ImageProps & { index: number; wrapperProps?: ViewProps }) => {
   const store = useGalleryStore()
   return (
     <XStack

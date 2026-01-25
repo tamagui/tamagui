@@ -57,7 +57,7 @@ export * from '@tamagui/input'
 export * from './views/Spinner'
 export * from './views/Text'
 
-// since we overlap with StackProps and potentially others
+// since we overlap with ViewProps and potentially others
 // lets be explicit on what gets exported
 export type {
   TransitionKeys,
@@ -96,7 +96,6 @@ export type {
   SpecificTokens,
   StackNonStyleProps,
   ViewProps,
-  StackProps,
   StaticConfig,
   Styleable,
   TamaguiBaseTheme,

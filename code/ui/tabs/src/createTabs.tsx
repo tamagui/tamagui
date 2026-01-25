@@ -7,16 +7,16 @@ import { RovingFocusGroup, type RovingFocusGroupProps } from '@tamagui/roving-fo
 import { SizableContext } from '@tamagui/sizable-context'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { GetProps, StackProps, TamaguiElement } from '@tamagui/web'
+import type { GetProps, ViewProps, TamaguiElement } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
 import { TabsProvider, useTabsContext } from './StyledContext'
 import { DefaultTabsContentFrame, DefaultTabsFrame, DefaultTabsTabFrame } from './Tabs'
 
-type TabsComponent = (props: { direction: 'horizontal' | 'vertical' } & StackProps) => any
-type TabComponent = (props: { active?: boolean } & StackProps) => any
-type ContentComponent = (props: StackProps) => any
+type TabsComponent = (props: { direction: 'horizontal' | 'vertical' } & ViewProps) => any
+type TabComponent = (props: { active?: boolean } & ViewProps) => any
+type ContentComponent = (props: ViewProps) => any
 
 export function createTabs<
   C extends TabsComponent,

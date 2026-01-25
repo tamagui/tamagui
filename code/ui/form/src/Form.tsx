@@ -1,4 +1,4 @@
-import type { StackProps, TamaguiElement } from '@tamagui/core'
+import type { ViewProps, TamaguiElement } from '@tamagui/core'
 import { View, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
@@ -28,7 +28,7 @@ export const [FormProvider, useFormContext] =
 type FormExtraProps = {
   onSubmit?: () => void
 }
-export type FormProps = StackProps & FormExtraProps
+export type FormProps = ViewProps & FormExtraProps
 
 /* -------------------------------------------------------------------------------------------------
  * FormTrigger
@@ -40,7 +40,7 @@ const FormTriggerFrame = styled(View, {
   name: TRIGGER_NAME,
 })
 
-export interface FormTriggerProps extends StackProps {}
+export interface FormTriggerProps extends ViewProps {}
 
 export const FormTrigger = FormTriggerFrame.styleable<ScopedProps<FormTriggerProps>>(
   (props, forwardedRef) => {

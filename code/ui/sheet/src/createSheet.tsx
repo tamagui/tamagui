@@ -2,7 +2,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type {
   GetProps,
-  StackProps,
+  ViewProps,
   TamaguiComponent,
   TamaguiComponentExpectingVariants,
   TamaguiElement,
@@ -30,7 +30,7 @@ type SharedSheetProps = {
   open?: boolean
 }
 
-type BaseProps = StackProps & SharedSheetProps
+type BaseProps = ViewProps & SharedSheetProps
 
 type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
 
