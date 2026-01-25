@@ -1,6 +1,6 @@
 import { type ResolveVariableAs } from '@tamagui/core';
 import { SizableContext } from '@tamagui/sizable-context';
-import type { FC } from 'react';
+import { type FC } from 'react';
 import type { IconProps } from './IconProps';
 export { SizableContext };
 type Options = {

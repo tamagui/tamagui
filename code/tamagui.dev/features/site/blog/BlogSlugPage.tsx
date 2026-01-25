@@ -161,21 +161,6 @@ export function BlogSlugPage(props: BlogPost) {
 
         <Separator my="$8" mx="auto" />
 
-        <YStack mb="$8" items="center">
-          <Paragraph>
-            Share this post on{' '}
-            <Link
-              href={twitterShare}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share this post on Twitter"
-            >
-              Twitter
-            </Link>
-            .
-          </Paragraph>
-        </YStack>
-
         {relatedPosts && (
           <YStack>
             <Separator my="$8" mx="auto" />
