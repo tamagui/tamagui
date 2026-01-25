@@ -5,7 +5,7 @@
  * works correctly when falling back to RN's usePressability.
  */
 
-import { by, device, element, expect } from 'detox'
+import { by, device, element, expect, waitFor } from 'detox'
 import * as fs from 'fs'
 import * as assert from 'assert'
 import { PNG } from 'pngjs'
@@ -23,37 +23,48 @@ describe('PressStyleNative (no RNGH)', () => {
       newInstance: true,
       launchArgs: { disableGestureHandler: true },
     })
+    // disable synchronization for the entire suite - without RNGH, there's a
+    // RNManualRecognizer gesture that stays in "Possible" state which blocks Detox
+    await device.disableSynchronization()
+  })
+
+  afterAll(async () => {
+    await device.enableSynchronization()
   })
 
   beforeEach(async () => {
     // reload but keep the launch args
     await device.reloadReactNative()
+    // wait for app to stabilize after reload
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     await navigateToPressStyleNative()
   })
 
   it('should render the test case screen', async () => {
-    await expect(element(by.id('color-test-pressable'))).toBeVisible()
-    await expect(element(by.id('animated-color-test-pressable'))).toBeVisible()
+    await waitFor(element(by.id('color-test-pressable'))).toBeVisible().withTimeout(5000)
+    await waitFor(element(by.id('animated-color-test-pressable'))).toBeVisible().withTimeout(5000)
   })
 
   describe('pressStyle without transition', () => {
     it('should fire pressIn and pressOut events on tap', async () => {
-      await expect(element(by.id('simple-press-in-count'))).toHaveText('In: 0')
-      await expect(element(by.id('simple-press-out-count'))).toHaveText('Out: 0')
+      await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 0').withTimeout(5000)
+      await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 0').withTimeout(5000)
 
       await element(by.id('color-test-pressable')).tap()
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
-      await expect(element(by.id('simple-press-in-count'))).toHaveText('In: 1')
-      await expect(element(by.id('simple-press-out-count'))).toHaveText('Out: 1')
+      await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 1').withTimeout(5000)
+      await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 1').withTimeout(5000)
     })
 
     it('should not be stuck in pressed state after tap', async () => {
       await element(by.id('color-test-pressable')).tap()
-      await new Promise((resolve) => setTimeout(resolve, 100))
-      await expect(element(by.id('simple-is-pressed'))).toHaveText('Pressed: NO')
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      await waitFor(element(by.id('simple-is-pressed'))).toHaveText('Pressed: NO').withTimeout(5000)
     })
 
     it('should show blue background at rest', async () => {
+      await new Promise((resolve) => setTimeout(resolve, 300))
       const restScreenshot = await element(by.id('color-test-pressable')).takeScreenshot(
         'color-test-rest-norngh'
       )
@@ -62,8 +73,8 @@ describe('PressStyleNative (no RNGH)', () => {
     })
 
     it('should unpress when finger drags off element', async () => {
-      await expect(element(by.id('simple-press-in-count'))).toHaveText('In: 0')
-      await expect(element(by.id('simple-press-out-count'))).toHaveText('Out: 0')
+      await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 0').withTimeout(5000)
+      await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 0').withTimeout(5000)
 
       await element(by.id('color-test-pressable')).longPressAndDrag(
         500,
@@ -76,11 +87,11 @@ describe('PressStyleNative (no RNGH)', () => {
         100
       )
 
-      await new Promise((resolve) => setTimeout(resolve, 200))
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-      await expect(element(by.id('simple-press-in-count'))).toHaveText('In: 1')
-      await expect(element(by.id('simple-press-out-count'))).toHaveText('Out: 1')
-      await expect(element(by.id('simple-is-pressed'))).toHaveText('Pressed: NO')
+      await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 1').withTimeout(5000)
+      await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 1').withTimeout(5000)
+      await waitFor(element(by.id('simple-is-pressed'))).toHaveText('Pressed: NO').withTimeout(5000)
     })
 
     it('should return to blue after drag off', async () => {
@@ -95,7 +106,7 @@ describe('PressStyleNative (no RNGH)', () => {
         100
       )
 
-      await new Promise((resolve) => setTimeout(resolve, 200))
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       const afterScreenshot = await element(by.id('color-test-pressable')).takeScreenshot(
         'color-test-after-drag-norngh'
@@ -107,22 +118,24 @@ describe('PressStyleNative (no RNGH)', () => {
 
   describe('pressStyle with transition (animation driver)', () => {
     it('should fire pressIn and pressOut events on animated pressable', async () => {
-      await expect(element(by.id('animated-press-in-count'))).toHaveText('In: 0')
-      await expect(element(by.id('animated-press-out-count'))).toHaveText('Out: 0')
+      await waitFor(element(by.id('animated-press-in-count'))).toHaveText('In: 0').withTimeout(5000)
+      await waitFor(element(by.id('animated-press-out-count'))).toHaveText('Out: 0').withTimeout(5000)
 
       await element(by.id('animated-color-test-pressable')).tap()
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
-      await expect(element(by.id('animated-press-in-count'))).toHaveText('In: 1')
-      await expect(element(by.id('animated-press-out-count'))).toHaveText('Out: 1')
+      await waitFor(element(by.id('animated-press-in-count'))).toHaveText('In: 1').withTimeout(5000)
+      await waitFor(element(by.id('animated-press-out-count'))).toHaveText('Out: 1').withTimeout(5000)
     })
 
     it('should not be stuck in pressed state after tap (animated)', async () => {
       await element(by.id('animated-color-test-pressable')).tap()
-      await new Promise((resolve) => setTimeout(resolve, 100))
-      await expect(element(by.id('animated-is-pressed'))).toHaveText('Pressed: NO')
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      await waitFor(element(by.id('animated-is-pressed'))).toHaveText('Pressed: NO').withTimeout(5000)
     })
 
     it('should show blue background at rest (animated)', async () => {
+      await new Promise((resolve) => setTimeout(resolve, 300))
       const restScreenshot = await element(by.id('animated-color-test-pressable')).takeScreenshot(
         'animated-color-test-rest-norngh'
       )
