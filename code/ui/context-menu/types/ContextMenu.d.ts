@@ -3,7 +3,7 @@ import React from 'react';
 export declare function createContextMenu(param: CreateBaseMenuProps): React.FC<import("./createNonNativeContextMenu").ContextMenuProps & {
     scope?: string;
 } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuProps> & {
-    Trigger: React.FC<Omit<import("@tamagui/web").StackProps, "scope" | keyof import("./createNonNativeContextMenu").ContextMenuTriggerProps> & import("./createNonNativeContextMenu").ContextMenuTriggerProps & {
+    Trigger: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("./createNonNativeContextMenu").ContextMenuTriggerProps> & import("./createNonNativeContextMenu").ContextMenuTriggerProps & {
         scope?: string;
     } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuTriggerProps>;
     Portal: React.FC<import("@tamagui/create-menu").MenuPortalProps & {

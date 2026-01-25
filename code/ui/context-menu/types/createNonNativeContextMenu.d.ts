@@ -46,7 +46,7 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
         (props: ScopedProps<ContextMenuProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Trigger: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").StackProps, "scope" | keyof ContextMenuTriggerProps> & ContextMenuTriggerProps & {
+    Trigger: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof ContextMenuTriggerProps> & ContextMenuTriggerProps & {
         scope?: string;
     }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & ContextMenuTriggerProps & {
         scope?: string;
@@ -99,7 +99,7 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
         (props: ScopedProps<ContextMenuSubProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    SubTrigger: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").StackProps, "scope" | "key" | keyof BaseMenuTypes.MenuSubTriggerProps> & Omit<BaseMenuTypes.MenuSubTriggerProps & {
+    SubTrigger: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | "key" | keyof BaseMenuTypes.MenuSubTriggerProps> & Omit<BaseMenuTypes.MenuSubTriggerProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;

@@ -2,7 +2,7 @@ import '@tamagui/polyfill-dev';
 export declare const ContextMenu: import("react").FC<import("./createNonNativeContextMenu").ContextMenuProps & {
     scope?: string;
 } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuProps> & {
-    Trigger: import("react").FC<Omit<import("@tamagui/web").StackProps, "scope" | keyof import("./createNonNativeContextMenu").ContextMenuTriggerProps> & import("./createNonNativeContextMenu").ContextMenuTriggerProps & {
+    Trigger: import("react").FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("./createNonNativeContextMenu").ContextMenuTriggerProps> & import("./createNonNativeContextMenu").ContextMenuTriggerProps & {
         scope?: string;
     } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuTriggerProps>;
     Portal: import("react").FC<import("@tamagui/create-menu").MenuPortalProps & {

@@ -76,6 +76,8 @@ AFTER v2 RC (nice to haves):
 
 ---
 
+- MCP works w your local tamagui config?
+
 - perf: could avoid even creating style rules, easy / big win:
   - note that in addStyleToInsertRules it checks if shouldInsert
   - note that we create all the style rules before we actually check if should insert

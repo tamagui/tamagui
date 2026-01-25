@@ -2,7 +2,7 @@ import '@tamagui/polyfill-dev';
 export declare const Menu: import("react").FC<import("./createNonNativeMenu").MenuProps & {
     scope?: string;
 } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuProps> & {
-    readonly Trigger: import("react").FC<Omit<import("@tamagui/web").StackProps, "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps> & import("./createNonNativeMenu").MenuTriggerProps & {
+    readonly Trigger: import("react").FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps> & import("./createNonNativeMenu").MenuTriggerProps & {
         scope?: string;
     } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuTriggerProps>;
     readonly Portal: import("react").FC<import("@tamagui/create-menu").MenuPortalProps & {
@@ -61,7 +61,7 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
     } & {
         scope?: string;
     } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubProps>;
-    readonly SubTrigger: import("react").FC<Omit<import("@tamagui/web").StackProps, "scope" | "key" | keyof import("@tamagui/create-menu").MenuSubTriggerProps> & Omit<import("@tamagui/create-menu").MenuSubTriggerProps & {
+    readonly SubTrigger: import("react").FC<Omit<import("@tamagui/web").ViewProps, "scope" | "key" | keyof import("@tamagui/create-menu").MenuSubTriggerProps> & Omit<import("@tamagui/create-menu").MenuSubTriggerProps & {
         scope?: string;
     } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
