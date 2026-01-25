@@ -1,11 +1,11 @@
-import type { ColorTokens, StackProps, TextStylePropsBase } from '@tamagui/web';
+import type { ColorTokens, ViewProps, TextStyle } from '@tamagui/web';
 /**
  * Web-aligned Input props
  * Follows standard HTML input API as primary, with RN compatibility for native
  */
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
-type InputTextStyleProps = Pick<TextStylePropsBase, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
-export type InputProps = StackProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps> & InputTextStyleProps & {
+type InputTextStyleProps = Pick<TextStyle, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
+export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps> & InputTextStyleProps & {
     /**
      * Rows for textarea (when render="textarea")
      */
