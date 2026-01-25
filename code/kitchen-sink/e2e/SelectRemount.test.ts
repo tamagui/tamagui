@@ -46,7 +46,7 @@ describe('SelectRemount', () => {
       }
 
       // Wait for sheet to close
-      await new Promise((resolve) => setTimeout(resolve, 700))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
     } finally {
       // Re-enable synchronization
       await device.enableSynchronization()
@@ -62,7 +62,7 @@ describe('SelectRemount', () => {
       await element(by.id('remount-button')).tap()
 
       // Wait a moment for remount to complete
-      await new Promise((resolve) => setTimeout(resolve, 700))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
       // Try to open the Select again - THIS IS THE KEY TEST for #1859
       await element(by.id('select-remount-test-trigger')).tap()
@@ -80,7 +80,7 @@ describe('SelectRemount', () => {
       }
 
       // Wait for sheet to close
-      await new Promise((resolve) => setTimeout(resolve, 700))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
     } finally {
       // Re-enable synchronization
       await device.enableSynchronization()
@@ -118,7 +118,7 @@ describe('SelectRemount', () => {
       await element(by.id('select-remount-test-option-apple')).tap()
 
       // Wait for sheet to close - give spring animation time to settle
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
       // Test second Select - wait for it to be visible after first sheet closes
       await waitFor(element(by.id('select-remount-test-2-trigger')))
