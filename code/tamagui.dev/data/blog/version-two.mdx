@@ -33,170 +33,83 @@ In comparison to other solutions, Tamagui is especially strong at:
   animation drivers (CSS, Reanimated, Motion, React Native), per-platform, yet
   no matter which you choose proper SSR support even with media queries and dark
   mode properly rendering and hydrating without jumps or flickers.
-- **Fast, type-safe, mergeable inline styling.** Inline styles are a leap
-  forward, but the lack of type safety or easy ability to merge and group your
-  styles is their biggest drawback. Tamagui is fully type safe, lets you control
-  how you merge styles, and optimizes it all nearly perfectly even in the face
-  of complicated logic.
-- **First-class, composable components based UI kit.** Our UI kit doesn't just
-  target one platform, uses composable components, and can even adapt based on
-  the device.
-- **Well designed and robust.** It's been developed actively for many years,
-  proven in [large apps](https://uniswap.org), has a large test suite and
-  extensive ecosystem.
+- **Fast, type-safe, mergeable inline styling.** Inline styles are productivity
+  boosts, but Tamagui adds type safety, easy/controllable merging, and an
+  optimizing compiler that does partial analysis to optimize even logic-filled
+  styling.
+- **Refined, unstyled, composable components.** Great on web and native thanks
+  to composable components, native adaptation, the Adapt primitive, and a lot of
+  iteration.
+- **Robust.** Tamagui has been developed actively for years, proven in
+  [large apps](https://uniswap.org), and has more than tripled test coverage
+  just in the last year.
 
-Tamagui lets you do more with less. We're proud to be used by companies like
-Uniswap to unify their featureset across platforms and greatly simplify their
-codebase.
+### Highlights since v1
 
-### In the last two years
-
-Some highlights:
-
-- **7,900+ commits** over 2 years (~330/month).
+- **8,500+ commits** over 2 years (~330/month).
 - **900+ issues closed**.
 - **136 new contributors** (from 46 to 182 total).
 - **289 test files** with kitchen-sink tests running across all 4 animation
-  drivers (256 test runs per CI), plus new native-specific tests with Detox and
+  drivers, plus many new deeper native integration tests with both Detox and
   Maestro.
-- Created
+- Released
   [`@tamagui/build`](https://github.com/tamagui/tamagui/blob/v2/code/packages/build/README.md),
-  the only way to publish npm packages that support CommonJS and ESModules and
+  the only way to publish npm packages that support CommonJS and ESModules,
   native and web without requiring any configuration at all when importing -
   whether it's Metro, Node, Vite, or otherwise.
-- Added many styling features like container queries, container and media
-  queries combined, and platform/theme selectors.
-- New compound components like Tabs, Accordion, and ToggleGroup.
-- Unstyled versions of most components.
-- Improved theme generation packages, and the amazing
+- Platform, theme, and container queries, plus combined container and media
+  queries.
+- New compound components [Tabs](/docs/components/tabs),
+  [Accordion](/docs/components/accordion),
+  [ToggleGroup](/docs/components/toggle-group).
+- New unstyled versions of most components.
+- The Takeout starter kit, and Bento components suite and patterns.
+- A lot of low level work on performance, documentation, our CLI, and more.
+- Improved theme generation packages, and the powerful
   [free and paid theme builder](/theme).
 
 [![Theme Generator examples](/blog/theme-generator-showcase.webp)](/theme/37/nike-neon)
 
-- The Takeout starter kit, and Bento copy-paste components and patterns.
-- A lot of low level work on performance, documentation, our CLI, and more.
-
 ## New in v2
 
-Version two is easy to migrate to with just a few breaking changes. It mostly
-removes deprecated APIs, improves performance, aligns with modern React, React
-Native, and web standards, and includes a few new features and components.
+Version 2 is a relatively easy migration. It mostly removes deprecated APIs,
+improves performance, aligns with modern React, React Native, and web standards,
+and includes a few new features and components. It does simplify a few
+components API surfaces.
 
-The breaking changes outside of deprecations are:
-
-- **Removed deprecated v2 config exports.** The `/v2` exports from
-  `@tamagui/config`, `@tamagui/themes`, and `@tamagui/shorthands` have been
-  removed. These were the original config format from early Tamagui versions -
-  not to be confused with Tamagui v2 itself. The current config is now at v5. If
-  you were using `@tamagui/config/v2`, migrate to `@tamagui/config/v5` or the
-  default export.
-- **Config v5 changes from v4.** Animations are now imported separately
-  (`@tamagui/config/v5-css` etc.), media query names changed (`2xl` → `xxl`,
-  `2xs` → `xxs`), and style defaults align with React Native. Migration is
-  straightforward - see [Config v5 docs](/docs/core/config-v5).
-
-- **React Native 0.82+, React 19+, and TypeScript 5+ required.** Tamagui 2
-  targets React Native 0.82, React 19, and TypeScript 5 and above with New
-  Architecture support. This enables significant new style features, improved
-  type inference, and simplified internals.
-- Default flex and position styles align with the latest React Native versions,
-  but you can change settings to keep the legacy behavior.
-- Button and ListItem lose direct text style props for better performance.
-- useTheme no longer takes props; use the Theme component instead.
-- Removed web-only `onHoverIn` and `onHoverOut` in favor of standard web events
-  (`onMouseEnter` or `onPointerEnter`).
-- Added comprehensive web event handler support including keyboard, pointer,
-  drag and drop, clipboard, and scroll events.
-- Moved from ThemeableStack to View for most base components in UI.
-- Removed deprecated `Stack` for the identical `View`.
-- Renamed the `animation` prop to `transition` for clarity and consistency.
-- Removed `<Theme inverse />` and `themeInverse` prop - see
-  [inverse themes guide](/docs/guides/theme-builder#inverse-themes).
-- Removed the `maxDarkLightNesting` and `cssStyleSeparator` settings.
-- Removed `space` and `spaceDirection` props - use `gap` instead.
-- Tabs `activationMode` now defaults to `'manual'` instead of `'automatic'`.
-  This means focusing a tab no longer changes the active tab - you must click or
-  press Enter/Space. This matches web standards.
-- Group component simplified: `Group.Item` is now required (no more auto-cloning
-  direct children). Removed props: `space`, `separator`, `scrollable`,
-  `showScrollIndicator`, `disablePassBorderRadius`, `forceUseItem`. Children now
-  control their own sizing - apply size/responsive props directly to child
-  components. Add `<Separator />` manually between items when needed.
-- Moved `<Spacer />` from core to `@tamagui/spacer`.
-- Moved all settings on `createTamagui` to the `settings` object.
-- Native portals no longer auto-import React internals hack. If you want native
-  portals for better context preservation, add
-  `import '@tamagui/native/setup-teleport'` at app startup. See
-  [Portal docs](/docs/components/portal).
-- Removed React Native accessibility props in favor of web-standard props:
-  - `accessibilityLabel` → `aria-label`
-  - `accessibilityRole` → `role`
-  - `accessibilityHint` → `aria-describedby`
-  - `accessibilityState` → `aria-disabled`, `aria-selected`, `aria-checked`,
-    `aria-busy`, `aria-expanded`
-  - `accessibilityValue` → `aria-valuemin`, `aria-valuemax`, `aria-valuenow`,
-    `aria-valuetext`
-  - `accessibilityElementsHidden` → `aria-hidden`
-  - `accessibilityViewIsModal` → `aria-modal`
-  - `accessibilityLiveRegion` → `aria-live`
-  - `accessible` → `tabIndex={0}`
-  - `focusable` → `tabIndex`
-  - `nativeID` → `id`
+Find a [list of breaking changes at the bottom of the post](#breaking-changes).
 
 <Notice>
-  Copy this blog post to give to AI Agents to migrate from v1 to v2!
+  Give this blog post URL to your favorite coding agent to help upgrade!
 </Notice>
 
 ### Features
 
-#### Cross-Platform Style Props
+#### New Style Props
 
 Many style properties that were previously web-only now work on React Native
 with the New Architecture. See the [Style API docs](/docs/intro/styles) for the
 full reference.
 
 - **`boxShadow`** - Full CSS box-shadow support including multiple shadows,
-  spread, and inset. Accepts strings, objects, or arrays.
-- **`filter`** - Graphical filters like `brightness`, `opacity`, `blur`,
-  `contrast`, `grayscale`, `hueRotate`, `invert`, `saturate`, `sepia`, and
-  `dropShadow`. Cross-platform for `brightness` and `opacity`; Android 12+ for
-  others.
+  spread, and inset. Accepts strings with your tokens.
+- **`filter`** - Graphical filters like `brightness`, `opacity`, `blur`.
 - **`mixBlendMode`** - Blend modes like `multiply`, `screen`, `overlay`, etc.
 - **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
 - **`boxSizing`** - Box model (`border-box` | `content-box`).
 - **`display`** - Pass-through with `contents`.
-- **`position`** - Now accepts `fixed` on native, automatically converted to
-  `absolute`. This lets you write cross-platform code with media queries like
-  `$md={{ position: 'fixed' }}` that works everywhere.
+- **`position`** - Now accepts `fixed`, automatically converted to `absolute` on
+  native. For easier media queries like `$md={{ position: 'fixed' }}`.
 - **`borderCurve`** - Corner curve style (`circular` | `continuous` for Apple's
   "squircle"). iOS 13+ only.
 - **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS
   17+ (trackpad/stylus).
 
-#### CSS Shorthands with Variables
-
-You can now use Tamagui `$variables` directly inside CSS shorthand string values
-like `boxShadow`. On web, variables resolve to CSS custom properties; on native,
-they resolve to raw values:
-
-```tsx
-// Works on both web and native!
-<View boxShadow="0 0 10px $shadowColor" />
-
-// Multiple variables work too
-<View boxShadow="0 0 5px $shadowColor, 0 0 15px $color" />
-```
-
-The `border` shorthand with variables (`border="1px solid $borderColor"`) is
-web-only since React Native doesn't support CSS border shorthand syntax. On
-native, continue using the individual props (`borderWidth`, `borderColor`,
-`borderStyle`).
-
-#### Motion Animation Driver
+#### Motion-powered Animations
 
 ![Motion animation library banner](/blog/motion-banner.webp)
 
-We've added a new [animation driver](/docs/core/animations) powered by
+We've added a new [animation driver](/docs/core/animations-motion) powered by
 [Motion](https://motion.dev), and it's our recommended choice for web. The
 `@tamagui/animations-motion` package is fast thanks to two optimizations:
 
@@ -209,7 +122,7 @@ We've added a new [animation driver](/docs/core/animations) powered by
 
 Together these make for much smoother spring animations on web.
 
-#### Reanimated Driver Improvements
+#### Reanimated Improvements
 
 The [Reanimated](https://docs.swmansion.com/react-native-reanimated/) driver
 comes back in style with `worklet` and `avoidReRenders` support. This means
@@ -218,15 +131,18 @@ giving you much better performance for complex animations on both web and
 native.
 
 The Moti driver (`@tamagui/animations-moti`) is now deprecated in favor of the
-Reanimated driver (`@tamagui/animations-reanimated`). This removes a dependency
-and fixes some compatibility issues. If you're using `@tamagui/animations-moti`,
-switch to `@tamagui/animations-reanimated` - the API is the same.
+[Reanimated driver](/docs/core/animations-reanimated)
+(`@tamagui/animations-reanimated`). This removes a dependency and fixes some
+compatibility issues. If you're using `@tamagui/animations-moti`, switch to
+`@tamagui/animations-reanimated` - the API is the same.
 
-#### Per-Component Animation Drivers
+#### Swap Animation Drivers Per-Component
 
 You can now configure multiple animation drivers and select per-component using
 the new `animatedBy` prop. This serves two important purposes: it allows mixing
-drivers more granularly, and it enables the compiler to better optimize.
+drivers more granularly, and it enables the compiler to better optimize. See the
+[animation drivers docs](/docs/core/animation-drivers#multiple-drivers) for full
+details.
 
 ```tsx
 // Config with multiple drivers up front
@@ -241,11 +157,8 @@ createTamagui({
 <View animatedBy="spring" transition="bouncy" />
 ```
 
-When the compiler sees `animatedBy`, it can make smarter decisions about
-extraction and avoid including unnecessary animation runtime code for components
-that don't need it. You can also lazy load a driver (e.g., load a heavier driver
-only after login), use the new `loadAnimationDriver` function, similar to how
-you could before using Configuration:
+The compiler can optimize better with this pattern, and you can now lazy load a
+driver with a function:
 
 ```tsx
 import { loadAnimationDriver } from 'tamagui'
@@ -262,7 +175,7 @@ All animation drivers now support delays:
 
 This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
-#### Enter/Exit Transitions
+#### Granular Enter/Exit Transitions
 
 The `transition` prop now supports different animations for enter and exit. This
 is useful for creating asymmetric animations where elements enter slowly but
@@ -287,10 +200,10 @@ exit quickly, or vice versa:
 />
 ```
 
-This works across all four animation drivers. See the
+This works on all four animation drivers. See the
 [animation docs](/docs/core/animations#enterexittransitions) for more details.
 
-#### Popover Transform Origin
+#### Popover `transform-origin`
 
 [Popover](/docs/components/popover) and [Tooltip](/docs/components/tooltip) now
 automatically calculate the correct CSS `transform-origin` based on placement
@@ -301,15 +214,16 @@ The transform origin adjusts automatically based on the final placement - if the
 popover flips from `bottom` to `top`, the origin updates accordingly. This
 creates polished, native-feeling animations without any manual configuration.
 
-#### Active State Styling
+#### Consistent Active Styling
 
 Components with toggle/selection states now support consistent `activeStyle` and
 `activeTheme` props for styling their active states:
 
-- **Switch** - Styles applied when the switch is on
-- **Checkbox** - Styles applied when checked
-- **ToggleGroup.Item** - Styles applied when the item is selected
-- **Tabs.Tab** - Styles applied when the tab is active
+- [**Switch**](/docs/components/switch) - Styles applied when the switch is on
+- [**Checkbox**](/docs/components/checkbox) - Styles applied when checked
+- [**ToggleGroup.Item**](/docs/components/toggle-group) - Styles applied when
+  the item is selected
+- [**Tabs.Tab**](/docs/components/tabs) - Styles applied when the tab is active
 
 ```tsx
 // Apply custom styles when active
@@ -326,35 +240,37 @@ const GreenTab = styled(Tabs.Tab, {
 })
 ```
 
-This replaces the inconsistent methods of active styling found across components
-in v1.
+This replaces a variety of incosistent APIs in v1.
 
 #### Component Cleanups
 
 Several components have been significantly simplified:
 
-**Button** - Rewritten from scratch with ~60% less code. No longer uses the slow
-`useProps` hook internally. Now supports all web-standard HTML button attributes
-(`type`, `formAction`, `formMethod`, `name`, `value`, `popoverTarget`, etc.).
-Defaults to `type="button"` to prevent accidental form submissions.
+[**Button**](/docs/components/button) - Rewritten from scratch with ~60% less
+code. No longer uses the slow `useProps` hook internally. Now supports all
+web-standard HTML button attributes (`type`, `formAction`, `formMethod`, `name`,
+`value`, `popoverTarget`, etc.). Defaults to `type="button"` to prevent
+accidental form submissions.
 
-**ListItem** - Rebuilt with context-based styling. Removed text style props
-(`fontFamily`, `fontSize`, etc.) and internal spacing props (`spaceFlex`,
-`scaleSpace`) for composable component API. Much faster rendering.
+[**ListItem**](/docs/components/list-item) - Rebuilt with context-based styling.
+Removed text style props (`fontFamily`, `fontSize`, etc.) and internal spacing
+props (`spaceFlex`, `scaleSpace`) for composable component API. Much faster
+rendering.
 
-**Select** - SelectItem is based on ListItem so is likewise much faster, and
-gains an optional floating indicator. SelectLabel is now a simpler
-SizableText-based component instead of depending on ListItem.
+[**Select**](/docs/components/select) - SelectItem is based on ListItem so is
+likewise much faster, and gains an optional floating indicator. SelectLabel is
+now a simpler SizableText-based component instead of depending on ListItem.
 
-**Progress** - Now SSR-friendly with percentage-based transforms on web that
-render correctly without client-side hydration. Bouncy animations no longer
-overshoot past the container edges.
+[**Progress**](/docs/components/progress) - Now SSR-friendly with
+percentage-based transforms on web that render correctly without client-side
+hydration. Bouncy animations no longer overshoot past the container edges.
 
-**Tabs** - `activeStyle` and `activeTheme` props replace the old `Theme` wrapper
-approach. `activationMode` now defaults to `'manual'` (click/Enter to activate)
-matching web standards.
+[**Tabs**](/docs/components/tabs) - `activeStyle` and `activeTheme` props
+replace the old `Theme` wrapper approach. `activationMode` now defaults to
+`'manual'` (click/Enter to activate) matching web standards.
 
-**Groups** - Dramatically simplified. No more magic child cloning.
+[**Group**](/docs/components/group) - Dramatically simplified. No more magic
+child cloning.
 
 #### Headless and Unstyled Components
 
@@ -389,11 +305,12 @@ internals - but for Tamagui-first apps, it's a nice optimization.
 
 #### Component Scoping
 
-Dialog, Popover, Sheet, and Tooltip now support a `scope` prop that lets you
-mount a single instance at your app's root while placing triggers anywhere in
-your tree. **This is a significant performance win** - in testing with large
-apps, we found it greatly improved UX by eliminating the overhead of mounting
-full overlay components inline.
+[Dialog](/docs/components/dialog), [Popover](/docs/components/popover),
+[Sheet](/docs/components/sheet), and [Tooltip](/docs/components/tooltip) now
+support a `scope` prop that lets you mount a single instance at your app's root
+while placing triggers anywhere in your tree. **This is a significant
+performance win** - in testing with large apps, we found it greatly improved UX
+by eliminating the overhead of mounting full overlay components inline.
 
 Instead of each Tooltip or Popover in a list rendering its own portal, content,
 and animation logic, you mount one instance at the root and scatter lightweight
@@ -427,13 +344,15 @@ need tooltips or popovers.
 #### Colors
 
 `@tamagui/colors` has been updated to Radix v3, old colors are available at
-`@tamagui/colors/legacy`.
+`@tamagui/colors/legacy`. See the [Colors docs](/docs/intro/colors) for full
+details.
 
 #### Native Compiler Improvements
 
-The native compiler has been significantly improved in v2. Most notably, the
-experimental theme optimization setting is now on by default, and stable. This
-means better performance on native without any configuration needed.
+The [native compiler](/docs/intro/compiler-install) has been significantly
+improved in v2. Most notably, the experimental theme optimization setting is now
+on by default, and stable. This means better performance on native without any
+configuration needed.
 
 #### Native Portals
 
@@ -553,6 +472,60 @@ with your design system:
 We recommend generating your prompt and committing to your repo, even before you
 do your full upgrade to version 2, as it will help agents understand your
 Tamagui config better.
+
+### Breaking Changes
+
+- **Config v5 changes from v4.** Media query names change (`2xl` → `xxl`, `2xs`
+  → `xxs`), style defaults align with React Native. See
+  [Config v5 docs](/docs/core/config-v5).
+- **React Native 0.82+, React 19+, and TypeScript 5+ required.** Tamagui 2
+  targets React Native 0.82, React 19, and TypeScript 5 and above with New
+  Architecture support. This enables significant new style features, improved
+  type inference, and simplified internals.
+- Default flex and position styles align with the latest React Native versions,
+  (you can change settings to keep the legacy behavior).
+- Button and ListItem lose direct text style props for better performance and
+  consistency.
+- useTheme no longer takes props; use the Theme component instead.
+- Removed web-only `onHoverIn` and `onHoverOut` in favor of standard web events
+  (`onMouseEnter` or `onPointerEnter`).
+- Added comprehensive web event handler support including keyboard, pointer,
+  drag and drop, clipboard, and scroll events.
+- Moved from ThemeableStack to View for most base components in UI.
+- Removed deprecated `Stack` for the identical `View`.
+- Renamed the `animation` prop to `transition` for clarity and consistency.
+- Removed `<Theme inverse />` and `themeInverse` prop - see
+  [inverse themes guide](/docs/guides/theme-builder#inverse-themes).
+- Removed the `maxDarkLightNesting` and `cssStyleSeparator` settings.
+- Removed `space` and `spaceDirection` props - use `gap` instead.
+- Tabs `activationMode` now defaults to `'manual'` instead of `'automatic'`.
+  This means focusing a tab no longer changes the active tab - you must click or
+  press Enter/Space. This matches web standards.
+- Group component simplified: `Group.Item` is now required (no more auto-cloning
+  direct children). Removed props: `space`, `separator`, `scrollable`,
+  `showScrollIndicator`, `disablePassBorderRadius`, `forceUseItem`. Children now
+  control their own sizing - apply size/responsive props directly to child
+  components. Add `<Separator />` manually between items when needed.
+- Moved `<Spacer />` from core to `@tamagui/spacer`.
+- Moved all settings on `createTamagui` to the `settings` object.
+- Native portals no longer auto-import React internals hack. If you want native
+  portals for better context preservation, add
+  `import '@tamagui/native/setup-teleport'` at app startup. See
+  [Portal docs](/docs/components/portal).
+- Removed React Native accessibility props in favor of web-standard props:
+  - `accessibilityLabel` → `aria-label`
+  - `accessibilityRole` → `role`
+  - `accessibilityHint` → `aria-describedby`
+  - `accessibilityState` → `aria-disabled`, `aria-selected`, `aria-checked`,
+    `aria-busy`, `aria-expanded`
+  - `accessibilityValue` → `aria-valuemin`, `aria-valuemax`, `aria-valuenow`,
+    `aria-valuetext`
+  - `accessibilityElementsHidden` → `aria-hidden`
+  - `accessibilityViewIsModal` → `aria-modal`
+  - `accessibilityLiveRegion` → `aria-live`
+  - `accessible` → `tabIndex={0}`
+  - `focusable` → `tabIndex`
+  - `nativeID` → `id`
 
 ### Goals
 
