@@ -118,7 +118,7 @@ describe('SelectRemount', () => {
       await element(by.id('select-remount-test-option-apple')).tap()
 
       // Wait for sheet to close - give spring animation time to settle
-      await new Promise((resolve) => setTimeout(resolve, 2500))
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
       // Test second Select - wait for it to be visible after first sheet closes
       await waitFor(element(by.id('select-remount-test-2-trigger')))

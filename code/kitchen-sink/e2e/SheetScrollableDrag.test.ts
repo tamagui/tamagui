@@ -68,13 +68,13 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     // Item 0 should be visible
     await expect(element(by.id('sheet-scrollable-drag-item-0'))).toBeVisible()
 
-    await device.takeScreenshot('case1-before')
+    // screenshots removed for CI speed - failures auto-capture via detox artifacts
 
     // swipe DOWN on scrollview - should drag sheet, NOT scroll
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('down', 'slow', 0.5)
-    await new Promise(r => setTimeout(r, 600))
+    await new Promise(r => setTimeout(r, 400))
 
-    await device.takeScreenshot('case1-after')
+    // screenshot removed for CI speed
 
     // EXPECTED: sheet moved to position 1, scroll stayed at 0
     const posAttr = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
@@ -100,13 +100,13 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     await expect(element(by.id('sheet-scrollable-drag-position'))).toHaveText('Sheet position: 0')
     await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).toHaveText('ScrollView Y: 0')
 
-    await device.takeScreenshot('case2-before')
+    // screenshot removed for CI speed
 
     // swipe UP on scrollview - should scroll content
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('up', 'slow', 0.5)
     await new Promise(r => setTimeout(r, 400))
 
-    await device.takeScreenshot('case2-after')
+    // screenshot removed for CI speed
 
     // EXPECTED: sheet stays at position 0, content scrolled
     const posAttr = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
@@ -141,13 +141,13 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     const scrollAfterDragDown = await element(by.id('sheet-scrollable-drag-scroll-y')).getAttributes()
     console.log('Case 3 - scroll after drag down:', (scrollAfterDragDown as any).text)
 
-    await device.takeScreenshot('case3-at-position1')
+    // screenshot removed for CI speed
 
     // now drag UP back to position 0
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('up', 'fast', 0.6)
-    await new Promise(r => setTimeout(r, 800)) // extra wait for scroll reset
+    await new Promise(r => setTimeout(r, 500)) // extra wait for scroll reset
 
-    await device.takeScreenshot('case3-after-drag-up')
+    // screenshot removed for CI speed
 
     // EXPECTED: sheet back at position 0, scroll should still be 0 (no simultaneous scroll)
     const posAttr = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
@@ -179,13 +179,13 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     const scrollBefore = await element(by.id('sheet-scrollable-drag-scroll-y')).getAttributes()
     console.log('Case 4 - scroll before swipe down:', (scrollBefore as any).text)
 
-    await device.takeScreenshot('case4-scrolled-down')
+    // screenshot removed for CI speed
 
     // now swipe DOWN - should scroll back first
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('down', 'slow', 0.6)
     await new Promise(r => setTimeout(r, 500))
 
-    await device.takeScreenshot('case4-after-swipe-down')
+    // screenshot removed for CI speed
 
     const posAttr = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
     const scrollAttr = await element(by.id('sheet-scrollable-drag-scroll-y')).getAttributes()
@@ -212,13 +212,13 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     const scrollBefore = await element(by.id('sheet-scrollable-drag-scroll-y')).getAttributes()
     console.log('Case 5 - scroll position before:', (scrollBefore as any).text)
 
-    await device.takeScreenshot('case5-scrolled')
+    // screenshot removed for CI speed
 
     // long swipe down - should scroll to 0 then drag sheet
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('down', 'slow', 0.8)
-    await new Promise(r => setTimeout(r, 600))
+    await new Promise(r => setTimeout(r, 400))
 
-    await device.takeScreenshot('case5-after-handoff')
+    // screenshot removed for CI speed
 
     const posAttr = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
     const scrollAttr = await element(by.id('sheet-scrollable-drag-scroll-y')).getAttributes()
@@ -266,7 +266,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
 
     // 4. swipe down - should scroll back first, then drag sheet
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('down', 'slow', 0.7)
-    await new Promise(r => setTimeout(r, 600))
+    await new Promise(r => setTimeout(r, 400))
 
     const finalPos = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
     const finalScroll = await element(by.id('sheet-scrollable-drag-scroll-y')).getAttributes()
@@ -299,14 +299,14 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     // verify scroll is at 0
     await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).toHaveText('ScrollView Y: 0')
 
-    await device.takeScreenshot('case7-at-position1')
+    // screenshot removed for CI speed
 
     // drag UP - sheet moves to position 0
     // scroll events may fire but are locked to 0
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('up', 'fast', 0.5)
     await new Promise(r => setTimeout(r, 500))
 
-    await device.takeScreenshot('case7-after-drag-up')
+    // screenshot removed for CI speed
 
     const posAttr = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
     const scrollAttr = await element(by.id('sheet-scrollable-drag-scroll-y')).getAttributes()
@@ -340,7 +340,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     await expect(element(by.id('sheet-scrollable-drag-position'))).toHaveText('Sheet position: 1')
     await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).toHaveText('ScrollView Y: 0')
 
-    await device.takeScreenshot('case9-at-position1')
+    // screenshot removed for CI speed
 
     // CRITICAL: one LONG swipe UP - should:
     // 1. Move sheet from position 1 to position 0
@@ -350,7 +350,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     // shorter wait - maybe scroll resets over time?
     await new Promise(r => setTimeout(r, 100))
 
-    await device.takeScreenshot('case9-after-long-swipe')
+    // screenshot removed for CI speed
 
     const posAttr = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
     const scrollAttr = await element(by.id('sheet-scrollable-drag-scroll-y')).getAttributes()
@@ -388,15 +388,15 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     await expect(element(by.id('sheet-scrollable-drag-position'))).toHaveText('Sheet position: 0')
     await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).toHaveText('ScrollView Y: 0')
 
-    await device.takeScreenshot('case8-at-top')
+    // screenshot removed for CI speed
 
     // drag UP on handle - should NOT scroll content
     // the resist() function applies rubber band effect visually
     // the sheet should spring back to top position
     await element(by.id('sheet-scrollable-drag-handle')).swipe('up', 'fast', 0.5)
-    await new Promise(r => setTimeout(r, 600)) // wait for spring animation
+    await new Promise(r => setTimeout(r, 400)) // wait for spring animation
 
-    await device.takeScreenshot('case8-after-resist')
+    // screenshot removed for CI speed
 
     const posAttr = await element(by.id('sheet-scrollable-drag-position')).getAttributes()
     const scrollAttr = await element(by.id('sheet-scrollable-drag-max-scroll-y')).getAttributes()

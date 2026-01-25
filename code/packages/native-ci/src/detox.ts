@@ -19,6 +19,8 @@ export interface DetoxRunnerOptions {
   retries: number
   /** Run in headless mode (Android only) */
   headless?: boolean
+  /** Number of parallel workers (default: 1) */
+  workers?: number
 }
 
 /**
@@ -34,6 +36,7 @@ export function parseDetoxArgs(platform: Platform) {
       headless: { type: 'boolean', default: false },
       'record-logs': { type: 'string', default: 'all' },
       retries: { type: 'string', default: '0' },
+      workers: { type: 'string', default: '1' },
     },
   })
 
@@ -44,12 +47,20 @@ export function parseDetoxArgs(platform: Platform) {
     process.exit(1)
   }
 
+  // Validate and convert workers to number
+  const workersNum = Number.parseInt(values.workers!, 10)
+  if (Number.isNaN(workersNum) || workersNum < 1) {
+    console.error('Error: workers must be a positive integer')
+    process.exit(1)
+  }
+
   return {
     config: values.config!,
     projectRoot: values['project-root']!,
     headless: values.headless!,
     recordLogs: values['record-logs']!,
     retries: retriesNum,
+    workers: workersNum,
   }
 }
 
@@ -72,6 +83,11 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
 
   if (options.headless) {
     args.push('--headless')
+  }
+
+  // add parallel workers if specified
+  if (options.workers && options.workers > 1) {
+    args.push('--workers', String(options.workers))
   }
 
   return args
