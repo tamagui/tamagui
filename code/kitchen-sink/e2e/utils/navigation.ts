@@ -30,8 +30,10 @@ export async function navigateToTestCase(
   // tap toggle button to expand the quick-nav section
   await element(by.id('toggle-test-cases')).tap()
 
-  // small delay for expansion
-  await new Promise((r) => setTimeout(r, 300))
+  // wait for the quick-nav element to appear (expansion animation)
+  await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
+    .toBeVisible()
+    .withTimeout(5000)
 
   // tap the quick-nav element for this test case
   await element(by.id(`detox-nav-${testCaseName}`)).tap()
