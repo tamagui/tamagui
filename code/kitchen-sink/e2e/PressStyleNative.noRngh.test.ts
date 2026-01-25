@@ -14,6 +14,9 @@ import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
 
 async function navigateToPressStyleNative() {
   await navigateToTestCase('PressStyleNative', 'color-test-pressable')
+  // navigateToTestCase re-enables sync, but we need it disabled for no-RNGH tests
+  // because the RNManualRecognizer gesture blocks Detox synchronization in CI
+  await device.disableSynchronization()
 }
 
 describe('PressStyleNative (no RNGH)', () => {
