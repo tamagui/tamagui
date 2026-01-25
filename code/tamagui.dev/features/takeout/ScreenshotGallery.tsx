@@ -13,7 +13,7 @@ const screenshotImages = [
     galleryIdx: 0,
   },
   {
-    src: '/takeout/starter-screenshots/web.png',
+    src: '/takeout/starter-screenshots/web.jpg',
     alt: 'Web',
     label: 'Web',
     galleryIdx: 15,
@@ -22,19 +22,19 @@ const screenshotImages = [
     src: '/takeout/starter-screenshots/android.jpg',
     alt: 'Android',
     label: 'Android',
-    galleryIdx: 26,
+    galleryIdx: 23,
   },
   {
-    src: '/takeout/starter-screenshots/ios-001.jpeg',
+    src: '/takeout/starter-screenshots/ios-001.jpg',
     alt: 'Login',
     label: 'Login',
     galleryIdx: 1,
   },
   {
-    src: '/takeout/starter-screenshots/ios-007.jpeg',
+    src: '/takeout/starter-screenshots/ios-007.jpg',
     alt: 'Feed',
     label: 'Feed',
-    galleryIdx: 2,
+    galleryIdx: 7,
   },
 ]
 
