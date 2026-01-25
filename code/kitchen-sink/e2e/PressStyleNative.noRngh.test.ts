@@ -39,7 +39,7 @@ describe('PressStyleNative (no RNGH)', () => {
     // reload but keep the launch args
     await device.reloadReactNative()
     // wait for app to stabilize after reload
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 800))
     await navigateToPressStyleNative()
   })
 
@@ -90,7 +90,7 @@ describe('PressStyleNative (no RNGH)', () => {
         100
       )
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 1').withTimeout(5000)
       await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 1').withTimeout(5000)
@@ -109,7 +109,7 @@ describe('PressStyleNative (no RNGH)', () => {
         100
       )
 
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 400))
 
       const afterScreenshot = await element(by.id('color-test-pressable')).takeScreenshot(
         'color-test-after-drag-norngh'
