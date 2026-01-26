@@ -22,7 +22,7 @@ export function simplifiedGetSplitStyles(
   // optionally merge in default props like createComponent does
   let mergedProps = props
   if (options.mergeDefaultProps) {
-    const defaults = getDefaultProps(props, component.staticConfig)
+    const defaults = getDefaultProps(component.staticConfig, props.componentName)
     mergedProps = { ...defaults, ...props }
   }
 

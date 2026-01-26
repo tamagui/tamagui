@@ -291,7 +291,11 @@ export function createComponent<
     const componentName = props.componentName || staticConfig.componentName
 
     // merge both default props and styled context props - ensure order is preserved
-    const defaultProps = getDefaultProps(props, staticConfig, isText && hasTextAncestor)
+    const defaultProps = getDefaultProps(
+      staticConfig,
+      props.componentName,
+      isText && hasTextAncestor
+    )
 
     // merge styled context props over defaults, ensure order is preserved
     const [nextProps, overrides] = mergeComponentProps(

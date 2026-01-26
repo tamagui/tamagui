@@ -73,7 +73,7 @@ export function MenuDemo() {
                 ios={{
                   name: 'calendar',
                   hierarchicalColor: '#000',
-                  pointSize: 20,
+                  // pointSize: 20,
                 }}
               >
                 <Calendar color="gray" size={14} />

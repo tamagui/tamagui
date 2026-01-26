@@ -166,6 +166,7 @@ export declare const stylePropsView: {
     boxShadow: boolean;
     filter: boolean;
     backgroundImage: boolean;
+    experimental_backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -459,6 +460,7 @@ export declare const stylePropsText: {
     boxShadow: boolean;
     filter: boolean;
     backgroundImage: boolean;
+    experimental_backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -721,6 +723,7 @@ export declare const stylePropsAll: {
     boxShadow: boolean;
     filter: boolean;
     backgroundImage: boolean;
+    experimental_backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -970,6 +973,7 @@ export declare const validStyles: {
     boxShadow: boolean;
     filter: boolean;
     backgroundImage: boolean;
+    experimental_backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;

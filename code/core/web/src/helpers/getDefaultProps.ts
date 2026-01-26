@@ -3,15 +3,15 @@ import type { StaticConfig } from '../types'
 
 // merge both default props, styled context props, and default text props
 export const getDefaultProps = (
-  props: Record<string, any>,
   staticConfig: StaticConfig,
+  propsComponentName?: string,
   isSubText?: boolean
 ) => {
   let defaultProps = staticConfig?.defaultProps
 
   const conf = getConfig()
   const name =
-    props?.componentName ||
+    propsComponentName ||
     staticConfig?.componentName ||
     // important: this is how we end up getting the defaultProps we set in createTamagui
     (staticConfig.isText ? 'Text' : 'View')
@@ -19,7 +19,7 @@ export const getDefaultProps = (
   const userDefaultProps = conf?.defaultProps?.[name]
 
   if (userDefaultProps) {
-    // can avoid doing this every render with a cache but need to profile first
+    // component's staticConfig.defaultProps wins over global config defaults
     defaultProps = { ...userDefaultProps, ...defaultProps }
   }
 
