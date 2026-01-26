@@ -75,6 +75,9 @@ It assumes your package.json looks something like this:
   - `--ignore-base-url` - if not set, tsc is passed `--baseUrl .`
   - `--skip-mjs` - don't output mjs files
   - `--skip-native` - don't output native files
+  - `--swap-exports` - swaps `exports.types` from `./src/*.ts` to `./types/*.d.ts` for publishing. if a command is given after `--`, runs it then swaps back. exit code is preserved.
+    - `tamagui-build --swap-exports` - build and swap, stays swapped (for manual publish)
+    - `tamagui-build --swap-exports -- npm publish` - build, swap, publish, swap back
 - `tamagui-build --watch` - watches for changes and does the above
 - `tamagui-build clean` - cleans dist, types, node_modules folders
 

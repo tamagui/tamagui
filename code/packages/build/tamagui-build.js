@@ -1,6 +1,27 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+/**
+ * tamagui-build - build tool for tamagui packages
+ *
+ * usage:
+ *   tamagui-build                     # build js + types
+ *   tamagui-build --watch             # watch mode
+ *   tamagui-build --skip-types        # js only
+ *   tamagui-build --skip-native       # skip native builds
+ *   tamagui-build clean               # remove dist/types/node_modules
+ *   tamagui-build clean:build         # remove dist/types only
+ *
+ *   --swap-exports                    # for publishing: swaps exports.types
+ *                                     # from ./src/*.ts to ./types/*.d.ts
+ *                                     # if command given after --, runs it
+ *                                     # then swaps back. exit code preserved.
+ *
+ *   examples:
+ *     tamagui-build --swap-exports -- npm publish
+ *     tamagui-build --swap-exports -- pnpm publish --no-git-checks
+ */
+
 const { transform } = require('@babel/core')
 const FSE = require('fs-extra')
 const esbuild = require('esbuild')
@@ -90,6 +111,11 @@ const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
+const shouldSwapExports = process.argv.includes('--swap-exports')
+
+// get command after "--" to run with swapped exports
+const dashDashIndex = process.argv.indexOf('--')
+const runCommandAfterSwap = dashDashIndex > -1 ? process.argv.slice(dashDashIndex + 1) : null
 
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
@@ -218,8 +244,98 @@ if (shouldClean || shouldCleanBuildOnly) {
       .on('change', rebuild)
       .on('add', rebuild)
   } else {
-    build()
+    build().then(async () => {
+      if (!shouldSwapExports) return
+
+      // swap exports.types from ./src to ./types
+      const swapped = swapExportsTypes(pkg, 'to-dist')
+      if (swapped) {
+        await FSE.writeJSON('./package.json', pkg, { spaces: 2 })
+        console.info('swapped exports.types to dist')
+      }
+
+      // run command after -- if given, then swap back
+      if (runCommandAfterSwap && runCommandAfterSwap.length > 0) {
+        const command = runCommandAfterSwap.join(' ')
+        console.info(`running: ${command}`)
+        let exitCode = 0
+        try {
+          childProcess.execSync(command, { stdio: 'inherit' })
+        } catch (err) {
+          // execSync throws on non-zero exit
+          exitCode = err.status ?? 1
+        } finally {
+          if (swapped) {
+            swapExportsTypes(pkg, 'to-src')
+            await FSE.writeJSON('./package.json', pkg, { spaces: 2 })
+            console.info('swapped exports.types back to src')
+          }
+        }
+        process.exit(exitCode)
+      }
+    }).catch(async (error) => {
+      // try to restore on error if we were swapping
+      if (shouldSwapExports) {
+        try {
+          const freshPkg = await FSE.readJSON('./package.json')
+          swapExportsTypes(freshPkg, 'to-src')
+          await FSE.writeJSON('./package.json', freshPkg, { spaces: 2 })
+        } catch {
+          // ignore restore errors
+        }
+      }
+      console.error(error)
+      process.exit(1)
+    })
   }
+}
+
+// stores original src paths so we can restore exactly (keyed by json path)
+const originalExportTypes = new Map()
+
+/**
+ * swaps "types" fields in exports between src and dist
+ * handles nested conditions like { "react-native": { "types": "..." } }
+ * @param {object} pkg - package.json object (mutated in place)
+ * @param {'to-dist' | 'to-src'} direction
+ * @returns {boolean} true if any swaps were made
+ */
+function swapExportsTypes(pkg, direction) {
+  if (!pkg.exports) return false
+
+  let swapped = false
+
+  function walk(obj, pathKey) {
+    if (!obj || typeof obj !== 'object') return
+
+    for (const [key, value] of Object.entries(obj)) {
+      const currentPath = pathKey ? `${pathKey}.${key}` : key
+
+      if (key === 'types' && typeof value === 'string') {
+        if (direction === 'to-dist' && value.startsWith('./src/')) {
+          // store original for restore
+          originalExportTypes.set(currentPath, value)
+          // ./src/index.ts -> ./types/index.d.ts
+          obj.types = value
+            .replace(/^\.\/src\//, './types/')
+            .replace(/\.tsx?$/, '.d.ts')
+          swapped = true
+        } else if (direction === 'to-src') {
+          const original = originalExportTypes.get(currentPath)
+          if (original) {
+            obj.types = original
+            swapped = true
+          }
+        }
+      } else if (typeof value === 'object' && value !== null) {
+        // recurse into nested conditions
+        walk(value, currentPath)
+      }
+    }
+  }
+
+  walk(pkg.exports, '')
+  return swapped
 }
 
 async function build({ skipTypes } = {}) {
