@@ -1095,7 +1095,7 @@ export function createBaseMenu({
    * MenuItemTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_TITLE_NAME = 'MenuItemTitle'
-  const MenuItemTitle = _Title.styleable((props, forwardedRef) => {
+  const MenuItemTitle = _Title.styleable<MenuItemTitleProps>((props, forwardedRef) => {
     return <_Title {...props} ref={forwardedRef} />
   })
 
@@ -1106,9 +1106,11 @@ export function createBaseMenu({
    * MenuItemSubTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
-  const MenuItemSubTitle = _SubTitle.styleable((props, forwardedRef) => {
-    return <_SubTitle {...props} ref={forwardedRef} />
-  })
+  const MenuItemSubTitle = _SubTitle.styleable<MenuItemSubTitleProps>(
+    (props, forwardedRef) => {
+      return <_SubTitle {...props} ref={forwardedRef} />
+    }
+  )
 
   MenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
 
@@ -1141,7 +1143,7 @@ export function createBaseMenu({
    * -----------------------------------------------------------------------------------------------*/
 
   const ITEM_ICON = 'MenuItemIcon'
-  const MenuItemIcon = _Icon.styleable((props: MenuItemIconProps, forwardedRef) => {
+  const MenuItemIcon = _Icon.styleable<MenuItemIconProps>((props, forwardedRef) => {
     // filter out native-only props that shouldn't reach the DOM
     const {
       // @ts-ignore
@@ -1733,14 +1735,23 @@ export function createBaseMenu({
   const Anchor = MenuAnchor
   const Portal = MenuPortal
   const Content = MenuContent
-  const Group = _MenuGroup
-  const Label = _Label
+  const Group = _MenuGroup.styleable<MenuGroupProps>((props, ref) => {
+    return <_MenuGroup {...props} ref={ref} />
+  })
+  Group.displayName = 'MenuGroup'
+  const Label = _Label.styleable<MenuLabelProps>((props, ref) => {
+    return <_Label {...props} ref={ref} />
+  })
+  Label.displayName = 'MenuLabel'
   const Item = MenuItem
   const CheckboxItem = MenuCheckboxItem
   const RadioGroup = MenuRadioGroup
   const RadioItem = MenuRadioItem
   const ItemIndicator = MenuItemIndicator
-  const Separator = _Separator
+  const Separator = _Separator.styleable<MenuSeparatorProps>((props, ref) => {
+    return <_Separator {...props} ref={ref} />
+  })
+  Separator.displayName = 'MenuSeparator'
   const Arrow = MenuArrow
   const Sub = MenuSub
   const SubTrigger = MenuSubTrigger

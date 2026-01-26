@@ -58,8 +58,8 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     Content: React.ForwardRefExoticComponent<MenuContentProps & {
         scope?: string;
     } & React.RefAttributes<HTMLElement | import("react-native").View>>;
-    Group: import("@tamagui/web").TamaguiComponent;
-    Label: import("@tamagui/web").TamaguiComponent;
+    Group: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuGroupProps> & BaseMenuTypes.MenuGroupProps, any, BaseMenuTypes.MenuGroupProps, {}, {}, {}>;
+    Label: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuLabelProps> & BaseMenuTypes.MenuLabelProps, any, BaseMenuTypes.MenuLabelProps, {}, {}, {}>;
     Item: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuItemProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>, "ref"> & {
@@ -91,7 +91,7 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     } & React.RefAttributes<any>, "ref"> & {
         scope?: string;
     }, {}, {}, {}>;
-    Separator: import("@tamagui/web").TamaguiComponent;
+    Separator: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuSeparatorProps> & BaseMenuTypes.MenuSeparatorProps, any, BaseMenuTypes.MenuSeparatorProps, {}, {}, {}>;
     Arrow: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuArrowProps & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>>;
@@ -113,10 +113,10 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     } & React.RefAttributes<HTMLElement | import("react-native").View>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<HTMLElement | import("react-native").View>>;
-    ItemTitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
-    ItemSubtitle: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
+    ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuItemTitleProps> & BaseMenuTypes.MenuItemTitleProps, any, BaseMenuTypes.MenuItemTitleProps, {}, {}, {}>;
+    ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuItemSubTitleProps> & BaseMenuTypes.MenuItemSubTitleProps, any, BaseMenuTypes.MenuItemSubTitleProps, {}, {}, {}>;
     ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;
-    ItemIcon: import("@tamagui/web").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
+    ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<any, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, any, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, {}, {}, {}>;
 };
 export type { MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIndicatorProps, MenuItemProps, MenuLabelProps, MenuPortalProps, MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps, };
 //# sourceMappingURL=createNonNativeMenu.d.ts.map
