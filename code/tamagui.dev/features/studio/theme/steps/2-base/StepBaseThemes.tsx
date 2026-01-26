@@ -148,7 +148,7 @@ const PaletteView = memo((props: Props) => {
     if (anchor) {
       // DELETE
       if (index === 0) {
-        toastController.show(`Can't delete anchor at index 0`)
+        toastController(`Can't delete anchor at index 0`)
         return
       }
       if (anchors.length === 2) {

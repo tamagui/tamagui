@@ -17,7 +17,6 @@ import {
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { IconGithub } from '~/features/studio/theme/icons/icon-github'
 import { IconGitlab } from '~/features/studio/theme/icons/icon-gitlab'
-import { ButtonSimple } from './ButtonSimple'
 
 export const LoginScreen = () => {
   const demoProps = useDemoProps()
@@ -53,7 +52,7 @@ export const LoginScreen = () => {
         <YStack flex={1} flexBasis="auto" {...demoProps.gapPropsLg}>
           <XStack {...demoProps.gapPropsMd}>
             <>
-              <ButtonSimple
+              <Button
                 flex={1}
                 size="$3"
                 icon={IconGitlab}
@@ -61,8 +60,8 @@ export const LoginScreen = () => {
                 {...demoProps.buttonOutlineProps}
               >
                 GitLab
-              </ButtonSimple>
-              <ButtonSimple
+              </Button>
+              <Button
                 flex={1}
                 size="$3"
                 icon={IconGithub}
@@ -70,7 +69,7 @@ export const LoginScreen = () => {
                 {...demoProps.buttonOutlineProps}
               >
                 GitHub
-              </ButtonSimple>
+              </Button>
             </>
           </XStack>
 

@@ -342,6 +342,6 @@ function downloadFile(filename, text) {
 
 function copyText(text: string) {
   navigator.clipboard.writeText(text).then(() => {
-    toastController.show('Copied!')
+    toastController('Copied!')
   })
 }
