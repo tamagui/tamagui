@@ -18,7 +18,6 @@ import {
 } from '@tamagui/helpers'
 import React from 'react'
 import { getConfig, getFont, getSetting } from '../config'
-import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -320,10 +319,15 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') continue // handled above first
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // skip the webViewFlexCompatStyles when asChild on web
-      if (asChild && webViewFlexCompatStyles[keyInit] === valInit) {
-        continue
+    // when asChild, skip default props - they shouldn't be passed down to children
+    if (asChild) {
+      const defaultProps = staticConfig.defaultProps
+      if (defaultProps) {
+        // check both original key and expanded key (after shorthand expansion)
+        const defaultVal = defaultProps[keyOg] ?? defaultProps[keyInit]
+        if (defaultVal !== undefined && valInit === defaultVal) {
+          continue
+        }
       }
     }
 

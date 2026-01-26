@@ -12,7 +12,8 @@ interface StackVariants {
   elevation?: number | SizeTokens
 }
 
-export type YStackProps = Omit<GetProps<typeof YStack>, keyof StackVariants> & StackVariants
+export type YStackProps = Omit<GetProps<typeof YStack>, keyof StackVariants> &
+  StackVariants
 
 export type XStackProps = YStackProps
 export type ZStackProps = YStackProps

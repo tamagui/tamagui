@@ -16,10 +16,19 @@ export function simplifiedGetSplitStyles(
   options: {
     render?: string
     mediaState?: Record<string, any>
+    mergeDefaultProps?: boolean
   } = {}
 ) {
+  // optionally merge in default props like createComponent does
+  let mergedProps = props
+  if (options.mergeDefaultProps) {
+    const staticConfig = component.staticConfig
+    const defaultProps = staticConfig?.defaultProps
+    mergedProps = defaultProps ? { ...defaultProps, ...props } : props
+  }
+
   return getSplitStyles(
-    props,
+    mergedProps,
     component.staticConfig,
     emptyObj,
     '',
