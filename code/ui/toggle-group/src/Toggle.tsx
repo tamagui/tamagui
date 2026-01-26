@@ -88,6 +88,7 @@ export const ToggleFrame = styled(
 type ToggleFrameProps = GetProps<typeof ToggleFrame>
 
 type ToggleItemExtraProps = {
+  orientation?: 'horizontal' | 'vertical'
   defaultValue?: string
   disabled?: boolean
   active?: boolean
