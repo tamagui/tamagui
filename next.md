@@ -4,6 +4,8 @@
 
 - Sheet scope prop (like Dialog/Popover/Tooltip have)
 
+- linear-gradient on native should fall back to just backgroundImage now
+
 ---
 
 AFTER v2 RC (nice to haves):
