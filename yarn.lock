@@ -7774,6 +7774,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/element@workspace:*, @tamagui/element@workspace:code/packages/element":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/element@workspace:code/packages/element"
+  dependencies:
+    "@tamagui/build": "workspace:*"
+    "@tamagui/compose-refs": "workspace:*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/elements@workspace:*, @tamagui/elements@workspace:code/ui/elements":
   version: 0.0.0-use.local
   resolution: "@tamagui/elements@workspace:code/ui/elements"
@@ -8127,6 +8138,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/element": "workspace:*"
     "@tamagui/focusable": "workspace:*"
     "@tamagui/font-size": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
@@ -9178,10 +9190,10 @@ __metadata:
   resolution: "@tamagui/tabs@workspace:code/ui/tabs"
   dependencies:
     "@tamagui/build": "workspace:*"
-    "@tamagui/compose-refs": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/create-context": "workspace:*"
+    "@tamagui/element": "workspace:*"
     "@tamagui/get-button-sized": "workspace:*"
     "@tamagui/group": "workspace:*"
     "@tamagui/helpers": "workspace:*"
@@ -28712,6 +28724,7 @@ __metadata:
     "@tamagui/core": "workspace:*"
     "@tamagui/create-context": "workspace:*"
     "@tamagui/dialog": "workspace:*"
+    "@tamagui/element": "workspace:*"
     "@tamagui/elements": "workspace:*"
     "@tamagui/fake-react-native": "workspace:*"
     "@tamagui/focusable": "workspace:*"
