@@ -1,4 +1,5 @@
 import type { ColorTokens, ViewProps, TextStyle } from '@tamagui/web'
+import type { InputNativeProps } from './InputNativeProps'
 
 /**
  * Web-aligned Input props
@@ -7,8 +8,8 @@ import type { ColorTokens, ViewProps, TextStyle } from '@tamagui/web'
 
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
 
-// Text style props supported by RN TextInput
-// Using TextStyle to get theme-enhanced token types for these props
+// text style props supported by RN TextInput
+// using TextStyle to get theme-enhanced token types for these props
 type InputTextStyleProps = Pick<
   TextStyle,
   | 'color'
@@ -26,7 +27,8 @@ export type InputProps = ViewProps &
     HTMLInputProps,
     'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps
   > &
-  InputTextStyleProps & {
+  InputTextStyleProps &
+  InputNativeProps & {
     // Core HTML input props are inherited from HTMLInputProps:
     // type, value, defaultValue, placeholder, disabled, readOnly,
     // onChange, onFocus, onBlur, onInput, autoComplete, autoFocus,
@@ -70,43 +72,61 @@ export type InputProps = ViewProps &
       nativeEvent: { selection: { start: number; end: number } }
     }) => void
 
-    // Native-only props (no web equivalent)
-
     /**
-     * Keyboard appearance for iOS (native only, no web equivalent)
+     * Text content type for iOS autofill.
+     * Use `autoComplete` for web compatibility.
+     * @platform ios
      */
-    keyboardAppearance?: 'default' | 'light' | 'dark'
-
-    /**
-     * Text content type for iOS autofill (native only, use `autoComplete` on web)
-     */
-    textContentType?:
-      | 'none'
-      | 'URL'
-      | 'addressCity'
-      | 'addressCityAndState'
-      | 'addressState'
-      | 'countryName'
-      | 'creditCardNumber'
-      | 'emailAddress'
-      | 'familyName'
-      | 'fullStreetAddress'
-      | 'givenName'
-      | 'jobTitle'
-      | 'location'
-      | 'middleName'
-      | 'name'
-      | 'namePrefix'
-      | 'nameSuffix'
-      | 'nickname'
-      | 'organizationName'
-      | 'postalCode'
-      | 'streetAddressLine1'
-      | 'streetAddressLine2'
-      | 'sublocality'
-      | 'telephoneNumber'
-      | 'username'
-      | 'password'
-      | 'newPassword'
-      | 'oneTimeCode'
+    textContentType?: InputTextContentType
   }
+
+/**
+ * iOS text content types for autofill
+ */
+export type InputTextContentType =
+  | 'none'
+  | 'URL'
+  | 'addressCity'
+  | 'addressCityAndState'
+  | 'addressState'
+  | 'countryName'
+  | 'creditCardNumber'
+  | 'creditCardExpiration'
+  | 'creditCardExpirationMonth'
+  | 'creditCardExpirationYear'
+  | 'creditCardSecurityCode'
+  | 'creditCardType'
+  | 'creditCardName'
+  | 'creditCardGivenName'
+  | 'creditCardMiddleName'
+  | 'creditCardFamilyName'
+  | 'emailAddress'
+  | 'familyName'
+  | 'fullStreetAddress'
+  | 'givenName'
+  | 'jobTitle'
+  | 'location'
+  | 'middleName'
+  | 'name'
+  | 'namePrefix'
+  | 'nameSuffix'
+  | 'nickname'
+  | 'organizationName'
+  | 'postalCode'
+  | 'streetAddressLine1'
+  | 'streetAddressLine2'
+  | 'sublocality'
+  | 'telephoneNumber'
+  | 'username'
+  | 'password'
+  | 'newPassword'
+  | 'oneTimeCode'
+  | 'birthdate'
+  | 'birthdateDay'
+  | 'birthdateMonth'
+  | 'birthdateYear'
+  | 'cellularEID'
+  | 'cellularIMEI'
+  | 'dateTime'
+  | 'flightNumber'
+  | 'shipmentTrackingNumber'

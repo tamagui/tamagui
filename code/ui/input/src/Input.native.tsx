@@ -25,6 +25,9 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     // Tamagui color props
     placeholderTextColor,
     selectionColor,
+    cursorColor,
+    selectionHandleColor,
+    underlineColorAndroid,
 
     // Callbacks
     onChange,
@@ -33,10 +36,57 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     onChangeText,
     onSubmitEditing,
     onSelectionChange,
+    onEndEditing,
+    onContentSizeChange,
+    onScroll,
+    onKeyPress: onKeyPressProp,
     selection,
 
-    // Native props
+    // Native-only props (pass through directly)
     keyboardAppearance,
+    returnKeyType: returnKeyTypeProp,
+    submitBehavior,
+    blurOnSubmit,
+    caretHidden,
+    contextMenuHidden,
+    selectTextOnFocus,
+    secureTextEntry: secureTextEntryProp,
+    maxFontSizeMultiplier,
+    allowFontScaling,
+    multiline: multilineProp,
+    keyboardType: keyboardTypeProp,
+    autoCapitalize,
+    autoCorrect,
+    autoFocusNative,
+    textContentType,
+
+    // iOS-only props
+    clearButtonMode,
+    clearTextOnFocus,
+    enablesReturnKeyAutomatically,
+    dataDetectorTypes,
+    scrollEnabled,
+    passwordRules,
+    rejectResponderTermination,
+    spellCheck,
+    lineBreakStrategyIOS,
+    lineBreakModeIOS,
+    smartInsertDelete,
+    inputAccessoryViewID,
+    inputAccessoryViewButtonLabel,
+    disableKeyboardShortcuts,
+
+    // Android-only props
+    importantForAutofill,
+    disableFullscreenUI,
+    inlineImageLeft,
+    inlineImagePadding,
+    returnKeyLabel,
+    textBreakStrategy,
+    textAlignVertical,
+    verticalAlign,
+    showSoftInputOnFocus,
+    numberOfLines: numberOfLinesProp,
 
     // Web-only props to filter out
     // @ts-ignore
@@ -58,67 +108,76 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
   const theme = useTheme()
   const composedRefs = useComposedRefs<any>(forwardedRef, ref)
 
-  // Convert web type to native props
-  let secureTextEntry = false
-  let keyboardType: RNTextInputProps['keyboardType'] = 'default'
+  // Convert web type to native props (if not explicitly overridden)
+  let secureTextEntry = secureTextEntryProp ?? false
+  let keyboardType: RNTextInputProps['keyboardType'] = keyboardTypeProp ?? 'default'
   let inputMode: RNTextInputProps['inputMode'] = undefined
 
-  switch (type) {
-    case 'password':
-      secureTextEntry = true
-      break
-    case 'email':
-      keyboardType = 'email-address'
-      inputMode = 'email'
-      break
-    case 'tel':
-      keyboardType = 'phone-pad'
-      inputMode = 'tel'
-      break
-    case 'number':
-      keyboardType = 'numeric'
-      inputMode = 'numeric'
-      break
-    case 'url':
-      keyboardType = 'url'
-      inputMode = 'url'
-      break
-    case 'search':
-      inputMode = 'search'
-      break
+  // only derive from type if native props weren't explicitly set
+  if (!secureTextEntryProp && !keyboardTypeProp) {
+    switch (type) {
+      case 'password':
+        secureTextEntry = true
+        break
+      case 'email':
+        keyboardType = 'email-address'
+        inputMode = 'email'
+        break
+      case 'tel':
+        keyboardType = 'phone-pad'
+        inputMode = 'tel'
+        break
+      case 'number':
+        keyboardType = 'numeric'
+        inputMode = 'numeric'
+        break
+      case 'url':
+        keyboardType = 'url'
+        inputMode = 'url'
+        break
+      case 'search':
+        inputMode = 'search'
+        break
+    }
   }
 
-  // Convert enterKeyHint to returnKeyType
-  let returnKeyType: RNTextInputProps['returnKeyType'] = undefined
-  switch (enterKeyHint) {
-    case 'done':
-      returnKeyType = 'done'
-      break
-    case 'go':
-      returnKeyType = 'go'
-      break
-    case 'next':
-      returnKeyType = 'next'
-      break
-    case 'search':
-      returnKeyType = 'search'
-      break
-    case 'send':
-      returnKeyType = 'send'
-      break
+  // Use explicit returnKeyType if provided, otherwise convert enterKeyHint
+  let returnKeyType: RNTextInputProps['returnKeyType'] = returnKeyTypeProp
+  if (!returnKeyType && enterKeyHint) {
+    switch (enterKeyHint) {
+      case 'done':
+        returnKeyType = 'done'
+        break
+      case 'go':
+        returnKeyType = 'go'
+        break
+      case 'next':
+        returnKeyType = 'next'
+        break
+      case 'search':
+        returnKeyType = 'search'
+        break
+      case 'send':
+        returnKeyType = 'send'
+        break
+    }
   }
+
+  // Determine multiline
+  const multiline = multilineProp ?? (render === 'textarea' || (rows && rows > 1))
+  const numberOfLines = numberOfLinesProp ?? rows
 
   // Resolve color tokens
-  const resolvedPlaceholderColor = placeholderTextColor
-    ? getTokenValue(
-        theme[placeholderTextColor as any]?.val ?? placeholderTextColor,
-        'color'
-      )
-    : undefined
+  const resolveColor = (color: any) => {
+    if (!color) return undefined
+    return getTokenValue(theme[color as any]?.val ?? color, 'color')
+  }
 
-  const resolvedSelectionColor = selectionColor
-    ? getTokenValue(theme[selectionColor as any]?.val ?? selectionColor, 'color')
-    : undefined
+  const resolvedPlaceholderColor = resolveColor(placeholderTextColor)
+  const resolvedSelectionColor = resolveColor(selectionColor)
+  const resolvedCursorColor = resolveColor(cursorColor)
+  const resolvedSelectionHandleColor = resolveColor(selectionHandleColor)
+  const resolvedUnderlineColorAndroid = resolveColor(underlineColorAndroid)
 
   // Register focusable
   React.useEffect(() => {
@@ -142,6 +201,9 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
 
   // Handle onKeyDown via onKeyPress + onSubmitEditing
   const handleKeyPress = (e: any) => {
+    // call user's onKeyPress first
+    onKeyPressProp?.(e)
+    // then handle web onKeyDown compat
     if (onKeyDown) {
       const { key } = e.nativeEvent
       if (key === 'Backspace' || key === 'Enter' || key.length === 1) {
@@ -154,9 +216,7 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     if (onKeyDown) {
       onKeyDown({ key: 'Enter', type: 'keydown' } as any)
     }
-    if (onSubmitEditing) {
-      onSubmitEditing(e)
-    }
+    onSubmitEditing?.(e)
   }
 
   // Handle selection change
@@ -172,16 +232,66 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     keyboardAppearance,
     inputMode,
     returnKeyType,
-    multiline: render === 'textarea' || (rows && rows > 1),
-    numberOfLines: rows,
+    multiline,
+    numberOfLines,
     selection,
+    autoComplete: autoComplete as any,
+    autoFocus: autoFocusNative,
+
+    // colors
     placeholderTextColor: resolvedPlaceholderColor,
     selectionColor: resolvedSelectionColor,
+    cursorColor: resolvedCursorColor,
+    selectionHandleColor: resolvedSelectionHandleColor,
+    underlineColorAndroid: resolvedUnderlineColorAndroid,
+
+    // callbacks
     onChangeText: handleChangeText,
-    onKeyPress: onKeyDown ? handleKeyPress : undefined,
+    onKeyPress: onKeyPressProp || onKeyDown ? handleKeyPress : undefined,
     onSubmitEditing: onKeyDown || onSubmitEditing ? handleSubmitEditing : undefined,
     onSelectionChange: onSelectionChange ? handleSelectionChange : undefined,
-    autoComplete: autoComplete as any,
+    onEndEditing,
+    onContentSizeChange,
+    onScroll,
+
+    // cross-platform native props
+    submitBehavior,
+    blurOnSubmit,
+    caretHidden,
+    contextMenuHidden,
+    selectTextOnFocus,
+    maxFontSizeMultiplier,
+    allowFontScaling,
+    autoCapitalize,
+    autoCorrect,
+    textContentType,
+
+    // iOS-only props
+    clearButtonMode,
+    clearTextOnFocus,
+    enablesReturnKeyAutomatically,
+    dataDetectorTypes,
+    scrollEnabled,
+    passwordRules,
+    rejectResponderTermination,
+    spellCheck,
+    lineBreakStrategyIOS,
+    lineBreakModeIOS,
+    smartInsertDelete,
+    inputAccessoryViewID,
+    inputAccessoryViewButtonLabel,
+    disableKeyboardShortcuts,
+
+    // Android-only props
+    importantForAutofill,
+    disableFullscreenUI,
+    inlineImageLeft,
+    inlineImagePadding,
+    returnKeyLabel,
+    textBreakStrategy,
+    textAlignVertical,
+    verticalAlign,
+    showSoftInputOnFocus,
   }
 
   return <StyledInput ref={composedRefs} {...finalProps} />

@@ -1,11 +1,12 @@
-import type { ColorTokens, ViewProps, TextStyle } from '@tamagui/web';
+import type { ColorTokens, StackProps, TextStylePropsBase } from '@tamagui/web';
+import type { InputNativeProps } from './InputNativeProps';
 /**
  * Web-aligned Input props
  * Follows standard HTML input API as primary, with RN compatibility for native
  */
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
-type InputTextStyleProps = Pick<TextStyle, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
-export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps> & InputTextStyleProps & {
+type InputTextStyleProps = Pick<TextStylePropsBase, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
+export type InputProps = StackProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps> & InputTextStyleProps & InputNativeProps & {
     /**
      * Rows for textarea (when render="textarea")
      */
@@ -50,13 +51,15 @@ export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'st
         };
     }) => void;
     /**
-     * Keyboard appearance for iOS (native only, no web equivalent)
+     * Text content type for iOS autofill.
+     * Use `autoComplete` for web compatibility.
+     * @platform ios
      */
-    keyboardAppearance?: 'default' | 'light' | 'dark';
-    /**
-     * Text content type for iOS autofill (native only, use `autoComplete` on web)
-     */
-    textContentType?: 'none' | 'URL' | 'addressCity' | 'addressCityAndState' | 'addressState' | 'countryName' | 'creditCardNumber' | 'emailAddress' | 'familyName' | 'fullStreetAddress' | 'givenName' | 'jobTitle' | 'location' | 'middleName' | 'name' | 'namePrefix' | 'nameSuffix' | 'nickname' | 'organizationName' | 'postalCode' | 'streetAddressLine1' | 'streetAddressLine2' | 'sublocality' | 'telephoneNumber' | 'username' | 'password' | 'newPassword' | 'oneTimeCode';
+    textContentType?: InputTextContentType;
 };
+/**
+ * iOS text content types for autofill
+ */
+export type InputTextContentType = 'none' | 'URL' | 'addressCity' | 'addressCityAndState' | 'addressState' | 'countryName' | 'creditCardNumber' | 'creditCardExpiration' | 'creditCardExpirationMonth' | 'creditCardExpirationYear' | 'creditCardSecurityCode' | 'creditCardType' | 'creditCardName' | 'creditCardGivenName' | 'creditCardMiddleName' | 'creditCardFamilyName' | 'emailAddress' | 'familyName' | 'fullStreetAddress' | 'givenName' | 'jobTitle' | 'location' | 'middleName' | 'name' | 'namePrefix' | 'nameSuffix' | 'nickname' | 'organizationName' | 'postalCode' | 'streetAddressLine1' | 'streetAddressLine2' | 'sublocality' | 'telephoneNumber' | 'username' | 'password' | 'newPassword' | 'oneTimeCode' | 'birthdate' | 'birthdateDay' | 'birthdateMonth' | 'birthdateYear' | 'cellularEID' | 'cellularIMEI' | 'dateTime' | 'flightNumber' | 'shipmentTrackingNumber';
 export {};
 //# sourceMappingURL=types.d.ts.map
