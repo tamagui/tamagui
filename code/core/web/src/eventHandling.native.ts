@@ -2,9 +2,9 @@
  * Native event handling - uses RNGH when available, falls back to usePressability
  */
 
-import React, { useRef } from 'react'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
+import React, { useRef } from 'react'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
 // web events not used on native
@@ -50,21 +50,25 @@ export function useEvents(
 
   const gh = getGestureHandler()
 
-  // track if we ever had press events to avoid re-parenting
+  // track if we ever had press events to avoid re-parenting / hooks issues
   if (hasPressEvents) {
     stateRef.current.hasHadEvents = true
   }
 
-  if (gh.isEnabled && hasPressEvents) {
+  const pressEventsEnabled = gh.isEnabled && hasPressEvents
+
+  if (stateRef.current.hasHadEvents || pressEventsEnabled) {
     // RNGH path - return gesture for wrapping
     // store callbacks in refs so gesture doesn't need to be recreated on every render
     const callbacksRef = useRef<any>({})
-    callbacksRef.current = {
-      onPressIn: events.onPressIn,
-      onPressOut: events.onPressOut,
-      onPress: events.onPress,
-      onLongPress: events.onLongPress,
-    }
+    callbacksRef.current = pressEventsEnabled
+      ? {
+          onPressIn: events.onPressIn,
+          onPressOut: events.onPressOut,
+          onPress: events.onPress,
+          onLongPress: events.onLongPress,
+        }
+      : {}
 
     // only create gesture once, callbacks are read from ref
     const gestureRef = useRef<any>(null)
@@ -81,12 +85,10 @@ export function useEvents(
     return gestureRef.current
   }
 
-  if (hasPressEvents) {
-    // fallback - use usePressability when RNGH not enabled
-    // split into separate file to avoid deep import warnings
-    const { useMainThreadPressEvents } = require('./helpers/mainThreadPressEvents')
-    useMainThreadPressEvents(events, viewProps)
-  }
+  // fallback - use usePressability when RNGH not enabled
+  // split into separate file to avoid deep import warnings
+  const { useMainThreadPressEvents } = require('./helpers/mainThreadPressEvents')
+  useMainThreadPressEvents(events, viewProps, hasPressEvents)
 
   return null
 }
