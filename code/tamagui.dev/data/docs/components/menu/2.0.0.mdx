@@ -650,3 +650,31 @@ Renders the content of a submenu. Same props as `Menu.Content`, excluding `side`
 
 A menu item that opens a submenu on hover or focus. Accepts the same props as
 `Menu.Item`.
+
+## Styling
+
+### Item Highlight Behavior
+
+Menu items use `focusStyle` for highlighting rather than `hoverStyle`. This ensures a unified highlight experience when switching between mouse and keyboard navigation - only one item is ever highlighted at a time.
+
+When you hover over an item, it receives focus, which triggers the `focusStyle`. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
+
+```jsx
+// Default behavior - uses focusStyle for highlight
+<Menu.Item>
+  <Menu.ItemTitle>Settings</Menu.ItemTitle>
+</Menu.Item>
+
+// Custom highlight styling - use focusStyle, not hoverStyle
+<Menu.Item
+  focusStyle={{ backgroundColor: '$blue5' }}
+>
+  <Menu.ItemTitle>Custom Highlight</Menu.ItemTitle>
+</Menu.Item>
+```
+
+<Notice>
+  Avoid using `hoverStyle` for background highlights on Menu.Item. This can cause
+  "double highlighting" when switching between mouse and keyboard - where both the
+  hovered item and the focused item appear highlighted simultaneously.
+</Notice>
