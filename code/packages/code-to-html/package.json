@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/code-to-html",
-  "version": "2.0.0-1769320275396",
+  "version": "2.0.0-1769401121849",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
