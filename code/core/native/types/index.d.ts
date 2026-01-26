@@ -10,9 +10,10 @@
 * import '@tamagui/native/setup-gesture-handler'
 * import '@tamagui/native/setup-worklets'
 * import '@tamagui/native/setup-safe-area'
+* import '@tamagui/native/expo-linear-gradient'
 * ```
 */
-export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, SafeAreaInsets, SafeAreaFrame, SafeAreaMetrics, NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
+export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, SafeAreaInsets, SafeAreaFrame, SafeAreaMetrics, LinearGradientState, NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
 export { getPortal } from "./portalState";
 export type { PortalAccessor } from "./portalState";
 export { getGestureHandler } from "./gestureState";
@@ -21,6 +22,8 @@ export { getWorklets } from "./workletsState";
 export type { WorkletsAccessor } from "./workletsState";
 export { getSafeArea } from "./safeAreaState";
 export type { SafeAreaAccessor } from "./safeAreaState";
+export { getLinearGradient } from "./linearGradientState";
+export type { LinearGradientAccessor } from "./linearGradientState";
 export { NativePortal, NativePortalHost, NativePortalProvider } from "./components";
 
 //# sourceMappingURL=index.d.ts.map

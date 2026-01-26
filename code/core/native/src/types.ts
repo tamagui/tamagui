@@ -58,3 +58,8 @@ export type NativePortalHostProps = {
 export type NativePortalProviderProps = {
   children: ReactNode
 }
+
+export interface LinearGradientState {
+  enabled: boolean
+  Component: any
+}
