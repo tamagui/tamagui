@@ -237,7 +237,7 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
       await page.waitForTimeout(500)
 
       // find the PromoLinksRow buttons (Starter Kit/Takeout, Copy-Paste UI/Bento, Add Even)
-      // these are the buttons that use the scoped tooltip with enableAnimationForPositionChange
+      // these are the buttons that use the scoped tooltip with animatePosition
       // the buttons show "Starter Kit", "Copy-Paste UI", "Add Even"
       const takeoutBtn = page.locator('button:has-text("Starter Kit")').first()
       const bentoBtn = page.locator('button:has-text("Copy-Paste UI")').first()
@@ -270,7 +270,7 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
       console.log('  Consulting (right):', consultingBox.x)
 
       // inject position tracking for tooltip
-      // the tooltip content has enableAnimationForPositionChange and scope="promo-tooltip"
+      // the tooltip content has animatePosition and scope="promo-tooltip"
       await page.evaluate(() => {
         (window as any).__tooltipPositions = []
         ;(window as any).__jumpLog = []

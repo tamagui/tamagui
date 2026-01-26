@@ -4,7 +4,7 @@ import { setupPage } from './test-utils'
 /**
  * TOOLTIP POSITION JUMP TEST (Motion Driver Only)
  *
- * Bug: When using enableAnimationForPositionChange with a scoped tooltip,
+ * Bug: When using animatePosition with a scoped tooltip,
  * rapidly moving between triggers causes the tooltip to JUMP to wrong position
  * (often near origin/top-left) before animating back.
  *

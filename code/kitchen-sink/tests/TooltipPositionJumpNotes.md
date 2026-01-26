@@ -1,7 +1,7 @@
 # Motion Driver Tooltip Position Jump Bug
 
 ## Problem Summary
-When using `enableAnimationForPositionChange` with a shared tooltip (scope pattern) in the motion driver, rapidly moving between triggers causes the tooltip to JUMP to a wrong position (often far left or near origin) before animating back.
+When using `animatePosition` with a shared tooltip (scope pattern) in the motion driver, rapidly moving between triggers causes the tooltip to JUMP to a wrong position (often far left or near origin) before animating back.
 
 ## Reproduction Pattern
 1. Hover on rightmost button (HIRE US), wait ~1 second for tooltip to fully appear
@@ -124,7 +124,7 @@ Potential causes:
   - `animate(scope.current, diff, animationOptions)` - Starts animation
 
 - `/code/ui/popper/src/Popper.tsx` - PopperContent
-  - `enableAnimationForPositionChange` prop enables x/y animation
+  - `animatePosition` prop enables x/y animation
   - Passes x/y from floating-ui to the animated element
 
 ## TODO

@@ -7,7 +7,7 @@ import { useState } from 'react'
  * CRITICAL: This must match the PromoLinksRow pattern from tamagui.dev:
  * - Single Tooltip with scope
  * - Multiple Tooltip.Triggers with same scope
- * - enableAnimationForPositionChange on Tooltip.Content
+ * - animatePosition on Tooltip.Content
  *
  * The bug: When rapidly moving between triggers, the tooltip JUMPS
  * to wrong position (often near origin/top-left) before animating back.
@@ -31,7 +31,7 @@ export function TooltipPositionJumpCase() {
         3. Watch for tooltip jumping to wrong position
       </SizableText>
 
-      {/* EXACT pattern from PromoLinksRow - scoped tooltip with enableAnimationForPositionChange */}
+      {/* EXACT pattern from PromoLinksRow - scoped tooltip with animatePosition */}
       <TooltipGroup delay={{ open: 0, close: 150 }}>
         <Tooltip scope="promo-tooltip" offset={12} placement="bottom">
           <XStack gap="$3" mt="$4">
@@ -54,7 +54,7 @@ export function TooltipPositionJumpCase() {
 
           <Tooltip.Content
             data-testid="tooltip-jump-content"
-            enableAnimationForPositionChange
+            animatePosition
             transition="quick"
             bg="$background"
             elevation="$2"
