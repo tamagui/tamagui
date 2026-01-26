@@ -46,6 +46,7 @@ import type {
   ViewStyleWithPseudos,
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
+import { getDefaultProps } from './getDefaultProps'
 import { fixStyles } from './expandStyles'
 import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
 import {
@@ -321,10 +322,10 @@ export const getSplitStyles: StyleSplitter = (
 
     // when asChild, skip default props - they shouldn't be passed down to children
     if (asChild) {
-      const defaultProps = staticConfig.defaultProps
-      if (defaultProps) {
+      const defaults = getDefaultProps({}, staticConfig)
+      if (defaults) {
         // check both original key and expanded key (after shorthand expansion)
-        const defaultVal = defaultProps[keyOg] ?? defaultProps[keyInit]
+        const defaultVal = defaults[keyOg] ?? defaults[keyInit]
         if (defaultVal !== undefined && valInit === defaultVal) {
           continue
         }

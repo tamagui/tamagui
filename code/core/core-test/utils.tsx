@@ -1,5 +1,5 @@
 import type { SplitStyleProps } from '../web/src'
-import { getSplitStyles } from '../web/src'
+import { getDefaultProps, getSplitStyles } from '../web/src'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 
 const emptyObj = {} as any
@@ -22,9 +22,8 @@ export function simplifiedGetSplitStyles(
   // optionally merge in default props like createComponent does
   let mergedProps = props
   if (options.mergeDefaultProps) {
-    const staticConfig = component.staticConfig
-    const defaultProps = staticConfig?.defaultProps
-    mergedProps = defaultProps ? { ...defaultProps, ...props } : props
+    const defaults = getDefaultProps(props, component.staticConfig)
+    mergedProps = { ...defaults, ...props }
   }
 
   return getSplitStyles(
