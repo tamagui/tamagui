@@ -24,7 +24,7 @@ import type {
   LayoutChangeEvent,
   PanResponderGestureState,
 } from 'react-native'
-import { Dimensions, Keyboard, PanResponder, View } from 'react-native'
+import { Dimensions, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { GestureSheetProvider } from './GestureSheetContext'
@@ -32,6 +32,7 @@ import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useGestureHandlerPan } from './useGestureHandlerPan'
+import { useKeyboardControllerSheet } from './useKeyboardControllerSheet'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -505,38 +506,28 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     })
 
-    const sizeBeforeKeyboard = React.useRef<number | null>(null)
-    React.useEffect(() => {
-      if (isWeb || !moveOnKeyboardChange) return
-      const keyboardShowListener = Keyboard.addListener(
-        currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-        (e) => {
-          if (sizeBeforeKeyboard.current !== null) return
-          sizeBeforeKeyboard.current =
-            isHidden || position === -1 ? screenSize : positions[position]
-          animatedNumber.setValue(
-            Math.max(sizeBeforeKeyboard.current - e.endCoordinates.height, 0),
-            {
-              type: 'timing',
-              duration: 250,
-            }
-          )
-        }
-      )
-      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-        if (sizeBeforeKeyboard.current === null) return
-        animatedNumber.setValue(sizeBeforeKeyboard.current, {
-          type: 'timing',
-          duration: 250,
-        })
-        sizeBeforeKeyboard.current = null
-      })
+    // keyboard handling via useKeyboardControllerSheet hook
+    // uses react-native-keyboard-controller when available for smooth frame-by-frame tracking
+    // falls back to basic Keyboard API otherwise
+    const { dismissKeyboard } = useKeyboardControllerSheet({
+      enabled: !isWeb && Boolean(moveOnKeyboardChange),
+      positions,
+      position,
+      isHidden: Boolean(isHidden),
+      screenSize: screenSize || 0,
+      setAnimatedPosition: React.useCallback(
+        (y: number, config?: { type: 'timing' | 'spring'; duration?: number }) => {
+          animatedNumber.setValue(y, config as any)
+        },
+        [animatedNumber]
+      ),
+    })
 
-      return () => {
-        keyboardDidHideListener.remove()
-        keyboardShowListener.remove()
-      }
-    }, [moveOnKeyboardChange, positions, position, isHidden])
+    // expose dismissKeyboard for gesture handler integration
+    // when user starts dragging, we can dismiss keyboard for smooth handoff
+    React.useEffect(() => {
+      scrollBridge.dismissKeyboard = dismissKeyboard
+    }, [dismissKeyboard, scrollBridge])
 
     // we need to set this *after* fully closed to 0, to avoid it overlapping
     // the page when resizing quickly on web for example

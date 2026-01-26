@@ -97,6 +97,82 @@ export type ScrollBridge = {
     scrollLockY?: number;
     forceScrollTo?: (y: number) => void;
     isAtTop?: boolean;
+    dismissKeyboard?: () => void;
 };
+export interface KeyboardControllerSheetOptions {
+    /**
+     * Whether keyboard handling is enabled.
+     * When false, the hook is a no-op.
+     */
+    enabled: boolean;
+    /**
+     * Current sheet positions (snap points converted to Y positions).
+     */
+    positions: number[];
+    /**
+     * Current active position index.
+     */
+    position: number;
+    /**
+     * Whether the sheet is hidden.
+     */
+    isHidden: boolean;
+    /**
+     * Screen size for calculations.
+     */
+    screenSize: number;
+    /**
+     * Callback to set the animated sheet position.
+     * This should immediately update the sheet Y position.
+     */
+    setAnimatedPosition: (y: number, config?: {
+        type: 'timing' | 'spring';
+        duration?: number;
+    }) => void;
+    /**
+     * How the sheet behaves when the keyboard appears.
+     * - 'interactive': Sheet moves frame-by-frame as keyboard animates (requires keyboard-controller)
+     * - 'extend': Sheet extends upward by keyboard height
+     * - 'fillParent': Sheet fills available space above keyboard
+     *
+     * @default 'extend'
+     */
+    keyboardBehavior?: 'interactive' | 'extend' | 'fillParent';
+    /**
+     * What happens when keyboard is dismissed.
+     * - 'none': Sheet stays at current position
+     * - 'restore': Sheet returns to position before keyboard appeared
+     *
+     * @default 'restore'
+     */
+    keyboardBlurBehavior?: 'none' | 'restore';
+    /**
+     * Whether to dismiss keyboard when user starts dragging the sheet.
+     * This enables smooth keyboard → sheet gesture handoff.
+     *
+     * @default true
+     */
+    enableBlurKeyboardOnGesture?: boolean;
+}
+export interface KeyboardControllerSheetResult {
+    /**
+     * Whether keyboard-controller is available and enabled.
+     */
+    keyboardControllerEnabled: boolean;
+    /**
+     * Current keyboard height (0 when hidden).
+     * On web or when keyboard-controller is not available, always 0.
+     */
+    keyboardHeight: number;
+    /**
+     * Whether the keyboard is currently visible.
+     */
+    isKeyboardVisible: boolean;
+    /**
+     * Dismiss the keyboard programmatically.
+     * Call this when user starts dragging the sheet (if enableBlurKeyboardOnGesture is true).
+     */
+    dismissKeyboard: () => void;
+}
 export {};
 //# sourceMappingURL=types.d.ts.map

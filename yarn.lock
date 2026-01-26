@@ -1063,7 +1063,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-classes@npm:7.28.4, @babel/plugin-transform-classes@npm:^7.0.0-0, @babel/plugin-transform-classes@npm:^7.25.4":
+"@babel/plugin-transform-classes@npm:7.28.4":
   version: 7.28.4
   resolution: "@babel/plugin-transform-classes@npm:7.28.4"
   dependencies:
@@ -1076,6 +1076,22 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 10/1f8423d0ba287ba4ae3aac89299e704a666ef2fc5950cd581e056c068486917a460efd5731fdd0d0fb0a8a08852e13b31c1add089028e89a8991a7fdfaff5c43
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-transform-classes@npm:^7.0.0-0, @babel/plugin-transform-classes@npm:^7.25.4":
+  version: 7.27.1
+  resolution: "@babel/plugin-transform-classes@npm:7.27.1"
+  dependencies:
+    "@babel/helper-annotate-as-pure": "npm:^7.27.1"
+    "@babel/helper-compilation-targets": "npm:^7.27.1"
+    "@babel/helper-plugin-utils": "npm:^7.27.1"
+    "@babel/helper-replace-supers": "npm:^7.27.1"
+    "@babel/traverse": "npm:^7.27.1"
+    globals: "npm:^11.1.0"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 10/4ac2224fa68b933c80b4755300d795e055f6fb18c51432e9a4c048edcd6c64cae097eb9063d25f6c7e706ecd85a4c0b89b6f89b320b5798e3139c9cc4ff99f61
   languageName: node
   linkType: hard
 
@@ -8224,6 +8240,7 @@ __metadata:
     react-native-gesture-handler: "npm:~2.28.0"
     react-native-ios-context-menu: "npm:^3.2.1"
     react-native-ios-utilities: "npm:^5.2.0"
+    react-native-keyboard-controller: "npm:^1.16.0"
     react-native-launch-arguments: "npm:^4.1.1"
     react-native-reanimated: "npm:~4.1.1"
     react-native-safe-area-context: "npm:~5.6.0"
@@ -8402,6 +8419,7 @@ __metadata:
     react: "npm:*"
     react-native: "npm:0.81.5"
     react-native-gesture-handler: "npm:~2.28.0"
+    react-native-keyboard-controller: "npm:^1.16.0"
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-teleport: "npm:^0.5.6"
     react-native-worklets-core: "npm:^1.0.0"
@@ -8409,11 +8427,14 @@ __metadata:
     react: "*"
     react-native: "*"
     react-native-gesture-handler: ">=2.0.0"
+    react-native-keyboard-controller: ">=1.0.0"
     react-native-safe-area-context: ">=4.0.0"
     react-native-teleport: ">=0.5.0"
     react-native-worklets-core: ">=1.0.0"
   peerDependenciesMeta:
     react-native-gesture-handler:
+      optional: true
+    react-native-keyboard-controller:
       optional: true
     react-native-safe-area-context:
       optional: true
@@ -11008,7 +11029,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/color-scheme@npm:1.2.81, @vxrn/color-scheme@npm:^1.2.81":
+"@vxrn/color-scheme@npm:1.2.81":
   version: 1.2.81
   resolution: "@vxrn/color-scheme@npm:1.2.81"
   dependencies:
@@ -11017,6 +11038,18 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/a7b9f939bf86626658412d7d2de0ee5e90079915011696ff23c37eae661f3e6f871f88983d9c63e49e96134ba30358b51870a257bcec6696c8524cb8287d6ca4
+  languageName: node
+  linkType: hard
+
+"@vxrn/color-scheme@npm:^1.2.81":
+  version: 1.2.83
+  resolution: "@vxrn/color-scheme@npm:1.2.83"
+  dependencies:
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.2.83"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/e76d7107fbd91e5fb1296ccabf36fff6fc251b85bbb3c47b7f59b5bf12f6cc004db0705a22c1840a577c43047ba5a478930e8e2b457f643c55c1154b8e6e2a4c
   languageName: node
   linkType: hard
 
@@ -11050,8 +11083,8 @@ __metadata:
   linkType: hard
 
 "@vxrn/mdx@npm:^1.2.81":
-  version: 1.2.81
-  resolution: "@vxrn/mdx@npm:1.2.81"
+  version: 1.2.83
+  resolution: "@vxrn/mdx@npm:1.2.83"
   dependencies:
     compare-versions: "npm:^4.1.3"
     esbuild-wasm: "npm:^0.25.11"
@@ -11077,7 +11110,7 @@ __metadata:
   dependenciesMeta:
     sharp:
       optional: true
-  checksum: 10/7ee59e8079159c7ea4e2b021e120e431c629e7fdc12e151953fa737d9a6598648c08181bd48ae0cc7206fd46b13d7d94024394b81116e72b11630b9e73243197
+  checksum: 10/b4f15475a4a235d4b2786461430563636f08742bc25dbb02fc2df59a805ec71498517372055f26c631b8b0374cfe56ea51decaaf39dc12b230c9982b16303ef6
   languageName: node
   linkType: hard
 
@@ -11144,6 +11177,15 @@ __metadata:
   dependencies:
     react: "npm:19.1.0"
   checksum: 10/c7d12341451bcd5d55550d7017db0bc685e5545012db463c6a6a05a0aefe701c81eca6c522d73d38179aefc00859852cc84fa638df66f2e300dba1e387c82286
+  languageName: node
+  linkType: hard
+
+"@vxrn/use-isomorphic-layout-effect@npm:1.2.83":
+  version: 1.2.83
+  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.2.83"
+  dependencies:
+    react: "npm:19.1.0"
+  checksum: 10/d737797a1fd86696b85bcb44b1b7430eabfc9895279074529051f2ccc2a5ba0f631645ffa65a3661ea817dcc34c5b4d0122b9ce9dc07968b78ead3f4629fbf66
   languageName: node
   linkType: hard
 
@@ -25580,6 +25622,19 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/8fb6d8ab7b953c7d7cec8c987cef24f1c5348a293a85cb49c7c53b54ef110c0ca746736ae730e297603c8c76020df912e93915fb17518c4f2f91143757177aba
+  languageName: node
+  linkType: hard
+
+"react-native-keyboard-controller@npm:^1.16.0":
+  version: 1.20.6
+  resolution: "react-native-keyboard-controller@npm:1.20.6"
+  dependencies:
+    react-native-is-edge-to-edge: "npm:^1.2.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: ">=3.0.0"
+  checksum: 10/1182d33451fa4aa7dabfb921a1ac6cf17aabcaae478030252d558db9341f136a794e6a9e5ea74503685766b8b055e4c1eb49ad60bfc3d8f23a9796e33d50c60b
   languageName: node
   linkType: hard
 

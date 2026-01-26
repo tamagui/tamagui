@@ -142,6 +142,8 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
       .onStart(() => {
         // console.warn('[RNGH-Pan] onStart', { startY: gs.startY, minY })
         scrollBridge.initialPosition = gs.startY
+        // dismiss keyboard when gesture starts for smooth handoff
+        scrollBridge.dismissKeyboard?.()
         onStart()
       })
       .onChange((event: { translationY: number; velocityY: number }) => {
