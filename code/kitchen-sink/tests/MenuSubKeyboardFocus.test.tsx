@@ -163,3 +163,82 @@ test.describe('Menu Submenu Keyboard Focus', () => {
     expect(hasHighlight).toBe('')
   })
 })
+
+test.describe('Menu Submenu Left-Side Keyboard Navigation', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupPage(page, { name: 'MenuSubLeftCase', type: 'useCase' })
+  })
+
+  test('ArrowLeft opens left-side submenu', async ({ page }) => {
+    await page.waitForLoadState('networkidle')
+
+    // open menu
+    const menuTrigger = page.locator('#menu-trigger')
+    await menuTrigger.click()
+    await page.waitForTimeout(200)
+
+    const menuContent = page.locator('#menu-content')
+    await expect(menuContent).toBeVisible()
+
+    // focus submenu trigger
+    const submenuTrigger = page.locator('#submenu-trigger')
+    await submenuTrigger.focus()
+    await expect(submenuTrigger).toBeFocused()
+
+    // ArrowLeft should open left-side submenu (not ArrowRight)
+    await page.keyboard.press('ArrowLeft')
+    await page.waitForTimeout(300)
+
+    const submenuContent = page.locator('#submenu-content')
+    await expect(submenuContent).toBeVisible()
+  })
+
+  test('ArrowRight does NOT open left-side submenu', async ({ page }) => {
+    await page.waitForLoadState('networkidle')
+
+    // open menu
+    const menuTrigger = page.locator('#menu-trigger')
+    await menuTrigger.click()
+    await page.waitForTimeout(200)
+
+    const menuContent = page.locator('#menu-content')
+    await expect(menuContent).toBeVisible()
+
+    // focus submenu trigger
+    const submenuTrigger = page.locator('#submenu-trigger')
+    await submenuTrigger.focus()
+    await expect(submenuTrigger).toBeFocused()
+
+    // ArrowRight should NOT open left-side submenu
+    await page.keyboard.press('ArrowRight')
+    await page.waitForTimeout(300)
+
+    const submenuContent = page.locator('#submenu-content')
+    await expect(submenuContent).not.toBeVisible()
+  })
+
+  test('ArrowRight closes left-side submenu', async ({ page }) => {
+    await page.waitForLoadState('networkidle')
+
+    // open menu
+    const menuTrigger = page.locator('#menu-trigger')
+    await menuTrigger.click()
+    await page.waitForTimeout(200)
+
+    // open submenu via ArrowLeft
+    const submenuTrigger = page.locator('#submenu-trigger')
+    await submenuTrigger.focus()
+    await page.keyboard.press('ArrowLeft')
+    await page.waitForTimeout(300)
+
+    const submenuContent = page.locator('#submenu-content')
+    await expect(submenuContent).toBeVisible()
+
+    // ArrowRight should close left-side submenu
+    await page.keyboard.press('ArrowRight')
+    await page.waitForTimeout(300)
+
+    await expect(submenuContent).not.toBeVisible()
+    await expect(submenuTrigger).toBeFocused()
+  })
+})
