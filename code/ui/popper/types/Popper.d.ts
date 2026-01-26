@@ -100,6 +100,11 @@ export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<Omit
 }, import("@tamagui/core").StaticConfigPublic>;
 export type PopperContentProps = SizableStackProps & {
     scope?: string;
+    /**
+     * Enable smooth animation when the content position changes (e.g., when flipping sides)
+     */
+    animatePosition?: boolean | 'even-when-repositioning';
+    /** @deprecated Use `animatePosition` instead */
     enableAnimationForPositionChange?: boolean | 'even-when-repositioning';
     passThrough?: boolean;
 };
@@ -141,6 +146,11 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     unstyled?: boolean | undefined;
 }>> & {
     scope?: string;
+    /**
+     * Enable smooth animation when the content position changes (e.g., when flipping sides)
+     */
+    animatePosition?: boolean | "even-when-repositioning";
+    /** @deprecated Use `animatePosition` instead */
     enableAnimationForPositionChange?: boolean | "even-when-repositioning";
     passThrough?: boolean;
 } & React.RefAttributes<TamaguiElement>>;
@@ -148,6 +158,10 @@ export type PopperArrowExtraProps = {
     offset?: number;
     size?: SizeTokens;
     scope?: string;
+    /**
+     * Enable smooth animation when the arrow position changes
+     */
+    animatePosition?: boolean;
 };
 export type PopperArrowProps = YStackProps & PopperArrowExtraProps;
 export declare const PopperArrowFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

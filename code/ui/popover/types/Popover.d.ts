@@ -60,7 +60,11 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<ViewPr
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
-    /** enable animation for content position changing */
+    /**
+     * Enable smooth animation when the content position changes (e.g., when flipping sides)
+     */
+    animatePosition?: boolean | 'even-when-repositioning';
+    /** @deprecated Use `animatePosition` instead */
     enableAnimationForPositionChange?: boolean;
 }
 export type PopoverContentProps = PopoverContentTypeProps;
