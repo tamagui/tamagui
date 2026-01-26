@@ -1,11 +1,10 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
+import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { isTouchable, Theme, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import { useWindowDimensions, type LayoutRectangle } from 'react-native'
 import {
-  type PopoverProps,
   Adapt,
   AnimatePresence,
   Button,
@@ -17,6 +16,7 @@ import {
   Separator,
   Sheet,
   SizableText,
+  Span,
   styled,
   TooltipGroup,
   useComposedRefs,
@@ -25,12 +25,17 @@ import {
   XGroup,
   XStack,
   YStack,
+  type PopoverProps,
 } from 'tamagui'
 import { Link } from '~/components/Link'
 import { bannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useLoginLink } from '../../auth/useLoginLink'
+import { useBentoStore } from '../../bento/BentoStore'
+import { useBentoTheme } from '../../bento/useBentoTheme'
 import { DocsMenuContents } from '../../docs/DocsMenuContents'
 import { useDocsMenu } from '../../docs/useDocsMenu'
 import { AddEvenBrandIcon } from '../../icons/AddEvenBrandIcon'
@@ -43,10 +48,6 @@ import { SearchButton } from './SearchButton'
 import { UpgradeToProPopover } from './UpgradeToProPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
-import { useLoginLink } from '../../auth/useLoginLink'
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { useBentoStore } from '../../bento/BentoStore'
-import { useBentoTheme } from '../../bento/useBentoTheme'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -210,22 +211,14 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <Theme name="teal">
           <Link href="/blog/version-two">
-            <XStack
-              bg="$color4"
-              px="$2.5"
-              py="$0.5"
-              rounded="$3"
-              hoverStyle={{
-                bg: '$color3',
-              }}
-              pressStyle={{
-                bg: '$color5',
-              }}
+            <Button
+              size="$2"
+              borderWidth={0}
+              theme="teal"
+              boxShadow="inset 0 -2px 0 1px $color2"
             >
-              <SizableText size="$3" color="$color11" fontWeight="600">
-                v2
-              </SizableText>
-            </XStack>
+              <Span y={-2}>v2 RC</Span>
+            </Button>
           </Link>
         </Theme>
       </XStack>
