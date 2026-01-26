@@ -15,6 +15,10 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         type: "timing";
         duration: number;
     };
+    '250ms': {
+        type: "timing";
+        duration: number;
+    };
     superBouncy: {
         type: "spring";
         damping: number;

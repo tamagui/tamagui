@@ -89,6 +89,7 @@ export declare const config: {
         '75ms': string;
         '100ms': string;
         '200ms': string;
+        '250ms': string;
         '300ms': string;
         superBouncy: string;
         bouncy: string;

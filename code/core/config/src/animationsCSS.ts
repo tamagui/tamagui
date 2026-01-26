@@ -11,6 +11,7 @@ export const animationsCSS = c1({
   '75ms': '75ms linear',
   '100ms': '100ms ease-out',
   '200ms': '200ms ease-out',
+  '250ms': '250ms ease-out',
   '300ms': '300ms ease-out',
   superBouncy: `300ms cubic-bezier(0.175, 0.885, 0.32, 1.5)`,
   bouncy: `350ms ${bouncy}`,

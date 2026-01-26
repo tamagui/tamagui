@@ -19,6 +19,9 @@ export const animationsMotion = createAnimations({
   '200ms': {
     duration: 200,
   },
+  '250ms': {
+    duration: 250,
+  },
   '300ms': {
     duration: 300,
   },

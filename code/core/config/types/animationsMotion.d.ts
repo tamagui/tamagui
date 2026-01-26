@@ -17,6 +17,9 @@ export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
     '200ms': {
         duration: number;
     };
+    '250ms': {
+        duration: number;
+    };
     '300ms': {
         duration: number;
     };

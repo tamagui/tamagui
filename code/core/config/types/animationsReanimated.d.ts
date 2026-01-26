@@ -15,6 +15,10 @@ export declare const animationsReanimated: import("@tamagui/web").AnimationDrive
         type: "timing";
         duration: number;
     };
+    '250ms': {
+        type: "timing";
+        duration: number;
+    };
     superBouncy: {
         damping: number;
         mass: number;
