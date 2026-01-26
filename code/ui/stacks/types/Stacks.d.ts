@@ -1,5 +1,5 @@
 import type { GetProps, SizeTokens } from '@tamagui/core';
-interface StackVariants {
+export interface StackVariants {
     /**
      * @deprecated use `inset: 0, position: 'absolute'` instead
      */
@@ -40,5 +40,4 @@ export declare const ZStack: import("@tamagui/core").TamaguiComponent<import("@t
     neverFlatten: true;
     isZStack: true;
 }>;
-export {};
 //# sourceMappingURL=Stacks.d.ts.map

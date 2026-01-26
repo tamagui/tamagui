@@ -52,10 +52,7 @@ type PopoverContextValue = {
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
 export declare const usePopoverContext: (scope?: string) => PopoverContextValue;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
-export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}>, "scope"> & {
+export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>;
@@ -106,10 +103,7 @@ export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps
     freezeContentsWhenHidden?: boolean;
 };
 export type PopoverCloseProps = ScopedPopoverProps<YStackProps>;
-export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}>, "scope"> & {
+export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverArrowProps = PopperArrowProps;
@@ -160,10 +154,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
      */
     disableFocus?: boolean;
 } & React.RefAttributes<Popover>> & {
-    Anchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, "scope"> & {
+    Anchor: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Arrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -189,10 +180,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Close: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, "scope"> & {
+    Close: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {

@@ -1404,7 +1404,11 @@ export function createBaseMenu({
     // if submenu opens to the left, arrow keys should be flipped
     const placementSide = popperContext.placement?.split('-')[0]
     const effectiveDir: Direction =
-      placementSide === 'left' ? 'rtl' : placementSide === 'right' ? 'ltr' : rootContext.dir
+      placementSide === 'left'
+        ? 'rtl'
+        : placementSide === 'right'
+          ? 'ltr'
+          : rootContext.dir
 
     const clearOpenTimer = React.useCallback(() => {
       if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
@@ -1494,11 +1498,11 @@ export function createBaseMenu({
               // Note: data-side is on the inner PopperContentFrame, not the outer container,
               // so we need to query for it or check child elements
               const contentEl = context.content as HTMLElement
-              const sideEl =
-                contentEl?.dataset?.side
-                  ? contentEl
-                  : contentEl?.querySelector('[data-side]')
-              const side: Side = ((sideEl as HTMLElement)?.dataset?.side as Side) || 'right'
+              const sideEl = contentEl?.dataset?.side
+                ? contentEl
+                : contentEl?.querySelector('[data-side]')
+              const side: Side =
+                ((sideEl as HTMLElement)?.dataset?.side as Side) || 'right'
               const rightSide = side === 'right'
               const bleed = rightSide ? -5 : +5
               const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
@@ -1648,7 +1652,11 @@ export function createBaseMenu({
 
     // effective direction for keyboard navigation - if submenu is on left, flip arrow keys
     const effectiveDir: Direction =
-      placementSide === 'left' ? 'rtl' : placementSide === 'right' ? 'ltr' : rootContext.dir
+      placementSide === 'left'
+        ? 'rtl'
+        : placementSide === 'right'
+          ? 'ltr'
+          : rootContext.dir
 
     return (
       <Collection.Provider scope={scope}>

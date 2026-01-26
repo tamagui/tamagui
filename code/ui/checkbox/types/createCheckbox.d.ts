@@ -47,7 +47,7 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
     Indicator?: T;
 }): React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
     readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>, {
         accept: {
@@ -67,7 +67,7 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
     native?: NativeValue<"web">;
 } & CheckboxExpectingVariantProps & CheckboxFrameActiveStyleProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
     readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>, {
         accept: {
@@ -92,7 +92,7 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
     native?: NativeValue<"web">;
 } & CheckboxExpectingVariantProps & CheckboxFrameActiveStyleProps, import("@tamagui/core").StackStyleBase & {
     readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>, {
         accept: {
@@ -116,7 +116,7 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
 }, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            elevation?: number | SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic>, {
             accept: {
@@ -141,7 +141,7 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
         native?: NativeValue<"web">;
     } & CheckboxExpectingVariantProps & CheckboxFrameActiveStyleProps, import("@tamagui/core").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            elevation?: number | SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic>, {
             accept: {
@@ -162,7 +162,7 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
 } & {
     Indicator: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            elevation?: number | SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic>, {
             accept: {
@@ -175,7 +175,7 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
         unstyled?: boolean | undefined;
     }>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "activeStyle" | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | keyof CheckboxIndicatorExtraProps> & import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & CheckboxIndicatorExtraProps & CheckboxIndicatorActiveStyleProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & CheckboxIndicatorExtraProps & CheckboxIndicatorActiveStyleProps, import("@tamagui/core").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            elevation?: number | SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic>, {
             accept: {

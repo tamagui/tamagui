@@ -3,7 +3,7 @@ import { View, styled } from '@tamagui/core'
 
 import { getElevation } from './getElevation'
 
-interface StackVariants {
+export interface StackVariants {
   /**
    * @deprecated use `inset: 0, position: 'absolute'` instead
    */
