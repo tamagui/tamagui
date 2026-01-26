@@ -480,6 +480,28 @@ describe('getSplitStyles - asChild default props skipping', () => {
     expect(exceptStyleRules).not.toContain('static')
     expect(exceptStyleRules).not.toContain('relative')
   })
+
+  test('asChild should not pass through global config default props (position: static)', () => {
+    // this tests that asChild skips the global config defaults like position: static
+    // which comes from conf.defaultProps.View, not from staticConfig.defaultProps
+    const SimpleTrigger = styled(View, {
+      // no position set here - it comes from global config
+      backgroundColor: 'blue',
+    })
+
+    // with asChild, position: static from global config should NOT be passed through
+    const withAsChild = simplifiedGetSplitStyles(
+      SimpleTrigger,
+      {
+        asChild: true,
+        position: 'static', // this is the merged-in value from global config
+      },
+      { mergeDefaultProps: true }
+    )
+    const withAsChildOutput = JSON.stringify(withAsChild)
+    // position: static should be skipped because it matches the global config default
+    expect(withAsChildOutput).not.toContain('_pos-static')
+  })
 })
 
 describe('getSplitStyles - pseudo prop merging', () => {
