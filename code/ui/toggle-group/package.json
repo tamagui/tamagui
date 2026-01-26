@@ -44,7 +44,6 @@
     "@tamagui/focusable": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/get-token": "workspace:*",
-    "@tamagui/group": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/roving-focus": "workspace:*",

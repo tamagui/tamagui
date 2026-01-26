@@ -1,7 +1,10 @@
-import { createStyledContext, type SizeTokens } from '@tamagui/web'
+import { createStyledContext } from '@tamagui/web'
 
 export const context = createStyledContext({
-  size: undefined as SizeTokens | undefined,
   color: '',
   active: false,
 })
+
+export const useToggleGroupItem = () => {
+  return context.useStyledContext()
+}

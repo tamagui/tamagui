@@ -17,6 +17,7 @@ export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import
 }>;
 type ToggleFrameProps = GetProps<typeof ToggleFrame>;
 type ToggleItemExtraProps = {
+    orientation?: 'horizontal' | 'vertical';
     defaultValue?: string;
     disabled?: boolean;
     active?: boolean;
@@ -26,7 +27,7 @@ type ToggleItemExtraProps = {
     activeTheme?: string | null;
 };
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps;
-export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamagui/web").StackNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase | "activeStyle" | "unstyled" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "size" | "activeStyle" | "unstyled" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
     readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
         accept: {
             readonly activeStyle: "style";
