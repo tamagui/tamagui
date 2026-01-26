@@ -235,9 +235,7 @@ RovingFocusGroupItem.displayName = ITEM_NAME
 const GROUP_NAME = 'RovingFocusGroup'
 
 type ItemData = { id: string; focusable: boolean; active: boolean }
-const [Collection, useCollection] = createCollection<HTMLSpanElement, ItemData>(
-  GROUP_NAME
-)
+const [Collection, useCollection] = createCollection<any, ItemData>(GROUP_NAME)
 
 type ScopedProps<P> = P & { __scopeRovingFocusGroup?: string }
 // const [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(

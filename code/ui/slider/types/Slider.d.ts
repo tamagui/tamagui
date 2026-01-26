@@ -3,7 +3,6 @@ import type { SizableStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import type { View } from 'react-native';
 import type { SliderProps, SliderTrackProps } from './types';
-type SliderTrackElement = HTMLElement | View;
 export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     size?: any;
@@ -41,7 +40,7 @@ declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui
     bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
-}>> & React.RefAttributes<SliderTrackElement>>;
+}>> & React.RefAttributes<TamaguiElement>>;
 export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     size?: any;
@@ -139,7 +138,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
         bordered?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
-    }>> & React.RefAttributes<SliderTrackElement>>;
+    }>> & React.RefAttributes<TamaguiElement>>;
     TrackActive: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "unstyled" | "orientation"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         size?: any;
@@ -211,7 +210,7 @@ declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
-}>> & React.RefAttributes<SliderTrackElement>>;
+}>> & React.RefAttributes<TamaguiElement>>;
 declare const Range: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "unstyled" | "orientation"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | SizeTokens | undefined;
     size?: any;

@@ -15,7 +15,7 @@ interface RovingFocusItemProps extends PrimitiveSpanProps {
 }
 declare const RovingFocusGroupItem: React.ForwardRefExoticComponent<RovingFocusItemProps & {
     __scopeRovingFocusGroup?: string;
-} & React.RefAttributes<HTMLElement | import("react-native").View>>;
+} & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View>>;
 type Orientation = React.AriaAttributes['aria-orientation'];
 type Direction = 'ltr' | 'rtl';
 interface RovingFocusGroupOptions {
@@ -38,10 +38,10 @@ interface RovingFocusGroupProps extends RovingFocusGroupImplProps {
 }
 declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroupProps & {
     __scopeRovingFocusGroup?: string;
-} & React.RefAttributes<HTMLElement | import("react-native").View>> & {
+} & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View>> & {
     Item: React.ForwardRefExoticComponent<RovingFocusItemProps & {
         __scopeRovingFocusGroup?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    } & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View>>;
 };
 export { RovingFocusGroup, RovingFocusGroupItem };
 export type { RovingFocusGroupProps, RovingFocusItemProps };

@@ -301,7 +301,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
 
 const TRACK_NAME = 'SliderTrack'
 
-type SliderTrackElement = HTMLElement | View
+type SliderTrackElement = TamaguiElement
 
 export const SliderTrackFrame = styled(SliderFrame, {
   name: 'SliderTrack',
