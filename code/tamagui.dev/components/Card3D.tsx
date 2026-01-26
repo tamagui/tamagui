@@ -38,11 +38,11 @@ const Card3DContainer = ({
   const [perspectiveRef, setPerspectiveRef] = useState<TamaguiElement | null>(null)
   const [isMouseEntered, setIsMouseEntered] = useState(false)
 
-  const containerRef = _containerRef as HTMLDivElement
+  const containerRef = _containerRef as unknown as HTMLDivElement
 
   useEffect(() => {
     if (perspectiveRef && isWeb) {
-      ;(perspectiveRef as HTMLDivElement).style.perspective = '800px'
+      ;(perspectiveRef as unknown as HTMLDivElement).style.perspective = '800px'
     }
   }, [perspectiveRef])
 

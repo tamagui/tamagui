@@ -11,7 +11,7 @@ export function AnimationsDelayDemo() {
   const [show, setShow] = React.useState(true)
 
   if (isWeb && !hasIntersected) {
-    return <YStack ref={ref} height={150} />
+    return <YStack ref={ref as any} height={150} />
   }
 
   return (

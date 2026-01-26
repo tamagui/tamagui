@@ -8,7 +8,7 @@ export const ToastDuplicateDemo = () => {
       <Toaster />
       <Button
         onPress={() => {
-          toast.success("Successfully saved!", {
+          toast.success('Successfully saved!', {
             description: "Don't worry... We've got your data.",
           })
         }}

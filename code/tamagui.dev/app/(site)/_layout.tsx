@@ -36,7 +36,8 @@ export default function SiteLayout() {
   const isTakeout = path.startsWith('/takeout')
   const isProductLandingPage = isTakeout || isStudio
   const isBlog = path.startsWith('/blog')
-  const isDocs = path.startsWith('/docs') || path.startsWith('/ui') || path.startsWith('/demo')
+  const isDocs =
+    path.startsWith('/docs') || path.startsWith('/ui') || path.startsWith('/demo')
   const isBento = path.startsWith('/bento')
 
   const disableNew = isBlog || isAuthPage || isProductLandingPage || isAccountPage

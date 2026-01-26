@@ -7782,6 +7782,7 @@ __metadata:
     "@tamagui/compose-refs": "workspace:*"
   peerDependencies:
     react: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -8204,6 +8205,7 @@ __metadata:
     "@tamagui/native": "workspace:*"
     "@tamagui/portal": "workspace:*"
     "@tamagui/sandbox-ui": "workspace:*"
+    "@tamagui/scroll-view": "workspace:*"
     "@tamagui/sheet": "workspace:*"
     "@tamagui/shorthands": "workspace:*"
     "@tamagui/theme": "workspace:*"

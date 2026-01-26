@@ -44,19 +44,34 @@ function ToggleGroupComponent(props: {
       >
         <Group>
           <Group.Item>
-            <ToggleGroup.Item value="left" aria-label="Left aligned" borderRadius="$4" activeStyle={{ backgroundColor: '$color5' }}>
+            <ToggleGroup.Item
+              value="left"
+              aria-label="Left aligned"
+              borderRadius="$4"
+              activeStyle={{ backgroundColor: '$color5' }}
+            >
               <AlignLeft size={16} />
             </ToggleGroup.Item>
           </Group.Item>
 
           <Group.Item>
-            <ToggleGroup.Item value="center" aria-label="Center aligned" borderRadius="$4" activeStyle={{ backgroundColor: '$color5' }}>
+            <ToggleGroup.Item
+              value="center"
+              aria-label="Center aligned"
+              borderRadius="$4"
+              activeStyle={{ backgroundColor: '$color5' }}
+            >
               <AlignCenter size={16} />
             </ToggleGroup.Item>
           </Group.Item>
 
           <Group.Item>
-            <ToggleGroup.Item value="right" aria-label="Right aligned" borderRadius="$4" activeStyle={{ backgroundColor: '$color5' }}>
+            <ToggleGroup.Item
+              value="right"
+              aria-label="Right aligned"
+              borderRadius="$4"
+              activeStyle={{ backgroundColor: '$color5' }}
+            >
               <AlignRight size={16} />
             </ToggleGroup.Item>
           </Group.Item>

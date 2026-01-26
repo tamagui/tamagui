@@ -227,7 +227,7 @@ export const HomeThemes = memo(function HomeThemes() {
           <YStack fullscreen pointerEvents="none" z={1000000000} />
           <XStack
             className="scroll-horizontal no-scrollbar"
-            ref={scrollView}
+            ref={scrollView as any}
             onScroll={(e: any) => {
               if (scrollLock === 'animate' || scrollLock === 'shouldAnimate') {
                 return

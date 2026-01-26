@@ -64,7 +64,6 @@ export function BorderRadiusInput() {
         disableDeactivation
         orientation={'horizontal'}
         type={'single'}
-        size="$2"
         value={store.demosOptions.borderRadius?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -131,7 +130,6 @@ export function BorderWidthInput() {
         disableDeactivation
         orientation={'horizontal'}
         type={'single'}
-        size="$2"
         value={store.demosOptions.borderWidth?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -185,7 +183,6 @@ export function FontFamilyInput() {
         disableDeactivation
         orientation={'horizontal'}
         type={'single'}
-        size="$2"
         value={store.demosOptions.headingFontFamily?.toString() ?? ''}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -228,7 +225,6 @@ export function FillStyleInput() {
         disableDeactivation
         orientation={'horizontal'}
         type={'single'}
-        size="$2"
         value={store.demosOptions.fillStyle?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -267,7 +263,6 @@ export function ElevationInput() {
         disableDeactivation
         orientation="horizontal"
         type="single"
-        size="$2"
         value={store.demosOptions.elevation?.toString() ?? ''}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -322,7 +317,6 @@ export function SpacingInput() {
         disableDeactivation
         orientation={'horizontal'}
         type={'single'}
-        size="$2"
         value={store.demosOptions.spacing?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -386,7 +380,6 @@ export function TextAccentInput() {
         disableDeactivation
         orientation={'horizontal'}
         type={'single'}
-        size="$2"
         value={store.demosOptions.textAccent?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -424,7 +417,6 @@ export function BackgroundAccentInput() {
         disableDeactivation
         orientation={'horizontal'}
         type={'single'}
-        size="$2"
         value={store.demosOptions.backgroundAccent?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -459,7 +451,6 @@ export function InverseAccentInput() {
   return (
     <XStack gap="$3" items="center">
       <Label
-        size="$2"
         color="$color10"
         htmlFor="switch-accent-switch"
         onPress={() => {
