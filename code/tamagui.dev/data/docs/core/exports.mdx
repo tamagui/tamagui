@@ -238,6 +238,41 @@ function MyButton(props) {
 }
 ```
 
+### useWebRef
+
+For platform-specific files (`.tsx` and `.native.tsx`), this hook creates a properly typed ref for web that also composes with a forwarded ref. When you need to access `HTMLElement`-specific properties like `selectionStart` on inputs, this avoids needing `any` casts.
+
+```tsx
+import { useWebRef } from 'tamagui' // or '@tamagui/element'
+
+// In your .tsx (web) file:
+function MyInput(props, forwardedRef) {
+  const { ref, composedRef } = useWebRef<HTMLInputElement>(forwardedRef)
+
+  // ref.current is typed as HTMLInputElement
+  // Access web-specific properties safely:
+  const start = ref.current?.selectionStart
+
+  // composedRef forwards to both ref and forwardedRef
+  return <StyledInput ref={composedRef} />
+}
+```
+
+### getWebElement
+
+A runtime utility that narrows a `TamaguiElement` to an `HTMLElement`. Throws if the element is not an HTMLElement. Useful for platform-specific code where you know you're on web.
+
+```tsx
+import { getWebElement } from 'tamagui' // or '@tamagui/element'
+
+// Narrows to HTMLElement
+const el = getWebElement(ref.current)
+
+// Or narrow to a specific element type
+const input = getWebElement<HTMLInputElement>(ref.current)
+input.selectionStart // typed correctly
+```
+
 ### useThemeName
 
 Returns the string name of the current theme.
