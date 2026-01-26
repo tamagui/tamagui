@@ -1,5 +1,5 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
-import { Label, styled, ToggleGroup, XGroup, YGroup, XStack, YStack } from 'tamagui'
+import { Label, ToggleGroup, XGroup, YGroup, XStack, YStack } from 'tamagui'
 
 export function ToggleGroupDemo() {
   return (
@@ -44,33 +44,24 @@ function ToggleGroupComponent(props: {
       >
         <Group>
           <Group.Item>
-            <ToggleGroup.Item value="left" aria-label="Left aligned" borderRadius="$4">
+            <ToggleGroup.Item value="left" aria-label="Left aligned" borderRadius="$4" activeStyle={{ backgroundColor: '$color5' }}>
               <AlignLeft size={16} />
             </ToggleGroup.Item>
           </Group.Item>
 
           <Group.Item>
-            <ToggleGroup.Item value="center" aria-label="Center aligned" borderRadius="$4">
+            <ToggleGroup.Item value="center" aria-label="Center aligned" borderRadius="$4" activeStyle={{ backgroundColor: '$color5' }}>
               <AlignCenter size={16} />
             </ToggleGroup.Item>
           </Group.Item>
 
           <Group.Item>
-            <StyledItem value="right" aria-label="Right aligned" borderRadius="$4">
+            <ToggleGroup.Item value="right" aria-label="Right aligned" borderRadius="$4" activeStyle={{ backgroundColor: '$color5' }}>
               <AlignRight size={16} />
-            </StyledItem>
+            </ToggleGroup.Item>
           </Group.Item>
         </Group>
       </ToggleGroup>
     </XStack>
   )
 }
-
-const StyledItem = styled(ToggleGroup.Item, {
-  hoverStyle: {
-    backgroundColor: '$color5',
-  },
-  activeStyle: {
-    backgroundColor: '$color6',
-  },
-})
