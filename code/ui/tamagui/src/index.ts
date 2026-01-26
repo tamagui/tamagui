@@ -158,6 +158,7 @@ export {
   setConfig,
   setupDev,
   // constants
+  isBrowser,
   isChrome,
   isClient,
   isServer,

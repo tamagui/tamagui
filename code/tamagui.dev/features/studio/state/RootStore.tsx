@@ -98,8 +98,9 @@ export class RootStore {
     tamaguiConfig: TamaguiInternalConfig
     components: Components
   }) {
-    toastController.success('Config Updated.', {
-      description: 'We picked up the new changes.',
+    toastController.show('Config Updated.', {
+      message: 'We picked up the new changes.',
+      customData: { theme: 'green' },
     })
 
     this.components = {

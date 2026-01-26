@@ -171,7 +171,7 @@ export class ThemeBuilderStore {
       this.sync(last)
       this.history = this.history.slice(1)
     } else {
-      toastController(`No more history items`)
+      toastController.show(`No more history items`)
     }
   }
 
@@ -182,7 +182,7 @@ export class ThemeBuilderStore {
       this.sync(last)
       this.redoHistory = this.redoHistory.slice(1)
     } else {
-      toastController(`No more history items`)
+      toastController.show(`No more history items`)
     }
   }
 
