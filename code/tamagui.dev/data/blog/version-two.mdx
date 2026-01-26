@@ -428,6 +428,41 @@ On native, you can choose your image loading adapter - use the built-in React
 Native Image, or integrate with optimized libraries like `expo-image` or
 `react-native-fast-image` for better caching and performance.
 
+#### Toast
+
+[Toast](/docs/components/toast) has been completely rewritten with a simple,
+Sonner-inspired API. Gone are the complex provider/controller patterns - now you
+just call `toast()`:
+
+```tsx
+import { toast, Toaster } from '@tamagui/toast'
+
+// Add Toaster once at your app root
+<Toaster position="bottom-right" closeButton />
+
+// Show toasts from anywhere
+toast('Event created')
+toast.success('Saved!')
+toast.error('Something went wrong')
+
+// With options
+toast('Deleted', {
+  description: 'The item was removed',
+  action: { label: 'Undo', onClick: () => restore() },
+})
+```
+
+For colored toasts, wrap with Theme - no internal type logic needed:
+
+```tsx
+<Theme name="green">
+  <Toaster />
+</Theme>
+```
+
+The old `Toast`, `ToastProvider`, `ToastViewport`, `useToastController`, and
+`useToastState` APIs have been removed.
+
 #### Menu
 
 [Menu](/docs/components/menu) provides dropdown menus with full keyboard
@@ -512,6 +547,9 @@ Tamagui config better.
   control their own sizing - apply size/responsive props directly to child
   components. Add `<Separator />` manually between items when needed.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
+- Toast API completely rewritten. Removed `Toast`, `ToastProvider`,
+  `ToastViewport`, `useToastController`, and `useToastState`. Use `toast()` and
+  `<Toaster />` instead. See [Toast docs](/docs/components/toast).
 - Moved all settings on `createTamagui` to the `settings` object.
 - Native portals no longer auto-import React internals hack. If you want native
   portals for better context preservation, add
