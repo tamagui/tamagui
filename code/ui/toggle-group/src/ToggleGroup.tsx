@@ -123,30 +123,32 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps
 
 const ToggleGroup = withStaticProperties(
-  React.forwardRef<TamaguiElement, ScopedProps<ToggleGroupProps>>((props, forwardedRef) => {
-    const { type, ...toggleGroupProps } = props
+  React.forwardRef<TamaguiElement, ScopedProps<ToggleGroupProps>>(
+    (props, forwardedRef) => {
+      const { type, ...toggleGroupProps } = props
 
-    if (!isWeb) {
-      React.useEffect(() => {
-        if (!props.id) return
-        return registerFocusable(props.id, {
-          focus: () => {},
-        })
-      }, [props.id])
+      if (!isWeb) {
+        React.useEffect(() => {
+          if (!props.id) return
+          return registerFocusable(props.id, {
+            focus: () => {},
+          })
+        }, [props.id])
+      }
+
+      if (type === 'single') {
+        const singleProps = toggleGroupProps as ToggleGroupImplSingleProps
+        return <ToggleGroupImplSingle {...singleProps} ref={forwardedRef} />
+      }
+
+      if (type === 'multiple') {
+        const multipleProps = toggleGroupProps as ToggleGroupImplMultipleProps
+        return <ToggleGroupImplMultiple {...multipleProps} ref={forwardedRef} />
+      }
+
+      throw new Error(`Missing prop \`type\` expected on \`${TOGGLE_GROUP_NAME}\``)
     }
-
-    if (type === 'single') {
-      const singleProps = toggleGroupProps as ToggleGroupImplSingleProps
-      return <ToggleGroupImplSingle {...singleProps} ref={forwardedRef} />
-    }
-
-    if (type === 'multiple') {
-      const multipleProps = toggleGroupProps as ToggleGroupImplMultipleProps
-      return <ToggleGroupImplMultiple {...multipleProps} ref={forwardedRef} />
-    }
-
-    throw new Error(`Missing prop \`type\` expected on \`${TOGGLE_GROUP_NAME}\``)
-  }),
+  ),
   {
     Item: ToggleGroupItem,
   }
@@ -319,7 +321,11 @@ const ToggleGroupImpl = ToggleGroupFrame.styleable<TamaguiElement, ToggleGroupIm
     )
 
     return (
-      <ToggleGroupContext scope={__scopeToggleGroup} rovingFocus={rovingFocus} disabled={disabled}>
+      <ToggleGroupContext
+        scope={__scopeToggleGroup}
+        rovingFocus={rovingFocus}
+        disabled={disabled}
+      >
         <ToggleContext.Provider color={color}>
           {rovingFocus ? (
             <RovingFocusGroup

@@ -58,7 +58,7 @@ export const TintSection = ({ children, index, themed, z, ...props }: Props) => 
         return (
           <>
             <XStack
-              ref={top}
+              ref={top as any}
               position="absolute"
               t="10%"
               l={0}
@@ -68,7 +68,7 @@ export const TintSection = ({ children, index, themed, z, ...props }: Props) => 
               pointerEvents="none"
             />
             <XStack
-              ref={mid}
+              ref={mid as any}
               position="absolute"
               t="50%"
               l={0}
@@ -78,7 +78,7 @@ export const TintSection = ({ children, index, themed, z, ...props }: Props) => 
               pointerEvents="none"
             />
             <XStack
-              ref={bottom}
+              ref={bottom as any}
               position="absolute"
               b="10%"
               l={0}

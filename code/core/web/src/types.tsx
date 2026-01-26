@@ -523,8 +523,8 @@ export type TamaguiTextElement = (HTMLElement & TamaguiElementMethods) | RNText
  * const ref = useRef<TamaguiWebElement<HTMLInputElement>>(null)
  * // ref.current has both HTMLInputElement props and TamaguiElementMethods
  */
-export type TamaguiWebElement<T extends HTMLElement = HTMLElement> =
-  T & TamaguiElementMethods
+export type TamaguiWebElement<T extends HTMLElement = HTMLElement> = T &
+  TamaguiElementMethods
 
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
 

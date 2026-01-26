@@ -57,7 +57,6 @@ const ToastItemFrame = styled(YStack, {
         },
       },
     },
-
   } as const,
 
   defaultVariants: {

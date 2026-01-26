@@ -6,7 +6,39 @@ export * from './animations';
 export declare const config: {
     themes: typeof themes;
     animations: import("@tamagui/web").AnimationDriver<{
+        '0ms': {
+            type: "timing";
+            duration: number;
+        };
+        '50ms': {
+            type: "timing";
+            duration: number;
+        };
+        '75ms': {
+            type: "timing";
+            duration: number;
+        };
         '100ms': {
+            type: "timing";
+            duration: number;
+        };
+        '200ms': {
+            type: "timing";
+            duration: number;
+        };
+        '250ms': {
+            type: "timing";
+            duration: number;
+        };
+        '300ms': {
+            type: "timing";
+            duration: number;
+        };
+        '400ms': {
+            type: "timing";
+            duration: number;
+        };
+        '500ms': {
             type: "timing";
             duration: number;
         };

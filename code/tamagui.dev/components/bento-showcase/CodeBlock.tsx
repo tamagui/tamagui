@@ -43,7 +43,7 @@ export default React.forwardRef<HTMLPreElement, CodeBlockProps>(
 
     return (
       <Pre
-        ref={forwardedRef}
+        ref={forwardedRef as any}
         className={classes}
         data-line-numbers={showLineNumbers}
         {...props}

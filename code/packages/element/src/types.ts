@@ -46,8 +46,8 @@ export type TamaguiElement = (HTMLElement & TamaguiElementMethods) | View
  * Web-specific element type that extends HTMLElement with Tamagui methods.
  * Use this when you need an HTMLElement ref in web-only code.
  */
-export type TamaguiWebElement<T extends HTMLElement = HTMLElement> =
-  T & TamaguiElementMethods
+export type TamaguiWebElement<T extends HTMLElement = HTMLElement> = T &
+  TamaguiElementMethods
 
 /**
  * Native-specific element type (View).
