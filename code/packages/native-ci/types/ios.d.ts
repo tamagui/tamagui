@@ -18,7 +18,8 @@ export declare function ensureIOSFolder(): Promise<void>;
 /**
  * Ensure the iOS app binary exists, building it if necessary.
  * On CI, this is a no-op since CI builds the app in a separate job.
- * Locally, this will build the app if the binary is missing.
+ * Locally, this will build the app if the binary is missing OR if the
+ * fingerprint has changed (indicating native dependencies changed).
  */
 export declare function ensureIOSApp(config?: string): Promise<void>;
 //# sourceMappingURL=ios.d.ts.map

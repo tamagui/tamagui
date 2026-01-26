@@ -48,7 +48,9 @@ function TestCasesSection() {
       <Button
         testID="toggle-test-cases"
         size="$3"
-        onPress={() => setExpanded(!expanded)}
+        onPress={() => {
+          setExpanded(!expanded)
+        }}
         theme="gray"
       >
         {`${expanded ? 'Hide' : 'Show'} Quick Test Links (${testCaseNames.length})`}

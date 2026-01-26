@@ -216,34 +216,7 @@ content = wrapWithGestureDetector(
 
 ### 5. Simplify `core/core/src/index.tsx` setupHooks
 
-The `useEvents` hook can be simplified since eventHandling.native.ts handles it:
-
-```typescript
-setupHooks({
-  // ... other hooks stay same ...
-
-  useEvents(viewProps, events, splitStyles, setStateShallow, staticConfig) {
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      // focus/blur still needed
-      if (events?.onFocus) viewProps['onFocus'] = events.onFocus
-      if (events?.onBlur) viewProps['onBlur'] = events.onBlur
-
-      // input special case stays
-      if (staticConfig.isInput && events) {
-        // ... existing input handling ...
-      }
-
-      // press handling now in eventHandling.native.ts via usePressHandling
-      // no more usePressability here
-    }
-  },
-
-  useChildren(elementType, children, viewProps) {
-    // ... existing optimization logic ...
-    // GestureDetector wrapping handled by wrapWithGestureDetector in createComponent
-  },
-})
-```
+We removed this
 
 ## User Setup
 

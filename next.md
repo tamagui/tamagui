@@ -8,6 +8,10 @@
 
 AFTER v2 RC (nice to haves):
 
+- @tamagui/web can just merge into core, .native paths are perfectly fine since we build separate so no need to serapte.
+
+- reanimated on native - no transitino can still avoidReRenders just set duration: 0 timing, should be faster
+
 - css driver can avoidReRenders
   - reanimated too but requires testing native + worklets
 

@@ -1,10 +1,10 @@
-import { shorthands } from '@tamagui/shorthands/v5'
+import { shorthands } from '@tamagui/shorthands/v4' // v4 same as v5
 import { themes, tokens } from '@tamagui/themes/v5'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts } from './v5-fonts'
 import { media, mediaQueryDefaultActive } from './v5-media'
 
-export { shorthands } from '@tamagui/shorthands/v5'
+export { shorthands } from '@tamagui/shorthands/v4'
 export { createThemes } from '@tamagui/theme-builder'
 export {
   adjustPalette,
