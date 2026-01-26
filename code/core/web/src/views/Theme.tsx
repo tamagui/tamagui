@@ -30,7 +30,9 @@ export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, r
 
   let finalChildren = disableDirectChildTheme
     ? Children.map(props.children, (child) =>
-        passThrough ? child : cloneElement(child, { ['data-disable-theme']: true })
+        passThrough || !isValidElement(child)
+          ? child
+          : cloneElement(child, { ['data-disable-theme']: true } as any)
       )
     : props.children
 

@@ -161,6 +161,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const isScrollable = showDownArrow || showUpArrow
 
   useIsomorphicLayoutEffect(() => {
+    if (typeof window === 'undefined') return
     window.addEventListener('resize', update)
     if (open) {
       update()

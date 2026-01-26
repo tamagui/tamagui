@@ -324,7 +324,6 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     try {
       for (const rule of rules) {
         sheet.insertRule(rule, sheet.cssRules.length)
-        if (identifier === '_dsp-_groupframe-maxMd_none') console.warn('INSERT', rule)
       }
     } catch (err) {
       if (process.env.NODE_ENV === 'production') {

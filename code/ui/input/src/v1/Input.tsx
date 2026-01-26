@@ -152,7 +152,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
           theme[placeholderTextColor]?.variable || placeholderTextColor,
       }),
       ...(selectionColor && {
-        '--selectionColor': theme[selectionColor]?.variable || selectionColor,
+        '--selectionBackground': theme[selectionColor]?.variable || selectionColor,
       }),
     },
   } as any

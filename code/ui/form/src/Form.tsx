@@ -73,7 +73,10 @@ const FormComponent = FormFrame.styleable<ScopedProps<FormExtraProps>>(function 
       <FormFrame
         ref={ref}
         {...(props as any)}
-        onSubmit={(e: any) => e.preventDefault()}
+        onSubmit={(e: any) => {
+          e.preventDefault()
+          onSubmit?.()
+        }}
       />
     </FormProvider>
   )

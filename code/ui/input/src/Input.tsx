@@ -155,19 +155,5 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     },
   } as any
 
-  return (
-    <>
-      <style>
-        {`
-          input::selection, textarea::selection {
-            background-color: var(--selectionColor) !important;
-          }
-          input::placeholder, textarea::placeholder {
-            color: var(--placeholderColor) !important;
-          }
-        `}
-      </style>
-      <StyledInput ref={composedRefs} {...finalProps} />
-    </>
-  )
+  return <StyledInput ref={composedRefs} {...finalProps} />
 })

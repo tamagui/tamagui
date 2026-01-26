@@ -72,8 +72,7 @@ export function createExtractor(
   { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
   if (!process.env.TAMAGUI_TARGET) {
-    console.warn('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
-    process.exit(1)
+    throw new Error('Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
   }
 
   const INLINE_EXTRACTABLE = {

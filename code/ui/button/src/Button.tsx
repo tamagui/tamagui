@@ -119,6 +119,8 @@ const Frame = styled(View, {
     disabled: {
       true: {
         pointerEvents: 'none',
+        // @ts-ignore
+        'aria-disabled': true,
       },
     },
   } as const,

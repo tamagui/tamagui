@@ -1067,11 +1067,11 @@ interface ExtraStyleProps {
     /**
      * Web-only style property. Will be omitted on native.
      */
-    overflowX?: Properties['boxSizing'];
+    overflowX?: Properties['overflowX'];
     /**
      * Web-only style property. Will be omitted on native.
      */
-    overflowY?: Properties['boxSizing'];
+    overflowY?: Properties['overflowY'];
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * The point at which transforms originate from.
