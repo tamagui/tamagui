@@ -1,4 +1,3 @@
-import { isClient } from '@tamagui/constants'
 import { initialValue } from './initialValue'
 import type { WindowSize, WindowSizeListener } from './types'
 
@@ -6,7 +5,7 @@ let lastSize: WindowSize = initialValue
 let docEl: HTMLElement | null = null
 
 export function getWindowSize(): WindowSize {
-  if (!isClient) {
+  if (process.env.TAMAGUI_TARGET !== 'web') {
     return initialValue
   }
 
@@ -33,7 +32,7 @@ export function getWindowSize(): WindowSize {
 
 const cbs = new Set<WindowSizeListener>()
 
-if (isClient) {
+if (process.env.TAMAGUI_TARGET === 'web') {
   let lastUpdate = Date.now()
   let tm
   const USER_MAX_MS = process.env.TAMAGUI_USE_WINDOW_DIMENSIONS_MAX_UPDATE_MS

@@ -3,7 +3,6 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   currentPlatform,
-  isClient,
   isWeb,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
@@ -303,7 +302,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         setIsDragging(val)
 
         // make unselectable:
-        if (isClient) {
+        if (process.env.TAMAGUI_TARGET === 'web') {
           if (!sheetHiddenStyleSheet) {
             sheetHiddenStyleSheet = document.createElement('style')
             if (typeof document.head !== 'undefined') {

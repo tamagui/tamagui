@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isIos, isWeb } from '@tamagui/constants'
+import { isIos, isWeb } from '@tamagui/constants'
 import type {
   GestureReponderEvent,
   GetProps,
@@ -60,7 +60,7 @@ const activeSliderMeasureListeners = new Set<Function>()
 // run an interval on web as using translate can move things at any moment
 // without triggering layout or intersection observers
 
-if (isWeb && isClient) {
+if (process.env.TAMAGUI_TARGET === 'web') {
   if (!process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL) {
     setInterval?.(
       () => {

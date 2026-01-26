@@ -4,7 +4,7 @@ import { Platform } from 'react-native'
 export const isWeb: boolean = false
 export const isWindowDefined: boolean = false
 export const isServer: boolean = false
-export const isClient: boolean = false
+export const isClient: boolean = true
 export const useIsomorphicLayoutEffect: typeof useEffect = useLayoutEffect
 export const isChrome: boolean = false
 export const isWebTouchable: boolean = false
