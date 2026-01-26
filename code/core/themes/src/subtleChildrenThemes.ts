@@ -31,8 +31,8 @@ export const v5SubtlePaletteAdjustments: PaletteAdjustments<
     },
     dark: (hsl, i) => ({
       ...hsl,
-      s: hsl.s * (i <= 7 ? 0.24 : 0.6),
-      l: hsl.l * (i <= 4 ? 0.65 : 1.1),
+      s: hsl.s * (i <= 7 ? 0.45 : 0.55),
+      l: hsl.l * (i <= 4 ? 0.8 : 1),
     }),
   },
 }

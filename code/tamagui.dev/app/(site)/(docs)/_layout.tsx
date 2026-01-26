@@ -48,6 +48,10 @@ export default function DocsLayout() {
               width: 245,
               shrink: 0,
               alignSelf: 'flex-start',
+              x: 20,
+            }}
+            $gtLg={{
+              x: 0,
             }}
           >
             <ScrollView showsVerticalScrollIndicator={false}>

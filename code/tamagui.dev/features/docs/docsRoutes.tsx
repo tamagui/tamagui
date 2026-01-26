@@ -30,8 +30,7 @@ export const docsRoutes = [
     section: 'core',
     title: 'Styling',
     pages: [
-      { title: 'Style Props', route: '/docs/intro/styles' },
-      { title: 'Props', route: '/docs/intro/props' },
+      { title: 'Styling', route: '/docs/intro/styles' },
       { title: 'styled()', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
       { title: 'createStyledContext', route: '/docs/core/create-styled-context' },
@@ -43,7 +42,8 @@ export const docsRoutes = [
     section: 'core',
     title: 'Components',
     pages: [
-      { title: 'View & Text', route: '/docs/core/stack-and-text' },
+      { title: 'Props', route: '/docs/intro/props' },
+      { title: 'View & Text', route: '/docs/core/view-and-text' },
       { title: 'Theme', route: '/docs/core/theme' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
     ],
