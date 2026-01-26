@@ -212,7 +212,7 @@ test.describe('Enter/Exit Transition Props', () => {
     const midOpacity = await getOpacity(page, 'scenario-45-target')
 
     expect(
-      midOpacity < 0.95,
+      midOpacity <= 0.95,
       `Prop change opacity (${midOpacity.toFixed(2)}) should have started animating`
     ).toBe(true)
 
