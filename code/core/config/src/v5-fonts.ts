@@ -1,7 +1,8 @@
 import type { FillInFont, GenericFont } from '@tamagui/core'
-import { createFont, getVariableValue, isWeb } from '@tamagui/core'
+import { createFont, getVariableValue } from '@tamagui/core'
 
-const isNative = !isWeb
+const isWeb = process.env.TAMAGUI_TARGET === 'web'
+const isNative = process.env.TAMAGUI_TARGET === 'native'
 
 // web sizes
 const webSizes = {
@@ -76,7 +77,7 @@ export const createSystemFont = <A extends GenericFont>({
       Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
     ),
     weight: {
-      4: '300',
+      1: '400',
     },
     letterSpacing: {
       4: 0,
