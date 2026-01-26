@@ -1,4 +1,3 @@
-import { isClient } from '@tamagui/constants'
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import { createVariable } from '../createVariable'
 import type {
@@ -40,7 +39,7 @@ export function scanAllSheets(
   tokens?: TokensParsed
 ): DedupedThemes | undefined {
   if (process.env.NODE_ENV === 'test') return
-  if (!isClient) return
+  if (process.env.TAMAGUI_TARGET !== 'web') return
 
   let themes: DedupedThemes | undefined
 
@@ -295,7 +294,7 @@ export function setNonce(_: string) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (!isClient) return
+  if (process.env.TAMAGUI_TARGET !== 'web') return
 
   if (!sheet && document.head) {
     const styleTag = document.createElement('style')

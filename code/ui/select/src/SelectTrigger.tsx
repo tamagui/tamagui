@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb, type TamaguiElement } from '@tamagui/core'
+import { type TamaguiElement } from '@tamagui/core'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItem } from '@tamagui/list-item'
 import * as React from 'react'
@@ -15,7 +15,9 @@ const TRIGGER_NAME = 'SelectTrigger'
 export type SelectTriggerProps = SelectScopedProps<ListItemProps>
 
 const isPointerCoarse =
-  isWeb && isClient ? window.matchMedia('(pointer:coarse)').matches : true
+  process.env.TAMAGUI_TARGET === 'web'
+    ? window.matchMedia('(pointer:coarse)').matches
+    : true
 
 export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
   function SelectTrigger(props: SelectTriggerProps, forwardedRef) {

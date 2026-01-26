@@ -15,7 +15,7 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react'
-import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent, useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
@@ -75,7 +75,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }, [open, selectedIndex, setActiveIndexFast])
 
   // close when mouseup outside select
-  if (isWeb && isClient) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
     useIsomorphicLayoutEffect(() => {
       if (!open) return
       const mouseUp = (e: MouseEvent) => {
