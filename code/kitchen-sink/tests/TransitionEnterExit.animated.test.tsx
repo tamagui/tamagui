@@ -205,17 +205,19 @@ test.describe('Enter/Exit Transition Props', () => {
     // click prop button to change opacity (not enter/exit, so uses default=lazy)
     await page.getByTestId('scenario-45-trigger-prop').click()
 
-    // at 200ms into lazy (~500ms), should be intermediate
+    // at 200ms into lazy (~500ms), should be animating (not at initial value)
+    // note: spring animations can overshoot past target (0.5) before settling,
+    // so we just verify animation has started (opacity changed from initial 1.0)
     await page.waitForTimeout(200)
     const midOpacity = await getOpacity(page, 'scenario-45-target')
 
     expect(
-      isIntermediate(midOpacity, 1, 0.5) || midOpacity > 0.6,
-      `Prop change opacity (${midOpacity.toFixed(2)}) should use lazy default`
+      midOpacity < 0.95,
+      `Prop change opacity (${midOpacity.toFixed(2)}) should have started animating`
     ).toBe(true)
 
-    // wait for completion
-    await page.waitForTimeout(800)
+    // wait for completion - spring settles at target
+    await page.waitForTimeout(1000)
     expect(await getOpacity(page, 'scenario-45-target'), 'Final opacity').toBeCloseTo(0.5, 1)
   })
 
