@@ -223,6 +223,8 @@ export const stylePropsView = {
   boxShadow: true,
   border: true,
   filter: true,
+  // RN 0.76+ supports linear-gradient via backgroundImage
+  backgroundImage: true,
   // RN 0.76/0.77+ style props (New Architecture)
   boxSizing: true,
   mixBlendMode: true,

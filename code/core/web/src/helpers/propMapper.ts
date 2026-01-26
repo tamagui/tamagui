@@ -60,11 +60,11 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     if (typeof value === 'string' && value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
     } else if (
-      (key === 'boxShadow' || key === 'filter') &&
+      (key === 'boxShadow' || key === 'filter' || key === 'backgroundImage') &&
       typeof value === 'string' &&
       value.includes('$')
     ) {
-      // boxShadow/filter with embedded $tokens - resolve each token
+      // boxShadow/filter/backgroundImage with embedded $tokens - resolve each token
       // Try size first (for dimensions), then color (for the color value)
       value = value.replace(/(\$[\w.-]+)/g, (t) => {
         let r = getTokenForKey('size', t, styleProps, styleState)

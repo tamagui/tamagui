@@ -46,6 +46,7 @@ type BaseViewStyle = RNViewStyle & FlatTransformStyles & CrossPlatformStyles & W
 type CrossPlatformStyles = {
   boxShadow?: BoxShadowValue  // string, object, or array
   filter?: FilterValue        // brightness, opacity cross-platform; blur, contrast, etc. Android 12+
+  backgroundImage?: string    // linear-gradient, radial-gradient; supports $tokens
   cursor?: Properties['cursor'] // web + iOS 17+ (trackpad/stylus/gaze)
   mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | ... // blend modes
   isolation?: 'auto' | 'isolate'
@@ -63,7 +64,6 @@ type WebOnlyStyles =  {
   contain?: Properties['contain']
   touchAction?: Properties['touchAction']
   backdropFilter?: Properties['backdropFilter']
-  backgroundImage?: Properties['backgroundImage']
   backgroundOrigin: Properties['backgroundOrigin'],
   backgroundPosition: Properties['backgroundPosition'],
   backgroundRepeat: Properties['backgroundRepeat'],
@@ -190,28 +190,46 @@ type TextStyleBase = BaseViewStyle & {
 ## CSS Shorthand with Variables
 
 Tamagui supports using `$variables` directly inside CSS shorthand string values.
-This is particularly useful for `boxShadow` where you want to reference theme
-colors:
+This is particularly useful for `boxShadow` and `backgroundImage` where you want
+to reference theme colors:
 
 ```tsx
-// Single variable
+// boxShadow with variables
 <View boxShadow="0 0 10px $shadowColor" />
-
-// Multiple variables
 <View boxShadow="0 0 5px $shadowColor, 0 0 15px $color" />
+
+// backgroundImage with linear-gradient (cross-platform, RN 0.76+)
+<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
+<View backgroundImage="linear-gradient(45deg, $black 0%, $white 50%, $black 100%)" />
+
+// filter with variables
+<View filter="blur($2)" />
 
 // On web: resolves to CSS custom properties
 // boxShadow: "0 0 10px var(--t-shadow-shadowColor)"
+// backgroundImage: "linear-gradient(to bottom, var(--background), var(--color))"
 
 // On native: resolves to raw values
 // boxShadow: "0 0 10px rgba(0,0,0,0.2)"
+// backgroundImage: "linear-gradient(to bottom, #fff, #000)"
 ```
 
 Supported shorthand properties with variable resolution:
 
 - `boxShadow` - Works on both web and native
+- `backgroundImage` - Works on both web and native (see below)
+- `filter` - Works on both web and native
 - `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
 - `background` - Web only
+
+### backgroundImage
+
+Supports `linear-gradient()` and `radial-gradient()` cross-platform. Does not support `url()` on native - use `<ImageBackground>` for images.
+
+```tsx
+<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
+<View backgroundImage="radial-gradient(circle, $white, $black)" />
+```
 
 For native border styling, use individual props:
 

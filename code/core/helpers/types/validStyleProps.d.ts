@@ -118,7 +118,6 @@ export declare const stylePropsView: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
@@ -166,6 +165,7 @@ export declare const stylePropsView: {
     willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -412,7 +412,6 @@ export declare const stylePropsText: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
@@ -459,6 +458,7 @@ export declare const stylePropsText: {
     willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -674,7 +674,6 @@ export declare const stylePropsAll: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
@@ -721,6 +720,7 @@ export declare const stylePropsAll: {
     willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -922,7 +922,6 @@ export declare const validStyles: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
@@ -970,6 +969,7 @@ export declare const validStyles: {
     willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;

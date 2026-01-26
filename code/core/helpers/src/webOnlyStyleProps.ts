@@ -18,7 +18,7 @@ export const webOnlyStylePropsView = {
   backgroundAttachment: true,
   backgroundBlendMode: true,
   backgroundClip: true,
-  backgroundImage: true,
+  // backgroundImage: now cross-platform via experimental_backgroundImage in RN 0.76+
   backgroundOrigin: true,
   backgroundPosition: true,
   backgroundRepeat: true,

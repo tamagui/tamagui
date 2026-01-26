@@ -50,6 +50,18 @@ LinearGradient is a YStack that accepts all Tamagui style props as well as theme
 
 See the [expo docs](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) for more complete information.
 
+#### Alternative: backgroundImage style prop
+
+For most gradients, use the [`backgroundImage` style prop](/docs/intro/styles#backgroundimage):
+
+```tsx
+<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
+```
+
+Use `<LinearGradient>` for precise color stop control.
+
+---
+
 LinearGradient extends YStack, inheriting [Stack props](/docs/components/stacks) and therefore the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
