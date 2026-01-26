@@ -297,6 +297,21 @@ export const LocationNotification = BentoComponentStub
         experimental_scriptLoading: 'after-lcp-aggressive',
         redirects: [
           {
+            source: '/llms.txt',
+            destination: '/api/llms',
+            permanent: false,
+          },
+          {
+            source: '/llms-full.txt',
+            destination: '/api/llms-full',
+            permanent: false,
+          },
+          {
+            source: '/docs.txt',
+            destination: '/api/llms-full',
+            permanent: false,
+          },
+          {
             source: '/account/subscriptions',
             destination: '/account',
             permanent: false,
