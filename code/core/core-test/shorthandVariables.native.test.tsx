@@ -60,14 +60,16 @@ describe('shorthand variables - native', () => {
     expect(style?.filter).toBe('brightness(1.2)')
   })
 
-  // backgroundImage - RN 0.76+ supports linear-gradient
-  // note: ViewStyle types don't include backgroundImage yet, so we cast
+  // backgroundImage - RN 0.76+ uses experimental_backgroundImage
+  // note: ViewStyle types don't include this yet, so we cast
   test('backgroundImage with $variable resolves tokens to raw values', () => {
     const { style } = getSplitStylesFor({
       backgroundImage: 'linear-gradient(to bottom, $white, $black)',
     })
 
-    expect((style as any)?.backgroundImage).toBe('linear-gradient(to bottom, #fff, #000)')
+    expect((style as any)?.experimental_backgroundImage).toBe(
+      'linear-gradient(to bottom, #fff, #000)'
+    )
   })
 
   test('backgroundImage with angle and multiple color stops', () => {
@@ -75,7 +77,7 @@ describe('shorthand variables - native', () => {
       backgroundImage: 'linear-gradient(45deg, $black 0%, $white 50%, $black 100%)',
     })
 
-    expect((style as any)?.backgroundImage).toBe(
+    expect((style as any)?.experimental_backgroundImage).toBe(
       'linear-gradient(45deg, #000 0%, #fff 50%, #000 100%)'
     )
   })
@@ -85,7 +87,9 @@ describe('shorthand variables - native', () => {
       backgroundImage: 'linear-gradient(to bottom, red, blue)',
     })
 
-    expect((style as any)?.backgroundImage).toBe('linear-gradient(to bottom, red, blue)')
+    expect((style as any)?.experimental_backgroundImage).toBe(
+      'linear-gradient(to bottom, red, blue)'
+    )
   })
 
   test('backgroundImage with unresolvable $variable keeps token string', () => {
@@ -93,7 +97,9 @@ describe('shorthand variables - native', () => {
       backgroundImage: 'linear-gradient($nonexistent, $white)',
     })
 
-    expect((style as any)?.backgroundImage).toBe('linear-gradient($nonexistent, #fff)')
+    expect((style as any)?.experimental_backgroundImage).toBe(
+      'linear-gradient($nonexistent, #fff)'
+    )
   })
 })
 

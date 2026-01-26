@@ -826,7 +826,7 @@ export function createExtractor(
           const { staticConfig } = component
 
           const defaultProps = {
-            ...(getDefaultProps({}, staticConfig) || {}),
+            ...getDefaultProps(staticConfig),
           }
           const variants = staticConfig.variants || {}
           const isTextView = staticConfig.isText || false

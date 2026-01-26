@@ -13,7 +13,7 @@ export function themeable<ComponentType extends (props: any) => any>(
     props: ThemeableProps,
     ref
   ) {
-    const userDefaults = getDefaultProps(props, staticConfig)
+    const userDefaults = getDefaultProps(staticConfig, props.componentName)
     const defaultTheme = userDefaults?.theme
     const defaultResetTheme = userDefaults?.themeReset
     const { theme, componentName, themeReset, ...rest } = props
