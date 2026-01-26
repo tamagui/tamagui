@@ -1400,6 +1400,12 @@ export function createBaseMenu({
     const openTimerRef = React.useRef<number | null>(null)
     const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
 
+    // determine effective direction for keyboard navigation based on placement
+    // if submenu opens to the left, arrow keys should be flipped
+    const placementSide = popperContext.placement?.split('-')[0]
+    const effectiveDir: Direction =
+      placementSide === 'left' ? 'rtl' : placementSide === 'right' ? 'ltr' : rootContext.dir
+
     const clearOpenTimer = React.useCallback(() => {
       if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
       openTimerRef.current = null
@@ -1571,7 +1577,9 @@ export function createBaseMenu({
                 onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
                   const isTypingAhead = contentContext.searchRef.current !== ''
                   if (props.disabled || (isTypingAhead && event.key === ' ')) return
-                  const willOpen = SUB_OPEN_KEYS[rootContext.dir].includes(event.key)
+                  // use effectiveDir so arrow keys match the submenu's actual position
+                  // (e.g., ArrowLeft opens a left-side submenu)
+                  const willOpen = SUB_OPEN_KEYS[effectiveDir].includes(event.key)
                   if (willOpen) {
                     // set the popper reference for keyboard-only open
                     // (normally set on mouseEnter, see PopperAnchor)
@@ -1638,6 +1646,10 @@ export function createBaseMenu({
           ? 'left'
           : 'right'
 
+    // effective direction for keyboard navigation - if submenu is on left, flip arrow keys
+    const effectiveDir: Direction =
+      placementSide === 'left' ? 'rtl' : placementSide === 'right' ? 'ltr' : rootContext.dir
+
     return (
       <Collection.Provider scope={scope}>
         <Collection.Slot scope={scope}>
@@ -1687,7 +1699,9 @@ export function createBaseMenu({
                     const isKeyDownInside = event.currentTarget.contains(
                       event.target as HTMLElement
                     )
-                    const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(event.key)
+                    // use effectiveDir so arrow keys match the submenu's actual position
+                    // (e.g., ArrowRight closes a left-side submenu)
+                    const isCloseKey = SUB_CLOSE_KEYS[effectiveDir].includes(event.key)
                     if (isKeyDownInside && isCloseKey) {
                       context.onOpenChange(false)
                       // We focus manually because we prevented it in `onCloseAutoFocus`
