@@ -119,7 +119,9 @@
   },
   "manypkg": {
     "workspaceProtocol": "require",
-    "ignoredRules": ["INVALID_DEV_AND_PEER_DEPENDENCY_RELATIONSHIP"]
+    "ignoredRules": [
+      "INVALID_DEV_AND_PEER_DEPENDENCY_RELATIONSHIP"
+    ]
   },
   "packageManager": "yarn@4.5.0",
   "devDependencies": {
