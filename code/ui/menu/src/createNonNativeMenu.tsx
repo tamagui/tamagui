@@ -226,15 +226,16 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           componentName={TRIGGER_NAME}
           scope={scope || DROPDOWN_MENU_CONTEXT}
         >
+          {/* biome-ignore lint/a11y/useSemanticElements: intentionally not using button element for styling flexibility */}
           <Comp
-            render="button"
+            role="button"
             id={context.triggerId}
             aria-haspopup="menu"
             aria-expanded={context.open}
             aria-controls={context.open ? context.contentId : undefined}
             data-state={context.open ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
-            disabled={disabled}
+            aria-disabled={disabled || undefined}
             ref={composeRefs(forwardedRef, context.triggerRef)}
             {...{
               [pressEvent]: composeEventHandlers(
