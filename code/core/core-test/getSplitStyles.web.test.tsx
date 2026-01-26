@@ -412,6 +412,76 @@ describe('getSplitStyles', () => {
   // })
 })
 
+describe('getSplitStyles - asChild default props skipping', () => {
+  test('asChild should not pass through default style props', () => {
+    // create a styled component with default props
+    const StyledTrigger = styled(View, {
+      position: 'static',
+      backgroundColor: 'red',
+    })
+
+    // without asChild, position: static should be in the output
+    const withoutAsChild = simplifiedGetSplitStyles(
+      StyledTrigger,
+      {},
+      { mergeDefaultProps: true }
+    )
+    const withoutAsChildOutput = JSON.stringify(withoutAsChild)
+    expect(withoutAsChildOutput).toContain('static')
+
+    // with asChild, position: static should NOT be in the output (it's a default)
+    const withAsChild = simplifiedGetSplitStyles(
+      StyledTrigger,
+      {
+        asChild: true,
+      },
+      { mergeDefaultProps: true }
+    )
+    const withAsChildOutput = JSON.stringify(withAsChild)
+    expect(withAsChildOutput).not.toContain('static')
+    // red is also a default, so it should not be there either
+    expect(withAsChildOutput).not.toContain('red')
+  })
+
+  test('asChild should pass through non-default style props', () => {
+    const StyledTrigger = styled(View, {
+      position: 'static',
+    })
+
+    // with asChild but a different position value, it should be passed through
+    const withAsChildOverride = simplifiedGetSplitStyles(
+      StyledTrigger,
+      {
+        asChild: true,
+        position: 'relative',
+      },
+      { mergeDefaultProps: true }
+    )
+    const withAsChildOverrideRules = JSON.stringify(withAsChildOverride.rulesToInsert)
+    expect(withAsChildOverrideRules).toContain('relative')
+  })
+
+  test('asChild except-style should skip all styles', () => {
+    const StyledTrigger = styled(View, {
+      position: 'static',
+    })
+
+    const exceptStyle = simplifiedGetSplitStyles(
+      StyledTrigger,
+      {
+        asChild: 'except-style',
+        position: 'relative',
+      },
+      { mergeDefaultProps: true }
+    )
+    const exceptStyleRules = JSON.stringify(exceptStyle.rulesToInsert)
+    // should have no style rules at all
+    expect(exceptStyleRules).not.toContain('position')
+    expect(exceptStyleRules).not.toContain('static')
+    expect(exceptStyleRules).not.toContain('relative')
+  })
+})
+
 describe('getSplitStyles - pseudo prop merging', () => {
   const StyledButton = styled(View, {
     name: 'StyledButton',

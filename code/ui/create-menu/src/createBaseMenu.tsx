@@ -1422,7 +1422,7 @@ export function createBaseMenu({
     }, [pointerGraceTimerRef, onPointerGraceIntentChange])
 
     return (
-      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild scope={scope}>
+      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild="except-style" scope={scope}>
         <MenuItemImpl
           id={subContext.triggerId}
           aria-haspopup="menu"
