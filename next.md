@@ -1,3 +1,18 @@
+## Fix ref type issues properly
+
+Many components have `as any` casts for refs due to `HTMLElement` subtypes not being assignable to `TamaguiElement`. These were pre-existing issues exposed during the `@tamagui/element` package work. Files with `as any` ref casts that could be fixed properly:
+
+- `code/ui/dialog/src/Dialog.tsx` - triggerRef, contentRef
+- `code/ui/select/src/Select.tsx` - onValueNodeChange, nativeSelectRef
+- `code/ui/select/src/SelectViewport.tsx` - floatingContext refs
+- `code/ui/create-menu/src/createBaseMenu.tsx` - composedRefs
+- `code/ui/menu/src/createNonNativeMenu.tsx` - triggerRef
+- `code/ui/context-menu/src/createNonNativeContextMenu.tsx` - triggerRef
+
+Consider using `useWebRef` from `@tamagui/element` for these components to properly type the refs.
+
+---
+
 ⚠️ When bento `migrate-tamagui-v2` branch is merged to main, update Dockerfile to remove the branch specifier
 
 - accept type not looking right?
@@ -90,13 +105,6 @@ AFTER v2 RC (nice to haves):
 - drop rnw support / setupReactNative.ts
 
 ---
-
-<View
-    ref={universalRef}
-    webRef={webRef}
-    nativeRef={nativeRef}
-  />
-
 
 - MCP works w your local tamagui config?
 
