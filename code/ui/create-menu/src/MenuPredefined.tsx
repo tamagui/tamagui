@@ -93,7 +93,6 @@ const MenuIcon = styled(View, {
         height: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        opacity: 0.5,
         marginLeft: 'auto',
       },
     },
@@ -138,14 +137,14 @@ const MenuItem = styled(View, {
         paddingVertical: 4,
         paddingHorizontal: 8,
 
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
+        // use focusStyle for highlight since hover triggers focus via onPointerMove
+        // this ensures a single unified highlight for both mouse and keyboard
+        focusStyle: {
+          backgroundColor: '$backgroundFocus',
         },
+
         pressStyle: {
           backgroundColor: '$backgroundPress',
-        },
-        focusVisibleStyle: {
-          backgroundColor: '$backgroundFocus',
         },
       },
     },
