@@ -167,8 +167,8 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         Content: React.ForwardRefExoticComponent<MenuContentProps & {
             scope?: string;
         } & React.RefAttributes<HTMLElement | import("react-native").View>>;
-        Group: TamaguiComponent;
-        Label: TamaguiComponent;
+        Group: TamaguiComponent<Omit<any, keyof MenuGroupProps> & MenuGroupProps, any, MenuGroupProps, {}, {}, {}>;
+        Label: TamaguiComponent<Omit<any, keyof MenuLabelProps> & MenuLabelProps, any, MenuLabelProps, {}, {}, {}>;
         Item: React.ForwardRefExoticComponent<MenuItemProps & {
             scope?: string;
         } & React.RefAttributes<TamaguiElement>>;
@@ -188,7 +188,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         }, any, MenuItemIndicatorProps & {
             scope?: string;
         }, {}, {}, {}>;
-        Separator: TamaguiComponent;
+        Separator: TamaguiComponent<Omit<any, keyof MenuSeparatorProps> & MenuSeparatorProps, any, MenuSeparatorProps, {}, {}, {}>;
         Arrow: React.ForwardRefExoticComponent<MenuArrowProps & React.RefAttributes<TamaguiElement>>;
         Sub: React.FC<ScopedProps<MenuSubProps>>;
         SubTrigger: React.ForwardRefExoticComponent<MenuSubTriggerProps & {
@@ -197,10 +197,10 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         SubContent: React.ForwardRefExoticComponent<MenuSubContentProps & {
             scope?: string;
         } & React.RefAttributes<HTMLElement | import("react-native").View>>;
-        ItemTitle: TamaguiComponent<any, any, {} & void, {}, {}, {}>;
-        ItemSubtitle: TamaguiComponent<any, any, {} & void, {}, {}, {}>;
+        ItemTitle: TamaguiComponent<Omit<any, keyof MenuItemTitleProps> & MenuItemTitleProps, any, MenuItemTitleProps, {}, {}, {}>;
+        ItemSubtitle: TamaguiComponent<Omit<any, keyof MenuItemSubTitleProps> & MenuItemSubTitleProps, any, MenuItemSubTitleProps, {}, {}, {}>;
         ItemImage: React.ForwardRefExoticComponent<ImageProps & React.RefAttributes<Image>>;
-        ItemIcon: TamaguiComponent<any, any, {} & void, {}, {}, {}>;
+        ItemIcon: TamaguiComponent<Omit<any, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, any, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, {}, {}, {}>;
     };
 };
 export type { MenuAnchorProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIconProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubTitleProps, MenuItemTitleProps, MenuLabelProps, MenuPortalProps, MenuBaseProps as MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSeparatorProps, MenuSubTriggerProps, };

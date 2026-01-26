@@ -14,8 +14,8 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
     readonly Content: React.FC<import("./createNonNativeMenu").MenuContentProps & {
         scope?: string;
     } & React.RefAttributes<HTMLElement | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuContentProps>;
-    readonly Group: React.FC<any>;
-    readonly Label: React.FC<any>;
+    readonly Group: React.FC<Omit<any, keyof import("@tamagui/create-menu").MenuGroupProps> & import("@tamagui/create-menu").MenuGroupProps & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuGroupProps>;
+    readonly Label: React.FC<Omit<any, keyof import("@tamagui/create-menu").MenuLabelProps> & import("@tamagui/create-menu").MenuLabelProps & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuLabelProps>;
     readonly Item: React.FC<Omit<import("@tamagui/create-menu").MenuItemProps & {
         scope?: string;
     } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
@@ -50,7 +50,7 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
     } & React.RefAttributes<any>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemIndicatorProps>;
-    readonly Separator: React.FC<any>;
+    readonly Separator: React.FC<Omit<any, keyof import("@tamagui/create-menu").MenuSeparatorProps> & import("@tamagui/create-menu").MenuSeparatorProps & React.RefAttributes<any>>;
     readonly Arrow: React.FC<Omit<import("@tamagui/create-menu").MenuArrowProps & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<import("@tamagui/web").TamaguiElement>>;
@@ -83,9 +83,9 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
     } & React.RefAttributes<HTMLElement | import("react-native").View>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<HTMLElement | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubContentProps>;
-    readonly ItemTitle: React.FC<any>;
-    readonly ItemSubtitle: React.FC<any>;
-    readonly ItemIcon: React.FC<any>;
+    readonly ItemTitle: React.FC<Omit<any, keyof import("@tamagui/create-menu").MenuItemTitleProps> & import("@tamagui/create-menu").MenuItemTitleProps & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemTitleProps>;
+    readonly ItemSubtitle: React.FC<Omit<any, keyof import("@tamagui/create-menu").MenuItemSubTitleProps> & import("@tamagui/create-menu").MenuItemSubTitleProps & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemSubtitleProps>;
+    readonly ItemIcon: React.FC<Omit<any, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & React.RefAttributes<any> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps>;
     readonly ItemImage: React.FC<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
         source: import("react-native").ImageProps["source"];
         ios?: {
