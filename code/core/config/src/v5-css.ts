@@ -27,3 +27,5 @@ export const animationsCSS = createAnimations({
   quickest: `80ms ${easeOut}`,
   quickestLessBouncy: `60ms ${easeOut}`,
 })
+
+export const animations = animationsCSS
