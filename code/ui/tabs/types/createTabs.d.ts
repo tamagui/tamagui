@@ -1,6 +1,6 @@
 import type { GroupProps } from '@tamagui/group';
 import { type RovingFocusGroupProps } from '@tamagui/roving-focus';
-import type { GetProps, ViewProps, TamaguiElement } from '@tamagui/web';
+import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/web';
 import * as React from 'react';
 import type { LayoutRectangle } from 'react-native';
 import { DefaultTabsContentFrame, DefaultTabsFrame, DefaultTabsTabFrame } from './Tabs';
