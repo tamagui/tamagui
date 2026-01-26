@@ -20,6 +20,7 @@ import {
   YStack,
 } from 'tamagui'
 import { defaultModel } from '../../api/generateModels'
+import { getActivePromo } from '../../site/purchase/promoConfig'
 import { purchaseModal } from '../../site/purchase/purchaseModalStore'
 import { useUser } from '../../user/useUser'
 import { toastController } from '../ToastProvider'
@@ -240,6 +241,11 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                   if (hasAccess) {
                     fetchUpdate('new')
                   } else {
+                    const activePromo = getActivePromo()
+                    if (activePromo) {
+                      purchaseModal.activePromo = activePromo
+                      purchaseModal.prefilledCouponCode = activePromo.code
+                    }
                     purchaseModal.show = true
                   }
                 }}

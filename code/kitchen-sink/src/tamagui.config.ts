@@ -10,6 +10,8 @@ import { createTamagui, type CreateTamaguiProps } from 'tamagui'
 // TODO just move this into this folder
 import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
+// Generated theme from v5 theme builder for testing
+import { themes as generatedV5Themes } from './generatedV5Theme'
 
 export const animationsCSS = createAnimationsCSS({
   '100ms': 'ease-in 100ms',
@@ -242,6 +244,7 @@ const search = (typeof window !== 'undefined' && globalThis.location?.search) ||
 const useV4Themes = search.includes('v4theme=true')
 const v5config = search.includes('v5config')
 const tamav5Config = search.includes('tamav5config')
+const generatedV5 = search.includes('generatedV5')
 
 const tokens = {
   ...config.tokens,
@@ -307,6 +310,8 @@ declare module 'tamagui' {
 
 export default tamav5Config
   ? createTamagui(tamaguiDevConfig)
-  : v5config
-    ? createTamagui({ ...defaultConfig, animations })
-    : tamaConf
+  : generatedV5
+    ? createTamagui({ ...defaultConfig, themes: generatedV5Themes, animations })
+    : v5config
+      ? createTamagui({ ...defaultConfig, animations })
+      : tamaConf
