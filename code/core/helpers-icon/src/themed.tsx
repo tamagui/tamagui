@@ -3,12 +3,11 @@ import {
   getVariable,
   Text,
   usePropsAndStyle,
-  useTheme,
   type ResolveVariableAs,
 } from '@tamagui/core'
 import { SizableContext } from '@tamagui/sizable-context'
 
-import { memo, type FC } from 'react'
+import type { FC } from 'react'
 import type { IconProps } from './IconProps'
 
 export { SizableContext }
@@ -38,42 +37,15 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
     ...optsIn,
   }
 
-  // fast path: skips usePropsAndStyle entirely for simple icons without media queries
-  const LiteIconWrapper = memo((propsIn: IconProps) => {
+  const IconWrapper = (propsIn: IconProps) => {
     const styledContext = SizableContext.useStyledContext()
-    const theme = useTheme()
-
-    const defaultColor = opts.defaultThemeColor
-    const colorIn =
-      propsIn.color ||
-      (defaultColor ? theme[defaultColor as string] : undefined) ||
-      (!propsIn.disableTheme ? theme.color : null) ||
-      opts.fallbackColor
-
-    const color = getVariable(colorIn)
-
-    const size =
-      typeof propsIn.size === 'string'
-        ? getTokenValue(propsIn.size as any, 'size')
-        : propsIn.size ||
-          (styledContext.size === '$true' ? undefined : styledContext.size)
-
-    const strokeWidth =
-      typeof propsIn.strokeWidth === 'string'
-        ? getTokenValue(propsIn.strokeWidth as any, 'size')
-        : (propsIn.strokeWidth ?? `${opts.defaultStrokeWidth}`)
-
-    return <Component {...propsIn} color={color} size={size} strokeWidth={strokeWidth} />
-  })
-
-  // full path: handles media queries, animations, and complex style resolution
-  const HeavyIconWrapper = (propsIn: IconProps) => {
-    const styledContext = SizableContext.useStyledContext()
+    const needsMedia = needsFullStyleResolution(propsIn)
 
     const [props, style, theme] = usePropsAndStyle(propsIn, {
       ...opts,
       forComponent: Text,
       resolveValues: opts.resolveValues,
+      noMedia: !needsMedia,
     })
 
     const defaultColor = opts.defaultThemeColor
@@ -108,10 +80,7 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   }
 
   const wrapped = (propsIn: IconProps) => {
-    if (needsFullStyleResolution(propsIn)) {
-      return <HeavyIconWrapper {...propsIn} />
-    }
-    return <LiteIconWrapper {...propsIn} />
+    return <IconWrapper {...propsIn} />
   }
 
   // add staticConfig so styled() works properly with themed icons
