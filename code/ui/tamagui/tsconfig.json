@@ -60,6 +60,9 @@
       "path": "../../core/use-window-dimensions"
     },
     {
+      "path": "../../packages/element"
+    },
+    {
       "path": "../accordion"
     },
     {
