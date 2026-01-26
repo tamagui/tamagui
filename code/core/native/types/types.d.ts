@@ -16,6 +16,28 @@ export interface WorkletsState {
 	useWorklet: any;
 	createWorkletContextValue: any;
 }
+export interface SafeAreaInsets {
+	top: number;
+	right: number;
+	bottom: number;
+	left: number;
+}
+export interface SafeAreaFrame {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
+export interface SafeAreaMetrics {
+	insets: SafeAreaInsets;
+	frame: SafeAreaFrame;
+}
+export interface SafeAreaState {
+	enabled: boolean;
+	useSafeAreaInsets: (() => SafeAreaInsets) | null;
+	useSafeAreaFrame: (() => SafeAreaFrame) | null;
+	initialMetrics: SafeAreaMetrics | null;
+}
 export type NativePortalProps = {
 	hostName?: string;
 	children: ReactNode;

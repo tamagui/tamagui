@@ -30,6 +30,9 @@
       ],
       "setup-worklets": [
         "./types/setup-worklets.d.ts"
+      ],
+      "setup-safe-area": [
+        "./types/setup-safe-area.d.ts"
       ]
     }
   },
@@ -76,6 +79,18 @@
       "module": "./dist/esm/setup-worklets.mjs",
       "import": "./dist/esm/setup-worklets.mjs",
       "require": "./dist/cjs/setup-worklets.cjs"
+    },
+    "./setup-safe-area": {
+      "react-native": {
+        "types": "./types/setup-safe-area.d.ts",
+        "module": "./dist/esm/setup-safe-area.native.js",
+        "import": "./dist/esm/setup-safe-area.native.js",
+        "require": "./dist/cjs/setup-safe-area.native.js"
+      },
+      "types": "./types/setup-safe-area.d.ts",
+      "module": "./dist/esm/setup-safe-area.mjs",
+      "import": "./dist/esm/setup-safe-area.mjs",
+      "require": "./dist/cjs/setup-safe-area.cjs"
     }
   },
   "devDependencies": {
@@ -83,6 +98,7 @@
     "react": "*",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
+    "react-native-safe-area-context": "~5.6.0",
     "react-native-teleport": "^0.5.6",
     "react-native-worklets-core": "^1.0.0"
   },
@@ -90,11 +106,15 @@
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=2.0.0",
+    "react-native-safe-area-context": ">=4.0.0",
     "react-native-teleport": ">=0.5.0",
     "react-native-worklets-core": ">=1.0.0"
   },
   "peerDependenciesMeta": {
     "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
       "optional": true
     },
     "react-native-teleport": {

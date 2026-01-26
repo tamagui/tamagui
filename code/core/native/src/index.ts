@@ -9,9 +9,7 @@
  * import '@tamagui/native/setup-teleport'
  * import '@tamagui/native/setup-gesture-handler'
  * import '@tamagui/native/setup-worklets'
- *
- * // Then use Tamagui components normally
- * // Sheet will automatically use native gestures when available
+ * import '@tamagui/native/setup-safe-area'
  * ```
  */
 
@@ -20,6 +18,10 @@ export type {
   NativePortalState,
   GestureState,
   WorkletsState,
+  SafeAreaState,
+  SafeAreaInsets,
+  SafeAreaFrame,
+  SafeAreaMetrics,
   NativePortalProps,
   NativePortalHostProps,
   NativePortalProviderProps,
@@ -36,6 +38,10 @@ export type { GestureHandlerAccessor, PressGestureConfig } from './gestureState'
 // worklets
 export { getWorklets } from './workletsState'
 export type { WorkletsAccessor } from './workletsState'
+
+// safe area
+export { getSafeArea } from './safeAreaState'
+export type { SafeAreaAccessor } from './safeAreaState'
 
 // components
 export { NativePortal, NativePortalHost, NativePortalProvider } from './components'
