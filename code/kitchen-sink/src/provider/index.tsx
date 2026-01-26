@@ -1,5 +1,6 @@
 import type { TamaguiProviderProps } from 'tamagui'
 import { TamaguiProvider } from 'tamagui'
+import { ToastProvider } from '@tamagui/toast'
 
 import config from '../tamagui.config'
 
@@ -9,7 +10,9 @@ export function Provider({
 }: Omit<Partial<TamaguiProviderProps>, 'config'>) {
   return (
     <TamaguiProvider config={config} defaultTheme="light" {...rest}>
-      {children}
+      <ToastProvider swipeDirection="horizontal" duration={5000}>
+        {children}
+      </ToastProvider>
     </TamaguiProvider>
   )
 }
