@@ -23,13 +23,11 @@ export const Container = styled(YStack, {
   $gtMd: {
     maxW: 760,
     pr: '$4',
-    x: -50,
   },
 
   $gtLg: {
     maxW: 810,
     pr: '$10',
-    x: 0,
   },
 
   variants,

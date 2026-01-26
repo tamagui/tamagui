@@ -46,6 +46,7 @@ export const Notice = ({
             mt={-3}
             mb={-3}
             className="paragraph-parent"
+            size="$5"
           >
             {disableUnwrap ? children : unwrapText(children)}
           </Paragraph>

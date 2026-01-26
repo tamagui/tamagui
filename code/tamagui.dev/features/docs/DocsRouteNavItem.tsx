@@ -48,7 +48,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           py: '$2',
         }}
         hoverStyle={{
-          bg: 'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
+          bg: '$background06',
         }}
       >
         {!inMenu && (
