@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-previous",
-  "version": "2.0.0-1769406109304",
+  "version": "2.0.0-1769409090068",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
