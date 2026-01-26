@@ -1485,8 +1485,14 @@ export function createBaseMenu({
               // Get side from data-side attribute (set by MenuSubContent)
               // This is critical - without it, side is undefined and isPointerMovingToSubmenu
               // always returns false because pointerDir === undefined is never true
+              // Note: data-side is on the inner PopperContentFrame, not the outer container,
+              // so we need to query for it or check child elements
               const contentEl = context.content as HTMLElement
-              const side: Side = (contentEl?.dataset?.side as Side) || 'right'
+              const sideEl =
+                contentEl?.dataset?.side
+                  ? contentEl
+                  : contentEl?.querySelector('[data-side]')
+              const side: Side = ((sideEl as HTMLElement)?.dataset?.side as Side) || 'right'
               const rightSide = side === 'right'
               const bleed = rightSide ? -5 : +5
               const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
@@ -1517,8 +1523,20 @@ export function createBaseMenu({
               const triggerEl = subContext.trigger as unknown as HTMLElement
               const triggerRect = triggerEl?.getBoundingClientRect()
               if (triggerRect) {
-                const rightSide = rootContext.dir !== 'rtl'
-                const side: Side = rightSide ? 'right' : 'left'
+                // determine side from popper placement, falling back to RTL direction
+                const placementSide = popperContext.placement?.split('-')[0] as
+                  | 'left'
+                  | 'right'
+                  | 'top'
+                  | 'bottom'
+                  | undefined
+                const side: Side =
+                  placementSide === 'left' || placementSide === 'right'
+                    ? placementSide
+                    : rootContext.dir === 'rtl'
+                      ? 'left'
+                      : 'right'
+                const rightSide = side === 'right'
                 const bleed = rightSide ? -5 : +5
                 // Estimate submenu position based on trigger
                 const nearEdge = rightSide ? triggerRect.right + 4 : triggerRect.left - 4
@@ -1567,7 +1585,9 @@ export function createBaseMenu({
                     })
                     // The trigger may hold focus if opened via pointer interaction
                     // so we ensure content is given focus again when switching to keyboard.
-                    context.content?.focus()
+                    // use focusVisible: true since this is keyboard navigation
+                    // @ts-ignore focusVisible is a newer API
+                    context.content?.focus({ focusVisible: true })
                     // prevent window from scrolling
                     event.preventDefault()
                   }
@@ -1597,8 +1617,27 @@ export function createBaseMenu({
     const context = useMenuContext(scope)
     const rootContext = useMenuRootContext(scope)
     const subContext = useMenuSubContext(scope)
+    const popperContext = PopperPrimitive.usePopperContext(scope)
     const ref = React.useRef<MenuSubContentElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
+
+    // determine side from actual placement, not just RTL direction
+    // placement like "left-start" or "right-end" - extract the side
+    const placementSide = popperContext.placement?.split('-')[0] as
+      | 'left'
+      | 'right'
+      | 'top'
+      | 'bottom'
+      | undefined
+    // for submenus, we care about horizontal placement (left/right)
+    // default to 'right' for LTR, 'left' for RTL
+    const dataSide: Side =
+      placementSide === 'left' || placementSide === 'right'
+        ? placementSide
+        : rootContext.dir === 'rtl'
+          ? 'left'
+          : 'right'
+
     return (
       <Collection.Provider scope={scope}>
         <Collection.Slot scope={scope}>
@@ -1607,7 +1646,7 @@ export function createBaseMenu({
             aria-labelledby={subContext.triggerId}
             {...subContentProps}
             ref={composedRefs}
-            data-side={rootContext.dir === 'rtl' ? 'left' : 'right'}
+            data-side={dataSide}
             disableOutsidePointerEvents={false}
             disableOutsideScroll={false}
             trapFocus={false}
@@ -1634,8 +1673,9 @@ export function createBaseMenu({
             onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
               // close only this submenu, not the root menu
               context.onOpenChange(false)
-              // return focus to the submenu trigger
-              subContext.trigger?.focus()
+              // return focus to the submenu trigger with focusVisible since this is keyboard navigation
+              // @ts-ignore focusVisible is a newer API
+              subContext.trigger?.focus({ focusVisible: true })
               // ensure pressing escape in submenu doesn't escape full screen mode
               event.preventDefault()
             })}
@@ -1651,7 +1691,9 @@ export function createBaseMenu({
                     if (isKeyDownInside && isCloseKey) {
                       context.onOpenChange(false)
                       // We focus manually because we prevented it in `onCloseAutoFocus`
-                      subContext.trigger?.focus()
+                      // use focusVisible: true since this is keyboard navigation
+                      // @ts-ignore focusVisible is a newer API
+                      subContext.trigger?.focus({ focusVisible: true })
                       // prevent window from scrolling
                       event.preventDefault()
                     }
