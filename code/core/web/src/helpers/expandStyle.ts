@@ -62,6 +62,10 @@ export function expandStyle(key: string, value: any): PropMappedValue {
         }
         return
       }
+      case 'backgroundImage': {
+        // RN 0.76+ uses experimental_backgroundImage
+        return [['experimental_backgroundImage', value]]
+      }
     }
 
     // native-only key expansions (logical properties)
