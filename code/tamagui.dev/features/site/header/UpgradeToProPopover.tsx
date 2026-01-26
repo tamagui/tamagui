@@ -89,7 +89,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
       </Adapt>
 
       <Popover.Content
-        enableAnimationForPositionChange
+        animatePosition
         transition="quick"
         bg="$background08"
         backdropFilter="blur(40px)"
