@@ -9,7 +9,7 @@ import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
-import { getWebEvents, usePressHandling, wrapWithGestureDetector } from './eventHandling'
+import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
@@ -1307,13 +1307,11 @@ export function createComponent<
       log(`events`, { events, attachHover, attachPress })
     }
 
-    // EVENTS native - use RNGH press handling if available
+    // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'
-        ? usePressHandling(events, viewProps, stateRef)
+        ? useEvents(events, viewProps, stateRef, staticConfig)
         : null
-
-    hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow, staticConfig)
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
@@ -1321,7 +1319,7 @@ export function createComponent<
 
     if (asChild) {
       elementType = Slot
-      // on native this is already merged into viewProps in hooks.useEvents
+      // on native this is already merged into viewProps in useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
         const webStyleEvents = asChild === 'web' || asChild === 'except-style-web'
         const passEvents = getWebEvents(
@@ -1602,9 +1600,10 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (process.env.TAMAGUI_FORCE_MEMO || staticConfig.memo) {
-    res = React.memo(res) as any
-  }
+  // we now have avoid re-renders in many more cases so imo this is way more worth it
+  // Text/Button/string taking components
+  //  + react compiler can memoize children too
+  res = React.memo(res) as any
 
   res.staticConfig = staticConfig
 

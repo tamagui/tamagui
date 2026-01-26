@@ -1,11 +1,11 @@
 /**
  * Native event handling - uses RNGH when available, falls back to usePressability
  */
-import type { TamaguiComponentStateRef } from './types';
+import type { StaticConfig, TamaguiComponentStateRef } from './types';
 export declare function getWebEvents(): {};
-export declare function usePressHandling(events: any, viewProps: any, stateRef: {
+export declare function useEvents(events: any, viewProps: any, stateRef: {
     current: TamaguiComponentStateRef;
-}): any;
+}, staticConfig: StaticConfig): any;
 export declare function wrapWithGestureDetector(content: any, gesture: any, stateRef: {
     current: TamaguiComponentStateRef;
 }): any;

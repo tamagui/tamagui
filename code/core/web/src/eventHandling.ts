@@ -31,10 +31,11 @@ export function wrapWithGestureDetector(
 }
 
 // no-op on web, events attached via getWebEvents
-export function usePressHandling(
+export function useEvents(
   _events: any,
   _viewProps: any,
-  _stateRef: { current: any }
+  _stateRef: { current: any },
+  _staticConfig: any
 ) {
   return null
 }

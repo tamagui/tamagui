@@ -26,7 +26,6 @@ import {
   TamaguiProvider as WebTamaguiProvider,
   Text as WebText,
   View as WebView,
-  composeEventHandlers,
   createTamagui as createTamaguiWeb,
   setupHooks,
   useIsomorphicLayoutEffect,
@@ -170,37 +169,6 @@ setupHooks({
         }
         return plainDOMProps
       }
-    }
-  },
-
-  useEvents(viewProps, events, splitStyles, setStateShallow, staticConfig) {
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      // focus/blur events still need to be attached directly
-      if (events) {
-        if (events.onFocus) {
-          viewProps['onFocus'] = events.onFocus
-        }
-        if (events.onBlur) {
-          viewProps['onBlur'] = events.onBlur
-        }
-      }
-
-      // input special case - TextInput needs press events attached directly
-      if (staticConfig.isInput && events) {
-        const { onPressIn, onPressOut, onPress } = events
-        const inputEvents = {
-          onPressIn,
-          onPressOut: onPressOut || onPress,
-        }
-        if (onPressOut && onPress) {
-          // only supports onPressIn and onPressOut so combine them
-          inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
-        }
-        Object.assign(viewProps, inputEvents)
-      }
-
-      // press handling is now done by usePressHandling in createComponent
-      // which uses RNGH when available, otherwise falls back to usePressability
     }
   },
 

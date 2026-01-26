@@ -2,28 +2,51 @@
  * Native event handling - uses RNGH when available, falls back to usePressability
  */
 
-import React from 'react'
+import React, { useRef } from 'react'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
-import type { TamaguiComponentStateRef } from './types'
+import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
 // web events not used on native
 export function getWebEvents() {
   return {}
 }
 
-const dontComposePressabilityKeys: Record<string, boolean> = {
-  onBlur: true,
-  onFocus: true,
-}
-
-export function usePressHandling(
+export function useEvents(
   events: any,
   viewProps: any,
-  stateRef: { current: TamaguiComponentStateRef }
+  stateRef: { current: TamaguiComponentStateRef },
+  staticConfig: StaticConfig
 ) {
+  // focus/blur events always attached directly
+  if (events) {
+    if (events.onFocus) {
+      viewProps['onFocus'] = events.onFocus
+    }
+    if (events.onBlur) {
+      viewProps['onBlur'] = events.onBlur
+    }
+  }
+
+  // input special case - TextInput needs press events attached directly (not via RNGH)
+  if (staticConfig.isInput && events) {
+    const { onPressIn, onPressOut, onPress } = events
+    const inputEvents: any = {
+      onPressIn,
+      onPressOut: onPressOut || onPress,
+    }
+    if (onPressOut && onPress) {
+      // only supports onPressIn and onPressOut so combine them
+      inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
+    }
+    Object.assign(viewProps, inputEvents)
+    // inputs don't use gesture handler
+    return null
+  }
+
   const hasPressEvents =
-    events?.onPress || events?.onPressIn || events?.onPressOut || events?.onLongPress
+    // its stable and always on if you have in/out/regular
+    events?.onPress
 
   const gh = getGestureHandler()
 
@@ -34,33 +57,35 @@ export function usePressHandling(
 
   if (gh.isEnabled && hasPressEvents) {
     // RNGH path - return gesture for wrapping
-    return gh.createPressGesture({
+    // store callbacks in refs so gesture doesn't need to be recreated on every render
+    const callbacksRef = useRef<any>({})
+    callbacksRef.current = {
       onPressIn: events.onPressIn,
       onPressOut: events.onPressOut,
       onPress: events.onPress,
       onLongPress: events.onLongPress,
-      delayLongPress: events.delayLongPress,
-      hitSlop: viewProps.hitSlop,
-    })
+    }
+
+    // only create gesture once, callbacks are read from ref
+    const gestureRef = useRef<any>(null)
+    if (!gestureRef.current) {
+      gestureRef.current = gh.createPressGesture({
+        onPressIn: (e: any) => callbacksRef.current.onPressIn?.(e),
+        onPressOut: (e: any) => callbacksRef.current.onPressOut?.(e),
+        onPress: (e: any) => callbacksRef.current.onPress?.(e),
+        onLongPress: (e: any) => callbacksRef.current.onLongPress?.(e),
+        delayLongPress: events.delayLongPress,
+        hitSlop: viewProps.hitSlop,
+      })
+    }
+    return gestureRef.current
   }
 
   if (hasPressEvents) {
-    // fallback - inline require usePressability only when needed
-    const usePressability =
-      require('react-native/Libraries/Pressability/usePressability').default
-    const pressability = usePressability(events)
-
-    if (pressability) {
-      if (viewProps.hitSlop) {
-        events.hitSlop = viewProps.hitSlop
-      }
-      for (const key in pressability) {
-        const og = viewProps[key]
-        const val = pressability[key]
-        viewProps[key] =
-          og && !dontComposePressabilityKeys[key] ? composeEventHandlers(og, val) : val
-      }
-    }
+    // fallback - use usePressability when RNGH not enabled
+    // split into separate file to avoid deep import warnings
+    const { useMainThreadPressEvents } = require('./helpers/mainThreadPressEvents')
+    useMainThreadPressEvents(events, viewProps)
   }
 
   return null

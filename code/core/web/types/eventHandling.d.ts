@@ -20,8 +20,8 @@ export declare function getWebEvents<E extends EventLikeObject>(events: E, webSt
 export declare function wrapWithGestureDetector(content: any, _gesture: any, _stateRef: {
     current: any;
 }): any;
-export declare function usePressHandling(_events: any, _viewProps: any, _stateRef: {
+export declare function useEvents(_events: any, _viewProps: any, _stateRef: {
     current: any;
-}): null;
+}, _staticConfig: any): null;
 export {};
 //# sourceMappingURL=eventHandling.d.ts.map

@@ -61,9 +61,15 @@ export function getGestureHandler(): GestureHandlerAccessor {
       const tap = Gesture.Tap()
         .runOnJS(true)
         .maxDuration(10000) // allow very long presses
-        .onBegin((e: any) => config.onPressIn?.(e))
-        .onEnd((e: any) => config.onPress?.(e))
-        .onFinalize((e: any) => config.onPressOut?.(e))
+        .onBegin((e: any) => {
+          config.onPressIn?.(e)
+        })
+        .onEnd((e: any) => {
+          config.onPress?.(e)
+        })
+        .onFinalize((e: any) => {
+          config.onPressOut?.(e)
+        })
 
       if (config.hitSlop) tap.hitSlop(config.hitSlop)
 
