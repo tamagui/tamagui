@@ -31,11 +31,33 @@ LinearGradient is already installed in `tamagui`, or you can install it independ
 npm install @tamagui/linear-gradient
 ```
 
-To use this package, you need to add `expo-linear-gradient` to your app. This works [with vanilla React Native](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) or Expo.
+### Native Setup
+
+On native, LinearGradient uses `expo-linear-gradient` for rendering. This works with vanilla React Native or Expo.
+
+#### Step 1: Install expo-linear-gradient
+
+```bash
+npm install expo-linear-gradient
+```
+
+#### Step 2: Import the setup module
+
+In your app's entry file (index.js or App.tsx), before any Tamagui imports:
+
+```tsx
+import '@tamagui/native/setup-expo-linear-gradient'
+```
+
+That's it! LinearGradient will automatically detect and use expo-linear-gradient when available.
+
+#### Without expo-linear-gradient
+
+If you don't set up expo-linear-gradient, LinearGradient will log a warning on native. On web, LinearGradient uses CSS gradients and doesn't require any additional setup.
 
 ## Usage
 
-Because LinearGradient requires a more complex native package to install, it is not included in the main `tamagui` export until Metro supports async import. Import it either separately or using the path `/linear-gradient`:
+Because LinearGradient requires a native package, it is not included in the main `tamagui` export. Import it either separately or using the path `/linear-gradient`:
 
 ```tsx
 import { LinearGradient } from '@tamagui/linear-gradient'
