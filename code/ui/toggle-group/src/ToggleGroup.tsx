@@ -43,14 +43,6 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
     const color = (props as any).color || toggleContext.color
     const disabled = context.disabled || props.disabled || false
 
-    console.log('ToggleGroupItem', props.value, {
-      active,
-      valueContextValue: valueContext?.value,
-      valueContextType: valueContext?.type,
-      hasActivate: !!valueContext?.onItemActivate,
-      rovingFocus: context?.rovingFocus
-    })
-
     const inner = (
       <ToggleGroupItemImpl
         ref={forwardedRef}
@@ -98,19 +90,12 @@ const ToggleGroupItemImpl = React.forwardRef<
   const singleProps = { 'aria-pressed': undefined }
   const typeProps = valueContext.type === 'single' ? singleProps : undefined
 
-  console.log('ToggleGroupItemImpl', value, {
-    hasValueContext: !!valueContext,
-    type: valueContext?.type,
-    hasActivate: !!valueContext?.onItemActivate,
-  })
-
   return (
     <Toggle
       {...typeProps}
       {...itemProps}
       ref={forwardedRef}
       onActiveChange={(pressed) => {
-        console.log('onActiveChange', value, pressed, { hasActivate: !!valueContext?.onItemActivate })
         if (pressed) {
           valueContext.onItemActivate(value)
         } else {
