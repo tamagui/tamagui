@@ -438,7 +438,7 @@ export function Popper(props: PopperProps) {
  * PopperAnchor
  * -----------------------------------------------------------------------------------------------*/
 
-type PopperAnchorRef = HTMLElement | View
+type PopperAnchorRef = TamaguiElement
 
 export type PopperAnchorExtraProps = {
   virtualRef?: React.RefObject<any>

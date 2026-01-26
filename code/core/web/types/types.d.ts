@@ -236,8 +236,23 @@ export interface TamaguiElementMethods {
     focus(): void;
     blur(): void;
 }
+/**
+ * Cross-platform element ref type. On web, includes TamaguiElementMethods
+ * (measure, focus, blur) which Tamagui adds at runtime. On native, View
+ * already has these via NativeMethods.
+ */
 export type TamaguiElement = (HTMLElement & TamaguiElementMethods) | View;
 export type TamaguiTextElement = (HTMLElement & TamaguiElementMethods) | RNText;
+/**
+ * Web-specific element type for platform-specific .tsx files.
+ * Use when you need HTMLElement subtype properties (e.g., selectionStart on HTMLInputElement)
+ * that aren't on the cross-platform TamaguiElement type.
+ *
+ * @example
+ * const ref = useRef<TamaguiWebElement<HTMLInputElement>>(null)
+ * // ref.current has both HTMLInputElement props and TamaguiElementMethods
+ */
+export type TamaguiWebElement<T extends HTMLElement = HTMLElement> = T & TamaguiElementMethods;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';
 export interface TamaguiComponentPropsBase extends TamaguiComponentPropsBaseBase, WebOnlyPressEvents {
 }
@@ -1692,7 +1707,7 @@ export type UniversalAnimatedNumber<A> = {
 };
 export type UseAnimatedNumberReaction<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (opts: {
     value: V;
-    hostRef: RefObject<HTMLElement | View>;
+    hostRef: RefObject<TamaguiElement>;
 }, onValue: (current: number) => void) => void;
 export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: any) => any) => any;
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
