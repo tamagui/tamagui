@@ -6,6 +6,11 @@
 
 - linear-gradient on native should fall back to just backgroundImage now
 
+- fullscreen prop deprecated, use `inset: 0, position: 'absolute'` instead
+
+- split input/textinput into SizableTextInput / SizableInput or not?
+  - otherwise its annoying af if you want your OWN size
+
 ---
 
 AFTER v2 RC (nice to haves):
