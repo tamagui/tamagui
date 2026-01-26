@@ -1,4 +1,4 @@
-import { Toaster } from '@tamagui/toast'
+import { ToastViewport } from '@tamagui/toast'
 import { lazy, Suspense } from 'react'
 import { LoadProgressBar, Slot, usePathname } from 'one'
 import { PromoBanner } from '~/components/PromoBanner'
@@ -58,7 +58,15 @@ export default function SiteLayout() {
       <LoadProgressBar />
       <Slot />
       {!hideFooter && <Footer />}
-      {!isDocs && <Toaster position="top-center" />}
+      <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />
+      <ToastViewport
+        multipleToasts
+        name="viewport-multiple"
+        flexDirection="column-reverse"
+        top="$2"
+        left={0}
+        right={0}
+      />
     </>
   )
 }

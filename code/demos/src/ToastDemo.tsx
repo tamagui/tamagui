@@ -1,74 +1,125 @@
-import { toast, Toaster, type ToasterPosition } from '@tamagui/toast'
-import { Circle } from '@tamagui/lucide-icons'
-import * as React from 'react'
-import { Button, XStack, YStack } from 'tamagui'
+import { Toast, useToastController, useToastState } from '@tamagui/toast'
+import React from 'react'
+import { Button, Label, Switch, XStack, YStack } from 'tamagui'
 
-// put this at the root of your app:
-export const ToastRoot = () => <Toaster />
-
-export function ToastDemo() {
-  const [position, setPosition] = React.useState<ToasterPosition>('bottom-right')
+/**
+ *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add:
+ *    - <ToastProvider> at the root
+ *    - <ToastViewport /> where you want to show the toasts
+ */
+export const ToastDemo = () => {
+  const [native, setNative] = React.useState(false)
 
   return (
-    <XStack gap="$4" alignItems="center" userSelect="none">
-      <Toaster position={position} closeButton />
+    <YStack gap="$4" items="center">
+      <ToastControl native={native} />
+      <CurrentToast />
 
-      <XStack gap="$2" flexWrap="wrap">
-        <Button size="$3" onPress={() => toast('Event created')}>
-          Default
-        </Button>
-        <Button size="$3" theme="green" onPress={() => toast.success('Saved!')}>
-          Success
-        </Button>
-        <Button size="$3" theme="red" onPress={() => toast.error('Failed')}>
-          Error
-        </Button>
-        <Button
-          size="$3"
-          onPress={() =>
-            toast('Deleted', {
-              action: { label: 'Undo', onClick: () => toast('Restored') },
-            })
-          }
-        >
-          Action
-        </Button>
+      <NativeOptions native={native} setNative={setNative} />
+    </YStack>
+  )
+}
+
+const CurrentToast = () => {
+  const currentToast = useToastState()
+
+  if (!currentToast || currentToast.isHandledNatively) return null
+
+  return (
+    <Toast
+      key={currentToast.id}
+      duration={currentToast.duration}
+      viewportName={currentToast.viewportName}
+      enterStyle={{ opacity: 0, scale: 0.95, y: -80 }}
+      exitStyle={{ opacity: 0, scale: 0.95, y: -80 }}
+      opacity={1}
+      scale={1}
+      y={-50}
+      transition="quicker"
+      bg="$color2"
+      boxShadow="0px 2px 4px rgba(0,0,0,0.12), 0px 8px 24px rgba(0,0,0,0.08)"
+    >
+      <XStack gap="$5" items="center" justify="space-between">
+        <YStack gap="$0.5" flex={1}>
+          <Toast.Title>{currentToast.title}</Toast.Title>
+          {!!currentToast.message && (
+            <Toast.Description>{currentToast.message}</Toast.Description>
+          )}
+        </YStack>
+        <Toast.Action asChild altText="Dismiss toast">
+          <Button theme="surface3" size="$2">
+            Dismiss
+          </Button>
+        </Toast.Action>
       </XStack>
+    </Toast>
+  )
+}
 
-      {/* Position Grid */}
-      <YStack gap="$1">
-        <XStack gap="$1">
-          <PosBtn pos="top-left" current={position} set={setPosition} />
-          <PosBtn pos="top-center" current={position} set={setPosition} />
-          <PosBtn pos="top-right" current={position} set={setPosition} />
-        </XStack>
-        <XStack gap="$1">
-          <PosBtn pos="bottom-left" current={position} set={setPosition} />
-          <PosBtn pos="bottom-center" current={position} set={setPosition} />
-          <PosBtn pos="bottom-right" current={position} set={setPosition} />
-        </XStack>
-      </YStack>
+const ToastControl = ({ native }: { native: boolean }) => {
+  const toast = useToastController()
+
+  return (
+    <XStack gap="$2" justify="center">
+      <Button
+        theme="surface3"
+        onPress={() => {
+          toast.show('Successfully saved!', {
+            message: "Don't worry, we've got your data.",
+            native,
+            demo: true,
+          })
+        }}
+      >
+        Show
+      </Button>
+      <Button
+        theme="surface3"
+        onPress={() => {
+          toast.hide()
+        }}
+      >
+        Hide
+      </Button>
     </XStack>
   )
 }
 
-function PosBtn({
-  pos,
-  current,
-  set,
+const NativeOptions = ({
+  native,
+  setNative,
 }: {
-  pos: ToasterPosition
-  current: ToasterPosition
-  set: (p: ToasterPosition) => void
-}) {
+  native: boolean
+  setNative: (native: boolean) => void
+}) => {
   return (
-    <Button
-      size="$2"
-      circular
-      icon={Circle}
-      theme={pos === current ? 'blue' : undefined}
-      onPress={() => set(pos)}
-      aria-label={pos}
-    />
+    <XStack gap="$3">
+      <Label size="$1" onPress={() => setNative(false)}>
+        Custom
+      </Label>
+      <Switch
+        theme="surface2"
+        id="native-toggle"
+        size="$1"
+        checked={!!native}
+        onCheckedChange={(val) => setNative(val)}
+      >
+        <Switch.Thumb
+          theme="accent"
+          transition={[
+            'quickest',
+            {
+              transform: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+        />
+      </Switch>
+
+      <Label size="$1" onPress={() => setNative(true)}>
+        Native
+      </Label>
+    </XStack>
   )
 }

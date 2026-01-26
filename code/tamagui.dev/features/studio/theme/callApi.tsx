@@ -74,8 +74,11 @@ export async function callStudioProcedure<P extends Procedure>(
   } catch (error) {
     if (error instanceof Error) {
       console.error(error)
-      toastController.error('An error occurred', {
-        description: error.message,
+      toastController.show('An error occurred', {
+        message: error.message,
+        customData: {
+          theme: 'red',
+        },
       })
     } else {
       throw error

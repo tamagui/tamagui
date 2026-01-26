@@ -103,14 +103,14 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     themeIdToDelete?: string
   ) => {
     if (type !== 'delete' && !inputRef.current?.value.trim()) {
-      toastController(`Please enter a prompt`)
+      toastController.show(`Please enter a prompt`)
       return
     }
 
     if (type !== 'delete') {
-      toastController(`Generating...`)
+      toastController.show(`Generating...`)
     } else {
-      toastController(`Deleting theme...`)
+      toastController.show(`Deleting theme...`)
     }
 
     setGenerating(type as 'reply' | 'new')
@@ -120,19 +120,19 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     const int = setInterval(() => {
       seconds++
       if (seconds === 4) {
-        toastController(
+        toastController.show(
           `${type === 'delete' ? 'Still deleting...' : 'Thinking about colors...'}`
         )
       } else if (seconds === 8) {
-        toastController(`...`)
+        toastController.show(`...`)
       } else if (seconds === 12) {
-        toastController(
+        toastController.show(
           `${type === 'delete' ? 'Almost done...' : 'Refining palettes...'}`
         )
       } else if (seconds === 16) {
-        toastController(`Taking too long...`)
+        toastController.show(`Taking too long...`)
       } else if (seconds === 24) {
-        toastController(`It really does take a bit sometimes...`)
+        toastController.show(`It really does take a bit sometimes...`)
       }
     }, 1000)
 
@@ -162,7 +162,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
       console.info(`got themes`, data)
 
       if (data.error) {
-        toastController(
+        toastController.show(
           `Error ${type === 'delete' ? 'deleting' : 'generating'}! ${data.error}`
         )
         return
@@ -181,7 +181,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
           )
         }
       } else {
-        toastController('Theme deleted')
+        toastController.show('Theme deleted')
       }
 
       await mutate('/api/theme/histories')
@@ -189,9 +189,9 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
       if (type !== 'delete') {
         setLastPrompt(prompt)
       }
-      toastController.dismiss()
+      toastController.hide()
     } catch (err) {
-      toastController(`Error: ${err}`)
+      toastController.show(`Error: ${err}`)
     } finally {
       setGenerating(null)
       clearInterval(int)
