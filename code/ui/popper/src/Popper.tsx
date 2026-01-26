@@ -521,6 +521,11 @@ type PopperContentElement = TamaguiElement
 
 export type PopperContentProps = SizableStackProps & {
   scope?: string
+  /**
+   * Enable smooth animation when the content position changes (e.g., when flipping sides)
+   */
+  animatePosition?: boolean | 'even-when-repositioning'
+  /** @deprecated Use `animatePosition` instead */
   enableAnimationForPositionChange?: boolean | 'even-when-repositioning'
   passThrough?: boolean
 }
@@ -554,8 +559,15 @@ export const PopperContentFrame = styled(YStack, {
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
   function PopperContent(props, forwardedRef) {
-    const { scope, enableAnimationForPositionChange, children, passThrough, ...rest } =
-      props
+    const {
+      scope,
+      animatePosition,
+      enableAnimationForPositionChange,
+      children,
+      passThrough,
+      ...rest
+    } = props
+    const animatePos = animatePosition ?? enableAnimationForPositionChange
     const context = usePopperContext(scope)
 
     const {
@@ -583,22 +595,20 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
 
     const contentRefs = useComposedRefs<any>(safeSetFloating, forwardedRef)
 
-    const [needsMeasure, setNeedsMeasure] = React.useState(
-      enableAnimationForPositionChange
-    )
+    const [needsMeasure, setNeedsMeasure] = React.useState(animatePos)
 
     useIsomorphicLayoutEffect(() => {
       if (needsMeasure && x && y) {
         setNeedsMeasure(false)
       }
-    }, [needsMeasure, enableAnimationForPositionChange, x, y])
+    }, [needsMeasure, animatePos, x, y])
 
     // default to not showing if positioned at 0, 0
     const hide = x === 0 && y === 0
 
     const disableAnimationProp =
       // if they want to animate also when re-positioning allow it
-      enableAnimationForPositionChange === 'even-when-repositioning'
+      animatePos === 'even-when-repositioning'
         ? needsMeasure
         : !isPositioned || needsMeasure
 
@@ -623,7 +633,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       left: 0,
       position: strategy,
       opacity: 1,
-      ...(enableAnimationForPositionChange && {
+      ...(animatePos && {
         transition: rest.transition,
         animateOnly: disableAnimation ? [] : rest.animateOnly,
         // apply animation but disable it on initial render to avoid animating from 0 to the first position
@@ -654,7 +664,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         contain="layout style"
         {...(passThrough ? null : floatingProps)}
         {...(!passThrough &&
-          enableAnimationForPositionChange && {
+          animatePos && {
             // marker for animation driver to know this is a popper element
             // that needs special handling for position animation interruption
             'data-popper-animate-position': 'true',
@@ -687,6 +697,10 @@ export type PopperArrowExtraProps = {
   offset?: number
   size?: SizeTokens
   scope?: string
+  /**
+   * Enable smooth animation when the arrow position changes
+   */
+  animatePosition?: boolean
 }
 
 export type PopperArrowProps = YStackProps & PopperArrowExtraProps
@@ -741,7 +755,7 @@ type Sides = keyof typeof opposites
 
 export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
   function PopperArrow(propsIn, forwardedRef) {
-    const { scope, ...rest } = propsIn
+    const { scope, animatePosition, transition, ...rest } = propsIn
     const props = useProps(rest)
     const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
 
@@ -796,7 +810,15 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
 
     // outer frame to cut off for ability to have nicer shadows/borders
     return (
-      <PopperArrowOuterFrame ref={refs} {...arrowStyle}>
+      <PopperArrowOuterFrame
+        ref={refs}
+        {...arrowStyle}
+        {...(animatePosition && {
+          transition,
+          animateOnly: ['transform'],
+          animatePresence: false,
+        })}
+      >
         <PopperArrowFrame
           width={size}
           height={size}
