@@ -468,8 +468,48 @@ export type IsMediaType = boolean | 'platform' | 'theme' | 'group'
 
 export type MaybeTamaguiComponent<A = any> = TamaguiComponent<A> | React.FC<A>
 
-export type TamaguiElement = HTMLElement | View
-export type TamaguiTextElement = HTMLElement | RNText
+type MeasureOnSuccessCallback = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  pageX: number,
+  pageY: number
+) => void
+
+type MeasureInWindowOnSuccessCallback = (
+  x: number,
+  y: number,
+  width: number,
+  height: number
+) => void
+
+type MeasureLayoutOnSuccessCallback = (
+  left: number,
+  top: number,
+  width: number,
+  height: number
+) => void
+
+/**
+ * Methods added to element refs that work across web and native.
+ * On web these are added at runtime to HTMLElements.
+ * On native these exist on View already.
+ */
+export interface TamaguiElementMethods {
+  measure(callback: MeasureOnSuccessCallback): void
+  measureInWindow(callback: MeasureInWindowOnSuccessCallback): void
+  measureLayout(
+    relativeToNativeNode: View | HTMLElement,
+    onSuccess: MeasureLayoutOnSuccessCallback,
+    onFail?: () => void
+  ): void
+  focus(): void
+  blur(): void
+}
+
+export type TamaguiElement = (HTMLElement & TamaguiElementMethods) | View
+export type TamaguiTextElement = (HTMLElement & TamaguiElementMethods) | RNText
 
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
 
