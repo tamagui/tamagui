@@ -7,6 +7,9 @@ import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
+// TODO conditional improt - the way we bundle core test.native.js breaks if inline require need to fix
+import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
+
 // web events not used on native
 export function getWebEvents() {
   return {}
@@ -55,13 +58,15 @@ export function useEvents(
     stateRef.current.hasHadEvents = true
   }
 
-  const pressEventsEnabled = gh.isEnabled && hasPressEvents
+  // avoid hooks/reparenting
+  const enabled = Boolean(hasPressEvents || stateRef.current.hasHadEvents)
 
-  if (stateRef.current.hasHadEvents || pressEventsEnabled) {
+  // rngh path
+  if (gh.isEnabled && enabled) {
     // RNGH path - return gesture for wrapping
     // store callbacks in refs so gesture doesn't need to be recreated on every render
     const callbacksRef = useRef<any>({})
-    callbacksRef.current = pressEventsEnabled
+    callbacksRef.current = hasPressEvents
       ? {
           onPressIn: events.onPressIn,
           onPressOut: events.onPressOut,
@@ -87,7 +92,6 @@ export function useEvents(
 
   // fallback - use usePressability when RNGH not enabled
   // split into separate file to avoid deep import warnings
-  const { useMainThreadPressEvents } = require('./helpers/mainThreadPressEvents')
   useMainThreadPressEvents(events, viewProps, hasPressEvents)
 
   return null
