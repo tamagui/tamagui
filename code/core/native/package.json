@@ -35,6 +35,9 @@
       ],
       "setup-safe-area": [
         "./types/setup-safe-area.d.ts"
+      ],
+      "setup-expo-linear-gradient": [
+        "./types/setup-expo-linear-gradient.d.ts"
       ]
     }
   },
@@ -93,6 +96,18 @@
       "module": "./dist/esm/setup-safe-area.mjs",
       "import": "./dist/esm/setup-safe-area.mjs",
       "require": "./dist/cjs/setup-safe-area.cjs"
+    },
+    "./setup-expo-linear-gradient": {
+      "react-native": {
+        "types": "./types/setup-expo-linear-gradient.d.ts",
+        "module": "./dist/esm/setup-expo-linear-gradient.native.js",
+        "import": "./dist/esm/setup-expo-linear-gradient.native.js",
+        "require": "./dist/cjs/setup-expo-linear-gradient.native.js"
+      },
+      "types": "./types/setup-expo-linear-gradient.d.ts",
+      "module": "./dist/esm/setup-expo-linear-gradient.mjs",
+      "import": "./dist/esm/setup-expo-linear-gradient.mjs",
+      "require": "./dist/cjs/setup-expo-linear-gradient.cjs"
     }
   },
   "devDependencies": {
