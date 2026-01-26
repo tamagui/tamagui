@@ -2,7 +2,7 @@ import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.css'
 
-import { Toast, ToastProvider, ToastViewport, useToastState } from '@tamagui/toast'
+import { Toaster } from '@tamagui/toast'
 import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'
 import { LoadProgressBar, SafeAreaView, Slot } from 'one'
 import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
@@ -29,56 +29,24 @@ export default function Layout() {
       <LoadProgressBar />
 
       <SchemeProvider>
-        <ToastProvider swipeDirection="horizontal">
-          <TamaguiRootProvider>
-            <YStack bg="$color1" minH="100%" gap="$4" flex={1}>
-              <SafeAreaView>
-                <ToastViewport portalToRoot top={0} left={0} right={0} />
-                <CustomToast />
+        <TamaguiRootProvider>
+          <YStack bg="$color1" minH="100%" gap="$4" flex={1}>
+            <SafeAreaView>
+              <Toaster position="top-center" />
 
-                <XStack items="center" justify="center" gap="$4" py="$4">
-                  <Image src={oneBall} width={42} height={42} />
-                  <ToggleThemeButton />
-                </XStack>
+              <XStack items="center" justify="center" gap="$4" py="$4">
+                <Image src={oneBall} width={42} height={42} />
+                <ToggleThemeButton />
+              </XStack>
 
-                <Configuration animationDriver={animationsMotion}>
-                  <Slot />
-                </Configuration>
-              </SafeAreaView>
-            </YStack>
-          </TamaguiRootProvider>
-        </ToastProvider>
+              <Configuration animationDriver={animationsMotion}>
+                <Slot />
+              </Configuration>
+            </SafeAreaView>
+          </YStack>
+        </TamaguiRootProvider>
       </SchemeProvider>
     </>
-  )
-}
-
-export const CustomToast = () => {
-  const currentToast = useToastState()
-
-  if (!currentToast || currentToast.isHandledNatively) {
-    return null
-  }
-
-  return (
-    <Toast
-      key={currentToast.id}
-      duration={currentToast.duration}
-      viewportName={currentToast.viewportName}
-      enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
-      exitStyle={{ opacity: 0, scale: 1, y: -20 }}
-      y={0}
-      opacity={1}
-      scale={1}
-      transition="quick"
-    >
-      <YStack py="$1.5" px="$2">
-        <Toast.Title lineHeight="$1">{currentToast.title}</Toast.Title>
-        {!!currentToast.message && (
-          <Toast.Description>{currentToast.message}</Toast.Description>
-        )}
-      </YStack>
-    </Toast>
   )
 }
 

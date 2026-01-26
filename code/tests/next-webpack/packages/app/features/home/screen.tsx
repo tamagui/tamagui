@@ -11,7 +11,7 @@ import {
   type SelectProps,
   Separator,
   Sheet,
-  useToastController,
+  toast,
   XStack,
   YStack,
 } from '@my/ui'
@@ -248,8 +248,6 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 }
 
 function SheetDemo() {
-  const toast = useToastController()
-
   const [open, setOpen] = useState(false)
   const [position, setPosition] = useState(0)
 
@@ -304,8 +302,8 @@ function SheetDemo() {
             icon={ChevronDown}
             onPress={() => {
               setOpen(false)
-              toast.show('Sheet closed!', {
-                message: 'Just showing how toast works...',
+              toast('Sheet closed!', {
+                description: 'Just showing how toast works...',
               })
             }}
           />

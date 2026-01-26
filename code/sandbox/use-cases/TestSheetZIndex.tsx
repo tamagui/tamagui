@@ -1,14 +1,13 @@
 import { Anchor, Button, Paragraph, Sheet, XStack } from 'tamagui'
 import { ChevronDown } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { useToastController } from '@tamagui/toast'
+import { toast } from '@tamagui/toast'
 
 export default function test() {
   return <SheetDemo />
 }
 
 function SheetDemo() {
-  const toast = useToastController()
   const [open, setOpen] = useState(false)
 
   return (
@@ -17,8 +16,8 @@ function SheetDemo() {
         size="$6"
         onPress={() => {
           setOpen(true)
-          toast.show('This toast is covered by the ', {
-            message: 'Just showing how toast works...',
+          toast('This toast is covered by the ', {
+            description: 'Just showing how toast works...',
             duration: 100_000,
           })
         }}
