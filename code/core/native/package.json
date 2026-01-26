@@ -3,7 +3,12 @@
   "version": "2.0.0-1769320275396",
   "description": "Native setup modules for Tamagui - portals, gesture handler, worklets, and more",
   "type": "module",
-  "sideEffects": true,
+  "sideEffects": [
+    "./dist/esm/setup-*.js",
+    "./dist/esm/setup-*.native.js",
+    "./dist/cjs/setup-*.js",
+    "./dist/cjs/setup-*.cjs"
+  ],
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

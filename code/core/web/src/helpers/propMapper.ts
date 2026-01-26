@@ -18,7 +18,7 @@ import { isObj } from './isObj'
 import { normalizeStyle } from './normalizeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { isRemValue, resolveRem } from './resolveRem'
-import { resolveSafeAreaValue } from './resolveSafeArea'
+// import { resolveSafeAreaValue } from './resolveSafeArea'
 import { skipProps } from './skipProps'
 
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
@@ -393,10 +393,10 @@ export const getTokenForKey = (
   }
 
   // handle safe area tokens: $safeAreaTop, $safeAreaBottom, $safeAreaLeft, $safeAreaRight
-  const safeAreaValue = resolveSafeAreaValue(value)
-  if (safeAreaValue !== undefined) {
-    return safeAreaValue
-  }
+  // const safeAreaValue = resolveSafeAreaValue(value)
+  // if (safeAreaValue !== undefined) {
+  //   return safeAreaValue
+  // }
 
   const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
 
