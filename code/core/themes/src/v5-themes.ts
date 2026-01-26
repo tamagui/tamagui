@@ -28,20 +28,18 @@ export { interpolateColor, opacify } from './opacify'
 export const defaultComponentThemes = {
   Button: { template: 'surface3' },
   Switch: { template: 'surface2' },
-  SwitchThumb: { template: 'inverse' },
+  SwitchThumb: { template: 'accent' },
   Progress: { template: 'surface1' },
-  SliderThumb: { template: 'inverse' },
-  Tooltip: { template: 'inverse' },
-  ProgressIndicator: { template: 'inverse' },
+  SliderThumb: { template: 'accent' },
+  Tooltip: { template: 'accent' },
+  ProgressIndicator: { template: 'accent' },
   Input: { template: 'surface1' },
   TextArea: { template: 'surface1' },
 } as const
 
 /** Default grandchildren themes available in v5 */
 export const defaultGrandChildrenThemes = {
-  accent: { template: 'inverse' },
-  alt1: { template: 'alt1' },
-  alt2: { template: 'alt2' },
+  accent: { template: 'accent' },
   surface1: { template: 'surface1' },
   surface2: { template: 'surface2' },
   surface3: { template: 'surface3' },
@@ -187,7 +185,7 @@ function paletteToNamedColors<N extends string>(name: N, palette: readonly strin
 
 // Base palettes
 const darkPalette = [
-  '#050505',
+  '#090909',
   '#151515',
   '#191919',
   '#232323',

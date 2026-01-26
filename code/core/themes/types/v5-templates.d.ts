@@ -1,4 +1,4 @@
-export declare const v5Templates: Record<"light_inverse" | "light_alt1" | "light_alt2" | "light_surface1" | "light_surface2" | "light_surface3" | "light_base" | "dark_inverse" | "dark_alt1" | "dark_alt2" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_base", {
+export declare const v5Templates: Record<"light_accent" | "light_surface1" | "light_surface2" | "light_surface3" | "light_base" | "dark_accent" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_base", {
     colorTransparent: number;
     color: number;
     colorHover: number;

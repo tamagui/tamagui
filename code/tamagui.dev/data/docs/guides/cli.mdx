@@ -1,15 +1,17 @@
 ---
 title: Tamagui CLI
-description: Command-line tools for building, checking, and managing Tamagui projects
+description:
+  Command-line tools for building, checking, and managing Tamagui projects
 ---
 
 <IntroParagraph>
-  The Tamagui CLI provides a suite of command-line tools for optimizing components,
-  managing dependencies, adding fonts and icons, and more.
+  The Tamagui CLI provides a suite of command-line tools for optimizing
+  components, managing dependencies, adding fonts and icons, and more.
 </IntroParagraph>
 
 <Notice theme="blue">
-  **New to Tamagui?** We recommend skipping this section if it's your first time setting up Tamagui. Everything in the CLI is optional and can be learned later.
+  **Just starting out?** Skim this section, the CLI is not necessary to get
+  going.
 </Notice>
 
 ## Installation
@@ -24,7 +26,9 @@ yarn add -D @tamagui/cli
 
 ### build
 
-Pre-compile Tamagui components in-place for production builds. This is useful for bundlers that don't have a Tamagui plugin yet (like Turbopack) or when you want a simple setup that works with any bundler.
+Pre-compile Tamagui components in-place for production builds. This is useful
+for bundlers that don't have a Tamagui plugin yet (like Turbopack) or when you
+want a simple setup that works with any bundler.
 
 ```bash
 # Build all components in a directory (web + native by default)
@@ -45,10 +49,12 @@ npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
 
 **Flags:**
 
-- `--target <platform>` - Target platform: `web`, `native`, or `both` (default: `both`)
+- `--target <platform>` - Target platform: `web`, `native`, or `both` (default:
+  `both`)
 - `--include <pattern>` - Glob pattern to include files
 - `--exclude <pattern>` - Glob pattern to exclude files
-- `--expect-optimizations <number>` - Fail if fewer than this many components are optimized (useful for CI)
+- `--expect-optimizations <number>` - Fail if fewer than this many components
+  are optimized (useful for CI)
 - `--debug` - Enable debug output
 - `--verbose` - Enable verbose debug output
 
@@ -57,8 +63,10 @@ npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
 The CLI automatically handles platform-specific files:
 
 - Files with `.web.tsx` or `.ios.tsx` extensions are optimized for web only
-- Files with `.native.tsx` or `.android.tsx` extensions are optimized for native only
-- Base files (`.tsx`) without platform-specific versions are optimized for all platforms
+- Files with `.native.tsx` or `.android.tsx` extensions are optimized for native
+  only
+- Base files (`.tsx`) without platform-specific versions are optimized for all
+  platforms
 - If both `.web.tsx` and `.native.tsx` exist, the base `.tsx` file is skipped
 
 **Configuration:**
@@ -78,7 +86,8 @@ export default {
 
 **Integration Examples:**
 
-The CLI can wrap your build command using `--`, which optimizes files beforehand and automatically restores them after:
+The CLI can wrap your build command using `--`, which optimizes files beforehand
+and automatically restores them after:
 
 ```json
 {
@@ -88,7 +97,9 @@ The CLI can wrap your build command using `--`, which optimizes files beforehand
 }
 ```
 
-The `--` separator tells the CLI to run `next build` after optimization, then restore your source files automatically. This is the recommended approach as it keeps your source files unchanged.
+The `--` separator tells the CLI to run `next build` after optimization, then
+restore your source files automatically. This is the recommended approach as it
+keeps your source files unchanged.
 
 Alternatively, run `tamagui build` separately (files will remain modified):
 
@@ -100,13 +111,18 @@ Alternatively, run `tamagui build` separately (files will remain modified):
 }
 ```
 
-**Important:** Without the `--` wrapper, files are modified in-place and not restored. Only use this approach if you're building in a CI environment where the files are discarded anyway.
+**Important:** Without the `--` wrapper, files are modified in-place and not
+restored. Only use this approach if you're building in a CI environment where
+the files are discarded anyway.
 
-For more details, see the [Compiler Installation guide](/docs/intro/compiler-install#cli-based-in-place-compilation).
+For more details, see the
+[Compiler Installation guide](/docs/intro/compiler-install#cli-based-in-place-compilation).
 
 ### check
 
-Check your dependencies for inconsistent versions across your project. This helps identify version mismatches that can cause issues, especially in monorepos.
+Check your dependencies for inconsistent versions across your project. This
+helps identify version mismatches that can cause issues, especially in
+monorepos.
 
 ```bash
 npx tamagui check
@@ -119,11 +135,13 @@ npx tamagui check
 
 **Example output:**
 
-The command will scan your project and report any packages with mismatched versions, helping you maintain consistency across your dependencies.
+The command will scan your project and report any packages with mismatched
+versions, helping you maintain consistency across your dependencies.
 
 ### generate
 
-Build your entire Tamagui configuration and output CSS. This is useful for pre-generating your design system's CSS and validating your configuration.
+Build your entire Tamagui configuration and output CSS. This is useful for
+pre-generating your design system's CSS and validating your configuration.
 
 ```bash
 npx tamagui generate
@@ -143,7 +161,8 @@ npx tamagui generate
 
 ### generate-themes
 
-Pre-build your theme configuration for faster runtime performance. This generates optimized theme objects from your theme definitions.
+Pre-build your theme configuration for faster runtime performance. This
+generates optimized theme objects from your theme definitions.
 
 ```bash
 npx tamagui generate-themes <input-path> <output-path>
@@ -160,15 +179,18 @@ npx tamagui generate-themes ./themes/input.ts ./themes/generated.ts
 - `--debug` - Enable debug output
 - `--verbose` - Enable verbose debug output
 
-**Use case:** If you have complex theme generation logic, this command pre-computes your themes at build time rather than runtime.
+**Use case:** If you have complex theme generation logic, this command
+pre-computes your themes at build time rather than runtime.
 
 ### add
 
 <Notice theme="green">
-  **Tamagui Pro** - This command is available exclusively to Tamagui Pro members.
+  **Tamagui Pro** - This command is available exclusively to Tamagui Pro
+  members.
 </Notice>
 
-Add pre-configured fonts and icons from Tamagui's curated collections. This includes Google Fonts and Iconify icon packs.
+Add pre-configured fonts and icons from Tamagui's curated collections. This
+includes Google Fonts and Iconify icon packs.
 
 ```bash
 # Add a font
@@ -185,18 +207,24 @@ npx tamagui add icon [packages-path]
 
 **Interactive selection:**
 
-The command will present an interactive menu where you can search and select from available fonts or icons:
+The command will present an interactive menu where you can search and select
+from available fonts or icons:
 
 - **Fonts**: Browse Google Fonts with weight, style, and subset information
 - **Icons**: Browse Iconify collections with icon counts and license information
 
-**Default path:** If you don't provide a path, packages are installed to `./packages` in your current directory.
+**Default path:** If you don't provide a path, packages are installed to
+`./packages` in your current directory.
 
-**Requirements:** This feature requires [Tamagui Pro](https://tamagui.dev/takeout) membership for access to the font and icon repositories.
+**Requirements:** This feature requires
+[Tamagui Pro](https://tamagui.dev/takeout) membership for access to the font and
+icon repositories.
 
 ### generate-prompt
 
-Generate an LLM-friendly markdown file from your Tamagui configuration. This creates comprehensive documentation of your design system for use with AI assistants.
+Generate an LLM-friendly markdown file from your Tamagui configuration. This
+creates comprehensive documentation of your design system for use with AI
+assistants.
 
 ```bash
 npx tamagui generate-prompt
@@ -215,7 +243,8 @@ npx tamagui generate-prompt
 - Font families and configurations
 - Media queries and breakpoints
 
-**Use case:** Share this file with AI assistants like Claude or ChatGPT to get better suggestions that align with your design system.
+**Use case:** Share this file with AI assistants like Claude or ChatGPT to get
+better suggestions that align with your design system.
 
 ## Global Flags
 
@@ -248,7 +277,8 @@ All commands support these flags:
 }
 ```
 
-This fails the build if fewer than 10 components are optimized, helping catch configuration issues in CI.
+This fails the build if fewer than 10 components are optimized, helping catch
+configuration issues in CI.
 
 ### Cross-Platform Mobile App
 
@@ -266,7 +296,8 @@ This fails the build if fewer than 10 components are optimized, helping catch co
 
 ### Build command fails with "cannot find module"
 
-Make sure you have a `tamagui.build.ts` config file that correctly points to your configuration:
+Make sure you have a `tamagui.build.ts` config file that correctly points to
+your configuration:
 
 ```ts
 export default {
@@ -277,8 +308,11 @@ export default {
 
 ### Check command reports false positives
 
-The check command is strict about version consistency. If you have a specific reason for version mismatches (like testing), you can document them in your README.
+The check command is strict about version consistency. If you have a specific
+reason for version mismatches (like testing), you can document them in your
+README.
 
 ### Add command shows "Repository not found"
 
-The `add` command requires Tamagui Takeout access. Visit [tamagui.dev/takeout](https://tamagui.dev/takeout) to learn more.
+The `add` command requires Tamagui Takeout access. Visit
+[tamagui.dev/takeout](https://tamagui.dev/takeout) to learn more.
