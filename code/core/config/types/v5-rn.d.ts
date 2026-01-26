@@ -109,4 +109,115 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         stiffness: number;
     };
 }>;
+export declare const animations: import("@tamagui/web").AnimationDriver<{
+    '0ms': {
+        type: "timing";
+        duration: number;
+    };
+    '50ms': {
+        type: "timing";
+        duration: number;
+    };
+    '75ms': {
+        type: "timing";
+        duration: number;
+    };
+    '100ms': {
+        type: "timing";
+        duration: number;
+    };
+    '200ms': {
+        type: "timing";
+        duration: number;
+    };
+    '250ms': {
+        type: "timing";
+        duration: number;
+    };
+    '300ms': {
+        type: "timing";
+        duration: number;
+    };
+    '400ms': {
+        type: "timing";
+        duration: number;
+    };
+    '500ms': {
+        type: "timing";
+        duration: number;
+    };
+    superBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    bouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    superLazy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    lazy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    medium: {
+        damping: number;
+        stiffness: number;
+        mass: number;
+    };
+    slowest: {
+        type: "spring";
+        damping: number;
+        stiffness: number;
+    };
+    slow: {
+        type: "spring";
+        damping: number;
+        stiffness: number;
+    };
+    quick: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickLessBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quicker: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickerLessBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickest: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickestLessBouncy: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+}>;
 //# sourceMappingURL=v5-rn.d.ts.map
