@@ -1,4 +1,4 @@
-export { shorthands } from '@tamagui/shorthands/v5';
+export { shorthands } from '@tamagui/shorthands/v4';
 export { createThemes } from '@tamagui/theme-builder';
 export { adjustPalette, adjustPalettes, createV5Theme, defaultChildrenThemes, defaultDarkPalette, defaultGrandChildrenThemes, defaultLightPalette, hslToString, interpolateColor, opacify, parseHSL, tokens, type AdjustFn, type HSL, type PaletteAdjustments, } from '@tamagui/themes/v5';
 export { createSystemFont, fonts } from './v5-fonts';

@@ -8272,6 +8272,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "workspace:*"
     "@tamagui/core": "workspace:*"
+    "@tamagui/native": "workspace:*"
     "@tamagui/stacks": "workspace:*"
     expo-linear-gradient: "npm:~15.0.7"
     react: "npm:*"
