@@ -920,7 +920,7 @@ export function createBaseMenu({
       const ref = React.useRef<HTMLDivElement>(null)
       const rootContext = useMenuRootContext(scope)
       const contentContext = useMenuContentContext(scope)
-      const composedRefs = useComposedRefs(forwardedRef, ref)
+      const composedRefs = useComposedRefs(forwardedRef, ref as any)
       const isPointerDownRef = React.useRef(false)
 
       const handleSelect = () => {

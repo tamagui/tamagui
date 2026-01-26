@@ -60,7 +60,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     const composedRefs = useComposedRefs(
       // @ts-ignore TODO react 19 type needs fix
       forwardedRef,
-      context.floatingContext?.refs.setFloating
+      context.floatingContext?.refs.setFloating as any
     )
 
     useIsomorphicLayoutEffect(() => {

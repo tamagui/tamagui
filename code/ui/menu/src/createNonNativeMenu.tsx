@@ -236,7 +236,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             data-state={context.open ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
             aria-disabled={disabled || undefined}
-            ref={composeRefs(forwardedRef, context.triggerRef)}
+            ref={composeRefs(forwardedRef, context.triggerRef as any)}
             {...{
               [pressEvent]: composeEventHandlers(
                 //@ts-ignore

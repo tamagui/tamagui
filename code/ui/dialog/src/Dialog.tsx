@@ -473,7 +473,11 @@ type DialogContentTypeProps = DialogContentImplProps & {
 const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
   ({ children, context, ...props }, forwardedRef) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
-    const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      context.contentRef,
+      contentRef as any
+    )
 
     return (
       <DialogContentImpl
@@ -608,7 +612,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       // TODO react 19 type workaround
       undefined as unknown as HTMLDivElement
     )
-    const composedRefs = useComposedRefs(forwardedRef, contentRef)
+    const composedRefs = useComposedRefs(forwardedRef, contentRef as any)
     const isAdapted = useAdaptIsActive(context.adaptScope)
 
     // TODO this will re-parent, ideally we would not change tree structure
@@ -669,7 +673,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
           <>
             <TitleWarning titleId={context.titleId} />
             <DescriptionWarning
-              contentRef={contentRef}
+              contentRef={contentRef as any}
               descriptionId={context.descriptionId}
             />
           </>
@@ -864,7 +868,7 @@ const Dialog = withStaticProperties(
       const titleId = `${dialogId}-title`
       const descriptionId = `${dialogId}-description`
 
-      const triggerRef = React.useRef<HTMLButtonElement>(null)
+      const triggerRef = React.useRef<TamaguiElement>(null)
       const contentRef = React.useRef<TamaguiElement>(null)
 
       const [open, setOpen] = useControllableState({

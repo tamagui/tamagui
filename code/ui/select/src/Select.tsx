@@ -64,7 +64,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     const composedRefs = useComposedRefs(
       // @ts-ignore TODO react 19 type needs fix
       forwardedRef,
-      context.onValueNodeChange
+      context.onValueNodeChange as any
     )
     const isEmptyValue = context.value == null || context.value === ''
 
@@ -313,7 +313,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
                 itemParentContext.onChange(event.currentTarget.value)
               }}
               size={size as FontSizeTokens}
-              ref={nativeSelectRef}
+              ref={nativeSelectRef as any}
               style={{
                 color: 'var(--color)',
                 // @ts-ignore
