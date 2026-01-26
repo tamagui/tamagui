@@ -29,7 +29,7 @@
     "@tamagui/toast": "workspace:*",
     "@vxrn/color-scheme": "^1.2.81",
     "expo": "^54.0.23",
-    "one": "1.2.81",
+    "one": "1.2.87",
     "react": "*",
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1",
