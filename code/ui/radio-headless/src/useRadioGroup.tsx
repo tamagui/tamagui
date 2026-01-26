@@ -231,7 +231,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
       }),
     },
     rovingFocusGroupAttrs: {
-      asChild: 'expect-style' as boolean | 'web' | 'except-style' | 'except-style-web',
+      asChild: 'except-style' as const,
       focusable: !isDisabled,
       active: checked,
     },

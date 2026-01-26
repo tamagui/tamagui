@@ -157,7 +157,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         return motionAnimationState
       }, [isExiting, animationKey, styleKey, animationState, disableAnimation])
 
-      const debugId = process.env.NODE_ENV === 'development' ? useId() : ''
+      const id = useId()
+      const debugId = process.env.NODE_ENV === 'development' ? id : ''
       const lastAnimateAt = useRef(0)
       const disposed = useRef(false)
       const [firstRenderStyle] = useState(style)

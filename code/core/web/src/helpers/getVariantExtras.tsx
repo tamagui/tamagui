@@ -53,12 +53,12 @@ export function getFontsForLanguage(fonts: GenericFonts, language: LanguageConte
   const next = {
     ...fonts,
     ...Object.fromEntries(
-      Object.entries(language).map(([name, lang]) => {
+      Object.entries(language).flatMap(([name, lang]) => {
         if (lang === 'default') {
           return []
         }
         const langKey = `$${name}_${lang}`
-        return [`$${name}`, fonts[langKey]]
+        return [[`$${name}`, fonts[langKey]]]
       })
     ),
   }

@@ -379,7 +379,6 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                         onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
                           if (event.key !== 'Escape') return
                           onEscapeKeyDown?.(event)
-                          onEscapeKeyDown?.(event)
                           if (!event.defaultPrevented) {
                             context.isFocusedToastEscapeKeyDownRef.current = true
                             handleClose()

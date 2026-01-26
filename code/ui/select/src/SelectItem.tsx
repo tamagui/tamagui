@@ -99,14 +99,17 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
 
     const textId = React.useId()
 
-    const refCallback = React.useCallback((node) => {
-      if (!isWeb) return
-      if (node instanceof HTMLElement) {
-        if (listRef) {
-          listRef.current[index] = node
+    const refCallback = React.useCallback(
+      (node) => {
+        if (!isWeb) return
+        if (node instanceof HTMLElement) {
+          if (listRef) {
+            listRef.current[index] = node
+          }
         }
-      }
-    }, [])
+      },
+      [index, listRef]
+    )
 
     const composedRefs = useComposedRefs(forwardedRef, refCallback)
 
@@ -203,6 +206,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
             render="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
+            role="option"
             aria-labelledby={textId}
             aria-selected={isSelected}
             data-state={isSelected ? 'active' : 'inactive'}

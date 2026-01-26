@@ -20,11 +20,15 @@ function setup(): void {
   g.__tamagui_native_portal_setup = true
 
   // try teleport first (preferred)
-  const teleport = require('react-native-teleport')
-  if (teleport?.Portal && teleport?.PortalHost && teleport?.PortalProvider) {
-    g.__tamagui_teleport = teleport
-    getPortal().set({ enabled: true, type: 'teleport' })
-    return
+  try {
+    const teleport = require('react-native-teleport')
+    if (teleport?.Portal && teleport?.PortalHost && teleport?.PortalProvider) {
+      g.__tamagui_teleport = teleport
+      getPortal().set({ enabled: true, type: 'teleport' })
+      return
+    }
+  } catch {
+    // react-native-teleport not installed, that's ok
   }
 }
 

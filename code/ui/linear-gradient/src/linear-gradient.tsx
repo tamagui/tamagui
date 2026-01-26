@@ -169,7 +169,7 @@ function calculatePseudoAngle(
 function calculateGradientColors(colors: string[], locations?: number[] | null) {
   return colors.map((color: string, index: number): string | void => {
     const output = normalizeColor(color)
-    if (locations && locations[index]) {
+    if (locations && locations[index] !== undefined) {
       const location = Math.max(0, Math.min(1, locations[index]))
       // Convert 0...1 to 0...100
       const percentage = location * 100

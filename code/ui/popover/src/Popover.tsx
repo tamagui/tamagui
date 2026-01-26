@@ -184,14 +184,7 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
           }),
         },
       }
-    }, [
-      context.anchorTo,
-      anchorTo?.x,
-      anchorTo?.y,
-      anchorTo?.x,
-      anchorTo?.height,
-      anchorTo?.width,
-    ])
+    }, [context.anchorTo, anchorTo?.x, anchorTo?.y, anchorTo?.height, anchorTo?.width])
 
     return context.hasCustomAnchor ? (
       trigger

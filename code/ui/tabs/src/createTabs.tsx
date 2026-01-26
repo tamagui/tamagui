@@ -208,7 +208,7 @@ export function createTabs<
                   context.onChange(value)
                 }
               }),
-              onBlur: composeEventHandlers(props.onFocus, () => {
+              onBlur: composeEventHandlers(props.onBlur, () => {
                 onInteraction?.('focus', null)
               }),
             })}

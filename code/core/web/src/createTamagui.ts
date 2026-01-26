@@ -232,8 +232,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       if (sinceLastCall && lastCSSInsertedRulesIndex >= 0) {
         // after first run with sinceLastCall
         const rules = getAllRules()
+        const newRules = rules.slice(lastCSSInsertedRulesIndex)
         lastCSSInsertedRulesIndex = rules.length
-        return rules.slice(lastCSSInsertedRulesIndex).join(separator)
+        return newRules.join(separator)
       }
 
       // set so next time getNewCSS will trigger only new rules
@@ -249,6 +250,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   .is_Text .is_Text {display:inline-flex;}
   ._dsp_contents {display:contents;}
   ._no_backdrop::backdrop {display: none;}
+  .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}
+  .is_Input::placeholder, .is_TextArea::placeholder {color: var(--placeholderColor);}
   ${themeConfig.cssRuleSets.join(separator)}`
 
       return `${designSystem}

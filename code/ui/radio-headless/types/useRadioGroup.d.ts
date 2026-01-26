@@ -78,7 +78,7 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
         ref: (node: any) => void;
     };
     rovingFocusGroupAttrs: {
-        asChild: boolean | "web" | "except-style" | "except-style-web";
+        asChild: "except-style";
         focusable: boolean;
         active: boolean;
     };

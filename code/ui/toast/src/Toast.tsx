@@ -127,7 +127,7 @@ const ToastClose = React.forwardRef<TamaguiElement, ToastCloseProps>(
     return (
       <ToastAnnounceExclude asChild>
         <ToastCloseFrame
-          aria-label="Dialog Close"
+          aria-label="Close"
           {...closeProps}
           ref={forwardedRef}
           onPress={composeEventHandlers(props.onPress as any, interactiveContext.onClose)}

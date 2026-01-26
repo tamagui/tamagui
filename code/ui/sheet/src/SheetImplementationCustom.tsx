@@ -85,7 +85,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const { animationDriver } = useConfiguration()
 
     if (!animationDriver) {
-      throw new Error(`Sheet reqiures an animation driver to be set`)
+      throw new Error(`Sheet requires an animation driver to be set`)
     }
 
     const transitionConfig = (() => {

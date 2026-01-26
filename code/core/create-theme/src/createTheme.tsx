@@ -23,7 +23,7 @@ export function createThemeWithPalettes<
   [key in keyof Definition | keyof Extras]: string
 } {
   if (!palettes[defaultPalette]) {
-    throw new Error(`No pallete: ${defaultPalette}`)
+    throw new Error(`No palette: ${defaultPalette}`)
   }
   const newDef = { ...definition }
   for (const key in definition) {

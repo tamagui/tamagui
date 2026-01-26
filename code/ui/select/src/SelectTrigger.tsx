@@ -50,7 +50,8 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
           borderWidth: 1,
           size: itemParentContext.size,
         })}
-        // aria-controls={context.contentId}
+        role="combobox"
+        aria-haspopup="listbox"
         aria-expanded={context.open}
         aria-autocomplete="none"
         dir={context.dir}
