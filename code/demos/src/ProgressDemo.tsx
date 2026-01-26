@@ -37,7 +37,7 @@ export function ProgressDemo() {
         l="$4"
         $xxs={{ display: 'none' }}
       >
-        <Slider
+        {/* <Slider
           size="$2"
           theme="surface2"
           width={130}
@@ -54,17 +54,17 @@ export function ProgressDemo() {
             <Slider.TrackActive />
           </Slider.Track>
           <Slider.Thumb theme="accent" circular index={0} />
-        </Slider>
+        </Slider> */}
 
         <Button
           theme="surface3"
-          size="$2"
+          size="$3"
           icon={Play}
           onPress={() => setProgress((prev) => (prev + 20) % 100)}
         />
         <Button
           theme="surface3"
-          size="$2"
+          size="$3"
           icon={RotateCcw}
           onPress={() => {
             setKey(Math.random())

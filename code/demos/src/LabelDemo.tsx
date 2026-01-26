@@ -14,8 +14,13 @@ export function LabelDemo() {
         <Label width={90} htmlFor="notify">
           Notifications
         </Label>
-        <Switch theme="surface2" id="notify">
-          <Switch.Thumb theme="accent" transition="quickest" />
+        <Switch
+          activeStyle={{
+            backgroundColor: '$color8',
+          }}
+          id="notify"
+        >
+          <Switch.Thumb transition="quickest" />
         </Switch>
       </XStack>
     </YStack>

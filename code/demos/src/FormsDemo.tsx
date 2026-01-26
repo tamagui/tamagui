@@ -1,6 +1,17 @@
 import React from 'react'
 import type { SizeTokens } from 'tamagui'
-import { Button, Form, H4, Spinner } from 'tamagui'
+import {
+  Button,
+  Form,
+  H4,
+  Spinner,
+  AnimatePresence,
+  Square,
+  XStack,
+  XGroup,
+  Label,
+  YStack,
+} from 'tamagui'
 
 export function FormsDemo(props: { size: SizeTokens }) {
   const [status, setStatus] = React.useState<'off' | 'submitting' | 'submitted'>('off')
@@ -17,24 +28,32 @@ export function FormsDemo(props: { size: SizeTokens }) {
   return (
     <Form
       items="center"
-      minW={300}
       gap="$2"
       onSubmit={() => setStatus('submitting')}
       borderWidth={1}
       rounded="$4"
-      bg="$background"
+      bg="$color2"
       borderColor="$borderColor"
-      p="$8"
+      minW={350}
+      p="$6"
     >
-      <H4>{status[0].toUpperCase() + status.slice(1)}</H4>
-
       <Form.Trigger asChild disabled={status !== 'off'}>
-        <Button
-          theme="surface3"
-          icon={status === 'submitting' ? () => <Spinner /> : undefined}
-        >
-          Submit
-        </Button>
+        <YStack gap="$4">
+          <Button theme="surface3">Submit</Button>
+          <YStack width="100%" height={40} justifyContent="center" alignItems="center">
+            <AnimatePresence>
+              {status === 'submitting' ? (
+                <Spinner
+                  transition="kindaBouncy"
+                  enterStyle={{ opacity: 0 }}
+                  alignSelf="center"
+                  key="spinner"
+                  width={8}
+                />
+              ) : null}
+            </AnimatePresence>
+          </YStack>
+        </YStack>
       </Form.Trigger>
     </Form>
   )

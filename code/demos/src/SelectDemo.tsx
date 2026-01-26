@@ -53,8 +53,6 @@ export function SelectDemoContents(
           iconAfter={ChevronDown}
           borderRadius="$4"
           backgroundColor="$background"
-          hoverStyle={{ backgroundColor: '$backgroundHover' }}
-          pressStyle={{ backgroundColor: '$backgroundPress' }}
         >
           <Select.Value placeholder="Something" />
         </Select.Trigger>
