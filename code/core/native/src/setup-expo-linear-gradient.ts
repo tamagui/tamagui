@@ -5,11 +5,11 @@
  *
  * @example
  * ```tsx
- * import '@tamagui/native/expo-linear-gradient'
+ * import '@tamagui/native/setup-expo-linear-gradient'
  * ```
  *
  * This automatically detects and configures expo-linear-gradient.
- * If not installed, LinearGradient will use a CSS-based fallback on native.
+ * If not installed, LinearGradient will log a warning on native.
  */
 
 import { getLinearGradient } from './linearGradientState'
