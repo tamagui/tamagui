@@ -23,9 +23,9 @@ demoName: Stacks
   ]}
 />
 
-Tamagui UI includes optional stack views - XStack, YStack and ZStack. They extend directly off the [View](/docs/core/stack-and-text) from `@tamagui/core`.
-
-Stack props accept [every prop from react-native-web](https://necolas.github.io/react-native-web/docs/view/) View, as well as all [the style properties Tamagui supports](/docs/intro/props).
+Tamagui UI includes optional stack views - XStack, YStack and ZStack. They
+extend directly off the [View](/docs/core/view-and-text) from `@tamagui/core`,
+and so accept all [style properties](/docs/intro/props).
 
 In this example you'd show three `YStack` elements spaced out.
 
@@ -51,7 +51,8 @@ export default () => (
 )
 ```
 
-To see all the style properties supported, see the [Props](/docs/intro/props) documentation.
+To see all the style properties supported, see the [Props](/docs/intro/props)
+documentation.
 
 ### Fuller Example
 
@@ -107,7 +108,8 @@ Beyond the [Tamagui Props](/docs/intro/props), the stacks add just two variants:
       type: 'number | tokens.size',
       description: (
         <span>
-          Sets a natural looking shadow that expands out and away as the size gets bigger.
+          Sets a natural looking shadow that expands out and away as the size
+          gets bigger.
         </span>
       ),
     },

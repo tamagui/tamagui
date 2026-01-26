@@ -36,8 +36,6 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   const bgIndex = 6
   const lighten = isLight ? -1 : 1
   const darken = -lighten
-  // always +1 because palette is structured with higher indices = more contrast from background
-  const increaseContrast = 1
   const borderColor = bgIndex + 3
 
   const baseColors = {
@@ -82,10 +80,13 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     // the @tamagui/button Button component looks for `$background`, so you set the
     // dark_red_Button theme to have a stronger background than the dark_red theme.
     background: bgIndex,
-    backgroundHover: bgIndex + increaseContrast * 2,
-    backgroundPress: bgIndex + increaseContrast * 3,
-    backgroundFocus: bgIndex + increaseContrast * 2,
-    backgroundActive: bgIndex + increaseContrast * 4,
+    // hover lightens in both light/dark modes (towards background)
+    backgroundHover: bgIndex + lighten * 2,
+    // press darkens in both modes (towards foreground)
+    backgroundPress: bgIndex + darken * 2,
+    // focus: darken in dark mode, stay same in light
+    backgroundFocus: bgIndex + (isLight ? 0 : darken),
+    backgroundActive: bgIndex + darken * 3,
     borderColor,
     borderColorHover: borderColor + lighten,
     borderColorPress: borderColor + darken,
@@ -94,44 +95,30 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     colorTransparent: -1,
   }
 
-  const surface1 = {
-    ...baseColors,
-    background: base.background + 1,
-    backgroundHover: base.backgroundHover + 1,
-    backgroundPress: base.backgroundPress + 1,
-    backgroundFocus: base.backgroundFocus + 1,
-    backgroundActive: base.backgroundActive + 1,
-    borderColor: base.borderColor + 1,
-    borderColorHover: base.borderColorHover + 1,
-    borderColorFocus: base.borderColorFocus + 1,
-    borderColorPress: base.borderColorPress + 1,
+  // helper for surface themes - they need their own hover/press/focus calculations
+  // because those need to be relative to their elevated background, not base
+  const makeSurface = (offset: number) => {
+    const bg = base.background + offset
+    return {
+      ...baseColors,
+      background: bg,
+      // hover lightens (towards background)
+      backgroundHover: bg + lighten,
+      // press darkens (towards foreground)
+      backgroundPress: bg + darken,
+      // focus: darken in dark mode, stay same in light
+      backgroundFocus: bg + (isLight ? 0 : darken),
+      backgroundActive: bg + darken * 2,
+      borderColor: base.borderColor + offset,
+      borderColorHover: base.borderColor + offset + lighten,
+      borderColorFocus: base.borderColor + offset,
+      borderColorPress: base.borderColor + offset + darken,
+    }
   }
 
-  const surface2 = {
-    ...baseColors,
-    background: base.background + 2,
-    backgroundHover: base.backgroundHover + 2,
-    backgroundPress: base.backgroundPress + 2,
-    backgroundFocus: base.backgroundFocus + 2,
-    backgroundActive: base.backgroundActive + 2,
-    borderColor: base.borderColor + 2,
-    borderColorHover: base.borderColorHover + 2,
-    borderColorFocus: base.borderColorFocus + 2,
-    borderColorPress: base.borderColorPress + 2,
-  }
-
-  const surface3 = {
-    ...baseColors,
-    background: base.background + 3,
-    backgroundHover: base.backgroundHover + 3,
-    backgroundPress: base.backgroundPress + 3,
-    backgroundFocus: base.backgroundFocus + 3,
-    backgroundActive: base.backgroundActive + 3,
-    borderColor: base.borderColor + 3,
-    borderColorHover: base.borderColorHover + 3,
-    borderColorFocus: base.borderColorFocus + 3,
-    borderColorPress: base.borderColorPress + 3,
-  }
+  const surface1 = makeSurface(1)
+  const surface2 = makeSurface(2)
+  const surface3 = makeSurface(3)
 
   const alt1 = {
     color: base.color - 1,

@@ -854,7 +854,6 @@ export function createExtractor(
 
           const inlineProps = new Set([
             // adding some always inline props
-            'dataSet',
             ...(restProps.inlineProps || []),
             ...(staticConfig.inlineProps || []),
           ])

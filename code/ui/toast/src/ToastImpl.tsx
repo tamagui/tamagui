@@ -192,7 +192,9 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       // focus viewport if focus is within toast to read the remaining toast
       // count to SR users and ensure focus isn't lost
       if (isWeb) {
-        const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
+        const isFocusInToast = (node as unknown as HTMLDivElement)?.contains(
+          document.activeElement
+        )
         if (isFocusInToast) viewport?.focus()
       }
       onClose()
@@ -250,7 +252,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
 
     const announceTextContent = React.useMemo(() => {
       if (!isWeb) return null
-      return node ? getAnnounceTextContent(node as HTMLDivElement) : null
+      return node ? getAnnounceTextContent(node as unknown as HTMLDivElement) : null
     }, [node])
 
     const isHorizontalSwipe = ['left', 'right', 'horizontal'].includes(

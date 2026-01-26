@@ -11,6 +11,9 @@
 - split input/textinput into SizableTextInput / SizableInput or not?
   - otherwise its annoying af if you want your OWN size
 
+- /Users/n8/tamagui/code/core/web/src/helpers/defaultAnimationDriver.tsx
+  - should just be native on native, css on web? use platfomr extensions
+
 ---
 
 AFTER v2 RC (nice to haves):
@@ -84,8 +87,16 @@ AFTER v2 RC (nice to haves):
 - remove getToken + shift weirdness in general
 - react compiler on internals / concurrent friendly internals
 - eject from floating-ui if possible (its huge)
+- drop rnw support / setupReactNative.ts
 
 ---
+
+<View
+    ref={universalRef}
+    webRef={webRef}
+    nativeRef={nativeRef}
+  />
+
 
 - MCP works w your local tamagui config?
 

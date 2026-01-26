@@ -238,7 +238,7 @@ const ToastViewport = React.memo(
               const index = sortedCandidates.findIndex(
                 (candidate) => candidate === focusedElement
               )
-              if (focusFirst(sortedCandidates.slice(index + 1))) {
+              if (focusFirst(sortedCandidates.slice(index + 1) as any)) {
                 event.preventDefault()
               } else {
                 // If we can't focus that means we're at the edges so we
@@ -261,7 +261,7 @@ const ToastViewport = React.memo(
 
       const contents = (
         <ToastViewportWrapperFrame
-          ref={wrapperRef}
+          ref={wrapperRef as any}
           // biome-ignore lint/a11y/useSemanticElements: <explanation>
           role="region"
           aria-label={label.replace('{hotkey}', hotkeyLabel)}
@@ -280,7 +280,7 @@ const ToastViewport = React.memo(
                 const tabbableCandidates = getSortedTabbableCandidates({
                   tabbingDirection: 'forwards',
                 })
-                focusFirst(tabbableCandidates)
+                focusFirst(tabbableCandidates as any)
               }}
             />
           )}
@@ -291,7 +291,7 @@ const ToastViewport = React.memo(
           <Collection.Slot scope={context.toastScope}>
             <ToastViewportFrame
               focusable={context.toastCount > 0}
-              ref={composedRefs}
+              ref={composedRefs as any}
               {...viewportProps}
             >
               <PortalHost
@@ -313,7 +313,7 @@ const ToastViewport = React.memo(
                 const tabbableCandidates = getSortedTabbableCandidates({
                   tabbingDirection: 'backwards',
                 })
-                focusFirst(tabbableCandidates)
+                focusFirst(tabbableCandidates as any)
               }}
             />
           )}
