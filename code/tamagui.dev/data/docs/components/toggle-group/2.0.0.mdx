@@ -34,7 +34,7 @@ npm install @tamagui/toggle-group
 
 ## Usage
 
-ToggleGroup handles the toggle state logic. For visual grouping with border radius, compose with `XGroup` or `YGroup`:
+ToggleGroup handles the toggle state logic. For visual grouping with border radius, compose with `XGroup` or `YGroup`. Use `activeStyle` to customize the active state appearance:
 
 ```tsx
 import { ToggleGroup, XGroup } from 'tamagui'
@@ -44,12 +44,20 @@ export default () => {
     <ToggleGroup type="single">
       <XGroup>
         <XGroup.Item>
-          <ToggleGroup.Item value="foo" borderRadius="$4">
+          <ToggleGroup.Item
+            value="foo"
+            borderRadius="$4"
+            activeStyle={{ backgroundColor: '$color5' }}
+          >
             Foo
           </ToggleGroup.Item>
         </XGroup.Item>
         <XGroup.Item>
-          <ToggleGroup.Item value="bar" borderRadius="$4">
+          <ToggleGroup.Item
+            value="bar"
+            borderRadius="$4"
+            activeStyle={{ backgroundColor: '$color5' }}
+          >
             Bar
           </ToggleGroup.Item>
         </XGroup.Item>
