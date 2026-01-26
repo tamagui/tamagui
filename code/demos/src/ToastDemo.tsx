@@ -17,17 +17,17 @@ export function ToastDemo() {
       <Toaster position={position} closeButton />
 
       <XStack gap="$2" flexWrap="wrap">
-        <Button size="$3" onPress={() => toast('Event created')}>
+        <Button size="$2" onPress={() => toast('Event created')}>
           Default
         </Button>
-        <Button size="$3" theme="green" onPress={() => toast.success('Saved!')}>
+        <Button size="$2" theme="green" onPress={() => toast.success('Saved!')}>
           Success
         </Button>
-        <Button size="$3" theme="red" onPress={() => toast.error('Failed')}>
+        <Button size="$2" theme="red" onPress={() => toast.error('Failed')}>
           Error
         </Button>
         <Button
-          size="$3"
+          size="$2"
           onPress={() =>
             toast('Deleted', {
               action: { label: 'Undo', onClick: () => toast('Restored') },
@@ -100,7 +100,7 @@ function PosBtn({
     <Button
       circular
       icon={Icon}
-      theme={pos === current ? 'active' : 'surface3'}
+      theme={pos === current ? 'blue' : undefined}
       onPress={() => set(pos)}
       aria-label={pos}
     />

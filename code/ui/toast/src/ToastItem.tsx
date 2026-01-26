@@ -570,6 +570,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       tabIndex={0}
       // @ts-expect-error dataSet is a valid prop for RN Web compatibility
       dataSet={dataSet}
+      data-expanded={expanded ? 'true' : 'false'}
       onLayout={handleLayout}
       // use Tamagui animation system - disable animation while dragging
       transition={dragState.isDragging ? undefined : 'quick'}

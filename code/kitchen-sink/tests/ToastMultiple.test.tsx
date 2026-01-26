@@ -183,4 +183,26 @@ test.describe('toast with actions', () => {
     const toast = page.locator('[role="status"]').first()
     await expect(toast).toContainText('View')
   })
+
+  test('action and cancel buttons render without overlap', async ({ page }) => {
+    await page.getByRole('button', { name: 'With Action + Cancel' }).click()
+    await page.waitForTimeout(500)
+
+    const toast = page.locator('[role="status"]').first()
+    await expect(toast).toBeVisible()
+
+    const cancelButton = toast.getByRole('button', { name: 'Cancel' })
+    const confirmButton = toast.getByRole('button', { name: 'Confirm' })
+
+    await expect(cancelButton).toBeVisible()
+    await expect(confirmButton).toBeVisible()
+
+    // verify buttons don't overlap
+    const cancelBox = await cancelButton.boundingBox()
+    const confirmBox = await confirmButton.boundingBox()
+
+    expect(cancelBox).not.toBeNull()
+    expect(confirmBox).not.toBeNull()
+    expect(confirmBox!.x).toBeGreaterThan(cancelBox!.x + cancelBox!.width - 5)
+  })
 })

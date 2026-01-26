@@ -17,27 +17,24 @@ demoName: Toast
 
 <Highlights
   features={[
-    `Automatically closes`,
-    `Pause closing on hover, focus, window blur and mobile touch`,
-    `Supports closing via swipe gesture`,
-    `Easily animatable with Tamagui's animation drivers`,
-    `Native toasts included for Android, iOS and web (notification API)`,
+    `Simple imperative API - just call toast()`,
+    `Stacking with expand on hover`,
+    `Swipe to dismiss gestures`,
+    `Promise toasts with loading states`,
+    `Native toasts on Android, iOS and web`,
+    `Customizable icons and actions`,
   ]}
 />
 
 ## Installation
 
-Note that `@tamagui/toast` is the only UI package not included by default in `tamagui`. The reason for this is that Metro would force you to install the native `burnt` dependency, and that would mean `tamagui` wouldn't work with Expo Go and would require a native install step no matter if you used Toast or not. This is due to a limitation in Metro.
-
-To install toast:
+Toast is not included by default in `tamagui` because Metro would force native apps to install the `burnt` dependency, breaking Expo Go compatibility.
 
 ```bash
-yarn add @tamagui/toast burnt
+npm install @tamagui/toast burnt
 ```
 
-Then, if targeting native, rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
-
-We're open to a refactor that moves the burnt dependency into a sub-path like `@tamagui/toast/burnt` and forces setup through there, that likely fixes the Metro issue and allow us to include it by default.
+If targeting native, rebuild your React Native app after installing.
 
 <Notice theme="blue">
   For native apps, we recommend [setting up native portals](/docs/components/portal#native-portal-setup-recommended) to preserve React context inside Toast content.
@@ -46,500 +43,456 @@ We're open to a refactor that moves the burnt dependency into a sub-path like `@
 ## Anatomy
 
 ```tsx
-<ToastProvider>
-  <Toast>
-    <Toast.Title />
-    <Toast.Description />
-    <Toast.Action />
-    <Toast.Close />
-  </Toast>
+import { toast, Toaster } from '@tamagui/toast'
 
-  <ToastViewport />
-</ToastProvider>
+export default () => (
+  <>
+    <Toaster />
+    {/* Call toast() anywhere in your app */}
+  </>
+)
+```
+
+## Quick Start
+
+```tsx
+import { toast, Toaster } from '@tamagui/toast'
+
+function App() {
+  return (
+    <>
+      <Toaster />
+      <Button onPress={() => toast('Hello!')}>Show Toast</Button>
+    </>
+  )
+}
 ```
 
 ## API Reference
 
-### ToastProvider
+### toast()
 
-Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
+The main function to show toasts. Call it directly or use typed methods.
+
+```tsx
+// Basic
+toast('Event created')
+
+// With description
+toast('Event created', { description: 'Monday, January 3rd at 6:00pm' })
+
+// Typed toasts
+toast.success('Saved successfully')
+toast.error('Something went wrong')
+toast.warning('Please review your input')
+toast.info('New update available')
+
+// Loading toast
+toast.loading('Uploading...')
+
+// With action button
+toast('File deleted', {
+  action: {
+    label: 'Undo',
+    onClick: () => console.log('Undo clicked'),
+  },
+})
+
+// With cancel button
+toast('Confirm action', {
+  cancel: {
+    label: 'Cancel',
+    onClick: () => console.log('Cancelled'),
+  },
+})
+
+// Dismiss programmatically
+const id = toast('Processing...')
+toast.dismiss(id)
+
+// Dismiss all
+toast.dismiss()
+```
+
+#### Toast Options
 
 <PropsTable
   data={[
     {
-      name: 'label',
-      required: false,
-      type: 'string',
-      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
-      default: 'Notification',
+      name: 'id',
+      type: 'string | number',
+      description: `Custom ID for the toast. Useful for updating or dismissing specific toasts.`,
+    },
+    {
+      name: 'description',
+      type: 'ReactNode | (() => ReactNode)',
+      description: `Secondary text shown below the title.`,
+    },
+    {
+      name: 'icon',
+      type: 'ReactNode',
+      description: `Custom icon to display. Overrides type-based default icons.`,
     },
     {
       name: 'duration',
-      required: false,
       type: 'number',
-      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
-      default: 5000,
+      description: `Time in ms before auto-dismiss. Set to \`Infinity\` to disable auto-dismiss.`,
     },
     {
-      name: 'swipeDirection',
-      required: false,
-      type: 'SwipeDirection',
-      description: `Direction of pointer swipe that should close the toast.`,
-      default: 'right',
+      name: 'dismissible',
+      type: 'boolean',
+      default: 'true',
+      description: `Whether the toast can be dismissed by the user.`,
     },
     {
-      name: 'swipeThreshold',
-      required: false,
-      type: 'number',
-      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
-      default: 50,
+      name: 'action',
+      type: '{ label: string, onClick: () => void }',
+      description: `Primary action button displayed on the toast.`,
     },
     {
-      name: 'id',
-      required: false,
-      type: 'string',
-      default: 'A unique generated ID',
-      description: `Unique identifier for the toast provider.`,
+      name: 'cancel',
+      type: '{ label: string, onClick: () => void }',
+      description: `Secondary cancel button displayed on the toast.`,
     },
     {
-      name: 'native',
-      required: false,
-      type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
-      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+      name: 'onDismiss',
+      type: '(toast: ToastT) => void',
+      description: `Callback when toast is dismissed by user interaction.`,
     },
     {
-      name: `burntOptions`,
-      required: false,
-      type: `Omit<BurntToastOptions, 'title' | 'message' | 'duration'>`,
-      description: `Options for the burnt package if you're using native toasts on mobile`,
+      name: 'onAutoClose',
+      type: '(toast: ToastT) => void',
+      description: `Callback when toast auto-closes after duration.`,
     },
     {
-      name: `notificationOptions`,
-      required: false,
-      type: `NotificationOptions`,
-      description: `Options for the notification API if you're using native toasts on web`,
+      name: 'closeButton',
+      type: 'boolean',
+      description: `Show close button on this specific toast. Overrides Toaster setting.`,
+    },
+    {
+      name: 'burntOptions',
+      type: 'BurntToastOptions',
+      description: `Options for native mobile toasts via burnt package.`,
+    },
+    {
+      name: 'notificationOptions',
+      type: 'NotificationOptions',
+      description: `Options for web Notification API.`,
     },
   ]}
 />
 
-### ToastViewport
+### toast.promise()
 
-The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks), adds:
+Show a toast that automatically updates based on a promise's state.
+
+```tsx
+toast.promise(saveData(), {
+  loading: 'Saving...',
+  success: 'Data saved!',
+  error: 'Failed to save',
+})
+
+// With dynamic messages
+toast.promise(fetchUser(id), {
+  loading: 'Loading user...',
+  success: (data) => `Welcome, ${data.name}!`,
+  error: (err) => `Error: ${err.message}`,
+  finally: () => console.log('Request completed'),
+})
+
+// Unwrap the result
+const { unwrap } = toast.promise(asyncOperation(), {
+  loading: 'Working...',
+  success: 'Done!',
+  error: 'Failed',
+})
+
+const result = await unwrap()
+```
+
+### toast.custom()
+
+Render completely custom JSX for a toast.
+
+```tsx
+toast.custom((id) => (
+  <YStack padding="$4" backgroundColor="$background">
+    <Text>Custom toast content</Text>
+    <Button onPress={() => toast.dismiss(id)}>Close</Button>
+  </YStack>
+))
+```
+
+### toast.dismiss()
+
+Dismiss toasts programmatically.
+
+```tsx
+// Dismiss specific toast
+const id = toast('Hello')
+toast.dismiss(id)
+
+// Dismiss all toasts
+toast.dismiss()
+```
+
+### toast.getToasts() / toast.getHistory()
+
+Access toast state.
+
+```tsx
+// Get currently active (non-dismissed) toasts
+const activeToasts = toast.getToasts()
+
+// Get all toasts including dismissed ones
+const allToasts = toast.getHistory()
+```
+
+### Toaster
+
+The container component that renders toasts. Place it once at the root of your app.
+
+```tsx
+<Toaster
+  position="bottom-right"
+  closeButton
+  duration={4000}
+/>
+```
 
 <PropsTable
   data={[
+    {
+      name: 'position',
+      type: 'ToasterPosition',
+      default: "'bottom-right'",
+      description: `Where toasts appear on screen. Options: 'top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'.`,
+    },
+    {
+      name: 'width',
+      type: 'number',
+      default: '356',
+      description: `Width of toast container in pixels.`,
+    },
+    {
+      name: 'expand',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, toasts are always expanded. When false, they stack and expand on hover.`,
+    },
+    {
+      name: 'visibleToasts',
+      type: 'number',
+      default: '4',
+      description: `Maximum number of toasts visible at once.`,
+    },
+    {
+      name: 'gap',
+      type: 'number',
+      default: '14',
+      description: `Gap between toasts in pixels when expanded.`,
+    },
+    {
+      name: 'duration',
+      type: 'number',
+      default: '4000',
+      description: `Default duration in ms before toasts auto-dismiss.`,
+    },
+    {
+      name: 'offset',
+      type: 'number | { top?, right?, bottom?, left? }',
+      default: '24',
+      description: `Distance from screen edges in pixels.`,
+    },
     {
       name: 'hotkey',
       type: 'string[]',
-      default: "['F8']",
-      required: false,
-      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+      default: "['altKey', 'KeyT']",
+      description: `Keyboard shortcut to focus the toast viewport.`,
     },
     {
-      name: 'label',
-      type: 'string',
-      default: 'Notifications ({hotkey})',
-      required: false,
-      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+      name: 'swipeDirection',
+      type: 'SwipeDirection',
+      default: "'right'",
+      description: `Direction(s) toasts can be swiped to dismiss. Options: 'left', 'right', 'up', 'down', 'horizontal', 'vertical'.`,
     },
     {
-      name: 'name',
-      type: 'string',
-      required: false,
-      description: `Used to reference the viewport if you want to have multiple viewports in the same provider.`,
-    },
-    {
-      name: 'multipleToasts',
-      type: 'boolean',
-      required: false,
-      description: `Pass this when you want to have multiple/duplicated toasts.`,
-    },
-    {
-      name: 'portalToRoot',
-      type: 'boolean | number',
-      default: 'false',
-      description: `When true, uses a portal to render at the very top of the root TamaguiProvider.`,
-    },
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
-/>
-
-### Toast
-
-Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stacks) and adds:
-
-<PropsTable
-  data={[
-    {
-      name: 'forceMount',
-      type: 'boolean',
-      required: false,
-      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
-    },
-    {
-      name: 'type',
-      type: "'foreground' | 'background'",
-      required: false,
-      description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
-    },
-    {
-      name: 'duration',
+      name: 'swipeThreshold',
       type: 'number',
-      required: false,
-      description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
+      default: '50',
+      description: `Distance in pixels swipe must travel to dismiss.`,
     },
     {
-      name: 'defaultOpen',
+      name: 'closeButton',
       type: 'boolean',
-      required: false,
-      description: `The open state of the dialog when it is initially rendered. Use when you do not need to control its open state.`,
+      default: 'false',
+      description: `Show close button on all toasts.`,
     },
     {
-      name: 'open',
-      type: 'boolean',
-      required: false,
-      description: `The controlled open state of the dialog. Must be used in conjunction with \`onOpenChange\`.`,
+      name: 'theme',
+      type: "'light' | 'dark' | 'system'",
+      description: `Theme for toasts. Auto-detected from Tamagui theme if not set.`,
     },
     {
-      name: 'onOpenChange',
-      type: '(open: boolean): void',
-      required: false,
-      description: `Event handler called when the open state of the dialog changes.`,
+      name: 'icons',
+      type: '{ success?, error?, warning?, info?, loading?, close? }',
+      description: `Custom icons for each toast type and close button.`,
     },
     {
-      name: 'onEscapeKeyDown',
-      type: "(): DismissableProps['onEscapeKeyDown']",
-      required: false,
-      description: `Event handler called when the escape key is down. It can be prevented by calling \`event.preventDefault\`.`,
+      name: 'toastOptions',
+      type: 'ExternalToast',
+      description: `Default options applied to all toasts.`,
     },
     {
-      name: 'onPause',
-      type: '(): void',
-      required: false,
-      description: `Event handler called when the dismiss timer is paused. On web, this occurs when the pointer is moved over the viewport, the viewport is focused or when the window is blurred. On mobile, this occurs when the toast is touched.`,
-    },
-    {
-      name: 'onResume',
-      type: '(): void',
-      required: false,
-      description: `Event handler called when the dismiss timer is resumed. On web, this occurs when the pointer is moved away from the viewport, the viewport is blurred or when the window is focused. On mobile, this occurs when the toast is released.`,
-    },
-    {
-      name: 'onSwipeStart',
-      type: '(event: SwipeEvent): void',
-      required: false,
-      description: `Event handler called when starting a swipe interaction. It can be prevented by calling \`event.preventDefault\`.`,
-    },
-    {
-      name: 'onSwipeMove',
-      type: '(event: SwipeEvent): void',
-      required: false,
-      description: `Event handler called during a swipe interaction. It can be prevented by calling \`event.preventDefault\`.`,
-    },
-    {
-      name: 'onSwipeCancel',
-      type: '(event: SwipeEvent): void',
-      required: false,
-      description: `Event handler called at the cancellation of a swipe interaction. It can be prevented by calling \`event.preventDefault\`.`,
-    },
-    {
-      name: 'onSwipeEnd',
-      type: '(event: SwipeEvent): void',
-      required: false,
-      description: `Event handler called at the end of a swipe interaction. It can be prevented by calling \`event.preventDefault\`.`,
-    },
-    {
-      name: 'viewportName',
+      name: 'containerAriaLabel',
       type: 'string',
-      required: false,
-      description: `The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
-      default: 'default',
+      default: "'Notifications'",
+      description: `Aria label for the toast container for screen readers.`,
     },
     {
-      name: 'unstyled',
+      name: 'disableNative',
       type: 'boolean',
       default: 'false',
-      description: `When true, remove all default tamagui styling.`,
+      description: `Disable native toasts on mobile (uses burnt package).`,
+    },
+    {
+      name: 'burntOptions',
+      type: 'BurntToastOptions',
+      description: `Default options for native mobile toasts.`,
+    },
+    {
+      name: 'notificationOptions',
+      type: 'NotificationOptions',
+      description: `Default options for web Notification API.`,
     },
   ]}
 />
-
-### Toast.Title
-
-Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text#sizabletext), adding:
-
-<PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
-/>
-
-### Toast.Description
-
-Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text#sizabletext), adding:
-
-<PropsTable
-  data={[
-    {
-      name: 'unstyled',
-      type: 'boolean',
-      default: 'false',
-      description: `When true, remove all default tamagui styling.`,
-    },
-  ]}
-/>
-
-### Toast.Close
-
-Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks). You can pass `asChild` to this component and use a custom `<Button>` inside.
-
-### Toast.Action
-
-Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks). You can pass `asChild` to this component and use a custom `<Button>` inside.
-
-### useToastController
-
-Used to control the display of toasts. Should be used inside [ToastProvider](#toastprovider).
-
-<PropsTable
-  title="Returns"
-  data={[
-    {
-      name: `show`,
-      type: '(title: string, showOptions?: ShowToastOptions): void',
-      description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
-    },
-    {
-      name: `hide`,
-      type: '(): void',
-      description: `Call it to hide the currently displayed toast.`,
-    },
-    {
-      name: `options`,
-      type: `ToastOptions`,
-      description: `You can use if need to access the toast options.`,
-    },
-  ]}
-/>
-
-### useToastState
-
-Used to render out your toast contents. Should be used inside [ToastProvider](#toastprovider). Doesn't take in anything and returns `ToastData`.
-
-```tsx
-const CurrentToast = () => {
-  const toast = useToastState()
-
-  // don't show any toast if no toast is present or it's handled natively
-  if (!toast || toast.isHandledNatively) {
-    return null
-  }
-
-  return (
-    <Toast key={toast.id} duration={toast.duration} viewport={toast.viewport}>
-      <Toast.Title>{toast.title}</Toast.Title>
-      <Toast.Description>{toast.message}</Toast.Description>
-    </Toast>
-  )
-}
-```
 
 ## Examples
 
-### Position the viewport
+### Position
 
-To position the viewport on native toasts:
-
-- iOS (burnt): Supports top or bottom placements. Adjustable by passing `from` to `burntOptions`:
+Control where toasts appear on screen:
 
 ```tsx
-<ToastProvider burntOptions={{ from: 'bottom' }}>
+<Toaster position="top-center" />
+<Toaster position="bottom-left" />
 ```
 
-- Android (burnt): Not supported.
-- Web (Notification API): Not supported.
+### Custom Icons
 
-To position the viewport on custom toasts:
-
-You should change the positioning of your [`<ToastViewport>`](#toastviewport). For instance, if you want them to appear from top right:
+Replace default icons for toast types:
 
 ```tsx
-<ToastViewport flexDirection="column-reverse" top={0} right={0} />
+import { Check, X, AlertTriangle, Info, Loader } from '@tamagui/lucide-icons'
+
+<Toaster
+  icons={{
+    success: <Check color="$green10" />,
+    error: <X color="$red10" />,
+    warning: <AlertTriangle color="$yellow10" />,
+    info: <Info color="$blue10" />,
+    loading: <Loader color="$gray10" />,
+  }}
+/>
 ```
 
-Or for bottom center:
+### With Actions
 
 ```tsx
-<ToastViewport flexDirection="column" bottom={0} left={0} right={0} />
+toast('Message sent', {
+  action: {
+    label: 'View',
+    onClick: () => navigate('/messages'),
+  },
+})
+
+// With both action and cancel
+toast('Delete this item?', {
+  action: {
+    label: 'Delete',
+    onClick: () => deleteItem(),
+  },
+  cancel: {
+    label: 'Cancel',
+    onClick: () => {},
+  },
+})
 ```
 
-<Notice theme="blue">
-  When using multiple toasts, you can change the order of toasts by setting
-  `flexDirection` to `column` or `column-reverse`. Or even have them stack horizontally
-  using `row` or `row-reverse`.
-</Notice>
+### Update Existing Toast
 
-### Mobile safe area
-
-To show toasts inside device's safe area, install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and then use the safe area insets to position the viewport inside the safe area.
+Use the same ID to update a toast:
 
 ```tsx
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+const id = toast.loading('Uploading...')
 
-const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
-  return (
-    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
-  )
-}
+// Later...
+toast.success('Upload complete!', { id })
 ```
 
-### Different viewports
+### Persistent Toast
 
-To send toasts to different viewports, you can set up different viewports:
+Set duration to `Infinity` to keep toast visible until dismissed:
 
 ```tsx
-const App = () => {
-  return (
-    <ToastProvider>
-      <ToastViewport /> {/* default viewport */}
-      <ToastViewport name="viewport-custom" />
-    </ToastProvider>
-  )
-}
+toast('Important message', {
+  duration: Infinity,
+  dismissible: true,
+})
 ```
 
-And then, use the viewport's name on the toasts.
+### Native Toasts
+
+On mobile, toasts can use native system toasts via the [burnt](https://github.com/nandorojo/burnt) package:
 
 ```tsx
-const MyComponent = () => {
-  return <Toast /> // default viewport
-}
-
-const MyComponent2 = () => {
-  return <Toast viewportName="viewport-custom" />
-}
-
+<Toaster
+  burntOptions={{
+    from: 'bottom', // iOS only: 'top' | 'bottom'
+    preset: 'done', // 'done' | 'error' | 'none'
+  }}
+/>
 ```
 
-### Custom data
-
-Just pass your custom data to the second parameter of the `show()` method.
-
-```ts
-const toastController = useToastController()
-toastController.show("Title", { myPreset: 'error' }) // or toastController.show("Title", { customData: { myPreset: 'error' } })
-```
-
-then, when showing the toast, you can retrieve them like so:
-
-```ts
-const toastState = useToastState()
-toastState.myPreset // or toastState.customData.myPreset
-```
-
-To add TypeScript auto-completion for your custom fields, you can use TS module augmentation:
-
-```ts
-declare module '@tamagui/toast' {
-  interface CustomData {
-    myPreset: 'error' | 'success' | 'warning'
-  }
-}
-
-```
-
-### Without hooks
-
-You can also use toasts without the hooks.
-
-<Notice>You can't use native toasts this way.</Notice>
-
-#### Single Toast
+To disable native toasts and always use custom toasts:
 
 ```tsx
-export default () => {
-  const [open, setOpen] = React.useState(false)
-  const timerRef = React.useRef(0)
-
-  React.useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, [])
-
-  return (
-    <YStack ai="center">
-      <Button
-        onPress={() => {
-          setOpen(false)
-          window.clearTimeout(timerRef.current)
-          timerRef.current = window.setTimeout(() => {
-            setOpen(true)
-          }, 150)
-        }}
-      >
-        Single Toast
-      </Button>
-      <Toast
-        onOpenChange={setOpen}
-        open={open}
-        transition="100ms"
-        enterStyle={{ x: -20, opacity: 0 }}
-        exitStyle={{ x: -20, opacity: 0 }}
-        opacity={1}
-        x={0}
-      >
-        <Toast.Title>Subscribed!</Toast.Title>
-        <Toast.Description>We'll be in touch.</Toast.Description>
-      </Toast>
-    </YStack>
-  )
-}
+<Toaster disableNative />
 ```
 
-#### Multiple Toasts
-
-<Notice>
-  To use multiple toasts, you should pass `multipleToasts` to your `ToastViewport`.
-  Otherwise there'll be issues when swipe-dismissing or animating toasts.
-</Notice>
+## Types
 
 ```tsx
-export default () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+import type {
+  ToastT,
+  ToastType,
+  ToasterPosition,
+  ExternalToast,
+  PromiseData,
+  ToastAction,
+  SwipeDirection,
+} from '@tamagui/toast'
 
-  return (
-    <YStack ai="center">
-      <Button
-        onPress={() => {
-          setSavedCount((old) => old + 1)
-        }}
-      >
-        Show toast
-      </Button>
-      {[...Array(savedCount)].map((_, index) => (
-        <Toast
-          key={index}
-          transition="100ms"
-          enterStyle={{ x: -20, opacity: 0 }}
-          exitStyle={{ x: -20, opacity: 0 }}
-          opacity={1}
-          x={0}
-        >
-          <Toast.Title>Subscribed!</Toast.Title>
-          <Toast.Description>We'll be in touch.</Toast.Description>
-        </Toast>
-      ))}
-    </YStack>
-  )
-}
+// ToastType
+type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info' | 'loading'
+
+// ToasterPosition
+type ToasterPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right'
+
+// SwipeDirection
+type SwipeDirection = 'left' | 'right' | 'up' | 'down' | 'horizontal' | 'vertical'
 ```
+
+## Notes
+
+For Android, you may need to manually re-propagate context when using toasts in modals. This is because React Native doesn't fully support portals yet.
+
+On web, the `Toaster` component automatically renders into a portal at the root level. On native, toasts render inline but are positioned absolutely.

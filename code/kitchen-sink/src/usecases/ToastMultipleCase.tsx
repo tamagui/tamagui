@@ -17,7 +17,6 @@ const positions: ToasterPosition[] = [
 
 export function ToastMultipleCase() {
   const [position, setPosition] = React.useState<ToasterPosition>('bottom-right')
-  const [richColors, setRichColors] = React.useState(true)
   const [closeButton, setCloseButton] = React.useState(true)
   const [expand, setExpand] = React.useState(false)
 
@@ -25,7 +24,6 @@ export function ToastMultipleCase() {
     <YStack flex={1} gap="$4" padding="$4">
       <Toaster
         position={position}
-        richColors={richColors}
         closeButton={closeButton}
         expand={expand}
         visibleToasts={4}
@@ -42,7 +40,7 @@ export function ToastMultipleCase() {
             <Button
               key={pos}
               size="$2"
-              theme={position === pos ? 'active' : undefined}
+              theme={position === pos ? 'blue' : undefined}
               onPress={() => setPosition(pos)}
             >
               {pos}
@@ -57,21 +55,14 @@ export function ToastMultipleCase() {
       <XStack gap="$4" flexWrap="wrap">
         <Button
           size="$3"
-          theme={richColors ? 'active' : undefined}
-          onPress={() => setRichColors(!richColors)}
-        >
-          Rich Colors: {richColors ? 'On' : 'Off'}
-        </Button>
-        <Button
-          size="$3"
-          theme={closeButton ? 'active' : undefined}
+          theme={closeButton ? 'blue' : undefined}
           onPress={() => setCloseButton(!closeButton)}
         >
           Close Button: {closeButton ? 'On' : 'Off'}
         </Button>
         <Button
           size="$3"
-          theme={expand ? 'active' : undefined}
+          theme={expand ? 'blue' : undefined}
           onPress={() => setExpand(!expand)}
         >
           Always Expand: {expand ? 'On' : 'Off'}
