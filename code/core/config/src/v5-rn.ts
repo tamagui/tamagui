@@ -111,3 +111,5 @@ export const animationsReactNative = createAnimations({
     stiffness: 750,
   },
 })
+
+export const animations = animationsReactNative

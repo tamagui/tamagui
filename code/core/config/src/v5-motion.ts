@@ -105,3 +105,5 @@ export const animationsMotion = createAnimations({
     stiffness: 600,
   },
 })
+
+export const animations = animationsMotion
