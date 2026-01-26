@@ -59,35 +59,43 @@ export function useEvents(
   }
 
   // avoid hooks/reparenting
-  const enabled = Boolean(hasPressEvents || stateRef.current.hasHadEvents)
+  const everEnabled = Boolean(hasPressEvents || stateRef.current.hasHadEvents)
 
-  // rngh path
-  if (gh.isEnabled && enabled) {
-    // RNGH path - return gesture for wrapping
-    // store callbacks in refs so gesture doesn't need to be recreated on every render
+  // rngh
+  // gh.isEnabled - set once before app load - never changes
+  if (gh.isEnabled) {
     const callbacksRef = useRef<any>({})
-    callbacksRef.current = hasPressEvents
-      ? {
-          onPressIn: events.onPressIn,
-          onPressOut: events.onPressOut,
-          onPress: events.onPress,
-          onLongPress: events.onLongPress,
-        }
-      : {}
-
-    // only create gesture once, callbacks are read from ref
     const gestureRef = useRef<any>(null)
-    if (!gestureRef.current) {
-      gestureRef.current = gh.createPressGesture({
-        onPressIn: (e: any) => callbacksRef.current.onPressIn?.(e),
-        onPressOut: (e: any) => callbacksRef.current.onPressOut?.(e),
-        onPress: (e: any) => callbacksRef.current.onPress?.(e),
-        onLongPress: (e: any) => callbacksRef.current.onLongPress?.(e),
-        delayLongPress: events.delayLongPress,
-        hitSlop: viewProps.hitSlop,
-      })
+
+    if (everEnabled) {
+      // store callbacks in refs so gesture doesn't need to be recreated on every render
+      callbacksRef.current = hasPressEvents
+        ? {
+            onPressIn: events.onPressIn,
+            onPressOut: events.onPressOut,
+            onPress: events.onPress,
+            onLongPress: events.onLongPress,
+          }
+        : {}
+
+      // only create gesture once, callbacks are read from ref
+      if (!gestureRef.current) {
+        gestureRef.current = gh.createPressGesture({
+          onPressIn: (e: any) => callbacksRef.current.onPressIn?.(e),
+          onPressOut: (e: any) => callbacksRef.current.onPressOut?.(e),
+          onPress: (e: any) => callbacksRef.current.onPress?.(e),
+          onLongPress: (e: any) => callbacksRef.current.onLongPress?.(e),
+          delayLongPress: events.delayLongPress,
+          hitSlop: viewProps.hitSlop,
+        })
+      }
+      // TODO update viewProps.hitSlop / events.delayLongPress!
+
+      return gestureRef.current
     }
-    return gestureRef.current
+
+    // don't fall through to useMainThreadPressEvents
+    return null
   }
 
   // fallback - use usePressability when RNGH not enabled
