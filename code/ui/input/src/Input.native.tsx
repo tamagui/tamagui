@@ -1,7 +1,8 @@
 import React from 'react'
 import { TextInput, type TextInputProps as RNTextInputProps } from 'react-native'
-import { styled, useComposedRefs, useTheme, getTokenValue } from '@tamagui/core'
+import { styled, useTheme, getTokenValue } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
+import { useNativeInputRef } from '@tamagui/element'
 import { styledBody } from './shared'
 import type { InputProps } from './types'
 
@@ -104,9 +105,8 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     ...rest
   } = props
 
-  const ref = React.useRef<any>(null)
+  const { ref, composedRef } = useNativeInputRef(forwardedRef)
   const theme = useTheme()
-  const composedRefs = useComposedRefs<any>(forwardedRef, ref)
 
   // Convert web type to native props (if not explicitly overridden)
   let secureTextEntry = secureTextEntryProp ?? false
@@ -294,5 +294,5 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     showSoftInputOnFocus,
   }
 
-  return <StyledInput ref={composedRefs} {...finalProps} />
+  return <StyledInput ref={composedRef} {...finalProps} />
 })

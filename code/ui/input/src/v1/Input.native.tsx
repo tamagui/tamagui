@@ -1,6 +1,7 @@
 import React from 'react'
-import { styled, useComposedRefs } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
+import { useNativeInputRef } from '@tamagui/element'
 
 import type { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import { TextInput } from 'react-native'
@@ -40,9 +41,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     ...rest
   } = inProps
 
-  const ref = React.useRef<HTMLInputElement>(null)
-
-  const composedRefs = useComposedRefs<any>(forwardedRef, ref)
+  const { ref, composedRef } = useNativeInputRef(forwardedRef)
 
   // TODO: later move most of the logic to the core package
 
@@ -150,5 +149,5 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
       focus: () => {},
     })
   }, [id, disabled])
-  return <StyledInput onChange={(e) => {}} ref={composedRefs} {...finalProps} />
+  return <StyledInput onChange={(e) => {}} ref={composedRef} {...finalProps} />
 })
