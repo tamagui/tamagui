@@ -258,6 +258,27 @@ Popover.Arrow can be used to show an arrow that points at the Trigger element.
 In order for the Arrow to show you must have a Trigger element within your
 Popover. Arrows extend YStack, see [Stacks](/docs/components/stacks).
 
+<PropsTable
+  data={[
+    {
+      name: 'animatePosition',
+      type: 'boolean',
+      description:
+        'Enable smooth animation when the arrow position changes.',
+    },
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      description: 'Size of the arrow.',
+    },
+    {
+      name: 'offset',
+      type: 'number',
+      description: 'Offset from the content edge.',
+    },
+  ]}
+/>
+
 ### Popover.Trigger
 
 Used to trigger opening of the popover when uncontrolled, just renders a YStack,
@@ -271,10 +292,10 @@ Extends PopperContent which extends SizableStack which extends a YStack (see
 <PropsTable
   data={[
     {
-      name: 'enableAnimationForPositionChange',
-      type: 'boolean',
+      name: 'animatePosition',
+      type: "boolean | 'even-when-repositioning'",
       description:
-        'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.',
+        'Enable smooth animation when the content position changes (e.g., when flipping sides).',
     },
     {
       name: 'size',

@@ -546,7 +546,7 @@ function TooltipBadge() {
         </Button>
       </Tooltip.Trigger>
       <Tooltip.Content
-        enableAnimationForPositionChange
+        animatePosition
         transition="quick"
         bg="$background"
         elevation="$2"

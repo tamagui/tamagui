@@ -217,7 +217,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               theme="teal"
               boxShadow="inset 0 -2px 0 1px $color2"
             >
-              <Span y={-2}>v2 RC</Span>
+              <Span fontSize="$2" y={-2}>
+                v2 RC
+              </Span>
             </Button>
           </Link>
         </Theme>
@@ -573,16 +575,14 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       onMouseLeave={() => {
         isOnMenu = false
       }}
-      enableAnimationForPositionChange
+      animatePosition
       transition="medium"
-      bg="$color3"
+      bg="$background06"
       backdropFilter="blur(40px)"
       maxH="90vh"
       maxW={360}
       minW={360}
       elevation="$2"
-      borderWidth={3}
-      borderColor="$color2"
       p={0}
       rounded="$6"
       opacity={1}
@@ -596,7 +596,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         opacity: 0,
       }}
     >
-      <Popover.Arrow bg="$color3" size="$3.5" />
+      <Popover.Arrow transition="medium" animatePosition bg="$background06" size="$4" />
 
       {pointerFine ? (
         <YStack

@@ -52,7 +52,7 @@ export const PromoLinksRow = () => {
         </XGroup>
 
         <Tooltip.Content
-          enableAnimationForPositionChange
+          animatePosition
           transition="quick"
           bg="$background"
           elevation="$2"
