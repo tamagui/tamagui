@@ -7,10 +7,8 @@ tags:
     element: 'Toast'
     centerElement: true
 - tapOn: 'Toast'
-- assertVisible: 'Show'
-# Switch to native toast mode which works on iOS
-- tapOn: 'Native'
-# Test: tap show, native toast appears
-- tapOn: 'Show'
-# Native iOS toast shows brief alert - just verify it was tapped
-# The native toast is handled by the system, not rendered as React component
+# Toast v2 demo has Default, Success, Error, Action buttons
+- assertVisible: 'Default'
+# Test: tap default to show a toast
+- tapOn: 'Default'
+# Toast should appear (but may dismiss quickly)

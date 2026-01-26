@@ -49,11 +49,21 @@ test.describe('Enter/Exit Transition Props', () => {
       type: 'useCase',
     })
     // wait for initial render and any enter animations to complete
-    await page.waitForTimeout(1000)
+    // use longer timeout for CI environments which can be slower
+    await page.waitForTimeout(1500)
   })
 
   test('scenario 42: different enter/exit transitions - enter uses slow animation', async ({ page }) => {
     expect(await elementExists(page, 'scenario-42-target'), 'Initially visible').toBe(true)
+    // wait for initial enter animation to complete (500ms animation + settling time)
+    await page.waitForFunction(
+      (testId) => {
+        const el = document.querySelector(`[data-testid="${testId}"]`)
+        return el && Number.parseFloat(getComputedStyle(el).opacity) >= 0.95
+      },
+      'scenario-42-target',
+      { timeout: 3000 }
+    )
     expect(await getOpacity(page, 'scenario-42-target'), 'Initial opacity').toBeCloseTo(1, 1)
 
     // hide then show to test enter animation (enter=500ms)
