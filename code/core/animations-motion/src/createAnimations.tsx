@@ -262,9 +262,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // Only apply this fix when:
               // 1. There's a running animation
               // 2. The transform change is POSITION-ONLY (just translate, no scale/rotate/skew)
-              // 3. enableAnimationForPositionChange is being used (Popper/Tooltip pattern)
+              // 3. animatePosition is being used (Popper/Tooltip pattern)
               // This fixes tooltip position jumping without breaking AnimatePresence scale/rotate animations
-              // NOTE: We check for enableAnimationForPositionChange to avoid this fix causing jitter
+              // NOTE: We check for animatePosition to avoid this fix causing jitter
               // on components like the TAMAGUI logo dot indicator which also use translate-only transforms
 
               const isRunning = controls.current?.state === 'running'
@@ -277,18 +277,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 targetTransform.includes('translate') &&
                 !nonPositionTransformRe.test(targetTransform)
 
-              // Position fix for Popper/Tooltip elements with enableAnimationForPositionChange.
+              // Position fix for Popper/Tooltip elements with animatePosition.
               // Only apply when:
               // 1. Animation is actively running
               // 2. Transform is position-only (translate without scale/rotate/etc)
               // 3. Element has data-popper-animate-position attribute (set by Popper when
-              //    enableAnimationForPositionChange is true)
+              //    animatePosition is true)
               //
               // The issue: when a Popper animation is interrupted mid-flight, motion's
               // animate() may start from wrong position causing jumps to origin.
               //
               // Why check data-popper-animate-position: This attribute is ONLY set on Popper
-              // elements that explicitly use enableAnimationForPositionChange. Regular
+              // elements that explicitly use animatePosition. Regular
               // components like the logo Circle don't have this attribute, so they won't
               // get this fix applied (which would cause jitter due to getComputedStyle
               // overhead on rapid updates).
