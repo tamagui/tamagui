@@ -4,8 +4,8 @@ import { setupPage } from './test-utils'
 /**
  * ENTER/EXIT TRANSITION TESTS
  *
- * Tests the transition prop's enter/exit-specific animations.
- * Supports syntax like: transition={{ enter: 'lazy', exit: 'quick' }}
+ * Tests the transition prop's enter/exit-specific animations using timing animations.
+ * Supports syntax like: transition={{ enter: '500ms', exit: '100ms' }}
  *
  * These tests run across all animation drivers (css, native, reanimated, motion).
  */
@@ -18,20 +18,6 @@ async function getOpacity(page: Page, testId: string): Promise<number> {
       const el = document.querySelector(`[data-testid="${id}"]`)
       if (!el) return -1
       return Number.parseFloat(getComputedStyle(el).opacity)
-    },
-    testId
-  )
-}
-
-async function getScale(page: Page, testId: string): Promise<number> {
-  return page.evaluate(
-    (id) => {
-      const el = document.querySelector(`[data-testid="${id}"]`)
-      if (!el) return -1
-      const transform = getComputedStyle(el).transform
-      if (transform === 'none') return 1
-      const match = transform.match(/matrix\(([^,]+),/)
-      return match ? Number.parseFloat(match[1]) : 1
     },
     testId
   )
@@ -63,272 +49,195 @@ test.describe('Enter/Exit Transition Props', () => {
       type: 'useCase',
     })
     // wait for initial render and any enter animations to complete
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(1000)
   })
 
   test('scenario 42: different enter/exit transitions - enter uses slow animation', async ({ page }) => {
-    // initial state: element is visible
     expect(await elementExists(page, 'scenario-42-target'), 'Initially visible').toBe(true)
-    // use precision 0 (within 0.5) - CI timing causes animation to not fully settle
-    expect(await getOpacity(page, 'scenario-42-target'), 'Initial opacity').toBeCloseTo(1, 0)
+    expect(await getOpacity(page, 'scenario-42-target'), 'Initial opacity').toBeCloseTo(1, 1)
 
-    // hide element, then show again to test enter animation
+    // hide then show to test enter animation (enter=500ms)
     await page.getByTestId('scenario-42-trigger').click()
-    // spring animations can take longer to settle, especially with reanimated
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(300) // exit=100ms + buffer
 
     expect(await elementExists(page, 'scenario-42-target'), 'Hidden').toBe(false)
 
-    // show element - enter animation should be slow (lazy ~500ms)
     await page.getByTestId('scenario-42-trigger').click()
-
-    // wait a bit for element to appear and start animating
-    await page.waitForTimeout(100)
+    await page.waitForTimeout(50)
     expect(await elementExists(page, 'scenario-42-target'), 'Should appear').toBe(true)
 
-    // at 200ms into a 500ms lazy animation, should still be animating
     await page.waitForTimeout(150)
     const midEnterOpacity = await getOpacity(page, 'scenario-42-target')
 
-    // if enter uses lazy (slow), at 250ms total the animation should still be in progress
-    // opacity should be intermediate between 0 (enterStyle) and 1 (final)
     expect(
-      isIntermediate(midEnterOpacity, 0, 1) || midEnterOpacity < 0.9,
-      `Mid-enter opacity (${midEnterOpacity.toFixed(2)}) should be animating (lazy animation)`
+      isIntermediate(midEnterOpacity, 0, 1),
+      `Mid-enter opacity (${midEnterOpacity.toFixed(2)}) should be intermediate at 200ms into 500ms`
     ).toBe(true)
 
-    // wait for enter animation to complete
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(500)
     expect(await getOpacity(page, 'scenario-42-target'), 'Final opacity').toBeCloseTo(1, 1)
   })
 
-  test('scenario 42: different enter/exit transitions - exit uses fast animation', async ({ page }, testInfo) => {
-    const driver = (testInfo.project?.metadata as any)?.animationDriver
-
-    // initial state: element is visible
+  test('scenario 42: different enter/exit transitions - exit uses fast animation', async ({ page }) => {
     expect(await elementExists(page, 'scenario-42-target'), 'Initially visible').toBe(true)
-    // use precision 0 (within 0.5) - CI timing causes animation to not fully settle
-    expect(await getOpacity(page, 'scenario-42-target'), 'Initial opacity').toBeCloseTo(1, 0)
 
-    // trigger exit - should use quick animation (css: 100ms, spring: ~150-200ms)
+    // trigger exit (exit=100ms - fast)
     await page.getByTestId('scenario-42-trigger').click()
+    await page.waitForTimeout(300) // 100ms + buffer
 
-    // verify exit completes reasonably fast
-    // css: quick is 100ms, should complete well under 500ms
-    // spring: quick with stiffness=250 settles in ~200-500ms
-    if (driver === 'css') {
-      // CSS quick is 100ms - should be gone within 300ms (allowing some buffer)
-      await page.waitForTimeout(300)
-      expect(await elementExists(page, 'scenario-42-target'), 'Gone after CSS quick exit').toBe(false)
-    } else {
-      // spring drivers take longer but should still be "quick"
-      // check element is animating at 50ms
-      await page.waitForTimeout(50)
-      const exists = await elementExists(page, 'scenario-42-target')
-      if (exists) {
-        const midOpacity = await getOpacity(page, 'scenario-42-target')
-        // just verify it's started changing or check later
-        expect(midOpacity <= 1.0, `Spring opacity should be <= 1.0`).toBe(true)
-      }
-      // wait for exit to complete (spring animations need time to settle)
-      await page.waitForTimeout(1500)
-      expect(await elementExists(page, 'scenario-42-target'), 'Gone after spring quick exit').toBe(false)
-    }
+    expect(await elementExists(page, 'scenario-42-target'), 'Gone after fast exit').toBe(false)
   })
 
   test('scenario 43: enter-only transition - enter uses specified, exit uses default', async ({ page }) => {
-    // hide first (spring animations need more time)
+    // enter=500ms, exit uses default=100ms
+    expect(await elementExists(page, 'scenario-43-target'), 'Initially visible').toBe(true)
+
+    // hide - uses default=100ms (fast)
     await page.getByTestId('scenario-43-trigger').click()
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(300)
     expect(await elementExists(page, 'scenario-43-target'), 'Hidden').toBe(false)
 
-    // show - enter should use lazy (slow)
+    // show - uses enter=500ms (slow)
     await page.getByTestId('scenario-43-trigger').click()
-    await page.waitForTimeout(100)
-    expect(await elementExists(page, 'scenario-43-target'), 'Should appear').toBe(true)
-
-    // at 250ms into lazy animation, should still be animating
-    await page.waitForTimeout(150)
+    await page.waitForTimeout(200)
     const midOpacity = await getOpacity(page, 'scenario-43-target')
 
     expect(
-      isIntermediate(midOpacity, 0, 1) || midOpacity < 0.9,
-      `Mid-enter opacity (${midOpacity.toFixed(2)}) should be intermediate (lazy)`
+      isIntermediate(midOpacity, 0, 1),
+      `Enter opacity (${midOpacity.toFixed(2)}) should be intermediate at 200ms into 500ms`
     ).toBe(true)
 
-    // wait for completion
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(500)
     expect(await getOpacity(page, 'scenario-43-target'), 'Final').toBeCloseTo(1, 1)
   })
 
-  test('scenario 44: exit-only transition - exit uses specified lazy (slow)', async ({ page }, testInfo) => {
-    const driver = (testInfo.project?.metadata as any)?.animationDriver
-
-    // element starts visible
+  test('scenario 44: exit-only transition - exit uses specified 500ms (slow)', async ({ page }) => {
+    // exit=500ms, enter uses default=100ms
     expect(await elementExists(page, 'scenario-44-target'), 'Initially visible').toBe(true)
 
-    // trigger exit - uses lazy (slow)
+    // trigger exit - uses 500ms (slow)
     await page.getByTestId('scenario-44-trigger').click()
 
-    // at 200ms into a lazy animation, should still be in progress
+    // at 200ms into a 500ms animation, should still be in progress
     await page.waitForTimeout(200)
 
-    expect(await elementExists(page, 'scenario-44-target'), 'Still exists during lazy exit').toBe(true)
+    expect(await elementExists(page, 'scenario-44-target'), 'Still exists during 500ms exit').toBe(true)
     const midOpacity = await getOpacity(page, 'scenario-44-target')
 
-    // with lazy exit, opacity should still be intermediate at 200ms
+    // with 500ms exit, opacity should still be intermediate at 200ms
     expect(
-      isIntermediate(midOpacity, 1, 0) || midOpacity > 0.1,
-      `Mid-exit opacity (${midOpacity.toFixed(2)}) should be intermediate (lazy exit)`
+      isIntermediate(midOpacity, 1, 0),
+      `Mid-exit opacity (${midOpacity.toFixed(2)}) should be intermediate at 200ms into 500ms`
     ).toBe(true)
 
-    // wait for full completion - lazy spring has stiffness=50 which is very slow
-    // give it up to 5 seconds total
-    for (let i = 0; i < 10; i++) {
-      await page.waitForTimeout(500)
-      const exists = await elementExists(page, 'scenario-44-target')
-      if (!exists) break
-      if (i === 9) {
-        console.log(`[DEBUG] Element still exists after ${(i + 1) * 500 + 200}ms`)
-      }
-    }
-    expect(await elementExists(page, 'scenario-44-target'), 'Gone after lazy exit').toBe(false)
+    // wait for completion (500ms + buffer)
+    await page.waitForTimeout(500)
+    expect(await elementExists(page, 'scenario-44-target'), 'Gone after 500ms exit').toBe(false)
   })
 
   test('scenario 45: enter/exit/default - property changes use default animation', async ({ page }) => {
-    // element visible, test property change animation (should use lazy default)
+    // enter=300ms, exit=100ms, default=500ms for property changes
     expect(await elementExists(page, 'scenario-45-target'), 'Initially visible').toBe(true)
     const initialOpacity = await getOpacity(page, 'scenario-45-target')
-    // use precision 0 (within 0.5) - CI timing causes animation to not fully settle
-    expect(initialOpacity, 'Initial opacity').toBeCloseTo(1, 0)
+    expect(initialOpacity, 'Initial opacity').toBeCloseTo(1, 1)
 
-    // click prop button to change opacity (not enter/exit, so uses default=lazy)
+    // click prop button to change opacity (not enter/exit, so uses default=500ms)
     await page.getByTestId('scenario-45-trigger-prop').click()
 
-    // at 200ms into lazy (~500ms), should be animating (not at initial value)
-    // note: spring animations can overshoot past target (0.5) before settling,
-    // so we just verify animation has started (opacity changed from initial 1.0)
-    await page.waitForTimeout(200)
+    // at 300ms into 500ms animation, should be intermediate (between 1 and 0.5)
+    await page.waitForTimeout(300)
     const midOpacity = await getOpacity(page, 'scenario-45-target')
 
     expect(
-      midOpacity <= 0.95,
-      `Prop change opacity (${midOpacity.toFixed(2)}) should have started animating`
+      isIntermediate(midOpacity, 1, 0.5),
+      `Prop change opacity (${midOpacity.toFixed(2)}) should be intermediate at 300ms into 500ms animation`
     ).toBe(true)
 
-    // wait for completion - spring settles at target
-    await page.waitForTimeout(1000)
+    // wait for completion (500ms animation + buffer)
+    await page.waitForTimeout(400)
     expect(await getOpacity(page, 'scenario-45-target'), 'Final opacity').toBeCloseTo(0.5, 1)
   })
 
   test('scenario 46: enter/exit with per-property config - opacity uses its own animation', async ({ page }) => {
-    // test that opacity uses lazy regardless of enter/exit setting
-    // hide first (spring animations need more time)
+    // enter=300ms for scale, exit=100ms for scale, but opacity always=500ms
+    // hide first
     await page.getByTestId('scenario-46-trigger').click()
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(700) // opacity=500ms + buffer
 
-    // show - opacity should use lazy (slow) even though enter=bouncy for other props
+    expect(await elementExists(page, 'scenario-46-target'), 'Hidden').toBe(false)
+
+    // show - opacity should use 500ms even though enter=300ms for other props
     await page.getByTestId('scenario-46-trigger').click()
-    await page.waitForTimeout(100)
-    expect(await elementExists(page, 'scenario-46-target'), 'Should appear').toBe(true)
+    await page.waitForTimeout(200)
 
-    // at 200ms, if opacity uses lazy (~500ms), it should still be animating
-    await page.waitForTimeout(150)
     const midOpacity = await getOpacity(page, 'scenario-46-target')
 
-    // opacity with lazy should be slow
+    // at 200ms into 500ms opacity animation, should be intermediate
     expect(
-      isIntermediate(midOpacity, 0, 1) || midOpacity < 0.8,
-      `Opacity (${midOpacity.toFixed(2)}) should use lazy per-property config`
+      isIntermediate(midOpacity, 0, 1),
+      `Mid-enter opacity (${midOpacity.toFixed(2)}) should be intermediate at 200ms into 500ms`
     ).toBe(true)
 
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(500)
     expect(await getOpacity(page, 'scenario-46-target'), 'Final').toBeCloseTo(1, 1)
   })
 
   test('scenario 47: enter/exit with delay - animations start after delay', async ({ page }) => {
-    // hide first (spring animations need more time)
-    await page.getByTestId('scenario-47-trigger').click()
-    await page.waitForTimeout(1500)
-    expect(await elementExists(page, 'scenario-47-target'), 'Hidden').toBe(false)
+    // enter=300ms, exit=100ms, delay=200ms
+    expect(await elementExists(page, 'scenario-47-target'), 'Initially visible').toBe(true)
 
-    // show - should have 200ms delay before enter animation starts
+    // trigger exit
     await page.getByTestId('scenario-47-trigger').click()
 
-    // element appears but at 100ms (during delay), should still be at enterStyle values
+    // at 100ms, still within 200ms delay - should still be visible at full opacity
     await page.waitForTimeout(100)
-    expect(await elementExists(page, 'scenario-47-target'), 'Should appear immediately').toBe(true)
+    expect(await elementExists(page, 'scenario-47-target'), 'Still visible during delay').toBe(true)
+    const delayOpacity = await getOpacity(page, 'scenario-47-target')
+    expect(delayOpacity, 'Opacity during delay').toBeGreaterThan(0.8)
 
-    const duringDelayOpacity = await getOpacity(page, 'scenario-47-target')
-    // during 200ms delay, opacity should be near 0 (enterStyle)
-    expect(duringDelayOpacity, 'During delay, should be at enterStyle').toBeLessThan(0.3)
-
-    // after delay + some animation time
-    await page.waitForTimeout(400)
-    const afterDelayOpacity = await getOpacity(page, 'scenario-47-target')
-    // should be animating or completed by now
-    expect(afterDelayOpacity, 'After delay, should be animating').toBeGreaterThan(0.3)
-
-    // wait for full completion
-    await page.waitForTimeout(1000)
-    expect(await getOpacity(page, 'scenario-47-target'), 'Final').toBeCloseTo(1, 1)
+    // wait for delay + animation to complete
+    await page.waitForTimeout(400) // 200ms delay + 100ms exit + buffer
+    expect(await elementExists(page, 'scenario-47-target'), 'Gone after delay + exit').toBe(false)
   })
 
-  test('enter animation timing differs from exit timing', async ({ page }, testInfo) => {
-    /**
-     * This is the core test for the enter/exit feature.
-     * We measure timing to verify enter is slow (lazy) and exit is fast (quick).
-     */
-    const driver = (testInfo.project?.metadata as any)?.animationDriver
+  test('enter animation timing differs from exit timing', async ({ page }) => {
+    // scenario 42 uses enter=500ms, exit=100ms
+    const startTime = Date.now()
 
-    // first hide, then show to measure enter timing (spring animations need more time)
+    // trigger exit
     await page.getByTestId('scenario-42-trigger').click()
-    await page.waitForTimeout(1500)
 
-    // measure enter animation
+    // wait for element to disappear
+    await page.waitForFunction(
+      (testId) => !document.querySelector(`[data-testid="${testId}"]`),
+      'scenario-42-target',
+      { timeout: 5000 }
+    )
+
+    const exitDuration = Date.now() - startTime
+
+    // exit should be fast (100ms + overhead)
+    expect(exitDuration, 'Exit should be fast').toBeLessThan(500)
+
+    // now trigger enter
     const enterStart = Date.now()
     await page.getByTestId('scenario-42-trigger').click()
-    await page.waitForTimeout(50) // give it a moment to appear
 
-    // wait until opacity reaches 0.9 (near complete)
-    let enterDuration = 0
-    for (let i = 0; i < 20; i++) {
-      await page.waitForTimeout(50)
-      const opacity = await getOpacity(page, 'scenario-42-target')
-      if (opacity >= 0.9) {
-        enterDuration = Date.now() - enterStart
-        break
-      }
-    }
+    // wait for element to fully appear
+    await page.waitForTimeout(100)
+    await page.waitForFunction(
+      (testId) => {
+        const el = document.querySelector(`[data-testid="${testId}"]`)
+        if (!el) return false
+        return Number.parseFloat(getComputedStyle(el).opacity) > 0.9
+      },
+      'scenario-42-target',
+      { timeout: 5000 }
+    )
 
-    // now measure exit animation
-    await page.waitForTimeout(200) // ensure enter is complete
-    const exitStart = Date.now()
-    await page.getByTestId('scenario-42-trigger').click()
+    const enterDuration = Date.now() - enterStart
 
-    // wait until element is gone or opacity < 0.1
-    let exitDuration = 0
-    for (let i = 0; i < 20; i++) {
-      await page.waitForTimeout(50)
-      const exists = await elementExists(page, 'scenario-42-target')
-      if (!exists) {
-        exitDuration = Date.now() - exitStart
-        break
-      }
-      const opacity = await getOpacity(page, 'scenario-42-target')
-      if (opacity < 0.1) {
-        exitDuration = Date.now() - exitStart
-        break
-      }
-    }
-
-    // enter (lazy ~500ms) should be significantly slower than exit (quick ~150ms)
-    // we use a ratio check rather than absolute values for cross-driver compatibility
-    if (enterDuration > 0 && exitDuration > 0) {
-      expect(
-        enterDuration > exitDuration * 1.5,
-        `Enter (${enterDuration}ms) should be slower than exit (${exitDuration}ms)`
-      ).toBe(true)
-    }
+    // enter should be slower than exit
+    expect(enterDuration, 'Enter should be slower than exit').toBeGreaterThan(exitDuration)
   })
 })
