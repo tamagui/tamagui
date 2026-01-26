@@ -26,14 +26,14 @@ export function V5ThemeBuilderOutput() {
         <XStack gap="$2">
           <Theme name="light">
             <Theme name="accent">
-              <Button testID="button-accent-light" backgroundColor="$background" color="$color">
+              <Button testID="button-accent-light" backgroundColor="$background">
                 Accent Light
               </Button>
             </Theme>
           </Theme>
           <Theme name="dark">
             <Theme name="accent">
-              <Button testID="button-accent-dark" backgroundColor="$background" color="$color">
+              <Button testID="button-accent-dark" backgroundColor="$background">
                 Accent Dark
               </Button>
             </Theme>

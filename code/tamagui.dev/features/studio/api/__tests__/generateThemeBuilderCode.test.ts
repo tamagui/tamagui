@@ -16,7 +16,7 @@ describe('generateThemeBuilderCode', () => {
     })
 
     // Should use v5 API
-    expect(code).toContain("import { createV5Theme")
+    expect(code).toContain('import { createV5Theme')
     expect(code).toContain("from '@tamagui/config/v5'")
     expect(code).toContain('createV5Theme({')
   })
@@ -59,7 +59,9 @@ describe('generateThemeBuilderCode', () => {
     })
 
     // Should import Radix colors
-    expect(code).toContain("import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'")
+    expect(code).toContain(
+      "import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'"
+    )
 
     // Should include semantic themes
     expect(code).toContain('warning: {')
