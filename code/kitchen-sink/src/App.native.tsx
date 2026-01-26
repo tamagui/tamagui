@@ -17,7 +17,7 @@ if (launchArgs.disableGestureHandler) {
 }
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { ToastViewport } from '@tamagui/sandbox-ui'
+import { Toaster } from '@tamagui/toast'
 import { useFonts } from 'expo-font'
 import React from 'react'
 import { Appearance, LogBox, useColorScheme } from 'react-native'
@@ -74,7 +74,7 @@ export default function App() {
           <ThemeContext.Provider value={themeContext}>
             <Provider defaultTheme={resolvedTheme as any}>
               <Navigation />
-              <SafeToastViewport />
+              <SafeToaster />
             </Provider>
           </ThemeContext.Provider>
         </SafeAreaProvider>
@@ -83,17 +83,7 @@ export default function App() {
   )
 }
 
-const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
-  return (
-    <>
-      <ToastViewport
-        flexDirection="column-reverse"
-        top={top}
-        left={left}
-        right={right}
-        mx="auto"
-      />
-    </>
-  )
+const SafeToaster = () => {
+  const { top } = useSafeAreaInsets()
+  return <Toaster position="top-center" offset={{ top }} />
 }
