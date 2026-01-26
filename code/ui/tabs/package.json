@@ -39,10 +39,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
+    "@tamagui/element": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/group": "workspace:*",
     "@tamagui/helpers": "workspace:*",
