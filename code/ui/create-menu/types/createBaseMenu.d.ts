@@ -166,7 +166,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         };
         Content: React.ForwardRefExoticComponent<MenuContentProps & {
             scope?: string;
-        } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+        } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
         Group: TamaguiComponent<Omit<any, keyof MenuGroupProps> & MenuGroupProps, any, MenuGroupProps, {}, {}, {}>;
         Label: TamaguiComponent<Omit<any, keyof MenuLabelProps> & MenuLabelProps, any, MenuLabelProps, {}, {}, {}>;
         Item: React.ForwardRefExoticComponent<MenuItemProps & {
@@ -196,7 +196,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         } & React.RefAttributes<TamaguiElement>>;
         SubContent: React.ForwardRefExoticComponent<MenuSubContentProps & {
             scope?: string;
-        } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+        } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
         ItemTitle: TamaguiComponent<Omit<any, keyof MenuItemTitleProps> & MenuItemTitleProps, any, MenuItemTitleProps, {}, {}, {}>;
         ItemSubtitle: TamaguiComponent<Omit<any, keyof MenuItemSubTitleProps> & MenuItemSubTitleProps, any, MenuItemSubTitleProps, {}, {}, {}>;
         ItemImage: React.ForwardRefExoticComponent<ImageProps & React.RefAttributes<Image>>;

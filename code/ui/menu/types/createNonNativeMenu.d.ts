@@ -57,7 +57,7 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     };
     Content: React.ForwardRefExoticComponent<MenuContentProps & {
         scope?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
     Group: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuGroupProps> & BaseMenuTypes.MenuGroupProps, any, BaseMenuTypes.MenuGroupProps, {}, {}, {}>;
     Label: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuLabelProps> & BaseMenuTypes.MenuLabelProps, any, BaseMenuTypes.MenuLabelProps, {}, {}, {}>;
     Item: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuItemProps & {
@@ -110,9 +110,9 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
     SubContent: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>, "ref"> & {
+    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>, "ref"> & {
         scope?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
     ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuItemTitleProps> & BaseMenuTypes.MenuItemTitleProps, any, BaseMenuTypes.MenuItemTitleProps, {}, {}, {}>;
     ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuItemSubTitleProps> & BaseMenuTypes.MenuItemSubTitleProps, any, BaseMenuTypes.MenuItemSubTitleProps, {}, {}, {}>;
     ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;

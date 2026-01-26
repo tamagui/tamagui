@@ -57,7 +57,7 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
     };
     Content: React.ForwardRefExoticComponent<ContextMenuContentProps & {
         scope?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
     Group: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuGroupProps> & BaseMenuTypes.MenuGroupProps, any, BaseMenuTypes.MenuGroupProps, {}, {}, {}>;
     Label: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuLabelProps> & BaseMenuTypes.MenuLabelProps, any, BaseMenuTypes.MenuLabelProps, {}, {}, {}>;
     Item: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuItemProps & {
@@ -110,9 +110,9 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
     SubContent: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>, "ref"> & {
+    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>, "ref"> & {
         scope?: string;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
     ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuItemTitleProps> & BaseMenuTypes.MenuItemTitleProps, any, BaseMenuTypes.MenuItemTitleProps, {}, {}, {}>;
     ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<any, keyof BaseMenuTypes.MenuItemSubTitleProps> & BaseMenuTypes.MenuItemSubTitleProps, any, BaseMenuTypes.MenuItemSubTitleProps, {}, {}, {}>;
     ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<any, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, any, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, {}, {}, {}>;
