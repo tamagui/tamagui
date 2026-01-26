@@ -12,7 +12,10 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
     textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
     textTransform?: "unset" | "none" | "capitalize" | "uppercase" | "lowercase" | undefined;
-} & import("./InputNativeProps").InputNativeProps & {
+} & Omit<import("./InputNativeProps").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
+    autoCorrect?: boolean | "on" | "off";
+    autoCapitalize?: "none" | "sentences" | "words" | "characters" | "off" | "on";
+    spellCheck?: boolean;
     rows?: number;
     placeholderTextColor?: import("@tamagui/web").ColorTokens;
     selectionColor?: import("@tamagui/web").ColorTokens;

@@ -6,7 +6,11 @@ import type { InputNativeProps } from './InputNativeProps';
  */
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 type InputTextStyleProps = Pick<TextStyle, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
-export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps> & InputTextStyleProps & InputNativeProps & {
+type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck';
+export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps> & InputTextStyleProps & Omit<InputNativeProps, OverlappingNativeProps> & {
+    autoCorrect?: boolean | 'on' | 'off';
+    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
+    spellCheck?: boolean;
     /**
      * Rows for textarea (when render="textarea")
      */

@@ -22,13 +22,20 @@ type InputTextStyleProps = Pick<
   | 'textTransform'
 >
 
+// props that have different types on web vs native and need cross-platform definitions
+type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck'
+
 export type InputProps = ViewProps &
   Omit<
     HTMLInputProps,
     'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps
   > &
   InputTextStyleProps &
-  InputNativeProps & {
+  Omit<InputNativeProps, OverlappingNativeProps> & {
+    // cross-platform props with unified types (web string | native boolean/enum)
+    autoCorrect?: boolean | 'on' | 'off'
+    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on'
+    spellCheck?: boolean
     // Core HTML input props are inherited from HTMLInputProps:
     // type, value, defaultValue, placeholder, disabled, readOnly,
     // onChange, onFocus, onBlur, onInput, autoComplete, autoFocus,
