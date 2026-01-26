@@ -117,3 +117,20 @@ export const Paragraph = styled(SizableText, {
   during SSR. If you don't mind rendering to a span, use `SizableText`, otherwise, be
   careful when nesting items inside a Paragraph.
 </Notice>
+
+## Inline Text Elements
+
+For semantic inline text styling, `@tamagui/text` exports `Strong`, `Em`, and `Span`:
+
+```tsx
+import { Strong, Em, Span, Paragraph } from '@tamagui/text'
+
+export default () => (
+  <Paragraph>
+    This is <Strong>bold text</Strong>, this is <Em>italic text</Em>,
+    and this is a <Span color="$blue10">colored span</Span>.
+  </Paragraph>
+)
+```
+
+These render to their corresponding HTML elements (`<strong>`, `<em>`, `<span>`) on web while remaining compatible with React Native.
