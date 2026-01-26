@@ -1,7 +1,7 @@
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
 import { listingData } from '~/components/bento-showcase/data'
 import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
-import { useToastController } from '@tamagui/toast'
+import { toast } from '@tamagui/toast'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
 import { startTransition } from 'react'
@@ -39,7 +39,6 @@ function useParts() {
 export default function BentoPage() {
   const { section, part } = useParts()
   const Comp = Sections?.[section]?.[part]
-  const toast = useToastController()
 
   const { showAppropriateModal, subscriptionStatus, userData } = useSubscriptionModal()
 
@@ -72,7 +71,7 @@ export default function BentoPage() {
                             `${window.location.hostname}/bento#${sectionName}`
                           )
 
-                          toast.show('Link copied to clipboard')
+                          toast('Link copied to clipboard')
                         }}
                         gap="$2"
                         items="center"

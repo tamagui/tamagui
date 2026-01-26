@@ -1,5 +1,5 @@
 import { Code, Eye, Info, Link, Lock, Minus, Plus } from '@tamagui/lucide-icons'
-import { useToastController } from '@tamagui/toast'
+import { toast } from '@tamagui/toast'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { SizeTokens, ThemeName } from 'tamagui'
 
@@ -67,9 +67,6 @@ const ShowcaseView = forwardRef<any, Props>(
     ref
   ) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
-    // const [theme, setTheme] = useState
-    // const [phoneFocused, setPhoneFocused] = useState(false)
-    const toast = useToastController()
 
     const { section, part } = useCurrentRouteParams()
 
@@ -143,7 +140,7 @@ const ShowcaseView = forwardRef<any, Props>(
                   navigator?.clipboard?.writeText?.(
                     window.location.href.split('#')[0] + `#${fileName}`
                   )
-                  toast.show('Link copied to clipboard')
+                  toast('Link copied to clipboard')
                 }}
               >
                 <Button.Icon>
