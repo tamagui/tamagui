@@ -1273,8 +1273,9 @@ function Scenario41_PerPropertyWithDelay() {
 
 // ============================================================================
 // SCENARIO 42: Different Enter/Exit Transitions
-// Tests: transition={{ enter: 'lazy', exit: 'quick' }}
-// Enter animation should be slow (lazy), exit should be fast (quick)
+// Tests: transition={{ enter: '500ms', exit: '100ms' }}
+// Enter animation should be slow (500ms), exit should be fast (100ms)
+// Using timing animations for predictable test behavior across all drivers
 // ============================================================================
 function Scenario42_TransitionEnterExit() {
   const [visible, setVisible] = useState(true)
@@ -1292,8 +1293,8 @@ function Scenario42_TransitionEnterExit() {
           <Square
             key="enter-exit-42"
             ref={ref as any}
-            // enter should be slow (lazy ~500ms), exit should be fast (quick ~150ms)
-            transition={{ enter: 'lazy', exit: 'quick' } as any}
+            // enter=500ms (slow), exit=100ms (fast)
+            transition={{ enter: '500ms', exit: '100ms' } as any}
             size={40}
             bg="$blue10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
@@ -1302,15 +1303,16 @@ function Scenario42_TransitionEnterExit() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=lazy, exit=quick)</Paragraph>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=500ms, exit=100ms)</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 43: Enter Transition Only (exit uses default)
-// Tests: transition={{ enter: 'lazy', default: 'quick' }}
-// Enter uses lazy, exit/other uses quick
+// Tests: transition={{ enter: '500ms', default: '100ms' }}
+// Enter uses 500ms (slow), exit/other uses default 100ms (fast)
+// Using timing animations for predictable test behavior across all drivers
 // ============================================================================
 function Scenario43_TransitionEnterOnly() {
   const [visible, setVisible] = useState(true)
@@ -1328,8 +1330,8 @@ function Scenario43_TransitionEnterOnly() {
           <Square
             key="enter-only-43"
             ref={ref as any}
-            // enter=lazy, exit falls back to default=quick
-            transition={{ enter: 'lazy', default: 'quick' } as any}
+            // enter=500ms, exit falls back to default=100ms
+            transition={{ enter: '500ms', default: '100ms' } as any}
             size={40}
             bg="$green10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
@@ -1338,15 +1340,16 @@ function Scenario43_TransitionEnterOnly() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=lazy, default=quick)</Paragraph>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=500ms, default=100ms)</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 44: Exit Transition Only (enter uses default)
-// Tests: transition={{ exit: 'lazy', default: 'quick' }}
-// Exit uses lazy, enter/other uses quick
+// Tests: transition={{ exit: '500ms', default: '100ms' }}
+// Exit uses 500ms (slow), enter/other uses default 100ms (fast)
+// Using timing animations for predictable test behavior across all drivers
 // ============================================================================
 function Scenario44_TransitionExitOnly() {
   const [visible, setVisible] = useState(true)
@@ -1364,8 +1367,8 @@ function Scenario44_TransitionExitOnly() {
           <Square
             key="exit-only-44"
             ref={ref as any}
-            // exit=lazy (slow), enter falls back to default=quick (fast)
-            transition={{ exit: 'lazy', default: 'quick' } as any}
+            // exit=500ms (slow), enter falls back to default=100ms (fast)
+            transition={{ exit: '500ms', default: '100ms' } as any}
             size={40}
             bg="$yellow10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
@@ -1374,15 +1377,16 @@ function Scenario44_TransitionExitOnly() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (exit=lazy, default=quick)</Paragraph>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (exit=500ms, default=100ms)</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 45: Enter/Exit with Default Fallback
-// Tests: transition={{ enter: 'bouncy', exit: 'quick', default: 'lazy' }}
-// Enter=bouncy, exit=quick, property changes while visible use lazy
+// Tests: transition={{ enter: '300ms', exit: '100ms', default: '500ms' }}
+// Enter=300ms, exit=100ms, property changes while visible use 500ms
+// Using timing animations for predictable test behavior across all drivers
 // ============================================================================
 function Scenario45_TransitionEnterExitWithDefault() {
   const [visible, setVisible] = useState(true)
@@ -1405,8 +1409,8 @@ function Scenario45_TransitionEnterExitWithDefault() {
           <Square
             key="enter-exit-default-45"
             ref={ref as any}
-            // enter=bouncy, exit=quick, property changes while visible=lazy
-            transition={{ enter: 'bouncy', exit: 'quick', default: 'lazy' } as any}
+            // enter=300ms, exit=100ms, property changes while visible=500ms
+            transition={{ enter: '300ms', exit: '100ms', default: '500ms' } as any}
             size={40}
             bg="$red10"
             opacity={active ? 0.5 : 1}
@@ -1416,15 +1420,16 @@ function Scenario45_TransitionEnterExitWithDefault() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=bouncy, exit=quick, default=lazy)</Paragraph>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, default=500ms)</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 46: Enter/Exit with Per-Property Configs
-// Tests: transition={{ enter: 'bouncy', exit: 'quick', opacity: 'lazy' }}
-// Enter=bouncy, exit=quick, but opacity always uses lazy regardless
+// Tests: transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' }}
+// Enter=300ms for scale, exit=100ms for scale, but opacity always uses 500ms
+// Using timing animations for predictable test behavior across all drivers
 // ============================================================================
 function Scenario46_TransitionEnterExitPerProperty() {
   const [visible, setVisible] = useState(true)
@@ -1442,8 +1447,8 @@ function Scenario46_TransitionEnterExitPerProperty() {
           <Square
             key="enter-exit-per-prop-46"
             ref={ref as any}
-            // enter=bouncy for scale, exit=quick for scale, but opacity always=lazy
-            transition={{ enter: 'bouncy', exit: 'quick', opacity: 'lazy' } as any}
+            // enter=300ms for scale, exit=100ms for scale, but opacity always=500ms
+            transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' } as any}
             size={40}
             bg="$blue10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
@@ -1452,15 +1457,16 @@ function Scenario46_TransitionEnterExitPerProperty() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter/exit + opacity=lazy)</Paragraph>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, opacity=500ms)</Paragraph>
     </XStack>
   )
 }
 
 // ============================================================================
 // SCENARIO 47: Enter/Exit Transitions with Delay
-// Tests: transition={{ enter: 'bouncy', exit: 'quick', delay: 200 }}
-// Both enter and exit have 200ms delay
+// Tests: transition={{ enter: '300ms', exit: '100ms', delay: 200 }}
+// Both enter and exit have 200ms delay before starting
+// Using timing animations for predictable test behavior across all drivers
 // ============================================================================
 function Scenario47_TransitionEnterExitWithDelay() {
   const [visible, setVisible] = useState(true)
@@ -1478,7 +1484,7 @@ function Scenario47_TransitionEnterExitWithDelay() {
           <Square
             key="enter-exit-delay-47"
             ref={ref as any}
-            transition={{ enter: 'bouncy', exit: 'quick', delay: 200 } as any}
+            transition={{ enter: '300ms', exit: '100ms', delay: 200 } as any}
             size={40}
             bg="$color10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
@@ -1487,7 +1493,7 @@ function Scenario47_TransitionEnterExitWithDelay() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=bouncy, exit=quick, delay=200ms)</Paragraph>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, delay=200ms)</Paragraph>
     </XStack>
   )
 }

@@ -14,8 +14,16 @@ import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
 import { themes as generatedV5Themes } from './generatedV5Theme'
 
 export const animationsCSS = createAnimationsCSS({
-  '100ms': 'ease-in 100ms',
-  '1000ms': 'ease-in 1000ms',
+  '0ms': '0ms linear',
+  '50ms': '50ms linear',
+  '75ms': '75ms linear',
+  '100ms': '100ms ease-out',
+  '200ms': '200ms ease-out',
+  '250ms': '250ms ease-out',
+  '300ms': '300ms ease-out',
+  '400ms': '400ms ease-out',
+  '500ms': '500ms ease-out',
+  '1000ms': '1000ms ease-out',
   bouncy: 'ease-in 200ms',
   lazy: 'ease-in 600ms',
   slow: 'ease-in 500ms',
@@ -27,6 +35,12 @@ export const animationsCSS = createAnimationsCSS({
 })
 
 export const animationsMotion = createAnimationsMotion({
+  '0ms': {
+    duration: 0,
+  },
+  '50ms': {
+    duration: 50,
+  },
   '75ms': {
     duration: 75,
   },
@@ -35,6 +49,18 @@ export const animationsMotion = createAnimationsMotion({
   },
   '200ms': {
     duration: 200,
+  },
+  '250ms': {
+    duration: 250,
+  },
+  '300ms': {
+    duration: 300,
+  },
+  '400ms': {
+    duration: 400,
+  },
+  '500ms': {
+    duration: 500,
   },
   '1000ms': {
     duration: 1000,
@@ -87,6 +113,14 @@ export const animationsMotion = createAnimationsMotion({
 })
 
 export const animationsNative = createAnimationsNative({
+  '0ms': {
+    type: 'timing',
+    duration: 0,
+  },
+  '50ms': {
+    type: 'timing',
+    duration: 50,
+  },
   '75ms': {
     type: 'timing',
     duration: 75,
@@ -98,6 +132,22 @@ export const animationsNative = createAnimationsNative({
   '200ms': {
     type: 'timing',
     duration: 200,
+  },
+  '250ms': {
+    type: 'timing',
+    duration: 250,
+  },
+  '300ms': {
+    type: 'timing',
+    duration: 300,
+  },
+  '400ms': {
+    type: 'timing',
+    duration: 400,
+  },
+  '500ms': {
+    type: 'timing',
+    duration: 500,
   },
   '1000ms': {
     type: 'timing',
@@ -151,6 +201,14 @@ export const animationsNative = createAnimationsNative({
 })
 
 export const animationsReanimated = createAnimationsReanimated({
+  '0ms': {
+    type: 'timing',
+    duration: 0,
+  },
+  '50ms': {
+    type: 'timing',
+    duration: 50,
+  },
   '75ms': {
     type: 'timing',
     duration: 75,
@@ -162,6 +220,22 @@ export const animationsReanimated = createAnimationsReanimated({
   '200ms': {
     type: 'timing',
     duration: 200,
+  },
+  '250ms': {
+    type: 'timing',
+    duration: 250,
+  },
+  '300ms': {
+    type: 'timing',
+    duration: 300,
+  },
+  '400ms': {
+    type: 'timing',
+    duration: 400,
+  },
+  '500ms': {
+    type: 'timing',
+    duration: 500,
   },
   '1000ms': {
     type: 'timing',
