@@ -1,33 +1,30 @@
 import { toast, Toaster, type ToasterPosition } from '@tamagui/toast'
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-  Circle,
-} from '@tamagui/lucide-icons'
+import { Circle } from '@tamagui/lucide-icons'
 import * as React from 'react'
 import { Button, XStack, YStack } from 'tamagui'
+
+// put this at the root of your app:
+export const ToastRoot = () => <Toaster />
 
 export function ToastDemo() {
   const [position, setPosition] = React.useState<ToasterPosition>('bottom-right')
 
   return (
-    <YStack gap="$4" padding="$4" alignItems="center">
+    <XStack gap="$4" alignItems="center" userSelect="none">
       <Toaster position={position} closeButton />
 
       <XStack gap="$2" flexWrap="wrap">
-        <Button size="$2" onPress={() => toast('Event created')}>
+        <Button size="$3" onPress={() => toast('Event created')}>
           Default
         </Button>
-        <Button size="$2" theme="green" onPress={() => toast.success('Saved!')}>
+        <Button size="$3" theme="green" onPress={() => toast.success('Saved!')}>
           Success
         </Button>
-        <Button size="$2" theme="red" onPress={() => toast.error('Failed')}>
+        <Button size="$3" theme="red" onPress={() => toast.error('Failed')}>
           Error
         </Button>
         <Button
-          size="$2"
+          size="$3"
           onPress={() =>
             toast('Deleted', {
               action: { label: 'Undo', onClick: () => toast('Restored') },
@@ -39,49 +36,19 @@ export function ToastDemo() {
       </XStack>
 
       {/* Position Grid */}
-      <YStack gap="$2">
-        <XStack gap="$2">
-          <PosBtn
-            pos="top-left"
-            current={position}
-            set={setPosition}
-            Icon={Circle}
-          />
-          <PosBtn
-            pos="top-center"
-            current={position}
-            set={setPosition}
-            Icon={ChevronUp}
-          />
-          <PosBtn
-            pos="top-right"
-            current={position}
-            set={setPosition}
-            Icon={Circle}
-          />
+      <YStack gap="$1">
+        <XStack gap="$1">
+          <PosBtn pos="top-left" current={position} set={setPosition} />
+          <PosBtn pos="top-center" current={position} set={setPosition} />
+          <PosBtn pos="top-right" current={position} set={setPosition} />
         </XStack>
-        <XStack gap="$2">
-          <PosBtn
-            pos="bottom-left"
-            current={position}
-            set={setPosition}
-            Icon={Circle}
-          />
-          <PosBtn
-            pos="bottom-center"
-            current={position}
-            set={setPosition}
-            Icon={ChevronDown}
-          />
-          <PosBtn
-            pos="bottom-right"
-            current={position}
-            set={setPosition}
-            Icon={Circle}
-          />
+        <XStack gap="$1">
+          <PosBtn pos="bottom-left" current={position} set={setPosition} />
+          <PosBtn pos="bottom-center" current={position} set={setPosition} />
+          <PosBtn pos="bottom-right" current={position} set={setPosition} />
         </XStack>
       </YStack>
-    </YStack>
+    </XStack>
   )
 }
 
@@ -89,17 +56,16 @@ function PosBtn({
   pos,
   current,
   set,
-  Icon,
 }: {
   pos: ToasterPosition
   current: ToasterPosition
   set: (p: ToasterPosition) => void
-  Icon: any
 }) {
   return (
     <Button
+      size="$2"
       circular
-      icon={Icon}
+      icon={Circle}
       theme={pos === current ? 'blue' : undefined}
       onPress={() => set(pos)}
       aria-label={pos}

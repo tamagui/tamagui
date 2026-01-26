@@ -162,7 +162,7 @@ const demos = [
   },
   {
     pages: [
-      { title: 'Stacks', route: '/demo/stacks' },
+      { title: 'XStack, YStack', route: '/demo/stacks' },
       { title: 'Headings', route: '/demo/headings' },
       { title: 'Paragraph', route: '/demo/text' },
       { title: 'Animations', route: '/demo/animations' },

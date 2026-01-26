@@ -63,7 +63,7 @@ export function TooltipGroupCase() {
       <XStack gap="$4" justifyContent="center">
         <Tooltip placement="bottom" delay={1000} restMs={0}>
           <Tooltip.Trigger data-testid="tooltip-trigger-standalone-a">
-            <Button theme="alt1">Standalone A</Button>
+            <Button>Standalone A</Button>
           </Tooltip.Trigger>
           <Tooltip.Content
             data-testid="tooltip-content-standalone-a"
@@ -77,7 +77,7 @@ export function TooltipGroupCase() {
 
         <Tooltip placement="bottom" delay={1000} restMs={0}>
           <Tooltip.Trigger data-testid="tooltip-trigger-standalone-b">
-            <Button theme="alt1">Standalone B</Button>
+            <Button>Standalone B</Button>
           </Tooltip.Trigger>
           <Tooltip.Content
             data-testid="tooltip-content-standalone-b"

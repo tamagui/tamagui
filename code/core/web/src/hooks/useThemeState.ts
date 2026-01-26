@@ -430,7 +430,7 @@ function getNewThemeName(
   // If not found, fall back to the original search algorithm combining with parent
   if (!found) {
     // If we're only adding componentName (no explicit name prop), don't backtrack through parent parts
-    // This preserves sub-themes like "light_red_alt1" when adding Button component
+    // This preserves sub-themes like "light_red_surface1" when adding Button component
     if (!name && componentName) {
       // Just try adding component to full parent
       const potential = `${parentParts.join('_')}_${componentName}`

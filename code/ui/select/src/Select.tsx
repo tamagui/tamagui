@@ -362,14 +362,12 @@ const SelectLabelFrame = styled(SizableText, {
         ellipsis: true,
         maxWidth: '100%',
         cursor: 'default',
-        fontWeight: '800',
       },
     },
 
     size: {
       '...size': (val: SizeTokens, { tokens }) => {
         return {
-          minHeight: tokens.size[val],
           paddingHorizontal: tokens.space[val],
           paddingVertical: getSpace(tokens.space[val], {
             shift: -4,

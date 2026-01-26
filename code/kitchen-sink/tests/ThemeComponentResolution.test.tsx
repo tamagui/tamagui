@@ -16,12 +16,14 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, {
     name: 'ThemeComponentResolution',
     type: 'useCase',
-    searchParams: { v4theme: 'true' }
+    searchParams: { v4theme: 'true' },
   })
 })
 
 test.describe('Goal 1a: Explicit scheme override', () => {
-  test('dark_green theme is preserved when nested inside blue parent', async ({ page }) => {
+  test('dark_green theme is preserved when nested inside blue parent', async ({
+    page,
+  }) => {
     // Direct dark_green theme
     const directSquare = page.locator(`#${TEST_IDS.themeExplicitSchemeDirect}`)
     await expect(directSquare).toBeVisible()
@@ -59,20 +61,22 @@ test.describe('Goal 1b: Inherit scheme from parent', () => {
 })
 
 test.describe('Goal 2: Sub-theme preservation', () => {
-  test('alt1 sub-theme is preserved when nested (no backtracking)', async ({ page }) => {
-    // Direct light_blue_alt1
-    const directSquare = page.locator(`#${TEST_IDS.themeAlt1Direct}`)
+  test('surface1 sub-theme is preserved when nested (no backtracking)', async ({
+    page,
+  }) => {
+    // Direct light_blue_surface1
+    const directSquare = page.locator(`#${TEST_IDS.themeSurface1Direct}`)
     await expect(directSquare).toBeVisible()
 
-    // Nested: blue → alt1
-    const nestedSquare = page.locator(`#${TEST_IDS.themeAlt1WithComponent}`)
+    // Nested: blue → surface1
+    const nestedSquare = page.locator(`#${TEST_IDS.themeSurface1WithComponent}`)
     await expect(nestedSquare).toBeVisible()
 
-    // Both should be light_blue_alt1
+    // Both should be light_blue_surface1
     const directText = await directSquare.innerText()
     const nestedText = await nestedSquare.innerText()
 
-    expect(directText).toBe('light_blue_alt1')
-    expect(nestedText).toBe('light_blue_alt1')
+    expect(directText).toBe('light_blue_surface1')
+    expect(nestedText).toBe('light_blue_surface1')
   })
 })

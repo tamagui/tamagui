@@ -27,8 +27,8 @@ export const TEST_IDS = {
   themeInheritSchemeDirect: 'theme-inherit-scheme-direct',
   themeInheritSchemeNested: 'theme-inherit-scheme-nested',
   // Goal 2: Component-only preserves sub-theme (no backtracking)
-  themeAlt1Direct: 'theme-alt1-direct',
-  themeAlt1WithComponent: 'theme-alt1-with-component',
+  themeSurface1Direct: 'theme-surface1-direct',
+  themeSurface1WithComponent: 'theme-surface1-with-component',
   // Nested Surface test IDs
   nestedSurface1To3Direct: 'nested-surface-1-to-3-direct',
   nestedSurface1To3Nested: 'nested-surface-1-to-3-nested',

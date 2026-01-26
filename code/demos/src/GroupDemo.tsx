@@ -33,15 +33,22 @@ export function GroupDemo() {
       {/* with separators - add them between items */}
       <YGroup>
         <YGroup.Item>
-          <ListItem theme="surface1" title="First" />
+          <ListItem borderRadius="$6" theme="surface1" title="First" />
         </YGroup.Item>
         <Separator />
         <YGroup.Item>
-          <ListItem theme="surface1" title="Second" subTitle="Second subtitle" />
+          <ListItem
+            borderRadius="$6"
+            theme="surface1"
+            title="Second"
+            subTitle="Second subtitle"
+          />
         </YGroup.Item>
         <Separator />
         <YGroup.Item>
-          <ListItem theme="surface1">Third</ListItem>
+          <ListItem borderRadius="$6" theme="surface1">
+            Third
+          </ListItem>
         </YGroup.Item>
       </YGroup>
     </YStack>

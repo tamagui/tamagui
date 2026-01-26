@@ -57,9 +57,7 @@ const reactCompilerPlugin = {
         const result = transform(source, {
           filename: args.path,
           configFile: false,
-          presets: [
-            ['@babel/preset-typescript', { isTSX, allExtensions: true }],
-          ],
+          presets: [['@babel/preset-typescript', { isTSX, allExtensions: true }]],
           plugins: [
             [
               require.resolve('babel-plugin-react-compiler'),
@@ -70,7 +68,10 @@ const reactCompilerPlugin = {
                 logger: process.env.REACT_COMPILER_DEBUG
                   ? {
                       logEvent(filename, event) {
-                        if (event.kind === 'CompileError' || event.kind === 'CompileSkip') {
+                        if (
+                          event.kind === 'CompileError' ||
+                          event.kind === 'CompileSkip'
+                        ) {
                           const name = event.fnLoc?.identifierName || 'unknown'
                           const reason = event.detail?.reason || event.reason || ''
                           console.log(`[RC] ${basename(filename)}:${name} - ${reason}`)
@@ -115,7 +116,8 @@ const shouldSwapExports = process.argv.includes('--swap-exports')
 
 // get command after "--" to run with swapped exports
 const dashDashIndex = process.argv.indexOf('--')
-const runCommandAfterSwap = dashDashIndex > -1 ? process.argv.slice(dashDashIndex + 1) : null
+const runCommandAfterSwap =
+  dashDashIndex > -1 ? process.argv.slice(dashDashIndex + 1) : null
 
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
@@ -244,49 +246,51 @@ if (shouldClean || shouldCleanBuildOnly) {
       .on('change', rebuild)
       .on('add', rebuild)
   } else {
-    build().then(async () => {
-      if (!shouldSwapExports) return
+    build()
+      .then(async () => {
+        if (!shouldSwapExports) return
 
-      // swap exports.types from ./src to ./types
-      const swapped = swapExportsTypes(pkg, 'to-dist')
-      if (swapped) {
-        await FSE.writeJSON('./package.json', pkg, { spaces: 2 })
-        console.info('swapped exports.types to dist')
-      }
+        // swap exports.types from ./src to ./types
+        const swapped = swapExportsTypes(pkg, 'to-dist')
+        if (swapped) {
+          await FSE.writeJSON('./package.json', pkg, { spaces: 2 })
+          console.info('swapped exports.types to dist')
+        }
 
-      // run command after -- if given, then swap back
-      if (runCommandAfterSwap && runCommandAfterSwap.length > 0) {
-        const command = runCommandAfterSwap.join(' ')
-        console.info(`running: ${command}`)
-        let exitCode = 0
-        try {
-          childProcess.execSync(command, { stdio: 'inherit' })
-        } catch (err) {
-          // execSync throws on non-zero exit
-          exitCode = err.status ?? 1
-        } finally {
-          if (swapped) {
-            swapExportsTypes(pkg, 'to-src')
-            await FSE.writeJSON('./package.json', pkg, { spaces: 2 })
-            console.info('swapped exports.types back to src')
+        // run command after -- if given, then swap back
+        if (runCommandAfterSwap && runCommandAfterSwap.length > 0) {
+          const command = runCommandAfterSwap.join(' ')
+          console.info(`running: ${command}`)
+          let exitCode = 0
+          try {
+            childProcess.execSync(command, { stdio: 'inherit' })
+          } catch (err) {
+            // execSync throws on non-zero exit
+            exitCode = err.status ?? 1
+          } finally {
+            if (swapped) {
+              swapExportsTypes(pkg, 'to-src')
+              await FSE.writeJSON('./package.json', pkg, { spaces: 2 })
+              console.info('swapped exports.types back to src')
+            }
+          }
+          process.exit(exitCode)
+        }
+      })
+      .catch(async (error) => {
+        // try to restore on error if we were swapping
+        if (shouldSwapExports) {
+          try {
+            const freshPkg = await FSE.readJSON('./package.json')
+            swapExportsTypes(freshPkg, 'to-src')
+            await FSE.writeJSON('./package.json', freshPkg, { spaces: 2 })
+          } catch {
+            // ignore restore errors
           }
         }
-        process.exit(exitCode)
-      }
-    }).catch(async (error) => {
-      // try to restore on error if we were swapping
-      if (shouldSwapExports) {
-        try {
-          const freshPkg = await FSE.readJSON('./package.json')
-          swapExportsTypes(freshPkg, 'to-src')
-          await FSE.writeJSON('./package.json', freshPkg, { spaces: 2 })
-        } catch {
-          // ignore restore errors
-        }
-      }
-      console.error(error)
-      process.exit(1)
-    })
+        console.error(error)
+        process.exit(1)
+      })
   }
 }
 
@@ -316,9 +320,7 @@ function swapExportsTypes(pkg, direction) {
           // store original for restore
           originalExportTypes.set(currentPath, value)
           // ./src/index.ts -> ./types/index.d.ts
-          obj.types = value
-            .replace(/^\.\/src\//, './types/')
-            .replace(/\.tsx?$/, '.d.ts')
+          obj.types = value.replace(/^\.\/src\//, './types/').replace(/\.tsx?$/, '.d.ts')
           swapped = true
         } else if (direction === 'to-src') {
           const original = originalExportTypes.get(currentPath)
@@ -840,6 +842,8 @@ async function esbuildWriteIfChanged(
         ...(shouldBundleNodeModules && {
           'process.env.ESBUILD_BINARY_PATH': `"true"`,
         }),
+        // vite-compatible env vars for tree-shaking
+        'import.meta.env.VITE_NATIVE': platform === 'native' ? 'true' : 'false',
         ...opts.define,
       },
     }

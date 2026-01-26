@@ -25,9 +25,9 @@ export function AccordionDemo() {
             </>
           )}
         </Accordion.Trigger>
-        <Accordion.HeightAnimator transition="100ms">
+        <Accordion.HeightAnimator transition="300ms">
           <Accordion.Content
-            transition="100ms"
+            transition="300ms"
             exitStyle={{ opacity: 0 }}
             borderWidth={1}
             borderTopWidth={0}
@@ -61,9 +61,9 @@ export function AccordionDemo() {
             </>
           )}
         </Accordion.Trigger>
-        <Accordion.HeightAnimator transition="100ms">
+        <Accordion.HeightAnimator transition="300ms">
           <Accordion.Content
-            transition="100ms"
+            transition="300ms"
             exitStyle={{ opacity: 0 }}
             borderWidth={1}
             borderTopWidth={0}
