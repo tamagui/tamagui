@@ -15,7 +15,7 @@ const TRIGGER_NAME = 'SelectTrigger'
 export type SelectTriggerProps = SelectScopedProps<ListItemProps>
 
 const isPointerCoarse =
-  process.env.TAMAGUI_TARGET === 'web'
+  typeof window !== 'undefined' && process.env.TAMAGUI_TARGET === 'web'
     ? window.matchMedia('(pointer:coarse)').matches
     : true
 
