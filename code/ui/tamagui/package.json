@@ -101,6 +101,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/dialog": "workspace:*",
+    "@tamagui/element": "workspace:*",
     "@tamagui/elements": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/focusable": "workspace:*",
