@@ -148,7 +148,7 @@ export declare const defaultConfig: {
         t: "top";
         z: "zIndex";
     };
-    themes: Record<"light" | "dark" | "light_orange" | "light_yellow" | "light_green" | "light_blue" | "light_purple" | "light_pink" | "light_red" | "dark_orange" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_purple" | "dark_pink" | "dark_red" | "light_gray" | "dark_gray" | "light_surface1" | "light_surface2" | "light_surface3" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "light_blue_surface1" | "light_gray_surface1" | "light_green_surface1" | "light_orange_surface1" | "light_pink_surface1" | "light_purple_surface1" | "light_red_surface1" | "light_yellow_surface1" | "light_blue_surface2" | "light_gray_surface2" | "light_green_surface2" | "light_orange_surface2" | "light_pink_surface2" | "light_purple_surface2" | "light_red_surface2" | "light_yellow_surface2" | "light_blue_surface3" | "light_gray_surface3" | "light_green_surface3" | "light_orange_surface3" | "light_pink_surface3" | "light_purple_surface3" | "light_red_surface3" | "light_yellow_surface3" | "dark_blue_surface1" | "dark_gray_surface1" | "dark_green_surface1" | "dark_orange_surface1" | "dark_pink_surface1" | "dark_purple_surface1" | "dark_red_surface1" | "dark_yellow_surface1" | "dark_blue_surface2" | "dark_gray_surface2" | "dark_green_surface2" | "dark_orange_surface2" | "dark_pink_surface2" | "dark_purple_surface2" | "dark_red_surface2" | "dark_yellow_surface2" | "dark_blue_surface3" | "dark_gray_surface3" | "dark_green_surface3" | "dark_orange_surface3" | "dark_pink_surface3" | "dark_purple_surface3" | "dark_red_surface3" | "dark_yellow_surface3" | "light_accent" | "light_white_accent" | "dark_accent" | "dark_black_accent" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_black_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent" | "light_teal" | "light_neutral" | "dark_teal" | "dark_neutral" | "light_white_surface1" | "light_white_surface2" | "light_white_surface3" | "dark_black_surface1" | "dark_black_surface2" | "dark_black_surface3" | "light_black_surface1" | "light_black_surface2" | "light_black_surface3" | "light_gray_accent" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "light_teal_accent" | "light_teal_surface1" | "light_teal_surface2" | "light_teal_surface3" | "light_neutral_accent" | "light_neutral_surface1" | "light_neutral_surface2" | "light_neutral_surface3" | "dark_white_surface1" | "dark_white_surface2" | "dark_white_surface3" | "dark_gray_accent" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent" | "dark_teal_accent" | "dark_teal_surface1" | "dark_teal_surface2" | "dark_teal_surface3" | "dark_neutral_accent" | "dark_neutral_surface1" | "dark_neutral_surface2" | "dark_neutral_surface3", {
+    themes: Record<"light" | "dark" | "light_orange" | "light_yellow" | "light_green" | "light_blue" | "light_purple" | "light_pink" | "light_red" | "dark_orange" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_purple" | "dark_pink" | "dark_red" | "light_gray" | "dark_gray" | "light_surface1" | "light_surface2" | "dark_surface1" | "dark_surface2" | "light_blue_surface1" | "light_gray_surface1" | "light_green_surface1" | "light_orange_surface1" | "light_pink_surface1" | "light_purple_surface1" | "light_red_surface1" | "light_yellow_surface1" | "light_blue_surface2" | "light_gray_surface2" | "light_green_surface2" | "light_orange_surface2" | "light_pink_surface2" | "light_purple_surface2" | "light_red_surface2" | "light_yellow_surface2" | "dark_blue_surface1" | "dark_gray_surface1" | "dark_green_surface1" | "dark_orange_surface1" | "dark_pink_surface1" | "dark_purple_surface1" | "dark_red_surface1" | "dark_yellow_surface1" | "dark_blue_surface2" | "dark_gray_surface2" | "dark_green_surface2" | "dark_orange_surface2" | "dark_pink_surface2" | "dark_purple_surface2" | "dark_red_surface2" | "dark_yellow_surface2" | "light_accent" | "light_white_accent" | "dark_accent" | "dark_black_accent" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_black_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent" | "light_teal" | "light_neutral" | "dark_teal" | "dark_neutral" | "light_white_surface1" | "light_white_surface2" | "dark_black_surface1" | "dark_black_surface2" | "light_black_surface1" | "light_black_surface2" | "light_gray_accent" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "light_teal_accent" | "light_teal_surface1" | "light_teal_surface2" | "light_neutral_accent" | "light_neutral_surface1" | "light_neutral_surface2" | "dark_white_surface1" | "dark_white_surface2" | "dark_gray_accent" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent" | "dark_teal_accent" | "dark_teal_surface1" | "dark_teal_surface2" | "dark_neutral_accent" | "dark_neutral_surface1" | "dark_neutral_surface2", {
         accentBackground: string;
         accentColor: string;
         background0: string;
@@ -173,6 +173,10 @@ export declare const defaultConfig: {
         color04: string;
         color06: string;
         color08: string;
+        color: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -180,12 +184,8 @@ export declare const defaultConfig: {
         backgroundActive: string;
         borderColor: string;
         borderColorHover: string;
-        borderColorPress: string;
         borderColorFocus: string;
-        color: string;
-        colorHover: string;
-        colorPress: string;
-        colorFocus: string;
+        borderColorPress: string;
         placeholderColor: string;
         outlineColor: string;
         colorTransparent: string;
@@ -364,9 +364,6 @@ export declare const defaultConfig: {
         accent10: string;
         accent11: string;
         accent12: string;
-        color0pt5: string;
-        color1pt5: string;
-        color2pt5: string;
         color01: string;
         color0075: string;
         color005: string;

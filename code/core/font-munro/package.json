@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-munro",
-  "version": "2.0.0-1769536410877",
+  "version": "2.0.0-1769550075301",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
