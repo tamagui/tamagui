@@ -157,22 +157,14 @@ export const docsRoutes = [
     section: 'ui',
     label: 'Panels',
     pages: [
+      { title: 'Accordion', route: '/ui/accordion' },
       { title: 'AlertDialog', route: '/ui/alert-dialog' },
       { title: 'Dialog', route: '/ui/dialog' },
       { title: 'Popover', route: '/ui/popover' },
       { title: 'Sheet', route: '/ui/sheet' },
+      { title: 'Tabs', route: '/ui/tabs' },
       { title: 'Tooltip', route: '/ui/tooltip' },
       { title: 'Toast', route: '/ui/toast' },
-    ],
-  },
-
-  {
-    section: 'ui',
-    label: 'Organize',
-    pages: [
-      { title: 'Accordion', route: '/ui/accordion' },
-      { title: 'Group', route: '/ui/group' },
-      { title: 'Tabs', route: '/ui/tabs' },
     ],
   },
 
@@ -188,27 +180,28 @@ export const docsRoutes = [
   },
 
   {
-    label: 'Visual',
     section: 'ui',
+    label: 'Functional',
     pages: [
-      { title: 'LinearGradient', route: '/ui/linear-gradient' },
-      { title: 'Separator', route: '/ui/separator' },
-      { title: 'Square & Circle', route: '/ui/shapes' },
+      { title: 'Anchor', route: '/ui/anchor' },
+      { title: 'FocusScope', route: '/ui/focus-scope' },
+      { title: 'Group', route: '/ui/group' },
+      { title: 'HTML Elements', route: '/ui/html-elements' },
+      { title: 'ScrollView', route: '/ui/scroll-view' },
+      { title: 'Unspaced', route: '/ui/unspaced' },
+      { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
     ],
   },
 
   {
-    label: 'Etc',
+    label: 'Visual',
     section: 'ui',
     pages: [
+      { title: 'LinearGradient', route: '/ui/linear-gradient' },
       { title: 'Lucide Icons', route: '/ui/lucide-icons' },
-      { title: 'FocusScope', route: '/ui/focus-scope' },
-      { title: 'Anchor', route: '/ui/anchor' },
-      { title: 'HTML Elements', route: '/ui/html-elements' },
-      { title: 'ScrollView', route: '/ui/scroll-view' },
+      { title: 'Separator', route: '/ui/separator' },
       { title: 'Spinner', route: '/ui/spinner' },
-      { title: 'Unspaced', route: '/ui/unspaced' },
-      { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
+      { title: 'Square & Circle', route: '/ui/shapes' },
     ],
   },
 ]

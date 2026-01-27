@@ -216,7 +216,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               bg="$color3"
               borderWidth={0}
               theme="teal"
-              // boxShadow="inset 0 -2px 0 1px $color3"
+              boxShadow="inset 0 -2px 0 1px $color3"
             >
               <Span fontSize="$2" y={-2}>
                 v2 RC
