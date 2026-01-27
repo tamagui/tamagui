@@ -1,4 +1,4 @@
-export declare const v5Templates: Record<"light_accent" | "light_surface1" | "light_surface2" | "light_surface3" | "light_base" | "dark_accent" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_base", {
+export declare const v5Templates: Record<"light_accent" | "light_surface1" | "light_surface2" | "light_base" | "dark_accent" | "dark_surface1" | "dark_surface2" | "dark_base", {
     colorTransparent: number;
     color: number;
     colorHover: number;
@@ -6,6 +6,15 @@ export declare const v5Templates: Record<"light_accent" | "light_surface1" | "li
     colorFocus: number;
     placeholderColor: number;
     outlineColor: number;
+    background: number;
+    backgroundHover: number;
+    backgroundPress: number;
+    backgroundFocus: number;
+    backgroundActive: number;
+    borderColor: number;
+    borderColorHover: number;
+    borderColorFocus: number;
+    borderColorPress: number;
     accentBackground: number;
     accentColor: number;
     background0: number;
@@ -30,14 +39,5 @@ export declare const v5Templates: Record<"light_accent" | "light_surface1" | "li
     color04: number;
     color06: number;
     color08: number;
-    background: number;
-    backgroundHover: number;
-    backgroundPress: number;
-    backgroundFocus: number;
-    backgroundActive: number;
-    borderColor: number;
-    borderColorHover: number;
-    borderColorPress: number;
-    borderColorFocus: number;
 }>;
 //# sourceMappingURL=v5-templates.d.ts.map

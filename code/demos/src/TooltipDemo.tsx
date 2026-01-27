@@ -38,7 +38,7 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
       <Tooltip.Trigger asChild>
-        <Button theme="surface3" icon={Icon} circular />
+        <Button icon={Icon} circular />
       </Tooltip.Trigger>
       <Tooltip.Content
         enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}

@@ -57,13 +57,11 @@ export function ProgressDemo() {
         </Slider> */}
 
         <Button
-          theme="surface3"
           size="$3"
           icon={Play}
           onPress={() => setProgress((prev) => (prev + 20) % 100)}
         />
         <Button
-          theme="surface3"
           size="$3"
           icon={RotateCcw}
           onPress={() => {

@@ -229,6 +229,7 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      devtools: false,
       react: {
         compiler: process.env.NODE_ENV === 'production',
       },

@@ -70,6 +70,11 @@ declare const generatedThemes: Record<"light_blue" | "light_green" | "light_red"
     colorTransparent: string;
     placeholderColor: string;
     outlineColor: string;
+    backgroundHover: string;
+    backgroundPress: string;
+    backgroundFocus: string;
+    borderColorFocus: string;
+    borderColorPress: string;
     accentBackground: string;
     accentColor: string;
     background0: string;
@@ -82,11 +87,6 @@ declare const generatedThemes: Record<"light_blue" | "light_green" | "light_red"
     color04: string;
     color06: string;
     color08: string;
-    backgroundHover: string;
-    backgroundPress: string;
-    backgroundFocus: string;
-    borderColorPress: string;
-    borderColorFocus: string;
     black2: string;
     black1: string;
     black4: string;
@@ -204,6 +204,11 @@ export declare const themes: Record<"light_blue" | "light_green" | "light_red" |
     colorTransparent: string;
     placeholderColor: string;
     outlineColor: string;
+    backgroundHover: string;
+    backgroundPress: string;
+    backgroundFocus: string;
+    borderColorFocus: string;
+    borderColorPress: string;
     accentBackground: string;
     accentColor: string;
     background0: string;
@@ -216,11 +221,6 @@ export declare const themes: Record<"light_blue" | "light_green" | "light_red" |
     color04: string;
     color06: string;
     color08: string;
-    backgroundHover: string;
-    backgroundPress: string;
-    backgroundFocus: string;
-    borderColorPress: string;
-    borderColorFocus: string;
     black2: string;
     black1: string;
     black4: string;
