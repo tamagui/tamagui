@@ -171,5 +171,4 @@ export interface KeyboardControllerSheetResult {
    * Call after drag ends to reconcile actual keyboard state.
    */
   flushPendingHide: () => void
-
 }

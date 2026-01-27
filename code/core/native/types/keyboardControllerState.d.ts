@@ -5,6 +5,7 @@ export interface KeyboardControllerState {
 	useKeyboardHandler: any;
 	useReanimatedKeyboardAnimation: any;
 	KeyboardController: any;
+	KeyboardEvents: any;
 	KeyboardStickyView: any;
 }
 export declare function isKeyboardControllerEnabled(): boolean;

@@ -283,7 +283,8 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         // ensure the snap index reflects the user's intent at drag start.
         // The onEnd callback's animateTo uses latest activePositions for the
         // actual animation target, so the sheet ends up at the right place.
-        const snapPositions = gs.frozenPositions.length > 0 ? gs.frozenPositions : positions
+        const snapPositions =
+          gs.frozenPositions.length > 0 ? gs.frozenPositions : positions
         const snapMinY = gs.frozenPositions.length > 0 ? gs.frozenMinY : minY
 
         // if sheet is at top and scroll is engaged, just stay at top

@@ -183,16 +183,19 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // so the ref is true by the time activePositions memo re-evaluates.
     // Also controls pauseKeyboardHandler to freeze keyboard state during drag.
     const isDraggingRef = React.useRef(false)
-    const setIsDragging = React.useCallback((val: boolean) => {
-      isDraggingRef.current = val
-      pauseKeyboardHandler.current = val
-      setIsDragging_(val)
-      // when drag ends, flush any keyboard hide that was suppressed during drag
-      // so isKeyboardVisible/keyboardHeight reflect actual state
-      if (!val) {
-        flushPendingHide()
-      }
-    }, [pauseKeyboardHandler, flushPendingHide])
+    const setIsDragging = React.useCallback(
+      (val: boolean) => {
+        isDraggingRef.current = val
+        pauseKeyboardHandler.current = val
+        setIsDragging_(val)
+        // when drag ends, flush any keyboard hide that was suppressed during drag
+        // so isKeyboardVisible/keyboardHeight reflect actual state
+        if (!val) {
+          flushPendingHide()
+        }
+      },
+      [pauseKeyboardHandler, flushPendingHide]
+    )
 
     // keyboard-adjusted positions: shift snap points up by keyboard height
     // when keyboard is visible. This drives both gesture snap calculation
