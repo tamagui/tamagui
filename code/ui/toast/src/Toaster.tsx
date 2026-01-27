@@ -205,6 +205,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const [heights, setHeights] = React.useState<HeightT[]>([])
     const [expanded, setExpanded] = React.useState(false)
     const [interacting, setInteracting] = React.useState(false)
+    const [isPointerDown, setIsPointerDown] = React.useState(false)
 
     const listRef = React.useRef<TamaguiElement>(null)
     const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
@@ -288,9 +289,31 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       }
     }, [])
 
+    // global pointer up listener to catch releases outside container
+    // prevents isPointerDown from getting stuck true
+    React.useEffect(() => {
+      if (!isWeb || !isPointerDown) return
+
+      const handleGlobalPointerUp = () => {
+        setIsPointerDown(false)
+        setInteracting(false)
+        setExpanded(false)
+      }
+
+      document.addEventListener('pointerup', handleGlobalPointerUp)
+      return () => document.removeEventListener('pointerup', handleGlobalPointerUp)
+    }, [isPointerDown])
+
     // clean up all deleted toasts after exit animations complete
     const handleExitComplete = React.useCallback(() => {
-      setToasts((toasts) => toasts.filter((t) => !t.delete))
+      setToasts((currentToasts) => {
+        // get IDs of toasts being removed
+        const deletedIds = currentToasts.filter((t) => t.delete).map((t) => t.id)
+        // clean up each deleted toast from ToastState
+        deletedIds.forEach((id) => ToastState.cleanup(id))
+        // remove from local state
+        return currentToasts.filter((t) => !t.delete)
+      })
     }, [])
 
     // parse position
@@ -366,12 +389,20 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
         onMouseEnter={() => setExpanded(true)}
         onMouseMove={() => setExpanded(true)}
         onMouseLeave={() => {
-          // always collapse on mouse leave, reset interacting state
-          setInteracting(false)
-          setExpanded(false)
+          // only collapse if not actively dragging (pointer down outside container)
+          // this prevents mid-interaction collapse when dragging outside
+          if (!isPointerDown) {
+            setInteracting(false)
+            setExpanded(false)
+          }
         }}
-        onPointerDown={() => setInteracting(true)}
-        onPointerUp={() => setInteracting(false)}
+        onPointerDown={() => {
+          setInteracting(true)
+          setIsPointerDown(true)
+        }}
+        onPointerUp={() => {
+          setIsPointerDown(false)
+        }}
         {...(isWeb && {
           onBlur: (event: React.FocusEvent) => {
             if (
@@ -396,32 +427,39 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
         })}
       >
         <AnimatePresence onExitComplete={handleExitComplete}>
-          {toasts
-            .filter((t) => !t.delete) // filter deleted toasts - AnimatePresence will animate them out
-            .map((toast, index) => {
-              return (
-                <ToastItem
-                  key={toast.id}
-                  toast={toast}
-                  index={index}
-                  expanded={expanded || expand}
-                  interacting={interacting}
-                  position={position}
-                  visibleToasts={visibleToasts}
-                  heights={heights}
-                  setHeights={setHeights}
-                  duration={toast.duration ?? toastOptions?.duration ?? duration}
-                  gap={gap}
-                  swipeDirection={swipeDirection}
-                  swipeThreshold={swipeThreshold}
-                  closeButton={toast.closeButton ?? closeButton}
-                  icons={icons}
-                  disableNative={disableNative}
-                  burntOptions={burntOptions}
-                  notificationOptions={notificationOptions}
-                />
-              )
-            })}
+          {toasts.map((toast) => {
+            // calculate index among non-deleted toasts for stacking
+            const visibleIndex = toasts
+              .filter((t) => !t.delete)
+              .findIndex((t) => t.id === toast.id)
+
+            // skip rendering deleted toasts - AnimatePresence will animate exit
+            // for toasts that are still visible
+            if (toast.delete) return null
+
+            return (
+              <ToastItem
+                key={toast.id}
+                toast={toast}
+                index={visibleIndex === -1 ? 0 : visibleIndex}
+                expanded={expanded || expand}
+                interacting={interacting}
+                position={position}
+                visibleToasts={visibleToasts}
+                heights={heights}
+                setHeights={setHeights}
+                duration={toast.duration ?? toastOptions?.duration ?? duration}
+                gap={gap}
+                swipeDirection={swipeDirection}
+                swipeThreshold={swipeThreshold}
+                closeButton={toast.closeButton ?? closeButton}
+                icons={icons}
+                disableNative={disableNative}
+                burntOptions={burntOptions}
+                notificationOptions={notificationOptions}
+              />
+            )
+          })}
         </AnimatePresence>
       </ToasterFrame>
     )

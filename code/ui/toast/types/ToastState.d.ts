@@ -78,6 +78,16 @@ declare class Observer {
      */
     dismiss: (id?: string | number) => string | number | undefined;
     /**
+     * Clean up a toast after its exit animation completes.
+     * Call this from Toaster's onExitComplete callback to prevent memory leaks.
+     */
+    cleanup: (id: string | number) => void;
+    /**
+     * Clean up all dismissed toasts at once.
+     * Call this from Toaster's onExitComplete when all animations finish.
+     */
+    cleanupAll: () => void;
+    /**
      * Show a basic toast message
      */
     message: (title: TitleT, data?: ExternalToast) => string | number;

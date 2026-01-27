@@ -166,6 +166,24 @@ class Observer {
   }
 
   /**
+   * Clean up a toast after its exit animation completes.
+   * Call this from Toaster's onExitComplete callback to prevent memory leaks.
+   */
+  cleanup = (id: string | number) => {
+    this.toasts = this.toasts.filter((t) => t.id !== id)
+    this.dismissedToasts.delete(id)
+  }
+
+  /**
+   * Clean up all dismissed toasts at once.
+   * Call this from Toaster's onExitComplete when all animations finish.
+   */
+  cleanupAll = () => {
+    this.toasts = this.toasts.filter((t) => !this.dismissedToasts.has(t.id))
+    this.dismissedToasts.clear()
+  }
+
+  /**
    * Show a basic toast message
    */
   message = (title: TitleT, data?: ExternalToast) => {

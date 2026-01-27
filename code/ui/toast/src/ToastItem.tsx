@@ -345,6 +345,11 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const startTimer = React.useCallback(() => {
     if (duration === Number.POSITIVE_INFINITY || toastType === 'loading') return
 
+    // clear any existing timer before starting new one to prevent double-firing
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current)
+    }
+
     closeTimerStartRef.current = Date.now()
     closeTimerRef.current = setTimeout(() => {
       toast.onAutoClose?.(toast)
@@ -391,6 +396,9 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     remainingTimeRef.current = duration
   }, [duration])
 
+  // track if already dismissed to prevent double callbacks
+  const dismissedRef = React.useRef(false)
+
   // drag gesture for swipe-to-dismiss
   const { dragState, gestureHandlers } = useDragGesture({
     direction: swipeDirection,
@@ -398,7 +406,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     disabled: !dismissible || toastType === 'loading',
     onDragStart: pauseTimer,
     onDragEnd: (dismissed) => {
-      if (dismissed) {
+      if (dismissed && !dismissedRef.current) {
+        dismissedRef.current = true
         setSwipeOut(true)
         toast.onDismiss?.(toast)
         setRemoved(true)
@@ -433,7 +442,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   }, [toast.id, setHeights])
 
   const handleClose = React.useCallback(() => {
-    if (!dismissible) return
+    if (!dismissible || dismissedRef.current) return // guard against double dismiss
+    dismissedRef.current = true
     toast.onDismiss?.(toast)
     setRemoved(true)
     // mark for deletion via ToastState - triggers AnimatePresence exit
