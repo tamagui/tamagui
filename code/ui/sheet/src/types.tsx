@@ -124,8 +124,6 @@ export type ScrollBridge = {
   forceScrollTo?: (y: number) => void
   // whether sheet is at top position (for scroll enable/disable)
   isAtTop?: boolean
-  // dismiss keyboard when gesture starts (for smooth keyboard -> sheet handoff)
-  dismissKeyboard?: () => void
 }
 
 // keyboard controller sheet types
@@ -136,62 +134,6 @@ export interface KeyboardControllerSheetOptions {
    * When false, the hook is a no-op.
    */
   enabled: boolean
-
-  /**
-   * Current sheet positions (snap points converted to Y positions).
-   */
-  positions: number[]
-
-  /**
-   * Current active position index.
-   */
-  position: number
-
-  /**
-   * Whether the sheet is hidden.
-   */
-  isHidden: boolean
-
-  /**
-   * Screen size for calculations.
-   */
-  screenSize: number
-
-  /**
-   * Callback to set the animated sheet position.
-   * This should immediately update the sheet Y position.
-   */
-  setAnimatedPosition: (
-    y: number,
-    config?: { type: 'timing' | 'spring'; duration?: number }
-  ) => void
-
-  /**
-   * How the sheet behaves when the keyboard appears.
-   * - 'interactive': Sheet moves frame-by-frame as keyboard animates (requires keyboard-controller)
-   * - 'extend': Sheet extends upward by keyboard height
-   * - 'fillParent': Sheet fills available space above keyboard
-   *
-   * @default 'extend'
-   */
-  keyboardBehavior?: 'interactive' | 'extend' | 'fillParent'
-
-  /**
-   * What happens when keyboard is dismissed.
-   * - 'none': Sheet stays at current position
-   * - 'restore': Sheet returns to position before keyboard appeared
-   *
-   * @default 'restore'
-   */
-  keyboardBlurBehavior?: 'none' | 'restore'
-
-  /**
-   * Whether to dismiss keyboard when user starts dragging the sheet.
-   * This enables smooth keyboard → sheet gesture handoff.
-   *
-   * @default true
-   */
-  enableBlurKeyboardOnGesture?: boolean
 }
 
 export interface KeyboardControllerSheetResult {
@@ -213,7 +155,21 @@ export interface KeyboardControllerSheetResult {
 
   /**
    * Dismiss the keyboard programmatically.
-   * Call this when user starts dragging the sheet (if enableBlurKeyboardOnGesture is true).
+   * Called when sheet closes to dismiss the keyboard.
    */
   dismissKeyboard: () => void
+
+  /**
+   * Ref to pause keyboard hide state updates (action-sheet pattern).
+   * When true, keyboard hide events are ignored — keeps isKeyboardVisible=true
+   * and keyboardHeight at their last values during drag.
+   */
+  pauseKeyboardHandler: React.RefObject<boolean>
+
+  /**
+   * Flush any keyboard hide event that was suppressed while paused.
+   * Call after drag ends to reconcile actual keyboard state.
+   */
+  flushPendingHide: () => void
+
 }

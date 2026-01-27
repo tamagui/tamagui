@@ -7,6 +7,7 @@ export interface KeyboardControllerState {
   useKeyboardHandler: any
   useReanimatedKeyboardAnimation: any
   KeyboardController: any
+  KeyboardEvents: any
   KeyboardStickyView: any
 }
 
@@ -20,6 +21,7 @@ function getGlobalState(): KeyboardControllerState {
       useKeyboardHandler: null,
       useReanimatedKeyboardAnimation: null,
       KeyboardController: null,
+      KeyboardEvents: null,
       KeyboardStickyView: null,
     }
   }

@@ -18,6 +18,7 @@ if (launchArgs.disableGestureHandler) {
 }
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import React from 'react'
@@ -70,16 +71,18 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <PortalProvider>
-        <SafeAreaProvider>
-          <ThemeContext.Provider value={themeContext}>
-            <Provider defaultTheme={resolvedTheme as any}>
-              <Navigation />
-              <SafeToastViewport />
-            </Provider>
-          </ThemeContext.Provider>
-        </SafeAreaProvider>
-      </PortalProvider>
+      <KeyboardProvider>
+        <PortalProvider>
+          <SafeAreaProvider>
+            <ThemeContext.Provider value={themeContext}>
+              <Provider defaultTheme={resolvedTheme as any}>
+                <Navigation />
+                <SafeToastViewport />
+              </Provider>
+            </ThemeContext.Provider>
+          </SafeAreaProvider>
+        </PortalProvider>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   )
 }

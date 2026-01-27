@@ -279,6 +279,8 @@ export const SheetScrollView = React.forwardRef<
           }}
           contentContainerStyle={{ minHeight: '100%' }}
           bounces={false}
+          keyboardShouldPersistTaps="always"
+          keyboardDismissMode="none"
           {...props}
         >
           {/* wrapper to measure actual content height (not min-height expanded) */}

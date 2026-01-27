@@ -35,6 +35,7 @@ function setup() {
       useKeyboardHandler,
       useReanimatedKeyboardAnimation,
       KeyboardController,
+      KeyboardEvents,
       KeyboardStickyView,
     } = rnkc
 
@@ -46,6 +47,7 @@ function setup() {
         useKeyboardHandler: useKeyboardHandler || null,
         useReanimatedKeyboardAnimation: useReanimatedKeyboardAnimation || null,
         KeyboardController: KeyboardController || null,
+        KeyboardEvents: KeyboardEvents || null,
         KeyboardStickyView: KeyboardStickyView || null,
       })
     }

@@ -10,7 +10,7 @@ interface GesturePanConfig {
   positions: number[]
   frameSize: number
   setPosition: (pos: number) => void
-  animateTo: (pos: number) => void
+  animateTo: (pos: number, animationOverride?: any) => void
   stopSpring: () => void
   scrollBridge: ScrollBridge
   setIsDragging: (val: boolean) => void
@@ -22,6 +22,8 @@ interface GesturePanConfig {
   setAnimatedPosition: (val: number) => void
   // ref to scroll gesture for simultaneousWithExternalGesture
   scrollGestureRef?: RefObject<any> | null
+  // ref to pause keyboard hide events during gesture (action-sheet pattern)
+  pauseKeyboardHandler?: RefObject<boolean>
 }
 
 interface GesturePanResult {
@@ -80,21 +82,26 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
     prevTranslationY: 0,
     // track if scroll was engaged (scrollY > 0) at some point
     scrollEngaged: false,
+    // positions frozen at gesture start — keyboard may dismiss during drag (input blur),
+    // causing positions to revert. Frozen positions ensure stable snap calculation.
+    frozenPositions: [] as number[],
+    frozenMinY: 0,
+    // whether pan gesture actually started (vs just a tap in onBegin)
+    panStarted: false,
   })
 
   const onStart = useCallback(() => {
     stopSpring()
-    setIsDragging(true)
-  }, [stopSpring, setIsDragging])
+  }, [stopSpring])
 
   const onEnd = useCallback(
-    (closestPoint: number) => {
+    (closestPoint: number, animationOverride?: any) => {
       setIsDragging(false)
       scrollBridge.setParentDragging(false)
       // re-enable scroll when gesture ends
       scrollBridge.setScrollEnabled?.(true)
       setPosition(closestPoint)
-      animateTo(closestPoint)
+      animateTo(closestPoint, animationOverride)
     },
     [setIsDragging, scrollBridge, setPosition, animateTo]
   )
@@ -122,6 +129,18 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
       .failOffsetX([-20, 20])
       .shouldCancelWhenOutside(false)
       .onBegin(() => {
+        // onBegin fires on ANY touch (including taps to focus inputs).
+        // We do NOT set isDragging here — that would block keyboard animation.
+        // Instead, isDragging is set in onStart (actual pan gesture recognized).
+        gs.panStarted = false
+
+        // lightweight: pause keyboard handler to suppress hide events during gesture.
+        // This prevents keyboard flicker if input blurs before onStart.
+        // If this is just a tap, onFinalize un-pauses without setting isDragging.
+        if (config.pauseKeyboardHandler) {
+          config.pauseKeyboardHandler.current = true
+        }
+
         // check position at gesture begin - before direction is known
         const pos = getCurrentPosition()
         const atTop = pos <= minY + AT_TOP_THRESHOLD
@@ -132,6 +151,10 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         gs.accumulatedOffset = 0
         gs.prevTranslationY = 0
         gs.scrollEngaged = currentScrollY > 0 // track if scroll is already engaged
+        // freeze positions at gesture start so keyboard dismiss during drag
+        // doesn't change snap targets mid-gesture
+        gs.frozenPositions = [...positions]
+        gs.frozenMinY = minY
 
         // if sheet not at top, DISABLE SCROLL immediately and lock to 0
         // this prevents scroll from firing before pan takes over
@@ -140,10 +163,13 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         }
       })
       .onStart(() => {
+        // onStart fires only when pan gesture is recognized (finger moved enough).
+        // Safe to set isDragging here — this won't fire for taps to focus inputs.
+        gs.panStarted = true
+        setIsDragging(true)
+
         // console.warn('[RNGH-Pan] onStart', { startY: gs.startY, minY })
         scrollBridge.initialPosition = gs.startY
-        // dismiss keyboard when gesture starts for smooth handoff
-        scrollBridge.dismissKeyboard?.()
         onStart()
       })
       .onChange((event: { translationY: number; velocityY: number }) => {
@@ -252,21 +278,29 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         // clear scroll lock
         scrollBridge.scrollLockY = undefined
 
+        // use frozen positions from gesture start — keyboard may have dismissed
+        // during drag (input blur), reverting activePositions. Frozen positions
+        // ensure the snap index reflects the user's intent at drag start.
+        // The onEnd callback's animateTo uses latest activePositions for the
+        // actual animation target, so the sheet ends up at the right place.
+        const snapPositions = gs.frozenPositions.length > 0 ? gs.frozenPositions : positions
+        const snapMinY = gs.frozenPositions.length > 0 ? gs.frozenMinY : minY
+
         // if sheet is at top and scroll is engaged, just stay at top
-        if (currentPos <= minY + AT_TOP_THRESHOLD && scrollBridge.y > 0) {
+        if (currentPos <= snapMinY + AT_TOP_THRESHOLD && scrollBridge.y > 0) {
           onEnd(0)
           return
         }
 
-        // find closest snap point using current position and velocity
+        // snap calculation using frozen positions
         const velocity = velocityY / 1000
         const projectedEnd = currentPos + frameSize * velocity * 0.2
 
         let closestPoint = 0
         let minDist = Number.POSITIVE_INFINITY
 
-        for (let i = 0; i < positions.length; i++) {
-          const pos = positions[i]
+        for (let i = 0; i < snapPositions.length; i++) {
+          const pos = snapPositions[i]
           const dist = Math.abs(projectedEnd - pos)
           if (dist < minDist) {
             minDist = dist
@@ -277,9 +311,19 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         onEnd(closestPoint)
       })
       .onFinalize(() => {
-        // console.warn('[RNGH-Pan] onFinalize')
+        // console.warn('[RNGH-Pan] onFinalize', { panStarted: gs.panStarted })
         // clear scroll lock on finalize too (safety)
         scrollBridge.scrollLockY = undefined
+        if (gs.panStarted) {
+          // real pan gesture — reset isDragging (also un-pauses keyboard handler + flushes)
+          setIsDragging(false)
+        } else {
+          // just a tap (onBegin fired but onStart never did) — un-pause keyboard handler
+          // without setting isDragging (which would block keyboard animation effect)
+          if (config.pauseKeyboardHandler) {
+            config.pauseKeyboardHandler.current = false
+          }
+        }
       })
       .runOnJS(true)
 

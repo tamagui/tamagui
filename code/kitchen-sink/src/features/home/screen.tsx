@@ -8,7 +8,6 @@ import { H1, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
 
 export function HomeScreen() {
   const gestureHandlerEnabled = getGestureHandler().isEnabled
-  console.log('[HomeScreen] isGestureHandlerEnabled returned:', gestureHandlerEnabled)
 
   return (
     <ScrollView testID="home-scroll-view">
