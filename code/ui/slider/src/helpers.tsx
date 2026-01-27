@@ -1,3 +1,8 @@
+import type { ThumbCollisionBehavior } from './types'
+
+/**
+ * @deprecated Use resolveThumbCollision instead
+ */
 export function getNextSortedValues(
   prevValues: number[] = [],
   nextValue: number,
@@ -6,6 +11,107 @@ export function getNextSortedValues(
   const nextValues = [...prevValues]
   nextValues[atIndex] = nextValue
   return nextValues.sort((a, b) => a - b)
+}
+
+interface ResolveThumbCollisionParams {
+  behavior: ThumbCollisionBehavior
+  values: number[]
+  pressedIndex: number
+  nextValue: number
+  min: number
+  max: number
+  step: number
+  minStepsBetweenValues: number
+}
+
+interface ResolveThumbCollisionResult {
+  values: number[]
+  thumbIndex: number
+}
+
+/**
+ * Resolves thumb collision based on the specified behavior.
+ */
+export function resolveThumbCollision({
+  behavior,
+  values,
+  pressedIndex,
+  nextValue,
+  min,
+  max,
+  step,
+  minStepsBetweenValues,
+}: ResolveThumbCollisionParams): ResolveThumbCollisionResult {
+  if (values.length <= 1) {
+    return {
+      values: [nextValue],
+      thumbIndex: 0,
+    }
+  }
+
+  const minValueDifference = step * minStepsBetweenValues
+  const candidateValues = values.slice()
+
+  switch (behavior) {
+    case 'swap': {
+      // original radix behavior - values get sorted so thumbs can swap
+      candidateValues[pressedIndex] = nextValue
+      const sortedValues = candidateValues.sort((a, b) => a - b)
+      return {
+        values: sortedValues,
+        thumbIndex: sortedValues.indexOf(nextValue),
+      }
+    }
+
+    case 'push': {
+      // thumbs push each other
+      candidateValues[pressedIndex] = nextValue
+
+      // push thumbs to the right
+      for (let i = pressedIndex + 1; i < candidateValues.length; i++) {
+        const minAllowed = candidateValues[i - 1] + minValueDifference
+        if (candidateValues[i] < minAllowed) {
+          candidateValues[i] = Math.min(
+            minAllowed,
+            max - (candidateValues.length - 1 - i) * minValueDifference
+          )
+        }
+      }
+
+      // push thumbs to the left
+      for (let i = pressedIndex - 1; i >= 0; i--) {
+        const maxAllowed = candidateValues[i + 1] - minValueDifference
+        if (candidateValues[i] > maxAllowed) {
+          candidateValues[i] = Math.max(maxAllowed, min + i * minValueDifference)
+        }
+      }
+
+      return {
+        values: candidateValues,
+        thumbIndex: pressedIndex,
+      }
+    }
+
+    default: {
+      // 'none' - thumbs cannot pass each other - clamp to neighbors
+      const previousNeighbor = candidateValues[pressedIndex - 1]
+      const nextNeighbor = candidateValues[pressedIndex + 1]
+
+      const lowerBound =
+        previousNeighbor != null ? previousNeighbor + minValueDifference : min
+      const upperBound = nextNeighbor != null ? nextNeighbor - minValueDifference : max
+
+      candidateValues[pressedIndex] = Math.max(
+        lowerBound,
+        Math.min(upperBound, nextValue)
+      )
+
+      return {
+        values: candidateValues,
+        thumbIndex: pressedIndex,
+      }
+    }
+  }
 }
 
 export function convertValueToPercentage(value: number, min: number, max: number) {

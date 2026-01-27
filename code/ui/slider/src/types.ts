@@ -6,6 +6,15 @@ export type ScopedProps<P> = P & { __scopeSlider?: string }
 
 export type Direction = 'ltr' | 'rtl'
 
+/**
+ * Controls how thumbs behave when they collide during pointer interactions.
+ *
+ * - `'none'` (default): Thumbs cannot move past each other; excess movement is ignored.
+ * - `'push'`: Thumbs push each other without restoring their previous positions when dragged back.
+ * - `'swap'`: Thumbs swap places when dragged past each other.
+ */
+export type ThumbCollisionBehavior = 'none' | 'push' | 'swap'
+
 type SliderEventProps = {
   onSlideStart?: (
     event: GestureReponderEvent,
@@ -74,6 +83,16 @@ export interface SliderProps
   max?: number
   step?: number
   minStepsBetweenThumbs?: number
+  /**
+   * Controls how thumbs behave when they collide during pointer interactions.
+   *
+   * - `'none'` (default): Thumbs cannot move past each other; excess movement is ignored.
+   * - `'push'`: Thumbs push each other without restoring their previous positions when dragged back.
+   * - `'swap'`: Thumbs swap places when dragged past each other.
+   *
+   * @default 'none'
+   */
+  thumbCollisionBehavior?: ThumbCollisionBehavior
   value?: number[]
   defaultValue?: number[]
   onValueChange?(value: number[]): void

@@ -2,17 +2,18 @@
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
+import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { TamaguiElement } from '@tamagui/core'
+import type { GestureReponderEvent } from '@tamagui/core'
 import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { composeEventHandlers } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import type { View } from 'react-native'
 
-import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'
+import { ARROW_KEYS, PAGE_KEYS, useSliderContext } from './constants'
 import type { ScopedProps, SliderImplProps } from './types'
+import { useSliderEvents } from './useSliderEvents'
 
 export const SliderFrame = styled(YStack, {
   position: 'relative',
@@ -45,30 +46,6 @@ export const SliderFrame = styled(YStack, {
   } as const,
 })
 
-// export const SliderTrackFrame = styled(SliderFrame, {
-//   // name: 'SliderTrack',
-
-//   variants: {
-//     unstyled: {
-//       false: {
-//         height: '100%',
-//         width: '100%',
-//         backgroundColor: '$background',
-//         position: 'relative',
-//         borderRadius: 100_000,
-//         overflow: 'hidden',
-//       },
-//     },
-//   } as const,
-
-//   // defaultVariants: {
-//   //   unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-//   // },
-// })
-
-// const XXXX = <SliderFrame margin={10} />
-// const XX = <SliderTrackFrame  />
-
 export const SliderImpl = React.forwardRef<View, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
     const {
@@ -82,70 +59,81 @@ export const SliderImpl = React.forwardRef<View, SliderImplProps>(
       ...sliderProps
     } = props
     const context = useSliderContext(__scopeSlider)
-    return (
+    const frameRef = React.useRef<View>(null)
+    const composedRef = useComposedRefs(forwardedRef, frameRef)
+
+    const { frameProps, Wrapper } = useSliderEvents(context, {
+      onSlideStart: (event: GestureReponderEvent, target: 'thumb' | 'track') => {
+        onSlideStart(event, target)
+      },
+      onSlideMove: (event: GestureReponderEvent) => {
+        onSlideMove(event)
+      },
+      onSlideEnd: (event: GestureReponderEvent) => {
+        onSlideEnd(event)
+      },
+    })
+
+    const sliderFrame = (
       <SliderFrame
         size="$4"
         {...sliderProps}
         data-orientation={sliderProps.orientation}
-        ref={forwardedRef}
+        ref={composedRef}
+        {...frameProps}
         {...(isWeb && {
           onKeyDown: (event) => {
             if (event.key === 'Home') {
               onHomeKeyDown(event)
-              // Prevent scrolling to page start
               event.preventDefault()
             } else if (event.key === 'End') {
               onEndKeyDown(event)
-              // Prevent scrolling to page end
               event.preventDefault()
             } else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
               onStepKeyDown(event)
-              // Prevent scrolling for directional key presses
               event.preventDefault()
             }
           },
         })}
-        onMoveShouldSetResponderCapture={() => true}
-        onScrollShouldSetResponder={() => true}
-        onScrollShouldSetResponderCapture={() => true}
-        onMoveShouldSetResponder={() => true}
-        onStartShouldSetResponder={() => true}
-        // onStartShouldSetResponderCapture={() => true}
-        onResponderTerminationRequest={() => {
-          return false
-        }}
-        onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
-          const target = event.target as unknown as TamaguiElement | number
-          const thumbIndex = context.thumbs.get(target as TamaguiElement)
-          const isStartingOnThumb = thumbIndex !== undefined
-
-          // Prevent browser focus behaviour because we focus a thumb manually when values change.
-          // Touch devices have a delay before focusing so won't focus if touch immediately moves
-          // away from target (sliding). We want thumb to focus regardless.
-          if (isWeb && target instanceof HTMLElement) {
-            if (context.thumbs.has(target)) {
-              target.focus()
-            }
-          }
-
-          // Thumbs won't receive focus events on native, so we have to manually
-          // set the value index to change when sliding starts on a thumb.
-          if (!isWeb && isStartingOnThumb) {
-            context.valueIndexToChangeRef.current = thumbIndex
-          }
-
-          onSlideStart(event, isStartingOnThumb ? 'thumb' : 'track')
-        })}
-        onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
-          event.stopPropagation()
-          // const target = event.target as HTMLElement
-          onSlideMove(event)
-        })}
-        onResponderRelease={composeEventHandlers(props.onResponderRelease, (event) => {
-          // const target = event.target as HTMLElement
-          onSlideEnd(event)
-        })}
       />
     )
+
+    // on native, wrap with a View that handles responder events
+    if (Wrapper) {
+      const {
+        flex,
+        flexGrow,
+        flexShrink,
+        flexBasis,
+        alignSelf,
+        width,
+        height,
+        minWidth,
+        minHeight,
+        maxWidth,
+        maxHeight,
+      } = sliderProps
+      // filter out 'unset' values which are tamagui-specific
+      const wrapperStyle: Record<string, any> = {}
+      if (flex !== undefined && flex !== 'unset') wrapperStyle.flex = flex
+      if (flexGrow !== undefined && flexGrow !== 'unset') wrapperStyle.flexGrow = flexGrow
+      if (flexShrink !== undefined && flexShrink !== 'unset')
+        wrapperStyle.flexShrink = flexShrink
+      if (flexBasis !== undefined && flexBasis !== 'unset')
+        wrapperStyle.flexBasis = flexBasis
+      if (alignSelf !== undefined && alignSelf !== 'unset')
+        wrapperStyle.alignSelf = alignSelf
+      if (width !== undefined && width !== 'unset') wrapperStyle.width = width
+      if (height !== undefined && height !== 'unset') wrapperStyle.height = height
+      if (minWidth !== undefined && minWidth !== 'unset') wrapperStyle.minWidth = minWidth
+      if (minHeight !== undefined && minHeight !== 'unset')
+        wrapperStyle.minHeight = minHeight
+      if (maxWidth !== undefined && maxWidth !== 'unset') wrapperStyle.maxWidth = maxWidth
+      if (maxHeight !== undefined && maxHeight !== 'unset')
+        wrapperStyle.maxHeight = maxHeight
+      return <Wrapper style={wrapperStyle}>{sliderFrame}</Wrapper>
+    }
+
+    return sliderFrame
   }
 )

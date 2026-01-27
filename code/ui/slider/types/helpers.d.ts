@@ -1,4 +1,26 @@
+import type { ThumbCollisionBehavior } from './types';
+/**
+ * @deprecated Use resolveThumbCollision instead
+ */
 export declare function getNextSortedValues(prevValues: number[] | undefined, nextValue: number, atIndex: number): number[];
+interface ResolveThumbCollisionParams {
+    behavior: ThumbCollisionBehavior;
+    values: number[];
+    pressedIndex: number;
+    nextValue: number;
+    min: number;
+    max: number;
+    step: number;
+    minStepsBetweenValues: number;
+}
+interface ResolveThumbCollisionResult {
+    values: number[];
+    thumbIndex: number;
+}
+/**
+ * Resolves thumb collision based on the specified behavior.
+ */
+export declare function resolveThumbCollision({ behavior, values, pressedIndex, nextValue, min, max, step, minStepsBetweenValues, }: ResolveThumbCollisionParams): ResolveThumbCollisionResult;
 export declare function convertValueToPercentage(value: number, min: number, max: number): number;
 /**
  * Returns a label for each thumb when there are two or more thumbs
@@ -34,4 +56,5 @@ export declare function hasMinStepsBetweenValues(values: number[], minStepsBetwe
 export declare function linearScale(input: readonly [number, number], output: readonly [number, number]): (value: number) => number;
 export declare function getDecimalCount(value: number): number;
 export declare function roundValue(value: number, decimalCount: number): number;
+export {};
 //# sourceMappingURL=helpers.d.ts.map

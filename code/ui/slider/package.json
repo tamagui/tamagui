@@ -45,6 +45,7 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/native": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",

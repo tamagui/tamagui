@@ -12,9 +12,9 @@ import {
   getTokens,
   getVariableValue,
   styled,
-  useConfiguration,
   useCreateShallowSetState,
 } from '@tamagui/core'
+import { getSafeArea } from '@tamagui/native'
 import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { SizableStackProps } from '@tamagui/stacks'
@@ -39,10 +39,9 @@ import {
   getClosestValueIndex,
   getDecimalCount,
   getLabel,
-  getNextSortedValues,
   getThumbInBoundsOffset,
-  hasMinStepsBetweenValues,
   linearScale,
+  resolveThumbCollision,
   roundValue,
 } from './helpers'
 import { SliderFrame, SliderImpl } from './SliderImpl'
@@ -230,10 +229,10 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
     const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
     const setState = useCreateShallowSetState(setState_)
     const sliderRef = React.useRef<View>(null)
-    const configuration = useConfiguration()
-    // these insets are insets passed from TamaguiProvider by useSafeAreaInsets()
+    // get insets from @tamagui/native/setup-safe-area if configured
+    const safeArea = getSafeArea()
     const insets =
-      isIos && configuration.insets ? configuration.insets : { top: 0, bottom: 0 }
+      isIos && safeArea.isEnabled ? safeArea.getInsets() : { top: 0, bottom: 0 }
 
     function getValueFromPointer(pointerPosition: number) {
       const input: [number, number] = [0, state.size]
@@ -587,6 +586,7 @@ const SliderComponent = React.forwardRef(
       orientation = 'horizontal',
       disabled = false,
       minStepsBetweenThumbs = 0,
+      thumbCollisionBehavior = 'none',
       defaultValue = [min],
       value,
       onValueChange = () => {},
@@ -655,12 +655,18 @@ const SliderComponent = React.forwardRef(
       )
       const nextValue = clamp(snapToStep, [min, max])
       setValues((prevValues = []) => {
-        const nextValues = getNextSortedValues(prevValues, nextValue, atIndex)
-        if (hasMinStepsBetweenValues(nextValues, minStepsBetweenThumbs * step)) {
-          valueIndexToChangeRef.current = nextValues.indexOf(nextValue)
-          return String(nextValues) === String(prevValues) ? prevValues : nextValues
-        }
-        return prevValues
+        const result = resolveThumbCollision({
+          behavior: thumbCollisionBehavior,
+          values: prevValues,
+          pressedIndex: atIndex,
+          nextValue,
+          min,
+          max,
+          step,
+          minStepsBetweenValues: minStepsBetweenThumbs,
+        })
+        valueIndexToChangeRef.current = result.thumbIndex
+        return String(result.values) === String(prevValues) ? prevValues : result.values
       })
     }
 

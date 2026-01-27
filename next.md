@@ -1,3 +1,14 @@
+// redo this
+return React.cloneElement(
+        child,
+        { collapsable: false },
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        child.props.children
+      );
+
+
+- safe-area-insets support back
+
 ## Fix ref type issues properly
 
 Many components have `as any` casts for refs due to `HTMLElement` subtypes not being assignable to `TamaguiElement`. These were pre-existing issues exposed during the `@tamagui/element` package work. Files with `as any` ref casts that could be fixed properly:
