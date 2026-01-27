@@ -25,12 +25,13 @@ import { v5Templates } from './v5-templates'
 // re-export color utilities for users
 export { interpolateColor, opacify } from './opacify'
 
-export const defaultComponentThemes = {
-  Button: { template: 'surface2' },
+export const v5ComponentThemes = {
+  Button: { template: 'surface1' },
   Input: { template: 'surface1' },
   Progress: { template: 'surface2' },
   ProgressIndicator: { template: 'accent' },
-  Slider: { template: 'surface2' },
+  Slider: { template: 'surface1' },
+  SliderTrack: { template: 'surface2' },
   SliderThumb: { template: 'accent' },
   Switch: { template: 'surface2' },
   SwitchThumb: { template: 'accent' },
@@ -39,7 +40,7 @@ export const defaultComponentThemes = {
 } as const
 
 /** Default grandchildren themes available in v5 */
-export const defaultGrandChildrenThemes = {
+export const v5GrandchildrenThemes = {
   accent: { template: 'accent' },
   surface1: { template: 'surface1' },
   surface2: { template: 'surface2' },
@@ -210,7 +211,7 @@ const lightPalette = [
   'hsl(0, 0%, 45%)',
   'hsl(0, 0%, 30%)',
   'hsl(0, 0%, 20%)',
-  'hsl(0, 0%, 12%)',
+  'hsl(0, 0%, 14%)',
   'hsl(0, 0%, 2%)',
 ]
 
@@ -324,7 +325,7 @@ export type CreateV5ThemeOptions<
   GrandChildren extends Record<
     string,
     GrandChildrenThemeDefinition
-  > = typeof defaultGrandChildrenThemes,
+  > = typeof v5GrandchildrenThemes,
 > = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: string[]
@@ -337,7 +338,7 @@ export type CreateV5ThemeOptions<
   childrenThemes?: Children
   /**
    * Override grandChildren themes (alt1, alt2, surface1, etc.)
-   * Pass undefined or omit to use defaultGrandChildrenThemes
+   * Pass undefined or omit to use v5GrandchildrenThemes
    */
   grandChildrenThemes?: GrandChildren
   /**
@@ -374,7 +375,7 @@ export function createV5Theme<
   GrandChildren extends Record<
     string,
     GrandChildrenThemeDefinition
-  > = typeof defaultGrandChildrenThemes,
+  > = typeof v5GrandchildrenThemes,
 >(
   options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<
     Children,
@@ -385,8 +386,8 @@ export function createV5Theme<
     darkPalette: customDarkPalette = darkPalette,
     lightPalette: customLightPalette = lightPalette,
     childrenThemes = defaultChildrenThemes as unknown as Children,
-    grandChildrenThemes = defaultGrandChildrenThemes as unknown as GrandChildren,
-    componentThemes: customComponentThemes = defaultComponentThemes,
+    grandChildrenThemes = v5GrandchildrenThemes as unknown as GrandChildren,
+    componentThemes: customComponentThemes = v5ComponentThemes,
   } = options
 
   // Generate black/white named colors from palettes
@@ -502,6 +503,9 @@ export function createV5Theme<
         background04: opacify(bgColor, 0.4),
         background06: opacify(bgColor, 0.6),
         background08: opacify(bgColor, 0.8),
+
+        // same as background01
+        outlineColor: opacify(bgColor, 0.1),
       }
     },
   })

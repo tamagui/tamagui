@@ -23,8 +23,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -57,8 +57,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -91,8 +91,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -125,8 +125,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -159,8 +159,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -193,8 +193,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -227,8 +227,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -261,8 +261,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -295,8 +295,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -329,8 +329,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -363,8 +363,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -397,8 +397,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -431,8 +431,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -465,8 +465,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -499,8 +499,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -533,8 +533,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -567,8 +567,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -601,8 +601,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -635,8 +635,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -669,8 +669,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -703,8 +703,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -737,8 +737,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -771,8 +771,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -805,8 +805,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -839,8 +839,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -873,8 +873,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -907,8 +907,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -941,8 +941,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -975,8 +975,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1009,8 +1009,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1043,8 +1043,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1077,8 +1077,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1111,8 +1111,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1145,8 +1145,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1179,8 +1179,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1213,8 +1213,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1247,8 +1247,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1281,8 +1281,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1315,8 +1315,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1349,8 +1349,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1383,8 +1383,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1417,8 +1417,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1451,8 +1451,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1485,8 +1485,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1519,8 +1519,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1553,8 +1553,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1587,8 +1587,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1621,8 +1621,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1655,8 +1655,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1689,8 +1689,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1723,8 +1723,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1757,8 +1757,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1791,8 +1791,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1825,8 +1825,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1859,8 +1859,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1893,8 +1893,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1927,8 +1927,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1961,8 +1961,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -1995,8 +1995,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2029,8 +2029,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2063,8 +2063,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2097,8 +2097,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2131,8 +2131,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2165,8 +2165,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2199,8 +2199,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2233,8 +2233,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2267,8 +2267,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2301,8 +2301,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2335,8 +2335,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2369,8 +2369,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2403,8 +2403,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2437,8 +2437,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2471,8 +2471,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2505,8 +2505,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2539,8 +2539,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2573,8 +2573,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2607,8 +2607,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2641,8 +2641,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2675,8 +2675,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2709,8 +2709,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2743,8 +2743,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2777,8 +2777,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2811,8 +2811,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2845,8 +2845,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2879,8 +2879,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2913,8 +2913,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2947,8 +2947,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -2981,8 +2981,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3015,8 +3015,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3049,8 +3049,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3083,8 +3083,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3117,8 +3117,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3151,8 +3151,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3185,8 +3185,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3219,8 +3219,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3253,8 +3253,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3287,8 +3287,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3321,8 +3321,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3355,8 +3355,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3389,8 +3389,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3423,8 +3423,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3457,8 +3457,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3491,8 +3491,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3525,8 +3525,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3559,8 +3559,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3593,8 +3593,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3627,8 +3627,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3661,8 +3661,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3695,8 +3695,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3729,8 +3729,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3763,8 +3763,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3797,8 +3797,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3831,8 +3831,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3865,8 +3865,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3899,8 +3899,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3933,8 +3933,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -3967,8 +3967,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4001,8 +4001,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4035,8 +4035,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4069,8 +4069,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4103,8 +4103,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4137,8 +4137,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4171,8 +4171,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4205,8 +4205,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4239,8 +4239,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4273,8 +4273,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4307,8 +4307,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4341,8 +4341,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4375,8 +4375,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4409,8 +4409,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4443,8 +4443,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4477,8 +4477,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4511,8 +4511,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4545,8 +4545,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4579,8 +4579,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4613,8 +4613,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4647,8 +4647,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4681,8 +4681,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4715,8 +4715,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4749,8 +4749,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4783,8 +4783,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4817,8 +4817,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4851,8 +4851,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4885,8 +4885,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4919,8 +4919,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4953,8 +4953,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -4987,8 +4987,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5021,8 +5021,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5055,8 +5055,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5089,8 +5089,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5123,8 +5123,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5157,8 +5157,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5191,8 +5191,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5225,8 +5225,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5259,8 +5259,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5293,8 +5293,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5327,8 +5327,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5361,8 +5361,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5395,8 +5395,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5429,8 +5429,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5463,8 +5463,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5497,8 +5497,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5531,8 +5531,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5565,8 +5565,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5599,8 +5599,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5633,8 +5633,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5667,8 +5667,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5701,8 +5701,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5735,8 +5735,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5769,8 +5769,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5803,8 +5803,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5837,8 +5837,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5871,8 +5871,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5905,8 +5905,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5939,8 +5939,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -5973,8 +5973,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6007,8 +6007,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6041,8 +6041,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6075,8 +6075,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6109,8 +6109,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6143,8 +6143,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6177,8 +6177,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6211,8 +6211,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6245,8 +6245,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6279,8 +6279,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6313,8 +6313,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6347,8 +6347,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6381,8 +6381,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6415,8 +6415,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6449,8 +6449,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6483,8 +6483,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6517,8 +6517,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6551,8 +6551,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6585,8 +6585,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6619,8 +6619,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6653,8 +6653,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6687,8 +6687,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6721,8 +6721,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6755,8 +6755,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6789,8 +6789,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6823,8 +6823,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6857,8 +6857,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6891,8 +6891,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6925,8 +6925,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6959,8 +6959,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -6993,8 +6993,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7027,8 +7027,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7061,8 +7061,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7095,8 +7095,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7129,8 +7129,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7163,8 +7163,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7197,8 +7197,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7231,8 +7231,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7265,8 +7265,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7299,8 +7299,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7333,8 +7333,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7367,8 +7367,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7401,8 +7401,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7435,8 +7435,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7469,8 +7469,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7503,8 +7503,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7537,8 +7537,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7571,8 +7571,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7605,8 +7605,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7639,8 +7639,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7673,8 +7673,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7707,8 +7707,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7741,8 +7741,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7775,8 +7775,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7809,8 +7809,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7843,8 +7843,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7877,8 +7877,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7911,8 +7911,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7945,8 +7945,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -7979,8 +7979,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8013,8 +8013,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8047,8 +8047,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8081,8 +8081,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8115,8 +8115,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8149,8 +8149,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8183,8 +8183,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8217,8 +8217,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8251,8 +8251,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8285,8 +8285,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8319,8 +8319,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8353,8 +8353,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8387,8 +8387,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8421,8 +8421,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8455,8 +8455,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8489,8 +8489,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8523,8 +8523,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8557,8 +8557,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8591,8 +8591,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8625,8 +8625,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8659,8 +8659,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8693,8 +8693,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8727,8 +8727,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8761,8 +8761,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8795,8 +8795,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8829,8 +8829,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8863,8 +8863,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8897,8 +8897,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8931,8 +8931,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8965,8 +8965,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -8999,8 +8999,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9033,8 +9033,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9067,8 +9067,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9101,8 +9101,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9135,8 +9135,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9169,8 +9169,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9203,8 +9203,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9237,8 +9237,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9271,8 +9271,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9305,8 +9305,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9339,8 +9339,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9373,8 +9373,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9407,8 +9407,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9441,8 +9441,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9475,8 +9475,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9509,8 +9509,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9543,8 +9543,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9577,8 +9577,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9611,8 +9611,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9645,8 +9645,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9679,8 +9679,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9713,8 +9713,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9747,8 +9747,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9781,8 +9781,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9815,8 +9815,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9849,8 +9849,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9883,8 +9883,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9917,8 +9917,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9951,8 +9951,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -9985,8 +9985,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10019,8 +10019,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10053,8 +10053,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10087,8 +10087,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10121,8 +10121,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10155,8 +10155,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10189,8 +10189,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10223,8 +10223,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10257,8 +10257,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10291,8 +10291,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10325,8 +10325,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10359,8 +10359,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10393,8 +10393,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10427,8 +10427,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10461,8 +10461,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10495,8 +10495,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10529,8 +10529,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10563,8 +10563,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10597,8 +10597,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10631,8 +10631,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10665,8 +10665,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10699,8 +10699,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10733,8 +10733,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10767,8 +10767,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10801,8 +10801,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10835,8 +10835,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10869,8 +10869,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10903,8 +10903,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10937,8 +10937,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -10971,8 +10971,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11005,8 +11005,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11039,8 +11039,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11073,8 +11073,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11107,8 +11107,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11141,8 +11141,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11175,8 +11175,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11209,8 +11209,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11243,8 +11243,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11277,8 +11277,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11311,8 +11311,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11345,8 +11345,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11379,8 +11379,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11413,8 +11413,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11447,8 +11447,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11481,8 +11481,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11515,8 +11515,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11549,8 +11549,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11583,8 +11583,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11617,8 +11617,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11651,8 +11651,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11685,8 +11685,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11719,8 +11719,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11753,8 +11753,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11787,8 +11787,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11821,8 +11821,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11855,8 +11855,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11889,8 +11889,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11923,8 +11923,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11957,8 +11957,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -11991,8 +11991,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12025,8 +12025,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12059,8 +12059,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12093,8 +12093,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12127,8 +12127,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12161,8 +12161,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12195,8 +12195,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12229,8 +12229,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12263,8 +12263,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12297,8 +12297,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12331,8 +12331,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12365,8 +12365,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12399,8 +12399,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12433,8 +12433,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12467,8 +12467,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12501,8 +12501,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12535,8 +12535,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12569,8 +12569,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12603,8 +12603,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12637,8 +12637,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12671,8 +12671,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12705,8 +12705,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12739,8 +12739,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12773,8 +12773,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12807,8 +12807,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12841,8 +12841,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12875,8 +12875,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12909,8 +12909,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12943,8 +12943,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -12977,8 +12977,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13011,8 +13011,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13045,8 +13045,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13079,8 +13079,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13113,8 +13113,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13147,8 +13147,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13181,8 +13181,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13215,8 +13215,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13249,8 +13249,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13283,8 +13283,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13317,8 +13317,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13351,8 +13351,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13385,8 +13385,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13419,8 +13419,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13453,8 +13453,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13487,8 +13487,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13521,8 +13521,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13555,8 +13555,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13589,8 +13589,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13623,8 +13623,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13657,8 +13657,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13691,8 +13691,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13725,8 +13725,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13759,8 +13759,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13793,8 +13793,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13827,8 +13827,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13861,8 +13861,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13895,8 +13895,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13929,8 +13929,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13963,8 +13963,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -13997,8 +13997,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14031,8 +14031,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14065,8 +14065,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14099,8 +14099,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14133,8 +14133,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14167,8 +14167,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14201,8 +14201,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14235,8 +14235,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14269,8 +14269,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14303,8 +14303,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14337,8 +14337,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14371,8 +14371,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14405,8 +14405,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14439,8 +14439,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14473,8 +14473,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14507,8 +14507,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14541,8 +14541,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14575,8 +14575,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14609,8 +14609,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14643,8 +14643,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14677,8 +14677,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14711,8 +14711,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14745,8 +14745,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14779,8 +14779,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14813,8 +14813,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14847,8 +14847,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14881,8 +14881,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14915,8 +14915,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14949,8 +14949,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -14983,8 +14983,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15017,8 +15017,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15051,8 +15051,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15085,8 +15085,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15119,8 +15119,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15153,8 +15153,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15187,8 +15187,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15221,8 +15221,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15255,8 +15255,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15289,8 +15289,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15323,8 +15323,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15357,8 +15357,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15391,8 +15391,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15425,8 +15425,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15459,8 +15459,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15493,8 +15493,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15527,8 +15527,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15561,8 +15561,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15595,8 +15595,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15629,8 +15629,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15663,8 +15663,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15697,8 +15697,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15731,8 +15731,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15765,8 +15765,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15799,8 +15799,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15833,8 +15833,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15867,8 +15867,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15901,8 +15901,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15935,8 +15935,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -15969,8 +15969,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16003,8 +16003,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16037,8 +16037,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16071,8 +16071,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16105,8 +16105,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16139,8 +16139,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16173,8 +16173,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16207,8 +16207,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16241,8 +16241,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16275,8 +16275,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16309,8 +16309,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16343,8 +16343,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16377,8 +16377,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16411,8 +16411,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16445,8 +16445,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16479,8 +16479,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16513,8 +16513,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16547,8 +16547,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16581,8 +16581,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16615,8 +16615,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16649,8 +16649,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16683,8 +16683,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16717,8 +16717,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16751,8 +16751,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16785,8 +16785,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16819,8 +16819,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16853,8 +16853,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16887,8 +16887,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16921,8 +16921,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16955,8 +16955,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -16989,8 +16989,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17023,8 +17023,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17057,8 +17057,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17091,8 +17091,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17125,8 +17125,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17159,8 +17159,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17193,8 +17193,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17227,8 +17227,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17261,8 +17261,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17295,8 +17295,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17329,8 +17329,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17363,8 +17363,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17397,8 +17397,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17431,8 +17431,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17465,8 +17465,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17499,8 +17499,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17533,8 +17533,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17567,8 +17567,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17601,8 +17601,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17635,8 +17635,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17669,8 +17669,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17703,8 +17703,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17737,8 +17737,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17771,8 +17771,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17805,8 +17805,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17839,8 +17839,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17873,8 +17873,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17907,8 +17907,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17941,8 +17941,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -17975,8 +17975,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18009,8 +18009,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18043,8 +18043,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18077,8 +18077,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18111,8 +18111,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18145,8 +18145,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18179,8 +18179,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18213,8 +18213,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18247,8 +18247,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18281,8 +18281,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18315,8 +18315,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18349,8 +18349,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18383,8 +18383,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18417,8 +18417,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18451,8 +18451,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18485,8 +18485,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18519,8 +18519,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18553,8 +18553,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18587,8 +18587,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18621,8 +18621,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18655,8 +18655,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18689,8 +18689,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18723,8 +18723,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18757,8 +18757,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18791,8 +18791,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18825,8 +18825,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18859,8 +18859,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18893,8 +18893,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18927,8 +18927,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18961,8 +18961,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -18995,8 +18995,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19029,8 +19029,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19063,8 +19063,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19097,8 +19097,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19131,8 +19131,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19165,8 +19165,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19199,8 +19199,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19233,8 +19233,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19267,8 +19267,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19301,8 +19301,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19335,8 +19335,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19369,8 +19369,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19403,8 +19403,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19437,8 +19437,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19471,8 +19471,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19505,8 +19505,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19539,8 +19539,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19573,8 +19573,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19607,8 +19607,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19641,8 +19641,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19675,8 +19675,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19709,8 +19709,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19743,8 +19743,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19777,8 +19777,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19811,8 +19811,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19845,8 +19845,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19879,8 +19879,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19913,8 +19913,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19947,8 +19947,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -19981,8 +19981,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20015,8 +20015,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20049,8 +20049,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20083,8 +20083,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20117,8 +20117,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20151,8 +20151,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20185,8 +20185,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20219,8 +20219,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20253,8 +20253,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20287,8 +20287,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20321,8 +20321,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20355,8 +20355,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20389,8 +20389,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20423,8 +20423,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20457,8 +20457,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20491,8 +20491,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20525,8 +20525,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20559,8 +20559,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20593,8 +20593,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20627,8 +20627,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20661,8 +20661,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20695,8 +20695,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20729,8 +20729,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20763,8 +20763,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20797,8 +20797,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20831,8 +20831,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20865,8 +20865,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20899,8 +20899,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20933,8 +20933,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -20967,8 +20967,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21001,8 +21001,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21035,8 +21035,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21069,8 +21069,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21103,8 +21103,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21137,8 +21137,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21171,8 +21171,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21205,8 +21205,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21239,8 +21239,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21273,8 +21273,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21307,8 +21307,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21341,8 +21341,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21375,8 +21375,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21409,8 +21409,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21443,8 +21443,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21477,8 +21477,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21511,8 +21511,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21545,8 +21545,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21579,8 +21579,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21613,8 +21613,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21647,8 +21647,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21681,8 +21681,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21715,8 +21715,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21749,8 +21749,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21783,8 +21783,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21817,8 +21817,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21851,8 +21851,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21885,8 +21885,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21919,8 +21919,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21953,8 +21953,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -21987,8 +21987,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22021,8 +22021,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22055,8 +22055,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22089,8 +22089,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22123,8 +22123,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22157,8 +22157,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22191,8 +22191,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22225,8 +22225,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22259,8 +22259,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22293,8 +22293,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22327,8 +22327,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22361,8 +22361,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22395,8 +22395,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22429,8 +22429,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22463,8 +22463,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22497,8 +22497,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22531,8 +22531,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22565,8 +22565,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22599,8 +22599,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22633,8 +22633,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22667,8 +22667,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22701,8 +22701,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22735,8 +22735,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22769,8 +22769,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22803,8 +22803,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22837,8 +22837,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22871,8 +22871,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22905,8 +22905,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22939,8 +22939,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -22973,8 +22973,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23007,8 +23007,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23041,8 +23041,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23075,8 +23075,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23109,8 +23109,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23143,8 +23143,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23177,8 +23177,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23211,8 +23211,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23245,8 +23245,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23279,8 +23279,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23313,8 +23313,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23347,8 +23347,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23381,8 +23381,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23415,8 +23415,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23449,8 +23449,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23483,8 +23483,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23517,8 +23517,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23551,8 +23551,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23585,8 +23585,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23619,8 +23619,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23653,8 +23653,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23687,8 +23687,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23721,8 +23721,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23755,8 +23755,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23789,8 +23789,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23823,8 +23823,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23857,8 +23857,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23891,8 +23891,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23925,8 +23925,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23959,8 +23959,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -23993,8 +23993,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24027,8 +24027,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24061,8 +24061,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24095,8 +24095,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24129,8 +24129,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24163,8 +24163,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24197,8 +24197,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24231,8 +24231,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24265,8 +24265,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24299,8 +24299,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24333,8 +24333,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24367,8 +24367,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24401,8 +24401,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24435,8 +24435,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24469,8 +24469,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24503,8 +24503,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24537,8 +24537,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24571,8 +24571,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24605,8 +24605,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24639,8 +24639,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24673,8 +24673,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24707,8 +24707,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24741,8 +24741,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24775,8 +24775,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24809,8 +24809,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24843,8 +24843,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24877,8 +24877,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24911,8 +24911,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24945,8 +24945,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -24979,8 +24979,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25013,8 +25013,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25047,8 +25047,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25081,8 +25081,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25115,8 +25115,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25149,8 +25149,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25183,8 +25183,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25217,8 +25217,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25251,8 +25251,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25285,8 +25285,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25319,8 +25319,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25353,8 +25353,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25387,8 +25387,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25421,8 +25421,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25455,8 +25455,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25489,8 +25489,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25523,8 +25523,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25557,8 +25557,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25591,8 +25591,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25625,8 +25625,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25659,8 +25659,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25693,8 +25693,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25727,8 +25727,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25761,8 +25761,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25795,8 +25795,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25829,8 +25829,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25863,8 +25863,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25897,8 +25897,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25931,8 +25931,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25965,8 +25965,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -25999,8 +25999,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26033,8 +26033,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26067,8 +26067,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26101,8 +26101,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26135,8 +26135,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26169,8 +26169,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26203,8 +26203,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26237,8 +26237,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26271,8 +26271,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26305,8 +26305,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26339,8 +26339,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26373,8 +26373,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26407,8 +26407,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26441,8 +26441,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26475,8 +26475,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26509,8 +26509,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26543,8 +26543,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26577,8 +26577,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26611,8 +26611,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26645,8 +26645,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26679,8 +26679,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26713,8 +26713,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26747,8 +26747,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26781,8 +26781,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26815,8 +26815,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26849,8 +26849,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26883,8 +26883,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26917,8 +26917,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26951,8 +26951,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -26985,8 +26985,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27019,8 +27019,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27053,8 +27053,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27087,8 +27087,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27121,8 +27121,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27155,8 +27155,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27189,8 +27189,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27223,8 +27223,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27257,8 +27257,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27291,8 +27291,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27325,8 +27325,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27359,8 +27359,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27393,8 +27393,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27427,8 +27427,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27461,8 +27461,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27495,8 +27495,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27529,8 +27529,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27563,8 +27563,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27597,8 +27597,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27631,8 +27631,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27665,8 +27665,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27699,8 +27699,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27733,8 +27733,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27767,8 +27767,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27801,8 +27801,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27835,8 +27835,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27869,8 +27869,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27903,8 +27903,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27937,8 +27937,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -27971,8 +27971,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28005,8 +28005,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28039,8 +28039,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28073,8 +28073,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28107,8 +28107,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28141,8 +28141,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28175,8 +28175,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28209,8 +28209,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28243,8 +28243,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28277,8 +28277,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28311,8 +28311,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28345,8 +28345,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28379,8 +28379,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28413,8 +28413,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28447,8 +28447,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28481,8 +28481,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28515,8 +28515,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28549,8 +28549,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28583,8 +28583,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28617,8 +28617,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28651,8 +28651,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28685,8 +28685,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28719,8 +28719,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28753,8 +28753,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28787,8 +28787,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28821,8 +28821,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28855,8 +28855,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28889,8 +28889,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28923,8 +28923,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28957,8 +28957,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -28991,8 +28991,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29025,8 +29025,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29059,8 +29059,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29093,8 +29093,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29127,8 +29127,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29161,8 +29161,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29195,8 +29195,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29229,8 +29229,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29263,8 +29263,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29297,8 +29297,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29331,8 +29331,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29365,8 +29365,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29399,8 +29399,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29433,8 +29433,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29467,8 +29467,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29501,8 +29501,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29535,8 +29535,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29569,8 +29569,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29603,8 +29603,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29637,8 +29637,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29671,8 +29671,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29705,8 +29705,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29739,8 +29739,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29773,8 +29773,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29807,8 +29807,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29841,8 +29841,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29875,8 +29875,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29909,8 +29909,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29943,8 +29943,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -29977,8 +29977,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30011,8 +30011,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30045,8 +30045,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30079,8 +30079,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30113,8 +30113,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30147,8 +30147,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30181,8 +30181,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30215,8 +30215,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30249,8 +30249,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30283,8 +30283,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30317,8 +30317,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30351,8 +30351,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30385,8 +30385,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30419,8 +30419,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30453,8 +30453,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30487,8 +30487,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30521,8 +30521,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30555,8 +30555,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30589,8 +30589,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30623,8 +30623,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30657,8 +30657,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30691,8 +30691,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30725,8 +30725,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30759,8 +30759,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30793,8 +30793,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30827,8 +30827,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30861,8 +30861,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30895,8 +30895,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30929,8 +30929,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30963,8 +30963,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -30997,8 +30997,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31031,8 +31031,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31065,8 +31065,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31099,8 +31099,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31133,8 +31133,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31167,8 +31167,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31201,8 +31201,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31235,8 +31235,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31269,8 +31269,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31303,8 +31303,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31337,8 +31337,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31371,8 +31371,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31405,8 +31405,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31439,8 +31439,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31473,8 +31473,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31507,8 +31507,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31541,8 +31541,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31575,8 +31575,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31609,8 +31609,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31643,8 +31643,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31677,8 +31677,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31711,8 +31711,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31745,8 +31745,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31779,8 +31779,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31813,8 +31813,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31847,8 +31847,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31881,8 +31881,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31915,8 +31915,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31949,8 +31949,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -31983,8 +31983,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32017,8 +32017,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32051,8 +32051,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32085,8 +32085,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32119,8 +32119,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32153,8 +32153,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32187,8 +32187,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32221,8 +32221,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32255,8 +32255,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32289,8 +32289,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32323,8 +32323,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32357,8 +32357,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32391,8 +32391,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32425,8 +32425,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32459,8 +32459,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32493,8 +32493,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32527,8 +32527,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32561,8 +32561,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32595,8 +32595,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32629,8 +32629,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32663,8 +32663,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32697,8 +32697,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32731,8 +32731,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32765,8 +32765,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32799,8 +32799,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32833,8 +32833,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32867,8 +32867,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32901,8 +32901,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32935,8 +32935,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -32969,8 +32969,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33003,8 +33003,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33037,8 +33037,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33071,8 +33071,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33105,8 +33105,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33139,8 +33139,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33173,8 +33173,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33207,8 +33207,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33241,8 +33241,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33275,8 +33275,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33309,8 +33309,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33343,8 +33343,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33377,8 +33377,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33411,8 +33411,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33445,8 +33445,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33479,8 +33479,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33513,8 +33513,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33547,8 +33547,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33581,8 +33581,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33615,8 +33615,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33649,8 +33649,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33683,8 +33683,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33717,8 +33717,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33751,8 +33751,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33785,8 +33785,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33819,8 +33819,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33853,8 +33853,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33887,8 +33887,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33921,8 +33921,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33955,8 +33955,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -33989,8 +33989,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34023,8 +34023,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34057,8 +34057,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34091,8 +34091,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34125,8 +34125,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34159,8 +34159,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34193,8 +34193,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34227,8 +34227,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34261,8 +34261,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34295,8 +34295,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34329,8 +34329,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34363,8 +34363,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34397,8 +34397,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34431,8 +34431,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34465,8 +34465,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34499,8 +34499,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34533,8 +34533,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34567,8 +34567,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34601,8 +34601,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34635,8 +34635,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34669,8 +34669,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34703,8 +34703,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34737,8 +34737,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34771,8 +34771,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34805,8 +34805,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34839,8 +34839,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34873,8 +34873,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34907,8 +34907,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34941,8 +34941,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -34975,8 +34975,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35009,8 +35009,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35043,8 +35043,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35077,8 +35077,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35111,8 +35111,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35145,8 +35145,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35179,8 +35179,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35213,8 +35213,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35247,8 +35247,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35281,8 +35281,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35315,8 +35315,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35349,8 +35349,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35383,8 +35383,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35417,8 +35417,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35451,8 +35451,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35485,8 +35485,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35519,8 +35519,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35553,8 +35553,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35587,8 +35587,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35621,8 +35621,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35655,8 +35655,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35689,8 +35689,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35723,8 +35723,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35757,8 +35757,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35791,8 +35791,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35825,8 +35825,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35859,8 +35859,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35893,8 +35893,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35927,8 +35927,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35961,8 +35961,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -35995,8 +35995,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36029,8 +36029,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36063,8 +36063,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36097,8 +36097,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36131,8 +36131,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36165,8 +36165,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36199,8 +36199,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36233,8 +36233,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36267,8 +36267,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36301,8 +36301,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36335,8 +36335,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36369,8 +36369,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36403,8 +36403,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36437,8 +36437,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36471,8 +36471,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36505,8 +36505,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36539,8 +36539,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36573,8 +36573,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36607,8 +36607,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36641,8 +36641,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36675,8 +36675,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36709,8 +36709,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36743,8 +36743,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36777,8 +36777,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36811,8 +36811,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36845,8 +36845,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36879,8 +36879,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36913,8 +36913,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36947,8 +36947,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -36981,8 +36981,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37015,8 +37015,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37049,8 +37049,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37083,8 +37083,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37117,8 +37117,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37151,8 +37151,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37185,8 +37185,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37219,8 +37219,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37253,8 +37253,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37287,8 +37287,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37321,8 +37321,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37355,8 +37355,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37389,8 +37389,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37423,8 +37423,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37457,8 +37457,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37491,8 +37491,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37525,8 +37525,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37559,8 +37559,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37593,8 +37593,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37627,8 +37627,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37661,8 +37661,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37695,8 +37695,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37729,8 +37729,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37763,8 +37763,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37797,8 +37797,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37831,8 +37831,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37865,8 +37865,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37899,8 +37899,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37933,8 +37933,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -37967,8 +37967,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38001,8 +38001,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38035,8 +38035,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38069,8 +38069,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38103,8 +38103,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38137,8 +38137,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38171,8 +38171,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38205,8 +38205,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38239,8 +38239,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38273,8 +38273,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38307,8 +38307,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38341,8 +38341,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38375,8 +38375,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38409,8 +38409,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38443,8 +38443,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38477,8 +38477,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38511,8 +38511,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38545,8 +38545,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38579,8 +38579,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38613,8 +38613,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38647,8 +38647,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38681,8 +38681,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38715,8 +38715,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38749,8 +38749,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38783,8 +38783,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38817,8 +38817,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38851,8 +38851,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38885,8 +38885,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38919,8 +38919,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38953,8 +38953,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -38987,8 +38987,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39021,8 +39021,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39055,8 +39055,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39089,8 +39089,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39123,8 +39123,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39157,8 +39157,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39191,8 +39191,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39225,8 +39225,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39259,8 +39259,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39293,8 +39293,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39327,8 +39327,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39361,8 +39361,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39395,8 +39395,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39429,8 +39429,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39463,8 +39463,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39497,8 +39497,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39531,8 +39531,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39565,8 +39565,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39599,8 +39599,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39633,8 +39633,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39667,8 +39667,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39701,8 +39701,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39735,8 +39735,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39769,8 +39769,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39803,8 +39803,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39837,8 +39837,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39871,8 +39871,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39905,8 +39905,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39939,8 +39939,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -39973,8 +39973,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40007,8 +40007,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40041,8 +40041,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40075,8 +40075,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40109,8 +40109,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40143,8 +40143,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40177,8 +40177,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40211,8 +40211,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40245,8 +40245,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40279,8 +40279,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40313,8 +40313,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40347,8 +40347,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40381,8 +40381,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40415,8 +40415,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40449,8 +40449,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40483,8 +40483,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40517,8 +40517,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40551,8 +40551,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40585,8 +40585,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40619,8 +40619,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40653,8 +40653,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40687,8 +40687,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40721,8 +40721,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40755,8 +40755,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40789,8 +40789,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40823,8 +40823,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40857,8 +40857,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40891,8 +40891,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40925,8 +40925,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40959,8 +40959,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -40993,8 +40993,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41027,8 +41027,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41061,8 +41061,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41095,8 +41095,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41129,8 +41129,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41163,8 +41163,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41197,8 +41197,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41231,8 +41231,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41265,8 +41265,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41299,8 +41299,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41333,8 +41333,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41367,8 +41367,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41401,8 +41401,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41435,8 +41435,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41469,8 +41469,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41503,8 +41503,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41537,8 +41537,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41571,8 +41571,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41605,8 +41605,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41639,8 +41639,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41673,8 +41673,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41707,8 +41707,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41741,8 +41741,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41775,8 +41775,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41809,8 +41809,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41843,8 +41843,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41877,8 +41877,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41911,8 +41911,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41945,8 +41945,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -41979,8 +41979,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42013,8 +42013,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42047,8 +42047,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42081,8 +42081,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42115,8 +42115,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42149,8 +42149,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42183,8 +42183,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42217,8 +42217,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42251,8 +42251,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42285,8 +42285,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42319,8 +42319,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42353,8 +42353,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42387,8 +42387,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42421,8 +42421,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42455,8 +42455,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42489,8 +42489,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42523,8 +42523,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42557,8 +42557,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42591,8 +42591,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42625,8 +42625,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42659,8 +42659,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42693,8 +42693,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42727,8 +42727,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42761,8 +42761,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42795,8 +42795,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42829,8 +42829,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42863,8 +42863,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42897,8 +42897,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42931,8 +42931,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42965,8 +42965,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -42999,8 +42999,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43033,8 +43033,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43067,8 +43067,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43101,8 +43101,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43135,8 +43135,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43169,8 +43169,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43203,8 +43203,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43237,8 +43237,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43271,8 +43271,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43305,8 +43305,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43339,8 +43339,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43373,8 +43373,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43407,8 +43407,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43441,8 +43441,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43475,8 +43475,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43509,8 +43509,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43543,8 +43543,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43577,8 +43577,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43611,8 +43611,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43645,8 +43645,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43679,8 +43679,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43713,8 +43713,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43747,8 +43747,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43781,8 +43781,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43815,8 +43815,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43849,8 +43849,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43883,8 +43883,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43917,8 +43917,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43951,8 +43951,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -43985,8 +43985,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44019,8 +44019,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44053,8 +44053,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44087,8 +44087,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44121,8 +44121,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44155,8 +44155,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44189,8 +44189,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44223,8 +44223,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44257,8 +44257,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44291,8 +44291,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44325,8 +44325,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44359,8 +44359,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44393,8 +44393,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44427,8 +44427,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44461,8 +44461,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44495,8 +44495,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44529,8 +44529,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44563,8 +44563,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44597,8 +44597,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44631,8 +44631,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44665,8 +44665,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44699,8 +44699,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44733,8 +44733,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44767,8 +44767,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44801,8 +44801,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44835,8 +44835,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44869,8 +44869,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44903,8 +44903,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44937,8 +44937,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -44971,8 +44971,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45005,8 +45005,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45039,8 +45039,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45073,8 +45073,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45107,8 +45107,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45141,8 +45141,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45175,8 +45175,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45209,8 +45209,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45243,8 +45243,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45277,8 +45277,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45311,8 +45311,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45345,8 +45345,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45379,8 +45379,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45413,8 +45413,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45447,8 +45447,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45481,8 +45481,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45515,8 +45515,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45549,8 +45549,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45583,8 +45583,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45617,8 +45617,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45651,8 +45651,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45685,8 +45685,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45719,8 +45719,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45753,8 +45753,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45787,8 +45787,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45821,8 +45821,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45855,8 +45855,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45889,8 +45889,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45923,8 +45923,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45957,8 +45957,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -45991,8 +45991,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46025,8 +46025,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46059,8 +46059,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46093,8 +46093,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46127,8 +46127,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46161,8 +46161,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46195,8 +46195,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46229,8 +46229,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46263,8 +46263,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46297,8 +46297,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46331,8 +46331,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46365,8 +46365,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46399,8 +46399,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46433,8 +46433,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46467,8 +46467,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46501,8 +46501,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46535,8 +46535,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46569,8 +46569,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46603,8 +46603,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46637,8 +46637,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46671,8 +46671,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46705,8 +46705,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46739,8 +46739,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46773,8 +46773,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46807,8 +46807,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46841,8 +46841,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46875,8 +46875,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46909,8 +46909,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46943,8 +46943,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -46977,8 +46977,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47011,8 +47011,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47045,8 +47045,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47079,8 +47079,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47113,8 +47113,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47147,8 +47147,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47181,8 +47181,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47215,8 +47215,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47249,8 +47249,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47283,8 +47283,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47317,8 +47317,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47351,8 +47351,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47385,8 +47385,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47419,8 +47419,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47453,8 +47453,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47487,8 +47487,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47521,8 +47521,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47555,8 +47555,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47589,8 +47589,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47623,8 +47623,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47657,8 +47657,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47691,8 +47691,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47725,8 +47725,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47759,8 +47759,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47793,8 +47793,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47827,8 +47827,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47861,8 +47861,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47895,8 +47895,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47929,8 +47929,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47963,8 +47963,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -47997,8 +47997,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48031,8 +48031,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48065,8 +48065,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48099,8 +48099,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48133,8 +48133,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48167,8 +48167,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48201,8 +48201,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48235,8 +48235,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48269,8 +48269,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48303,8 +48303,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48337,8 +48337,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48371,8 +48371,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48405,8 +48405,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48439,8 +48439,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48473,8 +48473,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48507,8 +48507,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48541,8 +48541,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48575,8 +48575,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48609,8 +48609,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48643,8 +48643,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48677,8 +48677,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48711,8 +48711,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48745,8 +48745,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48779,8 +48779,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48813,8 +48813,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48847,8 +48847,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48881,8 +48881,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48915,8 +48915,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48949,8 +48949,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -48983,8 +48983,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49017,8 +49017,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49051,8 +49051,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49085,8 +49085,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49119,8 +49119,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49153,8 +49153,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49187,8 +49187,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49221,8 +49221,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49255,8 +49255,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49289,8 +49289,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49323,8 +49323,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49357,8 +49357,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49391,8 +49391,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49425,8 +49425,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49459,8 +49459,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49493,8 +49493,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49527,8 +49527,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49561,8 +49561,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49595,8 +49595,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49629,8 +49629,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49663,8 +49663,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49697,8 +49697,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49731,8 +49731,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49765,8 +49765,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49799,8 +49799,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49833,8 +49833,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49867,8 +49867,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49901,8 +49901,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49935,8 +49935,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -49969,8 +49969,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50003,8 +50003,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50037,8 +50037,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50071,8 +50071,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50105,8 +50105,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50139,8 +50139,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50173,8 +50173,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50207,8 +50207,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50241,8 +50241,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50275,8 +50275,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50309,8 +50309,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50343,8 +50343,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50377,8 +50377,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50411,8 +50411,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50445,8 +50445,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50479,8 +50479,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50513,8 +50513,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50547,8 +50547,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50581,8 +50581,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50615,8 +50615,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50649,8 +50649,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50683,8 +50683,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50717,8 +50717,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50751,8 +50751,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50785,8 +50785,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50819,8 +50819,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50853,8 +50853,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50887,8 +50887,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50921,8 +50921,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50955,8 +50955,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -50989,8 +50989,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51023,8 +51023,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51057,8 +51057,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51091,8 +51091,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51125,8 +51125,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51159,8 +51159,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51193,8 +51193,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51227,8 +51227,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51261,8 +51261,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51295,8 +51295,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51329,8 +51329,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51363,8 +51363,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
@@ -51397,8 +51397,8 @@ export declare const themes: {
         color11: string;
         color12: string;
         background: string;
-        colorTransparent: string;
         placeholderColor: string;
+        colorTransparent: string;
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;

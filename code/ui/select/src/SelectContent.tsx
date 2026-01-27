@@ -1,5 +1,5 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
-import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
+import { isWeb, Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import React from 'react'
@@ -11,8 +11,6 @@ import { useShowSelectSheet } from './useSelectBreakpointActive'
 /* -------------------------------------------------------------------------------------------------
  * SelectContent
  * -----------------------------------------------------------------------------------------------*/
-
-const CONTENT_NAME = 'SelectContent'
 
 export const SelectContent = ({
   children,
@@ -65,7 +63,7 @@ export const SelectContent = ({
           }}
         >
           {/* wrap in div so FocusScope has a DOM element to attach ref to */}
-          <div style={{ display: 'contents' }}>{contents}</div>
+          {isWeb ? <div style={{ display: 'contents' }}>{contents}</div> : contents}
         </FocusScope>
       </FloatingOverlay>
     </FloatingPortal>

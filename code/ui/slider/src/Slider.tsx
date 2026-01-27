@@ -299,8 +299,6 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
  * SliderTrack
  * -----------------------------------------------------------------------------------------------*/
 
-const TRACK_NAME = 'SliderTrack'
-
 type SliderTrackElement = TamaguiElement
 
 export const SliderTrackFrame = styled(SliderFrame, {
@@ -325,7 +323,7 @@ export const SliderTrackFrame = styled(SliderFrame, {
 })
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
-  (props: ScopedProps<SliderTrackProps>, forwardedRef) => {
+  function SliderTrack(props: ScopedProps<SliderTrackProps>, forwardedRef) {
     const { __scopeSlider, ...trackProps } = props
     const context = useSliderContext(__scopeSlider)
     return (
@@ -340,8 +338,6 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
     )
   }
 )
-
-SliderTrack.displayName = TRACK_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SliderTrackActive
