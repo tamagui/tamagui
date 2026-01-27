@@ -124,8 +124,8 @@ const Card = styled(YStack, {
 })
 
 const niceNames = {
-  'react-native': 'React Native',
-  css: 'css',
+  motion: 'Motion',
+  css: 'CSS',
 }
 
 const AnimationControl = () => {
@@ -140,9 +140,9 @@ const AnimationControl = () => {
         <Timer size={14} opacity={0.6} />
         <Switch
           size="$1"
-          checked={animationDriverToggler.driverName === 'react-native'}
+          checked={animationDriverToggler.driverName === 'motion'}
           onCheckedChange={(val) =>
-            animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
+            animationDriverToggler.setDriverName(val ? 'motion' : 'css')
           }
           activeStyle={{
             backgroundColor: '$color8',

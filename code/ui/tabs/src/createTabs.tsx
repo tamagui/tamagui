@@ -121,9 +121,7 @@ export function createTabs<
         >
           <TabFrame
             onLayout={(event) => {
-              if (!isWeb) {
-                setLayout(event.nativeEvent.layout)
-              }
+              setLayout(event.nativeEvent.layout)
             }}
             onMouseEnter={composeEventHandlers(props.onMouseEnter, () => {
               if (layout) {

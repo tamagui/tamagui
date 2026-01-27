@@ -19,7 +19,7 @@ import {
   yellowDark,
 } from '@tamagui/colors'
 import { createThemes } from '@tamagui/theme-builder'
-import { interpolateColor, opacify } from './opacify'
+import { opacify } from './opacify'
 import { v5Templates } from './v5-templates'
 
 // re-export color utilities for users
