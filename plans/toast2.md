@@ -488,6 +488,11 @@ Note: Internal styled components already exist (ToastItemFrame, etc.). Can expor
 4. Documentation - TODO
 5. Tests ✅ (29 tests passing - 13 basic + 16 comprehensive)
 6. **Spring physics tuning** ✅ (damping: 30, stiffness: 400, mass: 0.5 for snappy feel)
+7. **Interaction UX polish** ✅:
+   - Prevent text selection during drag (user-select: none)
+   - Visual drag feedback (cursor: grab)
+   - Smart expansion (only with 2+ toasts, 50ms delay, cancel on drag)
+   - Fast dismiss animation (200ms timing instead of spring)
 
 ---
 
