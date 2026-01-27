@@ -125,3 +125,51 @@ export type ScrollBridge = {
   // whether sheet is at top position (for scroll enable/disable)
   isAtTop?: boolean
 }
+
+// keyboard controller sheet types
+
+export interface KeyboardControllerSheetOptions {
+  /**
+   * Whether keyboard handling is enabled.
+   * When false, the hook is a no-op.
+   */
+  enabled: boolean
+}
+
+export interface KeyboardControllerSheetResult {
+  /**
+   * Whether keyboard-controller is available and enabled.
+   */
+  keyboardControllerEnabled: boolean
+
+  /**
+   * Current keyboard height (0 when hidden).
+   * On web or when keyboard-controller is not available, always 0.
+   */
+  keyboardHeight: number
+
+  /**
+   * Whether the keyboard is currently visible.
+   */
+  isKeyboardVisible: boolean
+
+  /**
+   * Dismiss the keyboard programmatically.
+   * Called when sheet closes to dismiss the keyboard.
+   */
+  dismissKeyboard: () => void
+
+  /**
+   * Ref to pause keyboard hide state updates (action-sheet pattern).
+   * When true, keyboard hide events are ignored — keeps isKeyboardVisible=true
+   * and keyboardHeight at their last values during drag.
+   */
+  pauseKeyboardHandler: React.RefObject<boolean>
+
+  /**
+   * Flush any keyboard hide event that was suppressed while paused.
+   * Call after drag ends to reconcile actual keyboard state.
+   */
+  flushPendingHide: () => void
+
+}

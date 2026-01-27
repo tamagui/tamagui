@@ -19,18 +19,40 @@ import type {
   LayoutChangeEvent,
   PanResponderGestureState,
 } from 'react-native'
-import { Dimensions, Keyboard, PanResponder, View } from 'react-native'
+import { Dimensions, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { GestureSheetProvider } from './GestureSheetContext'
+import { getSafeArea } from '@tamagui/native'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useGestureHandlerPan } from './useGestureHandlerPan'
+import { useKeyboardControllerSheet } from './useKeyboardControllerSheet'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
 const hiddenSize = 10_000.1
+
+// safe area top inset, cached per-session (device-constant value)
+let _cachedSafeAreaTop: number | undefined
+function getSafeAreaTopInset(): number {
+  if (_cachedSafeAreaTop !== undefined) return _cachedSafeAreaTop
+  // try tamagui native safe area state first
+  const sa = getSafeArea()
+  if (sa.isEnabled) {
+    _cachedSafeAreaTop = sa.getInsets().top
+    return _cachedSafeAreaTop
+  }
+  // fallback: react-native-safe-area-context initialWindowMetrics (no provider needed)
+  try {
+    const sac = require('react-native-safe-area-context')
+    _cachedSafeAreaTop = sac.initialWindowMetrics?.insets?.top ?? 0
+  } catch {
+    _cachedSafeAreaTop = 0
+  }
+  return _cachedSafeAreaTop ?? 0
+}
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 
@@ -141,6 +163,71 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       [screenSize, effectiveFrameSize, snapPoints, snapPointsMode]
     )
 
+    // keyboard state tracking — just tracks height/visibility, no position animation.
+    // Position animation is handled via keyboard-adjusted positions below,
+    // matching the react-native-actions-sheet pattern.
+    const {
+      keyboardHeight,
+      isKeyboardVisible,
+      dismissKeyboard,
+      pauseKeyboardHandler,
+      flushPendingHide,
+    } = useKeyboardControllerSheet({
+      enabled: !isWeb && Boolean(moveOnKeyboardChange),
+    })
+
+    const [isDragging, setIsDragging_] = React.useState(false)
+
+    // synchronous dragging ref — set BEFORE async state commits.
+    // RNGH onBegin fires before keyboard hide event reaches JS,
+    // so the ref is true by the time activePositions memo re-evaluates.
+    // Also controls pauseKeyboardHandler to freeze keyboard state during drag.
+    const isDraggingRef = React.useRef(false)
+    const setIsDragging = React.useCallback((val: boolean) => {
+      isDraggingRef.current = val
+      pauseKeyboardHandler.current = val
+      setIsDragging_(val)
+      // when drag ends, flush any keyboard hide that was suppressed during drag
+      // so isKeyboardVisible/keyboardHeight reflect actual state
+      if (!val) {
+        flushPendingHide()
+      }
+    }, [pauseKeyboardHandler, flushPendingHide])
+
+    // keyboard-adjusted positions: shift snap points up by keyboard height
+    // when keyboard is visible. This drives both gesture snap calculation
+    // and animation targets — keyboard never dismissed during drag.
+    // Capped at safe area top inset so the sheet never goes above the notch/status bar
+    // (matching the react-native-actions-sheet pattern).
+    //
+    // IMPORTANT: frozen during drag to prevent gesture handler recreation.
+    // When user drags, TextInput may blur → keyboard dismisses → positions would revert,
+    // causing the gesture useMemo to recreate and cancel the active drag.
+    // The post-drag reconciliation effect handles animating to correct position after drag ends.
+    const activePositionsRef = React.useRef(positions)
+    const activePositions = React.useMemo(() => {
+      // during drag, return frozen positions to prevent gesture handler recreation.
+      // check both state (for re-render trigger) and ref (for synchronous check
+      // when keyboard hide event fires before isDragging state commits)
+      if (isDragging || isDraggingRef.current) return activePositionsRef.current
+
+      let result: number[]
+      if (!isKeyboardVisible || keyboardHeight <= 0) {
+        result = positions
+      } else {
+        const safeAreaTop = isWeb ? 0 : getSafeAreaTopInset()
+        result = positions.map((p) => {
+          // don't adjust the off-screen/close position (from dismissOnSnapToBottom's 0% snap)
+          // — it must stay at screenSize so the user can drag between real snap points
+          // without accidentally closing the sheet
+          if (screenSize && p >= screenSize) return p
+          return Math.max(safeAreaTop, p - keyboardHeight)
+        })
+      }
+      activePositionsRef.current = result
+      return result
+    }, [positions, isKeyboardVisible, keyboardHeight, screenSize, isDragging])
+
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
     const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
@@ -179,8 +266,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           at.current = value
           scrollBridge.paneY = value
           // update isAtTop for scroll enable/disable
-          // positions[0] is the top snap point (minY)
-          const minY = positions[0]
+          // activePositions[0] is the top snap point (keyboard-adjusted minY)
+          const minY = activePositions[0]
           const wasAtTop = scrollBridge.isAtTop
           const nowAtTop = value <= minY + 5
           if (wasAtTop !== nowAtTop) {
@@ -196,7 +283,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             }
           }
         },
-        [animationDriver, positions]
+        [animationDriver, activePositions]
       )
     )
 
@@ -208,20 +295,23 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     }
 
-    const animateTo = useEvent((position: number) => {
+    const animateTo = useEvent((position: number, animationOverride?: any) => {
       if (frameSize === 0) return
 
-      let toValue = isHidden || position === -1 ? screenSize : positions[position]
+      let toValue = isHidden || position === -1 ? screenSize : activePositions[position]
 
       if (at.current === toValue) return
 
       at.current = toValue
       stopSpring()
 
-      animatedNumber.setValue(toValue, {
-        type: 'spring',
-        ...transitionConfig,
-      })
+      animatedNumber.setValue(
+        toValue,
+        animationOverride || {
+          type: 'spring',
+          ...transitionConfig,
+        }
+      )
     })
 
     useIsomorphicLayoutEffect(() => {
@@ -282,7 +372,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
-    const [isDragging, setIsDragging] = React.useState(false)
     const [blockPan, setBlockPan] = React.useState(false)
 
     const panResponder = React.useMemo(() => {
@@ -442,9 +531,41 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
+    // animate to keyboard-adjusted position when keyboard state changes
+    React.useEffect(() => {
+      if (isDragging || isHidden || !open || disableAnimation) return
+      if (!frameSize || !screenSize) return
+      // use timing animation to match iOS keyboard animation (~250ms)
+      animateTo(position, { type: 'timing', duration: 250 })
+    }, [isKeyboardVisible, keyboardHeight])
+
+    // reconcile position after drag ends — if keyboard dismissed during drag
+    // (e.g., input blur), activePositions reverted but onEnd used frozen positions
+    // for snap index. This effect ensures the sheet animates to the correct
+    // non-keyboard-adjusted position for the chosen snap index.
+    const wasDragging = React.useRef(false)
+    React.useEffect(() => {
+      if (isDragging) {
+        wasDragging.current = true
+        return
+      }
+      if (!wasDragging.current) return
+      wasDragging.current = false
+      // drag just ended — reconcile position with latest activePositions
+      if (!frameSize || !screenSize || isHidden || !open) return
+      animateTo(position)
+    }, [isDragging])
+
+    // dismiss keyboard when sheet closes
+    React.useEffect(() => {
+      if (!open && isKeyboardVisible) {
+        dismissKeyboard()
+      }
+    }, [open])
+
     // gesture handler hook for RNGH-based gesture coordination
     const { panGesture, panGestureRef, gestureHandlerEnabled } = useGestureHandlerPan({
-      positions,
+      positions: activePositions,
       frameSize,
       setPosition,
       animateTo,
@@ -457,9 +578,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       isShowingInnerSheet,
       setAnimatedPosition: (val: number) => {
         // directly set the animated value for smooth dragging
-        // console.warn('[RNGH-Sheet] setAnimatedPosition:', val.toFixed(1))
+        at.current = val
         animatedNumber.setValue(val, { type: 'direct' })
       },
+      pauseKeyboardHandler,
     })
 
     const handleAnimationViewLayout = React.useCallback(
@@ -499,39 +621,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         transform: [{ translateY }],
       }
     })
-
-    const sizeBeforeKeyboard = React.useRef<number | null>(null)
-    React.useEffect(() => {
-      if (isWeb || !moveOnKeyboardChange) return
-      const keyboardShowListener = Keyboard.addListener(
-        currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-        (e) => {
-          if (sizeBeforeKeyboard.current !== null) return
-          sizeBeforeKeyboard.current =
-            isHidden || position === -1 ? screenSize : positions[position]
-          animatedNumber.setValue(
-            Math.max(sizeBeforeKeyboard.current - e.endCoordinates.height, 0),
-            {
-              type: 'timing',
-              duration: 250,
-            }
-          )
-        }
-      )
-      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-        if (sizeBeforeKeyboard.current === null) return
-        animatedNumber.setValue(sizeBeforeKeyboard.current, {
-          type: 'timing',
-          duration: 250,
-        })
-        sizeBeforeKeyboard.current = null
-      })
-
-      return () => {
-        keyboardDidHideListener.remove()
-        keyboardShowListener.remove()
-      }
-    }, [moveOnKeyboardChange, positions, position, isHidden])
 
     // we need to set this *after* fully closed to 0, to avoid it overlapping
     // the page when resizing quickly on web for example
