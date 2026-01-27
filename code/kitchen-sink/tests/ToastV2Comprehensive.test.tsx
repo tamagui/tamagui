@@ -73,7 +73,11 @@ async function getToastTransformX(page: Page): Promise<number | null> {
     const toast = document.querySelector('[role="status"]') as HTMLElement
     if (!toast) return null
 
-    const style = getComputedStyle(toast)
+    // the drag transform is applied to the first child (DragWrapper), not the toast itself
+    const dragWrapper = toast.firstElementChild as HTMLElement
+    const targetElement = dragWrapper || toast
+
+    const style = getComputedStyle(targetElement)
     const transform = style.transform
 
     if (!transform || transform === 'none') return 0
