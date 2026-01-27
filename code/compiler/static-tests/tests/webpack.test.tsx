@@ -2,22 +2,15 @@
  * @vitest-environment jsdom
  */
 
-import '@expo/match-media'
 import { render } from '@testing-library/react'
 import React from 'react'
-import { beforeAll, describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 // Make React available globally for the webpack output
 ;(global as any).React = React
 if (typeof window !== 'undefined') {
   ;(window as any).React = React
 }
-
-// Set fixed window size for consistent media query results
-beforeAll(() => {
-  Object.defineProperty(window, 'innerWidth', { writable: true, value: 1024 })
-  Object.defineProperty(window, 'innerHeight', { writable: true, value: 768 })
-})
 
 function getTest(name: string) {
   const app = require('./spec/out/out-webpack')
