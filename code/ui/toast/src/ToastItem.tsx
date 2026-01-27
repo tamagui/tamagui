@@ -49,6 +49,13 @@ function DragWrapper({
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
+          // prevent text selection during drag
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          // prevent touch scrolling interference
+          touchAction: 'none',
+          // visual feedback that this is draggable
+          cursor: 'grab',
         }}
         {...gestureHandlers}
       >
@@ -465,10 +472,9 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     onDismiss: (exitDirection) => {
       setSwipeOut(true)
       toast.onDismiss?.(toast)
-      animateOut(exitDirection, () => {
-        setRemoved(true)
-        removeToast(toast)
-      })
+      // remove immediately - AnimatePresence handles exit animation
+      setRemoved(true)
+      removeToast(toast)
     },
     onCancel: () => {
       springBack(() => {
@@ -625,9 +631,10 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       {...dataAttributes}
       onLayout={handleLayout}
       // use Tamagui transition for stacking animations (y, scale, opacity)
+      // use a fast timing animation (not spring) so exit doesn't take forever
       // disable during drag so stacking doesn't interfere with drag gesture
       // also disable for reduced motion preference
-      transition={isDragging || reducedMotion ? undefined : 'quick'}
+      transition={isDragging || reducedMotion ? undefined : '200ms'}
       // stacking animation props (NOT drag - drag is handled by inner AnimatedView)
       y={computedY}
       scale={computedScale}

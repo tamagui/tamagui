@@ -221,6 +221,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const listRef = React.useRef<TamaguiElement>(null)
     const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
     const isFocusWithinRef = React.useRef(false)
+    const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
     // subscribe to toast state changes
     React.useEffect(() => {
@@ -295,6 +296,15 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
           lastFocusedElementRef.current.focus({ preventScroll: true })
           lastFocusedElementRef.current = null
           isFocusWithinRef.current = false
+        }
+      }
+    }, [])
+
+    // cleanup hover timeout on unmount
+    React.useEffect(() => {
+      return () => {
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current)
         }
       }
     }, [])
@@ -376,14 +386,44 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
         className={className}
         data-y-position={yPosition}
         data-x-position={xPosition}
-        onMouseEnter={() => setExpanded(true)}
-        onMouseMove={() => setExpanded(true)}
+        onMouseEnter={() => {
+          // only expand on hover if there are multiple toasts
+          // and not currently interacting (dragging)
+          if (toasts.length > 1 && !interacting) {
+            // small delay to allow pass-through mouse movement
+            hoverTimeoutRef.current = setTimeout(() => {
+              setExpanded(true)
+            }, 50)
+          }
+        }}
+        onMouseMove={() => {
+          // expand on sustained hover, not just entry
+          if (toasts.length > 1 && !interacting && !expanded) {
+            if (!hoverTimeoutRef.current) {
+              hoverTimeoutRef.current = setTimeout(() => {
+                setExpanded(true)
+              }, 50)
+            }
+          }
+        }}
         onMouseLeave={() => {
+          // cancel pending expansion
+          if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current)
+            hoverTimeoutRef.current = null
+          }
           if (!interacting) {
             setExpanded(false)
           }
         }}
-        onPointerDown={() => setInteracting(true)}
+        onPointerDown={() => {
+          // cancel any pending expansion when drag starts
+          if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current)
+            hoverTimeoutRef.current = null
+          }
+          setInteracting(true)
+        }}
         onPointerUp={() => setInteracting(false)}
         {...(isWeb && {
           onBlur: (event: React.FocusEvent) => {
