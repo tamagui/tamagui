@@ -94,6 +94,13 @@ const headingLineHeight = (size: number) =>
 export const fonts = {
   body: createSystemFont(),
   heading: createSystemFont({
+    font: {
+      weight: {
+        0: '600',
+        6: '700',
+        9: '800',
+      },
+    },
     sizeLineHeight: headingLineHeight,
   }),
 }
