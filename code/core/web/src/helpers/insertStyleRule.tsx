@@ -17,9 +17,12 @@ const allRules: Record<string, string> = {}
 
 export const getAllSelectors = () => allSelectors
 export const getAllRules = () => {
-  // Sort by identifier to ensure deterministic CSS output order
-  const sortedKeys = Object.keys(allRules).sort()
-  return sortedKeys.map((key) => allRules[key])
+  if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    // Sort by identifier to ensure deterministic CSS output order
+    const sortedKeys = Object.keys(allRules).sort()
+    return sortedKeys.map((key) => allRules[key])
+  }
+  return []
 }
 
 // once react 19 onyl supported we can remove most of this
@@ -38,35 +41,37 @@ export function scanAllSheets(
   collectThemes = false,
   tokens?: TokensParsed
 ): DedupedThemes | undefined {
-  if (process.env.NODE_ENV === 'test') return
-  if (process.env.TAMAGUI_TARGET !== 'web') return
+  if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    if (process.env.NODE_ENV === 'test') return
+    if (process.env.TAMAGUI_TARGET !== 'web') return
 
-  let themes: DedupedThemes | undefined
+    let themes: DedupedThemes | undefined
 
-  const sheets = document.styleSheets || []
-  const prev = lastScannedSheets
-  const current = new Set(sheets as any as CSSStyleSheet[])
+    const sheets = document.styleSheets || []
+    const prev = lastScannedSheets
+    const current = new Set(sheets as any as CSSStyleSheet[])
 
-  for (const sheet of current) {
-    if (sheet) {
-      const out = updateSheetStyles(sheet, false, collectThemes, tokens)
-      if (out) {
-        themes = out
+    for (const sheet of current) {
+      if (sheet) {
+        const out = updateSheetStyles(sheet, false, collectThemes, tokens)
+        if (out) {
+          themes = out
+        }
       }
     }
-  }
 
-  lastScannedSheets = current
+    lastScannedSheets = current
 
-  if (prev) {
-    for (const sheet of prev) {
-      if (sheet && !current.has(sheet)) {
-        updateSheetStyles(sheet, true)
+    if (prev) {
+      for (const sheet of prev) {
+        if (sheet && !current.has(sheet)) {
+          updateSheetStyles(sheet, true)
+        }
       }
     }
-  }
 
-  return themes
+    return themes
+  }
 }
 
 function trackInsertedStyle(id: string) {

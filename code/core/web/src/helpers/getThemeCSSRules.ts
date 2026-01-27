@@ -15,17 +15,17 @@ export function getThemeCSSRules(props: {
   theme: ThemeParsed
   names: string[]
   hasDarkLight?: boolean
-}) {
-  const cssRuleSets: string[] = []
-
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    return cssRuleSets
-  }
-  if (
+}): string[] {
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    // empty - CSS already extracted at build time
+  } else if (process.env.TAMAGUI_TARGET === 'native') {
+    // no CSS on native
+  } else if (
     !process.env.TAMAGUI_DOES_SSR_CSS ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'false'
   ) {
+    const cssRuleSets: string[] = []
     const { config, themeName, theme, names } = props
 
     // special case for SSR
@@ -174,9 +174,11 @@ export function getThemeCSSRules(props: {
         }
       }
     }
+
+    return cssRuleSets
   }
 
-  return cssRuleSets
+  return []
 }
 
 const darkSelector = '.t_dark'
