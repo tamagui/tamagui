@@ -38,6 +38,9 @@
       ],
       "setup-expo-linear-gradient": [
         "./types/setup-expo-linear-gradient.d.ts"
+      ],
+      "setup-keyboard-controller": [
+        "./types/setup-keyboard-controller.d.ts"
       ]
     }
   },
@@ -114,6 +117,18 @@
       "module": "./dist/esm/setup-expo-linear-gradient.mjs",
       "import": "./dist/esm/setup-expo-linear-gradient.mjs",
       "require": "./dist/cjs/setup-expo-linear-gradient.cjs"
+    },
+    "./setup-keyboard-controller": {
+      "react-native": {
+        "types": "./types/setup-keyboard-controller.d.ts",
+        "module": "./dist/esm/setup-keyboard-controller.native.js",
+        "import": "./dist/esm/setup-keyboard-controller.native.js",
+        "require": "./dist/cjs/setup-keyboard-controller.native.js"
+      },
+      "types": "./types/setup-keyboard-controller.d.ts",
+      "module": "./dist/esm/setup-keyboard-controller.mjs",
+      "import": "./dist/esm/setup-keyboard-controller.mjs",
+      "require": "./dist/cjs/setup-keyboard-controller.cjs"
     }
   },
   "devDependencies": {
@@ -121,6 +136,7 @@
     "react": "*",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
+    "react-native-keyboard-controller": "^1.16.0",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-teleport": "^0.5.6",
     "react-native-worklets-core": "^1.0.0"
@@ -129,12 +145,16 @@
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=2.0.0",
+    "react-native-keyboard-controller": ">=1.0.0",
     "react-native-safe-area-context": ">=4.0.0",
     "react-native-teleport": ">=0.5.0",
     "react-native-worklets-core": ">=1.0.0"
   },
   "peerDependenciesMeta": {
     "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-keyboard-controller": {
       "optional": true
     },
     "react-native-safe-area-context": {

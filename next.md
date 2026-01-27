@@ -90,6 +90,7 @@ AFTER v2 RC (nice to haves):
 
 # v3 cleanups
 
+- var(--)
 - may want to align flexShrink = 1 by default to align with web default?
 - styleable shouldnt forwardRef, remove it in general
 - remove inlineWhenUnflattened i think
