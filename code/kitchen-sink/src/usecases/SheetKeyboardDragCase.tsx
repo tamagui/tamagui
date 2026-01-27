@@ -1,5 +1,9 @@
-import { useState, useCallback, useEffect } from 'react'
-import { Keyboard, Platform, TextInput as RNTextInput } from 'react-native'
+import { useState, useCallback, useEffect, useRef } from 'react'
+import { Keyboard, Platform } from 'react-native'
+import ActionSheet, {
+  type ActionSheetRef,
+  ScrollView as ActionScrollView,
+} from 'react-native-actions-sheet'
 import { Button, Input, Sheet, Text, XStack, YStack } from 'tamagui'
 import { getGestureHandler, isKeyboardControllerEnabled } from '@tamagui/native'
 
@@ -15,6 +19,7 @@ import { getGestureHandler, isKeyboardControllerEnabled } from '@tamagui/native'
 export function SheetKeyboardDragCase() {
   const [open, setOpen] = useState(false)
   const [position, setPosition] = useState(0)
+  const actionsSheetRef = useRef<ActionSheetRef>(null)
   const [keyboardHeight, setKeyboardHeight] = useState(0)
   const [keyboardVisible, setKeyboardVisible] = useState(false)
   const [events, setEvents] = useState<string[]>([])
@@ -82,33 +87,48 @@ export function SheetKeyboardDragCase() {
       </XStack>
 
       <Text testID="sheet-keyboard-drag-instructions" fontSize="$3" color="$gray11">
-        Test keyboard + sheet interaction: tap input to show keyboard, drag sheet while keyboard is
-        open.
+        Test keyboard + sheet interaction: tap input to show keyboard, drag sheet while
+        keyboard is open.
       </Text>
 
-      <XStack gap="$2">
-        <Button testID="sheet-keyboard-drag-trigger" onPress={() => setOpen(true)} flex={1}>
+      <YStack flexDirection="row" gap="$2">
+        <Button
+          testID="sheet-keyboard-drag-trigger"
+          onPress={() => setOpen(true)}
+          flex={1}
+        >
           Open Sheet
         </Button>
         <Button
-          testID="sheet-keyboard-drag-reset"
-          onPress={() => {
-            setEvents([])
-            setInputValue('')
-          }}
-          theme="red"
+          testID="sheet-keyboard-drag-action-trigger"
+          onPress={() => actionsSheetRef.current?.show()}
+          theme="blue"
         >
-          Reset
+          Open ActionSheet
         </Button>
-      </XStack>
+      </YStack>
+      <Button
+        testID="sheet-keyboard-drag-reset"
+        onPress={() => {
+          setEvents([])
+          setInputValue('')
+        }}
+        theme="red"
+      >
+        Reset
+      </Button>
 
       <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
         <Text testID="sheet-keyboard-drag-position">Sheet position: {position}</Text>
-        <Text testID="sheet-keyboard-drag-kb-height">Keyboard height: {keyboardHeight}</Text>
+        <Text testID="sheet-keyboard-drag-kb-height">
+          Keyboard height: {keyboardHeight}
+        </Text>
         <Text testID="sheet-keyboard-drag-kb-visible">
           Keyboard: {keyboardVisible ? 'visible' : 'hidden'}
         </Text>
-        <Text testID="sheet-keyboard-drag-events">Events: {events.join(', ') || '(none)'}</Text>
+        <Text testID="sheet-keyboard-drag-events">
+          Events: {events.join(', ') || '(none)'}
+        </Text>
       </YStack>
 
       <YStack gap="$1" padding="$2" bg="$blue3" borderRadius="$2">
@@ -148,13 +168,107 @@ export function SheetKeyboardDragCase() {
         />
         <Sheet.Handle testID="sheet-keyboard-drag-handle" />
         <Sheet.Frame testID="sheet-keyboard-drag-frame">
+          <Sheet.ScrollView
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="interactive"
+          >
+            <YStack gap="$4" padding="$4">
+              <Text
+                testID="sheet-keyboard-drag-sheet-title"
+                fontSize="$5"
+                fontWeight="bold"
+              >
+                Keyboard Test Sheet
+              </Text>
+
+              <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
+                <Text fontSize="$2">Position: {position}</Text>
+                <Text fontSize="$2">KB Height: {keyboardHeight}</Text>
+                <Text fontSize="$2">KB Visible: {keyboardVisible ? 'yes' : 'no'}</Text>
+              </YStack>
+
+              <YStack gap="$2">
+                <Text fontSize="$3" fontWeight="bold">
+                  Test Input (tap to show keyboard):
+                </Text>
+                <Input
+                  testID="sheet-keyboard-drag-input"
+                  placeholder="Type something..."
+                  value={inputValue}
+                  onChangeText={setInputValue}
+                  onFocus={() => addEvent('input-focus')}
+                  onBlur={() => addEvent('input-blur')}
+                />
+              </YStack>
+
+              <YStack gap="$2">
+                <Text fontSize="$3" fontWeight="bold">
+                  Second Input:
+                </Text>
+                <Input
+                  testID="sheet-keyboard-drag-input-2"
+                  placeholder="Another input..."
+                  onFocus={() => addEvent('input2-focus')}
+                  onBlur={() => addEvent('input2-blur')}
+                />
+              </YStack>
+
+              <Button
+                testID="sheet-keyboard-drag-dismiss-kb"
+                onPress={() => {
+                  Keyboard.dismiss()
+                  addEvent('manual-kb-dismiss')
+                }}
+              >
+                Dismiss Keyboard
+              </Button>
+
+              <Button testID="sheet-keyboard-drag-close" onPress={() => setOpen(false)}>
+                Close Sheet
+              </Button>
+
+              {/* spacer for testing scroll + keyboard */}
+              <YStack
+                height={300}
+                bg="$gray3"
+                borderRadius="$2"
+                padding="$4"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Text color="$gray11">Spacer area</Text>
+                <Text color="$gray11" fontSize="$2">
+                  Drag here to test sheet drag
+                </Text>
+              </YStack>
+            </YStack>
+          </Sheet.ScrollView>
+        </Sheet.Frame>
+      </Sheet>
+
+      {/* ActionSheet for comparison */}
+      <ActionSheet
+        ref={actionsSheetRef}
+        snapPoints={[80, 50]}
+        initialSnapIndex={0}
+        gestureEnabled
+        keyboardHandlerEnabled
+        containerStyle={{ maxHeight: '100%', height: '100%' }}
+      >
+        <ActionScrollView
+          style={{ width: '100%', flexShrink: 1 }}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="interactive"
+        >
           <YStack gap="$4" padding="$4">
-            <Text testID="sheet-keyboard-drag-sheet-title" fontSize="$5" fontWeight="bold">
-              Keyboard Test Sheet
+            <Text fontSize="$5" fontWeight="bold">
+              ActionSheet (Reference)
+            </Text>
+            <Text fontSize="$3" color="$gray11">
+              Compare keyboard + drag behavior
             </Text>
 
             <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
-              <Text fontSize="$2">Position: {position}</Text>
               <Text fontSize="$2">KB Height: {keyboardHeight}</Text>
               <Text fontSize="$2">KB Visible: {keyboardVisible ? 'yes' : 'no'}</Text>
             </YStack>
@@ -164,12 +278,9 @@ export function SheetKeyboardDragCase() {
                 Test Input (tap to show keyboard):
               </Text>
               <Input
-                testID="sheet-keyboard-drag-input"
                 placeholder="Type something..."
-                value={inputValue}
-                onChangeText={setInputValue}
-                onFocus={() => addEvent('input-focus')}
-                onBlur={() => addEvent('input-blur')}
+                onFocus={() => addEvent('as-input-focus')}
+                onBlur={() => addEvent('as-input-blur')}
               />
             </YStack>
 
@@ -178,37 +289,42 @@ export function SheetKeyboardDragCase() {
                 Second Input:
               </Text>
               <Input
-                testID="sheet-keyboard-drag-input-2"
                 placeholder="Another input..."
-                onFocus={() => addEvent('input2-focus')}
-                onBlur={() => addEvent('input2-blur')}
+                onFocus={() => addEvent('as-input2-focus')}
+                onBlur={() => addEvent('as-input2-blur')}
               />
             </YStack>
 
             <Button
-              testID="sheet-keyboard-drag-dismiss-kb"
               onPress={() => {
                 Keyboard.dismiss()
-                addEvent('manual-kb-dismiss')
+                addEvent('as-manual-kb-dismiss')
               }}
             >
               Dismiss Keyboard
             </Button>
 
-            <Button testID="sheet-keyboard-drag-close" onPress={() => setOpen(false)}>
+            <Button onPress={() => actionsSheetRef.current?.hide()}>
               Close Sheet
             </Button>
 
             {/* spacer for testing scroll + keyboard */}
-            <YStack height={300} bg="$gray3" borderRadius="$2" padding="$4" justifyContent="center" alignItems="center">
+            <YStack
+              height={300}
+              bg="$gray3"
+              borderRadius="$2"
+              padding="$4"
+              justifyContent="center"
+              alignItems="center"
+            >
               <Text color="$gray11">Spacer area</Text>
               <Text color="$gray11" fontSize="$2">
                 Drag here to test sheet drag
               </Text>
             </YStack>
           </YStack>
-        </Sheet.Frame>
-      </Sheet>
+        </ActionScrollView>
+      </ActionSheet>
     </YStack>
   )
 }
