@@ -465,6 +465,7 @@ const ToastTitle = styled(SizableText, {
 2. Cross-driver animation integration ✅ (useAnimatedDragGesture + useToastAnimations)
 3. Velocity-based dismissal ✅
 4. Spring snap-back ✅
+5. **Web direct DOM manipulation for drag** ✅ (direct DOM for web, AnimatedView for native)
 
 ### Phase 3: Stacking & Polish
 1. Collapsed stacking with scale/opacity ✅
