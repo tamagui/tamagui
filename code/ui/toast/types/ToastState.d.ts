@@ -18,6 +18,7 @@ export interface ToastT {
     delete?: boolean;
     style?: React.CSSProperties;
     className?: string;
+    closeButton?: boolean;
     burntOptions?: CreateNativeToastOptions['burntOptions'];
     notificationOptions?: CreateNativeToastOptions['notificationOptions'];
     [key: string]: any;

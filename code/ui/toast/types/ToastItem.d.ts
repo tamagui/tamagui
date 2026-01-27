@@ -10,7 +10,6 @@ export interface ToastItemProps {
     interacting: boolean;
     position: ToasterPosition;
     visibleToasts: number;
-    removeToast: (toast: ToastT) => void;
     heights: HeightT[];
     setHeights: React.Dispatch<React.SetStateAction<HeightT[]>>;
     duration: number;
