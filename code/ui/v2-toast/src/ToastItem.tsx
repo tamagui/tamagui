@@ -258,6 +258,8 @@ export interface ToastItemProps {
   disableNative?: boolean
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   notificationOptions?: NotificationOptions
+  /** When true, disables animations for accessibility */
+  reducedMotion?: boolean
 }
 
 export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
@@ -280,6 +282,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     disableNative,
     burntOptions,
     notificationOptions,
+    reducedMotion,
   } = props
 
   const [mounted, setMounted] = React.useState(false)
@@ -402,7 +405,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
 
   // animation driver for drag gestures
   const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView } =
-    useToastAnimations()
+    useToastAnimations({ reducedMotion })
 
   // drag gesture with animation driver integration
   const { isDragging, gestureHandlers } = useAnimatedDragGesture({
@@ -577,7 +580,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       onLayout={handleLayout}
       // use Tamagui transition for stacking animations (y, scale, opacity)
       // disable during drag so stacking doesn't interfere with drag gesture
-      transition={isDragging ? undefined : 'quick'}
+      // also disable for reduced motion preference
+      transition={isDragging || reducedMotion ? undefined : 'quick'}
       // stacking animation props (NOT drag - drag is handled by inner AnimatedView)
       y={computedY}
       scale={computedScale}
@@ -598,25 +602,34 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         })}
       // enter/exit styles for AnimatePresence
       // subtle animations - small y shift + opacity fade
-      enterStyle={{
-        opacity: 0,
-        y: isTop ? -10 : 10,
-        scale: 0.95,
-      }}
-      exitStyle={{
-        opacity: 0,
-        // for swipe dismissal, continue in swipe direction with subtle movement
-        x: isHorizontalSwipe && swipeOut ? (swipeDirection === 'left' ? -30 : 30) : 0,
-        y:
-          isVerticalSwipe && swipeOut
-            ? swipeDirection === 'up'
-              ? -30
-              : 30
-            : isTop
-              ? -10
-              : 10,
-        scale: 0.95,
-      }}
+      // when reducedMotion, only fade opacity (no transform)
+      enterStyle={
+        reducedMotion
+          ? { opacity: 0 }
+          : {
+              opacity: 0,
+              y: isTop ? -10 : 10,
+              scale: 0.95,
+            }
+      }
+      exitStyle={
+        reducedMotion
+          ? { opacity: 0 }
+          : {
+              opacity: 0,
+              // for swipe dismissal, continue in swipe direction with subtle movement
+              x: isHorizontalSwipe && swipeOut ? (swipeDirection === 'left' ? -30 : 30) : 0,
+              y:
+                isVerticalSwipe && swipeOut
+                  ? swipeDirection === 'up'
+                    ? -30
+                    : 30
+                  : isTop
+                    ? -10
+                    : 10,
+              scale: 0.95,
+            }
+      }
       {...(isWeb && {
         onKeyDown: (event: React.KeyboardEvent) => {
           if (event.key === 'Escape' && dismissible) {

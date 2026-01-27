@@ -18,6 +18,10 @@ export interface UseToastAnimationsOptions {
    * Called when exit animation completes
    */
   onExitComplete?: () => void
+  /**
+   * When true, animations complete instantly (accessibility)
+   */
+  reducedMotion?: boolean
 }
 
 export interface ToastAnimationValues {
@@ -50,7 +54,10 @@ const EXIT_DISTANCE = 200
 export function useToastAnimations(
   options: UseToastAnimationsOptions = {}
 ): ToastAnimationValues {
-  const { onExitComplete } = options
+  const { onExitComplete, reducedMotion } = options
+
+  // instant config for reduced motion
+  const INSTANT_CONFIG = { type: 'direct' as const }
 
   const { animationDriver } = useConfiguration()
 
@@ -82,8 +89,9 @@ export function useToastAnimations(
 
   // spring back to origin after cancelled drag
   const springBack = useEvent((onComplete?: () => void) => {
-    translateX.setValue(0, SPRING_CONFIG)
-    translateY.setValue(0, SPRING_CONFIG, onComplete)
+    const config = reducedMotion ? INSTANT_CONFIG : SPRING_CONFIG
+    translateX.setValue(0, config)
+    translateY.setValue(0, config, onComplete)
   })
 
   // animate out in a direction after successful swipe
@@ -94,11 +102,13 @@ export function useToastAnimations(
       const exitY =
         direction === 'up' ? -EXIT_DISTANCE : direction === 'down' ? EXIT_DISTANCE : 0
 
-      const exitConfig = {
-        type: 'spring' as const,
-        damping: 25,
-        stiffness: 200,
-      }
+      const exitConfig = reducedMotion
+        ? INSTANT_CONFIG
+        : {
+            type: 'spring' as const,
+            damping: 25,
+            stiffness: 200,
+          }
 
       translateX.setValue(exitX, exitConfig)
       translateY.setValue(exitY, exitConfig, () => {

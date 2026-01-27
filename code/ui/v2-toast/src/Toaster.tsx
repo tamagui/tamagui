@@ -9,6 +9,7 @@ import type { SwipeDirection } from './ToastProvider'
 import type { ExternalToast, ToastT, ToastToDismiss } from './ToastState'
 import { ToastState } from './ToastState'
 import type { BurntToastOptions } from './types'
+import { useReducedMotion } from './useReducedMotion'
 
 // defaults
 const VISIBLE_TOASTS_AMOUNT = 4
@@ -174,6 +175,13 @@ export interface ToasterProps {
    * Custom style for the container
    */
   style?: React.CSSProperties
+
+  /**
+   * Force reduced motion mode (disables animations)
+   * When true, animations are disabled. When false, animations are enabled.
+   * When undefined, respects system preference (prefers-reduced-motion).
+   */
+  reducedMotion?: boolean
 }
 
 export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
@@ -199,7 +207,11 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       notificationOptions,
       className,
       style,
+      reducedMotion: reducedMotionProp,
     } = props
+
+    // detect reduced motion preference
+    const reducedMotion = useReducedMotion(reducedMotionProp)
 
     const [toasts, setToasts] = React.useState<ToastT[]>([])
     const [heights, setHeights] = React.useState<HeightT[]>([])
@@ -422,6 +434,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 disableNative={disableNative}
                 burntOptions={burntOptions}
                 notificationOptions={notificationOptions}
+                reducedMotion={reducedMotion}
               />
             )
           })}
