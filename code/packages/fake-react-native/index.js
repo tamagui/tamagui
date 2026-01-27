@@ -33,7 +33,8 @@ function proxyWorm() {
       TextInput: createMockComponent('TextInput'),
       ScrollView: createMockComponent('ScrollView'),
       Dimensions: {
-        addEventListener(cb) {},
+        get: () => ({ width: 1024, height: 768 }),
+        addEventListener: () => ({ remove: () => {} }),
       },
       Appearance: {
         getColorScheme: () => 'light',

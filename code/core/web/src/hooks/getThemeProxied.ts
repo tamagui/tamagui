@@ -127,7 +127,7 @@ export function getThemeProxied(
 
           if (process.env.TAMAGUI_TARGET === 'native') {
             // ios can avoid re-rendering for scheme changes (light↔dark) when using DynamicColorIOS
-            // this does NOT work for sub-theme changes (red→blue) - those need re-renders
+            // this does NOT work for sub-theme changes (red→blue) or when scheme inverses from parent
             const fastSchemeChange = getSetting('fastSchemeChange')
             const rootMatchesSystem = doesRootSchemeMatchSystem()
             const shouldOptimize =
@@ -135,13 +135,14 @@ export function getThemeProxied(
               platform !== 'web' &&
               isIos &&
               !curProps.deopt &&
+              !curState.isInverse &&
               fastSchemeChange &&
               rootMatchesSystem
 
             if (process.env.NODE_ENV === 'development' && curProps.debug === 'verbose') {
               console.info(
                 ` 🎨 useTheme().get(${key}) theme=${name} scheme=${scheme}`,
-                `\n   shouldOptimize=${shouldOptimize} (iOS=${isIos} deopt=${curProps.deopt} fastScheme=${fastSchemeChange} rootMatch=${rootMatchesSystem})`
+                `\n   shouldOptimize=${shouldOptimize} (iOS=${isIos} deopt=${curProps.deopt} isInverse=${curState.isInverse} fastScheme=${fastSchemeChange} rootMatch=${rootMatchesSystem})`
               )
             }
 

@@ -14,7 +14,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_tr-0hover-scale21281 _pos-static _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red _bxsh-0px0px10px0946673987 test1"
+          class="_tr-0hover-scale21281 _pos-static _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red _bxsh-0px0px10pxr538535358 test1"
           rounded="100"
         >
           <span
@@ -561,12 +561,12 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _pos-static _dsp-flex _ai-stretch _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _fb-10037 _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-260px _bg-background"
+          class="_pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _pos-static _dsp-flex _ai-stretch _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _fb-10037 _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-10037 _bg-background"
           maxw="100%"
-          rounded="$8"
+          rounded="$0"
         >
           <div
-            class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _fwr-wrap _gap-4px"
+            class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _fwr-wrap _gap-0px"
             justify="flex-start"
           >
             <span
@@ -599,12 +599,12 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _pos-static _dsp-flex _ai-stretch _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _fb-auto _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-260px _bg-background"
+          class="_pr-_sm_t-space-0 _pl-_sm_t-space-0 _cur-0hover-pointer _bg-0hover-backgroundH3423444 _pos-static _dsp-flex _ai-stretch _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _fb-auto _ox-hidden _oy-hidden _pt-4px _pr-4px _pb-4px _pl-4px _w-10037 _bg-background"
           maxw="100%"
-          rounded="$8"
+          rounded="$0"
         >
           <div
-            class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _fwr-wrap _gap-4px"
+            class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _fwr-wrap _gap-0px"
             justify="center"
           >
             <span
@@ -637,7 +637,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-_sm_nowrap _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fwr-wrap _gap-t-space-2 _fd-column "
+          class="_pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-_sm_nowrap _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fwr-wrap _gap-t-space-2 _fd-row "
         >
           <span
             class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
