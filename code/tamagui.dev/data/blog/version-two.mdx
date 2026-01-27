@@ -88,27 +88,16 @@ Find a [list of breaking changes at the bottom of the post](#breaking-changes).
 #### 32% Smaller Bundle Size
 
 The `@tamagui/core` bundle has been reduced by ~32% (from ~37KB to ~25KB
-gzipped). This was achieved through several optimizations:
+gzipped). This was achieved through several optimizations to color parsing,
+expensive gesture handling, and automaticall trimming optional theme generation
+code.
 
-- **Removed color parsing on web** - Colors like `red` or `#fff` are now passed
-  directly to CSS instead of being parsed and converted to rgba. Web browsers
-  handle color parsing natively.
-- **Removed responder events** - The
-  `@tamagui/react-native-use-responder-events` package has been removed
-  entirely. React Native has built-in responder support.
-- **Tree-shakeable CSS generation** - When using the Vite/webpack plugin with
-  `outputCSS` enabled, all runtime CSS generation code is automatically
-  eliminated from your bundle.
+#### New Styles
 
-If you're using the compiler to extract CSS at build time, you get the full
-savings automatically.
+See the [Style API docs](/docs/intro/styles) for the full reference, some
+highlights:
 
-#### New Style Props
-
-Many style properties that were previously web-only now work on React Native
-with the New Architecture. See the [Style API docs](/docs/intro/styles) for the
-full reference.
-
+- **`backgroundImage`** - Web-style gradient, `linear` and `radial`.
 - **`boxShadow`** - Full CSS box-shadow support including multiple shadows,
   spread, and inset. Accepts strings with your tokens.
 - **`backgroundImage`** - CSS `linear-gradient` syntax with token support.
@@ -124,22 +113,95 @@ full reference.
 - **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS
   17+ (trackpad/stylus).
 
-#### Motion-powered Animations
+### New Components
+
+#### Menu
+
+[Menu](/docs/components/menu) provides dropdown menus with full keyboard
+navigation, submenus, checkbox items, and animations. On iOS and Android, it
+automatically renders using native platform menus.
+
+<HeroContainer>
+  <MenuDemo />
+</HeroContainer>
+
+```tsx hero template=Menu
+
+```
+
+#### ContextMenu
+
+[ContextMenu](/docs/components/context-menu) works like Menu but activates on
+right-click (web) or long-press (native). It includes support for preview
+content on iOS.
+
+<HeroContainer>
+  <ContextMenuDemo />
+</HeroContainer>
+
+```tsx hero template=ContextMenu
+
+```
+
+#### Input & TextArea
+
+<HeroContainer demoMultiple>
+  <NewInputsDemo />
+</HeroContainer>
+
+```tsx hero template=Inputs
+
+```
+
+Input has been rewritten from scratch with a web-first approach - you write
+standard HTML input attributes and Tamagui automatically converts them to React
+Native equivalents on native platforms:
+
+```tsx
+// Web-standard API that works everywhere
+<Input type="email" enterKeyHint="send" />
+<Input type="password" />
+<Input type="tel" />
+```
+
+This replaces the React Native-style props like `keyboardType`,
+`secureTextEntry`, and `returnKeyType` with their web equivalents. The old props
+still work but are deprecated. See the [Input docs](/docs/components/inputs) for
+the full migration guide.
+
+#### Image
+
+The [Image](/docs/components/image) component follows the same web-first
+philosophy as Input. It uses standard HTML `<img>` attributes like `src`, `alt`,
+`loading`, and `decoding` as the primary API, with automatic conversion to React
+Native equivalents on native.
+
+On native, you can choose your image loading adapter - use the built-in React
+Native Image, or integrate with optimized libraries like `expo-image` or
+`react-native-fast-image` for better caching and performance.
+
+#### Sheet, Button, ListItem, Select
+
+All were re-written internally to retain much the same API surface, but align
+better to the web, and run dramatically faster and better.
+
+Select on web and Sheet on native got big upgrades.
+
+#### Motion Animations
 
 ![Motion animation library banner](/blog/motion-banner.webp)
 
-We've added a new [animation driver](/docs/core/animations-motion) powered by
-[Motion](https://motion.dev), and it's our recommended choice for web. The
-`@tamagui/animations-motion` package is fast thanks to two optimizations:
+The all powerful [Motion animation library](https://motion.dev) comes to Tamagui
+as an [animation driver](<(/docs/core/animations-motion)>), and we can
+wholheartedly recommend it for your web apps.
 
-- **No re-renders**: Tamagui now supports an `avoidReRenders` mode for animation
-  drivers. Instead of updating state, style changes flow through a callback that
-  mutates the DOM directly.
-- **Off main thread**: Motion uses the
-  [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
-  which runs animations off the main JavaScript thread.
+We spent a lot making it special with the **new Tamagui 0 re-render path**.
+Tamagui now supports an `avoidReRenders` option for animation drivers. Style
+changes don't even pass through React.
 
-Together these make for much smoother spring animations on web.
+Combined with Motion's **off-thread animation support** via the
+[Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
+and we've noticed huge gains in UX on apps.
 
 #### Reanimated Improvements
 
@@ -407,109 +469,7 @@ import before any Tamagui imports:
 See the [`@tamagui/native` docs](/ui/native) or
 [Sheet docs](/docs/components/sheet) for full details.
 
-### New Components
-
-#### Input & TextArea
-
-<HeroContainer demoMultiple>
-  <NewInputsDemo />
-</HeroContainer>
-
-```tsx hero template=Inputs
-
-```
-
-Input has been rewritten from scratch with a web-first approach - you write
-standard HTML input attributes and Tamagui automatically converts them to React
-Native equivalents on native platforms:
-
-```tsx
-// Web-standard API that works everywhere
-<Input type="email" enterKeyHint="send" />
-<Input type="password" />
-<Input type="tel" />
-```
-
-This replaces the React Native-style props like `keyboardType`,
-`secureTextEntry`, and `returnKeyType` with their web equivalents. The old props
-still work but are deprecated. See the [Input docs](/docs/components/inputs) for
-the full migration guide.
-
-#### Image
-
-The [Image](/docs/components/image) component follows the same web-first
-philosophy as Input. It uses standard HTML `<img>` attributes like `src`, `alt`,
-`loading`, and `decoding` as the primary API, with automatic conversion to React
-Native equivalents on native.
-
-On native, you can choose your image loading adapter - use the built-in React
-Native Image, or integrate with optimized libraries like `expo-image` or
-`react-native-fast-image` for better caching and performance.
-
-#### Toast
-
-[Toast](/docs/components/toast) has been completely rewritten with a simple,
-Sonner-inspired API. Gone are the complex provider/controller patterns - now you
-just call `toast()`:
-
-```tsx
-import { toast, Toaster } from '@tamagui/toast'
-
-// Add Toaster once at your app root
-;<Toaster position="bottom-right" closeButton />
-
-// Show toasts from anywhere
-toast('Event created')
-toast.success('Saved!')
-toast.error('Something went wrong')
-
-// With options
-toast('Deleted', {
-  description: 'The item was removed',
-  action: { label: 'Undo', onClick: () => restore() },
-})
-```
-
-For colored toasts, wrap with Theme - no internal type logic needed:
-
-```tsx
-<Theme name="green">
-  <Toaster />
-</Theme>
-```
-
-The old `Toast`, `ToastProvider`, `ToastViewport`, `useToastController`, and
-`useToastState` APIs have been removed.
-
-#### Menu
-
-[Menu](/docs/components/menu) provides dropdown menus with full keyboard
-navigation, submenus, checkbox items, and animations. On iOS and Android, it
-automatically renders using native platform menus.
-
-<HeroContainer>
-  <MenuDemo />
-</HeroContainer>
-
-```tsx hero template=Menu
-
-```
-
-#### ContextMenu
-
-[ContextMenu](/docs/components/context-menu) works like Menu but activates on
-right-click (web) or long-press (native). It includes support for preview
-content on iOS.
-
-<HeroContainer>
-  <ContextMenuDemo />
-</HeroContainer>
-
-```tsx hero template=ContextMenu
-
-```
-
-#### CLI Improvements / Agent Docs Generation
+### CLI / Agent Docs
 
 The [Tamagui CLI](/docs/guides/cli) has new commands for building and working
 with your design system:
