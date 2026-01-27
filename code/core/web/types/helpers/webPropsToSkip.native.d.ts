@@ -16,12 +16,6 @@ export declare const webPropsToSkip: {
     onKeyDown: number;
     onKeyUp: number;
     onKeyPress: number;
-    onPointerDown: number;
-    onPointerMove: number;
-    onPointerUp: number;
-    onPointerCancel: number;
-    onPointerEnter: number;
-    onPointerLeave: number;
     onDrag: number;
     onDragStart: number;
     onDragEnd: number;

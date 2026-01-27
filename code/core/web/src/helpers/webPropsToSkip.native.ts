@@ -29,12 +29,7 @@ export const webPropsToSkip = {
   onKeyDown: 1,
   onKeyUp: 1,
   onKeyPress: 1,
-  onPointerDown: 1,
-  onPointerMove: 1,
-  onPointerUp: 1,
-  onPointerCancel: 1,
-  onPointerEnter: 1,
-  onPointerLeave: 1,
+  // pointer events handled by usePointerEvents hook on native
   onDrag: 1,
   onDragStart: 1,
   onDragEnd: 1,

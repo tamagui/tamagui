@@ -173,6 +173,8 @@ export interface WebOnlyPressEvents {
     onPointerMove?: DivAttributes['onPointerMove'];
     onPointerUp?: DivAttributes['onPointerUp'];
     onPointerCancel?: DivAttributes['onPointerCancel'];
+    onPointerEnter?: DivAttributes['onPointerEnter'];
+    onPointerLeave?: DivAttributes['onPointerLeave'];
 }
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 type FontFamilies = FontTokens extends `$${infer Token}` ? Token : never;
@@ -1358,7 +1360,7 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBase
     wordWrap?: Properties['wordWrap'];
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
-export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
+export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp' | 'onPointerEnter' | 'onPointerLeave'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;

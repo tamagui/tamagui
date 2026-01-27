@@ -11,6 +11,7 @@ import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
+import { usePointerEvents } from './helpers/pointerEvents'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
@@ -998,6 +999,9 @@ export function createComponent<
     }
 
     viewProps.ref = stateRef.current.composedRef
+
+    // handle pointer events (native: maps to touch events, web: adds pointer capture for drags)
+    usePointerEvents(props, viewProps)
 
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {

@@ -405,6 +405,8 @@ export interface WebOnlyPressEvents {
   onPointerMove?: DivAttributes['onPointerMove']
   onPointerUp?: DivAttributes['onPointerUp']
   onPointerCancel?: DivAttributes['onPointerCancel']
+  onPointerEnter?: DivAttributes['onPointerEnter']
+  onPointerLeave?: DivAttributes['onPointerLeave']
 }
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -2296,6 +2298,8 @@ export interface StackNonStyleProps
       | 'onPointerDown'
       | 'onPointerMove'
       | 'onPointerUp'
+      | 'onPointerEnter'
+      | 'onPointerLeave'
     >,
     ExtendBaseStackProps,
     TamaguiComponentPropsBase {
