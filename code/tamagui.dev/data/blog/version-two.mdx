@@ -85,6 +85,24 @@ Find a [list of breaking changes at the bottom of the post](#breaking-changes).
 
 ### Features
 
+#### 40% Smaller Bundle Size
+
+The `@tamagui/core` bundle has been reduced by ~40% (from ~37KB to ~25KB
+gzipped). This was achieved through several optimizations:
+
+- **Removed color parsing on web** - Colors like `red` or `#fff` are now passed
+  directly to CSS instead of being parsed and converted to rgba. Web browsers
+  handle color parsing natively.
+- **Removed responder events** - The
+  `@tamagui/react-native-use-responder-events` package has been removed
+  entirely. React Native has built-in responder support.
+- **Tree-shakeable CSS generation** - When using the Vite/webpack plugin with
+  `outputCSS` enabled, all runtime CSS generation code is automatically
+  eliminated from your bundle.
+
+If you're using the compiler to extract CSS at build time, you get the full
+savings automatically.
+
 #### New Style Props
 
 Many style properties that were previously web-only now work on React Native
@@ -438,7 +456,7 @@ just call `toast()`:
 import { toast, Toaster } from '@tamagui/toast'
 
 // Add Toaster once at your app root
-<Toaster position="bottom-right" closeButton />
+;<Toaster position="bottom-right" closeButton />
 
 // Show toasts from anywhere
 toast('Event created')
@@ -515,6 +533,13 @@ Tamagui config better.
 
 ### Breaking Changes
 
+- \*\*Shadow colors output opacities using color-mix() which may break snapshot
+  tests or any code testing the expected the parsed format.
+- **Removed `@tamagui/react-native-use-responder-events`.** If you were using
+  `onResponderGrant`, `onResponderMove`, `onResponderRelease`, or
+  `onResponderTerminate` props on web, switch to standard pointer events
+  (`onPointerDown`, `onPointerMove`, `onPointerUp`) or touch events. On native,
+  use React Native's built-in responder system.
 - **Config v5 changes from v4.** Media query names change (`2xl` → `xxl`, `2xs`
   → `xxs`), style defaults align with React Native. See
   [Config v5 docs](/docs/core/config-v5).
