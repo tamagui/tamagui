@@ -161,7 +161,7 @@ const SelectIndicatorFrame = styled(YStack, {
         left: 0,
         pointerEvents: 'none',
         zIndex: 10,
-        backgroundColor: '$backgroundHover',
+        backgroundColor: '$background',
         borderRadius: 0,
       },
     },

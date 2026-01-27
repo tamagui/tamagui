@@ -1,11 +1,10 @@
-export declare const v5Templates: Record<"light_accent" | "light_surface1" | "light_surface2" | "light_base" | "dark_accent" | "dark_surface1" | "dark_surface2" | "dark_base", {
+export declare const v5Templates: Record<"light_base" | "light_surface1" | "light_surface2" | "light_accent" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_accent", {
+    placeholderColor: number;
     colorTransparent: number;
     color: number;
     colorHover: number;
     colorPress: number;
     colorFocus: number;
-    placeholderColor: number;
-    outlineColor: number;
     background: number;
     backgroundHover: number;
     backgroundPress: number;

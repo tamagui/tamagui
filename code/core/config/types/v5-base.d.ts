@@ -1,6 +1,6 @@
 export { shorthands } from '@tamagui/shorthands/v4';
 export { createThemes } from '@tamagui/theme-builder';
-export { adjustPalette, adjustPalettes, createV5Theme, defaultChildrenThemes, defaultDarkPalette, defaultGrandChildrenThemes, defaultLightPalette, hslToString, interpolateColor, opacify, parseHSL, tokens, type AdjustFn, type HSL, type PaletteAdjustments, } from '@tamagui/themes/v5';
+export { adjustPalette, adjustPalettes, createV5Theme, defaultChildrenThemes, defaultDarkPalette, defaultLightPalette, hslToString, interpolateColor, opacify, parseHSL, tokens, type AdjustFn, type HSL, type PaletteAdjustments, } from '@tamagui/themes/v5';
 export { createSystemFont, fonts } from './v5-fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media';
 export declare const selectionStyles: (theme: any) => {
@@ -187,7 +187,6 @@ export declare const defaultConfig: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
-        outlineColor: string;
         colorTransparent: string;
         black1: string;
         black2: string;
@@ -376,6 +375,7 @@ export declare const defaultConfig: {
         background0025: string;
         background002: string;
         background001: string;
+        outlineColor: string;
     }>;
     tokens: {
         readonly radius: {

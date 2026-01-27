@@ -41,43 +41,10 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   const borderColor = background + 3
   const color = -background
 
-  const baseColors = {
-    color,
-    colorHover: color + (isLight ? 0 : lighten),
-    colorPress: color,
-    colorFocus: color + darken,
-    placeholderColor: color - 3,
-    outlineColor: -2, // opacity
-  }
-
-  // const getGenerics = (type: 'base' | 'above-base') => {
-  //   // at base we have no "room" to lighten from light theme
-  //   const adjustDynamic = type === 'base' ? (isLight ? darken : lighten) : lighten
-
-  //   return {
-  //     // the background, color, etc keys here work like generics - they make it so you
-  //     // can publish components for others to use without mandating a specific color scale
-  //     // the @tamagui/button Button component looks for `$background`, so you set the
-  //     // dark_red_Button theme to have a stronger background than the dark_red theme.
-  //     background: bgIndex,
-  //     // hover lightens in both light/dark modes (towards background)
-  //     backgroundHover: bgIndex + adjustDynamic,
-  //     // press darkens in both modes (towards foreground)
-  //     backgroundPress: bgIndex + darken,
-  //     // focus: darken in dark mode, stay same in light
-  //     backgroundFocus: bgIndex + darken,
-  //     backgroundActive: bgIndex,
-  //     borderColor,
-  //     borderColorHover: borderColor + lighten,
-  //     borderColorPress: borderColor + darken,
-  //     borderColorFocus: borderColor,
-  //   }
-  // }
-
   // helper for surface themes - they need their own hover/press/focus calculations
   // because those need to be relative to their elevated background, not base
-  const makeSurface = (offset: number) => {
-    const clr = color - 1
+  const makeSurface = (offset: number, colorOffset = 0) => {
+    const clr = color - colorOffset
     const bg = background + offset
     const brdr = borderColor + offset
 
@@ -133,13 +100,12 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     // v5 = we make this actually 1 up (surface1 technically from before)
     // this way "generics" are automatically differentiated from base bg
     ...makeSurface(1),
-    // but we keep stronger base color
-    ...baseColors,
+    placeholderColor: color - 3,
     colorTransparent: -1,
   }
 
-  const surface1 = makeSurface(2)
-  const surface2 = makeSurface(3)
+  const surface1 = makeSurface(3, 1)
+  const surface2 = makeSurface(4, 1)
 
   const accent = Object.fromEntries(
     Object.entries(base).map(([key, index]) => {

@@ -2,7 +2,7 @@
  * Subtle v5 themes - pre-built desaturated color themes
  */
 export * from './v5-themes';
-export declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "light_orange" | "light_pink" | "light_purple" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_orange" | "dark_pink" | "dark_purple" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_accent" | "dark_accent" | "light_neutral" | "light_black" | "light_white" | "light_teal" | "light_blue_accent" | "light_gray_accent" | "light_green_accent" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "light_red_accent" | "light_yellow_accent" | "light_neutral_accent" | "light_black_accent" | "light_white_accent" | "light_teal_accent" | "light_blue_surface1" | "light_gray_surface1" | "light_green_surface1" | "light_orange_surface1" | "light_pink_surface1" | "light_purple_surface1" | "light_red_surface1" | "light_yellow_surface1" | "light_neutral_surface1" | "light_black_surface1" | "light_white_surface1" | "light_teal_surface1" | "light_blue_surface2" | "light_gray_surface2" | "light_green_surface2" | "light_orange_surface2" | "light_pink_surface2" | "light_purple_surface2" | "light_red_surface2" | "light_yellow_surface2" | "light_neutral_surface2" | "light_black_surface2" | "light_white_surface2" | "light_teal_surface2" | "dark_neutral" | "dark_black" | "dark_white" | "dark_teal" | "dark_blue_accent" | "dark_gray_accent" | "dark_green_accent" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_neutral_accent" | "dark_black_accent" | "dark_white_accent" | "dark_teal_accent" | "dark_blue_surface1" | "dark_gray_surface1" | "dark_green_surface1" | "dark_orange_surface1" | "dark_pink_surface1" | "dark_purple_surface1" | "dark_red_surface1" | "dark_yellow_surface1" | "dark_neutral_surface1" | "dark_black_surface1" | "dark_white_surface1" | "dark_teal_surface1" | "dark_blue_surface2" | "dark_gray_surface2" | "dark_green_surface2" | "dark_orange_surface2" | "dark_pink_surface2" | "dark_purple_surface2" | "dark_red_surface2" | "dark_yellow_surface2" | "dark_neutral_surface2" | "dark_black_surface2" | "dark_white_surface2" | "dark_teal_surface2", {
+export declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "light_orange" | "light_pink" | "light_purple" | "light_red" | "light_yellow" | "dark_blue" | "dark_gray" | "dark_green" | "dark_orange" | "dark_pink" | "dark_purple" | "dark_red" | "dark_yellow" | "light" | "dark" | "light_accent" | "dark_accent" | "light_neutral" | "light_black" | "light_white" | "light_teal" | "light_blue_surface1" | "light_gray_surface1" | "light_green_surface1" | "light_orange_surface1" | "light_pink_surface1" | "light_purple_surface1" | "light_red_surface1" | "light_yellow_surface1" | "light_neutral_surface1" | "light_black_surface1" | "light_white_surface1" | "light_teal_surface1" | "light_blue_surface2" | "light_gray_surface2" | "light_green_surface2" | "light_orange_surface2" | "light_pink_surface2" | "light_purple_surface2" | "light_red_surface2" | "light_yellow_surface2" | "light_neutral_surface2" | "light_black_surface2" | "light_white_surface2" | "light_teal_surface2" | "light_blue_accent" | "light_gray_accent" | "light_green_accent" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "light_red_accent" | "light_yellow_accent" | "light_neutral_accent" | "light_black_accent" | "light_white_accent" | "light_teal_accent" | "dark_neutral" | "dark_black" | "dark_white" | "dark_teal" | "dark_blue_surface1" | "dark_gray_surface1" | "dark_green_surface1" | "dark_orange_surface1" | "dark_pink_surface1" | "dark_purple_surface1" | "dark_red_surface1" | "dark_yellow_surface1" | "dark_neutral_surface1" | "dark_black_surface1" | "dark_white_surface1" | "dark_teal_surface1" | "dark_blue_surface2" | "dark_gray_surface2" | "dark_green_surface2" | "dark_orange_surface2" | "dark_pink_surface2" | "dark_purple_surface2" | "dark_red_surface2" | "dark_yellow_surface2" | "dark_neutral_surface2" | "dark_black_surface2" | "dark_white_surface2" | "dark_teal_surface2" | "dark_blue_accent" | "dark_gray_accent" | "dark_green_accent" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_neutral_accent" | "dark_black_accent" | "dark_white_accent" | "dark_teal_accent", {
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -119,9 +119,8 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     color11: string;
     color12: string;
     background: string;
-    colorTransparent: string;
     placeholderColor: string;
-    outlineColor: string;
+    colorTransparent: string;
     backgroundHover: string;
     backgroundPress: string;
     backgroundFocus: string;
@@ -205,6 +204,7 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     shadow4: string;
     shadow5: string;
     shadow6: string;
+    outlineColor: string;
     accent0: string;
     accent2: string;
     accent1: string;
@@ -235,5 +235,6 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     background04: string;
     background06: string;
     background08: string;
+    outlineColor: string;
 }>;
 //# sourceMappingURL=v5-themes-subtle.d.ts.map
