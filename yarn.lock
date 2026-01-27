@@ -9607,39 +9607,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/v2-toast@workspace:code/ui/v2-toast":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/v2-toast@workspace:code/ui/v2-toast"
-  dependencies:
-    "@tamagui/animate-presence": "workspace:*"
-    "@tamagui/build": "workspace:*"
-    "@tamagui/collection": "workspace:*"
-    "@tamagui/compose-refs": "workspace:*"
-    "@tamagui/constants": "workspace:*"
-    "@tamagui/core": "workspace:*"
-    "@tamagui/create-context": "workspace:*"
-    "@tamagui/dismissable": "workspace:*"
-    "@tamagui/helpers": "workspace:*"
-    "@tamagui/polyfill-dev": "workspace:*"
-    "@tamagui/portal": "workspace:*"
-    "@tamagui/stacks": "workspace:*"
-    "@tamagui/start-transition": "workspace:*"
-    "@tamagui/text": "workspace:*"
-    "@tamagui/use-controllable-state": "workspace:*"
-    "@tamagui/visually-hidden": "workspace:*"
-    burnt: "npm:^0.12.2"
-    react: "npm:*"
-    react-native: "npm:0.81.5"
-  peerDependencies:
-    burnt: ^0.12.2
-    react: "*"
-    react-native: "*"
-  peerDependenciesMeta:
-    burnt:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/visually-hidden@workspace:*, @tamagui/visually-hidden@workspace:code/ui/visually-hidden":
   version: 0.0.0-use.local
   resolution: "@tamagui/visually-hidden@workspace:code/ui/visually-hidden"
