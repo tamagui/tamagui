@@ -14,10 +14,7 @@ interface GesturePanConfig {
     isShowingInnerSheet?: boolean;
     setAnimatedPosition: (val: number) => void;
     scrollGestureRef?: RefObject<any> | null;
-    isKeyboardVisibleRef?: RefObject<boolean>;
-    onDismissKeyboard?: () => void;
     pauseKeyboardHandler?: RefObject<boolean>;
-    screenSize?: number;
 }
 interface GesturePanResult {
     panGesture: any | null;
