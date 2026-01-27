@@ -36,7 +36,9 @@ export function getKeyboardControllerState(): KeyboardControllerState {
   return getGlobalState()
 }
 
-export function setKeyboardControllerState(updates: Partial<KeyboardControllerState>): void {
+export function setKeyboardControllerState(
+  updates: Partial<KeyboardControllerState>
+): void {
   const state = getGlobalState()
   Object.assign(state, updates)
 }
