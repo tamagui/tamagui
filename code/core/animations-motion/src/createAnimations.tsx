@@ -340,7 +340,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               }
 
               // IMPORTANT: Spread to create mutable copy - style objects may be frozen
-              controls.current = animate(scope.current, { ...diff }, animationOptions)
+              // fix transparent colors to use rgba for motion.dev compatibility
+              const fixedDiff = fixTransparentColors({ ...diff }, lastDoAnimate.current)
+              controls.current = animate(scope.current, fixedDiff, animationOptions)
               lastAnimateAt.current = Date.now()
             }
           }
@@ -790,4 +792,31 @@ function getDiff<T extends Record<string, unknown>>(
     }
   }
   return diff
+}
+
+// motion.dev can't animate to "transparent" - convert it to rgba based on previous value
+// if previous was rgba, use same rgb with alpha 0, otherwise use rgba(0,0,0,0)
+function fixTransparentColors(
+  diff: Record<string, unknown>,
+  previous: Record<string, unknown> | null
+): Record<string, unknown> {
+  let result = diff
+  for (const key in diff) {
+    if (diff[key] === 'transparent') {
+      const prev = previous?.[key]
+      let fixed = 'rgba(0, 0, 0, 0)'
+      if (typeof prev === 'string') {
+        // match rgba(r, g, b, a) or rgb(r, g, b)
+        const rgbaMatch = prev.match(/^rgba?\(([^,]+),\s*([^,]+),\s*([^,)]+)/)
+        if (rgbaMatch) {
+          fixed = `rgba(${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}, 0)`
+        }
+      }
+      if (result === diff) {
+        result = { ...diff }
+      }
+      result[key] = fixed
+    }
+  }
+  return result
 }
