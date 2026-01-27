@@ -486,7 +486,8 @@ Note: Internal styled components already exist (ToastItemFrame, etc.). Can expor
 2. Accessibility audit ✅ (role="status", aria-live)
 3. Reduced motion ✅ (useReducedMotion hook, respects prefers-reduced-motion)
 4. Documentation - TODO
-5. Tests ✅ (16 comprehensive tests passing)
+5. Tests ✅ (29 tests passing - 13 basic + 16 comprehensive)
+6. **Spring physics tuning** ✅ (damping: 30, stiffness: 400, mass: 0.5 for snappy feel)
 
 ---
 
