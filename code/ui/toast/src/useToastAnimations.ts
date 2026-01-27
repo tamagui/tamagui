@@ -50,11 +50,12 @@ export interface ToastAnimationValues {
   dragRef: React.RefObject<HTMLDivElement | null>
 }
 
+// tuned for snappy, premium feel like Sonner
 const SPRING_CONFIG = {
   type: 'spring' as const,
-  damping: 20,
-  stiffness: 300,
-  mass: 0.8,
+  damping: 30,
+  stiffness: 400,
+  mass: 0.5,
 }
 
 const EXIT_DISTANCE = 200
@@ -69,7 +70,7 @@ function animateSpring(
   config: { damping?: number; stiffness?: number; mass?: number },
   onComplete?: () => void
 ) {
-  const { damping = 20, stiffness = 300, mass = 0.8 } = config
+  const { damping = 30, stiffness = 400, mass = 0.5 } = config
 
   let x = fromX
   let y = fromY
@@ -237,10 +238,11 @@ export function useToastAnimations(
         return
       }
 
+      // exit animation - slightly less damped for faster exit
       const exitConfig = {
         damping: 25,
-        stiffness: 200,
-        mass: 0.8,
+        stiffness: 350,
+        mass: 0.4,
       }
 
       if (useDirectDom && dragRef.current) {
