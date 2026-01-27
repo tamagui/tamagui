@@ -21,7 +21,8 @@ export const useThemeWithState = (
   isRoot = false
 ): ThemeWithState => {
   const keys = useRef<Set<string> | null>(null)
-  const themeState = useThemeState(props, isRoot, keys)
+  const schemeKeys = useRef<Set<string> | null>(null)
+  const themeState = useThemeState(props, isRoot, keys, schemeKeys)
 
   if (process.env.NODE_ENV === 'development') {
     if (!props.passThrough && !themeState?.theme) {
@@ -35,7 +36,9 @@ export const useThemeWithState = (
     }
   }
 
-  const themeProxied = props.passThrough ? {} : getThemeProxied(props, themeState, keys)
+  const themeProxied = props.passThrough
+    ? {}
+    : getThemeProxied(props, themeState, keys, schemeKeys)
 
   return [themeProxied, themeState]
 }

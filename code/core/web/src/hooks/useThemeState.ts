@@ -1,3 +1,4 @@
+import { isIos } from '@tamagui/constants'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   createContext,
@@ -7,7 +8,7 @@ import {
   useSyncExternalStore,
   type MutableRefObject,
 } from 'react'
-import { getConfig } from '../config'
+import { getConfig, getSetting } from '../config'
 import { MISSING_THEME_MESSAGE } from '../constants/constants'
 import type {
   ThemeParsed,
@@ -47,10 +48,14 @@ let themes: Record<string, ThemeParsed> | null = null
 let rootThemeState: ThemeState | null = null
 export const getRootThemeState = () => rootThemeState
 
+// extracts base name without scheme: "light_red_surface1" -> "red_surface1"
+const getThemeBaseName = (name: string) => name.replace(/^(light|dark)_/, '')
+
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
-  keys: MutableRefObject<Set<string> | null>
+  keys: MutableRefObject<Set<string> | null>,
+  schemeKeys?: MutableRefObject<Set<string> | null>
 ): ThemeState => {
   const { disable } = props
   const parentId = useContext(ThemeStateContext)
@@ -94,6 +99,24 @@ export const useThemeState = (
 
   const getSnapshot = () => {
     let local = localStates.get(id)
+    const parentState = states.get(parentId)
+
+    // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
+    const isSchemeOnlyChange =
+      process.env.TAMAGUI_TARGET === 'native' &&
+      isIos &&
+      getSetting('fastSchemeChange') &&
+      local &&
+      parentState &&
+      local.scheme !== parentState.scheme &&
+      getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
+
+    // all tracked keys are scheme-optimized = can skip re-render for scheme changes
+    const keysSize = keys?.current?.size ?? 0
+    const schemeKeysSize = schemeKeys?.current?.size ?? 0
+    const allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
+
+    const canSkipForSchemeChange = isSchemeOnlyChange && allKeysSchemeOptimized
 
     const needsUpdate = props.passThrough
       ? false
@@ -101,11 +124,12 @@ export const useThemeState = (
         ? true
         : !HasRenderedOnce.get(keys)
           ? true
-          : keys?.current?.size
-            ? true
-            : props.needsUpdate?.()
+          : canSkipForSchemeChange
+            ? false // skip re-render for scheme-only changes with DynamicColorIOS
+            : keys?.current?.size
+              ? true
+              : props.needsUpdate?.()
 
-    // const parentState = states.get(parentId)
     // const cacheKey = `${cacheVersion}${id}${propsKey}${parentState?.name || ''}${isRoot}`
     // if (!needsUpdate) {
     //   if (cache.has(cacheKey)) {
@@ -137,7 +161,18 @@ export const useThemeState = (
 
     if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
       console.groupCollapsed(` ${id} getSnapshot ${rerender}`, local.name, '>', next.name)
-      console.info({ props, propsKey, isRoot, parentId, local, next, needsUpdate })
+      console.info({
+        props,
+        propsKey,
+        isRoot,
+        parentId,
+        local,
+        next,
+        needsUpdate,
+        isSchemeOnlyChange,
+        allKeysSchemeOptimized,
+        canSkipForSchemeChange,
+      })
       console.groupEnd()
     }
 
@@ -288,8 +323,6 @@ const getNextState = (
 
   return [true, nextState]
 }
-
-const regexParentScheme = /^(light|dark)_/
 
 function scheduleUpdate(id: string) {
   const queue = [id]
