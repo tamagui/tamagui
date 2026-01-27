@@ -472,19 +472,20 @@ const ToastTitle = styled(SizableText, {
 3. Height measurement and offset calculation ✅
 4. Position variants ✅
 
-### Phase 4: Composable API
+### Phase 4: Composable API (LOW PRIORITY)
 1. Toast.Provider context
 2. Toast.Viewport portal
 3. Toast.Root wrapper
 4. Toast.Content/Title/Description/Action/Close
 5. Toast.Icon
+Note: Internal styled components already exist (ToastItemFrame, etc.). Can export if needed.
 
 ### Phase 5: Final Polish
-1. Keyboard navigation
-2. Accessibility audit
-3. Reduced motion
-4. Documentation
-5. Tests
+1. Keyboard navigation ✅ (Escape key, Tab focus)
+2. Accessibility audit ✅ (role="status", aria-live)
+3. Reduced motion - TODO
+4. Documentation - TODO
+5. Tests ✅ (16 comprehensive tests passing)
 
 ---
 
