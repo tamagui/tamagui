@@ -5,6 +5,7 @@ export const HomeH1 = styled(H1, {
   className: 'word-break-keep-all',
   size: '$9',
   mb: '$2',
+  color: '$color11',
 
   $gtSm: {
     size: '$10',
