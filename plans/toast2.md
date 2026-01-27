@@ -419,7 +419,7 @@ const ToastTitle = styled(SizableText, {
 - [x] Position variants (6 positions)
 - [x] Custom JSX toasts
 - [ ] Toast history API
-- [ ] Keyboard focus management (hotkey to focus)
+- [x] Keyboard focus management (hotkey to focus) - Alt+T by default
 - [ ] Rich colors option
 
 ### From Base UI
