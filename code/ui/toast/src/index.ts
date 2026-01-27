@@ -1,4 +1,4 @@
-// Toast v2 API
+// Toast v2 imperative API (Sonner-style)
 export { toast } from './ToastState'
 export type {
   ToastT,
@@ -12,6 +12,28 @@ export type {
 
 export { Toaster } from './Toaster'
 export type { ToasterProps, ToasterPosition, HeightT } from './Toaster'
+
+// Toast v1 declarative API (backward compatibility)
+export {
+  Toast,
+  ToastProvider,
+  ToastViewport,
+  useToast,
+  useToastController,
+  useToastState,
+} from './Toast'
+export type {
+  ToastProps,
+  ToastProviderProps,
+  ToastViewportProps,
+  ToastActionProps,
+  ToastCloseProps,
+  ToastDescriptionProps,
+  ToastTitleProps,
+  ToastNativePlatform,
+  ToastNativeValue,
+  CustomData,
+} from './Toast'
 
 export type { SwipeDirection } from './ToastProvider'
 export type { BurntToastOptions, CreateNativeToastOptions, NativeToastRef } from './types'

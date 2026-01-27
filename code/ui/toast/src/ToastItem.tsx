@@ -27,6 +27,7 @@ interface DragWrapperProps {
   animatedStyle: any
   gestureHandlers: any
   AnimatedView: any
+  dragRef: React.RefObject<HTMLDivElement | null>
   children: React.ReactNode
 }
 
@@ -35,16 +36,19 @@ function DragWrapper({
   animatedStyle,
   gestureHandlers,
   AnimatedView,
+  dragRef,
   children,
 }: DragWrapperProps) {
   if (isWebProp) {
+    // on web, use a raw div with ref for direct DOM manipulation (CSS driver)
+    // the dragRef is used by useToastAnimations to directly set transform
     return (
       <div
+        ref={dragRef}
         style={{
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          ...(animatedStyle || {}),
         }}
         {...gestureHandlers}
       >
@@ -53,6 +57,7 @@ function DragWrapper({
     )
   }
 
+  // on native, use AnimatedView with animatedStyle
   return (
     <AnimatedView style={[{ flex: 1 }, animatedStyle]} {...gestureHandlers}>
       {children}
@@ -447,7 +452,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   }, [duration])
 
   // animation driver for drag gestures
-  const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView } =
+  const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView, dragRef } =
     useToastAnimations({ reducedMotion })
 
   // drag gesture with animation driver integration
@@ -593,16 +598,16 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const description =
     typeof toast.description === 'function' ? toast.description() : toast.description
 
-  // data attributes for testing/styling - use dataSet for RN Web compatibility
-  const dataSet = {
-    mounted: mounted ? 'true' : 'false',
-    removed: removed ? 'true' : 'false',
-    swipeOut: swipeOut ? 'true' : 'false',
-    visible: isVisible ? 'true' : 'false',
-    front: isFront ? 'true' : 'false',
-    index: String(index),
-    type: toastType,
-    expanded: expanded ? 'true' : 'false',
+  // data attributes for testing/styling
+  const dataAttributes = {
+    'data-mounted': mounted ? 'true' : 'false',
+    'data-removed': removed ? 'true' : 'false',
+    'data-swipe-out': swipeOut ? 'true' : 'false',
+    'data-visible': isVisible ? 'true' : 'false',
+    'data-front': isFront ? 'true' : 'false',
+    'data-index': String(index),
+    'data-type': toastType,
+    'data-expanded': expanded ? 'true' : 'false',
   }
 
   // gap filler height - extends hit area to prevent flicker when moving between toasts
@@ -617,9 +622,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       aria-live="polite"
       aria-atomic
       tabIndex={0}
-      // @ts-expect-error dataSet is a valid prop for RN Web compatibility
-      dataSet={dataSet}
-      data-expanded={expanded ? 'true' : 'false'}
+      {...dataAttributes}
       onLayout={handleLayout}
       // use Tamagui transition for stacking animations (y, scale, opacity)
       // disable during drag so stacking doesn't interfere with drag gesture
@@ -687,6 +690,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         animatedStyle={animatedStyle}
         gestureHandlers={gestureHandlers}
         AnimatedView={AnimatedView}
+        dragRef={dragRef}
       >
       {/* invisible hit area that fills the gap above/below toast when expanded
           this prevents hover state flickering when mouse moves between toasts */}

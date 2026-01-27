@@ -8,7 +8,12 @@
  *
  * This hook handles ONLY the drag gesture animations.
  * Uses the same pattern as Sheet for universal animation support.
+ *
+ * NOTE: For CSS driver, we use a ref-based approach with direct DOM manipulation
+ * because CSS driver's useAnimatedNumberStyle doesn't reactively update.
+ * For Motion/Reanimated drivers, we use the AnimatedView + motionValue pattern.
  */
+import * as React from 'react';
 import type { Animated } from 'react-native';
 export interface UseToastAnimationsOptions {
     /**
@@ -29,10 +34,12 @@ export interface ToastAnimationValues {
     animateOut: (direction: 'left' | 'right' | 'up' | 'down', onComplete?: () => void) => void;
     /** stop any running animations */
     stop: () => void;
-    /** the animated style to spread on the AnimatedView */
+    /** the animated style to spread on the AnimatedView (for motion/reanimated drivers) */
     animatedStyle: any;
     /** the animated view component from the driver */
     AnimatedView: typeof Animated.View;
+    /** ref to attach to the drag wrapper element (for CSS driver direct DOM updates) */
+    dragRef: React.RefObject<HTMLDivElement | null>;
 }
 export declare function useToastAnimations(options?: UseToastAnimationsOptions): ToastAnimationValues;
 //# sourceMappingURL=useToastAnimations.d.ts.map
