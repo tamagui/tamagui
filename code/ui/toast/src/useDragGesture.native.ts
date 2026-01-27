@@ -4,6 +4,7 @@
  */
 
 import * as React from 'react'
+import type { PanResponderGestureState } from 'react-native'
 import { PanResponder } from 'react-native'
 import type { SwipeDirection } from './ToastProvider'
 

@@ -18,7 +18,6 @@ export interface ToastT {
     delete?: boolean;
     style?: React.CSSProperties;
     className?: string;
-    closeButton?: boolean;
     burntOptions?: CreateNativeToastOptions['burntOptions'];
     notificationOptions?: CreateNativeToastOptions['notificationOptions'];
     [key: string]: any;
@@ -77,16 +76,6 @@ declare class Observer {
      * Dismiss a toast by id, or all toasts if no id provided
      */
     dismiss: (id?: string | number) => string | number | undefined;
-    /**
-     * Clean up a toast after its exit animation completes.
-     * Call this from Toaster's onExitComplete callback to prevent memory leaks.
-     */
-    cleanup: (id: string | number) => void;
-    /**
-     * Clean up all dismissed toasts at once.
-     * Call this from Toaster's onExitComplete when all animations finish.
-     */
-    cleanupAll: () => void;
     /**
      * Show a basic toast message
      */

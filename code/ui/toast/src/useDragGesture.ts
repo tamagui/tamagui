@@ -32,13 +32,21 @@ interface DragStartData {
 const VELOCITY_THRESHOLD = 0.11
 
 /**
- * Apply Sonner-style dampening when dragging against allowed direction.
- * Uses 1 / (1.5 + factor) curve which feels smooth and natural.
- * @param delta - the drag distance (can be positive or negative)
+ * Apply resistance when dragging past a boundary.
+ * Uses a square root curve for natural-feeling resistance (same as Sheet).
+ * @param delta - the drag distance
+ * @param maxResist - maximum resistant distance (default 25px)
  */
-function getDampening(delta: number): number {
-  const factor = Math.abs(delta) / 20
-  return 1 / (1.5 + factor)
+function resisted(delta: number, maxResist = 25): number {
+  // no resistance for drag in allowed direction
+  if (delta >= 0) return delta
+
+  // square root curve for gentle resistance
+  const pastBoundary = Math.abs(delta)
+  const resistedDistance = Math.sqrt(pastBoundary) * 2
+
+  // cap at max resist distance
+  return -Math.min(resistedDistance, maxResist)
 }
 
 export function useDragGesture(options: UseDragGestureOptions) {
@@ -63,27 +71,10 @@ export function useDragGesture(options: UseDragGestureOptions) {
   const handlePointerDown = React.useCallback(
     (event: React.PointerEvent) => {
       if (disabled) return
-      if (event.button !== 0) return // only left click
-
-      // skip drag if clicking on interactive elements (buttons, links, inputs, etc.)
-      const target = event.target as HTMLElement
-      const tagName = target.tagName.toLowerCase()
-      const interactiveTags = ['button', 'a', 'input', 'select', 'textarea']
-      if (interactiveTags.includes(tagName)) {
-        return
-      }
-      // check for ARIA roles and explicit focusable elements
-      const role = target.getAttribute('role')
-      if (role === 'button' || role === 'link') {
-        return
-      }
-      // check if clicking inside an interactive element
-      if (target.closest('button, a, input, select, textarea, [role="button"], [role="link"]')) {
-        return
-      }
-
-      // capture pointer for drag outside element
-      target.setPointerCapture(event.pointerId)
+      if (event.button !== 0)
+        return // only left click
+        // capture pointer for drag outside element
+      ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
 
       dragStartRef.current = {
         startX: event.clientX,
@@ -112,28 +103,27 @@ export function useDragGesture(options: UseDragGestureOptions) {
       let offsetX = 0
       let offsetY = 0
 
-      // apply Sonner-style dampening: full movement in allowed direction,
-      // dampened movement in opposite direction
+      // apply direction-aware movement with resistance for wrong direction
       if (lockedDirectionRef.current === 'x' && isHorizontal) {
         if (direction === 'right') {
-          // swipe right: full movement right, dampened left
-          offsetX = deltaX > 0 ? deltaX : deltaX * getDampening(deltaX)
+          // swipe right: free movement right (positive), resisted left (negative)
+          offsetX = deltaX > 0 ? deltaX : resisted(deltaX)
         } else if (direction === 'left') {
-          // swipe left: full movement left, dampened right
-          offsetX = deltaX < 0 ? deltaX : deltaX * getDampening(deltaX)
+          // swipe left: free movement left (negative), resisted right (positive)
+          offsetX = deltaX < 0 ? deltaX : -resisted(-deltaX)
         } else {
-          // horizontal: full movement both directions
+          // horizontal: free movement both directions
           offsetX = deltaX
         }
       } else if (lockedDirectionRef.current === 'y' && isVertical) {
         if (direction === 'down') {
-          // swipe down: full movement down, dampened up
-          offsetY = deltaY > 0 ? deltaY : deltaY * getDampening(deltaY)
+          // swipe down: free movement down (positive), resisted up (negative)
+          offsetY = deltaY > 0 ? deltaY : resisted(deltaY)
         } else if (direction === 'up') {
-          // swipe up: full movement up, dampened down
-          offsetY = deltaY < 0 ? deltaY : deltaY * getDampening(deltaY)
+          // swipe up: free movement up (negative), resisted down (positive)
+          offsetY = deltaY < 0 ? deltaY : -resisted(-deltaY)
         } else {
-          // vertical: full movement both directions
+          // vertical: free movement both directions
           offsetY = deltaY
         }
       }

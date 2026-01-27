@@ -115,6 +115,12 @@ export interface ToasterProps {
      * Custom style for the container
      */
     style?: React.CSSProperties;
+    /**
+     * Force reduced motion mode (disables animations)
+     * When true, animations are disabled. When false, animations are enabled.
+     * When undefined, respects system preference (prefers-reduced-motion).
+     */
+    reducedMotion?: boolean;
 }
 export declare const Toaster: React.ForwardRefExoticComponent<ToasterProps & React.RefAttributes<TamaguiElement>>;
 //# sourceMappingURL=Toaster.d.ts.map

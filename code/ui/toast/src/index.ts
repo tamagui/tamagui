@@ -1,9 +1,4 @@
-// v1 API (declarative component-based)
-export * from './Toast'
-export type { SwipeDirection } from './ToastProvider'
-export type { BurntToastOptions, CreateNativeToastOptions, NativeToastRef } from './types'
-
-// v2 API (imperative singleton-based)
+// Toast v2 API
 export { toast } from './ToastState'
 export type {
   ToastT,
@@ -17,3 +12,6 @@ export type {
 
 export { Toaster } from './Toaster'
 export type { ToasterProps, ToasterPosition, HeightT } from './Toaster'
+
+export type { SwipeDirection } from './ToastProvider'
+export type { BurntToastOptions, CreateNativeToastOptions, NativeToastRef } from './types'

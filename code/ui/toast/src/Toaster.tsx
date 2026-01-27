@@ -9,6 +9,7 @@ import type { SwipeDirection } from './ToastProvider'
 import type { ExternalToast, ToastT, ToastToDismiss } from './ToastState'
 import { ToastState } from './ToastState'
 import type { BurntToastOptions } from './types'
+import { useReducedMotion } from './useReducedMotion'
 
 // defaults
 const VISIBLE_TOASTS_AMOUNT = 4
@@ -38,7 +39,7 @@ const ToasterFrame = styled(View, {
   variants: {
     unstyled: {
       false: {
-        position: isWeb ? ('fixed' as any) : 'absolute',
+        position: 'fixed',
         zIndex: 100000,
         pointerEvents: 'box-none',
         maxWidth: '100%',
@@ -174,6 +175,13 @@ export interface ToasterProps {
    * Custom style for the container
    */
   style?: React.CSSProperties
+
+  /**
+   * Force reduced motion mode (disables animations)
+   * When true, animations are disabled. When false, animations are enabled.
+   * When undefined, respects system preference (prefers-reduced-motion).
+   */
+  reducedMotion?: boolean
 }
 
 export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
@@ -199,13 +207,16 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       notificationOptions,
       className,
       style,
+      reducedMotion: reducedMotionProp,
     } = props
+
+    // detect reduced motion preference
+    const reducedMotion = useReducedMotion(reducedMotionProp)
 
     const [toasts, setToasts] = React.useState<ToastT[]>([])
     const [heights, setHeights] = React.useState<HeightT[]>([])
     const [expanded, setExpanded] = React.useState(false)
     const [interacting, setInteracting] = React.useState(false)
-    const [isPointerDown, setIsPointerDown] = React.useState(false)
 
     const listRef = React.useRef<TamaguiElement>(null)
     const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
@@ -241,13 +252,12 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       })
     }, [])
 
-    // collapse expanded view when only 1 active (non-deleted) toast remains
-    const activeToastCount = toasts.filter((t) => !t.delete).length
+    // collapse expanded view when only 1 toast remains
     React.useEffect(() => {
-      if (activeToastCount <= 1) {
+      if (toasts.length <= 1) {
         setExpanded(false)
       }
-    }, [activeToastCount])
+    }, [toasts.length])
 
     // keyboard hotkey handler
     React.useEffect(() => {
@@ -289,30 +299,12 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       }
     }, [])
 
-    // global pointer up listener to catch releases outside container
-    // prevents isPointerDown from getting stuck true
-    React.useEffect(() => {
-      if (!isWeb || !isPointerDown) return
-
-      const handleGlobalPointerUp = () => {
-        setIsPointerDown(false)
-        setInteracting(false)
-        setExpanded(false)
-      }
-
-      document.addEventListener('pointerup', handleGlobalPointerUp)
-      return () => document.removeEventListener('pointerup', handleGlobalPointerUp)
-    }, [isPointerDown])
-
-    // clean up all deleted toasts after exit animations complete
-    const handleExitComplete = React.useCallback(() => {
-      setToasts((currentToasts) => {
-        // get IDs of toasts being removed
-        const deletedIds = currentToasts.filter((t) => t.delete).map((t) => t.id)
-        // clean up each deleted toast from ToastState
-        deletedIds.forEach((id) => ToastState.cleanup(id))
-        // remove from local state
-        return currentToasts.filter((t) => !t.delete)
+    const removeToast = React.useCallback((toastToRemove: ToastT) => {
+      setToasts((toasts) => {
+        if (!toasts.find((toast) => toast.id === toastToRemove.id)?.delete) {
+          ToastState.dismiss(toastToRemove.id)
+        }
+        return toasts.filter(({ id }) => id !== toastToRemove.id)
       })
     }, [])
 
@@ -367,8 +359,6 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
 
     const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
 
-    // only return null if there are no toasts at all (including ones being animated out)
-    // we keep the container mounted while exit animations play
     if (toasts.length === 0) {
       return null
     }
@@ -389,20 +379,12 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
         onMouseEnter={() => setExpanded(true)}
         onMouseMove={() => setExpanded(true)}
         onMouseLeave={() => {
-          // only collapse if not actively dragging (pointer down outside container)
-          // this prevents mid-interaction collapse when dragging outside
-          if (!isPointerDown) {
-            setInteracting(false)
+          if (!interacting) {
             setExpanded(false)
           }
         }}
-        onPointerDown={() => {
-          setInteracting(true)
-          setIsPointerDown(true)
-        }}
-        onPointerUp={() => {
-          setIsPointerDown(false)
-        }}
+        onPointerDown={() => setInteracting(true)}
+        onPointerUp={() => setInteracting(false)}
         {...(isWeb && {
           onBlur: (event: React.FocusEvent) => {
             if (
@@ -426,26 +408,21 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
           },
         })}
       >
-        <AnimatePresence onExitComplete={handleExitComplete}>
-          {toasts.map((toast) => {
-            // calculate index among non-deleted toasts for stacking
-            const visibleIndex = toasts
-              .filter((t) => !t.delete)
-              .findIndex((t) => t.id === toast.id)
-
-            // skip rendering deleted toasts - AnimatePresence will animate exit
-            // for toasts that are still visible
-            if (toast.delete) return null
+        <AnimatePresence>
+          {toasts.map((toast, index) => {
+            const isVisible = index < visibleToasts
+            const isFront = index === 0
 
             return (
               <ToastItem
                 key={toast.id}
                 toast={toast}
-                index={visibleIndex === -1 ? 0 : visibleIndex}
+                index={index}
                 expanded={expanded || expand}
                 interacting={interacting}
                 position={position}
                 visibleToasts={visibleToasts}
+                removeToast={removeToast}
                 heights={heights}
                 setHeights={setHeights}
                 duration={toast.duration ?? toastOptions?.duration ?? duration}
@@ -457,6 +434,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 disableNative={disableNative}
                 burntOptions={burntOptions}
                 notificationOptions={notificationOptions}
+                reducedMotion={reducedMotion}
               />
             )
           })}
