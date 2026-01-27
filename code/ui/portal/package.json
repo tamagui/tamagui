@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/portal",
-  "version": "2.0.0-1769495042619",
+  "version": "2.0.0-1769536410877",
   "type": "module",
   "sideEffects": [
     "*.css"
