@@ -101,7 +101,9 @@ export function getThemeProxied(
     }
 
     if (process.env.NODE_ENV === 'development' && curProps.debug) {
-      console.info(` 🎨 useTheme() tracking key: ${key} schemeOptimized=${schemeOptimized}`)
+      console.info(
+        ` 🎨 useTheme() tracking key: ${key} schemeOptimized=${schemeOptimized}`
+      )
     }
   }
 
@@ -149,7 +151,10 @@ export function getThemeProxied(
               const color = getVariable(config.themes[name]?.[key])
               const oppositeColor = getVariable(config.themes[oppositeName]?.[key])
 
-              if (process.env.NODE_ENV === 'development' && curProps.debug === 'verbose') {
+              if (
+                process.env.NODE_ENV === 'development' &&
+                curProps.debug === 'verbose'
+              ) {
                 console.info(
                   ` 🎨 useTheme().get(${key}) using DynamicColorIOS`,
                   `\n   color=${color} oppositeColor=${oppositeColor}`
