@@ -8,7 +8,8 @@ import type { LayoutChangeEvent } from 'react-native'
 
 import type { HeightT, ToasterPosition } from './Toaster'
 import type { ToastT, ToastType } from './ToastState'
-import { useDragGesture } from './useDragGesture'
+import { useAnimatedDragGesture } from './useAnimatedDragGesture'
+import { useToastAnimations } from './useToastAnimations'
 import type { SwipeDirection } from './ToastProvider'
 import type { BurntToastOptions } from './types'
 import { createNativeToast } from './createNativeToast'
@@ -399,23 +400,30 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     remainingTimeRef.current = duration
   }, [duration])
 
-  // drag gesture for swipe-to-dismiss
-  const { dragState, gestureHandlers } = useDragGesture({
+  // animation driver for drag gestures
+  const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView } =
+    useToastAnimations()
+
+  // drag gesture with animation driver integration
+  const { isDragging, gestureHandlers } = useAnimatedDragGesture({
     direction: swipeDirection,
     threshold: swipeThreshold,
     disabled: !dismissible || toastType === 'loading',
     onDragStart: pauseTimer,
-    onDragEnd: (dismissed) => {
-      if (dismissed) {
-        setSwipeOut(true)
-        toast.onDismiss?.(toast)
+    onDragMove: setDragOffset,
+    onDismiss: (exitDirection) => {
+      setSwipeOut(true)
+      toast.onDismiss?.(toast)
+      animateOut(exitDirection, () => {
         setRemoved(true)
-        setTimeout(() => {
-          removeToast(toast)
-        }, TIME_BEFORE_UNMOUNT)
-      }
+        removeToast(toast)
+      })
     },
-    onDragCancel: resumeTimer,
+    onCancel: () => {
+      springBack(() => {
+        resumeTimer()
+      })
+    },
   })
 
   // measure height
@@ -469,16 +477,13 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const icon = getIcon()
 
   // calculate values for stacking effect using Tamagui animation props
+  // NOTE: drag offset is now handled separately by AnimatedView with useAnimatedNumber
   const isHorizontalSwipe =
     swipeDirection === 'left' ||
     swipeDirection === 'right' ||
     swipeDirection === 'horizontal'
   const isVerticalSwipe =
     swipeDirection === 'up' || swipeDirection === 'down' || swipeDirection === 'vertical'
-
-  // drag offset based on swipe direction
-  const dragOffsetX = isHorizontalSwipe ? dragState.offsetX : 0
-  const dragOffsetY = isVerticalSwipe ? dragState.offsetY : 0
 
   // scale non-front toasts when not expanded (sonner-style stacking)
   // each toast behind front is scaled down by 5% - this creates visual depth
@@ -510,9 +515,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         ? liftPerToast * index // for top position, toasts stack downward
         : -liftPerToast * index // for bottom position, toasts stack upward
 
-  // final computed values including drag
-  const computedY = stackY + dragOffsetY
-  const computedX = dragOffsetX
+  // stacking position (drag offset handled separately by AnimatedView)
+  const computedY = stackY
   const computedScale = stackScale
 
   // opacity: toasts beyond visibleToasts are always hidden (like Sonner)
@@ -571,11 +575,11 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       dataSet={dataSet}
       data-expanded={expanded ? 'true' : 'false'}
       onLayout={handleLayout}
-      // use Tamagui animation system - disable animation while dragging
-      transition={dragState.isDragging ? undefined : 'quick'}
-      // animation props
+      // use Tamagui transition for stacking animations (y, scale, opacity)
+      // disable during drag so stacking doesn't interfere with drag gesture
+      transition={isDragging ? undefined : 'quick'}
+      // stacking animation props (NOT drag - drag is handled by inner AnimatedView)
       y={computedY}
-      x={computedX}
       scale={computedScale}
       opacity={computedOpacity}
       zIndex={computedZIndex}
@@ -613,7 +617,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
               : 10,
         scale: 0.95,
       }}
-      {...gestureHandlers}
       {...(isWeb && {
         onKeyDown: (event: React.KeyboardEvent) => {
           if (event.key === 'Escape' && dismissible) {
@@ -622,6 +625,11 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         },
       })}
     >
+      {/* AnimatedView wrapper for drag gestures using animation driver */}
+      <AnimatedView
+        style={[{ flex: 1 }, animatedStyle]}
+        {...(gestureHandlers as any)}
+      >
       {/* invisible hit area that fills the gap above/below toast when expanded
           this prevents hover state flickering when mouse moves between toasts */}
       {expanded && gapFillerHeight > 0 && (
@@ -687,6 +695,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
           )}
         </XStack>
       )}
+      </AnimatedView>
     </ToastItemFrame>
   )
 })

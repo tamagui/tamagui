@@ -1,0 +1,174 @@
+/**
+ * Native implementation of drag gesture handling with animation driver integration.
+ * Uses PanResponder for gesture tracking, animation driver for transforms.
+ */
+
+import * as React from 'react'
+import type { PanResponderGestureState } from 'react-native'
+import { PanResponder } from 'react-native'
+import type { SwipeDirection } from './ToastProvider'
+
+export interface UseAnimatedDragGestureOptions {
+  direction: SwipeDirection
+  threshold: number
+  disabled?: boolean
+  /** called during drag with offset values */
+  onDragMove: (x: number, y: number) => void
+  /** called when drag starts */
+  onDragStart?: () => void
+  /** called when drag ends with successful dismiss - animate out in this direction */
+  onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down') => void
+  /** called when drag ends without dismiss - spring back */
+  onCancel: () => void
+}
+
+const GESTURE_GRANT_THRESHOLD = 10
+const VELOCITY_THRESHOLD = 0.11
+
+/**
+ * Apply resistance when dragging past a boundary.
+ * Uses a square root curve for natural-feeling resistance (same as Sheet).
+ */
+function resisted(delta: number, maxResist = 25): number {
+  if (delta >= 0) return delta
+  const pastBoundary = Math.abs(delta)
+  const resistedDistance = Math.sqrt(pastBoundary) * 2
+  return -Math.min(resistedDistance, maxResist)
+}
+
+function shouldGrantGestureMove(dir: SwipeDirection, dx: number, dy: number): boolean {
+  if ((dir === 'horizontal' || dir === 'left') && dx < -GESTURE_GRANT_THRESHOLD) {
+    return true
+  }
+  if ((dir === 'horizontal' || dir === 'right') && dx > GESTURE_GRANT_THRESHOLD) {
+    return true
+  }
+  if ((dir === 'vertical' || dir === 'up') && dy < -GESTURE_GRANT_THRESHOLD) {
+    return true
+  }
+  if ((dir === 'vertical' || dir === 'down') && dy > GESTURE_GRANT_THRESHOLD) {
+    return true
+  }
+  return false
+}
+
+export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
+  const {
+    direction,
+    threshold,
+    disabled,
+    onDragMove,
+    onDragStart,
+    onDismiss,
+    onCancel,
+  } = options
+
+  const [isDragging, setIsDragging] = React.useState(false)
+
+  const isHorizontal =
+    direction === 'left' || direction === 'right' || direction === 'horizontal'
+  const isVertical =
+    direction === 'up' || direction === 'down' || direction === 'vertical'
+
+  const panResponder = React.useMemo(() => {
+    if (disabled) return null
+
+    return PanResponder.create({
+      onMoveShouldSetPanResponder: (_e, gesture) => {
+        return shouldGrantGestureMove(direction, gesture.dx, gesture.dy)
+      },
+
+      onPanResponderGrant: () => {
+        setIsDragging(true)
+        onDragStart?.()
+      },
+
+      onPanResponderMove: (_e, gesture: PanResponderGestureState) => {
+        const { dx, dy } = gesture
+
+        let offsetX = 0
+        let offsetY = 0
+
+        // apply direction-aware movement with resistance for wrong direction
+        if (isHorizontal) {
+          if (direction === 'right') {
+            offsetX = dx > 0 ? dx : resisted(dx)
+          } else if (direction === 'left') {
+            offsetX = dx < 0 ? dx : -resisted(-dx)
+          } else {
+            offsetX = dx
+          }
+        }
+
+        if (isVertical) {
+          if (direction === 'down') {
+            offsetY = dy > 0 ? dy : resisted(dy)
+          } else if (direction === 'up') {
+            offsetY = dy < 0 ? dy : -resisted(-dy)
+          } else {
+            offsetY = dy
+          }
+        }
+
+        // directly update animated values (no React state)
+        onDragMove(offsetX, offsetY)
+      },
+
+      onPanResponderRelease: (_e, gesture: PanResponderGestureState) => {
+        const { dx, dy, vx, vy } = gesture
+
+        const relevantDelta = isHorizontal ? dx : dy
+        const relevantVelocity = isHorizontal ? Math.abs(vx) : Math.abs(vy)
+
+        const passedThreshold = Math.abs(relevantDelta) >= threshold
+        const hasVelocity = relevantVelocity > VELOCITY_THRESHOLD
+
+        // determine exit direction
+        let exitDirection: 'left' | 'right' | 'up' | 'down' | null = null
+        if (direction === 'right' && dx > 0) exitDirection = 'right'
+        else if (direction === 'left' && dx < 0) exitDirection = 'left'
+        else if (direction === 'horizontal') {
+          if (Math.abs(dx) > Math.abs(dy)) {
+            exitDirection = dx > 0 ? 'right' : 'left'
+          }
+        } else if (direction === 'down' && dy > 0) exitDirection = 'down'
+        else if (direction === 'up' && dy < 0) exitDirection = 'up'
+        else if (direction === 'vertical') {
+          if (Math.abs(dy) > Math.abs(dx)) {
+            exitDirection = dy > 0 ? 'down' : 'up'
+          }
+        }
+
+        const shouldDismiss = exitDirection && (passedThreshold || hasVelocity)
+
+        setIsDragging(false)
+
+        if (shouldDismiss && exitDirection) {
+          onDismiss(exitDirection)
+        } else {
+          onCancel()
+        }
+      },
+
+      onPanResponderTerminate: () => {
+        setIsDragging(false)
+        onCancel()
+      },
+    })
+  }, [
+    disabled,
+    direction,
+    threshold,
+    isHorizontal,
+    isVertical,
+    onDragMove,
+    onDragStart,
+    onDismiss,
+    onCancel,
+  ])
+
+  return {
+    isDragging,
+    gestureHandlers: panResponder?.panHandlers ?? {},
+  }
+}
