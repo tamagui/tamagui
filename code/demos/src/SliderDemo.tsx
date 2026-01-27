@@ -12,7 +12,7 @@ export function SliderDemo() {
 
 function SimpleSlider({ children, ...props }: SliderProps) {
   return (
-    <Slider theme="surface3" defaultValue={[50]} max={100} step={1} {...props}>
+    <Slider defaultValue={[50]} max={100} step={1} {...props}>
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>

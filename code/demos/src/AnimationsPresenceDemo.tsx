@@ -66,7 +66,6 @@ export function AnimationsPresenceDemo() {
       </AnimatePresence>
 
       <Button
-        theme="surface3"
         aria-label="Carousel left"
         icon={ArrowLeft}
         size="$5"
@@ -79,7 +78,6 @@ export function AnimationsPresenceDemo() {
       />
 
       <Button
-        theme="surface3"
         aria-label="Carousel right"
         icon={ArrowRight}
         size="$5"

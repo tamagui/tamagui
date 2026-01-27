@@ -38,7 +38,6 @@ export function UpdateThemeDemo() {
       </XStack>
 
       <Button
-        theme="surface3"
         onPress={() => {
           const randomColor = getVariableValue(
             colors[colorKeys[Math.floor(Math.random() * colorKeys.length)]]

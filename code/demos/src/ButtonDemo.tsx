@@ -5,8 +5,6 @@ import { Theme, XGroup, XStack, YStack } from 'tamagui'
 export function ButtonDemo() {
   return (
     <YStack p="$3" gap="$3">
-      {/* v5 config comes with surface1 => 4 setting surface3 here to "brighten" buttons like in v4 */}
-      {/* you could also do this yourself by just wrapping Button */}
       <Button>Plain</Button>
       <Button self="center" icon={Airplay} size="$6">
         Large

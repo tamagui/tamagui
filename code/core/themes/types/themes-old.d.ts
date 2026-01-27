@@ -28,8 +28,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -62,8 +62,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -96,8 +96,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -130,8 +130,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -164,8 +164,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -198,8 +198,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -232,8 +232,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -266,8 +266,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -300,8 +300,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -334,8 +334,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -368,8 +368,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -402,8 +402,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -436,8 +436,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -470,8 +470,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -504,8 +504,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -538,8 +538,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -572,8 +572,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -606,8 +606,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -640,8 +640,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -674,8 +674,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -708,8 +708,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -742,8 +742,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -776,8 +776,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -810,8 +810,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -844,8 +844,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -878,8 +878,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -912,8 +912,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -946,8 +946,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -980,8 +980,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1014,8 +1014,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1048,8 +1048,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1082,8 +1082,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1116,8 +1116,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1150,8 +1150,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1184,8 +1184,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1218,8 +1218,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1252,8 +1252,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1286,8 +1286,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1320,8 +1320,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1354,8 +1354,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1388,8 +1388,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1422,8 +1422,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1456,8 +1456,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1490,8 +1490,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1524,8 +1524,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1558,8 +1558,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1592,8 +1592,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1626,8 +1626,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1660,8 +1660,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1694,8 +1694,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1728,8 +1728,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1762,8 +1762,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1796,8 +1796,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1830,8 +1830,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1864,8 +1864,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1898,8 +1898,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1932,8 +1932,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -1966,8 +1966,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2000,8 +2000,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2034,8 +2034,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2068,8 +2068,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2102,8 +2102,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2136,8 +2136,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2170,8 +2170,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2204,8 +2204,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2238,8 +2238,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2272,8 +2272,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2306,8 +2306,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2340,8 +2340,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2374,8 +2374,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2408,8 +2408,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2442,8 +2442,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2476,8 +2476,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2510,8 +2510,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2544,8 +2544,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2578,8 +2578,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2612,8 +2612,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2646,8 +2646,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2680,8 +2680,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2714,8 +2714,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2748,8 +2748,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2782,8 +2782,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2816,8 +2816,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2850,8 +2850,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2884,8 +2884,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2918,8 +2918,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2952,8 +2952,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -2986,8 +2986,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3020,8 +3020,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3054,8 +3054,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3088,8 +3088,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3122,8 +3122,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3156,8 +3156,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3190,8 +3190,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3224,8 +3224,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3258,8 +3258,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3292,8 +3292,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3326,8 +3326,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3360,8 +3360,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3394,8 +3394,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3428,8 +3428,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3462,8 +3462,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3496,8 +3496,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3530,8 +3530,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3564,8 +3564,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3598,8 +3598,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3632,8 +3632,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3666,8 +3666,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3700,8 +3700,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3734,8 +3734,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3768,8 +3768,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3802,8 +3802,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3836,8 +3836,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3870,8 +3870,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3904,8 +3904,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3938,8 +3938,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -3972,8 +3972,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4006,8 +4006,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4040,8 +4040,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4074,8 +4074,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4108,8 +4108,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4142,8 +4142,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4176,8 +4176,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4210,8 +4210,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4244,8 +4244,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4278,8 +4278,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4312,8 +4312,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4346,8 +4346,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4380,8 +4380,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4414,8 +4414,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4448,8 +4448,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4482,8 +4482,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4516,8 +4516,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4550,8 +4550,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4584,8 +4584,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4618,8 +4618,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4652,8 +4652,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4686,8 +4686,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4720,8 +4720,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4754,8 +4754,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4788,8 +4788,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4822,8 +4822,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4856,8 +4856,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4890,8 +4890,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4924,8 +4924,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4958,8 +4958,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -4992,8 +4992,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5026,8 +5026,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5060,8 +5060,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5094,8 +5094,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5128,8 +5128,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5162,8 +5162,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5196,8 +5196,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5230,8 +5230,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5264,8 +5264,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5298,8 +5298,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5332,8 +5332,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5366,8 +5366,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5400,8 +5400,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5434,8 +5434,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5468,8 +5468,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5502,8 +5502,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5536,8 +5536,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5570,8 +5570,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5604,8 +5604,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5638,8 +5638,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5672,8 +5672,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5706,8 +5706,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5740,8 +5740,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5774,8 +5774,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5808,8 +5808,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5842,8 +5842,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5876,8 +5876,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5910,8 +5910,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5944,8 +5944,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -5978,8 +5978,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6012,8 +6012,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6046,8 +6046,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6080,8 +6080,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6114,8 +6114,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6148,8 +6148,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6182,8 +6182,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6216,8 +6216,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6250,8 +6250,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6284,8 +6284,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6318,8 +6318,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6352,8 +6352,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6386,8 +6386,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6420,8 +6420,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6454,8 +6454,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6488,8 +6488,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6522,8 +6522,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6556,8 +6556,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6590,8 +6590,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6624,8 +6624,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6658,8 +6658,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6692,8 +6692,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6726,8 +6726,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6760,8 +6760,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6794,8 +6794,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6828,8 +6828,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6862,8 +6862,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6896,8 +6896,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6930,8 +6930,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6964,8 +6964,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -6998,8 +6998,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7032,8 +7032,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7066,8 +7066,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7100,8 +7100,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7134,8 +7134,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7168,8 +7168,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7202,8 +7202,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7236,8 +7236,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7270,8 +7270,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7304,8 +7304,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7338,8 +7338,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7372,8 +7372,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7406,8 +7406,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7440,8 +7440,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7474,8 +7474,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7508,8 +7508,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7542,8 +7542,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7576,8 +7576,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7610,8 +7610,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7644,8 +7644,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7678,8 +7678,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7712,8 +7712,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7746,8 +7746,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7780,8 +7780,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7814,8 +7814,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7848,8 +7848,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7882,8 +7882,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7916,8 +7916,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7950,8 +7950,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -7984,8 +7984,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8018,8 +8018,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8052,8 +8052,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8086,8 +8086,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8120,8 +8120,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8154,8 +8154,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8188,8 +8188,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8222,8 +8222,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8256,8 +8256,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8290,8 +8290,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8324,8 +8324,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8358,8 +8358,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8392,8 +8392,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8426,8 +8426,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8460,8 +8460,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8494,8 +8494,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8528,8 +8528,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8562,8 +8562,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8596,8 +8596,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8630,8 +8630,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8664,8 +8664,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8698,8 +8698,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8732,8 +8732,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8766,8 +8766,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8800,8 +8800,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8834,8 +8834,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8868,8 +8868,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8902,8 +8902,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8936,8 +8936,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -8970,8 +8970,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9004,8 +9004,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9038,8 +9038,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9072,8 +9072,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9106,8 +9106,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9140,8 +9140,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9174,8 +9174,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9208,8 +9208,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9242,8 +9242,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9276,8 +9276,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9310,8 +9310,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9344,8 +9344,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9378,8 +9378,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9412,8 +9412,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9446,8 +9446,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9480,8 +9480,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9514,8 +9514,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9548,8 +9548,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9582,8 +9582,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9616,8 +9616,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9650,8 +9650,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9684,8 +9684,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9718,8 +9718,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9752,8 +9752,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9786,8 +9786,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9820,8 +9820,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9854,8 +9854,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9888,8 +9888,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9922,8 +9922,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9956,8 +9956,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -9990,8 +9990,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10024,8 +10024,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10058,8 +10058,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10092,8 +10092,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10126,8 +10126,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10160,8 +10160,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10194,8 +10194,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10228,8 +10228,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10262,8 +10262,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10296,8 +10296,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10330,8 +10330,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10364,8 +10364,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10398,8 +10398,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10432,8 +10432,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10466,8 +10466,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10500,8 +10500,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10534,8 +10534,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10568,8 +10568,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10602,8 +10602,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10636,8 +10636,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10670,8 +10670,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10704,8 +10704,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10738,8 +10738,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10772,8 +10772,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10806,8 +10806,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10840,8 +10840,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10874,8 +10874,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10908,8 +10908,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10942,8 +10942,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -10976,8 +10976,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11010,8 +11010,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11044,8 +11044,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11078,8 +11078,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11112,8 +11112,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11146,8 +11146,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11180,8 +11180,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11214,8 +11214,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11248,8 +11248,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11282,8 +11282,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11316,8 +11316,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11350,8 +11350,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11384,8 +11384,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11418,8 +11418,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11452,8 +11452,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11486,8 +11486,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11520,8 +11520,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11554,8 +11554,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11588,8 +11588,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11622,8 +11622,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11656,8 +11656,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11690,8 +11690,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11724,8 +11724,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11758,8 +11758,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11792,8 +11792,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11826,8 +11826,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11860,8 +11860,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11894,8 +11894,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11928,8 +11928,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11962,8 +11962,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -11996,8 +11996,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12030,8 +12030,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12064,8 +12064,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12098,8 +12098,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12132,8 +12132,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12166,8 +12166,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12200,8 +12200,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12234,8 +12234,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12268,8 +12268,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12302,8 +12302,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12336,8 +12336,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12370,8 +12370,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12404,8 +12404,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12438,8 +12438,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12472,8 +12472,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12506,8 +12506,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12540,8 +12540,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12574,8 +12574,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12608,8 +12608,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12642,8 +12642,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12676,8 +12676,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12710,8 +12710,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12744,8 +12744,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12778,8 +12778,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12812,8 +12812,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12846,8 +12846,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12880,8 +12880,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12914,8 +12914,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12948,8 +12948,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -12982,8 +12982,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13016,8 +13016,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13050,8 +13050,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13084,8 +13084,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13118,8 +13118,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13152,8 +13152,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13186,8 +13186,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13220,8 +13220,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13254,8 +13254,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13288,8 +13288,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13322,8 +13322,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13356,8 +13356,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13390,8 +13390,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13424,8 +13424,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13458,8 +13458,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13492,8 +13492,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13526,8 +13526,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13560,8 +13560,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13594,8 +13594,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13628,8 +13628,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13662,8 +13662,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13696,8 +13696,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13730,8 +13730,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13764,8 +13764,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13798,8 +13798,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13832,8 +13832,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13866,8 +13866,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13900,8 +13900,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13934,8 +13934,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -13968,8 +13968,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14002,8 +14002,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14036,8 +14036,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14070,8 +14070,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14104,8 +14104,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14138,8 +14138,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14172,8 +14172,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14206,8 +14206,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14240,8 +14240,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14274,8 +14274,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14308,8 +14308,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14342,8 +14342,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14376,8 +14376,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14410,8 +14410,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14444,8 +14444,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14478,8 +14478,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14512,8 +14512,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14546,8 +14546,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14580,8 +14580,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14614,8 +14614,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14648,8 +14648,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14682,8 +14682,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14716,8 +14716,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14750,8 +14750,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14784,8 +14784,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14818,8 +14818,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14852,8 +14852,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14886,8 +14886,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14920,8 +14920,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14954,8 +14954,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -14988,8 +14988,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15022,8 +15022,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15056,8 +15056,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15090,8 +15090,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15124,8 +15124,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15158,8 +15158,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15192,8 +15192,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15226,8 +15226,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15260,8 +15260,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15294,8 +15294,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15328,8 +15328,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15362,8 +15362,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15396,8 +15396,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15430,8 +15430,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15464,8 +15464,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15498,8 +15498,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15532,8 +15532,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15566,8 +15566,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15600,8 +15600,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15634,8 +15634,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15668,8 +15668,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15702,8 +15702,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15736,8 +15736,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15770,8 +15770,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15804,8 +15804,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15838,8 +15838,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15872,8 +15872,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15906,8 +15906,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15940,8 +15940,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -15974,8 +15974,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16008,8 +16008,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16042,8 +16042,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16076,8 +16076,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16110,8 +16110,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16144,8 +16144,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16178,8 +16178,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16212,8 +16212,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16246,8 +16246,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16280,8 +16280,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16314,8 +16314,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16348,8 +16348,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16382,8 +16382,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16416,8 +16416,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16450,8 +16450,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16484,8 +16484,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16518,8 +16518,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16552,8 +16552,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16586,8 +16586,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16620,8 +16620,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16654,8 +16654,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16688,8 +16688,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16722,8 +16722,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16756,8 +16756,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16790,8 +16790,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16824,8 +16824,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16858,8 +16858,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16892,8 +16892,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16926,8 +16926,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16960,8 +16960,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -16994,8 +16994,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17028,8 +17028,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17062,8 +17062,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17096,8 +17096,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17130,8 +17130,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17164,8 +17164,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17198,8 +17198,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17232,8 +17232,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17266,8 +17266,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17300,8 +17300,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17334,8 +17334,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17368,8 +17368,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17402,8 +17402,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17436,8 +17436,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17470,8 +17470,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17504,8 +17504,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17538,8 +17538,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17572,8 +17572,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17606,8 +17606,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17640,8 +17640,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17674,8 +17674,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17708,8 +17708,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17742,8 +17742,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17776,8 +17776,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17810,8 +17810,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17844,8 +17844,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17878,8 +17878,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17912,8 +17912,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17946,8 +17946,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -17980,8 +17980,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18014,8 +18014,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18048,8 +18048,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18082,8 +18082,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18116,8 +18116,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18150,8 +18150,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18184,8 +18184,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18218,8 +18218,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18252,8 +18252,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18286,8 +18286,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18320,8 +18320,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18354,8 +18354,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18388,8 +18388,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18422,8 +18422,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18456,8 +18456,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18490,8 +18490,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18524,8 +18524,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18558,8 +18558,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18592,8 +18592,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18626,8 +18626,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18660,8 +18660,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18694,8 +18694,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18728,8 +18728,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18762,8 +18762,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18796,8 +18796,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18830,8 +18830,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18864,8 +18864,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18898,8 +18898,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18932,8 +18932,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -18966,8 +18966,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19000,8 +19000,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19034,8 +19034,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19068,8 +19068,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19102,8 +19102,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19136,8 +19136,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19170,8 +19170,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19204,8 +19204,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19238,8 +19238,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19272,8 +19272,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19306,8 +19306,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19340,8 +19340,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19374,8 +19374,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19408,8 +19408,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19442,8 +19442,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19476,8 +19476,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19510,8 +19510,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19544,8 +19544,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19578,8 +19578,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19612,8 +19612,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19646,8 +19646,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19680,8 +19680,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19714,8 +19714,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19748,8 +19748,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19782,8 +19782,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19816,8 +19816,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19850,8 +19850,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19884,8 +19884,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19918,8 +19918,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19952,8 +19952,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -19986,8 +19986,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20020,8 +20020,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20054,8 +20054,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20088,8 +20088,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20122,8 +20122,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20156,8 +20156,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20190,8 +20190,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20224,8 +20224,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20258,8 +20258,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20292,8 +20292,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20326,8 +20326,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20360,8 +20360,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20394,8 +20394,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20428,8 +20428,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20462,8 +20462,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20496,8 +20496,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20530,8 +20530,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20564,8 +20564,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20598,8 +20598,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20632,8 +20632,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20666,8 +20666,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20700,8 +20700,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20734,8 +20734,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20768,8 +20768,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20802,8 +20802,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20836,8 +20836,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20870,8 +20870,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20904,8 +20904,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20938,8 +20938,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -20972,8 +20972,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21006,8 +21006,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21040,8 +21040,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21074,8 +21074,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21108,8 +21108,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21142,8 +21142,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21176,8 +21176,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21210,8 +21210,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21244,8 +21244,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21278,8 +21278,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21312,8 +21312,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21346,8 +21346,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21380,8 +21380,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21414,8 +21414,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21448,8 +21448,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21482,8 +21482,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21516,8 +21516,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21550,8 +21550,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21584,8 +21584,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21618,8 +21618,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21652,8 +21652,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21686,8 +21686,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21720,8 +21720,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21754,8 +21754,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21788,8 +21788,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21822,8 +21822,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21856,8 +21856,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21890,8 +21890,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21924,8 +21924,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21958,8 +21958,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -21992,8 +21992,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22026,8 +22026,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22060,8 +22060,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22094,8 +22094,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22128,8 +22128,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22162,8 +22162,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22196,8 +22196,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22230,8 +22230,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22264,8 +22264,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22298,8 +22298,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22332,8 +22332,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22366,8 +22366,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22400,8 +22400,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22434,8 +22434,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22468,8 +22468,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22502,8 +22502,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22536,8 +22536,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22570,8 +22570,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22604,8 +22604,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22638,8 +22638,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22672,8 +22672,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22706,8 +22706,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22740,8 +22740,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22774,8 +22774,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22808,8 +22808,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22842,8 +22842,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22876,8 +22876,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22910,8 +22910,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22944,8 +22944,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -22978,8 +22978,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23012,8 +23012,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23046,8 +23046,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23080,8 +23080,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23114,8 +23114,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23148,8 +23148,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23182,8 +23182,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23216,8 +23216,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23250,8 +23250,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23284,8 +23284,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23318,8 +23318,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23352,8 +23352,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23386,8 +23386,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23420,8 +23420,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23454,8 +23454,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23488,8 +23488,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23522,8 +23522,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23556,8 +23556,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23590,8 +23590,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23624,8 +23624,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23658,8 +23658,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23692,8 +23692,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23726,8 +23726,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23760,8 +23760,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23794,8 +23794,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23828,8 +23828,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23862,8 +23862,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23896,8 +23896,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23930,8 +23930,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23964,8 +23964,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -23998,8 +23998,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24032,8 +24032,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24066,8 +24066,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24100,8 +24100,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24134,8 +24134,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24168,8 +24168,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24202,8 +24202,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24236,8 +24236,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24270,8 +24270,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24304,8 +24304,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24338,8 +24338,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24372,8 +24372,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24406,8 +24406,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24440,8 +24440,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24474,8 +24474,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24508,8 +24508,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24542,8 +24542,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24576,8 +24576,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24610,8 +24610,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24644,8 +24644,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24678,8 +24678,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24712,8 +24712,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24746,8 +24746,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24780,8 +24780,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24814,8 +24814,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24848,8 +24848,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24882,8 +24882,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24916,8 +24916,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24950,8 +24950,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -24984,8 +24984,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25018,8 +25018,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25052,8 +25052,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25086,8 +25086,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25120,8 +25120,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25154,8 +25154,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25188,8 +25188,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25222,8 +25222,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25256,8 +25256,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25290,8 +25290,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25324,8 +25324,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25358,8 +25358,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25392,8 +25392,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25426,8 +25426,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25460,8 +25460,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25494,8 +25494,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25528,8 +25528,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25562,8 +25562,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25596,8 +25596,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25630,8 +25630,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25664,8 +25664,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25698,8 +25698,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25732,8 +25732,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25766,8 +25766,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25800,8 +25800,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25834,8 +25834,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25868,8 +25868,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25902,8 +25902,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25936,8 +25936,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -25970,8 +25970,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26004,8 +26004,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26038,8 +26038,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26072,8 +26072,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26106,8 +26106,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26140,8 +26140,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26174,8 +26174,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26208,8 +26208,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26242,8 +26242,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26276,8 +26276,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26310,8 +26310,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26344,8 +26344,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26378,8 +26378,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26412,8 +26412,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26446,8 +26446,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26480,8 +26480,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26514,8 +26514,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26548,8 +26548,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26582,8 +26582,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26616,8 +26616,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26650,8 +26650,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26684,8 +26684,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26718,8 +26718,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26752,8 +26752,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26786,8 +26786,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26820,8 +26820,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26854,8 +26854,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26888,8 +26888,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26922,8 +26922,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26956,8 +26956,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -26990,8 +26990,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27024,8 +27024,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27058,8 +27058,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27092,8 +27092,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27126,8 +27126,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27160,8 +27160,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27194,8 +27194,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27228,8 +27228,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27262,8 +27262,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27296,8 +27296,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27330,8 +27330,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27364,8 +27364,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27398,8 +27398,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27432,8 +27432,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27466,8 +27466,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27500,8 +27500,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27534,8 +27534,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27568,8 +27568,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27602,8 +27602,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27636,8 +27636,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27670,8 +27670,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27704,8 +27704,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27738,8 +27738,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27772,8 +27772,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27806,8 +27806,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27840,8 +27840,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27874,8 +27874,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27908,8 +27908,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27942,8 +27942,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -27976,8 +27976,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28010,8 +28010,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28044,8 +28044,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28078,8 +28078,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28112,8 +28112,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28146,8 +28146,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28180,8 +28180,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28214,8 +28214,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28248,8 +28248,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28282,8 +28282,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28316,8 +28316,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28350,8 +28350,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28384,8 +28384,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28418,8 +28418,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28452,8 +28452,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28486,8 +28486,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28520,8 +28520,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28554,8 +28554,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28588,8 +28588,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28622,8 +28622,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28656,8 +28656,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28690,8 +28690,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28724,8 +28724,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28758,8 +28758,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28792,8 +28792,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28826,8 +28826,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28860,8 +28860,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28894,8 +28894,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28928,8 +28928,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28962,8 +28962,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -28996,8 +28996,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29030,8 +29030,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29064,8 +29064,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29098,8 +29098,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29132,8 +29132,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29166,8 +29166,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29200,8 +29200,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29234,8 +29234,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29268,8 +29268,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29302,8 +29302,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29336,8 +29336,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29370,8 +29370,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29404,8 +29404,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29438,8 +29438,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29472,8 +29472,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29506,8 +29506,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29540,8 +29540,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29574,8 +29574,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29608,8 +29608,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29642,8 +29642,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29676,8 +29676,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29710,8 +29710,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29744,8 +29744,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29778,8 +29778,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29812,8 +29812,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29846,8 +29846,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29880,8 +29880,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29914,8 +29914,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29948,8 +29948,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -29982,8 +29982,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30016,8 +30016,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30050,8 +30050,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30084,8 +30084,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30118,8 +30118,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30152,8 +30152,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30186,8 +30186,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30220,8 +30220,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30254,8 +30254,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30288,8 +30288,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30322,8 +30322,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30356,8 +30356,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30390,8 +30390,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30424,8 +30424,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30458,8 +30458,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30492,8 +30492,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30526,8 +30526,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30560,8 +30560,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30594,8 +30594,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30628,8 +30628,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30662,8 +30662,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30696,8 +30696,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30730,8 +30730,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30764,8 +30764,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30798,8 +30798,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30832,8 +30832,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30866,8 +30866,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30900,8 +30900,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30934,8 +30934,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -30968,8 +30968,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31002,8 +31002,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31036,8 +31036,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31070,8 +31070,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31104,8 +31104,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31138,8 +31138,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31172,8 +31172,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31206,8 +31206,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31240,8 +31240,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31274,8 +31274,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31308,8 +31308,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31342,8 +31342,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31376,8 +31376,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31410,8 +31410,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31444,8 +31444,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31478,8 +31478,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31512,8 +31512,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31546,8 +31546,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31580,8 +31580,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31614,8 +31614,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31648,8 +31648,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31682,8 +31682,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31716,8 +31716,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31750,8 +31750,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31784,8 +31784,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31818,8 +31818,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31852,8 +31852,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31886,8 +31886,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31920,8 +31920,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31954,8 +31954,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -31988,8 +31988,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32022,8 +32022,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32056,8 +32056,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32090,8 +32090,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32124,8 +32124,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32158,8 +32158,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32192,8 +32192,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32226,8 +32226,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32260,8 +32260,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32294,8 +32294,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32328,8 +32328,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32362,8 +32362,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32396,8 +32396,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32430,8 +32430,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32464,8 +32464,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32498,8 +32498,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32532,8 +32532,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32566,8 +32566,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32600,8 +32600,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32634,8 +32634,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32668,8 +32668,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32702,8 +32702,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32736,8 +32736,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32770,8 +32770,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32804,8 +32804,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32838,8 +32838,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32872,8 +32872,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32906,8 +32906,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32940,8 +32940,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -32974,8 +32974,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33008,8 +33008,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33042,8 +33042,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33076,8 +33076,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33110,8 +33110,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33144,8 +33144,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33178,8 +33178,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33212,8 +33212,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33246,8 +33246,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33280,8 +33280,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33314,8 +33314,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33348,8 +33348,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33382,8 +33382,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33416,8 +33416,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33450,8 +33450,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33484,8 +33484,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33518,8 +33518,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33552,8 +33552,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33586,8 +33586,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33620,8 +33620,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33654,8 +33654,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33688,8 +33688,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33722,8 +33722,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33756,8 +33756,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33790,8 +33790,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33824,8 +33824,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33858,8 +33858,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33892,8 +33892,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33926,8 +33926,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33960,8 +33960,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -33994,8 +33994,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34028,8 +34028,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34062,8 +34062,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34096,8 +34096,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34130,8 +34130,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34164,8 +34164,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34198,8 +34198,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34232,8 +34232,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34266,8 +34266,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34300,8 +34300,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34334,8 +34334,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34368,8 +34368,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34402,8 +34402,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34436,8 +34436,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34470,8 +34470,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34504,8 +34504,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34538,8 +34538,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34572,8 +34572,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34606,8 +34606,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34640,8 +34640,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34674,8 +34674,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34708,8 +34708,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34742,8 +34742,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34776,8 +34776,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34810,8 +34810,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34844,8 +34844,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34878,8 +34878,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34912,8 +34912,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34946,8 +34946,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -34980,8 +34980,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35014,8 +35014,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35048,8 +35048,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35082,8 +35082,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35116,8 +35116,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35150,8 +35150,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35184,8 +35184,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35218,8 +35218,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35252,8 +35252,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35286,8 +35286,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35320,8 +35320,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35354,8 +35354,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35388,8 +35388,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35422,8 +35422,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35456,8 +35456,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35490,8 +35490,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35524,8 +35524,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35558,8 +35558,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35592,8 +35592,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35626,8 +35626,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35660,8 +35660,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35694,8 +35694,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35728,8 +35728,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35762,8 +35762,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35796,8 +35796,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35830,8 +35830,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35864,8 +35864,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35898,8 +35898,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35932,8 +35932,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -35966,8 +35966,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36000,8 +36000,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36034,8 +36034,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36068,8 +36068,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36102,8 +36102,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36136,8 +36136,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36170,8 +36170,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36204,8 +36204,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36238,8 +36238,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36272,8 +36272,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36306,8 +36306,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36340,8 +36340,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36374,8 +36374,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36408,8 +36408,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36442,8 +36442,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36476,8 +36476,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36510,8 +36510,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36544,8 +36544,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36578,8 +36578,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36612,8 +36612,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36646,8 +36646,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36680,8 +36680,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36714,8 +36714,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36748,8 +36748,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36782,8 +36782,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36816,8 +36816,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36850,8 +36850,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36884,8 +36884,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36918,8 +36918,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36952,8 +36952,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -36986,8 +36986,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37020,8 +37020,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37054,8 +37054,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37088,8 +37088,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37122,8 +37122,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37156,8 +37156,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37190,8 +37190,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37224,8 +37224,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37258,8 +37258,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37292,8 +37292,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37326,8 +37326,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37360,8 +37360,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37394,8 +37394,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37428,8 +37428,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37462,8 +37462,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37496,8 +37496,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37530,8 +37530,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37564,8 +37564,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37598,8 +37598,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37632,8 +37632,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37666,8 +37666,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37700,8 +37700,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37734,8 +37734,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37768,8 +37768,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37802,8 +37802,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37836,8 +37836,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37870,8 +37870,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37904,8 +37904,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37938,8 +37938,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -37972,8 +37972,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38006,8 +38006,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38040,8 +38040,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38074,8 +38074,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38108,8 +38108,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38142,8 +38142,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38176,8 +38176,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38210,8 +38210,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38244,8 +38244,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38278,8 +38278,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38312,8 +38312,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38346,8 +38346,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38380,8 +38380,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38414,8 +38414,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38448,8 +38448,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38482,8 +38482,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38516,8 +38516,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38550,8 +38550,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38584,8 +38584,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38618,8 +38618,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38652,8 +38652,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38686,8 +38686,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38720,8 +38720,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38754,8 +38754,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38788,8 +38788,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38822,8 +38822,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38856,8 +38856,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38890,8 +38890,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38924,8 +38924,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38958,8 +38958,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -38992,8 +38992,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39026,8 +39026,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39060,8 +39060,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39094,8 +39094,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39128,8 +39128,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39162,8 +39162,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39196,8 +39196,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39230,8 +39230,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39264,8 +39264,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39298,8 +39298,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39332,8 +39332,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39366,8 +39366,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39400,8 +39400,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39434,8 +39434,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39468,8 +39468,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39502,8 +39502,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39536,8 +39536,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39570,8 +39570,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39604,8 +39604,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39638,8 +39638,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39672,8 +39672,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39706,8 +39706,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39740,8 +39740,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39774,8 +39774,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39808,8 +39808,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39842,8 +39842,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39876,8 +39876,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39910,8 +39910,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39944,8 +39944,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -39978,8 +39978,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40012,8 +40012,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40046,8 +40046,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40080,8 +40080,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40114,8 +40114,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40148,8 +40148,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40182,8 +40182,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40216,8 +40216,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40250,8 +40250,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40284,8 +40284,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40318,8 +40318,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40352,8 +40352,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40386,8 +40386,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40420,8 +40420,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40454,8 +40454,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40488,8 +40488,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40522,8 +40522,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40556,8 +40556,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40590,8 +40590,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40624,8 +40624,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40658,8 +40658,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40692,8 +40692,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40726,8 +40726,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40760,8 +40760,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40794,8 +40794,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40828,8 +40828,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40862,8 +40862,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40896,8 +40896,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40930,8 +40930,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40964,8 +40964,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -40998,8 +40998,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41032,8 +41032,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41066,8 +41066,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41100,8 +41100,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41134,8 +41134,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41168,8 +41168,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41202,8 +41202,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41236,8 +41236,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41270,8 +41270,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41304,8 +41304,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41338,8 +41338,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41372,8 +41372,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41406,8 +41406,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41440,8 +41440,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41474,8 +41474,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41508,8 +41508,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41542,8 +41542,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41576,8 +41576,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41610,8 +41610,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41644,8 +41644,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41678,8 +41678,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41712,8 +41712,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41746,8 +41746,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41780,8 +41780,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41814,8 +41814,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41848,8 +41848,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41882,8 +41882,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41916,8 +41916,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41950,8 +41950,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -41984,8 +41984,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42018,8 +42018,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42052,8 +42052,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42086,8 +42086,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42120,8 +42120,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42154,8 +42154,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42188,8 +42188,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42222,8 +42222,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42256,8 +42256,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42290,8 +42290,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42324,8 +42324,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42358,8 +42358,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42392,8 +42392,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42426,8 +42426,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42460,8 +42460,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42494,8 +42494,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42528,8 +42528,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42562,8 +42562,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42596,8 +42596,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42630,8 +42630,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42664,8 +42664,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42698,8 +42698,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42732,8 +42732,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42766,8 +42766,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42800,8 +42800,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42834,8 +42834,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42868,8 +42868,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42902,8 +42902,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42936,8 +42936,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -42970,8 +42970,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43004,8 +43004,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43038,8 +43038,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43072,8 +43072,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43106,8 +43106,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43140,8 +43140,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43174,8 +43174,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43208,8 +43208,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43242,8 +43242,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43276,8 +43276,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43310,8 +43310,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43344,8 +43344,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43378,8 +43378,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43412,8 +43412,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43446,8 +43446,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43480,8 +43480,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43514,8 +43514,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43548,8 +43548,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43582,8 +43582,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43616,8 +43616,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43650,8 +43650,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43684,8 +43684,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43718,8 +43718,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43752,8 +43752,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43786,8 +43786,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43820,8 +43820,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43854,8 +43854,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43888,8 +43888,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43922,8 +43922,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43956,8 +43956,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -43990,8 +43990,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44024,8 +44024,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44058,8 +44058,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44092,8 +44092,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44126,8 +44126,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44160,8 +44160,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44194,8 +44194,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44228,8 +44228,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44262,8 +44262,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44296,8 +44296,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44330,8 +44330,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44364,8 +44364,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44398,8 +44398,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44432,8 +44432,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44466,8 +44466,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44500,8 +44500,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44534,8 +44534,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44568,8 +44568,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44602,8 +44602,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44636,8 +44636,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44670,8 +44670,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44704,8 +44704,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44738,8 +44738,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44772,8 +44772,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44806,8 +44806,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44840,8 +44840,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44874,8 +44874,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44908,8 +44908,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44942,8 +44942,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -44976,8 +44976,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45010,8 +45010,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45044,8 +45044,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45078,8 +45078,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45112,8 +45112,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45146,8 +45146,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45180,8 +45180,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45214,8 +45214,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45248,8 +45248,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45282,8 +45282,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45316,8 +45316,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45350,8 +45350,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45384,8 +45384,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45418,8 +45418,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45452,8 +45452,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45486,8 +45486,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45520,8 +45520,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45554,8 +45554,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45588,8 +45588,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45622,8 +45622,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45656,8 +45656,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45690,8 +45690,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45724,8 +45724,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45758,8 +45758,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45792,8 +45792,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45826,8 +45826,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45860,8 +45860,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45894,8 +45894,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45928,8 +45928,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45962,8 +45962,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -45996,8 +45996,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46030,8 +46030,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46064,8 +46064,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46098,8 +46098,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46132,8 +46132,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46166,8 +46166,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46200,8 +46200,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46234,8 +46234,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46268,8 +46268,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46302,8 +46302,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46336,8 +46336,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46370,8 +46370,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46404,8 +46404,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46438,8 +46438,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46472,8 +46472,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46506,8 +46506,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46540,8 +46540,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46574,8 +46574,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46608,8 +46608,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46642,8 +46642,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46676,8 +46676,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46710,8 +46710,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46744,8 +46744,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46778,8 +46778,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46812,8 +46812,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46846,8 +46846,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46880,8 +46880,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46914,8 +46914,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46948,8 +46948,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -46982,8 +46982,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47016,8 +47016,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47050,8 +47050,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47084,8 +47084,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47118,8 +47118,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47152,8 +47152,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47186,8 +47186,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47220,8 +47220,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47254,8 +47254,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47288,8 +47288,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47322,8 +47322,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47356,8 +47356,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47390,8 +47390,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47424,8 +47424,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47458,8 +47458,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47492,8 +47492,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47526,8 +47526,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47560,8 +47560,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47594,8 +47594,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47628,8 +47628,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47662,8 +47662,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47696,8 +47696,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47730,8 +47730,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47764,8 +47764,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47798,8 +47798,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47832,8 +47832,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47866,8 +47866,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47900,8 +47900,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47934,8 +47934,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -47968,8 +47968,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48002,8 +48002,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48036,8 +48036,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48070,8 +48070,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48104,8 +48104,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48138,8 +48138,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48172,8 +48172,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48206,8 +48206,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48240,8 +48240,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48274,8 +48274,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48308,8 +48308,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48342,8 +48342,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48376,8 +48376,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48410,8 +48410,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48444,8 +48444,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48478,8 +48478,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48512,8 +48512,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48546,8 +48546,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48580,8 +48580,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48614,8 +48614,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48648,8 +48648,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48682,8 +48682,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48716,8 +48716,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48750,8 +48750,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48784,8 +48784,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48818,8 +48818,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48852,8 +48852,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48886,8 +48886,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48920,8 +48920,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48954,8 +48954,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -48988,8 +48988,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49022,8 +49022,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49056,8 +49056,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49090,8 +49090,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49124,8 +49124,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49158,8 +49158,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49192,8 +49192,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49226,8 +49226,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49260,8 +49260,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49294,8 +49294,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49328,8 +49328,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49362,8 +49362,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49396,8 +49396,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49430,8 +49430,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49464,8 +49464,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49498,8 +49498,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49532,8 +49532,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49566,8 +49566,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49600,8 +49600,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49634,8 +49634,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49668,8 +49668,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49702,8 +49702,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49736,8 +49736,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49770,8 +49770,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49804,8 +49804,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49838,8 +49838,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49872,8 +49872,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49906,8 +49906,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49940,8 +49940,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -49974,8 +49974,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50008,8 +50008,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50042,8 +50042,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50076,8 +50076,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50110,8 +50110,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50144,8 +50144,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50178,8 +50178,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50212,8 +50212,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50246,8 +50246,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50280,8 +50280,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50314,8 +50314,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50348,8 +50348,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50382,8 +50382,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50416,8 +50416,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50450,8 +50450,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50484,8 +50484,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50518,8 +50518,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50552,8 +50552,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50586,8 +50586,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50620,8 +50620,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50654,8 +50654,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50688,8 +50688,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50722,8 +50722,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50756,8 +50756,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50790,8 +50790,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50824,8 +50824,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50858,8 +50858,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50892,8 +50892,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50926,8 +50926,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50960,8 +50960,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -50994,8 +50994,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51028,8 +51028,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51062,8 +51062,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51096,8 +51096,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51130,8 +51130,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51164,8 +51164,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51198,8 +51198,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51232,8 +51232,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51266,8 +51266,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51300,8 +51300,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51334,8 +51334,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51368,8 +51368,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };
@@ -51402,8 +51402,8 @@ export declare const themes: {
         backgroundHover: string;
         backgroundPress: string;
         backgroundFocus: string;
-        borderColorPress: string;
         borderColorFocus: string;
+        borderColorPress: string;
         backgroundStrong: string;
         backgroundTransparent: string;
     };

@@ -26,15 +26,16 @@ import { v5Templates } from './v5-templates'
 export { interpolateColor, opacify } from './opacify'
 
 export const defaultComponentThemes = {
-  Button: { template: 'surface3' },
+  Button: { template: 'surface2' },
+  Input: { template: 'surface1' },
+  Progress: { template: 'surface2' },
+  ProgressIndicator: { template: 'accent' },
+  Slider: { template: 'surface2' },
+  SliderThumb: { template: 'accent' },
   Switch: { template: 'surface2' },
   SwitchThumb: { template: 'accent' },
-  Progress: { template: 'surface1' },
-  SliderThumb: { template: 'accent' },
-  Tooltip: { template: 'accent' },
-  ProgressIndicator: { template: 'accent' },
-  Input: { template: 'surface1' },
   TextArea: { template: 'surface1' },
+  Tooltip: { template: 'accent' },
 } as const
 
 /** Default grandchildren themes available in v5 */
@@ -42,7 +43,6 @@ export const defaultGrandChildrenThemes = {
   accent: { template: 'accent' },
   surface1: { template: 'surface1' },
   surface2: { template: 'surface2' },
-  surface3: { template: 'surface3' },
 } satisfies Record<string, GrandChildrenThemeDefinition>
 
 // ---- adjustPalette: generic HSL color adjustment ----
@@ -484,10 +484,6 @@ export function createV5Theme<
       const fgColor = palette[palette.length - 2]!
 
       return {
-        // In-between shades
-        color0pt5: interpolateColor(bgColor, palette[2]!, 0.5),
-        color1pt5: interpolateColor(palette[1]!, palette[2]!, 0.5),
-        color2pt5: interpolateColor(palette[2]!, palette[3]!, 0.5),
         // Opacity variants of foreground color
         color01: opacify(fgColor, 0.1),
         color0075: opacify(fgColor, 0.075),
@@ -502,6 +498,10 @@ export function createV5Theme<
         background0025: opacify(bgColor, 0.025),
         background002: opacify(bgColor, 0.02),
         background001: opacify(bgColor, 0.01),
+        background02: opacify(bgColor, 0.2),
+        background04: opacify(bgColor, 0.4),
+        background06: opacify(bgColor, 0.6),
+        background08: opacify(bgColor, 0.8),
       }
     },
   })

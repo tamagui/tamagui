@@ -21,9 +21,7 @@ function InputDemo(props: { size: SizeTokens }) {
         size={props.size}
         placeholder={`Size ${props.size}...`}
       />
-      <Button theme="surface3" size={props.size}>
-        Go
-      </Button>
+      <Button size={props.size}>Go</Button>
     </XStack>
   )
 }

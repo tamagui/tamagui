@@ -13,6 +13,9 @@ Consider using `useWebRef` from `@tamagui/element` for these components to prope
 
 ---
 
+- remove the transparencies from *palette* and background0: 1 etc from template
+  thats all done in getTheme now + we should add color-mix or /opacity
+
 ⚠️ When bento `migrate-tamagui-v2` branch is merged to main, update Dockerfile to remove the branch specifier
 
 - accept type not looking right?
