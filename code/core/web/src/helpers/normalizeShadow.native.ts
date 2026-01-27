@@ -1,4 +1,5 @@
 import { defaultOffset } from './defaultOffset'
+import { getRgba, normalizeColor } from './normalizeColor'
 
 export function normalizeShadow({
   shadowColor,
@@ -13,9 +14,7 @@ export function normalizeShadow({
       height: height || 0,
     },
     shadowRadius: shadowRadius || 0,
-    // pass color through as-is, opacity applied via color-mix in getCSSStylesAtomic
-    shadowColor: shadowColor,
-    // default to 1 if not specified (color-mix will handle the opacity)
-    shadowOpacity: shadowOpacity ?? 1,
+    shadowColor: normalizeColor(shadowColor, 1),
+    shadowOpacity: shadowOpacity ?? (shadowColor ? getRgba(shadowColor)?.a : 1),
   }
 }
