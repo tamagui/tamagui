@@ -29,6 +29,8 @@ export interface ToastItemProps {
     disableNative?: boolean;
     burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>;
     notificationOptions?: NotificationOptions;
+    /** When true, disables animations for accessibility */
+    reducedMotion?: boolean;
 }
 export declare const ToastItem: React.NamedExoticComponent<ToastItemProps>;
 //# sourceMappingURL=ToastItem.d.ts.map
