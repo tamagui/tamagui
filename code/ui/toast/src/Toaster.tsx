@@ -462,6 +462,15 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
             const isVisible = index < visibleToasts
             const isFront = index === 0
 
+            // calculate sum of heights of all toasts BEFORE this one
+            // toasts[0..index-1] are rendered before this toast (visually above it for bottom position)
+            const heightBeforeMe = toasts
+              .slice(0, index)
+              .reduce((sum, t) => {
+                const h = heights.find((h) => h.toastId === t.id)
+                return sum + (h?.height ?? 55)
+              }, 0)
+
             return (
               <ToastItem
                 key={toast.id}
@@ -474,6 +483,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 removeToast={removeToast}
                 heights={heights}
                 setHeights={setHeights}
+                heightBeforeMe={heightBeforeMe}
                 duration={toast.duration ?? toastOptions?.duration ?? duration}
                 gap={gap}
                 swipeDirection={swipeDirection}

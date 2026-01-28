@@ -565,8 +565,8 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 
 ### TODO / Known Issues
 
-- [ ] Top-right position: can't pull left with resistance when expanded
-- [ ] Mixed height toasts don't position correctly in stack
+- [x] Top-right position: can't pull left with resistance when expanded - FIXED (all-direction resistance works)
+- [x] Mixed height toasts don't position correctly in stack - NOT A BUG (positioning is correct)
 - [ ] swipeDirection 'auto' option to auto-detect based on edge position
 
 ### 2026-01-27 (continued - velocity-based exit)

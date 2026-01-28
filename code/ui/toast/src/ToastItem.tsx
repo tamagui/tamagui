@@ -306,6 +306,8 @@ export interface ToastItemProps {
   removeToast: (toast: ToastT) => void
   heights: HeightT[]
   setHeights: React.Dispatch<React.SetStateAction<HeightT[]>>
+  /** Sum of heights of all toasts before this one (for expanded positioning) */
+  heightBeforeMe: number
   duration: number
   gap: number
   swipeDirection: SwipeDirection
@@ -337,6 +339,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     removeToast,
     heights,
     setHeights,
+    heightBeforeMe,
     duration,
     gap,
     swipeDirection,
@@ -559,23 +562,18 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // get the height of the front toast for collapsed positioning
   const frontToastHeight = heights.length > 0 ? (heights[0]?.height ?? 55) : 55
 
-  // y position: expanded shows full offset, collapsed stacks visually
-  // sonner uses gap (14px) as the lift amount per toast in collapsed mode
-  const baseOffset = isTop ? offset : -offset
+  // y position: expanded shows full offset based on preceding toast heights
+  // collapsed mode shows visual stacking with small peek
 
-  // in collapsed mode, create visual stack where each toast peeks behind the one in front
-  // for bottom position with transformOrigin: bottom, back toasts need to move UP
-  // enough that their TOP edge peeks ABOVE the front toast's TOP edge
-  // since scale shrinks toward bottom, we need: lift > frontHeight * (1 - scale)
-  // but we only want a small peek (8-12px visible), so lift = frontHeight - peekAmount
-  // simplified: use a fixed peek amount that creates nice visual stacking
-  // for bottom position: back toasts need to peek ABOVE front toast
-  // with bottom:0 anchor and transformOrigin:bottom, we need lift > toast height to peek
-  // use front toast height minus desired overlap as lift
+  // expanded offset: use heightBeforeMe (sum of preceding heights) + gaps
+  const expandedOffset = heightBeforeMe + (index * gap)
+
+  // collapsed mode: create visual stack where each toast peeks behind the one in front
   const peekVisible = 10 // how many pixels of back toast border should peek
   const liftPerToast = peekVisible // lift this much for each toast in stack
+
   const stackY = expanded
-    ? baseOffset
+    ? (isTop ? expandedOffset : -expandedOffset)
     : isFront
       ? 0
       : isTop
