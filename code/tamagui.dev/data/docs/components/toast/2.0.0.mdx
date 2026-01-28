@@ -7,12 +7,6 @@ package: toast
 demoName: Toast
 ---
 
-# Toast <Beta />
-
-<Notice theme="yellow">
-  The v2 Toast API is still stabilizing. If you need a stable API, you can use the [v1 Toast](/docs/components/toast/1.83.0) which is still available via `@tamagui/toast/v1`.
-</Notice>
-
 <HeroContainer showAnimationDriverControl>
   <ToastDemo />
 </HeroContainer>
@@ -23,11 +17,10 @@ demoName: Toast
 
 <Highlights
   features={[
-    `Simple imperative API`,
+    `Composable component API`,
     `Smooth stacking with hover-to-expand`,
     `Swipe to dismiss with spring physics`,
     `Promise toasts for async operations`,
-    `Cross-platform with native toast support`,
     `Works with all Tamagui animation drivers`,
   ]}
 />
@@ -42,19 +35,51 @@ If targeting native, rebuild your React Native app. Toast relies on [Burnt](http
 
 ## Quick Start
 
-The simplest way to use toasts:
-
 ```tsx
-import { toast, Toaster } from '@tamagui/toast'
+import { Toast, toast, useToasts } from '@tamagui/toast'
 
 function App() {
   return (
+    <Toast position="bottom-right">
+      <Toast.Viewport>
+        <ToastList />
+      </Toast.Viewport>
+
+      <Button onPress={() => toast('Hello!')}>Show Toast</Button>
+    </Toast>
+  )
+}
+
+function ToastList() {
+  const { toasts } = useToasts()
+
+  return (
     <>
-      <Toaster />
-      <Button onPress={() => toast('Hello world!')}>Show Toast</Button>
+      {toasts.map((t, index) => (
+        <Toast.Item key={t.id} toast={t} index={index}>
+          <Toast.Title>{t.title}</Toast.Title>
+          <Toast.Description>{t.description}</Toast.Description>
+          <Toast.Close />
+        </Toast.Item>
+      ))}
     </>
   )
 }
+```
+
+## Anatomy
+
+```tsx
+<Toast>             {/* Root - context and position */}
+  <Toast.Viewport>  {/* Container with portal */}
+    <Toast.Item>    {/* Individual toast with stacking/drag */}
+      <Toast.Title />
+      <Toast.Description />
+      <Toast.Close />
+      <Toast.Action />
+    </Toast.Item>
+  </Toast.Viewport>
+</Toast>
 ```
 
 ## API
@@ -78,14 +103,6 @@ toast.loading('Processing...')
 toast('Message', {
   description: 'More details here',
   duration: 5000,
-  action: {
-    label: 'Undo',
-    onClick: () => undoAction(),
-  },
-  cancel: {
-    label: 'Cancel',
-    onClick: () => {},
-  },
 })
 
 // Dismiss
@@ -104,29 +121,9 @@ toast.promise(saveData(), {
   success: 'Saved!',
   error: 'Failed to save',
 })
-
-// With data access
-toast.promise(fetchUser(), {
-  loading: 'Loading user...',
-  success: (data) => `Welcome, ${data.name}!`,
-  error: (err) => `Error: ${err.message}`,
-})
 ```
 
-### Toaster
-
-The toast container component:
-
-```tsx
-<Toaster
-  position="bottom-right"  // Position on screen
-  expand={false}           // Always show expanded
-  visibleToasts={4}        // Max visible toasts
-  closeButton={true}       // Show close button
-  gap={12}                 // Gap between expanded toasts
-  duration={4000}          // Default duration (ms)
-/>
-```
+### Toast (Root)
 
 <PropsTable
   data={[
@@ -137,34 +134,22 @@ The toast container component:
       description: 'Position of the toast viewport.',
     },
     {
-      name: 'expand',
-      type: 'boolean',
-      default: 'false',
-      description: 'When true, toasts are always expanded. When false, hover to expand.',
-    },
-    {
-      name: 'visibleToasts',
-      type: 'number',
-      default: '3',
-      description: 'Maximum number of visible toasts.',
-    },
-    {
-      name: 'closeButton',
-      type: 'boolean',
-      default: 'true',
-      description: 'Show close button on toasts.',
-    },
-    {
-      name: 'gap',
-      type: 'number',
-      default: '12',
-      description: 'Gap between toasts when expanded.',
-    },
-    {
       name: 'duration',
       type: 'number',
       default: '4000',
       description: 'Default toast duration in milliseconds.',
+    },
+    {
+      name: 'gap',
+      type: 'number',
+      default: '14',
+      description: 'Gap between toasts when expanded.',
+    },
+    {
+      name: 'visibleToasts',
+      type: 'number',
+      default: '4',
+      description: 'Maximum number of visible toasts.',
     },
     {
       name: 'swipeDirection',
@@ -172,65 +157,105 @@ The toast container component:
       default: "'auto'",
       description: "Swipe direction to dismiss. 'auto' detects based on position.",
     },
+    {
+      name: 'closeButton',
+      type: 'boolean',
+      default: 'false',
+      description: 'Show close button on toasts.',
+    },
   ]}
 />
 
-## Toast Options
+### Toast.Viewport
 
-Options for individual toasts:
+The portal container for toasts. Extends Stack.
 
 <PropsTable
   data={[
     {
-      name: 'description',
-      type: 'string | React.ReactNode',
-      description: 'Additional description text.',
+      name: 'offset',
+      type: 'number | { top?: number, right?: number, bottom?: number, left?: number }',
+      default: '24',
+      description: 'Offset from screen edge.',
     },
     {
-      name: 'duration',
-      type: 'number',
-      description: 'Duration in ms. Infinity for persistent.',
+      name: 'hotkey',
+      type: 'string[]',
+      default: "['altKey', 'KeyT']",
+      description: 'Hotkey to focus viewport.',
     },
     {
-      name: 'id',
-      type: 'string | number',
-      description: 'Custom ID for updating/dismissing.',
-    },
-    {
-      name: 'action',
-      type: '{ label: string, onClick: () => void }',
-      description: 'Action button configuration.',
-    },
-    {
-      name: 'cancel',
-      type: '{ label: string, onClick: () => void }',
-      description: 'Cancel button configuration.',
-    },
-    {
-      name: 'onDismiss',
-      type: '(toast: ToastT) => void',
-      description: 'Called when toast is dismissed.',
-    },
-    {
-      name: 'onAutoClose',
-      type: '(toast: ToastT) => void',
-      description: 'Called when toast auto-closes.',
+      name: 'label',
+      type: 'string',
+      default: "'Notifications'",
+      description: 'Aria label for the viewport.',
     },
   ]}
 />
+
+### Toast.Item
+
+Individual toast wrapper with stacking and drag support. Extends Stack.
+
+<PropsTable
+  data={[
+    {
+      name: 'toast',
+      type: 'ToastT',
+      required: true,
+      description: 'The toast data object.',
+    },
+    {
+      name: 'index',
+      type: 'number',
+      required: true,
+      description: 'Index in the toast list (for stacking).',
+    },
+  ]}
+/>
+
+Supports render prop for custom content:
+
+```tsx
+<Toast.Item toast={t} index={i}>
+  {({ toast, handleClose }) => (
+    <YStack>
+      <Toast.Title>{toast.title}</Toast.Title>
+      <Button onPress={handleClose}>Close</Button>
+    </YStack>
+  )}
+</Toast.Item>
+```
+
+### Toast.Title
+
+Styled text for the toast title. Extends SizableText.
+
+### Toast.Description
+
+Styled text for the toast description. Extends SizableText.
+
+### Toast.Close
+
+Close button. Extends Stack.
+
+### Toast.Action
+
+Action button. Extends Stack.
+
+### useToasts
+
+Hook to access toast state inside `<Toast>`:
+
+```tsx
+const { toasts, expanded, position } = useToasts()
+```
 
 ## Features
 
 ### Stacking
 
-Multiple toasts stack visually. Hover over the stack to expand and see all toasts:
-
-```tsx
-// Create multiple toasts
-toast.success('First')
-toast.info('Second')
-toast.warning('Third')
-```
+Multiple toasts stack visually. Hover over the stack to expand and see all toasts.
 
 ### Swipe to Dismiss
 
@@ -238,33 +263,34 @@ Toasts can be swiped away. The direction is auto-detected based on position:
 - Left/right positioned toasts swipe toward their edge
 - Center positioned toasts swipe up/down
 
-### Update Toast
+### Custom Styling
 
-Update an existing toast by ID:
-
-```tsx
-const id = toast.loading('Processing...')
-
-// Later...
-toast.success('Done!', { id })
-```
-
-### Custom Duration
+Each part can be styled independently:
 
 ```tsx
-// Short duration
-toast('Quick!', { duration: 1000 })
-
-// Persistent (no auto-dismiss)
-toast.loading('Processing...', { duration: Infinity })
+<Toast.Item toast={t} index={i} backgroundColor="$blue5" borderRadius="$6">
+  <Toast.Title color="$blue12" fontWeight="bold">
+    {t.title}
+  </Toast.Title>
+  <Toast.Description color="$blue11">
+    {t.description}
+  </Toast.Description>
+</Toast.Item>
 ```
 
-## Legacy API (v1)
+## Toaster (All-in-One)
 
-The previous declarative API is still available for backwards compatibility:
+For simpler use cases, use the `Toaster` component which handles rendering internally:
 
 ```tsx
-import { Toast, ToastProvider, ToastViewport, useToastController } from '@tamagui/toast/v1'
-```
+import { toast, Toaster } from '@tamagui/toast'
 
-See the [v1 documentation](/docs/components/toast/1.83.0) for the legacy API.
+function App() {
+  return (
+    <>
+      <Toaster position="bottom-right" />
+      <Button onPress={() => toast('Hello!')}>Show Toast</Button>
+    </>
+  )
+}
+```
