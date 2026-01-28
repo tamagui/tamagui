@@ -217,6 +217,24 @@ The Moti driver (`@tamagui/animations-moti`) is now deprecated in favor of the
 compatibility issues. If you're using `@tamagui/animations-moti`, switch to
 `@tamagui/animations-reanimated` - the API is the same.
 
+#### React Compiler
+
+All Tamagui packages are now built with the
+[React Compiler](https://react.dev/learn/react-compiler), providing automatic
+memoization for better runtime performance. The compiler analyzes components and
+automatically inserts `useMemo` and `useCallback` where beneficial, reducing
+unnecessary re-renders without any code changes on your part.
+
+To use Tamagui with the React Compiler in your own app with React 18, add the
+runtime polyfill:
+
+```bash
+npm install react-compiler-runtime
+```
+
+React 19 includes this runtime natively, so no additional dependencies are
+needed.
+
 #### Swap Animation Drivers Per-Component
 
 You can now configure multiple animation drivers and select per-component using
