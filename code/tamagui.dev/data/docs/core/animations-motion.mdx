@@ -3,7 +3,10 @@ title: Motion Driver
 description: High-performance web animations with WAAPI
 ---
 
-[Motion](https://motion.dev) is a modern animation library built on the Web Animations API (WAAPI). It features a unique hybrid engine that combines JavaScript animations with native browser APIs to deliver high-performance, GPU-accelerated animations.
+[Motion](https://motion.dev) is a modern animation library built on the Web
+Animations API (WAAPI). It features a unique hybrid engine that combines
+JavaScript animations with native browser APIs to deliver high-performance,
+GPU-accelerated animations.
 
 ## Installation
 
@@ -36,17 +39,6 @@ export default createTamagui({
       mass: 0.9,
       stiffness: 150,
     },
-    medium: {
-      damping: 15,
-      stiffness: 120,
-      mass: 1,
-    },
-    quick: {
-      type: 'spring',
-      damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    },
   }),
   // ...
 })
@@ -54,9 +46,14 @@ export default createTamagui({
 
 ## How it Works
 
-At runtime, the Motion driver uses the `useAnimate()` hook from the Motion library to create animation scopes and orchestrate animations. It intelligently batches style changes and only animates properties that have changed, optimizing performance.
+At runtime, the Motion driver uses the `useAnimate()` hook from the Motion
+library to create animation scopes and orchestrate animations. It intelligently
+batches style changes and only animates properties that have changed, optimizing
+performance.
 
-The driver leverages the Web Animations API (WAAPI) which runs animations on the compositor thread when possible, keeping animations smooth even when the main thread is busy.
+The driver leverages the Web Animations API (WAAPI) which runs animations on the
+compositor thread when possible, keeping animations smooth even when the main
+thread is busy.
 
 ## Animation Configuration
 
@@ -89,29 +86,21 @@ You can add animation delays using the array syntax:
 <Square transition={['bouncy', { delay: 200 }]} />
 ```
 
-The delay is specified in milliseconds and is converted to seconds for Motion internally.
+The delay is specified in milliseconds and is converted to seconds for Motion
+internally.
 
-## Key Features
+## Highlights
 
-### Hybrid Engine
+### Zero Re-renders
 
-Motion is the only animation library with a hybrid engine that can dynamically run animations either via `requestAnimationFrame` or the Web Animations API. This allows it to animate any value while retaining the ability to run animations with hardware acceleration on the GPU.
+The Motion driver now works with Tamagui to bypasses all internal style changes
+to instead directly hand off directly to Motion.
 
 ### WAAPI Performance
 
-The Web Animations API runs animations on the compositor thread when possible, keeping animations smooth even when the main thread is busy. This provides off-thread performance comparable to Reanimated, but for web-only applications.
-
-### Excellent Spring Physics
-
-Motion provides natural, physics-based spring animations with intuitive controls via `damping`, `stiffness`, and `mass` parameters. The spring implementation is excellent and feels very natural.
-
-### Independent Transform Animations
-
-Unlike standard WAAPI, Motion allows you to animate individual transform properties like `x`, `y`, `scale`, `rotate` separately with different animation configurations.
-
-### Lightweight
-
-Motion comes in two sizes: mini (2.3kb) for basic WAAPI animations and hybrid (17kb) for full-featured animations. The Tamagui integration uses the hybrid engine for maximum flexibility, still much smaller than Reanimated.
+The Web Animations API runs animations on the compositor thread when possible,
+keeping animations smooth even when the main thread is busy. This provides
+off-thread performance comparable to Reanimated, but for web-only applications.
 
 ## Platform-Specific Configuration
 
@@ -150,56 +139,6 @@ import { animations } from './animations'
 ```
 
 Your bundler will automatically pick the right file based on the platform.
-
-## Example
-
-```tsx
-import { createAnimations } from '@tamagui/animations-motion'
-import { YStack, createTamagui } from 'tamagui'
-
-const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 9,
-    mass: 0.9,
-    stiffness: 150,
-  },
-  quick: {
-    type: 'spring',
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-  },
-  '100ms': {
-    duration: 100,
-  },
-})
-
-export default createTamagui({
-  animations,
-  // ... rest of config
-})
-
-// Usage in components
-export const MyComponent = () => (
-  <YStack
-    transition="bouncy"
-    hoverStyle={{
-      scale: 1.05,
-    }}
-    enterStyle={{
-      opacity: 0,
-      y: 10,
-    }}
-  />
-)
-```
-
-## Advanced Features
-
-### GPU Acceleration
-
-Motion automatically uses GPU acceleration for transforms and opacity, ensuring smooth 60fps animations even during heavy JavaScript execution.
 
 ## See Also
 
