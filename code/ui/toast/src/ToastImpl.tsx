@@ -31,7 +31,7 @@ import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
 const ToastImplFrame = styled(YStack, {
   name: 'ToastImpl',
-  focusable: true,
+  tabIndex: 0,
 
   variants: {
     unstyled: {

@@ -116,6 +116,7 @@ test.describe('Sheet drag interactions', () => {
   })
 
   test('partial drag snaps back to original position', async ({ page }) => {
+
     const trigger = page.getByTestId('drag-percent-trigger')
     const frame = page.getByTestId('drag-percent-frame')
     const handle = page.getByTestId('drag-percent-handle')

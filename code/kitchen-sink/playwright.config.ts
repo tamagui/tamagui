@@ -46,10 +46,12 @@ export default defineConfig({
   webServer: {
     command: `PORT=${port} npm run start:web`,
     url: `http://localhost:${port}`,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
+    timeout: 120_000, // give webpack more time to start
   },
 
   fullyParallel: true,
+  workers: process.env.CI ? 2 : undefined, // limit parallelism in CI to avoid server overload
   retries: 1,
   // Stop on first failure to show the error immediately
   maxFailures: 1,
