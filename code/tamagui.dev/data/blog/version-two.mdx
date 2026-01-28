@@ -89,7 +89,7 @@ Find a [list of breaking changes at the bottom of the post](#breaking-changes).
 
 The `@tamagui/core` bundle has been reduced by ~32% (from ~37KB to ~25KB
 gzipped). This was achieved through several optimizations to color parsing,
-expensive gesture handling, and automaticall trimming optional theme generation
+expensive gesture handling, and automatically trimming optional theme generation
 code.
 
 #### New Styles
@@ -97,10 +97,9 @@ code.
 See the [Style API docs](/docs/intro/styles) for the full reference, some
 highlights:
 
-- **`backgroundImage`** - Web-style gradient, `linear` and `radial`.
+- **`backgroundImage`** - CSS `linear-gradient` and `radial-gradient` syntax with token support.
 - **`boxShadow`** - Full CSS box-shadow support including multiple shadows,
   spread, and inset. Accepts strings with your tokens.
-- **`backgroundImage`** - CSS `linear-gradient` syntax with token support.
 - **`filter`** - Graphical filters like `brightness`, `opacity`, `blur`.
 - **`mixBlendMode`** - Blend modes like `multiply`, `screen`, `overlay`, etc.
 - **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
@@ -192,8 +191,8 @@ Select on web and Sheet on native got big upgrades.
 ![Motion animation library banner](/blog/motion-banner.webp)
 
 The all powerful [Motion animation library](https://motion.dev) comes to Tamagui
-as an [animation driver](<(/docs/core/animations-motion)>), and we can
-wholheartedly recommend it for your web apps.
+as an [animation driver](/docs/core/animations-motion), and we can
+wholeheartedly recommend it for your web apps.
 
 We spent a lot making it special with the **new Tamagui 0 re-render path**.
 Tamagui now supports an `avoidReRenders` option for animation drivers. Style
@@ -321,7 +320,7 @@ const GreenTab = styled(Tabs.Tab, {
 })
 ```
 
-This replaces a variety of incosistent APIs in v1.
+This replaces a variety of inconsistent APIs in v1.
 
 #### Component Cleanups
 
@@ -469,6 +468,32 @@ import before any Tamagui imports:
 See the [`@tamagui/native` docs](/ui/native) or
 [Sheet docs](/docs/components/sheet) for full details.
 
+#### Cross-Platform Pointer Events
+
+Pointer events (`onPointerDown`, `onPointerUp`, `onPointerMove`, `onPointerEnter`,
+`onPointerLeave`, `onPointerCancel`) now work cross-platform. On native, they're
+mapped to touch events with a normalized event shape matching the web API:
+
+```tsx
+<View
+  onPointerDown={(e) => {
+    // works on web and native
+    console.log(e.clientX, e.clientY, e.pointerId)
+    e.target.setPointerCapture(e.pointerId)
+  }}
+  onPointerMove={(e) => {
+    // receives events outside bounds when captured
+  }}
+  onPointerUp={(e) => {
+    e.target.releasePointerCapture(e.pointerId)
+  }}
+/>
+```
+
+The `setPointerCapture` and `releasePointerCapture` APIs are supported for drag
+scenarios where you need move events to continue firing even after the pointer
+leaves the element bounds.
+
 ### CLI / Agent Docs
 
 The [Tamagui CLI](/docs/guides/cli) has new commands for building and working
@@ -493,8 +518,8 @@ Tamagui config better.
 
 ### Breaking Changes
 
-- \*\*Shadow colors output opacities using color-mix() which may break snapshot
-  tests or any code testing the expected the parsed format.
+- **Shadow colors** output opacities using `color-mix()` which may break snapshot
+  tests or any code testing the expected parsed format.
 - **Removed `@tamagui/react-native-use-responder-events`.** If you were using
   `onResponderGrant`, `onResponderMove`, `onResponderRelease`, or
   `onResponderTerminate` props on web, switch to standard pointer events
