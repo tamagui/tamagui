@@ -159,6 +159,27 @@ npx tamagui generate
 3. Outputs to the `.tamagui` directory
 4. Also generates an LLM-friendly prompt file at `.tamagui/prompt.md`
 
+### generate-css
+
+Generate the `tamagui.css` file from your configuration. Useful for build
+pipelines or when you need to regenerate CSS without running a full build.
+
+```bash
+npx tamagui generate-css
+```
+
+**Flags:**
+
+- `--output <path>` - Custom output path (default: `tamagui.css`)
+- `--debug` - Enable debug output
+- `--verbose` - Enable verbose debug output
+
+**Example:**
+
+```bash
+npx tamagui generate-css --output ./public/styles/tamagui.css
+```
+
 ### generate-themes
 
 Pre-build your theme configuration for faster runtime performance. This
