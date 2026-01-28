@@ -567,7 +567,7 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 
 - [x] Top-right position: can't pull left with resistance when expanded - FIXED (all-direction resistance works)
 - [x] Mixed height toasts don't position correctly in stack - FIXED (heightBeforeMe calculation)
-- [ ] swipeDirection 'auto' option to auto-detect based on edge position
+- [x] swipeDirection 'auto' option to auto-detect based on edge position - DONE
 
 ### 2026-01-27 (continued - mixed height fix)
 
@@ -579,6 +579,15 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 - Gap between expanded toasts is consistent (12px) regardless of height differences
 
 ### 2026-01-27 (continued - velocity-based exit)
+
+**Feature: Auto swipe direction**
+- Added `'auto'` to SwipeDirection type
+- When `swipeDirection='auto'` (now the default), the dismiss direction is auto-detected based on position:
+  - left/right positions → swipe toward that horizontal edge (left/right)
+  - center positions → swipe toward the vertical edge (up for top, down for bottom)
+- Helper function `resolveSwipeDirection()` converts 'auto' to actual direction
+- This makes the toast feel natural - always swipe toward the nearest edge to dismiss
+- Added test for all 6 positions
 
 **Feature: Velocity-based exit animation**
 - Issue: Swipe dismiss felt disconnected - drag ended abruptly, then AnimatePresence handled exit separately

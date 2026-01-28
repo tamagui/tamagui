@@ -17,7 +17,7 @@ const PROVIDER_NAME = 'ToastProvider'
 
 const [Collection, useCollection] = createCollection<TamaguiElement>('Toast')
 
-export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right'
+export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right' | 'auto'
 
 export type ToastProviderContextValue = {
   id: string

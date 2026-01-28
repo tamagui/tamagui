@@ -963,4 +963,56 @@ test.describe('Toast Position Swipe Directions', () => {
     await waitForToastCount(page, 0, 2000)
     expect(await getToastCount(page)).toBe(0)
   })
+
+  test('auto swipe direction works for all positions', async ({ page }) => {
+    // auto swipe direction: swipe toward nearest edge to dismiss
+    // bottom-right/top-right -> swipe right
+    // bottom-left/top-left -> swipe left
+    // bottom-center -> swipe down
+    // top-center -> swipe up
+    await page.goto(TEST_URL)
+    await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
+
+    const testCases = [
+      { position: 'bottom-left', swipeX: -100, swipeY: 0 },
+      { position: 'top-left', swipeX: -100, swipeY: 0 },
+      { position: 'top-right', swipeX: 100, swipeY: 0 },
+      { position: 'bottom-center', swipeX: 0, swipeY: 100 },
+      { position: 'top-center', swipeX: 0, swipeY: -100 },
+    ]
+
+    for (const { position, swipeX, swipeY } of testCases) {
+      // dismiss any existing toasts
+      await page.click('[data-testid="toast-dismiss-all"]')
+      await page.waitForTimeout(200)
+
+      // change position
+      const posButton = page.locator(`button:has-text("${position}")`)
+      await posButton.click()
+      await page.waitForTimeout(200)
+
+      // create toast
+      await page.click('[data-testid="toast-default"]')
+      await page.waitForSelector('[role="status"]')
+      await page.waitForTimeout(300)
+
+      // swipe in the auto-detected direction
+      const box = await getToastBoundingBox(page)
+      expect(box).toBeTruthy()
+
+      await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+      await page.mouse.down()
+      await page.mouse.move(
+        box!.x + box!.width / 2 + swipeX,
+        box!.y + box!.height / 2 + swipeY,
+        { steps: 10 }
+      )
+      await page.mouse.up()
+
+      // toast should dismiss
+      await waitForToastCount(page, 0, 2000)
+      const count = await getToastCount(page)
+      expect(count).toBe(0)
+    }
+  })
 })

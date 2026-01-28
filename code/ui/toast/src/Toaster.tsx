@@ -17,6 +17,32 @@ const VIEWPORT_OFFSET = 24
 const TOAST_GAP = 14
 const TOAST_LIFETIME = 4000
 
+/**
+ * Resolves 'auto' swipe direction based on toast position.
+ * Swipe toward the nearest edge to dismiss.
+ */
+function resolveSwipeDirection(
+  direction: SwipeDirection,
+  position: ToasterPosition
+): Exclude<SwipeDirection, 'auto'> {
+  if (direction !== 'auto') {
+    return direction
+  }
+
+  // parse position to determine edges
+  const [yPosition, xPosition] = position.split('-') as [
+    'top' | 'bottom',
+    'left' | 'center' | 'right',
+  ]
+
+  // for left/right positions, swipe horizontally toward that edge
+  if (xPosition === 'left') return 'left'
+  if (xPosition === 'right') return 'right'
+
+  // for center positions, swipe vertically toward the y edge
+  return yPosition === 'top' ? 'up' : 'down'
+}
+
 export type ToasterPosition =
   | 'top-left'
   | 'top-center'
@@ -105,8 +131,9 @@ export interface ToasterProps {
   hotkey?: string[]
 
   /**
-   * Direction(s) toasts can be swiped to dismiss
-   * @default 'right'
+   * Direction(s) toasts can be swiped to dismiss.
+   * 'auto' detects based on position (swipe toward nearest edge).
+   * @default 'auto'
    */
   swipeDirection?: SwipeDirection
 
@@ -195,7 +222,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       duration = TOAST_LIFETIME,
       offset = VIEWPORT_OFFSET,
       hotkey = ['altKey', 'KeyT'],
-      swipeDirection = 'right',
+      swipeDirection = 'auto',
       swipeThreshold = 50,
       closeButton = false,
       theme: themeProp,
@@ -486,7 +513,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 heightBeforeMe={heightBeforeMe}
                 duration={toast.duration ?? toastOptions?.duration ?? duration}
                 gap={gap}
-                swipeDirection={swipeDirection}
+                swipeDirection={resolveSwipeDirection(swipeDirection, position)}
                 swipeThreshold={swipeThreshold}
                 closeButton={toast.closeButton ?? closeButton}
                 icons={icons}

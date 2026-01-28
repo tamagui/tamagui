@@ -56,8 +56,9 @@ export interface ToasterProps {
      */
     hotkey?: string[];
     /**
-     * Direction(s) toasts can be swiped to dismiss
-     * @default 'right'
+     * Direction(s) toasts can be swiped to dismiss.
+     * 'auto' detects based on position (swipe toward nearest edge).
+     * @default 'auto'
      */
     swipeDirection?: SwipeDirection;
     /**

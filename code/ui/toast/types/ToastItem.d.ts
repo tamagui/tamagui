@@ -13,6 +13,8 @@ export interface ToastItemProps {
     removeToast: (toast: ToastT) => void;
     heights: HeightT[];
     setHeights: React.Dispatch<React.SetStateAction<HeightT[]>>;
+    /** Sum of heights of all toasts before this one (for expanded positioning) */
+    heightBeforeMe: number;
     duration: number;
     gap: number;
     swipeDirection: SwipeDirection;
