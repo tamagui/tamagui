@@ -176,3 +176,42 @@ function SimplePopoverTest() {
     </Popover>
   )
 }
+
+// test case for animatePosition - verifies position is correct on re-open
+export function PopoverAnimatePositionCase() {
+  return (
+    <YStack padding="$4" gap="$4" alignItems="center">
+      <H1>Popover animatePosition Test</H1>
+      <Paragraph>
+        Tests that popover with animatePosition shows at correct position on re-open
+      </Paragraph>
+
+      <XStack paddingLeft={100}>
+        <Popover offset={10}>
+          <Popover.Trigger asChild>
+            <Button id="animate-position-trigger">Open Popover</Button>
+          </Popover.Trigger>
+          <Popover.Content
+            id="animate-position-content"
+            animatePosition
+            transition="quick"
+            enterStyle={{ y: 5, opacity: 0 }}
+            exitStyle={{ y: 5, opacity: 0 }}
+            elevate
+            padding="$4"
+          >
+            <Popover.Arrow />
+            <YStack gap="$2" width={200}>
+              <Paragraph>Popover with animatePosition</Paragraph>
+              <Popover.Close asChild>
+                <Button size="$2" id="animate-position-close">
+                  Close
+                </Button>
+              </Popover.Close>
+            </YStack>
+          </Popover.Content>
+        </Popover>
+      </XStack>
+    </YStack>
+  )
+}
