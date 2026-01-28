@@ -33,6 +33,10 @@ export const animationsMotion = createAnimations({
     damping: 15,
     stiffness: 40,
   },
+  superLazy: {
+    damping: 20,
+    stiffness: 20,
+  },
   quick: {
     damping: 20,
     mass: 1.2,
