@@ -23,6 +23,26 @@ Build the best toast component for React Native/Web - combining Sonner's polish 
 
 ---
 
+## FEEDBACK FROM LAST ITERATION
+
+ok i updateed things - 7979 is your port now
+
+  my feedback: the drag is dragging the inner text and content but not the outer frame
+
+  - release after drag needs to be smooth you need a velocity of release matching veolicty of exit animation test
+  - if i drag it a bit and let go and its closer to stayin in, it should go back to rest and use spring if possible for spring dfrivers
+  - etner toast seem behind the exiting ones should be above (test TDD)
+  - resistive drag should work in all directions (TDD) except exit direction
+  - exit direction should be configurable but default to "edge" aka the edge its on, so if it comes up from bottom i drag down to hide (TDD)
+  - other options should be horizontal, vertical, down, up, left, right
+  - exit animations not working i think, sort of but opacity is not smooth
+
+  for animations - you should define new ULTRA slow aninmations for use only in kitchen sink - 5000ms on each driver
+  - that way you can do REAL tests where you ACTUALLY capture FOUR points of measurement and ENSURE ITS SMOOTH
+
+
+---
+
 ## Developing
 
 DO NOT RUN PLAYWRIGHT wihtou 'headless'!!!!!!!!!!!   
