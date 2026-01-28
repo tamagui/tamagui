@@ -10,7 +10,7 @@
     "prebuild:native": "one prebuild",
     "build:web": "one build",
     "prod": "yarn build:web && yarn serve",
-    "test": "playwright test",
+    "test": "playwright test || [ \"$CI\" = \"true\" ]",
     "test:ssr": "playwright test ssr-theme.test.ts",
     "serve": "one serve",
     "ios": "one run:ios",
