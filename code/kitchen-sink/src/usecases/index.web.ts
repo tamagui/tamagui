@@ -5,6 +5,7 @@
 
 export { AnimatedByProp } from './AnimatedByProp'
 export { AnimationComprehensiveCase } from './AnimationComprehensiveCase'
+export { AnimationsWithMediaQueriesCase } from './AnimationsWithMediaQueriesCase'
 export { Benchmark } from './Benchmark'
 export { ButtonCircular } from './ButtonCircular'
 export { ButtonCustom } from './ButtonCustom'

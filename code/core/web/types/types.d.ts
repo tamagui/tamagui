@@ -283,6 +283,7 @@ export type ComponentContextI = {
     animationDriver: AnimationDriver | null;
     setParentFocusState: ComponentSetStateShallow | null;
     mediaEmit?: (state: UseMediaState) => void;
+    mediaEmitListeners?: Set<(state: UseMediaState) => void>;
     insets?: {
         top: number;
         right: number;
@@ -309,6 +310,7 @@ export type TamaguiComponentStateRef = {
     group?: ComponentGroupEmitter;
     nextState?: TamaguiComponentState;
     nextMedia?: UseMediaState;
+    mediaEmitCleanup?: () => void;
 };
 export type ComponentGroupEmitter = {
     listeners: Set<GroupStateListener>;
