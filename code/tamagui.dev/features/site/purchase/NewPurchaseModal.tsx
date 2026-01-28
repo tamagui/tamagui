@@ -46,33 +46,7 @@ export { purchaseModal, usePurchaseModal } from './purchaseModalStore'
 // import for internal use
 import { FaqTabContent } from './FaqTabContent'
 import { calculatePromoPrice } from './promoConfig'
-
-// support tier configuration
-const SUPPORT_TIERS = {
-  chat: {
-    label: 'Chat',
-    price: 0,
-    priceLabel: 'included',
-    description:
-      'Access to the private #takeout Discord channel. No SLA guarantee, but we typically respond within a few days.',
-  },
-  direct: {
-    label: 'Direct',
-    price: 500,
-    priceLabel: '$500/mo',
-    description:
-      '5 bug fixes per year, guaranteed response within 2 business days, your issues get prioritized in our queue.',
-  },
-  sponsor: {
-    label: 'Sponsor',
-    price: 2000,
-    priceLabel: '$2,000/mo',
-    description:
-      'Unlimited higher priority bug fixes, 1 day response time, plus a monthly video call with the team.',
-  },
-} as const
-
-type SupportTier = keyof typeof SUPPORT_TIERS
+import { SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
 
 export const NewPurchaseModal = () => {
   return <PurchaseModalContents />
@@ -155,13 +129,12 @@ export function PurchaseModalContents() {
     paymentModal.monthlyTotal = supportTierPrice
     paymentModal.disableAutoRenew = false
     paymentModal.chatSupport = false
-    paymentModal.supportTier =
-      supportTier === 'direct' ? 1 : supportTier === 'sponsor' ? 2 : 0
+    paymentModal.supportTier = supportTier
     paymentModal.teamSeats = 0
     paymentModal.selectedPrices = {
       disableAutoRenew: false,
       chatSupport: false,
-      supportTier: supportTier === 'direct' ? 1 : supportTier === 'sponsor' ? 2 : 0,
+      supportTier: supportTier,
       teamSeats: 0,
     }
     // pass promo info from purchase modal
@@ -583,7 +556,7 @@ export function PurchaseModalContents() {
             monthlyTotal={supportTierMonthly}
             disableAutoRenew={false}
             chatSupport={false}
-            supportTier={supportTier === 'direct' ? 1 : supportTier === 'sponsor' ? 2 : 0}
+            supportTier={supportTier}
             teamSeats={0}
             onSuccess={handlePaymentSuccess}
             onError={handlePaymentError}

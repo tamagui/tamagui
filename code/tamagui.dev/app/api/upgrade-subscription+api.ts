@@ -3,6 +3,9 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
 
+// V2 support tier type
+type SupportTier = 'chat' | 'direct' | 'sponsor'
+
 // Helper function to get or create a Stripe customer
 const getOrCreateStripeCustomer = async (user: any) => {
   const { data: customers } = await stripe.customers.list({
@@ -24,6 +27,27 @@ const getOrCreateStripeCustomer = async (user: any) => {
   return newCustomer.id
 }
 
+// Get the price ID for a support tier
+const getSupportTierPriceId = (tier: SupportTier | number): string | null => {
+  // Handle new string-based tiers
+  if (tier === 'direct') {
+    return STRIPE_PRODUCTS.SUPPORT_DIRECT.priceId
+  }
+  if (tier === 'sponsor') {
+    return STRIPE_PRODUCTS.SUPPORT_SPONSOR.priceId
+  }
+  if (tier === 'chat') {
+    return null // Chat is included, no additional subscription needed
+  }
+
+  // Handle legacy numeric tiers (for backwards compatibility)
+  if (typeof tier === 'number' && tier > 0) {
+    return STRIPE_PRODUCTS.SUPPORT.priceId
+  }
+
+  return null
+}
+
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
@@ -42,11 +66,21 @@ export default apiRoute(async (req) => {
 
     // Build items array based on selected options
     const items: Array<{ price: string; quantity?: number }> = []
+
+    // Handle legacy V1 chat support
     if (chatSupport) {
       items.push({ price: STRIPE_PRODUCTS.CHAT.priceId })
     }
-    if (supportTier > 0) {
-      items.push({ price: STRIPE_PRODUCTS.SUPPORT.priceId, quantity: supportTier })
+
+    // Handle support tier (V2 string-based or legacy numeric)
+    const supportPriceId = getSupportTierPriceId(supportTier)
+    if (supportPriceId) {
+      // Legacy numeric tiers used quantity, new string tiers don't
+      if (typeof supportTier === 'number' && supportTier > 0) {
+        items.push({ price: supportPriceId, quantity: supportTier })
+      } else {
+        items.push({ price: supportPriceId })
+      }
     }
 
     if (items.length === 0) {
