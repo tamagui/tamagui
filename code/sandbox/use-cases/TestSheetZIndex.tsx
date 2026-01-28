@@ -1,7 +1,7 @@
 import { Anchor, Button, Paragraph, Sheet, XStack } from 'tamagui'
 import { ChevronDown } from '@tamagui/lucide-icons'
 import { useState } from 'react'
-import { toast } from '@tamagui/toast'
+// import { toast } from '@tamagui/toast'
 
 export default function test() {
   return <SheetDemo />
@@ -16,10 +16,10 @@ function SheetDemo() {
         size="$6"
         onPress={() => {
           setOpen(true)
-          toast('This toast is covered by the ', {
-            description: 'Just showing how toast works...',
-            duration: 100_000,
-          })
+          // toast('This toast is covered by the ', {
+          //   description: 'Just showing how toast works...',
+          //   duration: 100_000,
+          // })
         }}
       >
         Open Sheet & Toast
