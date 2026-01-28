@@ -126,6 +126,7 @@ type WithStates = BaseViewStyle & {
   pressStyle?: BaseViewStyle
   focusStyle?: BaseViewStyle
   focusVisibleStyle?: BaseViewStyle
+  focusWithinStyle?: BaseViewStyle
   disabledStyle?: BaseViewStyle
   enterStyle?: BaseViewStyle
   exitStyle?: BaseViewStyle
@@ -188,6 +189,60 @@ type TextStyleBase = BaseViewStyle & {
   textTransform?: string,
 }
 ```
+
+## Pseudo States
+
+Tamagui supports several style states that apply based on interaction or focus:
+
+- **`hoverStyle`** - Styles applied when hovering over the element (web only, maps to CSS `:hover`)
+- **`pressStyle`** - Styles applied while the element is being pressed
+- **`focusStyle`** - Styles applied when the element has focus (maps to CSS `:focus`)
+- **`focusVisibleStyle`** - Styles applied when the element has keyboard focus (maps to CSS `:focus-visible`). Use this for keyboard navigation indicators.
+- **`focusWithinStyle`** - Styles applied when any child element has focus (maps to CSS `:focus-within`). Useful for styling containers when an input inside them is focused.
+- **`disabledStyle`** - Styles applied when `disabled={true}` is set
+
+```tsx
+<View
+  backgroundColor="$background"
+  hoverStyle={{ backgroundColor: '$backgroundHover' }}
+  pressStyle={{ backgroundColor: '$backgroundPress', scale: 0.98 }}
+  focusStyle={{ outlineColor: '$blue10', outlineWidth: 2, outlineStyle: 'solid' }}
+  focusVisibleStyle={{ outlineColor: '$blue10', outlineWidth: 2 }}
+  focusWithinStyle={{ borderColor: '$blue10' }}
+  disabledStyle={{ opacity: 0.5 }}
+/>
+```
+
+### Enter and Exit Styles
+
+For mount/unmount animations, use:
+
+- **`enterStyle`** - Initial styles when the component mounts (animates _from_ these values)
+- **`exitStyle`** - Final styles when the component unmounts (animates _to_ these values)
+
+See [Animations](/docs/core/animations) for more details on enter/exit animations.
+
+## rem Units
+
+Tamagui supports `rem` units cross-platform. On web, browsers handle rem natively. On native, Tamagui converts rem values to pixels using `PixelRatio.getFontScale()` to respect the user's font size preferences.
+
+```tsx
+// works on both web and native
+<View padding="1rem" />
+<Text fontSize="1.5rem" />
+```
+
+You can configure the base font size (default 16) in your config:
+
+```tsx
+createTamagui({
+  settings: {
+    remBaseFontSize: 16, // default
+  },
+})
+```
+
+On native, `1rem` with a base of 16 equals `16 * PixelRatio.getFontScale()` pixels, scaling with the user's accessibility settings.
 
 ## CSS Shorthand with Variables
 
