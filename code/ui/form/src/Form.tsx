@@ -1,5 +1,5 @@
 import type { ViewProps } from '@tamagui/core'
-import { View, styled, createStyledContext } from '@tamagui/core'
+import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 
 const FORM_NAME = 'Form'
@@ -17,7 +17,9 @@ type FormContextValue = {
   onSubmit?: () => unknown
 }
 
-export const FormContext = createStyledContext<FormContextValue>({} as FormContextValue)
+export const FormContext = createStyledContext<FormContextValue>({
+  onSubmit: undefined,
+} as FormContextValue)
 
 export const { useStyledContext: useFormContext, Provider: FormProvider } = FormContext
 
@@ -31,10 +33,8 @@ export type FormProps = ViewProps & FormExtraProps
  * FormTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-const TRIGGER_NAME = 'FormTrigger'
-
 const FormTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
+  name: 'FormTrigger',
 })
 
 export interface FormTriggerProps extends ViewProps {

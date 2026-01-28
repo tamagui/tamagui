@@ -39,14 +39,8 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/create-context": "workspace:*",
-    "@tamagui/focusable": "workspace:*",
-    "@tamagui/get-button-sized": "workspace:*",
-    "@tamagui/get-font-sized": "workspace:*",
-    "@tamagui/helpers": "workspace:*",
-    "@tamagui/text": "workspace:*"
+    "@tamagui/helpers": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
