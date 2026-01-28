@@ -88,6 +88,9 @@ const ToastItemFrame = styled(YStack, {
   scale: 1,
   y: 0,
   x: 0,
+  // prevent text selection during drag - critical for gesture handling
+  userSelect: 'none',
+  cursor: 'grab',
 
   variants: {
     unstyled: {
