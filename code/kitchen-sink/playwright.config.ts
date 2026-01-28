@@ -25,6 +25,8 @@ export default defineConfig({
     baseURL: `http://localhost:${port}`,
     // Larger viewport to prevent popover positioning issues
     viewport: { width: 1920, height: 1080 },
+    // always run headless
+    headless: true,
   },
 
   projects: [

@@ -83,6 +83,11 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
     (event: React.PointerEvent) => {
       if (!dragStartRef.current || disabled) return
 
+      // skip swipe if user is selecting text (same as Sonner)
+      const isHighlighted = typeof window !== 'undefined' &&
+        (window.getSelection()?.toString().length ?? 0) > 0
+      if (isHighlighted) return
+
       const deltaX = event.clientX - dragStartRef.current.startX
       const deltaY = event.clientY - dragStartRef.current.startY
 
