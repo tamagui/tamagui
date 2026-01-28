@@ -3,8 +3,8 @@ import { ChevronDown, ChevronUp, Circle, X } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { Button, Theme, XStack, YStack } from 'tamagui'
 
-// Add <Toaster /> to your app root:
-// <Toaster position="bottom-right" />
+// Toaster provides stacking, swipe-to-dismiss, and smooth animations.
+// For more control, use the composable API: Toast, ToastProvider, ToastViewport
 
 export const ToastDemo = () => {
   const [position, setPosition] = useState<ToasterPosition>('bottom-right')
