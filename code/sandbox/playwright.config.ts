@@ -11,6 +11,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
+  // skip in CI - sandbox tests are for local dev only
+  testIgnore: process.env.CI ? ['**/*'] : [],
   use: {
     baseURL,
     trace: 'on-first-retry',
@@ -21,10 +23,12 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: {
-    command: `yarn dev --port ${port}`,
-    url: baseURL,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-  },
+  webServer: process.env.CI
+    ? undefined
+    : {
+        command: `yarn dev --port ${port}`,
+        url: baseURL,
+        reuseExistingServer: true,
+        timeout: 120000,
+      },
 })
