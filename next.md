@@ -13,6 +13,10 @@ Consider using `useWebRef` from `@tamagui/element` for these components to prope
 
 ---
 
+- motion has a ton of hacks, but also dont forget:
+    const animateKey = JSON.stringify(style)
+
+
 - remove the transparencies from *palette* and background0: 1 etc from template
   thats all done in getTheme now + we should add color-mix or /opacity
 
