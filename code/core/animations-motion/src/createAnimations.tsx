@@ -164,7 +164,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const [firstRenderStyle] = useState(style)
 
       // avoid first render returning wrong styles - always render all, after that we can just mutate
-      const lastDontAnimate = useRef<Record<string, unknown>>(firstRenderStyle)
+      const lastDontAnimate = useRef<Record<string, unknown> | null>(firstRenderStyle)
 
       useLayoutEffect(() => {
         return () => {
@@ -179,6 +179,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }: AnimationProps) => {
         try {
           const node = stateRef.current.host
+
+          // on first render, reset stale animation refs - they can persist if component
+          // instance is reused (e.g. AnimatePresence keepChildrenMounted)
+          if (isFirstRender.current) {
+            lastDontAnimate.current = null
+            lastDoAnimate.current = null
+          }
 
           if (shouldDebug) {
             console.groupCollapsed(
