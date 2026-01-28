@@ -17,9 +17,7 @@ import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
   cancelAnimation,
   runOnJS,
-  useAnimatedReaction,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
   withDelay,
   withSpring,
@@ -66,6 +64,9 @@ type TimingConfig = {
 
 /** Combined animation configuration type */
 export type TransitionConfig = SpringConfig | TimingConfig
+
+/** Options for createAnimations (reserved for future use) */
+export type CreateAnimationsOptions = {}
 
 // =============================================================================
 // Utility Functions
@@ -272,6 +273,7 @@ const AnimatedText = createWebAnimatedComponent('span')
  *   fast: { type: 'spring', damping: 20, stiffness: 250 },
  *   slow: { type: 'timing', duration: 500 },
  * })
+ *
  * ```
  */
 export function createAnimations<A extends Record<string, TransitionConfig>>(
@@ -588,8 +590,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           }
         }
 
-        // Update SharedValues - this triggers worklet without React re-render
-        // Using .set() method for concurrent-safe updates
+        // Update SharedValues - on web, the mapper watches these if passed in dependencies
         animatedTargetsRef.set(animated)
         staticTargetsRef.set(statics)
         transformTargetsRef.set(transforms)
@@ -654,14 +655,15 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         const result: Record<string, any> = {}
         const config = configRef.get()
 
-        // Check if we have avoidRerenders updates
-        // Using .get() method for concurrent-safe reads in worklets
-        const emitterAnimated = animatedTargetsRef.get()
+        // Check if we have avoidRerenders updates from useStyleEmitter
+        const emitterAnimated = animatedTargetsRef.value
+        const emitterStatic = staticTargetsRef.value
+        const emitterTransforms = transformTargetsRef.value
         const hasEmitterUpdates = emitterAnimated !== null
 
         // Use emitter values if available, otherwise use React state values
         const animatedValues = hasEmitterUpdates ? emitterAnimated! : animatedStyles
-        const staticValues = hasEmitterUpdates ? staticTargetsRef.get()! : {}
+        const staticValues = hasEmitterUpdates ? emitterStatic! : {}
 
         // Include static values from emitter (for hover/press style changes)
         for (const key in staticValues) {
@@ -679,7 +681,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         // Handle transforms
         const transforms = hasEmitterUpdates
-          ? transformTargetsRef.get()
+          ? emitterTransforms
           : animatedStyles.transform
 
         // Animate transform properties with validation
@@ -707,7 +709,17 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         return result
-      }, [animatedStyles, baseConfig, propertyConfigs, disableAnimation, isHydrating])
+      }, [
+        animatedStyles,
+        baseConfig,
+        propertyConfigs,
+        disableAnimation,
+        isHydrating,
+        // Pass SharedValues so the mapper watches them on web (see useAnimatedStyle.ts line 470-472)
+        animatedTargetsRef,
+        staticTargetsRef,
+        transformTargetsRef,
+      ])
 
       // Debug logging
       if (

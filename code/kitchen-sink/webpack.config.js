@@ -63,10 +63,14 @@ module.exports = {
   ],
   module: {
     rules: [
-      // Process react-native-reanimated/worklets with Babel plugin from babel.config.js
+      // Process react-native-reanimated and @tamagui/animations-reanimated with Babel plugin
+      // The reanimated babel plugin transforms 'worklet' directives for web
       {
         test: /\.(js|ts)x?$/,
-        include: /node_modules\/(react-native-reanimated|react-native-worklets)/,
+        include: [
+          /node_modules\/(react-native-reanimated|react-native-worklets)/,
+          /code\/core\/animations-reanimated/,
+        ],
         use: {
           loader: 'babel-loader',
           options: {
