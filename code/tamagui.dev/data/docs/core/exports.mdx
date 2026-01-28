@@ -261,6 +261,36 @@ function MyInput(props, forwardedRef) {
 }
 ```
 
+### useNativeRef
+
+For platform-specific files (`.native.tsx`), this hook creates a properly typed
+ref for React Native that also composes with a forwarded ref. Pairs with
+`useWebRef` for cross-platform component development.
+
+```tsx
+import { useNativeRef } from 'tamagui' // or '@tamagui/element'
+
+// In your .native.tsx file:
+function MyComponent(props, forwardedRef) {
+  const { ref, composedRef } = useNativeRef(forwardedRef)
+
+  // ref.current is typed as View
+  return <StyledView ref={composedRef} />
+}
+```
+
+For input components, use `useNativeInputRef` which types to `TextInput`:
+
+```tsx
+import { useNativeInputRef } from 'tamagui' // or '@tamagui/element'
+
+function MyInput(props, forwardedRef) {
+  const { ref, composedRef } = useNativeInputRef(forwardedRef)
+  // ref.current is typed as TextInput
+  return <StyledInput ref={composedRef} />
+}
+```
+
 ### getWebElement
 
 A runtime utility that narrows a `TamaguiElement` to an `HTMLElement`. Throws if

@@ -1,4 +1,4 @@
-import type { BuildTemplates } from '@tamagui/theme-builder'
+import { PALETTE_BACKGROUND_OFFSET, type BuildTemplates } from '@tamagui/theme-builder'
 
 const objectFromEntries = <const T extends readonly (readonly [string, any])[]>(
   entries: T
@@ -31,20 +31,43 @@ const getTemplates = () => {
 const getBaseTemplates = (scheme: 'dark' | 'light') => {
   const isLight = scheme === 'light'
 
-  // our palettes have 4 things padding each end until you get to bg/color:
+  // our palettes have PALETTE_BACKGROUND_OFFSET things padding each end until you get to bg/color:
   // [accentBg, transparent1, transparent2, transparent3, transparent4, background, ...]
-  const bgIndex = 6
   const lighten = isLight ? -1 : 1
   const darken = -lighten
-  const borderColor = bgIndex + 3
 
-  const baseColors = {
-    color: -bgIndex,
-    colorHover: -bgIndex - 1,
-    colorPress: -bgIndex,
-    colorFocus: -bgIndex - 1,
-    placeholderColor: -bgIndex - 3,
-    outlineColor: -2,
+  // base
+  const background = PALETTE_BACKGROUND_OFFSET
+  const borderColor = background + 3
+  const color = -background
+
+  // helper for surface themes - they need their own hover/press/focus calculations
+  // because those need to be relative to their elevated background, not base
+  const makeSurface = (offset: number, colorOffset = 0) => {
+    const clr = color - colorOffset
+    const bg = background + offset
+    const brdr = borderColor + offset
+
+    return {
+      color: clr,
+      colorHover: clr + (isLight ? 0 : lighten),
+      colorPress: clr,
+      colorFocus: clr + darken,
+
+      background: bg,
+      // hover lightens always
+      backgroundHover: bg + lighten,
+      // press darkens always
+      backgroundPress: bg + darken,
+      // focus: lightens in dark mode, darkens in light
+      backgroundFocus: bg + offset,
+      backgroundActive: bg,
+
+      borderColor: brdr,
+      borderColorHover: brdr + lighten,
+      borderColorFocus: brdr,
+      borderColorPress: brdr + darken,
+    }
   }
 
   // templates use the palette and specify index
@@ -52,73 +75,37 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   const base = {
     accentBackground: 0,
     accentColor: -0,
-
     background0: 1,
     background02: 2,
     background04: 3,
     background06: 4,
     background08: 5,
-    color1: bgIndex,
-    color2: bgIndex + 1,
-    color3: bgIndex + 2,
-    color4: bgIndex + 3,
-    color5: bgIndex + 4,
-    color6: bgIndex + 5,
-    color7: bgIndex + 6,
-    color8: bgIndex + 7,
-    color9: bgIndex + 8,
-    color10: bgIndex + 9,
-    color11: bgIndex + 10,
-    color12: bgIndex + 11,
+    color1: background,
+    color2: background + 1,
+    color3: background + 2,
+    color4: background + 3,
+    color5: background + 4,
+    color6: background + 5,
+    color7: background + 6,
+    color8: background + 7,
+    color9: background + 8,
+    color10: background + 9,
+    color11: background + 10,
+    color12: background + 11,
     color0: -1,
     color02: -2,
     color04: -3,
     color06: -4,
     color08: -5,
-    // the background, color, etc keys here work like generics - they make it so you
-    // can publish components for others to use without mandating a specific color scale
-    // the @tamagui/button Button component looks for `$background`, so you set the
-    // dark_red_Button theme to have a stronger background than the dark_red theme.
-    background: bgIndex,
-    // hover lightens in both light/dark modes (towards background)
-    backgroundHover: bgIndex + lighten * 2,
-    // press darkens in both modes (towards foreground)
-    backgroundPress: bgIndex + darken * 2,
-    // focus: darken in dark mode, stay same in light
-    backgroundFocus: bgIndex + (isLight ? 0 : darken),
-    backgroundActive: bgIndex + darken * 3,
-    borderColor,
-    borderColorHover: borderColor + lighten,
-    borderColorPress: borderColor + darken,
-    borderColorFocus: borderColor,
-    ...baseColors,
+    // v5 = we make this actually 1 up (surface1 technically from before)
+    // this way "generics" are automatically differentiated from base bg
+    ...makeSurface(1),
+    placeholderColor: color - 3,
     colorTransparent: -1,
   }
 
-  // helper for surface themes - they need their own hover/press/focus calculations
-  // because those need to be relative to their elevated background, not base
-  const makeSurface = (offset: number) => {
-    const bg = base.background + offset
-    return {
-      ...baseColors,
-      background: bg,
-      // hover lightens (towards background)
-      backgroundHover: bg + lighten,
-      // press darkens (towards foreground)
-      backgroundPress: bg + darken,
-      // focus: darken in dark mode, stay same in light
-      backgroundFocus: bg + (isLight ? 0 : darken),
-      backgroundActive: bg + darken * 2,
-      borderColor: base.borderColor + offset,
-      borderColorHover: base.borderColor + offset + lighten,
-      borderColorFocus: base.borderColor + offset,
-      borderColorPress: base.borderColor + offset + darken,
-    }
-  }
-
-  const surface1 = makeSurface(1)
-  const surface2 = makeSurface(2)
-  const surface3 = makeSurface(3)
+  const surface1 = makeSurface(3, 1)
+  const surface2 = makeSurface(5, 1)
 
   const accent = Object.fromEntries(
     Object.entries(base).map(([key, index]) => {
@@ -130,7 +117,6 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     base,
     surface1,
     surface2,
-    surface3,
     accent,
   } satisfies BuildTemplates
 }

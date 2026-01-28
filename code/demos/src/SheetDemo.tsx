@@ -33,14 +33,11 @@ export const SheetDemo = () => {
     <>
       <YStack gap="$4">
         <XStack gap="$4" $maxMd={{ flexDirection: 'column', items: 'center' }}>
-          <Button theme="surface3" onPress={() => setOpen(true)}>
-            Open
-          </Button>
-          <Button theme="surface3" onPress={() => setModal((x) => !x)}>
+          <Button onPress={() => setOpen(true)}>Open</Button>
+          <Button onPress={() => setModal((x) => !x)}>
             {modal ? 'Type: Modal' : 'Type: Inline'}
           </Button>
           <Button
-            theme="surface3"
             onPress={() =>
               setSnapPointsMode(
                 (prev) => spModes[(spModes.indexOf(prev) + 1) % spModes.length]
@@ -55,7 +52,7 @@ export const SheetDemo = () => {
           </Button>
         </XStack>
         {isMixed ? (
-          <Button theme="surface3" onPress={() => setMixedFitDemo((x) => !x)}>
+          <Button onPress={() => setMixedFitDemo((x) => !x)}>
             {`Snap Points: ${JSON.stringify(snapPoints)}`}
           </Button>
         ) : (
@@ -100,19 +97,12 @@ const SheetContents = memo(
   ({ modal, isPercent, innerOpen, setInnerOpen, setOpen }: any) => {
     return (
       <>
-        <Button
-          theme="surface3"
-          size="$6"
-          circular
-          icon={ChevronDown}
-          onPress={() => setOpen(false)}
-        />
+        <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
         <Input width={200} />
         {modal && isPercent && (
           <>
             <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
             <Button
-              theme="surface3"
               size="$6"
               circular
               icon={ChevronUp}
@@ -140,7 +130,6 @@ function InnerSheet(props: SheetProps) {
         <Sheet.ScrollView>
           <YStack p="$5" gap="$8">
             <Button
-              theme="surface3"
               size="$6"
               circular
               self="center"

@@ -10,7 +10,8 @@ description: Modern config and themes with @tamagui/config/v5
 </IntroParagraph>
 
 V5 builds on v4 with more colors, theme helpers, and expanded media queries.
-Migration from v4 is straightforward - see [what's changed](#whats-different-from-v4).
+Migration from v4 is straightforward - see
+[what's changed](#whats-different-from-v4).
 
 First install the config package:
 
@@ -29,8 +30,8 @@ npm install @tamagui/config
   different casing: `max2Xl` → `maxXXL`.
 - **`styleCompat: 'react-native'`** - `flex` now uses `flexBasis: 0` by default
   (v4 used `'legacy'` with `flexBasis: auto`).
-- **`defaultPosition` not set** - Defaults to browser `static` instead of
-  v4's `'relative'`. You can still set it in your config.
+- **`defaultPosition` not set** - Defaults to browser `static` instead of v4's
+  `'relative'`. You can still set it in your config.
 
 ### New Features
 
@@ -39,7 +40,8 @@ npm install @tamagui/config
 - **`createV5Theme` helper** for easy theme customization
 - **Height-based media queries**: `heightXXXS`, `heightXXS`, `heightXS`, etc.
 - **`pointerTouch`** media query for touch device detection
-- **Color utilities**: `adjustPalette`, `adjustPalettes` for transforming palettes
+- **Color utilities**: `adjustPalette`, `adjustPalettes` for transforming
+  palettes
 - **Radix Colors v3** with improved accessibility (v4 used legacy Radix)
 
 ### Migrating from v4
@@ -342,13 +344,7 @@ Background color with opacity:
 - `background01` (10% opacity), `background0075`, `background005`,
   `background0025`, `background002`, `background001`
 
-### Interpolated Colors
-
-In-between shades for fine-grained control:
-
-- `color0pt5` - Between color0 and color1
-- `color1pt5` - Between color1 and color2
-- `color2pt5` - Between color2 and color3
+### Extra Colors
 
 ### White & Black (Fixed)
 
@@ -423,9 +419,9 @@ For more details on how templates work, see the
 
 ## Component Themes
 
-V5 keeps component themes because they solve a hard problem — how do you
-change the theme of an entire area (like from `dark` to `dark_green`) but have
-the components inside it still keep their relative shades?
+V5 keeps component themes because they solve a hard problem — how do you change
+the theme of an entire area (like from `dark` to `dark_green`) but have the
+components inside it still keep their relative shades?
 
 One of the great things in Tamagui is being able to set component themes, and
 sub-themes, and have an entire area of your UI re-theme and look perfect.
@@ -582,7 +578,10 @@ export const config = createTamagui({
    ```tsx
    import { animations } from '@tamagui/config/v5-css'
    ```
-2. **Update media query names** - `2xl` → `xxl`, `2xs` → `xxs`, `max2Xl` → `maxXXL`
-3. **Review flex behavior** - v5 uses `flexBasis: 0` by default (React Native style)
+2. **Update media query names** - `2xl` → `xxl`, `2xs` → `xxs`, `max2Xl` →
+   `maxXXL`
+3. **Review flex behavior** - v5 uses `flexBasis: 0` by default (React Native
+   style)
 4. **Review position** - v5 doesn't set `defaultPosition` (defaults to `static`)
-5. **Review theme colors** - v5 uses Radix Colors v3 with slightly different values
+5. **Review theme colors** - v5 uses Radix Colors v3 with slightly different
+   values

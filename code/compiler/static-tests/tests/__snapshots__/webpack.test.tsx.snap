@@ -14,7 +14,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_tr-0hover-scale21281 _pos-static _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red _bxsh-0px0px10pxr538535358 test1"
+          class="_tr-0hover-scale21281 _pos-static _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red _bxsh-0px0px10px0946673987 test1"
           rounded="100"
         >
           <span

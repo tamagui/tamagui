@@ -4,7 +4,7 @@ export function AlertDialogDemo() {
   return (
     <AlertDialog native>
       <AlertDialog.Trigger asChild>
-        <Button theme="surface3">Show Alert</Button>
+        <Button>Show Alert</Button>
       </AlertDialog.Trigger>
 
       <AlertDialog.Portal>
@@ -42,7 +42,7 @@ export function AlertDialogDemo() {
 
             <XStack gap="$3" justify="flex-end">
               <AlertDialog.Cancel asChild>
-                <Button theme="surface3">Cancel</Button>
+                <Button>Cancel</Button>
               </AlertDialog.Cancel>
               <AlertDialog.Action asChild>
                 <Button theme="accent">Accept</Button>

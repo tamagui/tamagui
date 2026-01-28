@@ -15,7 +15,7 @@ export const ConsultingButton = (props: ButtonProps) => {
         Hire Us!
       </Button.Text>
       <Button.Icon>
-        <AddEvenBrandIcon scale={0.75} />
+        <AddEvenBrandIcon scale={1} />
       </Button.Icon>
     </Button>
   )

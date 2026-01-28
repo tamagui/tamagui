@@ -4,7 +4,7 @@ interface GesturePanConfig {
     positions: number[];
     frameSize: number;
     setPosition: (pos: number) => void;
-    animateTo: (pos: number) => void;
+    animateTo: (pos: number, animationOverride?: any) => void;
     stopSpring: () => void;
     scrollBridge: ScrollBridge;
     setIsDragging: (val: boolean) => void;
@@ -14,6 +14,7 @@ interface GesturePanConfig {
     isShowingInnerSheet?: boolean;
     setAnimatedPosition: (val: number) => void;
     scrollGestureRef?: RefObject<any> | null;
+    pauseKeyboardHandler?: RefObject<boolean>;
 }
 interface GesturePanResult {
     panGesture: any | null;

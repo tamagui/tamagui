@@ -1,0 +1,312 @@
+---
+title: RovingFocusGroup
+description: Manage keyboard navigation within a group of focusable elements.
+name: roving-focus
+component: RovingFocusGroup
+package: roving-focus
+---
+
+<IntroParagraph marginTop={-5} marginBottom={30}>
+  A utility component for managing keyboard focus within a group of elements using the roving tabindex pattern. Enables arrow key navigation between focusable items while maintaining a single tab stop for the group.
+</IntroParagraph>
+
+Note that this is primarily a web component. On native it renders children without keyboard navigation management.
+
+<Highlights
+  features={[
+    'Arrow key navigation between items (respects orientation).',
+    'Single tab stop for the entire group.',
+    'Optional looping from last to first item.',
+    'RTL direction support.',
+    'Tracks active/current item state.',
+  ]}
+/>
+
+## Installation
+
+RovingFocusGroup is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/roving-focus
+```
+
+## Usage
+
+Wrap focusable items with RovingFocusGroup and use RovingFocusGroup.Item for each focusable element:
+
+```tsx
+import { Button, RovingFocusGroup, XStack } from 'tamagui'
+
+export default () => (
+  <RovingFocusGroup orientation="horizontal" loop>
+    <XStack gap="$2">
+      <RovingFocusGroup.Item asChild>
+        <Button>First</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Second</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Third</Button>
+      </RovingFocusGroup.Item>
+    </XStack>
+  </RovingFocusGroup>
+)
+```
+
+## How It Works
+
+The roving tabindex pattern allows a group of focusable elements to act as a single tab stop. When the user tabs into the group, focus moves to the currently active item. Arrow keys then navigate between items within the group.
+
+This improves keyboard navigation by:
+- Reducing the number of tab stops on a page
+- Providing intuitive arrow key navigation within related controls
+- Maintaining focus state across the group
+
+## Orientation
+
+Set `orientation` to control which arrow keys navigate:
+
+```tsx
+import { Button, RovingFocusGroup, YStack } from 'tamagui'
+
+export default () => (
+  // Up/Down arrows navigate, Left/Right are ignored
+  <RovingFocusGroup orientation="vertical">
+    <YStack gap="$2">
+      <RovingFocusGroup.Item asChild>
+        <Button>Option 1</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Option 2</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Option 3</Button>
+      </RovingFocusGroup.Item>
+    </YStack>
+  </RovingFocusGroup>
+)
+```
+
+## Looping Navigation
+
+Enable `loop` to wrap focus from the last item back to the first:
+
+```tsx
+import { Button, RovingFocusGroup, XStack } from 'tamagui'
+
+export default () => (
+  <RovingFocusGroup loop>
+    <XStack gap="$2">
+      <RovingFocusGroup.Item asChild>
+        <Button>First</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Middle</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Last</Button>
+      </RovingFocusGroup.Item>
+      {/* Arrow right from "Last" goes to "First" */}
+    </XStack>
+  </RovingFocusGroup>
+)
+```
+
+## Controlled Tab Stop
+
+Control which item is the current tab stop:
+
+```tsx
+import { Button, RovingFocusGroup, XStack } from 'tamagui'
+import { useState } from 'react'
+
+export default () => {
+  const [currentId, setCurrentId] = useState<string | null>('item-2')
+
+  return (
+    <RovingFocusGroup
+      currentTabStopId={currentId}
+      onCurrentTabStopIdChange={setCurrentId}
+    >
+      <XStack gap="$2">
+        <RovingFocusGroup.Item tabStopId="item-1" asChild>
+          <Button>First</Button>
+        </RovingFocusGroup.Item>
+        <RovingFocusGroup.Item tabStopId="item-2" asChild>
+          <Button>Second (default)</Button>
+        </RovingFocusGroup.Item>
+        <RovingFocusGroup.Item tabStopId="item-3" asChild>
+          <Button>Third</Button>
+        </RovingFocusGroup.Item>
+      </XStack>
+    </RovingFocusGroup>
+  )
+}
+```
+
+## Non-Focusable Items
+
+Mark items as non-focusable to skip them during keyboard navigation:
+
+```tsx
+import { Button, RovingFocusGroup, XStack } from 'tamagui'
+
+export default () => (
+  <RovingFocusGroup>
+    <XStack gap="$2">
+      <RovingFocusGroup.Item asChild>
+        <Button>Enabled</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item focusable={false} asChild>
+        <Button disabled>Disabled</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Enabled</Button>
+      </RovingFocusGroup.Item>
+    </XStack>
+  </RovingFocusGroup>
+)
+```
+
+## Entry Focus Control
+
+Handle focus when the group first receives focus:
+
+```tsx
+import { Button, RovingFocusGroup, XStack } from 'tamagui'
+
+export default () => (
+  <RovingFocusGroup
+    onEntryFocus={(event) => {
+      // Prevent default focus behavior
+      // event.preventDefault()
+      console.log('Group received focus')
+    }}
+  >
+    <XStack gap="$2">
+      <RovingFocusGroup.Item asChild>
+        <Button>First</Button>
+      </RovingFocusGroup.Item>
+      <RovingFocusGroup.Item asChild>
+        <Button>Second</Button>
+      </RovingFocusGroup.Item>
+    </XStack>
+  </RovingFocusGroup>
+)
+```
+
+## API Reference
+
+### RovingFocusGroup
+
+<PropsTable
+  data={[
+    {
+      name: 'orientation',
+      type: '"horizontal" | "vertical"',
+      description:
+        'The orientation of the group. Determines which arrow keys are used for navigation (left/right vs up/down).',
+    },
+    {
+      name: 'dir',
+      type: '"ltr" | "rtl"',
+      description:
+        'The reading direction. When set to rtl, left and right arrow keys are reversed.',
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'When true, keyboard navigation will loop from last to first and vice versa.',
+    },
+    {
+      name: 'currentTabStopId',
+      type: 'string | null',
+      description:
+        'The controlled id of the current tab stop.',
+    },
+    {
+      name: 'defaultCurrentTabStopId',
+      type: 'string',
+      description:
+        'The default id of the current tab stop for uncontrolled usage.',
+    },
+    {
+      name: 'onCurrentTabStopIdChange',
+      type: '(tabStopId: string | null) => void',
+      description:
+        'Callback when the current tab stop changes.',
+    },
+    {
+      name: 'onEntryFocus',
+      type: '(event: Event) => void',
+      description:
+        'Callback when focus enters the group via keyboard. Call event.preventDefault() to prevent default focus behavior.',
+    },
+    {
+      name: 'asChild',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'When true, renders as a Slot, merging props onto the child element.',
+    },
+  ]}
+/>
+
+### RovingFocusGroup.Item
+
+<PropsTable
+  data={[
+    {
+      name: 'tabStopId',
+      type: 'string',
+      description:
+        'A unique identifier for this item. Auto-generated if not provided.',
+    },
+    {
+      name: 'focusable',
+      type: 'boolean',
+      default: 'true',
+      description:
+        'Whether this item should be focusable. Set to false to skip during keyboard navigation.',
+    },
+    {
+      name: 'active',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Whether this item is considered active. Active items receive focus priority when the group is entered.',
+    },
+    {
+      name: 'asChild',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'When true, renders as a Slot, merging props onto the child element.',
+    },
+  ]}
+/>
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `Tab` | Move focus into/out of the group |
+| `Arrow Left/Right` | Move focus between items (horizontal orientation) |
+| `Arrow Up/Down` | Move focus between items (vertical orientation) |
+| `Home` / `Page Up` | Move focus to first item |
+| `End` / `Page Down` | Move focus to last item |
+
+## Usage in Components
+
+RovingFocusGroup is used internally by several Tamagui components to provide keyboard navigation:
+
+- [Tabs](/docs/components/tabs) - Navigate between tab triggers
+- [RadioGroup](/docs/components/radio-group) - Navigate between radio options
+- [ToggleGroup](/docs/components/toggle-group) - Navigate between toggle options
+
+<Notice>
+  RovingFocusGroup is primarily designed for web platforms. On React Native, it renders children without keyboard navigation management since native platforms handle focus differently.
+</Notice>

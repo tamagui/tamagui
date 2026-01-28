@@ -12,7 +12,6 @@ export {
   createV5Theme,
   defaultChildrenThemes,
   defaultDarkPalette,
-  defaultGrandChildrenThemes,
   defaultLightPalette,
   hslToString,
   // helpers

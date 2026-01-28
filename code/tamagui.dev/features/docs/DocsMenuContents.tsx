@@ -113,9 +113,11 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }}
         aria-label="Docs Menu"
       >
-        <XStack justifyContent="flex-end" pr="$2" mb="$2">
-          <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
-        </XStack>
+        {!inMenu && (
+          <XStack justifyContent="flex-end" pr="$2" mb="$2">
+            <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
+          </XStack>
+        )}
         <Accordion value={openSections} onValueChange={setOpenSections} type="multiple">
           {Object.keys(uiGroupedItems).map((label) => {
             const items = uiGroupedItems[label]
@@ -147,9 +149,11 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
-      <XStack justifyContent="flex-end" pr="$2" mb="$2">
-        <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
-      </XStack>
+      {!inMenu && (
+        <XStack justifyContent="flex-end" pr="$2" mb="$2">
+          <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
+        </XStack>
+      )}
       <Accordion value={openSections} onValueChange={setOpenSections} type="multiple">
         {Object.keys(groupedItems).map((sectionTitle) => {
           const items = groupedItems[sectionTitle]

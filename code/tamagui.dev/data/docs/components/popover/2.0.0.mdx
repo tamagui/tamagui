@@ -200,9 +200,9 @@ Contains every component for the popover.
     },
     {
       name: 'onOpenChange',
-      type: '(open: boolean) => void',
+      type: `(open: boolean, via?: 'hover' | 'press') => void`,
       required: false,
-      description: `Called when the popover opens or closes.`,
+      description: `Called when the popover opens or closes. The optional second argument indicates how it was triggered - 'hover' for hover events (when using the hoverable prop) or 'press' for click/press events.`,
     },
     {
       name: 'keepChildrenMounted',
@@ -296,6 +296,13 @@ Extends PopperContent which extends SizableStack which extends a YStack (see
       type: "boolean | 'even-when-repositioning'",
       description:
         'Enable smooth animation when the content position changes (e.g., when flipping sides).',
+    },
+    {
+      name: 'transformOrigin',
+      type: 'boolean',
+      default: 'true',
+      description:
+        'Automatically sets CSS transform-origin based on placement and arrow position. Updates when the popover flips. Enables natural scale animations that grow from the arrow point.',
     },
     {
       name: 'size',

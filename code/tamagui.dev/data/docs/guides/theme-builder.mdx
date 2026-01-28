@@ -340,3 +340,35 @@ Add values that don't cascade to child themes:
   },
 })
 ```
+
+### Inverse Themes
+
+In v2, the `<Theme inverse />` prop and `themeInverse` prop were removed. To
+create inverse-like themes, follow the pattern used by the v5 config's `accent`
+theme: swap your light and dark palettes.
+
+```tsx
+// with createThemes - swap palettes for inverse effect
+accent: {
+  palette: {
+    light: darkPalette,  // use dark colors in light mode
+    dark: lightPalette,  // use light colors in dark mode
+  },
+},
+```
+
+This gives you an "inverted" theme where light mode shows dark colors and vice
+versa - commonly used for accent buttons or cards that should stand out. This
+approach is also SSR-safe.
+
+Use it in your components:
+
+```tsx
+<Theme name="accent">
+  <Button>Inverted colors</Button>
+</Theme>
+
+// or use activeTheme on supported components
+<Switch activeTheme="accent" />
+<Checkbox activeTheme="accent" />
+```

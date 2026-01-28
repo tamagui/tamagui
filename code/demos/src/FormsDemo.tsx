@@ -39,7 +39,7 @@ export function FormsDemo(props: { size: SizeTokens }) {
     >
       <Form.Trigger asChild disabled={status !== 'off'}>
         <YStack gap="$4">
-          <Button theme="surface3">Submit</Button>
+          <Button>Submit</Button>
           <YStack width="100%" height={40} justifyContent="center" alignItems="center">
             <AnimatePresence>
               {status === 'submitting' ? (

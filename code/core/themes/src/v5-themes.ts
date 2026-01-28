@@ -19,30 +19,31 @@ import {
   yellowDark,
 } from '@tamagui/colors'
 import { createThemes } from '@tamagui/theme-builder'
-import { interpolateColor, opacify } from './opacify'
+import { opacify } from './opacify'
 import { v5Templates } from './v5-templates'
 
 // re-export color utilities for users
 export { interpolateColor, opacify } from './opacify'
 
-export const defaultComponentThemes = {
-  Button: { template: 'surface3' },
+export const v5ComponentThemes = {
+  Button: { template: 'surface1' },
+  Input: { template: 'surface1' },
+  Progress: { template: 'surface2' },
+  ProgressIndicator: { template: 'accent' },
+  Slider: { template: 'surface1' },
+  SliderActive: { template: 'surface2' },
+  SliderThumb: { template: 'accent' },
   Switch: { template: 'surface2' },
   SwitchThumb: { template: 'accent' },
-  Progress: { template: 'surface1' },
-  SliderThumb: { template: 'accent' },
-  Tooltip: { template: 'accent' },
-  ProgressIndicator: { template: 'accent' },
-  Input: { template: 'surface1' },
   TextArea: { template: 'surface1' },
+  Tooltip: { template: 'accent' },
 } as const
 
 /** Default grandchildren themes available in v5 */
-export const defaultGrandChildrenThemes = {
+export const v5GrandchildrenThemes = {
   accent: { template: 'accent' },
   surface1: { template: 'surface1' },
   surface2: { template: 'surface2' },
-  surface3: { template: 'surface3' },
 } satisfies Record<string, GrandChildrenThemeDefinition>
 
 // ---- adjustPalette: generic HSL color adjustment ----
@@ -210,7 +211,7 @@ const lightPalette = [
   'hsl(0, 0%, 45%)',
   'hsl(0, 0%, 30%)',
   'hsl(0, 0%, 20%)',
-  'hsl(0, 0%, 12%)',
+  'hsl(0, 0%, 14%)',
   'hsl(0, 0%, 2%)',
 ]
 
@@ -324,7 +325,7 @@ export type CreateV5ThemeOptions<
   GrandChildren extends Record<
     string,
     GrandChildrenThemeDefinition
-  > = typeof defaultGrandChildrenThemes,
+  > = typeof v5GrandchildrenThemes,
 > = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: string[]
@@ -337,7 +338,7 @@ export type CreateV5ThemeOptions<
   childrenThemes?: Children
   /**
    * Override grandChildren themes (alt1, alt2, surface1, etc.)
-   * Pass undefined or omit to use defaultGrandChildrenThemes
+   * Pass undefined or omit to use v5GrandchildrenThemes
    */
   grandChildrenThemes?: GrandChildren
   /**
@@ -374,7 +375,7 @@ export function createV5Theme<
   GrandChildren extends Record<
     string,
     GrandChildrenThemeDefinition
-  > = typeof defaultGrandChildrenThemes,
+  > = typeof v5GrandchildrenThemes,
 >(
   options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<
     Children,
@@ -385,8 +386,8 @@ export function createV5Theme<
     darkPalette: customDarkPalette = darkPalette,
     lightPalette: customLightPalette = lightPalette,
     childrenThemes = defaultChildrenThemes as unknown as Children,
-    grandChildrenThemes = defaultGrandChildrenThemes as unknown as GrandChildren,
-    componentThemes: customComponentThemes = defaultComponentThemes,
+    grandChildrenThemes = v5GrandchildrenThemes as unknown as GrandChildren,
+    componentThemes: customComponentThemes = v5ComponentThemes,
   } = options
 
   // Generate black/white named colors from palettes
@@ -484,10 +485,6 @@ export function createV5Theme<
       const fgColor = palette[palette.length - 2]!
 
       return {
-        // In-between shades
-        color0pt5: interpolateColor(bgColor, palette[2]!, 0.5),
-        color1pt5: interpolateColor(palette[1]!, palette[2]!, 0.5),
-        color2pt5: interpolateColor(palette[2]!, palette[3]!, 0.5),
         // Opacity variants of foreground color
         color01: opacify(fgColor, 0.1),
         color0075: opacify(fgColor, 0.075),
@@ -502,6 +499,13 @@ export function createV5Theme<
         background0025: opacify(bgColor, 0.025),
         background002: opacify(bgColor, 0.02),
         background001: opacify(bgColor, 0.01),
+        background02: opacify(bgColor, 0.2),
+        background04: opacify(bgColor, 0.4),
+        background06: opacify(bgColor, 0.6),
+        background08: opacify(bgColor, 0.8),
+
+        // same as background01
+        outlineColor: opacify(bgColor, 0.1),
       }
     },
   })

@@ -1,33 +1,25 @@
-import { normalizeCSSColor, rgba } from '@tamagui/normalize-css-color'
-
-export { rgba } from '@tamagui/normalize-css-color'
+// web-only: use color-mix for opacity, no parsing needed
+// browsers handle named colors, hex, rgb, hsl natively
 
 export const normalizeColor = (color?: string | null, opacity?: number) => {
   if (!color) return
-  // Handle dynamic color objects (from $theme-dark/$theme-light)
+  // handle dynamic color objects (from $theme-dark/$theme-light)
   if (typeof color !== 'string') return color
-  if (color[0] === '$') return color
-  if (color.startsWith('var(')) {
-    if (typeof opacity === 'number' && opacity < 1) {
-      return `color-mix(in srgb, ${color} ${opacity * 100}%, transparent)`
-    }
-  } else {
-    const rgba = getRgba(color)
-    if (rgba) {
-      const colors = `${rgba.r},${rgba.g},${rgba.b}`
-      return opacity === 1
-        ? `rgb(${colors})`
-        : `rgba(${colors},${opacity ?? rgba.a ?? 1})`
-    }
+
+  // convert "transparent" to rgba for animation compatibility (motion.dev requires rgba)
+  if (color === 'transparent') {
+    return 'rgba(0, 0, 0, 0)'
   }
+
+  // apply opacity via color-mix (widely supported: Chrome 111+, Safari 16.2+, Firefox 113+)
+  if (typeof opacity === 'number' && opacity < 1) {
+    return `color-mix(in srgb, ${color} ${Math.round(opacity * 100)}%, transparent)`
+  }
+
   return color
 }
 
-export const getRgba = (color: string) => {
-  // Handle dynamic color objects (from $theme-dark/$theme-light)
-  if (typeof color !== 'string') return
-  const colorNum = normalizeCSSColor(color)
-  if (colorNum != null) {
-    return rgba(colorNum)
-  }
-}
+// stub for native compat - native uses normalizeColor.native.ts which has real impl
+export const getRgba = (
+  _color: string
+): { r: number; g: number; b: number; a: number } | undefined => undefined

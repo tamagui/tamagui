@@ -41,15 +41,15 @@ declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }>> & React.RefAttributes<TamaguiElement>>;
-export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const SliderActiveFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     size?: any;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>;
-declare const SliderTrackActive: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "unstyled" | "orientation"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+type SliderActiveProps = GetProps<typeof SliderActiveFrame>;
+declare const SliderActive: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "unstyled" | "orientation"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | SizeTokens | undefined;
     size?: any;
     fullscreen?: boolean | undefined;
@@ -251,6 +251,6 @@ declare const Thumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tama
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export { Range, Slider, SliderThumb, SliderTrack, SliderTrackActive, Thumb, Track, };
-export type { SliderProps, SliderTrackActiveProps, SliderTrackProps };
+export { Range, Slider, SliderThumb, SliderTrack, SliderActive, Thumb, Track, };
+export type { SliderProps, SliderActiveProps, SliderTrackProps };
 //# sourceMappingURL=Slider.d.ts.map

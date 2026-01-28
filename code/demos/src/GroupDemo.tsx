@@ -6,25 +6,25 @@ export function GroupDemo() {
     <YStack p="$3" gap="$2" items="center">
       <Group orientation="horizontal">
         <Group.Item>
-          <Button theme="surface3">First</Button>
+          <Button>First</Button>
         </Group.Item>
         <Group.Item>
-          <Button theme="surface3">Second</Button>
+          <Button>Second</Button>
         </Group.Item>
         <Group.Item>
-          <Button theme="surface3">Third</Button>
+          <Button>Third</Button>
         </Group.Item>
       </Group>
 
       {/* responsive size - children control their own size/radius */}
       <XGroup>
         <XGroup.Item>
-          <Button theme="surface3" size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
+          <Button size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
             First
           </Button>
         </XGroup.Item>
         <XGroup.Item>
-          <Button theme="surface3" size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
+          <Button size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
             Second
           </Button>
         </XGroup.Item>

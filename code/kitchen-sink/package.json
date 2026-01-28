@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "2.0.0-1769467800680",
+  "version": "2.0.0-1769588848304",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -84,6 +84,7 @@
     "react-native-gesture-handler": "~2.28.0",
     "react-native-ios-context-menu": "^3.2.1",
     "react-native-ios-utilities": "^5.2.0",
+    "react-native-keyboard-controller": "^1.16.0",
     "react-native-launch-arguments": "^4.1.1",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
@@ -113,7 +114,7 @@
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.2.88",
+    "one": "1.2.93",
     "pngjs": "^7.0.0",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",

@@ -3,7 +3,6 @@ import {
   createV5Theme,
   themes as defaultThemes,
   defaultChildrenThemes,
-  defaultGrandChildrenThemes,
 } from '../src/v5-themes'
 import { opacify, interpolateColor } from '../src/opacify'
 
@@ -166,12 +165,6 @@ describe('defaultChildrenThemes', () => {
     expect(defaultChildrenThemes.neutral.light).toEqual(
       defaultChildrenThemes.neutral.dark
     )
-  })
-})
-
-describe('defaultGrandChildrenThemes', () => {
-  test('has accent with inverse template', () => {
-    expect(defaultGrandChildrenThemes.accent.template).toBe('inverse')
   })
 })
 

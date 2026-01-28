@@ -4,7 +4,7 @@ export declare function normalizeShadow({ shadowColor, shadowOffset, shadowOpaci
         height: any;
     };
     shadowRadius: any;
-    shadowColor: string | undefined;
+    shadowColor: any;
     shadowOpacity: any;
 };
 //# sourceMappingURL=normalizeShadow.d.ts.map
