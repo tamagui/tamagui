@@ -566,8 +566,17 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 ### TODO / Known Issues
 
 - [x] Top-right position: can't pull left with resistance when expanded - FIXED (all-direction resistance works)
-- [x] Mixed height toasts don't position correctly in stack - NOT A BUG (positioning is correct)
+- [x] Mixed height toasts don't position correctly in stack - FIXED (heightBeforeMe calculation)
 - [ ] swipeDirection 'auto' option to auto-detect based on edge position
+
+### 2026-01-27 (continued - mixed height fix)
+
+**Bug Fix: Mixed height toast positioning**
+- Issue: Toasts with different heights (e.g., with description vs simple) overlapped when expanded
+- Root cause: Y position calculation used heights array index which didn't match visual order
+- Fix: Added `heightBeforeMe` prop calculated in Toaster by summing heights of preceding toasts
+- Now each toast's expanded Y position is based on actual heights of toasts above it
+- Gap between expanded toasts is consistent (12px) regardless of height differences
 
 ### 2026-01-27 (continued - velocity-based exit)
 
