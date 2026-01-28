@@ -169,6 +169,8 @@ export function createAnimations<A extends AnimationsConfig>(
 ): AnimationDriver<A> {
   return {
     isReactNative: true,
+    inputStyle: 'value',
+    outputStyle: 'inline',
     animations,
     View: AnimatedView,
     Text: AnimatedText,

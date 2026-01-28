@@ -93,6 +93,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     Text: MotionText,
     isReactNative: false,
     supportsCSS: true,
+    inputStyle: 'css',
+    outputStyle: 'inline',
     needsWebStyles: true,
     avoidReRenders: true,
     animations,

@@ -53,7 +53,9 @@ export const useComponentState = (
       (props.style && hasAnimatedStyleValue(props.style))
   )
 
-  const supportsCSS = animationDriver?.supportsCSS
+  // for backwards compat, derive from supportsCSS if new props not set
+  const outputStyle = animationDriver?.outputStyle ?? (animationDriver?.supportsCSS ? 'css' : 'inline')
+  const supportsCSS = outputStyle === 'css'
   const curStateRef = stateRef.current
 
   if (!needsHydration && hasAnimationProp) {

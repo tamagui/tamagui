@@ -40,6 +40,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     usePresence,
     ResetPresence,
     supportsCSS: true,
+    inputStyle: 'css',
+    outputStyle: 'css',
     classNameAnimation: true,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {

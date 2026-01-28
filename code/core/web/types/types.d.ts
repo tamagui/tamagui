@@ -1717,6 +1717,10 @@ export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = Universal
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
     supportsCSS?: boolean;
+    /** What style format the driver expects as input: 'css' (CSS variables) or 'value' (resolved values) */
+    inputStyle?: 'css' | 'value';
+    /** How the driver outputs styles: 'css' (className-based) or 'inline' (style object) */
+    outputStyle?: 'css' | 'inline';
     needsWebStyles?: boolean;
     avoidReRenders?: boolean;
     /** When true, this is a stub driver with no real animation support */
