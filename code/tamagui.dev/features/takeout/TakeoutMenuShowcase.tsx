@@ -363,7 +363,7 @@ function InputComponent() {
         placeholder="Search..."
         width={150}
       />
-      <Button theme="surface3" size="$3">
+      <Button theme="surface1" size="$3">
         Go
       </Button>
     </XStack>
