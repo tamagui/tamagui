@@ -175,6 +175,29 @@ export const MyComponent = () => (
 )
 ```
 
+## Zero Re-render Mode
+
+The Reanimated driver supports `avoidReRenders` for the highest performance animations. When enabled, style changes bypass React entirely and run directly through Reanimated worklets:
+
+```tsx
+const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    stiffness: 100,
+  },
+}, {
+  avoidReRenders: true,
+})
+```
+
+With `avoidReRenders: true`:
+- Style changes don't trigger React re-renders
+- Animations run entirely on the UI thread
+- Best for high-frequency animations like drag gestures
+
+**Note:** This mode has some limitations - not all style properties may be animatable, and complex state-dependent animations may still need React updates.
+
 ## Advanced Features
 
 Reanimated provides advanced features:

@@ -298,6 +298,13 @@ Extends PopperContent which extends SizableStack which extends a YStack (see
         'Enable smooth animation when the content position changes (e.g., when flipping sides).',
     },
     {
+      name: 'transformOrigin',
+      type: 'boolean',
+      default: 'true',
+      description:
+        'Automatically sets CSS transform-origin based on placement and arrow position. Updates when the popover flips. Enables natural scale animations that grow from the arrow point.',
+    },
+    {
       name: 'size',
       type: 'SizeTokens',
       required: false,
