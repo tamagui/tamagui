@@ -1,49 +1,70 @@
 import { toast, Toaster, type ToasterPosition } from '@tamagui/toast'
-import { ChevronDown, ChevronUp, Circle, X } from '@tamagui/lucide-icons'
-import { useState } from 'react'
+import {
+  ArrowDown,
+  ArrowDownLeft,
+  ArrowDownRight,
+  ArrowUp,
+  ArrowUpLeft,
+  ArrowUpRight,
+} from '@tamagui/lucide-icons'
+import { useRef, useState } from 'react'
 import { Button, Theme, XStack, YStack } from 'tamagui'
-
-// Toaster provides stacking, swipe-to-dismiss, and smooth animations.
-// For more control, use the composable API: Toast, ToastProvider, ToastViewport
 
 export const ToastDemo = () => {
   const [position, setPosition] = useState<ToasterPosition>('bottom-right')
+  const count = useRef(0)
+
+  const showToast = (newPosition: ToasterPosition) => {
+    setPosition(newPosition)
+    count.current++
+    toast(`Toast #${count.current}`)
+  }
 
   return (
     <Theme name="surface2">
       <Toaster position={position} />
 
-      <YStack gap="$3" self="center">
-        {/* Toast types */}
-        <XStack gap="$2" justify="center">
-          <Button size="$3" onPress={() => toast('Default')}>
-            Default
-          </Button>
-          <Button size="$3" theme="green" onPress={() => toast.success('Success!')}>
-            Success
-          </Button>
-          <Button size="$3" theme="red" onPress={() => toast.error('Error')}>
-            Error
-          </Button>
-          <Button size="$3" theme="yellow" onPress={() => toast.warning('Warning')}>
-            Warning
-          </Button>
-          <Button size="$3" icon={X} onPress={() => toast.dismiss()} />
+      <YStack gap="$2" self="center">
+        <XStack gap="$2">
+          <PositionButton
+            position="top-left"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUpLeft}
+          />
+          <PositionButton
+            position="top-center"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUp}
+          />
+          <PositionButton
+            position="top-right"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUpRight}
+          />
         </XStack>
-
-        {/* Position grid */}
-        <YStack gap="$2" self="center">
-          <XStack gap="$2">
-            <PositionButton position="top-left" current={position} onPress={setPosition} Icon={Circle} />
-            <PositionButton position="top-center" current={position} onPress={setPosition} Icon={ChevronUp} />
-            <PositionButton position="top-right" current={position} onPress={setPosition} Icon={Circle} />
-          </XStack>
-          <XStack gap="$2">
-            <PositionButton position="bottom-left" current={position} onPress={setPosition} Icon={Circle} />
-            <PositionButton position="bottom-center" current={position} onPress={setPosition} Icon={ChevronDown} />
-            <PositionButton position="bottom-right" current={position} onPress={setPosition} Icon={Circle} />
-          </XStack>
-        </YStack>
+        <XStack gap="$2">
+          <PositionButton
+            position="bottom-left"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDownLeft}
+          />
+          <PositionButton
+            position="bottom-center"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDown}
+          />
+          <PositionButton
+            position="bottom-right"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDownRight}
+          />
+        </XStack>
       </YStack>
     </Theme>
   )

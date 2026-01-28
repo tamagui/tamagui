@@ -1,4 +1,8 @@
-// Toast v2 imperative API (Sonner-style)
+// Toast v2 - composable component API
+export { Toast, useToasts } from './ToastComposable'
+export type { ToastRootProps, ToastViewportProps, ToastItemProps, ToastPosition } from './ToastComposable'
+
+// Toast v2 - imperative API
 export { toast } from './ToastState'
 export type {
   ToastT,
@@ -10,31 +14,9 @@ export type {
   ToastAction,
 } from './ToastState'
 
+// Toaster - all-in-one component (uses composable API internally)
 export { Toaster } from './Toaster'
 export type { ToasterProps, ToasterPosition, HeightT } from './Toaster'
-
-// Re-export v1 for backwards compatibility
-// Users should migrate to '@tamagui/toast/v1' for the legacy API
-export {
-  Toast,
-  ToastProvider,
-  ToastViewport,
-  useToast,
-  useToastController,
-  useToastState,
-} from './Toast'
-export type {
-  ToastProps,
-  ToastProviderProps,
-  ToastViewportProps,
-  ToastActionProps,
-  ToastCloseProps,
-  ToastDescriptionProps,
-  ToastTitleProps,
-  ToastNativePlatform,
-  ToastNativeValue,
-  CustomData,
-} from './Toast'
 
 export type { SwipeDirection } from './ToastProvider'
 export type { BurntToastOptions, CreateNativeToastOptions, NativeToastRef } from './types'
