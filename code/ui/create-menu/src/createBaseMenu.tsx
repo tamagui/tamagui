@@ -18,13 +18,13 @@ import { useDirection } from '@tamagui/use-direction'
 import type { TamaguiComponent, TextProps } from '@tamagui/web'
 import {
   type ViewProps,
-  Text,
-  View,
   composeEventHandlers,
   composeRefs,
   createStyledContext,
   isWeb,
+  Text,
   useComposedRefs,
+  View,
   withStaticProperties,
 } from '@tamagui/web'
 import type { TamaguiElement } from '@tamagui/web/types'
@@ -1587,6 +1587,21 @@ export function createBaseMenu({
                   // (e.g., ArrowLeft opens a left-side submenu)
                   const willOpen = SUB_OPEN_KEYS[effectiveDir].includes(event.key)
                   if (willOpen) {
+                    // if submenu is already open (e.g., opened via hover), focus the first item
+                    if (context.open && context.content) {
+                      // find and focus the first focusable item in the submenu
+                      const contentEl = context.content as unknown as HTMLElement
+                      const firstItem = contentEl.querySelector?.(
+                        '[role="menuitem"]:not([data-disabled])'
+                      ) as HTMLElement | null
+                      if (firstItem) {
+                        // @ts-ignore focusVisible is a newer API
+                        firstItem.focus({ focusVisible: true })
+                        event.preventDefault()
+                        return
+                      }
+                    }
+
                     // set the popper reference for keyboard-only open
                     // (normally set on mouseEnter, see PopperAnchor)
                     const triggerEl = event.currentTarget as HTMLElement
@@ -1894,5 +1909,6 @@ export type {
   MenuRadioGroupProps,
   MenuRadioItemProps,
   MenuSeparatorProps,
-  MenuSubTriggerProps,
+  MenuSubTriggerProps
 }
+
