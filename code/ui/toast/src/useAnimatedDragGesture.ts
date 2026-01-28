@@ -135,6 +135,14 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
       const velocityX = Math.abs(deltaX) / timeTaken
       const velocityY = Math.abs(deltaY) / timeTaken
 
+      const lockedDirection = lockedDirectionRef.current
+
+      // if locked to wrong axis for the swipe direction, don't dismiss
+      // e.g., if drag started vertical but swipe direction is horizontal
+      const isLockedToWrongAxis =
+        (lockedDirection === 'y' && isHorizontal) ||
+        (lockedDirection === 'x' && isVertical)
+
       const relevantDelta = isHorizontal ? deltaX : deltaY
       const relevantVelocity = isHorizontal ? velocityX : velocityY
 
@@ -143,17 +151,21 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
 
       // determine exit direction based on actual drag direction
       let exitDirection: 'left' | 'right' | 'up' | 'down' | null = null
-      if (direction === 'right' && deltaX > 0) exitDirection = 'right'
-      else if (direction === 'left' && deltaX < 0) exitDirection = 'left'
-      else if (direction === 'horizontal') {
-        if (Math.abs(deltaX) > Math.abs(deltaY)) {
-          exitDirection = deltaX > 0 ? 'right' : 'left'
-        }
-      } else if (direction === 'down' && deltaY > 0) exitDirection = 'down'
-      else if (direction === 'up' && deltaY < 0) exitDirection = 'up'
-      else if (direction === 'vertical') {
-        if (Math.abs(deltaY) > Math.abs(deltaX)) {
-          exitDirection = deltaY > 0 ? 'down' : 'up'
+
+      // only set exit direction if not locked to wrong axis
+      if (!isLockedToWrongAxis) {
+        if (direction === 'right' && deltaX > 0) exitDirection = 'right'
+        else if (direction === 'left' && deltaX < 0) exitDirection = 'left'
+        else if (direction === 'horizontal') {
+          if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            exitDirection = deltaX > 0 ? 'right' : 'left'
+          }
+        } else if (direction === 'down' && deltaY > 0) exitDirection = 'down'
+        else if (direction === 'up' && deltaY < 0) exitDirection = 'up'
+        else if (direction === 'vertical') {
+          if (Math.abs(deltaY) > Math.abs(deltaX)) {
+            exitDirection = deltaY > 0 ? 'down' : 'up'
+          }
         }
       }
 
@@ -170,7 +182,7 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
         onCancel()
       }
     },
-    [disabled, direction, threshold, isHorizontal, onDismiss, onCancel]
+    [disabled, direction, threshold, isHorizontal, isVertical, onDismiss, onCancel]
   )
 
   const handlePointerCancel = React.useCallback(() => {

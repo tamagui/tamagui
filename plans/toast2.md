@@ -1,5 +1,12 @@
 # Toast v2 - Complete Redesign Plan
 
+DO NOT RUN PLAYWRIGHT wihtou 'headless'!!!!!!!!!!!   
+
+run `yarn watch` in the bg its faster 
+run kitchen-sink:web in the bg!!!!!!! ON PORT 6666!!!!!!!!!!!!!!
+- change tests to run on 6666  
+
+
 ## Vision
 
 Build the best toast component for React Native/Web - combining Sonner's polish and UX details with Base UI's composability, implemented in pure Tamagui style with cross-platform gesture handling.
@@ -8,11 +15,46 @@ Build the best toast component for React Native/Web - combining Sonner's polish 
 
 ## Core Principles
 
-1. **Tamagui-first**: No CSS animations, use `useAnimatedNumber`/`useAnimatedNumberStyle` for all motion
+1. **Tamagui-first**: No CSS animations, use `useAnimatedNumber`/`useAnimatedNumberStyle` for interactive + animations
 2. **Cross-driver animations**: Works with CSS, RN Animated, Reanimated, and Motion drivers
 3. **Composable API**: Base UI-style compound components for full customization
 4. **Premium UX**: Sonner-level polish - resistance physics, velocity-based dismissal, smooth stacking
 5. **unstyled={false} defaults**: Beautiful out-of-box styling, fully customizable with `unstyled={true}`
+
+---
+
+## Developing
+
+DO NOT RUN PLAYWRIGHT wihtou 'headless'!!!!!!!!!!!   
+
+run `yarn watch` in the bg its faster 
+run kitchen-sink:web in the bg!!!!!!! ON PORT 6666!!!!!!!!!!!!!!
+- change tests to run on 6666  
+
+The is intensively animated / interactive stuff  in the past you really struggled to get it right, you would: 
+
+- drags would not be working or only dragging the inside, or glitchy and think its ok 
+- mousemove between the toast would casue stutering animations
+- complex mouse interactions like swiping one while others are open or moving mouse back over while they  close would just break 
+
+so you need to come up with a way to test that like REALLY
+
+i think that maybe taking short videos using playwright perhaps and doing frame analysis (like sample 30)
+
+i tink you need to write extremely good tests as ell, and then have sub-agents just critique the tests themeslves if they are actaully testing like visually + animation + gesture deeply and well not halfway 
+
+FINAL NOTE:
+
+run `yarn watch` in the bg its faster 
+run kitchen-sink:web in the bg!!!!!!! ON PORT 6666!!!!!!!!!!!!!!
+- change tests to run on 6666  
+
+please dont interrupt me  - if kitchen sink tests are fialing maybe it did get stuck
+
+- rebase against origin/v2 every so often to be sure youre up to date 
+
+- IF YOU THINK YOU ARE DONE - TIME TO REVIEW YOUR TESTS AND HAVE
+A SUB-AGENT CRITIQUE YOUR TESTS
 
 ---
 
@@ -147,7 +189,7 @@ Three levels of animation, all cross-driver compatible:
 
 ### Animation Driver Integration
 
-Following Sheet's pattern for cross-driver support:
+Following Sheet's pattern for cross-driver support of animations that need to be granularyl changed in reaction to drags:
 
 ```tsx
 function useToastAnimations(options: ToastAnimationOptions) {
@@ -337,6 +379,8 @@ const ToastContent = styled(YStack, {
     unstyled: {
       false: {
         backgroundColor: '$background',
+        // TODO instead o fusnig hardcode just set size: '$true' here and add a size variant, tjen getSize() + shift - see other example in codebase
+        // this lets peple BYO tokens (clor ones like $backougrnd are ok)
         borderRadius: '$4',
         paddingHorizontal: '$4',
         paddingVertical: '$3',
@@ -349,25 +393,6 @@ const ToastContent = styled(YStack, {
         borderColor: '$borderColor',
         minWidth: 300,
         maxWidth: 400,
-      },
-    },
-
-    type: {
-      success: {
-        borderLeftWidth: 3,
-        borderLeftColor: '$green10',
-      },
-      error: {
-        borderLeftWidth: 3,
-        borderLeftColor: '$red10',
-      },
-      warning: {
-        borderLeftWidth: 3,
-        borderLeftColor: '$yellow10',
-      },
-      info: {
-        borderLeftWidth: 3,
-        borderLeftColor: '$blue10',
       },
     },
   },
@@ -405,116 +430,38 @@ const ToastTitle = styled(SizableText, {
 
 ---
 
-## Features Checklist
+## Progress Log
 
-### From Sonner
-- [x] Imperative API (`toast()`, `toast.success()`, etc.)
-- [x] Promise toasts with loading/success/error states
-- [x] Stacking with scale + opacity (collapsed/expanded)
-- [x] Swipe to dismiss with velocity detection
-- [x] Pause on hover/interaction
-- [x] Rich content (title, description, icon)
-- [x] Action/cancel buttons
-- [x] Auto-dismiss with configurable duration
-- [x] Position variants (6 positions)
-- [x] Custom JSX toasts
-- [ ] Toast history API
-- [x] Keyboard focus management (hotkey to focus) - Alt+T by default
-- [ ] Rich colors option
+### 2026-01-27
 
-### From Base UI
-- [x] Compound component API
-- [x] Unstyled/headless mode
-- [x] Accessibility (ARIA live regions, roles)
-- [x] Swipe direction prop (single or array)
-- [ ] Anchor positioning (toast at element)
-- [ ] F6 keyboard navigation to viewport
-- [ ] Priority levels for announcements
+**Bug Fix: Direction Lock in Pointer Up Handler**
+- Found bug via new test: diagonal drags starting vertical were still dismissing horizontal toasts
+- Fixed `handlePointerUp` in `useAnimatedDragGesture.ts` to check `lockedDirectionRef` before allowing dismiss
+- Added `isLockedToWrongAxis` check that prevents horizontal dismissal when locked to Y axis (and vice versa)
 
-### Tamagui-Specific
-- [x] Cross-animation-driver support
-- [x] `useAnimatedNumber`/`useAnimatedNumberStyle` for all motion
-- [x] AnimatePresence for enter/exit
-- [x] `unstyled` variant pattern
-- [x] `createStyledContext` for prop inheritance
-- [x] Native toast support (burnt)
-- [x] Portal rendering
+**Tests Added (33 total in Toast.test.tsx, 13 in ToastMultiple.test.tsx = 46 total)**
 
-### Premium UX Details
-- [x] Resistance physics on wrong-direction drag
-- [x] Velocity-based dismissal
-- [x] Spring animations for snap-back
-- [x] Smooth stacking transitions
-- [x] Transform-origin awareness for scale
-- [x] Gap filler for hover stability
-- [ ] Haptic feedback on dismiss (native)
-- [x] Reduced motion support (useReducedMotion hook, respects prefers-reduced-motion)
+New test categories added:
+- Toast Gesture Physics (6 tests):
+  - diagonal drag direction lock prevents horizontal swipe ✓
+  - resistance caps at ~25px when dragging far in wrong direction ✓
+  - fast flick in wrong direction does NOT dismiss ✓
+  - transform follows sqrt resistance curve during wrong-direction drag ✓
+  - orphaned pointer move without pointer down is ignored ✓
+  - right-click during drag triggers cancel and snaps back ✓
 
----
+- Toast Stacking Drag Interactions (3 tests):
+  - dragging stacked (non-front) toast works correctly ✓
+  - drag one toast while another is entering does not cause glitches ✓
+  - escape key during drag cancels drag and dismisses toast ✓
 
-## Implementation Order
-
-### Phase 1: Core Foundation
-1. Toast state management (observer pattern) ✅
-2. Basic Toaster component ✅
-3. ToastItem with basic rendering ✅
-4. Enter/exit animations with AnimatePresence ✅
-
-### Phase 2: Gesture System
-1. `useDragGesture` hook with resistance ✅
-2. Cross-driver animation integration ✅ (useAnimatedDragGesture + useToastAnimations)
-3. Velocity-based dismissal ✅
-4. Spring snap-back ✅
-5. **Web direct DOM manipulation for drag** ✅ (direct DOM for web, AnimatedView for native)
-
-### Phase 3: Stacking & Polish
-1. Collapsed stacking with scale/opacity ✅
-2. Expanded mode on hover ✅
-3. Height measurement and offset calculation ✅
-4. Position variants ✅
-
-### Phase 4: Composable API (LOW PRIORITY)
-1. Toast.Provider context
-2. Toast.Viewport portal
-3. Toast.Root wrapper
-4. Toast.Content/Title/Description/Action/Close
-5. Toast.Icon
-Note: Internal styled components already exist (ToastItemFrame, etc.). Can export if needed.
-
-### Phase 5: Final Polish
-1. Keyboard navigation ✅ (Escape key, Tab focus)
-2. Accessibility audit ✅ (role="status", aria-live)
-3. Reduced motion ✅ (useReducedMotion hook, respects prefers-reduced-motion)
-4. Documentation - TODO
-5. Tests ✅ (37 focused tests - 13 basic API + 24 gesture/interaction/edge cases)
-6. **Spring physics tuning** ✅ (damping: 30, stiffness: 400, mass: 0.5 for snappy feel)
-7. **Interaction UX polish** ✅:
-   - Prevent text selection during drag (user-select: none)
-   - Visual drag feedback (cursor: grab)
-   - Smart expansion (only with 2+ toasts, 50ms delay, cancel on drag)
-   - Fast dismiss animation (200ms timing instead of spring)
-
----
-
-## File Changes Summary
-
-### Existing (v2-toast) - Enhance
-- `Toaster.tsx` - add animation driver integration
-- `ToastItem.tsx` - use `useAnimatedNumber` for drag
-- `useDragGesture.ts` - integrate with animation system
-- `ToastState.ts` - good as-is
-
-### New Files
-- `Toast.tsx` - compound component API wrapper
-- `ToastContext.tsx` - createStyledContext setup
-- `ToastRoot.tsx` - individual toast wrapper
-- `ToastContent.tsx` - styled content container
-- `ToastTitle.tsx` - styled title
-- `ToastDescription.tsx` - styled description
-- `ToastAction.tsx` - action button
-- `ToastClose.tsx` - close button
-- `ToastIcon.tsx` - type-based icons
-- `useToastAnimations.ts` - animation coordination
+**Sub-agent Test Critique**
+Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
+- Direction lock mechanism (fixed + tested)
+- Resistance physics boundary (tested)
+- Orphaned pointer moves (tested)
+- Pointer cancel handling (tested)
+- Stacking + drag interactions (tested)
 
 ---
 

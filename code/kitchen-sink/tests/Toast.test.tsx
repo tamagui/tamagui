@@ -13,7 +13,7 @@ import { expect, test, type Page } from '@playwright/test'
  * - Complex interactions (swipe one toast while others exist)
  */
 
-const TEST_URL = '/?test=ToastMultipleCase&animationDriver=css'
+const TEST_URL = 'http://localhost:9000/?test=ToastMultipleCase&animationDriver=css'
 
 // helper to get the drag transform on the toast's DragWrapper
 async function getDragTransformX(page: Page): Promise<number> {
@@ -545,5 +545,245 @@ test.describe('Toast Auto-dismiss', () => {
 
     // loading toast should still exist
     expect(await getToastCount(page)).toBe(1)
+  })
+})
+
+test.describe('Toast Gesture Physics', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(TEST_URL)
+    await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
+  })
+
+  test('diagonal drag starting vertical locks Y direction and prevents horizontal swipe', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    const startX = box!.x + box!.width / 2
+    const startY = box!.y + box!.height / 2
+
+    // start drag with slight vertical bias first (2px down, then 1px right)
+    // this should lock to Y direction
+    await page.mouse.move(startX, startY)
+    await page.mouse.down()
+    await page.mouse.move(startX, startY + 3, { steps: 2 }) // vertical first
+    await page.mouse.move(startX + 100, startY + 3, { steps: 10 }) // then try horizontal
+
+    // check that horizontal offset is minimal (locked to Y)
+    const dragX = await getDragTransformX(page)
+    expect(Math.abs(dragX)).toBeLessThan(10) // should be near zero due to Y lock
+
+    await page.mouse.up()
+    await page.waitForTimeout(500)
+
+    // toast should NOT be dismissed (Y-locked drag can't trigger horizontal dismiss)
+    expect(await getToastCount(page)).toBe(1)
+  })
+
+  test('resistance caps at max ~25px when dragging far in wrong direction', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    const startX = box!.x + box!.width / 2
+    const startY = box!.y + box!.height / 2
+
+    // drag very far left (200px in wrong direction for right-swipe toast)
+    await page.mouse.move(startX, startY)
+    await page.mouse.down()
+    await page.mouse.move(startX - 200, startY, { steps: 20 })
+
+    // resistance should cap the offset around 25px
+    const dragX = await getDragTransformX(page)
+    expect(Math.abs(dragX)).toBeLessThan(30) // max should be ~25px
+
+    await page.mouse.up()
+    await page.waitForTimeout(500)
+
+    // toast should still exist
+    expect(await getToastCount(page)).toBe(1)
+  })
+
+  test('fast flick in wrong direction does NOT dismiss', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    const startX = box!.x + box!.width / 2
+    const startY = box!.y + box!.height / 2
+
+    // fast flick LEFT (wrong direction - swipe direction is right)
+    await page.mouse.move(startX, startY)
+    await page.mouse.down()
+    await page.mouse.move(startX - 50, startY, { steps: 2 }) // very fast
+    await page.mouse.up()
+
+    await page.waitForTimeout(500)
+
+    // toast should NOT be dismissed despite high velocity
+    expect(await getToastCount(page)).toBe(1)
+  })
+
+  test('transform follows sqrt resistance curve during wrong-direction drag', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    const startX = box!.x + box!.width / 2
+    const startY = box!.y + box!.height / 2
+
+    // drag in wrong direction and sample transform at different distances
+    await page.mouse.move(startX, startY)
+    await page.mouse.down()
+
+    const transforms: number[] = []
+
+    // sample at 25px, 50px, 100px wrong direction drags
+    for (const dist of [25, 50, 100]) {
+      await page.mouse.move(startX - dist, startY, { steps: 5 })
+      await page.waitForTimeout(50)
+      transforms.push(await getDragTransformX(page))
+    }
+
+    await page.mouse.up()
+
+    // sqrt resistance: offset should be sqrt(dist) * 2, capped at 25
+    // 25px drag -> sqrt(25)*2 = 10px
+    // 50px drag -> sqrt(50)*2 = 14.14px
+    // 100px drag -> sqrt(100)*2 = 20px (still under cap)
+    // all should be negative and much less than raw distance
+    expect(Math.abs(transforms[0])).toBeLessThan(15) // ~10px expected
+    expect(Math.abs(transforms[1])).toBeLessThan(18) // ~14px expected
+    expect(Math.abs(transforms[2])).toBeLessThan(25) // ~20px expected
+
+    // verify it's following sqrt curve (each subsequent should be less than linear)
+    // ratio test: offset at 100px should NOT be 4x offset at 25px
+    const ratio = Math.abs(transforms[2]) / Math.abs(transforms[0])
+    expect(ratio).toBeLessThan(3) // sqrt(100/25) = 2, so should be ~2
+  })
+
+  test('orphaned pointer move without pointer down is ignored', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    const startX = box!.x + box!.width / 2
+    const startY = box!.y + box!.height / 2
+
+    // move mouse over toast without pressing down
+    await page.mouse.move(startX, startY)
+    await page.mouse.move(startX + 100, startY, { steps: 10 })
+
+    // no transform should be applied
+    const dragX = await getDragTransformX(page)
+    expect(dragX).toBe(0)
+
+    // toast should still exist
+    expect(await getToastCount(page)).toBe(1)
+  })
+
+  test('right-click during drag triggers cancel and snaps back', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    const startX = box!.x + box!.width / 2
+    const startY = box!.y + box!.height / 2
+
+    // start drag
+    await page.mouse.move(startX, startY)
+    await page.mouse.down()
+    await page.mouse.move(startX + 40, startY, { steps: 5 })
+
+    // right-click should trigger pointer cancel
+    await page.mouse.click(startX + 40, startY, { button: 'right' })
+
+    await page.waitForTimeout(500)
+
+    // toast should still exist (drag was cancelled)
+    expect(await getToastCount(page)).toBe(1)
+  })
+})
+
+test.describe('Toast Stacking Drag Interactions', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(TEST_URL)
+    await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
+  })
+
+  test('dragging stacked (non-front) toast works correctly', async ({ page }) => {
+    // create multiple toasts
+    await page.click('[data-testid="toast-multiple"]')
+    await page.waitForTimeout(1000)
+
+    const toasts = await page.$$('[role="status"]')
+    expect(toasts.length).toBe(4)
+
+    // expand by hovering
+    const frontBox = await getToastBoundingBox(page)
+    expect(frontBox).toBeTruthy()
+    await page.mouse.move(frontBox!.x + frontBox!.width / 2, frontBox!.y + frontBox!.height / 2)
+    await page.waitForTimeout(200)
+
+    // get the second toast (non-front)
+    const secondToast = await page.$('[data-index="1"]')
+    expect(secondToast).toBeTruthy()
+    const secondBox = await secondToast!.boundingBox()
+    expect(secondBox).toBeTruthy()
+
+    // swipe the second toast
+    await page.mouse.move(secondBox!.x + secondBox!.width / 2, secondBox!.y + secondBox!.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(secondBox!.x + secondBox!.width / 2 + 100, secondBox!.y + secondBox!.height / 2, { steps: 10 })
+    await page.mouse.up()
+
+    await page.waitForTimeout(500)
+
+    // should have dismissed one toast
+    expect(await getToastCount(page)).toBe(3)
+  })
+
+  test('drag one toast while another is entering does not cause glitches', async ({ page }) => {
+    // create first toast
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    // start dragging the first toast
+    await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(box!.x + box!.width / 2 + 30, box!.y + box!.height / 2, { steps: 5 })
+
+    // while dragging, create more toasts
+    await page.click('[data-testid="toast-success"]')
+    await page.click('[data-testid="toast-error"]')
+
+    // continue and complete the drag
+    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, { steps: 5 })
+    await page.mouse.up()
+
+    await page.waitForTimeout(500)
+
+    // first toast dismissed, two new ones should exist
+    expect(await getToastCount(page)).toBe(2)
+  })
+
+  test('escape key during drag cancels drag and dismisses toast', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    // start drag
+    await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(box!.x + box!.width / 2 + 30, box!.y + box!.height / 2, { steps: 5 })
+
+    // press escape mid-drag
+    await page.keyboard.press('Escape')
+
+    await page.waitForTimeout(500)
+
+    // toast should be dismissed by escape
+    expect(await getToastCount(page)).toBe(0)
   })
 })
