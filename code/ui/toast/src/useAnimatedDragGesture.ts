@@ -171,6 +171,13 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
 
       const shouldDismiss = exitDirection && (passedThreshold || hasVelocity)
 
+      // release pointer capture (explicit release for safety, though browsers auto-release)
+      try {
+        ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
+      } catch {
+        // ignore if already released
+      }
+
       // reset refs
       dragStartRef.current = null
       lockedDirectionRef.current = null
@@ -185,12 +192,22 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
     [disabled, direction, threshold, isHorizontal, isVertical, onDismiss, onCancel]
   )
 
-  const handlePointerCancel = React.useCallback(() => {
-    dragStartRef.current = null
-    lockedDirectionRef.current = null
-    setIsDragging(false)
-    onCancel()
-  }, [onCancel])
+  const handlePointerCancel = React.useCallback(
+    (event: React.PointerEvent) => {
+      // release pointer capture
+      try {
+        ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
+      } catch {
+        // ignore if already released
+      }
+
+      dragStartRef.current = null
+      lockedDirectionRef.current = null
+      setIsDragging(false)
+      onCancel()
+    },
+    [onCancel]
+  )
 
   const gestureHandlers = {
     onPointerDown: handlePointerDown,
