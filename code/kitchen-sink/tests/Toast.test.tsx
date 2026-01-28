@@ -13,7 +13,7 @@ import { expect, test, type Page } from '@playwright/test'
  * - Complex interactions (swipe one toast while others exist)
  */
 
-const TEST_URL = 'http://localhost:6666/?test=ToastMultipleCase&animationDriver=css'
+const TEST_URL = 'http://localhost:7979/?test=ToastMultipleCase&animationDriver=css'
 
 // helper to get the drag transform on the toast's DragWrapper
 async function getDragTransformX(page: Page): Promise<number> {

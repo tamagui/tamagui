@@ -6,12 +6,12 @@ export default defineConfig({
 
   use: {
     // Base URL to use in actions like `await page.goto('/')`.
-    baseURL: 'http://localhost:6666',
+    baseURL: 'http://localhost:7979',
   },
   // Run your local dev server before starting the tests.
   webServer: {
     command: 'yarn start:web',
-    url: 'http://localhost:6666',
+    url: 'http://localhost:7979',
     reuseExistingServer: !process.env.CI,
   },
 })

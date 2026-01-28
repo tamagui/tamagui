@@ -51,7 +51,7 @@ module.exports = {
       directory: path.join(__dirname, 'public'),
     },
     compress: true,
-    port: process.env.PORT || 6666,
+    port: process.env.PORT || 7979,
   },
   module: {
     rules: [

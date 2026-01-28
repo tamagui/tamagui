@@ -3,8 +3,8 @@
 DO NOT RUN PLAYWRIGHT wihtou 'headless'!!!!!!!!!!!   
 
 run `yarn watch` in the bg its faster 
-run kitchen-sink:web in the bg!!!!!!! ON PORT 6666!!!!!!!!!!!!!!
-- change tests to run on 6666  
+run kitchen-sink:web in the bg!!!!!!! ON PORT 7979!!!!!!!!!!!!!!
+- change tests to run on 7979  
 
 
 ## Vision
@@ -28,8 +28,8 @@ Build the best toast component for React Native/Web - combining Sonner's polish 
 DO NOT RUN PLAYWRIGHT wihtou 'headless'!!!!!!!!!!!   
 
 run `yarn watch` in the bg its faster 
-run kitchen-sink:web in the bg!!!!!!! ON PORT 6666!!!!!!!!!!!!!!
-- change tests to run on 6666  
+run kitchen-sink:web in the bg!!!!!!! ON PORT 7979!!!!!!!!!!!!!!
+- change tests to run on 7979  
 
 The is intensively animated / interactive stuff  in the past you really struggled to get it right, you would: 
 
@@ -46,8 +46,8 @@ i tink you need to write extremely good tests as ell, and then have sub-agents j
 FINAL NOTE:
 
 run `yarn watch` in the bg its faster 
-run kitchen-sink:web in the bg!!!!!!! ON PORT 6666!!!!!!!!!!!!!!
-- change tests to run on 6666  
+run kitchen-sink:web in the bg!!!!!!! ON PORT 7979!!!!!!!!!!!!!!
+- change tests to run on 7979  
 
 please dont interrupt me  - if kitchen sink tests are fialing maybe it did get stuck
 
