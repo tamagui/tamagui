@@ -1,4 +1,9 @@
-import { Configuration, createStyledContext, styled, useConfiguration } from '@tamagui/web'
+import {
+  Configuration,
+  createStyledContext,
+  styled,
+  useConfiguration,
+} from '@tamagui/web'
 import { useState } from 'react'
 import {
   AnimatePresence,
@@ -233,11 +238,14 @@ function RovingTabsIndicator({
 } & ViewProps) {
   const isUnderline = variant === 'underline'
 
+  // very obvious colors for debugging
+  const bg = active ? 'blue' : 'red'
+
   return (
     <View
       position="absolute"
-      bg={active ? '$blue10' : '$color5'}
-      opacity={active ? 1 : 0.5}
+      bg={bg}
+      opacity={active ? 1 : 0.6}
       rounded={isUnderline ? '$2' : '$4'}
       transition="quick"
       pointerEvents="none"

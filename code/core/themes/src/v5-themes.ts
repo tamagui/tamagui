@@ -31,7 +31,7 @@ export const v5ComponentThemes = {
   Progress: { template: 'surface2' },
   ProgressIndicator: { template: 'accent' },
   Slider: { template: 'surface1' },
-  SliderTrack: { template: 'surface2' },
+  SliderActive: { template: 'surface2' },
   SliderThumb: { template: 'accent' },
   Switch: { template: 'surface2' },
   SwitchThumb: { template: 'accent' },

@@ -1,6 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import type { CreateTamaguiProps, Variable } from '../types'
-import { registerCSSVariable, variableToCSS } from './registerCSSVariable'
+import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
 import { getThemeCSSRules } from './getThemeCSSRules'
 import { getAllRules } from './insertStyleRule'
 

@@ -18,3 +18,19 @@ export const variableToCSS = (v: Variable, unitless = false) => {
 }
 
 export const tokensValueToVariable = new Map<any, any>()
+
+// auto-generated vars for theme values not in tokens
+let autoVarId = 0
+export const autoVariables: Variable[] = []
+
+export const getOrCreateVariable = (val: any): Variable => {
+  if (tokensValueToVariable.has(val)) {
+    return tokensValueToVariable.get(val)!
+  }
+  const name = `t${autoVarId++}`
+  const variable = `var(--${name})`
+  const v = { val, name, variable } as Variable
+  tokensValueToVariable.set(val, v)
+  autoVariables.push(v)
+  return v
+}

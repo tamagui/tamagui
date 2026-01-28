@@ -16,7 +16,7 @@ export declare const v5ComponentThemes: {
     readonly Slider: {
         readonly template: "surface1";
     };
-    readonly SliderTrack: {
+    readonly SliderActive: {
         readonly template: "surface2";
     };
     readonly SliderThumb: {
