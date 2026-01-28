@@ -200,9 +200,9 @@ Contains every component for the popover.
     },
     {
       name: 'onOpenChange',
-      type: '(open: boolean) => void',
+      type: `(open: boolean, via?: 'hover' | 'press') => void`,
       required: false,
-      description: `Called when the popover opens or closes.`,
+      description: `Called when the popover opens or closes. The optional second argument indicates how it was triggered - 'hover' for hover events (when using the hoverable prop) or 'press' for click/press events.`,
     },
     {
       name: 'keepChildrenMounted',
