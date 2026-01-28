@@ -44,7 +44,7 @@ module.exports = {
   devServer: {
     client: {
       overlay: false,
-      logging: 'warn',
+      logging: 'error',
     },
     hot: true,
     static: {
@@ -53,6 +53,14 @@ module.exports = {
     compress: true,
     port: process.env.PORT || 9000,
   },
+  ignoreWarnings: [
+    // suppress react-native-worklets critical dependency warning
+    /Critical dependency: require function is used in a way/,
+    // suppress expo-modules-core tsconfig warnings
+    /expo-modules-core.*expo-module-scripts\/tsconfig\.base/,
+    // suppress all esbuild-loader tsconfig warnings
+    /esbuild-loader.*Error parsing tsconfig\.json/,
+  ],
   module: {
     rules: [
       // Process react-native-reanimated/worklets with Babel plugin from babel.config.js
