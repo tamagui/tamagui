@@ -527,6 +527,25 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 - 13 tests in ToastMultiple.test.tsx
 - 50 total tests
 
+### 2026-01-27 (continued - velocity-based exit)
+
+**Feature: Velocity-based exit animation**
+- Issue: Swipe dismiss felt disconnected - drag ended abruptly, then AnimatePresence handled exit separately
+- AnimatePresence doesn't support initialVelocity, so couldn't carry momentum
+- Solution: Use `animateOut` from useToastAnimations instead of relying on AnimatePresence exitStyle for position
+- Now the gesture velocity is passed through to the spring animation for smooth momentum continuation
+
+**Implementation changes:**
+- `useAnimatedDragGesture.onDismiss` now passes velocity (px/ms) as second parameter
+- `useToastAnimations.animateOut` accepts optional velocity and uses it as initial spring velocity
+- `animateSpring` (CSS driver) now supports `initialVelocityX/Y` config options
+- `ToastItem.onDismiss` uses `animateOut(direction, velocity, callback)` then removes toast after animation
+- `exitStyle` simplified: for swipe dismisses, only handles opacity fade (position handled by drag transform)
+
+**Test timing updates:**
+- Changed waitForTimeout from 500ms to 800ms for tests involving swipe dismiss
+- Spring exit animation takes longer than previous instant removal + AnimatePresence transition
+
 ---
 
 ## Notes
