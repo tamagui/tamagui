@@ -21,7 +21,6 @@
   "dependencies": {
     "@react-native-masked-view/masked-view": "^0.3.1",
     "@tamagui/animations-css": "workspace:*",
-    "@tamagui/animations-moti": "workspace:*",
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/demos": "workspace:*",
