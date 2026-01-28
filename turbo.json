@@ -15,7 +15,7 @@
         "tamagui-build.js",
         "externalNodePlugin.js"
       ],
-      "outputs": [".next/**", "dist/**", "types/**"]
+      "outputs": [".next/**", "dist/**", "types/**", "**/*.css"]
     },
     "start": {
       "dependsOn": ["^build"],
