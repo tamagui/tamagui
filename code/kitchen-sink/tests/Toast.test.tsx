@@ -13,7 +13,7 @@ import { expect, test, type Page } from '@playwright/test'
  * - Complex interactions (swipe one toast while others exist)
  */
 
-const TEST_URL = 'http://localhost:9000/?test=ToastMultipleCase&animationDriver=css'
+const TEST_URL = 'http://localhost:6666/?test=ToastMultipleCase&animationDriver=css'
 
 // helper to get the drag transform on the toast's DragWrapper
 async function getDragTransformX(page: Page): Promise<number> {
@@ -40,7 +40,11 @@ async function getToastCount(page: Page): Promise<number> {
   return page.$$eval('[role="status"]', (els) => els.length)
 }
 
-async function waitForToastCount(page: Page, count: number, timeout = 3000): Promise<boolean> {
+async function waitForToastCount(
+  page: Page,
+  count: number,
+  timeout = 3000
+): Promise<boolean> {
   try {
     await page.waitForFunction(
       (expected) => document.querySelectorAll('[role="status"]').length === expected,
@@ -201,10 +205,10 @@ test.describe('Toast Stacking', () => {
 
     // check z-index ordering
     const zIndices = await page.$$eval('[role="status"]', (els) =>
-      els.map(el => getComputedStyle(el).zIndex)
+      els.map((el) => getComputedStyle(el).zIndex)
     )
     // front toast should have highest z-index
-    const numericZIndices = zIndices.map(z => parseInt(z) || 0)
+    const numericZIndices = zIndices.map((z) => parseInt(z) || 0)
     expect(numericZIndices[0]).toBeGreaterThan(numericZIndices[1])
   })
 
@@ -273,7 +277,9 @@ test.describe('Toast Complex Interactions', () => {
 
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
     await page.mouse.down()
-    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, { steps: 10 })
+    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, {
+      steps: 10,
+    })
     await page.mouse.up()
 
     await page.waitForTimeout(500)
@@ -354,7 +360,9 @@ test.describe('Toast Complex Interactions', () => {
 
     // swipe while expanded
     await page.mouse.down()
-    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, { steps: 10 })
+    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, {
+      steps: 10,
+    })
     await page.mouse.up()
 
     await page.waitForTimeout(500)
@@ -411,7 +419,9 @@ test.describe('Toast Edge Cases', () => {
     await page.click('[data-testid="toast-error"]')
 
     // complete swipe
-    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, { steps: 5 })
+    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, {
+      steps: 5,
+    })
     await page.mouse.up()
 
     await page.waitForTimeout(500)
@@ -427,7 +437,9 @@ test.describe('Toast Edge Cases', () => {
     // start swipe to dismiss
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
     await page.mouse.down()
-    await page.mouse.move(box!.x + box!.width / 2 + 80, box!.y + box!.height / 2, { steps: 5 })
+    await page.mouse.move(box!.x + box!.width / 2 + 80, box!.y + box!.height / 2, {
+      steps: 5,
+    })
     await page.mouse.up()
 
     // immediately hover back over toast area during exit animation
@@ -495,7 +507,6 @@ test.describe('Toast Edge Cases', () => {
     await createToast(page)
     expect(await getToastCount(page)).toBe(1)
   })
-
 })
 
 test.describe('Toast Auto-dismiss', () => {
@@ -554,7 +565,9 @@ test.describe('Toast Gesture Physics', () => {
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
-  test('diagonal drag starting vertical locks Y direction and prevents horizontal swipe', async ({ page }) => {
+  test('diagonal drag starting vertical locks Y direction and prevents horizontal swipe', async ({
+    page,
+  }) => {
     await createToast(page)
     const box = await getToastBoundingBox(page)
     expect(box).toBeTruthy()
@@ -580,7 +593,9 @@ test.describe('Toast Gesture Physics', () => {
     expect(await getToastCount(page)).toBe(1)
   })
 
-  test('resistance caps at max ~25px when dragging far in wrong direction', async ({ page }) => {
+  test('resistance caps at max ~25px when dragging far in wrong direction', async ({
+    page,
+  }) => {
     await createToast(page)
     const box = await getToastBoundingBox(page)
     expect(box).toBeTruthy()
@@ -624,7 +639,9 @@ test.describe('Toast Gesture Physics', () => {
     expect(await getToastCount(page)).toBe(1)
   })
 
-  test('transform follows sqrt resistance curve during wrong-direction drag', async ({ page }) => {
+  test('transform follows sqrt resistance curve during wrong-direction drag', async ({
+    page,
+  }) => {
     await createToast(page)
     const box = await getToastBoundingBox(page)
     expect(box).toBeTruthy()
@@ -722,7 +739,10 @@ test.describe('Toast Stacking Drag Interactions', () => {
     // expand by hovering
     const frontBox = await getToastBoundingBox(page)
     expect(frontBox).toBeTruthy()
-    await page.mouse.move(frontBox!.x + frontBox!.width / 2, frontBox!.y + frontBox!.height / 2)
+    await page.mouse.move(
+      frontBox!.x + frontBox!.width / 2,
+      frontBox!.y + frontBox!.height / 2
+    )
     await page.waitForTimeout(200)
 
     // get the second toast (non-front)
@@ -732,9 +752,16 @@ test.describe('Toast Stacking Drag Interactions', () => {
     expect(secondBox).toBeTruthy()
 
     // swipe the second toast
-    await page.mouse.move(secondBox!.x + secondBox!.width / 2, secondBox!.y + secondBox!.height / 2)
+    await page.mouse.move(
+      secondBox!.x + secondBox!.width / 2,
+      secondBox!.y + secondBox!.height / 2
+    )
     await page.mouse.down()
-    await page.mouse.move(secondBox!.x + secondBox!.width / 2 + 100, secondBox!.y + secondBox!.height / 2, { steps: 10 })
+    await page.mouse.move(
+      secondBox!.x + secondBox!.width / 2 + 100,
+      secondBox!.y + secondBox!.height / 2,
+      { steps: 10 }
+    )
     await page.mouse.up()
 
     await page.waitForTimeout(500)
@@ -743,7 +770,9 @@ test.describe('Toast Stacking Drag Interactions', () => {
     expect(await getToastCount(page)).toBe(3)
   })
 
-  test('drag one toast while another is entering does not cause glitches', async ({ page }) => {
+  test('drag one toast while another is entering does not cause glitches', async ({
+    page,
+  }) => {
     // create first toast
     await createToast(page)
     const box = await getToastBoundingBox(page)
@@ -752,14 +781,18 @@ test.describe('Toast Stacking Drag Interactions', () => {
     // start dragging the first toast
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
     await page.mouse.down()
-    await page.mouse.move(box!.x + box!.width / 2 + 30, box!.y + box!.height / 2, { steps: 5 })
+    await page.mouse.move(box!.x + box!.width / 2 + 30, box!.y + box!.height / 2, {
+      steps: 5,
+    })
 
     // while dragging, create more toasts
     await page.click('[data-testid="toast-success"]')
     await page.click('[data-testid="toast-error"]')
 
     // continue and complete the drag
-    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, { steps: 5 })
+    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, {
+      steps: 5,
+    })
     await page.mouse.up()
 
     await page.waitForTimeout(500)
@@ -776,7 +809,9 @@ test.describe('Toast Stacking Drag Interactions', () => {
     // start drag
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
     await page.mouse.down()
-    await page.mouse.move(box!.x + box!.width / 2 + 30, box!.y + box!.height / 2, { steps: 5 })
+    await page.mouse.move(box!.x + box!.width / 2 + 30, box!.y + box!.height / 2, {
+      steps: 5,
+    })
 
     // press escape mid-drag
     await page.keyboard.press('Escape')
@@ -805,7 +840,9 @@ test.describe('Toast Timer Interactions', () => {
     // start drag (should pause timer)
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
     await page.mouse.down()
-    await page.mouse.move(box!.x + box!.width / 2 + 20, box!.y + box!.height / 2, { steps: 5 })
+    await page.mouse.move(box!.x + box!.width / 2 + 20, box!.y + box!.height / 2, {
+      steps: 5,
+    })
 
     // wait another 2 seconds while dragging (timer should be paused)
     await page.waitForTimeout(2000)
@@ -861,7 +898,9 @@ test.describe('Toast Position Swipe Directions', () => {
     // swipe right
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
     await page.mouse.down()
-    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, { steps: 10 })
+    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, {
+      steps: 10,
+    })
     await page.mouse.up()
 
     await waitForToastCount(page, 0, 2000)
