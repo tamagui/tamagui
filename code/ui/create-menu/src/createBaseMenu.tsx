@@ -1909,6 +1909,5 @@ export type {
   MenuRadioGroupProps,
   MenuRadioItemProps,
   MenuSeparatorProps,
-  MenuSubTriggerProps
+  MenuSubTriggerProps,
 }
-
