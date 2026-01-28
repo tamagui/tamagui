@@ -439,7 +439,7 @@ const ToastTitle = styled(SizableText, {
 - Fixed `handlePointerUp` in `useAnimatedDragGesture.ts` to check `lockedDirectionRef` before allowing dismiss
 - Added `isLockedToWrongAxis` check that prevents horizontal dismissal when locked to Y axis (and vice versa)
 
-**Tests Added (33 total in Toast.test.tsx, 13 in ToastMultiple.test.tsx = 46 total)**
+**Tests Added (36 total in Toast.test.tsx, 13 in ToastMultiple.test.tsx = 49 total)**
 
 New test categories added:
 - Toast Gesture Physics (6 tests):
@@ -455,6 +455,13 @@ New test categories added:
   - drag one toast while another is entering does not cause glitches ✓
   - escape key during drag cancels drag and dismisses toast ✓
 
+- Toast Timer Interactions (2 tests):
+  - drag pauses auto-dismiss timer and resumes on cancel ✓
+  - multiple rapid hovers do not corrupt timer state ✓
+
+- Toast Position Swipe Directions (1 test):
+  - bottom-right position allows right swipe dismissal ✓
+
 **Sub-agent Test Critique**
 Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 - Direction lock mechanism (fixed + tested)
@@ -462,6 +469,7 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 - Orphaned pointer moves (tested)
 - Pointer cancel handling (tested)
 - Stacking + drag interactions (tested)
+- Timer pause/resume during gestures (tested)
 
 ---
 
