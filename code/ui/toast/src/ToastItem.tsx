@@ -73,11 +73,12 @@ function DragWrapper({
 }
 
 /* -------------------------------------------------------------------------------------------------
- * ToastItemFrame
+ * ToastPositionWrapper - handles absolute positioning and stacking animations
+ * This is separate from visual styling so drag transform can move the entire visual toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastItemFrame = styled(YStack, {
-  name: 'ToastItem',
+const ToastPositionWrapper = styled(YStack, {
+  name: 'ToastPositionWrapper',
   focusable: true,
   pointerEvents: 'auto',
   position: 'absolute',
@@ -88,6 +89,14 @@ const ToastItemFrame = styled(YStack, {
   scale: 1,
   y: 0,
   x: 0,
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * ToastItemFrame - visual styling for the toast
+ * -----------------------------------------------------------------------------------------------*/
+
+const ToastItemFrame = styled(YStack, {
+  name: 'ToastItem',
   // prevent text selection during drag - critical for gesture handling
   userSelect: 'none',
   cursor: 'grab',
@@ -462,7 +471,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   }, [duration])
 
   // animation driver for drag gestures
-  const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView, dragRef } =
+  // note: animateOut is available but we use AnimatePresence exitStyle instead
+  const { setDragOffset, springBack, animatedStyle, AnimatedView, dragRef } =
     useToastAnimations({ reducedMotion })
 
   // drag gesture with animation driver integration
@@ -472,7 +482,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     disabled: !dismissible || toastType === 'loading',
     onDragStart: pauseTimer,
     onDragMove: setDragOffset,
-    onDismiss: (exitDirection) => {
+    onDismiss: () => {
       setSwipeOut(true)
       toast.onDismiss?.(toast)
       // remove immediately - AnimatePresence handles exit animation
@@ -591,7 +601,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
 
   // z-index: front toast should be on top, back toasts below
   // higher z-index = more in front
-  const computedZIndex = visibleToasts - index
+  // exiting toasts (removed=true) get lower z-index so entering toasts appear above them
+  const computedZIndex = removed ? 0 : visibleToasts - index + 1
   // in collapsed mode, set back toasts to front toast height (sonner pattern)
   // this makes the stack work by having all toasts same height
   const computedHeight = !expanded && !isFront ? frontToastHeight : undefined
@@ -624,7 +635,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const gapFillerHeight = expanded ? gap + 1 : 0
 
   return (
-    <ToastItemFrame
+    <ToastPositionWrapper
       ref={toastRef}
       // biome-ignore lint/a11y/useSemanticElements: we can't use <output> element as this is a styled Tamagui component
       role="status"
@@ -638,7 +649,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       // disable during drag so stacking doesn't interfere with drag gesture
       // also disable for reduced motion preference
       transition={isDragging || reducedMotion ? undefined : '200ms'}
-      // stacking animation props (NOT drag - drag is handled by inner AnimatedView)
+      // stacking animation props (NOT drag - drag is handled by inner DragWrapper)
       y={computedY}
       scale={computedScale}
       opacity={computedOpacity}
@@ -694,7 +705,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         },
       })}
     >
-      {/* Drag wrapper - uses raw div on web for proper pointer event handling */}
+      {/* Drag wrapper - wraps the entire visual toast so drag moves everything */}
       <DragWrapper
         isWeb={isWeb}
         animatedStyle={animatedStyle}
@@ -702,73 +713,75 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         AnimatedView={AnimatedView}
         dragRef={dragRef}
       >
-      {/* invisible hit area that fills the gap above/below toast when expanded
-          this prevents hover state flickering when mouse moves between toasts */}
-      {expanded && gapFillerHeight > 0 && (
-        <View
-          position="absolute"
-          left={0}
-          right={0}
-          height={gapFillerHeight}
-          pointerEvents="auto"
-          {
-            ...(isTop
-              ? { top: '100%' } // for top position, extend downward
-              : { bottom: '100%' }) // for bottom position, extend upward
-          }
-        />
-      )}
-      <XStack alignItems="flex-start" gap="$3">
-        {icon && (
-          <View flexShrink={0} marginTop="$0.5">
-            {icon}
-          </View>
-        )}
-
-        <YStack flex={1} gap="$1">
-          {title && <ToastItemTitle>{title}</ToastItemTitle>}
-          {description && <ToastItemDescription>{description}</ToastItemDescription>}
-        </YStack>
-
-        {closeButton && dismissible && (
-          <ToastCloseButton onPress={handleClose} aria-label="Close toast">
-            {icons?.close ?? <DefaultCloseIcon />}
-          </ToastCloseButton>
-        )}
-      </XStack>
-
-      {/* Action buttons */}
-      {(toast.action || toast.cancel) && (
-        <XStack marginTop="$3" gap="$2" justifyContent="flex-end">
-          {toast.cancel && (
-            <ToastActionButton
-              onPress={(event) => {
-                toast.cancel?.onClick?.(event as any)
-                handleClose()
-              }}
-            >
-              <SizableText size="$2">{toast.cancel.label}</SizableText>
-            </ToastActionButton>
+        <ToastItemFrame>
+          {/* invisible hit area that fills the gap above/below toast when expanded
+              this prevents hover state flickering when mouse moves between toasts */}
+          {expanded && gapFillerHeight > 0 && (
+            <View
+              position="absolute"
+              left={0}
+              right={0}
+              height={gapFillerHeight}
+              pointerEvents="auto"
+              {
+                ...(isTop
+                  ? { top: '100%' } // for top position, extend downward
+                  : { bottom: '100%' }) // for bottom position, extend upward
+              }
+            />
           )}
-          {toast.action && (
-            <ToastActionButton
-              primary
-              onPress={(event) => {
-                toast.action?.onClick?.(event as any)
-                if (!(event as any).defaultPrevented) {
-                  handleClose()
-                }
-              }}
-            >
-              <SizableText size="$2" fontWeight="600" color="$background">
-                {toast.action.label}
-              </SizableText>
-            </ToastActionButton>
+          <XStack alignItems="flex-start" gap="$3">
+            {icon && (
+              <View flexShrink={0} marginTop="$0.5">
+                {icon}
+              </View>
+            )}
+
+            <YStack flex={1} gap="$1">
+              {title && <ToastItemTitle>{title}</ToastItemTitle>}
+              {description && <ToastItemDescription>{description}</ToastItemDescription>}
+            </YStack>
+
+            {closeButton && dismissible && (
+              <ToastCloseButton onPress={handleClose} aria-label="Close toast">
+                {icons?.close ?? <DefaultCloseIcon />}
+              </ToastCloseButton>
+            )}
+          </XStack>
+
+          {/* Action buttons */}
+          {(toast.action || toast.cancel) && (
+            <XStack marginTop="$3" gap="$2" justifyContent="flex-end">
+              {toast.cancel && (
+                <ToastActionButton
+                  onPress={(event) => {
+                    toast.cancel?.onClick?.(event as any)
+                    handleClose()
+                  }}
+                >
+                  <SizableText size="$2">{toast.cancel.label}</SizableText>
+                </ToastActionButton>
+              )}
+              {toast.action && (
+                <ToastActionButton
+                  primary
+                  onPress={(event) => {
+                    toast.action?.onClick?.(event as any)
+                    if (!(event as any).defaultPrevented) {
+                      handleClose()
+                    }
+                  }}
+                >
+                  <SizableText size="$2" fontWeight="600" color="$background">
+                    {toast.action.label}
+                  </SizableText>
+                </ToastActionButton>
+              )}
+            </XStack>
           )}
-        </XStack>
-      )}
+        </ToastItemFrame>
       </DragWrapper>
-    </ToastItemFrame>
+    </ToastPositionWrapper>
   )
 })
 

@@ -255,6 +255,47 @@ test.describe('Toast Stacking', () => {
     expandedToast = await page.$('[data-expanded="true"]')
     expect(expandedToast).toBeFalsy()
   })
+
+  test('entering toast appears above exiting toast', async ({ page }) => {
+    // create a toast
+    await createToast(page)
+    await page.waitForTimeout(200)
+
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    // start swipe to dismiss first toast
+    await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(box!.x + box!.width / 2 + 60, box!.y + box!.height / 2, {
+      steps: 5,
+    })
+    await page.mouse.up()
+
+    // immediately create a new toast while first is exiting
+    await page.click('[data-testid="toast-success"]')
+    await page.waitForTimeout(100)
+
+    // check z-index: the new toast (data-removed=false) should have higher z-index
+    // than the exiting toast (data-removed=true)
+    const zIndices = await page.$$eval('[role="status"]', (els) => {
+      return els.map((el) => ({
+        zIndex: parseInt(getComputedStyle(el).zIndex) || 0,
+        removed: el.getAttribute('data-removed'),
+      }))
+    })
+
+    // find the non-removed toast (new one) and removed toast (exiting one)
+    const newToast = zIndices.find((t) => t.removed === 'false')
+    const exitingToast = zIndices.find((t) => t.removed === 'true')
+
+    // new toast should have higher z-index than exiting toast
+    if (newToast && exitingToast) {
+      expect(newToast.zIndex).toBeGreaterThan(exitingToast.zIndex)
+    }
+
+    await page.waitForTimeout(500) // wait for exit animation
+  })
 })
 
 test.describe('Toast Complex Interactions', () => {
