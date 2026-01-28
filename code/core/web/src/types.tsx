@@ -1303,6 +1303,7 @@ export type TamaguiInternalConfig<
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
     settings: Omit<GenericTamaguiSettings, keyof G> & G
+    defaultFont?: string
     defaultFontToken: `${string}`
   }
 
