@@ -301,7 +301,7 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
             select="auto"
           >
             <span
-              class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-inherit _ws-inherit _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
+              class="_ff-inherit _dsp-inline _bxs-border-box _ww-inherit _ws-inherit _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
             >
               hello
             </span>
