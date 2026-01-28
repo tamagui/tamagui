@@ -38,7 +38,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
 
   // base
   const background = PALETTE_BACKGROUND_OFFSET
-  const borderColor = background + 3
+  const borderColor = background + 2
   const color = -background
 
   // helper for surface themes - they need their own hover/press/focus calculations
