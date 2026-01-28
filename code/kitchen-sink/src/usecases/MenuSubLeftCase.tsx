@@ -59,7 +59,7 @@ export function MenuSubLeftCase() {
                 id="menu-item-1"
                 onSelect={() => setLastAction('Item 1 selected')}
                 style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
-                hoverStyle={{ bg: '$backgroundHover' }}
+                focusStyle={{ bg: '$backgroundHover' }}
               >
                 <Menu.ItemTitle>Item 1 (above trigger)</Menu.ItemTitle>
               </Menu.Item>
@@ -69,7 +69,7 @@ export function MenuSubLeftCase() {
                 id="menu-item-2"
                 onSelect={() => setLastAction('Item 2 selected')}
                 style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
-                hoverStyle={{ bg: '$backgroundHover' }}
+                focusStyle={{ bg: '$backgroundHover' }}
               >
                 <Menu.ItemTitle>Item 2 (above trigger)</Menu.ItemTitle>
               </Menu.Item>
@@ -89,7 +89,7 @@ export function MenuSubLeftCase() {
                   justify="space-between"
                   textValue="Actions"
                   style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
-                  hoverStyle={{ bg: '$backgroundHover' }}
+                  focusStyle={{ bg: '$backgroundHover' }}
                 >
                   <ChevronLeft size={14} color="$color10" />
                   <Menu.ItemTitle>Actions (left submenu)</Menu.ItemTitle>
@@ -114,7 +114,7 @@ export function MenuSubLeftCase() {
                         paddingVertical: 8,
                         borderRadius: 4,
                       }}
-                      hoverStyle={{ bg: '$backgroundHover' }}
+                      focusStyle={{ bg: '$backgroundHover' }}
                     >
                       <Menu.ItemTitle>Sub Item 1</Menu.ItemTitle>
                     </Menu.Item>
@@ -128,7 +128,7 @@ export function MenuSubLeftCase() {
                         paddingVertical: 8,
                         borderRadius: 4,
                       }}
-                      hoverStyle={{ bg: '$backgroundHover' }}
+                      focusStyle={{ bg: '$backgroundHover' }}
                     >
                       <Menu.ItemTitle>Sub Item 2</Menu.ItemTitle>
                     </Menu.Item>
@@ -142,7 +142,7 @@ export function MenuSubLeftCase() {
                         paddingVertical: 8,
                         borderRadius: 4,
                       }}
-                      hoverStyle={{ bg: '$backgroundHover' }}
+                      focusStyle={{ bg: '$backgroundHover' }}
                     >
                       <Menu.ItemTitle>Sub Item 3</Menu.ItemTitle>
                     </Menu.Item>
@@ -155,7 +155,7 @@ export function MenuSubLeftCase() {
                 id="menu-item-3"
                 onSelect={() => setLastAction('Item 3 selected')}
                 style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
-                hoverStyle={{ bg: '$backgroundHover' }}
+                focusStyle={{ bg: '$backgroundHover' }}
               >
                 <Menu.ItemTitle>Item 3 (below trigger)</Menu.ItemTitle>
               </Menu.Item>
@@ -165,7 +165,7 @@ export function MenuSubLeftCase() {
                 id="menu-item-4"
                 onSelect={() => setLastAction('Item 4 selected')}
                 style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
-                hoverStyle={{ bg: '$backgroundHover' }}
+                focusStyle={{ bg: '$backgroundHover' }}
               >
                 <Menu.ItemTitle>Item 4 (below trigger)</Menu.ItemTitle>
               </Menu.Item>
