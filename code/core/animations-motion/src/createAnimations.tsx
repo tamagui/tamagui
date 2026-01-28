@@ -155,10 +155,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           animationState
         )
         return motionAnimationState
-      }, [isExiting, animationKey, styleKey, animationState, disableAnimation])
+      }, [isExiting, animationKey, styleKey, animationState])
 
-      const id = useId()
-      const debugId = process.env.NODE_ENV === 'development' ? id : ''
+      const debugId = process.env.NODE_ENV === 'development' ? useId() : ''
       const lastAnimateAt = useRef(0)
       const disposed = useRef(false)
       const [firstRenderStyle] = useState(style)
@@ -171,6 +170,31 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           disposed.current = true
         }
       }, [])
+
+      const updateFirstAnimationStyle = () => {
+        const node = stateRef.current.host
+
+        if (!(node instanceof HTMLElement)) {
+          return false
+        }
+
+        if (!lastDoAnimate.current) {
+          lastAnimateAt.current = Date.now()
+          lastDoAnimate.current = doAnimate || {}
+          animate(scope.current, doAnimate || {}, {
+            type: false,
+          })
+
+          if (shouldDebug) {
+            console.groupCollapsed(`[motion] ${debugId} 🌊 FIRST`)
+            console.info(doAnimate)
+            console.groupEnd()
+          }
+          return true
+        }
+
+        return false
+      }
 
       const flushAnimation = ({
         doAnimate = {},
@@ -232,17 +256,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           }
 
           if (doAnimate) {
+            if (updateFirstAnimationStyle()) {
+              return
+            }
+
             // bugfix: going from non-animated to animated in motion -
             // motion batches things so the above removal can happen a frame before causing flickering
             // we see this with tooltips, this is not an ideal solution though, ideally we can remove/update
             // in the same batch/frame as motion
-            // Also sync motion's internal state for properties moving from dontAnimate to doAnimate
             if (prevDont) {
-              const movedToAnimate: Record<string, unknown> = {}
               for (const key in prevDont) {
                 if (key in doAnimate) {
                   node.style[key] = prevDont[key]
-                  movedToAnimate[key] = prevDont[key]
                   // Also update lastDoAnimate to include the previous value
                   // This prevents animating from undefined to the current value
                   // when a property transitions from dontAnimate to doAnimate
@@ -250,10 +275,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                     lastDoAnimate.current[key] = prevDont[key]
                   }
                 }
-              }
-              // Sync motion's internal state for moved properties
-              if (Object.keys(movedToAnimate).length > 0) {
-                animate(scope.current, { ...movedToAnimate }, { duration: 0 })
               }
             }
 
@@ -387,41 +408,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       useIsomorphicLayoutEffect(() => {
         if (isFirstRender.current) {
+          updateFirstAnimationStyle()
           isFirstRender.current = false
-          const node = stateRef.current.host
-
-          if (node instanceof HTMLElement) {
-            // IMPORTANT: On first render, we need to:
-            // 1. Apply dontAnimate styles to the DOM (enterStyle values like scale(0))
-            // 2. Tell motion about these styles so it knows the starting state
-            // This ensures AnimatePresence enter animations work correctly.
-
-            if (dontAnimate) {
-              // Apply initial styles to DOM
-              Object.assign(node.style, dontAnimate as any)
-
-              // Tell motion about the initial state by animating instantly to dontAnimate
-              // This syncs motion's internal state with what's actually on the DOM
-              // IMPORTANT: Spread to create mutable copy - React/Tamagui style objects may be frozen
-              animate(scope.current, { ...dontAnimate }, { duration: 0 })
-            }
-
-            // If there are styles to animate, set them up (but animation is disabled on first render)
-            if (doAnimate && Object.keys(doAnimate).length > 0) {
-              // IMPORTANT: Spread to create mutable copy - objects may be frozen
-              lastDoAnimate.current = { ...doAnimate }
-              animate(scope.current, { ...doAnimate }, { duration: 0 })
-            } else {
-              // doAnimate is empty, so track dontAnimate as the initial animated state
-              // This way on next render, getDiff will detect the change
-              // IMPORTANT: Spread to create mutable copy - objects may be frozen
-              lastDoAnimate.current = dontAnimate ? { ...dontAnimate } : {}
-            }
-          }
-
-          // IMPORTANT: Spread to create mutable copy - objects may be frozen
           lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
-          lastAnimateAt.current = Date.now()
+          lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
           return
         }
 
@@ -431,7 +421,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [animateKey, isExiting, disableAnimation])
+      }, [animateKey, isExiting])
 
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
