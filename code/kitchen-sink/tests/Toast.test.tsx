@@ -787,3 +787,84 @@ test.describe('Toast Stacking Drag Interactions', () => {
     expect(await getToastCount(page)).toBe(0)
   })
 })
+
+test.describe('Toast Timer Interactions', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(TEST_URL)
+    await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
+  })
+
+  test('drag pauses auto-dismiss timer and resumes on cancel', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    // wait 2 seconds (half the 4s duration)
+    await page.waitForTimeout(2000)
+
+    // start drag (should pause timer)
+    await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(box!.x + box!.width / 2 + 20, box!.y + box!.height / 2, { steps: 5 })
+
+    // wait another 2 seconds while dragging (timer should be paused)
+    await page.waitForTimeout(2000)
+
+    // cancel the drag (release without enough distance/velocity)
+    await page.waitForTimeout(300) // slow velocity
+    await page.mouse.up()
+
+    // toast should still exist (timer was paused during drag)
+    expect(await getToastCount(page)).toBe(1)
+
+    // now wait for remaining time + buffer (about 2s remaining + animation time)
+    await page.waitForTimeout(3000)
+
+    // toast should be gone now
+    expect(await getToastCount(page)).toBe(0)
+  })
+
+  test('multiple rapid hovers do not corrupt timer state', async ({ page }) => {
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    // rapidly hover in and out multiple times
+    for (let i = 0; i < 5; i++) {
+      await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+      await page.waitForTimeout(100)
+      await page.mouse.move(0, 0)
+      await page.waitForTimeout(100)
+    }
+
+    // toast should still exist
+    expect(await getToastCount(page)).toBe(1)
+
+    // wait for full duration + buffer
+    await page.waitForTimeout(5000)
+
+    // toast should be gone
+    expect(await getToastCount(page)).toBe(0)
+  })
+})
+
+test.describe('Toast Position Swipe Directions', () => {
+  test('bottom-right position allows right swipe dismissal', async ({ page }) => {
+    // default position is bottom-right
+    await page.goto(TEST_URL)
+    await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
+
+    await createToast(page)
+    const box = await getToastBoundingBox(page)
+    expect(box).toBeTruthy()
+
+    // swipe right
+    await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(box!.x + box!.width / 2 + 100, box!.y + box!.height / 2, { steps: 10 })
+    await page.mouse.up()
+
+    await waitForToastCount(page, 0, 2000)
+    expect(await getToastCount(page)).toBe(0)
+  })
+})
