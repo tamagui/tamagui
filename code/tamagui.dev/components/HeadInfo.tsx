@@ -53,13 +53,15 @@ export function HeadInfo({
             </>
           )}
 
-          {openGraph.images?.map((image) => {
+          {openGraph.images?.map((image, index) => {
             const imageUrl = image.url.startsWith('http')
               ? image.url
               : `${SITE_URL}${image.url}`
             return (
               <Fragment key={image.url}>
                 <meta property="og:image" content={imageUrl} />
+                {/* twitter needs its own image tag */}
+                {index === 0 && <meta name="twitter:image" content={imageUrl} />}
                 {image.width && (
                   <meta property="og:image:width" content={`${image.width}`} />
                 )}
