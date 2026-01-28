@@ -4,10 +4,12 @@ import { setupPage } from './test-utils'
 /**
  * Tests for animated properties responding to media query changes.
  *
- * Bug: With motion driver, transform properties (scale, translateX) in media queries
- * don't apply when resizing viewport. The style change is not being flushed to the DOM.
+ * This tests the useStyleEmitter path which allows style updates without re-renders.
+ * When media queries change, the animation driver receives new styles and must
+ * update the DOM accordingly.
  *
- * This is a regression test - CSS driver passes all tests, motion driver fails on resize.
+ * Note: The 'native' driver (animations-react-native) doesn't support avoidReRenders/useStyleEmitter,
+ * so these tests are skipped for that driver.
  */
 
 async function getScale(page: Page, testId: string): Promise<number> {
@@ -39,7 +41,12 @@ async function getTranslateX(page: Page, testId: string): Promise<number> {
 }
 
 test.describe('Animations With Media Queries', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    // Skip native driver - it doesn't support useStyleEmitter (avoidReRenders)
+    test.skip(
+      testInfo.project.name === 'animated-native',
+      'Native driver does not support avoidReRenders/useStyleEmitter'
+    )
     await setupPage(page, { name: 'AnimationsWithMediaQueriesCase', type: 'useCase' })
   })
 
