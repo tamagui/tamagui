@@ -6,8 +6,6 @@ import {
   Button,
   Dialog,
   H3,
-  Input,
-  Label,
   Paragraph,
   Separator,
   Sheet,
@@ -16,6 +14,7 @@ import {
   Tabs,
   Text,
   Theme,
+  ToggleGroup,
   Unspaced,
   useMedia,
   XStack,
@@ -24,7 +23,7 @@ import {
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
-import { Select } from '../../../components/Select'
+import { Link } from '../../../components/Link'
 import { sendEvent } from '../../analytics/sendEvent'
 import { PromoCards } from '../header/PromoCards'
 import { ProAgreementModal } from './AgreementModal'
@@ -48,28 +47,52 @@ export { purchaseModal, usePurchaseModal } from './purchaseModalStore'
 import { FaqTabContent } from './FaqTabContent'
 import { calculatePromoPrice } from './promoConfig'
 
+// support tier configuration
+const SUPPORT_TIERS = {
+  chat: {
+    label: 'Chat',
+    price: 0,
+    priceLabel: 'included',
+    description:
+      'Access to the private #takeout Discord channel. No SLA guarantee, but we typically respond within a few days.',
+  },
+  direct: {
+    label: 'Direct',
+    price: 500,
+    priceLabel: '$500/mo',
+    description:
+      '5 bug fixes per year, guaranteed response within 2 business days, your issues get prioritized in our queue.',
+  },
+  sponsor: {
+    label: 'Sponsor',
+    price: 2000,
+    priceLabel: '$2,000/mo',
+    description:
+      'Unlimited higher priority bug fixes, 1 day response time, plus a monthly video call with the team.',
+  },
+} as const
+
+type SupportTier = keyof typeof SUPPORT_TIERS
+
 export const NewPurchaseModal = () => {
   return <PurchaseModalContents />
 }
 
-const tabOrder = ['purchase', 'support', 'faq'] as const
+const tabOrder = ['pro', 'faq'] as const
 
 type Tab = (typeof tabOrder)[number]
 
 export function PurchaseModalContents() {
   const store = usePurchaseModal()
   const takeoutStore = useTakeoutStore()
-  const [lastTab, setLastTab] = useState<Tab>('purchase')
-  const [currentTab, setCurrentTab] = useState<Tab>('purchase')
-  const [chatSupport, setChatSupport] = useState(false)
-  const [supportTier, setSupportTier] = useState('0')
+  const [currentTab, setCurrentTab] = useState<Tab>('pro')
+  const [supportTier, setSupportTier] = useState<SupportTier>('chat')
   const [isProcessing, setIsProcessing] = useState(false)
-  const [error, setError] = useState<Error | StripeError | null>(null)
+  const [, setError] = useState<Error | StripeError | null>(null)
   const { gtMd } = useMedia()
 
   const { data: userData, subscriptionStatus } = useUser()
   const { parityDeals } = useParityDiscount()
-  const [teamSeats, setTeamSeats] = useState(0)
 
   const hasSubscribedBefore = useMemo(() => {
     return (
@@ -100,12 +123,8 @@ export function PurchaseModalContents() {
 
   function changeTab(next: string) {
     sendEvent(`Pro: Change Tab`, { tab: next })
-    if (next === 'purchase' || next === 'support' || next === 'faq') {
-      if (currentTab === 'purchase' && next === 'support') {
-        setLastTab(currentTab)
-        setCurrentTab(next)
-      } else if (!isProcessing) {
-        setLastTab(currentTab)
+    if (next === 'pro' || next === 'faq') {
+      if (!isProcessing) {
         setCurrentTab(next)
       }
     }
@@ -129,49 +148,43 @@ export function PurchaseModalContents() {
 
     if (isProcessing) return
 
+    const supportTierPrice = SUPPORT_TIERS[supportTier].price
+
     paymentModal.show = true
-    paymentModal.yearlyTotal = yearlyTotal
-    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.yearlyTotal = V2_PRICE
+    paymentModal.monthlyTotal = supportTierPrice
     paymentModal.disableAutoRenew = false
-    paymentModal.chatSupport = chatSupport
-    paymentModal.supportTier = Number(supportTier)
-    paymentModal.teamSeats = teamSeats
+    paymentModal.chatSupport = false
+    paymentModal.supportTier =
+      supportTier === 'direct' ? 1 : supportTier === 'sponsor' ? 2 : 0
+    paymentModal.teamSeats = 0
     paymentModal.selectedPrices = {
       disableAutoRenew: false,
-      chatSupport,
-      supportTier: Number(supportTier),
-      teamSeats,
+      chatSupport: false,
+      supportTier: supportTier === 'direct' ? 1 : supportTier === 'sponsor' ? 2 : 0,
+      teamSeats: 0,
     }
     // pass promo info from purchase modal
     paymentModal.activePromo = store.activePromo
     paymentModal.prefilledCouponCode = store.prefilledCouponCode
   }
 
-  // Calculate direction for animation
-  const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
-
   // V2 Pricing: $999 one-time per project
   const V2_PRICE = 999
 
-  // Legacy V1 prices (for existing subscribers adding support)
-  const chatSupportMonthly = chatSupport ? 200 : 0
-  const supportTierMonthly = Number(supportTier) * 800
-
-  // For V2, yearly total is just the base price (no more per-seat)
-  const yearlyTotal = V2_PRICE
-  const monthlyTotal = supportTierMonthly // Chat support included in V2, only premium support extra
+  // Support tier monthly price
+  const supportTierMonthly = SUPPORT_TIERS[supportTier].price
 
   // V2 subscription message
   const subscriptionMessage = useMemo(() => {
-    const hasSupportTier = Number(supportTier) > 0
-    if (hasSupportTier) {
-      return `$${V2_PRICE.toLocaleString()} one-time + $${supportTierMonthly}/month premium support`
+    if (supportTierMonthly > 0) {
+      return `$${V2_PRICE.toLocaleString()} one-time + $${supportTierMonthly.toLocaleString()}/mo support`
     }
     return `$${V2_PRICE.toLocaleString()} one-time. Includes 1 year of updates, then $300/year.`
-  }, [supportTier, supportTierMonthly])
+  }, [supportTierMonthly])
 
   const tabContents = {
-    purchase: () => {
+    pro: () => {
       return (
         <YStack>
           <YStack $gtMd={{ gap: '$6' }} gap="$5">
@@ -216,19 +229,81 @@ export function PurchaseModalContents() {
                 (auto-subscribed).
               </P>
             </YStack>
+
+            <Separator />
+
+            {/* Support Tier Selection */}
+            <YStack gap="$3">
+              <H3 fontFamily="$mono" size="$6">
+                Support Level
+              </H3>
+
+              <ToggleGroup
+                type="single"
+                value={supportTier}
+                onValueChange={(val) => val && setSupportTier(val as SupportTier)}
+                orientation="horizontal"
+                borderRadius="$4"
+                borderWidth={1}
+                borderColor="$color4"
+                overflow="hidden"
+              >
+                {(Object.keys(SUPPORT_TIERS) as SupportTier[]).map((tier) => (
+                  <ToggleGroup.Item
+                    key={tier}
+                    value={tier}
+                    flex={1}
+                    bg={supportTier === tier ? '$color4' : '$color1'}
+                    hoverStyle={{ bg: supportTier === tier ? '$color4' : '$color2' }}
+                    pressStyle={{ bg: '$color3' }}
+                    borderWidth={0}
+                    borderRadius={0}
+                  >
+                    <YStack items="center" gap="$1" py="$2.5" px="$2">
+                      <Paragraph fontWeight="600" size="$4">
+                        {SUPPORT_TIERS[tier].label}
+                      </Paragraph>
+                      <Paragraph size="$2" color="$color9">
+                        {SUPPORT_TIERS[tier].priceLabel}
+                      </Paragraph>
+                    </YStack>
+                  </ToggleGroup.Item>
+                ))}
+              </ToggleGroup>
+
+              <YStack
+                bg="$color2"
+                p="$3"
+                rounded="$3"
+                borderWidth={1}
+                borderColor="$color4"
+              >
+                <Paragraph size="$3" color="$color11">
+                  {SUPPORT_TIERS[supportTier].description}
+                </Paragraph>
+              </YStack>
+            </YStack>
+
+            {/* Enterprise Notice */}
+            <Theme name="yellow">
+              <XStack
+                bg="$color3"
+                rounded="$4"
+                borderWidth={0.5}
+                borderColor="$color8"
+                p="$3"
+              >
+                <Paragraph size="$3" color="$color11">
+                  For companies with over $1M in annual revenue,{' '}
+                  <Link href="mailto:support@tamagui.dev">contact us</Link> for enterprise
+                  pricing.
+                </Paragraph>
+              </XStack>
+            </Theme>
           </YStack>
         </YStack>
       )
     },
-
-    support: () => (
-      <SupportTabContent
-        chatSupport={chatSupport}
-        setChatSupport={setChatSupport}
-        supportTier={supportTier}
-        setSupportTier={setSupportTier}
-      />
-    ),
 
     faq: FaqTabContent,
   }
@@ -296,23 +371,18 @@ export function PurchaseModalContents() {
               <Tabs
                 orientation="horizontal"
                 flexDirection="column"
-                defaultValue="purchase"
+                defaultValue="pro"
                 size="$6"
                 value={currentTab}
                 onValueChange={changeTab}
               >
                 <Tabs.List>
-                  <YStack width={'33.3333%'} flex={1}>
-                    <Tab isActive={currentTab === 'purchase'} value="purchase">
+                  <YStack width={'50%'} flex={1}>
+                    <Tab isActive={currentTab === 'pro'} value="pro">
                       Pro
                     </Tab>
                   </YStack>
-                  <YStack width={'33.3333%'} flex={1}>
-                    <Tab isActive={currentTab === 'support'} value="support">
-                      Support
-                    </Tab>
-                  </YStack>
-                  <YStack width={'33.3333%'} flex={1}>
+                  <YStack width={'50%'} flex={1}>
                     <Tab isActive={currentTab === 'faq'} value="faq" end>
                       FAQ
                     </Tab>
@@ -505,105 +575,21 @@ export function PurchaseModalContents() {
 
       <ProAgreementModal />
 
-      <Suspense fallback={null}>
-        <StripePaymentModal
-          yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : yearlyTotal} // if they have a pro subscription or have subscribed before, the yearly total is 0
-          monthlyTotal={monthlyTotal}
-          disableAutoRenew={false}
-          chatSupport={chatSupport}
-          supportTier={Number(supportTier)}
-          teamSeats={teamSeats}
-          onSuccess={handlePaymentSuccess}
-          onError={handlePaymentError}
-        />
-      </Suspense>
-    </>
-  )
-}
-
-// FaqTabContent moved to FaqTabContent.tsx
-
-const SupportTabContent = ({
-  chatSupport,
-  setChatSupport,
-  supportTier,
-  setSupportTier,
-}: {
-  chatSupport: boolean
-  setChatSupport: (value: boolean) => void
-  supportTier: string
-  setSupportTier: (value: string) => void
-}) => {
-  const tiers = [
-    { value: '0', label: 'None', price: 0 },
-    { value: '1', label: 'Tier 1', price: 800 },
-    { value: '2', label: 'Tier 2', price: 1600 },
-    { value: '3', label: 'Tier 3', price: 2400 },
-  ]
-
-  // Handle support tier change
-  const handleSupportTierChange = (value: string) => {
-    setSupportTier(value)
-  }
-
-  return (
-    <>
-      <BigP>
-        Premium support helps teams using Tamagui ensure bugs get fixed quickly and
-        questions are answered promptly.
-      </BigP>
-
-      <YStack gap="$6">
-        <YStack gap="$3" p="$4" rounded="$4">
-          <XStack items="center">
-            <Text fontSize="$5" color="$green10" width={0}>
-              ✓
-            </Text>
-            <P fontWeight="600">Basic Chat Support - Included</P>
-          </XStack>
-          <P maxW={500} size="$4" lineHeight="$6" color="$color9">
-            Access to the private #takeout Discord channel. We prioritize responses there
-            over public Discord. No SLA, but we typically respond within 1-2 business
-            days.
-          </P>
-        </YStack>
-
-        <YStack gap="$3">
-          <XStack overflow="hidden" items="center">
-            <Label flex={1} htmlFor="support-tier" rounded="$4">
-              <P>Premium Support </P>
-            </Label>
-
-            <XStack flex={1} maxW={200}>
-              <Select
-                id="support-tier"
-                size="$4"
-                rounded="$4"
-                value={supportTier}
-                onValueChange={handleSupportTierChange}
-                disabled={chatSupport} // Disable if chat support is enabled
-              >
-                {tiers.map((tier) => (
-                  <Select.Item
-                    key={tier.value}
-                    value={tier.value}
-                    index={Number(tier.value)}
-                  >
-                    {tier.value === '0'
-                      ? tier.label
-                      : `${tier.label} · $${tier.price}/mo`}
-                  </Select.Item>
-                ))}
-              </Select>
-            </XStack>
-          </XStack>
-
-          <P size="$5" lineHeight="$6" maxW={500} opacity={supportTier !== '0' ? 1 : 0.5}>
-            Each tier adds 4 hours of development a month, faster response times, and 4
-            additional private chat invites.
-          </P>
-        </YStack>
-      </YStack>
+      {/* Lazy load Stripe when purchase modal opens - ready by checkout time */}
+      {store.show && (
+        <Suspense fallback={null}>
+          <StripePaymentModal
+            yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : V2_PRICE}
+            monthlyTotal={supportTierMonthly}
+            disableAutoRenew={false}
+            chatSupport={false}
+            supportTier={supportTier === 'direct' ? 1 : supportTier === 'sponsor' ? 2 : 0}
+            teamSeats={0}
+            onSuccess={handlePaymentSuccess}
+            onError={handlePaymentError}
+          />
+        </Suspense>
+      )}
     </>
   )
 }
@@ -681,40 +667,5 @@ function Tab({
         {children}
       </Paragraph>
     </Tabs.Tab>
-  )
-}
-
-const TeamSeatsInput = ({
-  value,
-  onChange,
-  yearlyPrice,
-}: {
-  value: number
-  onChange: (seats: number) => void
-  yearlyPrice: number
-}) => {
-  return (
-    <YStack gap="$3">
-      <XStack items="center">
-        <Label flex={1} htmlFor="team-seats">
-          <Text>Additional Team Seats</Text>
-        </Label>
-        <Input
-          id="team-seats"
-          value={value.toString()}
-          onChange={(e) => {
-            const val = e.target?.value
-            onChange(Math.max(0, Number.parseInt(val) || 0))
-          }}
-          type="number-pad"
-          width={100}
-        />
-      </XStack>
-      {value > 0 && (
-        <Text color="$color9">
-          +${yearlyPrice}/year for {value} additional {value === 1 ? 'seat' : 'seats'}
-        </Text>
-      )}
-    </YStack>
   )
 }
