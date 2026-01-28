@@ -34,7 +34,7 @@ jobs:
     name: iOS Detox Tests
     needs: build-ios
     runs-on: macos-14
-    timeout-minutes: 45
+    timeout-minutes: 60
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
