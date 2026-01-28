@@ -95,7 +95,7 @@ describe('generateThemeBuilderCode', () => {
     })
 
     expect(code).toContain('v5ComponentThemes')
-    expect(code).toContain('componentThemes: defaultComponentThemes,')
+    expect(code).toContain('componentThemes: v5ComponentThemes,')
   })
 
   it('disables componentThemes when not enabled', async () => {
