@@ -1,8 +1,7 @@
+import fs, { ensureDir, writeJSON } from 'fs-extra'
 import * as proc from 'node:child_process'
-import { join } from 'node:path'
+import path, { join } from 'node:path'
 import { promisify } from 'node:util'
-import path from 'node:path'
-import fs, { writeJSON, ensureDir } from 'fs-extra'
 import pMap from 'p-map'
 import prompts from 'prompts'
 
@@ -210,8 +209,14 @@ async function run() {
         const [major, minor, patch] = baseVersion.split('.').map(Number)
 
         const rcChoices = [
-          { title: `${major}.${minor + 1}.0-rc.1 (next minor)`, value: `${major}.${minor + 1}.0-rc.1` },
-          { title: `${major}.${minor}.${patch + 1}-rc.1 (next patch)`, value: `${major}.${minor}.${patch + 1}-rc.1` },
+          {
+            title: `${major}.${minor + 1}.0-rc.1 (next minor)`,
+            value: `${major}.${minor + 1}.0-rc.1`,
+          },
+          {
+            title: `${major}.${minor}.${patch + 1}-rc.1 (next patch)`,
+            value: `${major}.${minor}.${patch + 1}-rc.1`,
+          },
           { title: `${major + 1}.0.0-rc.1 (next major)`, value: `${major + 1}.0.0-rc.1` },
         ]
 
@@ -324,8 +329,15 @@ async function run() {
         packageJsons,
         async ({ name, cwd }) => {
           const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
-          const publishTag = canary || isCanaryVersion ? 'canary' : version.includes('-rc.') ? 'rc' : undefined
-          const publishOptions = [publishTag && `--tag ${publishTag}`].filter(Boolean).join(' ')
+          const publishTag =
+            canary || isCanaryVersion
+              ? 'canary'
+              : version.includes('-rc.')
+                ? 'rc'
+                : undefined
+          const publishOptions = [publishTag && `--tag ${publishTag}`]
+            .filter(Boolean)
+            .join(' ')
 
           const absolutePath = `${tmpDir}/${name.replace('/', '_')}-package.tmp.tgz`
           await spawnify(`yarn pack --out ${absolutePath}`, {
@@ -373,19 +385,7 @@ async function run() {
       }
 
       if (!canary && !skipStarters) {
-        const starterFreeDir = join(process.cwd(), '../starter-free')
-        if (!dirty) {
-          const starterBranch = (await exec(`git rev-parse --abbrev-ref HEAD`, { cwd: starterFreeDir })).stdout.trim()
-          await spawnify(`git pull --rebase origin ${starterBranch}`, { cwd: starterFreeDir })
-        }
-
         await spawnify(`yarn upgrade:starters`)
-
-        if (!shouldFinish) {
-          // Run yarn test in starter-free directory
-          await spawnify(`yarn test`, { cwd: starterFreeDir })
-          await finishAndCommit(starterFreeDir)
-        }
       }
 
       await finishAndCommit()
@@ -400,7 +400,9 @@ async function run() {
 
           if (!dirty) {
             // pull once more before pushing so if there was a push in interim we get it
-            const currentBranch = (await exec(`git rev-parse --abbrev-ref HEAD`, { cwd })).stdout.trim()
+            const currentBranch = (
+              await exec(`git rev-parse --abbrev-ref HEAD`, { cwd })
+            ).stdout.trim()
             await spawnify(`git pull --rebase origin ${currentBranch}`, { cwd })
           }
 
