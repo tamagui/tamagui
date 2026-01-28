@@ -3,10 +3,9 @@ tags:
   - component
 ---
 - runFlow: OpenApp.yaml
-# Scroll down to find AlertDialog in the Panels section
-- scroll:
-    direction: DOWN
-    duration: 500
+- scrollUntilVisible:
+    element: 'AlertDialog'
+    centerElement: true
 - tapOn: 'AlertDialog'
 - assertVisible: 'Show Alert'
 # Test: tap button, dialog appears
