@@ -9,6 +9,7 @@ import {
   Input,
   Label,
   Paragraph,
+  ScrollView,
   Separator,
   Sheet,
   SizableText,
@@ -248,10 +249,8 @@ export function PurchaseModalContents() {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal transition="quick">
-            <Sheet.Frame bg="$color1" p={0} gap="$4">
-              <Sheet.ScrollView>
-                <Dialog.Adapt.Contents />
-              </Sheet.ScrollView>
+            <Sheet.Frame bg="$color1" p={0} flex={1}>
+              <Dialog.Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
               bg="$shadow4"
@@ -292,7 +291,7 @@ export function PurchaseModalContents() {
             maxW={900}
             p={0}
           >
-            <YStack height="100%">
+            <YStack height="100%" $maxMd={{ flex: 1 }}>
               <Tabs
                 orientation="horizontal"
                 flexDirection="column"
@@ -300,6 +299,7 @@ export function PurchaseModalContents() {
                 size="$6"
                 value={currentTab}
                 onValueChange={changeTab}
+                $maxMd={{ flex: 1, overflow: 'hidden' }}
               >
                 <Tabs.List>
                   <YStack width={'33.3333%'} flex={1}>
@@ -319,33 +319,33 @@ export function PurchaseModalContents() {
                   </YStack>
                 </Tabs.List>
 
-                <YStack group="takeoutBody">
+                <YStack group="takeoutBody" $maxMd={{ flex: 1, overflow: 'hidden' }}>
                   <AnimatedYStack key={currentTab}>
                     <Tabs.Content
                       value={currentTab}
                       forceMount
                       flex={1}
-                      minH={550}
                       $gtMd={{
+                        minHeight: 550,
                         height: 'calc(min(100vh - 200px, 900px))',
                       }}
                     >
-                      <YStack
-                        $gtMd={{
-                          p: '$8',
-                          gap: '$6',
-                        }}
-                        p="$4"
-                        gap="$4"
-                        height="100%"
-                        {...(gtMd && {
-                          style: {
-                            overflowY: 'scroll',
-                          },
-                        })}
-                      >
-                        {tabContents[currentTab]()}
-                      </YStack>
+                      {gtMd ? (
+                        <YStack
+                          p="$8"
+                          gap="$6"
+                          height="100%"
+                          style={{ overflowY: 'scroll' }}
+                        >
+                          {tabContents[currentTab]()}
+                        </YStack>
+                      ) : (
+                        <ScrollView flex={1}>
+                          <YStack p="$4" gap="$4">
+                            {tabContents[currentTab]()}
+                          </YStack>
+                        </ScrollView>
+                      )}
                     </Tabs.Content>
                   </AnimatedYStack>
                 </YStack>
@@ -366,11 +366,12 @@ export function PurchaseModalContents() {
                     gap: '$6',
                   }}
                 >
-                  <YStack gap="$1" flex={1} width="100%" $gtXs={{ width: '40%' }}>
-                    <XStack items="baseline" gap="$2">
+                  <YStack gap="$1" width="100%" $gtXs={{ flex: 1, width: '40%' }}>
+                    <XStack items="baseline" gap="$2" flexWrap="wrap">
                       {store.activePromo && (
                         <H3
-                          size="$10"
+                          size="$8"
+                          $gtXs={{ size: '$10' }}
                           fontWeight="200"
                           opacity={0.5}
                           textDecorationLine="line-through"
@@ -381,7 +382,7 @@ export function PurchaseModalContents() {
                           ${Intl.NumberFormat('en-US').format(V2_PRICE)}
                         </H3>
                       )}
-                      <H3 size="$11" letterSpacing={-2}>
+                      <H3 size="$9" $gtXs={{ size: '$11' }} letterSpacing={-2}>
                         $
                         {Intl.NumberFormat('en-US').format(
                           calculatePromoPrice(V2_PRICE, store.activePromo)
@@ -396,7 +397,7 @@ export function PurchaseModalContents() {
                     </Paragraph>
                   </YStack>
 
-                  <YStack gap="$2" width="100%" $gtXs={{ width: '42%' }}>
+                  <YStack gap="$2" width="100%" pt="$4" $gtXs={{ width: '42%', pt: 0 }}>
                     {parityDeals && (
                       <Theme name="yellow">
                         <XStack
