@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 test.describe('ToggleGroup', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:9000/?demo=ToggleGroup')
-    await page.waitForLoadState('networkidle')
+    await setupPage(page, { name: 'ToggleGroup', type: 'demo' })
   })
 
   test('single mode: clicking toggle item should toggle active state', async ({ page }) => {

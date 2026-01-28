@@ -133,3 +133,6 @@ e2e/artifacts/
 # Fingerprint cache (local testing)
 .fingerprint-cache.json
 .ios-build-fingerprint.json
+
+# Port file for dev server (auto-generated)
+.port

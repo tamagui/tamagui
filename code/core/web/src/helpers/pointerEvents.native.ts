@@ -80,10 +80,7 @@ export function usePointerEvents(props: any, viewProps: any) {
       const { locationX, locationY } = e.nativeEvent
       const { width, height } = layoutRef.current
       const isInBounds =
-        locationX >= 0 &&
-        locationX <= width &&
-        locationY >= 0 &&
-        locationY <= height
+        locationX >= 0 && locationX <= width && locationY >= 0 && locationY <= height
 
       // fire if captured OR in bounds (matches web behavior)
       if (isCapturedRef.current || isInBounds) {
@@ -116,12 +113,7 @@ export function usePointerEvents(props: any, viewProps: any) {
     viewProps.onTouchStart = composeEventHandlers(viewProps.onTouchStart, (e: any) => {
       const { locationX, locationY } = e.nativeEvent
       const { width, height } = layoutRef.current
-      if (
-        locationX >= 0 &&
-        locationX <= width &&
-        locationY >= 0 &&
-        locationY <= height
-      ) {
+      if (locationX >= 0 && locationX <= width && locationY >= 0 && locationY <= height) {
         isInsideRef.current = true
         onPointerEnter(createNormalizedEvent(e))
       }
@@ -134,10 +126,7 @@ export function usePointerEvents(props: any, viewProps: any) {
       const { locationX, locationY } = e.nativeEvent
       const { width, height } = layoutRef.current
       const isInside =
-        locationX >= 0 &&
-        locationX <= width &&
-        locationY >= 0 &&
-        locationY <= height
+        locationX >= 0 && locationX <= width && locationY >= 0 && locationY <= height
       if (isInsideRef.current && !isInside) {
         isInsideRef.current = false
         onPointerLeave(createNormalizedEvent(e))

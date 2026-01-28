@@ -5,7 +5,7 @@
  * To test with your own theme:
  * 1. Go to tamagui.dev/theme and create your theme
  * 2. Export the generated code and replace this file's contents
- * 3. Run: yarn start:web and open http://localhost:9000/?test=V5ThemeBuilderOutput&generatedV5=true
+ * 3. Run: yarn start:web and open http://localhost:9100/?test=V5ThemeBuilderOutput&generatedV5=true
  */
 import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5'
 import { v5ComponentThemes } from '@tamagui/themes/v5'

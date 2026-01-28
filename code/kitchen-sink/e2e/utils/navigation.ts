@@ -1,15 +1,15 @@
 /**
  * Shared navigation utilities for Detox e2e tests
- * Uses the quick-nav grid in the collapsible section on home screen
+ * Navigates through home screen -> test cases list -> specific test case
  */
 
 import { by, device, element, waitFor } from 'detox'
 
 /**
- * Fast navigation to any test case using the quick-nav grid
- * Taps the toggle button to expand the section, then taps the target test case
+ * Navigate to any test case through the standard navigation flow
+ * Home -> Test Cases -> Specific test case
  *
- * @param testCaseName - The exact name of the test case (e.g., 'SelectAndroidOnPress')
+ * @param testCaseName - The exact name of the test case (e.g., 'PointerEventsCase')
  * @param waitForElementId - Optional testID to wait for after navigation (confirms screen loaded)
  */
 export async function navigateToTestCase(
@@ -27,16 +27,40 @@ export async function navigateToTestCase(
   // small delay for UI to settle before tapping
   await new Promise((r) => setTimeout(r, 500))
 
-  // tap toggle button to expand the quick-nav section
-  await element(by.id('toggle-test-cases')).tap()
+  // tap "Test Cases" link on home screen
+  await element(by.id('home-test-cases-link')).tap()
 
-  // wait for the quick-nav element to appear (expansion animation)
-  await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
-    .toBeVisible()
-    .withTimeout(5000)
+  // wait for test cases screen to load
+  await waitFor(element(by.id('test-cases-scroll-view')))
+    .toExist()
+    .withTimeout(10000)
 
-  // tap the quick-nav element for this test case
-  await element(by.id(`detox-nav-${testCaseName}`)).tap()
+  // small delay for the list to render fully
+  await new Promise((r) => setTimeout(r, 500))
+
+  // scroll to find and tap the specific test case
+  const testCaseElement = element(by.id(`test-case-${testCaseName}`))
+  const scrollView = element(by.id('test-cases-scroll-view'))
+
+  // try scrolling multiple times to find the element
+  let found = false
+  const maxScrolls = 20
+  for (let i = 0; i < maxScrolls && !found; i++) {
+    try {
+      // check if element exists and is at least partially visible
+      await expect(testCaseElement).toExist()
+      await testCaseElement.tap()
+      found = true
+    } catch {
+      // scroll down and try again
+      await scrollView.scroll(400, 'down')
+      await new Promise((r) => setTimeout(r, 100))
+    }
+  }
+
+  if (!found) {
+    throw new Error(`Could not find test case: ${testCaseName} after ${maxScrolls} scroll attempts`)
+  }
 
   // wait for the target screen to load
   if (waitForElementId) {

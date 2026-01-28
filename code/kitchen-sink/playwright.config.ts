@@ -1,7 +1,10 @@
 import { defineConfig } from '@playwright/test'
+import { execSync } from 'child_process'
 import { ANIMATION_DRIVERS } from './tests/test-utils'
 
-const port = process.env.PORT || '9000'
+// read port from .port file (written by start:web) or find one
+// this ensures playwright and webpack use the same port
+const port = process.env.PORT || execSync('node scripts/get-port.js', { encoding: 'utf-8' }).trim()
 
 // Support both single-driver mode (via env var) and multi-driver parallel mode
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER

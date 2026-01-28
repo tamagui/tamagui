@@ -49,7 +49,7 @@ The motion driver's animation state gets out of sync when:
 
 ## Testing Notes
 - Bug is **motion-driver specific** - other drivers (css, native, reanimated) may not have this issue
-- Run kitchen-sink on port 9000: `yarn start:web`
+- Run kitchen-sink on port 9100: `yarn start:web`
 - Run tamagui.dev on port 8282: `yarn dev --port 8282` (v2 branch)
 - Animation driver can be changed via URL param or config
 
@@ -89,7 +89,7 @@ When rapidly changing triggers:
 
 ### Debugging Challenge
 - tamagui.dev on 8282 uses bundled code, doesn't pick up local changes
-- kitchen-sink on 9000 doesn't trigger tooltips in headless mode
+- kitchen-sink on 9100 doesn't trigger tooltips in headless mode
 - Need to either fix bundling or find different test approach
 
 ## Key Discovery - Transform Jump Pattern
