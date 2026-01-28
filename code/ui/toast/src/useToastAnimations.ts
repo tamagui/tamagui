@@ -35,9 +35,10 @@ export interface ToastAnimationValues {
   setDragOffset: (x: number, y: number) => void
   /** spring back to origin after cancelled drag */
   springBack: (onComplete?: () => void) => void
-  /** animate out in a direction after successful swipe */
+  /** animate out in a direction after successful swipe, with optional velocity for smooth continuation */
   animateOut: (
     direction: 'left' | 'right' | 'up' | 'down',
+    velocity?: number,
     onComplete?: () => void
   ) => void
   /** stop any running animations */
@@ -67,15 +68,28 @@ function animateSpring(
   fromY: number,
   toX: number,
   toY: number,
-  config: { damping?: number; stiffness?: number; mass?: number },
+  config: {
+    damping?: number
+    stiffness?: number
+    mass?: number
+    initialVelocityX?: number
+    initialVelocityY?: number
+  },
   onComplete?: () => void
 ) {
-  const { damping = 30, stiffness = 400, mass = 0.5 } = config
+  const {
+    damping = 30,
+    stiffness = 400,
+    mass = 0.5,
+    initialVelocityX = 0,
+    initialVelocityY = 0,
+  } = config
 
   let x = fromX
   let y = fromY
-  let velocityX = 0
-  let velocityY = 0
+  // use initial velocity from gesture for smooth continuation
+  let velocityX = initialVelocityX
+  let velocityY = initialVelocityY
   let animationId: number | null = null
   const targetX = toX
   const targetY = toY
@@ -215,8 +229,13 @@ export function useToastAnimations(
   })
 
   // animate out in a direction after successful swipe
+  // velocity is in px/ms from gesture, used for smooth momentum continuation
   const animateOut = useEvent(
-    (direction: 'left' | 'right' | 'up' | 'down', onComplete?: () => void) => {
+    (
+      direction: 'left' | 'right' | 'up' | 'down',
+      velocity?: number,
+      onComplete?: () => void
+    ) => {
       // cancel any running animation
       cancelAnimationRef.current?.()
 
@@ -238,11 +257,21 @@ export function useToastAnimations(
         return
       }
 
-      // exit animation - slightly less damped for faster exit
+      // convert velocity from px/ms to px/frame (assuming 60fps = 16.67ms/frame)
+      // multiply by ~500 to get a reasonable initial velocity for the spring
+      const velocityScale = (velocity ?? 0) * 500
+      const initialVelocityX =
+        direction === 'left' ? -velocityScale : direction === 'right' ? velocityScale : 0
+      const initialVelocityY =
+        direction === 'up' ? -velocityScale : direction === 'down' ? velocityScale : 0
+
+      // exit animation config - tuned for smooth momentum continuation
       const exitConfig = {
         damping: 25,
         stiffness: 350,
         mass: 0.4,
+        initialVelocityX,
+        initialVelocityY,
       }
 
       if (useDirectDom && dragRef.current) {
@@ -262,6 +291,8 @@ export function useToastAnimations(
         )
       } else {
         // use animation driver for motion/reanimated
+        // note: most animation drivers don't support initialVelocity in spring config
+        // but the spring will still look smooth starting from current drag position
         translateX.setValue(exitX, { type: 'spring', ...exitConfig })
         translateY.setValue(exitY, { type: 'spring', ...exitConfig }, () => {
           onComplete?.()

@@ -471,8 +471,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   }, [duration])
 
   // animation driver for drag gestures
-  // note: animateOut is available but we use AnimatePresence exitStyle instead
-  const { setDragOffset, springBack, animatedStyle, AnimatedView, dragRef } =
+  const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView, dragRef } =
     useToastAnimations({ reducedMotion })
 
   // drag gesture with animation driver integration
@@ -482,12 +481,15 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     disabled: !dismissible || toastType === 'loading',
     onDragStart: pauseTimer,
     onDragMove: setDragOffset,
-    onDismiss: () => {
+    onDismiss: (exitDirection, velocity) => {
       setSwipeOut(true)
       toast.onDismiss?.(toast)
-      // remove immediately - AnimatePresence handles exit animation
       setRemoved(true)
-      removeToast(toast)
+      // use animateOut for smooth velocity-based exit animation
+      // this continues the drag momentum into the exit, then removes the toast
+      animateOut(exitDirection, velocity, () => {
+        removeToast(toast)
+      })
     },
     onCancel: () => {
       springBack(() => {
@@ -684,17 +686,11 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
           ? { opacity: 0 }
           : {
               opacity: 0,
-              // for swipe dismissal, continue in swipe direction with subtle movement
-              x: isHorizontalSwipe && swipeOut ? (swipeDirection === 'left' ? -30 : 30) : 0,
-              y:
-                isVerticalSwipe && swipeOut
-                  ? swipeDirection === 'up'
-                    ? -30
-                    : 30
-                  : isTop
-                    ? -10
-                    : 10,
-              scale: 0.95,
+              // for swipe dismissal, drag transform handles position via animateOut
+              // for non-swipe dismissal (close button, timeout), use subtle position shift
+              x: 0,
+              y: swipeOut ? 0 : isTop ? -10 : 10,
+              scale: swipeOut ? 1 : 0.95,
             }
       }
       {...(isWeb && {

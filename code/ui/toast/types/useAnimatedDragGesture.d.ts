@@ -12,8 +12,8 @@ export interface UseAnimatedDragGestureOptions {
     onDragMove: (x: number, y: number) => void;
     /** called when drag starts */
     onDragStart?: () => void;
-    /** called when drag ends with successful dismiss - animate out in this direction */
-    onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down') => void;
+    /** called when drag ends with successful dismiss - includes exit direction and velocity */
+    onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down', velocity: number) => void;
     /** called when drag ends without dismiss - spring back */
     onCancel: () => void;
 }

@@ -30,8 +30,8 @@ export interface ToastAnimationValues {
     setDragOffset: (x: number, y: number) => void;
     /** spring back to origin after cancelled drag */
     springBack: (onComplete?: () => void) => void;
-    /** animate out in a direction after successful swipe */
-    animateOut: (direction: 'left' | 'right' | 'up' | 'down', onComplete?: () => void) => void;
+    /** animate out in a direction after successful swipe, with optional velocity for smooth continuation */
+    animateOut: (direction: 'left' | 'right' | 'up' | 'down', velocity?: number, onComplete?: () => void) => void;
     /** stop any running animations */
     stop: () => void;
     /** the animated style to spread on the AnimatedView (for motion/reanimated drivers) */
