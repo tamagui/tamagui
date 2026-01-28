@@ -116,7 +116,7 @@ test.describe('Toast Gestures', () => {
     expect(Math.abs(dragX)).toBeLessThan(30) // sqrt(50) * 2 ≈ 14px max
 
     await page.mouse.up()
-    await page.waitForTimeout(500) // wait for snap back animation
+    await page.waitForTimeout(800) // wait for snap back animation
 
     // toast should still exist
     expect(await getToastCount(page)).toBe(1)
@@ -159,7 +159,7 @@ test.describe('Toast Gestures', () => {
     }
 
     await page.mouse.up()
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // toast should still exist
     expect(await getToastCount(page)).toBe(1)
@@ -177,10 +177,10 @@ test.describe('Toast Gestures', () => {
     await page.mouse.move(startX, startY)
     await page.mouse.down()
     await page.mouse.move(startX + 20, startY, { steps: 15 }) // slow, small movement
-    await page.waitForTimeout(500) // slow enough velocity
+    await page.waitForTimeout(800) // slow enough velocity
     await page.mouse.up()
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
     expect(await getToastCount(page)).toBe(1)
   })
 })
@@ -294,7 +294,7 @@ test.describe('Toast Stacking', () => {
       expect(newToast.zIndex).toBeGreaterThan(exitingToast.zIndex)
     }
 
-    await page.waitForTimeout(500) // wait for exit animation
+    await page.waitForTimeout(800) // wait for exit animation
   })
 })
 
@@ -323,7 +323,8 @@ test.describe('Toast Complex Interactions', () => {
     })
     await page.mouse.up()
 
-    await page.waitForTimeout(500)
+    // wait for spring exit animation to complete (animateOut uses spring physics)
+    await page.waitForTimeout(800)
 
     // should have 2 toasts remaining
     expect(await getToastCount(page)).toBe(2)
@@ -337,7 +338,7 @@ test.describe('Toast Complex Interactions', () => {
     expect(closeButton).toBeTruthy()
 
     await closeButton!.click()
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     expect(await getToastCount(page)).toBe(0)
   })
@@ -351,7 +352,7 @@ test.describe('Toast Complex Interactions', () => {
     expect(actionButton).toBeTruthy()
 
     await actionButton!.click()
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // toast should be dismissed after action
     expect(await getToastCount(page)).toBe(0)
@@ -366,7 +367,7 @@ test.describe('Toast Complex Interactions', () => {
 
     // press escape
     await page.keyboard.press('Escape')
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     expect(await getToastCount(page)).toBe(0)
   })
@@ -378,13 +379,13 @@ test.describe('Toast Complex Interactions', () => {
       await page.waitForTimeout(50)
     }
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
     const count = await getToastCount(page)
     expect(count).toBeGreaterThanOrEqual(4)
 
     // dismiss all
     await dismissAllToasts(page)
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     expect(await getToastCount(page)).toBe(0)
   })
@@ -406,7 +407,8 @@ test.describe('Toast Complex Interactions', () => {
     })
     await page.mouse.up()
 
-    await page.waitForTimeout(500)
+    // wait for spring exit animation to complete
+    await page.waitForTimeout(800)
 
     // should have dismissed one toast
     expect(await getToastCount(page)).toBe(3)
@@ -465,7 +467,7 @@ test.describe('Toast Edge Cases', () => {
     })
     await page.mouse.up()
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // first toast dismissed, two new ones exist
     expect(await getToastCount(page)).toBe(2)
@@ -486,7 +488,7 @@ test.describe('Toast Edge Cases', () => {
     // immediately hover back over toast area during exit animation
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // toast should be dismissed despite hover
     expect(await getToastCount(page)).toBe(0)
@@ -514,7 +516,7 @@ test.describe('Toast Edge Cases', () => {
     expect(cancelButton).toBeTruthy()
 
     await cancelButton!.click()
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     expect(await getToastCount(page)).toBe(0)
   })
@@ -628,7 +630,7 @@ test.describe('Toast Gesture Physics', () => {
     expect(Math.abs(dragX)).toBeLessThan(10) // should be near zero due to Y lock
 
     await page.mouse.up()
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // toast should NOT be dismissed (Y-locked drag can't trigger horizontal dismiss)
     expect(await getToastCount(page)).toBe(1)
@@ -654,7 +656,7 @@ test.describe('Toast Gesture Physics', () => {
     expect(Math.abs(dragX)).toBeLessThan(30) // max should be ~25px
 
     await page.mouse.up()
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // toast should still exist
     expect(await getToastCount(page)).toBe(1)
@@ -674,7 +676,7 @@ test.describe('Toast Gesture Physics', () => {
     await page.mouse.move(startX - 50, startY, { steps: 2 }) // very fast
     await page.mouse.up()
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // toast should NOT be dismissed despite high velocity
     expect(await getToastCount(page)).toBe(1)
@@ -756,7 +758,7 @@ test.describe('Toast Gesture Physics', () => {
     // right-click should trigger pointer cancel
     await page.mouse.click(startX + 40, startY, { button: 'right' })
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // toast should still exist (drag was cancelled)
     expect(await getToastCount(page)).toBe(1)
@@ -805,7 +807,7 @@ test.describe('Toast Stacking Drag Interactions', () => {
     )
     await page.mouse.up()
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // should have dismissed one toast
     expect(await getToastCount(page)).toBe(3)
@@ -836,7 +838,7 @@ test.describe('Toast Stacking Drag Interactions', () => {
     })
     await page.mouse.up()
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // first toast dismissed, two new ones should exist
     expect(await getToastCount(page)).toBe(2)
@@ -857,7 +859,7 @@ test.describe('Toast Stacking Drag Interactions', () => {
     // press escape mid-drag
     await page.keyboard.press('Escape')
 
-    await page.waitForTimeout(500)
+    await page.waitForTimeout(800)
 
     // toast should be dismissed by escape
     expect(await getToastCount(page)).toBe(0)
