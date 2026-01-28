@@ -281,6 +281,7 @@ const PaymentForm = ({
               projectName,
               projectDomain,
               couponId: finalCoupon?.id,
+              supportTier: selectedPrices.supportTier,
             }),
           })
 
@@ -810,6 +811,52 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </YStack>
             </XStack>
 
+            <YStack gap="$2">
+              <SizableText
+                color="$color10"
+                opacity={0.3}
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
+                $maxMd={{
+                  fontSize: '$3',
+                }}
+                onPress={() => setShowCoupon((x) => !x)}
+              >
+                {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+              </SizableText>
+              {showCoupon && (
+                <XStack gap="$2" items="center">
+                  <Input
+                    flex={1}
+                    size="$3"
+                    borderWidth={1}
+                    placeholder="Enter code"
+                    value={couponCode}
+                    onChange={(e) => {
+                      const text = e.target?.value
+                      setCouponCode(text)
+                    }}
+                  />
+                  <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                    <Button.Text>Apply</Button.Text>
+                  </Button>
+                </XStack>
+              )}
+              {couponError && (
+                <Paragraph size="$2" color="$red10">
+                  {couponError}
+                </Paragraph>
+              )}
+              {finalCoupon && (
+                <Paragraph size="$2" color="$green10">
+                  Coupon applied:{' '}
+                  {finalCoupon.percent_off
+                    ? `${finalCoupon.percent_off}% off`
+                    : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+                </Paragraph>
+              )}
+            </YStack>
+
             <Theme name="red">
               <YStack
                 bg="$color3"
@@ -1121,6 +1168,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         <Dialog.Overlay
           key="overlay"
           transition="medium"
+          bg="$shadow3"
           opacity={0.95}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}

@@ -61,13 +61,20 @@ const nextVersion = (() => {
     return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
   }
 
-  // RC mode: bump existing RC or will prompt for new RC version
+  // RC mode: bump existing RC or compute new RC version
   if (isRC) {
     if (isCurrentRC) {
       // Already an RC, bump the RC number
       return `${currentRCBase}-rc.${currentRCNumber + 1}`
     }
-    // Not an RC yet, return null - will be set via prompt
+    // Not an RC yet - compute the RC version
+    const baseVersion = curVersion.replace(/-.*$/, '') // strip any existing prerelease
+    const isCanaryOfCurrent = /-\d+$/.test(curVersion)
+    if (isCanaryOfCurrent) {
+      // canary of X.Y.Z -> X.Y.Z-rc.0
+      return `${baseVersion}-rc.0`
+    }
+    // otherwise return null - will be set via prompt
     return null
   }
 
@@ -208,17 +215,28 @@ async function run() {
         const baseVersion = curVersion.replace(/-.*$/, '') // strip any existing prerelease
         const [major, minor, patch] = baseVersion.split('.').map(Number)
 
-        const rcChoices = [
-          {
-            title: `${major}.${minor + 1}.0-rc.1 (next minor)`,
-            value: `${major}.${minor + 1}.0-rc.1`,
-          },
-          {
-            title: `${major}.${minor}.${patch + 1}-rc.1 (next patch)`,
-            value: `${major}.${minor}.${patch + 1}-rc.1`,
-          },
-          { title: `${major + 1}.0.0-rc.1 (next major)`, value: `${major + 1}.0.0-rc.1` },
-        ]
+        // check if current version is a canary (has prerelease suffix like -1234567)
+        const isCanaryOfCurrent = /-\d+$/.test(curVersion)
+
+        const rcChoices = isCanaryOfCurrent
+          ? [
+              // canary of X.Y.Z -> offer X.Y.Z-rc.0 as the RC
+              {
+                title: `${major}.${minor}.${patch}-rc.0`,
+                value: `${major}.${minor}.${patch}-rc.0`,
+              },
+            ]
+          : [
+              {
+                title: `${major}.${minor + 1}.0-rc.0 (next minor)`,
+                value: `${major}.${minor + 1}.0-rc.0`,
+              },
+              {
+                title: `${major}.${minor}.${patch + 1}-rc.0 (next patch)`,
+                value: `${major}.${minor}.${patch + 1}-rc.0`,
+              },
+              { title: `${major + 1}.0.0-rc.0 (next major)`, value: `${major + 1}.0.0-rc.0` },
+            ]
 
         const rcAnswer = await prompts({
           type: 'select',
@@ -329,12 +347,7 @@ async function run() {
         packageJsons,
         async ({ name, cwd }) => {
           const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
-          const publishTag =
-            canary || isCanaryVersion
-              ? 'canary'
-              : version.includes('-rc.')
-                ? 'rc'
-                : undefined
+          const publishTag = canary || isCanaryVersion ? 'canary' : undefined
           const publishOptions = [publishTag && `--tag ${publishTag}`]
             .filter(Boolean)
             .join(' ')

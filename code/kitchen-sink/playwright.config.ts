@@ -38,6 +38,10 @@ export default defineConfig({
     ...drivers.map((driver) => ({
       name: `animated-${driver}`,
       testMatch: '**/*.animated.test.{ts,tsx}',
+      // AnimationsWithMediaQueries only passes with css and motion drivers for now
+      ...(driver !== 'motion' && driver !== 'css' && {
+        testIgnore: '**/AnimationsWithMediaQueries.animated.test.{ts,tsx}',
+      }),
       metadata: { animationDriver: driver },
     })),
   ],

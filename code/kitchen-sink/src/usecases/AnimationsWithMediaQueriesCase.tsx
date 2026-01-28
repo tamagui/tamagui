@@ -13,7 +13,7 @@ import { YStack, XStack, Text, Square } from 'tamagui'
 
 export function AnimationsWithMediaQueriesCase() {
   return (
-    <YStack p="$4" gap="$6" height="100vh">
+    <YStack p="$4" gap="$6" height={"100vh" as any}>
       <Text fontSize="$5" fontWeight="bold">
         Animations With Media Queries Test
       </Text>
