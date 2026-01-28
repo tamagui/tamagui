@@ -177,7 +177,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     colorVarToVal = {}
     for (const key in tokens.color) {
       const token = tokens.color[key]
-      colorVarToVal[token.name] = token.val
+      if (token) {
+        colorVarToVal[token.name] = token.val
+      }
     }
   }
 
@@ -204,7 +206,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     if (val[0] === 'v' && val.startsWith('var(')) {
       // var()
       const varName = val.slice(6, -1)
-      const tokenVal = colorVarToVal[varName]
+      const tokenVal = colorVarToVal?.[varName]
       // either hydrate it from tokens directly or from computed style on body if no token
       if (tokenVal) {
         value = tokenVal
