@@ -15,7 +15,8 @@ module.exports = getDefaultConfig(__dirname)
 
 ## With Metro Plugin (Recommended)
 
-For better dev experience, use `@tamagui/metro-plugin` which loads your Tamagui config and watches for changes:
+For better dev experience, use `@tamagui/metro-plugin` which loads your Tamagui
+config and watches for changes:
 
 ```bash
 yarn add @tamagui/metro-plugin
@@ -33,43 +34,18 @@ module.exports = withTamagui(config, {
 })
 ```
 
-## CSS Generation
-
-For web, Tamagui outputs CSS containing your themes and tokens. Create a `tamagui.build.ts` file in your project root:
-
-```ts fileName="tamagui.build.ts"
-import type { TamaguiBuildOptions } from 'tamagui'
-
-export default {
-  components: ['tamagui'],
-  config: './tamagui.config.ts',
-  outputCSS: './tamagui-web.css',
-} satisfies TamaguiBuildOptions
-```
-
-Then import the CSS in your app's layout:
-
-```tsx fileName="app/_layout.tsx"
-import '../tamagui-web.css'
-// ... rest of your layout
-```
-
-In development, the CSS is generated automatically when Tamagui loads your config. For production builds, run:
-
-```bash
-tamagui generate
-```
-
 ## Optimized Production Builds
 
-For maximum optimization, use the `tamagui build` command which pre-compiles your components:
+For maximum optimization, use the `tamagui build` command which pre-compiles
+your components:
 
 ```bash
 # Optimize and build, then restore source files
 tamagui build --target web ./app -- expo export --platform web
 ```
 
-The `--` syntax runs the command after optimization, then automatically restores your source files. Add this to your `package.json`:
+The `--` syntax runs the command after optimization, then automatically restores
+your source files. Add this to your `package.json`:
 
 ```json
 {
@@ -93,7 +69,8 @@ export function MyComponent() {
 }
 ```
 
-This will print detailed compiler output showing what optimizations are happening:
+This will print detailed compiler output showing what optimizations are
+happening:
 
 ```
 [✅] flattened YStack div

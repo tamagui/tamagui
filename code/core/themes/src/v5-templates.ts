@@ -105,7 +105,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   }
 
   const surface1 = makeSurface(3, 1)
-  const surface2 = makeSurface(4, 1)
+  const surface2 = makeSurface(5, 1)
 
   const accent = Object.fromEntries(
     Object.entries(base).map(([key, index]) => {

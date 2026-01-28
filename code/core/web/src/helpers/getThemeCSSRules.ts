@@ -3,7 +3,7 @@ import { getSetting } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed, Variable } from '../types'
-import { tokensValueToVariable } from './registerCSSVariable'
+import { getOrCreateVariable } from './registerCSSVariable'
 import { sortString } from './sortString'
 
 const darkLight = ['dark', 'light']
@@ -38,13 +38,7 @@ export function getThemeCSSRules(props: {
 
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
-      let value: any = null
-
-      if (!tokensValueToVariable.has(variable.val)) {
-        value = variable.val
-      } else {
-        value = tokensValueToVariable.get(variable.val)!.variable
-      }
+      const value = getOrCreateVariable(variable.val).variable
       // Hash themeKey in case it has invalid chars too
       vars += `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(
         themeKey,

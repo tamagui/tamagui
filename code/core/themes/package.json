@@ -7,10 +7,9 @@
   "module": "dist/esm",
   "sideEffects": false,
   "scripts": {
-    "generate": "yarn generate:v1 & yarn generate:v3 & yarn generate:v4 & yarn generate:v4-tamagui & yarn generate:v5 & yarn generate:v5-subtle",
+    "generate": "yarn generate:v5 & yarn generate:v5-subtle",
     "generate:v5": "tamagui generate-themes ./src/v5-themes.ts ./src/generated-v5.ts",
     "generate:v5-subtle": "tamagui generate-themes ./src/v5-themes-subtle.ts ./src/generated-v5-subtle.ts",
-    "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
     "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
     "generate:v4-tamagui": "tamagui generate-themes ./src/v4-tamagui.ts ./src/generated-v4-tamagui.ts",
@@ -24,7 +23,6 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./src/themes-new.ts": "./src/themes-new.ts",
     ".": {
       "react-native": {
         "module": "./dist/esm/index.native.js",

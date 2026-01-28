@@ -691,7 +691,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
               <AnimatedView
                 ref={ref}
-                {...(!gestureHandlerEnabled && panResponder?.panHandlers)}
                 onLayout={handleAnimationViewLayout}
                 // @ts-ignore for CSS driver this is necessary to attach the transition
                 // also motion driver at least though i suspect all drivers?
@@ -713,12 +712,18 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
                   animatedStyle,
                 ]}
               >
+                {/* wrap children with plain RN View for panResponder - tamagui views no longer handle responder events on web */}
                 {gestureHandlerEnabled && panGesture ? (
                   <GestureDetectorWrapper gesture={panGesture} style={{ flex: 1 }}>
                     {props.children}
                   </GestureDetectorWrapper>
                 ) : (
-                  props.children
+                  <View
+                    {...panResponder?.panHandlers}
+                    style={{ flex: 1, width: '100%', height: '100%' }}
+                  >
+                    {props.children}
+                  </View>
                 )}
               </AnimatedView>
             </GestureSheetProvider>

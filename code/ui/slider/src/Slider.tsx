@@ -302,7 +302,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
 type SliderTrackElement = TamaguiElement
 
 export const SliderTrackFrame = styled(SliderFrame, {
-  name: 'SliderTrack',
+  name: 'Slider',
 
   variants: {
     unstyled: {
@@ -340,20 +340,18 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
 )
 
 /* -------------------------------------------------------------------------------------------------
- * SliderTrackActive
+ * SliderActive
  * -----------------------------------------------------------------------------------------------*/
 
-const RANGE_NAME = 'SliderTrackActive'
-
-export const SliderTrackActiveFrame = styled(SliderFrame, {
-  name: 'SliderTrackActive',
+export const SliderActiveFrame = styled(SliderFrame, {
+  name: 'SliderActive',
   position: 'absolute',
   pointerEvents: 'box-none',
 
   variants: {
     unstyled: {
       false: {
-        backgroundColor: '$backgroundActive',
+        backgroundColor: '$background',
         borderRadius: 100_000,
       },
     },
@@ -364,49 +362,48 @@ export const SliderTrackActiveFrame = styled(SliderFrame, {
   },
 })
 
-type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>
+type SliderActiveProps = GetProps<typeof SliderActiveFrame>
 
-const SliderTrackActive = React.forwardRef<View, SliderTrackActiveProps>(
-  (props: ScopedProps<SliderTrackActiveProps>, forwardedRef) => {
-    const { __scopeSlider, ...rangeProps } = props
-    const context = useSliderContext(__scopeSlider)
-    const orientation = useSliderOrientationContext(__scopeSlider)
-    const ref = React.useRef<View>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
-    const valuesCount = context.values.length
-    const percentages = context.values.map((value) =>
-      convertValueToPercentage(value, context.min, context.max)
-    )
-    const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0
-    const offsetEnd = 100 - Math.max(...percentages)
+const SliderActive = React.forwardRef<View, SliderActiveProps>(function SliderActive(
+  props: ScopedProps<SliderActiveProps>,
+  forwardedRef
+) {
+  const { __scopeSlider, ...rangeProps } = props
+  const context = useSliderContext(__scopeSlider)
+  const orientation = useSliderOrientationContext(__scopeSlider)
+  const ref = React.useRef<View>(null)
+  const composedRefs = useComposedRefs(forwardedRef, ref)
+  const valuesCount = context.values.length
+  const percentages = context.values.map((value) =>
+    convertValueToPercentage(value, context.min, context.max)
+  )
+  const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0
+  const offsetEnd = 100 - Math.max(...percentages)
 
-    return (
-      <SliderTrackActiveFrame
-        orientation={context.orientation}
-        data-orientation={context.orientation}
-        data-disabled={context.disabled ? '' : undefined}
-        size={context.size}
-        animateOnly={['left', 'top', 'right', 'bottom']}
-        {...rangeProps}
-        ref={composedRefs}
-        {...{
-          [orientation.startEdge]: `${offsetStart}%`,
-          [orientation.endEdge]: `${offsetEnd}%`,
-        }}
-        {...(orientation.sizeProp === 'width'
-          ? {
-              height: '100%',
-            }
-          : {
-              left: 0,
-              right: 0,
-            })}
-      />
-    )
-  }
-)
-
-SliderTrackActive.displayName = RANGE_NAME
+  return (
+    <SliderActiveFrame
+      orientation={context.orientation}
+      data-orientation={context.orientation}
+      data-disabled={context.disabled ? '' : undefined}
+      size={context.size}
+      animateOnly={['left', 'top', 'right', 'bottom']}
+      {...rangeProps}
+      ref={composedRefs}
+      {...{
+        [orientation.startEdge]: `${offsetStart}%`,
+        [orientation.endEdge]: `${offsetEnd}%`,
+      }}
+      {...(orientation.sizeProp === 'width'
+        ? {
+            height: '100%',
+          }
+        : {
+            left: 0,
+            right: 0,
+          })}
+    />
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * SliderThumb
@@ -449,13 +446,14 @@ export const SliderThumbFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundPress',
           borderColor: '$borderColorPress',
         },
-        focusStyle: {
-          backgroundColor: '$backgroundFocus',
-          borderColor: '$borderColorFocus',
-        },
         hoverStyle: {
           backgroundColor: '$backgroundHover',
           borderColor: '$borderColorHover',
+        },
+        focusVisibleStyle: {
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$outlineColor',
         },
       },
     },
@@ -726,7 +724,7 @@ const SliderComponent = React.forwardRef(
 
 const Slider = withStaticProperties(SliderComponent, {
   Track: SliderTrack,
-  TrackActive: SliderTrackActive,
+  TrackActive: SliderActive,
   Thumb: SliderThumb,
 })
 
@@ -768,7 +766,7 @@ Slider.displayName = SLIDER_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 const Track = SliderTrack
-const Range = SliderTrackActive
+const Range = SliderActive
 const Thumb = SliderThumb
 
 export {
@@ -776,10 +774,10 @@ export {
   Slider,
   SliderThumb,
   SliderTrack,
-  SliderTrackActive,
+  SliderActive,
   Thumb,
   //
   Track,
 }
 
-export type { SliderProps, SliderTrackActiveProps, SliderTrackProps }
+export type { SliderProps, SliderActiveProps, SliderTrackProps }

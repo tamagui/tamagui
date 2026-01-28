@@ -8,7 +8,7 @@
  * 3. Run: yarn start:web and open http://localhost:9000/?test=V5ThemeBuilderOutput&generatedV5=true
  */
 import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5'
-import { defaultComponentThemes } from '@tamagui/themes/v5'
+import { v5ComponentThemes } from '@tamagui/themes/v5'
 import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'
 
 const darkPalette = ['hsla(228, 53%, 1%, 1)','hsla(228, 53%, 6%, 1)','hsla(228, 53%, 12%, 1)','hsla(228, 53%, 17%, 1)','hsla(228, 53%, 23%, 1)','hsla(228, 53%, 28%, 1)','hsla(228, 53%, 34%, 1)','hsla(228, 53%, 39%, 1)','hsla(228, 53%, 45%, 1)','hsla(228, 53%, 50%, 1)','hsla(0, 15%, 93%, 1)','hsla(0, 15%, 99%, 1)']
@@ -48,7 +48,7 @@ const accentDark = {
 const builtThemes = createV5Theme({
   darkPalette,
   lightPalette,
-  componentThemes: defaultComponentThemes,
+  componentThemes: v5ComponentThemes,
   childrenThemes: {
     // Include default color themes (blue, red, green, yellow, etc.)
     ...defaultChildrenThemes,
