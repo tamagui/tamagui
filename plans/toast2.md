@@ -500,6 +500,33 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 - 13 tests in ToastMultiple.test.tsx
 - 49 total tests covering gestures, stacking, timing, edge cases
 
+### 2026-01-27 (continued)
+
+**Bug Fix: Entering toasts behind exiting toasts**
+- Issue: New toasts appeared behind exiting toasts during animation
+- Root cause: Z-index was computed without considering `removed` state
+- Fixed: Added `removed ? 0 : visibleToasts - index + 1` for z-index calculation
+- Exiting toasts now get z-index 0, so entering toasts appear above them
+- Added test: "entering toast appears above exiting toast"
+
+**Bug Fix: Drag only moving content, not outer frame**
+- Issue: Dragging was moving text/content but the background/border stayed in place
+- Root cause: DragWrapper was inside ToastItemFrame; drag transform only applied to content
+- Fixed: Restructured component hierarchy:
+  - New `ToastPositionWrapper` handles absolute positioning and stacking animations
+  - `DragWrapper` now wraps `ToastItemFrame` entirely
+  - `ToastItemFrame` only contains visual styling (background, border, shadow)
+- Now drag transform moves the entire visual toast including styling
+
+**Ultra-slow 5000ms animation added**
+- Added 5000ms animation to all drivers (CSS, Motion, Native, Reanimated)
+- Available for testing animation smoothness by sampling multiple points
+
+**Test Summary (Updated):**
+- 37 tests in Toast.test.tsx (added z-index test)
+- 13 tests in ToastMultiple.test.tsx
+- 50 total tests
+
 ---
 
 ## Notes
