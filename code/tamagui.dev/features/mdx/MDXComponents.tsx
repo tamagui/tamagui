@@ -463,7 +463,7 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading asChild data-heading mt="$6" mb="$2" id={id}>
+    <LinkHeading data-heading mt="$6" mb="$2" id={id}>
       <H3
         maxW="100%"
         position="relative"
@@ -475,8 +475,8 @@ const componentsIn = {
         {...props}
       >
         {children}
-        {getNonTextChildren(children)}
       </H3>
+      {getNonTextChildren(children)}
     </LinkHeading>
   ),
 
@@ -998,6 +998,7 @@ export const components = Object.fromEntries(
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
     render="a"
+    data-heading
     // @ts-expect-error
     href={`#${id}`}
     id={id}
