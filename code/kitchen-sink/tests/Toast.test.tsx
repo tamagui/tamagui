@@ -16,24 +16,31 @@ import { expect, test, type Page } from '@playwright/test'
 const TEST_URL = 'http://localhost:7979/?test=ToastMultipleCase&animationDriver=css'
 
 // helper to get the drag transform on the toast's DragWrapper
-async function getDragTransformX(page: Page): Promise<number> {
+// structure: ToastPositionWrapper > DragWrapper (cursor:grab) > ToastItemFrame (role=status)
+async function getDragTransform(page: Page): Promise<{ x: number; y: number }> {
   return page.evaluate(() => {
-    const toast = document.querySelector('[role="status"]') as HTMLElement
-    if (!toast) return 0
+    const toastFrame = document.querySelector('[role="status"]') as HTMLElement
+    if (!toastFrame) return { x: 0, y: 0 }
 
-    const dragWrapper = toast.querySelector('div[style*="cursor"]') as HTMLElement
-    if (!dragWrapper) return 0
+    // dragWrapper is the parent of toastFrame
+    const dragWrapper = toastFrame.parentElement as HTMLElement
+    if (!dragWrapper) return { x: 0, y: 0 }
 
     const transform = dragWrapper.style.transform
-    if (!transform) return 0
+    if (!transform) return { x: 0, y: 0 }
 
     // parse translate3d(Xpx, Ypx, 0)
-    const match = transform.match(/translate3d\(([^,]+)/)
+    const match = transform.match(/translate3d\(([^,]+),\s*([^,]+)/)
     if (match) {
-      return parseFloat(match[1])
+      return { x: parseFloat(match[1]), y: parseFloat(match[2]) }
     }
-    return 0
+    return { x: 0, y: 0 }
   })
+}
+
+async function getDragTransformX(page: Page): Promise<number> {
+  const { x } = await getDragTransform(page)
+  return x
 }
 
 async function getToastCount(page: Page): Promise<number> {
@@ -203,9 +210,13 @@ test.describe('Toast Stacking', () => {
     const frontToast = await page.$('[data-front="true"]')
     expect(frontToast).toBeTruthy()
 
-    // check z-index ordering
+    // check z-index ordering - z-index is on ToastPositionWrapper (grandparent of role=status)
     const zIndices = await page.$$eval('[role="status"]', (els) =>
-      els.map((el) => getComputedStyle(el).zIndex)
+      els.map((el) => {
+        // ToastPositionWrapper > DragWrapper > ToastItemFrame (role=status)
+        const positionWrapper = el.parentElement?.parentElement
+        return positionWrapper ? getComputedStyle(positionWrapper).zIndex : '0'
+      })
     )
     // front toast should have highest z-index
     const numericZIndices = zIndices.map((z) => parseInt(z) || 0)
@@ -608,7 +619,7 @@ test.describe('Toast Gesture Physics', () => {
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
-  test('diagonal drag starting vertical locks Y direction and prevents horizontal swipe', async ({
+  test('collapsed mode allows all-direction drag with resistance except exit direction', async ({
     page,
   }) => {
     await createToast(page)
@@ -618,21 +629,24 @@ test.describe('Toast Gesture Physics', () => {
     const startX = box!.x + box!.width / 2
     const startY = box!.y + box!.height / 2
 
-    // start drag with slight vertical bias first (2px down, then 1px right)
-    // this should lock to Y direction
+    // in collapsed mode, dragging vertically should have resisted movement
+    // (swipeDirection is 'right' by default, so vertical gets resistance)
     await page.mouse.move(startX, startY)
     await page.mouse.down()
-    await page.mouse.move(startX, startY + 3, { steps: 2 }) // vertical first
-    await page.mouse.move(startX + 100, startY + 3, { steps: 10 }) // then try horizontal
+    await page.mouse.move(startX, startY + 50, { steps: 5 }) // drag down 50px
 
-    // check that horizontal offset is minimal (locked to Y)
-    const dragX = await getDragTransformX(page)
-    expect(Math.abs(dragX)).toBeLessThan(10) // should be near zero due to Y lock
+    // vertical movement should be resisted (sqrt curve caps at ~25px)
+    const { x, y } = await getDragTransform(page)
+    // x should be near 0 since we only moved vertically
+    expect(Math.abs(x)).toBeLessThan(5)
+    // y should show resistance - less than 50px input, capped around 15px for sqrt(50)*2
+    expect(Math.abs(y)).toBeLessThan(20)
+    expect(Math.abs(y)).toBeGreaterThan(5) // but there should be SOME movement
 
     await page.mouse.up()
-    await page.waitForTimeout(800)
+    await page.waitForTimeout(500)
 
-    // toast should NOT be dismissed (Y-locked drag can't trigger horizontal dismiss)
+    // toast should NOT be dismissed (vertical drag doesn't trigger horizontal dismiss)
     expect(await getToastCount(page)).toBe(1)
   })
 

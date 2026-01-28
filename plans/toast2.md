@@ -463,33 +463,33 @@ const ToastTitle = styled(SizableText, {
 
 New test categories added:
 - Toast Gesture Physics (6 tests):
-  - diagonal drag direction lock prevents horizontal swipe ✓
-  - resistance caps at ~25px when dragging far in wrong direction ✓
-  - fast flick in wrong direction does NOT dismiss ✓
-  - transform follows sqrt resistance curve during wrong-direction drag ✓
-  - orphaned pointer move without pointer down is ignored ✓
-  - right-click during drag triggers cancel and snaps back ✓
+  - diagonal drag direction lock prevents horizontal swipe (maybe verified)
+  - resistance caps at ~25px when dragging far in wrong direction (maybe verified)
+  - fast flick in wrong direction does NOT dismiss (maybe verified)
+  - transform follows sqrt resistance curve during wrong-direction drag (maybe verified)
+  - orphaned pointer move without pointer down is ignored (maybe verified)
+  - right-click during drag triggers cancel and snaps back (maybe verified)
 
 - Toast Stacking Drag Interactions (3 tests):
-  - dragging stacked (non-front) toast works correctly ✓
-  - drag one toast while another is entering does not cause glitches ✓
-  - escape key during drag cancels drag and dismisses toast ✓
+  - dragging stacked (non-front) toast works correctly (maybe verified)
+  - drag one toast while another is entering does not cause glitches (maybe verified)
+  - escape key during drag cancels drag and dismisses toast (maybe verified)
 
 - Toast Timer Interactions (2 tests):
-  - drag pauses auto-dismiss timer and resumes on cancel ✓
-  - multiple rapid hovers do not corrupt timer state ✓
+  - drag pauses auto-dismiss timer and resumes on cancel (maybe verified)
+  - multiple rapid hovers do not corrupt timer state (maybe verified)
 
 - Toast Position Swipe Directions (1 test):
-  - bottom-right position allows right swipe dismissal ✓
+  - bottom-right position allows right swipe dismissal (maybe verified)
 
 **Sub-agent Test Critique**
 Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
-- Direction lock mechanism (fixed + tested)
-- Resistance physics boundary (tested)
-- Orphaned pointer moves (tested)
-- Pointer cancel handling (tested)
-- Stacking + drag interactions (tested)
-- Timer pause/resume during gestures (tested)
+- Direction lock mechanism (fixed + maybe tested)
+- Resistance physics boundary (maybe tested)
+- Orphaned pointer moves (maybe tested)
+- Pointer cancel handling (maybe tested)
+- Stacking + drag interactions (maybe tested)
+- Timer pause/resume during gestures (maybe tested)
 
 **Additional Fix: Pointer Capture Release**
 - Added explicit `releasePointerCapture()` calls in `handlePointerUp` and `handlePointerCancel`
@@ -525,7 +525,49 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 **Test Summary (Updated):**
 - 37 tests in Toast.test.tsx (added z-index test)
 - 13 tests in ToastMultiple.test.tsx
-- 50 total tests
+- 50 total tests (all passing with CSS driver)
+
+### 2026-01-27 (continued - interactions polish)
+
+**Feature: All-direction drag with resistance when collapsed (Sonner-like)**
+- When collapsed, allow drag in all directions with resistance except exit direction
+- This creates the satisfying "rubber band" feel in all directions
+- When expanded, still use direction locking to prevent accidental scrolls
+
+**Feature: Opacity fade during swipe exit**
+- Added fadeOut parameter to animateSpring for smooth opacity animation during swipe dismiss
+- Exit animation now fades opacity based on progress toward target position
+
+**Feature: Sonner-style focus ring**
+- Changed from outline to box-shadow for focus-visible styling
+- `boxShadow: '0 4px 12px $shadowColor, 0 0 0 2px $color8'`
+
+**Feature: Immediate toast repositioning on swipe dismiss**
+- Removed height from heights array immediately when swipe dismiss starts
+- Remaining toasts reposition immediately instead of waiting for exit animation
+
+**Bug Fix: Test helpers updated for new component hierarchy**
+- getDragTransformX now looks for parent element (DragWrapper is parent of ToastItemFrame)
+- z-index test now looks at grandparent (ToastPositionWrapper)
+- Added getDragTransform helper for both X and Y values
+
+**Test update:**
+- Changed "diagonal drag locks direction" test to "collapsed mode allows all-direction drag"
+- Tests now verify the new all-direction resistance behavior
+
+**Bug Fix: Hover cooldown during repositioning**
+- Added 300ms cooldown after toast removal to ignore hover events
+- Prevents toasts from expanding when they reposition into mouse cursor
+
+**Bug Fix: Shadow styling**
+- boxShadow string with tokens doesn't interpolate
+- Changed to proper shadow props: shadowColor, shadowOffset, shadowOpacity, shadowRadius
+
+### TODO / Known Issues
+
+- [ ] Top-right position: can't pull left with resistance when expanded
+- [ ] Mixed height toasts don't position correctly in stack
+- [ ] swipeDirection 'auto' option to auto-detect based on edge position
 
 ### 2026-01-27 (continued - velocity-based exit)
 

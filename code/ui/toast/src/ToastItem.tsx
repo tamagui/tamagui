@@ -79,7 +79,6 @@ function DragWrapper({
 
 const ToastPositionWrapper = styled(YStack, {
   name: 'ToastPositionWrapper',
-  focusable: true,
   pointerEvents: 'auto',
   position: 'absolute',
   left: 0,
@@ -100,6 +99,7 @@ const ToastItemFrame = styled(YStack, {
   // prevent text selection during drag - critical for gesture handling
   userSelect: 'none',
   cursor: 'grab',
+  focusable: true,
 
   variants: {
     unstyled: {
@@ -108,20 +108,17 @@ const ToastItemFrame = styled(YStack, {
         borderRadius: '$4',
         paddingHorizontal: '$4',
         paddingVertical: '$3',
-        // shadow using elevation for cross-platform
-        elevation: '$4',
-        shadowColor: '$shadowColor',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
         borderWidth: 1,
         borderColor: '$borderColor',
+        shadowColor: 'rgba(0, 0, 0, 0.15)',
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 12,
 
-        // only show focus outline on keyboard navigation, not on click/tap
+        // sonner-style focus ring using outline
         focusVisibleStyle: {
-          outlineStyle: 'solid',
           outlineWidth: 2,
-          outlineColor: '$outlineColor',
+          outlineColor: '$color8',
+          outlineStyle: 'solid',
         },
       },
     },
@@ -479,12 +476,16 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     direction: swipeDirection,
     threshold: swipeThreshold,
     disabled: !dismissible || toastType === 'loading',
+    expanded,
     onDragStart: pauseTimer,
     onDragMove: setDragOffset,
     onDismiss: (exitDirection, velocity) => {
       setSwipeOut(true)
       toast.onDismiss?.(toast)
       setRemoved(true)
+      // remove height immediately so remaining toasts can reposition right away
+      // (don't wait for exit animation to complete)
+      setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
       // use animateOut for smooth velocity-based exit animation
       // this continues the drag momentum into the exit, then removes the toast
       animateOut(exitDirection, velocity, () => {
@@ -550,12 +551,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
 
   // calculate values for stacking effect using Tamagui animation props
   // NOTE: drag offset is now handled separately by AnimatedView with useAnimatedNumber
-  const isHorizontalSwipe =
-    swipeDirection === 'left' ||
-    swipeDirection === 'right' ||
-    swipeDirection === 'horizontal'
-  const isVerticalSwipe =
-    swipeDirection === 'up' || swipeDirection === 'down' || swipeDirection === 'vertical'
 
   // scale non-front toasts when not expanded (sonner-style stacking)
   // each toast behind front is scaled down by 5% - this creates visual depth
@@ -639,11 +634,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   return (
     <ToastPositionWrapper
       ref={toastRef}
-      // biome-ignore lint/a11y/useSemanticElements: we can't use <output> element as this is a styled Tamagui component
-      role="status"
-      aria-live="polite"
-      aria-atomic
-      tabIndex={0}
       {...dataAttributes}
       onLayout={handleLayout}
       // use Tamagui transition for stacking animations (y, scale, opacity)
@@ -693,13 +683,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
               scale: swipeOut ? 1 : 0.95,
             }
       }
-      {...(isWeb && {
-        onKeyDown: (event: React.KeyboardEvent) => {
-          if (event.key === 'Escape' && dismissible) {
-            handleClose()
-          }
-        },
-      })}
     >
       {/* Drag wrapper - wraps the entire visual toast so drag moves everything */}
       <DragWrapper
@@ -709,7 +692,20 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         AnimatedView={AnimatedView}
         dragRef={dragRef}
       >
-        <ToastItemFrame>
+        <ToastItemFrame
+          // biome-ignore lint/a11y/useSemanticElements: we can't use <output> element as this is a styled Tamagui component
+          role="status"
+          aria-live="polite"
+          aria-atomic
+          tabIndex={0}
+          {...(isWeb && {
+            onKeyDown: (event: React.KeyboardEvent) => {
+              if (event.key === 'Escape' && dismissible) {
+                handleClose()
+              }
+            },
+          })}
+        >
           {/* invisible hit area that fills the gap above/below toast when expanded
               this prevents hover state flickering when mouse moves between toasts */}
           {expanded && gapFillerHeight > 0 && (

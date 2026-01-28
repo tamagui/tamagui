@@ -222,6 +222,8 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
     const isFocusWithinRef = React.useRef(false)
     const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+    // cooldown ref to ignore hover events during toast repositioning animation
+    const hoverCooldownRef = React.useRef(false)
 
     // subscribe to toast state changes
     React.useEffect(() => {
@@ -310,6 +312,12 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     }, [])
 
     const removeToast = React.useCallback((toastToRemove: ToastT) => {
+      // enable cooldown to ignore hover events during repositioning animation
+      hoverCooldownRef.current = true
+      setTimeout(() => {
+        hoverCooldownRef.current = false
+      }, 300) // 300ms cooldown matches the transition duration
+
       setToasts((toasts) => {
         if (!toasts.find((toast) => toast.id === toastToRemove.id)?.delete) {
           ToastState.dismiss(toastToRemove.id)
@@ -388,8 +396,8 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
         data-x-position={xPosition}
         onMouseEnter={() => {
           // only expand on hover if there are multiple toasts
-          // and not currently interacting (dragging)
-          if (toasts.length > 1 && !interacting) {
+          // and not currently interacting (dragging) or in cooldown
+          if (toasts.length > 1 && !interacting && !hoverCooldownRef.current) {
             // small delay to allow pass-through mouse movement
             hoverTimeoutRef.current = setTimeout(() => {
               setExpanded(true)
@@ -398,7 +406,8 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
         }}
         onMouseMove={() => {
           // expand on sustained hover, not just entry
-          if (toasts.length > 1 && !interacting && !expanded) {
+          // skip during cooldown to prevent flicker during repositioning
+          if (toasts.length > 1 && !interacting && !expanded && !hoverCooldownRef.current) {
             if (!hoverTimeoutRef.current) {
               hoverTimeoutRef.current = setTimeout(() => {
                 setExpanded(true)

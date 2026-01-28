@@ -74,6 +74,7 @@ function animateSpring(
     mass?: number
     initialVelocityX?: number
     initialVelocityY?: number
+    fadeOut?: boolean
   },
   onComplete?: () => void
 ) {
@@ -83,6 +84,7 @@ function animateSpring(
     mass = 0.5,
     initialVelocityX = 0,
     initialVelocityY = 0,
+    fadeOut = false,
   } = config
 
   let x = fromX
@@ -93,6 +95,9 @@ function animateSpring(
   let animationId: number | null = null
   const targetX = toX
   const targetY = toY
+
+  // for fade out, track progress based on distance traveled
+  const totalDistance = Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2) || 1
 
   function step() {
     // spring physics
@@ -111,6 +116,13 @@ function animateSpring(
 
     element.style.transform = `translate3d(${x}px, ${y}px, 0)`
 
+    // animate opacity based on progress toward target
+    if (fadeOut) {
+      const distanceTraveled = Math.sqrt((x - fromX) ** 2 + (y - fromY) ** 2)
+      const progress = Math.min(distanceTraveled / totalDistance, 1)
+      element.style.opacity = String(1 - progress)
+    }
+
     // check if close enough to target and velocity is low
     const distanceX = Math.abs(x - targetX)
     const distanceY = Math.abs(y - targetY)
@@ -118,6 +130,9 @@ function animateSpring(
 
     if (distanceX < 0.5 && distanceY < 0.5 && speed < 0.5) {
       element.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`
+      if (fadeOut) {
+        element.style.opacity = '0'
+      }
       onComplete?.()
       return
     }
@@ -272,6 +287,7 @@ export function useToastAnimations(
         mass: 0.4,
         initialVelocityX,
         initialVelocityY,
+        fadeOut: true,
       }
 
       if (useDirectDom && dragRef.current) {

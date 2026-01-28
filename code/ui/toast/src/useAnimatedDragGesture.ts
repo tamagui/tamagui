@@ -10,6 +10,8 @@ export interface UseAnimatedDragGestureOptions {
   direction: SwipeDirection
   threshold: number
   disabled?: boolean
+  /** when collapsed, allow drag in all directions with resistance except exit direction */
+  expanded?: boolean
   /** called during drag with offset values */
   onDragMove: (x: number, y: number) => void
   /** called when drag starts */
@@ -44,6 +46,7 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
     direction,
     threshold,
     disabled,
+    expanded,
     onDragMove,
     onDragStart,
     onDismiss,
@@ -99,29 +102,54 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
       let offsetX = 0
       let offsetY = 0
 
-      // apply direction-aware movement with resistance for wrong direction
-      if (lockedDirectionRef.current === 'x' && isHorizontal) {
+      // when collapsed, allow drag in all directions with resistance except exit direction
+      // this feels more interactive like Sonner
+      if (!expanded) {
+        // exit direction gets free movement, all others get resistance
         if (direction === 'right') {
           offsetX = deltaX > 0 ? deltaX : resisted(deltaX)
+          offsetY = deltaY > 0 ? -resisted(-deltaY) : resisted(deltaY)
         } else if (direction === 'left') {
           offsetX = deltaX < 0 ? deltaX : -resisted(-deltaX)
-        } else {
-          offsetX = deltaX
-        }
-      } else if (lockedDirectionRef.current === 'y' && isVertical) {
-        if (direction === 'down') {
+          offsetY = deltaY > 0 ? -resisted(-deltaY) : resisted(deltaY)
+        } else if (direction === 'down') {
           offsetY = deltaY > 0 ? deltaY : resisted(deltaY)
+          offsetX = deltaX > 0 ? -resisted(-deltaX) : resisted(deltaX)
         } else if (direction === 'up') {
           offsetY = deltaY < 0 ? deltaY : -resisted(-deltaY)
-        } else {
+          offsetX = deltaX > 0 ? -resisted(-deltaX) : resisted(deltaX)
+        } else if (direction === 'horizontal') {
+          offsetX = deltaX
+          offsetY = deltaY > 0 ? -resisted(-deltaY) : resisted(deltaY)
+        } else if (direction === 'vertical') {
           offsetY = deltaY
+          offsetX = deltaX > 0 ? -resisted(-deltaX) : resisted(deltaX)
+        }
+      } else {
+        // when expanded, only allow movement in the configured swipe direction
+        if (lockedDirectionRef.current === 'x' && isHorizontal) {
+          if (direction === 'right') {
+            offsetX = deltaX > 0 ? deltaX : resisted(deltaX)
+          } else if (direction === 'left') {
+            offsetX = deltaX < 0 ? deltaX : -resisted(-deltaX)
+          } else {
+            offsetX = deltaX
+          }
+        } else if (lockedDirectionRef.current === 'y' && isVertical) {
+          if (direction === 'down') {
+            offsetY = deltaY > 0 ? deltaY : resisted(deltaY)
+          } else if (direction === 'up') {
+            offsetY = deltaY < 0 ? deltaY : -resisted(-deltaY)
+          } else {
+            offsetY = deltaY
+          }
         }
       }
 
       // directly update animated values (no React state update during drag)
       onDragMove(offsetX, offsetY)
     },
-    [disabled, direction, isHorizontal, isVertical, onDragMove]
+    [disabled, direction, expanded, isHorizontal, isVertical, onDragMove]
   )
 
   const handlePointerUp = React.useCallback(
