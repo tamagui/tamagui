@@ -6,6 +6,7 @@ import { Separator, Theme, XStack, YStack } from 'tamagui'
 import { Provider } from './provider'
 import { Sandbox } from './Sandbox'
 import * as TestCases from './usecases/index.web'
+import { MotionDemoPage } from './demos/motion/MotionDemoPage'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
@@ -69,8 +70,9 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
           `,
         }}
       />
+      <MotionDemoPage />
 
-      <Theme name={screenshot ? 'blue' : undefined}>
+      {/* <Theme name={screenshot ? 'blue' : undefined}>
         <XStack width="100%" height="100%" fullscreen>
           <YStack
             {...(centered && {
@@ -102,7 +104,7 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
             </>
           ) : null}
         </XStack>
-      </Theme>
+      </Theme> */}
       {showThemeSwitch && (
         // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
         <div
