@@ -437,6 +437,12 @@ Tamagui supports all React Native events on all platforms. On web, we also suppo
 ### Cross-Platform Events
 - `onPress`, `onLongPress`, `onPressIn`, `onPressOut` - Touch/press events that work on both native and web
 
+**Pointer Events** - Modern events that unify mouse, touch, and pen input. On native, these are mapped to touch events with a normalized event shape including `clientX/Y`, `pointerId`, and `pointerType`:
+- `onPointerDown`, `onPointerUp`, `onPointerMove`
+- `onPointerEnter`, `onPointerLeave`, `onPointerCancel`
+
+On native, `e.target.setPointerCapture(pointerId)` and `releasePointerCapture(pointerId)` are supported for drag scenarios where you need to receive move events outside the element bounds.
+
 ### Web-Only Events
 The following events are available on web and automatically ignored on native:
 
@@ -448,10 +454,6 @@ The following events are available on web and automatically ignored on native:
 
 **Keyboard Events**
 - `onKeyDown`, `onKeyUp`, `onKeyPress`
-
-**Pointer Events** - Modern events that work across mouse, touch, and pen:
-- `onPointerDown`, `onPointerUp`, `onPointerMove`
-- `onPointerEnter`, `onPointerLeave`, `onPointerCancel`
 
 **Drag and Drop**
 - `onDrag`, `onDragStart`, `onDragEnd`

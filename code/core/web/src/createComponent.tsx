@@ -13,6 +13,7 @@ import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandlin
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
+import { usePointerEvents } from './helpers/pointerEvents'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
@@ -1002,6 +1003,9 @@ export function createComponent<
     }
 
     viewProps.ref = stateRef.current.composedRef
+
+    // handle pointer events (native: maps to touch events, web: no-op)
+    usePointerEvents(props, viewProps)
 
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
