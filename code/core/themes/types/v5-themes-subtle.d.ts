@@ -204,6 +204,8 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     shadow4: string;
     shadow5: string;
     shadow6: string;
+    shadow7: string;
+    shadow8: string;
     outlineColor: string;
     accent0: string;
     accent2: string;

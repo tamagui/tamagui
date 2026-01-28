@@ -230,6 +230,8 @@ export declare const defaultConfig: {
         shadow4: string;
         shadow5: string;
         shadow6: string;
+        shadow7: string;
+        shadow8: string;
         shadowColor: string;
         gray1: string;
         gray2: string;

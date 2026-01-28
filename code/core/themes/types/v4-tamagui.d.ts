@@ -164,6 +164,8 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     shadow4: string;
     shadow5: string;
     shadow6: string;
+    shadow7: string;
+    shadow8: string;
     outlineColor: string;
     accent0: string;
     accent2: string;
@@ -179,8 +181,6 @@ declare const themes: Record<"light_blue" | "light_gray" | "light_green" | "ligh
     accent6: string;
     accent11: string;
     colorBg: string;
-    shadow7: string;
-    shadow8: string;
     shadow9: string;
     shadow10: string;
 } & Record<string, string>>;
