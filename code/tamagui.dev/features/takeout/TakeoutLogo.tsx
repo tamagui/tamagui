@@ -1,5 +1,5 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { H1, YStack } from 'tamagui'
+import { H1, Theme, YStack } from 'tamagui'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
 
 export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props }) => (
@@ -69,26 +69,36 @@ export const TakeoutLogo = (props: { scale?: number }) => {
             }}
           >
             {/* main color slices */}
-            <ThemeTintAlt offset={5}>
+            {/* <ThemeTintAlt offset={5}>
               <TAKEOUT
                 color="$color10"
-                className="clip-slice mix-blend"
+                className="clip-slice"
                 position="absolute"
                 opacity={0.3}
                 z={1001}
               />
-            </ThemeTintAlt>
+            </ThemeTintAlt> */}
 
-            {/* alt color slices */}
-            <ThemeTintAlt>
+            <Theme name="red">
               <TAKEOUT
-                color="$color7"
-                className="clip-slice-2 mix-blend"
+                color="$color9"
+                className="clip-slice mix-blend"
                 position="absolute"
-                opacity={0.3}
+                opacity={1}
                 z={1002}
               />
-            </ThemeTintAlt>
+            </Theme>
+
+            {/* alt color slices */}
+            <Theme name="red">
+              <TAKEOUT
+                color="$color9"
+                className="clip-slice-2 mix-blend"
+                position="absolute"
+                opacity={0.5}
+                z={1002}
+              />
+            </Theme>
 
             {/* secondary slice layer */}
             {/* <ThemeTintAlt offset={-2}>

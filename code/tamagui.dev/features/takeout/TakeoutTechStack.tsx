@@ -198,14 +198,14 @@ const techStack = [
 export function TakeoutTechStack() {
   return (
     <YStack gap="$6" py="$8" px="$4" maxW={1200} self="center" width="100%">
-      <YStack items="center" gap="$4">
+      <YStack items="center" gap="$4" px="$2">
         <H2
-          fontSize={32}
+          fontSize={28}
           fontWeight="700"
           text="center"
           color="$color12"
           style={{ lineHeight: '1.2' }}
-          $sm={{ fontSize: 40 }}
+          $gtSm={{ fontSize: 40 }}
         >
           Designed for moving fast
         </H2>

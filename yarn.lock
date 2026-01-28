@@ -7982,14 +7982,8 @@ __metadata:
   resolution: "@tamagui/form@workspace:code/ui/form"
   dependencies:
     "@tamagui/build": "workspace:*"
-    "@tamagui/compose-refs": "workspace:*"
     "@tamagui/core": "workspace:*"
-    "@tamagui/create-context": "workspace:*"
-    "@tamagui/focusable": "workspace:*"
-    "@tamagui/get-button-sized": "workspace:*"
-    "@tamagui/get-font-sized": "workspace:*"
     "@tamagui/helpers": "workspace:*"
-    "@tamagui/text": "workspace:*"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -9197,6 +9191,7 @@ __metadata:
   resolution: "@tamagui/tabs@workspace:code/ui/tabs"
   dependencies:
     "@tamagui/build": "workspace:*"
+    "@tamagui/compose-refs": "workspace:*"
     "@tamagui/constants": "workspace:*"
     "@tamagui/core": "workspace:*"
     "@tamagui/create-context": "workspace:*"

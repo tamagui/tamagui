@@ -3,21 +3,25 @@ import { View, styled } from '@tamagui/core'
 
 export const Separator = styled(View, {
   name: 'Separator',
-  borderColor: '$borderColor',
-  flexShrink: 0,
-  borderWidth: 0,
-  flex: 1,
-  height: 0,
-  maxHeight: 0,
-  borderBottomWidth: 1,
-  y: -0.5,
 
   variants: {
+    unstyled: {
+      false: {
+        borderColor: '$backgroundFocus',
+        flexShrink: 0,
+        borderWidth: 0,
+        flex: 1,
+        height: 0,
+        maxHeight: 0,
+        borderBottomWidth: 1,
+        y: -0.5,
+      },
+    },
+
     vertical: {
       true: {
         y: 0,
         x: -0.5,
-
         height: isWeb ? 'initial' : 'auto',
         // maxHeight auto WILL BE passed to style attribute, but for some reason not used?
         // almost seems like a react or browser bug, but for now `initial` works
@@ -30,4 +34,8 @@ export const Separator = styled(View, {
       },
     },
   } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })

@@ -749,9 +749,26 @@ export function createComponent<
       }
 
       // don't change this ever or else you break ComponentContext and cause re-rendering
+      // use a Set of listeners so multiple components can register
+      componentContext.mediaEmitListeners ||= new Set()
+
+      // only register once per component instance
+      if (!stateRef.current.mediaEmitCleanup) {
+        const updateListener = (next: Record<string, boolean>) => {
+          stateRef.current.nextMedia = next
+          stateRef.current.updateStyleListener?.()
+        }
+        componentContext.mediaEmitListeners.add(updateListener)
+        stateRef.current.mediaEmitCleanup = () => {
+          componentContext.mediaEmitListeners?.delete(updateListener)
+        }
+      }
+
       componentContext.mediaEmit ||= (next) => {
-        stateRef.current.nextMedia = next
-        stateRef.current.updateStyleListener?.()
+        // notify all registered components
+        for (const listener of componentContext.mediaEmitListeners!) {
+          listener(next)
+        }
       }
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
@@ -1088,6 +1105,7 @@ export function createComponent<
 
       return () => {
         componentSetStates.delete(setState)
+        stateRef.current.mediaEmitCleanup?.()
       }
     }, [state.unmounted, supportsCSS])
 

@@ -257,6 +257,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             }
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
+
             if (diff) {
               // FIX: Handle animation interruption for position-only animations
               // Only apply this fix when:
@@ -342,6 +343,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // IMPORTANT: Spread to create mutable copy - style objects may be frozen
               // fix transparent colors to use rgba for motion.dev compatibility
               const fixedDiff = fixTransparentColors({ ...diff }, lastDoAnimate.current)
+
               controls.current = animate(scope.current, fixedDiff, animationOptions)
               lastAnimateAt.current = Date.now()
             }

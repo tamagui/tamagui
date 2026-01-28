@@ -2,8 +2,8 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { LoadProgressBar, Slot, Stack, usePathname } from 'one'
-import { isWeb, setupPopper } from 'tamagui'
+import { LoadProgressBar, Slot, usePathname } from 'one'
+import { setupPopper } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Providers } from '../components/Providers'
 
@@ -93,26 +93,7 @@ export default function Layout() {
         <LoadProgressBar />
 
         <Providers>
-          {isWeb ? (
-            <Slot />
-          ) : (
-            <Stack
-              screenOptions={
-                isWeb
-                  ? {
-                      header() {
-                        return null
-                      },
-
-                      contentStyle: {
-                        position: 'relative',
-                        backgroundColor: 'red',
-                      },
-                    }
-                  : {}
-              }
-            />
-          )}
+          <Slot />
         </Providers>
       </body>
     </html>

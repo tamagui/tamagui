@@ -672,16 +672,15 @@ textarea {
 @media (hover: hover) {
   .clip-slice {
     mask-image: url(/takeouticon.svg);
-    mask-size: 50% 50%;
-    animation: clip-fade2 50s infinite alternate;
+    mask-size: 100% 100%;
+    animation: clip-fade2 40s infinite alternate;
     mix-blend-mode: difference !important;
   }
 
   .clip-slice-2 {
     mask-image: url(/takeouticon.svg);
-    mask-size: 25% 25%;
-    transform: rotate(-2deg);
-    animation: clip-fade 70s infinite alternate;
+    mask-size: 1% 1%;
+    animation: clip-fade 150s infinite alternate;
     mix-blend-mode: difference !important;
   }
 

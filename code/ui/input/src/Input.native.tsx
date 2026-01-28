@@ -56,6 +56,7 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     allowFontScaling,
     multiline: multilineProp,
     keyboardType: keyboardTypeProp,
+    inputMode: inputModeProp,
     autoCapitalize,
     autoCorrect,
     autoFocusNative,
@@ -111,10 +112,10 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
   // Convert web type to native props (if not explicitly overridden)
   let secureTextEntry = secureTextEntryProp ?? false
   let keyboardType: RNTextInputProps['keyboardType'] = keyboardTypeProp ?? 'default'
-  let inputMode: RNTextInputProps['inputMode'] = undefined
+  let inputMode: RNTextInputProps['inputMode'] = inputModeProp
 
   // only derive from type if native props weren't explicitly set
-  if (!secureTextEntryProp && !keyboardTypeProp) {
+  if (!secureTextEntryProp && !keyboardTypeProp && !inputModeProp) {
     switch (type) {
       case 'password':
         secureTextEntry = true

@@ -29,6 +29,7 @@ declare const SelectLabelFrame: import("@tamagui/core").TamaguiComponent<import(
 }, import("@tamagui/core").StaticConfigPublic>;
 export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>;
 export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    unstyled?: boolean | undefined;
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Select: (<Value extends string = string>(props: SelectScopedProps<SelectProps<Value>>) => import("react/jsx-runtime").JSX.Element) & {

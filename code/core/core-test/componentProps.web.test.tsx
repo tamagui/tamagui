@@ -23,8 +23,8 @@ describe('animation props', () => {
     expect(tree.asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <span
-          class=""
-          style="display: contents;"
+          class="font_body"
+          style="display: contents; font-family: var(--f-family);"
         >
           <span
             class="t_light _dsp_contents"

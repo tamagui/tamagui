@@ -1,7 +1,7 @@
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ClientOnly } from '@tamagui/use-did-finish-ssr'
 import React from 'react'
-import { getSetting } from '../config'
+import { getConfig, getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
@@ -76,7 +76,7 @@ export function TamaguiProvider({
   )
 }
 
-// for CSS animations
+// for CSS animations and default font inheritance
 function UnmountedClassName(props: { children: React.ReactNode }) {
   const [mounted, setMounted] = React.useState(false)
 
@@ -88,8 +88,20 @@ function UnmountedClassName(props: { children: React.ReactNode }) {
     return props.children
   }
 
+  const config = getConfig()
+  const defaultFont = config.defaultFont
+  const fontClass = defaultFont ? `font_${defaultFont}` : ''
+  const className = [mounted ? '' : 't_unmounted', fontClass].filter(Boolean).join(' ')
+
   return (
-    <span style={{ display: 'contents' }} className={mounted ? '' : 't_unmounted'}>
+    <span
+      style={{
+        display: 'contents',
+        // set default font so nested text inherits
+        fontFamily: defaultFont ? 'var(--f-family)' : undefined,
+      }}
+      className={className || undefined}
+    >
       {props.children}
     </span>
   )

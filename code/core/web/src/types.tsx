@@ -576,6 +576,7 @@ export type ComponentContextI = {
   animationDriver: AnimationDriver | null
   setParentFocusState: ComponentSetStateShallow | null
   mediaEmit?: (state: UseMediaState) => void
+  mediaEmitListeners?: Set<(state: UseMediaState) => void>
   insets?: { top: number; right: number; bottom: number; left: number } | null
 }
 
@@ -604,6 +605,9 @@ export type TamaguiComponentStateRef = {
   // avoid re-render animation support
   nextState?: TamaguiComponentState
   nextMedia?: UseMediaState
+
+  // cleanup function for media emit listener
+  mediaEmitCleanup?: () => void
 }
 
 export type ComponentGroupEmitter = {
@@ -1299,6 +1303,7 @@ export type TamaguiInternalConfig<
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
     settings: Omit<GenericTamaguiSettings, keyof G> & G
+    defaultFont?: string
     defaultFontToken: `${string}`
   }
 
