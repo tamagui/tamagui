@@ -471,6 +471,15 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 - Stacking + drag interactions (tested)
 - Timer pause/resume during gestures (tested)
 
+**Additional Fix: Pointer Capture Release**
+- Added explicit `releasePointerCapture()` calls in `handlePointerUp` and `handlePointerCancel`
+- While browsers auto-release on pointer end, explicit release is safer practice
+
+**Final Test Summary:**
+- 36 tests in Toast.test.tsx
+- 13 tests in ToastMultiple.test.tsx
+- 49 total tests covering gestures, stacking, timing, edge cases
+
 ---
 
 ## Notes
