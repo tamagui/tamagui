@@ -1,20 +1,6 @@
-// Toast v2 imperative API (Sonner-style)
-export { toast } from './ToastState'
-export type {
-  ToastT,
-  ToastType,
-  ToastToDismiss,
-  ExternalToast,
-  PromiseT,
-  PromiseData,
-  ToastAction,
-} from './ToastState'
+// Toast v1 declarative API (backward compatibility)
+// Import from '@tamagui/toast/v1' for the legacy API
 
-export { Toaster } from './Toaster'
-export type { ToasterProps, ToasterPosition, HeightT } from './Toaster'
-
-// Re-export v1 for backwards compatibility
-// Users should migrate to '@tamagui/toast/v1' for the legacy API
 export {
   Toast,
   ToastProvider,
@@ -23,6 +9,7 @@ export {
   useToastController,
   useToastState,
 } from './Toast'
+
 export type {
   ToastProps,
   ToastProviderProps,

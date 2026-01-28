@@ -1,121 +1,77 @@
-import { Toast, useToastController, useToastState } from '@tamagui/toast'
-import React from 'react'
-import { Button, Label, Switch, XStack, YStack } from 'tamagui'
+import { toast, Toaster } from '@tamagui/toast'
+import { Button, XStack, YStack } from 'tamagui'
 
-/**
- *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add:
- *    - <ToastProvider> at the root
- *    - <ToastViewport /> where you want to show the toasts
- */
 export const ToastDemo = () => {
-  const [native, setNative] = React.useState(false)
-
   return (
     <YStack gap="$4" items="center">
-      <ToastControl native={native} />
-      <CurrentToast />
+      <Toaster />
 
-      <NativeOptions native={native} setNative={setNative} />
-    </YStack>
-  )
-}
-
-const CurrentToast = () => {
-  const currentToast = useToastState()
-
-  if (!currentToast || currentToast.isHandledNatively) return null
-
-  return (
-    <Toast
-      key={currentToast.id}
-      duration={currentToast.duration}
-      viewportName={currentToast.viewportName}
-      enterStyle={{ opacity: 0, scale: 0.95, y: -80 }}
-      exitStyle={{ opacity: 0, scale: 0.95, y: -80 }}
-      opacity={1}
-      scale={1}
-      y={-50}
-      transition="quicker"
-      bg="$color2"
-      boxShadow="0px 2px 4px rgba(0,0,0,0.12), 0px 8px 24px rgba(0,0,0,0.08)"
-    >
-      <XStack gap="$5" items="center" justify="space-between">
-        <YStack gap="$0.5" flex={1}>
-          <Toast.Title>{currentToast.title}</Toast.Title>
-          {!!currentToast.message && (
-            <Toast.Description>{currentToast.message}</Toast.Description>
-          )}
-        </YStack>
-        <Toast.Action asChild altText="Dismiss toast">
-          <Button size="$2">Dismiss</Button>
-        </Toast.Action>
+      <XStack gap="$2" flexWrap="wrap" justify="center">
+        <Button size="$3" onPress={() => toast('Hello world!')}>
+          Default
+        </Button>
+        <Button
+          size="$3"
+          theme="green"
+          onPress={() => toast.success('Operation completed!')}
+        >
+          Success
+        </Button>
+        <Button size="$3" theme="red" onPress={() => toast.error('Something went wrong')}>
+          Error
+        </Button>
+        <Button
+          size="$3"
+          theme="yellow"
+          onPress={() => toast.warning('Please review')}
+        >
+          Warning
+        </Button>
       </XStack>
-    </Toast>
-  )
-}
 
-const ToastControl = ({ native }: { native: boolean }) => {
-  const toast = useToastController()
-
-  return (
-    <XStack gap="$2" justify="center">
-      <Button
-        onPress={() => {
-          toast.show('Successfully saved!', {
-            message: "Don't worry, we've got your data.",
-            native,
-            demo: true,
-          })
-        }}
-      >
-        Show
-      </Button>
-      <Button
-        onPress={() => {
-          toast.hide()
-        }}
-      >
-        Hide
-      </Button>
-    </XStack>
-  )
-}
-
-const NativeOptions = ({
-  native,
-  setNative,
-}: {
-  native: boolean
-  setNative: (native: boolean) => void
-}) => {
-  return (
-    <XStack gap="$3">
-      <Label size="$1" onPress={() => setNative(false)}>
-        Custom
-      </Label>
-      <Switch
-        theme="surface2"
-        id="native-toggle"
-        size="$1"
-        checked={!!native}
-        onCheckedChange={(val) => setNative(val)}
-      >
-        <Switch.Thumb
-          theme="accent"
-          transition={[
-            'quickest',
-            {
-              transform: {
-                overshootClamping: true,
+      <XStack gap="$2" flexWrap="wrap" justify="center">
+        <Button
+          size="$3"
+          onPress={() =>
+            toast.success('File uploaded', {
+              description: 'Your file has been saved to the cloud.',
+            })
+          }
+        >
+          With Description
+        </Button>
+        <Button
+          size="$3"
+          onPress={() =>
+            toast('New message', {
+              action: {
+                label: 'View',
+                onClick: () => console.log('View clicked'),
               },
-            },
-          ]}
-        />
-      </Switch>
+            })
+          }
+        >
+          With Action
+        </Button>
+      </XStack>
 
-      <Label size="$1" onPress={() => setNative(true)}>
-        Native
-      </Label>
-    </XStack>
+      <XStack gap="$2" justify="center">
+        <Button
+          size="$3"
+          onPress={() => {
+            toast.promise(new Promise((resolve) => setTimeout(resolve, 2000)), {
+              loading: 'Saving...',
+              success: 'Saved!',
+              error: 'Failed to save',
+            })
+          }}
+        >
+          Promise Toast
+        </Button>
+        <Button size="$3" onPress={() => toast.dismiss()}>
+          Dismiss All
+        </Button>
+      </XStack>
+    </YStack>
   )
 }
