@@ -169,16 +169,24 @@ export function getCSS(
       return runtimeStyles
     }
 
+    const themeRules = exclude ? '' : themeConfig.getThemeRulesSets().join(separator)
+
+    // auto-generated vars from theme values not in tokens
+    const autoVarCSS = autoVariables.length
+      ? `:root{${autoVariables.map((v) => `--${v.name}:${v.val}`).join(';')}}`
+      : ''
+
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
 .is_Text .is_Text {display:inline-flex;}
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}
 .is_Input::placeholder, .is_TextArea::placeholder {color: var(--placeholderColor);}
+${autoVarCSS}
 ${themeConfig.cssRuleSets.join(separator)}`
 
     return `${designSystem}
-${exclude ? '' : themeConfig.getThemeRulesSets().join(separator)}
+${themeRules}
 ${runtimeStyles}`
   }
   return ''
