@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test'
 test.describe('Toast v2 API', () => {
   test.beforeEach(async ({ page }) => {
     // use CSS animation driver for proper exit animation support
-    await page.goto('http://localhost:9000/?test=ToastMultipleCase&animationDriver=css')
+    await page.goto('http://localhost:7979/?test=ToastMultipleCase&animationDriver=css')
     // wait for app to load
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
