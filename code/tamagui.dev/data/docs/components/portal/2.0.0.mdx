@@ -113,6 +113,41 @@ const myValue = useContext(MyContext)
 This is more verbose and error-prone as you need to remember to re-propagate
 every context you use.
 
+## API Reference
+
+### Portal
+
+<PropsTable
+  data={[
+    {
+      name: 'zIndex',
+      type: 'number',
+      description: `Fixed z-index value for the portal.`,
+    },
+    {
+      name: 'stackZIndex',
+      type: `boolean | number | 'global'`,
+      description: (
+        <span>
+          Enable automatic z-index stacking. Tamagui intelligently stacks z-index both horizontally
+          (based on mount order) and vertically (nested content is always above parent but below
+          sibling content that comes after). <code>true</code> enables stacking, a number adds to the
+          stacked value, <code>'global'</code> only stacks horizontally without nesting logic.
+        </span>
+      ),
+    },
+    {
+      name: 'passThrough',
+      type: 'boolean',
+      description: `When true, renders children directly without portal behavior.`,
+    },
+  ]}
+/>
+
+This automatic stacking is already enabled by default in Dialog, Popover, Sheet, and other overlay
+components. If you open a Popover from within a Dialog, the Popover will automatically have a
+higher z-index than the Dialog without any configuration needed.
+
 ## Technical Details
 
 [react-native-teleport](https://github.com/nicksrandall/react-native-teleport)
