@@ -1,10 +1,20 @@
 import { defineConfig } from '@playwright/test'
-import { execSync } from 'child_process'
+import { readFileSync, existsSync } from 'fs'
+import { join } from 'path'
 import { ANIMATION_DRIVERS } from './tests/test-utils'
 
-// read port from .port file (written by start:web) or find one
+// read port from .port file (written by start:web) or use default
 // this ensures playwright and webpack use the same port
-const port = process.env.PORT || execSync('node scripts/get-port.js', { encoding: 'utf-8' }).trim()
+const portFile = join(__dirname, '.port')
+let port = process.env.PORT || '9100'
+if (existsSync(portFile)) {
+  try {
+    port = readFileSync(portFile, 'utf-8').trim()
+  } catch {
+    // fallback to default
+  }
+}
+console.log('[playwright.config] Using port:', port)
 
 // Support both single-driver mode (via env var) and multi-driver parallel mode
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER
@@ -36,12 +46,14 @@ export default defineConfig({
       name: 'default',
       testIgnore: '**/*.animated.test.{ts,tsx}',
       metadata: { animationDriver: 'native' },
+      use: { baseURL: `http://localhost:${port}` },
     },
     // Animated tests run with all animation drivers
     ...drivers.map((driver) => ({
       name: `animated-${driver}`,
       testMatch: '**/*.animated.test.{ts,tsx}',
       metadata: { animationDriver: driver },
+      use: { baseURL: `http://localhost:${port}` },
     })),
   ],
 
