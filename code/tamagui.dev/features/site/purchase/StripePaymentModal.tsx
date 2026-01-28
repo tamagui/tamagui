@@ -142,10 +142,17 @@ export {
   usePaymentModal,
   V2_LICENSE_PRICE,
   V2_UPGRADE_PRICE,
+  SUPPORT_TIERS,
+  type SupportTier,
 } from './paymentModalStore'
 
 // also import for internal use
-import { usePaymentModal, V2_LICENSE_PRICE, V2_UPGRADE_PRICE } from './paymentModalStore'
+import {
+  usePaymentModal,
+  V2_LICENSE_PRICE,
+  SUPPORT_TIERS,
+  type SupportTier,
+} from './paymentModalStore'
 import { calculatePromoPrice } from './promoConfig'
 
 type StripePaymentModalProps = {
@@ -153,7 +160,7 @@ type StripePaymentModalProps = {
   monthlyTotal: number
   disableAutoRenew: boolean
   chatSupport: boolean
-  supportTier: number
+  supportTier: SupportTier
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
   teamSeats: number
@@ -184,12 +191,12 @@ const PaymentForm = ({
   onError: (error: Error | StripeError) => void
   autoRenew: boolean
   chatSupport: boolean
-  supportTier: number
+  supportTier: SupportTier
   teamSeats: number
   selectedPrices: {
     disableAutoRenew: boolean
     chatSupport: boolean
-    supportTier: number
+    supportTier: SupportTier
     teamSeats: number
   }
   isProcessing: boolean
@@ -335,7 +342,7 @@ const PaymentForm = ({
       }
 
       // If Chat or Support is selected, create additional subscription
-      if (selectedPrices.chatSupport || selectedPrices.supportTier > 0) {
+      if (selectedPrices.chatSupport || selectedPrices.supportTier !== 'chat') {
         const upgradeResponse = await fetch('/api/upgrade-subscription', {
           method: 'POST',
           headers: {
@@ -874,9 +881,11 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   </YStack>
                 </XStack>
               )}
-              {supportTier > 0 && (
+              {supportTier !== 'chat' && (
                 <XStack justify="space-between">
-                  <Paragraph fontFamily="$mono">Support tier ({supportTier})</Paragraph>
+                  <Paragraph fontFamily="$mono">
+                    {SUPPORT_TIERS[supportTier].label} Support
+                  </Paragraph>
                   <YStack items="flex-end">
                     {finalCoupon && (
                       <Paragraph
@@ -885,13 +894,16 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                         opacity={0.5}
                         textDecorationLine="line-through"
                       >
-                        ${supportTier * 800}/month
+                        ${SUPPORT_TIERS[supportTier].price}/month
                       </Paragraph>
                     )}
                     <Paragraph fontFamily="$mono">
                       $
                       {Math.ceil(
-                        calculateDiscountedAmount(supportTier * 800, finalCoupon)
+                        calculateDiscountedAmount(
+                          SUPPORT_TIERS[supportTier].price,
+                          finalCoupon
+                        )
                       )}
                       /month
                     </Paragraph>
@@ -1055,7 +1067,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 selectedPrices={{
                   disableAutoRenew,
                   chatSupport,
-                  supportTier: Number(supportTier),
+                  supportTier,
                   teamSeats: Number(teamSeats),
                 }}
                 isProcessing={isProcessing}

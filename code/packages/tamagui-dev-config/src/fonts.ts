@@ -12,7 +12,7 @@ export const headingFont = createInterFont(
     size: {
       5: 13,
       6: 15,
-      9: 32,
+      9: 30,
       10: 44,
     },
     transform: {

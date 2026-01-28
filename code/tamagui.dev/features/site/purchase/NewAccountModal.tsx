@@ -39,7 +39,7 @@ import { Link } from '../../../components/Link'
 import { accountModal, useAccountModal } from './accountModalStore'
 import { addTeamMemberModal } from './addTeamMemberModalStore'
 import { FaqTabContent } from './FaqTabContent'
-import { paymentModal } from './paymentModalStore'
+import { paymentModal, SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
 import { useProducts } from './useProducts'
 import {
   useInviteTeamMember,
@@ -1181,17 +1181,28 @@ const ChatAccessCard = () => {
 const UpgradeTab = () => {
   const { subscriptionStatus } = useUser()
 
-  const [supportTier, setSupportTier] = useState(subscriptionStatus.supportTier)
-  const currentTier = subscriptionStatus.supportTier
+  // Map old numeric tier to new string tier for current users
+  const mapNumericToStringTier = (tier: number): SupportTier => {
+    if (tier >= 2) return 'sponsor'
+    if (tier >= 1) return 'direct'
+    return 'chat'
+  }
+
+  const currentTierString = mapNumericToStringTier(subscriptionStatus.supportTier)
+  const [supportTier, setSupportTier] = useState<SupportTier>(currentTierString)
+
+  const tierOrder: SupportTier[] = ['chat', 'direct', 'sponsor']
 
   const getActionLabel = () => {
-    if (supportTier === currentTier) return 'Current Plan'
-    return Number(supportTier) > Number(currentTier) ? 'Upgrade Plan' : 'Downgrade Plan'
+    if (supportTier === currentTierString) return 'Current Plan'
+    const currentIndex = tierOrder.indexOf(currentTierString)
+    const selectedIndex = tierOrder.indexOf(supportTier)
+    return selectedIndex > currentIndex ? 'Upgrade Plan' : 'Downgrade Plan'
   }
 
   const handleUpgrade = () => {
     // Calculate the monthly total based on support tier
-    const monthlyTotal = Number(supportTier) * 800
+    const monthlyTotal = SUPPORT_TIERS[supportTier].price
 
     // Set payment modal properties
     paymentModal.show = true
@@ -1199,15 +1210,15 @@ const UpgradeTab = () => {
     paymentModal.monthlyTotal = monthlyTotal
     paymentModal.disableAutoRenew = false // Support is always monthly
     paymentModal.chatSupport = false
-    paymentModal.supportTier = Number(supportTier)
+    paymentModal.supportTier = supportTier
   }
 
   return (
     <YStack gap="$6">
       <SupportTabContent
-        currentTier={currentTier.toString()}
-        supportTier={supportTier.toString()}
-        setSupportTier={(value) => setSupportTier(Number(value))}
+        currentTier={currentTierString}
+        supportTier={supportTier}
+        setSupportTier={setSupportTier}
       />
 
       <Button
@@ -1215,7 +1226,7 @@ const UpgradeTab = () => {
         rounded="$10"
         self="flex-end"
         onPress={handleUpgrade}
-        disabled={supportTier === currentTier}
+        disabled={supportTier === currentTierString}
       >
         <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
       </Button>
@@ -1223,8 +1234,7 @@ const UpgradeTab = () => {
       <Separator />
 
       <Paragraph fontFamily="$mono" size="$5" lineHeight="$6" opacity={0.8}>
-        Each tier adds 4 hours of development a month, faster response times, and 4
-        additional private chat invites.
+        Upgrade your support level for faster response times and dedicated bug fixes.
       </Paragraph>
     </YStack>
   )
@@ -1235,23 +1245,45 @@ const SupportTabContent = ({
   supportTier,
   setSupportTier,
 }: {
-  currentTier: string
-  supportTier: string
-  setSupportTier: (value: string) => void
+  currentTier: SupportTier
+  supportTier: SupportTier
+  setSupportTier: (value: SupportTier) => void
 }) => {
-  const tiers = [
-    { value: '0', label: 'None', price: 0 },
-    { value: '1', label: 'Tier 1', price: 800 },
-    { value: '2', label: 'Tier 2', price: 1600 },
-    { value: '3', label: 'Tier 3', price: 2400 },
+  const tiers: {
+    value: SupportTier
+    label: string
+    price: number
+    description: string
+  }[] = [
+    {
+      value: 'chat',
+      label: 'Chat',
+      price: 0,
+      description: 'Community Discord access, no SLA',
+    },
+    {
+      value: 'direct',
+      label: 'Direct',
+      price: 500,
+      description: '5 bug fixes/year, 2 day response',
+    },
+    {
+      value: 'sponsor',
+      label: 'Sponsor',
+      price: 2000,
+      description: 'Unlimited priority fixes, 1 day response',
+    },
   ]
 
   const formatCurrency = (price: number) => {
-    return price.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-    })
+    if (price === 0) return 'Included'
+    return (
+      price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+      }) + '/mo'
+    )
   }
 
   return (
@@ -1274,6 +1306,9 @@ const SupportTabContent = ({
                 <H3 fontFamily="$mono" size="$6">
                   {tier.label}
                 </H3>
+                <Paragraph color="$color10" size="$3">
+                  {tier.description}
+                </Paragraph>
                 <Paragraph color="$color10">
                   {tier.price === 0
                     ? 'Basic Support'

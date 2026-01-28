@@ -41,16 +41,39 @@ export const FaqTabContent = () => {
         themes.
       </P>
 
-      <Question>What support do I get in the base plan?</Question>
+      <Question>Can I buy licenses for multiple projects?</Question>
       <P>
-        For subscribers, you get access to the private #takeout channel. We prioritize
-        responses there over the public Discord, but we don't provide any SLA.
+        Yes! Each license covers one project (web domain + iOS + Android apps). You can
+        purchase additional project licenses anytime. Update subscriptions are always
+        $300/year per project regardless of when you buy.
       </P>
 
-      <Question>What support do I get with Support tiers?</Question>
+      <Question>What support do I get in the base plan?</Question>
       <P>
-        Each tier adds 4 hours of development per month, faster response times, and 4
-        additional private chat invites.
+        The base plan includes access to the private #takeout Discord channel. We
+        prioritize responses there over the public Discord, but there is no guaranteed
+        SLA. We typically respond within a few days. For guaranteed response times and bug
+        fix commitments, see our Direct and Sponsor support tiers.
+      </P>
+
+      <Question>What's the difference between support levels?</Question>
+      <P>
+        <strong>Chat (Included):</strong> Access to the private #takeout Discord channel.
+        No SLA guarantee, but we typically respond within a few days.
+        {'\n\n'}
+        <strong>Direct ($500/mo):</strong> 5 bug fixes per year, guaranteed response
+        within 2 business days, your issues get prioritized in our queue.
+        {'\n\n'}
+        <strong>Sponsor ($2,000/mo):</strong> Unlimited higher priority bug fixes, 1 day
+        response time, plus a monthly video call with the team.
+      </P>
+
+      <Question>What about companies with significant revenue?</Question>
+      <P>
+        Companies with over $1M in annual revenue should contact us at{' '}
+        <Link href="mailto:support@tamagui.dev">support@tamagui.dev</Link> for enterprise
+        pricing. The standard license is intended for bootstrapped companies, solo
+        developers, and early-stage startups.
       </P>
 
       <Question>How do I use a coupon?</Question>

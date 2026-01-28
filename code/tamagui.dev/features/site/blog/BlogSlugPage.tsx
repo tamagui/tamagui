@@ -127,32 +127,33 @@ export function BlogSlugPage(props: BlogPost) {
 
       <Container>
         {frontmatter.image && (
-          <View
-            my="$4"
-            rounded="$4"
-            overflow="hidden"
-            style={{
-              aspectRatio: frontmatter.imageMeta
-                ? `${frontmatter.imageMeta.width} / ${frontmatter.imageMeta.height}`
-                : undefined,
-              background: frontmatter.imageMeta?.blurDataURL
-                ? `url(${frontmatter.imageMeta.blurDataURL}) center/cover no-repeat`
-                : undefined,
-            }}
-          >
-            <img
-              src={frontmatter.image}
-              alt={frontmatter.title || ''}
-              width={frontmatter.imageMeta?.width}
-              height={frontmatter.imageMeta?.height}
+          <YStack pb="$6">
+            <View
+              rounded="$4"
+              overflow="hidden"
               style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-                borderRadius: 8,
+                aspectRatio: frontmatter.imageMeta
+                  ? `${frontmatter.imageMeta.width} / ${frontmatter.imageMeta.height}`
+                  : undefined,
+                background: frontmatter.imageMeta?.blurDataURL
+                  ? `url(${frontmatter.imageMeta.blurDataURL}) center/cover no-repeat`
+                  : undefined,
               }}
-            />
-          </View>
+            >
+              <img
+                src={frontmatter.image}
+                alt={frontmatter.title || ''}
+                width={frontmatter.imageMeta?.width}
+                height={frontmatter.imageMeta?.height}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  borderRadius: 8,
+                }}
+              />
+            </View>
+          </YStack>
         )}
 
         <YStack render="article" px="$2">

@@ -8,18 +8,34 @@ import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 const PRO_V2_LICENSE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_LICENSE.priceId
 const PRO_V2_UPGRADE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId
 
+// V2 support tier type
+type SupportTier = 'chat' | 'direct' | 'sponsor'
+
+// Get the price ID for a support tier
+const getSupportTierPriceId = (tier: SupportTier): string | null => {
+  if (tier === 'direct') {
+    return STRIPE_PRODUCTS.SUPPORT_DIRECT.priceId
+  }
+  if (tier === 'sponsor') {
+    return STRIPE_PRODUCTS.SUPPORT_SPONSOR.priceId
+  }
+  return null // Chat is included, no additional subscription needed
+}
+
 /**
  * V2 Pro Purchase Flow:
  * 1. Charge $999 one-time for license
  * 2. Create $300/year upgrade subscription (starts in 1 year)
- * 3. Project is created after successful payment via webhook
+ * 3. If support tier selected (direct/sponsor), create monthly subscription
+ * 4. Project is created after successful payment via webhook
  */
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
-  const { paymentMethodId, projectName, projectDomain, couponId } = await req.json()
+  const { paymentMethodId, projectName, projectDomain, couponId, supportTier } =
+    await req.json()
 
   // Validate required fields
   if (!paymentMethodId) {
@@ -128,12 +144,34 @@ export default apiRoute(async (req) => {
       },
     })
 
+    // If a paid support tier is selected, create the support subscription
+    let supportSubscriptionId: string | null = null
+    const supportPriceId = supportTier ? getSupportTierPriceId(supportTier) : null
+    if (supportPriceId) {
+      const supportSubscription = await stripe.subscriptions.create({
+        customer: stripeCustomerId,
+        items: [{ price: supportPriceId }],
+        payment_settings: { save_default_payment_method: 'on_subscription' },
+        default_payment_method: paymentMethodId,
+        metadata: {
+          project_name: projectName,
+          project_domain: projectDomain,
+          version: 'v2',
+          type: 'pro_v2_support',
+          support_tier: supportTier,
+        },
+      })
+      supportSubscriptionId = supportSubscription.id
+    }
+
     return Response.json({
       success: true,
       invoiceId: invoice.id,
       invoiceStatus: paidInvoice.status,
       upgradeSubscriptionId: upgradeSubscription.id,
       upgradeStartDate: upgradeStartDate.toISOString(),
+      supportSubscriptionId,
+      supportTier: supportTier || 'chat',
       projectName,
       projectDomain,
     })

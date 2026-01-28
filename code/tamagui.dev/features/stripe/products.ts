@@ -60,11 +60,33 @@ export const STRIPE_PRODUCTS = {
   },
 
   // ============================================
-  // SUPPORT PRODUCTS (both v1 and v2)
+  // V2 SUPPORT PRODUCTS
   // ============================================
 
   /**
-   * Premium Support - $800/month per tier
+   * V2 Direct Support - $500/month
+   * 5 bug fixes/year, 2 business day response, prioritized issues
+   */
+  SUPPORT_DIRECT: {
+    productId: 'prod_TsDjQ6tmdFy7M6',
+    priceId: 'price_1SuTIHFQGtHoG6xcSRnWg3xB',
+  },
+
+  /**
+   * V2 Sponsor Support - $2,000/month
+   * Unlimited priority fixes, 1 day response, monthly video call
+   */
+  SUPPORT_SPONSOR: {
+    productId: 'prod_TsDjG5QpL21tT1',
+    priceId: 'price_1SuTIVFQGtHoG6xcVVnbEeQx',
+  },
+
+  // ============================================
+  // V1 SUPPORT PRODUCTS (legacy)
+  // ============================================
+
+  /**
+   * @deprecated V1 - Premium Support - $800/month per tier
    */
   SUPPORT: {
     productId: 'prod_RlRebXO307MLoH',
