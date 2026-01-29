@@ -292,9 +292,10 @@ export const AccountView = () => {
   }
 
   return (
-    <YStack flex={1}>
+    <YStack flex={1} flexBasis="auto">
       <Tabs
         flex={1}
+        flexBasis="auto"
         value={currentTab}
         onValueChange={(val: any) => setCurrentTab(val)}
         orientation="horizontal"
@@ -326,7 +327,7 @@ export const AccountView = () => {
           </YStack>
         </Tabs.List>
 
-        <YStack overflow="hidden" flex={1}>
+        <YStack overflow="hidden" flex={1} flexBasis="auto">
           <ScrollView>
             <YStack p="$6">{renderTabs()}</YStack>
           </ScrollView>
