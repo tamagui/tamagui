@@ -1,11 +1,8 @@
-const os = require('os')
-
-// ~2.5GB per simulator, leave 2GB for system overhead
-const totalMemGB = os.totalmem() / 1024 / 1024 / 1024
-// force single worker in CI to avoid proper-lockfile ECOMPROMISED errors
+// force single worker always - multiple simulators are too taxing on system
+// and macOS doesn't clean them up properly, causing resource exhaustion
+// also avoids proper-lockfile ECOMPROMISED errors in CI
 // see: https://github.com/wix/Detox/issues/4210
-const isCI = !!process.env.CI
-const maxWorkers = isCI ? 1 : Math.max(1, Math.floor((totalMemGB - 2) / 2.5))
+const maxWorkers = 1
 
 /** @type {Detox.DetoxConfig} */
 module.exports = {
