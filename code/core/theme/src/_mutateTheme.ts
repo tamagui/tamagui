@@ -6,6 +6,7 @@ import {
   forceUpdateThemes,
   getConfig,
   getThemeCSSRules,
+  mutatedAutoVariables,
   proxyThemeToParents,
   simpleHash,
   updateConfig,
@@ -159,6 +160,8 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
       names: [themeName],
       hasDarkLight: true,
       theme,
+      // Use mutated variable creator which starts from high index to avoid conflicts
+      useMutatedVariables: true,
     })
 
     cssRules = [...cssRules, ...rules]
@@ -166,6 +169,12 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = fal
     if (!batch) {
       updateStyle(`t_theme_style_${themeName}`, rules)
     }
+  }
+
+  // Output ALL mutated auto variables (since updateStyle replaces the element)
+  if (mutatedAutoVariables.length > 0) {
+    const autoVarCSS = `:root{${mutatedAutoVariables.map((v) => `--${v.name}:${v.val}`).join(';')}}`
+    updateStyle(`t_mutate_vars`, [autoVarCSS])
   }
 
   if (batch) {

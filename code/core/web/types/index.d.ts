@@ -13,6 +13,7 @@ export * from './helpers/getShorthandValue';
 export * from './helpers/getSplitStyles';
 export * from './helpers/getThemeCSSRules';
 export * from './helpers/getVariantExtras';
+export { autoVariables, mutatedAutoVariables } from './helpers/registerCSSVariable';
 export { insertStyleRules } from './helpers/insertStyleRule';
 export * from './helpers/isTamaguiComponent';
 export * from './helpers/isTamaguiElement';

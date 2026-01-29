@@ -117,9 +117,9 @@ export const FieldsetWithLabel = ({
       {!!afterLabel && (
         <XStack
           position="absolute"
-          t={12}
+          t={0}
           r="$4"
-          z={100}
+          z={200}
           bg="$color2"
           rounded="$4"
           px="$2"

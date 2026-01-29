@@ -84,7 +84,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
   useLayoutEffect(() => {
     if (initialTheme) {
-      initialTheme
       inputRef.current!.value = initialTheme.query ?? ''
       themeBuilderStore.updateGenerate(
         initialTheme.themeSuite,
