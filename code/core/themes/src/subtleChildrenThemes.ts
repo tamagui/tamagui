@@ -29,8 +29,8 @@ export const v5SubtlePaletteAdjustments: PaletteAdjustments<
       const sEnd = 0.4
 
       // lightness: starts at lStart, ends at lEnd
-      const lStart = 1.02
-      const lEnd = 0.9
+      const lStart = 1.08
+      const lEnd = 0.8
 
       return {
         ...hsl,

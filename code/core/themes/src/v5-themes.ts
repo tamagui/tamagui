@@ -22,6 +22,10 @@ import { createThemes } from '@tamagui/theme-builder'
 import { opacify } from './opacify'
 import { v5Templates } from './v5-templates'
 
+// base theme uses elevated background (like old surface1)
+// this offset aligns getTheme's palette index with that elevation
+export const V5_BG_OFFSET = 2
+
 // re-export color utilities for users
 export { interpolateColor, opacify } from './opacify'
 
@@ -516,10 +520,9 @@ export function createV5Theme<
         throw new Error(`invalid palette: ${JSON.stringify(palette)}`)
       }
 
-      // palette[1] is background-ish, palette[length-2] is foreground-ish
       // TODO this should just be aligned with the offsets we use in templates
       // and all really simplified down
-      const bgColor = palette[2]!
+      const bgColor = palette[V5_BG_OFFSET]!
       const fgColor = palette[palette.length - 2]!
 
       return {
