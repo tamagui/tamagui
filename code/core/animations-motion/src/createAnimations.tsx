@@ -411,6 +411,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           isFirstRender.current = false
 
           // during hydration, use full sync logic to prevent flash
+          // doing this - will fix some of the enter (accordion) glitches but breaks animatepresence
+          //  isHydrating || (isMounting && !isEntering)
           if (isHydrating) {
             const node = stateRef.current.host
 
