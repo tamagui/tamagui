@@ -13,7 +13,7 @@
 
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { ensureIOSFolder, ensureIOSApp, cleanupSimulators } from './ios'
+import { ensureIOSFolder, ensureIOSApp } from './ios'
 
 const options = parseDetoxArgs('ios')
 
@@ -23,9 +23,6 @@ console.info(`Project root: ${options.projectRoot}`)
 
 // Change to project root
 process.chdir(options.projectRoot)
-
-// Clean up any leftover simulators from previous runs
-await cleanupSimulators()
 
 // Ensure ios folder exists (in case build artifacts were separated)
 await ensureIOSFolder()
