@@ -2,7 +2,13 @@ import { YStack } from 'tamagui'
 import { TamaguiIconSvg } from './TamaguiLogoSvg'
 import type { JSX } from 'react/jsx-runtime'
 
-export const LogoIcon = ({ downscale = 2 }: { downscale?: number }): JSX.Element => {
+export const LogoIcon = ({
+  downscale = 2,
+  color,
+}: {
+  downscale?: number
+  color?: string
+}): JSX.Element => {
   return (
     <YStack
       render="span"
@@ -18,6 +24,7 @@ export const LogoIcon = ({ downscale = 2 }: { downscale?: number }): JSX.Element
         className="tamagui-icon"
         width={450 / 8 / downscale}
         height={420 / 8 / downscale}
+        color={color}
       />
     </YStack>
   )
