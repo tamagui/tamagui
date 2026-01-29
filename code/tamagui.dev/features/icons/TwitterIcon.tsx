@@ -2,6 +2,7 @@ export const TwitterIcon = (props) => (
   <svg
     width={46}
     height={46}
+    style={{ marginLeft: -12 }}
     {...props}
     fillRule="evenodd"
     clipRule="evenodd"
