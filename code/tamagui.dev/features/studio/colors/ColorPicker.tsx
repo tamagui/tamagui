@@ -140,7 +140,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
   }
 
   return (
-    <XStack ml={20} gap="$4" items="center">
+    <XStack ml={20} gap="$4" items="center" flex={1}>
       <Popover hoverable>
         <Popover.Trigger>
           <View
@@ -211,6 +211,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
         items="center"
         gap="$4"
         height="$3"
+        flex={1}
         {...(props.disabled && {
           opacity: 0.5,
           pointerEvents: 'none',
@@ -222,6 +223,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           })}
           y="$-2"
           gap="$1"
+          flex={1}
         >
           <SizableText size="$1" select="none" color="$color9">
             Hue
@@ -236,7 +238,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             onSlideEnd={handleSlideEnd}
           >
             <Slider.Track
-              width={160}
+              width="100%"
+              minWidth={80}
               height={3}
               style={{
                 background: hueLinearGradient,
@@ -268,6 +271,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           })}
           y="$-2"
           gap="$1"
+          flex={1}
         >
           <SizableText size="$1" select="none" color="$color9">
             Saturation
@@ -284,7 +288,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             >
               <Slider.Track
                 height={3}
-                width={120}
+                width="100%"
+                minWidth={80}
                 style={{
                   background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
                 }}
@@ -311,7 +316,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
         </YStack>
 
         {!props.disableLightness && (
-          <YStack y="$-2" gap="$1">
+          <YStack y="$-2" gap="$1" flex={1}>
             <SizableText size="$1" select="none" color="$color9">
               Lightness
             </SizableText>
@@ -328,7 +333,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 <Slider.Track
                   height={3}
                   rounded="$10"
-                  width={120}
+                  width="100%"
+                  minWidth={80}
                   style={{
                     background: `linear-gradient(to right, #000, #fff)`,
                   }}

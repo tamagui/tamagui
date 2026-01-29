@@ -3,7 +3,7 @@ import { getSetting } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed, Variable } from '../types'
-import { getOrCreateVariable } from './registerCSSVariable'
+import { getOrCreateVariable, getOrCreateMutatedVariable } from './registerCSSVariable'
 import { sortString } from './sortString'
 
 const darkLight = ['dark', 'light']
@@ -15,6 +15,8 @@ export function getThemeCSSRules(props: {
   theme: ThemeParsed
   names: string[]
   hasDarkLight?: boolean
+  // Use mutated variable prefix (mt) instead of regular (t) - for dynamic theme mutation
+  useMutatedVariables?: boolean
 }): string[] {
   if (process.env.TAMAGUI_DID_OUTPUT_CSS) {
     // empty - CSS already extracted at build time
@@ -36,9 +38,13 @@ export function getThemeCSSRules(props: {
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
+    const variableCreator = props.useMutatedVariables
+      ? getOrCreateMutatedVariable
+      : getOrCreateVariable
+
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
-      const value = getOrCreateVariable(variable.val).variable
+      const value = variableCreator(variable.val).variable
       // Hash themeKey in case it has invalid chars too
       vars += `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(
         themeKey,

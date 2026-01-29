@@ -141,6 +141,8 @@ export function Panel({
                 {hasAccent && (
                   <ListItem
                     bg="transparent"
+                    hoverStyle={{ bg: 'transparent' }}
+                    pressStyle={{ bg: 'transparent' }}
                     gap="$3"
                     onPress={() => setAccent((val) => !val)}
                   >

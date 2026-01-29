@@ -63,7 +63,7 @@ const components = [
     </Panel>
   </>,
   <>
-    <Panel key="" fileToCopyName="Chat">
+    <Panel key=""  fileToCopyName="Chat">
       <ChatScreen />
     </Panel>
   </>,
