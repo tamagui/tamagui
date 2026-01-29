@@ -328,9 +328,7 @@ const PaletteView = memo((props: Props) => {
           shouldDim={lightDarkSynced && isDark}
         />
 
-        <YStack py="$2">
-          {syncButtons}
-        </YStack>
+        <YStack py="$2">{syncButtons}</YStack>
 
         <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
           <StepThemeHoverablePalette
@@ -404,9 +402,7 @@ const PaletteView = memo((props: Props) => {
           />
         </XLabeledItem>
 
-        <YStack py="$2">
-          {syncButtons}
-        </YStack>
+        <YStack py="$2">{syncButtons}</YStack>
 
         <ColorPickerContents
           isActive={isDark}
