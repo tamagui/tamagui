@@ -64,6 +64,8 @@ type AnimationProps = {
 }
 
 // track if we're still in the initial hydration phase
+// TODO didnt realize claude took the wrong one here - this should uust be isComponentHydrating ideally
+// but this is fine for beta motion driver rc.0 fix in rc.1
 let isHydrating = typeof window !== 'undefined'
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
