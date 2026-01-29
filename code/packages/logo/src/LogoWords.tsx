@@ -17,16 +17,6 @@ const defaultColors = [
   'var(--blue9)',
 ]
 
-const hoveredColors = [
-  'var(--yellow9)',
-  'var(--yellow9)',
-  'var(--yellow9)',
-  'var(--color12)',
-  'var(--red9)',
-  'var(--green9)',
-  'var(--blue9)',
-]
-
 export const LogoWords: React.MemoExoticComponent<
   ({
     downscale,
@@ -87,8 +77,10 @@ export const LogoWords: React.MemoExoticComponent<
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       paddingVertical="$2"
+      paddingRight="$2"
       data-tauri-drag-region
       marginVertical="$-2"
+      marginRight="$-2"
       position="relative"
       className="logo-words"
       onLayout={(e) => {
