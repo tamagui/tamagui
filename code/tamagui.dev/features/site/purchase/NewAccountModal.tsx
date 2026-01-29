@@ -42,7 +42,6 @@ import { addTeamMemberModal } from './addTeamMemberModalStore'
 import { FaqTabContent } from './FaqTabContent'
 import { paymentModal, SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
 import { useProjects, updateProject, type Project } from './useProjects'
-import { useProducts } from './useProducts'
 import {
   useInviteTeamMember,
   useRemoveTeamMember,
@@ -151,6 +150,7 @@ export const AccountView = () => {
 
   // Calculate values needed for hooks, but use safe defaults when data isn't ready
   const subscriptions = data?.subscriptions
+
   const filteredSubscriptions = subscriptions?.filter(
     (sub) =>
       (sub.status === SubscriptionStatus.Active ||
@@ -203,22 +203,32 @@ export const AccountView = () => {
     isLoading: isTeamLoading,
   } = useTeamSeats(haveTeamSeats)
 
-  // Find Pro subscription
+  // Find Pro subscription (V1 or V2)
   const proSubscription = haveTeamSeats
     ? proTeamSubscription
     : (activeSubscriptions?.find((sub) =>
         sub.subscription_items?.some(
-          (item) => item.price?.product?.name === ProductName.TamaguiPro
+          (item) =>
+            item.price?.product?.name === ProductName.TamaguiPro ||
+            item.price?.product?.name === ProductName.TamaguiProV2 ||
+            item.price?.product?.name === ProductName.TamaguiProV2Upgrade ||
+            // V2 support tiers also imply Pro access
+            item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+            item.price?.product?.name === ProductName.TamaguiSupportSponsor
         )
       ) as Subscription)
 
-  // Find ALL support-related subscriptions (Chat and/or Support tiers)
+  // Find ALL support-related subscriptions (Chat and/or Support tiers - V1 and V2)
   const supportSubscriptions = activeSubscriptions
     ?.filter((sub) =>
       sub.subscription_items?.some(
         (item) =>
+          // V1 support products
           item.price?.product?.name === ProductName.TamaguiSupport ||
-          item.price?.product?.name === ProductName.TamaguiChat
+          item.price?.product?.name === ProductName.TamaguiChat ||
+          // V2 support products
+          item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+          item.price?.product?.name === ProductName.TamaguiSupportSponsor
       )
     )
     .sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime())
@@ -590,8 +600,12 @@ const DiscordPanel = ({
   const hasSupportAccess = () => {
     const supportItems = subscription?.subscription_items?.filter((item) => {
       return (
+        // V1 support products
         item.price?.product?.name === ProductName.TamaguiSupport ||
-        item.price?.product?.name === ProductName.TamaguiChat
+        item.price?.product?.name === ProductName.TamaguiChat ||
+        // V2 support products
+        item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+        item.price?.product?.name === ProductName.TamaguiSupportSponsor
       )
     })
 
@@ -599,15 +613,18 @@ const DiscordPanel = ({
       return { hasAccess: false, hasChat: false, hasTier: false }
     }
 
-    // Check for chat support
+    // Check for chat support (V1 only - V2 Pro includes chat by default)
     const chatItem = supportItems.find(
       (item) => item.price?.product?.name === ProductName.TamaguiChat
     )
     const hasChat = !!chatItem
 
-    // Check for support tier
+    // Check for support tier (V1 or V2)
     const tierItem = supportItems.find(
-      (item) => item.price?.product?.name === ProductName.TamaguiSupport
+      (item) =>
+        item.price?.product?.name === ProductName.TamaguiSupport ||
+        item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+        item.price?.product?.name === ProductName.TamaguiSupportSponsor
     )
 
     let hasTier = false
@@ -926,7 +943,6 @@ const PlanTab = ({
 }) => {
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const [showSupportAccess, setShowSupportAccess] = useState(false)
-  const { data: products } = useProducts()
   const [isResendingInvite, setIsResendingInvite] = useState(false)
 
   // Check if this is a one-time payment plan
@@ -939,11 +955,15 @@ const PlanTab = ({
   }
 
   const handleResendInvite = async () => {
-    if (!subscription || !products) return
+    if (!subscription) return
 
-    const takeoutProduct = products.pro
-    if (!takeoutProduct) {
-      alert('Product information not found')
+    // Get product ID from the user's actual subscription items (works for both V1 and V2)
+    const subscriptionProduct = subscription.subscription_items?.find(
+      (item) => item.price?.product?.id
+    )?.price?.product
+
+    if (!subscriptionProduct?.id) {
+      alert('Product information not found in subscription')
       return
     }
 
@@ -957,7 +977,7 @@ const PlanTab = ({
         },
         body: JSON.stringify({
           subscription_id: subscription.id,
-          product_id: takeoutProduct.id,
+          product_id: subscriptionProduct.id,
         }),
       })
 
