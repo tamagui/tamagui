@@ -965,13 +965,12 @@ async function esbuildWriteIfChanged(
           contents = result.join('\n')
         }
 
-        // only if writes + not map do we continue to specification
-        if (await flush(path, contents)) {
-          if (!isMap) {
-            return {
-              path,
-              contents,
-            }
+        // write the file (only if changed), but always return file info for further processing
+        await flush(path, contents)
+        if (!isMap) {
+          return {
+            path,
+            contents,
           }
         }
       })

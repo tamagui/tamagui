@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-inter",
-  "version": "2.0.0-1769649802784",
+  "version": "2.0.0-1769665879528",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",
