@@ -949,6 +949,15 @@ const PlanTab = ({
   const isOneTimePlan =
     subscription?.subscription_items?.[0]?.price?.type === Pricing.OneTime
 
+  // Check if this is a V2 Pro subscription (V2 no need for team seats)
+  const isV2Pro = subscription?.subscription_items?.some(
+    (item) =>
+      item.price?.product?.name === ProductName.TamaguiProV2 ||
+      item.price?.product?.name === ProductName.TamaguiProV2Upgrade ||
+      item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+      item.price?.product?.name === ProductName.TamaguiSupportSponsor
+  )
+
   const handleTakeoutAccess = (repoUrl = 'https://github.com/tamagui/takeout') => {
     // Just open the repo URL directly - invite handling is done via "Resend Invite" button
     window.open(repoUrl, '_blank', 'noopener,noreferrer')
@@ -1073,7 +1082,8 @@ const PlanTab = ({
           />
 
           <ChatAccessCard />
-          {!isTeamMember && !isOneTimePlan ? (
+          {/* Add Members card - V1 only (V2 has unlimited team included in license) */}
+          {!isTeamMember && !isOneTimePlan && !isV2Pro ? (
             <ServiceCard
               title="Add Members"
               description="Add members to your Pro plan."
