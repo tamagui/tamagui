@@ -810,7 +810,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   <Paragraph fontFamily="$mono">
                     $
                     {Math.ceil(
-                      calculateDiscountedAmount(SUPPORT_TIERS[supportTier].price, finalCoupon)
+                      calculateDiscountedAmount(
+                        SUPPORT_TIERS[supportTier].price,
+                        finalCoupon
+                      )
                     ).toLocaleString()}
                     /mo
                   </Paragraph>
@@ -871,7 +874,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   ${Math.ceil(discountedPrice).toLocaleString()}
                   {supportTier !== 'chat' &&
                     ` + $${Math.ceil(
-                      calculateDiscountedAmount(SUPPORT_TIERS[supportTier].price, finalCoupon)
+                      calculateDiscountedAmount(
+                        SUPPORT_TIERS[supportTier].price,
+                        finalCoupon
+                      )
                     ).toLocaleString()}/mo`}
                 </H3>
               </YStack>
