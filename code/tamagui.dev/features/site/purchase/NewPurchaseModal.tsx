@@ -33,7 +33,7 @@ import { BigP, P } from './BigP'
 import { ProPoliciesModal } from './PoliciesModal'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { PurchaseButton } from './helpers'
-import { paymentModal } from './paymentModalStore'
+import { paymentModal, usePaymentModal } from './paymentModalStore'
 import { usePurchaseModal } from './purchaseModalStore'
 import { useTakeoutStore } from './useTakeoutStore'
 
@@ -60,6 +60,7 @@ type Tab = (typeof tabOrder)[number]
 
 export function PurchaseModalContents() {
   const store = usePurchaseModal()
+  const paymentStore = usePaymentModal()
   const takeoutStore = useTakeoutStore()
   const [currentTab, setCurrentTab] = useState<Tab>('pro')
   const [supportTier, setSupportTier] = useState<SupportTier>('chat')
@@ -541,8 +542,8 @@ export function PurchaseModalContents() {
 
       <ProAgreementModal />
 
-      {/* Lazy load Stripe when purchase modal opens - ready by checkout time */}
-      {store.show && (
+      {/* Lazy load Stripe when purchase modal opens OR payment modal is requested from elsewhere */}
+      {(store.show || paymentStore.show) && (
         <Suspense fallback={null}>
           <StripePaymentModal
             yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : V2_PRICE}
