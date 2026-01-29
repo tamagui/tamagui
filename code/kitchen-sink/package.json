@@ -27,10 +27,10 @@
     "test:web": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:driver": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:debug": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test --debug",
-    "detox:build:ios": "detox build -c ios.sim.debug",
+    "detox:build:ios": "yarn pod && detox build -c ios.sim.debug",
     "detox:build:android": "detox build -c android.emu.debug",
-    "detox:test:ios": "./run-detox.sh ios.sim.debug",
-    "detox:test:android": "./run-detox.sh android.emu.debug",
+    "detox:run:ios": "./run-detox.sh ios",
+    "detox:run:android": "./run-detox.sh android",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test:native": "yarn test:native:ios && yarn test:native:maestro",
     "test": "yarn test:web && ./run-native-tests.sh"
