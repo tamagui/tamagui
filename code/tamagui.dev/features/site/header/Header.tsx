@@ -1,4 +1,4 @@
-import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
+import { LogoWords, TamaguiLogo, ThemeTint, setTintFamily, useTint } from '@tamagui/logo'
 import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { isTouchable, Theme, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
@@ -30,7 +30,10 @@ import {
 import { Link } from '~/components/Link'
 import { bannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
-import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
+import {
+  SeasonTogglePopover,
+  seasonLogos,
+} from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useLoginLink } from '../../auth/useLoginLink'
@@ -224,7 +227,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 y: 1,
               }}
             >
-              <Span fontSize="$2" y={-2}>
+              <Span textSh fontSize="$2" y={-2}>
                 v2 RC
               </Span>
             </Button>
@@ -308,12 +311,11 @@ const HeaderMenuButton = () => {
     <Popover.Trigger>
       <SlidingPopoverTarget id="menu">
         <Button
-          size="$3"
-          my={10}
+          size="$5"
+          circular
+          my={2}
           bg="transparent"
-          rounded="$10"
-          borderWidth={2}
-          px="$2"
+          borderWidth={0}
           onPress={(e) => {
             if (isTouchable) {
               setOpen(!open)
@@ -335,11 +337,11 @@ const HeaderMenuButton = () => {
           }}
           aria-label="Open the main menu"
           hoverStyle={{
-            borderColor: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)' as any,
+            bg: '$shadow1',
           }}
         >
           <Circle size={34} items="center" justify="center">
-            {haveUser ? <UserAvatar /> : <Menu size={16} />}
+            {haveUser ? <UserAvatar /> : <Menu size={20} />}
           </Circle>
         </Button>
       </SlidingPopoverTarget>
@@ -975,7 +977,49 @@ const HeaderMenuMoreContents = () => {
           </YStack>
         </HeadAnchor>
       </Link>
+
+      <Separator borderColor="$color02" opacity={0.25} my="$2" />
+
+      <SeasonChooser />
     </YStack>
+  )
+}
+
+const SeasonChooser = () => {
+  const { name } = useTint()
+
+  return (
+    <XStack flexWrap="wrap" gap="$2" items="center">
+      {Object.keys(seasonLogos).map((seasonName) => {
+        const isActive = name === seasonName
+        return (
+          <Circle
+            key={seasonName}
+            size="$6"
+            cursor="pointer"
+            items="center"
+            justify="center"
+            hoverStyle={{
+              bg: '$backgroundHover',
+            }}
+            pressStyle={{
+              bg: '$backgroundPress',
+            }}
+            {...(isActive && {
+              bg: '$color5',
+              hoverStyle: {
+                bg: '$color5',
+              },
+            })}
+            onPress={() => {
+              setTintFamily(seasonName as any)
+            }}
+          >
+            {seasonLogos[seasonName]}
+          </Circle>
+        )
+      })}
+    </XStack>
   )
 }
 

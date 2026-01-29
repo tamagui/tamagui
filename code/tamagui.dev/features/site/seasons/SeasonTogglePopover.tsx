@@ -1,6 +1,16 @@
 import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
 import { Popover, SizableText, Square, View, YStack } from 'tamagui'
 
+// colors match the theme families in tints.tsx
+const seasonColors = {
+  tamagui: '#ECD20A', // yellow (default)
+  easter: '#ECD20A', // yellow
+  xmas: '#ff3333', // red
+  lunar: '#ff3333', // red
+  valentine: '#ff3333', // red
+  halloween: '#ECD20A', // yellow
+}
+
 export const seasons = {
   tamagui: <TamaguiLogo downscale={2} />,
   easter: '🐣',
@@ -8,6 +18,15 @@ export const seasons = {
   lunar: '🧧',
   valentine: '💘',
   halloween: '🎃',
+}
+
+export const seasonLogos = {
+  tamagui: <TamaguiLogo downscale={2} color={seasonColors.tamagui} />,
+  easter: <TamaguiLogo downscale={2} color={seasonColors.easter} />,
+  xmas: <TamaguiLogo downscale={2} color={seasonColors.xmas} />,
+  lunar: <TamaguiLogo downscale={2} color={seasonColors.lunar} />,
+  valentine: <TamaguiLogo downscale={2} color={seasonColors.valentine} />,
+  halloween: <TamaguiLogo downscale={2} color={seasonColors.halloween} />,
 }
 
 const seasonKeys = ['xmas', 'easter', 'halloween', 'valentine', 'lunar'] as const
