@@ -1,12 +1,6 @@
 import { isWeb } from '@tamagui/web'
 
-type CombinedProps<C, N> = C extends React.ComponentType<infer CP>
-  ? N extends React.ComponentType<infer NP>
-    ? CP & NP
-    : CP
-  : N extends React.ComponentType<infer NP>
-    ? NP
-    : {}
+type GetProps<T> = T extends React.ComponentType<infer P> ? P : {}
 
 export function withNativeMenu<
   C extends React.ComponentType<any>,
@@ -19,8 +13,8 @@ export function withNativeMenu<
   NativeComponent: N
   scope?: string
   isRoot?: boolean
-}): React.FC<CombinedProps<C, N>> {
-  type Props = CombinedProps<C, N>
+}): React.FC<GetProps<C> & GetProps<N>> {
+  type Props = GetProps<C> & GetProps<N>
 
   if (isWeb) {
     return Component as React.FC<Props>
@@ -28,7 +22,7 @@ export function withNativeMenu<
 
   // On native platform, always use native component
   const Menu: React.FC<Props> = (props) => {
-    return <NativeComponent {...(props as React.ComponentProps<N>)} />
+    return <NativeComponent {...(props as any)} />
   }
 
   // displayName is required for Portal flattening (checks displayName.includes('Portal'))
