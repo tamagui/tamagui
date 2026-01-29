@@ -854,7 +854,7 @@ const HeaderMenuMoreContents = () => {
 
       {!userSwr.data?.userDetails && (
         <HeadAnchor grid onPress={handleLogin}>
-          Login
+          <span>Login</span>
           <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
             <LogIn color="$color10" size={14} />
           </YStack>
@@ -870,7 +870,7 @@ const HeaderMenuMoreContents = () => {
           }}
         >
           <XStack items="center" justify="center">
-            Account
+            <span>Account</span>
             <YStack flex={10} />
             <YStack display={'inline-block' as any} y={-2} my={-3} self="flex-end">
               <UserAvatar size={22} />
