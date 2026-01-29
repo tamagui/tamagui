@@ -354,7 +354,7 @@ export function DocsQuickNav({ headings = [] }: { headings?: Heading[] }) {
             </ScrollView>
           </YStack>
 
-          <YStack gap="$2">
+          <YStack gap="$2" px="$4">
             <Theme name="green">
               <Link width="100%" href="/bento">
                 <BentoButton />

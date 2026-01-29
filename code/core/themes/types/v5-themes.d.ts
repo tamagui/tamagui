@@ -1,5 +1,5 @@
 import { createThemes } from '@tamagui/theme-builder';
-export declare const V5_BG_OFFSET = 2;
+export declare const V5_BG_OFFSET: number;
 export { interpolateColor, opacify } from './opacify';
 export declare const v5ComponentThemes: {
     readonly Button: {

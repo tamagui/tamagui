@@ -50,9 +50,6 @@ export default function DocsLayout() {
               alignSelf: 'flex-start',
               x: 20,
             }}
-            $gtLg={{
-              x: 0,
-            }}
           >
             <ScrollView showsVerticalScrollIndicator={false}>
               <YStack pt={55} pb="$18" px="$2">

@@ -24,7 +24,7 @@ import { v5Templates } from './v5-templates'
 
 // base theme uses elevated background (like old surface1)
 // this offset aligns getTheme's palette index with that elevation
-export const V5_BG_OFFSET = 2
+export const V5_BG_OFFSET = 6 + 1
 
 // re-export color utilities for users
 export { interpolateColor, opacify } from './opacify'
@@ -515,7 +515,7 @@ export function createV5Theme<
     grandChildrenThemes,
 
     // Add computed colors to ALL themes based on each theme's palette
-    getTheme: ({ palette }) => {
+    getTheme: ({ palette, scheme }) => {
       if (!palette || palette.length < 3) {
         throw new Error(`invalid palette: ${JSON.stringify(palette)}`)
       }
@@ -546,8 +546,8 @@ export function createV5Theme<
         background06: opacify(bgColor, 0.6),
         background08: opacify(bgColor, 0.8),
 
-        // same as background01
-        outlineColor: opacify(bgColor, 0.1),
+        // a slightly stronger but translucent color
+        outlineColor: opacify(palette[V5_BG_OFFSET + 4], 0.6),
       }
     },
   })
