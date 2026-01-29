@@ -72,8 +72,8 @@ export const LogoWords: React.MemoExoticComponent<
   }, [Tint])
 
   const getColor = (i: number) => {
-    if (hovered) return hoveredColors[i]
-    return defaultColors[i]
+    // use the active season's tint colors
+    return `var(--${Tint.tints[i]}9)`
   }
 
   const x = Math.round(
