@@ -28,12 +28,37 @@ const hasProductAccess = (
 
 /**
  * Calculate support tier from subscription data
+ * V2 support tiers: direct = 1, sponsor = 2
+ * V1 support tier: based on quantity
  */
 const calculateSupportTier = (
   subscriptions: UserContextType['subscriptions']
 ): number => {
   if (!subscriptions) return 0
 
+  // Check V2 sponsor support first (highest tier)
+  const hasSponsor = subscriptions.some(
+    (sub) =>
+      sub.subscription_items?.some(
+        (item) => item.price?.product?.name === ProductName.TamaguiSupportSponsor
+      ) &&
+      (sub.status === SubscriptionStatus.Active ||
+        sub.status === SubscriptionStatus.Trialing)
+  )
+  if (hasSponsor) return 2
+
+  // Check V2 direct support
+  const hasDirect = subscriptions.some(
+    (sub) =>
+      sub.subscription_items?.some(
+        (item) => item.price?.product?.name === ProductName.TamaguiSupportDirect
+      ) &&
+      (sub.status === SubscriptionStatus.Active ||
+        sub.status === SubscriptionStatus.Trialing)
+  )
+  if (hasDirect) return 1
+
+  // V1 support (legacy)
   const supportItem = subscriptions.find((sub) =>
     sub.subscription_items?.some(
       (item) =>
@@ -77,10 +102,25 @@ export const userSubscriptionStatus = (
     }
 
   const isPro =
+    // V1 products
     hasProductAccess(userData.subscriptions, ProductName.TamaguiPro) ||
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiProTeamSeats)
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiProTeamSeats) ||
+    // V2 products
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2) ||
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2Upgrade) ||
+    // V2 support tiers also imply Pro access (support is add-on to Pro license)
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportDirect) ||
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportSponsor)
 
-  const isChat = hasProductAccess(userData.subscriptions, ProductName.TamaguiChat)
+  const isChat =
+    // V1 chat
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiChat) ||
+    // V2 Pro includes basic chat support
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2) ||
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2Upgrade) ||
+    // V2 support tiers include chat
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportDirect) ||
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportSponsor)
 
   const supportTier = calculateSupportTier(userData.subscriptions) || 0
 

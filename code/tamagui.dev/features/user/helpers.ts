@@ -169,6 +169,15 @@ function checkAccessToProduct(
   subscriptions: Awaited<ReturnType<typeof getSubscriptions>>,
   ownedProducts: Awaited<ReturnType<typeof getOwnedProducts>>
 ) {
+  // Valid Pro products that grant access
+  const validProProducts = [
+    ProductName.TamaguiPro,
+    ProductName.TamaguiProV2,
+    ProductName.TamaguiProV2Upgrade,
+    ProductName.TamaguiSupportDirect,
+    ProductName.TamaguiSupportSponsor,
+  ]
+
   const hasActiveSubscription = subscriptions.some(
     (subscription) =>
       (subscription.status === SubscriptionStatus.Trialing ||
@@ -177,7 +186,7 @@ function checkAccessToProduct(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
       ) ||
         subscription.subscription_items.some((item) =>
-          item.price.product?.name?.includes(ProductName.TamaguiPro)
+          validProProducts.some((product) => item.price.product?.name?.includes(product))
         ))
   )
   if (hasActiveSubscription) {
