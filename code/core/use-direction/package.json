@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-direction",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "sideEffects": false,
   "types": "./types/index.d.ts",

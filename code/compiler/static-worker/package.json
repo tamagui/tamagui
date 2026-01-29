@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-worker",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "module",
