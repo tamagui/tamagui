@@ -112,7 +112,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         ? props.transition[0]
         : props.transition
 
-      const isHydrating = componentState.unmounted === true
+      const isComponentHydrating = componentState.unmounted === true
       const isMounting = componentState.unmounted === 'should-enter'
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
@@ -135,7 +135,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       // Disable animation during hydration AND during mounting (should-enter phase)
       // This prevents the "flying across the page" effect on initial render
-      const disableAnimation = isHydrating || isMounting || !animationKey
+      const disableAnimation = isComponentHydrating || isMounting || !animationKey
 
       const isFirstRender = useRef(true)
       const [scope, animate] = useAnimate()
