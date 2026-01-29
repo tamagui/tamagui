@@ -25,6 +25,7 @@ import {
   Spinner,
   Tabs,
   View,
+  VisuallyHidden,
   XStack,
   YStack,
 } from 'tamagui'
@@ -126,6 +127,9 @@ export const NewAccountModal = () => {
             minH={500}
           >
             <AccountView />
+            <VisuallyHidden>
+              <Dialog.Title>Account</Dialog.Title>
+            </VisuallyHidden>
 
             <Dialog.Close asChild>
               <Button position="absolute" t="$3" r="$3" size="$3" circular icon={X} />

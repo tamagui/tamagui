@@ -419,21 +419,9 @@ export function PurchaseModalContents() {
                       </H3>
 
                       {store.activePromo && (
-                        <YStack y={-30} ml={10}>
-                          <H3
-                            size="$9"
-                            fontWeight="200"
-                            opacity={0.5}
-                            textDecorationLine="line-through"
-                            color="$green10"
-                            letterSpacing={-2}
-                          >
-                            ${Intl.NumberFormat('en-US').format(V2_PRICE)}
-                          </H3>
-                          <Paragraph size="$2" color="$color8">
-                            Discounted {store.activePromo.description}
-                          </Paragraph>
-                        </YStack>
+                        <Paragraph size="$2" color="$color8">
+                          Discounted {store.activePromo.description}
+                        </Paragraph>
                       )}
                     </XStack>
 

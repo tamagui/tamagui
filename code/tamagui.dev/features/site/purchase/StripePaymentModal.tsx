@@ -216,15 +216,24 @@ const PaymentForm = ({
   const elements = useElements()
   const [error, setError] = useState<Error | StripeError | null>(null)
 
-  // V2 validation
-  const v2ValidationError = useMemo(() => {
+  // V2 validation - per-field errors
+  const [showValidation, setShowValidation] = useState(false)
+
+  const projectNameError = useMemo(() => {
     if (!isV2) return null
     if (!projectName || projectName.length <= 2)
       return 'Project name must be more than 2 characters'
+    return null
+  }, [isV2, projectName])
+
+  const projectDomainError = useMemo(() => {
+    if (!isV2) return null
     if (!projectDomain || projectDomain.length <= 2)
       return 'Domain must be more than 2 characters'
     return null
-  }, [isV2, projectName, projectDomain])
+  }, [isV2, projectDomain])
+
+  const v2ValidationError = projectNameError || projectDomainError
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -232,6 +241,7 @@ const PaymentForm = ({
 
     // V2 validation
     if (isV2 && v2ValidationError) {
+      setShowValidation(true)
       const validationErr = new Error(v2ValidationError)
       setError(validationErr)
       onError(validationErr)
@@ -247,6 +257,7 @@ const PaymentForm = ({
     try {
       // Submit the form first
       const { error: submitError } = await elements.submit()
+
       if (submitError) {
         setError(submitError)
         onError(submitError)
@@ -482,7 +493,17 @@ const PaymentForm = ({
                   value={projectName}
                   onChangeText={onProjectNameChange}
                   fontFamily="$mono"
+                  {...(showValidation &&
+                    projectNameError && {
+                      borderColor: '$red9',
+                      borderWidth: 2,
+                    })}
                 />
+                {showValidation && projectNameError && (
+                  <Paragraph size="$2" color="$red10">
+                    {projectNameError}
+                  </Paragraph>
+                )}
               </YStack>
 
               <YStack gap="$2">
@@ -494,10 +515,21 @@ const PaymentForm = ({
                   value={projectDomain}
                   onChangeText={onProjectDomainChange}
                   fontFamily="$mono"
+                  {...(showValidation &&
+                    projectDomainError && {
+                      borderColor: '$red9',
+                      borderWidth: 2,
+                    })}
                 />
-                <Paragraph size="$2" color="$color9">
-                  Primary web domain for your project
-                </Paragraph>
+                {showValidation && projectDomainError ? (
+                  <Paragraph size="$2" color="$red10">
+                    {projectDomainError}
+                  </Paragraph>
+                ) : (
+                  <Paragraph size="$2" color="$color9">
+                    Primary web domain for your project
+                  </Paragraph>
+                )}
               </YStack>
 
               <Separator my="$2" />
@@ -543,6 +575,7 @@ const PaymentForm = ({
               }}
             >
               <Button
+                render={<button type="submit" />}
                 rounded="$10"
                 self="flex-end"
                 $maxMd={{
