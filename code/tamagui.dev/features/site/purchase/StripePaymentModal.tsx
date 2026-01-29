@@ -305,7 +305,30 @@ const PaymentForm = ({
             return
           }
 
-          // V2 purchase successful
+          // Handle 3DS authentication if required
+          if (data.status === 'requires_action' && data.clientSecret) {
+            const result = await stripe.confirmPayment({
+              elements,
+              redirect: 'if_required',
+              confirmParams: {
+                payment_method: paymentMethod.id,
+              },
+              clientSecret: data.clientSecret,
+            })
+
+            if (result.error) {
+              setError(result.error)
+              onError(result.error)
+              return
+            }
+
+            // After 3DS, verify payment completed
+            // The webhook will handle project creation
+            onSuccess(data.invoiceId)
+            return
+          }
+
+          // V2 purchase successful (no 3DS required)
           onSuccess(data.invoiceId)
           return
         }
