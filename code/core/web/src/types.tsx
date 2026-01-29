@@ -2318,6 +2318,11 @@ export interface TextStylePropsBase
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
+  /**
+   * CSS text-shadow string. Supports tokens: "2px 2px 4px $shadowColor"
+   * On native, only a single shadow is supported.
+   */
+  textShadow?: string
 }
 
 //

@@ -257,6 +257,7 @@ export const stylePropsTextOnly = {
   textDecorationLine: true,
   textDecorationStyle: true,
   ...textColors,
+  textShadow: true,
   textShadowOffset: true,
   textShadowRadius: true,
   userSelect: true,

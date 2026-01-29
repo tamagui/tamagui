@@ -1389,6 +1389,11 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBase
     textOverflow?: Properties['textOverflow'];
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
+    /**
+     * CSS text-shadow string. Supports tokens: "2px 2px 4px $shadowColor"
+     * On native, only a single shadow is supported.
+     */
+    textShadow?: string;
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
