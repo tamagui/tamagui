@@ -228,6 +228,25 @@ pre {
   font-weight: inherit !important;
 }
 
+/* seasonal content - hidden by default, shown via html class */
+.season-emoji,
+.season-halloween-svg {
+  display: none !important;
+}
+
+/* show seasonal emojis based on active season */
+.xmas-season .season-emoji-xmas,
+.easter-season .season-emoji-easter,
+.halloween-season .season-emoji-halloween,
+.valentine-season .season-emoji-valentine,
+.lunar-season .season-emoji-lunar {
+  display: flex !important;
+}
+
+.halloween-season .season-halloween-svg {
+  display: flex !important;
+}
+
 .xmas-season .rainbow {
   background-image: -webkit-linear-gradient(
     -220deg,

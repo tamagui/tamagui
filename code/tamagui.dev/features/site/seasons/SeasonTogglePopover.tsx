@@ -10,6 +10,8 @@ export const seasons = {
   halloween: '🎃',
 }
 
+const seasonKeys = ['xmas', 'easter', 'halloween', 'valentine', 'lunar'] as const
+
 export const SeasonTogglePopover = (props: { children: any }) => {
   const { name } = useTint()
 
@@ -19,11 +21,20 @@ export const SeasonTogglePopover = (props: { children: any }) => {
         <View>
           {props.children}
 
-          {name !== 'tamagui' && (
-            <SizableText size="$8" position="absolute" b={-10} r={-10} rotate="-10deg">
-              {seasons[name]}
+          {/* seasonal emojis - all rendered, CSS controls visibility */}
+          {seasonKeys.map((season) => (
+            <SizableText
+              key={season}
+              className={`season-emoji season-emoji-${season}`}
+              size="$8"
+              position="absolute"
+              b={-10}
+              r={-10}
+              rotate="-10deg"
+            >
+              {seasons[season]}
             </SizableText>
-          )}
+          ))}
         </View>
       </Popover.Trigger>
 

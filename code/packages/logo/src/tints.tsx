@@ -41,31 +41,9 @@ const familiesNames = Object.keys(familiesValues) as any as Family[]
 type Families = { [key in Family]: ThemeName[] }
 const families = familiesValues as Families
 
-type TintFamily = keyof typeof families
+export type TintFamily = keyof typeof families
 
 let fam: TintFamily = DEFAULT_FAMILY
-
-// disabling - server time diff from client :/
-// const seasonalTheme = (() => {
-//   const month = new Date().getMonth()
-//   const day = new Date().getDate()
-
-//   if (month === 11 && day >= 14) {
-//     return 'xmas'
-//   }
-//   if (month === 9 && day >= 20) {
-//     return 'halloween'
-//   }
-//   if (month === 2 && day >= 30) {
-//     return 'easter'
-//   }
-// })()
-
-// setTintFamily('valentine')
-
-// if (seasonalTheme) {
-//   setTintFamily(seasonalTheme)
-// }
 
 export function getTints(): {
   name: string
@@ -100,6 +78,22 @@ export function useTints(): {
 export function setTintFamily(next: TintFamily): void {
   if (!families[next]) throw `impossible`
   fam = next
+
+  // update DOM class for CSS-based styling (e.g., rainbow gradients)
+  if (typeof document !== 'undefined') {
+    const root = document.documentElement.classList
+    // remove all season classes
+    familiesNames.forEach((s) => {
+      if (s !== 'tamagui') {
+        root.remove(`${s}-season`)
+      }
+    })
+    // add the new one if not tamagui
+    if (next !== 'tamagui') {
+      root.add(`${next}-season`)
+    }
+  }
+
   React.startTransition(() => {
     listeners.forEach((l) => l(next))
   })

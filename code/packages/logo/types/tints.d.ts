@@ -11,7 +11,7 @@ declare const familiesValues: {
 type Family = keyof typeof familiesValues;
 type Families = { [key in Family] : ThemeName[] };
 declare const families: Families;
-type TintFamily = keyof typeof families;
+export type TintFamily = keyof typeof families;
 export declare function getTints(): {
 	name: string;
 	tints: ThemeName[];
