@@ -80,6 +80,7 @@ describe('tamagui-build integration test', () => {
   // })
 
   it('should ignore base URL when --ignore-base-url is used', () => {
+    execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('yarn build:ignore-base-url', { cwd: simplePackagePath })
 
     // Check if the output files exist
@@ -138,6 +139,7 @@ describe('tamagui-build integration test', () => {
   }, 15000)
 
   it('should generate correct platform-specific output', async () => {
+    execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('yarn build', { cwd: simplePackagePath })
 
     const distCjsWebFilePath = join(distPath, 'cjs', 'index.cjs')
@@ -168,6 +170,7 @@ describe('tamagui-build integration test', () => {
 
   it('should minify the output when MINIFY=true is set', () => {
     // Build without minification and cache file sizes
+    execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('yarn build', { cwd: simplePackagePath })
     const originalCjsSize = statSync(distCjsFilePath).size
     const originalEsmSize = statSync(distEsmFilePath).size
