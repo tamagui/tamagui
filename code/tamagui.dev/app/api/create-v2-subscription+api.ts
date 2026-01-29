@@ -23,9 +23,9 @@ const getSupportTierPriceId = (tier: SupportTier): string | null => {
   return null // Chat is included, no additional subscription needed
 }
 
-// Generate idempotency key for Stripe API calls
+// Generate idempotency key for Stripe API calls (deterministic for retries)
 const generateIdempotencyKey = (userId: string, action: string, uniqueData: string) => {
-  return `v2_${userId}_${action}_${uniqueData}_${Date.now()}`
+  return `v2_${userId}_${action}_${uniqueData}`
 }
 
 /**
@@ -171,6 +171,7 @@ export default apiRoute(async (req) => {
     )
 
     // Create and pay the invoice
+    // Include support_tier in metadata for webhook to create subscriptions if 3DS required
     const invoice = await stripe.invoices.create(
       {
         customer: stripeCustomerId,
@@ -182,6 +183,8 @@ export default apiRoute(async (req) => {
           project_domain: projectDomain,
           version: 'v2',
           type: 'pro_v2_license',
+          support_tier: supportTier || 'chat',
+          payment_method_id: paymentMethodId,
         },
       },
       {
