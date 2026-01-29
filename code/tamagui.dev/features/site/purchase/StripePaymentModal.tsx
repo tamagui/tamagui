@@ -791,6 +791,33 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </YStack>
             </XStack>
 
+            {supportTier !== 'chat' && (
+              <XStack justify="space-between">
+                <Paragraph fontFamily="$mono">
+                  {SUPPORT_TIERS[supportTier].label} Support
+                </Paragraph>
+                <YStack items="flex-end">
+                  {finalCoupon && (
+                    <Paragraph
+                      fontFamily="$mono"
+                      size="$3"
+                      opacity={0.5}
+                      textDecorationLine="line-through"
+                    >
+                      ${SUPPORT_TIERS[supportTier].price.toLocaleString()}/mo
+                    </Paragraph>
+                  )}
+                  <Paragraph fontFamily="$mono">
+                    $
+                    {Math.ceil(
+                      calculateDiscountedAmount(SUPPORT_TIERS[supportTier].price, finalCoupon)
+                    ).toLocaleString()}
+                    /mo
+                  </Paragraph>
+                </YStack>
+              </XStack>
+            )}
+
             <YStack gap="$2" bg="$color3" p="$3" rounded="$3">
               <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
                 What's included:
@@ -836,10 +863,16 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     textDecorationLine="line-through"
                   >
                     ${V2_LICENSE_PRICE.toLocaleString()}
+                    {supportTier !== 'chat' &&
+                      ` + $${SUPPORT_TIERS[supportTier].price.toLocaleString()}/mo`}
                   </Paragraph>
                 )}
                 <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
                   ${Math.ceil(discountedPrice).toLocaleString()}
+                  {supportTier !== 'chat' &&
+                    ` + $${Math.ceil(
+                      calculateDiscountedAmount(SUPPORT_TIERS[supportTier].price, finalCoupon)
+                    ).toLocaleString()}/mo`}
                 </H3>
               </YStack>
             </XStack>
