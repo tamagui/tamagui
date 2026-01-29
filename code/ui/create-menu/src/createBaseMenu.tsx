@@ -23,7 +23,9 @@ import {
   createStyledContext,
   isWeb,
   Text,
+  Theme,
   useComposedRefs,
+  useThemeName,
   View,
   withStaticProperties,
 } from '@tamagui/web'
@@ -513,6 +515,14 @@ export function createBaseMenu({
     const rootContext = useMenuRootContext(scope)
     const popperContext = PopperPrimitive.usePopperContext(scope)
     const menuSubContext = useMenuSubContext(scope)
+    const themeName = useThemeName()
+
+    const themedChildren = (
+      <Theme forceClassName name={themeName}>
+        {children}
+      </Theme>
+    )
+
     const content = needsPortalRepropagation() ? (
       <RepropagateMenuAndMenuRootProvider
         menuContext={menuContext}
@@ -521,10 +531,10 @@ export function createBaseMenu({
         menuSubContext={menuSubContext}
         scope={scope}
       >
-        {children}
+        {themedChildren}
       </RepropagateMenuAndMenuRootProvider>
     ) : (
-      children
+      themedChildren
     )
 
     // For submenus, we need to check if the root menu is still open
