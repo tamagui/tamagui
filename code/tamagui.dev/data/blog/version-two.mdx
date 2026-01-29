@@ -18,7 +18,7 @@ here**!
 We'll do a little housekeeping first, so if you want to,
 [skip to what's new](#new-in-v2).
 
-### Background
+### What makes it great
 
 Tamagui brings many style features from CSS to native. Every style it supports
 works on both native and web, at both run-time and compile-time, and server-side
@@ -26,26 +26,28 @@ as well as client-side.
 
 In comparison to other solutions, Tamagui is especially strong at:
 
-- **Sharing between web and native without sacrifice.** Many other solutions
-  focus on one platform more than others, or implement their features in sub-par
-  ways on web, Tamagui has a large style featureset and hard-fought parity
-  between platforms.
-- **Great performance everywhere.** A small example - you can choose from 4
+- **Many features, high performance everywhere.** Other solutions prioritize one
+  platform, and bail out of the hard parts of web performance that require a
+  compiler _and_ a lot of careful work to get right. Some examples of large
+  areas Tamagui does well - SSR safe spring animations, SSR safe light-dark
+  themes, SSR safe media queries and Container all the above features working
+  with CSS or springs, and so on.
+- **Top tier performance everywhere.** A small example - you can choose from 4
   animation drivers (CSS, Reanimated, Motion, React Native), per-platform, yet
   no matter which you choose you get proper SSR support—even media queries and
   dark mode render and hydrate without jumps or flickers.
-- **Fast, type-safe, mergeable inline styling.** Inline styles are productivity
-  boosts, but Tamagui adds type safety, easy/controllable merging, and an
-  optimizing compiler that does partial analysis to optimize even logic-filled
-  styling.
-- **Refined, unstyled, composable components.** Great on web and native thanks
-  to composable components, native adaptation, the Adapt primitive, and a lot of
-  iteration.
+- **Type-safe inline styling that merges and optimizes.** Inline styles are
+  productivity boosts, but Tamagui adds type safety, easy/controllable merging,
+  and an optimizing compiler that does partial analysis to optimize even
+  logic-filled styling. It's an underrated boost to productivity.
+- **Refined, styled and unstyled composable components.** Great on web and
+  native thanks to composable components, native adaptation, the Adapt
+  primitive, and a lot of iteration.
 - **Robust.** Tamagui has been developed actively for years, proven in
   [large apps](https://uniswap.org), and has more than tripled test coverage
   just in the last year.
 
-### Highlights since v1
+### During v1
 
 - **8,500+ commits** over 2 years (~330/month).
 - **900+ issues closed**.
