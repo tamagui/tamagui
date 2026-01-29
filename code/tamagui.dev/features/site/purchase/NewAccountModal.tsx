@@ -431,6 +431,7 @@ const Tab = ({
       bg="$color1"
       height={60}
       borderBottomWidth={1}
+      cursor="pointer"
       borderBottomColor="transparent"
       {...(!isActive && {
         bg: '$color2',
@@ -1331,6 +1332,7 @@ const ManageTab = ({
     paymentModal.disableAutoRenew = false
     paymentModal.chatSupport = false
     paymentModal.supportTier = supportTier
+    paymentModal.isSupportUpgradeOnly = true
   }
 
   if (isTeamLoading || isProjectsLoading) {

@@ -140,6 +140,9 @@ export function PurchaseModalContents() {
       supportTier: supportTier,
       teamSeats: 0,
     }
+    // V2 purchase - not a support upgrade only
+    paymentModal.isV2 = true
+    paymentModal.isSupportUpgradeOnly = false
     // pass promo info from purchase modal
     paymentModal.activePromo = store.activePromo
     paymentModal.prefilledCouponCode = store.prefilledCouponCode

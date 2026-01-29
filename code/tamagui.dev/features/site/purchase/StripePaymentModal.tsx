@@ -182,6 +182,7 @@ const PaymentForm = ({
   children,
   // V2 fields
   isV2,
+  isSupportUpgradeOnly,
   projectName,
   projectDomain,
   onProjectNameChange,
@@ -207,6 +208,7 @@ const PaymentForm = ({
   children: React.ReactNode
   // V2 fields
   isV2: boolean
+  isSupportUpgradeOnly: boolean
   projectName: string
   projectDomain: string
   onProjectNameChange: (value: string) => void
@@ -216,22 +218,22 @@ const PaymentForm = ({
   const elements = useElements()
   const [error, setError] = useState<Error | StripeError | null>(null)
 
-  // V2 validation - per-field errors
+  // V2 validation - per-field errors (skip for support-only upgrades)
   const [showValidation, setShowValidation] = useState(false)
 
   const projectNameError = useMemo(() => {
-    if (!isV2) return null
+    if (!isV2 || isSupportUpgradeOnly) return null
     if (!projectName || projectName.length <= 2)
       return 'Project name must be more than 2 characters'
     return null
-  }, [isV2, projectName])
+  }, [isV2, isSupportUpgradeOnly, projectName])
 
   const projectDomainError = useMemo(() => {
-    if (!isV2) return null
+    if (!isV2 || isSupportUpgradeOnly) return null
     if (!projectDomain || projectDomain.length <= 2)
       return 'Domain must be more than 2 characters'
     return null
-  }, [isV2, projectDomain])
+  }, [isV2, isSupportUpgradeOnly, projectDomain])
 
   const v2ValidationError = projectNameError || projectDomainError
 
@@ -494,8 +496,8 @@ const PaymentForm = ({
           }}
           py="$4"
         >
-          {/* V2 Project Information Fields */}
-          {isV2 && (
+          {/* V2 Project Information Fields - only show for new V2 purchases, not support upgrades */}
+          {isV2 && !isSupportUpgradeOnly && (
             <YStack gap="$4" mb="$4">
               <YStack gap="$2">
                 <Paragraph fontFamily="$mono" fontWeight="600" size="$4">
@@ -645,6 +647,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const [projectName, setProjectName] = useState(store.projectName || '')
   const [projectDomain, setProjectDomain] = useState(store.projectDomain || '')
   const isV2 = store.isV2 ?? true // Default to V2 for new purchases
+  const isSupportUpgradeOnly = store.isSupportUpgradeOnly ?? false
 
   const theme = useTheme()
   const themeName = useThemeName()
@@ -783,6 +786,119 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     )
 
     const renderTotalView = () => {
+      // Support Tier Upgrade Only (for existing V2 Pro users)
+      if (isSupportUpgradeOnly && supportTier !== 'chat') {
+        const supportPrice = SUPPORT_TIERS[supportTier].price
+        const discountedSupportPrice = calculateDiscountedAmount(supportPrice, finalCoupon)
+        return (
+          <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
+            <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+              Order summary
+            </H3>
+            <Separator />
+
+            <XStack justify="space-between">
+              <Paragraph fontFamily="$mono">
+                {SUPPORT_TIERS[supportTier].label} Support
+              </Paragraph>
+              <YStack items="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    fontFamily="$mono"
+                    size="$3"
+                    opacity={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${supportPrice.toLocaleString()}/mo
+                  </Paragraph>
+                )}
+                <Paragraph fontFamily="$mono">
+                  ${Math.ceil(discountedSupportPrice).toLocaleString()}/mo
+                </Paragraph>
+              </YStack>
+            </XStack>
+
+            <YStack gap="$2" bg="$color3" p="$3" rounded="$3">
+              <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
+                {SUPPORT_TIERS[supportTier].label} Support includes:
+              </Paragraph>
+              <Paragraph size="$2" color="$color9">
+                {SUPPORT_TIERS[supportTier].description}
+              </Paragraph>
+            </YStack>
+
+            <Separator />
+
+            <XStack justify="space-between">
+              <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+                Total
+              </H3>
+              <YStack items="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    fontFamily="$mono"
+                    size="$3"
+                    opacity={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${supportPrice.toLocaleString()}/mo
+                  </Paragraph>
+                )}
+                <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+                  ${Math.ceil(discountedSupportPrice).toLocaleString()}/mo
+                </H3>
+              </YStack>
+            </XStack>
+
+            <YStack gap="$2">
+              <SizableText
+                color="$color10"
+                opacity={0.3}
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
+                $maxMd={{
+                  fontSize: '$3',
+                }}
+                onPress={() => setShowCoupon((x) => !x)}
+              >
+                {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+              </SizableText>
+              {showCoupon && (
+                <XStack gap="$2" items="center">
+                  <Input
+                    flex={1}
+                    size="$3"
+                    borderWidth={1}
+                    placeholder="Enter code"
+                    value={couponCode}
+                    onChange={(e) => {
+                      const text = e.target?.value
+                      setCouponCode(text)
+                    }}
+                  />
+                  <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                    <Button.Text>Apply</Button.Text>
+                  </Button>
+                </XStack>
+              )}
+              {couponError && (
+                <Paragraph size="$2" color="$red10">
+                  {couponError}
+                </Paragraph>
+              )}
+              {finalCoupon && (
+                <Paragraph size="$2" color="$green10">
+                  Coupon applied:{' '}
+                  {finalCoupon.percent_off
+                    ? `${finalCoupon.percent_off}% off`
+                    : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+                </Paragraph>
+              )}
+            </YStack>
+          </YStack>
+        )
+      }
+
       // V2 Order Summary
       if (isV2) {
         const discountedPrice = calculateDiscountedAmount(V2_LICENSE_PRICE, finalCoupon)
@@ -1219,6 +1335,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 subscriptionStatus={subscriptionStatus}
                 // V2 fields
                 isV2={isV2}
+                isSupportUpgradeOnly={isSupportUpgradeOnly}
                 projectName={projectName}
                 projectDomain={projectDomain}
                 onProjectNameChange={setProjectName}
