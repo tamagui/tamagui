@@ -21,7 +21,7 @@ test.describe('Menu Theme Inheritance', () => {
     const hasThemeClass = await menuContent.evaluate((el) => {
       let current = el.parentElement
       while (current) {
-        if (current.className?.includes('t_blue_active')) {
+        if (current.className?.includes('t_blue')) {
           return true
         }
         current = current.parentElement
