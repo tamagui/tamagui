@@ -299,6 +299,38 @@ For native border styling, use individual props:
 <View borderWidth={1} borderStyle="solid" borderColor="$borderColor" />
 ```
 
+### textShadow
+
+Text shadows support CSS shorthand with token resolution, just like `boxShadow`:
+
+```tsx
+import { Text } from 'tamagui'
+
+// CSS shorthand with tokens
+<Text textShadow="2px 2px 4px $shadowColor">
+  Shadowed Text
+</Text>
+
+// multiple shadows (web only)
+<Text textShadow="1px 1px 2px $shadowColor, 0 0 8px $color">
+  Glowing Text
+</Text>
+```
+
+You can also use the individual React Native props:
+
+```tsx
+<Text
+  textShadowColor="$shadowColor"
+  textShadowOffset={{ width: 2, height: 2 }}
+  textShadowRadius={4}
+>
+  Shadowed Text
+</Text>
+```
+
+On native, only a single text shadow is supported (React Native limitation).
+
 ## Parent based styling
 
 Tamagui has a variety of ways to style a child based on the "parent", a parent
