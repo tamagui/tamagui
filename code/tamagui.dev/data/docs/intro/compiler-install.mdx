@@ -285,7 +285,7 @@ export default {
 ```json
 {
   "scripts": {
-    "build": "tamagui build ./src && next build"
+    "build": "tamagui build ./src -- next build"
   }
 }
 ```
@@ -319,7 +319,7 @@ The `--expect-optimizations` flag ensures your build is actually optimizing comp
 ```json
 {
   "scripts": {
-    "build": "tamagui build --target web --expect-optimizations 10 ./src && next build"
+    "build": "tamagui build --target web --expect-optimizations 10 ./src -- next build"
   }
 }
 ```
@@ -373,7 +373,7 @@ command. Here are some examples:
 {
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "tamagui build --target web ./src && next build"
+    "build": "tamagui build --target web ./src -- next build"
   }
 }
 ```
@@ -383,7 +383,7 @@ command. Here are some examples:
 ```json
 {
   "scripts": {
-    "build": "tamagui build --target web ./src && vite build"
+    "build": "tamagui build --target web ./src -- vite build"
   }
 }
 ```
@@ -393,8 +393,8 @@ command. Here are some examples:
 ```json
 {
   "scripts": {
-    "build:ios": "tamagui build --target native ./src && eas build --platform ios",
-    "build:android": "tamagui build --target native ./src && eas build --platform android"
+    "build:ios": "tamagui build --target native ./src -- eas build --platform ios",
+    "build:android": "tamagui build --target native ./src -- eas build --platform android"
   }
 }
 ```
