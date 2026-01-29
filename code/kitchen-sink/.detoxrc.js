@@ -32,12 +32,14 @@ module.exports = {
   apps: {
     'ios.debug': {
       type: 'ios.app',
-      // CI uses 'build/' (set via env var), local uses 'ios/build/'
+      // CI uses 'build/' (set via env var), local uses global DerivedData
+      // note: -derivedDataPath is ignored when Xcode has IDEBuildLocationStyle=Custom
+      // so we use BUILT_PRODUCTS_DIR to force the output location
       binaryPath:
         process.env.DETOX_IOS_APP_PATH ||
         'ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app',
       build:
-        'xcodebuild -workspace ios/tamaguikitchensink.xcworkspace -scheme tamaguikitchensink -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build',
+        'xcodebuild -workspace ios/tamaguikitchensink.xcworkspace -scheme tamaguikitchensink -configuration Debug -sdk iphonesimulator SYMROOT="$(pwd)/ios/build/Build/Products" OBJROOT="$(pwd)/ios/build/Build/Intermediates.noindex"',
     },
     'ios.release': {
       type: 'ios.app',
@@ -45,7 +47,7 @@ module.exports = {
         process.env.DETOX_IOS_APP_PATH ||
         'ios/build/Build/Products/Release-iphonesimulator/tamaguikitchensink.app',
       build:
-        'xcodebuild -workspace ios/tamaguikitchensink.xcworkspace -scheme tamaguikitchensink -configuration Release -sdk iphonesimulator -derivedDataPath ios/build',
+        'xcodebuild -workspace ios/tamaguikitchensink.xcworkspace -scheme tamaguikitchensink -configuration Release -sdk iphonesimulator SYMROOT="$(pwd)/ios/build/Build/Products" OBJROOT="$(pwd)/ios/build/Build/Intermediates.noindex"',
     },
     'android.debug': {
       type: 'android.apk',

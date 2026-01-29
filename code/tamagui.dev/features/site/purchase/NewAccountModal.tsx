@@ -292,9 +292,10 @@ export const AccountView = () => {
   }
 
   return (
-    <YStack flex={1}>
+    <YStack flex={1} flexBasis="auto">
       <Tabs
         flex={1}
+        flexBasis="auto"
         value={currentTab}
         onValueChange={(val: any) => setCurrentTab(val)}
         orientation="horizontal"
@@ -326,7 +327,7 @@ export const AccountView = () => {
           </YStack>
         </Tabs.List>
 
-        <YStack overflow="hidden" flex={1}>
+        <YStack overflow="hidden" flex={1} flexBasis="auto">
           <ScrollView>
             <YStack p="$6">{renderTabs()}</YStack>
           </ScrollView>
@@ -431,6 +432,7 @@ const Tab = ({
       bg="$color1"
       height={60}
       borderBottomWidth={1}
+      cursor="pointer"
       borderBottomColor="transparent"
       {...(!isActive && {
         bg: '$color2',
@@ -1331,6 +1333,7 @@ const ManageTab = ({
     paymentModal.disableAutoRenew = false
     paymentModal.chatSupport = false
     paymentModal.supportTier = supportTier
+    paymentModal.isSupportUpgradeOnly = true
   }
 
   if (isTeamLoading || isProjectsLoading) {

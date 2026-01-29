@@ -46,6 +46,8 @@ class PaymentModal {
   isV2 = true // Default to V2 for new purchases
   projectName = ''
   projectDomain = ''
+  // Support tier upgrade only (no license purchase)
+  isSupportUpgradeOnly = false
   // promo support
   activePromo: PromoConfig | null = null
   prefilledCouponCode: string | null = null

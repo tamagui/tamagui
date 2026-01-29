@@ -10,20 +10,20 @@ export declare const selectionStyles: (theme: any) => {
 export declare const settings: {
     mediaQueryDefaultActive: {
         pointerTouch: boolean;
-        heightXXXS: boolean;
-        heightXXS: boolean;
-        heightXS: boolean;
-        heightSM: boolean;
-        heightMD: boolean;
-        heightLG: boolean;
-        maxXXXS: boolean;
-        maxXXS: boolean;
-        maxXS: boolean;
-        maxSM: boolean;
-        maxMD: boolean;
-        maxLG: boolean;
-        maxXL: boolean;
-        maxXXL: boolean;
+        'height-xxxs': boolean;
+        'height-xxs': boolean;
+        'height-xs': boolean;
+        'height-sm': boolean;
+        'height-md': boolean;
+        'height-lg': boolean;
+        'max-xxl': boolean;
+        'max-xl': boolean;
+        'max-lg': boolean;
+        'max-md': boolean;
+        'max-sm': boolean;
+        'max-xs': boolean;
+        'max-xxs': boolean;
+        'max-xxxs': boolean;
         xxxs: boolean;
         xxs: boolean;
         xs: boolean;
@@ -46,46 +46,46 @@ export declare const defaultConfig: {
         readonly pointerTouch: {
             readonly pointer: "coarse";
         };
-        readonly heightXXXS: {
+        readonly 'height-xxxs': {
             readonly minHeight: number;
         };
-        readonly heightXXS: {
+        readonly 'height-xxs': {
             readonly minHeight: number;
         };
-        readonly heightXS: {
+        readonly 'height-xs': {
             readonly minHeight: number;
         };
-        readonly heightSM: {
+        readonly 'height-sm': {
             readonly minHeight: number;
         };
-        readonly heightMD: {
+        readonly 'height-md': {
             readonly minHeight: number;
         };
-        readonly heightLG: {
+        readonly 'height-lg': {
             readonly minHeight: number;
         };
-        readonly maxXXXS: {
+        readonly 'max-xxl': {
             readonly maxWidth: number;
         };
-        readonly maxXXS: {
+        readonly 'max-xl': {
             readonly maxWidth: number;
         };
-        readonly maxXS: {
+        readonly 'max-lg': {
             readonly maxWidth: number;
         };
-        readonly maxSM: {
+        readonly 'max-md': {
             readonly maxWidth: number;
         };
-        readonly maxMD: {
+        readonly 'max-sm': {
             readonly maxWidth: number;
         };
-        readonly maxLG: {
+        readonly 'max-xs': {
             readonly maxWidth: number;
         };
-        readonly maxXL: {
+        readonly 'max-xxs': {
             readonly maxWidth: number;
         };
-        readonly maxXXL: {
+        readonly 'max-xxxs': {
             readonly maxWidth: number;
         };
         readonly xxxs: {
@@ -514,20 +514,20 @@ export declare const defaultConfig: {
     settings: {
         mediaQueryDefaultActive: {
             pointerTouch: boolean;
-            heightXXXS: boolean;
-            heightXXS: boolean;
-            heightXS: boolean;
-            heightSM: boolean;
-            heightMD: boolean;
-            heightLG: boolean;
-            maxXXXS: boolean;
-            maxXXS: boolean;
-            maxXS: boolean;
-            maxSM: boolean;
-            maxMD: boolean;
-            maxLG: boolean;
-            maxXL: boolean;
-            maxXXL: boolean;
+            'height-xxxs': boolean;
+            'height-xxs': boolean;
+            'height-xs': boolean;
+            'height-sm': boolean;
+            'height-md': boolean;
+            'height-lg': boolean;
+            'max-xxl': boolean;
+            'max-xl': boolean;
+            'max-lg': boolean;
+            'max-md': boolean;
+            'max-sm': boolean;
+            'max-xs': boolean;
+            'max-xxs': boolean;
+            'max-xxxs': boolean;
             xxxs: boolean;
             xxs: boolean;
             xs: boolean;

@@ -513,6 +513,7 @@ export function createComponent<
       disable: disableTheme,
       shallow: props.themeShallow,
       debug: debugProp,
+      unstyled: props.unstyled,
     }
 
     // this is set conditionally if existing in props because we wrap children with

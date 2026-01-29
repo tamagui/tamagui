@@ -18,7 +18,6 @@ import {
   Theme,
   ToggleGroup,
   Unspaced,
-  useMedia,
   XStack,
   YStack,
 } from 'tamagui'
@@ -33,7 +32,7 @@ import { BigP, P } from './BigP'
 import { ProPoliciesModal } from './PoliciesModal'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { PurchaseButton } from './helpers'
-import { paymentModal } from './paymentModalStore'
+import { paymentModal, usePaymentModal } from './paymentModalStore'
 import { usePurchaseModal } from './purchaseModalStore'
 import { useTakeoutStore } from './useTakeoutStore'
 
@@ -60,12 +59,12 @@ type Tab = (typeof tabOrder)[number]
 
 export function PurchaseModalContents() {
   const store = usePurchaseModal()
+  const paymentStore = usePaymentModal()
   const takeoutStore = useTakeoutStore()
   const [currentTab, setCurrentTab] = useState<Tab>('pro')
   const [supportTier, setSupportTier] = useState<SupportTier>('chat')
   const [isProcessing, setIsProcessing] = useState(false)
   const [, setError] = useState<Error | StripeError | null>(null)
-  const { gtMd } = useMedia()
 
   const { data: userData, subscriptionStatus } = useUser()
   const { parityDeals } = useParityDiscount()
@@ -139,6 +138,9 @@ export function PurchaseModalContents() {
       supportTier: supportTier,
       teamSeats: 0,
     }
+    // V2 purchase - not a support upgrade only
+    paymentModal.isV2 = true
+    paymentModal.isSupportUpgradeOnly = false
     // pass promo info from purchase modal
     paymentModal.activePromo = store.activePromo
     paymentModal.prefilledCouponCode = store.prefilledCouponCode
@@ -168,7 +170,15 @@ export function PurchaseModalContents() {
               scripting, and UI result in remarkably fast development.
             </BigP>
 
-            <XStack mx="$-4" gap="$3" items="center" justify="center" flexWrap="wrap">
+            <XStack
+              px="$4"
+              mx="$-4"
+              gap="$3"
+              items="center"
+              justify="center"
+              flexWrap="wrap"
+              $gtMd={{ px: 0 }}
+            >
               <PromoCards />
             </XStack>
 
@@ -191,8 +201,15 @@ export function PurchaseModalContents() {
             <Separator />
 
             {/* Support Tier Selection */}
-            <XStack gap="$4" items="center" justify="space-between" flexWrap="wrap">
-              <YStack gap="$2" flexShrink={1} flex={1}>
+            <YStack
+              gap="$4"
+              $gtMd={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <YStack gap="$2" flexShrink={1} $gtMd={{ flex: 1 }}>
                 <Paragraph fontFamily="$mono" fontWeight="600" size="$5">
                   Support Level
                 </Paragraph>
@@ -207,6 +224,8 @@ export function PurchaseModalContents() {
                 borderColor="$color4"
                 overflow="hidden"
                 flexShrink={0}
+                alignSelf="flex-start"
+                $gtMd={{ alignSelf: 'auto' }}
               >
                 {(Object.keys(SUPPORT_TIERS) as SupportTier[]).map((tier) => (
                   <YStack
@@ -230,7 +249,7 @@ export function PurchaseModalContents() {
                   </YStack>
                 ))}
               </XStack>
-            </XStack>
+            </YStack>
 
             <Separator />
 
@@ -279,7 +298,9 @@ export function PurchaseModalContents() {
         <Dialog.Adapt when="maxMd">
           <Sheet modal transition="quick">
             <Sheet.Frame bg="$color1" p={0} flex={1}>
-              <Dialog.Adapt.Contents />
+              <Sheet.ScrollView flex={1}>
+                <Dialog.Adapt.Contents />
+              </Sheet.ScrollView>
             </Sheet.Frame>
             <Sheet.Overlay
               bg="$shadow4"
@@ -318,19 +339,24 @@ export function PurchaseModalContents() {
             exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
             width="90%"
             maxW={900}
+            height="85%"
+            maxH="calc(min(85vh, 800px))"
+            minH={500}
             p={0}
           >
-            <YStack height="100%" $maxMd={{ flex: 1 }}>
+            <YStack flex={1} flexBasis="auto" overflow="hidden">
               <Tabs
                 orientation="horizontal"
                 flexDirection="column"
+                flex={1}
+                flexBasis="auto"
+                overflow="hidden"
                 defaultValue="pro"
                 size="$6"
                 value={currentTab}
                 onValueChange={changeTab}
-                $maxMd={{ flex: 1, overflow: 'hidden' }}
               >
-                <Tabs.List>
+                <Tabs.List flexShrink={0}>
                   <YStack width={'50%'} flex={1}>
                     <Tab isActive={currentTab === 'pro'} value="pro">
                       Pro
@@ -343,33 +369,20 @@ export function PurchaseModalContents() {
                   </YStack>
                 </Tabs.List>
 
-                <YStack group="takeoutBody" $maxMd={{ flex: 1, overflow: 'hidden' }}>
-                  <AnimatedYStack key={currentTab}>
+                <YStack group="takeoutBody" flex={1} flexBasis="auto" overflow="hidden">
+                  <AnimatedYStack key={currentTab} overflow="hidden">
                     <Tabs.Content
                       value={currentTab}
                       forceMount
                       flex={1}
-                      $gtMd={{
-                        minHeight: 550,
-                        height: 'calc(min(100vh - 200px, 900px))',
-                      }}
+                      flexBasis="auto"
+                      overflow="hidden"
                     >
-                      {gtMd ? (
-                        <YStack
-                          p="$8"
-                          gap="$6"
-                          height="100%"
-                          style={{ overflowY: 'scroll' }}
-                        >
+                      <ScrollView flex={1} flexBasis="auto">
+                        <YStack p="$4" gap="$4" $gtMd={{ p: '$8', gap: '$6' }}>
                           {tabContents[currentTab]()}
                         </YStack>
-                      ) : (
-                        <ScrollView flex={1}>
-                          <YStack p="$4" gap="$4">
-                            {tabContents[currentTab]()}
-                          </YStack>
-                        </ScrollView>
-                      )}
+                      </ScrollView>
                     </Tabs.Content>
                   </AnimatedYStack>
                 </YStack>
@@ -377,10 +390,10 @@ export function PurchaseModalContents() {
 
               {/* Bottom */}
               <YStack
+                flexShrink={0}
                 p="$4"
                 $gtXs={{ p: '$6' }}
                 gap="$2"
-                // bg="$color2"
                 borderTopWidth={0.5}
                 borderTopColor={'$color5'}
               >
@@ -388,14 +401,15 @@ export function PurchaseModalContents() {
                   justify="center"
                   items="center"
                   gap="$4"
-                  $gtXs={{
-                    justify: 'space-between',
-                    items: 'flex-start',
+                  $gtSm={{
                     flexDirection: 'row',
-                    gap: '$6',
                   }}
                 >
-                  <YStack gap="$1" width="100%" $gtXs={{ flex: 1, width: '40%' }}>
+                  <YStack
+                    gap="$1"
+                    width="100%"
+                    $gtXs={{ flex: 1, flexBasis: 'auto', width: '40%' }}
+                  >
                     <XStack items="baseline" gap="$2" flexWrap="wrap">
                       {store.activePromo && (
                         <H3
@@ -541,8 +555,8 @@ export function PurchaseModalContents() {
 
       <ProAgreementModal />
 
-      {/* Lazy load Stripe when purchase modal opens - ready by checkout time */}
-      {store.show && (
+      {/* Lazy load Stripe when purchase modal opens OR payment modal is requested from elsewhere */}
+      {(store.show || paymentStore.show) && (
         <Suspense fallback={null}>
           <StripePaymentModal
             yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : V2_PRICE}
