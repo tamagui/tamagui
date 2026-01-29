@@ -140,7 +140,8 @@ highlights:
 - **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS
   17+ (trackpad/stylus).
 - **`textShadow`** - CSS text-shadow shorthand with token support:
-  `textShadow="2px 2px 4px $shadowColor"`. On native, only single shadows supported.
+  `textShadow="2px 2px 4px $shadowColor"`. On native, only single shadows
+  supported.
 
 ### New Components
 
@@ -221,16 +222,26 @@ Select on web and Sheet on native got big upgrades.
 ![Motion animation library banner](/blog/motion-banner.webp)
 
 The all powerful [Motion animation library](https://motion.dev) comes to Tamagui
-as an [animation driver](/docs/core/animations-motion), and we can
-wholeheartedly recommend it for your web apps.
+as an [animation driver](/docs/core/animations-motion), bringing real innovation
+to web aimations.
 
-We put a lot of effort into making it special with the **new Tamagui 0 re-render
-path**. Tamagui now supports an `avoidReRenders` option for animation drivers.
-Style changes don't even pass through React.
+The driver is still somewhat experimental, we're still working through some very
+subtle issues with sending updates rapidly, and are working them to isolate it.
 
-Combined with Motion's **off-thread animation support** via the
+What makes this even more interesting is that Tamagui completely re-wrote the
+internal component logic to allow a new `avoidReRenders` path option for
+animation drivers. When true, all group, media, pseudo, and some theme styles
+all move out of React.
+
+Combined with Motion's support of the off-thread
 [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
-and we've noticed huge gains in UX on apps.
+and it makes for really incredibly smooth feeling apps.
+
+We noticed a large gain in performance in a large app by just swapping to the
+driver, and the animations feel great — see them for yourself on this site. Just
+note, there's a can be occasionally hiccups with some enter styles. There's a
+way to work around this, but then you de-opt other parts. We're sure we'll get
+Motion out of beta soon, and even in it's current state it's worth considering.
 
 ### Reanimated Driver
 
