@@ -107,7 +107,10 @@ that work well in both light and dark modes.
 
 **Expanded media queries** - Height-based queries (`$heightXS`, `$heightSM`,
 etc.), a `$pointerTouch` query for touch detection, and renamed size queries
-(`$xxl`, `$xxs`, `$xxxs`).
+(`$xxl`, `$xxs`, `$xxxs`). The `$sm` through `$xxl` breakpoints now match
+Tailwind CSS exactly (640, 768, 1024, 1280, 1536), making it easier to work
+across both ecosystems. The smaller breakpoints (`$xxxs`, `$xxs`, `$xs`) are
+designed for container queries where you need finer control below 640px.
 
 **Easy customization** - The new `createV5Theme` helper lets you add or override
 color themes with minimal boilerplate, working directly with `@tamagui/colors`.

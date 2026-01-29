@@ -484,6 +484,12 @@ V5 config includes these default settings:
 V5 includes an expanded set of media queries with height-based, max-width, and
 min-width variants.
 
+The `$sm` through `$xxl` breakpoints match Tailwind CSS exactly (640, 768, 1024,
+1280, 1536), making it easy to work across both ecosystems. The smaller
+breakpoints (`$xxxs`, `$xxs`, `$xs`) provide finer control below 640px, which is
+especially useful for container queries where you need granularity at smaller
+sizes.
+
 ### Min-Width (Mobile-First)
 
 <PropsTable
