@@ -272,6 +272,28 @@ const lightShadows = {
   shadow8: 'rgba(0,0,0,0.85)',
 }
 
+const darkHighlights = {
+  highlight1: 'rgba(255,255,255,0.1)',
+  highlight2: 'rgba(255,255,255,0.2)',
+  highlight3: 'rgba(255,255,255,0.3)',
+  highlight4: 'rgba(255,255,255,0.45)',
+  highlight5: 'rgba(255,255,255,0.65)',
+  highlight6: 'rgba(255,255,255,0.85)',
+  highlight7: 'rgba(255,255,255,0.95)',
+  highlight8: 'rgba(255,255,255,1)',
+}
+
+const lightHighlights = {
+  highlight1: 'rgba(255,255,255,0.05)',
+  highlight2: 'rgba(255,255,255,0.1)',
+  highlight3: 'rgba(255,255,255,0.15)',
+  highlight4: 'rgba(255,255,255,0.3)',
+  highlight5: 'rgba(255,255,255,0.4)',
+  highlight6: 'rgba(255,255,255,0.55)',
+  highlight7: 'rgba(255,255,255,0.7)',
+  highlight8: 'rgba(255,255,255,0.85)',
+}
+
 // Export palettes for customization
 export { darkPalette as defaultDarkPalette, lightPalette as defaultLightPalette }
 
@@ -321,8 +343,12 @@ type WhiteColors = ReturnType<typeof paletteToNamedColors<'white'>>
 
 // Base extra colors type (always included) - getTheme computes opacity/interpolation colors
 type BaseExtraCommon = BlackColors & WhiteColors & typeof whiteBlack
-type BaseExtraLight = BaseExtraCommon & typeof lightShadows & { shadowColor: string }
-type BaseExtraDark = BaseExtraCommon & typeof darkShadows & { shadowColor: string }
+type BaseExtraLight = BaseExtraCommon &
+  typeof lightShadows &
+  typeof lightHighlights & { shadowColor: string }
+type BaseExtraDark = BaseExtraCommon &
+  typeof darkShadows &
+  typeof darkHighlights & { shadowColor: string }
 
 export type CreateV5ThemeOptions<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
@@ -408,9 +434,15 @@ export function createV5Theme<
   const lightExtraBase = {
     ...extraBase,
     ...lightShadows,
-    shadowColor: lightShadows.shadow1,
+    ...lightHighlights,
+    shadowColor: lightShadows.shadow3,
   }
-  const darkExtraBase = { ...extraBase, ...darkShadows, shadowColor: darkShadows.shadow1 }
+  const darkExtraBase = {
+    ...extraBase,
+    ...darkShadows,
+    ...darkHighlights,
+    shadowColor: darkShadows.shadow3,
+  }
 
   // Spread all children colors into extra - types flow from Children generic
   type LightExtra = BaseExtraLight & MergedChildrenColors<Children, 'light'>
@@ -485,7 +517,9 @@ export function createV5Theme<
       }
 
       // palette[1] is background-ish, palette[length-2] is foreground-ish
-      const bgColor = palette[1]!
+      // TODO this should just be aligned with the offsets we use in templates
+      // and all really simplified down
+      const bgColor = palette[2]!
       const fgColor = palette[palette.length - 2]!
 
       return {
@@ -496,6 +530,7 @@ export function createV5Theme<
         color0025: opacify(fgColor, 0.025),
         color002: opacify(fgColor, 0.02),
         color001: opacify(fgColor, 0.01),
+
         // Opacity variants of background color
         background01: opacify(bgColor, 0.1),
         background0075: opacify(bgColor, 0.075),
