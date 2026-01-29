@@ -61,7 +61,14 @@ export function useSupabaseClient(given?: SupabaseAuthOnlyClient) {
   const [current, setCurrent] = useState(() => given ?? client)
 
   useEffect(() => {
-    if (current || client) return
+    // if we already have it in state, nothing to do
+    if (current) return
+    // if module-level client exists, sync it to state
+    if (client) {
+      setCurrent(client)
+      return
+    }
+    // otherwise create it
     client = createClient()
     if (client) {
       globalThis['supabaseClient'] = client
