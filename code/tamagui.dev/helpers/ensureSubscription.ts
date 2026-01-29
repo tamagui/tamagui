@@ -72,7 +72,15 @@ export async function ensureSubscription(
     console.warn(`No price description: ${JSON.stringify(subscriptionData)}`)
   }
 
-  const data = getTakeoutPriceInfo(pricingDescription ?? '')
+  // Check if this is a V2 Pro subscription (unlimited team, per-project license)
+  const productName = getSingle(getSingle(subscriptionData?.price)?.products)?.name
+  const isV2Pro =
+    productName === ProductName.TamaguiProV2 ||
+    productName === ProductName.TamaguiProV2Upgrade ||
+    productName === ProductName.TamaguiSupportDirect ||
+    productName === ProductName.TamaguiSupportSponsor
+
+  const data = getTakeoutPriceInfo(pricingDescription ?? '', isV2Pro)
 
   return {
     subscription,
