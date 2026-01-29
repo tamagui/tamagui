@@ -60,6 +60,7 @@
     "docs": "yarn workspace @tamagui/one-docs dev",
     "fix:deps": "yarn manypkg fix",
     "fix": "yarn lint:fix",
+    "generate-css": "yarn workspace @tamagui/themes generate && yarn workspace @tamagui/themes build && yarn workspace @tamagui/dot-dev build",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:build:android": "yarn workspace @tamagui/kitchen-sink android",
     "kitchen-sink:build:ios": "yarn workspace @tamagui/kitchen-sink ios",
