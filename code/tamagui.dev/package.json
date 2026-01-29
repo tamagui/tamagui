@@ -95,7 +95,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@tamagui/cli": "workspace:*",
     "@testing-library/react-hooks": "^8.0.1",
     "acorn": "^8.11.3",
     "acorn-walk": "^8.3.1",
