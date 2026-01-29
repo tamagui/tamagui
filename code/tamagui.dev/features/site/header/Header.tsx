@@ -221,13 +221,13 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               theme="teal"
               boxShadow="inset 0 -2px 0 1px $color1"
               $theme-light={{
-                boxShadow: 'inset 0 -2px 0 1px $color5',
+                boxShadow: 'inset 0 -2px 0 1px $color8',
               }}
               pressStyle={{
                 y: 1,
               }}
             >
-              <Span textSh fontSize="$2" y={-2}>
+              <Span fontSize="$2" y={-2} fontWeight="600">
                 v2 RC
               </Span>
             </Button>
@@ -568,6 +568,13 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const { height } = useWindowDimensions()
   const maxHeight = height - 50
 
+  const maxMenuHeight = Math.min(maxHeight * 0.9, 900)
+
+  // track measured content heights per menu
+  const [contentHeights, setContentHeights] = React.useState<Partial<Record<ID, number>>>(
+    {}
+  )
+  const measuredHeight = contentHeights[active]
   const heights = {
     core: Math.min(maxHeight, 1300),
     compiler: 117,
