@@ -6,17 +6,17 @@ import { Button, Theme, YStack } from 'tamagui'
  * Menu Theme Test Case
  *
  * Tests that menu content inherits the theme from parent context.
- * When a menu is inside a themed context (e.g., theme="blue_active"),
+ * When a menu is inside a themed context (e.g., theme="blue"),
  * the portal should also render with that theme.
  */
 export function MenuThemeCase() {
   return (
-    <Theme name="blue_active">
+    <Theme name="blue">
       <YStack
         data-testid="themed-container"
-        bg="$background"
-        p="$4"
-        br="$4"
+        backgroundColor="$background"
+        padding="$4"
+        borderRadius="$4"
         alignItems="flex-start"
       >
         <Menu placement="bottom-start" offset={8}>
