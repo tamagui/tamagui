@@ -1,20 +1,21 @@
-import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
+import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimatedNumberStrategy,
   type AnimationDriver,
-  type TransitionProp,
   fixStyles,
+  getConfig,
   getSplitStyles,
   hooks,
   styleToCSS,
   Text,
+  type TransitionProp,
   type UniversalAnimatedNumber,
   useComposedRefs,
   useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
 } from '@tamagui/web'
-import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
@@ -66,7 +67,6 @@ type AnimationProps = {
 // track if we're still in the initial hydration phase
 // TODO didnt realize claude took the wrong one here - this should uust be isComponentHydrating ideally
 // but this is fine for beta motion driver rc.0 fix in rc.1
-let isHydrating = typeof window !== 'undefined'
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animationsProp: A
@@ -92,6 +92,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
   }
 
+  let isHydratingGlobal: boolean | undefined
+  const hydratingComponents = new Set<Function>()
+
   return {
     // this is only used by Sheet basically for now to pass result of useAnimatedStyle to
     View: MotionView,
@@ -106,7 +109,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     usePresence,
     ResetPresence,
 
+    onMount() {
+      isHydratingGlobal = false
+      hydratingComponents.forEach((cb) => cb())
+    },
+
     useAnimations: (animationProps) => {
+      if (isHydratingGlobal === undefined && !getConfig().settings.disableSSR) {
+        isHydratingGlobal = true
+      }
+
       const { props, style, componentState, stateRef, useStyleEmitter, presence } =
         animationProps
 
@@ -172,11 +184,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       // avoid first render returning wrong styles - always render all, after that we can just mutate
       const lastDontAnimate = useRef<Record<string, unknown> | null>(firstRenderStyle)
+      const [isHydrating, setIsHydrating] = useState(isHydratingGlobal)
 
       useLayoutEffect(() => {
-        if (isHydrating) {
-          // flip after first layout effect runs
-          isHydrating = false
+        if (isHydratingGlobal) {
+          hydratingComponents.add(() => {
+            setIsHydrating(false)
+          })
         }
         return () => {
           disposed.current = true
@@ -392,8 +406,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         flushAnimation(animationProps)
       })
 
-      const animateKey = JSON.stringify(style)
-
       useIsomorphicLayoutEffect(() => {
         if (isFirstRender.current) {
           isFirstRender.current = false
@@ -449,7 +461,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [animateKey, isExiting, disableAnimation])
+      }, [styleKey, isExiting, disableAnimation])
 
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
@@ -457,7 +469,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           style,
           doAnimate,
           dontAnimate,
-          animateKey,
+          styleKey,
           scope,
           animationOptions,
           isExiting,
@@ -630,6 +642,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const baseConfig = animationNameOrConfig.type
           ? animations[animationNameOrConfig.type]
           : defaultConfig
+
+        // @ts-expect-error
         result[propName] = {
           ...baseConfig,
           ...animationNameOrConfig,

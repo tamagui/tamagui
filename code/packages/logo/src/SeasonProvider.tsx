@@ -16,7 +16,7 @@ function getInlineScript() {
   else if (m === 2 && day >= 10 && day <= 17) season = 'stpatricks';
   else if (m === 2 && day >= 30 || m === 3 && day <= 20) season = 'easter';
   else if (m === 1 && day >= 7 && day <= 14) season = 'valentine';
-  // else if (m === 0 && day >= 20 || m === 1 && day <= 12) season = 'lunar';
+  else if (m === 0 && day >= 20 || m === 1 && day <= 12) season = 'lunar';
 
   if (season !== 'tamagui') {
     document.documentElement.classList.add(season + '-season');
@@ -42,12 +42,13 @@ export function SeasonProvider({
 
   return (
     <>
-      <script
+      {/* disabled because were launchig v2 and its lunar new year */}
+      {/* <script
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: getInlineScript(),
         }}
-      />
+      /> */}
       {children}
     </>
   )
