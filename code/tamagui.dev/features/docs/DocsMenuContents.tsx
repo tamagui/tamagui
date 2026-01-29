@@ -184,9 +184,9 @@ const ToggleAllButton = ({
     <TooltipSimple label={expanded ? 'Collapse all' : 'Expand all'} placement="right">
       <Button
         circular
-        size="$2"
+        size="$3"
+        my="$-3"
         chromeless
-        opacity={0.5}
         hoverStyle={{ opacity: 1, backgroundColor: '$color3' }}
         pressStyle={{ opacity: 0.8, backgroundColor: '$color2' }}
         onPress={onPress}

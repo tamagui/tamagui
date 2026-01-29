@@ -4,7 +4,7 @@ import { AddEvenBrandIcon } from '~/features/icons/AddEvenBrandIcon'
 export const ConsultingButton = (props: ButtonProps) => {
   return (
     <Button
-      theme="black"
+      theme="gray"
       borderColor="$color6"
       elevation="$2"
       size="$3"
