@@ -328,11 +328,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // check if this is a Popper element with animated position
               const isPopperElement = node.hasAttribute('data-popper-animate-position')
 
+              // also apply fix for AnimatePresence children that just finished entering
+              // this fixes roving tabs indicator jumping when rapidly switching
+              const isEnteringPresenceChild = presence && justFinishedEntering
+
               if (
                 isRunning &&
                 controls.current &&
                 isPositionOnlyTransform &&
-                isPopperElement
+                (isPopperElement || isEnteringPresenceChild)
               ) {
                 const currentTransform = getComputedStyle(node).transform
 
