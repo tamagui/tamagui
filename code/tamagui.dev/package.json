@@ -13,6 +13,7 @@
     "lint": "biome check",
     "lint:fix": "biome check --write",
     "serve": "one serve --port 8081",
+    "build": "tamagui generate-css",
     "build:prod": "one build",
     "prod": "yarn build:prod && yarn serve",
     "serve:railway": "one serve --host 0.0.0.0",
