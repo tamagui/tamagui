@@ -49,12 +49,29 @@ export async function getAccessToken(): Promise<string | null> {
     }
   }
 
-  if (!client) return null
+  // Try via client first
+  if (client) {
+    const { data, error } = await client.auth.getSession()
+    if (!error && data.session) {
+      return data.session.access_token
+    }
+  }
 
-  const { data, error } = await client.auth.getSession()
-  if (error || !data.session) return null
+  // Fallback: read directly from localStorage
+  // This handles the case where SWR fetches before the client is fully ready
+  try {
+    const stored = localStorage.getItem('sb-auth-token')
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      if (parsed.access_token) {
+        return parsed.access_token
+      }
+    }
+  } catch {
+    // ignore parse errors
+  }
 
-  return data.session.access_token
+  return null
 }
 
 export function useSupabaseClient(given?: SupabaseAuthOnlyClient) {
