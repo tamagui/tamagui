@@ -227,7 +227,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 y: 1,
               }}
             >
-              <Span textSh fontSize="$2" y={-2}>
+              <Span fontSize="$2" y={-2}>
                 v2 RC
               </Span>
             </Button>
@@ -924,7 +924,7 @@ const HeaderMenuMoreContents = () => {
       <Link asChild href="https://addeven.com" target="_blank">
         <HeadAnchor grid render="a">
           <XStack items="center">
-            Add Even
+            <span>Add Even</span>
             <YStack
               ml={3}
               display={'inline-block' as any}
