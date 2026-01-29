@@ -1,35 +1,43 @@
 import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons'
-import { ListItem, Separator, XStack, YGroup } from 'tamagui'
+import { ListItem, Separator, Theme, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
   return (
-    <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
-      <ListItemDemo1 />
-      <ListItemDemo2 />
-    </XStack>
+    <Theme name="surface1">
+      <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
+        <ListItemDemo1 />
+        <ListItemDemo2 />
+      </XStack>
+    </Theme>
   )
 }
 
 function ListItemDemo1() {
   return (
-    <YGroup self="center" bordered width={240} size="$4">
+    <YGroup
+      self="center"
+      borderWidth={1}
+      borderColor="$borderColor"
+      rounded="$4"
+      width={240}
+      size="$4"
+    >
       <YGroup.Item>
-        <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
+        <ListItem
+          icon={Star}
+          title="Star"
+          subTitle={<ListItem.Subtitle>Twinkles</ListItem.Subtitle>}
+          iconAfter={ChevronRight}
+        />
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Moon}>
-          Moon
-        </ListItem>
+        <ListItem icon={Moon}>Moon</ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Sun}>
-          Sun
-        </ListItem>
+        <ListItem icon={Sun}>Sun</ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem hoverTheme icon={Cloud}>
-          Cloud
-        </ListItem>
+        <ListItem icon={Cloud}>Cloud</ListItem>
       </YGroup.Item>
     </YGroup>
   )
@@ -37,26 +45,20 @@ function ListItemDemo1() {
 
 function ListItemDemo2() {
   return (
-    <YGroup self="center" bordered width={240} size="$5" separator={<Separator />}>
+    <YGroup
+      self="center"
+      borderWidth={1}
+      borderColor="$borderColor"
+      rounded="$4"
+      width={240}
+      size="$5"
+    >
       <YGroup.Item>
-        <ListItem
-          hoverTheme
-          pressTheme
-          title="Star"
-          subTitle="Subtitle"
-          icon={Star}
-          iconAfter={ChevronRight}
-        />
+        <ListItem title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
       </YGroup.Item>
+      <Separator />
       <YGroup.Item>
-        <ListItem
-          hoverTheme
-          pressTheme
-          title="Moon"
-          subTitle="Subtitle"
-          icon={Moon}
-          iconAfter={ChevronRight}
-        />
+        <ListItem title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
       </YGroup.Item>
     </YGroup>
   )

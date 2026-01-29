@@ -48,7 +48,7 @@ export const HomeTypography = memo(() => {
   return (
     <>
       <YStack fullscreen className="" opacity={0.1} />
-      {/* -5 my to fir grid nicely */}
+      {/* -5 my to fit grid nicely */}
       <ContainerLarge my={-5} position="relative" gap="$8">
         <YStack ref={ref} items="center" gap="$3">
           <HomeH2>
@@ -87,7 +87,7 @@ export const HomeTypography = memo(() => {
                   index={0}
                   Component={H1}
                   family={family}
-                  color="$pink10"
+                  color="$red10"
                 >
                   Swappable
                 </AnimatedHeading>
@@ -107,7 +107,7 @@ export const HomeTypography = memo(() => {
                   index={2}
                   Component={H3}
                   family={family}
-                  color="$purple10"
+                  color="$blue10"
                 >
                   custom per-size
                 </AnimatedHeading>
@@ -127,7 +127,7 @@ export const HomeTypography = memo(() => {
                   index={4}
                   Component={H5}
                   family={family}
-                  color="$orange10"
+                  color="$yellow10"
                 >
                   easy to author
                 </AnimatedHeading>
@@ -173,19 +173,14 @@ const OverlayCard = () => {
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph text="left" size="$6" theme="alt2" fontWeight="400">
+        <Paragraph text="left" size="$6" color="$color9" fontWeight="400">
           Typed, sizable fonts with control over every facet - weight, spacing,
           line-height, letter-spacing, color and more.
         </Paragraph>
 
         <Link asChild href="/docs/core/configuration">
-          <Button
-            aria-label="Fonts docs"
-            fontFamily="$silkscreen"
-            self="flex-end"
-            theme={tint as any}
-          >
-            Fonts &raquo;
+          <Button aria-label="Fonts docs" self="flex-end" theme={tint as any}>
+            <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
           </Button>
         </Link>
       </YStack>
@@ -211,7 +206,7 @@ const AnimatedHeading = memo(
     return (
       <Delay passThrough={disableAnimation} by={index * 180 + 20}>
         <Component
-          animation={disableAnimation ? null : 'lazy'}
+          transition={disableAnimation ? null : 'lazy'}
           enterStyle={{ opacity: 0, y: -10 }}
           exitStyle={{ opacity: 0, y: 10 }}
           opacity={1}
@@ -226,7 +221,7 @@ const AnimatedHeading = memo(
           textShadowColor="$shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
-          ellipse
+          ellipsis
           {...rest}
         >
           {children}

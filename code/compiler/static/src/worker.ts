@@ -5,10 +5,7 @@
 
 import type { BabelFileResult } from '@babel/core'
 import { createExtractor } from './extractor/createExtractor'
-import type {
-  ExtractedResponse,
-  ExtractToClassNamesProps,
-} from './extractor/extractToClassNames'
+import type { ExtractedResponse } from './extractor/extractToClassNames'
 import { extractToClassNames as extractToClassNamesImpl } from './extractor/extractToClassNames'
 import { extractToNative as extractToNativeImpl } from './extractor/extractToNative'
 import type { TamaguiOptions } from './types'
@@ -46,9 +43,6 @@ export type WorkerResult =
   | { success: true; data: BabelFileResult }
   | { success: false; error: string; stack?: string }
 
-// Log worker PID once
-let hasLoggedPID = false
-
 /**
  * Main worker function that handles both extraction types
  * This is called by piscina for async usage
@@ -57,7 +51,10 @@ export async function runTask(task: WorkerTask): Promise<WorkerResult> {
   try {
     if (task.type === 'extractToClassNames') {
       // Load web config if needed (with caching)
-      if (!task.options.disableExtraction && !task.options['_disableLoadTamagui']) {
+      // only skip if both extraction AND debug attrs are disabled (fully disabled)
+      const isFullyDisabled =
+        task.options.disableExtraction && task.options.disableDebugAttr
+      if (!isFullyDisabled && !task.options['_disableLoadTamagui']) {
         const cacheKey = JSON.stringify({
           config: task.options.config,
           components: task.options.components,

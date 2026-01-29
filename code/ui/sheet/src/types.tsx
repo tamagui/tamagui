@@ -1,4 +1,4 @@
-import type { AnimatedNumberStrategy, AnimationProp } from '@tamagui/core'
+import type { AnimatedNumberStrategy, TransitionProp } from '@tamagui/core'
 import type { ScopedProps } from '@tamagui/create-context'
 import type { PortalProps } from '@tamagui/portal'
 import type { RemoveScroll } from '@tamagui/remove-scroll'
@@ -32,8 +32,20 @@ export type SheetProps = ScopedProps<
     children?: ReactNode
     dismissOnOverlayPress?: boolean
     dismissOnSnapToBottom?: boolean
+
+    /**
+     * Disables the RemoveScroll behavior that prevents body scrolling while sheet is open.
+     * By default, RemoveScroll is enabled when the sheet is open and modal.
+     */
+    disableRemoveScroll?: boolean
+
+    /**
+     * @deprecated Use `disableRemoveScroll` instead. This prop will be removed in a future version.
+     * Note: `disableRemoveScroll={true}` is equivalent to `forceRemoveScrollEnabled={false}`
+     */
     forceRemoveScrollEnabled?: boolean
-    animationConfig?: AnimatedNumberStrategy
+
+    transitionConfig?: AnimatedNumberStrategy
 
     /**
      * By default Sheet will prefer the open prop over a parent component that is
@@ -56,7 +68,7 @@ export type SheetProps = ScopedProps<
     /**
      * Pass if you're using the CSS animation driver
      */
-    animation?: AnimationProp
+    transition?: TransitionProp
     handleDisableScroll?: boolean
     disableDrag?: boolean
     modal?: boolean
@@ -97,4 +109,66 @@ export type ScrollBridge = {
   onParentDragging: (props: (val: boolean) => void) => () => void
   setParentDragging: (val: boolean) => void
   onFinishAnimate?: () => void
+  // gesture handler state for RNGH integration
+  blockPan?: boolean
+  initialPosition?: number
+  isScrollablePositionLocked?: boolean
+  // control scroll enabled state for RNGH coordination
+  // lockTo parameter: when disabling, lock scroll to this position (undefined = current position)
+  setScrollEnabled?: (enabled: boolean, lockTo?: number) => void
+  // track touch position for direction detection in RNGH
+  _lastTouchY?: number
+  // scroll lock position for forcing scroll back when pan handles
+  scrollLockY?: number
+  // force scroll to position (compensates for async setNativeProps)
+  forceScrollTo?: (y: number) => void
+  // whether sheet is at top position (for scroll enable/disable)
+  isAtTop?: boolean
+}
+
+// keyboard controller sheet types
+
+export interface KeyboardControllerSheetOptions {
+  /**
+   * Whether keyboard handling is enabled.
+   * When false, the hook is a no-op.
+   */
+  enabled: boolean
+}
+
+export interface KeyboardControllerSheetResult {
+  /**
+   * Whether keyboard-controller is available and enabled.
+   */
+  keyboardControllerEnabled: boolean
+
+  /**
+   * Current keyboard height (0 when hidden).
+   * On web or when keyboard-controller is not available, always 0.
+   */
+  keyboardHeight: number
+
+  /**
+   * Whether the keyboard is currently visible.
+   */
+  isKeyboardVisible: boolean
+
+  /**
+   * Dismiss the keyboard programmatically.
+   * Called when sheet closes to dismiss the keyboard.
+   */
+  dismissKeyboard: () => void
+
+  /**
+   * Ref to pause keyboard hide state updates (action-sheet pattern).
+   * When true, keyboard hide events are ignored — keeps isKeyboardVisible=true
+   * and keyboardHeight at their last values during drag.
+   */
+  pauseKeyboardHandler: React.RefObject<boolean>
+
+  /**
+   * Flush any keyboard hide event that was suppressed while paused.
+   * Call after drag ends to reconcile actual keyboard state.
+   */
+  flushPendingHide: () => void
 }

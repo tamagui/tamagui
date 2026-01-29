@@ -2,6 +2,7 @@ import { isServer, isWeb } from '@tamagui/constants'
 import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
+import { getSetting } from '../config'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
@@ -11,7 +12,6 @@ import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
-  StackProps,
   StaticConfig,
   TamaguiComponentState,
   TamaguiComponentStateRef,
@@ -19,9 +19,10 @@ import type {
   TextProps,
   UseAnimationHook,
 } from '../types'
+import type { ViewProps } from '../views/View'
 
 export const useComponentState = (
-  props: StackProps | TextProps | Record<string, any>,
+  props: ViewProps | TextProps | Record<string, any>,
   animationDriver: ComponentContextI['animationDriver'],
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
@@ -48,11 +49,14 @@ export const useComponentState = (
 
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
-    (!isHOC && 'animation' in props) ||
+    (!isHOC && 'transition' in props) ||
       (props.style && hasAnimatedStyleValue(props.style))
   )
 
-  const supportsCSS = animationDriver?.supportsCSS
+  // for backwards compat, derive from supportsCSS if new props not set
+  const inputStyle =
+    animationDriver?.inputStyle ?? (animationDriver?.supportsCSS ? 'css' : 'inline')
+  const supportsCSS = inputStyle === 'css'
   const curStateRef = stateRef.current
 
   if (!needsHydration && hasAnimationProp) {
@@ -189,7 +193,7 @@ export const useComponentState = (
   } else {
     // on server for SSR and animation compat added the && isHydrated but perhaps we want
     // disableClassName="until-hydrated" to be more straightforward
-    // see issue if not, Button sets disableClassName to true <Button animation="" /> with
+    // see issue if not, Button sets disableClassName to true <Button transition="" /> with
     // the react-native driver errors because it tries to animate var(--color) to rbga(..)
     // no matter what if fully unmounted or on the server we use className
     // only once we hydrate do we switch to spring animation drivers or disableClassName etc
@@ -197,7 +201,7 @@ export const useComponentState = (
       const isAnimatedAndHydrated = isAnimated && isHydrated
 
       const isClassNameDisabled =
-        !staticConfig.acceptsClassName && (config.disableSSR || !state.unmounted)
+        !staticConfig.acceptsClassName && (getSetting('disableSSR') || !state.unmounted)
 
       const isDisabledManually = disableClassName && !state.unmounted
 

@@ -1,22 +1,17 @@
 import { ProvideAdaptContext, useAdaptContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import {
-  currentPlatform,
-  isClient,
-  isWeb,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/constants'
+import { currentPlatform, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   LayoutMeasurementController,
-  Stack,
+  View as TamaguiView,
   Theme,
   useConfiguration,
   useDidFinishSSR,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
-import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
+import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
 import type {
   Animated,
@@ -24,15 +19,40 @@ import type {
   LayoutChangeEvent,
   PanResponderGestureState,
 } from 'react-native'
-import { Dimensions, Keyboard, PanResponder, View } from 'react-native'
+import { Dimensions, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
+import { GestureDetectorWrapper } from './GestureDetectorWrapper'
+import { GestureSheetProvider } from './GestureSheetContext'
+import { getSafeArea } from '@tamagui/native'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
+import { useGestureHandlerPan } from './useGestureHandlerPan'
+import { useKeyboardControllerSheet } from './useKeyboardControllerSheet'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
 const hiddenSize = 10_000.1
+
+// safe area top inset, cached per-session (device-constant value)
+let _cachedSafeAreaTop: number | undefined
+function getSafeAreaTopInset(): number {
+  if (_cachedSafeAreaTop !== undefined) return _cachedSafeAreaTop
+  // try tamagui native safe area state first
+  const sa = getSafeArea()
+  if (sa.isEnabled) {
+    _cachedSafeAreaTop = sa.getInsets().top
+    return _cachedSafeAreaTop
+  }
+  // fallback: react-native-safe-area-context initialWindowMetrics (no provider needed)
+  try {
+    const sac = require('react-native-safe-area-context')
+    _cachedSafeAreaTop = sac.initialWindowMetrics?.insets?.top ?? 0
+  } catch {
+    _cachedSafeAreaTop = 0
+  }
+  return _cachedSafeAreaTop ?? 0
+}
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 
@@ -44,8 +64,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const parentSheet = React.useContext(ParentSheetContext)
 
     const {
-      animation,
-      animationConfig: animationConfigProp,
+      transition,
+      transitionConfig: transitionConfigProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
@@ -82,20 +102,20 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const { animationDriver } = useConfiguration()
 
     if (!animationDriver) {
-      throw new Error(`Sheet reqiures an animation driver to be set`)
+      throw new Error(`Sheet requires an animation driver to be set`)
     }
 
-    const animationConfig = (() => {
-      // explicit animationConfig prop always takes precedence
-      if (animationConfigProp) {
-        return animationConfigProp
+    const transitionConfig = (() => {
+      // explicit transitionConfig prop always takes precedence
+      if (transitionConfigProp) {
+        return transitionConfigProp
       }
 
-      const [animationProp, animationPropConfig] = !animation
+      const [animationProp, animationPropConfig] = !transition
         ? []
-        : Array.isArray(animation)
-          ? animation
-          : ([animation] as const)
+        : Array.isArray(transition)
+          ? transition
+          : ([transition] as const)
 
       // look up named animation config from driver if available
       if (animationProp && animationDriver.animations?.[animationProp as string]) {
@@ -112,12 +132,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
      * This is a hacky workaround for native:
      */
     const [isShowingInnerSheet, setIsShowingInnerSheet] = React.useState(false)
+    // when using Gorhom portal (no teleport), inner sheets need to hide parent
     const shouldHideParentSheet =
-      !isWeb &&
-      modal &&
-      isShowingInnerSheet &&
-      // if not using weird portal limitation we dont need to hide parent sheet
-      USE_NATIVE_PORTAL
+      !isWeb && modal && isShowingInnerSheet && needsPortalRepropagation()
 
     const sheetInsideSheet = React.useContext(SheetInsideSheetContext)
     const onInnerSheet = React.useCallback((hasChild: boolean) => {
@@ -134,23 +151,89 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     }, [open, frameSize])
 
+    // use stableFrameSize when closing to prevent position jumps during exit animation
+    // but when opening, always use the current frameSize so positions update correctly
+    const effectiveFrameSize = open ? frameSize : stableFrameSize.current || frameSize
+
     const positions = React.useMemo(
       () =>
         snapPoints.map((point) =>
-          // FIX: Use stable frameSize when closing to prevent position jumps
-          getYPositions(
-            snapPointsMode,
-            point,
-            screenSize,
-            open ? frameSize : stableFrameSize.current
-          )
+          getYPositions(snapPointsMode, point, screenSize, effectiveFrameSize)
         ),
-      [screenSize, frameSize, snapPoints, snapPointsMode, open]
+      [screenSize, effectiveFrameSize, snapPoints, snapPointsMode]
     )
+
+    // keyboard state tracking — just tracks height/visibility, no position animation.
+    // Position animation is handled via keyboard-adjusted positions below,
+    // matching the react-native-actions-sheet pattern.
+    const {
+      keyboardHeight,
+      isKeyboardVisible,
+      dismissKeyboard,
+      pauseKeyboardHandler,
+      flushPendingHide,
+    } = useKeyboardControllerSheet({
+      enabled: !isWeb && Boolean(moveOnKeyboardChange),
+    })
+
+    const [isDragging, setIsDragging_] = React.useState(false)
+
+    // synchronous dragging ref — set BEFORE async state commits.
+    // RNGH onBegin fires before keyboard hide event reaches JS,
+    // so the ref is true by the time activePositions memo re-evaluates.
+    // Also controls pauseKeyboardHandler to freeze keyboard state during drag.
+    const isDraggingRef = React.useRef(false)
+    const setIsDragging = React.useCallback(
+      (val: boolean) => {
+        isDraggingRef.current = val
+        pauseKeyboardHandler.current = val
+        setIsDragging_(val)
+        // when drag ends, flush any keyboard hide that was suppressed during drag
+        // so isKeyboardVisible/keyboardHeight reflect actual state
+        if (!val) {
+          flushPendingHide()
+        }
+      },
+      [pauseKeyboardHandler, flushPendingHide]
+    )
+
+    // keyboard-adjusted positions: shift snap points up by keyboard height
+    // when keyboard is visible. This drives both gesture snap calculation
+    // and animation targets — keyboard never dismissed during drag.
+    // Capped at safe area top inset so the sheet never goes above the notch/status bar
+    // (matching the react-native-actions-sheet pattern).
+    //
+    // IMPORTANT: frozen during drag to prevent gesture handler recreation.
+    // When user drags, TextInput may blur → keyboard dismisses → positions would revert,
+    // causing the gesture useMemo to recreate and cancel the active drag.
+    // The post-drag reconciliation effect handles animating to correct position after drag ends.
+    const activePositionsRef = React.useRef(positions)
+    const activePositions = React.useMemo(() => {
+      // during drag, return frozen positions to prevent gesture handler recreation.
+      // check both state (for re-render trigger) and ref (for synchronous check
+      // when keyboard hide event fires before isDragging state commits)
+      if (isDragging || isDraggingRef.current) return activePositionsRef.current
+
+      let result: number[]
+      if (!isKeyboardVisible || keyboardHeight <= 0) {
+        result = positions
+      } else {
+        const safeAreaTop = isWeb ? 0 : getSafeAreaTopInset()
+        result = positions.map((p) => {
+          // don't adjust the off-screen/close position (from dismissOnSnapToBottom's 0% snap)
+          // — it must stay at screenSize so the user can drag between real snap points
+          // without accidentally closing the sheet
+          if (screenSize && p >= screenSize) return p
+          return Math.max(safeAreaTop, p - keyboardHeight)
+        })
+      }
+      activePositionsRef.current = result
+      return result
+    }, [positions, isKeyboardVisible, keyboardHeight, screenSize, isDragging])
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
-    const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
+    const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
       if (!(sheetInsideSheet && open)) return
@@ -185,8 +268,25 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         (value) => {
           at.current = value
           scrollBridge.paneY = value
+          // update isAtTop for scroll enable/disable
+          // activePositions[0] is the top snap point (keyboard-adjusted minY)
+          const minY = activePositions[0]
+          const wasAtTop = scrollBridge.isAtTop
+          const nowAtTop = value <= minY + 5
+          if (wasAtTop !== nowAtTop) {
+            scrollBridge.isAtTop = nowAtTop
+            // when reaching top, enable scroll; when leaving top, disable scroll
+            // this preemptively sets scroll state before any gestures start
+            if (nowAtTop) {
+              scrollBridge.scrollLockY = undefined
+              scrollBridge.setScrollEnabled?.(true)
+            } else {
+              scrollBridge.scrollLockY = 0
+              scrollBridge.setScrollEnabled?.(false)
+            }
+          }
         },
-        [animationDriver]
+        [animationDriver, activePositions]
       )
     )
 
@@ -198,19 +298,23 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     }
 
-    const animateTo = useEvent((position: number) => {
+    const animateTo = useEvent((position: number, animationOverride?: any) => {
       if (frameSize === 0) return
 
-      let toValue = isHidden || position === -1 ? screenSize : positions[position]
+      let toValue = isHidden || position === -1 ? screenSize : activePositions[position]
 
       if (at.current === toValue) return
 
       at.current = toValue
       stopSpring()
-      animatedNumber.setValue(toValue, {
-        type: 'spring',
-        ...animationConfig,
-      })
+
+      animatedNumber.setValue(
+        toValue,
+        animationOverride || {
+          type: 'spring',
+          ...transitionConfig,
+        }
+      )
     })
 
     useIsomorphicLayoutEffect(() => {
@@ -253,11 +357,25 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         scrollBridge.scrollLock = false
         scrollBridge.scrollStartY = -1
       }
+
+      // set initial isAtTop state when sheet opens
+      // position 0 = top snap point, so isAtTop = true
+      if (open && position >= 0) {
+        const isTopPosition = position === 0
+        scrollBridge.isAtTop = isTopPosition
+        if (isTopPosition) {
+          scrollBridge.scrollLockY = undefined
+          scrollBridge.setScrollEnabled?.(true)
+        } else {
+          scrollBridge.scrollLockY = 0
+          scrollBridge.setScrollEnabled?.(false)
+        }
+      }
     }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
-    const [isDragging, setIsDragging] = React.useState(false)
+    const [blockPan, setBlockPan] = React.useState(false)
 
     const panResponder = React.useMemo(() => {
       if (disableDrag) return
@@ -272,7 +390,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         setIsDragging(val)
 
         // make unselectable:
-        if (isClient) {
+        if (process.env.TAMAGUI_TARGET === 'web') {
           if (!sheetHiddenStyleSheet) {
             sheetHiddenStyleSheet = document.createElement('style')
             if (typeof document.head !== 'undefined') {
@@ -367,8 +485,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
         const granted = getShouldSet()
 
-        // console.log('DEBUG', { granted, dy }, { ...scrollBridge })
-
         if (granted) {
           scrollBridge.setParentDragging(true)
         }
@@ -418,6 +534,59 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
+    // animate to keyboard-adjusted position when keyboard state changes
+    React.useEffect(() => {
+      if (isDragging || isHidden || !open || disableAnimation) return
+      if (!frameSize || !screenSize) return
+      // use timing animation to match iOS keyboard animation (~250ms)
+      animateTo(position, { type: 'timing', duration: 250 })
+    }, [isKeyboardVisible, keyboardHeight])
+
+    // reconcile position after drag ends — if keyboard dismissed during drag
+    // (e.g., input blur), activePositions reverted but onEnd used frozen positions
+    // for snap index. This effect ensures the sheet animates to the correct
+    // non-keyboard-adjusted position for the chosen snap index.
+    const wasDragging = React.useRef(false)
+    React.useEffect(() => {
+      if (isDragging) {
+        wasDragging.current = true
+        return
+      }
+      if (!wasDragging.current) return
+      wasDragging.current = false
+      // drag just ended — reconcile position with latest activePositions
+      if (!frameSize || !screenSize || isHidden || !open) return
+      animateTo(position)
+    }, [isDragging])
+
+    // dismiss keyboard when sheet closes
+    React.useEffect(() => {
+      if (!open && isKeyboardVisible) {
+        dismissKeyboard()
+      }
+    }, [open])
+
+    // gesture handler hook for RNGH-based gesture coordination
+    const { panGesture, panGestureRef, gestureHandlerEnabled } = useGestureHandlerPan({
+      positions: activePositions,
+      frameSize,
+      setPosition,
+      animateTo,
+      stopSpring,
+      scrollBridge,
+      setIsDragging,
+      getCurrentPosition: () => at.current,
+      resisted,
+      disableDrag,
+      isShowingInnerSheet,
+      setAnimatedPosition: (val: number) => {
+        // directly set the animated value for smooth dragging
+        at.current = val
+        animatedNumber.setValue(val, { type: 'direct' })
+      },
+      pauseKeyboardHandler,
+    })
+
     const handleAnimationViewLayout = React.useCallback(
       (e: LayoutChangeEvent) => {
         // FIX: Don't update frameSize during exit animation to prevent position jumps
@@ -426,14 +595,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
 
         // avoid bugs where it grows forever for whatever reason
-        const next = Math.min(
-          e.nativeEvent?.layout.height,
-          Dimensions.get(relativeDimensionTo).height
-        )
+        // For inline mode (non-modal), don't cap at window height - use actual layout
+        const layoutHeight = e.nativeEvent?.layout.height
+        const next = modal
+          ? Math.min(layoutHeight, Dimensions.get(relativeDimensionTo).height)
+          : layoutHeight
         if (!next) return
         setFrameSize(next)
       },
-      [open]
+      [open, modal]
     )
 
     const handleMaxContentViewLayout = React.useCallback((e: LayoutChangeEvent) => {
@@ -454,39 +624,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         transform: [{ translateY }],
       }
     })
-
-    const sizeBeforeKeyboard = React.useRef<number | null>(null)
-    React.useEffect(() => {
-      if (isWeb || !moveOnKeyboardChange) return
-      const keyboardShowListener = Keyboard.addListener(
-        currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-        (e) => {
-          if (sizeBeforeKeyboard.current !== null) return
-          sizeBeforeKeyboard.current =
-            isHidden || position === -1 ? screenSize : positions[position]
-          animatedNumber.setValue(
-            Math.max(sizeBeforeKeyboard.current - e.endCoordinates.height, 0),
-            {
-              type: 'timing',
-              duration: 250,
-            }
-          )
-        }
-      )
-      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-        if (sizeBeforeKeyboard.current === null) return
-        animatedNumber.setValue(sizeBeforeKeyboard.current, {
-          type: 'timing',
-          duration: 250,
-        })
-        sizeBeforeKeyboard.current = null
-      })
-
-      return () => {
-        keyboardDidHideListener.remove()
-        keyboardShowListener.remove()
-      }
-    }, [moveOnKeyboardChange, positions, position, isHidden])
 
     // we need to set this *after* fully closed to 0, to avoid it overlapping
     // the page when resizing quickly on web for example
@@ -509,7 +646,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const forcedContentHeight = hasFit
       ? undefined
       : snapPointsMode === 'percent'
-        ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
+        ? // Use dvh for modal (viewport-relative), % for inline (container-relative)
+          `${maxSnapPoint}${isWeb ? (modal ? 'dvh' : '%') : '%'}`
         : maxSnapPoint
 
     const setHasScrollView = React.useCallback((val: boolean) => {
@@ -525,58 +663,76 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       <LayoutMeasurementController disable={!open}>
         <ParentSheetContext.Provider value={nextParentContext}>
           <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
-            <AnimatePresence custom={{ open }}>
-              {shouldHideParentSheet || !open ? null : overlayComponent}
-            </AnimatePresence>
-
-            {snapPointsMode !== 'percent' && (
-              <View
-                style={{
-                  opacity: 0,
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  pointerEvents: 'none',
-                }}
-                onLayout={handleMaxContentViewLayout}
-              />
-            )}
-
-            <AnimatedView
-              ref={ref}
-              {...panResponder?.panHandlers}
-              onLayout={handleAnimationViewLayout}
-              // @ts-ignore for CSS driver this is necessary to attach the transition
-              // also motion driver at least though i suspect all drivers?
-              animation={isDragging || disableAnimation ? null : animation}
-              // @ts-ignore
-              disableClassName
-              style={[
-                {
-                  position: 'absolute',
-                  zIndex,
-                  width: '100%',
-                  height: forcedContentHeight,
-                  minHeight: forcedContentHeight,
-                  opacity: !shouldHideParentSheet ? opacity : 0,
-                  ...((shouldHideParentSheet || !open) && {
-                    pointerEvents: 'none',
-                  }),
-                },
-                animatedStyle,
-              ]}
+            <GestureSheetProvider
+              isDragging={isDragging}
+              blockPan={blockPan}
+              setBlockPan={setBlockPan}
+              panGesture={panGesture}
+              panGestureRef={panGestureRef}
             >
-              {/* <AdaptProvider>{props.children}</AdaptProvider> */}
-              {props.children}
-            </AnimatedView>
+              <AnimatePresence custom={{ open }}>
+                {shouldHideParentSheet || !open ? null : overlayComponent}
+              </AnimatePresence>
+
+              {snapPointsMode !== 'percent' && (
+                <View
+                  style={{
+                    opacity: 0,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    pointerEvents: 'none',
+                  }}
+                  onLayout={handleMaxContentViewLayout}
+                />
+              )}
+
+              <AnimatedView
+                ref={ref}
+                onLayout={handleAnimationViewLayout}
+                // @ts-ignore for CSS driver this is necessary to attach the transition
+                // also motion driver at least though i suspect all drivers?
+                transition={isDragging || disableAnimation ? null : transition}
+                // @ts-ignore
+                disableClassName
+                style={[
+                  {
+                    position: 'absolute',
+                    zIndex,
+                    width: '100%',
+                    height: forcedContentHeight,
+                    minHeight: forcedContentHeight,
+                    opacity: !shouldHideParentSheet ? opacity : 0,
+                    ...((shouldHideParentSheet || !open) && {
+                      pointerEvents: 'none',
+                    }),
+                  },
+                  animatedStyle,
+                ]}
+              >
+                {/* wrap children with plain RN View for panResponder - tamagui views no longer handle responder events on web */}
+                {gestureHandlerEnabled && panGesture ? (
+                  <GestureDetectorWrapper gesture={panGesture} style={{ flex: 1 }}>
+                    {props.children}
+                  </GestureDetectorWrapper>
+                ) : (
+                  <View
+                    {...panResponder?.panHandlers}
+                    style={{ flex: 1, width: '100%', height: '100%' }}
+                  >
+                    {props.children}
+                  </View>
+                )}
+              </AnimatedView>
+            </GestureSheetProvider>
           </SheetProvider>
         </ParentSheetContext.Provider>
       </LayoutMeasurementController>
     )
 
-    if (process.env.TAMAGUI_TARGET === 'native' && !USE_NATIVE_PORTAL) {
+    if (process.env.TAMAGUI_TARGET === 'native' && needsPortalRepropagation()) {
       // TODO alongside sheet scope="" need to pass scope here
       const adaptContext = useAdaptContext()
       contents = (
@@ -625,7 +781,9 @@ function getYPositions(
   screenSize?: number,
   frameSize?: number
 ) {
-  if (!screenSize || !frameSize) return 0
+  if (!screenSize || !frameSize) {
+    return 0
+  }
 
   if (mode === 'mixed') {
     if (typeof point === 'number') {
@@ -640,8 +798,7 @@ function getYPositions(
         console.warn('Invalid snapPoint percentage string')
         return 0
       }
-      const next = Math.round(screenSize - pct * screenSize)
-      return next
+      return Math.round(screenSize - pct * screenSize)
     }
     console.warn('Invalid snapPoint unknown value')
     return 0

@@ -1,16 +1,6 @@
-import {
-  H5,
-  ListItem,
-  Popover,
-  SizableText,
-  Theme,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { H5, ListItem, SizableText, Theme, XStack, YStack, styled } from 'tamagui'
 
 import type { Palette, Scale } from '../state/types'
-import { ColorPicker } from './ColorPicker'
 import { colorToHex } from './helpers'
 
 const OffsetIndicator = styled(SizableText, {
@@ -44,13 +34,14 @@ export const ColorPaletteListItem = ({
   const numColors = colors.length
 
   return (
-    <Theme name={isActive ? 'alt1' : null}>
+    <Theme name={isActive ? 'accent' : null}>
       <ListItem
         size="$2"
         p={0}
         flexDirection="column"
         items="flex-start"
-        hoverTheme={hoverTheme ?? !isActive}
+        // Todo: fix hoverTheme
+        // hoverTheme={hoverTheme ?? !isActive}
         borderColor={isActive ? '$borderColor' : 'transparent'}
         bg={isActive ? '$background' : 'transparent'}
       >
@@ -79,7 +70,7 @@ export const ColorPaletteListItem = ({
                     flex={1}
                     key={index}
                     items="center"
-                    animation="bouncy"
+                    transition="bouncy"
                     animateOnly={['transform']}
                     overflow="hidden"
                     scale={1}
@@ -115,7 +106,7 @@ export const ColorPaletteListItem = ({
             {typeof indicateActive === 'number' && (
               <YStack
                 position="absolute"
-                animation="quick"
+                transition="quick"
                 animateOnly={['transform']}
                 z={0}
                 width={23}

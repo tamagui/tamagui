@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import type { TabsContentProps } from 'tamagui'
 import {
   Button,
   SizableStack,
@@ -20,8 +19,9 @@ export const TabsFrame = styled(SizableStack, {
 
 export const TabFrame = styled(ThemeableStack, {
   name: 'TabsTrigger',
-  tag: 'button',
+  render: 'button',
   cursor: 'pointer',
+  backgroundColor: 'transparent',
   variants: {
     size: {
       '...size': getButtonSized,
@@ -73,7 +73,7 @@ export function TabsHeadlessDemo() {
     <YStack
       px="$4"
       {...(isWeb && {
-        position: 'unset' as any,
+        position: 'static',
       })}
     >
       <TabsView flexDirection={demo === 'horizontal' ? 'row' : 'column'} />
@@ -107,7 +107,11 @@ const TabsView = ({ flexDirection = 'row' }: { flexDirection: 'row' | 'column' }
     >
       <CustomTabs.List flexDirection={flexDirection}>
         {content.map((name, index) => (
-          <CustomTabs.Tab key={index} value={name}>
+          <CustomTabs.Tab
+            key={index}
+            value={name}
+            activeStyle={{ backgroundColor: 'transparent' }}
+          >
             {name}
           </CustomTabs.Tab>
         ))}

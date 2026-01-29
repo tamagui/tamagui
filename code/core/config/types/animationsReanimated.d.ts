@@ -1,4 +1,8 @@
 export declare const animationsReanimated: import("@tamagui/web").AnimationDriver<{
+    '0ms': {
+        type: "timing";
+        duration: number;
+    };
     '75ms': {
         type: "timing";
         duration: number;
@@ -8,6 +12,10 @@ export declare const animationsReanimated: import("@tamagui/web").AnimationDrive
         duration: number;
     };
     '200ms': {
+        type: "timing";
+        duration: number;
+    };
+    '250ms': {
         type: "timing";
         duration: number;
     };
@@ -21,12 +29,27 @@ export declare const animationsReanimated: import("@tamagui/web").AnimationDrive
         mass: number;
         stiffness: number;
     };
+    kindaBouncy: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    superLazy: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
     medium: {
         damping: number;
         stiffness: number;
         mass: number;
     };
     lazy: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    slowest: {
         damping: number;
         stiffness: number;
     };
@@ -35,6 +58,11 @@ export declare const animationsReanimated: import("@tamagui/web").AnimationDrive
         stiffness: number;
     };
     quick: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickLessBouncy: {
         damping: number;
         mass: number;
         stiffness: number;
@@ -49,7 +77,17 @@ export declare const animationsReanimated: import("@tamagui/web").AnimationDrive
         mass: number;
         stiffness: number;
     };
+    quickerLessBouncy: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
     quickest: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickestLessBouncy: {
         damping: number;
         mass: number;
         stiffness: number;

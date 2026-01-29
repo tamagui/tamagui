@@ -1,0 +1,258 @@
+---
+title: Group
+description: Render horizontal or vertical groups easily
+name: group
+component: Group
+package: group
+demoName: Group
+---
+
+<HeroContainer>
+  <GroupDemo />
+</HeroContainer>
+
+```tsx hero template=Group
+
+```
+
+<Highlights
+  features={[
+    'Accepts size prop for border radius.',
+    'Align vertically or horizontally.',
+    'Children control their own sizing.',
+    'Disabled prop passes to children.',
+  ]}
+/>
+
+## Installation
+
+Group is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/group
+```
+
+## Usage
+
+Use `Group` with `Group.Item` wrapping each child. The `orientation` property determines the layout direction.
+
+Group zeros out the border radius on connecting sides of children - the first child keeps its start radius, the last keeps its end radius, and middle items have no radius on connecting sides. For `YGroup`, this affects top/bottom radius. For `XGroup`, left/right radius.
+
+```tsx
+import { Button, XGroup } from 'tamagui'
+
+export default () => (
+  <XGroup>
+    <XGroup.Item>
+      <Button>First</Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button>Second</Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button>Third</Button>
+    </XGroup.Item>
+  </XGroup>
+)
+```
+
+## Sizing
+
+In v2, children control their own sizing. Apply size props directly to the child components. For responsive sizing, use media queries on the children:
+
+```tsx
+import { Activity, Airplay } from '@tamagui/lucide-icons'
+import { Button, XGroup } from 'tamagui'
+
+export default () => (
+  <XGroup>
+    <XGroup.Item>
+      <Button size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
+        First
+      </Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
+        Second
+      </Button>
+    </XGroup.Item>
+  </XGroup>
+)
+```
+
+The `size` prop on Group itself only affects the border radius of the group container:
+
+```tsx
+import { Button, XGroup } from 'tamagui'
+
+export default () => (
+  <XGroup size="$6">
+    <XGroup.Item>
+      <Button>First</Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button>Second</Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button>Third</Button>
+    </XGroup.Item>
+  </XGroup>
+)
+```
+
+## Separators
+
+Add separators manually between items:
+
+```tsx
+import { ListItem, Separator, YGroup } from 'tamagui'
+
+export default () => (
+  <YGroup>
+    <YGroup.Item>
+      <ListItem title="First" />
+    </YGroup.Item>
+    <Separator />
+    <YGroup.Item>
+      <ListItem title="Second" />
+    </YGroup.Item>
+    <Separator />
+    <YGroup.Item>
+      <ListItem title="Third" />
+    </YGroup.Item>
+  </YGroup>
+)
+```
+
+## Disabled
+
+The `disabled` property will pass to children.
+
+<HeroContainer>
+  <GroupDisabledDemo />
+</HeroContainer>
+
+## Custom Components & Nested Items
+
+Automatic index detection only works when `Group.Item` is a **direct child** of `Group`. If you wrap `Group.Item` inside a custom component, the automatic first/last detection won't work.
+
+You have a few options:
+
+### Option 1: Use `forcePlacement`
+
+If you know the position ahead of time, use the `forcePlacement` prop:
+
+```tsx
+function MyFirstItem({ children }) {
+  return (
+    <XGroup.Item forcePlacement="first">
+      {children}
+    </XGroup.Item>
+  )
+}
+
+export default () => (
+  <XGroup>
+    <MyFirstItem>
+      <Button>First</Button>
+    </MyFirstItem>
+    <XGroup.Item>
+      <Button>Second</Button>
+    </XGroup.Item>
+  </XGroup>
+)
+```
+
+### Option 2: Use `useGroupItem` hook
+
+For full control, use the `useGroupItem` hook directly in your custom component:
+
+```tsx
+import { useGroupItem } from '@tamagui/group'
+
+function MyItem({ children, forcePlacement }) {
+  const groupItemProps = useGroupItem(
+    { disabled: false },
+    forcePlacement
+  )
+
+  return React.cloneElement(children, groupItemProps)
+}
+```
+
+### Option 3: Pass placement from parent
+
+Calculate positions in the parent and pass them down:
+
+```tsx
+const items = ['First', 'Second', 'Third']
+
+export default () => (
+  <XGroup>
+    {items.map((item, i) => (
+      <XGroup.Item
+        key={item}
+        forcePlacement={i === 0 ? 'first' : i === items.length - 1 ? 'last' : 'center'}
+      >
+        <Button>{item}</Button>
+      </XGroup.Item>
+    ))}
+  </XGroup>
+)
+```
+
+## API Reference
+
+### Group
+
+`Group`, `XGroup` and `YGroup` extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'orientation',
+      required: false,
+      type: '"horizontal" | "vertical"',
+      description: `Forces applying the border radius styles to left/right vs top/bottom. Defaults to horizontal for XGroup and vertical for YGroup.`,
+    },
+    {
+      name: 'size',
+      required: false,
+      type: 'string | SizeTokens',
+      description: `Sets the border radius of the Group container using your size tokens.`,
+    },
+    {
+      name: 'disabled',
+      required: false,
+      type: 'boolean',
+      description: `Passes disabled state down to children.`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Group.Item
+
+Wrap each of `XGroup` or `YGroup`'s children in one of these. It lets Tamagui apply the needed styles to them. It accepts the following props:
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      required: true,
+      type: 'ReactNode',
+      description: `The child element to wrap.`,
+    },
+    {
+      name: 'forcePlacement',
+      required: false,
+      type: '"first" | "center" | "last"',
+      description: `Forces the item to be a starting, center, or ending item and applies the respective styles.`,
+    },
+  ]}
+/>

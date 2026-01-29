@@ -7,12 +7,12 @@ const ROOT = join(__dirname, '..')
 const SRC = join(ROOT, 'src/TestComponent.tsx')
 const CSS = join(ROOT, 'src/_TestComponent.css')
 
-const ORIGINAL_CONTENT = `import { Stack, Text, styled } from '@tamagui/core'
+const ORIGINAL_CONTENT = `import { View, Text, styled } from '@tamagui/core'
 import { useState } from 'react'
 
-const YStack = styled(Stack, { flexDirection: 'column' })
-const Button = styled(Stack, {
-  tag: 'button',
+const YStack = styled(View, { flexDirection: 'column' })
+const Button = styled(View, {
+  render: 'button',
   padding: '$3',
   backgroundColor: '$blue10',
   borderRadius: '$4',
@@ -49,7 +49,7 @@ describe('Turbopack + Tamagui CLI optimization', () => {
   afterAll(() => reset())
 
   it('CLI optimization flattens Text to span with className', () => {
-    execSync(`npx tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
+    execSync(`yarn tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
 
     const optimized = readFileSync(SRC, 'utf-8')
 
@@ -65,7 +65,7 @@ describe('Turbopack + Tamagui CLI optimization', () => {
   })
 
   it('CLI generates atomic CSS file', () => {
-    execSync(`npx tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
+    execSync(`yarn tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
 
     expect(existsSync(CSS)).toBe(true)
     const css = readFileSync(CSS, 'utf-8')
@@ -80,14 +80,14 @@ describe('Turbopack + Tamagui CLI optimization', () => {
   })
 
   it('prod build works after CLI optimization', () => {
-    execSync(`npx tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
+    execSync(`yarn tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
     const result = execSync(`yarn next-build`, { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
     expect(result).toContain('Generating static pages')
   }, 120000)
 
   it('reset properly restores original file', () => {
     // Optimize
-    execSync(`npx tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
+    execSync(`yarn tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
     expect(existsSync(CSS)).toBe(true)
     expect(readFileSync(SRC, 'utf-8')).toContain('.css')
 

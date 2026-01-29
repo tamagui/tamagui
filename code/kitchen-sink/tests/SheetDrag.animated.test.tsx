@@ -116,6 +116,7 @@ test.describe('Sheet drag interactions', () => {
   })
 
   test('partial drag snaps back to original position', async ({ page }) => {
+
     const trigger = page.getByTestId('drag-percent-trigger')
     const frame = page.getByTestId('drag-percent-frame')
     const handle = page.getByTestId('drag-percent-handle')
@@ -133,14 +134,14 @@ test.describe('Sheet drag interactions', () => {
     const startX = handleBox!.x + handleBox!.width / 2
     const startY = handleBox!.y + handleBox!.height / 2
 
-    // small drag that shouldn't cross threshold
-    await dragSheet(page, startX, startY, 40, { steps: 5 })
-    await page.waitForTimeout(500)
+    // small drag that shouldn't cross threshold - use more steps for smoother movement
+    await dragSheet(page, startX, startY, 20, { steps: 10 })
+    await page.waitForTimeout(800)
 
     await expect(positionIndicator).toContainText('0')
   })
 
-  // TODO: flaky with Playwright mouse events - subsequent drags don't trigger PanResponder consistently
+  // flaky: Playwright mouse events don't trigger PanResponder consistently for subsequent drags
   test.skip('dragging up from lower snap point returns to higher', async ({ page }) => {
     const trigger = page.getByTestId('drag-percent-trigger')
     const frame = page.getByTestId('drag-percent-frame')

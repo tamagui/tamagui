@@ -1,3 +1,5 @@
+// ONLY USED BY KITCHEN SINK FOR TESTS
+
 import * as Colors from '@tamagui/colors'
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { desaturate } from 'color2k'
@@ -547,6 +549,9 @@ const themes = createThemes({
   },
 
   grandChildrenThemes: {
+    accent: {
+      template: 'inverse',
+    },
     alt1: {
       template: 'alt1',
     },

@@ -1,15 +1,17 @@
 import type { SizeTokens } from 'tamagui'
-import { Label, RadioGroup, XStack, YStack } from 'tamagui'
+import { Label, RadioGroup, Theme, XStack, YStack } from 'tamagui'
 
 export function RadioGroupDemo() {
   return (
-    <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
-      <YStack width={300} items="center" gap="$2">
-        <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
-        <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />
-        <RadioGroupItemWithLabel size="$5" value="4" label="Fourth value" />
-      </YStack>
-    </RadioGroup>
+    <Theme name="surface2">
+      <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
+        <YStack width={300} items="center" gap="$2">
+          <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
+          <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />
+          <RadioGroupItemWithLabel size="$5" value="4" label="Fourth value" />
+        </YStack>
+      </RadioGroup>
+    </Theme>
   )
 }
 

@@ -11,7 +11,7 @@ export declare const StyleSheet: {
 };
 export declare const Pressable: () => null;
 export declare const Animated: {
-    View: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").StackProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>;
+    View: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>;
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TextProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {}, {}>;
 };
 export declare const ActivityIndicator: () => null;

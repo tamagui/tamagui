@@ -24,7 +24,7 @@ export function HomePerformance() {
     <ContainerLarge position="relative">
       <YStack items="center" z={1} gap="$4">
         <YStack items="center" gap="$2">
-          <HomeH2 size="$10" maxW={500} ref={ref}>
+          <HomeH2 size="$10" maxW={500} ref={ref as any}>
             Automatically fast
           </HomeH2>
           <HomeH3>
@@ -48,11 +48,11 @@ export function HomePerformance() {
             b={-20}
             r={20}
             mt={-20}
-            theme="alt2"
+            color="$color9"
             size="$2"
             $sm={{ display: 'none' }}
           >
-            Lower is better. As of February 2022.
+            Lower is better.
           </Paragraph>
 
           {show && <BenchmarkChartWeb />}
@@ -71,12 +71,8 @@ const BenchmarksLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/benchmarks">
-      <Button
-        aria-label="Performance benchmarks"
-        fontFamily="$silkscreen"
-        theme={tint as any}
-      >
-        Benchmarks &raquo;
+      <Button aria-label="Performance benchmarks" theme={tint as any}>
+        <Button.Text fontFamily="$silkscreen">Benchmarks &raquo;</Button.Text>
       </Button>
     </Link>
   )
@@ -86,8 +82,8 @@ const CompilerLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/why-a-compiler">
-      <Button aria-label="Compiler" fontFamily="$silkscreen" theme={tint as any}>
-        About &raquo;
+      <Button aria-label="Compiler" theme={tint as any}>
+        <Button.Text fontFamily="$silkscreen">About &raquo;</Button.Text>
       </Button>
     </Link>
   )

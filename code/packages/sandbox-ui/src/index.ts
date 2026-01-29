@@ -1,4 +1,4 @@
-import { Stack, ThemeableStack, YStack, styled } from 'tamagui'
+import { View, ThemeableStack, YStack, styled } from 'tamagui'
 
 export * as lucideIcons from '@tamagui/lucide-icons'
 
@@ -13,7 +13,7 @@ export * from './views'
 // export { Image as ExpoImage } from 'expo-image'
 export * from 'expo-constants'
 
-export const SimpleTest = styled(Stack, {
+export const SimpleTest = styled(View, {
   width: 100,
   height: 100,
   backgroundColor: 'blue',

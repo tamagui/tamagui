@@ -29,10 +29,10 @@ import { View } from '@tamagui/core'
 test('theme + media queries + conditionals extract', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Stack
+        <View
           theme="surface1"
           $sm={{ flexDirection: 'column' }}
           {...(onlyDemo && {
@@ -62,10 +62,10 @@ test('theme + media queries + conditionals extract', async () => {
 test('conditional specific after generic style overrides', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Stack
+        <View
           p="$2"                              // base padding
           pb={floating ? 18 : 15}             // should override bottom
           mr={floating2 ? 2 : 1}              // unrelated ternary
@@ -93,10 +93,10 @@ test('conditional specific after generic style overrides', async () => {
 test('conditional styles get full base styles merged onto + shorthand', async () => {
   const output = await extractForWeb(
     `
-import { Stack } from '@tamagui/core'
+import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Stack width={10} bg={props.green ? 'red' : 'blue'} />
+        <View width={10} bg={props.green ? 'red' : 'blue'} />
       )
     }
   `,
@@ -115,10 +115,10 @@ import { Stack } from '@tamagui/core'
 test('className + conditional styles get full base styles merged onto + shorthand', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Stack width={10} bg={props.green ? 'red' : 'blue'} className={props.className} />
+        <View width={10} bg={props.green ? 'red' : 'blue'} className={props.className} />
       )
     }
   `,
@@ -330,7 +330,6 @@ test('double ternary + spread', async () => {
           alignItems="center"
           {...(isVertical && {
             flexDirection: 'column',
-            flex: 'unset',
             alignItems: 'flex-start',
           })}
         >
@@ -543,11 +542,11 @@ test('conditional spread with local variable preserves ternary', async () => {
 test('conditional spread with hoverStyle preserves ternary', async () => {
   const output = await extractForWeb(
     `
-    import { Stack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
 
     export function Test({ isActive }) {
       return (
-        <Stack
+        <View
           backgroundColor="red"
           cursor="pointer"
           hoverStyle={{ backgroundColor: 'green' }}
@@ -574,7 +573,7 @@ test('conditional spread with hoverStyle preserves ternary', async () => {
 // Verifies Text with hoverStyle and conditional spread preserves ternary
 test('Text with hoverStyle and conditional spread preserves ternary', async () => {
   const output = await extractForWeb(
-    `
+    `// debug
     import { Text } from '@tamagui/core'
 
     export function Test({ isActive }) {
@@ -643,4 +642,96 @@ test('font_body class is present in BOTH ternary branches', async () => {
   }
 
   expect(output?.js).toMatchSnapshot()
+})
+
+// role attribute is passed through during extraction
+test('role attribute is preserved during extraction', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return <View role="button" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // The output should have role="button" on the div
+  expect(output?.js).toContain('role=')
+  expect(output?.js).toContain('button')
+})
+
+// CSS shorthand properties with embedded $variables
+test('boxShadow with $variable extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return <View boxShadow="0 0 10px $background" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // Should extract to CSS with box-shadow and var()
+  expect(output?.styles).toContain('box-shadow')
+  expect(output?.styles).toContain('var(--')
+})
+
+// Skip until RN supports border shorthand - use borderWidth/borderColor/borderStyle for cross-platform
+test.skip('border with $variable extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return <View border="1px solid $background" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // border expands to individual border props, check for color with var()
+  expect(output?.styles).toContain('border')
+  expect(output?.styles).toContain('var(--')
+})
+
+test('boxShadow with multiple $variables extracts correctly', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return <View boxShadow="0 0 10px $background, 0 0 20px $color" />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // Should contain multiple var() references
+  expect(output?.styles).toContain('box-shadow')
+  const varMatches = output?.styles?.match(/var\(--/g)
+  expect(varMatches?.length).toBeGreaterThanOrEqual(2)
 })

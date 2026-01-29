@@ -6,8 +6,8 @@ import { GroupContext } from '../contexts/GroupContext'
 import { useSplitStyles } from '../helpers/getSplitStyles'
 import { subscribeToContextGroup } from '../helpers/subscribeToContextGroup'
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
-import { Stack } from '../views/Stack'
 import type { ViewProps, ViewStyle } from '../views/View'
+import { View } from '../views/View'
 import { useComponentState } from './useComponentState'
 import { mediaState, useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
@@ -79,11 +79,10 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {
-  const staticConfig = opts?.forComponent?.staticConfig ?? Stack.staticConfig
+  const staticConfig = opts?.forComponent?.staticConfig ?? View.staticConfig
   const [theme, themeState] = useThemeWithState({
     componentName: staticConfig.componentName,
     name: 'theme' in props ? props.theme : undefined,
-    inverse: 'themeInverse' in props ? props.themeInverse : undefined,
     needsUpdate() {
       return true
     },

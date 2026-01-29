@@ -111,12 +111,6 @@ export interface TamaguiBuildOptions {
   disableInitialBuild?: boolean
 
   /**
-   * This can speed up dev builds by only optimizing the client side generated code,
-   * but can cause hydration mis-matches
-   */
-  disableServerOptimization?: boolean
-
-  /**
    * If you have a tamagui.build.ts file that describes your compiler setup, you can set it here
    */
   buildFile?: string
@@ -127,23 +121,18 @@ export interface TamaguiBuildOptions {
   deoptProps?: Set<string>
   excludeProps?: Set<string>
   inlineProps?: Set<string>
-  forceExtractStyleDefinitions?: boolean
 
   /**
-   * (Experimental) Will flatten theme and other dynamic values on native
-   */
-  experimentalFlattenThemesOnNative?: boolean
-
-  /**
-   * combine all css files into one file
-   */
-  emitSingleCSSFile?: boolean
-
-  /**
-   * @deprecated Deprecated, just leave it off
+   * Use react-native-web-lite for better tree shaking on web.
+   * Set to 'without-animated' to exclude animated components.
    */
   useReactNativeWebLite?: boolean | 'without-animated'
   disableWatchTamaguiConfig?: boolean
+
+  /**
+   * (Experimental) Flatten theme access on native for better performance
+   */
+  experimentalFlattenThemesOnNative?: boolean
 }
 
 export interface TamaguiOptions extends TamaguiBuildOptions {

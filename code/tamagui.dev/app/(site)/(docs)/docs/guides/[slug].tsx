@@ -4,7 +4,8 @@ import { useMemo } from 'react'
 import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'
-import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
+import { DocsPageFrame } from '~/features/docs/DocsPageFrame'
+import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
@@ -29,11 +30,20 @@ export async function loader({ params }) {
 
 export default function DocGuidesPage() {
   const { code, frontmatter } = useLoader(loader)
-
+  const { next, previous, currentPath, documentVersionPath } = useDocsMenu()
   const Component = useMemo(() => getMDXComponent(code), [code])
 
+  const GITHUB_URL = 'https://github.com'
+  const REPO_NAME = 'tamagui/tamagui'
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${currentPath}${documentVersionPath}.mdx`
+
   return (
-    <>
+    <DocsPageFrame
+      headings={frontmatter.headings}
+      editUrl={editUrl}
+      next={next}
+      previous={previous}
+    >
       <HeadInfo
         title={frontmatter.title}
         description={frontmatter.description || ''}
@@ -54,8 +64,6 @@ export default function DocGuidesPage() {
       <ThemeTint>
         <Component components={components as any} />
       </ThemeTint>
-      {/* frontmatter.slug */}
-      <DocsQuickNav key={'ok'} />
-    </>
+    </DocsPageFrame>
   )
 }

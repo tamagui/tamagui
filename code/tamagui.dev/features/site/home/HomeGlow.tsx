@@ -86,7 +86,7 @@ export const HomeGlow = memo(() => {
       return (
         <YStack
           key={`${i}${tint}${tintAlt}`}
-          animation="superLazy"
+          transition="superLazy"
           enterStyle={{
             opacity: isOnHeroBelow ? 0.5 : 0,
           }}
@@ -94,15 +94,6 @@ export const HomeGlow = memo(() => {
             opacity: 0,
           }}
           opacity={isOnHeroBelow ? 0.5 : 0.8}
-          mixBlendMode={
-            i === 0
-              ? 'hard-light'
-              : i === 1
-                ? 'color-burn'
-                : i === 2
-                  ? 'exclusion'
-                  : 'hue'
-          }
           overflow="hidden"
           height="100vh"
           maxH={650}

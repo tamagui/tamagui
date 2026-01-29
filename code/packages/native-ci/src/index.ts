@@ -73,7 +73,7 @@ export {
 export { waitForDevice, setupAdbReverse, setupAndroidDevice, ensureAndroidFolder } from './android'
 
 // iOS utilities
-export { ensureIOSFolder } from './ios'
+export { ensureIOSFolder, ensureIOSApp, cleanupSimulators } from './ios'
 
 // Dependency management
 export {

@@ -13,7 +13,7 @@ export function HomeFeaturesGrid() {
               <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Fully typed
               </H4>
-              <Paragraph theme="alt1">
+              <Paragraph color="$color10">
                 <EnsureFlexed />
                 Typed inline styles, themes, tokens, shorthands, media queries,
                 animations, and hooks that optimize.
@@ -24,7 +24,7 @@ export function HomeFeaturesGrid() {
               <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Server-first
               </H4>
-              <Paragraph theme="alt1">
+              <Paragraph color="$color10">
                 SSR and RSC just work, hydrate, and don't flicker, with all animation
                 drivers, responsive styles, and themes.
               </Paragraph>
@@ -34,7 +34,7 @@ export function HomeFeaturesGrid() {
               <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Fast
               </H4>
-              <Paragraph theme="alt1">
+              <Paragraph color="$color10">
                 Fully optimizes and flattens to platform-ideal code for web and native,
                 every feature works at compile and runtime.
               </Paragraph>
@@ -44,7 +44,7 @@ export function HomeFeaturesGrid() {
               <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Introspection
               </H4>
-              <Paragraph theme="alt1">
+              <Paragraph color="$color10">
                 <EnsureFlexed />
                 Multi-level debug pragma and props, compile-time JSX props for quick
                 file:line:component jump.
@@ -55,7 +55,7 @@ export function HomeFeaturesGrid() {
               <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Compatibility
               </H4>
-              <Paragraph theme="alt1">
+              <Paragraph color="$color10">
                 Runs entirely without plugins, with optional optimizing plugins for Metro,
                 Vite, and Webpack.
               </Paragraph>
@@ -65,7 +65,7 @@ export function HomeFeaturesGrid() {
               <H4 letterSpacing={0} fontFamily="$mono" text="center">
                 Full Featured
               </H4>
-              <Paragraph theme="alt1">
+              <Paragraph color="$color10">
                 Style library + headless components. Animations, themes, variants, tokens,
                 fonts. Advanced selectors, and more.
               </Paragraph>

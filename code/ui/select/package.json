@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/select",
-  "version": "1.144.3",
+  "version": "2.0.0-1769665879528",
   "type": "module",
   "removeSideEffects": "true",
   "sideEffects": [
@@ -55,6 +55,7 @@
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/list-item": "workspace:*",
+    "@tamagui/native": "workspace:*",
     "@tamagui/portal": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/separator": "workspace:*",

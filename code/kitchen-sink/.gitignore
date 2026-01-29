@@ -132,3 +132,4 @@ e2e/artifacts/
 
 # Fingerprint cache (local testing)
 .fingerprint-cache.json
+.ios-build-fingerprint.json

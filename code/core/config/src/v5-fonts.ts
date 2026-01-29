@@ -1,15 +1,67 @@
 import type { FillInFont, GenericFont } from '@tamagui/core'
-import { createFont, getVariableValue, isWeb } from '@tamagui/core'
+import { createFont, getVariableValue } from '@tamagui/core'
+
+const isWeb = process.env.TAMAGUI_TARGET === 'web'
+const isNative = process.env.TAMAGUI_TARGET === 'native'
+
+// web sizes
+const webSizes = {
+  1: 12,
+  2: 13,
+  3: 14,
+  4: 15,
+  true: 15,
+  5: 16,
+  6: 18,
+  7: 22,
+  8: 26,
+  9: 30,
+  10: 40,
+  11: 46,
+  12: 52,
+  13: 60,
+  14: 70,
+  15: 85,
+  16: 100,
+} as const
+
+// native sizes aligned with iOS HIG (SF Pro)
+// 4/true = body (17pt), 3 = subheadline (15pt), 2 = caption (12pt)
+const nativeSizes = {
+  1: 11,
+  2: 12,
+  3: 15,
+  4: 17,
+  true: 17,
+  5: 20,
+  6: 22,
+  7: 24,
+  8: 28,
+  9: 32,
+  10: 40,
+  11: 46,
+  12: 52,
+  13: 60,
+  14: 70,
+  15: 85,
+  16: 100,
+} as const
+
+const defaultSizes = isNative ? nativeSizes : webSizes
+
+// line height: native ~125% per iOS HIG, web ~160%
+const defaultLineHeight = (size: number) =>
+  Math.round(isNative ? size * 1.25 : size * 1.05 + 8)
 
 export const createSystemFont = <A extends GenericFont>({
   font = {},
-  sizeLineHeight = (size) => size + 10,
-  sizeSize = (size) => size * 1,
+  sizeLineHeight = defaultLineHeight,
+  sizeSize = (size) => Math.round(size),
 }: {
   font?: Partial<A>
   sizeLineHeight?: (fontSize: number) => number
   sizeSize?: (size: number) => number
-} = {}): FillInFont<A, keyof typeof defaultSizes> => {
+} = {}): FillInFont<A, keyof typeof webSizes> => {
   // merge to allow individual overrides
   const size = Object.fromEntries(
     Object.entries({
@@ -25,7 +77,7 @@ export const createSystemFont = <A extends GenericFont>({
       Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
     ),
     weight: {
-      4: '300',
+      1: '400',
     },
     letterSpacing: {
       4: 0,
@@ -35,27 +87,20 @@ export const createSystemFont = <A extends GenericFont>({
   })
 }
 
-const defaultSizes = {
-  1: 11,
-  2: 12,
-  3: 13,
-  4: 14,
-  true: 14,
-  5: 16,
-  6: 18,
-  7: 20,
-  8: 23,
-  9: 30,
-  10: 46,
-  11: 55,
-  12: 62,
-  13: 72,
-  14: 92,
-  15: 114,
-  16: 134,
-} as const
+// heading line height: native ~120%, web original
+const headingLineHeight = (size: number) =>
+  Math.round(isNative ? size * 1.2 : size * 1.12 + 5)
 
 export const fonts = {
   body: createSystemFont(),
-  heading: createSystemFont({ sizeSize: (n) => n * 1.4 }),
+  heading: createSystemFont({
+    font: {
+      weight: {
+        0: '600',
+        6: '700',
+        9: '800',
+      },
+    },
+    sizeLineHeight: headingLineHeight,
+  }),
 }

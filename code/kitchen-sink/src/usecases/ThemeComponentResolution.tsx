@@ -1,5 +1,4 @@
-import React from 'react'
-import { Button, Square, Theme, YStack, Text, useThemeName } from 'tamagui'
+import { Square, Text, Theme, useThemeName, YStack } from 'tamagui'
 
 import { TEST_IDS } from '../constants/test-ids'
 
@@ -15,7 +14,13 @@ import { TEST_IDS } from '../constants/test-ids'
 function ThemeNameDisplay({ id }: { id: string }) {
   const themeName = useThemeName()
   return (
-    <Square id={id} bg="$background" size={100} alignItems="center" justifyContent="center">
+    <Square
+      id={id}
+      bg="$background"
+      size={100}
+      alignItems="center"
+      justifyContent="center"
+    >
       <Text fontSize="$2" color="$color">
         {themeName}
       </Text>
@@ -34,7 +39,8 @@ export function ThemeComponentResolution() {
       <YStack gap="$2">
         <Text fontWeight="bold">Goal 1a: Explicit scheme override</Text>
         <Text fontSize="$2">
-          When theme="dark_green" is set explicitly, it should be used even inside a blue parent
+          When theme="dark_green" is set explicitly, it should be used even inside a blue
+          parent
         </Text>
 
         {/* Direct: dark_green theme */}
@@ -86,27 +92,27 @@ export function ThemeComponentResolution() {
       <YStack gap="$2">
         <Text fontWeight="bold">Goal 2: Sub-theme preservation</Text>
         <Text fontSize="$2">
-          When inside alt1 sub-theme, components should NOT backtrack to find a component theme
+          When inside surface1 sub-theme, components should NOT backtrack to find a
+          component theme
         </Text>
 
-        {/* Direct: light_blue_alt1 */}
+        {/* Direct: light_blue_surface1 */}
         <YStack gap="$1">
-          <Text>Direct light_blue_alt1:</Text>
-          <Theme name="light_blue_alt1">
-            <ThemeNameDisplay id={TEST_IDS.themeAlt1Direct} />
+          <Text>Direct light_blue_surface1:</Text>
+          <Theme name="light_blue_surface1">
+            <ThemeNameDisplay id={TEST_IDS.themeSurface1Direct} />
           </Theme>
         </YStack>
 
-        {/* Nested: blue → alt1, then a Button (should stay on alt1, not get Button theme) */}
+        {/* Nested: blue → surface1, then a Button (should stay on surface1, not get Button theme) */}
         <YStack gap="$1">
-          <Text>Nested: blue → alt1 (component should stay on alt1):</Text>
+          <Text>Nested: blue → surface1 (component should stay on surface1):</Text>
           <Theme name="blue">
-            <Theme name="alt1">
-              <ThemeNameDisplay id={TEST_IDS.themeAlt1WithComponent} />
+            <Theme name="surface1">
+              <ThemeNameDisplay id={TEST_IDS.themeSurface1WithComponent} />
             </Theme>
           </Theme>
         </YStack>
-
       </YStack>
     </YStack>
   )

@@ -1,6 +1,6 @@
-import { styled } from '@tamagui/core'
-import { SizableStack, ThemeableStack } from '@tamagui/stacks'
+import { styled, View } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
+import { SizableStack, ThemeableStack } from '@tamagui/stacks'
 
 const TABS_NAME = 'Tabs'
 export const DefaultTabsFrame = styled(SizableStack, {
@@ -9,51 +9,58 @@ export const DefaultTabsFrame = styled(SizableStack, {
 
 const TRIGGER_NAME = 'TabsTrigger'
 
-export const DefaultTabsTabFrame = styled(ThemeableStack, {
-  name: TRIGGER_NAME,
-  tag: 'button',
+export const DefaultTabsTabFrame = styled(
+  View,
+  {
+    name: TRIGGER_NAME,
+    role: 'tab',
 
-  variants: {
-    size: {
-      '...size': getButtonSized,
-    },
-
-    disabled: {
-      true: {
-        pointerEvents: 'none',
+    variants: {
+      size: {
+        '...size': getButtonSized,
       },
-    },
 
-    unstyled: {
-      false: {
-        borderWidth: 0,
-        backgroundColor: '$background',
-        userSelect: 'none',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexWrap: 'nowrap',
-        flexDirection: 'row',
-        cursor: 'pointer',
-
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-        },
-
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-        },
-
-        focusStyle: {
-          backgroundColor: '$backgroundFocus',
+      disabled: {
+        true: {
+          pointerEvents: 'none',
         },
       },
-    },
-  } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+      unstyled: {
+        false: {
+          borderWidth: 0,
+          backgroundColor: '$background',
+          userSelect: 'none',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'nowrap',
+          flexDirection: 'row',
+          cursor: 'pointer',
+
+          pressStyle: {
+            backgroundColor: '$backgroundPress',
+          },
+
+          focusVisibleStyle: {
+            outlineColor: '$outlineColor',
+            outlineWidth: 2,
+            outlineStyle: 'solid',
+            zIndex: 10,
+          },
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1',
+    },
   },
-})
+  {
+    accept: {
+      activeStyle: 'style',
+    } as const,
+  }
+)
 
 const CONTENT_NAME = 'TabsContent'
 

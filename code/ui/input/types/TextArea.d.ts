@@ -1,97 +1,58 @@
+export type { InputProps as TextAreaProps } from './types';
 /**
- * @summary A text area is a multi-line input field that allows users to enter text.
+ * A web-aligned textarea component (multi-line input).
  * @see — Docs https://tamagui.dev/ui/inputs#textarea
  */
-export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").ClassAttributes<HTMLInputElement> & import("react").HTMLProps<HTMLInputElement>, "size" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & Pick<import("@tamagui/web").TextProps, "color"> & Omit<import("react").CSSProperties | undefined, "color"> & Omit<import("react-native").TextInputProps, "numberOfLines" | "selectionColor" | "enterKeyHint" | "inputMode" | "secureTextEntry" | "onChangeText" | "editable" | "keyboardType" | "placeholderTextColor"> & {
-    secureTextEntry?: import("react-native").TextInputProps["secureTextEntry"];
-    onChangeText?: import("react-native").TextInputProps["onChangeText"];
-    editable?: import("react-native").TextInputProps["editable"];
-    enterKeyHint?: "done" | "go" | "next" | "search" | "send" | "enter" | "previous";
-    keyboardType?: import("react-native").TextInputProps["keyboardType"];
-    inputMode?: import("react-native").InputModeOptions;
+export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "color" | "size" | "children" | "style" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "textAlign" | "textTransform" | "className"> & {
+    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/web").GetThemeValueForKey<"color"> | undefined;
+    fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
+    fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "unset" | "normal" | "italic" | undefined;
+    fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
+    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+    textTransform?: "unset" | "none" | "capitalize" | "uppercase" | "lowercase" | undefined;
+} & Omit<import("./InputNativeProps").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
+    autoCorrect?: boolean | "on" | "off";
+    autoCapitalize?: "none" | "sentences" | "words" | "characters" | "off" | "on";
+    spellCheck?: boolean;
+    rows?: number;
     placeholderTextColor?: import("@tamagui/web").ColorTokens;
     selectionColor?: import("@tamagui/web").ColorTokens;
-    tag?: import("@tamagui/web").TamaguiComponentPropsBase["tag"];
-    multiline?: boolean;
-    numberOfLines?: number;
-}, import("@tamagui/web").StackStyleBase, {
+    onChangeText?: (text: string) => void;
+    onSubmitEditing?: (e: {
+        nativeEvent: {
+            text: string;
+        };
+    }) => void;
+    selection?: {
+        start: number;
+        end?: number;
+    };
+    onSelectionChange?: (e: {
+        nativeEvent: {
+            selection: {
+                start: number;
+                end: number;
+            };
+        };
+    }) => void;
+    textContentType?: import("./types").InputTextContentType;
+}, import("@tamagui/web").StackStyleBase & {
+    readonly placeholderTextColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly selectionColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
+}, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
-}, ({
-    name: string;
-    tag: string;
-    variants: {
-        readonly unstyled: {
-            readonly false: {
-                readonly borderColor: "$borderColor";
-                readonly backgroundColor: "$background";
-                readonly minWidth: 0;
-                readonly hoverStyle: {
-                    readonly borderColor: "$borderColorHover";
-                };
-                readonly focusStyle: {
-                    readonly borderColor: "$borderColorFocus";
-                };
-                readonly focusVisibleStyle: {
-                    readonly outlineColor: "$outlineColor";
-                    readonly outlineWidth: 2;
-                    readonly outlineStyle: "solid";
-                };
-                readonly tabIndex: 0;
-                readonly size: "$true";
-                readonly fontFamily: "$body";
-                readonly borderWidth: 1;
-                readonly outlineWidth: 0;
-                readonly color: "$color";
-            } | {
-                readonly borderColor: "$borderColor";
-                readonly backgroundColor: "$background";
-                readonly minWidth: 0;
-                readonly hoverStyle: {
-                    readonly borderColor: "$borderColorHover";
-                };
-                readonly focusStyle: {
-                    readonly borderColor: "$borderColorFocus";
-                };
-                readonly focusVisibleStyle: {
-                    readonly outlineColor: "$outlineColor";
-                    readonly outlineWidth: 2;
-                    readonly outlineStyle: "solid";
-                };
-                readonly focusable: boolean;
-                readonly size: "$true";
-                readonly fontFamily: "$body";
-                readonly borderWidth: 1;
-                readonly outlineWidth: 0;
-                readonly color: "$color";
-            };
-        };
-        readonly size: {
-            readonly '...size': import("@tamagui/web").SizeVariantSpreadFunction<any>;
-        };
-        readonly disabled: {
-            readonly true: {};
-        };
-    };
-    defaultVariants: {
-        unstyled: boolean;
-    };
-    isInput?: undefined;
-    accept?: undefined;
-    validStyles?: undefined;
-} | {
-    isInput: boolean;
-    accept: {
+}, {
+    readonly isInput: true;
+    readonly accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
     };
-    validStyles: {
+    readonly validStyles: {
         [key: string]: boolean;
     } | undefined;
-    name?: undefined;
-    tag?: undefined;
-    variants?: undefined;
-    defaultVariants?: undefined;
-}) & import("@tamagui/web").StaticConfigPublic>;
+} & import("@tamagui/web").StaticConfigPublic>;
 //# sourceMappingURL=TextArea.d.ts.map

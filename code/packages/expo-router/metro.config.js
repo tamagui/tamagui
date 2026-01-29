@@ -14,7 +14,6 @@ const { withTamagui } = require('@tamagui/metro-plugin')
 module.exports = withTamagui(config, {
   components: ['tamagui'],
   config: './tamagui.config.ts',
-  outputCSS: './tamagui-web.css',
 })
 
 config.resolver.sourceExts.push('mjs')
@@ -41,12 +40,12 @@ if (process.env.IS_TAMAGUI_DEV && __dirname.includes('tamagui')) {
       force: true,
     })
   } catch {}
-  try {
-    fs.rmSync(path.join(projectRoot, 'node_modules', 'tamagui'), {
-      recursive: true,
-      force: true,
-    })
-  } catch {}
+  // try {
+  //   fs.rmSync(path.join(projectRoot, 'node_modules', 'tamagui'), {
+  //     recursive: true,
+  //     force: true,
+  //   })
+  // } catch {}
   try {
     fs.rmSync(path.join(projectRoot, 'node_modules', 'react'), {
       recursive: true,

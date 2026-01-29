@@ -26,7 +26,7 @@ export function SelectAndroidOnPress() {
   const [lastAction, setLastAction] = React.useState('none')
 
   const handleValueChange = (newVal: string) => {
-    console.log('[SelectAndroidOnPress] onValueChange fired:', newVal)
+    console.info('[SelectAndroidOnPress] onValueChange fired:', newVal)
     setVal(newVal)
     setChangeCount((c) => c + 1)
     setLastAction(`selected: ${newVal}`)
@@ -39,8 +39,8 @@ export function SelectAndroidOnPress() {
       </Text>
 
       <Text testID="select-android-instructions" fontSize="$3" color="$gray11">
-        Tap the select, then tap an item. On physical Android devices, the selection may not
-        work due to onPress not firing.
+        Tap the select, then tap an item. On physical Android devices, the selection may
+        not work due to onPress not firing.
       </Text>
 
       <Select
@@ -58,7 +58,7 @@ export function SelectAndroidOnPress() {
         </Select.Trigger>
 
         <Adapt when="maxMd" platform="touch">
-          <Sheet modal dismissOnSnapToBottom animation="medium">
+          <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Frame>
               <Sheet.ScrollView>
                 <Adapt.Contents />
@@ -66,7 +66,7 @@ export function SelectAndroidOnPress() {
             </Sheet.Frame>
             <Sheet.Overlay
               bg="$shadowColor"
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
@@ -74,7 +74,7 @@ export function SelectAndroidOnPress() {
         </Adapt>
 
         <Select.Content zIndex={200000}>
-          <Select.Viewport miw={200}>
+          <Select.Viewport minWidth={200}>
             <Select.Group>
               <Select.Label>Fruits</Select.Label>
               {items.map((item, i) => (
@@ -119,8 +119,8 @@ export function SelectAndroidOnPress() {
           Bug behavior (physical Android):
         </Text>
         <Text fontSize="$2">
-          • Tap trigger → sheet opens{'\n'}• Tap item → nothing happens{'\n'}• onValueChange
-          never fires
+          • Tap trigger → sheet opens{'\n'}• Tap item → nothing happens{'\n'}•
+          onValueChange never fires
         </Text>
       </YStack>
     </YStack>

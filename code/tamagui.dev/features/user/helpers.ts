@@ -17,7 +17,7 @@ export const getUserDetails = async (
   supabase: SupabaseClient<Database>,
   userId: string
 ) => {
-  const result = await supabase.from('users').select('*').eq('id', userId).single()
+  const result = await supabase.from('users').select('*').eq('id', userId).maybeSingle()
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -169,6 +169,15 @@ function checkAccessToProduct(
   subscriptions: Awaited<ReturnType<typeof getSubscriptions>>,
   ownedProducts: Awaited<ReturnType<typeof getOwnedProducts>>
 ) {
+  // Valid Pro products that grant access
+  const validProProducts = [
+    ProductName.TamaguiPro,
+    ProductName.TamaguiProV2,
+    ProductName.TamaguiProV2Upgrade,
+    ProductName.TamaguiSupportDirect,
+    ProductName.TamaguiSupportSponsor,
+  ]
+
   const hasActiveSubscription = subscriptions.some(
     (subscription) =>
       (subscription.status === SubscriptionStatus.Trialing ||
@@ -177,7 +186,7 @@ function checkAccessToProduct(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
       ) ||
         subscription.subscription_items.some((item) =>
-          item.price.product?.name?.includes(ProductName.TamaguiPro)
+          validProProducts.some((product) => item.price.product?.name?.includes(product))
         ))
   )
   if (hasActiveSubscription) {
@@ -296,7 +305,7 @@ export async function getUserThemeHistories(
 
     return data.map((d) => ({
       ...d,
-      theme_data: ThemeSuiteSchema.parse(d.theme_data) as ThemeSuiteItemData,
+      theme_data: ThemeSuiteSchema.parse(d.theme_data) as unknown as ThemeSuiteItemData,
     }))
   } catch {
     return []

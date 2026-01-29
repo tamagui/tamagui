@@ -333,7 +333,7 @@ const _sheet = __ReactNativeStyleSheet.create({
 });
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { Stack } from 'tamagui';
+import { View } from 'tamagui';
 export function Test(props) {
   return <__ReactNativeView style={props === 123 ? _sheet["0"] : _sheet["1"]} />;
 }"
@@ -342,9 +342,9 @@ export function Test(props) {
 exports[`normalize ternaries with the conditional dynamic values 1`] = `
 "const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
-import { Stack } from 'tamagui';
+import { View } from 'tamagui';
 export function Test(props) {
-  return <Stack marginBottom={props !== 123 ? 12 : props.mb} />;
+  return <View marginBottom={props !== 123 ? 12 : props.mb} />;
 }"
 `;
 

@@ -4,7 +4,7 @@ import { YStack } from '@tamagui/stacks'
 
 export const Fieldset = styled(YStack, {
   name: 'Fieldset',
-  tag: 'fieldset',
+  render: 'fieldset',
 
   // remove browser default styling
   borderWidth: 0,

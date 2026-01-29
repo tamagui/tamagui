@@ -1,15 +1,13 @@
 import React from 'react'
-import { SizableText, ToggleGroup, YStack } from 'tamagui'
+import { SizableText, ToggleGroup, YStack, useToggleGroupItem } from 'tamagui'
 
 // Issue #3485: ToggleGroup active prop passed to children
-// Children of ToggleGroup.Item should receive `active` prop based on selection state
+// Children of ToggleGroup.Item can access active state via useToggleGroupItem hook
 
-const CustomItem = ({
-  active,
-  children,
-}: { active?: boolean; children: React.ReactNode }) => {
+const CustomItem = ({ children }: { children: React.ReactNode }) => {
+  const { active } = useToggleGroupItem()
   return (
-    <SizableText id={`custom-item-${children}`} data-active={active}>
+    <SizableText id={`custom-item-${children}`} data-active={active ? 'true' : 'false'}>
       {children}
     </SizableText>
   )

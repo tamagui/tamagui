@@ -1,5 +1,5 @@
 import type { SliderProps } from 'tamagui'
-import { Slider, XStack } from 'tamagui'
+import { Slider, Theme, XStack } from 'tamagui'
 
 export function SliderDemo() {
   return (
@@ -16,7 +16,7 @@ function SimpleSlider({ children, ...props }: SliderProps) {
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb size="$2" index={0} circular />
+      <Slider.Thumb theme="accent" size={30} borderRadius={100} />
       {children}
     </Slider>
   )

@@ -1,8 +1,8 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { ListItemProps } from '@tamagui/list-item'
-import { ListItemFrame, useListItem } from '@tamagui/list-item'
 import { createStyledContext } from '@tamagui/core'
+import type { ListItemProps } from '@tamagui/list-item'
+import { ListItem } from '@tamagui/list-item'
 import * as React from 'react'
 import { useSelectItemParentContext } from './context'
 import type { SelectScopedProps } from './types'
@@ -35,7 +35,7 @@ export interface SelectItemProps
   extends Omit<ListItemProps, keyof SelectItemExtraProps>,
     SelectItemExtraProps {}
 
-export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
+export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
   function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
     const {
       scope,
@@ -45,13 +45,6 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
       index,
       ...restProps
     } = props
-
-    const { props: listItemProps } = useListItem({
-      ...(!props.unstyled && {
-        ellipse: true,
-      }),
-      ...restProps,
-    })
 
     const context = useSelectItemParentContext(scope)
 
@@ -72,9 +65,17 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
       size,
       onActiveChange,
       initialValue,
+      setActiveIndexFast,
     } = context
 
     const [isSelected, setSelected] = React.useState(initialValue === value)
+
+    // set initial selectedIndex when this item matches the initial value
+    useIsomorphicLayoutEffect(() => {
+      if (initialValue === value) {
+        setSelectedIndex(index)
+      }
+    }, [])
 
     React.useEffect(() => {
       return activeIndexSubscribe((i) => {
@@ -82,7 +83,10 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
 
         if (isActive) {
           onActiveChange(value, index)
-          listRef?.current[index]?.focus()
+
+          if (isWeb) {
+            listRef?.current[index]?.focus()
+          }
         }
       })
     }, [index])
@@ -95,14 +99,17 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
 
     const textId = React.useId()
 
-    const refCallback = React.useCallback((node) => {
-      if (!isWeb) return
-      if (node instanceof HTMLElement) {
-        if (listRef) {
-          listRef.current[index] = node
+    const refCallback = React.useCallback(
+      (node) => {
+        if (!isWeb) return
+        if (node instanceof HTMLElement) {
+          if (listRef) {
+            listRef.current[index] = node
+          }
         }
-      }
-    }, [])
+      },
+      [index, listRef]
+    )
 
     const composedRefs = useComposedRefs(forwardedRef, refCallback)
 
@@ -134,6 +141,21 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
               ) {
                 event.preventDefault()
                 handleSelect()
+              } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                // prevent default and stop propagation so floating-ui doesn't also handle
+                event.preventDefault()
+                event.stopPropagation()
+                const itemCount = listRef?.current.length ?? 0
+                if (itemCount === 0) return
+
+                let nextIndex: number
+                if (event.key === 'ArrowDown') {
+                  nextIndex = index + 1 >= itemCount ? 0 : index + 1
+                } else {
+                  nextIndex = index - 1 < 0 ? itemCount - 1 : index - 1
+                }
+                // use fast setter to avoid triggering state updates that reset activeIndex
+                setActiveIndexFast?.(nextIndex)
               } else {
                 allowSelectRef!.current = true
               }
@@ -147,6 +169,9 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
 
             onMouseUp() {
               if (!allowMouseUpRef!.current) {
+                // Re-enable mouseup and selection for subsequent interactions
+                allowMouseUpRef!.current = true
+                allowSelectRef!.current = true
                 return
               }
 
@@ -165,7 +190,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
         : {
             onPress: handleSelect,
           }
-    }, [handleSelect])
+    }, [handleSelect, index, listRef, setActiveIndexFast])
 
     return (
       <SelectItemContextProvider
@@ -177,10 +202,11 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
         {shouldRenderWebNative ? (
           <option value={value}>{props.children}</option>
         ) : (
-          <ListItemFrame
-            tag="div"
+          <ListItem.Frame
+            render="div"
             componentName={ITEM_NAME}
             ref={composedRefs}
+            role="option"
             aria-labelledby={textId}
             aria-selected={isSelected}
             data-state={isSelected ? 'active' : 'inactive'}
@@ -188,13 +214,22 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
             {...(!props.unstyled && {
-              backgrounded: true,
-              pressTheme: true,
-              hoverTheme: true,
-              focusTheme: true,
               cursor: 'default',
               size,
               outlineOffset: -0.5,
+              zIndex: 100,
+
+              hoverStyle: {
+                backgroundColor: '$backgroundHover',
+              },
+
+              pressStyle: {
+                backgroundColor: '$backgroundPress',
+              },
+
+              focusStyle: {
+                backgroundColor: '$backgroundFocus',
+              },
 
               focusVisibleStyle: {
                 outlineColor: '$outlineColor',
@@ -202,7 +237,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
                 outlineStyle: 'solid',
               },
             })}
-            {...listItemProps}
+            {...restProps}
             {...selectItemProps}
           />
         )}

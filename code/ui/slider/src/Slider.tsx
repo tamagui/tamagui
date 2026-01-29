@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb } from '@tamagui/constants'
+import { isIos, isWeb } from '@tamagui/constants'
 import type {
   GestureReponderEvent,
   GetProps,
@@ -9,14 +9,14 @@ import type {
   TamaguiElement,
 } from '@tamagui/core'
 import {
-  useCreateShallowSetState,
   getTokens,
   getVariableValue,
   styled,
+  useConfiguration,
+  useCreateShallowSetState,
 } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { withStaticProperties } from '@tamagui/helpers'
-import { clamp, composeEventHandlers } from '@tamagui/helpers'
+import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -60,7 +60,7 @@ const activeSliderMeasureListeners = new Set<Function>()
 // run an interval on web as using translate can move things at any moment
 // without triggering layout or intersection observers
 
-if (isWeb && isClient) {
+if (process.env.TAMAGUI_TARGET === 'web') {
   if (!process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL) {
     setInterval?.(
       () => {
@@ -110,45 +110,8 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
       })
     }
 
-    if (isClient) {
-      useOnDebouncedWindowResize(measure)
-
-      // intersection change
-      React.useEffect(() => {
-        const node = sliderRef.current as any as HTMLDivElement
-        if (!node) return
-
-        let measureTm
-        const debouncedMeasure = () => {
-          clearTimeout(measureTm)
-          measureTm = setTimeout(() => {
-            measure()
-          }, 200)
-        }
-
-        const io = new IntersectionObserver(
-          (entries) => {
-            debouncedMeasure()
-            if (entries?.[0].isIntersecting) {
-              activeSliderMeasureListeners.add(debouncedMeasure)
-            } else {
-              activeSliderMeasureListeners.delete(debouncedMeasure)
-            }
-          },
-          {
-            root: null, // Use the viewport as the container.
-            rootMargin: '0px',
-            threshold: [0, 0.5, 1.0],
-          }
-        )
-
-        io.observe(node)
-
-        return () => {
-          activeSliderMeasureListeners.delete(debouncedMeasure)
-          io.disconnect()
-        }
-      }, [])
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      useSliderMeasure(sliderRef, measure)
     }
 
     return (
@@ -209,6 +172,46 @@ function useOnDebouncedWindowResize(callback: Function, amt = 200) {
   }, [])
 }
 
+function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () => void) {
+  useOnDebouncedWindowResize(measure)
+
+  React.useEffect(() => {
+    const node = sliderRef.current as any as HTMLDivElement
+    if (!node) return
+
+    let measureTm
+    const debouncedMeasure = () => {
+      clearTimeout(measureTm)
+      measureTm = setTimeout(() => {
+        measure()
+      }, 200)
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        debouncedMeasure()
+        if (entries?.[0].isIntersecting) {
+          activeSliderMeasureListeners.add(debouncedMeasure)
+        } else {
+          activeSliderMeasureListeners.delete(debouncedMeasure)
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: [0, 0.5, 1.0],
+      }
+    )
+
+    io.observe(node)
+
+    return () => {
+      activeSliderMeasureListeners.delete(debouncedMeasure)
+      io.disconnect()
+    }
+  }, [])
+}
+
 /* -------------------------------------------------------------------------------------------------
  * SliderVertical
  * -----------------------------------------------------------------------------------------------*/
@@ -227,6 +230,10 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
     const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
     const setState = useCreateShallowSetState(setState_)
     const sliderRef = React.useRef<View>(null)
+    const configuration = useConfiguration()
+    // these insets are insets passed from TamaguiProvider by useSafeAreaInsets()
+    const insets =
+      isIos && configuration.insets ? configuration.insets : { top: 0, bottom: 0 }
 
     function getValueFromPointer(pointerPosition: number) {
       const input: [number, number] = [0, state.size]
@@ -239,13 +246,13 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
       sliderRef.current?.measure((_x, _y, _width, height, _pageX, pageY) => {
         setState({
           size: height,
-          offset: pageY,
+          offset: pageY + (isIos ? insets.top : 0),
         })
       })
     }
 
-    if (isClient) {
-      useOnDebouncedWindowResize(measure)
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      useSliderMeasure(sliderRef, measure)
     }
 
     return (
@@ -292,12 +299,10 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
  * SliderTrack
  * -----------------------------------------------------------------------------------------------*/
 
-const TRACK_NAME = 'SliderTrack'
-
-type SliderTrackElement = HTMLElement | View
+type SliderTrackElement = TamaguiElement
 
 export const SliderTrackFrame = styled(SliderFrame, {
-  name: 'SliderTrack',
+  name: 'Slider',
 
   variants: {
     unstyled: {
@@ -318,7 +323,7 @@ export const SliderTrackFrame = styled(SliderFrame, {
 })
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
-  (props: ScopedProps<SliderTrackProps>, forwardedRef) => {
+  function SliderTrack(props: ScopedProps<SliderTrackProps>, forwardedRef) {
     const { __scopeSlider, ...trackProps } = props
     const context = useSliderContext(__scopeSlider)
     return (
@@ -334,70 +339,75 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
   }
 )
 
-SliderTrack.displayName = TRACK_NAME
-
 /* -------------------------------------------------------------------------------------------------
- * SliderTrackActive
+ * SliderActive
  * -----------------------------------------------------------------------------------------------*/
 
-const RANGE_NAME = 'SliderTrackActive'
-
-export const SliderTrackActiveFrame = styled(SliderFrame, {
-  name: 'SliderTrackActive',
-  backgroundColor: '$background',
+export const SliderActiveFrame = styled(SliderFrame, {
+  name: 'SliderActive',
   position: 'absolute',
   pointerEvents: 'box-none',
+
+  variants: {
+    unstyled: {
+      false: {
+        backgroundColor: '$background',
+        borderRadius: 100_000,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
-type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>
+type SliderActiveProps = GetProps<typeof SliderActiveFrame>
 
-const SliderTrackActive = React.forwardRef<View, SliderTrackActiveProps>(
-  (props: ScopedProps<SliderTrackActiveProps>, forwardedRef) => {
-    const { __scopeSlider, ...rangeProps } = props
-    const context = useSliderContext(__scopeSlider)
-    const orientation = useSliderOrientationContext(__scopeSlider)
-    const ref = React.useRef<View>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
-    const valuesCount = context.values.length
-    const percentages = context.values.map((value) =>
-      convertValueToPercentage(value, context.min, context.max)
-    )
-    const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0
-    const offsetEnd = 100 - Math.max(...percentages)
+const SliderActive = React.forwardRef<View, SliderActiveProps>(function SliderActive(
+  props: ScopedProps<SliderActiveProps>,
+  forwardedRef
+) {
+  const { __scopeSlider, ...rangeProps } = props
+  const context = useSliderContext(__scopeSlider)
+  const orientation = useSliderOrientationContext(__scopeSlider)
+  const ref = React.useRef<View>(null)
+  const composedRefs = useComposedRefs(forwardedRef, ref)
+  const valuesCount = context.values.length
+  const percentages = context.values.map((value) =>
+    convertValueToPercentage(value, context.min, context.max)
+  )
+  const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0
+  const offsetEnd = 100 - Math.max(...percentages)
 
-    return (
-      <SliderTrackActiveFrame
-        orientation={context.orientation}
-        data-orientation={context.orientation}
-        data-disabled={context.disabled ? '' : undefined}
-        size={context.size}
-        animateOnly={['left', 'top', 'right', 'bottom']}
-        {...rangeProps}
-        ref={composedRefs}
-        {...{
-          [orientation.startEdge]: `${offsetStart}%`,
-          [orientation.endEdge]: `${offsetEnd}%`,
-        }}
-        {...(orientation.sizeProp === 'width'
-          ? {
-              height: '100%',
-            }
-          : {
-              left: 0,
-              right: 0,
-            })}
-      />
-    )
-  }
-)
-
-SliderTrackActive.displayName = RANGE_NAME
+  return (
+    <SliderActiveFrame
+      orientation={context.orientation}
+      data-orientation={context.orientation}
+      data-disabled={context.disabled ? '' : undefined}
+      size={context.size}
+      animateOnly={['left', 'top', 'right', 'bottom']}
+      {...rangeProps}
+      ref={composedRefs}
+      {...{
+        [orientation.startEdge]: `${offsetStart}%`,
+        [orientation.endEdge]: `${offsetEnd}%`,
+      }}
+      {...(orientation.sizeProp === 'width'
+        ? {
+            height: '100%',
+          }
+        : {
+            left: 0,
+            right: 0,
+          })}
+    />
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * SliderThumb
  * -----------------------------------------------------------------------------------------------*/
-
-const THUMB_NAME = 'SliderThumb'
 
 // TODO make this customizable through tamagui
 // so we can accurately use it for estimatedSize below
@@ -423,17 +433,28 @@ export const SliderThumbFrame = styled(ThemeableStack, {
   variants: {
     size: {
       '...size': getThumbSize,
+      ':number': getThumbSize,
     },
 
     unstyled: {
       false: {
         position: 'absolute',
-        bordered: 2,
         borderWidth: 2,
-        backgrounded: true,
-        pressTheme: isWeb,
-        focusTheme: isWeb,
-        hoverTheme: isWeb,
+        borderColor: '$borderColor',
+        backgroundColor: '$background',
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorPress',
+        },
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+          borderColor: '$borderColorHover',
+        },
+        focusVisibleStyle: {
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$outlineColor',
+        },
       },
     },
   } as const,
@@ -444,14 +465,14 @@ export const SliderThumbFrame = styled(ThemeableStack, {
 })
 
 export interface SliderThumbExtraProps {
-  index: number
+  index?: number
 }
 
 export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {}
 
 const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
   function SliderThumb(props: ScopedProps<SliderThumbProps>, forwardedRef) {
-    const { __scopeSlider, index, circular, size: sizeProp, ...thumbProps } = props
+    const { __scopeSlider, index = 0, circular, size: sizeProp, ...thumbProps } = props
     const context = useSliderContext(__scopeSlider)
     const orientation = useSliderOrientationContext(__scopeSlider)
     const [thumb, setThumb] = React.useState<TamaguiElement | null>(null)
@@ -703,7 +724,7 @@ const SliderComponent = React.forwardRef(
 
 const Slider = withStaticProperties(SliderComponent, {
   Track: SliderTrack,
-  TrackActive: SliderTrackActive,
+  TrackActive: SliderActive,
   Thumb: SliderThumb,
 })
 
@@ -745,18 +766,18 @@ Slider.displayName = SLIDER_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 const Track = SliderTrack
-const Range = SliderTrackActive
+const Range = SliderActive
 const Thumb = SliderThumb
 
 export {
+  Range,
   Slider,
-  SliderTrack,
-  SliderTrackActive,
   SliderThumb,
+  SliderTrack,
+  SliderActive,
+  Thumb,
   //
   Track,
-  Range,
-  Thumb,
 }
 
-export type { SliderProps, SliderTrackProps, SliderTrackActiveProps }
+export type { SliderProps, SliderActiveProps, SliderTrackProps }

@@ -71,7 +71,7 @@ export const SidePaneHost = memo(() => {
       />
       <XStack
         fullscreen
-        animation="quick"
+        transition="quick"
         l="15%"
         bg="$background"
         borderColor="$borderColor"
@@ -90,7 +90,7 @@ export const SidePaneHost = memo(() => {
         <Button
           l="$-4"
           t="$4"
-          elevate
+          elevation="$2"
           borderWidth={2}
           borderColor="$borderColor"
           size="$4"

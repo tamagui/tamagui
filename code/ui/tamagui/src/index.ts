@@ -1,5 +1,6 @@
 import './setup'
 
+export * from '@tamagui/spacer'
 export * from '@tamagui/accordion'
 export * from '@tamagui/adapt'
 export * from '@tamagui/alert-dialog'
@@ -41,6 +42,7 @@ export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
+export * from '@tamagui/element'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
 
@@ -52,15 +54,15 @@ export * from './views/TamaguiProvider'
 export * from './views/Anchor'
 export * from './views/EnsureFlexed'
 export * from './views/Fieldset'
-export * from './views/Input'
+export * from '@tamagui/input'
 export * from './views/Spinner'
-export * from './views/TextArea'
 export * from './views/Text'
 
-// since we overlap with StackProps and potentially others
+// since we overlap with ViewProps and potentially others
 // lets be explicit on what gets exported
 export type {
-  AnimationKeys,
+  TransitionKeys,
+  TransitionProp,
   ColorTokens,
   CreateTamaguiConfig,
   CreateTamaguiProps,
@@ -91,12 +93,10 @@ export type {
   RadiusTokens,
   Shorthands,
   SizeTokens,
-  SpacerProps,
   SpaceTokens,
   SpecificTokens,
   StackNonStyleProps,
   ViewProps,
-  StackProps,
   StaticConfig,
   Styleable,
   TamaguiBaseTheme,
@@ -136,16 +136,12 @@ export {
   GroupContext,
   FontLanguage,
   // components
-  Spacer,
-  Stack,
   Theme,
-  Unspaced,
   View,
   createComponent,
   createFont,
   createShorthands,
   createStyledContext,
-  createTheme,
   createTokens,
   createVariable,
   getConfig,
@@ -156,13 +152,13 @@ export {
   getTokenValue,
   getTokens,
   getVariable,
-  setupReactNative,
   getVariableName,
   getVariableValue,
   insertFont,
   setConfig,
   setupDev,
   // constants
+  isBrowser,
   isChrome,
   isClient,
   isServer,
@@ -177,7 +173,6 @@ export {
   mediaQueryConfig,
   mediaState,
   setOnLayoutStrategy,
-  spacedChildren,
   styled,
   themeable,
   // hooks

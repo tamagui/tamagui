@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/input",
-  "version": "1.144.3",
+  "version": "2.0.0-1769665879528",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
+    "@tamagui/element": "workspace:*",
     "@tamagui/focusable": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",

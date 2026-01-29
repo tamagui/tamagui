@@ -2,6 +2,7 @@ import { Paragraph, styled } from 'tamagui'
 
 export const P = styled(Paragraph, {
   fontFamily: '$mono',
+  color: '$color10',
   size: '$4',
   lineHeight: '$5',
   $gtXs: {

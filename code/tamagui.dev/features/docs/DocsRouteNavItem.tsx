@@ -18,20 +18,26 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   inMenu?: boolean
 }) {
   const isExternal = external || href.startsWith('http')
-  const ref = useRef<any>(undefined)
+  const ref = useRef<any>(null)
 
   return (
     <Link
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       href={href as Href}
+      focusVisibleStyle={{
+        outlineColor: '$outlineColor',
+        outlineWidth: 2,
+        outlineStyle: 'solid',
+        outlineOffset: -2,
+      }}
     >
       <XStack
         ref={ref}
         className="docs-nav-item"
         items="center"
-        justify="flex-end"
+        justify="flex-start"
         px="$4"
-        py="$1.5"
+        py="$2"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
           bg: '$background04',
@@ -39,14 +45,11 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         position="relative"
         $sm={{
-          py: '$1.5',
+          py: '$2',
         }}
         hoverStyle={{
-          bg: 'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
+          bg: '$background06',
         }}
-        {...(inMenu && {
-          jc: 'flex-start',
-        })}
       >
         {!inMenu && (
           <YStack
@@ -55,7 +58,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
             position="absolute"
             t={0}
             b={0}
-            r={0}
+            l={0}
             rounded="$2"
             width={3}
             bg={active ? '$color' : '$backgroundHover'}
@@ -63,13 +66,13 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         )}
         <SizableText
           fontFamily="$mono"
-          size="$4"
+          size="$5"
           letterSpacing={-0.5}
-          lineHeight="$3"
+          lineHeight="$4"
           cursor="pointer"
           select="none"
           opacity={active ? 1 : 0.65}
-          text={inMenu ? 'left' : 'right'}
+          style={{ textAlign: 'left' }}
           width="100%"
           hoverStyle={{
             opacity: 0.85,
@@ -99,7 +102,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           <>
             <XStack flex={1} />
             <SizableText
-              theme="alt2"
+              color="$color9"
               size="$1"
               px="$2"
               py="$1"

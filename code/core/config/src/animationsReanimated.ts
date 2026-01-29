@@ -1,6 +1,10 @@
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations } from '@tamagui/animations-reanimated'
 
 export const animationsReanimated = createAnimations({
+  '0ms': {
+    type: 'timing',
+    duration: 0,
+  },
   '75ms': {
     type: 'timing',
     duration: 75,
@@ -13,33 +17,57 @@ export const animationsReanimated = createAnimations({
     type: 'timing',
     duration: 200,
   },
+  '250ms': {
+    type: 'timing',
+    duration: 250,
+  },
   superBouncy: {
     damping: 5,
     mass: 0.7,
-    stiffness: 200,
+    stiffness: 180,
   },
   bouncy: {
     damping: 9,
     mass: 0.9,
-    stiffness: 150,
+    stiffness: 120,
+  },
+  kindaBouncy: {
+    damping: 16,
+    mass: 1,
+    stiffness: 25,
+  },
+  superLazy: {
+    damping: 25,
+    mass: 2,
+    stiffness: 25,
   },
   medium: {
-    damping: 15,
-    stiffness: 120,
-    mass: 1,
+    damping: 16,
+    stiffness: 90,
+    mass: 0.8,
   },
   lazy: {
     damping: 18,
-    stiffness: 50,
+    mass: 0.2,
+    stiffness: 10,
+  },
+  slowest: {
+    damping: 15,
+    stiffness: 10,
   },
   slow: {
-    damping: 15,
-    stiffness: 40,
+    damping: 45,
+    stiffness: 60,
   },
   quick: {
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
+    damping: 25,
+    mass: 1,
+    stiffness: 550,
+  },
+  quickLessBouncy: {
+    damping: 40,
+    mass: 2,
+    stiffness: 400,
   },
   tooltip: {
     damping: 10,
@@ -47,13 +75,23 @@ export const animationsReanimated = createAnimations({
     stiffness: 100,
   },
   quicker: {
-    damping: 20,
-    mass: 0.7,
-    stiffness: 250,
+    damping: 16,
+    mass: 0.6,
+    stiffness: 700,
+  },
+  quickerLessBouncy: {
+    damping: 27,
+    mass: 0.45,
+    stiffness: 750,
   },
   quickest: {
-    damping: 5,
-    mass: 0.2,
-    stiffness: 300,
+    damping: 15,
+    mass: 0.6,
+    stiffness: 400,
+  },
+  quickestLessBouncy: {
+    damping: 24,
+    mass: 0.35,
+    stiffness: 750,
   },
 })

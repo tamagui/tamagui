@@ -63,8 +63,37 @@ const COMMAND_MAP = {
     },
   },
 
+  'generate-css': {
+    shorthands: [],
+    description: `Generate the tamagui.css file from your config`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+      '--output': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        loadTamaguiOptions: true,
+      })
+
+      const outputPath = flags['--output'] || options.tamaguiOptions.outputCSS || './tamagui.css'
+
+      process.env.TAMAGUI_KEEP_THEMES = '1'
+      await loadTamagui({
+        ...options.tamaguiOptions,
+        outputCSS: outputPath,
+        platform: 'web',
+      })
+
+      console.info(`Generated CSS to ${outputPath}`)
+    },
+  },
+
   'generate-themes': {
-    shorthands: ['gt'],
+    shorthands: [],
     description: `Use to pre-build your themes`,
     flags: {
       '--help': Boolean,
@@ -102,7 +131,7 @@ const COMMAND_MAP = {
   },
 
   add: {
-    shorthands: ['a'],
+    shorthands: [],
     description: `Use to add fonts and icons to your monorepo. Supported types: ${generatedPackageTypes.join(
       ', '
     )}`,
@@ -212,7 +241,7 @@ const COMMAND_MAP = {
   },
 
   'generate-prompt': {
-    shorthands: ['gp'],
+    shorthands: [],
     description: `Generate an LLM-friendly markdown file from your Tamagui config`,
     flags: {
       '--help': Boolean,

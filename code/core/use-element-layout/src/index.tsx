@@ -1,4 +1,4 @@
-import { isClient, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import { createContext, useContext, useId, type ReactNode, type RefObject } from 'react'
 
@@ -11,7 +11,8 @@ const IntersectionState = new WeakMap<HTMLElement, boolean>()
 const DisableLayoutContextValues: Record<string, boolean> = {}
 const DisableLayoutContextKey = createContext<string>('')
 
-const ENABLE = isClient && typeof IntersectionObserver !== 'undefined'
+const ENABLE =
+  process.env.TAMAGUI_TARGET === 'web' && typeof IntersectionObserver !== 'undefined'
 
 // internal testing - advanced helper to turn off layout measurement for extra performance
 // TODO document!

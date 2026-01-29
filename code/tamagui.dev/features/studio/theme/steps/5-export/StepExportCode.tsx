@@ -171,7 +171,7 @@ export const StepExportCodeSidebar = () => {
                   }
                   size="$2"
                 >
-                  <Switch.Thumb animation="quickest" />
+                  <Switch.Thumb transition="quickest" />
                 </Switch>
               </YStack>
               <Label size="$3" htmlFor="include-component-themes-switch">
@@ -204,7 +204,7 @@ export const StepExportCodeSidebar = () => {
                 return (
                   <XStack key={_idx} ml="$4" mr="$3">
                     {subStep.type === 'text' && (
-                      <Paragraph theme="alt1" size="$4">
+                      <Paragraph color="$color10" size="$4">
                         {subStep.content}
                       </Paragraph>
                     )}
@@ -264,9 +264,10 @@ export const StepExportCodeSidebar = () => {
 
 const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
   return (
-    <YStack flex={1}>
+    <YStack flex={1} flexBasis="auto" position="relative">
       <ScrollView
         flex={1}
+        flexBasis="auto"
         horizontal
         maxH={maxHeight}
         bg="$background"

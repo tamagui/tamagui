@@ -3,7 +3,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GetProps, TamaguiElement } from '@tamagui/core'
 import {
-  Stack,
+  View,
   Theme,
   createStyledContext,
   styled,
@@ -15,7 +15,7 @@ import type { DismissableProps } from '@tamagui/dismissable'
 import { Dismissable } from '@tamagui/dismissable'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { PortalItem } from '@tamagui/portal'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import type {
   Animated,
@@ -29,9 +29,9 @@ import type { ScopedProps, SwipeDirection } from './ToastProvider'
 import { Collection, useToastProviderContext } from './ToastProvider'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
-const ToastImplFrame = styled(ThemeableStack, {
+const ToastImplFrame = styled(YStack, {
   name: 'ToastImpl',
-  focusable: true,
+  tabIndex: 0,
 
   variants: {
     unstyled: {
@@ -42,11 +42,12 @@ const ToastImplFrame = styled(ThemeableStack, {
           outlineColor: '$outlineColor',
         },
         backgroundColor: '$color6',
-        borderRadius: '$10',
-        paddingHorizontal: '$5',
-        paddingVertical: '$2',
+        borderRadius: '$4',
+        paddingHorizontal: '$4',
+        paddingVertical: '$3',
         marginHorizontal: 'auto',
         marginVertical: '$1',
+        elevation: '$3',
       },
     },
   } as const,
@@ -191,7 +192,9 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       // focus viewport if focus is within toast to read the remaining toast
       // count to SR users and ensure focus isn't lost
       if (isWeb) {
-        const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
+        const isFocusInToast = (node as unknown as HTMLDivElement)?.contains(
+          document.activeElement
+        )
         if (isFocusInToast) viewport?.focus()
       }
       onClose()
@@ -249,7 +252,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
 
     const announceTextContent = React.useMemo(() => {
       if (!isWeb) return null
-      return node ? getAnnounceTextContent(node as HTMLDivElement) : null
+      return node ? getAnnounceTextContent(node as unknown as HTMLDivElement) : null
     }, [node])
 
     const isHorizontalSwipe = ['left', 'right', 'horizontal'].includes(
@@ -268,7 +271,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     // temp until reanimated useAnimatedNumber fix
     const AnimatedView = (animationDriver['NumberView'] ??
       animationDriver.View ??
-      Stack) as typeof Animated.View
+      View) as typeof Animated.View
 
     const animatedStyles = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
@@ -368,23 +371,21 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                       data-state={open ? 'open' : 'closed'}
                       data-swipe-direction={context.swipeDirection}
                       pointerEvents="auto"
-                      touchAction="none"
-                      userSelect="none"
+                      $platform-web={{
+                        touchAction: 'none',
+                        userSelect: 'none',
+                      }}
                       {...toastProps}
                       ref={composedRefs}
                       {...(isWeb && {
-                        onKeyDown: composeEventHandlers(
-                          (props as any).onKeyDown,
-                          (event: KeyboardEvent) => {
-                            if (event.key !== 'Escape') return
-                            onEscapeKeyDown?.(event)
-                            onEscapeKeyDown?.(event)
-                            if (!event.defaultPrevented) {
-                              context.isFocusedToastEscapeKeyDownRef.current = true
-                              handleClose()
-                            }
+                        onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                          if (event.key !== 'Escape') return
+                          onEscapeKeyDown?.(event)
+                          if (!event.defaultPrevented) {
+                            context.isFocusedToastEscapeKeyDownRef.current = true
+                            handleClose()
                           }
-                        ),
+                        }),
                       })}
                     />
                   </Collection.ItemSlot>

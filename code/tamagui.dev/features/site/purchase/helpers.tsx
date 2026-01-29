@@ -1,5 +1,5 @@
-import { Check, CheckCircle, XCircle } from '@tamagui/lucide-icons'
-import type { ButtonProps, CheckboxProps, RadioGroupItemProps } from 'tamagui'
+import { Check, CheckCircle } from '@tamagui/lucide-icons'
+import type { CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
   Button,
   Checkbox,
@@ -29,11 +29,11 @@ export const isSafariMobile = (() => {
   return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
 })()
 
-export function PurchaseButton(props: ButtonProps) {
+export function PurchaseButton({ children, fontFamily = '$mono', ...props }) {
   return (
-    <Button size="$4" $gtXs={{ size: '$5' }} rounded="$10" {...props}>
-      <Button.Text size="$5" fontFamily="$mono">
-        {props.children}
+    <Button size="$4" rounded="$10" {...props}>
+      <Button.Text size="$5" fontFamily={fontFamily as any}>
+        {children}
       </Button.Text>
     </Button>
   )
@@ -47,10 +47,9 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
   return (
     <Label
       flex={1}
-      htmlFor={props.id as string}
+      {...(props.id && { htmlFor: props.id })}
       p="$4"
       className="3d"
-      height="unset"
       display="flex"
       borderWidth="$0.25"
       bg={props.checked ? '$color2' : '$color1'}
@@ -74,9 +73,9 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
           bg: '$color4',
           borderColor: '$color6',
         }}
-        checked={props.checked || false}
-        size="$6"
         {...props}
+        checked={props.checked ?? false}
+        size="$6"
       >
         <Checkbox.Indicator>
           <Check />
@@ -98,9 +97,9 @@ export const RadioGroupItem = ({
   return (
     <Label
       flex={1}
-      htmlFor={props.id as string}
+      {...(props.id && { htmlFor: props.id })}
       p="$4"
-      height="unset"
+      height="auto"
       display="flex"
       borderWidth="$0.25"
       borderColor={active ? '$color9' : '$color5'}
@@ -150,18 +149,13 @@ export function BentoTable({
   const priceInfo = price ? bentoDefaults[price.id] : null
 
   return (
-    <YStack
-      separator={<Separator borderColor="$color5" />}
-      borderWidth="$0.5"
-      rounded="$4"
-      borderColor="$color5"
-    >
+    <YStack borderWidth="$0.5" rounded="$4" borderColor="$color5">
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fontWeight="bold">
             Lifetime access
           </Paragraph>
-          <Paragraph flex={1} ellipse size="$3" theme="alt1">
+          <Paragraph flex={1} ellipsis size="$3" color="$color10">
             You own and can use the code forever.
           </Paragraph>
         </YStack>
@@ -174,7 +168,7 @@ export function BentoTable({
           <Paragraph size="$6" fontWeight="bold">
             Seats
           </Paragraph>
-          <Paragraph size="$3" theme="alt1" lineHeight="$2">
+          <Paragraph size="$3" color="$color10" lineHeight="$2">
             Accounts given access
           </Paragraph>
         </YStack>
@@ -198,18 +192,13 @@ export const TakeoutTable = ({
   const price = product?.prices.find((price) => price.id === selectedPriceId)
   const takeoutPriceInfo = getTakeoutPriceInfo(price?.description ?? '')
   return (
-    <YStack
-      separator={<Separator opacity={0.35} />}
-      borderWidth="$0.5"
-      rounded="$4"
-      borderColor="$borderColor"
-    >
+    <YStack borderWidth="$0.5" rounded="$4" borderColor="$borderColor">
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fontWeight="bold">
             Lifetime access, 1 year of updates
           </Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
             You own the code for life, but only have access for a year. One-click cancel
             in your account page
           </Paragraph>
@@ -221,7 +210,7 @@ export const TakeoutTable = ({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6">License Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
             Number of people allowed to&nbsp;develop&nbsp;on&nbsp;it
           </Paragraph>
         </YStack>
@@ -232,7 +221,7 @@ export const TakeoutTable = ({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6">Discord Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
             Access to the Discord #takeout room
           </Paragraph>
         </YStack>
@@ -244,7 +233,7 @@ export const TakeoutTable = ({
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6">GitHub Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph className="text-wrap-balance" size="$3" color="$color10">
             Open PRs and issues on the GitHub repo
           </Paragraph>
         </YStack>
@@ -257,4 +246,3 @@ export const TakeoutTable = ({
 }
 
 const checkCircle = <CheckCircle color="$green9" />
-const xCircle = <XCircle size={28} color="$red9" />

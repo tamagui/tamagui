@@ -60,8 +60,8 @@ export function AnimationsPresenceDemo() {
       items="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
-        <GalleryItem key={page} animation="slow" going={going}>
-          <Image source={{ uri: images[imageIndex], width: 820, height: 300 }} />
+        <GalleryItem key={page} transition="slow" going={going}>
+          <Image src={images[imageIndex]} width={820} height={300} objectFit="cover" />
         </GalleryItem>
       </AnimatePresence>
 
@@ -72,8 +72,8 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         l="$4"
         circular
-        elevate
         onPress={() => paginate(-1)}
+        boxShadow="0 0 10px rgba(0,0,0,0.5)"
         z={100}
       />
 
@@ -84,8 +84,8 @@ export function AnimationsPresenceDemo() {
         position="absolute"
         r="$4"
         circular
-        elevate
         onPress={() => paginate(1)}
+        boxShadow="0 0 10px rgba(0,0,0,0.5)"
         z={100}
       />
     </XStack>

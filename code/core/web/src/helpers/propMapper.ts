@@ -17,6 +17,8 @@ import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { normalizeStyle } from './normalizeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { isRemValue, resolveRem } from './resolveRem'
+// import { resolveSafeAreaValue } from './resolveSafeArea'
 import { skipProps } from './skipProps'
 
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
@@ -32,17 +34,6 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   }
 
   const { conf, styleProps, staticConfig } = styleState
-
-  if (value === 'unset') {
-    const unsetVal = conf.unset?.[key]
-    if (unsetVal != null) {
-      value = unsetVal
-    } else {
-      // if no unset found, do nothing
-      return
-    }
-  }
-
   const { variants } = staticConfig
 
   if (!styleProps.noExpand) {
@@ -66,10 +57,29 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   const originalValue = value
 
   if (value != null) {
-    if (value[0] === '$') {
+    if (typeof value === 'string' && value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
+    } else if (
+      (key === 'boxShadow' ||
+        key === 'textShadow' ||
+        key === 'filter' ||
+        key === 'backgroundImage') &&
+      typeof value === 'string' &&
+      value.includes('$')
+    ) {
+      // boxShadow/filter/backgroundImage with embedded $tokens - resolve each token
+      // Try size first (for dimensions), then color (for the color value)
+      value = value.replace(/(\$[\w.-]+)/g, (t) => {
+        let r = getTokenForKey('size', t, styleProps, styleState)
+        if (r == null) {
+          r = getTokenForKey('color', t, styleProps, styleState)
+        }
+        return r != null ? String(r) : t
+      })
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
+    } else if (isRemValue(value)) {
+      value = resolveRem(value)
     }
   }
 
@@ -290,9 +300,13 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     if (typeof val === 'string') {
+      // SYNC WITH *1
       const fVal =
-        // SYNC WITH *1
-        val[0] === '$' ? getTokenForKey(subKey, val, styleProps, styleState) : val
+        val[0] === '$'
+          ? getTokenForKey(subKey, val, styleProps, styleState)
+          : isRemValue(val)
+            ? resolveRem(val)
+            : val
 
       res[subKey] = fVal
       continue
@@ -380,6 +394,12 @@ export const getTokenForKey = (
   if (resolveAs === 'none') {
     return value
   }
+
+  // handle safe area tokens: $safeAreaTop, $safeAreaBottom, $safeAreaLeft, $safeAreaRight
+  // const safeAreaValue = resolveSafeAreaValue(value)
+  // if (safeAreaValue !== undefined) {
+  //   return safeAreaValue
+  // }
 
   const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
 

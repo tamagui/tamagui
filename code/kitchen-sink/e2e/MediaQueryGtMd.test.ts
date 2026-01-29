@@ -17,6 +17,7 @@
  */
 
 import { by, device, element, expect } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
 
 describe('MediaQueryGtMd', () => {
   beforeAll(async () => {
@@ -25,7 +26,7 @@ describe('MediaQueryGtMd', () => {
 
   beforeEach(async () => {
     await device.reloadReactNative()
-    await navigateToMediaQueryTest()
+    await navigateToTestCase('MediaQueryGtMd', 'media-test-both')
   })
 
   it('should render all media query test elements', async () => {
@@ -69,27 +70,3 @@ describe('MediaQueryGtMd', () => {
   })
 })
 
-/**
- * Navigate to the MediaQueryGtMd test case from home screen
- */
-async function navigateToMediaQueryTest() {
-  // Wait for home screen to load
-  await expect(element(by.text('Test Cases'))).toBeVisible()
-
-  // Tap on Test Cases
-  await element(by.text('Test Cases')).tap()
-
-  // Wait for test cases list and scroll to find MediaQueryGtMd
-  await waitFor(element(by.id('test-case-MediaQueryGtMd')))
-    .toBeVisible()
-    .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(200, 'down')
-
-  // Tap on MediaQueryGtMd test case
-  await element(by.id('test-case-MediaQueryGtMd')).tap()
-
-  // Wait for test case to load
-  await waitFor(element(by.id('media-test-both')))
-    .toBeVisible()
-    .withTimeout(5000)
-}

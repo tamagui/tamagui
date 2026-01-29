@@ -52,13 +52,16 @@ export default function BlogSlug() {
     <>
       <HeadInfo
         {...data.frontmatter}
-        title={`${data.frontmatter.title} — Tamagui`}
+        title={`${data.frontmatter.title}: ${(data.frontmatter.description ?? '')
+          .replace(/tamagui\s+/i, '')
+          .trim()
+          .replace(/^./, (c) => c.toLowerCase())}`}
         description={data.frontmatter.description ?? ''}
         openGraph={{
           images: [
             {
               url:
-                data.frontmatter.image ??
+                data.frontmatter.image ||
                 getOgUrl({
                   title: data.frontmatter.title,
                   description: data.frontmatter.description ?? '',

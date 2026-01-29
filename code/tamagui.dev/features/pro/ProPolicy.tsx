@@ -18,7 +18,7 @@ export const ProPolicy = () => {
       <Paragraph>
         Bento is not able to be returned as it is digital software, but for exceptional
         cases where things are breaking on Mac we do accept refunds within 48 hours. Get
-        in touch with support support@tamagui.dev.
+        in touch with support at support@tamagui.dev.
       </Paragraph>
 
       <Separator />

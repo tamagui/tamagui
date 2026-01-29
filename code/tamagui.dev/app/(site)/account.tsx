@@ -1,7 +1,7 @@
 import { useRouter } from 'one'
 import { useEffect } from 'react'
 import { Spinner, YStack } from 'tamagui'
-import { accountModal } from '~/features/site/purchase/NewAccountModal'
+import { accountModal } from '~/features/site/purchase/accountModalStore'
 import { useUser } from '~/features/user/useUser'
 
 export default function AccountPage() {

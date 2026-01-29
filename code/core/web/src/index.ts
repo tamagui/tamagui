@@ -6,6 +6,7 @@ export * from './_withStableStyle'
 export * from './createComponent'
 export * from './helpers/createMediaStyle'
 export * from './helpers/createStyledContext'
+export * from './helpers/getDefaultProps'
 export * from './helpers/expandStyles'
 export * from './helpers/getCSSStylesAtomic'
 export * from './helpers/getExpandedShorthands'
@@ -34,7 +35,6 @@ export * from './createComponent'
 export * from './createFont'
 export * from './createShorthands'
 export * from './createTamagui'
-export * from './createTheme'
 export * from './createTokens'
 export * from './createVariable'
 export * from './createVariables'
@@ -57,6 +57,7 @@ export {
   getToken,
   getTokens,
   getTokenValue,
+  loadAnimationDriver,
   setConfig,
   setupDev,
   updateConfig,
@@ -85,7 +86,6 @@ export { forceUpdateThemes } from './hooks/useThemeState'
 export * from './views/Configuration'
 export * from './views/FontLanguage'
 export * from './views/Slot'
-export * from './views/Stack'
 export * from './views/TamaguiProvider'
 export * from './views/Text'
 export * from './views/Theme'

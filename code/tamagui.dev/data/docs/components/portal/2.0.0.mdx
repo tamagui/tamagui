@@ -1,0 +1,165 @@
+---
+title: Portal
+description: Send items to other areas of the tree
+name: portal
+component: Portal
+package: portal
+---
+
+Portal is included in `tamagui` and is used by [Sheet](/docs/components/sheet),
+[Dialog](/docs/components/dialog), [Popover](/docs/components/popover),
+[Select](/docs/components/select), and [Toast](/docs/components/toast).
+
+## Native Portal Setup (Recommended)
+
+On web, React's built-in `createPortal` preserves context automatically. On
+native, the default portal implementation doesn't preserve React context.
+Tamagui automatically re-propagates its own contexts (theme, configuration), but
+your custom contexts like navigation or app state won't be available inside
+portaled content. The re-propagation also adds some overhead.
+
+We recommend using
+[react-native-teleport](https://github.com/nicksrandall/react-native-teleport)
+to solve this. It uses React Native's native portal API to preserve context
+automatically.
+
+### Step 1: Install react-native-teleport
+
+```bash
+npm install react-native-teleport
+```
+
+### Step 2: Import the setup module
+
+In your app's entry file (index.js or App.tsx), before any Tamagui imports:
+
+```tsx
+import '@tamagui/native/setup-teleport'
+```
+
+That's it! All portal-using components will now preserve context automatically
+on native. Without native portals, your custom context from parent components
+won't be available inside portaled content:
+
+```tsx
+const MyContext = createContext('default')
+
+function App() {
+  return (
+    <MyContext.Provider value="from-provider">
+      <Sheet modal open>
+        <Sheet.Frame>
+          {/* Without native portal: you'd not have context here on native */}
+          <MyConsumer />
+        </Sheet.Frame>
+      </Sheet>
+    </MyContext.Provider>
+  )
+}
+```
+
+## Alternative Approaches
+
+If you can't use react-native-teleport, there are other ways to handle context
+in portals:
+
+### Component Scoping
+
+For Dialog, Popover, and Tooltip, use the `scope` prop to mount a single
+instance at your app root. This avoids portals entirely on native:
+
+```tsx
+// _layout.tsx - mount once at root with all your providers
+<TamaguiProvider>
+  <Tooltip scope="global">
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+      <Paragraph>{/* label set by trigger */}</Paragraph>
+    </Tooltip.Content>
+
+    {/* rest of your app */}
+    <Slot />
+  </Tooltip>
+</TamaguiProvider>
+
+// anywhere in your app - just the trigger
+<Tooltip.Trigger scope="global" aria-label="Settings">
+  <Button icon={Settings} />
+</Tooltip.Trigger>
+```
+
+This pattern is also a performance win for lists or tables with many interactive
+elements.
+
+### Manual Context Re-propagation
+
+Wrap portal children with the necessary providers:
+
+```tsx
+const theme = useTheme()
+const myValue = useContext(MyContext)
+
+<Sheet>
+  <Sheet.Frame>
+    <ThemeProvider theme={theme}>
+      <MyContext.Provider value={myValue}>
+        {/* content that needs context */}
+      </MyContext.Provider>
+    </ThemeProvider>
+  </Sheet.Frame>
+</Sheet>
+```
+
+This is more verbose and error-prone as you need to remember to re-propagate
+every context you use.
+
+## API Reference
+
+### Portal
+
+<PropsTable
+  data={[
+    {
+      name: 'zIndex',
+      type: 'number',
+      description: `Fixed z-index value for the portal.`,
+    },
+    {
+      name: 'stackZIndex',
+      type: `boolean | number | 'global'`,
+      description: (
+        <span>
+          Enable automatic z-index stacking. Tamagui intelligently stacks z-index both horizontally
+          (based on mount order) and vertically (nested content is always above parent but below
+          sibling content that comes after). <code>true</code> enables stacking, a number adds to the
+          stacked value, <code>'global'</code> only stacks horizontally without nesting logic.
+        </span>
+      ),
+    },
+    {
+      name: 'passThrough',
+      type: 'boolean',
+      description: `When true, renders children directly without portal behavior.`,
+    },
+  ]}
+/>
+
+This automatic stacking is already enabled by default in Dialog, Popover, Sheet, and other overlay
+components. If you open a Popover from within a Dialog, the Popover will automatically have a
+higher z-index than the Dialog without any configuration needed.
+
+## Technical Details
+
+[react-native-teleport](https://github.com/nicksrandall/react-native-teleport)
+uses `ReactNativeFabricUIManager.createPortal` (Fabric) or
+`UIManager.createPortal` (Paper) to create true native portals that preserve the
+React fiber tree.
+
+The default portal implementation, by contrast, uses a JS-based approach with
+context providers and a reducer to manage portal state. While compatible with
+older RN versions, it breaks React context because it re-renders content in a
+separate provider tree.
+
+Tamagui includes a `needsPortalRepropagation()` helper that returns `true` when
+using the default portal implementation and `false` when using native portals,
+so library authors can conditionally re-propagate context only when needed.

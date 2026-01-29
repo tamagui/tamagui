@@ -9,51 +9,38 @@ test.describe('Select Focus Scope', () => {
   test('traps focus within select dropdown when open', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
-    // Open the basic select
+    // open the basic select
     const trigger = page.getByTestId('basic-select-trigger')
     await trigger.click()
 
-    // Wait for select viewport to be visible
+    // wait for select viewport to be visible
     const selectViewport = page.getByTestId('basic-select-viewport')
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
 
-    // Wait for focus to settle
-    await page.waitForTimeout(300)
-    
-    // Focus starts on the viewport/listbox itself
-    const isViewportFocused = await selectViewport.evaluate(el => el === document.activeElement)
-    expect(isViewportFocused).toBe(true)
-    
-    // Use arrow keys to navigate - this moves focus to first item
-    await page.keyboard.press('ArrowDown')
-    await page.waitForTimeout(100)
-    
+    // wait for focus trap to settle (rAF-based)
+    await page.waitForTimeout(50)
+
+    // first item should be focused
     const firstItem = page.getByTestId('select-apple')
-    const isFirstFocused = await firstItem.evaluate(el => el === document.activeElement)
-    expect(isFirstFocused).toBe(true)
+    await expect(firstItem).toBeFocused()
 
-    // Arrow down to second item
+    // arrow down to second item
     await page.keyboard.press('ArrowDown')
-    await page.waitForTimeout(100)
-    
-    const secondItem = page.getByTestId('select-banana')
-    const isSecondFocused = await secondItem.evaluate(el => el === document.activeElement)
-    expect(isSecondFocused).toBe(true)
+    await page.waitForTimeout(50)
 
-    // Tab closes the select and moves to next element
+    const secondItem = page.getByTestId('select-banana')
+    await expect(secondItem).toBeFocused()
+
+    // tab closes the select and moves to next element
     await page.keyboard.press('Tab')
-    await page.waitForTimeout(200)
-    
-    // Select should be closed after Tab
+    await page.waitForTimeout(100)
+
+    // select should be closed after tab
     await expect(selectViewport).not.toBeVisible()
-    
-    // Focus should have moved to the next trigger
+
+    // focus should have moved to the next trigger
     const nextTrigger = page.getByTestId('custom-select-trigger')
     await expect(nextTrigger).toBeFocused()
-
-    // Escape to close
-    await page.keyboard.press('Escape')
-    await expect(selectViewport).not.toBeVisible()
   })
 
   test('allows selection with Enter key', async ({ page }) => {
@@ -64,13 +51,12 @@ test.describe('Select Focus Scope', () => {
 
     const selectViewport = page.getByTestId('basic-select-viewport')
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
+    await page.waitForTimeout(300)
 
-    // Navigate to first item then to banana
-    await page.keyboard.press('ArrowDown') // Focus apple
+    // apple is focused initially, navigate to banana
+    await page.keyboard.press('ArrowDown')
     await page.waitForTimeout(100)
-    await page.keyboard.press('ArrowDown') // Focus banana
-    await page.waitForTimeout(100)
-    
+
     // Select with Enter
     await page.keyboard.press('Enter')
     await page.waitForTimeout(200)
@@ -125,12 +111,8 @@ test.describe('Select Focus Scope', () => {
     // Note: Select doesn't automatically restore focus to trigger like Dialog/Popover do
   })
 
-  test('maintains focus trap with multiple selects', async ({ page }) => {
+  test('Tab closes select and releases focus', async ({ page }) => {
     await page.waitForLoadState('networkidle')
-
-    // Click external button first to establish tab order
-    const externalButton = page.getByTestId('external-button')
-    await externalButton.click()
 
     // Open the small select
     const trigger = page.getByTestId('small-select-trigger')
@@ -139,24 +121,14 @@ test.describe('Select Focus Scope', () => {
     // Wait for any select viewport to be visible
     const selectViewport = page.getByRole('listbox').first()
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
+    await page.waitForTimeout(300)
 
-    // Tab should not leave the select dropdown
+    // Tab closes the select (consistent with first test)
     await page.keyboard.press('Tab')
-    await page.waitForTimeout(100)
-    await page.keyboard.press('Tab')
-    await page.waitForTimeout(100)
+    await page.waitForTimeout(200)
 
-    // Focus should still be within select
-    const focusInSelect = await page.evaluate(() => {
-      const active = document.activeElement
-      const listbox = document.querySelector('[role="listbox"]')
-      return listbox?.contains(active) || false
-    })
-    expect(focusInSelect).toBe(true)
-
-    // External button should not be focused
-    const isExternalFocused = await externalButton.evaluate(el => el === document.activeElement)
-    expect(isExternalFocused).toBe(false)
+    // Select should be closed after Tab
+    await expect(selectViewport).not.toBeVisible()
   })
 
   test('handles arrow key navigation correctly', async ({ page }) => {
@@ -167,19 +139,17 @@ test.describe('Select Focus Scope', () => {
 
     const selectViewport = page.getByTestId('basic-select-viewport')
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
+    await page.waitForTimeout(300)
 
-    // Navigate down to first item (apple)
-    await page.keyboard.press('ArrowDown')
-    await page.waitForTimeout(100)
-    
+    // first item (apple) is focused on open
     const apple = page.getByTestId('select-apple')
     const isAppleFocused = await apple.evaluate(el => el === document.activeElement)
     expect(isAppleFocused).toBe(true)
 
-    // Navigate down through more items
+    // Navigate down through all items
     await page.keyboard.press('ArrowDown') // banana
     await page.waitForTimeout(50)
-    await page.keyboard.press('ArrowDown') // orange  
+    await page.keyboard.press('ArrowDown') // orange
     await page.waitForTimeout(50)
     await page.keyboard.press('ArrowDown') // carrot
     await page.waitForTimeout(50)

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, H4, Label, Paragraph, RadioGroup, XStack, YStack } from 'tamagui'
-import { useDemoProps } from '../hooks/useDemoProps'
 import { AccentTheme } from '../../components/AccentTheme'
+import { useDemoProps } from '../hooks/useDemoProps'
 const options = [
   {
     title: 'Personal Plan',
@@ -41,12 +41,12 @@ export const PricingCards = () => {
         <H4 {...demoProps.headingFontFamilyProps} size="$4" text="center">
           Subscribe
         </H4>
-        <Paragraph theme="alt2" size="$4" text="center">
+        <Paragraph color="$color9" size="$4" text="center">
           Select a plan
         </Paragraph>
       </YStack>
 
-      <YStack mx="$-3" flex={1}>
+      <YStack mx="$-3" flex={1} flexBasis="auto">
         <RadioGroup {...demoProps.gapPropsMd} value={val} onValueChange={setVal}>
           {options.map((price) => {
             const active = val === price.value
@@ -57,7 +57,6 @@ export const PricingCards = () => {
                 flex={1}
                 htmlFor={htmlId}
                 p="$4"
-                height="unset"
                 display="flex"
                 bg="$color2"
                 hoverStyle={{
@@ -71,7 +70,7 @@ export const PricingCards = () => {
                 <RadioGroup.Item id={htmlId} size="$3" value={price.value}>
                   <RadioGroup.Indicator />
                 </RadioGroup.Item>
-                <YStack flex={1}>
+                <YStack flex={1} flexBasis="auto">
                   <Paragraph size="$6" mb={-3}>
                     {price.title}
                   </Paragraph>
@@ -86,9 +85,9 @@ export const PricingCards = () => {
       </YStack>
 
       <YStack mt="$4" gap="$4">
-        <Paragraph size="$3" text="center" theme="alt1" color="$color10">
+        <Paragraph size="$3" text="center" color="$color10">
           Have a coupon?{' '}
-          <Paragraph tag="span" textDecorationLine="underline">
+          <Paragraph render="span" textDecorationLine="underline">
             Click here
           </Paragraph>
         </Paragraph>

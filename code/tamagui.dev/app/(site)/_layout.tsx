@@ -1,11 +1,32 @@
 import { ToastViewport } from '@tamagui/toast'
+import { lazy, Suspense } from 'react'
 import { LoadProgressBar, Slot, usePathname } from 'one'
 import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
-import { NewAccountModal } from '../../features/site/purchase/NewAccountModal'
-import { NewPurchaseModal } from '../../features/site/purchase/NewPurchaseModal'
+
+// lazy load modals to avoid loading stripe on initial page load
+const NewAccountModal = lazy(() =>
+  import('~/features/site/purchase/NewAccountModal').then((mod) => ({
+    default: mod.NewAccountModal,
+  }))
+)
+
+const NewPurchaseModal = lazy(() =>
+  import('~/features/site/purchase/NewPurchaseModal').then((mod) => ({
+    default: mod.NewPurchaseModal,
+  }))
+)
+
+function Modals() {
+  return (
+    <Suspense fallback={null}>
+      <NewPurchaseModal />
+      <NewAccountModal />
+    </Suspense>
+  )
+}
 
 export default function SiteLayout() {
   const path = usePathname()
@@ -15,7 +36,8 @@ export default function SiteLayout() {
   const isTakeout = path.startsWith('/takeout')
   const isProductLandingPage = isTakeout || isStudio
   const isBlog = path.startsWith('/blog')
-  const isDocs = path.startsWith('/docs') || path.startsWith('/ui')
+  const isDocs =
+    path.startsWith('/docs') || path.startsWith('/ui') || path.startsWith('/demo')
   const isBento = path.startsWith('/bento')
 
   const disableNew = isBlog || isAuthPage || isProductLandingPage || isAccountPage
@@ -32,8 +54,7 @@ export default function SiteLayout() {
       <PromoBanner />
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />
-      <NewPurchaseModal />
-      <NewAccountModal />
+      <Modals />
       <LoadProgressBar />
       <Slot />
       {!hideFooter && <Footer />}

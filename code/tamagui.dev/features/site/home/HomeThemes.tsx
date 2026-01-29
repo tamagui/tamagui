@@ -26,7 +26,7 @@ export const HomeThemes = memo(function HomeThemes() {
   const userScheme = useUserScheme()
 
   const tints = useTints().tints as ThemeName[]
-  const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]
+  const themes: (ThemeName | null)[][] = [tints, [null, 'accent']]
 
   const themeCombos: string[] = []
   for (let i = 0; i < themes[0].length; i++) {
@@ -45,7 +45,7 @@ export const HomeThemes = memo(function HomeThemes() {
   }
 
   const splitToFlat = ([a, b]: number[]) => {
-    return a * 4 + b
+    return a * max + b
   }
 
   const [activeI, setActiveI_] = useState([0, 0])
@@ -58,14 +58,16 @@ export const HomeThemes = memo(function HomeThemes() {
   const getLock = useGet(scrollLock)
   const setTintIndexDebounce = useDebounce(setTintIndex, 100)
 
-  const updateActiveI = (to: SetStateAction<number[]>, lock: Lock = 'shouldAnimate') => {
-    setScrollLock(lock)
-    setActiveI_(to)
+  const updateActiveI = useEvent(
+    (to: SetStateAction<number[]>, lock: Lock = 'shouldAnimate') => {
+      setScrollLock(lock)
+      setActiveI_(to)
 
-    const val = typeof to === 'function' ? to(activeI) : to
-    const tintIndex = Math.floor(splitToFlat(val) / 4)
-    setTintIndexDebounce(tintIndex)
-  }
+      const val = typeof to === 'function' ? to(activeI) : to
+      const tintIndex = Math.floor(splitToFlat(val) / max)
+      setTintIndexDebounce(tintIndex)
+    }
+  )
 
   const isIntersecting = useIsIntersecting(scrollView, {
     threshold: 0.5,
@@ -77,8 +79,8 @@ export const HomeThemes = memo(function HomeThemes() {
 
     const now = Date.now() // ignore immediate one
     const disposeOnChange = onTintChange((index: number) => {
-      if (now > Date.now() - 200) return
-      moveToIndex(index * 3)
+      if (Date.now() - now < 200) return
+      moveToIndex(index * max)
     })
 
     return () => {
@@ -168,7 +170,13 @@ export const HomeThemes = memo(function HomeThemes() {
       <YStack my="$8" items="center" justify="center">
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" gap="$2">
-            <XGroup disablePassBorderRadius bordered p="$2" rounded="$10" self="center">
+            <XGroup
+              borderWidth={1}
+              borderColor="$borderColor"
+              p="$2"
+              rounded="$10"
+              self="center"
+            >
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = userScheme.value === name
                 return (
@@ -183,7 +191,13 @@ export const HomeThemes = memo(function HomeThemes() {
               })}
             </XGroup>
 
-            <XGroup disablePassBorderRadius bordered p="$2" rounded="$10" self="center">
+            <XGroup
+              borderWidth={1}
+              borderColor="$borderColor"
+              p="$2"
+              rounded="$10"
+              self="center"
+            >
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
@@ -213,16 +227,19 @@ export const HomeThemes = memo(function HomeThemes() {
           <YStack fullscreen pointerEvents="none" z={1000000000} />
           <XStack
             className="scroll-horizontal no-scrollbar"
-            ref={scrollView}
-            // @ts-expect-error it does pass through to web
+            ref={scrollView as any}
             onScroll={(e: any) => {
               if (scrollLock === 'animate' || scrollLock === 'shouldAnimate') {
                 return
               }
               const scrollX = Math.max(0, e.target.scrollLeft)
-              const itemI = Math.min(
-                Math.floor(scrollX / (width + 30)),
-                themeCombos.length - 1
+              // Match the formula in scrollToIndex: left = width * index + width / 2
+              const itemI = Math.max(
+                0,
+                Math.min(
+                  Math.round((scrollX - width / 2) / width),
+                  themeCombos.length - 1
+                )
               )
               const [n1, n2] = flatToSplit(itemI)
               const [c1, c2] = activeI

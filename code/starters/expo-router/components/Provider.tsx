@@ -4,7 +4,10 @@ import { ToastProvider, ToastViewport } from '@tamagui/toast'
 import { CurrentToast } from './CurrentToast'
 import { config } from '../tamagui.config'
 
-export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, 'config'>) {
+export function Provider({
+  children,
+  ...rest
+}: Omit<TamaguiProviderProps, 'config' | 'defaultTheme'>) {
   const colorScheme = useColorScheme()
 
   return (

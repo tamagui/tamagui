@@ -13,8 +13,8 @@ See the [Benchmarks](/docs/intro/benchmarks) or a more
 work at compile-time and runtime, so installing the compiler is optional, and in
 fact we recommend only setting it up once you're ready for production.
 
-The compiler uses Babel to analyze JSX and `styled` functions, then attempts
-statically analyze them and optimize them down to platform-native primitives.
+The compiler uses Babel to analyze JSX and `styled` functions, then attempts to
+statically analyze and optimize them down to platform-native primitives.
 The end result is less abstraction - like a `div` on web, or plain React Native
 `View` on native:
 
@@ -149,10 +149,10 @@ export default defineConfig({
 
 ### Next.js
 
-See the ([guide](/docs/guides/next-js)) for more complete setup.
+See the [guide](/docs/guides/next-js) for more complete setup.
 
 Add `@tamagui/next-plugin` and configure your `next.config.js`. Here we show a
-fuller scope of the options
+fuller scope of the options:
 
 ```js
 // note next-compose-plugins somewhat unmaintained
@@ -238,14 +238,6 @@ module.exports = {
 }
 ```
 
-Currently the native compiler doesn't optimize as much as it could. It bails out
-if it encounters any theme usage, like `<View backgroundColor="$background" />`.
-If you are on version `1.75` or greater, you can test enabling this experimental
-optimization by adding a new property with the key
-`experimentalFlattenThemesOnNative` set to true in the above config object and
-that will make the compiler to flat and extract any theme usage or dynamic
-values.
-
 ### Expo
 
 [Check out the Expo guide](/docs/guides/expo) for more information on setting up
@@ -263,6 +255,9 @@ will mess up your working directory, but makes it highly compatible with any
 bundler or tool. The downside is you don't get the helpful development
 compatibility parts of the plugins, plus dev-mode debugging and `data-`
 attributes.
+
+For complete CLI documentation including all available commands, see the
+[CLI Guide](/docs/guides/cli).
 
 #### Setup
 
@@ -407,6 +402,9 @@ command. Here are some examples:
 The Tamagui CLI optimizes your components in-place, then your bundler processes
 the already-optimized files.
 
+**Learn more:** See the [CLI Guide](/docs/guides/cli) for documentation on all
+CLI commands including `check`, `generate`, `add`, and more.
+
 ## Props
 
 All compiler plugins accept the same options:
@@ -489,13 +487,12 @@ All compiler plugins accept the same options:
         '(Experimental) Enables further extracting of any styled component, even if not in your components. See below for more information.',
     },
     {
-      name: 'experimentalFlattenThemesOnNative',
+      name: 'outputCSS',
       required: false,
-      type: 'boolean',
+      type: 'string',
       typeSimple: 'enum',
-      default: 'false',
       description:
-        '(Experimental) Enables further extracting of components that use theme values on native.',
+        'Path to output extracted CSS. When set, the compiler automatically sets TAMAGUI_DID_OUTPUT_CSS which tree-shakes all runtime CSS generation code from your bundle (~6KB gzipped savings).',
     },
   ]}
 />

@@ -4,7 +4,6 @@ import { useLoader } from 'one'
 import React from 'react'
 import { Container } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
-import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { MDXProvider } from '~/features/docs/MDXProvider'
 import { MDXTabs } from '~/features/docs/MDXTabs'
 import { components } from '~/features/mdx/MDXComponents'
@@ -37,8 +36,6 @@ export default function DPAPage() {
           </ThemeTint>
         </MDXProvider>
       </Container>
-
-      <DocsQuickNav key={frontmatter.slug} />
     </>
   )
 }

@@ -137,7 +137,7 @@ function getBashText(children: ReactNode): string {
     if (typeof node === 'string') return node
     if (Array.isArray(node)) return node.map(extractText).join('')
     if (isValidElement(node)) {
-      return extractText(node.props.children)
+      return extractText((node.props as any).children)
     }
     return ''
   }

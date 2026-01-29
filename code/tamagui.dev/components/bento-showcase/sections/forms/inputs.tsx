@@ -1,4 +1,4 @@
-import { Stack, YStack } from 'tamagui'
+import { View, YStack } from 'tamagui'
 
 import * as Inputs from '@tamagui/bento/component/forms/inputs'
 import { Showcase, WithSize } from '~/components/bento-showcase/_Showcase'
@@ -21,11 +21,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithLabelDemo.fileName}
           title="Input with Label"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.InputWithLabelDemo />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           isInput
@@ -33,11 +33,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.OneTimeCodeInputExample.fileName}
           title="One-Time Code Input"
         >
-          <Stack py="$15">
+          <View py="$15">
             <WithSize>
               <Inputs.OneTimeCodeInputExample />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           isInput
@@ -45,11 +45,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithLabelAndMessageDemo.fileName}
           title="Input with Label and Message"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.InputWithLabelAndMessageDemo />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           isInput
@@ -57,11 +57,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithErrorDemo.fileName}
           title="Input with Error"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.InputWithErrorDemo />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           isInput
@@ -69,11 +69,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithLeftIconDemo.fileName}
           title="Input Left Adornment"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.InputWithLeftIconDemo />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           isInput
@@ -81,11 +81,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithRightIconDemo.fileName}
           title="Input Right Adornment"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.InputWithRightIconDemo />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           isInput
@@ -93,11 +93,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputBothSideIconsExample.fileName}
           title="Input Left/Right Adornment"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.InputBothSideIconsExample />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           isInput
@@ -105,11 +105,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputGroupedIconsExample.fileName}
           title="Grouped Input with Buttons"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.InputGroupedIconsExample />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           isInput
@@ -117,11 +117,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.InputWithRightAddOnDemo.fileName}
           title="Grouped Input with Buttons (Alt)"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.InputWithRightAddOnDemo />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
         <Showcase
           short
@@ -129,11 +129,11 @@ export function inputs({ isProUser, showAppropriateModal }: BentoShowcaseContext
           fileName={Inputs.PhoneInputExample.fileName}
           title="Phone"
         >
-          <Stack py="$8">
+          <View py="$8">
             <WithSize>
               <Inputs.PhoneInputExample />
             </WithSize>
-          </Stack>
+          </View>
         </Showcase>
       </YStack>
     </BentoShowcaseProvider>

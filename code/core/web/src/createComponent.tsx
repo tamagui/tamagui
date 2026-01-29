@@ -1,25 +1,21 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import {
-  IS_REACT_19,
-  isAndroid,
-  isClient,
-  isServer,
-  isWeb,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/constants'
-import { composeEventHandlers, validStyles } from '@tamagui/helpers'
+import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { useMemo } from 'react'
-import { devConfig, onConfiguredOnce } from './config'
-import { stackDefaultStyles } from './constants/constants'
+import { devConfig, getConfig } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
+import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
+import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
+import { usePointerEvents } from './helpers/pointerEvents'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
+import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
@@ -38,13 +34,6 @@ import type {
   LayoutEvent,
   PseudoGroupState,
   SingleGroupContext,
-  SizeTokens,
-  SpaceDirection,
-  SpacerProps,
-  SpacerStyleProps,
-  SpaceValue,
-  StackNonStyleProps,
-  StackProps,
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
@@ -56,8 +45,8 @@ import type {
   UseAnimationProps,
   UseStyleEmitter,
   UseThemeWithStateProps,
-  WebOnlyPressEvents,
 } from './types'
+import type { ViewProps } from './views/View'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 
@@ -235,37 +224,13 @@ export function createComponent<
   BaseProps = never,
   BaseStyles extends Object = never,
 >(staticConfig: StaticConfig) {
-  const { componentName } = staticConfig
-
   let config: TamaguiInternalConfig | null = null
 
-  let defaultProps = staticConfig.defaultProps
-
-  onConfiguredOnce((conf) => {
-    config = conf
-
-    if (componentName) {
-      // TODO this should be deprecated and removed likely or at least done differently
-      const defaultForComponent = conf.defaultProps?.[componentName]
-      if (defaultForComponent) {
-        defaultProps = { ...defaultForComponent, ...defaultProps }
-      }
-    }
-  })
-
-  const { Component, isText, isZStack, isHOC } = staticConfig
-
-  if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
-    if (process.env.IS_STATIC !== 'is_static') {
-      log(`🐛 [${componentName || 'Component'}]`, {
-        staticConfig,
-        defaultProps,
-        defaultPropsKeyOrder: defaultProps ? Object.keys(defaultProps) : [],
-      })
-    }
-  }
+  const { Component, isText, isHOC } = staticConfig
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+    config ||= getConfig()
+
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
     if (process.env.NODE_ENV === 'development') {
@@ -322,41 +287,26 @@ export function createComponent<
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
-    let props: StackProps | TextProps = propsIn
-
-    // merge both default props and styled context props - ensure order is preserved
-    if (styledContextValue || defaultProps) {
-      // For nested text, override base Text defaults to use CSS inheritance
-      // Only override if using base defaults, not styled component explicit values
-      let effectiveDefaults = defaultProps
-      if (
-        process.env.TAMAGUI_TARGET === 'web' &&
-        isText &&
-        hasTextAncestor &&
-        defaultProps
-      ) {
-        effectiveDefaults = { ...defaultProps }
-        if (effectiveDefaults.fontFamily === 'unset')
-          effectiveDefaults.fontFamily = 'inherit'
-        if (effectiveDefaults.whiteSpace === 'pre-wrap')
-          effectiveDefaults.whiteSpace = 'inherit'
-        if (!effectiveDefaults.color) effectiveDefaults.color = 'inherit'
-        if (!effectiveDefaults.letterSpacing) effectiveDefaults.letterSpacing = 'inherit'
-        if (!effectiveDefaults.textTransform) effectiveDefaults.textTransform = 'inherit'
-      }
-
-      const [nextProps, overrides] = mergeComponentProps(
-        effectiveDefaults,
-        styledContextValue,
-        propsIn
-      )
-      if (nextProps) {
-        props = nextProps as StackProps | TextProps
-      }
-      overriddenContextProps = overrides
-    }
+    let props: ViewProps | TextProps = propsIn
 
     const componentName = props.componentName || staticConfig.componentName
+
+    // merge both default props and styled context props - ensure order is preserved
+    const defaultProps = getDefaultProps(
+      staticConfig,
+      props.componentName,
+      isText && hasTextAncestor
+    )
+
+    // merge styled context props over defaults, ensure order is preserved
+    const [nextProps, overrides] = mergeComponentProps(
+      defaultProps,
+      styledContextValue,
+      propsIn
+    )
+
+    props = nextProps as ViewProps | TextProps
+    overriddenContextProps = overrides
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
@@ -422,7 +372,23 @@ export function createComponent<
     }
 
     const groupContextParent = React.useContext(GroupContext)
-    const animationDriver = componentContext.animationDriver
+
+    // Get animation driver - either from animatedBy prop lookup or context
+    const animationDriver = (() => {
+      if (props.animatedBy && config?.animations) {
+        const animations = config.animations
+        // If animations is an object with named drivers (has 'default' key)
+        if ('default' in animations) {
+          return (
+            (animations as Record<string, any>)[props.animatedBy] ?? animations.default
+          )
+        }
+        // Single driver config - only 'default' makes sense
+        return props.animatedBy === 'default' ? animations : null
+      }
+      return componentContext.animationDriver
+    })()
+
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
     const componentState = useComponentState(
@@ -505,7 +471,7 @@ export function createComponent<
       }
     }, [stateRef, groupName, groupContextParent])
 
-    // if our animation driver supports noReRender, we'll replace this below with
+    // if our animation driver supports avoidReRenders, we'll replace this below with
     // a version that essentially uses an internall emitter rather than setting state
     // but still stores the current state and applies if it it needs to during render
     let setStateShallow = componentState.setStateShallow
@@ -513,9 +479,9 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     const isTaggable = !Component || typeof Component === 'string'
-    const tagProp = props.tag
-    // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? tagProp || Component : Component) : Component
+    const renderProp = props.render
+    // default to render prop, fallback to component (when both strings)
+    const element = isWeb ? (isTaggable ? renderProp || Component : Component) : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -542,28 +508,22 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
-    if (props.themeShallow) {
-      stateRef.current.themeShallow = true
-    }
-
     const themeStateProps: UseThemeWithStateProps = {
       componentName,
       disable: disableTheme,
-      shallow: stateRef.current.themeShallow,
+      shallow: props.themeShallow,
       debug: debugProp,
     }
 
-    // these two are set conditionally if existing in props because we wrap children with
+    // this is set conditionally if existing in props because we wrap children with
     // a span if they ever set one of these, so avoid wrapping all children with span
-    if ('themeInverse' in props) {
-      themeStateProps.inverse = props.themeInverse
-    }
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }
-    if (typeof stateRef.current.isListeningToTheme === 'boolean') {
-      themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
-    }
+    // Always set needsUpdate callback so it can check the ref's latest value
+    // This ensures components with $theme-dark/$theme-light re-render on theme change
+    // even when using raw colors (not tokens) since isListeningToTheme is set after useSplitStyles
+    themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {
       themeStateProps.deopt = willBeAnimated
@@ -636,7 +596,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    elementType = Component || elementType
+    elementType = element || elementType
     const isStringElement = typeof elementType === 'string'
 
     const mediaState = useMedia(componentContext, debugProp)
@@ -736,6 +696,19 @@ export function createComponent<
       const ogSetStateShallow = setStateShallow
 
       stateRef.current.updateStyleListener = () => {
+        const useStyleListener = stateRef.current.useStyleListener
+
+        // if no animation driver is listening for style updates, fall back to normal re-render
+        // this happens when a component has group prop but no transition/animation prop
+        if (!useStyleListener) {
+          const pendingState = stateRef.current.nextState
+          if (pendingState) {
+            stateRef.current.nextState = undefined
+            ogSetStateShallow(pendingState)
+          }
+          return
+        }
+
         const updatedState = stateRef.current.nextState || state
         const mediaState = stateRef.current.nextMedia
 
@@ -754,9 +727,7 @@ export function createComponent<
           debugProp
         )
 
-        const useStyleListener = stateRef.current.useStyleListener
-
-        useStyleListener?.((nextStyles?.style || {}) as any)
+        useStyleListener((nextStyles?.style || {}) as any)
       }
 
       function updateGroupListeners() {
@@ -766,7 +737,7 @@ export function createComponent<
             group,
             hasDynGroupChildren,
             unmounted,
-            animation,
+            transition,
             ...childrenGroupState
           } = updatedState
           notifyGroupSubscribers(
@@ -778,9 +749,26 @@ export function createComponent<
       }
 
       // don't change this ever or else you break ComponentContext and cause re-rendering
+      // use a Set of listeners so multiple components can register
+      componentContext.mediaEmitListeners ||= new Set()
+
+      // only register once per component instance
+      if (!stateRef.current.mediaEmitCleanup) {
+        const updateListener = (next: Record<string, boolean>) => {
+          stateRef.current.nextMedia = next
+          stateRef.current.updateStyleListener?.()
+        }
+        componentContext.mediaEmitListeners.add(updateListener)
+        stateRef.current.mediaEmitCleanup = () => {
+          componentContext.mediaEmitListeners?.delete(updateListener)
+        }
+      }
+
       componentContext.mediaEmit ||= (next) => {
-        stateRef.current.nextMedia = next
-        stateRef.current.updateStyleListener?.()
+        // notify all registered components
+        for (const listener of componentContext.mediaEmitListeners!) {
+          listener(next)
+        }
       }
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
@@ -877,7 +865,6 @@ export function createComponent<
       pseudos,
       style: splitStylesStyle,
       classNames,
-      space,
       pseudoGroups,
       mediaGroups,
     } = splitStyles || {}
@@ -928,8 +915,8 @@ export function createComponent<
       }
     }
 
-    if (tagProp && elementType['acceptTagProp']) {
-      viewProps.tag = tagProp
+    if (renderProp && elementType['acceptTagProp']) {
+      viewProps.render = renderProp
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -959,6 +946,7 @@ export function createComponent<
         componentState: state,
         styleProps,
         theme,
+        themeName,
         pseudos: pseudos || null,
         staticConfig,
         stateRef,
@@ -1033,6 +1021,9 @@ export function createComponent<
 
     viewProps.ref = stateRef.current.composedRef
 
+    // handle pointer events (native: maps to touch events, web: no-op)
+    usePointerEvents(props, viewProps)
+
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
         React.Children.toArray(props.children).forEach((item) => {
@@ -1077,37 +1068,46 @@ export function createComponent<
       })
     }
 
-    // TODO should this be regular effect to allow the render in-between?
+    // Animation enter state machine: true -> 'should-enter' -> false
+    // Stage 1: Set 'should-enter' synchronously before paint to apply enterStyle classes
+    // Stage 2: After browser paint, set false to trigger CSS transition
+    //
+    // CRITICAL: useEffect does NOT guarantee post-paint execution!
+    // See: https://thoughtspile.github.io/2021/11/15/unintentional-layout-effect/
+    // When layoutEffect updates state → re-render before paint → useEffect flushes pre-paint
+    // Solution: Double RAF ensures browser has actually painted before we transition
     useIsomorphicLayoutEffect(() => {
-      // Note: We removed the early return on disabled to allow animations to work
-      // This fixes the issue where animations wouldn't work on disabled components
       if (state.unmounted === true && hasEnterStyle) {
         setStateShallow({ unmounted: 'should-enter' })
         return
       }
 
-      let tm: NodeJS.Timeout
       if (state.unmounted) {
-        if (animationDriver?.supportsCSS || isAndroid) {
-          // this setTimeout fixes css driver enter animations  - not sure why
-          // this setTimeout fixes the conflict when with the safe area view in android
-          tm = setTimeout(() => {
-            setStateShallow({ unmounted: false })
+        // For CSS transitions, we need browser to paint enterStyle before removing it.
+        // Double RAF guarantees paint: first RAF schedules after current frame,
+        // second RAF schedules after that frame completes (including paint).
+        if (supportsCSS) {
+          let cancelled = false
+          requestAnimationFrame(() => {
+            if (cancelled) return
+            requestAnimationFrame(() => {
+              if (cancelled) return
+              setStateShallow({ unmounted: false })
+            })
           })
-          return () => clearTimeout(tm)
-          // don't clearTimeout! safari gets bugs it just doesn't ever set unmounted: false
+          return () => {
+            cancelled = true
+          }
         }
-
+        // Non-CSS drivers handle their own animation timing
         setStateShallow({ unmounted: false })
-        return
       }
-
-      // Only subscribe to context group if not disabled
 
       return () => {
         componentSetStates.delete(setState)
+        stateRef.current.mediaEmitCleanup?.()
       }
-    }, [state.unmounted, disabled])
+    }, [state.unmounted, supportsCSS])
 
     useIsomorphicLayoutEffect(() => {
       if (disabled) return
@@ -1333,28 +1333,19 @@ export function createComponent<
       log(`events`, { events, attachHover, attachPress })
     }
 
-    // EVENTS native
-    hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow, staticConfig)
-
-    const direction = props.spaceDirection || 'both'
+    // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
+    const pressGesture =
+      process.env.TAMAGUI_TARGET === 'native'
+        ? useEvents(events, viewProps, stateRef, staticConfig)
+        : null
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    let content =
-      !children || asChild || !splitStyles
-        ? children
-        : spacedChildren({
-            separator,
-            children,
-            space,
-            direction,
-            isZStack,
-            debug: debugProp,
-          })
+    let content = children
 
     if (asChild) {
       elementType = Slot
-      // on native this is already merged into viewProps in hooks.useEvents
+      // on native this is already merged into viewProps in useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
         const webStyleEvents = asChild === 'web' || asChild === 'except-style-web'
         const passEvents = getWebEvents(
@@ -1398,11 +1389,33 @@ export function createComponent<
     if (useChildrenResult) {
       content = useChildrenResult
     } else {
-      content = React.createElement(elementType, viewProps, content)
+      // Handle render prop variants: function, JSX element, or string
+      if (typeof renderProp === 'function') {
+        // Render function: full control with props and state
+        const renderProps = { ...viewProps, children: content }
+        content = renderProp(renderProps, state)
+      } else if (
+        renderProp &&
+        typeof renderProp === 'object' &&
+        React.isValidElement(renderProp)
+      ) {
+        // JSX element: clone with merged props
+        const elementProps = (renderProp as React.ReactElement).props || {}
+        const mergedProps = mergeRenderElementProps(elementProps, viewProps, content)
+        content = React.cloneElement(renderProp as React.ReactElement, mergedProps)
+      } else {
+        content = React.createElement(elementType, viewProps, content)
+      }
+    }
+
+    // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      content = wrapWithGestureDetector(content, pressGesture, stateRef)
     }
 
     // needs to reset the presence state for nested children
-    const ResetPresence = config?.animations?.ResetPresence
+    // Use the resolved animationDriver (handles multi-driver config)
+    const ResetPresence = animationDriver?.ResetPresence
     const needsReset = Boolean(
       // not when passing down to child
       !asChild &&
@@ -1444,7 +1457,7 @@ export function createComponent<
     }
 
     // Text components set inText context for children so nested Text can inherit styles
-    if (process.env.TAMAGUI_TARGET === 'web' && isText && !hasTextAncestor) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !asChild && isText && !hasTextAncestor) {
       content = (
         <ComponentContext.Provider {...componentContext} inText={true}>
           {content}
@@ -1484,10 +1497,6 @@ export function createComponent<
         }
       }
 
-      if (debugProp) {
-        console.info('overriddenContextProps', overriddenContextProps)
-      }
-
       content = (
         <Provider __disableMergeDefaultValues {...overriddenContextProps}>
           {content}
@@ -1515,7 +1524,7 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         const title = `render <${element} /> (${internalID}) with props`
-        if (!isWeb) {
+        if (!isWeb || !isClient) {
           log(title)
           log(`state: `, state)
           if (isDevTools) {
@@ -1538,7 +1547,6 @@ export function createComponent<
                 animationStyles,
                 classNames,
                 content,
-                defaultProps,
                 elementType,
                 events,
                 isAnimated,
@@ -1618,9 +1626,10 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (process.env.TAMAGUI_FORCE_MEMO || staticConfig.memo) {
-    res = React.memo(res) as any
-  }
+  // we now have avoid re-renders in many more cases so imo this is way more worth it
+  // Text/Button/string taking components
+  //  + react compiler can memoize children too
+  res = React.memo(res) as any
 
   res.staticConfig = staticConfig
 
@@ -1634,16 +1643,8 @@ export function createComponent<
     }
   }
 
-  function extractable(Component: any, extended?: Partial<StaticConfig>) {
-    Component.staticConfig = extendStyledConfig(extended)
-    Component.styleable = styleable
-    return Component
-  }
-
   function styleable(Component: any, options?: StyleableOptions) {
-    const skipForwardRef =
-      (IS_REACT_19 && typeof Component === 'function' && Component.length === 1) ||
-      Component.render?.length === 2
+    const skipForwardRef = typeof Component === 'function' && Component.length === 1
 
     let out = skipForwardRef ? Component : React.forwardRef(Component)
 
@@ -1660,233 +1661,10 @@ export function createComponent<
     return out
   }
 
-  res.extractable = extractable
   res.styleable = styleable
 
   return res
 }
-
-type EventKeys = keyof (TamaguiComponentEvents & WebOnlyPressEvents)
-type EventLikeObject = { [key in EventKeys]?: any }
-
-function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
-  return {
-    onMouseEnter: events.onMouseEnter,
-    onMouseLeave: events.onMouseLeave,
-    [webStyle ? 'onClick' : 'onPress']: events.onPress,
-    onMouseDown: events.onPressIn,
-    onMouseUp: events.onPressOut,
-    onTouchStart: events.onPressIn,
-    onTouchEnd: events.onPressOut,
-    onFocus: events.onFocus,
-    onBlur: events.onBlur,
-  }
-}
-
-// for elements to avoid spacing
-export function Unspaced(props: { children?: any }) {
-  return props.children
-}
-Unspaced['isUnspaced'] = true
-
-const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
-  size = size === false ? 0 : size === true ? '$true' : size
-  const sizePx = tokens.space[size] ?? size
-  return {
-    width: sizePx,
-    height: sizePx,
-    minWidth: sizePx,
-    minHeight: sizePx,
-  }
-}
-
-// dont used styled() here to avoid circular deps
-// keep inline to avoid circular deps
-export const Spacer = createComponent<
-  SpacerProps,
-  TamaguiElement,
-  StackNonStyleProps,
-  SpacerStyleProps
->({
-  acceptsClassName: true,
-  memo: true,
-  componentName: 'Spacer',
-  validStyles,
-
-  defaultProps: {
-    ...stackDefaultStyles,
-    // avoid nesting issues
-    tag: 'span',
-    size: true,
-    pointerEvents: 'none',
-  },
-
-  variants: {
-    size: {
-      '...': getSpacerSize,
-    },
-
-    flex: {
-      true: {
-        flexGrow: 1,
-      },
-    },
-
-    direction: {
-      horizontal: {
-        height: 0,
-        minHeight: 0,
-      },
-      vertical: {
-        width: 0,
-        minWidth: 0,
-      },
-      both: {},
-    },
-  } as const,
-})
-
-export type SpacedChildrenProps = {
-  isZStack?: boolean
-  children?: React.ReactNode
-  space?: SpaceValue
-  spaceFlex?: boolean | number
-  direction?: SpaceDirection | 'unset'
-  separator?: React.ReactNode
-  ensureKeys?: boolean
-  debug?: DebugProp
-}
-
-export function spacedChildren(props: SpacedChildrenProps) {
-  const { isZStack, children, space, direction, spaceFlex, separator, ensureKeys } = props
-  const hasSpace = !!(space || spaceFlex)
-  const hasSeparator = !(separator === undefined || separator === null)
-  const areChildrenArray = Array.isArray(children)
-
-  if (!ensureKeys && !(hasSpace || hasSeparator || isZStack)) {
-    return children
-  }
-
-  const childrenList = areChildrenArray ? children : React.Children.toArray(children)
-
-  const len = childrenList.length
-  if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
-    return children
-  }
-
-  const final: React.ReactNode[] = []
-  for (let [index, child] of childrenList.entries()) {
-    const isEmpty =
-      child === null ||
-      child === undefined ||
-      (Array.isArray(child) && child.length === 0)
-
-    // forward space
-    if (!isEmpty && React.isValidElement(child) && child.type?.['shouldForwardSpace']) {
-      child = React.cloneElement(child, {
-        // @ts-expect-error we explicitly know with shouldForwardSpace
-        space,
-        spaceFlex,
-        separator,
-        key: child.key,
-      })
-    }
-
-    // push them all, but wrap some in Fragment
-    if (isEmpty || !child || (child['key'] && !isZStack)) {
-      final.push(child)
-    } else {
-      final.push(
-        <React.Fragment key={`${index}0t`}>
-          {isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}
-        </React.Fragment>
-      )
-    }
-
-    // first child unspaced avoid insert space
-    if (isUnspaced(child) && index === 0) continue
-    // no spacing on ZStack
-    if (isZStack) continue
-
-    const next = childrenList[index + 1]
-
-    if (next && !isEmpty && !isUnspaced(next)) {
-      if (separator) {
-        if (hasSpace) {
-          final.push(
-            createSpacer({
-              key: `_${index}_00t`,
-              direction,
-              space,
-              spaceFlex,
-            })
-          )
-        }
-        final.push(<React.Fragment key={`${index}03t`}>{separator}</React.Fragment>)
-        if (hasSpace) {
-          final.push(
-            createSpacer({
-              key: `_${index}01t`,
-              direction,
-              space,
-              spaceFlex,
-            })
-          )
-        }
-      } else {
-        final.push(
-          createSpacer({
-            key: `_${index}02t`,
-            direction,
-            space,
-            spaceFlex,
-          })
-        )
-      }
-    }
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    if (props.debug) {
-      log(`  Spaced children`, final, props)
-    }
-  }
-
-  return final
-}
-
-type CreateSpacerProps = SpacedChildrenProps & { key: string }
-
-function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
-  return (
-    <Spacer
-      key={key}
-      size={space}
-      direction={direction}
-      {...(typeof spaceFlex !== 'undefined' && {
-        flex: spaceFlex === true ? 1 : spaceFlex === false ? 0 : spaceFlex,
-      })}
-    />
-  )
-}
-
-function isUnspaced(child: React.ReactNode) {
-  const t = child?.['type']
-  return t?.['isVisuallyHidden'] || t?.['isUnspaced']
-}
-
-const AbsoluteFill: any = createComponent({
-  defaultProps: {
-    ...stackDefaultStyles,
-    flexDirection: 'column',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    pointerEvents: 'box-none',
-  },
-})
 
 const fromPx = (val?: any): number => {
   if (typeof val === 'number') return val

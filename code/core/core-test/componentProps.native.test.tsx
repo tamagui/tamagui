@@ -11,7 +11,7 @@ const config = createTamagui(getDefaultTamaguiConfig('native'))
 describe('animation props', () => {
   test.skip(`renders with no props`, () => {
     const tree = render(
-      <TamaguiProvider config={config}>
+      <TamaguiProvider config={config} defaultTheme="light">
         <View />
       </TamaguiProvider>
     )
@@ -22,8 +22,8 @@ describe('animation props', () => {
   // this looks wrong
   test.skip(`renders with animation props`, () => {
     const tree = render(
-      <TamaguiProvider config={config}>
-        <View animation="quick" x={0} />
+      <TamaguiProvider config={config} defaultTheme="light">
+        <View transition="quick" x={0} />
       </TamaguiProvider>
     )
 

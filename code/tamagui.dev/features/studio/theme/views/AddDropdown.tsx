@@ -12,7 +12,7 @@ import {
 } from 'tamagui'
 
 const Item = ({ children, ...props }: ListItemProps) => (
-  <ListItem minW={190} size="$5" hoverTheme iconAfter={Plus} {...props}>
+  <ListItem minW={190} size="$5" iconAfter={Plus} {...props}>
     <Paragraph select="none">{children}</Paragraph>
   </ListItem>
 )
@@ -34,7 +34,7 @@ export const AddDropdown = withStaticProperties(
     return (
       <Popover size="$5" allowFlip placement="top" {...props}>
         <Popover.Trigger asChild>
-          <Button theme="surface3" size="$3" circular icon={Plus} />
+          <Button size="$3" circular icon={Plus} />
         </Popover.Trigger>
 
         <Popover.Content
@@ -47,7 +47,7 @@ export const AddDropdown = withStaticProperties(
           elevate
           maxW={400}
           items="flex-start"
-          animation={[
+          transition={[
             'quickest',
             {
               opacity: {

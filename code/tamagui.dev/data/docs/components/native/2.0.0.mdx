@@ -1,0 +1,129 @@
+---
+title: Native UI
+description: Optional native integrations for better performance and UX
+name: native
+---
+
+# Native Integrations
+
+Tamagui components work great out of the box, but several offer optional native
+integrations for improved performance and platform-native UX. All native
+integrations are opt-in - components work without them, just with slightly
+different behavior.
+
+## @tamagui/native Package
+
+The `@tamagui/native` package provides setup utilities for native integrations.
+Import the setup modules at your app's entry point, before any Tamagui imports.
+
+```bash
+npm install @tamagui/native
+```
+
+## Portal
+
+**Native portals preserve React context** - the default implementation on native
+uses a JS-based approach that breaks React context, or requires you to hoist data
+awkwardly. With native portals, your custom contexts (navigation, app state)
+work inside Sheet, Dialog, Popover, and other portaled content.
+
+### Setup
+
+```bash
+npm install react-native-teleport
+```
+
+```tsx
+// App.tsx - before any Tamagui imports
+import '@tamagui/native/setup-portal'
+```
+
+See [Portal docs](/docs/components/portal) for full details.
+
+## Sheet Gestures
+
+**Native gesture coordination** - makes sheets feel smoother and not get
+confused with scrollable content during drags. Without this, scroll and pan
+gestures can occasionally conflict on iOS.
+
+### Setup
+
+```bash
+npm install react-native-gesture-handler
+```
+
+```tsx
+// App.tsx - before any Tamagui imports
+import '@tamagui/native/setup-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {/* Your app */}
+    </GestureHandlerRootView>
+  )
+}
+```
+
+See [Sheet docs](/docs/components/sheet) for full details.
+
+## Menu & ContextMenu
+
+**Native menus** - renders platform-native context menus instead of custom
+overlays. Uses iOS's native menu API for haptics, blur effects, and system
+integration.
+
+### Setup
+
+```bash
+npm install zeego @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities
+```
+
+Then use the `native` prop:
+
+```tsx
+<Menu native>{/* menu content */}</Menu>
+```
+
+See [Menu docs](/docs/components/menu) and
+[ContextMenu docs](/docs/components/context-menu) for full details.
+
+## Toast
+
+**Native toasts** - uses platform-native toast implementations:
+
+- iOS: SPIndicator (system-style indicators)
+- Android: ToastAndroid
+- Web: Notification API
+
+### Setup
+
+```bash
+npm install burnt
+```
+
+Then use the `native` prop on ToastProvider:
+
+```tsx
+<Toast.Provider native>{/* your app */}</Toast.Provider>
+```
+
+See [Toast docs](/docs/components/toast) for full details.
+
+## LinearGradient
+
+**Native gradients** - uses `expo-linear-gradient` for high-performance native gradient rendering.
+
+### Setup
+
+```bash
+npm install expo-linear-gradient
+```
+
+```tsx
+// App.tsx - before any Tamagui imports
+import '@tamagui/native/setup-expo-linear-gradient'
+```
+
+See [LinearGradient docs](/docs/components/linear-gradient) for full details.

@@ -1,7 +1,7 @@
 import type { Href } from 'one'
 import { H2, Paragraph, XStack, YStack } from 'tamagui'
 import { Link } from '../../../components/Link'
-import { purchaseModal } from '../purchase/NewPurchaseModal'
+import { purchaseModal } from '../purchase/purchaseModalStore'
 
 export const TooltipLabelLarge = ({
   title,
@@ -10,7 +10,15 @@ export const TooltipLabelLarge = ({
   href,
 }: { href?: string; icon: any; title: string; subtitle: string }) => {
   const content = (
-    <YStack cursor={href ? 'pointer' : 'default'} flex={1} p="$3.5" rounded="$4" gap="$1">
+    <YStack
+      cursor={href ? 'pointer' : 'default'}
+      flex={1}
+      flexBasis="auto"
+      py="$2.5"
+      px="$3"
+      rounded="$4"
+      gap="$1"
+    >
       <XStack $gtXs={{ justify: 'center' }} items="center" gap="$2">
         <H2 fontFamily="$mono" fontWeight="600" size="$4" letterSpacing={1}>
           {title}
@@ -23,7 +31,7 @@ export const TooltipLabelLarge = ({
       <Paragraph
         $gtXs={{ text: 'center' }}
         fontFamily="$mono"
-        theme="alt1"
+        color="$color10"
         flex={1}
         size="$4"
         lineHeight="$3"

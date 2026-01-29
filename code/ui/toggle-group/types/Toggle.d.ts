@@ -1,112 +1,74 @@
-import type { GetProps, TamaguiElement } from '@tamagui/web';
+import type { GetProps, TamaguiElement, ViewStyle } from '@tamagui/web';
 import * as React from 'react';
-export declare const context: import("@tamagui/web").StyledContext<{
-    color: string;
-    toggledStyle: null | Record<string, any>;
-}>;
-export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
+export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase & {
+    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
+        accept: {
+            readonly activeStyle: "style";
+        };
+    }>> | undefined;
+}, {
+    size?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+    defaultActiveStyle?: boolean | undefined;
+}, {
+    accept: {
+        readonly activeStyle: "style";
+    };
+}>;
 type ToggleFrameProps = GetProps<typeof ToggleFrame>;
 type ToggleItemExtraProps = {
+    orientation?: 'horizontal' | 'vertical';
     defaultValue?: string;
     disabled?: boolean;
-    pressed?: boolean;
-    defaultPressed?: boolean;
-    onPressedChange?(pressed: boolean): void;
-    toggledStyle?: Record<string, any>;
+    active?: boolean;
+    defaultActive?: boolean;
+    onActiveChange?(active: boolean): void;
+    activeStyle?: ViewStyle | null;
+    activeTheme?: string | null;
 };
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps;
-export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "active" | "unstyled" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
+export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "size" | "activeStyle" | "unstyled" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
+        accept: {
+            readonly activeStyle: "style";
+        };
+    }>> | undefined;
+}> & {
+    size?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
+    defaultActiveStyle?: boolean | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
+        accept: {
+            readonly activeStyle: "style";
+        };
+    }>> | undefined;
+}>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
+        accept: {
+            readonly activeStyle: "style";
+        };
+    }>> | undefined;
+}> & {
+    size?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    active?: boolean | undefined;
+    defaultActiveStyle?: boolean | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
+        accept: {
+            readonly activeStyle: "style";
+        };
+    }>> | undefined;
+}>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase & {
+    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
+        accept: {
+            readonly activeStyle: "style";
+        };
+    }>> | undefined;
+}, {
+    size?: number | import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
+    defaultActiveStyle?: boolean | undefined;
 }>> & ToggleItemExtraProps & React.RefAttributes<TamaguiElement>>;
 export {};
 //# sourceMappingURL=Toggle.d.ts.map

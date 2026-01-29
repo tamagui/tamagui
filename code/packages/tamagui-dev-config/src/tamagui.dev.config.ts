@@ -1,10 +1,10 @@
-import { defaultConfig } from '@tamagui/config/v4'
+import { animationsCSS } from '@tamagui/config/v5-css'
+import { animationsMotion } from '@tamagui/config/v5-motion'
+import { defaultConfig, themes } from '@tamagui/config/v5-subtle'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-import { animations } from './animations'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
-import { themeDev } from './theme.dev'
 
 setupDev({
   visualizer: true,
@@ -18,21 +18,20 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-// Use v4 config as base and override with our customizations
+// Use v5 config as base, but with tamagui.dev custom themes
 export const config = {
   ...defaultConfig,
+  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
   fonts,
-  animations,
-  themes: themeDev,
+  animations: {
+    default: animationsMotion,
+    css: animationsCSS,
+  },
   media,
-  // v4 has shorthands built-in, no need to import
   settings: {
     ...defaultConfig.settings,
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    maxDarkLightNesting: 2,
-    themeClassNameOnRoot: true,
-    disableRootThemeClass: true,
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
@@ -40,8 +39,8 @@ export const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
-    // Allow full style props (not just shorthands) for demos
-    onlyAllowShorthands: true,
+    // Allow both shorthands and longhand names for flexibility
+    onlyAllowShorthands: false,
   },
 } satisfies CreateTamaguiProps
 

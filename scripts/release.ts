@@ -1,8 +1,7 @@
+import fs, { ensureDir, writeJSON } from 'fs-extra'
 import * as proc from 'node:child_process'
-import { join } from 'node:path'
+import path, { join } from 'node:path'
 import { promisify } from 'node:util'
-import path from 'node:path'
-import fs, { writeJSON, ensureDir } from 'fs-extra'
 import pMap from 'p-map'
 import prompts from 'prompts'
 
@@ -21,14 +20,13 @@ export const spawn = proc.spawn
 const reRun = process.argv.includes('--rerun')
 const rePublish = reRun || process.argv.includes('--republish')
 const shouldFinish = process.argv.includes('--finish')
-const skipFinish = process.argv.includes('--skip-finish')
 
 const canary = process.argv.includes('--canary')
 const isRC = process.argv.includes('--rc')
 const skipStarters = canary || process.argv.includes('--skip-starters')
 const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
-const dirty = shouldFinish || process.argv.includes('--dirty')
+const dirty = shouldFinish || rePublish || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
   shouldFinish ||
@@ -38,37 +36,45 @@ const skipTest =
 const skipNativeTests =
   process.argv.includes('--skip-native-test') ||
   process.argv.includes('--skip-native-tests')
-const skipChecks = process.argv.includes('--skip-checks')
+const skipChecks = rePublish || process.argv.includes('--skip-checks')
 const skipBuild = shouldFinish || rePublish || process.argv.includes('--skip-build')
 const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
-const isCI = shouldFinish || process.argv.includes('--ci')
+const isCI = shouldFinish || rePublish || process.argv.includes('--ci')
+const skipFinish = rePublish || process.argv.includes('--skip-finish')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
-// Check if current version is an RC (e.g., 1.3.0-rc.1)
+// Check if current version is an RC (e.g., 1.143.0-rc.1)
 const rcMatch = curVersion.match(/^(\d+\.\d+\.\d+)-rc\.(\d+)$/)
 const isCurrentRC = !!rcMatch
 const currentRCBase = rcMatch ? rcMatch[1] : null
 const currentRCNumber = rcMatch ? Number.parseInt(rcMatch[2], 10) : 0
 
 const nextVersion = (() => {
-  if (canary) {
-    return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
-  }
-
   if (rePublish) {
     return curVersion
   }
 
-  // RC mode: bump existing RC or will prompt for new RC version
+  if (canary) {
+    return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
+  }
+
+  // RC mode: bump existing RC or compute new RC version
   if (isRC) {
     if (isCurrentRC) {
       // Already an RC, bump the RC number
       return `${currentRCBase}-rc.${currentRCNumber + 1}`
     }
-    // Not an RC yet, return placeholder - will be set via prompt
+    // Not an RC yet - compute the RC version
+    const baseVersion = curVersion.replace(/-.*$/, '') // strip any existing prerelease
+    const isCanaryOfCurrent = /-\d+$/.test(curVersion)
+    if (isCanaryOfCurrent) {
+      // canary of X.Y.Z -> X.Y.Z-rc.0
+      return `${baseVersion}-rc.0`
+    }
+    // otherwise return null - will be set via prompt
     return null
   }
 
@@ -93,15 +99,7 @@ const sleep = (ms) => {
 }
 
 if (!skipVersion) {
-  console.info('Current:', curVersion)
-  if (isRC) {
-    if (isCurrentRC) {
-      console.info(`RC mode: bumping RC ${currentRCNumber} → ${currentRCNumber + 1}`)
-    } else {
-      console.info('RC mode: will prompt for version to RC')
-    }
-  }
-  console.info('')
+  console.info('Current:', curVersion, '\n')
 } else {
   console.info(`Re-releasing ${curVersion}`)
 }
@@ -113,8 +111,8 @@ async function run() {
     let version = curVersion
 
     // ensure we are up to date
-    // ensure we are on main
-    if (!canary) {
+    // ensure we are on main (skip for canary and rc releases)
+    if (!canary && !isRC && !rePublish) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
@@ -217,17 +215,28 @@ async function run() {
         const baseVersion = curVersion.replace(/-.*$/, '') // strip any existing prerelease
         const [major, minor, patch] = baseVersion.split('.').map(Number)
 
-        const rcChoices = [
-          {
-            title: `${major}.${minor + 1}.0-rc.1 (next minor)`,
-            value: `${major}.${minor + 1}.0-rc.1`,
-          },
-          {
-            title: `${major}.${minor}.${patch + 1}-rc.1 (next patch)`,
-            value: `${major}.${minor}.${patch + 1}-rc.1`,
-          },
-          { title: `${major + 1}.0.0-rc.1 (next major)`, value: `${major + 1}.0.0-rc.1` },
-        ]
+        // check if current version is a canary (has prerelease suffix like -1234567)
+        const isCanaryOfCurrent = /-\d+$/.test(curVersion)
+
+        const rcChoices = isCanaryOfCurrent
+          ? [
+              // canary of X.Y.Z -> offer X.Y.Z-rc.0 as the RC
+              {
+                title: `${major}.${minor}.${patch}-rc.0`,
+                value: `${major}.${minor}.${patch}-rc.0`,
+              },
+            ]
+          : [
+              {
+                title: `${major}.${minor + 1}.0-rc.0 (next minor)`,
+                value: `${major}.${minor + 1}.0-rc.0`,
+              },
+              {
+                title: `${major}.${minor}.${patch + 1}-rc.0 (next patch)`,
+                value: `${major}.${minor}.${patch + 1}-rc.0`,
+              },
+              { title: `${major + 1}.0.0-rc.0 (next major)`, value: `${major + 1}.0.0-rc.0` },
+            ]
 
         const rcAnswer = await prompts({
           type: 'select',
@@ -337,11 +346,8 @@ async function run() {
       await pMap(
         packageJsons,
         async ({ name, cwd }) => {
-          const publishTag = canary
-            ? 'canary'
-            : version.includes('-rc.')
-              ? 'rc'
-              : undefined
+          const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
+          const publishTag = canary || isCanaryVersion ? 'canary' : undefined
           const publishOptions = [publishTag && `--tag ${publishTag}`]
             .filter(Boolean)
             .join(' ')
@@ -392,27 +398,12 @@ async function run() {
       }
 
       if (!canary && !skipStarters) {
-        const starterFreeDir = join(process.cwd(), '../starter-free')
-        if (!dirty) {
-          await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
-        }
-
         await spawnify(`yarn upgrade:starters`)
-
-        if (!shouldFinish) {
-          // Run yarn test in starter-free directory
-          await spawnify(`yarn test`, { cwd: starterFreeDir })
-          await finishAndCommit(starterFreeDir)
-        }
       }
 
       await finishAndCommit()
 
       async function finishAndCommit(cwd = process.cwd()) {
-        if (canary && !isMain) {
-          console.info(`Canary off main - avoiding commit`)
-          return
-        }
         if (!rePublish || reRun || shouldFinish) {
           await spawnify(`git add -A`, { cwd })
           await spawnify(`git commit -m ${gitTag}`, { cwd })
@@ -422,7 +413,10 @@ async function run() {
 
           if (!dirty) {
             // pull once more before pushing so if there was a push in interim we get it
-            await spawnify(`git pull --rebase origin HEAD`, { cwd })
+            const currentBranch = (
+              await exec(`git rev-parse --abbrev-ref HEAD`, { cwd })
+            ).stdout.trim()
+            await spawnify(`git pull --rebase origin ${currentBranch}`, { cwd })
           }
 
           await spawnify(`git push origin head`, { cwd })

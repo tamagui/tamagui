@@ -8,7 +8,7 @@ import {
 } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
-import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledContext,
@@ -25,9 +25,14 @@ import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { Portal, PortalItem, resolveViewZIndex, USE_NATIVE_PORTAL } from '@tamagui/portal'
+import {
+  needsPortalRepropagation,
+  Portal,
+  PortalItem,
+  resolveViewZIndex,
+} from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
+import { SheetController } from '@tamagui/sheet/controller'
 import type { YStackProps } from '@tamagui/stacks'
 import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
@@ -98,7 +103,7 @@ const DialogTrigger = DialogTriggerFrame.styleable<ScopedProps<{}>>(
     return (
       <ButtonNestingContext.Provider value={true}>
         <DialogTriggerFrame
-          tag={isInsideButton ? 'span' : 'button'}
+          render={isInsideButton ? 'span' : 'button'}
           aria-haspopup="dialog"
           aria-expanded={context.open}
           aria-controls={context.contentId}
@@ -128,7 +133,7 @@ type DialogPortalProps = ScopedProps<
 
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
-  tag: 'dialog',
+  render: 'dialog',
 
   variants: {
     unstyled: {
@@ -161,7 +166,7 @@ export const DialogPortalFrame = styled(YStack, {
   },
 })
 
-const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL)
+const needsRepropagation = needsPortalRepropagation()
 
 const DialogPortalItem = ({
   context,
@@ -308,8 +313,33 @@ const OVERLAY_NAME = 'DialogOverlay'
 /**
  * exported for internal use with extractable()
  */
-export const DialogOverlayFrame = styled(Overlay, {
+export const DialogOverlayFrame = styled(YStack, {
   name: OVERLAY_NAME,
+
+  variants: {
+    open: {
+      true: {
+        pointerEvents: 'auto',
+      },
+      false: {
+        pointerEvents: 'none',
+      },
+    },
+
+    unstyled: {
+      false: {
+        fullscreen: true,
+        position: 'absolute',
+        backgroundColor: '$background',
+        zIndex: 100_000 - 1,
+        pointerEvents: 'auto',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 export type DialogOverlayExtraProps = ScopedProps<{
@@ -372,11 +402,15 @@ const DialogContentFrame = styled(ThemeableStack, {
     unstyled: {
       false: {
         position: 'relative',
-        backgrounded: true,
-        padded: true,
-        radiused: true,
+        backgroundColor: '$background',
+        borderWidth: 1,
+        borderColor: '$borderColor',
+        padding: '$true',
+        borderRadius: '$true',
         elevate: true,
         zIndex: 100_000,
+        // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
+        pointerEvents: 'auto',
       },
     },
   } as const,
@@ -439,7 +473,11 @@ type DialogContentTypeProps = DialogContentImplProps & {
 const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
   ({ children, context, ...props }, forwardedRef) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
-    const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      context.contentRef,
+      contentRef as any
+    )
 
     return (
       <DialogContentImpl
@@ -574,7 +612,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       // TODO react 19 type workaround
       undefined as unknown as HTMLDivElement
     )
-    const composedRefs = useComposedRefs(forwardedRef, contentRef)
+    const composedRefs = useComposedRefs(forwardedRef, contentRef as any)
     const isAdapted = useAdaptIsActive(context.adaptScope)
 
     // TODO this will re-parent, ideally we would not change tree structure
@@ -593,9 +631,13 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       <DialogContentFrame
         ref={composedRefs}
         id={context.contentId}
+        role="dialog"
+        aria-modal={context.modal}
         aria-describedby={context.descriptionId}
         aria-labelledby={context.titleId}
         data-state={getState(context.open)}
+        // allow clicking through content during exit animation
+        pointerEvents={context.open ? 'auto' : 'none'}
         {...contentProps}
       />
     )
@@ -631,7 +673,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
           <>
             <TitleWarning titleId={context.titleId} />
             <DescriptionWarning
-              contentRef={contentRef}
+              contentRef={contentRef as any}
               descriptionId={context.descriptionId}
             />
           </>
@@ -694,7 +736,7 @@ const CLOSE_NAME = 'DialogClose'
 
 const DialogCloseFrame = styled(View, {
   name: CLOSE_NAME,
-  tag: 'button',
+  render: 'button',
 })
 
 export type DialogCloseExtraProps = ScopedProps<{
@@ -716,8 +758,8 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
 
     return (
       <DialogCloseFrame
-        accessibilityLabel="Dialog Close"
-        tag={isInsideButton ? 'span' : 'button'}
+        aria-label="Dialog Close"
+        render={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () => {
@@ -826,7 +868,7 @@ const Dialog = withStaticProperties(
       const titleId = `${dialogId}-title`
       const descriptionId = `${dialogId}-description`
 
-      const triggerRef = React.useRef<HTMLButtonElement>(null)
+      const triggerRef = React.useRef<TamaguiElement>(null)
       const contentRef = React.useRef<TamaguiElement>(null)
 
       const [open, setOpen] = useControllableState({
@@ -888,7 +930,6 @@ const Dialog = withStaticProperties(
     Title: DialogTitle,
     Description: DialogDescription,
     Close: DialogClose,
-    Sheet: Sheet.Controlled,
     FocusScope: FocusScopeController,
     Adapt,
   }

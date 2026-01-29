@@ -6,11 +6,11 @@ import {
   Button,
   H1,
   H2,
-  Input,
   isWeb,
   Label,
   Paragraph,
   Popover,
+  Sheet,
   XStack,
   YStack,
 } from 'tamagui'
@@ -105,19 +105,19 @@ function Demo({
 
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
-          <Popover.Sheet modal dismissOnSnapToBottom>
-            <Popover.Sheet.Frame padding="$4">
+          <Sheet modal dismissOnSnapToBottom>
+            <Sheet.Frame padding="$4">
               <Adapt.Contents />
-            </Popover.Sheet.Frame>
-            <Popover.Sheet.Overlay backgroundColor="$shadowColor" />
-          </Popover.Sheet>
+            </Sheet.Frame>
+            <Sheet.Overlay backgroundColor="$shadowColor" />
+          </Sheet>
         </Adapt>
       )}
 
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
-        animation="100ms"
+        transition="100ms"
         width={300}
         height={300}
         enterStyle={{
@@ -174,5 +174,44 @@ function SimplePopoverTest() {
         </YStack>
       </Popover.Content>
     </Popover>
+  )
+}
+
+// test case for animatePosition - verifies position is correct on re-open
+export function PopoverAnimatePositionCase() {
+  return (
+    <YStack padding="$4" gap="$4" alignItems="center">
+      <H1>Popover animatePosition Test</H1>
+      <Paragraph>
+        Tests that popover with animatePosition shows at correct position on re-open
+      </Paragraph>
+
+      <XStack paddingLeft={100}>
+        <Popover offset={10}>
+          <Popover.Trigger asChild>
+            <Button id="animate-position-trigger">Open Popover</Button>
+          </Popover.Trigger>
+          <Popover.Content
+            id="animate-position-content"
+            animatePosition
+            transition="quick"
+            enterStyle={{ y: 5, opacity: 0 }}
+            exitStyle={{ y: 5, opacity: 0 }}
+            elevate
+            padding="$4"
+          >
+            <Popover.Arrow />
+            <YStack gap="$2" width={200}>
+              <Paragraph>Popover with animatePosition</Paragraph>
+              <Popover.Close asChild>
+                <Button size="$2" id="animate-position-close">
+                  Close
+                </Button>
+              </Popover.Close>
+            </YStack>
+          </Popover.Content>
+        </Popover>
+      </XStack>
+    </YStack>
   )
 }

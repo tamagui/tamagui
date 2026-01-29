@@ -17,7 +17,6 @@ import {
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { IconGithub } from '~/features/studio/theme/icons/icon-github'
 import { IconGitlab } from '~/features/studio/theme/icons/icon-gitlab'
-import { ButtonSimple } from './ButtonSimple'
 
 export const LoginScreen = () => {
   const demoProps = useDemoProps()
@@ -50,36 +49,34 @@ export const LoginScreen = () => {
           </Paragraph>
         </YStack>
 
-        <YStack flex={1} {...demoProps.gapPropsLg}>
+        <YStack flex={1} flexBasis="auto" {...demoProps.gapPropsLg}>
           <XStack {...demoProps.gapPropsMd}>
             <>
-              <ButtonSimple
+              <Button
                 flex={1}
-                flexBasis={0}
                 size="$3"
                 icon={IconGitlab}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
               >
                 GitLab
-              </ButtonSimple>
-              <ButtonSimple
+              </Button>
+              <Button
                 flex={1}
-                flexBasis={0}
                 size="$3"
                 icon={IconGithub}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
               >
                 GitHub
-              </ButtonSimple>
+              </Button>
             </>
           </XStack>
 
           <XStack my="$2" width="100%">
             <XStack position="absolute" l={0} r={0} items="center" gap="$4">
               <Separator flex={1} />
-              <SizableText fontFamily="$heading" text="center" theme="alt2" size="$1">
+              <SizableText fontFamily="$heading" text="center" color="$color9" size="$1">
                 or continue with
               </SizableText>
               <Separator flex={1} />
@@ -104,7 +101,7 @@ export const LoginScreen = () => {
               <Label>Password</Label>
               <Input
                 placeholder="Password"
-                secureTextEntry
+                type="password"
                 bg="transparent"
                 {...demoProps.borderRadiusProps}
               />
@@ -115,12 +112,11 @@ export const LoginScreen = () => {
         <YStack mt="$4">
           <Theme name="accent">
             <Button
-              fontWeight="600"
               size="$5"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >
-              Login
+              <SizableText fontWeight="600">Login</SizableText>
             </Button>
           </Theme>
         </YStack>

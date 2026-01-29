@@ -1,0 +1,224 @@
+---
+title: AnimatePresence
+description: Animate components as they mount and unmount
+---
+
+AnimatePresence animates direct children before they unmount. It is inspired by and forked from [Framer Motion](https://github.com/framer/motion), but works with any animation driver in Tamagui.
+
+To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It's already bundled and exported from `tamagui`.
+
+## Basic Usage
+
+Use `enterStyle` and `exitStyle` to define how components animate in and out:
+
+```tsx
+import { AnimatePresence, View } from 'tamagui'
+
+export const MyComponent = ({ isVisible }) => (
+  <AnimatePresence>
+    {isVisible && (
+      <View
+        key="my-square"
+        transition="bouncy"
+        backgroundColor="green"
+        size={50}
+        enterStyle={{
+          opacity: 0,
+          y: 10,
+          scale: 0.9,
+        }}
+        exitStyle={{
+          opacity: 0,
+          y: -10,
+          scale: 0.9,
+        }}
+      />
+    )}
+  </AnimatePresence>
+)
+```
+
+<Notice theme="blue">
+  Note you don't even need to set `opacity` on the base style. Tamagui knows to
+  normalize styles like opacity and scale to 1 (and y to 0) if it's not defined
+  on the base styles but is defined on `enterStyle` or `exitStyle`.
+</Notice>
+
+Wrap one or more Tamagui components with AnimatePresence. The child components will animate on enter and exit.
+
+<Notice theme="blue">
+  Animated child components must each have a unique key prop so AnimatePresence
+  can track their presence in the tree.
+</Notice>
+
+## Enter/Exit Transitions
+
+You can specify different animations for enter (mount) and exit (unmount) transitions. This is useful when you want elements to enter slowly but exit quickly, or vice versa:
+
+```tsx
+import { AnimatePresence, View } from 'tamagui'
+
+export default ({ show }) => (
+  <AnimatePresence>
+    {show && (
+      <View
+        key="panel"
+        transition={{ enter: 'lazy', exit: 'quick' }}
+        enterStyle={{ opacity: 0, y: 20 }}
+        exitStyle={{ opacity: 0, y: -20 }}
+      />
+    )}
+  </AnimatePresence>
+)
+```
+
+The `enter` and `exit` keys accept any animation name from your config. You can also combine them with a `default` for property changes that happen while the element is mounted:
+
+```tsx
+// enter slowly, exit quickly, property changes use medium speed
+<View
+  transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
+  enterStyle={{ opacity: 0 }}
+  exitStyle={{ opacity: 0 }}
+/>
+```
+
+Or use enter/exit with the array syntax to include delay and per-property animations:
+
+```tsx
+// enter with lazy, exit with quick, delay 200ms, x uses its own animation
+<View
+  transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200, x: 'slow' }]}
+  enterStyle={{ opacity: 0, x: -100 }}
+  exitStyle={{ opacity: 0, x: 100 }}
+/>
+```
+
+This works with all four animation drivers (CSS, React Native, Reanimated, Motion).
+
+## The `custom` prop
+
+<HeroContainer noPad>
+  <AnimationsPresenceDemo />
+</HeroContainer>
+
+```tsx hero template=AnimationsPresence
+
+```
+
+AnimatePresence takes a `custom` prop that allows you to update a variant of the animated child before it runs its exit animation. This is useful for animating a child out of the screen in a different direction before it unmounts, as shown in the example above:
+
+```tsx
+import { AnimatePresence } from '@tamagui/animate-presence'
+import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
+import { useState } from 'react'
+import { Button, Image, XStack, YStack, styled } from 'tamagui'
+
+const GalleryItem = styled(YStack, {
+  zIndex: 1,
+  x: 0,
+  opacity: 1,
+  fullscreen: true,
+
+  variants: {
+    // 1 = right, 0 = nowhere, -1 = left
+    going: {
+      ':number': (going) => ({
+        enterStyle: {
+          x: going > 0 ? 1000 : -1000,
+          opacity: 0,
+        },
+        exitStyle: {
+          zIndex: 0,
+          x: going < 0 ? 1000 : -1000,
+          opacity: 0,
+        },
+      }),
+    },
+  } as const,
+})
+
+const photos = [
+  'https://picsum.photos/500/300',
+  'https://picsum.photos/501/300',
+  'https://picsum.photos/502/300',
+]
+
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
+
+export function Demo() {
+  const [[page, going], setPage] = useState([0, 0])
+
+  const imageIndex = wrap(0, photos.length, page)
+  const paginate = (going: number) => {
+    setPage([page + going, going])
+  }
+
+  return (
+    <XStack
+      overflow="hidden"
+      backgroundColor="#000"
+      position="relative"
+      height={300}
+      width="100%"
+      alignItems="center"
+    >
+      <AnimatePresence initial={false} custom={{ going }}>
+        <GalleryItem key={page} transition="slowest" going={going}>
+          <Image src={photos[imageIndex]} width={500} height={300} />
+        </GalleryItem>
+      </AnimatePresence>
+
+      <Button
+        accessibilityLabel="Carousel left"
+        icon={ArrowLeft}
+        size="$5"
+        position="absolute"
+        left="$4"
+        circular
+        elevate
+        onPress={() => paginate(-1)}
+        zi={100}
+      />
+      <Button
+        accessibilityLabel="Carousel right"
+        icon={ArrowRight}
+        size="$5"
+        position="absolute"
+        right="$4"
+        circular
+        elevate
+        onPress={() => paginate(1)}
+        zi={100}
+      />
+    </XStack>
+  )
+}
+```
+
+## API Reference
+
+### AnimatePresence Props
+
+- **`children`** - One or more Tamagui components with unique `key` props
+- **`initial`** - If `false`, children entering on initial mount won't animate (default: `true`)
+- **`custom`** - Pass data to children's variants for dynamic exit animations
+- **`exitBeforeEnter`** - If `true`, only one child renders at a time (default: `false`)
+- **`onExitComplete`** - Callback fired when all exiting children have finished animating
+
+### Component Props
+
+When used inside AnimatePresence:
+
+- **`enterStyle`** - Styles to animate from when mounting
+- **`exitStyle`** - Styles to animate to when unmounting
+- **`transition`** - Animation configuration (can use `{ enter, exit }` syntax)
+- **`key`** - Required unique identifier for AnimatePresence tracking
+
+## See Also
+
+- [Animations Overview](/docs/core/animations)
+- [Animation Drivers](/docs/core/animation-drivers)

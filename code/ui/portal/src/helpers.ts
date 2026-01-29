@@ -9,7 +9,7 @@ export const getStackedZIndexProps = (propsIn: PortalProps) => {
 }
 
 export const resolveViewZIndex = (zIndex: ViewProps['zIndex']) => {
-  return typeof zIndex === 'undefined' || zIndex === 'unset'
+  return typeof zIndex === 'undefined'
     ? undefined
     : typeof zIndex === 'number'
       ? zIndex

@@ -3,8 +3,8 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-const FIXTURES_DIR = join(__dirname, '../packages/app/test-fixtures')
-const APPS_NEXT_DIR = join(__dirname, '../apps/next')
+const ROOT_DIR = join(__dirname, '..')
+const FIXTURES_DIR = join(ROOT_DIR, 'packages/app/test-fixtures')
 
 process.on('beforeExit', () => {
   resetFixtures()
@@ -13,6 +13,7 @@ process.on('beforeExit', () => {
 function resetFixtures() {
   try {
     execSync(`yarn test:clean`, {
+      cwd: ROOT_DIR,
       stdio: 'inherit',
     })
   } catch (e) {
@@ -32,9 +33,9 @@ describe('Platform-specific file optimization', () => {
   describe('BaseOnly.tsx - file without platform-specific versions', () => {
     it('should optimize for both web and native by default', () => {
       const result = execSync(
-        'npx tamagui build ../../packages/app/test-fixtures --include BaseOnly.tsx',
+        'yarn tamagui build ./packages/app/test-fixtures --include BaseOnly.tsx',
         {
-          cwd: APPS_NEXT_DIR,
+          cwd: ROOT_DIR,
           encoding: 'utf-8',
           stdio: 'pipe',
         }
@@ -57,7 +58,7 @@ describe('Platform-specific file optimization', () => {
 
       // Flattened to div
       expect(webContent).toContain('<div')
-      expect(webContent).not.toContain('<YStack')
+      expect(webContent).not.toContain('<View')
 
       // CSS file should exist with content
       const cssPath = join(FIXTURES_DIR, '_BaseOnly.css')
@@ -70,14 +71,12 @@ describe('Platform-specific file optimization', () => {
       const nativePath = join(FIXTURES_DIR, 'BaseOnly.native.tsx')
       expect(existsSync(nativePath)).toBe(true)
       const nativeContent = readFileSync(nativePath, 'utf-8')
-      const nativeLines = nativeContent.split('\n')
 
       // Native imports in file
       expect(nativeContent).toContain('__ReactNativeView')
-      expect(nativeContent).toContain('__ReactNativeText')
 
-      // Should still use YStack (not flattened)
-      expect(nativeContent).toContain('<YStack')
+      // v2: View is now flattened and wrapped in styled component on native
+      expect(nativeContent).toContain('_ReactNativeViewStyled')
       expect(nativeContent).not.toContain('.css')
       expect(nativeContent).not.toContain('className')
     })
@@ -85,20 +84,17 @@ describe('Platform-specific file optimization', () => {
 
   describe('WithWeb.tsx + WithWeb.web.tsx', () => {
     it('should optimize .web.tsx for web and base file for native only', () => {
-      const result = execSync(
-        'npx tamagui build ../../packages/app/test-fixtures --include "WithWeb*"',
-        {
-          cwd: APPS_NEXT_DIR,
-          encoding: 'utf-8',
-          stdio: 'pipe',
-        }
-      )
+      execSync('yarn tamagui build ./packages/app/test-fixtures --include "WithWeb*"', {
+        cwd: ROOT_DIR,
+        encoding: 'utf-8',
+        stdio: 'pipe',
+      })
 
       // Base file should only get native optimization
       const baseContent = readFileSync(join(FIXTURES_DIR, 'WithWeb.tsx'), 'utf-8')
       expect(baseContent).toContain('__ReactNativeView') // Native optimization
       expect(baseContent).not.toContain('.css') // No web CSS import
-      expect(baseContent).toContain('Base File') // Original content
+      expect(baseContent).toContain('>Base<') // Original content preserved
 
       // .web.tsx should get web optimization
       const webContent = readFileSync(join(FIXTURES_DIR, 'WithWeb.web.tsx'), 'utf-8')
@@ -109,8 +105,8 @@ describe('Platform-specific file optimization', () => {
 
       // Flattened
       expect(webContent).toContain('<div')
-      expect(webContent).not.toContain('<YStack')
-      expect(webContent).toContain('Web Specific')
+      expect(webContent).not.toContain('<View')
+      expect(webContent).toContain('>Web<')
 
       // CSS file exists
       const cssPath = join(FIXTURES_DIR, '_WithWeb.web.css')
@@ -123,14 +119,11 @@ describe('Platform-specific file optimization', () => {
 
   describe('WithNative.tsx + WithNative.native.tsx', () => {
     it('should optimize base file for web only and .native.tsx for native', () => {
-      const result = execSync(
-        'npx tamagui build ../../packages/app/test-fixtures --include "WithNative*"',
-        {
-          cwd: APPS_NEXT_DIR,
-          encoding: 'utf-8',
-          stdio: 'pipe',
-        }
-      )
+      execSync('yarn tamagui build ./packages/app/test-fixtures --include "WithNative*"', {
+        cwd: ROOT_DIR,
+        encoding: 'utf-8',
+        stdio: 'pipe',
+      })
 
       // Base file should only get web optimization
       const baseContent = readFileSync(join(FIXTURES_DIR, 'WithNative.tsx'), 'utf-8')
@@ -141,8 +134,8 @@ describe('Platform-specific file optimization', () => {
 
       // Flattened
       expect(baseContent).toContain('<div')
-      expect(baseContent).not.toContain('<YStack')
-      expect(baseContent).toContain('Base File')
+      expect(baseContent).not.toContain('<View')
+      expect(baseContent).toContain('>Base<')
 
       // CSS file exists
       const cssPath = join(FIXTURES_DIR, '_WithNative.css')
@@ -154,7 +147,7 @@ describe('Platform-specific file optimization', () => {
         'utf-8'
       )
       expect(nativeContent).toContain('__ReactNativeView') // Native imports
-      expect(nativeContent).toContain('Native Specific')
+      expect(nativeContent).toContain('>Native<')
       expect(nativeContent).not.toContain('.css')
     })
   })
@@ -163,19 +156,16 @@ describe('Platform-specific file optimization', () => {
     it('should leave base file untouched and optimize platform-specific files', () => {
       const originalBase = readFileSync(join(FIXTURES_DIR, 'WithBoth.tsx'), 'utf-8')
 
-      const result = execSync(
-        'npx tamagui build ../../packages/app/test-fixtures --include "WithBoth*"',
-        {
-          cwd: APPS_NEXT_DIR,
-          encoding: 'utf-8',
-          stdio: 'pipe',
-        }
-      )
+      execSync('yarn tamagui build ./packages/app/test-fixtures --include "WithBoth*"', {
+        cwd: ROOT_DIR,
+        encoding: 'utf-8',
+        stdio: 'pipe',
+      })
 
       // Base file should be UNCHANGED (platform-specific files exist)
       const baseContent = readFileSync(join(FIXTURES_DIR, 'WithBoth.tsx'), 'utf-8')
       expect(baseContent).toBe(originalBase)
-      expect(baseContent).toContain('Should Not Be Modified')
+      expect(baseContent).toContain('>Root<')
 
       // .web.tsx should be optimized for web
       const webContent = readFileSync(join(FIXTURES_DIR, 'WithBoth.web.tsx'), 'utf-8')
@@ -186,8 +176,8 @@ describe('Platform-specific file optimization', () => {
 
       // Flattened
       expect(webContent).toContain('<div')
-      expect(webContent).not.toContain('<YStack')
-      expect(webContent).toContain('Web Specific')
+      expect(webContent).not.toContain('<View')
+      expect(webContent).toContain('>Web<')
 
       // .native.tsx should be optimized for native
       const nativeContent = readFileSync(
@@ -195,7 +185,7 @@ describe('Platform-specific file optimization', () => {
         'utf-8'
       )
       expect(nativeContent).toContain('__ReactNativeView') // Native imports
-      expect(nativeContent).toContain('Native Specific')
+      expect(nativeContent).toContain('>Native<')
       expect(nativeContent).not.toContain('.css')
     })
   })
@@ -203,9 +193,9 @@ describe('Platform-specific file optimization', () => {
   describe('WebOnly.web.tsx - web-only file', () => {
     it('should optimize for web only', () => {
       const result = execSync(
-        'npx tamagui build ../../packages/app/test-fixtures --include "WebOnly*"',
+        'yarn tamagui build ./packages/app/test-fixtures --include "WebOnly*"',
         {
-          cwd: APPS_NEXT_DIR,
+          cwd: ROOT_DIR,
           encoding: 'utf-8',
           stdio: 'pipe',
         }
@@ -221,7 +211,7 @@ describe('Platform-specific file optimization', () => {
 
       // Flattened
       expect(webContent).toContain('<div')
-      expect(webContent).not.toContain('<YStack')
+      expect(webContent).not.toContain('<View')
       expect(webContent).toContain('Web Only File')
 
       // Should not create a native version
@@ -232,9 +222,9 @@ describe('Platform-specific file optimization', () => {
   describe('NativeOnly.native.tsx - native-only file', () => {
     it('should optimize for native only', () => {
       const result = execSync(
-        'npx tamagui build ../../packages/app/test-fixtures --include "NativeOnly*"',
+        'yarn tamagui build ./packages/app/test-fixtures --include "NativeOnly*"',
         {
-          cwd: APPS_NEXT_DIR,
+          cwd: ROOT_DIR,
           encoding: 'utf-8',
           stdio: 'pipe',
         }

@@ -28,7 +28,7 @@ export const StatisticsBarScreen = memo(() => {
         </XStack>
       </YStack>
 
-      <YStack flex={1} gap="$6" mx="$-4" justify="space-around">
+      <YStack flex={1} flexBasis="auto" gap="$6" mx="$-4" justify="space-around">
         <XStack maxH={200} gap="$4">
           <BarChart />
         </XStack>
@@ -64,7 +64,7 @@ export const StatisticsLineScreen = memo(() => {
         </XStack>
       </YStack>
 
-      <YStack flex={1} gap="$6" mx="$-4" justify="space-around">
+      <YStack flex={1} flexBasis="auto" gap="$6" mx="$-4" justify="space-around">
         <XStack maxH={200} gap="$4">
           <LineChart />
         </XStack>

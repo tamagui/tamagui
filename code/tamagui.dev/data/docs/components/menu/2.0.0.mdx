@@ -1,0 +1,680 @@
+---
+title: Menu
+description: A selectable list in a popover with nested submenus
+name: dropdown menu
+component: Menu
+package: menu
+---
+
+<HeroContainer>
+  <MenuDemo />
+</HeroContainer>
+
+```tsx hero template=Menu
+
+```
+
+<Highlights
+  features={[
+    'Full keyboard navigation.',
+    'Submenus, items, icons, images, checkboxes, groups, and more.',
+    'Modal and non-modal modes.',
+    'Native menus on native platforms.',
+  ]}
+/>
+
+## Installation
+
+Menu is already installed in `tamagui`, or you can install it independently:
+
+```bash
+yarn add @tamagui/menu
+```
+
+If you want to use native menus, add these dependencies:
+
+```sh
+yarn add @react-native-menu/menu
+yarn add react-native-ios-context-menu
+yarn add react-native-ios-utilities
+yarn add zeego
+```
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```jsx
+import { Menu } from 'tamagui' // or '@tamagui/menu'
+
+export default () => (
+  <Menu>
+    <Menu.Trigger asChild>
+      <Button />
+    </Menu.Trigger>
+
+    <Menu.Portal zIndex={100}>
+      <Menu.Content>
+        <Menu.Item>
+          <Menu.ItemTitle>About Notes</Menu.ItemTitle>
+        </Menu.Item>
+        <Menu.Item>
+          <Menu.ItemTitle>Settings</Menu.ItemTitle>
+        </Menu.Item>
+        {/* when title is nested inside a React element then you need to use `textValue` */}
+        <Menu.Item textValue="Calendar">
+          <Menu.ItemTitle>
+            <Text>Calendar</Text>
+          </Menu.ItemTitle>
+          <Menu.ItemIcon>
+            <Calendar color="gray" size="$1" />
+          </Menu.ItemIcon>
+        </Menu.Item>
+        <Menu.Separator />
+        <Menu.Sub>
+          <Menu.SubTrigger>
+            <Menu.ItemTitle>Actions</Menu.ItemTitle>
+          </Menu.SubTrigger>
+          <Menu.Portal zIndex={200}>
+            <Menu.SubContent>
+              <Menu.Label fontSize={'$1'}>Note settings</Menu.Label>
+              <Menu.Item onSelect={onSelect} key="create-note">
+                <Menu.ItemTitle>Create note</Menu.ItemTitle>
+              </Menu.Item>
+              <Menu.Item onSelect={onSelect} key="delete-all">
+                <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
+              </Menu.Item>
+              <Menu.Item onSelect={onSelect} key="sync-all">
+                <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
+              </Menu.Item>
+            </Menu.SubContent>
+          </Menu.Portal>
+        </Menu.Sub>
+      </Menu.Content>
+    </Menu.Portal>
+  </Menu>
+)
+```
+
+## API Reference
+
+### Menu
+
+Contains every component for the Menu.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Menu parts: Trigger, Portal, Content, Items, etc.',
+    },
+    {
+      name: 'placement',
+      type: 'Placement',
+      required: false,
+      description: `Where the menu appears relative to the trigger. Options: 'top' | 'right' | 'bottom' | 'left' with optional '-start' | '-end' alignment.`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: 'Controlled open state for the menu.',
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+      description: 'Initial open state when uncontrolled.',
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+      description: 'Called when the menu opens or closes.',
+    },
+    {
+      name: 'onOpenWillChange',
+      type: '(open: boolean) => void',
+      required: false,
+      platform: 'ios',
+      description: 'Called before the open/close animation begins.',
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description:
+        'When true, traps focus inside the menu and blocks outside scroll/interactions.',
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps | boolean',
+      required: false,
+      description: 'Shifts the menu to stay within viewport bounds.',
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps | boolean',
+      required: false,
+      description:
+        'Flips the menu to the opposite side if there is insufficient space.',
+    },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: 'Distance between the menu and its trigger.',
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: 'boolean',
+      description: 'Removes all default Tamagui styles.',
+    },
+  ]}
+/>
+
+### Menu.Portal
+
+Required for rendering the menu content.
+
+<PropsTable
+  data={[
+    {
+      name: 'zIndex',
+      required: false,
+      type: 'number',
+      description: 'Stacking order of the portal layer.',
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Content to render inside the portal.',
+    },
+    {
+      name: 'forceMount',
+      type: 'true',
+      required: false,
+      description:
+        'Forces the portal to stay mounted, useful for controlling animations.',
+    },
+  ]}
+/>
+
+### Menu.Trigger
+
+The menu will only be triggered when the user right-clicks or long-presses
+within the trigger area.
+
+<PropsTable
+  data={[
+    {
+      name: 'action',
+      required: false,
+      type: 'press|longPress',
+      default: 'longPress',
+      platform: 'android/ios',
+      description:
+        "Works with the native prop and accepts 'press' or 'longPress'. The default is 'longPress' for Menu.",
+    },
+  ]}
+/>
+
+### Menu.Content
+
+Contains the content of the menu.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Menu items, groups, labels, separators, and submenus.',
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether keyboard navigation wraps from last to first item.',
+    },
+    {
+      name: 'forceMount',
+      type: 'true',
+      required: false,
+      description:
+        'Forces the content to stay mounted, useful for controlling animations.',
+    },
+    {
+      name: 'onCloseAutoFocus',
+      type: '(event: Event) => void',
+      required: false,
+      description: 'Called when focus returns to the trigger after closing.',
+    },
+    {
+      name: 'onEscapeKeyDown',
+      type: '(event: KeyboardEvent) => void',
+      required: false,
+      description: 'Called when the escape key is pressed. Can be prevented.',
+    },
+    {
+      name: 'onPointerDownOutside',
+      type: '(event: PointerEvent) => void',
+      required: false,
+      description: 'Called when a pointer event occurs outside the content.',
+    },
+    {
+      name: 'onInteractOutside',
+      type: '(event: Event) => void',
+      required: false,
+      description: 'Called when any interaction occurs outside the content.',
+    },
+  ]}
+/>
+
+### Menu.Item
+
+A selectable menu item that triggers an action when selected.
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'string',
+      required: true,
+      description: 'Unique identifier for the item.',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Prevents interaction and dims the item.',
+    },
+    {
+      name: 'destructive',
+      type: 'boolean',
+      required: false,
+      platform: 'ios/android',
+      description:
+        'Renders the item in red on iOS to indicate a dangerous action (e.g. delete). No effect on web.',
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false,
+      description: 'Hides the item from the menu.',
+    },
+    {
+      name: 'onSelect',
+      type: '(event?: Event) => void',
+      required: false,
+      description: 'Called when the item is selected via click or keyboard.',
+    },
+    {
+      name: 'onFocus',
+      type: '() => void',
+      required: false,
+      description: 'Called when the item receives focus.',
+    },
+    {
+      name: 'onBlur',
+      type: '() => void',
+      required: false,
+      description: 'Called when the item loses focus.',
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description:
+        'Text used for typeahead and native menus. Required when ItemTitle contains a React node instead of a string.',
+    },
+  ]}
+/>
+
+### Menu.ItemTitle
+
+Renders the title of the menu item.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'string | React.ReactNode',
+      required: true,
+      description: 'The title text or element to display.',
+    },
+  ]}
+/>
+<Notice>
+  You can directly pass a text node to the ItemTitle. However, if you use a nested
+  React node like `<Text>`, you need to pass `textValue` to the `<Item>` so that it
+  works with native menus.
+</Notice>
+
+### Menu.ItemIcon
+
+A component to render an icon. For non-native menus, you can pass an icon
+component. For native menus, you can pass platform-specific icons to the
+`android` and `ios` props.
+
+On iOS, it renders the native
+[SF Symbols](https://github.com/andrewtavis/sf-symbols-online) icons.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Fallback icon for web when native icons are not available.',
+    },
+    {
+      name: 'ios',
+      type: 'object',
+      required: false,
+      platform: 'ios',
+      description:
+        'SF Symbol configuration: name, weight, scale, hierarchicalColor, paletteColors.',
+    },
+    {
+      name: 'android',
+      type: 'object',
+      required: false,
+      platform: 'android',
+      description: 'Android resource drawable name.',
+    },
+  ]}
+/>
+
+```jsx line=1
+<Menu.ItemIcon
+  ios={{
+    name: '0.circle.fill', // required
+    pointSize: 5,
+    weight: 'semibold',
+    scale: 'medium',
+    // can also be a color string. Requires iOS 15+
+    hierarchicalColor: {
+      dark: 'blue',
+      light: 'green',
+    },
+    // alternative to hierarchical color. Requires iOS 15+
+    paletteColors: [
+      {
+        dark: 'blue',
+        light: 'green',
+      },
+    ],
+  }}
+>
+  <CircleIcon />
+</Menu.ItemIcon>
+```
+
+### Menu.ItemImage
+
+A component to render an item image. For native menus, it only works on iOS. It
+takes the same props as `@tamagui/image`.
+
+### Menu.ItemSubtitle
+
+A component to render a subtitle for the menu item. For native menus, it only
+works on iOS.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'string',
+      required: true,
+      description: 'The subtitle text to display below the title.',
+    },
+  ]}
+/>
+
+### Menu.Group
+
+A component that groups multiple menu items together.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Menu items to group together.',
+    },
+  ]}
+/>
+
+### Menu.CheckboxItem
+
+A menu item with a checkbox that can be toggled on and off.
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'string',
+      required: true,
+      description: 'Unique identifier for the checkbox item.',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Prevents interaction and dims the item.',
+    },
+    {
+      name: 'destructive',
+      type: 'boolean',
+      required: false,
+      platform: 'ios/android',
+      description:
+        'Renders the item in red on iOS to indicate a dangerous action. No effect on web.',
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false,
+      description: 'Hides the item from the menu.',
+    },
+    {
+      name: 'onFocus',
+      type: '() => void',
+      required: false,
+      description: 'Called when the item receives focus.',
+    },
+    {
+      name: 'onBlur',
+      type: '() => void',
+      required: false,
+      description: 'Called when the item loses focus.',
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description:
+        'Text for native menus. Required when ItemTitle contains a React node.',
+    },
+    {
+      name: 'value',
+      type: "'on' | 'off' | 'mixed'",
+      required: false,
+      platform: 'ios/android',
+      description: 'Controlled checked state for native menus.',
+    },
+    {
+      name: 'onValueChange',
+      type: '(state, prevState) => void',
+      required: false,
+      platform: 'ios/android',
+      description: 'Called when checked state changes on native menus.',
+    },
+    {
+      name: 'checked',
+      type: 'boolean',
+      required: false,
+      description: 'Controlled checked state for web menus.',
+    },
+    {
+      name: 'onCheckedChange',
+      type: '(checked: boolean) => void',
+      required: false,
+      description: 'Called when checked state changes on web.',
+    },
+  ]}
+/>
+
+### Menu.ItemIndicator
+
+Use inside `Menu.CheckboxItem` or `Menu.RadioItem` to indicate when an item is checked.
+This allows you to conditionally render a checkmark.
+
+```jsx line=1
+<Menu.ItemIndicator>
+  <CheckmarkIcon /> {/* This does not work with the native prop. */}
+</Menu.ItemIndicator>
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Custom checkmark icon. Only works on web.',
+    },
+    {
+      name: 'forceMount',
+      type: 'true',
+      required: false,
+      description:
+        'Forces the indicator to stay mounted for animation control.',
+    },
+  ]}
+/>
+
+### Menu.Label
+
+Renders a non-focusable label for a group of items. On native menus, only one
+label is supported per menu and submenu.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'string',
+      required: true,
+      description: 'The label text.',
+    },
+    {
+      name: 'textValue',
+      type: 'string',
+      required: false,
+      platform: 'ios/android',
+      description: 'Text for native menus when children is a React node.',
+    },
+  ]}
+/>
+
+### Menu.Arrow
+
+Renders an arrow pointing to the trigger.
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'number | SizeToken',
+      required: false,
+      description: 'Width and height of the arrow.',
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      required: false,
+      description: 'Removes default arrow styles.',
+    },
+  ]}
+/>
+
+### Menu.Separator
+
+Renders a visual divider between menu items. Web only.
+
+### Menu.Sub
+
+A container for nested submenu components.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'SubTrigger, Portal, and SubContent components.',
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: 'Controlled open state for the submenu.',
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+      description: 'Called when the submenu opens or closes.',
+    },
+  ]}
+/>
+
+### Menu.SubContent
+
+Renders the content of a submenu. Same props as `Menu.Content`, excluding `side` and
+`align`.
+
+### Menu.SubTrigger
+
+A menu item that opens a submenu on hover or focus. Accepts the same props as
+`Menu.Item`.
+
+## Styling
+
+### Item Highlight Behavior
+
+Menu items use `focusStyle` for highlighting rather than `hoverStyle`. This ensures a unified highlight experience when switching between mouse and keyboard navigation - only one item is ever highlighted at a time.
+
+When you hover over an item, it receives focus, which triggers the `focusStyle`. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
+
+```jsx
+// Default behavior - uses focusStyle for highlight
+<Menu.Item>
+  <Menu.ItemTitle>Settings</Menu.ItemTitle>
+</Menu.Item>
+
+// Custom highlight styling - use focusStyle, not hoverStyle
+<Menu.Item
+  focusStyle={{ backgroundColor: '$blue5' }}
+>
+  <Menu.ItemTitle>Custom Highlight</Menu.ItemTitle>
+</Menu.Item>
+```
+
+<Notice>
+  Avoid using `hoverStyle` for background highlights on Menu.Item. This can cause
+  "double highlighting" when switching between mouse and keyboard - where both the
+  hovered item and the focused item appear highlighted simultaneously.
+</Notice>

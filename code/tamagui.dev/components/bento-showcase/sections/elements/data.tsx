@@ -1,5 +1,3 @@
-import { XStack } from 'tamagui'
-
 export const paths: {
   params: {
     section: 'elements'

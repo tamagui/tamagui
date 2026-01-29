@@ -9,7 +9,6 @@ import {
   Upload,
   User,
 } from '@tamagui/lucide-icons'
-import { Theme } from 'tamagui'
 
 import {
   Avatar,
@@ -40,27 +39,26 @@ const Chip = styled(View, {
 
 const WindowMacView = () => {
   return (
-    <Theme name="accent">
-      <XStack
-        bg="$backgroundPress"
-        borderBottomWidth={1}
-        borderColor="$color3"
-        py="$1.5"
-        px="$2"
-        gap="$2"
-      >
-        {['$red10', '$yellow10', '$green10'].map((color, index) => (
-          <View
-            bg={color as any}
-            height={6}
-            width={6}
-            rounded={1_000_000_000}
-            key={index}
-          />
-        ))}
-        <View flex={1} />
-      </XStack>
-    </Theme>
+    <XStack
+      bg="$backgroundPress"
+      borderBottomWidth={1}
+      borderColor="$color3"
+      py="$1.5"
+      px="$2"
+      gap="$2"
+      theme="accent"
+    >
+      {['$red10', '$yellow10', '$green10'].map((color, index) => (
+        <View
+          bg={color as any}
+          height={6}
+          width={6}
+          rounded={1_000_000_000}
+          key={index}
+        />
+      ))}
+      <View flex={1} />
+    </XStack>
   )
 }
 
@@ -197,7 +195,7 @@ const ComponentPreview = {
         height="auto"
         items="center"
         gap="$2.5"
-        animation="medium"
+        transition="medium"
       >
         <Label size="$1.5" htmlFor={'switch'}>
           Switch
@@ -213,7 +211,7 @@ const ComponentPreview = {
           size="$2"
           scale={1}
         >
-          <Switch.Thumb borderColor="$color1" bg="$white1" animation="200ms" />
+          <Switch.Thumb borderColor="$color1" bg="$white1" transition="quickest" />
         </Switch>
       </YStack>
     )
@@ -301,12 +299,12 @@ const ComponentPreview = {
             key={img}
             z={index}
             ml={index !== 0 ? -(getTokenValue('$2' as any) ?? 20) * 1.5 : undefined}
-            animation="bouncy"
+            transition="bouncy"
             position="relative"
             x={0}
           >
             <Avatar borderWidth={1.5} borderColor="$background" circular size="$5">
-              <Avatar.Image accessibilityLabel="Nate Wienert" src={`${img}?&w=100`} />
+              <Avatar.Image aria-label="Nate Wienert" src={`${img}?&w=100`} />
               <Avatar.Fallback delayMs={600} bg="$color3" />
             </Avatar>
           </View>
@@ -318,7 +316,7 @@ const ComponentPreview = {
   Buttons: () => {
     return (
       <ZStack>
-        <Button mb="$-6" mr="$-6" self="center" icon={User} size="$4" themeInverse>
+        <Button mb="$-6" mr="$-6" self="center" icon={User} size="$4" theme="accent">
           Follow
         </Button>
         <Button mt="$-6" ml="$-6" self="center" icon={Share} size="$4">
@@ -651,7 +649,7 @@ const ComponentPreview = {
                 height="$0.75"
                 rounded="$5"
                 bg={index === 1 ? '$accentColor' : '$color10'}
-                animation="200ms"
+                transition="200ms"
               />
             ))}
           </View>

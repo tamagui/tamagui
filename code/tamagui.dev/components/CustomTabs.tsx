@@ -39,12 +39,12 @@ function TabsComponent(props: TabsProps) {
 
   return (
     <Tabs
+      activationMode="manual"
       onValueChange={updateUrl}
       unstyled
       orientation="horizontal"
       flexDirection="column"
       borderWidth={0}
-      position="unset"
       {...props}
       value={value}
     />
@@ -60,7 +60,6 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       size="$3"
       flex={1}
       ref={ref as any}
-      elevation="$0.5"
       px="$5"
       pointerEvents="auto"
       {...props}
@@ -70,12 +69,12 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
         outlineStyle: 'solid',
       }}
       {...(isActive && {
-        bg: '$color7',
+        bg: '$color4',
         hoverStyle: {
-          bg: '$color7',
+          bg: '$color4',
         },
         focusStyle: {
-          bg: '$color7',
+          bg: '$color4',
         },
       })}
     >

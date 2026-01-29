@@ -1,5 +1,5 @@
 import { styled } from '@tamagui/core'
-import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
+import { XStack, YStack } from '@tamagui/stacks'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { createSheet } from './createSheet'
@@ -52,7 +52,7 @@ export const Handle = styled(XStack, {
  * SheetOverlay
  * -----------------------------------------------------------------------------------------------*/
 
-export const Overlay = styled(ThemeableStack, {
+export const Overlay = styled(YStack, {
   name: SHEET_OVERLAY_NAME,
 
   variants: {
@@ -69,7 +69,7 @@ export const Overlay = styled(ThemeableStack, {
       false: {
         fullscreen: true,
         position: 'absolute',
-        backgrounded: true,
+        backgroundColor: '$background',
         zIndex: 100_000 - 1,
         pointerEvents: 'auto',
       },
@@ -112,9 +112,3 @@ export const Sheet = createSheet({
   Handle,
   Overlay,
 })
-
-/** @deprecated use Overlay instead  */
-export const SheetOverlayFrame = Overlay
-
-/** @deprecated use Overlay instead  */
-export const SheetHandleFrame = Handle

@@ -10,16 +10,16 @@ export function AlertDialogDemo() {
       <AlertDialog.Portal>
         <AlertDialog.Overlay
           key="overlay"
-          animation="quick"
+          transition="quick"
           opacity={0.5}
+          backgroundColor="$background"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
         <AlertDialog.Content
-          bordered
           elevate
           key="content"
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {

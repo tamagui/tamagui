@@ -2,26 +2,28 @@ import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React from 'react'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
-import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
+import { Adapt, Label, Select, Sheet, Theme, XStack, YStack, getFontSize } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function SelectDemo() {
   return (
-    <YStack gap="$4">
-      <XStack width="100%" items="center" gap="$4">
-        <Label htmlFor="select-demo-1" flex={1} minW={80}>
-          Custom
-        </Label>
-        <SelectDemoContents id="select-demo-1" />
-      </XStack>
+    <Theme name="surface1">
+      <YStack gap="$4">
+        <XStack width="100%" items="center" gap="$4">
+          <Label htmlFor="select-demo-1" flex={1} minW={80}>
+            Custom
+          </Label>
+          <SelectDemoContents id="select-demo-1" />
+        </XStack>
 
-      <XStack width="100%" items="center" gap="$4">
-        <Label htmlFor="select-demo-2" flex={1} minW={80}>
-          Native
-        </Label>
-        <SelectDemoContents id="select-demo-2" native />
-      </XStack>
-    </YStack>
+        <XStack width="100%" items="center" gap="$4">
+          <Label htmlFor="select-demo-2" flex={1} minW={80}>
+            Native
+          </Label>
+          <SelectDemoContents id="select-demo-2" native />
+        </XStack>
+      </YStack>
+    </Theme>
   )
 }
 
@@ -46,13 +48,18 @@ export function SelectDemoContents(
       renderValue={getItemLabel}
     >
       {props?.trigger || (
-        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+        <Select.Trigger
+          maxWidth={220}
+          iconAfter={ChevronDown}
+          borderRadius="$4"
+          backgroundColor="$background"
+        >
           <Select.Value placeholder="Something" />
         </Select.Trigger>
       )}
 
       <Adapt when="maxMd" platform="touch">
-        <Sheet native={!!props.native} modal dismissOnSnapToBottom animation="medium">
+        <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -60,7 +67,7 @@ export function SelectDemoContents(
           </Sheet.Frame>
           <Sheet.Overlay
             bg="$shadowColor"
-            animation="lazy"
+            transition="lazy"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -86,8 +93,13 @@ export function SelectDemoContents(
             rounded="$4"
           />
         </Select.ScrollUpButton>
-
-        <Select.Viewport minW={200}>
+        <Select.Viewport
+          minW={200}
+          bg="$background"
+          rounded="$4"
+          borderWidth={1}
+          borderColor="$borderColor"
+        >
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
@@ -115,8 +127,7 @@ export function SelectDemoContents(
             <YStack
               position="absolute"
               r={0}
-              t={0}
-              b={0}
+              t={16}
               items="center"
               justify="center"
               width={'$4'}

@@ -37,7 +37,7 @@ const TestDialogContent = ({ name, shouldAdapt }) => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          transition="quick"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -47,7 +47,7 @@ const TestDialogContent = ({ name, shouldAdapt }) => {
           bordered
           elevate
           key="content"
-          animation={[
+          transition={[
             'quick',
             {
               opacity: {
@@ -87,14 +87,14 @@ const TestDialogContent = ({ name, shouldAdapt }) => {
 
       {shouldAdapt && (
         <Adapt when={true}>
-          <Sheet animation="medium" modal dismissOnSnapToBottom>
+          <Sheet transition="medium" modal dismissOnSnapToBottom>
             <Sheet.Frame data-testid={`${name}-sheet-contents`} padding="$4">
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
               id={`${name}-sheet-overlay`}
               backgroundColor="$shadowColor"
-              animation="lazy"
+              transition="lazy"
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />

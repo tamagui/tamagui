@@ -106,10 +106,10 @@ test('handles style order merge properly', async () => {
 
 test(`normalize ternaries flips the conditional properly`, async () => {
   const inputCode = `
-  import { Stack } from 'tamagui'
+  import { View } from 'tamagui'
   export function Test(props) {
     return (
-      <Stack marginBottom={props !== 123 ? 12 : 0} />
+      <View marginBottom={props !== 123 ? 12 : 0} />
     )
   }
 `
@@ -121,10 +121,10 @@ test(`normalize ternaries flips the conditional properly`, async () => {
 
 test(`normalize ternaries with the conditional dynamic values`, async () => {
   const inputCode = `
-  import { Stack } from 'tamagui'
+  import { View } from 'tamagui'
   export function Test(props) {
     return (
-      <Stack marginBottom={props !== 123 ? 12 : props.mb} />
+      <View marginBottom={props !== 123 ? 12 : props.mb} />
     )
   }
 `

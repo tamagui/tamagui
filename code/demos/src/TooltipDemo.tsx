@@ -6,36 +6,38 @@ import {
   Circle,
 } from '@tamagui/lucide-icons'
 import type { TooltipProps } from 'tamagui'
-import { Button, Paragraph, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, Theme, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
 
 export function TooltipDemo() {
   return (
-    <TooltipGroup delay={{ open: 3000, close: 100 }}>
-      <YStack gap="$2" self="center">
-        <XStack gap="$2">
-          <Demo groupId="0" placement="top-end" Icon={Circle} />
-          <Demo groupId="1" placement="top" Icon={ChevronUp} />
-          <Demo groupId="2" placement="top-start" Icon={Circle} />
-        </XStack>
-        <XStack gap="$2">
-          <Demo groupId="3" placement="left" Icon={ChevronLeft} />
-          <YStack flex={1} />
-          <Demo groupId="4" placement="right" Icon={ChevronRight} />
-        </XStack>
-        <XStack gap="$2">
-          <Demo groupId="5" placement="bottom-end" Icon={Circle} />
-          <Demo groupId="6" placement="bottom" Icon={ChevronDown} />
-          <Demo groupId="7" placement="bottom-start" Icon={Circle} />
-        </XStack>
-      </YStack>
-    </TooltipGroup>
+    <Theme name="surface2">
+      <TooltipGroup delay={{ open: 300, close: 100 }}>
+        <YStack gap="$2" self="center">
+          <XStack gap="$2">
+            <Demo groupId="0" placement="top-end" Icon={Circle} />
+            <Demo groupId="1" placement="top" Icon={ChevronUp} />
+            <Demo groupId="2" placement="top-start" Icon={Circle} />
+          </XStack>
+          <XStack gap="$2">
+            <Demo groupId="3" placement="left" Icon={ChevronLeft} />
+            <YStack flex={1} />
+            <Demo groupId="4" placement="right" Icon={ChevronRight} />
+          </XStack>
+          <XStack gap="$2">
+            <Demo groupId="5" placement="bottom-end" Icon={Circle} />
+            <Demo groupId="6" placement="bottom" Icon={ChevronDown} />
+            <Demo groupId="7" placement="bottom-start" Icon={Circle} />
+          </XStack>
+        </YStack>
+      </TooltipGroup>
+    </Theme>
   )
 }
 
 function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
-      <Tooltip.Trigger>
+      <Tooltip.Trigger asChild>
         <Button icon={Icon} circular />
       </Tooltip.Trigger>
       <Tooltip.Content
@@ -46,7 +48,7 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         y={0}
         opacity={1}
         py="$2"
-        animation={[
+        transition={[
           'quick',
           {
             opacity: {

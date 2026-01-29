@@ -1,5 +1,6 @@
-import type { ComponentContextI, StackProps, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps } from '../types';
-export declare const useComponentState: (props: StackProps | TextProps | Record<string, any>, animationDriver: ComponentContextI["animationDriver"], staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
+import type { ComponentContextI, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps } from '../types';
+import type { ViewProps } from '../views/View';
+export declare const useComponentState: (props: ViewProps | TextProps | Record<string, any>, animationDriver: ComponentContextI["animationDriver"], staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
     startedUnhydrated: boolean;
     curStateRef: TamaguiComponentStateRef;
     disabled: any;
@@ -16,7 +17,7 @@ export declare const useComponentState: (props: StackProps | TextProps | Record<
     noClass: boolean;
     state: TamaguiComponentState;
     stateRef: import("react").RefObject<TamaguiComponentStateRef>;
-    supportsCSS: boolean | undefined;
+    supportsCSS: boolean;
     willBeAnimated: boolean;
     willBeAnimatedClient: boolean;
 };

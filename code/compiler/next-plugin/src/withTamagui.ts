@@ -87,12 +87,6 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
             'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(false),
             'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(false),
           }),
-
-          // TODO move to TamaguiPlugin
-          // optimizes inserts automatically assuming CSS wont be "removed" on page change
-          ...(tamaguiOptions.emitSingleCSSFile && {
-            'process.env.TAMAGUI_INSERT_SELECTOR_TRIES': JSON.stringify('1'),
-          }),
         }
 
         /**
@@ -174,7 +168,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           }
           if (webpackConfig.resolve.plugins[0]) {
             delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
-            delete webpackConfig.resolve.plugins[0].paths['tamagui']
+            // delete webpackConfig.resolve.plugins[0].paths['tamagui']
           }
         }
 
@@ -223,7 +217,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
             if (
               fullPath.startsWith('moti') ||
               fullPath.startsWith('solito') ||
-              fullPath === 'tamagui' ||
+              // fullPath === 'tamagui' ||
               fullPath.startsWith('@tamagui') ||
               fullPath === 'react-native-safe-area-context' ||
               fullPath === 'expo-linear-gradient' ||

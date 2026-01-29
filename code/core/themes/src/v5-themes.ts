@@ -1,60 +1,207 @@
 import {
-  blueDark as blueDarkIn,
-  blue as blueIn,
-  greenDark as greenDarkIn,
-  green as greenIn,
-  orangeDark as orangeDarkIn,
-  orange as orangeIn,
-  pinkDark as pinkDarkIn,
-  pink as pinkIn,
-  purpleDark as purpleDarkIn,
-  purple as purpleIn,
-  redDark as redDarkIn,
-  red as redIn,
-  tealDark as tealDarkIn,
-  teal as tealIn,
-  yellowDark as yellowDarkIn,
-  yellow as yellowIn,
-  gray as grayIn,
-  grayDark as grayDarkIn,
+  blue,
+  blueDark,
+  gray,
+  grayDark,
+  green,
+  greenDark,
+  orange,
+  orangeDark,
+  pink,
+  pinkDark,
+  purple,
+  purpleDark,
+  red,
+  redDark,
+  teal,
+  tealDark,
+  yellow,
+  yellowDark,
 } from '@tamagui/colors'
-import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
+import { createThemes } from '@tamagui/theme-builder'
 import { opacify } from './opacify'
+import { v5Templates } from './v5-templates'
 
-// TODO we need grey which is neutral on both white and black
+// base theme uses elevated background (like old surface1)
+// this offset aligns getTheme's palette index with that elevation
+export const V5_BG_OFFSET = 6 + 1
 
-const blue = adjustPaletteLight('blue', blueIn)
-const blueDark = adjustPaletteDark('blueDark', blueDarkIn)
-const green = adjustPaletteLight('green', greenIn)
-const greenDark = adjustPaletteDark('greenDark', greenDarkIn)
-const purple = adjustPaletteLight('purple', purpleIn)
-const purpleDark = adjustPaletteDark('purpleDark', purpleDarkIn)
-const red = adjustPaletteLight('red', redIn)
-const redDark = adjustPaletteDark('redDark', redDarkIn)
-const yellow = adjustPaletteLight('yellow', yellowIn)
-const yellowDark = adjustPaletteDark('yellowDark', yellowDarkIn)
-const pink = adjustPaletteLight('pink', pinkIn)
-const pinkDark = adjustPaletteDark('pinkDark', pinkDarkIn)
-const orange = adjustPaletteLight('orange', orangeIn)
-const orangeDark = adjustPaletteDark('orangeDark', orangeDarkIn)
-const teal = adjustPaletteLight('teal', tealIn)
-const tealDark = adjustPaletteDark('tealDark', tealDarkIn)
-const gray = adjustPaletteLight('gray', grayIn)
-const grayDark = adjustPaletteDark('grayDark', grayDarkIn)
+// re-export color utilities for users
+export { interpolateColor, opacify } from './opacify'
 
+export const v5ComponentThemes = {
+  Button: { template: 'surface1' },
+  Input: { template: 'surface1' },
+  Progress: { template: 'surface2' },
+  ProgressIndicator: { template: 'accent' },
+  Slider: { template: 'surface1' },
+  SliderActive: { template: 'surface2' },
+  SliderThumb: { template: 'accent' },
+  Switch: { template: 'surface2' },
+  SwitchThumb: { template: 'accent' },
+  TextArea: { template: 'surface1' },
+  Tooltip: { template: 'accent' },
+} as const
+
+/** Default grandchildren themes available in v5 */
+export const v5GrandchildrenThemes = {
+  accent: { template: 'accent' },
+  surface1: { template: 'surface1' },
+  surface2: { template: 'surface2' },
+} satisfies Record<string, GrandChildrenThemeDefinition>
+
+// ---- adjustPalette: generic HSL color adjustment ----
+
+export type HSL = { h: number; s: number; l: number }
+
+/** callback receives hsl and 1-based index, returns adjusted hsl */
+export type AdjustFn = (hsl: HSL, index: number) => HSL
+
+/** parse hsl string to HSL object */
+export function parseHSL(str: string): HSL | null {
+  const m = str.match(/hsl\((\d+(?:\.\d+)?),\s*(\d+(?:\.\d+)?)%,\s*(\d+(?:\.\d+)?)%\)/)
+  return m ? { h: +m[1]!, s: +m[2]!, l: +m[3]! } : null
+}
+
+/** parse hex color to HSL object */
+export function parseHex(str: string): HSL | null {
+  if (!str.startsWith('#')) return null
+  let hex = str.slice(1)
+  if (hex.length === 3) {
+    hex = hex
+      .split('')
+      .map((c) => c + c)
+      .join('')
+  }
+  if (hex.length !== 6) return null
+
+  const r = Number.parseInt(hex.slice(0, 2), 16) / 255
+  const g = Number.parseInt(hex.slice(2, 4), 16) / 255
+  const b = Number.parseInt(hex.slice(4, 6), 16) / 255
+
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  const l = (max + min) / 2
+
+  if (max === min) {
+    return { h: 0, s: 0, l: l * 100 }
+  }
+
+  const d = max - min
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+
+  let h = 0
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6
+  else if (max === g) h = ((b - r) / d + 2) / 6
+  else h = ((r - g) / d + 4) / 6
+
+  return { h: Math.round(h * 360), s: s * 100, l: l * 100 }
+}
+
+/** parse any color format to HSL */
+export function parseColor(str: string): HSL | null {
+  return parseHSL(str) ?? parseHex(str)
+}
+
+export function hslToString(hsl: HSL): string {
+  return `hsl(${hsl.h}, ${Math.round(Math.min(100, Math.max(0, hsl.s)))}%, ${Math.round(Math.min(100, Math.max(0, hsl.l)))}%)`
+}
+
+/** adjust a palette of colors (hsl or hex) using a callback */
+export function adjustPalette(
+  palette: Record<string, string>,
+  fn: AdjustFn
+): Record<string, string> {
+  const out: Record<string, string> = {}
+  const keys = Object.keys(palette)
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]!
+    const parsed = parseColor(palette[key]!)
+    if (!parsed) {
+      out[key] = palette[key]!
+      continue
+    }
+    out[key] = hslToString(fn(parsed, i + 1))
+  }
+  return out
+}
+
+type SingleAdjustment = {
+  light?: AdjustFn
+  dark?: AdjustFn
+}
+
+export type PaletteAdjustments<T extends Record<string, any>> = {
+  [K in keyof T]?: SingleAdjustment
+} & {
+  /** fallback for themes not explicitly listed */
+  default?: SingleAdjustment
+}
+
+const identity: AdjustFn = (hsl) => hsl
+
+/**
+ * Adjust color palettes using callback functions.
+ *
+ * @example
+ * const adjusted = adjustPalettes(defaultChildrenThemes, {
+ *   default: {
+ *     light: (hsl, i) => ({ ...hsl, s: hsl.s * 0.8 }),
+ *     dark: (hsl, i) => ({ ...hsl, s: hsl.s * 0.5, l: hsl.l * 0.9 }),
+ *   },
+ *   yellow: {
+ *     light: (hsl, i) => ({ ...hsl, s: hsl.s * 0.5 }),
+ *   },
+ * })
+ */
+export function adjustPalettes<
+  T extends Record<
+    string,
+    { light: Record<string, string>; dark: Record<string, string> }
+  >,
+>(themes: T, adjustments: PaletteAdjustments<T>): T {
+  const result = {} as T
+
+  for (const [name, theme] of Object.entries(themes)) {
+    const adj = adjustments[name as keyof T] ?? adjustments.default
+    if (!adj) {
+      ;(result as any)[name] = theme
+      continue
+    }
+    ;(result as any)[name] = {
+      light: adjustPalette(theme.light, adj.light ?? identity),
+      dark: adjustPalette(theme.dark, adj.dark ?? identity),
+    }
+  }
+
+  return result
+}
+
+// component themes removed in v5 - use defaultProps in your config instead
+// see: https://tamagui.dev/docs/core/config-v5#migrating-from-component-themes
+
+/** Generate named colors from a palette: ['#fff', ...] -> { name1: '#fff', name2: ... } */
+function paletteToNamedColors<N extends string>(name: N, palette: readonly string[]) {
+  return Object.fromEntries(palette.map((color, i) => [`${name}${i + 1}`, color])) as {
+    [K in `${N}${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`]: string
+  }
+}
+
+// Base palettes
 const darkPalette = [
-  '#080808',
+  '#090909',
+  '#151515',
   '#191919',
-  '#282828',
-  '#353535',
+  '#232323',
+  '#333',
   '#444',
-  '#484848',
-  '#525252',
-  '#686868',
-  '#757575',
-  '#9a9a9a',
+  '#666',
+  '#777',
+  '#858585',
+  '#aaa',
   '#ccc',
-  '#fefefe',
+  '#ffffff',
 ]
 
 const lightPalette = [
@@ -63,16 +210,35 @@ const lightPalette = [
   'hsl(0, 0%, 93%)',
   'hsl(0, 0%, 87%)',
   'hsl(0, 0%, 80%)',
-  'hsl(0, 0%, 74%)',
-  'hsl(0, 0%, 68%)',
-  'hsl(0, 0%, 60%)',
-  'hsl(0, 0%, 48%)',
-  'hsl(0, 0%, 38%)',
+  'hsl(0, 0%, 70%)',
+  'hsl(0, 0%, 59%)',
+  'hsl(0, 0%, 45%)',
+  'hsl(0, 0%, 30%)',
   'hsl(0, 0%, 20%)',
+  'hsl(0, 0%, 14%)',
   'hsl(0, 0%, 2%)',
 ]
 
-// the same on both light and dark, useful for forcing white/black:
+/** Neutral grey - sufficient contrast on both white and black backgrounds */
+const neutralPalette = [
+  'hsl(0, 0%, 68%)',
+  'hsl(0, 0%, 65%)',
+  'hsl(0, 0%, 62%)',
+  'hsl(0, 0%, 59%)',
+  'hsl(0, 0%, 56%)',
+  'hsl(0, 0%, 53%)',
+  'hsl(0, 0%, 50%)',
+  'hsl(0, 0%, 47%)',
+  'hsl(0, 0%, 44%)',
+  'hsl(0, 0%, 41%)',
+  'hsl(0, 0%, 38%)',
+  'hsl(0, 0%, 32%)',
+]
+
+// Generate neutral colors from palette (used in defaultChildrenThemes)
+const neutral = paletteToNamedColors('neutral', neutralPalette)
+
+// Constants for forcing white/black with opacity variants
 const whiteBlack = {
   white: 'rgba(255,255,255,1)',
   white0: 'rgba(255,255,255,0)',
@@ -88,310 +254,312 @@ const whiteBlack = {
   black08: 'rgba(0,0,0,0.8)',
 }
 
-// highlights are lighter no matter if dark or light theme
-// on light theme they are ==== background
-// on dark theme === color2-4 looks good
-
-const extraColorsDark = {
-  // in between 1/2
-  color1pt5: 'rgba(20,20,20)',
-  color2pt5: '#222',
-
-  // TODO: ideally just functions for alpha($color1, 0.1)
-  // extra low opacities
-  color01: opacify(darkPalette[darkPalette.length - 1]!, 0.1),
-  color0075: opacify(darkPalette[darkPalette.length - 1]!, 0.075),
-  color005: opacify(darkPalette[darkPalette.length - 1]!, 0.05),
-  color0025: opacify(darkPalette[darkPalette.length - 1]!, 0.025),
-
-  background01: opacify(darkPalette[0]!, 0.1),
-  background0075: opacify(darkPalette[0]!, 0.075),
-  background005: opacify(darkPalette[0]!, 0.05),
-  background0025: opacify(darkPalette[0]!, 0.025),
-}
-
-const extraColorsLight = {
-  // in between 1/2
-  color1pt5: '#f9f9f9',
-  color2pt5: '#f4f4f4',
-
-  // extra low opacities
-  color01: opacify(lightPalette[lightPalette.length - 1]!, 0.1),
-  color0075: opacify(lightPalette[lightPalette.length - 1]!, 0.075),
-  color005: opacify(lightPalette[lightPalette.length - 1]!, 0.05),
-  color0025: opacify(lightPalette[lightPalette.length - 1]!, 0.025),
-
-  background01: opacify(lightPalette[0]!, 0.1),
-  background0075: opacify(lightPalette[0]!, 0.075),
-  background005: opacify(lightPalette[0]!, 0.05),
-  background0025: opacify(lightPalette[0]!, 0.025),
-}
-
 const darkShadows = {
   shadow1: 'rgba(0,0,0,0.1)',
-  shadow2: 'rgba(0,0,0,0.18)',
-  shadow3: 'rgba(0,0,0,0.25)',
-  shadow4: 'rgba(0,0,0,0.4)',
-  shadow5: 'rgba(0,0,0,0.55)',
-  shadow6: 'rgba(0,0,0,0.66)',
+  shadow2: 'rgba(0,0,0,0.2)',
+  shadow3: 'rgba(0,0,0,0.3)',
+  shadow4: 'rgba(0,0,0,0.45)',
+  shadow5: 'rgba(0,0,0,0.65)',
+  shadow6: 'rgba(0,0,0,0.85)',
+  shadow7: 'rgba(0,0,0,0.95)',
+  shadow8: 'rgba(0,0,0,1)',
 }
 
 const lightShadows = {
-  shadow1: 'rgba(0,0,0,0.025)',
-  shadow2: 'rgba(0,0,0,0.04)',
-  shadow3: 'rgba(0,0,0,0.06)',
-  shadow4: 'rgba(0,0,0,0.095)',
-  shadow5: 'rgba(0,0,0,0.195)',
-  shadow6: 'rgba(0,0,0,0.3)',
+  shadow1: 'rgba(0,0,0,0.05)',
+  shadow2: 'rgba(0,0,0,0.1)',
+  shadow3: 'rgba(0,0,0,0.15)',
+  shadow4: 'rgba(0,0,0,0.3)',
+  shadow5: 'rgba(0,0,0,0.4)',
+  shadow6: 'rgba(0,0,0,0.55)',
+  shadow7: 'rgba(0,0,0,0.7)',
+  shadow8: 'rgba(0,0,0,0.85)',
 }
 
-const blackColors = {
-  black1: darkPalette[0]!,
-  black2: darkPalette[1]!,
-  black3: darkPalette[2]!,
-  black4: darkPalette[3]!,
-  black5: darkPalette[4]!,
-  black6: darkPalette[5]!,
-  black7: darkPalette[6]!,
-  black8: darkPalette[7]!,
-  black9: darkPalette[8]!,
-  black10: darkPalette[9]!,
-  black11: darkPalette[10]!,
-  black12: darkPalette[11]!,
+const darkHighlights = {
+  highlight1: 'rgba(255,255,255,0.1)',
+  highlight2: 'rgba(255,255,255,0.2)',
+  highlight3: 'rgba(255,255,255,0.3)',
+  highlight4: 'rgba(255,255,255,0.45)',
+  highlight5: 'rgba(255,255,255,0.65)',
+  highlight6: 'rgba(255,255,255,0.85)',
+  highlight7: 'rgba(255,255,255,0.95)',
+  highlight8: 'rgba(255,255,255,1)',
 }
 
-const whiteColors = {
-  white1: lightPalette[0]!,
-  white2: lightPalette[1]!,
-  white3: lightPalette[2]!,
-  white4: lightPalette[3]!,
-  white5: lightPalette[4]!,
-  white6: lightPalette[5]!,
-  white7: lightPalette[6]!,
-  white8: lightPalette[7]!,
-  white9: lightPalette[8]!,
-  white10: lightPalette[9]!,
-  white11: lightPalette[10]!,
-  white12: lightPalette[11]!,
+const lightHighlights = {
+  highlight1: 'rgba(255,255,255,0.05)',
+  highlight2: 'rgba(255,255,255,0.1)',
+  highlight3: 'rgba(255,255,255,0.15)',
+  highlight4: 'rgba(255,255,255,0.3)',
+  highlight5: 'rgba(255,255,255,0.4)',
+  highlight6: 'rgba(255,255,255,0.55)',
+  highlight7: 'rgba(255,255,255,0.7)',
+  highlight8: 'rgba(255,255,255,0.85)',
 }
 
-export const themes = createThemes({
-  // ‼️ we can probably get rid of this since we have mostly moved off the default component themes
-  componentThemes: defaultComponentThemes,
+// Export palettes for customization
+export { darkPalette as defaultDarkPalette, lightPalette as defaultLightPalette }
 
-  base: {
-    palette: {
-      dark: darkPalette,
-      light: lightPalette,
-    },
+// Internal types
+type NamedColors = Record<string, string>
+type ChildTheme<T extends NamedColors = NamedColors> = { light: T; dark: T }
+type GrandChildrenThemeDefinition = { template: string }
 
-    // for values we don't want being inherited onto sub-themes
-    extra: {
-      light: {
-        ...blackColors,
-        ...blue,
-        ...gray,
-        ...green,
-        ...lightShadows,
-        ...orange,
-        ...pink,
-        ...purple,
-        ...red,
-        ...teal,
-        ...whiteColors,
-        ...yellow,
-        shadowColor: lightShadows.shadow1,
-        ...whiteBlack,
-        ...extraColorsLight,
-      },
-      dark: {
-        ...blackColors,
-        ...blueDark,
-        ...darkShadows,
-        ...grayDark,
-        ...greenDark,
-        ...orangeDark,
-        ...pinkDark,
-        ...purpleDark,
-        ...redDark,
-        ...tealDark,
-        ...whiteColors,
-        ...yellowDark,
-        shadowColor: darkShadows.shadow1,
-        ...whiteBlack,
-        ...extraColorsDark,
-      },
-    },
-  },
-
-  // inverse accent theme
-  accent: {
-    palette: {
-      dark: lightPalette,
-      light: darkPalette,
-    },
-  },
-
-  childrenThemes: {
-    black: {
-      palette: {
-        dark: Object.values(blackColors),
-        light: Object.values(blackColors),
-      },
-    },
-    white: {
-      palette: {
-        dark: Object.values(whiteColors),
-        light: Object.values(whiteColors),
-      },
-    },
-    gray: {
-      palette: {
-        dark: Object.values(grayDark),
-        light: Object.values(gray),
-      },
-    },
-    blue: {
-      palette: {
-        dark: Object.values(blueDark),
-        light: Object.values(blue),
-      },
-    },
-    red: {
-      palette: {
-        dark: Object.values(redDark),
-        light: Object.values(red),
-      },
-    },
-    yellow: {
-      palette: {
-        dark: Object.values(yellowDark),
-        light: Object.values(yellow),
-      },
-    },
-    green: {
-      palette: {
-        dark: Object.values(greenDark),
-        light: Object.values(green),
-      },
-    },
-    teal: {
-      palette: {
-        dark: Object.values(tealDark),
-        light: Object.values(teal),
-      },
-    },
-    orange: {
-      palette: {
-        dark: Object.values(orangeDark),
-        light: Object.values(orange),
-      },
-    },
-    pink: {
-      palette: {
-        dark: Object.values(pinkDark),
-        light: Object.values(pink),
-      },
-    },
-    purple: {
-      palette: {
-        dark: Object.values(purpleDark),
-        light: Object.values(purple),
-      },
-    },
-  },
-})
-
-function parseHSL(hslString: string): { h: number; s: number; l: number } {
-  const match = hslString.match(
-    /hsl\((\d+(?:\.\d+)?),\s*(\d+(?:\.\d+)?)%,\s*(\d+(?:\.\d+)?)%\)/
-  )
-  if (!match) throw new Error(`Invalid HSL string: ${hslString}`)
-  return {
-    h: Number.parseFloat(match[1]!),
-    s: Number.parseFloat(match[2]!),
-    l: Number.parseFloat(match[3]!),
-  }
+/** Default children themes - accepts radix colors directly */
+export const defaultChildrenThemes = {
+  gray: { light: gray, dark: grayDark },
+  blue: { light: blue, dark: blueDark },
+  red: { light: red, dark: redDark },
+  yellow: { light: yellow, dark: yellowDark },
+  green: { light: green, dark: greenDark },
+  orange: { light: orange, dark: orangeDark },
+  pink: { light: pink, dark: pinkDark },
+  purple: { light: purple, dark: purpleDark },
+  teal: { light: teal, dark: tealDark },
+  neutral: { light: neutral, dark: neutral },
 }
 
-function buildHSL(h: number, s: number, l: number): string {
-  return `hsl(${h}, ${s}%, ${Math.round(l)}%)`
+/** Union of all color values from children themes (for light or dark) */
+type ChildrenColors<
+  T extends Record<string, ChildTheme>,
+  Mode extends 'light' | 'dark',
+> = {
+  [K in keyof T]: T[K][Mode]
+}[keyof T]
+
+/** Merge all color objects from children into one type */
+type MergedChildrenColors<
+  T extends Record<string, ChildTheme>,
+  Mode extends 'light' | 'dark',
+> = UnionToIntersection<ChildrenColors<T, Mode>>
+
+// Helper to convert union to intersection
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never
+
+// Named color types for black/white (generated from palettes in createV5Theme)
+type BlackColors = ReturnType<typeof paletteToNamedColors<'black'>>
+type WhiteColors = ReturnType<typeof paletteToNamedColors<'white'>>
+
+// Base extra colors type (always included) - getTheme computes opacity/interpolation colors
+type BaseExtraCommon = BlackColors & WhiteColors & typeof whiteBlack
+type BaseExtraLight = BaseExtraCommon &
+  typeof lightShadows &
+  typeof lightHighlights & { shadowColor: string }
+type BaseExtraDark = BaseExtraCommon &
+  typeof darkShadows &
+  typeof darkHighlights & { shadowColor: string }
+
+export type CreateV5ThemeOptions<
+  Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
+  GrandChildren extends Record<
+    string,
+    GrandChildrenThemeDefinition
+  > = typeof v5GrandchildrenThemes,
+> = {
+  /** Override the dark base palette (12 colors from darkest to lightest) */
+  darkPalette?: string[]
+  /** Override the light base palette (12 colors from lightest to darkest) */
+  lightPalette?: string[]
+  /**
+   * Override children themes (color themes like blue, red, etc.)
+   * Accepts radix color objects directly: { blue: { light: blue, dark: blueDark } }
+   */
+  childrenThemes?: Children
+  /**
+   * Override grandChildren themes (alt1, alt2, surface1, etc.)
+   * Pass undefined or omit to use v5GrandchildrenThemes
+   */
+  grandChildrenThemes?: GrandChildren
+  /**
+   * @deprecated component themes are no longer recommended -
+   * configure component styles directly via themes or component defaultProps instead
+   */
+  componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes']
 }
 
 /**
- * I found the 11th color far too different, we smooth it out here
+ * Creates v5 themes with optional customizations.
+ *
+ * @example
+ * Use default themes
+ * const themes = createV5Theme()
+ *
+ * @example
+ * Custom children themes with brand color (accepts radix colors directly)
+ * const themes = createV5Theme({
+ *   childrenThemes: {
+ *     ...defaultChildrenThemes,
+ *     brand: { light: brandLight, dark: brandDark },
+ *   },
+ * })
+ *
+ * @example
+ * Minimal - no color themes
+ * const themes = createV5Theme({
+ *   childrenThemes: {},
+ * })
  */
+export function createV5Theme<
+  Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
+  GrandChildren extends Record<
+    string,
+    GrandChildrenThemeDefinition
+  > = typeof v5GrandchildrenThemes,
+>(
+  options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<
+    Children,
+    GrandChildren
+  >
+) {
+  const {
+    darkPalette: customDarkPalette = darkPalette,
+    lightPalette: customLightPalette = lightPalette,
+    childrenThemes = defaultChildrenThemes as unknown as Children,
+    grandChildrenThemes = v5GrandchildrenThemes as unknown as GrandChildren,
+    componentThemes: customComponentThemes = v5ComponentThemes,
+  } = options
 
-function adjustPaletteLight(
-  name: string,
-  palette: Record<string, string>
-): Record<string, string> {
-  const adjusted: Record<string, string> = { ...palette }
+  // Generate black/white named colors from palettes
+  const blackColors = paletteToNamedColors('black', customDarkPalette)
+  const whiteColors = paletteToNamedColors('white', customLightPalette)
 
-  const color11Key = Object.keys(palette).find((key) => key.endsWith('11'))
-  if (color11Key && palette[color11Key]?.startsWith('hsl(')) {
-    const { h, s, l } = parseHSL(palette[color11Key]!)
-    const newL = Math.min(100, l * 0.9)
-    const newS = 65
-    adjusted[color11Key] = buildHSL(h, newS, newL)
+  // Build extra colors - spread children color objects directly (types flow naturally)
+  // Note: opacity/interpolation colors (color01, background01, etc.) are computed by getTheme
+  const extraBase = {
+    ...blackColors,
+    ...whiteColors,
+    ...whiteBlack,
+  }
+  const lightExtraBase = {
+    ...extraBase,
+    ...lightShadows,
+    ...lightHighlights,
+    shadowColor: lightShadows.shadow3,
+  }
+  const darkExtraBase = {
+    ...extraBase,
+    ...darkShadows,
+    ...darkHighlights,
+    shadowColor: darkShadows.shadow3,
   }
 
-  const isYellow = name === 'yellow'
-  // de-saturate
-  for (const key in adjusted) {
-    const color = adjusted[key]!
-    const { h, s, l } = parseHSL(color)
-    const newS = s * (isYellow ? 0.65 : 0.9)
-    const newL = Math.round(l * 0.982) // matches dark a bit better
-    adjusted[key] = buildHSL(h, newS, newL)
+  // Spread all children colors into extra - types flow from Children generic
+  type LightExtra = BaseExtraLight & MergedChildrenColors<Children, 'light'>
+  type DarkExtra = BaseExtraDark & MergedChildrenColors<Children, 'dark'>
+
+  const lightExtra = { ...lightExtraBase } as LightExtra
+  const darkExtra = { ...darkExtraBase } as DarkExtra
+
+  for (const theme of Object.values(childrenThemes)) {
+    if (theme.light) Object.assign(lightExtra, theme.light)
+    if (theme.dark) Object.assign(darkExtra, theme.dark)
   }
 
-  return adjusted
-}
+  // Convert children to palette format for createThemes, adding black/white internally
+  type PaletteEntry = { palette: { light: string[]; dark: string[] } }
+  type ChildrenWithPalettes = { [K in keyof Children | 'black' | 'white']: PaletteEntry }
 
-function adjustPaletteDark(
-  name: string,
-  palette: Record<string, string>
-): Record<string, string> {
-  const adjusted: Record<string, string> = { ...palette }
-  const isYellow = name === 'yellowDark'
+  const childrenWithPalettes = {
+    // Always include black/white for theme generation
+    black: {
+      palette: { dark: Object.values(blackColors), light: Object.values(blackColors) },
+    },
+    white: {
+      palette: { dark: Object.values(whiteColors), light: Object.values(whiteColors) },
+    },
+    ...(Object.fromEntries(
+      Object.entries(childrenThemes).map(([name, theme]) => [
+        name,
+        {
+          palette: {
+            light: Object.values(theme.light),
+            dark: Object.values(theme.dark),
+          },
+        },
+      ])
+    ) as { [K in keyof Children]: PaletteEntry }),
+  } as ChildrenWithPalettes
 
-  for (const [index, key] of Object.keys(palette).entries()) {
-    const number = index + 1
-    const value = palette[key]
-    if (value?.startsWith('hsl(')) {
-      const { h, s, l } = parseHSL(value)
+  return createThemes({
+    // componentThemes: false disables them, undefined/truthy values enable them
+    componentThemes: customComponentThemes,
 
-      // we need to strongly de-saturate 11
-      if (number === 11) {
-        const newL = Math.round(Math.min(100, l * 1.1))
-        const newS = name === 'yellowDark' ? 45 : 65
-        adjusted[key] = buildHSL(h, newS, newL)
-        continue
+    templates: v5Templates,
+
+    base: {
+      palette: {
+        dark: customDarkPalette,
+        light: customLightPalette,
+      },
+
+      extra: {
+        light: lightExtra,
+        dark: darkExtra,
+      },
+    },
+
+    accent: {
+      palette: {
+        dark: customLightPalette,
+        light: customDarkPalette,
+      },
+    },
+
+    childrenThemes: childrenWithPalettes,
+
+    grandChildrenThemes,
+
+    // Add computed colors to ALL themes based on each theme's palette
+    getTheme: ({ palette, scheme }) => {
+      if (!palette || palette.length < 3) {
+        throw new Error(`invalid palette: ${JSON.stringify(palette)}`)
       }
 
-      // keep our 8-10 saturation high its meant as the bright value
-      const newS = Math.round(
-        s *
-          (number >= 8 && number <= 10
-            ? 1
-            : isYellow
-              ? 0.24
-              : // for lower index dark numbers they are used for backgrounds, more de-saturated looks better
-                number < 5
-                ? 0.5
-                : 0.9)
-      )
+      // TODO this should just be aligned with the offsets we use in templates
+      // and all really simplified down
+      const bgColor = palette[V5_BG_OFFSET]!
+      const fgColor = palette[palette.length - 2]!
 
-      // to match our themes we darken number < 4
-      const newL =
-        number < 4
-          ? Math.round(Math.min(100, l * 0.65))
-          : Math.round(l * (isYellow ? 1.1 : 0.88))
+      return {
+        // Opacity variants of foreground color
+        color01: opacify(fgColor, 0.1),
+        color0075: opacify(fgColor, 0.075),
+        color005: opacify(fgColor, 0.05),
+        color0025: opacify(fgColor, 0.025),
+        color002: opacify(fgColor, 0.02),
+        color001: opacify(fgColor, 0.01),
 
-      adjusted[key] = buildHSL(h, newS, newL)
-    }
-  }
+        // Opacity variants of background color
+        background01: opacify(bgColor, 0.1),
+        background0075: opacify(bgColor, 0.075),
+        background005: opacify(bgColor, 0.05),
+        background0025: opacify(bgColor, 0.025),
+        background002: opacify(bgColor, 0.02),
+        background001: opacify(bgColor, 0.01),
+        background02: opacify(bgColor, 0.2),
+        background04: opacify(bgColor, 0.4),
+        background06: opacify(bgColor, 0.6),
+        background08: opacify(bgColor, 0.8),
 
-  return adjusted
+        // a slightly stronger but translucent color
+        outlineColor: opacify(palette[V5_BG_OFFSET + 4], 0.6),
+      }
+    },
+  })
 }
+
+// Default themes using the createV5Theme function
+export const themes = createV5Theme()
+
+// don't remove this - type sanity checks - these should not cause type errors:
+themes.dark.background0075
+themes.dark_yellow.background0075
+themes.dark.background
+themes.dark.accent1
+// @ts-expect-error
+themes.dark.nonValid

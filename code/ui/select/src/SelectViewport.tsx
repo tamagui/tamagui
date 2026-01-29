@@ -2,9 +2,10 @@ import { FloatingFocusManager } from '@floating-ui/react'
 import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
-import { ThemeableStack } from '@tamagui/stacks'
+import { needsPortalRepropagation } from '@tamagui/portal'
+import { YStack } from '@tamagui/stacks'
 import { VIEWPORT_NAME } from './constants'
 import {
   ForwardSelectContext,
@@ -12,14 +13,12 @@ import {
   useSelectItemParentContext,
 } from './context'
 import type { SelectViewportExtraProps } from './types'
-import { USE_NATIVE_PORTAL } from '@tamagui/portal'
-import { useId } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectViewportFrame = styled(ThemeableStack, {
+export const SelectViewportFrame = styled(YStack, {
   name: VIEWPORT_NAME,
 
   variants: {
@@ -48,7 +47,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   },
 })
 
-const needsRepropagation = isAndroid || (isIos && !USE_NATIVE_PORTAL)
+const needsRepropagation = needsPortalRepropagation()
 
 export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraProps>(
   function SelectViewport(props, forwardedRef) {
@@ -60,7 +59,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     const composedRefs = useComposedRefs(
       // @ts-ignore TODO react 19 type needs fix
       forwardedRef,
-      context.floatingContext?.refs.setFloating
+      context.floatingContext?.refs.setFloating as any
     )
 
     useIsomorphicLayoutEffect(() => {
@@ -70,7 +69,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     }, [isAdapted])
 
     if (itemContext.shouldRenderWebNative) {
-      return <>{children}</>
+      return <YStack position="relative">{children}</YStack>
     }
 
     if (isAdapted || !isWeb) {
@@ -115,7 +114,11 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
         )}
         <AnimatePresence>
           {context.open ? (
-            <FloatingFocusManager context={context.floatingContext!} modal={false}>
+            <FloatingFocusManager
+              context={context.floatingContext!}
+              modal={false}
+              initialFocus={-1}
+            >
               <SelectViewportFrame
                 key="select-viewport"
                 size={itemContext.size}

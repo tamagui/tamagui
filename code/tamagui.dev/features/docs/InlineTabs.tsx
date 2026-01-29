@@ -39,14 +39,14 @@ function TabsComponent(props: TabsProps) {
 
   return (
     <Tabs
+      activationMode="manual"
       onValueChange={updateUrl}
       unstyled
       orientation="horizontal"
       flexDirection="column"
       borderWidth={0}
-      position="unset"
       {...props}
-      value={value}
+      value={value ?? ''}
     />
   )
 }
@@ -59,7 +59,6 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       size="$3"
       flex={1}
       ref={ref as any}
-      elevation="$0.5"
       px="$5"
       pointerEvents="auto"
       rounded="$5"
@@ -118,7 +117,14 @@ const TabsList = (props) => {
 
 const TabsContent = (props) => {
   return (
-    <Tabs.Content width="100%" jc="flex-start" ai="stretch" t="$-2" pt="$4" {...props} />
+    <Tabs.Content
+      width="100%"
+      justify="flex-start"
+      items="stretch"
+      t="$-2"
+      pt="$4"
+      {...props}
+    />
   )
 }
 

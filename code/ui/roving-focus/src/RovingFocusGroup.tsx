@@ -1,7 +1,7 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { Stack, createStyledContext, useEvent } from '@tamagui/core'
+import { Slot, View, createStyledContext, useEvent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
@@ -12,8 +12,8 @@ const EVENT_OPTIONS = { bubbles: false, cancelable: true }
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type RovingFocusGroupImplElement = React.ElementRef<typeof Stack>
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
+type RovingFocusGroupImplElement = React.ElementRef<typeof View>
+type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusGroupImplProps
   extends Omit<PrimitiveDivProps, 'dir'>,
     RovingFocusGroupOptions {
@@ -36,6 +36,7 @@ const RovingFocusGroupImpl = React.forwardRef<
     defaultCurrentTabStopId,
     onCurrentTabStopIdChange,
     onEntryFocus,
+    asChild,
     ...groupProps
   } = props
   const ref = React.useRef<RovingFocusGroupImplElement>(null)
@@ -52,13 +53,7 @@ const RovingFocusGroupImpl = React.forwardRef<
   const isClickFocusRef = React.useRef(false)
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
 
-  React.useEffect(() => {
-    const node = (ref as unknown as React.RefObject<HTMLDivElement>).current
-    if (node) {
-      node.addEventListener(ENTRY_FOCUS, handleEntryFocus)
-      return () => node.removeEventListener(ENTRY_FOCUS, handleEntryFocus)
-    }
-  }, [handleEntryFocus])
+  const Comp = (asChild ? Slot : View) as typeof View
 
   return (
     <RovingFocusProvider
@@ -81,13 +76,13 @@ const RovingFocusGroupImpl = React.forwardRef<
         []
       )}
     >
-      <Stack
+      <Comp
         tabIndex={isTabbingBackOut || focusableItemsCount === 0 ? -1 : 0}
         data-orientation={orientation}
         {...groupProps}
         ref={composedRefs}
+        outlineStyle="none"
         // @ts-ignore
-        style={[{ outline: 'none' }, props.style]}
         onMouseDown={composeEventHandlers(props.onMouseDown, () => {
           isClickFocusRef.current = true
         })}
@@ -97,14 +92,15 @@ const RovingFocusGroupImpl = React.forwardRef<
           // We do this because Safari doesn't focus buttons when clicked, and
           // instead, the wrapper will get focused and not through a bubbling event.
           const isKeyboardFocus = !isClickFocusRef.current
-
           if (
             event.target === event.currentTarget &&
             isKeyboardFocus &&
             !isTabbingBackOut
           ) {
+            // create a cancelable event that onEntryFocus can call preventDefault on
             const entryFocusEvent = new CustomEvent(ENTRY_FOCUS, EVENT_OPTIONS)
-            event.currentTarget.dispatchEvent(entryFocusEvent)
+            // call onEntryFocus directly (dispatching to DOM had issues with asChild/Slot)
+            handleEntryFocus(entryFocusEvent)
 
             if (!entryFocusEvent.defaultPrevented) {
               const items = getItems().filter((item) => item.focusable)
@@ -114,7 +110,7 @@ const RovingFocusGroupImpl = React.forwardRef<
                 Boolean
               ) as typeof items
               const candidateNodes = candidateItems.map((item) => item.ref.current!)
-              focusFirst(candidateNodes)
+              focusFirst(candidateNodes, { focusVisible: false })
             }
           }
 
@@ -135,8 +131,8 @@ const RovingFocusGroupImpl = React.forwardRef<
 
 const ITEM_NAME = 'RovingFocusGroupItem'
 
-type RovingFocusItemElement = React.ElementRef<typeof Stack>
-type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>
+type RovingFocusItemElement = React.ElementRef<typeof View>
+type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusItemProps extends PrimitiveSpanProps {
   tabStopId?: string
   focusable?: boolean
@@ -176,8 +172,8 @@ const RovingFocusGroupItem = React.forwardRef<
       focusable={focusable}
       active={active}
     >
-      <Stack
-        tabIndex={isCurrentTabStop ? 0 : -1}
+      <View
+        tabIndex={focusable ? 0 : -1}
         data-orientation={context.orientation}
         {...itemProps}
         ref={forwardedRef}
@@ -220,7 +216,7 @@ const RovingFocusGroupItem = React.forwardRef<
                  * Imperative focus during keydown is risky so we prevent React's batching updates
                  * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
                  */
-                setTimeout(() => focusFirst(candidateNodes))
+                setTimeout(() => focusFirst(candidateNodes, { focusVisible: true }))
               }
             }
           ),
@@ -239,9 +235,7 @@ RovingFocusGroupItem.displayName = ITEM_NAME
 const GROUP_NAME = 'RovingFocusGroup'
 
 type ItemData = { id: string; focusable: boolean; active: boolean }
-const [Collection, useCollection] = createCollection<HTMLSpanElement, ItemData>(
-  GROUP_NAME
-)
+const [Collection, useCollection] = createCollection<any, ItemData>(GROUP_NAME)
 
 type ScopedProps<P> = P & { __scopeRovingFocusGroup?: string }
 // const [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(
@@ -345,12 +339,13 @@ function getFocusIntent(
   return MAP_KEY_TO_FOCUS_INTENT[key]
 }
 
-function focusFirst(candidates: HTMLElement[]) {
+function focusFirst(candidates: HTMLElement[], options?: { focusVisible?: boolean }) {
   const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement
   for (const candidate of candidates) {
     // if focus is already where we want to go, we don't want to keep going through the candidates
     if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return
-    candidate.focus()
+    // @ts-ignore focusVisible is a newer API not yet in all TS libs
+    candidate.focus({ focusVisible: options?.focusVisible })
     if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return
   }
 }
@@ -363,6 +358,6 @@ function wrapArray<T>(array: T[], startIndex: number) {
   return array.map((_, index) => array[(startIndex + index) % array.length])
 }
 
-export { RovingFocusGroup }
+export { RovingFocusGroup, RovingFocusGroupItem }
 
 export type { RovingFocusGroupProps, RovingFocusItemProps }

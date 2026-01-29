@@ -6,8 +6,13 @@ type Product = Database['public']['Tables']['products']['Row'] & {
 }
 
 export type ProductsResponse = {
-  starter: Product
-  bento: Product
+  // V1 Products (required)
+  pro: Product
+  support: Product
+  // V2 Products (optional - may not exist in all environments)
+  proV2: Product | null
+  supportDirect: Product | null
+  supportSponsor: Product | null
 }
 
 export const useProducts = () => {

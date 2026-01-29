@@ -111,7 +111,6 @@ export function CodeWindow({ code, isLoading }: Props) {
     >
       <Tabs.List
         unstyled
-        disablePassBorderRadius="bottom"
         aria-label="Manage your account"
         backgroundColor="$background"
         borderColor="$borderColor"
@@ -163,7 +162,7 @@ function CopyCodeButton({ onCopy, hasCopied, oneTabLayout = false }) {
   return (
     <Button
       rounded="$4"
-      themeInverse
+      theme="accent"
       position="absolute"
       t={oneTabLayout ? 16 : 48}
       r={0}
@@ -220,7 +219,7 @@ function Content({
       overflow="hidden"
       p={0}
       bg="$background"
-      tag="pre"
+      render="pre"
       minH={500}
       data-line-numbers={true}
     >

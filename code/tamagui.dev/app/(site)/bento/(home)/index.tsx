@@ -36,10 +36,10 @@ export default function BentoPage() {
         title="Copy-paste UI for React Native and Web - Tamagui Bento"
         description="Tamagui Bento - Copy-paste components and screens for React and React Native"
         openGraph={{
-          url: 'https://tamagui.dev/bento',
+          url: '/bento',
           images: [
             {
-              url: 'https://tamagui.dev/bento/social.png',
+              url: '/bento/social.png',
             },
           ],
         }}
@@ -218,10 +218,8 @@ const Hero = () => {
                     <Button
                       className="box-3d all ease-in-out ms100"
                       size="$3"
-                      scaleSpace={0.75}
                       self="flex-end"
                       mr="$4"
-                      color="$color1"
                       bg="$color9"
                       outlineColor="$background02"
                       outlineOffset={2}
@@ -240,7 +238,7 @@ const Hero = () => {
                         showAppropriateModal()
                       }}
                     >
-                      <Button.Text fontFamily="$mono" size="$4">
+                      <Button.Text fontFamily="$mono" size="$4" color="$color1">
                         Pro
                       </Button.Text>
                     </Button>
@@ -339,7 +337,7 @@ const Hero = () => {
             >
               <YStack rounded="$4" shadowColor="rgba(0,0,0,0.1)" shadowRadius="$8">
                 <ThemeTintAlt>
-                  <Theme name="surface3">
+                  <Theme name="accent">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -354,7 +352,7 @@ const Hero = () => {
                 }}
               >
                 <ThemeTintAlt>
-                  <Theme name="surface3">
+                  <Theme name="accent">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -369,7 +367,7 @@ const Hero = () => {
                 }}
               >
                 <ThemeTintAlt>
-                  <Theme name="surface2">
+                  <Theme name="accent">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -397,7 +395,7 @@ const Hero = () => {
                 shadowRadius="$8"
               >
                 <ThemeTint>
-                  <Theme name="surface3">
+                  <Theme name="accent">
                     <LocationNotification />
                   </Theme>
                 </ThemeTint>

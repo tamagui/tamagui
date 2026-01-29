@@ -36,6 +36,9 @@
   "exclude": [
     "types",
     "dist",
-    "**/__tests__"
+    "**/__tests__",
+    "vitest.config.*",
+    "**/*.test.ts",
+    "**/*.test-d.ts"
   ]
 }

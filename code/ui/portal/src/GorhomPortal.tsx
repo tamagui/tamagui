@@ -3,6 +3,7 @@
 // fixing SSR issue
 
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { getPortal, NativePortalHost, NativePortalProvider } from '@tamagui/native'
 import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
 import React, {
@@ -103,9 +104,11 @@ const removePortal = (
   portalName: string
 ) => {
   if (!(hostName in state)) {
-    console.info(
-      `Failed to remove portal '${portalName}', '${hostName}' was not registered!`
-    )
+    if (process.env.NODE_ENV === 'development') {
+      console.info(
+        `Failed to remove portal '${portalName}', '${hostName}' was not registered!`
+      )
+    }
     return state
   }
 
@@ -240,7 +243,11 @@ const PortalProviderComponent = ({
     return next as typeof dispatch
   }, [dispatch])
 
-  return (
+  const portalState = getPortal().state
+
+  // when teleport is enabled, use NativePortalProvider as the wrapper
+  // the Gorhom context is still needed for fallback cases
+  const content = (
     <PortalDispatchContext.Provider value={transitionDispatch}>
       <PortalStateContext.Provider value={state}>
         {children}
@@ -248,6 +255,13 @@ const PortalProviderComponent = ({
       </PortalStateContext.Provider>
     </PortalDispatchContext.Provider>
   )
+
+  // wrap with NativePortalProvider if teleport is available
+  if (portalState.type === 'teleport') {
+    return <NativePortalProvider>{content}</NativePortalProvider>
+  }
+
+  return content
 }
 
 export const PortalProvider = memo(PortalProviderComponent)
@@ -274,6 +288,13 @@ const defaultRenderer = (children) => <>{children}</>
 export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
   if (isWeb) {
     return <PortalHostWeb {...props} />
+  }
+
+  const portalState = getPortal().state
+
+  // use teleport's PortalHost when available
+  if (portalState.type === 'teleport') {
+    return <NativePortalHost name={props.name} />
   }
 
   return <PortalHostNonNative {...props} />
@@ -306,7 +327,6 @@ function PortalHostNonNative(props: PortalHostProps) {
   const { registerHost, deregisterHost } = usePortal(props.name)
 
   useIsomorphicLayoutEffect(() => {
-    if (typeof window === 'undefined') return
     registerHost()
     return () => {
       deregisterHost()

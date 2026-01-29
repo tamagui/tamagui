@@ -3,7 +3,7 @@ import { getSetting } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed, Variable } from '../types'
-import { tokensValueToVariable } from './registerCSSVariable'
+import { getOrCreateVariable } from './registerCSSVariable'
 import { sortString } from './sortString'
 
 const darkLight = ['dark', 'light']
@@ -15,17 +15,17 @@ export function getThemeCSSRules(props: {
   theme: ThemeParsed
   names: string[]
   hasDarkLight?: boolean
-}) {
-  const cssRuleSets: string[] = []
-
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    return cssRuleSets
-  }
-  if (
+}): string[] {
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    // empty - CSS already extracted at build time
+  } else if (process.env.TAMAGUI_TARGET === 'native') {
+    // no CSS on native
+  } else if (
     !process.env.TAMAGUI_DOES_SSR_CSS ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'false'
   ) {
+    const cssRuleSets: string[] = []
     const { config, themeName, theme, names } = props
 
     // special case for SSR
@@ -36,17 +36,9 @@ export function getThemeCSSRules(props: {
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
-    // themeToVariableToValueMap.set(theme, {})
-    // const varToValMap = themeToVariableToValueMap.get(theme)
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
-      let value: any = null
-
-      if (!tokensValueToVariable.has(variable.val)) {
-        value = variable.val
-      } else {
-        value = tokensValueToVariable.get(variable.val)!.variable
-      }
+      const value = getOrCreateVariable(variable.val).variable
       // Hash themeKey in case it has invalid chars too
       vars += `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(
         themeKey,
@@ -60,9 +52,9 @@ export function getThemeCSSRules(props: {
     const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
 
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
-    // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
+    // hardcoded to support 2 levels of nesting (e.g. light > dark or dark > light)
     if (hasDarkLight) {
-      const maxDepth = getSetting('maxDarkLightNesting') ?? 3
+      const maxDepth = 2
 
       for (const subName of names) {
         const isDark = isDarkBase || subName.startsWith('dark_')
@@ -83,7 +75,6 @@ export function getThemeCSSRules(props: {
         for (let depth = 0; depth < numSelectors; depth++) {
           const isOdd = depth % 2 === 1
 
-          // wtf is this continue:
           if (isOdd && depth < 3) {
             continue
           }
@@ -106,9 +97,6 @@ export function getThemeCSSRules(props: {
           // for light/dark/light:
           const parentSelectorString = parentSelectors.join(' ')
           selectorsSet.add(`${parentSelectorString} ${nextChildSelector}`)
-          // selectorsSet.add(
-          //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
-          // )
         }
       }
     }
@@ -116,11 +104,15 @@ export function getThemeCSSRules(props: {
     const selectors = [...selectorsSet].sort(sortString)
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
-    // this isBaseTheme logic could probably be done more efficiently above
     const selectorsString =
       selectors
         .map((x) => {
-          const rootSep = isBaseTheme(x) && getSetting('themeClassNameOnRoot') ? '' : ' '
+          const rootSep =
+            isBaseTheme(x) &&
+            (getSetting('addThemeClassName') === 'html' ||
+              getSetting('addThemeClassName') === 'body')
+              ? ''
+              : ' '
           return `:root${rootSep}${x}`
         })
         .join(', ') + `, .tm_xxt`
@@ -176,9 +168,11 @@ export function getThemeCSSRules(props: {
         }
       }
     }
+
+    return cssRuleSets
   }
 
-  return cssRuleSets
+  return []
 }
 
 const darkSelector = '.t_dark'

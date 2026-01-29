@@ -3,16 +3,7 @@ import { styled } from '@tamagui/core'
 
 import { YStack } from './Stacks'
 
-import {
-  bordered,
-  circular,
-  elevate,
-  focusTheme,
-  hoverTheme,
-  padded,
-  pressTheme,
-  radiused,
-} from './variants'
+import { bordered, circular, elevate } from './variants'
 
 const chromelessStyle = {
   backgroundColor: 'transparent',
@@ -25,20 +16,12 @@ const chromelessStyle = {
 }
 
 export const themeableVariants = {
-  backgrounded: {
-    true: {
-      backgroundColor: '$background',
-    },
-  },
-
-  radiused,
-  hoverTheme,
-  pressTheme,
-  focusTheme,
   circular,
-  padded,
   elevate,
-  bordered,
+
+  bordered: {
+    true: bordered,
+  },
 
   transparent: {
     true: {

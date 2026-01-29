@@ -1,4 +1,3 @@
-import { isClient } from '@tamagui/constants'
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import { createVariable } from '../createVariable'
 import type {
@@ -18,9 +17,12 @@ const allRules: Record<string, string> = {}
 
 export const getAllSelectors = () => allSelectors
 export const getAllRules = () => {
-  // Sort by identifier to ensure deterministic CSS output order
-  const sortedKeys = Object.keys(allRules).sort()
-  return sortedKeys.map((key) => allRules[key])
+  if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    // Sort by identifier to ensure deterministic CSS output order
+    const sortedKeys = Object.keys(allRules).sort()
+    return sortedKeys.map((key) => allRules[key])
+  }
+  return []
 }
 
 // once react 19 onyl supported we can remove most of this
@@ -39,35 +41,37 @@ export function scanAllSheets(
   collectThemes = false,
   tokens?: TokensParsed
 ): DedupedThemes | undefined {
-  if (process.env.NODE_ENV === 'test') return
-  if (!isClient) return
+  if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    if (process.env.NODE_ENV === 'test') return
+    if (process.env.TAMAGUI_TARGET !== 'web') return
 
-  let themes: DedupedThemes | undefined
+    let themes: DedupedThemes | undefined
 
-  const sheets = document.styleSheets || []
-  const prev = lastScannedSheets
-  const current = new Set(sheets as any as CSSStyleSheet[])
+    const sheets = document.styleSheets || []
+    const prev = lastScannedSheets
+    const current = new Set(sheets as any as CSSStyleSheet[])
 
-  for (const sheet of current) {
-    if (sheet) {
-      const out = updateSheetStyles(sheet, false, collectThemes, tokens)
-      if (out) {
-        themes = out
+    for (const sheet of current) {
+      if (sheet) {
+        const out = updateSheetStyles(sheet, false, collectThemes, tokens)
+        if (out) {
+          themes = out
+        }
       }
     }
-  }
 
-  lastScannedSheets = current
+    lastScannedSheets = current
 
-  if (prev) {
-    for (const sheet of prev) {
-      if (sheet && !current.has(sheet)) {
-        updateSheetStyles(sheet, true)
+    if (prev) {
+      for (const sheet of prev) {
+        if (sheet && !current.has(sheet)) {
+          updateSheetStyles(sheet, true)
+        }
       }
     }
-  }
 
-  return themes
+    return themes
+  }
 }
 
 function trackInsertedStyle(id: string) {
@@ -173,7 +177,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     colorVarToVal = {}
     for (const key in tokens.color) {
       const token = tokens.color[key]
-      colorVarToVal[token.name] = token.val
+      if (token) {
+        colorVarToVal[token.name] = token.val
+      }
     }
   }
 
@@ -200,7 +206,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     if (val[0] === 'v' && val.startsWith('var(')) {
       // var()
       const varName = val.slice(6, -1)
-      const tokenVal = colorVarToVal[varName]
+      const tokenVal = colorVarToVal?.[varName]
       // either hydrate it from tokens directly or from computed style on body if no token
       if (tokenVal) {
         value = tokenVal
@@ -295,7 +301,7 @@ export function setNonce(_: string) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (!isClient) return
+  if (process.env.TAMAGUI_TARGET !== 'web') return
 
   if (!sheet && document.head) {
     const styleTag = document.createElement('style')
@@ -324,7 +330,6 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     try {
       for (const rule of rules) {
         sheet.insertRule(rule, sheet.cssRules.length)
-        if (identifier === '_dsp-_groupframe-maxMd_none') console.warn('INSERT', rule)
       }
     } catch (err) {
       if (process.env.NODE_ENV === 'production') {

@@ -11,7 +11,6 @@ import {
   ScrollView,
   SizableText,
   Spinner,
-  Stack,
   Text,
   ThemeableStack,
   View,
@@ -22,13 +21,14 @@ import {
   useEvent,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
-// @ts-expect-error - bento component wildcard import
-import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
+// @ts-ignore - bento component wildcard import
 import { useCurrentRouteParams } from '@tamagui/bento'
+// @ts-ignore - bento component wildcard import
+import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
-import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
 import { useBentoShowcase } from './BentoProvider'
+import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
 
 type Props = {
   children: React.ReactNode
@@ -67,8 +67,6 @@ const ShowcaseView = forwardRef<any, Props>(
     ref
   ) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
-    // const [theme, setTheme] = useState
-    // const [phoneFocused, setPhoneFocused] = useState(false)
     const toast = useToastController()
 
     const { section, part } = useCurrentRouteParams()
@@ -153,8 +151,7 @@ const ShowcaseView = forwardRef<any, Props>(
               <XGroup rounded="$10">
                 <Button
                   icon={Eye}
-                  // @ts-expect-error - active theme name
-                  theme={view === 'preview' ? 'active' : 'alt1'}
+                  theme={view === 'preview' ? 'accent' : null}
                   size="$3"
                   onPress={() => setView('preview')}
                 >
@@ -164,8 +161,7 @@ const ShowcaseView = forwardRef<any, Props>(
                 </Button>
                 <Button
                   icon={approved ? Code : Lock}
-                  // @ts-expect-error - active theme name
-                  theme={view === 'code' ? 'active' : 'alt1'}
+                  theme={view === 'code' ? 'accent' : null}
                   size="$3"
                   onPress={() => setView('code')}
                 >
@@ -285,7 +281,6 @@ const MessagesFrame = (props: {
         ))}
       </XStack>
 
-      {/* @ts-expect-error - hideDragHandle type mismatch */}
       <ResizableBox hideDragHandle={props.hideDragHandle}>
         <YStack
           bg="$backgroundPress"
@@ -434,7 +429,15 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
     })
 
     return (
-      <XStack flex={1} ref={ref} items="stretch" select="none" gap="$2" {...rest}>
+      <XStack
+        flex={1}
+        flexBasis="auto"
+        ref={ref}
+        items="stretch"
+        select="none"
+        gap="$2"
+        {...rest}
+      >
         <XStack
           items="center"
           // @ts-expect-error - window group name
@@ -454,7 +457,7 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
             justify="center"
             group
           >
-            <Stack
+            <View
               maxH="50%"
               width={8}
               bg="$background04"
@@ -489,13 +492,13 @@ export function Hint({ children }: { children: React.ReactNode }) {
       b={12}
       l={12}
       bordered
-      backgrounded
-      theme="orange"
+      bg="$color1"
+      theme="green"
       p="$2"
       px="$3"
       gap="$3"
       z={100000}
-      radiused
+      rounded="$4"
       flexDirection="row"
       justify="center"
       items="center"

@@ -746,7 +746,32 @@ const styles = {
   },
 }
 
-const ForwardedScrollView = React.forwardRef((props, forwardedRef) => {
+export interface ScrollViewMethods {
+  getScrollResponder: () => ScrollView
+  getScrollableNode: () => HTMLElement
+  getInnerViewNode: () => HTMLElement
+  getInnerViewRef: () => HTMLElement
+  getNativeScrollRef: () => HTMLElement
+  scrollTo: (options?: { x?: number; y?: number; animated?: boolean }) => void
+  scrollToEnd: (options?: { animated?: boolean }) => void
+  flashScrollIndicators: () => void
+  scrollResponderZoomTo: (rect: {
+    x: number
+    y: number
+    width: number
+    height: number
+    animated?: boolean
+  }) => void
+  scrollResponderScrollNativeHandleToKeyboard: (
+    nodeHandle: any,
+    additionalOffset?: number,
+    preventNegativeScrollOffset?: boolean
+  ) => void
+}
+
+export type ScrollViewRef = HTMLElement & ScrollViewMethods
+
+const ForwardedScrollView = React.forwardRef<ScrollViewRef, any>((props, forwardedRef) => {
   return <ScrollView {...props} forwardedRef={forwardedRef} />
 })
 

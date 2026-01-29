@@ -3,35 +3,25 @@ import { View, styled } from '@tamagui/core'
 
 import { getElevation } from './getElevation'
 
-export type YStackProps = GetProps<typeof YStack>
+export interface StackVariants {
+  /**
+   * @deprecated use `inset: 0, position: 'absolute'` instead
+   */
+  fullscreen?: boolean
+
+  elevation?: number | SizeTokens
+}
+
+export type YStackProps = Omit<GetProps<typeof YStack>, keyof StackVariants> &
+  StackVariants
 
 export type XStackProps = YStackProps
 export type ZStackProps = YStackProps
 
 export const fullscreenStyle = {
   position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
+  inset: 0,
 } as const
-
-type Insets = {
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
-}
-
-const getInset = (val: number | SizeTokens | Insets | null) =>
-  val && typeof val === 'object'
-    ? val
-    : {
-        top: val,
-        left: val,
-        bottom: val,
-        right: val,
-      }
 
 const variants = {
   fullscreen: {
@@ -42,8 +32,6 @@ const variants = {
     '...size': getElevation,
     ':number': getElevation,
   },
-
-  inset: getInset,
 } as const
 
 /**

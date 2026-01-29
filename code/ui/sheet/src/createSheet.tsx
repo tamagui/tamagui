@@ -2,12 +2,12 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type {
   GetProps,
-  StackProps,
+  ViewProps,
   TamaguiComponent,
   TamaguiComponentExpectingVariants,
   TamaguiElement,
 } from '@tamagui/core'
-import { Stack } from '@tamagui/core'
+import { View } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -15,7 +15,7 @@ import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
 import { forwardRef, memo, useMemo, useEffect, useRef } from 'react'
-import type { View } from 'react-native'
+import type { View as RNView } from 'react-native'
 import { Platform } from 'react-native'
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { getNativeSheet } from './nativeSheet'
@@ -30,7 +30,7 @@ type SharedSheetProps = {
   open?: boolean
 }
 
-type BaseProps = StackProps & SharedSheetProps
+type BaseProps = ViewProps & SharedSheetProps
 
 type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
 
@@ -47,6 +47,19 @@ export function createSheet<
       const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
       const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef)
 
+      // track if sheet was being dragged to prevent onPress toggle after drag
+      const wasDraggingRef = useRef(false)
+
+      // subscribe to parent dragging changes to track if we dragged during this press
+      useEffect(() => {
+        if (!context.scrollBridge) return
+        return context.scrollBridge.onParentDragging((isDragging: boolean) => {
+          if (isDragging) {
+            wasDraggingRef.current = true
+          }
+        })
+      }, [context.scrollBridge])
+
       if (context.onlyShowFrame) {
         return null
       }
@@ -55,7 +68,16 @@ export function createSheet<
         // @ts-ignore
         <Handle
           ref={composedRef}
+          onPressIn={() => {
+            // reset at start of new press
+            wasDraggingRef.current = false
+          }}
           onPress={() => {
+            // skip toggle if this was a drag gesture
+            if (wasDraggingRef.current) {
+              wasDraggingRef.current = false
+              return
+            }
             // don't toggle to the bottom snap position when dismissOnSnapToBottom set
             const max =
               context.snapPoints.length + (context.dismissOnSnapToBottom ? -1 : 0)
@@ -73,42 +95,40 @@ export function createSheet<
    * SheetOverlay
    * -----------------------------------------------------------------------------------------------*/
 
-  const SheetOverlay = Overlay.extractable(
-    memo((propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => {
-      const { __scopeSheet, ...props } = propsIn
-      const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
+  const SheetOverlay = Overlay.styleable<SheetScopedProps<{}>>((propsIn, ref) => {
+    const { __scopeSheet, ...props } = propsIn
+    const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
 
-      // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
-      // so we just pass it up to context
+    // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
+    // so we just pass it up to context
 
-      const element = useMemo(() => {
-        return (
-          // @ts-ignore
-          <Overlay
-            {...props}
-            onPress={composeEventHandlers(
-              props.onPress,
-              context.dismissOnOverlayPress
-                ? () => {
-                    context.setOpen(false)
-                  }
-                : undefined
-            )}
-          />
-        )
-      }, [props.onPress, props.opacity, context.dismissOnOverlayPress])
+    const element = useMemo(() => {
+      return (
+        // @ts-ignore
+        <Overlay
+          {...props}
+          onPress={composeEventHandlers(
+            props.onPress,
+            context.dismissOnOverlayPress
+              ? () => {
+                  context.setOpen(false)
+                }
+              : undefined
+          )}
+        />
+      )
+    }, [props.onPress, props.opacity, context.dismissOnOverlayPress])
 
-      useIsomorphicLayoutEffect(() => {
-        context.onOverlayComponent?.(element)
-      }, [element])
+    useIsomorphicLayoutEffect(() => {
+      context.onOverlayComponent?.(element)
+    }, [element])
 
-      if (context.onlyShowFrame) {
-        return null
-      }
-
+    if (context.onlyShowFrame) {
       return null
-    })
-  )
+    }
+
+    return null
+  })
 
   /* -------------------------------------------------------------------------------------------------
    * Sheet
@@ -130,112 +150,107 @@ export function createSheet<
     adjustPaddingForOffscreenContent?: boolean
   }
 
-  const SheetFrame = Frame.extractable(
-    forwardRef(
-      (
-        {
-          __scopeSheet,
-          adjustPaddingForOffscreenContent,
-          disableHideBottomOverflow,
-          children,
-          ...props
-        }: SheetProps & ExtraFrameProps,
-        forwardedRef
-      ) => {
-        const context = useSheetContext(SHEET_NAME, __scopeSheet)
-        const {
-          hasFit,
-          removeScrollEnabled = true,
-          frameSize,
-          contentRef,
-          open,
-        } = context
-        const composedContentRef = useComposedRefs(forwardedRef, contentRef)
-        const offscreenSize = useSheetOffscreenSize(context)
+  const SheetFrame = Frame.styleable<SheetProps & ExtraFrameProps>(
+    (
+      {
+        __scopeSheet,
+        adjustPaddingForOffscreenContent,
+        disableHideBottomOverflow,
+        children,
+        ...props
+      },
+      forwardedRef
+    ) => {
+      const context = useSheetContext(SHEET_NAME, __scopeSheet)
+      const { hasFit, disableRemoveScroll, frameSize, contentRef, open } = context
+      const composedContentRef = useComposedRefs(forwardedRef, contentRef)
+      const offscreenSize = useSheetOffscreenSize(context)
 
-        // FIX: Store the frameSize when open for use during close animation
-        const stableFrameSize = useRef(frameSize)
-        useEffect(() => {
-          if (open && frameSize) {
-            stableFrameSize.current = frameSize
-          }
-        }, [open, frameSize])
+      // FIX: Store the frameSize when open for use during close animation
+      const stableFrameSize = useRef(frameSize)
+      useEffect(() => {
+        if (open && frameSize) {
+          stableFrameSize.current = frameSize
+        }
+      }, [open, frameSize])
 
-        const sheetContents = useMemo(() => {
-          // FIX: Use fixed height during close animation to prevent content-driven resizing
-          const shouldUseFixedHeight = hasFit && !open && stableFrameSize.current
-
-          return (
-            // @ts-expect-error
-            <Frame
-              ref={composedContentRef}
-              flex={hasFit && open ? 0 : 1}
-              height={
-                shouldUseFixedHeight
-                  ? stableFrameSize.current
-                  : hasFit
-                    ? undefined
-                    : frameSize
-              }
-              pointerEvents={open ? 'auto' : 'none'}
-              data-state={open ? 'open' : 'closed'}
-              {...props}
-            >
-              <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
-                {children}
-              </StackZIndexContext>
-
-              {adjustPaddingForOffscreenContent && (
-                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-              )}
-            </Frame>
-          )
-        }, [
-          open,
-          props,
-          frameSize,
-          offscreenSize,
-          adjustPaddingForOffscreenContent,
-          hasFit,
-        ])
+      const sheetContents = useMemo(() => {
+        // FIX: Use fixed height during close animation to prevent content-driven resizing
+        const shouldUseFixedHeight = hasFit && !open && stableFrameSize.current
 
         return (
-          <>
-            <RemoveScroll enabled={removeScrollEnabled && context.open}>
-              {sheetContents}
-            </RemoveScroll>
+          // @ts-expect-error
+          <Frame
+            ref={composedContentRef}
+            flex={hasFit && open ? 0 : 1}
+            flexBasis={hasFit ? 'auto' : undefined}
+            height={
+              shouldUseFixedHeight
+                ? stableFrameSize.current
+                : hasFit
+                  ? undefined
+                  : frameSize
+            }
+            pointerEvents={open ? 'auto' : 'none'}
+            data-state={open ? 'open' : 'closed'}
+            {...props}
+          >
+            <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+              {children}
+            </StackZIndexContext>
 
-            {/* below frame hide when bouncing past 100% */}
-            {!disableHideBottomOverflow && (
-              // @ts-ignore
-              <Frame
-                {...props}
-                data-testid="ensure-sheet-cover-not-overlapping"
-                componentName="SheetCover"
-                // biome-ignore lint/correctness/noChildrenProp: <explanation>
-                children={null}
-                position="absolute"
-                bottom="-100%"
-                zIndex={-1}
-                height={context.frameSize}
-                left={0}
-                right={0}
-                borderWidth={0}
-                borderRadius={0}
-                shadowOpacity={0}
-              />
+            {adjustPaddingForOffscreenContent && (
+              <View data-sheet-offscreen-pad height={offscreenSize} width="100%" />
             )}
-          </>
+          </Frame>
         )
-      }
-    )
+      }, [
+        open,
+        props,
+        frameSize,
+        offscreenSize,
+        adjustPaddingForOffscreenContent,
+        hasFit,
+      ])
+
+      return (
+        <>
+          <RemoveScroll enabled={!disableRemoveScroll && context.open}>
+            {sheetContents}
+          </RemoveScroll>
+
+          {/* below frame hide when bouncing past 100% */}
+          {!disableHideBottomOverflow && (
+            // @ts-ignore
+            <Frame
+              {...props}
+              componentName="SheetCover"
+              // biome-ignore lint/correctness/noChildrenProp: <explanation>
+              children={null}
+              // Don't inherit testID - this is a visual helper element
+              testID={undefined}
+              id={undefined}
+              position="absolute"
+              bottom="-100%"
+              zIndex={-1}
+              height={context.frameSize}
+              left={0}
+              right={0}
+              borderWidth={0}
+              borderRadius={0}
+              shadowOpacity={0}
+            />
+          )}
+        </>
+      )
+    }
   ) as any as ForwardRefExoticComponent<
     SheetScopedProps<
       Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> & ExtraFrameProps
     >
   >
 
-  const Sheet = forwardRef<View, SheetProps>(function Sheet(props, ref) {
+  const Sheet = forwardRef<RNView, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 
@@ -269,7 +284,7 @@ export function createSheet<
   }
 
   const Controlled = withStaticProperties(Sheet, components) as any as FunctionComponent<
-    Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<View>
+    Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<RNView>
   > &
     typeof components
 

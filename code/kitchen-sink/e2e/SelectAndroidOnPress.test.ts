@@ -9,26 +9,41 @@
  * 1. The Select trigger can be tapped to open the sheet
  * 2. Tapping an item closes the sheet AND updates the selected value
  * 3. The change count increments (proving onValueChange was called)
+ *
+ * Note: This test is Android-specific - skip on iOS
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
+
+// helper to skip tests on iOS
+const skipOnIOS = () => {
+  if (device.getPlatform() === 'ios') {
+    return true
+  }
+  return false
+}
 
 describe('SelectAndroidOnPress (#3436)', () => {
   beforeAll(async () => {
+    if (skipOnIOS()) return
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
+    if (skipOnIOS()) return
     await device.reloadReactNative()
-    await navigateToSelectAndroidOnPress()
+    await navigateToTestCase('SelectAndroidOnPress', 'select-android-trigger')
   })
 
   it('should render the test case screen', async () => {
+    if (skipOnIOS()) return
     await expect(element(by.id('select-android-title'))).toBeVisible()
     await expect(element(by.id('select-android-trigger'))).toBeVisible()
   })
 
   it('should open the Select sheet when trigger is tapped', async () => {
+    if (skipOnIOS()) return
     // tap the select trigger
     await element(by.id('select-android-trigger')).tap()
 
@@ -42,6 +57,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
   })
 
   it('should update value when item is tapped - THIS IS THE BUG TEST', async () => {
+    if (skipOnIOS()) return
     // verify initial state: no value selected, change count is 0
     await expect(element(by.id('select-android-selected-value'))).toHaveText(
       'Selected value: (none)'
@@ -75,6 +91,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
   })
 
   it('should handle tap with slight movement (simulates physical device jitter)', async () => {
+    if (skipOnIOS()) return
     // This test simulates the physical device behavior where slight finger
     // movement during a tap can cause the responder to be stolen by the Sheet's ScrollView
     //
@@ -118,6 +135,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
   })
 
   it('should allow multiple selections', async () => {
+    if (skipOnIOS()) return
     // first selection
     await element(by.id('select-android-trigger')).tap()
     await waitFor(element(by.id('select-android-item-apple')))
@@ -150,38 +168,3 @@ describe('SelectAndroidOnPress (#3436)', () => {
   })
 })
 
-async function navigateToSelectAndroidOnPress() {
-  // wait for app to load
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(60000)
-
-  // give the app a moment to settle
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  // tap "Test Cases"
-  await waitFor(element(by.id('home-test-cases-link')))
-    .toBeVisible()
-    .withTimeout(10000)
-  await element(by.id('home-test-cases-link')).tap()
-
-  // wait for test cases screen
-  await waitFor(element(by.text('All Test Cases')))
-    .toExist()
-    .withTimeout(10000)
-
-  await new Promise((resolve) => setTimeout(resolve, 500))
-
-  // find and tap SelectAndroidOnPress test case
-  await waitFor(element(by.id('test-case-SelectAndroidOnPress')))
-    .toBeVisible()
-    .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(600, 'down', Number.NaN, Number.NaN)
-
-  await element(by.id('test-case-SelectAndroidOnPress')).tap()
-
-  // wait for test screen to load
-  await waitFor(element(by.id('select-android-trigger')))
-    .toExist()
-    .withTimeout(10000)
-}

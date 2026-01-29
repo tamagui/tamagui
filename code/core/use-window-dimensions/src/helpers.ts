@@ -6,7 +6,7 @@ let lastSize: WindowSize = initialValue
 let docEl: HTMLElement | null = null
 
 export function getWindowSize(): WindowSize {
-  if (!isClient) {
+  if (process.env.TAMAGUI_TARGET !== 'web') {
     return initialValue
   }
 
@@ -33,6 +33,7 @@ export function getWindowSize(): WindowSize {
 
 const cbs = new Set<WindowSizeListener>()
 
+// only attach resize listener on client (not during SSR)
 if (isClient) {
   let lastUpdate = Date.now()
   let tm

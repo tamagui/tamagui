@@ -1,16 +1,26 @@
+import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
   AnimatedNumberStrategy,
   AnimationDriver,
-  AnimationProp,
+  TransitionProp,
   UniversalAnimatedNumber,
   UseAnimatedNumberReaction,
   UseAnimatedNumberStyle,
 } from '@tamagui/web'
-import { useEvent } from '@tamagui/web'
+import { useEvent, useThemeWithState } from '@tamagui/web'
 import React from 'react'
 import { Animated, type Text, type View } from 'react-native'
+
+// Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
+const resolveDynamicValue = (value: any, isDark: boolean): any => {
+  if (value && typeof value === 'object' && 'dynamic' in value) {
+    const dynamicValue = isDark ? value.dynamic.dark : value.dynamic.light
+    return dynamicValue
+  }
+  return value
+}
 
 type AnimationsConfig<A extends Object = any> = { [Key in keyof A]: AnimationConfig }
 
@@ -159,6 +169,8 @@ export function createAnimations<A extends AnimationsConfig>(
 ): AnimationDriver<A> {
   return {
     isReactNative: true,
+    inputStyle: 'value',
+    outputStyle: 'inline',
     animations,
     View: AnimatedView,
     Text: AnimatedText,
@@ -171,6 +183,9 @@ export function createAnimations<A extends AnimationsConfig>(
       const isDisabled = isWeb && componentState.unmounted === true
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+      const [, themeState] = useThemeWithState({})
+      // Check scheme first, then fall back to checking theme name for 'dark'
+      const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
 
       /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = React.useRef<Record<string, Animated.Value>>({})
@@ -188,9 +203,25 @@ export function createAnimations<A extends AnimationsConfig>(
       )
 
       const animateOnly = (props.animateOnly as string[]) || []
-      const hasAnimateOnly = !!props.animateOnly
+      const hasTransitionOnly = !!props.animateOnly
 
-      const args = [JSON.stringify(style), componentState, isExiting, !!onDidAnimate]
+      // Track if we just finished entering (transition from entering to not entering)
+      // must be declared before args array that uses justFinishedEntering
+      const isEntering = !!componentState.unmounted
+      const wasEnteringRef = React.useRef(isEntering)
+      const justFinishedEntering = wasEnteringRef.current && !isEntering
+      React.useEffect(() => {
+        wasEnteringRef.current = isEntering
+      })
+
+      const args = [
+        JSON.stringify(style),
+        componentState,
+        isExiting,
+        !!onDidAnimate,
+        isDark,
+        justFinishedEntering,
+      ]
 
       // check if there is any style that is not supported by native driver
       const isThereNoNativeStyleKeys = React.useMemo(() => {
@@ -207,10 +238,21 @@ export function createAnimations<A extends AnimationsConfig>(
         const runners: Function[] = []
         const completions: Promise<void>[] = []
 
+        // Determine animation state for enter/exit transitions
+        // Use 'enter' if we're entering OR if we just finished entering
+        const animationState: 'enter' | 'exit' | 'default' = isExiting
+          ? 'exit'
+          : isEntering || justFinishedEntering
+            ? 'enter'
+            : 'default'
+
         const nonAnimatedStyle = {}
 
         for (const key in style) {
-          const val = style[key]
+          const rawVal = style[key]
+          // Resolve dynamic theme values (like $theme-dark)
+          const val = resolveDynamicValue(rawVal, isDark)
+          if (val === undefined) continue
 
           if (isDisabled) {
             continue
@@ -221,7 +263,7 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          if (hasAnimateOnly && !animateOnly.includes(key)) {
+          if (hasTransitionOnly && !animateOnly.includes(key)) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -310,7 +352,12 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (value) {
-            const animationConfig = getAnimationConfig(key, animations, props.animation)
+            const animationConfig = getAnimationConfig(
+              key,
+              animations,
+              props.transition,
+              animationState
+            )
 
             let resolve
             const promise = new Promise<void>((res) => {
@@ -426,31 +473,38 @@ function getInterpolated(current: number, next: number, postfix = 'deg') {
 function getAnimationConfig(
   key: string,
   animations: AnimationsConfig,
-  animation?: AnimationProp
+  transition?: TransitionProp,
+  animationState: 'enter' | 'exit' | 'default' = 'default'
 ): AnimationConfig {
-  if (typeof animation === 'string') {
-    return animations[animation]
-  }
-  let type = ''
-  let extraConf: any
+  const normalized = normalizeTransition(transition)
   const shortKey = transformShorthands[key]
-  if (Array.isArray(animation)) {
-    type = animation[0] as string
-    const conf = animation[1]?.[key] ?? animation[1]?.[shortKey]
-    if (conf) {
-      if (typeof conf === 'string') {
-        type = conf
-      } else {
-        type = (conf as any).type || type
-        extraConf = conf
-      }
-    }
+
+  // Check for property-specific animation
+  const propAnimation = normalized.properties[key] ?? normalized.properties[shortKey]
+
+  let animationType: string | null = null
+  let extraConf: any = {}
+
+  if (typeof propAnimation === 'string') {
+    // Direct animation name: { x: 'quick' }
+    animationType = propAnimation
+  } else if (propAnimation && typeof propAnimation === 'object') {
+    // Config object: { x: { type: 'quick', delay: 100 } }
+    // Use effective animation based on state if no explicit type in config
+    animationType =
+      propAnimation.type || getEffectiveAnimation(normalized, animationState)
+    extraConf = propAnimation
   } else {
-    const val = animation?.[key] ?? animation?.[shortKey]
-    type = val?.type
-    extraConf = val
+    // Fall back to effective animation based on state (enter/exit/default)
+    animationType = getEffectiveAnimation(normalized, animationState)
   }
-  const found = animations[type]
+
+  // Apply global delay if no property-specific delay
+  if (normalized.delay && !extraConf.delay) {
+    extraConf = { ...extraConf, delay: normalized.delay }
+  }
+
+  const found = animationType ? animations[animationType] : {}
   return {
     ...found,
     ...extraConf,

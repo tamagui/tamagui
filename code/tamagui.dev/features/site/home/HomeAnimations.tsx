@@ -1,6 +1,6 @@
 import { LogoIcon, useTint } from '@tamagui/logo'
 import { ArrowDown, Play } from '@tamagui/lucide-icons'
-import { animations } from '@tamagui/tamagui-dev-config'
+import { animationsMotion } from '@tamagui/tamagui-dev-config'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
   Button,
@@ -29,19 +29,19 @@ const animationDescriptions = [
     name: 'Bouncy',
     description: 'A bouncy spring',
     animation: 'bouncy',
-    settings: animations.animations.bouncy,
+    settings: animationsMotion.animations.bouncy,
   },
   {
     name: 'Lazy',
-    description: 'A lazy, straightforward spring',
+    description: 'A slow, relaxed spring',
     animation: 'lazy',
-    settings: animations.animations.lazy,
+    settings: animationsMotion.animations.lazy,
   },
   {
     name: 'Quick',
     description: 'A super fast spring',
     animation: 'quick',
-    settings: animations.animations.quick,
+    settings: animationsMotion.animations.quick,
   },
 ] as const
 
@@ -64,16 +64,16 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           </HomeH3>
         </YStack>
 
-        <XStack>
+        <XStack gap="$4">
           <YStack
             flex={2}
             minW="55%"
-            self="center"
-            mr="$-2"
+            self="flex-start"
             z={100}
             elevation="$4"
             rounded="$4"
             theme={tint as any}
+            justify="center"
           >
             <ExampleAnimations />
           </YStack>
@@ -81,7 +81,6 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           <YStack
             perspective={1000}
             rotateY="-5deg"
-            x={-10}
             $sm={{ display: 'none' }}
             position="relative"
             rounded="$8"
@@ -101,9 +100,9 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
                 y={200}
                 iconAfter={ArrowDown}
                 size="$4"
-                themeInverse
+                theme="accent"
                 z={10}
-                onPress={() => setDisableScrollPane(false)}
+                onPress={() => setDisableScrollPane((prev) => !prev)}
               >
                 View more
               </Button>
@@ -111,8 +110,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
             <CodeDemoPreParsed
               pointerEvents={disableScrollPane ? 'none' : 'auto'}
-              maxH={500}
-              height={500}
+              height={disableScrollPane ? 500 : 1250}
+              transition="quick"
               maxW={530}
               minW={530}
               rounded="$8"
@@ -124,8 +123,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
         <XStack self="center" gap="$3">
           <Link href="/docs/core/animations">
-            <Button aria-label="Animation docs" fontFamily="$silkscreen">
-              Docs &raquo;
+            <Button aria-label="Animation docs">
+              <Button.Text fontFamily="$silkscreen">Docs &raquo;</Button.Text>
             </Button>
           </Link>
         </XStack>
@@ -202,7 +201,7 @@ export const ExampleAnimations = memo(() => {
       <Separator vertical />
 
       <YStack position="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack flex={1} theme="alt2" bg="$color1">
+        <YStack flex={1} bg="$color1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
@@ -264,7 +263,7 @@ export function AnimationsDemoBase(props) {
   return (
     <>
       <Square
-        animation={(props.animation || 'bouncy') as any}
+        transition={props.animation || 'bouncy'}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}

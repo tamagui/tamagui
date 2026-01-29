@@ -15,6 +15,5 @@ export * from './reactNativeTypes';
 export declare const TamaguiProvider: (props: TamaguiProviderProps) => import("react/jsx-runtime").JSX.Element;
 export declare const createTamagui: typeof createTamaguiWeb;
 export declare const View: RNTamaguiView;
-export declare const Stack: RNTamaguiView;
 export declare const Text: RNTamaguiText;
 //# sourceMappingURL=index.d.ts.map

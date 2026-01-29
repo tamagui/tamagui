@@ -9,11 +9,11 @@ import {
   H6,
   Paragraph,
   Separator,
-  Spacer,
+  View,
   XStack,
   YStack,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
@@ -41,19 +41,19 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
               <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
-                {isDraft ? 'Drafts' : 'Blog'}
+                <Button.Text>{isDraft ? 'Drafts' : 'Blog'}</Button.Text>
               </Button>
             </Link>
           </ThemeTint>
         </YStack>
 
-        <H1 letterSpacing={-1} mt="$5" mb="$2">
+        <H1 letterSpacing={-1} mt="$5" mb="$2" color="$color11">
           {frontmatter.title}
         </H1>
 
         <H2
           opacity={0.5}
-          theme="alt1"
+          color="$color11"
           size="$7"
           fontWeight="500"
           fontFamily="$body"
@@ -68,14 +68,20 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Paragraph size="$3" theme="alt1" whiteSpace="nowrap">
+            <Paragraph size="$3" color="$color10" whiteSpace="nowrap">
               {authors?.[frontmatter.by || '']?.name}
             </Paragraph>
           </Link>
 
           <Separator vertical mx="$2" />
 
-          <Paragraph opacity={0.4} tag="time" size="$3" theme="alt1" whiteSpace="nowrap">
+          <Paragraph
+            opacity={0.4}
+            render="time"
+            size="$3"
+            color="$color10"
+            whiteSpace="nowrap"
+          >
             {Intl.DateTimeFormat('en-US', {
               month: 'short',
               year: 'numeric',
@@ -86,25 +92,21 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           <Separator vertical mx="$2" />
 
           <YStack items="center" display="none" $gtSm={{ display: 'flex' }}>
-            <Paragraph opacity={0.4} size="$3" theme="alt1">
+            <Paragraph opacity={0.4} size="$3" color="$color10">
               {frontmatter.readingTime?.text}
             </Paragraph>
 
             {frontmatter.type === 'changelog' && (
               <>
                 <Separator vertical mx="$2" />
-                <Button>Changelog</Button>
+                <Button>
+                  <Button.Text>Changelog</Button.Text>
+                </Button>
               </>
             )}
           </YStack>
         </XStack>
       </Container>
-
-      <Spacer />
-
-      <Separator />
-
-      <Spacer />
     </YStack>
   )
 }
@@ -124,26 +126,41 @@ export function BlogSlugPage(props: BlogPost) {
       <BlogArticleHeader {...props} />
 
       <Container>
-        <YStack tag="article" px="$2">
+        {frontmatter.image && (
+          <YStack pb="$6">
+            <View
+              rounded="$4"
+              overflow="hidden"
+              style={{
+                aspectRatio: frontmatter.imageMeta
+                  ? `${frontmatter.imageMeta.width} / ${frontmatter.imageMeta.height}`
+                  : undefined,
+                background: frontmatter.imageMeta?.blurDataURL
+                  ? `url(${frontmatter.imageMeta.blurDataURL}) center/cover no-repeat`
+                  : undefined,
+              }}
+            >
+              <img
+                src={frontmatter.image}
+                alt={frontmatter.title || ''}
+                width={frontmatter.imageMeta?.width}
+                height={frontmatter.imageMeta?.height}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  borderRadius: 8,
+                }}
+              />
+            </View>
+          </YStack>
+        )}
+
+        <YStack render="article" px="$2">
           <Component components={components as any} />
         </YStack>
 
         <Separator my="$8" mx="auto" />
-
-        <YStack mb="$8" items="center">
-          <Paragraph>
-            Share this post on{' '}
-            <Link
-              href={twitterShare}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share this post on Twitter"
-            >
-              Twitter
-            </Link>
-            .
-          </Paragraph>
-        </YStack>
 
         {relatedPosts && (
           <YStack>
@@ -156,7 +173,7 @@ export function BlogSlugPage(props: BlogPost) {
               {relatedPosts.map((frontmatter) => {
                 return (
                   <Paragraph
-                    tag="a"
+                    render="a"
                     key={frontmatter.slug}
                     // @ts-ignore
                     href={`/blog/${frontmatter.slug}`}

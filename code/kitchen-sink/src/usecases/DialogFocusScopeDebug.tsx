@@ -34,7 +34,7 @@ export function DialogFocusScopeDebug() {
         <Dialog.Portal>
           <Dialog.Overlay
             key="overlay"
-            animation="quick"
+            transition="quick"
             opacity={0.5}
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
@@ -43,7 +43,7 @@ export function DialogFocusScopeDebug() {
             key="content"
             bordered
             elevate
-            animation={[
+            transition={[
               'quick',
               {
                 opacity: {

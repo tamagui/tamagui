@@ -8,7 +8,7 @@ import {
   Button,
   Paragraph,
   Separator,
-  Stack,
+  View,
   ScrollView,
   XStack,
   YStack,
@@ -85,7 +85,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
       afterTitle={
         !steps ? null : (
           <XStack gap="$2" items="center">
-            <Paragraph mr="$2" size="$2" theme="alt2">
+            <Paragraph mr="$2" size="$2" color="$color9">
               {index + 1}/{total}
             </Paragraph>
 
@@ -122,7 +122,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
             >
               <YStackEnterable
                 key={page}
-                animation="quicker"
+                transition="quicker"
                 gap="$3"
                 position="absolute"
                 p="$4"
@@ -206,7 +206,7 @@ const ScrollViewWithFade = ({
   }
 
   return (
-    <Stack flex={1} position="relative">
+    <View flex={1} position="relative">
       {(status === 'fade-top' || status === 'fade-both') && (
         <LinearGradient
           pointerEvents="none"
@@ -266,7 +266,7 @@ const ScrollViewWithFade = ({
           {children}
         </YStack>
       </ScrollView>
-    </Stack>
+    </View>
   )
 }
 

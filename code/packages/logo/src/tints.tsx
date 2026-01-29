@@ -5,21 +5,32 @@ type ChangeHandler = (next: TintFamily) => void
 
 const listeners = new Set<ChangeHandler>()
 
+// T A M A G U I
+// Maps to logo letters - index 3 (A) is the "none" theme position
 const familiesValues = {
-  tamagui: ['orange', 'yellow', 'pink', 'gray', 'red', 'green', 'blue'] as ThemeName[],
+  tamagui: ['yellow', 'yellow', 'yellow', 'gray', 'red', 'green', 'blue'] as ThemeName[],
   xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'] as ThemeName[],
-  easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'] as ThemeName[],
-  halloween: [
-    'orange',
-    'gray',
-    'orange',
-    'gray',
-    'orange',
-    'gray',
-    'orange',
+  easter: [
+    'yellow',
+    'yellow',
+    'yellow',
+    'yellow',
+    'yellow',
+    'yellow',
+    'yellow',
   ] as ThemeName[],
-  valentine: ['pink', 'red', 'pink', 'red', 'pink', 'red', 'pink'] as ThemeName[],
+  halloween: [
+    'yellow',
+    'gray',
+    'yellow',
+    'gray',
+    'yellow',
+    'gray',
+    'yellow',
+  ] as ThemeName[],
+  valentine: ['red', 'red', 'red', 'red', 'red', 'red', 'red'] as ThemeName[],
   lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'] as ThemeName[],
+  stpatricks: ['green', 'teal', 'green', 'teal', 'green', 'teal', 'green'] as ThemeName[],
 }
 
 type Family = keyof typeof familiesValues
@@ -31,31 +42,9 @@ const familiesNames = Object.keys(familiesValues) as any as Family[]
 type Families = { [key in Family]: ThemeName[] }
 const families = familiesValues as Families
 
-type TintFamily = keyof typeof families
+export type TintFamily = keyof typeof families
 
 let fam: TintFamily = DEFAULT_FAMILY
-
-// disabling - server time diff from client :/
-// const seasonalTheme = (() => {
-//   const month = new Date().getMonth()
-//   const day = new Date().getDate()
-
-//   if (month === 11 && day >= 14) {
-//     return 'xmas'
-//   }
-//   if (month === 9 && day >= 20) {
-//     return 'halloween'
-//   }
-//   if (month === 2 && day >= 30) {
-//     return 'easter'
-//   }
-// })()
-
-// setTintFamily('valentine')
-
-// if (seasonalTheme) {
-//   setTintFamily(seasonalTheme)
-// }
 
 export function getTints(): {
   name: string
@@ -90,6 +79,22 @@ export function useTints(): {
 export function setTintFamily(next: TintFamily): void {
   if (!families[next]) throw `impossible`
   fam = next
+
+  // update DOM class for CSS-based styling (e.g., rainbow gradients)
+  if (typeof document !== 'undefined') {
+    const root = document.documentElement.classList
+    // remove all season classes
+    familiesNames.forEach((s) => {
+      if (s !== 'tamagui') {
+        root.remove(`${s}-season`)
+      }
+    })
+    // add the new one if not tamagui
+    if (next !== 'tamagui') {
+      root.add(`${next}-season`)
+    }
+  }
+
   React.startTransition(() => {
     listeners.forEach((l) => l(next))
   })

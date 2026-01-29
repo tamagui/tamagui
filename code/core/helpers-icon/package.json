@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "1.144.3",
+  "version": "2.0.0-1769665879528",
   "type": "module",
   "sideEffects": false,
   "description": "Utilities for icon packages",
@@ -21,7 +21,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "workspace:*"
+    "@tamagui/core": "workspace:*",
+    "@tamagui/sizable-context": "workspace:*"
   },
   "exports": {
     "./package.json": "./package.json",

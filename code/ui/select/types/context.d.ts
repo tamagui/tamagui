@@ -11,5 +11,5 @@ export declare const ForwardSelectContext: ({ context, itemContext, children, }:
     children?: any;
     context: SelectContextValue;
     itemContext: SelectItemParentContextValue;
-}) => import("react/jsx-runtime").JSX.Element;
+}) => any;
 //# sourceMappingURL=context.d.ts.map

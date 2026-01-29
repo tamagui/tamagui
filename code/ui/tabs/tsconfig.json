@@ -5,10 +5,10 @@
   },
   "references": [
     {
-      "path": "../../core/compose-refs"
+      "path": "../../core/constants"
     },
     {
-      "path": "../../core/constants"
+      "path": "../../packages/element"
     },
     {
       "path": "../../core/create-context"

@@ -1,6 +1,12 @@
 import { createAnimations } from '@tamagui/animations-motion'
 
 export const animationsMotion = createAnimations({
+  '0ms': {
+    duration: 0,
+  },
+  '50ms': {
+    duration: 50,
+  },
   '75ms': {
     duration: 75,
   },
@@ -9,6 +15,18 @@ export const animationsMotion = createAnimations({
   },
   '200ms': {
     duration: 200,
+  },
+  '250ms': {
+    duration: 250,
+  },
+  '300ms': {
+    duration: 300,
+  },
+  '400ms': {
+    duration: 400,
+  },
+  '500ms': {
+    duration: 500,
   },
   superBouncy: {
     type: 'spring',

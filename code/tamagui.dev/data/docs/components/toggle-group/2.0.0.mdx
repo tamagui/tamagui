@@ -1,0 +1,226 @@
+---
+title: ToggleGroup
+description: Two-state buttons that can be toggled on or off
+name: toggleGroup
+component: ToggleGroup
+package: toggle-group
+demoName: ToggleGroup
+---
+
+<HeroContainer>
+  <ToggleGroupDemo />
+</HeroContainer>
+
+```tsx hero template=ToggleGroup
+
+```
+
+<Highlights
+  features={[
+    `Full keyboard navigation.`,
+    `Supports horizontal/vertical orientation.`,
+    `Support single and multiple pressed buttons.`,
+    `Can be controlled or uncontrolled.`,
+  ]}
+/>
+
+## Installation
+
+ToggleGroup is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/toggle-group
+```
+
+## Usage
+
+ToggleGroup handles the toggle state logic. For visual grouping with border radius, compose with `XGroup` or `YGroup`. Use `activeStyle` to customize the active state appearance:
+
+```tsx
+import { ToggleGroup, XGroup } from 'tamagui'
+
+export default () => {
+  return (
+    <ToggleGroup type="single">
+      <XGroup>
+        <XGroup.Item>
+          <ToggleGroup.Item
+            value="foo"
+            borderRadius="$4"
+            activeStyle={{ backgroundColor: '$color5' }}
+          >
+            Foo
+          </ToggleGroup.Item>
+        </XGroup.Item>
+        <XGroup.Item>
+          <ToggleGroup.Item
+            value="bar"
+            borderRadius="$4"
+            activeStyle={{ backgroundColor: '$color5' }}
+          >
+            Bar
+          </ToggleGroup.Item>
+        </XGroup.Item>
+      </XGroup>
+    </ToggleGroup>
+  )
+}
+```
+
+For vertical layouts, use `YGroup`:
+
+```tsx
+<ToggleGroup type="single" orientation="vertical">
+  <YGroup>
+    <YGroup.Item>
+      <ToggleGroup.Item value="top" borderRadius="$4">Top</ToggleGroup.Item>
+    </YGroup.Item>
+    <YGroup.Item>
+      <ToggleGroup.Item value="bottom" borderRadius="$4">Bottom</ToggleGroup.Item>
+    </YGroup.Item>
+  </YGroup>
+</ToggleGroup>
+```
+
+## API Reference
+
+### ToggleGroup
+
+ToggleGroup manages toggle state and keyboard navigation. It does not render any visible element by default - use `XGroup`/`YGroup` for visual grouping.
+
+<PropsTable
+  data={[
+    {
+      name: 'type',
+      type: '"single" | "multiple"',
+      description: `Determines whether a single or multiple items can be pressed at a time.`,
+    },
+    {
+      name: 'value',
+      type: 'string | string[]',
+      description: `The controlled value of the pressed item(s). Use string for type="single", string[] for type="multiple".`,
+    },
+    {
+      name: 'defaultValue',
+      description: 'The value of the item(s) to show as pressed when initially rendered.',
+      type: 'string | string[]',
+    },
+    {
+      name: 'orientation',
+      type: '"horizontal" | "vertical"',
+      description: `The orientation of the component, which determines how focus moves: horizontal for left/right arrows and vertical for up/down arrows.`,
+      default: `"horizontal"`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `When true, prevents the user from interacting with the toggle group and all its items.`,
+      default: `false`,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string | string[]) => void',
+      description: `Event handler called when the pressed state of an item changes.`,
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      description: `Whether or not to loop over after reaching the end or start of the items. Used for keyboard navigation.`,
+      default: `true`,
+    },
+    {
+      name: 'disableDeactivation',
+      type: 'boolean',
+      description: `Won't let the user turn the active item off. Only applies to type="single".`,
+      default: 'false',
+    },
+    {
+      name: 'rovingFocus',
+      type: 'boolean',
+      description: `Enable roving focus keyboard navigation between items.`,
+      default: 'true',
+    },
+  ]}
+/>
+
+### ToggleGroup.Item
+
+`ToggleGroup.Item` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'value',
+      type: 'string',
+      description: `A unique value for this toggle item.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `When true, prevents the user from interacting with this item.`,
+      default: `false`,
+    },
+    {
+      name: 'activeStyle',
+      type: 'StyleProp',
+      description: `Style object applied when the item is in its active/pressed state.`,
+    },
+    {
+      name: 'activeTheme',
+      type: 'string | null',
+      description: `Theme to apply when the item is active. Set to null for no theme change.`,
+    },
+  ]}
+/>
+
+### Styling Active State
+
+Customize the active/pressed state using `activeStyle`:
+
+```tsx
+// Inline usage
+<ToggleGroup.Item
+  value="left"
+  activeStyle={{ backgroundColor: '$green9', color: '$yellow9' }}
+>
+  Left
+</ToggleGroup.Item>
+
+// Or via styled()
+const GreenItem = styled(ToggleGroup.Item, {
+  activeStyle: {
+    backgroundColor: '$green9',
+    color: '$yellow9',
+  },
+})
+```
+
+You can also use `activeTheme` to apply a theme when active:
+
+```tsx
+<ToggleGroup.Item value="option1" activeTheme="green">
+  Option 1
+</ToggleGroup.Item>
+```
+
+### useToggleGroupItem
+
+For custom components inside `ToggleGroup.Item` that need to know the active state, use the `useToggleGroupItem` hook:
+
+```tsx
+import { useToggleGroupItem, ToggleGroup } from '@tamagui/toggle-group'
+
+function CustomLabel({ children }) {
+  const { active, color } = useToggleGroupItem()
+  return (
+    <Text color={active ? '$green10' : '$color'}>
+      {children}
+    </Text>
+  )
+}
+
+// Usage
+<ToggleGroup.Item value="option1">
+  <CustomLabel>Option 1</CustomLabel>
+</ToggleGroup.Item>
+```

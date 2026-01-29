@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
-import { SizableText, XStack, styled } from 'tamagui'
+import { SizableText, XStack } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
 import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
-import { Image } from '@tamagui/image-next'
+import { Image } from '@tamagui/image'
 import { ScrollView } from 'react-native'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {
@@ -96,7 +96,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
               <AnimatePresence initial={false}>
                 {activeAt && (
                   <TabIndicator
-                    theme="alt1"
+                    bg="$color6"
                     width={activeAt.width}
                     height={activeAt.height}
                     x={activeAt.x}
@@ -105,12 +105,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 )}
               </AnimatePresence>
 
-              <Tabs.List
-                disablePassBorderRadius
-                loop={false}
-                aria-label="package manager"
-                gap="$2"
-              >
+              <Tabs.List loop={false} aria-label="package manager" gap="$2">
                 <>
                   {PACKAGE_MANAGERS.map((pkgManager) => (
                     <Tab
@@ -155,6 +150,7 @@ export function Tab({
       pr="$2.5"
       py="$1.5"
       gap="$1.5"
+      bg="transparent"
       value={pkgManager}
       {...(onInteraction && { onInteraction })}
       cursor="pointer"
@@ -167,12 +163,7 @@ export function Tab({
           y={imageName === 'pnpm' ? 0 : 0}
           src={`/logos/${imageName}.svg`}
         />
-        <SizableText
-          y={-0.5}
-          size="$2"
-          color={active ? '$color11' : '$color9'}
-          opacity={active ? 1 : 0.5}
-        >
+        <SizableText y={-0.5} size="$2" color="$color11" opacity={active ? 1 : 0.5}>
           {pkgManager}
         </SizableText>
       </XStack>
@@ -184,10 +175,13 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
   return (
     <YStack
       position="absolute"
-      bg="$color5"
+      pointerEvents="none"
+      t={0}
+      l={0}
+      bg="$color6"
       opacity={0.7}
       rounded="$4"
-      animation="quickest"
+      transition="quickest"
       enterStyle={{
         opacity: 0,
       }}

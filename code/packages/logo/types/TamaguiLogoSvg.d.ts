@@ -1,4 +1,8 @@
 import type { JSX } from "react/jsx-runtime";
-export declare const TamaguiIconSvg: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+type TamaguiIconSvgProps = React.SVGProps<SVGSVGElement> & {
+	color?: string;
+};
+export declare const TamaguiIconSvg: ({ color,...props }: TamaguiIconSvgProps) => JSX.Element;
+export {};
 
 //# sourceMappingURL=TamaguiLogoSvg.d.ts.map

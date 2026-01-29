@@ -1,4 +1,8 @@
 export declare const animationsReactNative: import("@tamagui/web").AnimationDriver<{
+    '0ms': {
+        type: "timing";
+        duration: number;
+    };
     '75ms': {
         type: "timing";
         duration: number;
@@ -8,6 +12,10 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         duration: number;
     };
     '200ms': {
+        type: "timing";
+        duration: number;
+    };
+    '250ms': {
         type: "timing";
         duration: number;
     };
@@ -23,9 +31,22 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         mass: number;
         stiffness: number;
     };
+    kindaBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    superLazy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
     lazy: {
         type: "spring";
         damping: number;
+        mass: number;
         stiffness: number;
     };
     medium: {
@@ -49,6 +70,12 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         mass: number;
         stiffness: number;
     };
+    quickLessBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
     tooltip: {
         type: "spring";
         damping: number;
@@ -61,7 +88,18 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         mass: number;
         stiffness: number;
     };
+    quickerLessBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
     quickest: {
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickestLessBouncy: {
         damping: number;
         mass: number;
         stiffness: number;

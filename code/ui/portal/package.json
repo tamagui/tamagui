@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/portal",
-  "version": "1.144.3",
+  "version": "2.0.0-1769665879528",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -40,6 +40,7 @@
   "dependencies": {
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/native": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/web": "workspace:*",

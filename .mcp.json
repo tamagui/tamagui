@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "XcodeBuildMCP": {
+      "command": "npx",
+      "args": ["-y", "xcodebuildmcp@latest"]
+    },
+    "native-devtools": {
+      "command": "/Users/n8/.local/bin/native-devtools-mcp"
+    }
+  }
+}

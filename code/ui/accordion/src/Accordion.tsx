@@ -2,7 +2,7 @@ import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/core'
+import type { GetProps, GetRef, TamaguiElement } from '@tamagui/core'
 import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
@@ -227,7 +227,7 @@ const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext }
   createStyledContext<AccordionImplContextValue>()
 
 type AccordionImplElement = TamaguiElement
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
+type PrimitiveDivProps = GetProps<typeof View>
 interface AccordionImplProps extends PrimitiveDivProps {
   /**
    * Whether or not an accordion is disabled from user interaction.
@@ -266,84 +266,81 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
     const getItems = useCollection(__scopeAccordion || ACCORDION_CONTEXT)
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
-    const handleKeyDown = composeEventHandlers(
-      (props as any).onKeyDown,
-      (event: KeyboardEvent) => {
-        if (!ACCORDION_KEYS.includes(event.key)) return
-        const target = event.target as HTMLElement
-        const triggerCollection = getItems().filter((item) => {
-          const el = item.ref.current as { disabled?: boolean } | null
-          return !el?.disabled
-        })
-        const triggerIndex = triggerCollection.findIndex(
-          (item) => item.ref.current === target
-        )
-        const triggerCount = triggerCollection.length
+    const handleKeyDown = composeEventHandlers(props.onKeyDown, (event) => {
+      if (!ACCORDION_KEYS.includes(event.key)) return
+      const target = event.target as HTMLElement
+      const triggerCollection = getItems().filter((item) => {
+        const el = item.ref.current as { disabled?: boolean } | null
+        return !el?.disabled
+      })
+      const triggerIndex = triggerCollection.findIndex(
+        (item) => item.ref.current === target
+      )
+      const triggerCount = triggerCollection.length
 
-        if (triggerIndex === -1) return
+      if (triggerIndex === -1) return
 
-        // Prevents page scroll while user is navigating
-        event.preventDefault()
+      // Prevents page scroll while user is navigating
+      event.preventDefault()
 
-        let nextIndex = triggerIndex
-        const homeIndex = 0
-        const endIndex = triggerCount - 1
+      let nextIndex = triggerIndex
+      const homeIndex = 0
+      const endIndex = triggerCount - 1
 
-        const moveNext = () => {
-          nextIndex = triggerIndex + 1
-          if (nextIndex > endIndex) {
-            nextIndex = homeIndex
-          }
+      const moveNext = () => {
+        nextIndex = triggerIndex + 1
+        if (nextIndex > endIndex) {
+          nextIndex = homeIndex
         }
+      }
 
-        const movePrev = () => {
-          nextIndex = triggerIndex - 1
-          if (nextIndex < homeIndex) {
-            nextIndex = endIndex
-          }
+      const movePrev = () => {
+        nextIndex = triggerIndex - 1
+        if (nextIndex < homeIndex) {
+          nextIndex = endIndex
         }
+      }
 
-        switch (event.key) {
-          case 'Home':
-            nextIndex = homeIndex
-            break
-          case 'End':
-            nextIndex = endIndex
-            break
-          case 'ArrowRight':
-            if (orientation === 'horizontal') {
-              if (isDirectionLTR) {
-                moveNext()
-              } else {
-                movePrev()
-              }
-            }
-            break
-          case 'ArrowDown':
-            if (orientation === 'vertical') {
+      switch (event.key) {
+        case 'Home':
+          nextIndex = homeIndex
+          break
+        case 'End':
+          nextIndex = endIndex
+          break
+        case 'ArrowRight':
+          if (orientation === 'horizontal') {
+            if (isDirectionLTR) {
               moveNext()
-            }
-            break
-          case 'ArrowLeft':
-            if (orientation === 'horizontal') {
-              if (isDirectionLTR) {
-                movePrev()
-              } else {
-                moveNext()
-              }
-            }
-            break
-          case 'ArrowUp':
-            if (orientation === 'vertical') {
+            } else {
               movePrev()
             }
-            break
-        }
-
-        const clampedIndex = nextIndex % triggerCount
-        triggerCollection[clampedIndex].ref.current?.focus()
+          }
+          break
+        case 'ArrowDown':
+          if (orientation === 'vertical') {
+            moveNext()
+          }
+          break
+        case 'ArrowLeft':
+          if (orientation === 'horizontal') {
+            if (isDirectionLTR) {
+              movePrev()
+            } else {
+              moveNext()
+            }
+          }
+          break
+        case 'ArrowUp':
+          if (orientation === 'vertical') {
+            movePrev()
+          }
+          break
       }
-    )
+
+      const clampedIndex = nextIndex % triggerCount
+      triggerCollection[clampedIndex].ref.current?.focus()
+    })
 
     return (
       <AccordionImplProvider
@@ -373,7 +370,11 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
 
 const ITEM_NAME = 'AccordionItem'
 
-type AccordionItemContextValue = { open?: boolean; disabled?: boolean; triggerId: string }
+type AccordionItemContextValue = {
+  open?: boolean
+  disabled?: boolean
+  triggerId: string
+}
 const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemContext } =
   createStyledContext<AccordionItemContextValue>()
 type AccordionItemElement = React.ElementRef<typeof Collapsible>
@@ -478,8 +479,6 @@ const AccordionTriggerFrame = styled(Collapsible.Trigger, {
       false: {
         cursor: 'pointer',
         backgroundColor: '$background',
-        borderColor: '$borderColor',
-        borderWidth: 1,
         padding: '$true',
 
         hoverStyle: {
@@ -580,16 +579,27 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
 const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
-  const [height, setHeight] = React.useState(0)
+  const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)
+  const hasMeasured = measuredHeight > 0
+
+  // when open and not measured yet, use auto so SSR shows content
+  // once measured, use numeric height for animations
+  const height = itemContext.open ? (hasMeasured ? measuredHeight : 'auto') : 0
+
+  // for SSR: when open but not yet measured, use static positioning so content
+  // contributes to parent height. after measurement, use absolute for animations.
+  const shouldAbsolutePosition = hasMeasured || !itemContext.open
 
   return (
-    <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
+    <View ref={ref} height={height} position="relative" {...rest}>
       <View
-        position="absolute"
-        width="100%"
+        position={shouldAbsolutePosition ? 'absolute' : 'relative'}
+        top={shouldAbsolutePosition ? 0 : undefined}
+        left={shouldAbsolutePosition ? 0 : undefined}
+        right={shouldAbsolutePosition ? 0 : undefined}
         onLayout={({ nativeEvent }) => {
-          if (nativeEvent.layout.height) {
-            setHeight(nativeEvent.layout.height)
+          if (nativeEvent.layout.height && nativeEvent.layout.height !== measuredHeight) {
+            setMeasuredHeight(nativeEvent.layout.height)
           }
         }}
       >

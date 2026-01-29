@@ -1,30 +1,24 @@
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
-import { getFontSize } from '@tamagui/font-size'
-import { getSize } from '@tamagui/get-token'
-import type { GroupProps } from '@tamagui/group'
-import { Group, useGroupItem } from '@tamagui/group'
 import { withStaticProperties } from '@tamagui/helpers'
-import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tamagui/web'
-import { createStyledContext, getVariableValue, styled, useTheme } from '@tamagui/web'
+import type { GetProps, TamaguiElement } from '@tamagui/web'
+import { createStyledContext, styled, View } from '@tamagui/web'
 import React from 'react'
 
 import type { ToggleProps } from './Toggle'
-import { Toggle, ToggleFrame, context as ToggleContext } from './Toggle'
+import { Toggle, ToggleFrame } from './Toggle'
+import { context as ToggleContext } from './context'
 
 const TOGGLE_GROUP_NAME = 'ToggleGroup'
+const TOGGLE_GROUP_ITEM_NAME = 'ToggleGroupItem'
+const TOGGLE_GROUP_CONTEXT = 'ToggleGroup'
 
 /* -------------------------------------------------------------------------------------------------
  * ToggleGroupItem
  * -----------------------------------------------------------------------------------------------*/
-
-const TOGGLE_GROUP_ITEM_NAME = 'ToggleGroupItem'
-
-const TOGGLE_GROUP_CONTEXT = 'ToggleGroup'
 
 type ToggleGroupItemContextValue = { disabled?: boolean }
 
@@ -32,83 +26,42 @@ const { Provider: ToggleGroupItemProvider } =
   createStyledContext<ToggleGroupItemContextValue>()
 
 const { Provider: ToggleGroupContext, useStyledContext: useToggleGroupContext } =
-  createStyledContext<ToggleGroupContextValue>()
+  createStyledContext<ToggleGroupContextValue>({})
 
 type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
   value: string
   id?: string
   disabled?: boolean
-  size?: SizeTokens
-  /**
-   * Used to disable passing styles down to children.
-   */
-  disablePassStyles?: boolean
-  toggledStyle?: Record<string, any>
-  color?: string
 }
+
 const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>(
   (props, forwardedRef) => {
     const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
     const context = useToggleGroupContext(props.__scopeToggleGroup)
     const toggleContext = ToggleContext.useStyledContext(props.__scopeToggleGroup)
-    const pressed = valueContext?.value.includes(props.value)
-    const toggledStyle = props.toggledStyle || toggleContext.toggledStyle
+    const active = valueContext?.value.includes(props.value)
     const color = (props as any).color || toggleContext.color
-
-    const { disablePassStyles, toggledStyle: _, ...rest } = props
     const disabled = context.disabled || props.disabled || false
-    const groupItemProps = useGroupItem({ disabled })
-    const size = props.size ?? context.size
-
-    const sizeProps: Record<string, any> = props.unstyled
-      ? {}
-      : {
-          width: undefined,
-          height: undefined,
-          padding: getVariableValue(size) * 0.6,
-        }
-
-    const iconSize =
-      (typeof size === 'number' ? size * 0.7 : getFontSize(size as FontSizeTokens)) * 1.2
-
-    const theme = useTheme()
-    const toggledColor = (toggledStyle as Record<string, any>)?.color
-    const activeColor = pressed && toggledColor ? toggledColor : color
-    const getThemedIcon = useGetThemedIcon({
-      size: iconSize,
-      color: activeColor || theme.color,
-    })
-
-    const childrens = React.Children.toArray(props.children)
-    const children = childrens.map((child) => {
-      if (props.disablePassStyles || !React.isValidElement(child)) {
-        return child
-      }
-      return React.cloneElement(getThemedIcon(child), { active: pressed } as any)
-    })
-
-    const commonProps = { pressed, disabled, ...sizeProps, ...rest, children }
 
     const inner = (
       <ToggleGroupItemImpl
-        {...commonProps}
         ref={forwardedRef}
-        // focusable={!disabled}
         tabIndex={disabled ? -1 : 0}
+        {...(props as any)}
+        active={active}
         disabled={disabled}
-        {...groupItemProps}
       />
     )
 
     return (
       <ToggleGroupItemProvider scope={props.__scopeToggleGroup}>
-        <ToggleContext.Provider color={color} toggledStyle={toggledStyle}>
+        <ToggleContext.Provider color={color} active={active}>
           {context.rovingFocus ? (
             <RovingFocusGroup.Item
               asChild="except-style"
               __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
               focusable={!disabled}
-              active={pressed}
+              active={active}
             >
               {inner}
             </RovingFocusGroup.Item>
@@ -124,15 +77,8 @@ ToggleGroupItem.displayName = TOGGLE_GROUP_ITEM_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type ToggleGroupItemImplProps = Omit<
-  ToggleProps,
-  'defaultPressed' | 'onPressedChange' | 'size'
-> & {
-  /**
-   * A string value for the toggle group item. All items within a toggle group should use a unique value.
-   */
+type ToggleGroupItemImplProps = Omit<ToggleProps, 'defaultActive' | 'onActiveChange'> & {
   value: string
-  size?: SizeTokens
 }
 
 const ToggleGroupItemImpl = React.forwardRef<
@@ -140,11 +86,8 @@ const ToggleGroupItemImpl = React.forwardRef<
   ScopedProps<ToggleGroupItemImplProps>
 >((props, forwardedRef) => {
   const { __scopeToggleGroup, value, ...itemProps } = props
-
   const valueContext = useToggleGroupValueContext(__scopeToggleGroup)
-  const singleProps = {
-    'aria-pressed': undefined,
-  }
+  const singleProps = { 'aria-pressed': undefined }
   const typeProps = valueContext.type === 'single' ? singleProps : undefined
 
   return (
@@ -152,7 +95,7 @@ const ToggleGroupItemImpl = React.forwardRef<
       {...typeProps}
       {...itemProps}
       ref={forwardedRef}
-      onPressedChange={(pressed) => {
+      onActiveChange={(pressed) => {
         if (pressed) {
           valueContext.onItemActivate(value)
         } else {
@@ -162,8 +105,6 @@ const ToggleGroupItemImpl = React.forwardRef<
     />
   )
 })
-
-/* -----------------------------------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------------------------------------
  * ToggleGroup
@@ -190,8 +131,6 @@ const ToggleGroup = withStaticProperties(
         React.useEffect(() => {
           if (!props.id) return
           return registerFocusable(props.id, {
-            // TODO: would be nice to focus on the first child later - could be done with reforest
-            // for now leaving it empty
             focus: () => {},
           })
         }, [props.id])
@@ -233,22 +172,13 @@ const {
 } = createStyledContext<ToggleGroupValueContextValue>()
 
 interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
-  /**
-   * The controlled stateful value of the item that is pressed.
-   */
+  /** The controlled stateful value of the item that is pressed. */
   value?: string
-  /**
-   * The value of the item that is pressed when initially rendered. Use
-   * `defaultValue` if you do not need to control the state of a toggle group.
-   */
+  /** The value of the item that is pressed when initially rendered. */
   defaultValue?: string
-  /**
-   * The callback that fires when the value of the toggle group changes.
-   */
+  /** The callback that fires when the value of the toggle group changes. */
   onValueChange?(value: string): void
-  /**
-   * Won't let the user turn the active item off.
-   */
+  /** Won't let the user turn the active item off. */
   disableDeactivation?: boolean
 }
 
@@ -261,6 +191,7 @@ const ToggleGroupImplSingle = React.forwardRef<
     defaultValue,
     onValueChange = () => {},
     disableDeactivation = false,
+    children,
     ...toggleGroupSingleProps
   } = props
 
@@ -282,24 +213,19 @@ const ToggleGroupImplSingle = React.forwardRef<
         [setValue, disableDeactivation]
       )}
     >
-      <ToggleGroupImpl {...toggleGroupSingleProps} ref={forwardedRef} />
+      <ToggleGroupImpl {...toggleGroupSingleProps} ref={forwardedRef}>
+        {children}
+      </ToggleGroupImpl>
     </ToggleGroupValueProvider>
   )
 })
 
 interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
-  /**
-   * The controlled stateful value of the items that are pressed.
-   */
+  /** The controlled stateful value of the items that are pressed. */
   value?: string[]
-  /**
-   * The value of the items that are pressed when initially rendered. Use
-   * `defaultValue` if you do not need to control the state of a toggle group.
-   */
+  /** The value of the items that are pressed when initially rendered. */
   defaultValue?: string[]
-  /**
-   * The callback that fires when the state of the toggle group changes.
-   */
+  /** The callback that fires when the state of the toggle group changes. */
   onValueChange?(value: string[]): void
   disableDeactivation?: never
 }
@@ -313,6 +239,7 @@ const ToggleGroupImplMultiple = React.forwardRef<
     defaultValue,
     onValueChange = () => {},
     disableDeactivation,
+    children,
     ...toggleGroupMultipleProps
   } = props
 
@@ -342,131 +269,82 @@ const ToggleGroupImplMultiple = React.forwardRef<
       onItemActivate={handleButtonActivate}
       onItemDeactivate={handleButtonDeactivate}
     >
-      <ToggleGroupImpl {...toggleGroupMultipleProps} ref={forwardedRef} />
+      <ToggleGroupImpl {...toggleGroupMultipleProps} ref={forwardedRef}>
+        {children}
+      </ToggleGroupImpl>
     </ToggleGroupValueProvider>
   )
 })
 
-ToggleGroup.displayName = TOGGLE_GROUP_NAME
-
 /* -----------------------------------------------------------------------------------------------*/
 
 type ToggleGroupContextValue = {
-  rovingFocus: boolean
-  disabled: boolean
-  size: SizeTokens
+  rovingFocus?: boolean
+  disabled?: boolean
 }
 
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>
 
-const ToggleGroupImplElementFrame = styled(Group, {
+const ToggleGroupFrame = styled(View, {
   name: TOGGLE_GROUP_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        backgroundColor: '$background',
-      },
-    },
-
-    orientation: {
-      vertical: {
-        flexDirection: 'column',
-        spaceDirection: 'vertical',
-      },
-      horizontal: {
-        flexDirection: 'row',
-        spaceDirection: 'horizontal',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
-type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
-  GroupProps & {
-    rovingFocus?: boolean
-    dir?: RovingFocusGroupProps['dir']
-    loop?: RovingFocusGroupProps['loop']
-    sizeAdjust?: number
-    toggledStyle?: Record<string, any>
-    color?: string
-  }
+type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
+  orientation?: 'horizontal' | 'vertical'
+  rovingFocus?: boolean
+  dir?: RovingFocusGroupProps['dir']
+  loop?: RovingFocusGroupProps['loop']
+  color?: string
+}
 
-const ToggleGroupImpl = ToggleGroupImplElementFrame.styleable<
-  TamaguiElement,
-  ToggleGroupImplProps
->((props: ScopedProps<ToggleGroupImplProps>, forwardedRef) => {
-  const {
-    __scopeToggleGroup,
-    disabled = false,
-    orientation = 'horizontal',
-    dir,
-    rovingFocus = true,
-    loop = true,
-    unstyled = false,
-    size: sizeProp = '$true',
-    sizeAdjust = 0,
-    toggledStyle,
-    color,
-    ...toggleGroupProps
-  } = props
-  const direction = useDirection(dir)
-  const commonProps: ToggleGroupImplProps = {
-    role: 'group',
-    dir: direction,
-    ...toggleGroupProps,
-  }
-  const adjustedSize = getVariableValue(
-    getSize(sizeProp, {
-      shift: sizeAdjust,
-    })
-  )
-  const size = Math.round(adjustedSize * 0.45)
+const ToggleGroupImpl = ToggleGroupFrame.styleable<TamaguiElement, ToggleGroupImplProps>(
+  (props: ScopedProps<ToggleGroupImplProps>, forwardedRef) => {
+    const {
+      __scopeToggleGroup,
+      disabled = false,
+      orientation = 'horizontal',
+      dir,
+      rovingFocus = true,
+      loop = true,
+      color,
+      ...toggleGroupProps
+    } = props
+    const direction = useDirection(dir)
 
-  return (
-    <ToggleGroupContext
-      scope={__scopeToggleGroup}
-      rovingFocus={rovingFocus}
-      disabled={disabled}
-      size={size}
-    >
-      <ToggleContext.Provider color={color} toggledStyle={toggledStyle}>
-        {rovingFocus ? (
-          <RovingFocusGroup
-            asChild="except-style"
-            __scopeRovingFocusGroup={__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
-            orientation={orientation}
-            dir={direction}
-            loop={loop}
-          >
-            <ToggleGroupImplElementFrame
-              aria-orientation={orientation}
+    const content = (
+      <ToggleGroupFrame
+        role="group"
+        ref={forwardedRef}
+        data-disabled={disabled ? '' : undefined}
+        {...toggleGroupProps}
+      />
+    )
+
+    return (
+      <ToggleGroupContext
+        scope={__scopeToggleGroup}
+        rovingFocus={rovingFocus}
+        disabled={disabled}
+      >
+        <ToggleContext.Provider color={color}>
+          {rovingFocus ? (
+            <RovingFocusGroup
+              asChild="except-style"
+              __scopeRovingFocusGroup={__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
               orientation={orientation}
-              // axis={orientation}
-              ref={forwardedRef}
-              data-disabled={disabled ? '' : undefined}
-              unstyled={unstyled}
-              {...commonProps}
-            />
-          </RovingFocusGroup>
-        ) : (
-          <ToggleGroupImplElementFrame
-            aria-orientation={orientation}
-            ref={forwardedRef}
-            orientation={orientation}
-            data-disabled={disabled ? '' : undefined}
-            unstyled={unstyled}
-            {...commonProps}
-          />
-        )}
-      </ToggleContext.Provider>
-    </ToggleGroupContext>
-  )
-})
+              dir={direction}
+              loop={loop}
+            >
+              {content}
+            </RovingFocusGroup>
+          ) : (
+            content
+          )}
+        </ToggleContext.Provider>
+      </ToggleGroupContext>
+    )
+  }
+)
 
 export { ToggleGroup }
 export type {

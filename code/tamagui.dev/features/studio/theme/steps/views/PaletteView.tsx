@@ -16,7 +16,6 @@ import { parseToHsla } from 'color2k'
 import { memo } from 'react'
 import {
   Button,
-  Separator,
   SizableText,
   Theme,
   TooltipGroup,
@@ -131,6 +130,10 @@ export const PaletteView = memo((props: Props) => {
         lum: {
           light: lightHSLA[2],
           dark: darkHSLA[2],
+        },
+        alpha: {
+          light: 1,
+          dark: 1,
         },
       }
 
@@ -278,7 +281,7 @@ export const PaletteView = memo((props: Props) => {
 
       <XLabeledItem label="">
         <YStack gap="$4">
-          <XStack gap="$4" separator={<Separator vertical />}>
+          <XStack gap="$4">
             <DataItem
               width={50}
               labelTop=""
@@ -369,7 +372,7 @@ const SyncButtons = memo(
   }) => {
     return (
       <>
-        <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+        <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
             <Button
               size={16}
@@ -401,7 +404,7 @@ const SyncButtons = memo(
           </TooltipSimple>
         </Theme>
 
-        <Theme name={anchor?.[anchorKey].sync ? 'accent' : 'surface1'}>
+        <Theme name={anchor?.[anchorKey].sync ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
             <Button
               size={16}
@@ -427,7 +430,7 @@ const SyncButtons = memo(
           </TooltipSimple>
         </Theme>
 
-        <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : 'surface1'}>
+        <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
             <Button
               size={16}
@@ -471,11 +474,7 @@ const DataItem = ({
   return (
     <YStack width={width} maxW={width}>
       <SizableText select="none">{labelTop}</SizableText>
-      <SizableText
-        select="none"
-        size="$2"
-        theme={typeof labelBottom === 'string' ? 'alt2' : null}
-      >
+      <SizableText select="none" size="$2">
         {labelBottom}
       </SizableText>
     </YStack>
@@ -639,7 +638,7 @@ const PaletteColor = memo(
       >
         <XStack fullscreen bg={color as any} items="center" justify="center">
           <SizableText
-            selectable={false}
+            select="none"
             color={index > 4 ? '$background' : '$color'}
             size="$1"
             scale={size === 'small' ? 0.8 : 1}
@@ -663,7 +662,7 @@ const PaletteIndices = () => (
               flex={1}
               key={i}
               size="$1"
-              theme="alt2"
+              color="$color9"
               fontFamily="$mono"
               self="center"
               text="center"

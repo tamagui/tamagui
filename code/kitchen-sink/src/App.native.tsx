@@ -1,14 +1,35 @@
-import 'react-native-gesture-handler'
-import { ToastViewport } from '@tamagui/sandbox-ui'
+// setup native features - just import, no function calls needed
+import '@tamagui/native/setup-teleport'
+import '@tamagui/native/setup-gesture-handler'
+// import '@tamagui/native/setup-safe-area'
+import '@tamagui/native/setup-keyboard-controller'
+
+// check launch args for disabling RNGH (for testing without gesture handler)
+import { LaunchArguments } from 'react-native-launch-arguments'
+import { getGestureHandler } from '@tamagui/native'
+
+interface TestLaunchArgs {
+  disableGestureHandler?: boolean
+}
+
+const launchArgs = LaunchArguments.value<TestLaunchArgs>()
+if (launchArgs.disableGestureHandler) {
+  getGestureHandler().disable()
+}
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
+import { Toast, ToastViewport, useToastState } from '@tamagui/toast'
 import { useFonts } from 'expo-font'
+import { YStack } from 'tamagui'
 import React from 'react'
 import { Appearance, LogBox, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { PortalProvider } from 'react-native-teleport'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
-import { ThemeContext, ThemeMode } from './useKitchenSinkTheme'
+import { ThemeContext, type ThemeMode } from './useKitchenSinkTheme'
 import * as SplashScreen from 'expo-splash-screen'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 // Disable LogBox warnings to prevent them from blocking E2E tests
 // These are typically deep import warnings from react-native internals
@@ -51,29 +72,56 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <ThemeContext.Provider value={themeContext}>
-          <Provider defaultTheme={resolvedTheme as any}>
-            <Navigation />
-            <SafeToastViewport />
-          </Provider>
-        </ThemeContext.Provider>
-      </SafeAreaProvider>
+      <KeyboardProvider>
+        <PortalProvider>
+          <SafeAreaProvider>
+            <ThemeContext.Provider value={themeContext}>
+              <Provider defaultTheme={resolvedTheme as any}>
+                <Navigation />
+                <SafeToastViewport />
+              </Provider>
+            </ThemeContext.Provider>
+          </SafeAreaProvider>
+        </PortalProvider>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   )
 }
 
+const CurrentToast = () => {
+  const currentToast = useToastState()
+
+  if (!currentToast || currentToast.isHandledNatively) {
+    return null
+  }
+
+  return (
+    <Toast
+      key={currentToast.id}
+      duration={currentToast.duration}
+      viewportName={currentToast.viewportName}
+      enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
+      exitStyle={{ opacity: 0, scale: 1, y: -20 }}
+      y={0}
+      opacity={1}
+      scale={1}
+    >
+      <YStack py="$1.5" px="$2">
+        <Toast.Title lineHeight="$1">{currentToast.title}</Toast.Title>
+        {!!currentToast.message && (
+          <Toast.Description>{currentToast.message}</Toast.Description>
+        )}
+      </YStack>
+    </Toast>
+  )
+}
+
 const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets()
+  const { top } = useSafeAreaInsets()
   return (
     <>
-      <ToastViewport
-        flexDirection="column-reverse"
-        top={top}
-        left={left}
-        right={right}
-        mx="auto"
-      />
+      <CurrentToast />
+      <ToastViewport top={top} left={0} right={0} />
     </>
   )
 }

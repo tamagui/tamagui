@@ -3,7 +3,7 @@ title: Design Systems
 description: Put together your own design system.
 ---
 
-Tamagui allows you to build our your own set of components that are optimized
+Tamagui allows you to build out your own set of components that are optimized
 with the compiler whenever they are used in your app.
 
 By default, if you just use `styled()` in your app, Tamagui **won't** be able to
@@ -14,12 +14,12 @@ Let's break down how to set this up in more detail.
 
 ## Step 1: Create a package
 
-Your design system needs to live in it's own npm module, which can be private to
+Your design system needs to live in its own npm module, which can be private to
 just your app. That way you can later direct the compiler to look for that
 package.
 
-Design systems can extend off each other. In fact `tamagui` extends off
-`@tamagui/core`, which contains simple base level components.
+Design systems can extend from each other. In fact, `tamagui` extends
+`@tamagui/core`, which contains simple base-level components.
 
 So, for example, if you'd like to use the Tamagui `XStack`, `YStack`, `Button`
 and `Paragraph` in your design system, you would add `tamagui` to your design
@@ -81,19 +81,19 @@ There are a few things to note here:
 - `sideEffects` field is important, otherwise webpack will remove the generated
   CSS in production.
 
-## Step 2: Create your design system.
+## Step 2: Create your design system
 
 Check the [configuration](/docs/core/configuration) for more detail on this
 step.
 
-You'll be creating a `tamagui.config.ts` at the the root of your app. It will
+You'll be creating a `tamagui.config.ts` at the root of your app. It will
 contain a full suite of tokens, themes, and fonts exported onto a single named
 `config` export.
 
 ## Step 3: Define and export components
 
-Now, create and export the components. You can re-export components from
-`tamagui` or `@tamagui/core` as well. Let's create a Circle component
+Now, create and export your components. You can re-export components from
+`tamagui` or `@tamagui/core` as well. Let's create a Circle component:
 
 `Circle.tsx`:
 

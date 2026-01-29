@@ -1,5 +1,5 @@
-import * as Colors from '@tamagui/colors'
-import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
+import * as Colors from '@tamagui/colors/legacy'
+import { createV4Themes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { desaturate } from 'color2k'
 
 const desat = (colors: Record<string, string>, amount: number) => {
@@ -104,7 +104,7 @@ const whiteColors = {
   white12: lightPalette[11],
 }
 
-const themes = createThemes({
+const themes = createV4Themes({
   componentThemes: defaultComponentThemes,
 
   base: {
@@ -252,6 +252,10 @@ const themes = createThemes({
   },
 
   grandChildrenThemes: {
+    // inverse accent theme
+    accent: {
+      template: 'inverse',
+    },
     alt1: {
       template: 'alt1',
     },

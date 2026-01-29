@@ -1,9 +1,9 @@
-import { YStack, Button } from '@my/ui'
+import { View } from '@tamagui/core'
 
-export function WithBoth() {
+export function WebOnly() {
   return (
-    <YStack flex={1} gap="$8" bg="$red5">
-      <Button>Native Specific</Button>
-    </YStack>
+    <View flex={1} gap="$6" bg="$green5">
+      <>Native</>
+    </View>
   )
 }

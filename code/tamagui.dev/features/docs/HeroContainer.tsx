@@ -1,5 +1,6 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Timer, Waves } from '@tamagui/lucide-icons'
+import type { ReactNode } from 'react'
 import {
   Configuration,
   Switch,
@@ -9,6 +10,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { useIsDocsTinted } from './docsTint'
 import {
   AnimationDriverTogglerContextProvider,
   useAnimationDriverToggler,
@@ -49,6 +51,7 @@ export function HeroContainer({
       mt="$4"
       mb="$4"
       position="relative"
+      flexBasis="auto"
       display="flex"
       items={alignItems || 'center'}
       justify="center"
@@ -66,13 +69,7 @@ export function HeroContainer({
     >
       <AnimationDriverTogglerContextProvider>
         {demoMultiple ? (
-          <XStack
-            maxH="100%"
-            maxW="100%"
-            minW="100%"
-            position="unset"
-            justify="flex-start"
-          >
+          <XStack maxH="100%" maxW="100%" minW="100%" justify="flex-start">
             {demo}
           </XStack>
         ) : (
@@ -100,10 +97,18 @@ export function HeroContainer({
   )
 
   if (tinted) {
-    return <ThemeTint>{contents}</ThemeTint>
+    return <ThemeTintWithToggle>{contents}</ThemeTintWithToggle>
   }
 
   return contents
+}
+
+const ThemeTintWithToggle = ({ children }: { children: ReactNode }) => {
+  const isTinted = useIsDocsTinted()
+  if (!isTinted) {
+    return <Theme name="gray">{children}</Theme>
+  }
+  return <ThemeTint>{children}</ThemeTint>
 }
 
 const Card = styled(YStack, {
@@ -119,8 +124,8 @@ const Card = styled(YStack, {
 })
 
 const niceNames = {
-  'react-native': 'React Native',
-  css: 'css',
+  motion: 'Motion',
+  css: 'CSS',
 }
 
 const AnimationControl = () => {
@@ -135,12 +140,15 @@ const AnimationControl = () => {
         <Timer size={14} opacity={0.6} />
         <Switch
           size="$1"
-          checked={animationDriverToggler.driverName === 'react-native'}
+          checked={animationDriverToggler.driverName === 'motion'}
           onCheckedChange={(val) =>
-            animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
+            animationDriverToggler.setDriverName(val ? 'motion' : 'css')
           }
+          activeStyle={{
+            backgroundColor: '$color8',
+          }}
         >
-          <Switch.Thumb animation="quick" />
+          <Switch.Thumb transition="medium" />
         </Switch>
         <Waves size={14} opacity={0.6} />
       </XStack>
@@ -169,12 +177,6 @@ const HeroContainerInner = ({
               <Card>{children}</Card>
             </Theme>
             <Theme name="red">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="pink">
-              <Card>{children}</Card>
-            </Theme>
-            <Theme name="orange">
               <Card>{children}</Card>
             </Theme>
             <Theme name="green">

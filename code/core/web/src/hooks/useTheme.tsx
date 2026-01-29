@@ -1,15 +1,12 @@
 import { useRef } from 'react'
-import type {
-  ThemeParsed,
-  ThemeProps,
-  ThemeState,
-  UseThemeWithStateProps,
-} from '../types'
+import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
 import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
 import { useThemeState } from './useThemeState'
 
-export const useTheme = (props: ThemeProps = {}) => {
-  const [theme] = useThemeWithState(props)
+const EMPTY = {}
+
+export const useTheme = () => {
+  const [theme] = useThemeWithState(EMPTY)
   const res = theme
   return res as ThemeProxied
 }
@@ -24,7 +21,8 @@ export const useThemeWithState = (
   isRoot = false
 ): ThemeWithState => {
   const keys = useRef<Set<string> | null>(null)
-  const themeState = useThemeState(props, isRoot, keys)
+  const schemeKeys = useRef<Set<string> | null>(null)
+  const themeState = useThemeState(props, isRoot, keys, schemeKeys)
 
   if (process.env.NODE_ENV === 'development') {
     if (!props.passThrough && !themeState?.theme) {
@@ -38,7 +36,9 @@ export const useThemeWithState = (
     }
   }
 
-  const themeProxied = props.passThrough ? {} : getThemeProxied(props, themeState, keys)
+  const themeProxied = props.passThrough
+    ? {}
+    : getThemeProxied(props, themeState, keys, schemeKeys)
 
   return [themeProxied, themeState]
 }

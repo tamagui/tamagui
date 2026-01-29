@@ -15,6 +15,8 @@ export interface DetoxRunnerOptions {
     retries: number;
     /** Run in headless mode (Android only) */
     headless?: boolean;
+    /** Number of parallel workers (default: 1) */
+    workers?: number;
 }
 /**
  * Parse common CLI arguments for Detox runners
@@ -25,11 +27,17 @@ export declare function parseDetoxArgs(platform: Platform): {
     headless: boolean;
     recordLogs: string;
     retries: number;
+    workers: number;
 };
 /**
  * Build Detox CLI command arguments
  */
 export declare function buildDetoxArgs(options: DetoxRunnerOptions): string[];
+/**
+ * Reset Detox lock file to prevent ECOMPROMISED errors in CI
+ * See: https://github.com/wix/Detox/issues/4210
+ */
+export declare function resetDetoxLockFile(): Promise<void>;
 /**
  * Run Detox tests with the given options
  *

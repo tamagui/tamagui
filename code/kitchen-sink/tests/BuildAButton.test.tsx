@@ -2,7 +2,7 @@ import { getSize, getSpace } from '@tamagui/get-token'
 import type { SizeTokens } from '@tamagui/web'
 import {
   GetProps,
-  Stack,
+  View,
   Text,
   createStyledContext,
   styled,
@@ -15,7 +15,7 @@ export const ButtonContext = createStyledContext({
   size: '$md' as SizeTokens,
 })
 
-export const ButtonFrame = styled(Stack, {
+export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
   backgroundColor: '$background',

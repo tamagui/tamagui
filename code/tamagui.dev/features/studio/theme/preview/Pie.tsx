@@ -23,7 +23,7 @@ export const PieScreen = () => {
         </Paragraph>
       </YStack>
 
-      <YStack flex={1}>
+      <YStack flex={1} flexBasis="auto">
         <AccentTheme>
           <NewMembersChart />
         </AccentTheme>

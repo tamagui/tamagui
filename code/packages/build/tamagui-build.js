@@ -1,6 +1,27 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+/**
+ * tamagui-build - build tool for tamagui packages
+ *
+ * usage:
+ *   tamagui-build                     # build js + types
+ *   tamagui-build --watch             # watch mode
+ *   tamagui-build --skip-types        # js only
+ *   tamagui-build --skip-native       # skip native builds
+ *   tamagui-build clean               # remove dist/types/node_modules
+ *   tamagui-build clean:build         # remove dist/types only
+ *
+ *   --swap-exports                    # for publishing: swaps exports.types
+ *                                     # from ./src/*.ts to ./types/*.d.ts
+ *                                     # if command given after --, runs it
+ *                                     # then swaps back. exit code preserved.
+ *
+ *   examples:
+ *     tamagui-build --swap-exports -- npm publish
+ *     tamagui-build --swap-exports -- pnpm publish --no-git-checks
+ */
+
 const { transform } = require('@babel/core')
 const FSE = require('fs-extra')
 const esbuild = require('esbuild')
@@ -21,17 +42,90 @@ const {
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
+
+// write file only if contents changed to avoid triggering watchers
+async function writeIfUnchanged(filePath, contents) {
+  const existing = await FSE.readFile(filePath, 'utf8').catch(() => null)
+  if (existing === contents) return false
+  await FSE.outputFile(filePath, contents, 'utf8')
+  return true
+}
+
+/**
+ * esbuild plugin that runs React Compiler on TS/TSX files before transformation
+ */
+const reactCompilerPlugin = {
+  name: 'react-compiler',
+  setup(build) {
+    build.onLoad({ filter: /\.tsx?$/ }, async (args) => {
+      const source = await FSE.readFile(args.path, 'utf8')
+      const isTSX = args.path.endsWith('.tsx')
+
+      try {
+        const result = transform(source, {
+          filename: args.path,
+          configFile: false,
+          presets: [['@babel/preset-typescript', { isTSX, allExtensions: true }]],
+          plugins: [
+            [
+              require.resolve('babel-plugin-react-compiler'),
+              {
+                // Target React 19 for optimal output
+                target: '19',
+                // Log when functions can't be compiled and why
+                logger: process.env.REACT_COMPILER_DEBUG
+                  ? {
+                      logEvent(filename, event) {
+                        if (
+                          event.kind === 'CompileError' ||
+                          event.kind === 'CompileSkip'
+                        ) {
+                          const name = event.fnLoc?.identifierName || 'unknown'
+                          const reason = event.detail?.reason || event.reason || ''
+                          console.log(`[RC] ${basename(filename)}:${name} - ${reason}`)
+                        }
+                      },
+                    }
+                  : undefined,
+              },
+            ],
+          ],
+        })
+
+        return {
+          contents: result.code,
+          loader: isTSX ? 'jsx' : 'js', // jsx/js since babel stripped TS
+        }
+      } catch (err) {
+        // If React Compiler fails, fall back to original source
+        console.warn(`React Compiler skipped for ${args.path}:`, err.message)
+        return null // let esbuild handle it normally
+      }
+    })
+  },
+}
+
 const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 
 const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
+// React Compiler is disabled by default - use --react-compiler to enable
+const shouldEnableCompiler = !!(
+  process.argv.includes('--react-compiler') || process.env.REACT_COMPILER
+)
 const shouldBundleFlag = !!process.argv.includes('--bundle')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
+const shouldSwapExports = process.argv.includes('--swap-exports')
+
+// get command after "--" to run with swapped exports
+const dashDashIndex = process.argv.indexOf('--')
+const runCommandAfterSwap =
+  dashDashIndex > -1 ? process.argv.slice(dashDashIndex + 1) : null
 
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
@@ -161,7 +255,97 @@ if (shouldClean || shouldCleanBuildOnly) {
       .on('add', rebuild)
   } else {
     build()
+      .then(async () => {
+        if (!shouldSwapExports) return
+
+        // swap exports.types from ./src to ./types
+        const swapped = swapExportsTypes(pkg, 'to-dist')
+        if (swapped) {
+          await FSE.writeJSON('./package.json', pkg, { spaces: 2 })
+          console.info('swapped exports.types to dist')
+        }
+
+        // run command after -- if given, then swap back
+        if (runCommandAfterSwap && runCommandAfterSwap.length > 0) {
+          const command = runCommandAfterSwap.join(' ')
+          console.info(`running: ${command}`)
+          let exitCode = 0
+          try {
+            childProcess.execSync(command, { stdio: 'inherit' })
+          } catch (err) {
+            // execSync throws on non-zero exit
+            exitCode = err.status ?? 1
+          } finally {
+            if (swapped) {
+              swapExportsTypes(pkg, 'to-src')
+              await FSE.writeJSON('./package.json', pkg, { spaces: 2 })
+              console.info('swapped exports.types back to src')
+            }
+          }
+          process.exit(exitCode)
+        }
+      })
+      .catch(async (error) => {
+        // try to restore on error if we were swapping
+        if (shouldSwapExports) {
+          try {
+            const freshPkg = await FSE.readJSON('./package.json')
+            swapExportsTypes(freshPkg, 'to-src')
+            await FSE.writeJSON('./package.json', freshPkg, { spaces: 2 })
+          } catch {
+            // ignore restore errors
+          }
+        }
+        console.error(error)
+        process.exit(1)
+      })
   }
+}
+
+// stores original src paths so we can restore exactly (keyed by json path)
+const originalExportTypes = new Map()
+
+/**
+ * swaps "types" fields in exports between src and dist
+ * handles nested conditions like { "react-native": { "types": "..." } }
+ * @param {object} pkg - package.json object (mutated in place)
+ * @param {'to-dist' | 'to-src'} direction
+ * @returns {boolean} true if any swaps were made
+ */
+function swapExportsTypes(pkg, direction) {
+  if (!pkg.exports) return false
+
+  let swapped = false
+
+  function walk(obj, pathKey) {
+    if (!obj || typeof obj !== 'object') return
+
+    for (const [key, value] of Object.entries(obj)) {
+      const currentPath = pathKey ? `${pathKey}.${key}` : key
+
+      if (key === 'types' && typeof value === 'string') {
+        if (direction === 'to-dist' && value.startsWith('./src/')) {
+          // store original for restore
+          originalExportTypes.set(currentPath, value)
+          // ./src/index.ts -> ./types/index.d.ts
+          obj.types = value.replace(/^\.\/src\//, './types/').replace(/\.tsx?$/, '.d.ts')
+          swapped = true
+        } else if (direction === 'to-src') {
+          const original = originalExportTypes.get(currentPath)
+          if (original) {
+            obj.types = original
+            swapped = true
+          }
+        }
+      } else if (typeof value === 'object' && value !== null) {
+        // recurse into nested conditions
+        walk(value, currentPath)
+      }
+    }
+  }
+
+  walk(pkg.exports, '')
+  return swapped
 }
 
 async function build({ skipTypes } = {}) {
@@ -257,8 +441,8 @@ async function buildTsc(allFiles) {
           const output = `${code}\n//# sourceMappingURL=${path.basename(mapPath)}`
           await FSE.ensureDir(dirname(dtsPath))
           await Promise.all([
-            FSE.writeFile(dtsPath, output),
-            FSE.writeFile(mapPath, JSON.stringify(map, null, 2)),
+            writeIfUnchanged(dtsPath, output),
+            writeIfUnchanged(mapPath, JSON.stringify(map, null, 2)),
           ])
         })
       )
@@ -631,6 +815,9 @@ async function esbuildWriteIfChanged(
       plugins: [
         ...(opts.plugins || []),
 
+        // React Compiler for automatic memoization (disabled by default, enable with --react-compiler)
+        ...(shouldEnableCompiler ? [reactCompilerPlugin] : []),
+
         ...(platform === 'native' && !opts.bundle
           ? [
               // class isnt supported by hermes
@@ -663,6 +850,8 @@ async function esbuildWriteIfChanged(
         ...(shouldBundleNodeModules && {
           'process.env.ESBUILD_BINARY_PATH': `"true"`,
         }),
+        // vite-compatible env vars for tree-shaking
+        'import.meta.env.VITE_NATIVE': platform === 'native' ? 'true' : 'false',
         ...opts.define,
       },
     }
@@ -699,20 +888,7 @@ async function esbuildWriteIfChanged(
   const cleanupNonMjsFiles = []
   const cleanupNonCjsFiles = []
 
-  async function flush(path, contents) {
-    if (shouldWatch) {
-      if (
-        !(await FSE.pathExists(path)) ||
-        (await FSE.readFile(path, 'utf8')) !== contents
-      ) {
-        await FSE.outputFile(path, contents, 'utf8')
-        return true
-      }
-    } else {
-      await FSE.outputFile(path, contents, 'utf8')
-      return true
-    }
-  }
+  const flush = writeIfUnchanged
 
   const outputs = (
     await Promise.all(
@@ -789,13 +965,12 @@ async function esbuildWriteIfChanged(
           contents = result.join('\n')
         }
 
-        // only if writes + not map do we continue to specification
-        if (await flush(path, contents)) {
-          if (!isMap) {
-            return {
-              path,
-              contents,
-            }
+        // write the file (only if changed), but always return file info for further processing
+        await flush(path, contents)
+        if (!isMap) {
+          return {
+            path,
+            contents,
           }
         }
       })
@@ -810,7 +985,7 @@ async function esbuildWriteIfChanged(
       if (!file) return
       const { path, contents } = file
       // write it without specifics to just .js for older react-native compat
-      await FSE.writeFile(path, contents)
+      await flush(path, contents)
     })
   )
 
@@ -839,7 +1014,7 @@ async function esbuildWriteIfChanged(
 
         cleanupNonCjsFiles.push(path)
 
-        await FSE.writeFile(path.replace(/\.js$/, '.cjs'), result.code)
+        await flush(path.replace(/\.js$/, '.cjs'), result.code)
       })
     )
     return
@@ -888,16 +1063,13 @@ async function esbuildWriteIfChanged(
       }
 
       // output to mjs fully specified
-      if (
-        await flush(
-          newOutPath,
-          result.code +
-            (result.map ? `\n//# sourceMappingURL=${basename(newOutPath)}.map\n` : '')
-        )
-      ) {
-        if (result.map) {
-          await FSE.writeFile(newOutPath + '.map', JSON.stringify(result.map), 'utf8')
-        }
+      await flush(
+        newOutPath,
+        result.code +
+          (result.map ? `\n//# sourceMappingURL=${basename(newOutPath)}.map\n` : '')
+      )
+      if (result.map) {
+        await flush(newOutPath + '.map', JSON.stringify(result.map))
       }
     })
   )

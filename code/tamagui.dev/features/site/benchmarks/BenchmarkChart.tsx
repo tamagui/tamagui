@@ -4,7 +4,7 @@ const getBarColor = (name: string) => {
   switch (name) {
     case 'Tamagui (No Compiler)':
     case 'Tamagui':
-      return '$pink9'
+      return '$red9'
     case 'Stitches':
       return '$yellow9'
     case 'Stitches 0.1.9':
@@ -16,13 +16,11 @@ const getBarColor = (name: string) => {
     case 'RN':
     case 'RNW':
     case 'React Native':
-      return '$purple9'
+      return '$blue9'
     case 'Emotion':
       return '$green9'
     case 'Dripsy':
       return '$blue9'
-    case 'NativeBase':
-      return '$orange9'
     default:
       return 'gray'
   }
@@ -65,7 +63,7 @@ export function BenchmarkChart({
                 justify="center"
                 scaleX={1}
                 {...(animateEnter && {
-                  animation: 'lazy',
+                  transition: 'lazy',
                   enterStyle: {
                     opacity: 0,
                     scaleX: 0,

@@ -1,7 +1,7 @@
 import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
+import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
   getVariableValue,
@@ -13,14 +13,11 @@ import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import type { ListItemProps } from '@tamagui/list-item'
-import { ListItem } from '@tamagui/list-item'
 import { Separator } from '@tamagui/separator'
-import { Sheet, SheetController } from '@tamagui/sheet'
-import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
+import { SheetController } from '@tamagui/sheet/controller'
+import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { useDebounce } from '@tamagui/use-debounce'
 import * as React from 'react'
 import {
   SelectItemParentProvider,
@@ -64,21 +61,25 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
 
-    // @ts-ignore TODO react 19 type needs fix
-    const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+    const composedRefs = useComposedRefs(
+      // @ts-ignore TODO react 19 type needs fix
+      forwardedRef,
+      context.onValueNodeChange as any
+    )
     const isEmptyValue = context.value == null || context.value === ''
 
     // Use renderValue for SSR support - called synchronously during render
-    // Falls back to the portal-based selectedItem for backward compatibility
+    // Falls back to the portal-based selectedItem, then to the raw value for SSR
     const renderedValue = context.renderValue?.(context.value)
-    const children = childrenProp ?? renderedValue ?? context.selectedItem
+    const children =
+      childrenProp ?? renderedValue ?? itemParentContext.selectedItem ?? context.value
     const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
       <SelectValueFrame
         {...(!props.unstyled && {
           size: itemParentContext.size as any,
-          ellipse: true,
+          ellipsis: true,
           // we don't want events from the portalled `SelectValue` children to bubble
           // through the item they came from
           pointerEvents: 'none',
@@ -146,6 +147,82 @@ const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicator
 )
 
 /* -------------------------------------------------------------------------------------------------
+ * SelectIndicator
+ * -----------------------------------------------------------------------------------------------*/
+
+const SelectIndicatorFrame = styled(YStack, {
+  name: 'SelectIndicator',
+
+  variants: {
+    unstyled: {
+      false: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        pointerEvents: 'none',
+        zIndex: 10,
+        backgroundColor: '$background',
+        borderRadius: 0,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
+})
+
+export type SelectIndicatorProps = GetProps<typeof SelectIndicatorFrame>
+
+const SelectIndicator = SelectIndicatorFrame.styleable<
+  SelectScopedProps<SelectIndicatorProps>
+>(function SelectIndicator({ scope, ...props }, forwardedRef) {
+  const itemContext = useSelectItemParentContext(scope)
+  const context = useSelectContext(scope)
+  const [layout, setLayout] = React.useState<any>(null)
+
+  const rafRef = React.useRef<any>(0)
+
+  React.useLayoutEffect(() => {
+    const update = (index: number | null) => {
+      if (typeof index !== 'number') return
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(() => {
+        const node = itemContext.listRef?.current?.[index]
+        if (node) {
+          setLayout({
+            width: Math.round(node.offsetWidth),
+            height: Math.round(node.offsetHeight),
+            x: Math.round(node.offsetLeft),
+            y: Math.round(node.offsetTop),
+          })
+        }
+      })
+    }
+
+    // use ref for initial read to avoid depending on state
+    if (context.open && context.activeIndexRef.current !== null) {
+      update(context.activeIndexRef.current)
+    }
+
+    return itemContext.activeIndexSubscribe(update)
+  }, [context.open, itemContext.listRef])
+
+  if (!layout) return null
+
+  return (
+    <SelectIndicatorFrame
+      ref={forwardedRef}
+      {...props}
+      width={layout.width}
+      height={layout.height}
+      x={layout.x}
+      y={layout.y}
+    />
+  )
+})
+
+/* -------------------------------------------------------------------------------------------------
  * SelectGroup
  * -----------------------------------------------------------------------------------------------*/
 
@@ -162,7 +239,7 @@ export const SelectGroupFrame = styled(YStack, {
 })
 
 const NativeSelectTextFrame = styled(SizableText, {
-  tag: 'select',
+  render: 'select',
   backgroundColor: '$background',
   borderColor: '$borderColor',
   hoverStyle: {
@@ -170,13 +247,8 @@ const NativeSelectTextFrame = styled(SizableText, {
   },
 })
 
-const NativeSelectFrame = styled(ThemeableStack, {
+const NativeSelectFrame = styled(YStack, {
   name: 'NativeSelect',
-
-  bordered: true,
-  userSelect: 'none',
-  outlineWidth: 0,
-  paddingRight: 10,
 
   variants: {
     size: {
@@ -195,10 +267,21 @@ const NativeSelectFrame = styled(ThemeableStack, {
         }
       },
     },
+
+    unstyled: {
+      false: {
+        borderWidth: 1,
+        borderColor: '$borderColor',
+        userSelect: 'none',
+        outlineWidth: 0,
+        paddingRight: 10,
+      },
+    },
   } as const,
 
   defaultVariants: {
     size: '$2',
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -225,12 +308,12 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
             id={itemParentContext.id}
           >
             <NativeSelectTextFrame
-              // @ts-ignore it's ok since tag="select"
+              // @ts-ignore it's ok since render="select"
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                 itemParentContext.onChange(event.currentTarget.value)
               }}
               size={size as FontSizeTokens}
-              ref={nativeSelectRef}
+              ref={nativeSelectRef as any}
               style={{
                 color: 'var(--color)',
                 // @ts-ignore
@@ -269,10 +352,40 @@ SelectGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'SelectLabel'
 
-export type SelectLabelProps = SelectScopedProps<ListItemProps>
+const SelectLabelFrame = styled(SizableText, {
+  name: LABEL_NAME,
 
-const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
-  (props, forwardedRef) => {
+  variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        ellipsis: true,
+        maxWidth: '100%',
+        cursor: 'default',
+      },
+    },
+
+    size: {
+      '...size': (val: SizeTokens, { tokens }) => {
+        return {
+          paddingHorizontal: tokens.space[val],
+          paddingVertical: getSpace(tokens.space[val], {
+            shift: -4,
+          }),
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
+})
+
+export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
+
+const SelectLabel = SelectLabelFrame.styleable<{ scope?: any }>(
+  (props: SelectLabelProps, forwardedRef) => {
     const { scope, ...labelProps } = props
     const context = useSelectItemParentContext(scope)
     const groupContext = useSelectGroupContext(scope)
@@ -282,10 +395,8 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
     }
 
     return (
-      <ListItem
-        tag="div"
-        componentName={LABEL_NAME}
-        fontWeight="800"
+      <SelectLabelFrame
+        render="div"
         id={groupContext.id}
         size={context.size}
         {...labelProps}
@@ -294,8 +405,6 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
     )
   }
 )
-
-SelectLabel.displayName = LABEL_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectSeparator
@@ -352,7 +461,7 @@ export const Select = withStaticProperties(
     )
   },
   {
-    Adapt,
+    Adapt: Adapt,
     Content: SelectContent,
     Group: SelectGroup,
     Icon: SelectIcon,
@@ -365,23 +474,20 @@ export const Select = withStaticProperties(
     Trigger: SelectTrigger,
     Value: SelectValue,
     Viewport: SelectViewport,
-    Sheet: Sheet.Controlled,
+    Indicator: SelectIndicator,
     FocusScope: FocusScopeController,
   }
 )
 
 function useEmitter<A>() {
-  const listeners = React.useRef<Set<Function>>(null)
-  if (!listeners.current) {
-    listeners.current = new Set()
-  }
-  const emit = (value: A) => {
-    listeners.current!.forEach((l) => l(value))
-  }
+  const listenersRef = React.useRef<Set<Function>>(new Set())
+  const emit = React.useCallback((value: A) => {
+    listenersRef.current.forEach((l) => l(value))
+  }, [])
   const subscribe = React.useCallback((listener: (val: A) => void) => {
-    listeners.current!.add(listener)
+    listenersRef.current.add(listener)
     return () => {
-      listeners.current!.delete(listener)
+      listenersRef.current.delete(listener)
     }
   }, [])
   return [emit, subscribe] as const
@@ -448,20 +554,24 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
     }, [props.id])
   }
 
-  const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
+  // activeIndex is stored in a ref to avoid re-renders on every hover
+  // we have two setters:
+  // - setActiveIndexFast: updates ref + emits to subscribers (no re-render) - use for hover/navigation
+  // - setActiveIndex: updates ref + emits + triggers re-render - use when UI needs to update
+  // initialize to null so floating-ui starts from selectedIndex on first open
+  const activeIndexRef = React.useRef<number | null>(null)
+  const [activeIndex, setActiveIndexState] = React.useState<number | null>(null)
 
   const [emitValue, valueSubscribe] = useEmitter<any>()
   const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
 
   const selectedIndexRef = React.useRef<number | null>(null)
-  const activeIndexRef = React.useRef<number | null>(null)
   const listContentRef = React.useRef<string[]>([])
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
 
   useIsomorphicLayoutEffect(() => {
     selectedIndexRef.current = selectedIndex
-    activeIndexRef.current = activeIndex
   })
 
   const shouldRenderWebNative =
@@ -470,23 +580,28 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
       native === 'web' ||
       (Array.isArray(native) && native.includes('web')))
 
-  // TODO its calling this a bunch if you move mouse around on select items fast
-  // using a debounce for now but need to fix root issue
-  const setActiveIndexDebounced = useDebounce(
+  // fast setter: updates ref + emits to subscribers without causing re-renders
+  // use this for mouse hover / keyboard navigation where we don't need parent re-renders
+  const setActiveIndexFast = React.useCallback(
     (index: number | null) => {
-      setActiveIndex((prev) => {
-        if (prev !== index) {
-          if (typeof index === 'number') {
-            emitActiveIndex(index)
-          }
-          return index
+      if (activeIndexRef.current !== index) {
+        activeIndexRef.current = index
+        if (typeof index === 'number') {
+          emitActiveIndex(index)
         }
-        return prev
-      })
+      }
     },
-    1,
-    {},
-    []
+    [emitActiveIndex]
+  )
+
+  // slow setter: also triggers a re-render for components that need the state value
+  // use this sparingly, e.g., when controlled scrolling needs to scroll item into view
+  const setActiveIndex = React.useCallback(
+    (index: number | null) => {
+      setActiveIndexFast(index)
+      setActiveIndexState(index)
+    },
+    [setActiveIndexFast]
   )
 
   return (
@@ -512,6 +627,9 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         listContentRef.current[index] = value
       }, [])}
       shouldRenderWebNative={shouldRenderWebNative}
+      setActiveIndexFast={setActiveIndexFast}
+      selectedItem={selectedItem}
+      setSelectedItem={setSelectedItem}
     >
       <SelectProvider
         scope={scope}
@@ -521,14 +639,13 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         dir={dir}
         blockSelection={false}
         fallback={false}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
         forceUpdate={forceUpdate}
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
         activeIndex={activeIndex}
+        activeIndexRef={activeIndexRef}
         selectedIndex={selectedIndex}
-        setActiveIndex={setActiveIndexDebounced}
+        setActiveIndex={setActiveIndex}
         value={value}
         open={open}
         native={native}
@@ -542,6 +659,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
               activeIndexRef={activeIndexRef}
               listContentRef={listContentRef}
               selectedIndexRef={selectedIndexRef}
+              setActiveIndexFast={setActiveIndexFast}
               {...props}
               open={open}
               value={value}

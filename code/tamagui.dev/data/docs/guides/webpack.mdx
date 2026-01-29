@@ -3,7 +3,7 @@ title: Webpack Guide
 description: How to set up Tamagui with Webpack
 ---
 
-First, install [webpack and webpack-cli](https://webpack.js.org/guides/installation/):
+First, install [Webpack and webpack-cli](https://webpack.js.org/guides/installation/):
 
 ```bash
 yarn add -D webpack webpack-cli
@@ -17,7 +17,7 @@ yarn add -D tamagui-loader
 
 ### Configuration
 
-You can then use the plugin in `webpack.config.js`:
+Add the plugin to your `webpack.config.js`:
 
 ```tsx fileName="webpack.config.js"
 const { TamaguiPlugin } = require('tamagui-loader')
@@ -60,13 +60,13 @@ compiler.options.resolve.extensions = [
 
 ## Usage
 
-To run server locally, install [webpack-dev-server](https://github.com/webpack/webpack-dev-server):
+To run the server locally, install [webpack-dev-server](https://github.com/webpack/webpack-dev-server):
 
 ```bash
 yarn add -D webpack-dev-server
 ```
 
-You can then use the following command to start the server:
+Start the server with:
 
 ```bash
 yarn run webpack serve

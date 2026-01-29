@@ -1,14 +1,4 @@
-import {
-  H3,
-  H4,
-  ListItem,
-  Paragraph,
-  Separator,
-  View,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { H3, H4, ListItem, Paragraph, Separator, View, XStack, YStack } from 'tamagui'
 
 import { Code } from '~/components/Code'
 
@@ -38,6 +28,7 @@ export function PropsTable({
       borderWidth={1}
       borderColor="$borderColor"
       flex={1}
+      flexBasis="auto"
       aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
       aria-labelledby={ariaLabelledBy}
       my="$4"
@@ -48,7 +39,7 @@ export function PropsTable({
         mx: 0,
       }}
     >
-      <XStack items="center" py="$2" px="$4" bg="$borderColor">
+      <XStack items="center" py="$2" px="$4" bg="$color1">
         <H3 size="$3">{title}</H3>
       </XStack>
       {data.map(
@@ -59,16 +50,16 @@ export function PropsTable({
             borderBottomWidth={1}
             borderBottomColor="$color4"
             py="$3"
+            pointerEvents="none"
+            bg={i % 2 === 1 ? '$color0025' : 'transparent'}
           >
             <YStack width="100%">
               <XStack
                 position="relative"
                 py="$1"
-                bg="$background"
                 px="$4"
                 $sm={{ flexDirection: 'column' }}
               >
-                <YStack fullscreen bg="$background" z={1} opacity={0.5} />
                 <XStack minW="30%" items="center" justify="space-between">
                   <H4
                     color="$color"
@@ -82,13 +73,13 @@ export function PropsTable({
                     {name}
                     {required ? (
                       <Paragraph
-                        tag="span"
+                        render="span"
                         // @ts-ignore
                         fontSize="inherit"
                         opacity={0.5}
                       >
                         {' '}
-                        <Paragraph tag="span" fontWeight="300">
+                        <Paragraph render="span" fontWeight="300">
                           (required)
                         </Paragraph>
                       </Paragraph>
@@ -102,9 +93,9 @@ export function PropsTable({
 
                     <XStack
                       flex={2}
+                      flexBasis="auto"
                       minW="30%"
                       items="center"
-                      separator={<Separator self="stretch" vertical mx="$3.5" my="$2" />}
                       $xs={{
                         flexDirection: 'column',
                         items: 'flex-start',
@@ -115,7 +106,7 @@ export function PropsTable({
                         opacity={0.8}
                         fontFamily="$mono"
                         overflow="hidden"
-                        ellipse
+                        ellipsis
                         mr="auto"
                       >
                         {type}
@@ -147,7 +138,7 @@ export function PropsTable({
                             borderWidth={1}
                             rounded="$2"
                           >
-                            <Paragraph tag="span" size="$2" fontWeight="300">
+                            <Paragraph render="span" size="$2" fontWeight="300">
                               deprecated
                             </Paragraph>
                           </View>

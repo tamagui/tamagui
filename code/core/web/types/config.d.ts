@@ -1,4 +1,4 @@
-import type { ConfigListener, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensMerged } from './types';
+import type { AnimationDriver, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensMerged } from './types';
 export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key: Key) => GenericTamaguiSettings[Key];
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
@@ -44,8 +44,6 @@ export declare const getThemes: () => {
         shadowColorFocus?: import("./types").Variable<any> | import("./types").Variable<string> | import("./types").Variable<undefined> | undefined;
     };
 };
-export declare const configListeners: Set<ConfigListener>;
-export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare const updateConfig: (key: string, value: any) => void;
 export declare const getFont: (name: string) => import("./types").GenericFont<string | number | symbol>;
 type DevConfig = {
@@ -56,5 +54,19 @@ type DevConfig = {
 };
 export declare let devConfig: DevConfig | undefined;
 export declare function setupDev(conf: DevConfig): void;
+/**
+ * Dynamically load an animation driver at runtime.
+ * Useful for lazy loading heavier animation drivers after initial page load.
+ *
+ * @example
+ * ```tsx
+ * // import loadAnimationDriver from tamagui
+ * // import createAnimations from your preferred driver (e.g. animations-reanimated)
+ *
+ * const driver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
+ * loadAnimationDriver('spring', driver)
+ * ```
+ */
+export declare function loadAnimationDriver(name: string, driver: AnimationDriver): void;
 export {};
 //# sourceMappingURL=config.d.ts.map

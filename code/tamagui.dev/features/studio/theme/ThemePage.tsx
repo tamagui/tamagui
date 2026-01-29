@@ -55,7 +55,7 @@ export function ThemePage() {
     <>
       <Dialogs />
 
-      <YStack shrink={0} mb="$10">
+      <YStack shrink={0} flexBasis="auto" mb="$10">
         <Suspense fallback={null}>
           <ThemeBuilderModal />
         </Suspense>
@@ -68,10 +68,12 @@ export function ThemePage() {
           $lg={{ pr: 0 }}
           justify="flex-end"
           overflow="hidden"
+          z={100}
         >
           <YStack
             p="$4"
             flex={1}
+            flexBasis="auto"
             maxW="calc(min(100vw, 1300px))"
             group="content"
             $md={{
@@ -108,7 +110,9 @@ const PreviewTheme = (props: { children: any; noKey?: any }) => {
     <>
       <Theme name={baseStepThemeName}>
         <ThemeNameEffectNoTheme />
-        <YStack flex={1}>{props.children}</YStack>
+        <YStack flex={1} flexBasis="auto">
+          {props.children}
+        </YStack>
       </Theme>
     </>
   )
@@ -139,13 +143,13 @@ const ThemeBuilderModal = memo(() => {
       width={530}
       maxH="90vh"
       maxW="95vw"
-      z={100_000}
+      z={1000}
       x={hide ? 500 : 0}
-      animation="medium"
+      transition="medium"
     >
       <YStack
         fullscreen
-        animation="medium"
+        transition="medium"
         animateOnly={['transform']}
         ref={ref}
         x={0}
@@ -158,12 +162,12 @@ const ThemeBuilderModal = memo(() => {
         backdropFilter="blur(60px)"
         {...(hide && {
           borderColor: '$color0',
-          bg: '$background0',
+          bg: '$color3',
         })}
       >
         <XStack
           position="absolute"
-          z={100000}
+          z={999}
           t="$2"
           l="$2"
           $gtLg={{
@@ -179,16 +183,15 @@ const ThemeBuilderModal = memo(() => {
         </XStack>
 
         <YStack
-          animation={['medium', { opacity: { overshootClamping: true } }]}
+          transition={['medium', { opacity: { overshootClamping: true } }]}
           opacity={hide ? 0 : 1}
           gap="$4"
-          separator={<Separator borderWidth={1} />}
           flex={1}
         >
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
               flex={1}
-              animation="75ms"
+              transition="75ms"
               animateOnly={['transform', 'opacity']}
               key={weakKey(StepComponent)}
             >
@@ -196,7 +199,6 @@ const ThemeBuilderModal = memo(() => {
                 return (
                   <ScrollView flex={1} contentContainerStyle={{ flex: 1 }}>
                     <YStack flex={1}>
-                      {/* @ts-ignore */}
                       <StepComponent />
                     </YStack>
                   </ScrollView>
@@ -234,7 +236,7 @@ const StudioThemeBuilderBottomBar = memo(() => {
   return (
     <XStack p="$4" py="$3" items="center" z={100} bg="$background02">
       <CurrentStepActionBar />
-      <Spacer flex />
+      <Spacer flex={1} />
       <ThemeStudioStepButtonsBar />
     </XStack>
   )
@@ -312,17 +314,18 @@ const ThemeStudioStepButtonsBar = () => {
       )}
 
       {canGoForward && (
-        <Button
-          themeInverse={!disableForward}
-          size="$3"
-          disabled={disableForward}
-          opacity={disableForward ? 0.5 : 1}
-          cursor={disableForward ? 'not-allowed' : undefined}
-          iconAfter={canGoForward ? ChevronRight : null}
-          onPress={forwardOrFinish}
-        >
-          {currentSection.nextTitle || 'Next'}
-        </Button>
+        <Theme name={!disableForward ? 'accent' : undefined}>
+          <Button
+            size="$3"
+            disabled={disableForward}
+            opacity={disableForward ? 0.5 : 1}
+            cursor={disableForward ? 'not-allowed' : undefined}
+            iconAfter={canGoForward ? ChevronRight : null}
+            onPress={forwardOrFinish}
+          >
+            {currentSection.nextTitle || 'Next'}
+          </Button>
+        </Theme>
       )}
     </XStack>
   )

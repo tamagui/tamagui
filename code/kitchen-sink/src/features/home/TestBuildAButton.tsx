@@ -2,7 +2,7 @@ import { getSize, getSpace } from '@tamagui/get-token'
 import { Moon } from '@tamagui/lucide-icons'
 import type { GetProps, SizeTokens } from '@tamagui/web'
 import {
-  Stack,
+  View,
   Text,
   createStyledContext,
   styled,
@@ -30,7 +30,7 @@ export const ButtonContext = createStyledContext({
   size: '$4' as SizeTokens,
 })
 
-export const ButtonFrame = styled(Stack, {
+export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
   backgroundColor: '$background',
