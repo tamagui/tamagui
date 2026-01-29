@@ -196,7 +196,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             <ThemeTint>
               <YStack
                 display="none"
-                contain="paint layout"
                 $gtMd={{
                   display: 'block',
                   p: '$0.5',

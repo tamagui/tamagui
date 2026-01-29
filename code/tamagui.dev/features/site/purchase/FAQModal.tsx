@@ -84,7 +84,7 @@ export const TakeoutFaqModal = () => {
 
                   <Paragraph>
                     Takeout is not designed for a beginner to React or React Native,
-                    instead it attempts to delivery a very high quality stack at the
+                    instead it attempts to deliver a very high quality stack at the
                     expense of some simplicity. If you try the free starter and find it to
                     be comfortable, then Takeout will be an easy transition. If not, then
                     Takeout may not be a good choice for you.
@@ -104,7 +104,7 @@ export const TakeoutFaqModal = () => {
                 <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
                   <H5>Can I still use the starter after my subscription has ended?</H5>
                   <Paragraph>
-                    Of course! the subscription is only for the bot updates. If you cancel
+                    Of course! The subscription is only for the bot updates. If you cancel
                     your subscription you will stop receiving updates but can still use
                     your starter.
                   </Paragraph>

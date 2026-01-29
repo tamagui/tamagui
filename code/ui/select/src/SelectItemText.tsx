@@ -4,7 +4,7 @@ import { styled, useIsomorphicLayoutEffect } from '@tamagui/core'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
 
-import { useSelectContext, useSelectItemParentContext } from './context'
+import { useSelectItemParentContext } from './context'
 import { useSelectItemContext } from './SelectItem'
 import type { SelectScopedProps } from './types'
 
@@ -39,7 +39,8 @@ export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame> &
 export const SelectItemText = SelectItemTextFrame.styleable<SelectItemTextExtraProps>(
   function SelectItemText(props, forwardedRef) {
     const { scope, className, ...itemTextProps } = props
-    const context = useSelectContext(scope)
+    // note: only uses itemParentContext (not selectContext) to avoid re-renders
+    // when activeIndex changes on hover
     const itemParentContext = useSelectItemParentContext(scope)
     const ref = React.useRef<TamaguiTextElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
@@ -59,18 +60,15 @@ export const SelectItemText = SelectItemTextFrame.styleable<SelectItemTextExtraP
     )
 
     useIsomorphicLayoutEffect(() => {
-      if (
-        itemParentContext.initialValue === itemContext.value &&
-        !context.selectedIndex
-      ) {
-        context.setSelectedItem(contents.current)
+      if (itemParentContext.initialValue === itemContext.value) {
+        itemParentContext.setSelectedItem(contents.current)
       }
     }, [])
 
     useIsomorphicLayoutEffect(() => {
       return itemParentContext.valueSubscribe((val) => {
         if (val === itemContext.value) {
-          context.setSelectedItem(contents.current)
+          itemParentContext.setSelectedItem(contents.current)
         }
       })
     }, [itemContext.value])
@@ -79,19 +77,6 @@ export const SelectItemText = SelectItemTextFrame.styleable<SelectItemTextExtraP
       return <>{props.children}</>
     }
 
-    return (
-      <>
-        {contents.current}
-
-        {/* Portal an option in the bubble select */}
-        {/* {context.bubbleSelect
-              ? ReactDOM.createPortal(
-                  // we use `.textContent` because `option` only support `string` or `number`
-                  <option value={itemContext.value}>{ref.current?.textContent}</option>,
-                  context.bubbleSelect
-                )
-              : null} */}
-      </>
-    )
+    return <>{contents.current}</>
   }
 )

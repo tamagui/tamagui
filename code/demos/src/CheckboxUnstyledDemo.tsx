@@ -1,9 +1,9 @@
 import { createCheckbox } from '@tamagui/checkbox'
-import { Stack, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 import { Check } from '@tamagui/lucide-icons'
 import { Label, XStack, YStack } from 'tamagui'
 
-const Frame = styled(Stack, {
+const Frame = styled(View, {
   borderWidth: 1,
   borderColor: '$borderColor',
   rounded: 5,
@@ -26,7 +26,7 @@ const Frame = styled(Stack, {
   },
 })
 
-const Indicator = styled(Stack, {})
+const Indicator = styled(View, {})
 
 export const Checkbox = createCheckbox({
   Frame,

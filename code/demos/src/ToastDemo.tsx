@@ -94,12 +94,14 @@ const NativeOptions = ({
         Custom
       </Label>
       <Switch
+        theme="surface2"
         id="native-toggle"
         size="$1"
         checked={!!native}
         onCheckedChange={(val) => setNative(val)}
       >
         <Switch.Thumb
+          theme="accent"
           transition={[
             'quickest',
             {

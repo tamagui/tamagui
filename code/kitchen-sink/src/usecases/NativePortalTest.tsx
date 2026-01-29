@@ -15,7 +15,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { getNativePortalState } from '@tamagui/native-portal'
+import { getPortal } from '@tamagui/native'
 
 const items = [
   { name: 'Apple' },
@@ -141,7 +141,7 @@ function SheetTest({ id }: { id: string }) {
 }
 
 export function NativePortalTest() {
-  const portalState = getNativePortalState()
+  const portalState = getPortal().state
 
   return (
     <YStack padding="$4" gap="$4" flex={1}>

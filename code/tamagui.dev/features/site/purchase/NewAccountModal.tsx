@@ -1,4 +1,4 @@
-import { LogOut, Search, X } from '@tamagui/lucide-icons'
+import { Check, Edit3, LogOut, Plus, Search, X } from '@tamagui/lucide-icons'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
@@ -25,6 +25,7 @@ import {
   Spinner,
   Tabs,
   View,
+  VisuallyHidden,
   XStack,
   YStack,
 } from 'tamagui'
@@ -39,8 +40,8 @@ import { Link } from '../../../components/Link'
 import { accountModal, useAccountModal } from './accountModalStore'
 import { addTeamMemberModal } from './addTeamMemberModalStore'
 import { FaqTabContent } from './FaqTabContent'
-import { paymentModal } from './paymentModalStore'
-import { useProducts } from './useProducts'
+import { paymentModal, SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
+import { useProjects, updateProject, type Project } from './useProjects'
 import {
   useInviteTeamMember,
   useRemoveTeamMember,
@@ -60,7 +61,7 @@ export { accountModal, useAccountModal } from './accountModalStore'
 
 type Subscription = NonNullable<UserContextType['subscriptions']>[number]
 
-type TabName = 'plan' | 'upgrade' | 'manage' | 'team' | 'faq'
+type TabName = 'plan' | 'manage' | 'team' | 'faq'
 
 export const NewAccountModal = () => {
   const store = useAccountModal()
@@ -125,6 +126,9 @@ export const NewAccountModal = () => {
             minH={500}
           >
             <AccountView />
+            <VisuallyHidden>
+              <Dialog.Title>Account</Dialog.Title>
+            </VisuallyHidden>
 
             <Dialog.Close asChild>
               <Button position="absolute" t="$3" r="$3" size="$3" circular icon={X} />
@@ -146,6 +150,7 @@ export const AccountView = () => {
 
   // Calculate values needed for hooks, but use safe defaults when data isn't ready
   const subscriptions = data?.subscriptions
+
   const filteredSubscriptions = subscriptions?.filter(
     (sub) =>
       (sub.status === SubscriptionStatus.Active ||
@@ -198,22 +203,32 @@ export const AccountView = () => {
     isLoading: isTeamLoading,
   } = useTeamSeats(haveTeamSeats)
 
-  // Find Pro subscription
+  // Find Pro subscription (V1 or V2)
   const proSubscription = haveTeamSeats
     ? proTeamSubscription
     : (activeSubscriptions?.find((sub) =>
         sub.subscription_items?.some(
-          (item) => item.price?.product?.name === ProductName.TamaguiPro
+          (item) =>
+            item.price?.product?.name === ProductName.TamaguiPro ||
+            item.price?.product?.name === ProductName.TamaguiProV2 ||
+            item.price?.product?.name === ProductName.TamaguiProV2Upgrade ||
+            // V2 support tiers also imply Pro access
+            item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+            item.price?.product?.name === ProductName.TamaguiSupportSponsor
         )
       ) as Subscription)
 
-  // Find ALL support-related subscriptions (Chat and/or Support tiers)
+  // Find ALL support-related subscriptions (Chat and/or Support tiers - V1 and V2)
   const supportSubscriptions = activeSubscriptions
     ?.filter((sub) =>
       sub.subscription_items?.some(
         (item) =>
+          // V1 support products
           item.price?.product?.name === ProductName.TamaguiSupport ||
-          item.price?.product?.name === ProductName.TamaguiChat
+          item.price?.product?.name === ProductName.TamaguiChat ||
+          // V2 support products
+          item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+          item.price?.product?.name === ProductName.TamaguiSupportSponsor
       )
     )
     .sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime())
@@ -249,9 +264,6 @@ export const AccountView = () => {
           />
         )
 
-      case 'upgrade':
-        return <UpgradeTab />
-
       case 'manage':
         return (
           <ManageTab
@@ -280,28 +292,22 @@ export const AccountView = () => {
   }
 
   return (
-    <YStack flex={1}>
+    <YStack flex={1} flexBasis="auto">
       <Tabs
         flex={1}
+        flexBasis="auto"
         value={currentTab}
         onValueChange={(val: any) => setCurrentTab(val)}
         orientation="horizontal"
         flexDirection="column"
         size="$6"
       >
-        <Tabs.List disablePassBorderRadius>
+        <Tabs.List>
           <YStack width={'33.3333%'} flex={1}>
             <Tab isActive={currentTab === 'plan'} value="plan">
               Plan
             </Tab>
           </YStack>
-          {!isTeamMember ? (
-            <YStack width={'33.3333%'} flex={1}>
-              <Tab isActive={currentTab === 'upgrade'} value="upgrade">
-                Upgrade
-              </Tab>
-            </YStack>
-          ) : null}
           <YStack width={'33.3333%'} flex={1}>
             <Tab isActive={currentTab === 'manage'} value="manage">
               Manage
@@ -321,7 +327,7 @@ export const AccountView = () => {
           </YStack>
         </Tabs.List>
 
-        <YStack overflow="hidden" flex={1}>
+        <YStack overflow="hidden" flex={1} flexBasis="auto">
           <ScrollView>
             <YStack p="$6">{renderTabs()}</YStack>
           </ScrollView>
@@ -426,6 +432,7 @@ const Tab = ({
       bg="$color1"
       height={60}
       borderBottomWidth={1}
+      cursor="pointer"
       borderBottomColor="transparent"
       {...(!isActive && {
         bg: '$color2',
@@ -595,8 +602,12 @@ const DiscordPanel = ({
   const hasSupportAccess = () => {
     const supportItems = subscription?.subscription_items?.filter((item) => {
       return (
+        // V1 support products
         item.price?.product?.name === ProductName.TamaguiSupport ||
-        item.price?.product?.name === ProductName.TamaguiChat
+        item.price?.product?.name === ProductName.TamaguiChat ||
+        // V2 support products
+        item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+        item.price?.product?.name === ProductName.TamaguiSupportSponsor
       )
     })
 
@@ -604,15 +615,18 @@ const DiscordPanel = ({
       return { hasAccess: false, hasChat: false, hasTier: false }
     }
 
-    // Check for chat support
+    // Check for chat support (V1 only - V2 Pro includes chat by default)
     const chatItem = supportItems.find(
       (item) => item.price?.product?.name === ProductName.TamaguiChat
     )
     const hasChat = !!chatItem
 
-    // Check for support tier
+    // Check for support tier (V1 or V2)
     const tierItem = supportItems.find(
-      (item) => item.price?.product?.name === ProductName.TamaguiSupport
+      (item) =>
+        item.price?.product?.name === ProductName.TamaguiSupport ||
+        item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+        item.price?.product?.name === ProductName.TamaguiSupportSponsor
     )
 
     let hasTier = false
@@ -926,17 +940,25 @@ const PlanTab = ({
 }: {
   subscription?: Subscription
   supportSubscription?: Subscription
-  setCurrentTab: (value: 'plan' | 'upgrade' | 'manage' | 'team') => void
+  setCurrentTab: (value: 'plan' | 'manage' | 'team') => void
   isTeamMember: boolean
 }) => {
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const [showSupportAccess, setShowSupportAccess] = useState(false)
-  const { data: products } = useProducts()
   const [isResendingInvite, setIsResendingInvite] = useState(false)
 
   // Check if this is a one-time payment plan
   const isOneTimePlan =
     subscription?.subscription_items?.[0]?.price?.type === Pricing.OneTime
+
+  // Check if this is a V2 Pro subscription (V2 no need for team seats)
+  const isV2Pro = subscription?.subscription_items?.some(
+    (item) =>
+      item.price?.product?.name === ProductName.TamaguiProV2 ||
+      item.price?.product?.name === ProductName.TamaguiProV2Upgrade ||
+      item.price?.product?.name === ProductName.TamaguiSupportDirect ||
+      item.price?.product?.name === ProductName.TamaguiSupportSponsor
+  )
 
   const handleTakeoutAccess = (repoUrl = 'https://github.com/tamagui/takeout') => {
     // Just open the repo URL directly - invite handling is done via "Resend Invite" button
@@ -944,11 +966,15 @@ const PlanTab = ({
   }
 
   const handleResendInvite = async () => {
-    if (!subscription || !products) return
+    if (!subscription) return
 
-    const takeoutProduct = products.pro
-    if (!takeoutProduct) {
-      alert('Product information not found')
+    // Get product ID from the user's actual subscription items (works for both V1 and V2)
+    const subscriptionProduct = subscription.subscription_items?.find(
+      (item) => item.price?.product?.id
+    )?.price?.product
+
+    if (!subscriptionProduct?.id) {
+      alert('Product information not found in subscription')
       return
     }
 
@@ -962,7 +988,7 @@ const PlanTab = ({
         },
         body: JSON.stringify({
           subscription_id: subscription.id,
-          product_id: takeoutProduct.id,
+          product_id: subscriptionProduct.id,
         }),
       })
 
@@ -1058,7 +1084,8 @@ const PlanTab = ({
           />
 
           <ChatAccessCard />
-          {!isTeamMember && !isOneTimePlan ? (
+          {/* Add Members card - V1 only (V2 has unlimited team included in license) */}
+          {!isTeamMember && !isOneTimePlan && !isV2Pro ? (
             <ServiceCard
               title="Add Members"
               description="Add members to your Pro plan."
@@ -1097,7 +1124,7 @@ const PlanTab = ({
               description="Direct support and prioritized issue handling"
               actionLabel={subscription ? 'Contact Support' : 'Upgrade'}
               onAction={() => {
-                setCurrentTab('upgrade')
+                setCurrentTab('manage')
               }}
             />
           </XStack>
@@ -1178,80 +1205,50 @@ const ChatAccessCard = () => {
   )
 }
 
-const UpgradeTab = () => {
-  const { subscriptionStatus } = useUser()
-
-  const [supportTier, setSupportTier] = useState(subscriptionStatus.supportTier)
-  const currentTier = subscriptionStatus.supportTier
-
-  const getActionLabel = () => {
-    if (supportTier === currentTier) return 'Current Plan'
-    return Number(supportTier) > Number(currentTier) ? 'Upgrade Plan' : 'Downgrade Plan'
-  }
-
-  const handleUpgrade = () => {
-    // Calculate the monthly total based on support tier
-    const monthlyTotal = Number(supportTier) * 800
-
-    // Set payment modal properties
-    paymentModal.show = true
-    paymentModal.yearlyTotal = 0 // No yearly component for support upgrade
-    paymentModal.monthlyTotal = monthlyTotal
-    paymentModal.disableAutoRenew = false // Support is always monthly
-    paymentModal.chatSupport = false
-    paymentModal.supportTier = Number(supportTier)
-  }
-
-  return (
-    <YStack gap="$6">
-      <SupportTabContent
-        currentTier={currentTier.toString()}
-        supportTier={supportTier.toString()}
-        setSupportTier={(value) => setSupportTier(Number(value))}
-      />
-
-      <Button
-        theme="accent"
-        rounded="$10"
-        self="flex-end"
-        onPress={handleUpgrade}
-        disabled={supportTier === currentTier}
-      >
-        <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
-      </Button>
-
-      <Separator />
-
-      <Paragraph fontFamily="$mono" size="$5" lineHeight="$6" opacity={0.8}>
-        Each tier adds 4 hours of development a month, faster response times, and 4
-        additional private chat invites.
-      </Paragraph>
-    </YStack>
-  )
-}
-
 const SupportTabContent = ({
   currentTier,
   supportTier,
   setSupportTier,
 }: {
-  currentTier: string
-  supportTier: string
-  setSupportTier: (value: string) => void
+  currentTier: SupportTier
+  supportTier: SupportTier
+  setSupportTier: (value: SupportTier) => void
 }) => {
-  const tiers = [
-    { value: '0', label: 'None', price: 0 },
-    { value: '1', label: 'Tier 1', price: 800 },
-    { value: '2', label: 'Tier 2', price: 1600 },
-    { value: '3', label: 'Tier 3', price: 2400 },
+  const tiers: {
+    value: SupportTier
+    label: string
+    price: number
+    description: string
+  }[] = [
+    {
+      value: 'chat',
+      label: 'Chat',
+      price: 0,
+      description: 'Community Discord access, no SLA',
+    },
+    {
+      value: 'direct',
+      label: 'Direct',
+      price: 500,
+      description: '5 bug fixes/year, 2 day response',
+    },
+    {
+      value: 'sponsor',
+      label: 'Sponsor',
+      price: 2000,
+      description: 'Unlimited priority fixes, 1 day response',
+    },
   ]
 
   const formatCurrency = (price: number) => {
-    return price.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-    })
+    if (price === 0) return 'Included'
+    return (
+      price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+      }) + '/mo'
+    )
   }
 
   return (
@@ -1274,6 +1271,9 @@ const SupportTabContent = ({
                 <H3 fontFamily="$mono" size="$6">
                   {tier.label}
                 </H3>
+                <Paragraph color="$color10" size="$3">
+                  {tier.description}
+                </Paragraph>
                 <Paragraph color="$color10">
                   {tier.price === 0
                     ? 'Basic Support'
@@ -1301,9 +1301,42 @@ const ManageTab = ({
   isTeamLoading: boolean
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { refresh } = useUser()
+  const { refresh, subscriptionStatus } = useUser()
+  const {
+    projects,
+    isLoading: isProjectsLoading,
+    refresh: refreshProjects,
+  } = useProjects()
 
-  if (isTeamLoading) {
+  // support tier state
+  const mapNumericToStringTier = (tier: number): SupportTier => {
+    if (tier >= 2) return 'sponsor'
+    if (tier >= 1) return 'direct'
+    return 'chat'
+  }
+  const currentTierString = mapNumericToStringTier(subscriptionStatus.supportTier)
+  const [supportTier, setSupportTier] = useState<SupportTier>(currentTierString)
+  const tierOrder: SupportTier[] = ['chat', 'direct', 'sponsor']
+
+  const getActionLabel = () => {
+    if (supportTier === currentTierString) return 'Current Plan'
+    const currentIndex = tierOrder.indexOf(currentTierString)
+    const selectedIndex = tierOrder.indexOf(supportTier)
+    return selectedIndex > currentIndex ? 'Upgrade Plan' : 'Downgrade Plan'
+  }
+
+  const handleUpgrade = () => {
+    const monthlyTotal = SUPPORT_TIERS[supportTier].price
+    paymentModal.show = true
+    paymentModal.yearlyTotal = 0
+    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.disableAutoRenew = false
+    paymentModal.chatSupport = false
+    paymentModal.supportTier = supportTier
+    paymentModal.isSupportUpgradeOnly = true
+  }
+
+  if (isTeamLoading || isProjectsLoading) {
     return (
       <YStack flex={1} items="center" justify="center" p="$6">
         <Spinner size="large" />
@@ -1311,28 +1344,8 @@ const ManageTab = ({
     )
   }
 
-  if (!subscriptions || subscriptions.length === 0) {
-    return (
-      <YStack gap="$4">
-        <H3>No Active Subscription</H3>
-        <Paragraph color="$color10">
-          You don't have an active subscription. Purchase a plan to get started.
-        </Paragraph>
-
-        <Button
-          theme="accent"
-          onPress={() => {
-            paymentModal.show = true
-          }}
-        >
-          <Button.Text>Purchase Plan</Button.Text>
-        </Button>
-      </YStack>
-    )
-  }
-
   // Sort subscriptions by creation date (oldest first)
-  const sortedSubscriptions = [...subscriptions].sort(
+  const sortedSubscriptions = [...(subscriptions || [])].sort(
     (a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()
   )
 
@@ -1368,146 +1381,355 @@ const ManageTab = ({
     }
   }
 
+  const hasProjects = projects.length > 0
+  const hasSubscriptions = subscriptions && subscriptions.length > 0
+
+  // no subscription and no projects
+  if (!hasSubscriptions && !hasProjects) {
+    return (
+      <YStack gap="$4">
+        <H3>No Active Subscription</H3>
+        <Paragraph color="$color10">
+          You don't have an active subscription. Purchase a plan to get started.
+        </Paragraph>
+
+        <Button
+          theme="accent"
+          onPress={() => {
+            paymentModal.show = true
+          }}
+        >
+          <Button.Text>Purchase Plan</Button.Text>
+        </Button>
+      </YStack>
+    )
+  }
+
   return (
-    <YStack gap="$6">
-      <XStack justify="space-between" items="center">
-        <View>
-          <H3>Subscription Details</H3>
-          {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
-        </View>
-        <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
-          <Button size="$3">View Invoices</Button>
-        </Link>
-      </XStack>
-      {sortedSubscriptions.map((subscription) => {
-        const subscriptionItems = subscription?.subscription_items || []
-        return (
-          <YStack
-            key={subscription.id}
-            gap="$4"
-            p="$4"
-            borderWidth={1}
-            borderColor="$color3"
-            rounded="$4"
-            mb="$4"
-          >
-            <YStack
-              p="$4"
-              borderWidth={1}
-              borderColor="$color3"
-              rounded="$4"
-              width="100%"
-              style={{
-                overflowX: 'auto',
+    <YStack gap="$8">
+      {/* Projects Section (V2) */}
+      {hasProjects && (
+        <YStack gap="$4">
+          <XStack justify="space-between" items="center">
+            <H3>Projects</H3>
+            <Button
+              size="$3"
+              theme="accent"
+              onPress={() => {
+                paymentModal.show = true
+                paymentModal.isV2 = true
               }}
             >
-              <YStack minW={500} width="100%">
-                {/* Table Header */}
-                <XStack items="center" mb="$2" width="100%">
-                  <Paragraph fontWeight="bold" width="60%">
-                    Product
-                  </Paragraph>
-                  <Paragraph fontWeight="bold" width="20%" text="center">
-                    Qty
-                  </Paragraph>
-                  <Paragraph fontWeight="bold" width="20%" text="right">
-                    Total
-                  </Paragraph>
-                </XStack>
-                {/* Table Rows */}
-                {subscriptionItems.map((item, idx) => {
-                  const price = item.price
-                  const product = price?.product
-                  const qty =
-                    product?.name === ProductName.TamaguiProTeamSeats
-                      ? (teamData?.subscription.total_seats ?? 1)
-                      : (subscription.quantity ?? 1)
-                  const total = (price?.unit_amount || 0) * qty
-                  return (
-                    <XStack key={item.id || idx} items="center" mb="$2" width="100%">
-                      <YStack width="60%">
-                        <Paragraph fontWeight="bold">{product?.name}</Paragraph>
-                        {product?.description && (
-                          <Paragraph color="$color9" size="$3">
-                            {product.description}
-                          </Paragraph>
-                        )}
-                        <Paragraph>
-                          {formatCurrency(price?.unit_amount || 0)}
-                          {price?.type !== Pricing.OneTime && price?.interval
-                            ? `/${price.interval}`
-                            : ''}
-                        </Paragraph>
-                      </YStack>
-                      <Paragraph width="20%" text="center">
-                        {qty}
+              <Plus size={16} />
+              <Button.Text>Add Project</Button.Text>
+            </Button>
+          </XStack>
+
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} onUpdate={refreshProjects} />
+          ))}
+        </YStack>
+      )}
+
+      {hasProjects && hasSubscriptions && <Separator />}
+
+      {/* Subscriptions Section */}
+      {hasSubscriptions && (
+        <YStack gap="$4">
+          <XStack justify="space-between" items="center">
+            <View>
+              <H3>Subscriptions</H3>
+              {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
+            </View>
+            <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
+              <Button size="$3">View Invoices</Button>
+            </Link>
+          </XStack>
+          {sortedSubscriptions.map((subscription) => {
+            const subscriptionItems = subscription?.subscription_items || []
+            return (
+              <YStack
+                key={subscription.id}
+                gap="$4"
+                p="$4"
+                borderWidth={1}
+                borderColor="$color3"
+                rounded="$4"
+              >
+                <YStack
+                  p="$4"
+                  borderWidth={1}
+                  borderColor="$color3"
+                  rounded="$4"
+                  width="100%"
+                  style={{
+                    overflowX: 'auto',
+                  }}
+                >
+                  <YStack minW={500} width="100%">
+                    {/* Table Header */}
+                    <XStack items="center" mb="$2" width="100%">
+                      <Paragraph fontWeight="bold" width="60%">
+                        Product
                       </Paragraph>
-                      <Paragraph width="20%" text="right">
-                        {formatCurrency(total)}
-                        {price?.type !== Pricing.OneTime && price?.interval
-                          ? `/${price.interval}`
-                          : ''}
+                      <Paragraph fontWeight="bold" width="20%" text="center">
+                        Qty
+                      </Paragraph>
+                      <Paragraph fontWeight="bold" width="20%" text="right">
+                        Total
                       </Paragraph>
                     </XStack>
-                  )
-                })}
+                    {/* Table Rows */}
+                    {subscriptionItems.map((item, idx) => {
+                      const price = item.price
+                      const product = price?.product
+                      const qty =
+                        product?.name === ProductName.TamaguiProTeamSeats
+                          ? (teamData?.subscription.total_seats ?? 1)
+                          : (subscription.quantity ?? 1)
+                      const total = (price?.unit_amount || 0) * qty
+                      return (
+                        <XStack key={item.id || idx} items="center" mb="$2" width="100%">
+                          <YStack width="60%">
+                            <Paragraph fontWeight="bold">{product?.name}</Paragraph>
+                            {product?.description && (
+                              <Paragraph color="$color9" size="$3">
+                                {product.description}
+                              </Paragraph>
+                            )}
+                            <Paragraph>
+                              {formatCurrency(price?.unit_amount || 0)}
+                              {price?.type !== Pricing.OneTime && price?.interval
+                                ? `/${price.interval}`
+                                : ''}
+                            </Paragraph>
+                          </YStack>
+                          <Paragraph width="20%" text="center">
+                            {qty}
+                          </Paragraph>
+                          <Paragraph width="20%" text="right">
+                            {formatCurrency(total)}
+                            {price?.type !== Pricing.OneTime && price?.interval
+                              ? `/${price.interval}`
+                              : ''}
+                          </Paragraph>
+                        </XStack>
+                      )
+                    })}
+                  </YStack>
+                </YStack>
+                {/* Billing Period, Status, Cancel Button */}
+                <XStack justify="space-between">
+                  <Paragraph flex={1}>Status</Paragraph>
+                  <Paragraph
+                    textTransform="capitalize"
+                    flex={1}
+                    text="right"
+                    color={
+                      subscription.status === SubscriptionStatus.Active
+                        ? '$green9'
+                        : '$yellow9'
+                    }
+                  >
+                    {subscription.status === SubscriptionStatus.Trialing
+                      ? SubscriptionStatus.Active
+                      : subscription.status}
+                  </Paragraph>
+                </XStack>
+                <XStack justify="space-between">
+                  <Paragraph flex={1}>Billing Period</Paragraph>
+                  <YStack self="flex-end">
+                    <Paragraph>
+                      {new Date(subscription.current_period_start).toLocaleDateString()} -{' '}
+                      {new Date(subscription.current_period_end).toLocaleDateString()}
+                    </Paragraph>
+                  </YStack>
+                </XStack>
+                {subscription.cancel_at_period_end && (
+                  <YStack bg="$yellow2" p="$3" rounded="$4">
+                    <Paragraph theme="yellow">
+                      Your subscription will end on{' '}
+                      {new Date(subscription.current_period_end).toLocaleDateString()}
+                    </Paragraph>
+                  </YStack>
+                )}
+                {/* Cancel button logic here */}
+                {!isTeamMember ? (
+                  <>
+                    <Separator />
+                    <Button
+                      theme="red"
+                      disabled={isLoading || !!subscription.cancel_at_period_end}
+                      onPress={() => handleCancelSubscription(subscription.id)}
+                    >
+                      <Button.Text>
+                        {subscription.cancel_at_period_end
+                          ? 'Cancellation Scheduled'
+                          : 'Cancel Subscription'}
+                      </Button.Text>
+                    </Button>
+                  </>
+                ) : null}
               </YStack>
-            </YStack>
-            {/* Billing Period, Status, Cancel Button */}
-            <XStack justify="space-between">
-              <Paragraph flex={1}>Status</Paragraph>
-              <Paragraph
-                textTransform="capitalize"
-                flex={1}
-                text="right"
-                color={
-                  subscription.status === SubscriptionStatus.Active
-                    ? '$green9'
-                    : '$yellow9'
-                }
-              >
-                {subscription.status === SubscriptionStatus.Trialing
-                  ? SubscriptionStatus.Active
-                  : subscription.status}
-              </Paragraph>
-            </XStack>
-            <XStack justify="space-between">
-              <Paragraph flex={1}>Billing Period</Paragraph>
-              <YStack self="flex-end">
-                <Paragraph>
-                  {new Date(subscription.current_period_start).toLocaleDateString()} -{' '}
-                  {new Date(subscription.current_period_end).toLocaleDateString()}
-                </Paragraph>
-              </YStack>
-            </XStack>
-            {subscription.cancel_at_period_end && (
-              <YStack bg="$yellow2" p="$3" rounded="$4">
-                <Paragraph theme="yellow">
-                  Your subscription will end on{' '}
-                  {new Date(subscription.current_period_end).toLocaleDateString()}
-                </Paragraph>
-              </YStack>
-            )}
-            {/* Cancel button logic here */}
-            {!isTeamMember ? (
-              <>
-                <Separator />
-                <Button
-                  theme="red"
-                  disabled={isLoading || !!subscription.cancel_at_period_end}
-                  onPress={() => handleCancelSubscription(subscription.id)}
-                >
-                  <Button.Text>
-                    {subscription.cancel_at_period_end
-                      ? 'Cancellation Scheduled'
-                      : 'Cancel Subscription'}
-                  </Button.Text>
-                </Button>
-              </>
-            ) : null}
+            )
+          })}
+        </YStack>
+      )}
+
+      {/* Support Tier Section */}
+      {!isTeamMember && (hasProjects || hasSubscriptions) && (
+        <>
+          <Separator />
+          <YStack gap="$4">
+            <H3>Support Tier</H3>
+            <SupportTabContent
+              currentTier={currentTierString}
+              supportTier={supportTier}
+              setSupportTier={setSupportTier}
+            />
+            <Button
+              theme="accent"
+              rounded="$10"
+              self="flex-end"
+              onPress={handleUpgrade}
+              disabled={supportTier === currentTierString}
+            >
+              <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
+            </Button>
           </YStack>
-        )
-      })}
+        </>
+      )}
+    </YStack>
+  )
+}
+
+// project card with inline editing
+const ProjectCard = ({
+  project,
+  onUpdate,
+}: {
+  project: Project
+  onUpdate: () => void
+}) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const [name, setName] = useState(project.name)
+  const [domain, setDomain] = useState(project.domain)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const updatesExpired = new Date(project.updates_expire_at) < new Date()
+  const daysUntilExpiry = Math.ceil(
+    (new Date(project.updates_expire_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+  )
+
+  const handleSave = async () => {
+    if (name === project.name && domain === project.domain) {
+      setIsEditing(false)
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+    try {
+      await updateProject(project.id, { name, domain })
+      onUpdate()
+      setIsEditing(false)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update project')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleCancel = () => {
+    setName(project.name)
+    setDomain(project.domain)
+    setError(null)
+    setIsEditing(false)
+  }
+
+  return (
+    <YStack
+      gap="$3"
+      p="$4"
+      borderWidth={1}
+      borderColor="$color4"
+      rounded="$4"
+      bg="$color2"
+    >
+      {isEditing ? (
+        <>
+          <YStack gap="$2">
+            <Label size="$2" htmlFor={`name-${project.id}`}>
+              Project Name
+            </Label>
+            <Input
+              id={`name-${project.id}`}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Project name"
+            />
+          </YStack>
+          <YStack gap="$2">
+            <Label size="$2" htmlFor={`domain-${project.id}`}>
+              Domain
+            </Label>
+            <Input
+              id={`domain-${project.id}`}
+              value={domain}
+              onChange={(e) => setDomain(e.target.value)}
+              placeholder="example.com"
+            />
+          </YStack>
+          {error && (
+            <Paragraph size="$2" color="$red10">
+              {error}
+            </Paragraph>
+          )}
+          <XStack gap="$2" justify="flex-end">
+            <Button size="$3" onPress={handleCancel} disabled={isLoading}>
+              <Button.Text>Cancel</Button.Text>
+            </Button>
+            <Button size="$3" theme="accent" onPress={handleSave} disabled={isLoading}>
+              {isLoading ? <Spinner size="small" /> : <Check size={16} />}
+              <Button.Text>Save</Button.Text>
+            </Button>
+          </XStack>
+        </>
+      ) : (
+        <>
+          <XStack justify="space-between" items="flex-start">
+            <YStack gap="$1" flex={1}>
+              <H4 fontFamily="$mono">{project.name}</H4>
+              <Paragraph size="$3" color="$color10">
+                {project.domain}
+              </Paragraph>
+            </YStack>
+            <Button size="$2" chromeless onPress={() => setIsEditing(true)}>
+              <Edit3 size={16} />
+            </Button>
+          </XStack>
+
+          <XStack justify="space-between" items="center">
+            <Paragraph size="$2" color="$color9">
+              Updates {updatesExpired ? 'expired' : 'expire'}:
+            </Paragraph>
+            <Paragraph
+              size="$2"
+              color={
+                updatesExpired
+                  ? '$red10'
+                  : daysUntilExpiry < 30
+                    ? '$yellow10'
+                    : '$color10'
+              }
+            >
+              {new Date(project.updates_expire_at).toLocaleDateString()}
+              {!updatesExpired && daysUntilExpiry <= 90 && ` (${daysUntilExpiry} days)`}
+            </Paragraph>
+          </XStack>
+        </>
+      )}
     </YStack>
   )
 }

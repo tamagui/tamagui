@@ -5,9 +5,9 @@ description: Accessing and using tokens
 
 Tamagui lets you create tokens using `createTokens`, which is then passed to the `createTamagui` function as part of the [configuration](/docs/core/configuration) object.
 
-### Getting tokens
+## Getting Tokens
 
-For example if you define some tokens:
+For example, if you define some tokens:
 
 ```tsx
 const tokens = createTokens({
@@ -37,7 +37,7 @@ If you'd like just an object containing the prefixed (starting with `$`) or non-
 // only non-$
 getTokens({ prefixed: false }).size.small
 // only $
-getTokens({ prefixed: true }).['$size'].small
+getTokens({ prefixed: true })['$size'].small
 ```
 
 What is returned is of type `Variable`, which is what Tamagui turns all tokens and theme values into internally in order to give them CSS variable names, as well as other things:
@@ -49,7 +49,7 @@ getTokens().size.small.variable // returns something like (--size-small), which 
 
 Tamagui has some helpers that make working with variables easier, which are documented in [Exports](/docs/core/exports), namely [`getVariable`](/docs/core/exports#getvariable) which will return the CSS variable on web, but raw value on native, and `getVariableValue` which always returns the raw value.
 
-#### Color tokens as fallback values for themes
+### Color Tokens as Fallback Values for Themes
 
 Color tokens are available as fallback values when you access a theme. So when you `useTheme()` and then access a value that isn't in the theme, it will check for a `tokens.color` with the matching name.
 
@@ -60,7 +60,7 @@ Think of it this way:
 
 If you are confused by Tamagui themes, don't be. You can avoid them altogether, or avoid learning them until later. Instead, you can just build your app using regular style props and leave out themes altogether. Or, simply use a `light` and a `dark` theme if you want light and dark mode in your app, but avoid using any nested themes.
 
-### Using tokens with components
+## Using Tokens with Components
 
 When using `styled` or any Tamagui component like `Stack`, you can access tokens directly. Just like with `useTheme`, it will first look for a theme value that matches, and if not it will fall back to a token.
 
@@ -96,7 +96,7 @@ Here's how they all apply:
   ]}
 />
 
-### Specific tokens
+## Specific Tokens
 
 As of version 1.34, you can also define any custom token values you'd like:
 
@@ -125,9 +125,9 @@ export default () => (
 This, like all token values, works the same with `styled`:
 
 ```tsx
-import { styled, Stack } from '@tamagui/core'
+import { styled, View } from '@tamagui/core'
 
-export const MyStack = styled(Stack, {
+export const MyView = styled(View, {
   width: '$icon.small'
 })
 ```

@@ -33,7 +33,7 @@ const animationDescriptions = [
   },
   {
     name: 'Lazy',
-    description: 'A lazy, straightforward spring',
+    description: 'A slow, relaxed spring',
     animation: 'lazy',
     settings: animationsMotion.animations.lazy,
   },

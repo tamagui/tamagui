@@ -1,6 +1,6 @@
 ---
 title: Progress
-description: Show percent completion with a progress bar.
+description: Show percent completion with a progress bar
 name: progress
 component: Progress
 package: progress
@@ -62,23 +62,25 @@ Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getti
       name: 'size',
       required: false,
       type: '"small" | "large"',
+      description: `Size preset for the progress bar.`,
     },
     {
       name: 'value',
       required: false,
       type: 'number | null',
-      description: `Control the percent progress.`,
+      description: `Controls the percent progress.`,
     },
     {
       name: 'max',
       required: false,
       type: 'number',
+      description: `Maximum value for calculating the percentage.`,
     },
     {
       name: 'unstyled',
       required: false,
       type: 'boolean',
-      description: `When true will remove all default styles`,
+      description: `When true, removes all default styles.`,
     },
   ]}
 />
@@ -93,7 +95,7 @@ Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getti
       name: 'unstyled',
       required: false,
       type: 'boolean',
-      description: `When true will remove all default styles`,
+      description: `When true, removes all default styles.`,
     },
   ]}
 />

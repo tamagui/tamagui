@@ -10,14 +10,6 @@ import type {
 
 export type Text = TamaguiTextElement
 
-const defaultWebStyle = {
-  display: 'inline', // display: inline breaks css transform styles
-  boxSizing: 'border-box',
-  wordWrap: 'break-word',
-  whiteSpace: 'pre-wrap',
-  margin: 0,
-}
-
 const ellipsisStyle =
   process.env.TAMAGUI_TARGET === 'web'
     ? {
@@ -37,18 +29,22 @@ export const Text = createComponent<
   TextNonStyleProps,
   TextStylePropsBase
 >({
+  componentName: 'Text',
   acceptsClassName: true,
   isText: true,
 
-  defaultProps: {
-    fontFamily: 'unset',
-    ...(process.env.TAMAGUI_TARGET === 'web'
-      ? defaultWebStyle
+  defaultProps:
+    process.env.TAMAGUI_TARGET === 'web'
+      ? {
+          display: 'inline', // display: inline breaks css transform styles
+          boxSizing: 'border-box',
+          wordWrap: 'break-word',
+          whiteSpace: 'pre-wrap',
+          margin: 0,
+        }
       : {
-          position: 'static',
           suppressHighlighting: true,
-        }),
-  },
+        },
 
   inlineWhenUnflattened: new Set(['fontFamily']),
 

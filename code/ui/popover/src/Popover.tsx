@@ -13,10 +13,9 @@ import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
+import type { SizeTokens, ViewProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
-  Stack,
   styled,
   Theme,
   useCreateShallowSetState,
@@ -143,7 +142,7 @@ export const PopoverAnchor = React.forwardRef<TamaguiElement, PopoverAnchorProps
  * PopoverTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopoverTriggerProps = ScopedPopoverProps<StackProps>
+export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>
 
 export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerProps>(
   function PopoverTrigger(props, forwardedRef) {
@@ -185,14 +184,7 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
           }),
         },
       }
-    }, [
-      context.anchorTo,
-      anchorTo?.x,
-      anchorTo?.y,
-      anchorTo?.x,
-      anchorTo?.height,
-      anchorTo?.width,
-    ])
+    }, [context.anchorTo, anchorTo?.x, anchorTo?.y, anchorTo?.height, anchorTo?.width])
 
     return context.hasCustomAnchor ? (
       trigger
@@ -212,7 +204,11 @@ type PopoverContentTypeElement = PopoverContentImplElement
 
 export interface PopoverContentTypeProps
   extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
-  /** enable animation for content position changing */
+  /**
+   * Enable smooth animation when the content position changes (e.g., when flipping sides)
+   */
+  animatePosition?: boolean | 'even-when-repositioning'
+  /** @deprecated Use `animatePosition` instead */
   enableAnimationForPositionChange?: boolean
 }
 
@@ -260,7 +256,7 @@ export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>
         context={context}
         zIndex={zIndex}
       >
-        <Stack
+        <View
           passThrough={context.breakpointActive}
           pointerEvents={
             context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
@@ -306,7 +302,7 @@ export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>
               { checkDefaultPrevented: false }
             )}
           />
-        </Stack>
+        </View>
       </PopoverPortal>
     )
   }

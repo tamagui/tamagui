@@ -6,7 +6,7 @@ description: Change themes contextually
 Changing themes in Tamagui is as easy as passing their name to the Theme
 component.
 
-### Usage
+## Usage
 
 Change themes anywhere in your app like so:
 
@@ -21,7 +21,7 @@ export default () => (
 )
 ```
 
-### Defining themes
+## Defining Themes
 
 Themes live one level below tokens. Tokens are your static variables, where
 themes are more dynamic like CSS variables.
@@ -72,10 +72,10 @@ export default createTamagui({
 })
 ```
 
-Passing tokens to themes will reduce CSS, but is not requred.
+Passing tokens to themes will reduce CSS, but is not required.
 
 You can then access theme values for any style value, either through styled() or
-through a Styled Compoent like View or Text:
+through a Styled Component like View or Text:
 
 ```tsx
 const P = styled(Text, {
@@ -97,7 +97,7 @@ export default () => {
     <Theme name="dark">
       <Button>I have the theme dark</Button>
       <Theme name="pink">
-        <Button>I have the theme pink_dark</Button>
+        <Button>I have the theme dark_pink</Button>
       </Theme>
     </Theme>
   )

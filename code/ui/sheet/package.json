@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -24,6 +24,13 @@
     "clean": "tamagui-build clean",
     "lint": "biome check src",
     "lint:fix": "biome check --write src"
+  },
+  "typesVersions": {
+    "*": {
+      "setup-gesture-handler": [
+        "./types/setupGestureHandler.d.ts"
+      ]
+    }
   },
   "exports": {
     "./package.json": "./package.json",
@@ -50,6 +57,18 @@
       "import": "./dist/esm/controller.mjs",
       "require": "./dist/cjs/controller.cjs",
       "default": "./dist/cjs/controller.native.js"
+    },
+    "./setup-gesture-handler": {
+      "react-native": {
+        "types": "./types/setupGestureHandler.d.ts",
+        "module": "./dist/esm/setupGestureHandler.native.js",
+        "import": "./dist/esm/setupGestureHandler.native.js",
+        "require": "./dist/cjs/setupGestureHandler.native.js"
+      },
+      "types": "./types/setupGestureHandler.d.ts",
+      "module": "./dist/esm/setupGestureHandler.mjs",
+      "import": "./dist/esm/setupGestureHandler.mjs",
+      "require": "./dist/cjs/setupGestureHandler.cjs"
     }
   },
   "dependencies": {
@@ -61,6 +80,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/native": "workspace:*",
     "@tamagui/portal": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/scroll-view": "workspace:*",
@@ -73,12 +93,19 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-gesture-handler": ">=2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-gesture-handler": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.81.5"
+    "react-native": "0.81.5",
+    "react-native-gesture-handler": "~2.28.0"
   },
   "publishConfig": {
     "access": "public"

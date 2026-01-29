@@ -6,6 +6,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
 
 describe('SelectRemount', () => {
   beforeAll(async () => {
@@ -16,7 +17,7 @@ describe('SelectRemount', () => {
     // Reload the app to start fresh on home screen
     await device.reloadReactNative()
     // Navigate to SelectRemount test case from home screen
-    await navigateToSelectRemount()
+    await navigateToTestCase('SelectRemount', 'remount-button')
   })
 
   it('should navigate to SelectRemount test case', async () => {
@@ -90,25 +91,22 @@ describe('SelectRemount', () => {
     // Verify we're on the SelectRemount screen
     await expect(element(by.id('remount-button'))).toBeVisible()
 
-    // Tap remount to reset state
-    await element(by.id('remount-button')).tap()
-
-    // Wait for remount - give extra time on Android
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    // Verify remount button is still visible (we're still on the right screen)
-    await waitFor(element(by.id('remount-button')))
-      .toBeVisible()
-      .withTimeout(5000)
-
     // Disable synchronization during sheet animations - spring animations can be slow to settle
     await device.disableSynchronization()
 
     try {
-      // Test first Select - wait for it to be ready after remount
+      // Tap remount to reset state
+      await element(by.id('remount-button')).tap()
+
+      // Wait for remount to complete and first Select to be ready
       await waitFor(element(by.id('select-remount-test-trigger')))
         .toBeVisible()
-        .withTimeout(5000)
+        .withTimeout(8000)
+
+      // Small delay to ensure element is interactive after becoming visible
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      // Test first Select
       await element(by.id('select-remount-test-trigger')).tap()
 
       // Wait for Select sheet/content to animate in
@@ -122,15 +120,14 @@ describe('SelectRemount', () => {
       // Wait for sheet to close - give spring animation time to settle
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
-      // Verify we're still on the SelectRemount screen
-      await waitFor(element(by.id('remount-button')))
-        .toBeVisible()
-        .withTimeout(5000)
-
-      // Test second Select - wait for it to be visible
+      // Test second Select - wait for it to be visible after first sheet closes
       await waitFor(element(by.id('select-remount-test-2-trigger')))
         .toBeVisible()
-        .withTimeout(5000)
+        .withTimeout(8000)
+
+      // Small delay to ensure element is interactive
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
       await element(by.id('select-remount-test-2-trigger')).tap()
       await waitFor(element(by.id('select-remount-test-2-option-apple')))
         .toBeVisible()
@@ -142,40 +139,3 @@ describe('SelectRemount', () => {
   })
 })
 
-async function navigateToSelectRemount() {
-  // Wait for app to load - look for "Kitchen Sink" title which is clearly visible
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(60000) // Longer timeout for Android bundle loading
-
-  // Give the app a moment to fully render and settle
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  // Tap "Test Cases" using testID (works cross-platform)
-  await waitFor(element(by.id('home-test-cases-link')))
-    .toBeVisible()
-    .withTimeout(10000)
-  await element(by.id('home-test-cases-link')).tap()
-
-  // Wait for Test Cases screen to load - wait for unique element "All Test Cases" header
-  await waitFor(element(by.text('All Test Cases')))
-    .toExist()
-    .withTimeout(10000)
-
-  // Small delay for the list to render
-  await new Promise((resolve) => setTimeout(resolve, 500))
-
-  // SelectRemount is now near the top of the list (2nd item after Benchmark)
-  // Wait for it to be visible and tap it using testID
-  await waitFor(element(by.id('test-case-SelectRemount')))
-    .toBeVisible()
-    .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(600, 'down', Number.NaN, Number.NaN)
-
-  await element(by.id('test-case-SelectRemount')).tap()
-
-  // Wait for the test screen to load
-  await waitFor(element(by.id('remount-button')))
-    .toExist()
-    .withTimeout(10000)
-}

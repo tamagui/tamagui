@@ -1,15 +1,15 @@
 {
   "name": "@tamagui/themes",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,
   "scripts": {
-    "generate": "bun run generate:v1 && bun run generate:v3 && bun run generate:v4 && bun run generate:v4-tamagui && bun run generate:v5",
+    "generate": "bun run generate:v5 & bun run generate:v5-subtle",
     "generate:v5": "tamagui generate-themes ./src/v5-themes.ts ./src/generated-v5.ts",
-    "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
+    "generate:v5-subtle": "tamagui generate-themes ./src/v5-themes-subtle.ts ./src/generated-v5-subtle.ts",
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
     "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
     "generate:v4-tamagui": "tamagui generate-themes ./src/v4-tamagui.ts ./src/generated-v4-tamagui.ts",
@@ -23,7 +23,6 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./src/themes-new.ts": "./src/themes-new.ts",
     ".": {
       "react-native": {
         "module": "./dist/esm/index.native.js",
@@ -79,6 +78,17 @@
       "module": "./dist/esm/v5.mjs",
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs"
+    },
+    "./v5-subtle": {
+      "react-native": {
+        "module": "./dist/esm/v5-subtle.native.js",
+        "import": "./dist/esm/v5-subtle.native.js",
+        "require": "./dist/cjs/v5-subtle.native.js"
+      },
+      "types": "./types/v5-subtle.d.ts",
+      "module": "./dist/esm/v5-subtle.mjs",
+      "import": "./dist/esm/v5-subtle.mjs",
+      "require": "./dist/cjs/v5-subtle.cjs"
     }
   },
   "dependencies": {

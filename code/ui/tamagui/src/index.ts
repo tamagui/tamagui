@@ -42,6 +42,7 @@ export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
+export * from '@tamagui/element'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
 
@@ -57,7 +58,7 @@ export * from '@tamagui/input'
 export * from './views/Spinner'
 export * from './views/Text'
 
-// since we overlap with StackProps and potentially others
+// since we overlap with ViewProps and potentially others
 // lets be explicit on what gets exported
 export type {
   TransitionKeys,
@@ -96,7 +97,6 @@ export type {
   SpecificTokens,
   StackNonStyleProps,
   ViewProps,
-  StackProps,
   StaticConfig,
   Styleable,
   TamaguiBaseTheme,
@@ -136,7 +136,6 @@ export {
   GroupContext,
   FontLanguage,
   // components
-  Stack,
   Theme,
   View,
   createComponent,
@@ -159,6 +158,7 @@ export {
   setConfig,
   setupDev,
   // constants
+  isBrowser,
   isChrome,
   isClient,
   isServer,

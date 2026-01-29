@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 import {
-  Stack,
+  View,
   StyleObjectProperty,
   StyleObjectRules,
   StyleObjectValue,
@@ -39,7 +39,7 @@ describe('getSplitStyles', () => {
 
   test(`prop "aria-required" is passed through`, () => {
     const { viewProps } = simplifiedGetSplitStyles(
-      Stack,
+      View,
       {
         'aria-required': true,
       },
@@ -53,7 +53,7 @@ describe('getSplitStyles', () => {
 
   test(`prop "paddingStart" value 10 becomes "10px"`, () => {
     const out = simplifiedGetSplitStyles(
-      Stack,
+      View,
       {
         paddingStart: 10,
       },
@@ -126,7 +126,7 @@ describe('getSplitStyles', () => {
 
   test(`$theme-light and $theme-dark styles generate the correct CSS selectors`, () => {
     // Test light theme styles
-    const lightThemeStyles = simplifiedGetSplitStyles(Stack, {
+    const lightThemeStyles = simplifiedGetSplitStyles(View, {
       '$theme-light': {
         backgroundColor: 'white',
         color: 'black',
@@ -150,7 +150,7 @@ describe('getSplitStyles', () => {
     expect(lightBgRule || lightThemeString.includes('white')).toBeTruthy()
 
     // Test dark theme styles
-    const darkThemeStyles = simplifiedGetSplitStyles(Stack, {
+    const darkThemeStyles = simplifiedGetSplitStyles(View, {
       '$theme-dark': {
         backgroundColor: 'black',
         color: 'white',
@@ -176,7 +176,7 @@ describe('getSplitStyles', () => {
 
   test(`$theme-light and $theme-dark styles are combined in the same component`, () => {
     // Test both light and dark theme styles in the same component
-    const combinedThemeStyles = simplifiedGetSplitStyles(Stack, {
+    const combinedThemeStyles = simplifiedGetSplitStyles(View, {
       '$theme-light': {
         backgroundColor: 'white',
         color: 'black',
@@ -198,7 +198,7 @@ describe('getSplitStyles', () => {
 
   test(`$theme conditional styles work with nested theme names`, () => {
     // Test more specific theme names like dark_blue
-    const nestedThemeStyles = simplifiedGetSplitStyles(Stack, {
+    const nestedThemeStyles = simplifiedGetSplitStyles(View, {
       '$theme-dark_blue': {
         backgroundColor: 'darkblue',
         color: 'lightblue',
@@ -253,8 +253,9 @@ describe('getSplitStyles', () => {
       shadowOpacity: 0.5,
     })
     expect(Object.values(styles.rulesToInsert).length).toEqual(1)
+    // on web, opacity is applied via CSS color-mix instead of parsing to rgba
     expect(Object.values(styles.rulesToInsert)[0][StyleObjectValue]).toEqual(
-      `0px 0px 0px rgba(255,0,0,0.5)`
+      `0px 0px 0px color-mix(in srgb, red 50%, transparent)`
     )
     expect(Object.values(styles.rulesToInsert)[0][StyleObjectProperty]).toEqual(
       `boxShadow`
@@ -412,8 +413,100 @@ describe('getSplitStyles', () => {
   // })
 })
 
+describe('getSplitStyles - asChild default props skipping', () => {
+  test('asChild should not pass through default style props', () => {
+    // create a styled component with default props
+    const StyledTrigger = styled(View, {
+      position: 'static',
+      backgroundColor: 'red',
+    })
+
+    // without asChild, position: static should be in the output
+    const withoutAsChild = simplifiedGetSplitStyles(
+      StyledTrigger,
+      {},
+      { mergeDefaultProps: true }
+    )
+    const withoutAsChildOutput = JSON.stringify(withoutAsChild)
+    expect(withoutAsChildOutput).toContain('static')
+
+    // with asChild, position: static should NOT be in the output (it's a default)
+    const withAsChild = simplifiedGetSplitStyles(
+      StyledTrigger,
+      {
+        asChild: true,
+      },
+      { mergeDefaultProps: true }
+    )
+    const withAsChildOutput = JSON.stringify(withAsChild)
+    expect(withAsChildOutput).not.toContain('static')
+    // red is also a default, so it should not be there either
+    expect(withAsChildOutput).not.toContain('red')
+  })
+
+  test('asChild should pass through non-default style props', () => {
+    const StyledTrigger = styled(View, {
+      position: 'static',
+    })
+
+    // with asChild but a different position value, it should be passed through
+    const withAsChildOverride = simplifiedGetSplitStyles(
+      StyledTrigger,
+      {
+        asChild: true,
+        position: 'relative',
+      },
+      { mergeDefaultProps: true }
+    )
+    const withAsChildOverrideRules = JSON.stringify(withAsChildOverride.rulesToInsert)
+    expect(withAsChildOverrideRules).toContain('relative')
+  })
+
+  test('asChild except-style should skip all styles', () => {
+    const StyledTrigger = styled(View, {
+      position: 'static',
+    })
+
+    const exceptStyle = simplifiedGetSplitStyles(
+      StyledTrigger,
+      {
+        asChild: 'except-style',
+        position: 'relative',
+      },
+      { mergeDefaultProps: true }
+    )
+    const exceptStyleRules = JSON.stringify(exceptStyle.rulesToInsert)
+    // should have no style rules at all
+    expect(exceptStyleRules).not.toContain('position')
+    expect(exceptStyleRules).not.toContain('static')
+    expect(exceptStyleRules).not.toContain('relative')
+  })
+
+  test('asChild should not pass through global config default props (position: static)', () => {
+    // this tests that asChild skips the global config defaults like position: static
+    // which comes from conf.defaultProps.View, not from staticConfig.defaultProps
+    const SimpleTrigger = styled(View, {
+      // no position set here - it comes from global config
+      backgroundColor: 'blue',
+    })
+
+    // with asChild, position: static from global config should NOT be passed through
+    const withAsChild = simplifiedGetSplitStyles(
+      SimpleTrigger,
+      {
+        asChild: true,
+        position: 'static', // this is the merged-in value from global config
+      },
+      { mergeDefaultProps: true }
+    )
+    const withAsChildOutput = JSON.stringify(withAsChild)
+    // position: static should be skipped because it matches the global config default
+    expect(withAsChildOutput).not.toContain('_pos-static')
+  })
+})
+
 describe('getSplitStyles - pseudo prop merging', () => {
-  const StyledButton = styled(Stack, {
+  const StyledButton = styled(View, {
     name: 'StyledButton',
     pressStyle: { backgroundColor: 'green' },
     variants: {

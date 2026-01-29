@@ -1,8 +1,8 @@
-import { H5, ListItem, Separator, Stack, Theme } from 'tamagui'
+import { H5, ListItem, Separator, View, Theme } from 'tamagui'
 import { ChevronRight, Star, Trash } from '@tamagui/lucide-icons'
 
 export const ThemedListItem = () => (
-  <Stack gap="$4">
+  <View gap="$4">
     <H5>Should change:</H5>
 
     <ListItem
@@ -119,5 +119,5 @@ export const ThemedListItem = () => (
         borderRadius="$3"
       />
     </ListItem.Apply>
-  </Stack>
+  </View>
 )

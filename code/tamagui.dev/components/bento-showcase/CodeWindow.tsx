@@ -111,7 +111,6 @@ export function CodeWindow({ code, isLoading }: Props) {
     >
       <Tabs.List
         unstyled
-        disablePassBorderRadius="bottom"
         aria-label="Manage your account"
         backgroundColor="$background"
         borderColor="$borderColor"

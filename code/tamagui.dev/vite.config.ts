@@ -54,6 +54,15 @@ const resolve = (path: string) => {
 }
 
 const include = [
+  // pre-bundle common web deps to avoid mid-navigation optimization in dev mode
+  'react-native',
+  'react-dom',
+  'zod',
+  '@stripe/react-stripe-js',
+  '@stripe/stripe-js',
+  'swr/mutation',
+  'mdx-bundler/client',
+  // existing
   '@ai-sdk/deepseek',
   'secure-json-parse',
   '@supabase/postgres-js',
@@ -215,12 +224,12 @@ export const LocationNotification = BentoComponentStub
     },
     tamaguiPlugin({
       // see tamagui.build.ts
-      optimize: true,
+      optimize: process.env.NODE_ENV === 'production',
     }),
 
     one({
       react: {
-        compiler: true,
+        compiler: process.env.NODE_ENV === 'production',
       },
 
       ssr: {
@@ -287,6 +296,21 @@ export const LocationNotification = BentoComponentStub
         experimental_scriptLoading: 'after-lcp-aggressive',
         redirects: [
           {
+            source: '/llms.txt',
+            destination: '/api/llms',
+            permanent: false,
+          },
+          {
+            source: '/llms-full.txt',
+            destination: '/api/llms-full',
+            permanent: false,
+          },
+          {
+            source: '/docs.txt',
+            destination: '/api/llms-full',
+            permanent: false,
+          },
+          {
             source: '/account/subscriptions',
             destination: '/account',
             permanent: false,
@@ -338,35 +362,4 @@ export const LocationNotification = BentoComponentStub
   ],
 } satisfies UserConfig
 
-// TODO bring back
-
-const purgeCloudflareCDN = async () => {
-  if (!process.env.CF_ZONE_ID) throw new Error(`Missing process.env.CF_ZONE_ID`)
-  if (!process.env.CF_EMAIL) throw new Error(`Missing process.env.CF_EMAIL`)
-  if (!process.env.CF_API_KEY) throw new Error(`Missing process.env.CF_API_KEY`)
-
-  console.info(`Clearing entire CDN cache...`)
-
-  const url = `https://api.cloudflare.com/client/v4/zones/${process.env.CF_ZONE_ID}/purge_cache`
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'X-Auth-Email': process.env.CF_EMAIL,
-        'X-Auth-Key': process.env.CF_API_KEY,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ purge_everything: true }),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to purge cache: ${response.statusText}`)
-    }
-
-    const result = await response.json()
-    console.info(`Cloudflare cache purged successfully:`, result.success)
-  } catch (error) {
-    console.error('Error purging Cloudflare cache:', error)
-  }
-}
+console.warn('done')

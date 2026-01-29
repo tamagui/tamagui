@@ -5,8 +5,10 @@ import { allPortalHosts, portalListeners } from './constants'
 import type { PortalItemProps } from './types'
 
 export const GorhomPortalItem = (props: PortalItemProps) => {
-  if (!props.hostName && !props.passThrough) {
-    console.warn(`No hostName`)
+  if (process.env.NODE_ENV === 'development') {
+    if (!props.hostName && !props.passThrough) {
+      console.warn(`No hostName`)
+    }
   }
 
   const cur = allPortalHosts.get(props.hostName || '')

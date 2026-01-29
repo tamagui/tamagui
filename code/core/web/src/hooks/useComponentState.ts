@@ -12,7 +12,6 @@ import { isObj } from '../helpers/isObj'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
-  StackProps,
   StaticConfig,
   TamaguiComponentState,
   TamaguiComponentStateRef,
@@ -20,9 +19,10 @@ import type {
   TextProps,
   UseAnimationHook,
 } from '../types'
+import type { ViewProps } from '../views/View'
 
 export const useComponentState = (
-  props: StackProps | TextProps | Record<string, any>,
+  props: ViewProps | TextProps | Record<string, any>,
   animationDriver: ComponentContextI['animationDriver'],
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
@@ -53,7 +53,10 @@ export const useComponentState = (
       (props.style && hasAnimatedStyleValue(props.style))
   )
 
-  const supportsCSS = animationDriver?.supportsCSS
+  // for backwards compat, derive from supportsCSS if new props not set
+  const inputStyle =
+    animationDriver?.inputStyle ?? (animationDriver?.supportsCSS ? 'css' : 'inline')
+  const supportsCSS = inputStyle === 'css'
   const curStateRef = stateRef.current
 
   if (!needsHydration && hasAnimationProp) {

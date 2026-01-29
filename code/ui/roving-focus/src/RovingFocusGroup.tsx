@@ -1,7 +1,7 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { Slot, Stack, createStyledContext, useEvent } from '@tamagui/core'
+import { Slot, View, createStyledContext, useEvent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
@@ -12,8 +12,8 @@ const EVENT_OPTIONS = { bubbles: false, cancelable: true }
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type RovingFocusGroupImplElement = React.ElementRef<typeof Stack>
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
+type RovingFocusGroupImplElement = React.ElementRef<typeof View>
+type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusGroupImplProps
   extends Omit<PrimitiveDivProps, 'dir'>,
     RovingFocusGroupOptions {
@@ -53,7 +53,7 @@ const RovingFocusGroupImpl = React.forwardRef<
   const isClickFocusRef = React.useRef(false)
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
 
-  const Comp = (asChild ? Slot : Stack) as typeof Stack
+  const Comp = (asChild ? Slot : View) as typeof View
 
   return (
     <RovingFocusProvider
@@ -131,8 +131,8 @@ const RovingFocusGroupImpl = React.forwardRef<
 
 const ITEM_NAME = 'RovingFocusGroupItem'
 
-type RovingFocusItemElement = React.ElementRef<typeof Stack>
-type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>
+type RovingFocusItemElement = React.ElementRef<typeof View>
+type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusItemProps extends PrimitiveSpanProps {
   tabStopId?: string
   focusable?: boolean
@@ -172,7 +172,7 @@ const RovingFocusGroupItem = React.forwardRef<
       focusable={focusable}
       active={active}
     >
-      <Stack
+      <View
         tabIndex={focusable ? 0 : -1}
         data-orientation={context.orientation}
         {...itemProps}
@@ -235,9 +235,7 @@ RovingFocusGroupItem.displayName = ITEM_NAME
 const GROUP_NAME = 'RovingFocusGroup'
 
 type ItemData = { id: string; focusable: boolean; active: boolean }
-const [Collection, useCollection] = createCollection<HTMLSpanElement, ItemData>(
-  GROUP_NAME
-)
+const [Collection, useCollection] = createCollection<any, ItemData>(GROUP_NAME)
 
 type ScopedProps<P> = P & { __scopeRovingFocusGroup?: string }
 // const [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(

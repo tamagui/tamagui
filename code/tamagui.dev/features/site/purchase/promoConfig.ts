@@ -37,7 +37,7 @@ export const ACTIVE_PROMOS: PromoConfig[] = [
     code: 'TKO2',
     couponId: 'ULFkuEYE',
     label: '50% off',
-    description: 'for launch month',
+    description: 'during Takeout 2 beta',
     percentOff: 50,
     active: true,
     theme: 'green',

@@ -1,6 +1,6 @@
-export { shorthands } from '@tamagui/shorthands/v5';
+export { shorthands } from '@tamagui/shorthands/v4';
 export { createThemes } from '@tamagui/theme-builder';
-export { themes, tokens, createV5Theme } from '@tamagui/themes/v5';
+export { adjustPalette, adjustPalettes, createV5Theme, defaultChildrenThemes, defaultDarkPalette, defaultLightPalette, hslToString, interpolateColor, opacify, parseHSL, tokens, type AdjustFn, type HSL, type PaletteAdjustments, } from '@tamagui/themes/v5';
 export { createSystemFont, fonts } from './v5-fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media';
 export declare const selectionStyles: (theme: any) => {
@@ -10,20 +10,20 @@ export declare const selectionStyles: (theme: any) => {
 export declare const settings: {
     mediaQueryDefaultActive: {
         pointerTouch: boolean;
-        heightXXXS: boolean;
-        heightXXS: boolean;
-        heightXS: boolean;
-        heightSM: boolean;
-        heightMD: boolean;
-        heightLG: boolean;
-        maxXXXS: boolean;
-        maxXXS: boolean;
-        maxXS: boolean;
-        maxSM: boolean;
-        maxMD: boolean;
-        maxLG: boolean;
-        maxXL: boolean;
-        maxXXL: boolean;
+        'height-xxxs': boolean;
+        'height-xxs': boolean;
+        'height-xs': boolean;
+        'height-sm': boolean;
+        'height-md': boolean;
+        'height-lg': boolean;
+        'max-xxl': boolean;
+        'max-xl': boolean;
+        'max-lg': boolean;
+        'max-md': boolean;
+        'max-sm': boolean;
+        'max-xs': boolean;
+        'max-xxs': boolean;
+        'max-xxxs': boolean;
         xxxs: boolean;
         xxs: boolean;
         xs: boolean;
@@ -41,51 +41,51 @@ export declare const settings: {
     onlyAllowShorthands: true;
     styleCompat: "react-native";
 };
-export declare const defaultConfigBase: {
+export declare const defaultConfig: {
     media: {
         readonly pointerTouch: {
             readonly pointer: "coarse";
         };
-        readonly heightXXXS: {
+        readonly 'height-xxxs': {
             readonly minHeight: number;
         };
-        readonly heightXXS: {
+        readonly 'height-xxs': {
             readonly minHeight: number;
         };
-        readonly heightXS: {
+        readonly 'height-xs': {
             readonly minHeight: number;
         };
-        readonly heightSM: {
+        readonly 'height-sm': {
             readonly minHeight: number;
         };
-        readonly heightMD: {
+        readonly 'height-md': {
             readonly minHeight: number;
         };
-        readonly heightLG: {
+        readonly 'height-lg': {
             readonly minHeight: number;
         };
-        readonly maxXXXS: {
+        readonly 'max-xxl': {
             readonly maxWidth: number;
         };
-        readonly maxXXS: {
+        readonly 'max-xl': {
             readonly maxWidth: number;
         };
-        readonly maxXS: {
+        readonly 'max-lg': {
             readonly maxWidth: number;
         };
-        readonly maxSM: {
+        readonly 'max-md': {
             readonly maxWidth: number;
         };
-        readonly maxMD: {
+        readonly 'max-sm': {
             readonly maxWidth: number;
         };
-        readonly maxLG: {
+        readonly 'max-xs': {
             readonly maxWidth: number;
         };
-        readonly maxXL: {
+        readonly 'max-xxs': {
             readonly maxWidth: number;
         };
-        readonly maxXXL: {
+        readonly 'max-xxxs': {
             readonly maxWidth: number;
         };
         readonly xxxs: {
@@ -148,7 +148,7 @@ export declare const defaultConfigBase: {
         t: "top";
         z: "zIndex";
     };
-    themes: Record<"light" | "dark" | "light_yellow" | "light_green" | "light_blue" | "light_red" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_red" | "light_alt1" | "light_alt2" | "dark_alt1" | "dark_alt2" | "light_yellow_alt1" | "light_yellow_alt2" | "light_green_alt1" | "light_green_alt2" | "light_blue_alt1" | "light_blue_alt2" | "light_red_alt1" | "light_red_alt2" | "dark_yellow_alt1" | "dark_yellow_alt2" | "dark_green_alt1" | "dark_green_alt2" | "dark_blue_alt1" | "dark_blue_alt2" | "dark_red_alt1" | "dark_red_alt2" | "light_gray" | "dark_gray" | "light_gray_alt1" | "light_gray_alt2" | "dark_gray_alt1" | "dark_gray_alt2" | "light_surface1" | "light_surface2" | "light_surface3" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "light_blue_surface1" | "light_blue_surface2" | "light_blue_surface3" | "light_gray_surface1" | "light_gray_surface2" | "light_gray_surface3" | "light_green_surface1" | "light_green_surface2" | "light_green_surface3" | "light_red_surface1" | "light_red_surface2" | "light_red_surface3" | "light_yellow_surface1" | "light_yellow_surface2" | "light_yellow_surface3" | "dark_blue_surface1" | "dark_blue_surface2" | "dark_blue_surface3" | "dark_gray_surface1" | "dark_gray_surface2" | "dark_gray_surface3" | "dark_green_surface1" | "dark_green_surface2" | "dark_green_surface3" | "dark_red_surface1" | "dark_red_surface2" | "dark_red_surface3" | "dark_yellow_surface1" | "dark_yellow_surface2" | "dark_yellow_surface3" | "light_accent" | "light_white_accent" | "dark_accent" | "dark_black_accent" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_black_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent" | "light_neutral" | "dark_neutral" | "light_white_alt1" | "dark_white_alt1" | "light_white_alt2" | "dark_white_alt2" | "light_white_surface1" | "light_white_surface2" | "light_white_surface3" | "light_black_alt1" | "dark_black_alt1" | "light_black_alt2" | "dark_black_alt2" | "dark_black_surface1" | "dark_black_surface2" | "dark_black_surface3" | "light_black_surface1" | "light_black_surface2" | "light_black_surface3" | "light_gray_accent" | "light_neutral_accent" | "light_neutral_alt1" | "dark_neutral_alt1" | "light_neutral_alt2" | "dark_neutral_alt2" | "light_neutral_surface1" | "light_neutral_surface2" | "light_neutral_surface3" | "dark_white_surface1" | "dark_white_surface2" | "dark_white_surface3" | "dark_gray_accent" | "dark_neutral_accent" | "dark_neutral_surface1" | "dark_neutral_surface2" | "dark_neutral_surface3", {
+    themes: Record<"light" | "dark" | "light_orange" | "light_yellow" | "light_green" | "light_blue" | "light_purple" | "light_pink" | "light_red" | "dark_orange" | "dark_yellow" | "dark_green" | "dark_blue" | "dark_purple" | "dark_pink" | "dark_red" | "light_gray" | "dark_gray" | "light_surface1" | "light_surface2" | "dark_surface1" | "dark_surface2" | "light_blue_surface1" | "light_gray_surface1" | "light_green_surface1" | "light_orange_surface1" | "light_pink_surface1" | "light_purple_surface1" | "light_red_surface1" | "light_yellow_surface1" | "light_blue_surface2" | "light_gray_surface2" | "light_green_surface2" | "light_orange_surface2" | "light_pink_surface2" | "light_purple_surface2" | "light_red_surface2" | "light_yellow_surface2" | "dark_blue_surface1" | "dark_gray_surface1" | "dark_green_surface1" | "dark_orange_surface1" | "dark_pink_surface1" | "dark_purple_surface1" | "dark_red_surface1" | "dark_yellow_surface1" | "dark_blue_surface2" | "dark_gray_surface2" | "dark_green_surface2" | "dark_orange_surface2" | "dark_pink_surface2" | "dark_purple_surface2" | "dark_red_surface2" | "dark_yellow_surface2" | "light_accent" | "light_white_accent" | "dark_accent" | "dark_black_accent" | "light_black" | "light_white" | "dark_black" | "dark_white" | "light_black_accent" | "light_blue_accent" | "light_red_accent" | "light_yellow_accent" | "light_green_accent" | "dark_white_accent" | "dark_blue_accent" | "dark_red_accent" | "dark_yellow_accent" | "dark_green_accent" | "light_teal" | "light_neutral" | "dark_teal" | "dark_neutral" | "light_white_surface1" | "light_white_surface2" | "dark_black_surface1" | "dark_black_surface2" | "light_black_surface1" | "light_black_surface2" | "light_gray_accent" | "light_orange_accent" | "light_pink_accent" | "light_purple_accent" | "light_teal_accent" | "light_teal_surface1" | "light_teal_surface2" | "light_neutral_accent" | "light_neutral_surface1" | "light_neutral_surface2" | "dark_white_surface1" | "dark_white_surface2" | "dark_gray_accent" | "dark_orange_accent" | "dark_pink_accent" | "dark_purple_accent" | "dark_teal_accent" | "dark_teal_surface1" | "dark_teal_surface2" | "dark_neutral_accent" | "dark_neutral_surface1" | "dark_neutral_surface2", {
         accentBackground: string;
         accentColor: string;
         background0: string;
@@ -173,6 +173,10 @@ export declare const defaultConfigBase: {
         color04: string;
         color06: string;
         color08: string;
+        color: string;
+        colorHover: string;
+        colorPress: string;
+        colorFocus: string;
         background: string;
         backgroundHover: string;
         backgroundPress: string;
@@ -180,14 +184,9 @@ export declare const defaultConfigBase: {
         backgroundActive: string;
         borderColor: string;
         borderColorHover: string;
-        borderColorPress: string;
         borderColorFocus: string;
-        color: string;
-        colorHover: string;
-        colorPress: string;
-        colorFocus: string;
+        borderColorPress: string;
         placeholderColor: string;
-        outlineColor: string;
         colorTransparent: string;
         black1: string;
         black2: string;
@@ -231,6 +230,16 @@ export declare const defaultConfigBase: {
         shadow4: string;
         shadow5: string;
         shadow6: string;
+        shadow7: string;
+        shadow8: string;
+        highlight1: string;
+        highlight2: string;
+        highlight3: string;
+        highlight4: string;
+        highlight5: string;
+        highlight6: string;
+        highlight7: string;
+        highlight8: string;
         shadowColor: string;
         gray1: string;
         gray2: string;
@@ -292,6 +301,54 @@ export declare const defaultConfigBase: {
         green10: string;
         green11: string;
         green12: string;
+        orange1: string;
+        orange2: string;
+        orange3: string;
+        orange4: string;
+        orange5: string;
+        orange6: string;
+        orange7: string;
+        orange8: string;
+        orange9: string;
+        orange10: string;
+        orange11: string;
+        orange12: string;
+        pink1: string;
+        pink2: string;
+        pink3: string;
+        pink4: string;
+        pink5: string;
+        pink6: string;
+        pink7: string;
+        pink8: string;
+        pink9: string;
+        pink10: string;
+        pink11: string;
+        pink12: string;
+        purple1: string;
+        purple2: string;
+        purple3: string;
+        purple4: string;
+        purple5: string;
+        purple6: string;
+        purple7: string;
+        purple8: string;
+        purple9: string;
+        purple10: string;
+        purple11: string;
+        purple12: string;
+        teal1: string;
+        teal2: string;
+        teal3: string;
+        teal4: string;
+        teal5: string;
+        teal6: string;
+        teal7: string;
+        teal8: string;
+        teal9: string;
+        teal10: string;
+        teal11: string;
+        teal12: string;
         neutral1: string;
         neutral2: string;
         neutral3: string;
@@ -316,9 +373,6 @@ export declare const defaultConfigBase: {
         accent10: string;
         accent11: string;
         accent12: string;
-        color0pt5: string;
-        color1pt5: string;
-        color2pt5: string;
         color01: string;
         color0075: string;
         color005: string;
@@ -331,6 +385,7 @@ export declare const defaultConfigBase: {
         background0025: string;
         background002: string;
         background001: string;
+        outlineColor: string;
     }>;
     tokens: {
         readonly radius: {
@@ -449,8 +504,8 @@ export declare const defaultConfigBase: {
         };
     };
     fonts: {
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
-        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
+        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
     };
     selectionStyles: (theme: any) => {
         backgroundColor: any;
@@ -459,20 +514,20 @@ export declare const defaultConfigBase: {
     settings: {
         mediaQueryDefaultActive: {
             pointerTouch: boolean;
-            heightXXXS: boolean;
-            heightXXS: boolean;
-            heightXS: boolean;
-            heightSM: boolean;
-            heightMD: boolean;
-            heightLG: boolean;
-            maxXXXS: boolean;
-            maxXXS: boolean;
-            maxXS: boolean;
-            maxSM: boolean;
-            maxMD: boolean;
-            maxLG: boolean;
-            maxXL: boolean;
-            maxXXL: boolean;
+            'height-xxxs': boolean;
+            'height-xxs': boolean;
+            'height-xs': boolean;
+            'height-sm': boolean;
+            'height-md': boolean;
+            'height-lg': boolean;
+            'max-xxl': boolean;
+            'max-xl': boolean;
+            'max-lg': boolean;
+            'max-md': boolean;
+            'max-sm': boolean;
+            'max-xs': boolean;
+            'max-xxs': boolean;
+            'max-xxxs': boolean;
             xxxs: boolean;
             xxs: boolean;
             xs: boolean;

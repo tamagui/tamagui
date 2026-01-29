@@ -1,5 +1,6 @@
 import { Collapsible } from '@tamagui/collapsible';
-import type { GetProps, Stack, TamaguiElement } from '@tamagui/core';
+import type { GetProps, TamaguiElement } from '@tamagui/core';
+import { View } from '@tamagui/core';
 import { H1 } from '@tamagui/text';
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
@@ -51,7 +52,7 @@ interface AccordionImplMultipleProps extends AccordionImplProps {
     onValueChange?(value: string[]): void;
 }
 type AccordionImplElement = TamaguiElement;
-type PrimitiveDivProps = GetProps<typeof Stack>;
+type PrimitiveDivProps = GetProps<typeof View>;
 interface AccordionImplProps extends PrimitiveDivProps {
     /**
      * Whether or not an accordion is disabled from user interaction.
@@ -104,21 +105,21 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Header: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").TextNonStyleProps, "unstyled" | "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }>> & React.RefAttributes<import("@tamagui/core").TamaguiTextElement>, "ref"> & React.RefAttributes<HTMLElement | import("react-native").Text>>;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    }>> & React.RefAttributes<import("@tamagui/core").TamaguiTextElement>, "ref"> & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").Text>>;
     Content: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentExtraProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/core").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentExtraProps & void, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Item: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    Item: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View>>;
     HeightAnimator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, {}>;
 };
 export { Accordion };

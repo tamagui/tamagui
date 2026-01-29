@@ -37,6 +37,7 @@ const exitCode = await withMetro('ios', async () => {
     projectRoot: options.projectRoot,
     recordLogs: options.recordLogs,
     retries: options.retries,
+    workers: options.workers,
   })
 })
 

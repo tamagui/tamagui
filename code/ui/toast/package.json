@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -56,8 +56,14 @@
     "@tamagui/visually-hidden": "workspace:*"
   },
   "peerDependencies": {
+    "burnt": "^0.12.2",
     "react": ">=19",
     "react-native": "*"
+  },
+  "peerDependenciesMeta": {
+    "burnt": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

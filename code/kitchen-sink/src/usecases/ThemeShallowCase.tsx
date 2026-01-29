@@ -1,4 +1,4 @@
-import { Square, Stack, Text, Theme, YStack } from 'tamagui'
+import { Square, View, Text, Theme, YStack } from 'tamagui'
 
 import { TEST_IDS } from '../constants/test-ids'
 
@@ -21,7 +21,7 @@ export function ThemeShallowCase() {
       <YStack gap="$2">
         <Text fontWeight="bold">Without themeShallow (normal)</Text>
         <Theme name="dark">
-          <Stack id={TEST_IDS.themeShallowNormal} backgroundColor="$background" padding="$4">
+          <View id={TEST_IDS.themeShallowNormal} backgroundColor="$background" padding="$4">
             <Text color="$color">Normal theme - children get dark theme</Text>
             <Theme name="light">
               <Square backgroundColor="$background" size={50}>
@@ -30,7 +30,7 @@ export function ThemeShallowCase() {
                 </Text>
               </Square>
             </Theme>
-          </Stack>
+          </View>
         </Theme>
       </YStack>
 
@@ -38,7 +38,7 @@ export function ThemeShallowCase() {
       <YStack gap="$2">
         <Text fontWeight="bold">With themeShallow</Text>
         <Theme name="dark">
-          <Stack
+          <View
             id={TEST_IDS.themeShallowEnabled}
             themeShallow
             backgroundColor="$background"
@@ -52,25 +52,25 @@ export function ThemeShallowCase() {
                 </Text>
               </Square>
             </Theme>
-          </Stack>
+          </View>
         </Theme>
       </YStack>
 
       {/* Test Case 3: Component with themeShallow for DOM structure comparison */}
       <YStack gap="$2">
         <Text fontWeight="bold">DOM structure comparison container</Text>
-        <Stack id={TEST_IDS.themeShallowContainer}>
+        <View id={TEST_IDS.themeShallowContainer}>
           <Theme name="dark">
-            <Stack
+            <View
               id={TEST_IDS.themeShallowInner}
               themeShallow
               backgroundColor="$background"
               padding="$2"
             >
               <Text color="$color">Inner content</Text>
-            </Stack>
+            </View>
           </Theme>
-        </Stack>
+        </View>
       </YStack>
     </YStack>
   )

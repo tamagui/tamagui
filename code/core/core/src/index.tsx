@@ -2,7 +2,6 @@
 export * from '@tamagui/web'
 
 import { createMedia } from '@tamagui/react-native-media-driver'
-import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import {
   createMeasure,
   createMeasureInWindow,
@@ -23,11 +22,9 @@ import type {
   TextStylePropsBase,
 } from '@tamagui/web'
 import {
-  Stack as WebStack,
   TamaguiProvider as WebTamaguiProvider,
   Text as WebText,
   View as WebView,
-  composeEventHandlers,
   createTamagui as createTamaguiWeb,
   setupHooks,
   useIsomorphicLayoutEffect,
@@ -35,7 +32,6 @@ import {
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
-import { usePressability } from './vendor/Pressability'
 
 // helpful for usage outside of tamagui
 export {
@@ -153,7 +149,8 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         useElementLayout(stateRef, !isDOM ? undefined : (onLayout as any))
-        useResponderEvents(stateRef, !isDOM ? undefined : propsIn)
+        // responder events removed for web - use native pointer/touch events instead
+        // the onResponder* props are stripped above and not passed to DOM
       }
 
       if (isDOM) {
@@ -175,66 +172,6 @@ setupHooks({
     }
   },
 
-  useEvents(viewProps, events, splitStyles, setStateShallow, staticConfig) {
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      if (events) {
-        if (events.onFocus) {
-          viewProps['onFocus'] = events.onFocus
-        }
-        if (events.onBlur) {
-          viewProps['onBlur'] = events.onBlur
-        }
-      }
-
-      if (staticConfig.isInput) {
-        if (events) {
-          const { onPressIn, onPressOut, onPress } = events
-          const inputEvents = {
-            onPressIn,
-            onPressOut: onPressOut || onPress,
-          }
-          if (onPressOut && onPress) {
-            // only supports onPressIn and onPressOut so combine them
-            inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
-          }
-          Object.assign(viewProps, inputEvents)
-        }
-      } else {
-        // use Pressability to get smooth unPress when you press + hold + move out
-        // only ever create once, use .configure() to update later
-        if (events && viewProps.hitSlop) {
-          events.hitSlop = viewProps.hitSlop
-        }
-
-        // note we do events checks more than we should because we need this hook to always run
-        const pressability = usePressability(events)
-
-        if (events) {
-          if (process.env.NODE_ENV === 'development') {
-            if (viewProps['debug']) {
-              console.info(
-                `Checking for press ${!!events.onPress} then applying pressability props: ${Object.keys(
-                  pressability || {}
-                )}`
-              )
-            }
-          }
-
-          if (events.onPress) {
-            for (const key in pressability) {
-              const og = viewProps[key]
-              const val = pressability[key]
-              viewProps[key] =
-                og && !dontComposePressabilityKeys[key]
-                  ? composeEventHandlers(og, val)
-                  : val
-            }
-          }
-        }
-      }
-    }
-  },
-
   // attempt at properly fixing RN input, but <Pressable><TextInput /> just doesnt work on RN
   ...(process.env.TAMAGUI_TARGET === 'native' && {
     useChildren(elementType, children, viewProps) {
@@ -251,14 +188,9 @@ setupHooks({
   }),
 })
 
-const dontComposePressabilityKeys = {
-  onClick: true,
-}
-
 // overwrite web versions:
 // putting at the end ensures it overwrites in dist/cjs/index.js
 export const View = WebView as any as RNTamaguiView
-export const Stack = WebStack as any as RNTamaguiView
 export const Text = WebText as any as RNTamaguiText
 
 // easily test type declaration output and if it gets messy:

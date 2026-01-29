@@ -1,4 +1,12 @@
 export * from './Input'
 export * from './TextArea'
 export { inputSizeVariant, textAreaSizeVariant } from './shared'
-export type { InputProps } from './types'
+export type { InputProps, InputTextContentType } from './types'
+export type {
+  InputNativeProps,
+  InputIOSProps,
+  InputAndroidProps,
+  InputDataDetectorTypes,
+  InputReturnKeyType,
+  InputKeyboardType,
+} from './InputNativeProps'

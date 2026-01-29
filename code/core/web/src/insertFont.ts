@@ -53,26 +53,29 @@ export function parseFont<A extends GenericFont>(definition: A): DeepVariableObj
 }
 
 export function registerFontVariables(parsedFont: any) {
-  const response: string[] = []
+  if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    const response: string[] = []
 
-  for (const fkey in parsedFont) {
-    if (fkey === 'face') continue
-    if (fkey === 'family') {
-      const val = parsedFont[fkey] as Variable
-      registerCSSVariable(val)
-      response.push(variableToCSS(val))
-    } else {
-      for (const fskey in parsedFont[fkey]) {
-        const fval = parsedFont[fkey][fskey]
-        if (typeof fval === 'string') {
-          // no need to add its a theme reference like "$borderColor"
-        } else {
-          const val = parsedFont[fkey][fskey] as Variable
-          registerCSSVariable(val)
-          response.push(variableToCSS(val))
+    for (const fkey in parsedFont) {
+      if (fkey === 'face') continue
+      if (fkey === 'family') {
+        const val = parsedFont[fkey] as Variable
+        registerCSSVariable(val)
+        response.push(variableToCSS(val))
+      } else {
+        for (const fskey in parsedFont[fkey]) {
+          const fval = parsedFont[fkey][fskey]
+          if (typeof fval === 'string') {
+            // no need to add its a theme reference like "$borderColor"
+          } else {
+            const val = parsedFont[fkey][fskey] as Variable
+            registerCSSVariable(val)
+            response.push(variableToCSS(val))
+          }
         }
       }
     }
+    return response
   }
-  return response
+  return []
 }

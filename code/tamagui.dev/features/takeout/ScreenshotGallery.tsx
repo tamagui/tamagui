@@ -1,8 +1,9 @@
 import { Image } from '@tamagui/image'
 import { ThemeTintAlt } from '@tamagui/logo'
-import { H2, SizableText, XStack, YStack, useThemeName } from 'tamagui'
-import { useGalleryStore, TakeoutGalleryDialog } from './TakeoutGallery'
+import { H2, Paragraph, styled, XStack, YStack } from 'tamagui'
+import { SubTitle } from '../../components/SubTitle'
 import { HighlightText } from './HighlightText'
+import { TakeoutGalleryDialog, useGalleryStore } from './TakeoutGallery'
 
 const screenshotImages = [
   {
@@ -21,47 +22,56 @@ const screenshotImages = [
     src: '/takeout/starter-screenshots/android.jpg',
     alt: 'Android',
     label: 'Android',
-    galleryIdx: 26,
+    galleryIdx: 23,
   },
   {
-    src: '/takeout/starter-screenshots/ios-001.jpeg',
+    src: '/takeout/starter-screenshots/ios-001.jpg',
     alt: 'Login',
     label: 'Login',
     galleryIdx: 1,
   },
   {
-    src: '/takeout/starter-screenshots/ios-002.jpeg',
+    src: '/takeout/starter-screenshots/ios-007.jpg',
     alt: 'Feed',
     label: 'Feed',
-    galleryIdx: 2,
-  },
-  {
-    src: '/takeout/starter-screenshots/web-001.jpeg',
-    alt: 'Dashboard',
-    label: 'Dashboard',
-    galleryIdx: 16,
+    galleryIdx: 7,
   },
 ]
 
-const polaroidColorsLight = [
-  '#fff9f0',
-  '#f0f5ff',
-  '#f5fff0',
-  '#fff0f5',
-  '#fffff0',
-  '#f0ffff',
-]
+const ScreenshotCard = styled(YStack, {
+  bg: '$background02',
+  rounded: '$5',
+  p: '$2',
+  pb: '$3',
+  cursor: 'pointer',
+  borderWidth: 0.5,
+  borderColor: 'transparent',
+  overflow: 'hidden',
+  transition: 'quick',
 
-const polaroidColorsDark = [
-  '#3d3530',
-  '#2d3340',
-  '#303d30',
-  '#3d3035',
-  '#3d3d30',
-  '#303d3d',
-]
+  hoverStyle: {
+    scale: 1.05,
+    borderColor: '$color6',
+    z: 10,
+  },
 
-const PolaroidCard = ({
+  pressStyle: {
+    scale: 0.98,
+  },
+})
+
+const ImageWrapper = styled(YStack, {
+  width: 140,
+  height: 140,
+  overflow: 'hidden',
+  rounded: '$3',
+  bg: '$color2',
+
+  $md: { width: 120, height: 120 },
+  $sm: { width: 90, height: 90 },
+})
+
+function ScreenshotItem({
   img,
   index,
   onPress,
@@ -69,49 +79,11 @@ const PolaroidCard = ({
   img: (typeof screenshotImages)[0]
   index: number
   onPress: () => void
-}) => {
-  const isDark = useThemeName().startsWith('dark')
-  const rotations = [-3, 2, -2, 3, -1, 2]
-  const rotation = rotations[index % rotations.length]
-  const frameColor = isDark
-    ? polaroidColorsDark[index % polaroidColorsDark.length]
-    : polaroidColorsLight[index % polaroidColorsLight.length]
-
+}) {
   return (
-    <YStack
-      cursor="pointer"
-      transition="quick"
-      hoverStyle={{
-        scale: 1.08,
-        rotate: '0deg',
-        z: 10,
-      }}
-      pressStyle={{
-        scale: 0.98,
-      }}
-      rotate={`${rotation}deg`}
-      onPress={onPress}
-      aria-label={`View ${img.label} screenshot`}
-    >
-      <YStack
-        p="$1.5"
-        pb="$4"
-        rounded="$2"
-        bg={frameColor as any}
-        boxShadow={
-          isDark
-            ? '0 4px 12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)'
-            : '0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1)'
-        }
-      >
-        <YStack
-          width={120}
-          height={120}
-          $md={{ width: 100, height: 100 }}
-          $sm={{ width: 70, height: 70 }}
-          overflow="hidden"
-          bg="#1a1a1a"
-        >
+    <ThemeTintAlt offset={index}>
+      <ScreenshotCard onPress={onPress} aria-label={`View ${img.label} screenshot`}>
+        <ImageWrapper>
           <Image
             src={img.src}
             alt={img.alt}
@@ -119,20 +91,15 @@ const PolaroidCard = ({
             height="100%"
             objectFit="cover"
           />
-        </YStack>
+        </ImageWrapper>
 
-        <YStack mt="$1.5" items="center">
-          <SizableText
-            size="$1"
-            color={isDark ? '#aaa' : '#444'}
-            fontFamily="$mono"
-            fontWeight="500"
-          >
+        <YStack mt="$2" items="center">
+          <Paragraph fontSize={12} color="$color10" fontFamily="$mono" fontWeight="500">
             {img.label}
-          </SizableText>
+          </Paragraph>
         </YStack>
-      </YStack>
-    </YStack>
+      </ScreenshotCard>
+    </ThemeTintAlt>
   )
 }
 
@@ -146,6 +113,7 @@ export const ScreenshotGallery = () => {
       maxW={1100}
       mx="auto"
       py="$8"
+      px="$4"
       width="100%"
       position="relative"
     >
@@ -162,56 +130,62 @@ export const ScreenshotGallery = () => {
           height={400}
           rounded={999}
           bg="$color8"
-          opacity={0.1}
+          opacity={0.08}
           pointerEvents="none"
-          style={{
-            filter: 'blur(100px)',
-          }}
+          style={{ filter: 'blur(100px)' }}
         />
       </ThemeTintAlt>
 
-      <H2
-        fontSize={32}
-        fontWeight="700"
-        text="center"
-        color="$color12"
-        style={{ lineHeight: '1.2' }}
-        $sm={{ fontSize: 40 }}
-        z={1}
-      >
-        v1{' '}
-        <ThemeTintAlt offset={2}>
-          <HighlightText render="span">screenshots</HighlightText>
-        </ThemeTintAlt>
-      </H2>
+      {/* Secondary glow */}
+      <ThemeTintAlt offset={3}>
+        <YStack
+          position="absolute"
+          b="20%"
+          r="10%"
+          width={400}
+          height={300}
+          rounded={999}
+          bg="$color7"
+          opacity={0.05}
+          pointerEvents="none"
+          style={{ filter: 'blur(80px)' }}
+        />
+      </ThemeTintAlt>
 
-      <YStack
-        position="relative"
-        bg="$background04"
-        rounded="$6"
-        p="$6"
-        $sm={{ p: '$4' }}
-        overflow="hidden"
-        z={1}
-        style={{
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-        }}
-      >
-        <XStack gap="$4" justify="center" flexWrap="wrap" $sm={{ gap: '$2' }}>
-          {screenshotImages.map((img, i) => (
-            <PolaroidCard
-              key={i}
-              img={img}
-              index={i}
-              onPress={() => {
-                store.galleryImageIdx = img.galleryIdx
-                store.galleryOpen = true
-              }}
-            />
-          ))}
-        </XStack>
+      <YStack items="center" gap="$4" z={1}>
+        <H2
+          fontSize={32}
+          fontWeight="700"
+          text="center"
+          color="$color12"
+          style={{ lineHeight: '1.2' }}
+          $sm={{ fontSize: 40 }}
+        >
+          See it in{' '}
+          <ThemeTintAlt offset={2}>
+            <HighlightText render="span">action</HighlightText>
+          </ThemeTintAlt>
+        </H2>
+
+        <SubTitle maxW={500} text="center">
+          Real screenshots from the starter. iOS, Android, and web - all from one
+          codebase.
+        </SubTitle>
       </YStack>
+
+      <XStack gap="$4" justify="center" flexWrap="wrap" z={1} $sm={{ gap: '$3' }}>
+        {screenshotImages.map((img, i) => (
+          <ScreenshotItem
+            key={img.label}
+            img={img}
+            index={i}
+            onPress={() => {
+              store.galleryImageIdx = img.galleryIdx
+              store.galleryOpen = true
+            }}
+          />
+        ))}
+      </XStack>
     </YStack>
   )
 }

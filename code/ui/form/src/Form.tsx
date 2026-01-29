@@ -1,12 +1,10 @@
-import type { StackProps, TamaguiElement } from '@tamagui/core'
-import { Stack, View, styled } from '@tamagui/core'
-import type { Scope } from '@tamagui/create-context'
-import { createContextScope } from '@tamagui/create-context'
+import type { ViewProps } from '@tamagui/core'
+import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 
 const FORM_NAME = 'Form'
 
-export const FormFrame = styled(Stack, {
+export const FormFrame = styled(View, {
   name: FORM_NAME,
   render: 'form',
 })
@@ -15,44 +13,45 @@ export const FormFrame = styled(Stack, {
  * Context
  * -----------------------------------------------------------------------------------------------*/
 
-type ScopedProps<P> = P & { __scopeForm?: Scope }
-const [createFormContext] = createContextScope(FORM_NAME)
-
 type FormContextValue = {
   onSubmit?: () => unknown
 }
 
-export const [FormProvider, useFormContext] =
-  createFormContext<FormContextValue>(FORM_NAME)
+export const FormContext = createStyledContext<FormContextValue>({
+  onSubmit: undefined,
+} as FormContextValue)
+
+export const { useStyledContext: useFormContext, Provider: FormProvider } = FormContext
 
 type FormExtraProps = {
+  scope?: string
   onSubmit?: () => void
 }
-export type FormProps = StackProps & FormExtraProps
+export type FormProps = ViewProps & FormExtraProps
 
 /* -------------------------------------------------------------------------------------------------
  * FormTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-const TRIGGER_NAME = 'FormTrigger'
-
 const FormTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
+  name: 'FormTrigger',
 })
 
-export interface FormTriggerProps extends StackProps {}
+export interface FormTriggerProps extends ViewProps {
+  scope?: string
+}
 
-export const FormTrigger = FormTriggerFrame.styleable<ScopedProps<FormTriggerProps>>(
+export const FormTrigger = FormTriggerFrame.styleable<FormTriggerProps>(
   (props, forwardedRef) => {
-    const { __scopeForm, children, onPress, ...triggerProps } = props
-    const context = useFormContext(TRIGGER_NAME, __scopeForm)
+    const { scope, children, onPress, ...triggerProps } = props
+    const context = useFormContext(scope)
 
     return (
       <FormTriggerFrame
-        render="button"
-        {...(triggerProps as any)}
+        render={<button type="submit" />}
+        {...triggerProps}
         ref={forwardedRef}
-        onPress={composeEventHandlers(onPress as any, context.onSubmit)}
+        onPress={composeEventHandlers(onPress, context.onSubmit)}
       >
         {children}
       </FormTriggerFrame>
@@ -64,16 +63,19 @@ export const FormTrigger = FormTriggerFrame.styleable<ScopedProps<FormTriggerPro
  * Form
  * -----------------------------------------------------------------------------------------------*/
 
-const FormComponent = FormFrame.styleable<ScopedProps<FormExtraProps>>(function Form(
-  { onSubmit, ...props },
+const FormComponent = FormFrame.styleable<FormExtraProps>(function Form(
+  { scope, onSubmit, ...props },
   ref
 ) {
   return (
-    <FormProvider scope={props.__scopeForm} onSubmit={onSubmit}>
+    <FormProvider scope={scope} onSubmit={onSubmit}>
       <FormFrame
         ref={ref}
         {...(props as any)}
-        onSubmit={(e: any) => e.preventDefault()}
+        onSubmit={(e: any) => {
+          e.preventDefault()
+          onSubmit?.()
+        }}
       />
     </FormProvider>
   )

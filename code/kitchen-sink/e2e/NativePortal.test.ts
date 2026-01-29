@@ -4,6 +4,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
 
 describe('NativePortal', () => {
   beforeAll(async () => {
@@ -12,7 +13,7 @@ describe('NativePortal', () => {
 
   beforeEach(async () => {
     await device.reloadReactNative()
-    await navigateToNativePortalTest()
+    await navigateToTestCase('NativePortalTest', 'portal-status')
   })
 
   it('should navigate to NativePortalTest test case', async () => {
@@ -111,38 +112,3 @@ describe('NativePortal', () => {
   })
 })
 
-async function navigateToNativePortalTest() {
-  // wait for app to load
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(60000)
-
-  // give app time to settle
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  // tap "Test Cases"
-  await waitFor(element(by.id('home-test-cases-link')))
-    .toBeVisible()
-    .withTimeout(10000)
-  await element(by.id('home-test-cases-link')).tap()
-
-  // wait for test cases screen
-  await waitFor(element(by.text('All Test Cases')))
-    .toExist()
-    .withTimeout(10000)
-
-  await new Promise((resolve) => setTimeout(resolve, 500))
-
-  // scroll to find NativePortalTest and tap it
-  await waitFor(element(by.id('test-case-NativePortalTest')))
-    .toBeVisible()
-    .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(600, 'down', Number.NaN, Number.NaN)
-
-  await element(by.id('test-case-NativePortalTest')).tap()
-
-  // wait for the test screen to load
-  await waitFor(element(by.id('portal-status')))
-    .toExist()
-    .withTimeout(10000)
-}

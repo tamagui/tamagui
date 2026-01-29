@@ -39,9 +39,6 @@ export default {
 
     tamaguiPlugin({
       optimize: true,
-      components: ['tamagui'],
-      config: './config/tamagui/tamagui.config.ts',
-      outputCSS: './app/tamagui.css',
     }),
   ],
 } satisfies UserConfig

@@ -1,6 +1,6 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { Card, H3, Paragraph, Stack, View, YStack } from 'tamagui'
+import { Card, H3, Paragraph, View, YStack } from 'tamagui'
 import type { Href } from 'one'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
@@ -28,7 +28,7 @@ export function ProductCard({ product, children, ...props }) {
 
   return (
     <Link asChild href={link as Href}>
-      <Stack
+      <View
         position="relative"
         group="card"
         render="a"
@@ -94,7 +94,7 @@ export function ProductCard({ product, children, ...props }) {
             />
           </Card.Footer>
         </Card>
-      </Stack>
+      </View>
     </Link>
   )
 }

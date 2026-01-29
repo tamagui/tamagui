@@ -1,7 +1,8 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { Stack, Text, createStyledContext, createTamagui, styled } from '../core/src'
+import { View, Text, createStyledContext, createTamagui, styled } from '../core/src'
+// Stack was removed in v2 - use View instead (same props)
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -34,7 +35,7 @@ describe('styled context token preservation', () => {
       color: undefined as string | undefined,
     })
 
-    const GridParent = styled(Stack, {
+    const GridParent = styled(View, {
       name: 'GridParent',
       context: GridContext,
       flexDirection: 'row',
@@ -88,7 +89,7 @@ describe('styled context token preservation', () => {
       gap: '$4' as string,
     })
 
-    const Parent = styled(Stack, {
+    const Parent = styled(View, {
       name: 'TestParent',
       context: TestContext,
 
@@ -132,7 +133,7 @@ describe('styled context token preservation', () => {
       myCustomProp: '$4' as string,
     })
 
-    const Parent = styled(Stack, {
+    const Parent = styled(View, {
       name: 'Parent',
       context: ThemeContext,
 

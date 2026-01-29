@@ -8,6 +8,7 @@ type LogoProps = {
   showWords?: boolean
   downscale?: number
   animated?: boolean
+  color?: string
   ref?: any
 } & XStackProps
 
@@ -15,6 +16,7 @@ export const TamaguiLogo = ({
   showWords,
   downscale,
   animated,
+  color,
   ref,
   ...props
 }: LogoProps): JSX.Element => {
@@ -27,7 +29,7 @@ export const TamaguiLogo = ({
       gap="$5"
       {...props}
     >
-      <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} />
+      <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />
       {showWords && (
         <YStack render="span" marginBottom={-4}>
           <LogoWords animated={animated} downscale={downscale ?? 2} />

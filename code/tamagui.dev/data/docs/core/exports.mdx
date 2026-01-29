@@ -11,9 +11,9 @@ Let's take a quick look through some of the useful other exports in
 [Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/main/code/core/constants/src/constants.ts):
 
 - `isWeb` - True if targeting the web. Will be true both for SSR and client.
-- `isWindowDefined` - `typeof window !== 'undefined'`
-- `isServer` - `isWeb && !isWindowDefined`.
-- `isClient` - `isWeb && isWindowDefined`.
+- `isBrowser` - `typeof window !== 'undefined'`
+- `isServer` - `isWeb && !isBrowser`.
+- `isClient` - `isWeb && isBrowser`.
 - `useIsomorphicLayoutEffect` - `isServer ? useEffect : useLayoutEffect`. Helper
   for SSR rendering without warnings.
 - `isChrome` - client-side Chrome
@@ -49,7 +49,7 @@ The same as insertFont, but will update an existing font.
 ### isTamaguiComponent
 
 ```tsx
-type isTamaguiComponent (component: any; name?: string) => boolean
+type isTamaguiComponent = (component: any, name?: string) => boolean
 ```
 
 If no name given, true if a Tamagui component, if name given ensures it's the
@@ -58,7 +58,7 @@ specific named Tamagui component.
 ### isTamaguiElement
 
 ```tsx
-type isTamaguiElement (child: any; name?: string) => boolean
+type isTamaguiElement = (child: any, name?: string) => boolean
 ```
 
 If no name given, true if a Tamagui ReactElement, if name given ensures it's the
@@ -238,13 +238,83 @@ function MyButton(props) {
 }
 ```
 
+### useWebRef
+
+For platform-specific files (`.tsx` and `.native.tsx`), this hook creates a
+properly typed ref for web that also composes with a forwarded ref. When you
+need to access `HTMLElement`-specific properties like `selectionStart` on
+inputs, this avoids needing `any` casts.
+
+```tsx
+import { useWebRef } from 'tamagui' // or '@tamagui/element'
+
+// In your .tsx (web) file:
+function MyInput(props, forwardedRef) {
+  const { ref, composedRef } = useWebRef<HTMLInputElement>(forwardedRef)
+
+  // ref.current is typed as HTMLInputElement
+  // Access web-specific properties safely:
+  const start = ref.current?.selectionStart
+
+  // composedRef forwards to both ref and forwardedRef
+  return <StyledInput ref={composedRef} />
+}
+```
+
+### useNativeRef
+
+For platform-specific files (`.native.tsx`), this hook creates a properly typed
+ref for React Native that also composes with a forwarded ref. Pairs with
+`useWebRef` for cross-platform component development.
+
+```tsx
+import { useNativeRef } from 'tamagui' // or '@tamagui/element'
+
+// In your .native.tsx file:
+function MyComponent(props, forwardedRef) {
+  const { ref, composedRef } = useNativeRef(forwardedRef)
+
+  // ref.current is typed as View
+  return <StyledView ref={composedRef} />
+}
+```
+
+For input components, use `useNativeInputRef` which types to `TextInput`:
+
+```tsx
+import { useNativeInputRef } from 'tamagui' // or '@tamagui/element'
+
+function MyInput(props, forwardedRef) {
+  const { ref, composedRef } = useNativeInputRef(forwardedRef)
+  // ref.current is typed as TextInput
+  return <StyledInput ref={composedRef} />
+}
+```
+
+### getWebElement
+
+A runtime utility that narrows a `TamaguiElement` to an `HTMLElement`. Throws if
+the element is not an HTMLElement. Useful for platform-specific code where you
+know you're on web.
+
+```tsx
+import { getWebElement } from 'tamagui' // or '@tamagui/element'
+
+// Narrows to HTMLElement
+const el = getWebElement(ref.current)
+
+// Or narrow to a specific element type
+const input = getWebElement<HTMLInputElement>(ref.current)
+input.selectionStart // typed correctly
+```
+
 ### useThemeName
 
 Returns the string name of the current theme.
 
 ### useIsTouchDevice
 
-SSR-friendly, only true on if native touchable or web touchable device (client
+SSR-friendly, only true if native touchable or web touchable device (client
 side, not server side).
 
 ### useDidFinishSSR
@@ -281,9 +351,9 @@ import { ClientOnly } from 'tamagui' // or '@tamagui/core'
 Fetches the type of props for a Tamagui component:
 
 ```tsx
-import { Stack, GetProps, styled } from '@tamagui/core'
+import { View, GetProps, styled } from '@tamagui/core'
 
-const X = styled(Stack, {})
+const X = styled(View, {})
 
 type XProps = GetProps<typeof X>
 ```
@@ -293,9 +363,9 @@ type XProps = GetProps<typeof X>
 Fetches the type of a ref for a Tamagui component, or any React component:
 
 ```tsx
-import { Stack, GetRef, styled } from '@tamagui/core'
+import { View, GetRef, styled } from '@tamagui/core'
 
-const X = styled(Stack, {})
+const X = styled(View, {})
 
 const MyComponent = () => {
   const ref = useRef<GetRef<typeof X>>()

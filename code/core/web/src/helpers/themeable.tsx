@@ -2,16 +2,20 @@ import React from 'react'
 
 import type { StaticConfig, ThemeableProps, ThemeProps } from '../types'
 import { Theme } from '../views/Theme'
+import { getDefaultProps } from './getDefaultProps'
 
 export function themeable<ComponentType extends (props: any) => any>(
   Component: ComponentType,
-  staticConfig?: Partial<StaticConfig>,
+  staticConfig: Partial<StaticConfig>,
   optimize = false
 ) {
   const withThemeComponent = React.forwardRef(function WithTheme(
     props: ThemeableProps,
     ref
   ) {
+    const userDefaults = getDefaultProps(staticConfig, props.componentName)
+    const defaultTheme = userDefaults?.theme
+    const defaultResetTheme = userDefaults?.themeReset
     const { theme, componentName, themeReset, ...rest } = props
 
     let overriddenContextProps: Object | undefined
@@ -51,13 +55,13 @@ export function themeable<ComponentType extends (props: any) => any>(
       filteredProps ||= {}
       filteredProps.debug = props.debug
     }
-    if ('theme' in props) {
+    if ('theme' in props || defaultTheme) {
       filteredProps ||= {}
-      filteredProps.name = props.theme
+      filteredProps.name = 'theme' in props ? props.theme : defaultTheme
     }
-    if ('themeReset' in props) {
+    if ('themeReset' in props || defaultResetTheme) {
       filteredProps ||= {}
-      filteredProps.reset = themeReset
+      filteredProps.reset = 'themeReset' in props ? themeReset : defaultResetTheme
     }
 
     if (optimize && !filteredProps) {

@@ -1,8 +1,9 @@
 ---
 title: Group
-description: Render horizontal or vertical groups easily.
+description: Render horizontal or vertical groups easily
 name: group
 component: Group
+package: group
 demoName: Group
 ---
 
@@ -16,10 +17,10 @@ demoName: Group
 
 <Highlights
   features={[
-    'Accepts size prop that works on all styles.',
+    'Accepts size prop for border radius.',
     'Align vertically or horizontally.',
-    'Natural spacing and disabled props.',
-    'Use with or without Item for more control.',
+    'Children control their own sizing.',
+    'Disabled prop passes to children.',
   ]}
 />
 
@@ -33,16 +34,13 @@ npm install @tamagui/group
 
 ## Usage
 
-You can use `Group` by itself with the `orientation` property determining the direction it assumes.
+Use `Group` with `Group.Item` wrapping each child. The `orientation` property determines the layout direction.
 
-By default, Groups will control the border radius of their children automatically - the first and last children will get their start/end radius set to match group radius. If it's a `YGroup`, it will adjust top/bottom radius. `XGroup` adjusts the left/right radius.
-
-You can use Groups with or without `Group.Item`, depending on if you want to spacing and separators to be handled based on direct children, or on each Item rendered.
+Group zeros out the border radius on connecting sides of children - the first child keeps its start radius, the last keeps its end radius, and middle items have no radius on connecting sides. For `YGroup`, this affects top/bottom radius. For `XGroup`, left/right radius.
 
 ```tsx
 import { Button, XGroup } from 'tamagui'
 
-// usage with Item:
 export default () => (
   <XGroup>
     <XGroup.Item>
@@ -58,24 +56,31 @@ export default () => (
 )
 ```
 
-For a simpler use case and backwards compat, you can also use it without `Group.Item`, which will just apply borders and spacing based on direct children. Note that Group will detect if any `Group.Item` is inside it, and automatically switch modes. If no Item, it spaces direct children:
+## Sizing
+
+In v2, children control their own sizing. Apply size props directly to the child components. For responsive sizing, use media queries on the children:
 
 ```tsx
+import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { Button, XGroup } from 'tamagui'
 
-// usage without Item:
 export default () => (
   <XGroup>
-    <Button>First</Button>
-    <Button>Second</Button>
-    <Button>Third</Button>
+    <XGroup.Item>
+      <Button size="$3" $gtSm={{ size: '$5' }} icon={Activity}>
+        First
+      </Button>
+    </XGroup.Item>
+    <XGroup.Item>
+      <Button size="$3" $gtSm={{ size: '$5' }} icon={Airplay}>
+        Second
+      </Button>
+    </XGroup.Item>
   </XGroup>
 )
 ```
 
-## Sizing
-
-The `size` property will use your tokens to grab the appropriate radius for borderRadius values which it will pass to the first and last child as style props for borderRadius.
+The `size` prop on Group itself only affects the border radius of the group container:
 
 ```tsx
 import { Button, XGroup } from 'tamagui'
@@ -95,9 +100,33 @@ export default () => (
 )
 ```
 
+## Separators
+
+Add separators manually between items:
+
+```tsx
+import { ListItem, Separator, YGroup } from 'tamagui'
+
+export default () => (
+  <YGroup>
+    <YGroup.Item>
+      <ListItem title="First" />
+    </YGroup.Item>
+    <Separator />
+    <YGroup.Item>
+      <ListItem title="Second" />
+    </YGroup.Item>
+    <Separator />
+    <YGroup.Item>
+      <ListItem title="Third" />
+    </YGroup.Item>
+  </YGroup>
+)
+```
+
 ## Disabled
 
-The `disabled` property will pass to children
+The `disabled` property will pass to children.
 
 <HeroContainer>
   <GroupDisabledDemo />
@@ -190,25 +219,13 @@ export default () => (
       name: 'size',
       required: false,
       type: 'string | SizeTokens',
-      description: `Set a size, number or one of the size token values.`,
+      description: `Sets the border radius of the Group container using your size tokens.`,
     },
     {
       name: 'disabled',
       required: false,
       type: 'boolean',
-      description: `Pass disabled down to children.`,
-    },
-    {
-      name: 'disablePassBorderRadius',
-      required: false,
-      type: `boolean | 'bottom' | 'top' | 'start' | 'end'`,
-      description: `Disables passing border radius to first/last children.`,
-    },
-    {
-      name: 'forceUseItem',
-      required: false,
-      type: 'boolean',
-      description: `Can be used to force the group to assume it has Item components as children.`,
+      description: `Passes disabled state down to children.`,
     },
     {
       name: 'unstyled',
@@ -229,12 +246,13 @@ Wrap each of `XGroup` or `YGroup`'s children in one of these. It lets Tamagui ap
       name: 'children',
       required: true,
       type: 'ReactNode',
+      description: `The child element to wrap.`,
     },
     {
       name: 'forcePlacement',
       required: false,
       type: '"first" | "center" | "last"',
-      description: `Forces the item to be a starting, center or ending item and gets the respective styles`,
+      description: `Forces the item to be a starting, center, or ending item and applies the respective styles.`,
     },
   ]}
 />

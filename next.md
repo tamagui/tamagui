@@ -1,10 +1,48 @@
+## Fix ref type issues properly
+
+Many components have `as any` casts for refs due to `HTMLElement` subtypes not being assignable to `TamaguiElement`. These were pre-existing issues exposed during the `@tamagui/element` package work. Files with `as any` ref casts that could be fixed properly:
+
+- `code/ui/dialog/src/Dialog.tsx` - triggerRef, contentRef
+- `code/ui/select/src/Select.tsx` - onValueNodeChange, nativeSelectRef
+- `code/ui/select/src/SelectViewport.tsx` - floatingContext refs
+- `code/ui/create-menu/src/createBaseMenu.tsx` - composedRefs
+- `code/ui/menu/src/createNonNativeMenu.tsx` - triggerRef
+- `code/ui/context-menu/src/createNonNativeContextMenu.tsx` - triggerRef
+
+Consider using `useWebRef` from `@tamagui/element` for these components to properly type the refs.
+
+---
+
+- motion has a ton of hacks, but also dont forget:
+    const animateKey = JSON.stringify(style)
+
+
+- remove the transparencies from *palette* and background0: 1 etc from template
+  thats all done in getTheme now + we should add color-mix or /opacity
+
+⚠️ When bento `migrate-tamagui-v2` branch is merged to main, update Dockerfile to remove the branch specifier
+
 - accept type not looking right?
 
 - Sheet scope prop (like Dialog/Popover/Tooltip have)
 
+- linear-gradient on native should fall back to just backgroundImage now
+
+- fullscreen prop deprecated, use `inset: 0, position: 'absolute'` instead
+
+- split input/textinput into SizableTextInput / SizableInput or not?
+  - otherwise its annoying af if you want your OWN size
+
+- /Users/n8/tamagui/code/core/web/src/helpers/defaultAnimationDriver.tsx
+  - should just be native on native, css on web? use platfomr extensions
+
 ---
 
 AFTER v2 RC (nice to haves):
+
+- @tamagui/web can just merge into core, .native paths are perfectly fine since we build separate so no need to serapte.
+
+- reanimated on native - no transitino can still avoidReRenders just set duration: 0 timing, should be faster
 
 - css driver can avoidReRenders
   - reanimated too but requires testing native + worklets
@@ -33,7 +71,7 @@ AFTER v2 RC (nice to haves):
   - react native 78 dialogs not working
     - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
 
-uniswap:
+- could make option automaticlaly handle overshootClamping just by esimtating length of animations and converting to timing?
 
 - enter/exit in media not overriding
 
@@ -59,13 +97,24 @@ uniswap:
 
 # v3 cleanups
 
+- var(--)
+- may want to align flexShrink = 1 by default to align with web default?
+- styleable shouldnt forwardRef, remove it in general
+- remove inlineWhenUnflattened i think
+- basically we need a style() helper because:
+  - then we can pre-compile styles like text defaults, view default, text-nested default
+  - then we can get rid of defaultProps
+  - then get rid of expensive statiConfig.defaultProps merging every render
 - always dynamic optimize no need for special "components"
 - remove `usePropsAndStyle` from icon `themed` somehow / pattern for that
 - remove getToken + shift weirdness in general
 - react compiler on internals / concurrent friendly internals
 - eject from floating-ui if possible (its huge)
+- drop rnw support / setupReactNative.ts
 
 ---
+
+- MCP works w your local tamagui config?
 
 - perf: could avoid even creating style rules, easy / big win:
   - note that in addStyleToInsertRules it checks if shouldInsert

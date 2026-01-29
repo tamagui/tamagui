@@ -12,10 +12,10 @@ compile-time.
 
 #### Visualizer
 
-You can setup a simple visualizer that shows a quick heads-up-display when you
-hold "Option" (or any key you define) after a short period of time, revealing
-the styled components names and even the file numbers and components they are in
-(if you have the compiler plugin installed) as an overlay over app in
+You can set up a simple visualizer that shows a heads-up display when you
+hold "Option" (or any key you define) after a short delay, revealing
+the styled component names and even the file numbers and components they are in
+(if you have the compiler plugin installed) as an overlay over your app in
 development mode.
 
 ```tsx
@@ -30,7 +30,7 @@ setupDev({
 })
 ```
 
-#### Debug pragma
+#### Debug Pragma
 
 To see what's being extracted, why, and every step along the optimization
 pipeline, add `// debug` to the top of any file. Adding `// debug-verbose` will
@@ -42,10 +42,10 @@ If you're developing in your design system package that is built with
 occasionally esbuild will insert a helper above the comment, breaking it, so be
 sure to check the built file in `dist/jsx`.
 
-#### Debug prop
+#### Debug Prop
 
-Adding `debug` to any Tamagui component will output a lot of information on
-what's going on at runtime. Use it like so:
+Adding `debug` to any Tamagui component outputs detailed information about
+what's happening at runtime. Use it like so:
 
 ```tsx
 import { Button } from 'tamagui'
@@ -53,18 +53,18 @@ import { Button } from 'tamagui'
 export default () => <Button debug>Hello world</Button>
 ```
 
-And you'll see props, styles, and a variety of variables relevant to processing
+You'll see props, styles, and a variety of variables relevant to processing
 them.
 
 You can do `<Button debug="break" />` to have it break at the beginning of
 rendering, or `<Button debug="verbose" />` to have it output more detailed debug
 information.
 
-#### DEBUG env
+#### DEBUG Environment Variable
 
-If you set `DEBUG=tamagui` before your build command, you will get the full
+If you set `DEBUG=tamagui` before your build command, you get the full
 debug output of every file built. This is useful for seeing everything that's
-happening across every file, and especially helpful for diagnosing production
+happening across every file and is especially helpful for diagnosing production
 issues.
 
 ### Runtime introspection
@@ -96,7 +96,7 @@ console.log(Circle.staticConfig) // lots of helpful information
 
 ### Classes generated
 
-Tamagui generates a few helpful classes. For components created with `styled()`
+Tamagui generates helpful CSS classes. For components created with `styled()`
 where a `name` is set like this:
 
 ```tsx

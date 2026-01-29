@@ -6,12 +6,9 @@ import {
   type ResolveVariableAs,
 } from '@tamagui/core'
 import { SizableContext } from '@tamagui/sizable-context'
-import React from 'react'
 
+import type { FC } from 'react'
 import type { IconProps } from './IconProps'
-
-// sad fix https://github.com/tamagui/tamagui/issues/1812
-React['keep']
 
 export { SizableContext }
 
@@ -23,7 +20,15 @@ type Options = {
   resolveValues?: ResolveVariableAs
 }
 
-export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
+// check if props contain media queries ($sm, $md, etc) or other complex tamagui features
+function needsFullStyleResolution(props: IconProps): boolean {
+  for (const key in props) {
+    if (key[0] === '$') return true
+  }
+  return false
+}
+
+export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   const opts: Options = {
     defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
     defaultStrokeWidth: 2,
@@ -32,13 +37,15 @@ export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
     ...optsIn,
   }
 
-  const wrapped = (propsIn: IconProps) => {
+  const IconWrapper = (propsIn: IconProps) => {
     const styledContext = SizableContext.useStyledContext()
+    const needsMedia = needsFullStyleResolution(propsIn)
 
     const [props, style, theme] = usePropsAndStyle(propsIn, {
       ...opts,
       forComponent: Text,
       resolveValues: opts.resolveValues,
+      noMedia: !needsMedia,
     })
 
     const defaultColor = opts.defaultThemeColor
@@ -70,6 +77,10 @@ export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
     }
 
     return <Component {...finalProps} />
+  }
+
+  const wrapped = (propsIn: IconProps) => {
+    return <IconWrapper {...propsIn} />
   }
 
   // add staticConfig so styled() works properly with themed icons

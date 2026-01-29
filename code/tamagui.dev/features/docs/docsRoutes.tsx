@@ -1,15 +1,11 @@
-import { Figma } from '@tamagui/lucide-icons'
-import { GithubIcon } from '~/features/icons/GithubIcon'
-
 export const docsRoutes = [
+  // top area - always visible, no accordion
   {
     section: 'core',
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
       { title: 'CLI', route: '/docs/guides/cli' },
-      // { title: 'Thinking in Tamagui', route: '/docs/intro/thinking-in-tamagui' },
-      // { title: 'Comparison', route: '/docs/intro/comparison' },
       {
         title: 'Releases',
         route: 'https://github.com/tamagui/tamagui/releases',
@@ -17,30 +13,67 @@ export const docsRoutes = [
     ],
   },
 
+  // Configuration section
   {
     section: 'core',
-    title: 'Core',
+    title: 'Configuration',
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
-      { title: '@tamagui/config', route: '/docs/core/config-v5' },
+      { title: 'Config v5', route: '/docs/core/config-v5' },
       { title: 'Tokens', route: '/docs/core/tokens' },
-      { title: 'View & Text', route: '/docs/core/stack-and-text' },
-      { title: 'Props', route: '/docs/intro/props' },
-      { title: 'Styles', route: '/docs/intro/styles' },
-      { title: 'styled()', route: '/docs/core/styled' },
-      { title: 'Variants', route: '/docs/core/variants' },
       { title: 'Themes', route: '/docs/intro/themes' },
-      { title: 'Theme', route: '/docs/core/theme' },
-      { title: 'useMedia', route: '/docs/core/use-media' },
-      { title: 'useTheme', route: '/docs/core/use-theme' },
-      { title: 'Server Rendering', route: '/docs/core/server-rendering' },
-      { title: 'FontLanguage', route: '/docs/core/font-language' },
-      { title: 'Extras', route: '/docs/core/exports' },
     ],
   },
 
+  // Styling section
   {
-    section: 'compiler',
+    section: 'core',
+    title: 'Styling',
+    pages: [
+      { title: 'Styling', route: '/docs/intro/styles' },
+      { title: 'styled()', route: '/docs/core/styled' },
+      { title: 'Variants', route: '/docs/core/variants' },
+      { title: 'createStyledContext', route: '/docs/core/create-styled-context' },
+    ],
+  },
+
+  // Components section
+  {
+    section: 'core',
+    title: 'Components',
+    pages: [
+      { title: 'Props', route: '/docs/intro/props' },
+      { title: 'View & Text', route: '/docs/core/view-and-text' },
+      { title: 'Theme', route: '/docs/core/theme' },
+      { title: 'FontLanguage', route: '/docs/core/font-language' },
+    ],
+  },
+
+  // Hooks section
+  {
+    section: 'core',
+    title: 'Hooks',
+    pages: [
+      { title: 'useMedia', route: '/docs/core/use-media' },
+      { title: 'useTheme', route: '/docs/core/use-theme' },
+    ],
+  },
+
+  // Animations section
+  {
+    title: 'Animations',
+    section: 'core',
+    pages: [
+      { title: 'Overview', route: '/docs/core/animations' },
+      { title: 'AnimatePresence', route: '/docs/core/animate-presence' },
+      { title: 'Animation Drivers', route: '/docs/core/animation-drivers' },
+    ],
+  },
+
+  // Compiler section
+  {
+    section: 'core',
+    title: 'Compiler',
     pages: [
       { title: 'Installation', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
@@ -48,18 +81,7 @@ export const docsRoutes = [
     ],
   },
 
-  {
-    title: 'Animations',
-    section: 'core',
-    pages: [
-      { title: 'Introduction', route: '/docs/core/animations' },
-      { title: 'CSS', route: '/docs/core/animations-css' },
-      { title: 'React Native', route: '/docs/core/animations-react-native' },
-      { title: 'Reanimated', route: '/docs/core/animations-reanimated' },
-      { title: 'Motion', route: '/docs/core/animations-motion' },
-    ],
-  },
-
+  // Bundlers section
   {
     title: 'Bundlers',
     section: 'core',
@@ -73,6 +95,7 @@ export const docsRoutes = [
     ],
   },
 
+  // Guides section
   {
     title: 'Guides',
     section: 'core',
@@ -82,32 +105,10 @@ export const docsRoutes = [
         title: 'How to Build a Button',
         route: '/docs/guides/how-to-build-a-button',
       },
-      { title: 'Takeout', route: '/docs/guides/takeout' },
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
-    ],
-  },
-
-  {
-    section: 'core',
-    title: 'Community',
-    pages: [
-      { title: `Community`, route: '/community' },
-      { title: `Blog`, route: '/blog' },
-      {
-        title: 'Figma',
-        icon: Figma,
-        route: 'https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1',
-      },
-      {
-        title: `GitHub`,
-        icon: () => (
-          <GithubIcon width={16} height={16} style={{ margin: '0 0 -2.5px 2px' }} />
-        ),
-        route: 'https://github.com/tamagui/tamagui',
-      },
-      { title: `X`, route: 'https://x.com/tamagui_js' },
-      { title: `Discord`, route: 'https://discord.gg/4qh6tdcVDa' },
+      { title: 'Server Rendering', route: '/docs/core/server-rendering' },
+      { title: 'Extras', route: '/docs/core/exports' },
     ],
   },
 
@@ -121,6 +122,7 @@ export const docsRoutes = [
       { title: 'Stacks', route: '/ui/stacks' },
       { title: 'Headings', route: '/ui/headings' },
       { title: 'Text', route: '/ui/text' },
+      { title: 'Native', route: '/ui/native' },
     ],
   },
 
@@ -155,22 +157,14 @@ export const docsRoutes = [
     section: 'ui',
     label: 'Panels',
     pages: [
+      { title: 'Accordion', route: '/ui/accordion' },
       { title: 'AlertDialog', route: '/ui/alert-dialog' },
       { title: 'Dialog', route: '/ui/dialog' },
       { title: 'Popover', route: '/ui/popover' },
       { title: 'Sheet', route: '/ui/sheet' },
+      { title: 'Tabs', route: '/ui/tabs' },
       { title: 'Tooltip', route: '/ui/tooltip' },
       { title: 'Toast', route: '/ui/toast' },
-    ],
-  },
-
-  {
-    section: 'ui',
-    label: 'Organize',
-    pages: [
-      { title: 'Accordion', route: '/ui/accordion' },
-      { title: 'Group', route: '/ui/group' },
-      { title: 'Tabs', route: '/ui/tabs' },
     ],
   },
 
@@ -186,27 +180,30 @@ export const docsRoutes = [
   },
 
   {
-    label: 'Visual',
     section: 'ui',
+    label: 'Functional',
     pages: [
-      { title: 'LinearGradient', route: '/ui/linear-gradient' },
-      { title: 'Separator', route: '/ui/separator' },
-      { title: 'Square & Circle', route: '/ui/shapes' },
+      { title: 'Anchor', route: '/ui/anchor' },
+      { title: 'FocusScope', route: '/ui/focus-scope' },
+      { title: 'Group', route: '/ui/group' },
+      { title: 'HTML Elements', route: '/ui/html-elements' },
+      { title: 'Portal', route: '/ui/portal' },
+      { title: 'RovingFocusGroup', route: '/ui/roving-focus' },
+      { title: 'ScrollView', route: '/ui/scroll-view' },
+      { title: 'Unspaced', route: '/ui/unspaced' },
+      { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
     ],
   },
 
   {
-    label: 'Etc',
+    label: 'Visual',
     section: 'ui',
     pages: [
+      { title: 'LinearGradient', route: '/ui/linear-gradient' },
       { title: 'Lucide Icons', route: '/ui/lucide-icons' },
-      { title: 'FocusScope', route: '/ui/focus-scope' },
-      { title: 'Anchor', route: '/ui/anchor' },
-      { title: 'HTML Elements', route: '/ui/html-elements' },
-      { title: 'ScrollView', route: '/ui/scroll-view' },
+      { title: 'Separator', route: '/ui/separator' },
       { title: 'Spinner', route: '/ui/spinner' },
-      { title: 'Unspaced', route: '/ui/unspaced' },
-      { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
+      { title: 'Square & Circle', route: '/ui/shapes' },
     ],
   },
 ]

@@ -2,32 +2,28 @@ import { createAnimations } from '@tamagui/animations-motion'
 
 export const animationsMotion = createAnimations({
   '0ms': {
-    type: 'tween',
     duration: 0,
   },
   '30ms': {
-    type: 'tween',
-    duration: 0.03,
+    duration: 30,
   },
   '50ms': {
-    type: 'tween',
-    duration: 0.05,
+    duration: 50,
   },
   '75ms': {
-    type: 'tween',
-    duration: 0.075,
+    duration: 75,
   },
   '100ms': {
-    type: 'tween',
-    duration: 0.1,
+    duration: 100,
   },
   '200ms': {
-    type: 'tween',
-    duration: 0.2,
+    duration: 200,
+  },
+  '250ms': {
+    duration: 250,
   },
   '300ms': {
-    type: 'tween',
-    duration: 0.3,
+    duration: 300,
   },
   superBouncy: {
     type: 'spring',
@@ -95,24 +91,26 @@ export const animationsMotion = createAnimations({
   },
   quicker: {
     type: 'spring',
-    damping: 12,
-    mass: 0.8,
-    stiffness: 320,
+    damping: 20,
+    mass: 0.4,
+    stiffness: 450,
   },
   quickerLessBouncy: {
     type: 'spring',
-    damping: 25,
-    mass: 0.45,
+    damping: 26,
+    mass: 0.35,
     stiffness: 500,
   },
   quickest: {
-    damping: 10,
-    mass: 0.5,
-    stiffness: 520,
+    type: 'spring',
+    damping: 22,
+    mass: 0.3,
+    stiffness: 550,
   },
   quickestLessBouncy: {
-    damping: 14.4,
-    mass: 0.35,
-    stiffness: 562.5,
+    type: 'spring',
+    damping: 28,
+    mass: 0.25,
+    stiffness: 600,
   },
 })

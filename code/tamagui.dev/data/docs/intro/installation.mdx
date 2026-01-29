@@ -4,19 +4,20 @@ description: Get Tamagui set up, step by step
 ---
 
 <IntroParagraph>
-  Setting up Tamagui can be easy, or take a bit of investment. We highly
-  recommend starting with our starter templates and preset config.
+  Tamagui is easy to set up as we've invested into "0-config" installs for all
+  bundlers. That said, it's easy to get lost if you start configuring too many
+  things too early.
 </IntroParagraph>
 
 Use `npm create tamagui@latest` to pick one of our starter templates.
 
 ## Requirements
 
-- **React Native 0.76+** with New Architecture enabled (for native apps)
-- React 18.2+ or React 19+
-- TypeScript 5.0+ (recommended)
+- **React Native 0.82+** with New Architecture enabled (for native apps)
+- **React 19+**
+- **TypeScript 5+** (required)
 
-Tamagui 2 takes advantage of new style features in React Native 0.76+ including
+Tamagui 2 takes advantage of new style features in React Native 0.82+ including
 `boxShadow`, `filter`, and more. On web, there are no version restrictions.
 
 ## Installation
@@ -63,7 +64,7 @@ You can use it like so:
 
 ```tsx fileName="App.tsx"
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 
 // you usually export this from a tamagui.config.ts file
 const config = createTamagui(defaultConfig)
@@ -105,17 +106,16 @@ invested a lot into building it such that it doesn't need any special bundler
 configuration to work on either native or web, you can begin using Tamagui with
 just the above setup.
 
-Later on, you can [set up the compiler](/docs/intro/compiler-install) to gain
-more performance and some nice development helpers.
-
 ---
 
 ## Next Steps
 
 Once you have Tamagui installed, you'll want to explore:
 
-- **[CLI](/docs/guides/cli)** - Command-line tools for building, optimizing, and managing your Tamagui projects
-- **[Bundler Setup](/docs/guides/next-js)** - Integration guides for Next.js, Expo, Vite, Webpack, Metro, and more
+- **[CLI](/docs/guides/cli)** - Command-line tools for building, optimizing, and
+  managing your Tamagui projects
+- **[Bundler Setup](/docs/guides/next-js)** - Integration guides for Next.js,
+  Expo, Vite, Webpack, Metro, and more
 
 Later on, you can [set up the compiler](/docs/intro/compiler-install) to gain
 more performance and some nice development helpers.

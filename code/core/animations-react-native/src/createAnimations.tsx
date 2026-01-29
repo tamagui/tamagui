@@ -1,4 +1,4 @@
-import { normalizeTransition } from '@tamagui/animation-helpers'
+import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
@@ -169,6 +169,8 @@ export function createAnimations<A extends AnimationsConfig>(
 ): AnimationDriver<A> {
   return {
     isReactNative: true,
+    inputStyle: 'value',
+    outputStyle: 'inline',
     animations,
     View: AnimatedView,
     Text: AnimatedText,
@@ -203,12 +205,22 @@ export function createAnimations<A extends AnimationsConfig>(
       const animateOnly = (props.animateOnly as string[]) || []
       const hasTransitionOnly = !!props.animateOnly
 
+      // Track if we just finished entering (transition from entering to not entering)
+      // must be declared before args array that uses justFinishedEntering
+      const isEntering = !!componentState.unmounted
+      const wasEnteringRef = React.useRef(isEntering)
+      const justFinishedEntering = wasEnteringRef.current && !isEntering
+      React.useEffect(() => {
+        wasEnteringRef.current = isEntering
+      })
+
       const args = [
         JSON.stringify(style),
         componentState,
         isExiting,
         !!onDidAnimate,
         isDark,
+        justFinishedEntering,
       ]
 
       // check if there is any style that is not supported by native driver
@@ -225,6 +237,14 @@ export function createAnimations<A extends AnimationsConfig>(
       const res = React.useMemo(() => {
         const runners: Function[] = []
         const completions: Promise<void>[] = []
+
+        // Determine animation state for enter/exit transitions
+        // Use 'enter' if we're entering OR if we just finished entering
+        const animationState: 'enter' | 'exit' | 'default' = isExiting
+          ? 'exit'
+          : isEntering || justFinishedEntering
+            ? 'enter'
+            : 'default'
 
         const nonAnimatedStyle = {}
 
@@ -332,7 +352,12 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (value) {
-            const animationConfig = getAnimationConfig(key, animations, props.transition)
+            const animationConfig = getAnimationConfig(
+              key,
+              animations,
+              props.transition,
+              animationState
+            )
 
             let resolve
             const promise = new Promise<void>((res) => {
@@ -448,7 +473,8 @@ function getInterpolated(current: number, next: number, postfix = 'deg') {
 function getAnimationConfig(
   key: string,
   animations: AnimationsConfig,
-  transition?: TransitionProp
+  transition?: TransitionProp,
+  animationState: 'enter' | 'exit' | 'default' = 'default'
 ): AnimationConfig {
   const normalized = normalizeTransition(transition)
   const shortKey = transformShorthands[key]
@@ -464,11 +490,13 @@ function getAnimationConfig(
     animationType = propAnimation
   } else if (propAnimation && typeof propAnimation === 'object') {
     // Config object: { x: { type: 'quick', delay: 100 } }
-    animationType = propAnimation.type || normalized.default
+    // Use effective animation based on state if no explicit type in config
+    animationType =
+      propAnimation.type || getEffectiveAnimation(normalized, animationState)
     extraConf = propAnimation
-  } else if (normalized.default) {
-    // Fall back to default
-    animationType = normalized.default
+  } else {
+    // Fall back to effective animation based on state (enter/exit/default)
+    animationType = getEffectiveAnimation(normalized, animationState)
   }
 
   // Apply global delay if no property-specific delay

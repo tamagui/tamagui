@@ -1,7 +1,7 @@
 ---
-title: AlertDialog
+title: Alert Dialog
 description: Show an alert prompt in a dialog
-name: alertDialog
+name: alert-dialog
 component: AlertDialog
 package: alert-dialog
 demoName: AlertDialog
@@ -31,7 +31,7 @@ Alert Dialog is already installed in `tamagui`, or you can install it independen
 npm install @tamagui/alert-dialog
 ```
 
-In order to use this component independently of `tamagui`, you'll first need to install the `@tamagui/portal` package: 
+In order to use this component independently of `tamagui`, you'll first need to install the `@tamagui/portal` package:
 
 ```bash
 npm install @tamagui/portal
@@ -165,6 +165,57 @@ Closes the AlertDialog, accepts all YStack props. Recommended to use with your o
       name: 'displayWhenAdapted',
       type: 'boolean',
       description: `By default Cancel elements hide when Adapt is active. If set to true, they will show when adapted.`,
+    },
+  ]}
+/>
+
+### AlertDialog.Action
+
+Confirms the AlertDialog action, accepts all YStack props. Recommended to use with your own component and `asChild`.
+
+<PropsTable
+  data={[
+    {
+      name: 'displayWhenAdapted',
+      type: 'boolean',
+      description: `By default Action elements hide when Adapt is active. If set to true, they will show when adapted.`,
+    },
+  ]}
+/>
+
+### AlertDialog.Destructive
+
+A destructive action button for the AlertDialog. When using `native` mode on iOS, this renders with the native red destructive button style. Accepts all YStack props.
+
+```tsx
+<AlertDialog native>
+  <AlertDialog.Trigger asChild>
+    <Button>Delete Account</Button>
+  </AlertDialog.Trigger>
+  <AlertDialog.Portal>
+    <AlertDialog.Overlay />
+    <AlertDialog.Content>
+      <AlertDialog.Title>Delete Account?</AlertDialog.Title>
+      <AlertDialog.Description>
+        This action cannot be undone.
+      </AlertDialog.Description>
+      <AlertDialog.Cancel asChild>
+        <Button>Cancel</Button>
+      </AlertDialog.Cancel>
+      <AlertDialog.Destructive asChild>
+        <Button theme="red">Delete</Button>
+      </AlertDialog.Destructive>
+    </AlertDialog.Content>
+  </AlertDialog.Portal>
+</AlertDialog>
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'displayWhenAdapted',
+      type: 'boolean',
+      description: `By default Destructive elements hide when Adapt is active. If set to true, they will show when adapted.`,
     },
   ]}
 />

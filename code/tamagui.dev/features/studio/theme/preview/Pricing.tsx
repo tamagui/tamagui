@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, H4, Label, Paragraph, RadioGroup, XStack, YStack } from 'tamagui'
-import { useDemoProps } from '../hooks/useDemoProps'
 import { AccentTheme } from '../../components/AccentTheme'
+import { useDemoProps } from '../hooks/useDemoProps'
 const options = [
   {
     title: 'Personal Plan',
@@ -57,7 +57,6 @@ export const PricingCards = () => {
                 flex={1}
                 htmlFor={htmlId}
                 p="$4"
-                height="unset"
                 display="flex"
                 bg="$color2"
                 hoverStyle={{

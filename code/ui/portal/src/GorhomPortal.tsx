@@ -3,11 +3,7 @@
 // fixing SSR issue
 
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
-  getNativePortalState,
-  NativePortalHost,
-  NativePortalProvider,
-} from '@tamagui/native-portal'
+import { getPortal, NativePortalHost, NativePortalProvider } from '@tamagui/native'
 import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
 import React, {
@@ -108,9 +104,11 @@ const removePortal = (
   portalName: string
 ) => {
   if (!(hostName in state)) {
-    console.info(
-      `Failed to remove portal '${portalName}', '${hostName}' was not registered!`
-    )
+    if (process.env.NODE_ENV === 'development') {
+      console.info(
+        `Failed to remove portal '${portalName}', '${hostName}' was not registered!`
+      )
+    }
     return state
   }
 
@@ -245,7 +243,7 @@ const PortalProviderComponent = ({
     return next as typeof dispatch
   }, [dispatch])
 
-  const portalState = getNativePortalState()
+  const portalState = getPortal().state
 
   // when teleport is enabled, use NativePortalProvider as the wrapper
   // the Gorhom context is still needed for fallback cases
@@ -292,7 +290,7 @@ export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
     return <PortalHostWeb {...props} />
   }
 
-  const portalState = getNativePortalState()
+  const portalState = getPortal().state
 
   // use teleport's PortalHost when available
   if (portalState.type === 'teleport') {

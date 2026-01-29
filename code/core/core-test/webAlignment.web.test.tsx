@@ -5,7 +5,7 @@
  * RN-specific accessibility props are no longer converted - use aria-* directly.
  */
 
-import { Stack, Text, View, createTamagui } from '@tamagui/core'
+import { View, Text, View, createTamagui } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -18,7 +18,7 @@ beforeAll(() => {
 describe('Web Alignment - Accessibility Props', () => {
   describe('Web props should work (aria-*, role)', () => {
     test('aria-label is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-label': 'Test label',
       })
 
@@ -26,7 +26,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-labelledby is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-labelledby': 'label-id',
       })
 
@@ -34,7 +34,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-describedby is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-describedby': 'desc-id',
       })
 
@@ -42,7 +42,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('role is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         role: 'button',
       })
 
@@ -50,7 +50,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-hidden is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-hidden': true,
       })
 
@@ -58,7 +58,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-disabled is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-disabled': true,
       })
 
@@ -66,7 +66,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-checked is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-checked': true,
       })
 
@@ -74,7 +74,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-expanded is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-expanded': true,
       })
 
@@ -82,7 +82,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-selected is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-selected': true,
       })
 
@@ -90,7 +90,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-busy is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-busy': true,
       })
 
@@ -98,7 +98,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-live is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-live': 'polite',
       })
 
@@ -106,7 +106,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-modal is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-modal': true,
       })
 
@@ -114,7 +114,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('aria-valuemin/max/now/text are passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         'aria-valuemin': 0,
         'aria-valuemax': 100,
         'aria-valuenow': 50,
@@ -128,7 +128,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('id is passed through to viewProps', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         id: 'my-element',
       })
 
@@ -138,7 +138,7 @@ describe('Web Alignment - Accessibility Props', () => {
 
   describe('RN accessibility props are NOT converted (v2)', () => {
     test('accessibilityLabel is NOT converted to aria-label', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         accessibilityLabel: 'Test label',
       })
 
@@ -147,7 +147,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('accessibilityRole is NOT converted to role', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         accessibilityRole: 'button',
       })
 
@@ -156,7 +156,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('accessibilityLabelledBy is NOT converted to aria-labelledby', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         accessibilityLabelledBy: 'label-id',
       })
 
@@ -164,7 +164,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('accessibilityHint is NOT converted to aria-describedby', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         accessibilityHint: 'Test hint',
       })
 
@@ -172,7 +172,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('accessibilityElementsHidden is NOT converted to aria-hidden', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         accessibilityElementsHidden: true,
       })
 
@@ -180,7 +180,7 @@ describe('Web Alignment - Accessibility Props', () => {
     })
 
     test('nativeID is NOT converted to id (use id instead)', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         nativeID: 'my-element',
       })
 
@@ -193,7 +193,7 @@ describe('Web Alignment - Accessibility Props', () => {
 describe('Web Alignment - Focus Props', () => {
   describe('Web props should work (tabIndex)', () => {
     test('tabIndex={0} makes element focusable', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         tabIndex: 0,
       })
 
@@ -201,7 +201,7 @@ describe('Web Alignment - Focus Props', () => {
     })
 
     test('tabIndex={-1} makes element not focusable', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         tabIndex: -1,
       })
 
@@ -211,7 +211,7 @@ describe('Web Alignment - Focus Props', () => {
 
   describe('RN focus props are NOT converted (v2)', () => {
     test('focusable is NOT converted (use tabIndex instead)', () => {
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         focusable: true,
       })
 
@@ -229,7 +229,7 @@ describe('Web Alignment - Event Handlers', () => {
   describe('Web event props should work', () => {
     test('onClick is passed through to viewProps', () => {
       const handler = () => {}
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         onClick: handler,
       })
 
@@ -238,7 +238,7 @@ describe('Web Alignment - Event Handlers', () => {
 
     test('onPointerDown is passed through to viewProps', () => {
       const handler = () => {}
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         onPointerDown: handler,
       })
 
@@ -247,7 +247,7 @@ describe('Web Alignment - Event Handlers', () => {
 
     test('onPointerUp is passed through to viewProps', () => {
       const handler = () => {}
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         onPointerUp: handler,
       })
 
@@ -256,7 +256,7 @@ describe('Web Alignment - Event Handlers', () => {
 
     test('onMouseEnter is passed through to viewProps', () => {
       const handler = () => {}
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         onMouseEnter: handler,
       })
 
@@ -265,7 +265,7 @@ describe('Web Alignment - Event Handlers', () => {
 
     test('onMouseLeave is passed through to viewProps', () => {
       const handler = () => {}
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         onMouseLeave: handler,
       })
 
@@ -276,7 +276,7 @@ describe('Web Alignment - Event Handlers', () => {
   describe('RN event props still work (kept for cross-platform compatibility)', () => {
     test('onPress is passed through to viewProps', () => {
       const handler = () => {}
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         onPress: handler,
       })
 
@@ -286,7 +286,7 @@ describe('Web Alignment - Event Handlers', () => {
 
     test('onPressIn is passed through to viewProps', () => {
       const handler = () => {}
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         onPressIn: handler,
       })
 
@@ -295,7 +295,7 @@ describe('Web Alignment - Event Handlers', () => {
 
     test('onPressOut is passed through to viewProps', () => {
       const handler = () => {}
-      const { viewProps } = simplifiedGetSplitStyles(Stack, {
+      const { viewProps } = simplifiedGetSplitStyles(View, {
         onPressOut: handler,
       })
 
@@ -307,7 +307,7 @@ describe('Web Alignment - Event Handlers', () => {
 describe('Web Alignment - Shadow Props', () => {
   describe('Web props should work (boxShadow)', () => {
     test('boxShadow string is applied correctly', () => {
-      const { rulesToInsert } = simplifiedGetSplitStyles(Stack, {
+      const { rulesToInsert } = simplifiedGetSplitStyles(View, {
         boxShadow: '0 2px 10px rgba(0,0,0,0.5)',
       })
 

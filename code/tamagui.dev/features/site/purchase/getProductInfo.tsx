@@ -1,8 +1,18 @@
-export function getTakeoutPriceInfo(pricingDescription: string) {
+export function getTakeoutPriceInfo(pricingDescription: string, isV2Pro = false) {
   let discordSeats = 1
   let licenseSeats = 1
   let githubSeats = 1
 
+  // V2 Pro has unlimited team members - Discord/GitHub seats
+  if (isV2Pro) {
+    return {
+      discordSeats: 2,
+      licenseSeats: 2,
+      githubSeats: 2,
+    }
+  }
+
+  // V1 logic based on price description
   const isFirstTier = pricingDescription.toLowerCase().includes('hobby')
 
   const minMaxMatch = Number(pricingDescription?.match(/.*[0-9]+-([0-9]+) seats.*/i)?.[1])
@@ -28,8 +38,8 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
     hasDiscordPrivateChannels,
     licenseSeats,
     githubSeats,
-    publicDomainUses: 2,
-    androidAppsPublished: 2,
-    iosAppsPublished: 2,
+    publicDomainUses: 1,
+    androidAppsPublished: 1,
+    iosAppsPublished: 1,
   }
 }

@@ -171,7 +171,6 @@ export const HomeThemes = memo(function HomeThemes() {
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" gap="$2">
             <XGroup
-              disablePassBorderRadius
               borderWidth={1}
               borderColor="$borderColor"
               p="$2"
@@ -193,7 +192,6 @@ export const HomeThemes = memo(function HomeThemes() {
             </XGroup>
 
             <XGroup
-              disablePassBorderRadius
               borderWidth={1}
               borderColor="$borderColor"
               p="$2"
@@ -229,7 +227,7 @@ export const HomeThemes = memo(function HomeThemes() {
           <YStack fullscreen pointerEvents="none" z={1000000000} />
           <XStack
             className="scroll-horizontal no-scrollbar"
-            ref={scrollView}
+            ref={scrollView as any}
             onScroll={(e: any) => {
               if (scrollLock === 'animate' || scrollLock === 'shouldAnimate') {
                 return

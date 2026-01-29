@@ -1,14 +1,16 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isClient, isWeb, View, type GetRef } from '@tamagui/core'
+import { isWeb, View, type GetRef } from '@tamagui/core'
 import type { ScrollViewProps } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { useEffect, useRef, useState } from 'react'
 import type { ScrollView as RNScrollView } from 'react-native'
+import { useGestureSheetContext } from './GestureSheetContext'
+import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 import { useSheetContext } from './SheetContext'
 import type { SheetScopedProps } from './types'
 
-// TODO ideally would replicate https://github.com/ammarahm-ed/react-native-actions-sheet/blob/master/src/index.tsx
+// uses react-native-gesture-handler's simultaneousWithExternalGesture for native-quality coordination
 
 /* -------------------------------------------------------------------------------------------------
  * SheetScrollView
@@ -33,6 +35,7 @@ export const SheetScrollView = React.forwardRef<
     ref
   ) => {
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
+    const gestureContext = useGestureSheetContext()
     const { scrollBridge, setHasScrollView } = context
     const [scrollEnabled, setScrollEnabled_] = useControllableState({
       prop: scrollEnabledProp,
@@ -40,16 +43,71 @@ export const SheetScrollView = React.forwardRef<
     })
     const scrollRef = React.useRef<RNScrollView | null>(null)
 
+    // get the pan gesture ref for simultaneousHandlers
+    // react-native-actions-sheet pattern: pass panGestureRef to ScrollView's simultaneousHandlers
+    const panGestureRef = gestureContext?.panGestureRef
+
+    // get RNGH ScrollView from gestureState (passed via setupGestureHandler to avoid double registration)
+    const { ScrollView: RNGHScrollView } = getGestureHandlerState()
+
+    // determine which ScrollView component to use - need RNGH ScrollView for simultaneousHandlers
+    const useRNGHScrollView = isGestureHandlerEnabled() && RNGHScrollView && panGestureRef
+
+    // console.warn('[RNGH-Scroll] Setup:', {
+    //   enabled: isGestureHandlerEnabled(),
+    //   hasRNGHScrollView: !!RNGHScrollView,
+    //   hasPanRef: !!panGestureRef,
+    //   useRNGHScrollView
+    // })
+
     // could make it so it has negative bottom margin and then pads the bottom content
     // to avoid clipping effect when resizing smaller
     // or more ideally could use context to register if it has a scrollview and change behavior
     // const offscreenSize = useSheetOffscreenSize(context)
 
-    const setScrollEnabled = (next: boolean) => {
-      scrollRef.current?.setNativeProps?.({
-        scrollEnabled: next,
+    // actions-sheet pattern: track scroll offset continuously via ref
+    // this is updated on EVERY scroll event so it's always current
+    const currentScrollOffset = useRef(0)
+    // the position to lock at when scroll is disabled
+    const lockedScrollY = useRef(0)
+
+    const setScrollEnabled = (next: boolean, lockTo?: number) => {
+      // console.warn('[RNGH-Scroll] setScrollEnabled', next, 'currentOffset:', currentScrollOffset.current, 'lockTo:', lockTo)
+      if (!next) {
+        // locking scroll - freeze at specified position or CURRENT position
+        // if lockTo is provided (e.g., 0), use that; otherwise freeze at current
+        // key insight: we use currentScrollOffset which is updated every onScroll
+        // this ensures we freeze at the actual position, not a stale value
+        const lockY = lockTo ?? currentScrollOffset.current
+        lockedScrollY.current = lockY
+        scrollBridge.scrollLockY = lockY
+        // console.warn('[RNGH-Scroll] LOCKING at', lockY)
+        // immediately scroll to lock position
+        scrollRef.current?.scrollTo?.({
+          x: 0,
+          y: lockY,
+          animated: false,
+        })
+      } else {
+        // unlocking - save current position before clearing lock
+        lockedScrollY.current = currentScrollOffset.current
+        scrollBridge.scrollLockY = undefined
+        // console.warn('[RNGH-Scroll] UNLOCKING at', lockedScrollY.current)
+      }
+      // NOTE: intentionally NOT using setNativeProps or scrollEnabled state
+      // because that kills the RNGH scroll gesture mid-touch, breaking handoff.
+      // This is the react-native-actions-sheet pattern: both gestures run,
+      // we use scrollLockY + scrollTo to "freeze" scroll position during pan.
+    }
+
+    // force scroll to specific position (called from pan gesture to compensate for async props)
+    const forceScrollTo = (y: number) => {
+      // console.warn('[RNGH-Scroll] forceScrollTo:', y)
+      scrollRef.current?.scrollTo?.({
+        x: 0,
+        y,
+        animated: false,
       })
-      setScrollEnabled_(next)
     }
 
     const state = React.useRef({
@@ -62,8 +120,21 @@ export const SheetScrollView = React.forwardRef<
 
     useEffect(() => {
       setHasScrollView(true)
+
+      // register setScrollEnabled on scrollBridge for RNGH coordination
+      if (isGestureHandlerEnabled()) {
+        scrollBridge.setScrollEnabled = setScrollEnabled
+        scrollBridge.forceScrollTo = forceScrollTo
+      }
+
       return () => {
         setHasScrollView(false)
+        if (scrollBridge.setScrollEnabled) {
+          scrollBridge.setScrollEnabled = undefined
+        }
+        if (scrollBridge.forceScrollTo) {
+          scrollBridge.forceScrollTo = undefined
+        }
       }
     }, [])
 
@@ -93,7 +164,7 @@ export const SheetScrollView = React.forwardRef<
     const scrollable = scrollEnabled
 
     useEffect(() => {
-      if (!isClient) return
+      if (process.env.TAMAGUI_TARGET !== 'web') return
       if (!scrollRef.current) return
 
       const controller = new AbortController()
@@ -141,7 +212,8 @@ export const SheetScrollView = React.forwardRef<
 
     const setIsScrollable = () => {
       if (parentHeight.current && contentHeight.current) {
-        setHasScrollableContent(contentHeight.current > parentHeight.current)
+        const isScrollable = contentHeight.current > parentHeight.current
+        setHasScrollableContent(isScrollable)
       }
     }
 
@@ -149,7 +221,87 @@ export const SheetScrollView = React.forwardRef<
       scrollBridge.hasScrollableContent = hasScrollableContent
     }, [hasScrollableContent])
 
-    return (
+    // Use RNGH ScrollView with simultaneousHandlers for native-quality gesture coordination
+    // Pattern from react-native-actions-sheet: pass panGestureRef to simultaneousHandlers
+    if (useRNGHScrollView && RNGHScrollView && panGestureRef) {
+      const RNGHComponent = RNGHScrollView as any
+      // console.warn('[RNGH-Scroll] RENDER with simultaneousHandlers')
+      return (
+        <RNGHComponent
+          ref={composeRefs(scrollRef as any, ref)}
+          style={{ flex: 1 }}
+          scrollEventThrottle={1}
+          scrollEnabled={scrollable}
+          simultaneousHandlers={[panGestureRef]}
+          onLayout={(e: any) => {
+            parentHeight.current = Math.ceil(e.nativeEvent.layout.height)
+            setIsScrollable()
+          }}
+          onScroll={(e: any) => {
+            const { y } = e.nativeEvent.contentOffset
+
+            // actions-sheet pattern: ALWAYS track current offset
+            // this ensures setScrollEnabled knows the exact current position
+            currentScrollOffset.current = y
+
+            // if scroll is locked, force it back to lock position
+            if (scrollBridge.scrollLockY !== undefined) {
+              if (y !== scrollBridge.scrollLockY) {
+                scrollRef.current?.scrollTo?.({
+                  x: 0,
+                  y: scrollBridge.scrollLockY,
+                  animated: false,
+                })
+              }
+              // still update bridge y to the lock position for consistency
+              scrollBridge.y = scrollBridge.scrollLockY
+              // fire callback but with locked position (for UI updates)
+              const lockedEvent = {
+                ...e,
+                nativeEvent: {
+                  ...e.nativeEvent,
+                  contentOffset: {
+                    ...e.nativeEvent.contentOffset,
+                    y: scrollBridge.scrollLockY,
+                  },
+                },
+              }
+              onScroll?.(lockedEvent)
+              return
+            }
+
+            // console.warn('[RNGH-Scroll] y:', y)
+            scrollBridge.y = y
+            if (y > 0) {
+              scrollBridge.scrollStartY = -1
+            }
+            onScroll?.(e)
+          }}
+          contentContainerStyle={{ minHeight: '100%' }}
+          bounces={false}
+          keyboardShouldPersistTaps="always"
+          keyboardDismissMode="none"
+          {...props}
+        >
+          {/* wrapper to measure actual content height (not min-height expanded) */}
+          <View
+            onLayout={(e) => {
+              const height = Math.floor(e.nativeEvent.layout.height)
+              // only update if different to avoid loops
+              if (height !== contentHeight.current) {
+                contentHeight.current = height
+                setIsScrollable()
+              }
+            }}
+          >
+            {children}
+          </View>
+        </RNGHComponent>
+      )
+    }
+
+    // Fallback: regular Tamagui ScrollView for web or when RNGH not available
+    const content = (
       <ScrollView
         onLayout={(e) => {
           parentHeight.current = Math.ceil(e.nativeEvent.layout.height)
@@ -157,7 +309,7 @@ export const SheetScrollView = React.forwardRef<
         }}
         ref={composeRefs(scrollRef as any, ref)}
         flex={1}
-        scrollEventThrottle={8}
+        scrollEventThrottle={1}
         onResponderRelease={release}
         className="_ovs-contain"
         scrollEnabled={scrollable}
@@ -175,7 +327,6 @@ export const SheetScrollView = React.forwardRef<
             scrollBridge.scrollStartY = -1
           }
 
-          // Process the "onScroll" prop here if any
           onScroll?.(e)
 
           // This assures that we do not skip the "scrollBridge" values processing
@@ -256,21 +407,21 @@ export const SheetScrollView = React.forwardRef<
         }}
         {...props}
       >
-        {/* content height measurer */}
+        {/* wrapper to measure actual content height */}
         <View
-          position="absolute"
-          inset={0}
-          pointerEvents="none"
-          zIndex={-1}
           onLayout={(e) => {
-            // found that contentHeight can be 0.x higher than parent when not scrollable
-            contentHeight.current = Math.floor(e.nativeEvent.layout.height)
-            setIsScrollable()
+            const height = Math.floor(e.nativeEvent.layout.height)
+            if (height !== contentHeight.current) {
+              contentHeight.current = height
+              setIsScrollable()
+            }
           }}
-        />
-
-        {children}
+        >
+          {children}
+        </View>
       </ScrollView>
     )
+
+    return content
   }
 )

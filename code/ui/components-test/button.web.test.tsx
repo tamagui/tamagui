@@ -3,7 +3,7 @@ import 'vitest-axe/extend-expect'
 
 import { Button } from '@tamagui/button'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { Stack, TamaguiProvider, createTamagui } from '@tamagui/core'
+import { View, TamaguiProvider, createTamagui } from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
@@ -13,9 +13,9 @@ const conf = createTamagui(getDefaultTamaguiConfig())
 function ButtonTest(props: React.ComponentProps<typeof Button>) {
   return (
     <TamaguiProvider config={conf} defaultTheme="light">
-      <Stack>
+      <View>
         <Button {...props} />
-      </Stack>
+      </View>
     </TamaguiProvider>
   )
 }

@@ -1,5 +1,7 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { ScrollView as RNScrollView } from 'react-native'
 import { Button, Sheet, Text, YStack } from 'tamagui'
+import { getGestureHandler } from '@tamagui/native'
 
 /**
  * Test case for Sheet + ScrollView drag interaction
@@ -16,8 +18,15 @@ export function SheetScrollableDrag() {
   const [dragEvents, setDragEvents] = useState<string[]>([])
   const [scrollEventCount, setScrollEventCount] = useState(0)
   const [minScrollY, setMinScrollY] = useState(0)
-  const [itemCount, setItemCount] = useState(10)
+  const [maxScrollY, setMaxScrollY] = useState(0)
+  const [itemCount, setItemCount] = useState(20)
   const lastScrollY = useRef(0)
+
+  const rnghEnabled = getGestureHandler().isEnabled
+
+  useEffect(() => {
+    console.log('[SheetScrollableDrag] RNGH enabled:', rnghEnabled)
+  }, [rnghEnabled])
 
   const addEvent = useCallback((event: string) => {
     setDragEvents((prev) => [...prev.slice(-4), event])
@@ -28,6 +37,29 @@ export function SheetScrollableDrag() {
       <Text testID="sheet-scrollable-drag-title" fontSize="$5" fontWeight="bold">
         Sheet + ScrollView Drag Test (v4)
       </Text>
+
+      <Text
+        testID="sheet-scrollable-drag-rngh-status"
+        fontSize="$3"
+        color={rnghEnabled ? '$green10' : '$red10'}
+        fontWeight="bold"
+      >
+        RNGH: {rnghEnabled ? '✓ enabled' : '✗ disabled'}
+      </Text>
+
+      {/* Debug: test if plain RN ScrollView fires onScroll */}
+      <RNScrollView
+        style={{ height: 60, backgroundColor: '#eef' }}
+        onScroll={(e) => {
+          console.log('[TEST RNScrollView] onScroll:', e.nativeEvent.contentOffset.y)
+        }}
+        scrollEventThrottle={16}
+      >
+        <Text style={{ padding: 8 }}>Scroll me to test (outside sheet) - 1</Text>
+        <Text style={{ padding: 8 }}>Scroll me to test (outside sheet) - 2</Text>
+        <Text style={{ padding: 8 }}>Scroll me to test (outside sheet) - 3</Text>
+        <Text style={{ padding: 8 }}>Scroll me to test (outside sheet) - 4</Text>
+      </RNScrollView>
 
       <Text testID="sheet-scrollable-drag-instructions" fontSize="$3" color="$gray11">
         Test smooth handoff: drag down then up to scroll, scroll up then drag down to drag sheet.
@@ -42,6 +74,7 @@ export function SheetScrollableDrag() {
           onPress={() => {
             setScrollEventCount(0)
             setMinScrollY(0)
+            setMaxScrollY(0)
             setDragEvents([])
             setItemCount(10)
             lastScrollY.current = 0
@@ -57,6 +90,7 @@ export function SheetScrollableDrag() {
         <Text testID="sheet-scrollable-drag-scroll-y">ScrollView Y: {scrollY.toFixed(0)}</Text>
         <Text testID="sheet-scrollable-drag-scroll-count">Scroll events: {scrollEventCount}</Text>
         <Text testID="sheet-scrollable-drag-min-scroll-y">Min scroll Y: {minScrollY.toFixed(0)}</Text>
+        <Text testID="sheet-scrollable-drag-max-scroll-y">Max scroll Y: {maxScrollY.toFixed(0)}</Text>
         <Text testID="sheet-scrollable-drag-events">
           Events: {dragEvents.join(', ') || '(none)'}
         </Text>
@@ -105,6 +139,9 @@ export function SheetScrollableDrag() {
               setScrollEventCount((c) => c + 1)
               if (y < minScrollY) {
                 setMinScrollY(y)
+              }
+              if (y > maxScrollY) {
+                setMaxScrollY(y)
               }
               if (Math.abs(y - lastScrollY.current) > 5) {
                 addEvent(`scroll:${y.toFixed(0)}`)

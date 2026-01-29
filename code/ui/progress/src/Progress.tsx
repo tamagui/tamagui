@@ -2,22 +2,24 @@
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
 import type { GetProps } from '@tamagui/core'
-import { getVariableValue, styled } from '@tamagui/core'
+import { getVariableValue, isWeb, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
-import * as React from 'react'
+import { useState } from 'react'
 
 const PROGRESS_NAME = 'Progress'
 
 const [createProgressContext, createProgressScope] = createContextScope(PROGRESS_NAME)
+
 type ProgressContextValue = {
   value: number | null
   max: number
   width: number
 }
+
 const [ProgressProvider, useProgressContext] =
   createProgressContext<ProgressContextValue>(PROGRESS_NAME)
 
@@ -53,9 +55,25 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
 ) {
   const { __scopeProgress, transition, ...indicatorProps } = props
   const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
-  const pct = context.max - (context.value ?? 0)
-  // default somewhat far off
-  const x = -(context.width === 0 ? 300 : context.width) * (pct / context.max)
+
+  const progressRatio = (context.value ?? 0) / context.max
+
+  // indicator is 2x container width so bouncy animations can overshoot
+  // without visually extending past the right edge (parent has overflow:hidden)
+  // translateX percentage is relative to element's own width (200% of container)
+  // so we divide by 2 to get container-relative positioning:
+  // at 0%: x = -100% of element = -200% of container (fully hidden left)
+  // at 100%: x = -50% of element = -100% of container (right half visible)
+  let x: string | number
+  if (isWeb) {
+    // web: use percentage-based translateX for SSR-friendly rendering
+    // formula: -100% + (progressRatio * 50%) since translateX % is relative to element width
+    x = `${-100 + progressRatio * 50}%`
+  } else {
+    // native: use pixel-based transform (RN doesn't support percentage transforms reliably)
+    const baseWidth = context.width || 0
+    x = Math.ceil(-baseWidth * (2 - progressRatio))
+  }
 
   return (
     <ProgressIndicatorFrame
@@ -63,15 +81,15 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
       data-value={context.value ?? undefined}
       data-max={context.max}
       x={x}
-      width={context.width}
+      width="200%"
       {...(!props.unstyled && {
         animateOnly: ['transform'],
-        opacity: context.width === 0 ? 0 : 1,
+        // on native, hide until we have width measurement
+        ...(!isWeb && context.width === 0 && { opacity: 0 }),
       })}
       {...indicatorProps}
       ref={forwardedRef}
-      // avoid animation on first render so the progress doesn't bounce to initial location
-      transition={!context.width ? null : transition}
+      transition={!isWeb && !context.width ? null : transition}
     />
   )
 })
@@ -161,9 +179,11 @@ const Progress = withStaticProperties(
     } = props
 
     const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
-    const value = isValidValueNumber(valueProp, max) ? Math.round(valueProp) : null // Math.round() so the component doesn't crash with decimal values such as 16.666
+    const value = isValidValueNumber(valueProp, max) ? Math.round(valueProp) : null
     const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
-    const [width, setWidth] = React.useState(0)
+
+    // only needed for native where we can't use percentage-based transforms
+    const [width, setWidth] = useState(0)
 
     return (
       <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
@@ -181,14 +201,15 @@ const Progress = withStaticProperties(
             size,
           })}
           {...progressProps}
-          onLayout={(e) => {
-            // prevent unnecessary re-renders
-            const newWidth = Math.round(e.nativeEvent.layout.width)
-            if (newWidth !== width) {
-              setWidth(newWidth)
-            }
-            progressProps.onLayout?.(e)
-          }}
+          {...(!isWeb && {
+            onLayout: (e) => {
+              const newWidth = Math.round(e.nativeEvent.layout.width)
+              if (newWidth !== width) {
+                setWidth(newWidth)
+              }
+              progressProps.onLayout?.(e)
+            },
+          })}
           ref={forwardedRef}
         />
       </ProgressProvider>

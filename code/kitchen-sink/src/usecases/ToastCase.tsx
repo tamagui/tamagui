@@ -19,7 +19,7 @@ export function ToastCase() {
         {[...Array(count)].map((_, index) => {
           const identifier = index + 1
           return (
-            <Toast key={index} open data-testid={`toast-${identifier}`} tabIndex={0}>
+            <Toast key={index} open data-testid={`toast-${identifier}`}>
               <Toast.Title>Toast {identifier} title</Toast.Title>
               <Toast.Description>Toast {identifier} description</Toast.Description>
 

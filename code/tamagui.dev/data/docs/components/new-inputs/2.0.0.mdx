@@ -1,7 +1,9 @@
 ---
 title: Input & TextArea
+description: Single-line and multi-line text inputs with web-first API
 name: inputs
 component: Input
+package: input
 demoName: Inputs
 ---
 
@@ -25,8 +27,6 @@ npm install @tamagui/input
 
 ## Usage
 
-### Input
-
 A single-line text input:
 
 ```tsx
@@ -40,9 +40,7 @@ export default () => (
 )
 ```
 
-### TextArea
-
-For multi-line text input:
+For multi-line text input, use `TextArea`:
 
 ```tsx
 import { TextArea } from 'tamagui'
@@ -195,9 +193,7 @@ Input accepts all Tamagui style props and supports the `size` prop for consisten
 
 Some props only apply on native platforms and have no web equivalent:
 
-### keyboardAppearance (iOS)
-
-Controls the keyboard color scheme on iOS:
+**keyboardAppearance (iOS)**: Controls the keyboard color scheme on iOS:
 
 ```tsx
 <Input keyboardAppearance="dark" />
@@ -205,9 +201,7 @@ Controls the keyboard color scheme on iOS:
 <Input keyboardAppearance="default" />
 ```
 
-### textContentType (iOS)
-
-Provides hints for iOS autofill:
+**textContentType (iOS)**: Provides hints for iOS autofill:
 
 ```tsx
 <Input textContentType="emailAddress" />

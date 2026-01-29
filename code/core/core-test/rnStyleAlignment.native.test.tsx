@@ -1,4 +1,4 @@
-import { Stack, createTamagui, getSplitStyles } from '@tamagui/core'
+import { View, createTamagui, getSplitStyles } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -7,7 +7,7 @@ beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig('native'))
 })
 
-function getSplitStylesFor(props: Record<string, any>, Component = Stack) {
+function getSplitStylesFor(props: Record<string, any>, Component = View) {
   return getSplitStyles(
     props,
     Component.staticConfig,

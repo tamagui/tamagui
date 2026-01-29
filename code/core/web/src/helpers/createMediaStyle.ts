@@ -10,6 +10,12 @@ export const MEDIA_SEP = '_'
 let prefixes: Record<string, string> | null = null
 let selectors: Record<string, string> | null = null
 
+// call this when media config changes to reset cached prefixes/selectors
+export function resetMediaStyleCache() {
+  prefixes = null
+  selectors = null
+}
+
 const groupPseudoToPseudoCSSMap = {
   press: 'active',
   focusVisible: 'focus-visible',

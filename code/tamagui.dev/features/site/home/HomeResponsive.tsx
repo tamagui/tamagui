@@ -184,7 +184,7 @@ export const HomeResponsive = memo(() => {
   const scale = 0.7 - smIndex * 0.05
 
   return (
-    <YStack ref={ref} y={0} mt={-80} position="relative">
+    <YStack ref={ref as any} y={0} mt={-80} position="relative">
       <ContainerLarge position="relative">
         <ResponsiveHeader />
         <Spacer size="$6" $sm={{ size: '$0' }} />
@@ -208,7 +208,7 @@ export const HomeResponsive = memo(() => {
             pointerEvents={isDragging ? 'none' : 'auto'}
             width={width}
             flex={1}
-            ref={safariRef}
+            ref={safariRef as any}
             onPress={() => {
               if (isTouchable) {
                 setHasInteracted(true)

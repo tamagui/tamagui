@@ -2,12 +2,12 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type {
   GetProps,
-  StackProps,
+  ViewProps,
   TamaguiComponent,
   TamaguiComponentExpectingVariants,
   TamaguiElement,
 } from '@tamagui/core'
-import { Stack } from '@tamagui/core'
+import { View } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -15,7 +15,7 @@ import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
 import { forwardRef, memo, useMemo, useEffect, useRef } from 'react'
-import type { View } from 'react-native'
+import type { View as RNView } from 'react-native'
 import { Platform } from 'react-native'
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { getNativeSheet } from './nativeSheet'
@@ -30,7 +30,7 @@ type SharedSheetProps = {
   open?: boolean
 }
 
-type BaseProps = StackProps & SharedSheetProps
+type BaseProps = ViewProps & SharedSheetProps
 
 type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
 
@@ -47,6 +47,19 @@ export function createSheet<
       const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
       const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef)
 
+      // track if sheet was being dragged to prevent onPress toggle after drag
+      const wasDraggingRef = useRef(false)
+
+      // subscribe to parent dragging changes to track if we dragged during this press
+      useEffect(() => {
+        if (!context.scrollBridge) return
+        return context.scrollBridge.onParentDragging((isDragging: boolean) => {
+          if (isDragging) {
+            wasDraggingRef.current = true
+          }
+        })
+      }, [context.scrollBridge])
+
       if (context.onlyShowFrame) {
         return null
       }
@@ -55,7 +68,16 @@ export function createSheet<
         // @ts-ignore
         <Handle
           ref={composedRef}
+          onPressIn={() => {
+            // reset at start of new press
+            wasDraggingRef.current = false
+          }}
           onPress={() => {
+            // skip toggle if this was a drag gesture
+            if (wasDraggingRef.current) {
+              wasDraggingRef.current = false
+              return
+            }
             // don't toggle to the bottom snap position when dismissOnSnapToBottom set
             const max =
               context.snapPoints.length + (context.dismissOnSnapToBottom ? -1 : 0)
@@ -178,7 +200,7 @@ export function createSheet<
             </StackZIndexContext>
 
             {adjustPaddingForOffscreenContent && (
-              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+              <View data-sheet-offscreen-pad height={offscreenSize} width="100%" />
             )}
           </Frame>
         )
@@ -228,7 +250,7 @@ export function createSheet<
     >
   >
 
-  const Sheet = forwardRef<View, SheetProps>(function Sheet(props, ref) {
+  const Sheet = forwardRef<RNView, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 
@@ -262,7 +284,7 @@ export function createSheet<
   }
 
   const Controlled = withStaticProperties(Sheet, components) as any as FunctionComponent<
-    Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<View>
+    Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<RNView>
   > &
     typeof components
 

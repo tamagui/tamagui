@@ -33,7 +33,7 @@ export function ContextMenuDemo() {
           enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
           exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
           elevation="$3"
-          transition="200ms"
+          transition="100ms"
         >
           <ContextMenu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
 
@@ -105,7 +105,7 @@ export function ContextMenuDemo() {
               <ContextMenu.SubContent
                 enterStyle={{ scale: 0.9, opacity: 0, x: -5 }}
                 exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
-                transition="200ms"
+                transition="100ms"
                 transformOrigin="left top"
                 elevation="$3"
                 minW={160}

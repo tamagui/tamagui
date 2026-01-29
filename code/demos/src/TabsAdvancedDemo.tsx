@@ -1,5 +1,5 @@
 import React from 'react'
-import type { StackProps, TabLayout, TabsTabProps } from 'tamagui'
+import type { ViewProps, TabLayout, TabsTabProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -122,7 +122,6 @@ const TabsAdvancedBackground = () => {
       </AnimatePresence>
       <YStack position="relative">
         <Tabs.List
-          disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
           gap="$2"
@@ -249,7 +248,6 @@ const TabsAdvancedUnderline = () => {
           )}
         </AnimatePresence>
         <Tabs.List
-          disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
           borderBottomLeftRadius={0}
@@ -306,7 +304,7 @@ const TabsAdvancedUnderline = () => {
   )
 }
 
-const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackProps) => {
+const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & ViewProps) => {
   return (
     <YStack
       position="absolute"

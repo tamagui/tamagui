@@ -1,8 +1,8 @@
-import { Stack, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 import { createSwitch } from '@tamagui/switch'
 import { Label, XStack, YStack } from 'tamagui'
 
-const Frame = styled(Stack, {
+const Frame = styled(View, {
   width: 40,
   height: 20,
   rounded: 20,
@@ -21,7 +21,7 @@ const Frame = styled(Stack, {
   },
 })
 
-const Thumb = styled(Stack, {
+const Thumb = styled(View, {
   width: 20,
   height: 20,
   bg: 'black',

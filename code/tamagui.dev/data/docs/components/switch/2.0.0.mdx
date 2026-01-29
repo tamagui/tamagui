@@ -1,6 +1,6 @@
 ---
 title: Switch
-description: A toggle between two states.
+description: A toggle between two states
 name: switch
 component: Switch
 package: switch
@@ -244,12 +244,13 @@ function MySwitch({ defaultChecked, onCheckedChange, ...props }) {
     {
       name: 'onCheckedChange',
       type: '(checked: boolean) => void',
+      description: `Callback called when checked state changes.`,
     },
     {
       name: 'unstyled',
       type: 'boolean',
       default: 'false',
-      description: `When true, remove all default tamagui styling.`,
+      description: `When true, removes all default Tamagui styling.`,
     },
     {
       name: 'native',
@@ -285,7 +286,7 @@ function MySwitch({ defaultChecked, onCheckedChange, ...props }) {
       name: 'unstyled',
       type: 'boolean',
       default: 'false',
-      description: `When true, remove all default tamagui styling.`,
+      description: `When true, removes all default Tamagui styling.`,
     },
     {
       name: 'activeStyle',

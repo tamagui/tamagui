@@ -10,72 +10,260 @@ import {
   Button,
   Circle,
   Square,
+  Tabs,
   Text,
-  TooltipSimple,
   View,
+  XStack,
   YStack,
+  withStaticProperties,
 } from 'tamagui'
-// import { animationsMotion } from '../../packages/tamagui-dev-config/src/animations.motion'
+import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
 
 export default function Sandbox() {
   return (
     <Configuration>
-      <YStack p="$10" items="center" justify="center">
-        <SandboxContent />
-        {/* <LogoWords animated /> */}
+      <YStack p="$10" gap="$8" items="center" justify="center">
+        <RovingTabsDemo />
       </YStack>
     </Configuration>
   )
 }
 
-function SandboxContent() {
-  const config = useConfiguration()
-  console.warn('render', config)
-
-  // useEffect(() => {
-  //   console.info('freeze main thread interval')
-  //   const x = setInterval(() => {
-  //     const startTime = Date.now()
-  //     while (Date.now() < startTime + 20) {
-  //       // Do nothing, just wait
-  //     }
-  //   }, 100)
-  //   return () => {
-  //     clearInterval(x)
-  //   }
-  // }, [])
+// roving tabs demo
+function RovingTabsDemo() {
+  const [tab, setTab] = useState('tab1')
 
   return (
-    <View>
-      <YStack
-        transition="lazy"
-        width={500}
-        height={500}
-        bg="red"
-        hoverStyle={{
-          y: 100,
-        }}
-      >
-        <TooltipSimple label="test tooltip">
-          <Button>Close</Button>
-        </TooltipSimple>
+    <YStack gap="$6" p="$4" bg="$background" rounded="$4" width={400}>
+      <Text fontSize="$6" fontWeight="600">
+        Underline Style
+      </Text>
+      <RovingTabs value={tab} onValueChange={setTab} indicatorStyle="underline">
+        {({ handleOnInteraction }) => (
+          <>
+            <RovingTabs.Tab value="tab1" onInteraction={handleOnInteraction}>
+              <Text color={tab === 'tab1' ? '$color12' : '$color10'} py="$2" px="$3">
+                Home
+              </Text>
+            </RovingTabs.Tab>
+            <RovingTabs.Tab value="tab2" onInteraction={handleOnInteraction}>
+              <Text color={tab === 'tab2' ? '$color12' : '$color10'} py="$2" px="$3">
+                Settings
+              </Text>
+            </RovingTabs.Tab>
+            <RovingTabs.Tab value="tab3" onInteraction={handleOnInteraction}>
+              <Text color={tab === 'tab3' ? '$color12' : '$color10'} py="$2" px="$3">
+                Profile
+              </Text>
+            </RovingTabs.Tab>
+          </>
+        )}
+      </RovingTabs>
+
+      <Text fontSize="$6" fontWeight="600">
+        Pill Style
+      </Text>
+      <RovingTabs value={tab} onValueChange={setTab} indicatorStyle="pill">
+        {({ handleOnInteraction }) => (
+          <>
+            <RovingTabs.Tab value="tab1" onInteraction={handleOnInteraction}>
+              <Text color={tab === 'tab1' ? '$color12' : '$color10'} py="$2" px="$3">
+                Home
+              </Text>
+            </RovingTabs.Tab>
+            <RovingTabs.Tab value="tab2" onInteraction={handleOnInteraction}>
+              <Text color={tab === 'tab2' ? '$color12' : '$color10'} py="$2" px="$3">
+                Settings
+              </Text>
+            </RovingTabs.Tab>
+            <RovingTabs.Tab value="tab3" onInteraction={handleOnInteraction}>
+              <Text color={tab === 'tab3' ? '$color12' : '$color10'} py="$2" px="$3">
+                Profile
+              </Text>
+            </RovingTabs.Tab>
+          </>
+        )}
+      </RovingTabs>
+
+      <YStack p="$4" bg="$color2" rounded="$4">
+        <Text>Current tab: {tab}</Text>
       </YStack>
-    </View>
+    </YStack>
   )
-  // return <StyledText customProp="ok">hello world</StyledText>
-
-  // const [x, setX] = useState(false)
-
-  // return (
-  //   <>
-  //     <Button onPress={() => setX(!x)}>go</Button>
-
-  //     <Theme name={x ? 'red' : null}>
-  //       <Y debug="visualize" />
-  //     </Theme>
-  //   </>
-  // )
 }
+
+// roving tabs implementation
+type TabState = {
+  intentAt: TabLayout | null
+  activeAt: TabLayout | null
+  prevActiveAt: TabLayout | null
+}
+
+type IndicatorStyle = 'underline' | 'pill'
+
+type RenderProps = {
+  handleOnInteraction: TabsTabProps['onInteraction']
+  currentTab: string
+}
+
+type RovingTabsChildren = React.ReactNode | ((props: RenderProps) => React.ReactNode)
+
+function RovingTabsRoot({
+  children,
+  value,
+  onValueChange,
+  indicatorStyle = 'underline',
+  ...rest
+}: {
+  children: RovingTabsChildren
+  value: string
+  onValueChange?: (value: string) => void
+  indicatorStyle?: IndicatorStyle
+} & Omit<ViewProps, 'children'>) {
+  const [tabState, setTabState] = useState<TabState>({
+    intentAt: null,
+    activeAt: null,
+    prevActiveAt: null,
+  })
+
+  const setIntentIndicator = (intentAt: TabLayout | null) =>
+    setTabState((prev) => ({ ...prev, intentAt }))
+
+  const setActiveIndicator = (activeAt: TabLayout | null) =>
+    setTabState((prev) => ({
+      ...prev,
+      prevActiveAt: prev.activeAt,
+      activeAt,
+    }))
+
+  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
+    if (type === 'select') {
+      setActiveIndicator(layout)
+    } else {
+      setIntentIndicator(layout)
+    }
+  }
+
+  const { activeAt, intentAt } = tabState
+
+  return (
+    <Tabs
+      value={value}
+      onValueChange={onValueChange}
+      orientation="horizontal"
+      activationMode="manual"
+      {...rest}
+    >
+      <View position="relative">
+        <AnimatePresence>
+          {intentAt && (
+            <RovingTabsIndicator
+              key="intent"
+              variant={indicatorStyle}
+              width={intentAt.width}
+              height={indicatorStyle === 'underline' ? 3 : intentAt.height}
+              x={intentAt.x}
+              y={indicatorStyle === 'underline' ? undefined : intentAt.y}
+              b={indicatorStyle === 'underline' ? 0 : undefined}
+            />
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {activeAt && (
+            <RovingTabsIndicator
+              key="active"
+              active
+              variant={indicatorStyle}
+              width={activeAt.width}
+              height={indicatorStyle === 'underline' ? 3 : activeAt.height}
+              x={activeAt.x}
+              y={indicatorStyle === 'underline' ? undefined : activeAt.y}
+              b={indicatorStyle === 'underline' ? 0 : undefined}
+            />
+          )}
+        </AnimatePresence>
+
+        <Tabs.List loop={false} bg="transparent" gap="$2">
+          {typeof children === 'function'
+            ? children({
+                handleOnInteraction,
+                currentTab: value,
+              })
+            : children}
+        </Tabs.List>
+      </View>
+    </Tabs>
+  )
+}
+
+function RovingTabsTab({
+  children,
+  value,
+  onInteraction,
+  ...rest
+}: {
+  children: React.ReactNode
+  value: string
+  onInteraction?: TabsTabProps['onInteraction']
+} & Omit<ViewProps, 'children'>) {
+  return (
+    <Tabs.Tab
+      unstyled
+      value={value}
+      onInteraction={onInteraction}
+      borderWidth={0}
+      bg="transparent"
+      rounded="$2"
+      hoverStyle={{
+        bg: 'transparent',
+      }}
+      pressStyle={{
+        bg: 'transparent',
+      }}
+      {...rest}
+    >
+      {children}
+    </Tabs.Tab>
+  )
+}
+
+function RovingTabsIndicator({
+  active,
+  variant = 'underline',
+  ...props
+}: {
+  active?: boolean
+  variant?: IndicatorStyle
+} & ViewProps) {
+  const isUnderline = variant === 'underline'
+
+  // very obvious colors for debugging
+  const bg = active ? 'blue' : 'red'
+
+  return (
+    <View
+      position="absolute"
+      bg={bg}
+      opacity={active ? 1 : 0.6}
+      rounded={isUnderline ? '$2' : '$4'}
+      transition="quick"
+      pointerEvents="none"
+      enterStyle={{
+        opacity: 0,
+      }}
+      exitStyle={{
+        opacity: 0,
+      }}
+      {...props}
+    />
+  )
+}
+
+const RovingTabs = withStaticProperties(RovingTabsRoot, {
+  Tab: RovingTabsTab,
+  Indicator: RovingTabsIndicator,
+})
 
 const Styyled = styled(View)
 

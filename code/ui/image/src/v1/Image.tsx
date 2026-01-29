@@ -4,7 +4,7 @@ import type {
   GetProps,
   RadiusTokens,
   SizeTokens,
-  StackProps,
+  ViewProps,
   ThemeValueFallback,
 } from '@tamagui/web'
 import { styled, usePropsAndStyle } from '@tamagui/web'
@@ -35,7 +35,7 @@ type BaseProps = Omit<
   objectFit?: React.CSSProperties['objectFit']
 }
 
-export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
+export type ImageProps = BaseProps & Omit<ViewProps, keyof BaseProps>
 
 type RNImageType = typeof RNImage
 

@@ -2,7 +2,7 @@ import { Image, type ImageProps } from '@tamagui/image'
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
-import type { StackProps } from 'tamagui'
+import type { ViewProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -17,50 +17,42 @@ import {
 } from 'tamagui'
 
 const androidImages = [
-  '/takeout/starter-screenshots/android-001.jpeg',
-  '/takeout/starter-screenshots/android-002.jpeg',
-  '/takeout/starter-screenshots/android-003.jpeg',
-  '/takeout/starter-screenshots/android-004.jpeg',
-  '/takeout/starter-screenshots/android-005.jpeg',
-  '/takeout/starter-screenshots/android-006.jpeg',
-  '/takeout/starter-screenshots/android-007.jpeg',
-  '/takeout/starter-screenshots/android-008.jpeg',
-  '/takeout/starter-screenshots/android-009.jpeg',
-  '/takeout/starter-screenshots/android-010.jpeg',
-  '/takeout/starter-screenshots/android-011.jpeg',
-  '/takeout/starter-screenshots/android-012.jpeg',
-  '/takeout/starter-screenshots/android-013.jpeg',
-  '/takeout/starter-screenshots/android-014.jpeg',
+  '/takeout/starter-screenshots/android-001.jpg',
+  '/takeout/starter-screenshots/android-002.jpg',
+  '/takeout/starter-screenshots/android-003.jpg',
+  '/takeout/starter-screenshots/android-004.jpg',
+  '/takeout/starter-screenshots/android-005.jpg',
+  '/takeout/starter-screenshots/android-006.jpg',
+  '/takeout/starter-screenshots/android-007.jpg',
+  '/takeout/starter-screenshots/android-008.jpg',
+  '/takeout/starter-screenshots/android-009.jpg',
 ]
 
 const iosImages = [
-  '/takeout/starter-screenshots/ios-001.jpeg',
-  '/takeout/starter-screenshots/ios-002.jpeg',
-  '/takeout/starter-screenshots/ios-003.jpeg',
-  '/takeout/starter-screenshots/ios-004.jpeg',
-  '/takeout/starter-screenshots/ios-005.jpeg',
-  '/takeout/starter-screenshots/ios-006.jpeg',
-  '/takeout/starter-screenshots/ios-007.jpeg',
-  '/takeout/starter-screenshots/ios-008.jpeg',
-  '/takeout/starter-screenshots/ios-009.jpeg',
-  '/takeout/starter-screenshots/ios-010.jpeg',
-  '/takeout/starter-screenshots/ios-011.jpeg',
-  '/takeout/starter-screenshots/ios-012.jpeg',
-  '/takeout/starter-screenshots/ios-013.jpeg',
-  '/takeout/starter-screenshots/ios-014.jpeg',
+  '/takeout/starter-screenshots/ios-001.jpg',
+  '/takeout/starter-screenshots/ios-002.jpg',
+  '/takeout/starter-screenshots/ios-003.jpg',
+  '/takeout/starter-screenshots/ios-004.jpg',
+  '/takeout/starter-screenshots/ios-005.jpg',
+  '/takeout/starter-screenshots/ios-006.jpg',
+  '/takeout/starter-screenshots/ios-007.jpg',
+  '/takeout/starter-screenshots/ios-008.jpg',
+  '/takeout/starter-screenshots/ios-009.jpg',
+  '/takeout/starter-screenshots/ios-010.jpg',
+  '/takeout/starter-screenshots/ios-011.jpg',
+  '/takeout/starter-screenshots/ios-012.jpg',
+  '/takeout/starter-screenshots/ios-013.jpg',
+  '/takeout/starter-screenshots/ios-014.jpg',
 ]
 
 const webImages = [
-  '/takeout/starter-screenshots/web-001.jpeg',
-  '/takeout/starter-screenshots/web-002.jpeg',
-  '/takeout/starter-screenshots/web-003.jpeg',
-  '/takeout/starter-screenshots/web-004.jpeg',
-  '/takeout/starter-screenshots/web-005.jpeg',
-  '/takeout/starter-screenshots/web-006.jpeg',
-  '/takeout/starter-screenshots/web-007.jpeg',
+  '/takeout/starter-screenshots/web-001.jpg',
+  '/takeout/starter-screenshots/web-002.jpg',
+  '/takeout/starter-screenshots/web-003.jpg',
+  '/takeout/starter-screenshots/web-004.jpg',
+  '/takeout/starter-screenshots/web-005.jpg',
+  '/takeout/starter-screenshots/web-006.jpg',
   '/takeout/starter-screenshots/web-008.jpeg',
-  '/takeout/starter-screenshots/web-009.jpeg',
-  '/takeout/starter-screenshots/web-010.jpeg',
 ]
 
 const takeoutImages = [
@@ -251,7 +243,7 @@ const ImageGallery = () => {
         store.galleryOpen = open
       }}
     >
-      <Dialog.Portal>
+      <Dialog.Portal zIndex={100000001}>
         <Dialog.Overlay
           key="overlay"
           transition="lazy"
@@ -373,7 +365,7 @@ const ImagesCarousel = () => {
         position="absolute"
         l="$4"
         circular
-        elevation="$2"
+        boxShadow="0 0 10px $shadowColor"
         onPress={() => store.paginateGallery(-1)}
       />
       <Button
@@ -383,7 +375,7 @@ const ImagesCarousel = () => {
         position="absolute"
         r="$4"
         circular
-        elevation="$2"
+        boxShadow="0 0 10px $shadowColor"
         onPress={() => store.paginateGallery(1)}
       />
     </XStack>
@@ -405,7 +397,7 @@ const wrap = (min: number, max: number, v: number) => {
 const TakeoutImage = ({
   wrapperProps,
   ...props
-}: ImageProps & { index: number; wrapperProps?: StackProps }) => {
+}: ImageProps & { index: number; wrapperProps?: ViewProps }) => {
   const store = useGalleryStore()
   return (
     <XStack

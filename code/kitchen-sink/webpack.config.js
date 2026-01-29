@@ -28,7 +28,7 @@ module.exports = {
   },
   resolve: {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.web.tsx', '.web.ts', '.ts', '.tsx', '.js'],
     alias: {
       'react/jsx-runtime': require.resolve('react/jsx-runtime'),
       'react/jsx-dev-runtime': require.resolve('react/jsx-dev-runtime'),
@@ -44,7 +44,7 @@ module.exports = {
   devServer: {
     client: {
       overlay: false,
-      logging: 'warn',
+      logging: 'error',
     },
     hot: true,
     static: {
@@ -53,12 +53,24 @@ module.exports = {
     compress: true,
     port: process.env.PORT || 9000,
   },
+  ignoreWarnings: [
+    // suppress react-native-worklets critical dependency warning
+    /Critical dependency: require function is used in a way/,
+    // suppress expo-modules-core tsconfig warnings
+    /expo-modules-core.*expo-module-scripts\/tsconfig\.base/,
+    // suppress all esbuild-loader tsconfig warnings
+    /esbuild-loader.*Error parsing tsconfig\.json/,
+  ],
   module: {
     rules: [
-      // Process react-native-reanimated/worklets with Babel plugin from babel.config.js
+      // Process react-native-reanimated and @tamagui/animations-reanimated with Babel plugin
+      // The reanimated babel plugin transforms 'worklet' directives for web
       {
         test: /\.(js|ts)x?$/,
-        include: /node_modules\/(react-native-reanimated|react-native-worklets)/,
+        include: [
+          /node_modules\/(react-native-reanimated|react-native-worklets)/,
+          /code\/core\/animations-reanimated/,
+        ],
         use: {
           loader: 'babel-loader',
           options: {
@@ -108,17 +120,7 @@ module.exports = {
       config: './src/tamagui.config.ts',
       components: ['tamagui', '@tamagui/sandbox-ui'],
       importsWhitelist: ['constants.js'],
-      // enableDynamicEvaluation: true,
       disableExtraction,
-      themeBuilder: {
-        input: '../core/themes/src/themes-new.ts',
-        output: path.join(
-          require.resolve('@tamagui/themes/src/themes-new.ts'),
-          '..',
-          'generated-new.ts'
-        ),
-      },
-      // disable: true,
     }),
     isProduction ? null : new ReactRefreshWebpackPlugin(),
     new webpack.DefinePlugin({

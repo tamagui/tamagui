@@ -16,7 +16,8 @@
  * 3. Future: Could use pixel sampling to verify actual colors
  */
 
-import { by, device, element, expect, waitFor } from 'detox'
+import { by, device, element, expect } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
 
 describe('MediaQueryGtMd', () => {
   beforeAll(async () => {
@@ -25,7 +26,7 @@ describe('MediaQueryGtMd', () => {
 
   beforeEach(async () => {
     await device.reloadReactNative()
-    await navigateToMediaQueryTest()
+    await navigateToTestCase('MediaQueryGtMd', 'media-test-both')
   })
 
   it('should render all media query test elements', async () => {
@@ -69,42 +70,3 @@ describe('MediaQueryGtMd', () => {
   })
 })
 
-/**
- * Navigate to the MediaQueryGtMd test case from home screen
- */
-async function navigateToMediaQueryTest() {
-  // Wait for app to load - look for "Kitchen Sink" title
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(60000)
-
-  // Give the app a moment to fully render and settle
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  // Tap "Test Cases" using testID (works cross-platform)
-  await waitFor(element(by.id('home-test-cases-link')))
-    .toBeVisible()
-    .withTimeout(10000)
-  await element(by.id('home-test-cases-link')).tap()
-
-  // Wait for Test Cases screen to load
-  await waitFor(element(by.text('All Test Cases')))
-    .toExist()
-    .withTimeout(10000)
-
-  // Small delay for the list to render
-  await new Promise((resolve) => setTimeout(resolve, 500))
-
-  // Scroll to and tap MediaQueryGtMd test case
-  await waitFor(element(by.id('test-case-MediaQueryGtMd')))
-    .toBeVisible()
-    .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(600, 'down', Number.NaN, Number.NaN)
-
-  await element(by.id('test-case-MediaQueryGtMd')).tap()
-
-  // Wait for test case to load
-  await waitFor(element(by.id('media-test-both')))
-    .toBeVisible()
-    .withTimeout(5000)
-}

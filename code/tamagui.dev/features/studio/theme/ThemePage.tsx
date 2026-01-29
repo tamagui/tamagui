@@ -68,6 +68,7 @@ export function ThemePage() {
           $lg={{ pr: 0 }}
           justify="flex-end"
           overflow="hidden"
+          z={100}
         >
           <YStack
             p="$4"
@@ -142,7 +143,7 @@ const ThemeBuilderModal = memo(() => {
       width={530}
       maxH="90vh"
       maxW="95vw"
-      z={100_000}
+      z={1000}
       x={hide ? 500 : 0}
       transition="medium"
     >
@@ -161,12 +162,12 @@ const ThemeBuilderModal = memo(() => {
         backdropFilter="blur(60px)"
         {...(hide && {
           borderColor: '$color0',
-          bg: '$background0',
+          bg: '$color3',
         })}
       >
         <XStack
           position="absolute"
-          z={100000}
+          z={999}
           t="$2"
           l="$2"
           $gtLg={{

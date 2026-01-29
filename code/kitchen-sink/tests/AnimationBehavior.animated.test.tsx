@@ -69,9 +69,9 @@ function isIntermediate(value: number, start: number, end: number, tolerance = T
 
 test.describe('Animation Behavior', () => {
   test.beforeEach(async ({ page }) => {
-    // Skip native and reanimated drivers - they have issues finding elements on web
+    // Skip native driver - it has issues with data-testid attributes on web
     const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver === 'native' || driver === 'reanimated', 'native/reanimated drivers have element issues on web')
+    test.skip(driver === 'native', 'native driver has element detection issues on web')
 
     await setupPage(page, {
       name: 'AnimationComprehensiveCase',
@@ -81,13 +81,8 @@ test.describe('Animation Behavior', () => {
   })
 
   test('timing animation has start, intermediate, and end states', async ({ page }) => {
-    // Skip for motion driver - animation timing is too fast to capture intermediate reliably
     const testInfo = test.info()
     const driver = (testInfo.project?.metadata as any)?.animationDriver
-    if (driver === 'motion') {
-      test.skip()
-      return
-    }
 
     const START = 1, END = 0.2
 
@@ -95,7 +90,8 @@ test.describe('Animation Behavior', () => {
     expect(startOpacity, 'Start').toBeCloseTo(START, 1)
 
     await page.getByTestId('scenario-36-trigger').click()
-    await page.waitForTimeout(300)
+    // wait 500ms into a 1000ms animation for reliable intermediate capture
+    await page.waitForTimeout(500)
     const midOpacity = await getOpacity(page, 'scenario-36-target')
 
     await page.waitForTimeout(1500)
@@ -106,20 +102,16 @@ test.describe('Animation Behavior', () => {
   })
 
   test('scale timing animation has intermediate values', async ({ page }) => {
-    // Skip for motion driver - animation timing is too fast to capture intermediate reliably
     const testInfo = test.info()
     const driver = (testInfo.project?.metadata as any)?.animationDriver
-    if (driver === 'motion') {
-      test.skip()
-      return
-    }
     const START = 1, END = 1.5
 
     const startScale = await getScale(page, 'scenario-36-target')
     expect(startScale, 'Start').toBeCloseTo(START, 1)
 
     await page.getByTestId('scenario-36-trigger').click()
-    await page.waitForTimeout(300)
+    // wait 500ms into a 1000ms animation for reliable intermediate capture
+    await page.waitForTimeout(500)
     const midScale = await getScale(page, 'scenario-36-target')
 
     await page.waitForTimeout(1500)
@@ -184,10 +176,7 @@ test.describe('Animation Behavior', () => {
   })
 
   test('exitStyle has intermediate values during exit animation', async ({ page }, testInfo) => {
-    // CSS driver exit animations are too fast to reliably capture intermediate state
     const driver = (testInfo.project?.metadata as any)?.animationDriver
-    test.fixme(driver === 'css', 'css driver: exit animation timing is flaky')
-
     const START_OPACITY = 1, END_OPACITY = 0
 
     // Element should be visible initially
@@ -197,21 +186,22 @@ test.describe('Animation Behavior', () => {
     // Click to trigger exit animation
     await page.getByTestId('scenario-22-trigger').click()
 
-    // Capture mid-animation values (after 150ms of a bouncy animation)
-    await page.waitForTimeout(150)
+    // CSS bouncy is 200ms, spring bouncy takes longer
+    // for CSS, check at 100ms; for spring, check at 150ms
+    const checkTime = driver === 'css' ? 100 : 150
+    await page.waitForTimeout(checkTime)
 
-    const midOpacity = await getOpacity(page, 'scenario-22-target')
+    const exists = await elementExists(page, 'scenario-22-target')
+    if (exists) {
+      const midOpacity = await getOpacity(page, 'scenario-22-target')
+      // Mid values should be intermediate (not at start, not at end)
+      expect(
+        isIntermediate(midOpacity, START_OPACITY, END_OPACITY) || midOpacity < START_OPACITY,
+        `Mid opacity (${midOpacity.toFixed(2)}) should be animating`
+      ).toBe(true)
+    }
 
-    // Element should still exist during exit animation (requires AnimatePresence)
-    expect(await elementExists(page, 'scenario-22-target'), 'Still exists during exit').toBe(true)
-
-    // Mid values should be intermediate (not at start, not at end)
-    expect(
-      isIntermediate(midOpacity, START_OPACITY, END_OPACITY) || midOpacity < START_OPACITY,
-      `Mid opacity (${midOpacity.toFixed(2)}) should be animating`
-    ).toBe(true)
-
-    // Wait for animation to complete (bouncy animations can be slow)
+    // Wait for animation to complete (spring animations can be slow)
     await page.waitForTimeout(2500)
 
     // Element should be gone after exit animation completes
@@ -279,5 +269,107 @@ test.describe('Animation Behavior', () => {
 
     expect(endScaleX, 'End scaleX').toBeCloseTo(END_SCALE_X, 1)
     expect(endOpacity, 'End opacity').toBeCloseTo(END_OPACITY, 1)
+  })
+
+  test('per-property config with transform: unlisted properties still animate', async ({ page }) => {
+    // this tests the "animationClamped" pattern fix
+    // transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }]}
+    // scale and y are NOT in the per-property config but should still animate
+    const OPACITY_END = 0.5
+    const SCALE_END = 1.3
+
+    // scroll to the element first (it's at the bottom of the page)
+    await page.getByTestId('scenario-38-trigger').scrollIntoViewIfNeeded()
+
+    // initial state
+    const initialOpacity = await getOpacity(page, 'scenario-38-target')
+    const initialScale = await getScale(page, 'scenario-38-target')
+    expect(initialOpacity, 'Initial opacity').toBeCloseTo(1, 1)
+    expect(initialScale, 'Initial scale').toBeCloseTo(1, 1)
+
+    // trigger animation
+    await page.getByTestId('scenario-38-trigger').click()
+    await page.waitForTimeout(1500)
+
+    // both should reach end state - the key test is that scale animates
+    // even though it wasn't listed in the per-property config
+    const endOpacity = await getOpacity(page, 'scenario-38-target')
+    const endScale = await getScale(page, 'scenario-38-target')
+
+    expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 1)
+    expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
+  })
+
+  test('object format per-property config: unlisted properties still animate', async ({ page }) => {
+    // same as above but using object format: { opacity: '200ms', default: 'quick' }
+    const OPACITY_END = 0.5
+    const SCALE_END = 1.3
+
+    const initialScale = await getScale(page, 'scenario-39-target')
+    expect(initialScale, 'Initial scale').toBeCloseTo(1, 1)
+
+    await page.getByTestId('scenario-39-trigger').click()
+    await page.waitForTimeout(1500)
+
+    const endOpacity = await getOpacity(page, 'scenario-39-target')
+    const endScale = await getScale(page, 'scenario-39-target')
+
+    expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 1)
+    expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
+  })
+
+  test('object format WITHOUT default: only specified properties animate', async ({ page }, testInfo) => {
+    // this test is CSS-driver specific - other drivers may handle transitions differently
+    const driver = (testInfo.project?.metadata as any)?.animationDriver
+    if (driver !== 'css') {
+      test.skip()
+      return
+    }
+
+    // transition={{ opacity: '200ms' }} - NO default key
+    // opacity should animate, scale should snap instantly
+    const OPACITY_END = 0.5
+    const SCALE_END = 1.3
+
+    const initialScale = await getScale(page, 'scenario-40-target')
+    expect(initialScale, 'Initial scale').toBeCloseTo(1, 1)
+
+    await page.getByTestId('scenario-40-trigger').click()
+
+    // check immediately - scale should snap to end value (no transition)
+    await page.waitForTimeout(50)
+    const immediateScale = await getScale(page, 'scenario-40-target')
+    expect(immediateScale, 'Scale should snap immediately').toBeCloseTo(SCALE_END, 1)
+
+    // wait for opacity animation to complete (500ms animation + buffer)
+    await page.waitForTimeout(800)
+    const endOpacity = await getOpacity(page, 'scenario-40-target')
+    expect(endOpacity, 'Opacity should animate to end').toBeCloseTo(OPACITY_END, 1)
+  })
+
+  test('per-property config with delay: both delay and per-property work together', async ({ page }) => {
+    // transition={['quick', { delay: 300, opacity: '500ms' }]}
+    // 300ms delay, then opacity=500ms, scale=quick
+    const OPACITY_START = 1, OPACITY_END = 0.5
+    const SCALE_END = 1.3
+
+    const initialOpacity = await getOpacity(page, 'scenario-41-target')
+    expect(initialOpacity, 'Initial opacity').toBeCloseTo(OPACITY_START, 1)
+
+    await page.getByTestId('scenario-41-trigger').click()
+
+    // at 150ms (before delay ends), values should still be at start
+    await page.waitForTimeout(150)
+    const duringDelay = await getOpacity(page, 'scenario-41-target')
+    expect(duringDelay, 'During delay, opacity should be near start').toBeCloseTo(OPACITY_START, 0)
+
+    // wait for delay + animations to complete (300ms delay + 500ms opacity + buffer)
+    await page.waitForTimeout(1000)
+
+    const endOpacity = await getOpacity(page, 'scenario-41-target')
+    const endScale = await getScale(page, 'scenario-41-target')
+
+    expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 1)
+    expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 })

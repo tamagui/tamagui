@@ -3,7 +3,7 @@ import 'vitest-axe/extend-expect'
 
 import { Checkbox } from '@tamagui/checkbox'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { Stack, TamaguiProvider, createTamagui, getTokenValue } from '@tamagui/core'
+import { View, TamaguiProvider, createTamagui, getTokenValue } from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
 import { fireEvent, render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vitest } from 'vitest'
@@ -14,11 +14,11 @@ const conf = createTamagui(getDefaultTamaguiConfig())
 function CheckboxTest(props: React.ComponentProps<typeof Checkbox>) {
   return (
     <TamaguiProvider config={conf} defaultTheme="light">
-      <Stack>
+      <View>
         <Checkbox {...props} aria-label="basic checkbox">
           <Checkbox.Indicator data-testid={INDICATOR_TEST_ID} />
         </Checkbox>
-      </Stack>
+      </View>
     </TamaguiProvider>
   )
 }

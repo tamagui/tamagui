@@ -10,6 +10,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
 
 describe('ThemeMutation', () => {
   beforeAll(async () => {
@@ -18,7 +19,7 @@ describe('ThemeMutation', () => {
 
   beforeEach(async () => {
     await device.reloadReactNative()
-    await navigateToThemeMutation()
+    await navigateToTestCase('ThemeMutation', 'theme-mutation-button')
   })
 
   it('should navigate to ThemeMutation test case', async () => {
@@ -78,39 +79,3 @@ describe('ThemeMutation', () => {
   })
 })
 
-async function navigateToThemeMutation() {
-  // Wait for app to load
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(60000)
-
-  // Give the app a moment to fully render
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  // Tap "Test Cases" using testID
-  await waitFor(element(by.id('home-test-cases-link')))
-    .toBeVisible()
-    .withTimeout(10000)
-  await element(by.id('home-test-cases-link')).tap()
-
-  // Wait for Test Cases screen to load
-  await waitFor(element(by.text('All Test Cases')))
-    .toExist()
-    .withTimeout(10000)
-
-  // Small delay for the list to render
-  await new Promise((resolve) => setTimeout(resolve, 500))
-
-  // Scroll to and tap ThemeMutation test case
-  await waitFor(element(by.id('test-case-ThemeMutation')))
-    .toBeVisible()
-    .whileElement(by.id('test-cases-scroll-view'))
-    .scroll(600, 'down', Number.NaN, Number.NaN)
-
-  await element(by.id('test-case-ThemeMutation')).tap()
-
-  // Wait for the test screen to load
-  await waitFor(element(by.id('theme-mutation-button')))
-    .toExist()
-    .withTimeout(10000)
-}

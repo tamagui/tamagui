@@ -1,6 +1,6 @@
 ---
 title: Menu
-description: A selectable list in a popover with nesting sub-menus.
+description: A selectable list in a popover with nested submenus
 name: dropdown menu
 component: Menu
 package: menu
@@ -177,9 +177,9 @@ Contains every component for the Menu.
   ]}
 />
 
-### Portal
+### Menu.Portal
 
-This is necessary for the Menu.
+Required for rendering the menu content.
 
 <PropsTable
   data={[
@@ -205,10 +205,10 @@ This is necessary for the Menu.
   ]}
 />
 
-### Trigger
+### Menu.Trigger
 
-The Menu will only be triggered when the user right-clicks or long-presses
-within the Trigger area.
+The menu will only be triggered when the user right-clicks or long-presses
+within the trigger area.
 
 <PropsTable
   data={[
@@ -224,9 +224,9 @@ within the Trigger area.
   ]}
 />
 
-### Content
+### Menu.Content
 
-Contains the content of the Menu.
+Contains the content of the menu.
 
 <PropsTable
   data={[
@@ -277,7 +277,7 @@ Contains the content of the Menu.
   ]}
 />
 
-### Item
+### Menu.Item
 
 A selectable menu item that triggers an action when selected.
 
@@ -339,7 +339,7 @@ A selectable menu item that triggers an action when selected.
   ]}
 />
 
-### ItemTitle
+### Menu.ItemTitle
 
 Renders the title of the menu item.
 
@@ -359,11 +359,11 @@ Renders the title of the menu item.
   works with native menus.
 </Notice>
 
-### ItemIcon
+### Menu.ItemIcon
 
 A component to render an icon. For non-native menus, you can pass an icon
 component. For native menus, you can pass platform-specific icons to the
-`android`/`ios` props.
+`android` and `ios` props.
 
 On iOS, it renders the native
 [SF Symbols](https://github.com/andrewtavis/sf-symbols-online) icons.
@@ -419,12 +419,12 @@ On iOS, it renders the native
 </Menu.ItemIcon>
 ```
 
-### ItemImage
+### Menu.ItemImage
 
 A component to render an item image. For native menus, it only works on iOS. It
-takes the same properties as `@tamagui/image`.
+takes the same props as `@tamagui/image`.
 
-### ItemSubtitle
+### Menu.ItemSubtitle
 
 A component to render a subtitle for the menu item. For native menus, it only
 works on iOS.
@@ -440,7 +440,7 @@ works on iOS.
   ]}
 />
 
-### Group
+### Menu.Group
 
 A component that groups multiple menu items together.
 
@@ -455,9 +455,9 @@ A component that groups multiple menu items together.
   ]}
 />
 
-### CheckboxItem
+### Menu.CheckboxItem
 
-A menu item with a checkbox that can be toggled on/off.
+A menu item with a checkbox that can be toggled on and off.
 
 <PropsTable
   data={[
@@ -537,9 +537,9 @@ A menu item with a checkbox that can be toggled on/off.
   ]}
 />
 
-### ItemIndicator
+### Menu.ItemIndicator
 
-Use inside `CheckboxItem` or `RadioItem` to indicate when an item is checked.
+Use inside `Menu.CheckboxItem` or `Menu.RadioItem` to indicate when an item is checked.
 This allows you to conditionally render a checkmark.
 
 ```jsx line=1
@@ -566,7 +566,7 @@ This allows you to conditionally render a checkmark.
   ]}
 />
 
-### Label
+### Menu.Label
 
 Renders a non-focusable label for a group of items. On native menus, only one
 label is supported per menu and submenu.
@@ -589,7 +589,7 @@ label is supported per menu and submenu.
   ]}
 />
 
-### Arrow
+### Menu.Arrow
 
 Renders an arrow pointing to the trigger.
 
@@ -610,13 +610,13 @@ Renders an arrow pointing to the trigger.
   ]}
 />
 
-### Separator
+### Menu.Separator
 
 Renders a visual divider between menu items. Web only.
 
-### Sub
+### Menu.Sub
 
-A container for nested sub-menu components.
+A container for nested submenu components.
 
 <PropsTable
   data={[
@@ -630,23 +630,51 @@ A container for nested sub-menu components.
       name: 'open',
       type: 'boolean',
       required: false,
-      description: 'Controlled open state for the sub-menu.',
+      description: 'Controlled open state for the submenu.',
     },
     {
       name: 'onOpenChange',
       type: '(open: boolean) => void',
       required: false,
-      description: 'Called when the sub-menu opens or closes.',
+      description: 'Called when the submenu opens or closes.',
     },
   ]}
 />
 
-### SubContent
+### Menu.SubContent
 
-Renders the content of a sub-menu. Same props as `Content`, excluding `side` and
+Renders the content of a submenu. Same props as `Menu.Content`, excluding `side` and
 `align`.
 
-### SubTrigger
+### Menu.SubTrigger
 
-A menu item that opens a sub-menu on hover/focus. Accepts the same props as
-`Item`.
+A menu item that opens a submenu on hover or focus. Accepts the same props as
+`Menu.Item`.
+
+## Styling
+
+### Item Highlight Behavior
+
+Menu items use `focusStyle` for highlighting rather than `hoverStyle`. This ensures a unified highlight experience when switching between mouse and keyboard navigation - only one item is ever highlighted at a time.
+
+When you hover over an item, it receives focus, which triggers the `focusStyle`. When you use arrow keys to navigate, focus moves to the new item, removing the highlight from the previous one.
+
+```jsx
+// Default behavior - uses focusStyle for highlight
+<Menu.Item>
+  <Menu.ItemTitle>Settings</Menu.ItemTitle>
+</Menu.Item>
+
+// Custom highlight styling - use focusStyle, not hoverStyle
+<Menu.Item
+  focusStyle={{ backgroundColor: '$blue5' }}
+>
+  <Menu.ItemTitle>Custom Highlight</Menu.ItemTitle>
+</Menu.Item>
+```
+
+<Notice>
+  Avoid using `hoverStyle` for background highlights on Menu.Item. This can cause
+  "double highlighting" when switching between mouse and keyboard - where both the
+  hovered item and the focused item appear highlighted simultaneously.
+</Notice>

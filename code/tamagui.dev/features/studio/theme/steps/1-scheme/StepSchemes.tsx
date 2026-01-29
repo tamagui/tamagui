@@ -76,7 +76,6 @@ const Option = ({
       flex={1}
       htmlFor={id}
       p="$3"
-      height="unset"
       display="flex"
       borderWidth={1}
       theme={active ? 'blue' : null}

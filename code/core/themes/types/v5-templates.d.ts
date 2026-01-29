@@ -1,11 +1,19 @@
-export declare const v5Templates: Record<"light_alt1" | "light_alt2" | "dark_alt1" | "dark_alt2" | "light_surface1" | "light_surface2" | "light_surface3" | "light_base" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_base" | "light_inverse" | "dark_inverse", {
+export declare const v5Templates: Record<"light_base" | "light_surface1" | "light_surface2" | "light_surface3" | "light_accent" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_accent", {
+    placeholderColor: number;
     colorTransparent: number;
     color: number;
     colorHover: number;
     colorPress: number;
     colorFocus: number;
-    placeholderColor: number;
-    outlineColor: number;
+    background: number;
+    backgroundHover: number;
+    backgroundPress: number;
+    backgroundFocus: number;
+    backgroundActive: number;
+    borderColor: number;
+    borderColorHover: number;
+    borderColorFocus: number;
+    borderColorPress: number;
     accentBackground: number;
     accentColor: number;
     background0: number;
@@ -30,14 +38,5 @@ export declare const v5Templates: Record<"light_alt1" | "light_alt2" | "dark_alt
     color04: number;
     color06: number;
     color08: number;
-    background: number;
-    backgroundHover: number;
-    backgroundPress: number;
-    backgroundFocus: number;
-    backgroundActive: number;
-    borderColor: number;
-    borderColorHover: number;
-    borderColorPress: number;
-    borderColorFocus: number;
 }>;
 //# sourceMappingURL=v5-templates.d.ts.map

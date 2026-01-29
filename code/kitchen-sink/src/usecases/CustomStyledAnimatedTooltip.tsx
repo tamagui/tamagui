@@ -1,5 +1,5 @@
 import {
-  Stack,
+  View,
   Tooltip as TamaguiTooltip,
   Text,
   Theme,
@@ -51,8 +51,8 @@ const TriggerText = styled(Text, {
 
 export function CustomStyledAnimatedTooltip() {
   return (
-    <Stack flex={1} items="center" justify="center" gap="$5">
-      <Stack theme="red">
+    <View flex={1} items="center" justify="center" gap="$5">
+      <View theme="red">
         <Tooltip>
           <Tooltip.Trigger>
             <TriggerText>No animation with styled()</TriggerText>
@@ -66,7 +66,7 @@ export function CustomStyledAnimatedTooltip() {
             </Tooltip.Content>
           </Theme>
         </Tooltip>
-      </Stack>
-    </Stack>
+      </View>
+    </View>
   )
 }

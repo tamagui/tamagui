@@ -14,7 +14,8 @@ export const TooltipLabelLarge = ({
       cursor={href ? 'pointer' : 'default'}
       flex={1}
       flexBasis="auto"
-      p="$3.5"
+      py="$2.5"
+      px="$3"
       rounded="$4"
       gap="$1"
     >

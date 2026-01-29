@@ -178,6 +178,22 @@ export function AnimationComprehensiveCase() {
       {/* SECTION 11: scaleX EnterStyle (BenchmarkChart reproduction) */}
       <SectionHeader>11. scaleX EnterStyle</SectionHeader>
       <Scenario37_EnterStyleScaleX />
+
+      {/* SECTION 12: Per-Property with Transform (animationClamped fix) */}
+      <SectionHeader>12. Per-Property with Transform</SectionHeader>
+      <Scenario38_PerPropertyWithTransform />
+      <Scenario39_ObjectFormatPerProperty />
+      <Scenario40_ObjectFormatNoDefault />
+      <Scenario41_PerPropertyWithDelay />
+
+      {/* SECTION 13: Enter/Exit Transition Props */}
+      <SectionHeader>13. Enter/Exit Transition Props</SectionHeader>
+      <Scenario42_TransitionEnterExit />
+      <Scenario43_TransitionEnterOnly />
+      <Scenario44_TransitionExitOnly />
+      <Scenario45_TransitionEnterExitWithDefault />
+      <Scenario46_TransitionEnterExitPerProperty />
+      <Scenario47_TransitionEnterExitWithDelay />
     </YStack>
   )
 }
@@ -1124,6 +1140,360 @@ function Scenario37_EnterStyleScaleX() {
         />
       )}
       <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 38: Per-Property Config with Transform (animationClamped pattern)
+// Tests: transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }]}
+// The key test: scale/y should STILL animate with the default 'quick' animation
+// even though they're not explicitly listed in the per-property config
+// ============================================================================
+function Scenario38_PerPropertyWithTransform() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('38-per-prop-transform', ref, ['opacity', 'transform', 'backgroundColor'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-38-trigger" data-testid="scenario-38-trigger">
+        38: PerProp+Transform
+      </Button>
+      <Square
+        ref={ref as any}
+        // this is the "animationClamped" pattern - opacity/backgroundColor have specific timing
+        // but scale/y should STILL animate with the default 'quick' animation
+        transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }] as any}
+        size={40}
+        bg={active ? '$red10' : '$blue10'}
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        y={active ? -10 : 0}
+        testID="scenario-38-target" data-testid="scenario-38-target"
+      />
+      <Paragraph size="$1">opacity/bg=200ms, scale/y=quick</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 39: Object Format Per-Property with Transform
+// Tests: transition={{ opacity: '200ms', backgroundColor: '200ms', default: 'quick' }}
+// Same as 38 but using object format instead of array format
+// ============================================================================
+function Scenario39_ObjectFormatPerProperty() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('39-object-per-prop', ref, ['opacity', 'transform', 'backgroundColor'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-39-trigger" data-testid="scenario-39-trigger">
+        39: Object Format
+      </Button>
+      <Square
+        ref={ref as any}
+        // object format - same as array but different syntax
+        transition={{ opacity: '200ms', backgroundColor: '200ms', default: 'quick' } as any}
+        size={40}
+        bg={active ? '$red10' : '$blue10'}
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        y={active ? -10 : 0}
+        testID="scenario-39-target" data-testid="scenario-39-target"
+      />
+      <Paragraph size="$1">object: opacity/bg=200ms, default=quick</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 40: Object Format WITHOUT Default (only specified properties animate)
+// Tests: transition={{ opacity: '200ms' }} - scale should NOT animate
+// ============================================================================
+function Scenario40_ObjectFormatNoDefault() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('40-object-no-default', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
+        testID="scenario-40-trigger" data-testid="scenario-40-trigger">
+        40: No Default
+      </Button>
+      <Square
+        ref={ref as any}
+        // NO default key - only opacity should animate, scale should snap instantly
+        transition={{ opacity: '500ms' } as any}
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        testID="scenario-40-target" data-testid="scenario-40-target"
+      />
+      <Paragraph size="$1">only opacity animates (500ms)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 41: Per-Property Config with Delay
+// Tests: transition={['quick', { delay: 300, opacity: '500ms' }]}
+// Delay should apply to all properties, opacity uses custom timing
+// ============================================================================
+function Scenario41_PerPropertyWithDelay() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('41-per-prop-delay', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center">
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-41-trigger" data-testid="scenario-41-trigger">
+        41: PerProp+Delay
+      </Button>
+      <Square
+        ref={ref as any}
+        // delay + per-property: 300ms delay, then opacity=500ms, scale=quick
+        transition={['quick', { delay: 300, opacity: '500ms' }] as any}
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.5 : 1}
+        scale={active ? 1.3 : 1}
+        testID="scenario-41-target" data-testid="scenario-41-target"
+      />
+      <Paragraph size="$1">300ms delay, opacity=500ms, scale=quick</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 42: Different Enter/Exit Transitions
+// Tests: transition={{ enter: '500ms', exit: '100ms' }}
+// Enter animation should be slow (500ms), exit should be fast (100ms)
+// Using timing animations for predictable test behavior across all drivers
+// ============================================================================
+function Scenario42_TransitionEnterExit() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('42-enter-exit', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-42-trigger" data-testid="scenario-42-trigger">
+        42: Enter/Exit
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-exit-42"
+            ref={ref as any}
+            // enter=500ms (slow), exit=100ms (fast)
+            transition={{ enter: '500ms', exit: '100ms' } as any}
+            size={40}
+            bg="$blue10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-42-target" data-testid="scenario-42-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=500ms, exit=100ms)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 43: Enter Transition Only (exit uses default)
+// Tests: transition={{ enter: '500ms', default: '100ms' }}
+// Enter uses 500ms (slow), exit/other uses default 100ms (fast)
+// Using timing animations for predictable test behavior across all drivers
+// ============================================================================
+function Scenario43_TransitionEnterOnly() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('43-enter-only', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-43-trigger" data-testid="scenario-43-trigger">
+        43: Enter Only
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-only-43"
+            ref={ref as any}
+            // enter=500ms, exit falls back to default=100ms
+            transition={{ enter: '500ms', default: '100ms' } as any}
+            size={40}
+            bg="$green10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-43-target" data-testid="scenario-43-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=500ms, default=100ms)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 44: Exit Transition Only (enter uses default)
+// Tests: transition={{ exit: '500ms', default: '100ms' }}
+// Exit uses 500ms (slow), enter/other uses default 100ms (fast)
+// Using timing animations for predictable test behavior across all drivers
+// ============================================================================
+function Scenario44_TransitionExitOnly() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('44-exit-only', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-44-trigger" data-testid="scenario-44-trigger">
+        44: Exit Only
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="exit-only-44"
+            ref={ref as any}
+            // exit=500ms (slow), enter falls back to default=100ms (fast)
+            transition={{ exit: '500ms', default: '100ms' } as any}
+            size={40}
+            bg="$yellow10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-44-target" data-testid="scenario-44-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (exit=500ms, default=100ms)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 45: Enter/Exit with Default Fallback
+// Tests: transition={{ enter: '300ms', exit: '100ms', default: '500ms' }}
+// Enter=300ms, exit=100ms, property changes while visible use 500ms
+// Using timing animations for predictable test behavior across all drivers
+// ============================================================================
+function Scenario45_TransitionEnterExitWithDefault() {
+  const [visible, setVisible] = useState(true)
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('45-enter-exit-default', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-45-trigger" data-testid="scenario-45-trigger">
+        45: Toggle
+      </Button>
+      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
+        testID="scenario-45-trigger-prop" data-testid="scenario-45-trigger-prop">
+        Prop
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-exit-default-45"
+            ref={ref as any}
+            // enter=300ms, exit=100ms, property changes while visible=500ms
+            transition={{ enter: '300ms', exit: '100ms', default: '500ms' } as any}
+            size={40}
+            bg="$red10"
+            opacity={active ? 0.5 : 1}
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-45-target" data-testid="scenario-45-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, default=500ms)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 46: Enter/Exit with Per-Property Configs
+// Tests: transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' }}
+// Enter=300ms for scale, exit=100ms for scale, but opacity always uses 500ms
+// Using timing animations for predictable test behavior across all drivers
+// ============================================================================
+function Scenario46_TransitionEnterExitPerProperty() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('46-enter-exit-per-prop', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-46-trigger" data-testid="scenario-46-trigger">
+        46: PerProp
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-exit-per-prop-46"
+            ref={ref as any}
+            // enter=300ms for scale, exit=100ms for scale, but opacity always=500ms
+            transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' } as any}
+            size={40}
+            bg="$blue10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-46-target" data-testid="scenario-46-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, opacity=500ms)</Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 47: Enter/Exit Transitions with Delay
+// Tests: transition={{ enter: '300ms', exit: '100ms', delay: 200 }}
+// Both enter and exit have 200ms delay before starting
+// Using timing animations for predictable test behavior across all drivers
+// ============================================================================
+function Scenario47_TransitionEnterExitWithDelay() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('47-enter-exit-delay', ref, ['opacity', 'transform'])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
+        testID="scenario-47-trigger" data-testid="scenario-47-trigger">
+        47: Delay
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-exit-delay-47"
+            ref={ref as any}
+            transition={{ enter: '300ms', exit: '100ms', delay: 200 } as any}
+            size={40}
+            bg="$color10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-47-target" data-testid="scenario-47-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, delay=200ms)</Paragraph>
     </XStack>
   )
 }

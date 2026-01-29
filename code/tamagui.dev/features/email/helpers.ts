@@ -1,12 +1,13 @@
+// @ts-ignore
 import * as postmark from 'postmark'
 
-const serverToken = process.env.POSTMARK_SERVER_TOKEN
+const serverToken = process.env.POSTMARK_SERVER_TOKEN!
 
-if (!serverToken) {
-  throw new Error(`No POSTMARK_SERVER_TOKEN env var is set`)
+if (process.env.NODE_ENV === 'production') {
+  if (!serverToken) {
+    throw new Error(`No POSTMARK_SERVER_TOKEN env var is set`)
+  }
 }
-
-const client = new postmark.ServerClient(serverToken)
 
 export function sendProductPurchaseEmail(
   email: string,
@@ -16,6 +17,8 @@ export function sendProductPurchaseEmail(
     console.info(`Not sending email to ${email} since we're not on prod.`)
     return
   }
+
+  const client = new postmark.ServerClient(serverToken)
 
   const htmlBody = `
 <!DOCTYPE html>
@@ -84,6 +87,8 @@ export function sendProductRenewalEmail(
     return
   }
 
+  const client = new postmark.ServerClient(serverToken)
+
   const htmlBody = `
 <!DOCTYPE html>
 <html>
@@ -137,6 +142,8 @@ export function sendV1ExpirationEmail(email: string, args: { name: string }) {
     console.info(`Not sending V1 expiration email to ${email} since we're not on prod.`)
     return
   }
+
+  const client = new postmark.ServerClient(serverToken)
 
   const htmlBody = `
 <!DOCTYPE html>

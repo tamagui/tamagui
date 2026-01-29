@@ -1,10 +1,4 @@
-import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
-import type {
-  GetStyleResult,
-  StaticConfig,
-  TamaguiComponentState,
-  TamaguiComponentStateRef,
-} from './types'
+import type { TamaguiComponentStateRef } from './types'
 
 export const hooks: InternalHooks = {}
 
@@ -22,14 +16,6 @@ type InternalHooks = {
   ) => any
 
   setElementProps?: (node?: any) => void
-
-  useEvents?: (
-    viewProps: Record<string, any>,
-    events: TamaguiComponentEvents | null,
-    splitStyles: GetStyleResult | null,
-    setStateShallow: (next: Partial<TamaguiComponentState>) => void,
-    staticConfig: StaticConfig
-  ) => any
 
   useChildren?: (elementType: any, children: any, viewProps: Record<string, any>) => any
 

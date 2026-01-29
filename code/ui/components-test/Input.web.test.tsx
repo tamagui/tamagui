@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import { Input } from '@tamagui/input'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { Stack, TamaguiProvider, createTamagui } from '@tamagui/core'
+import { View, TamaguiProvider, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
@@ -10,9 +10,9 @@ const conf = createTamagui(getDefaultTamaguiConfig())
 function InputTest(props: React.ComponentProps<typeof Input>) {
   return (
     <TamaguiProvider config={conf} defaultTheme="light">
-      <Stack>
+      <View>
         <Input {...props} />
-      </Stack>
+      </View>
     </TamaguiProvider>
   )
 }

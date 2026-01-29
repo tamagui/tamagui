@@ -9,7 +9,6 @@ type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
 export async function generateThemeBuilderCode({
   palettes,
   includeComponentThemes,
-  templateStrategy,
 }: GenerateThemeBuilderCodeProps) {
   // side effect to getLastBuilder
   const palettesOut = createPalettes(palettes)
@@ -18,123 +17,64 @@ export async function generateThemeBuilderCode({
     return pIn.slice(PALETTE_BACKGROUND_OFFSET, -PALETTE_BACKGROUND_OFFSET)
   }
 
-  const templatesIdentifier =
-    !templateStrategy || templateStrategy === 'base'
-      ? ''
-      : templateStrategy === 'stronger'
-        ? 'defaultTemplatesStronger'
-        : 'defaultTemplatesStrongest'
-
-  const importTemplates = templatesIdentifier ? `, ${templatesIdentifier}` : ''
-
-  const templatesProp = templatesIdentifier
-    ? `\n  templates: ${templatesIdentifier},\n`
-    : ''
-  const componentsProp =
-    includeComponentThemes === true
-      ? `\n  componentThemes: defaultComponentThemes,\n`
-      : ``
-
-  return `import { createThemes${includeComponentThemes ? `, defaultComponentThemes` : ``}${importTemplates} } from '@tamagui/theme-builder'
-import * as Colors from '@tamagui/colors'
-
-const darkPalette = ${arrayToJS(paletteToCreateThemes(palettesOut.dark))}
-const lightPalette = ${arrayToJS(paletteToCreateThemes(palettesOut.light))}
-
-const lightShadows = {
-  shadow1: 'rgba(0,0,0,0.04)',
-  shadow2: 'rgba(0,0,0,0.08)',
-  shadow3: 'rgba(0,0,0,0.16)',
-  shadow4: 'rgba(0,0,0,0.24)',
-  shadow5: 'rgba(0,0,0,0.32)',
-  shadow6: 'rgba(0,0,0,0.4)',
-}
-
-const darkShadows = {
-  shadow1: 'rgba(0,0,0,0.2)',
-  shadow2: 'rgba(0,0,0,0.3)',
-  shadow3: 'rgba(0,0,0,0.4)',
-  shadow4: 'rgba(0,0,0,0.5)',
-  shadow5: 'rgba(0,0,0,0.6)',
-  shadow6: 'rgba(0,0,0,0.7)',
-}
-
-// we're adding some example sub-themes for you to show how they are done, "success" "warning", "error":
-
-const builtThemes = createThemes({${templatesProp}${componentsProp}
-  base: {
-    palette: {
-      dark: darkPalette,
-      light: lightPalette,
-    },
-
-    extra: {
-      light: {
-        ...Colors.green,
-        ...Colors.red,
-        ...Colors.yellow,
-        ...lightShadows,
-        shadowColor: lightShadows.shadow1,
+  // Convert accent palette array to named color object
+  function paletteToNamedColors(name: string, palette: string[]) {
+    return palette.reduce(
+      (acc, color, i) => {
+        acc[`${name}${i + 1}`] = color
+        return acc
       },
-      dark: {
-        ...Colors.greenDark,
-        ...Colors.redDark,
-        ...Colors.yellowDark,
-        ...darkShadows,
-        shadowColor: darkShadows.shadow1,
-      },
-    },
-  },
+      {} as Record<string, string>
+    )
+  }
 
-  accent: {
-    palette: {
-      dark: ${arrayToJS(paletteToCreateThemes(palettesOut.dark_accent))},
-      light: ${arrayToJS(paletteToCreateThemes(palettesOut.light_accent))},
-    },
-  },
+  const darkPalette = paletteToCreateThemes(palettesOut.dark)
+  const lightPalette = paletteToCreateThemes(palettesOut.light)
+  const darkAccent = paletteToCreateThemes(palettesOut.dark_accent)
+  const lightAccent = paletteToCreateThemes(palettesOut.light_accent)
 
+  const componentThemesProp = includeComponentThemes
+    ? `\n  componentThemes: v5ComponentThemes,`
+    : `\n  componentThemes: false,`
+
+  return `import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5'${includeComponentThemes ? `\nimport { v5ComponentThemes } from '@tamagui/themes/v5'` : ``}
+import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'
+
+const darkPalette = ${arrayToJS(darkPalette)}
+const lightPalette = ${arrayToJS(lightPalette)}
+
+// Your custom accent color theme
+const accentLight = ${JSON.stringify(paletteToNamedColors('accent', lightAccent), null, 2)}
+
+const accentDark = ${JSON.stringify(paletteToNamedColors('accent', darkAccent), null, 2)}
+
+const builtThemes = createV5Theme({
+  darkPalette,
+  lightPalette,${componentThemesProp}
   childrenThemes: {
+    // Include default color themes (blue, red, green, yellow, etc.)
+    ...defaultChildrenThemes,
+
+    // Your custom accent color
+    accent: {
+      light: accentLight,
+      dark: accentDark,
+    },
+
+    // Semantic color themes for warnings, errors, and success states
     warning: {
-      palette: {
-        dark: Object.values(Colors.yellowDark),
-        light: Object.values(Colors.yellow),
-      },
+      light: yellow,
+      dark: yellowDark,
     },
-
     error: {
-      palette: {
-        dark: Object.values(Colors.redDark),
-        light: Object.values(Colors.red),
-      },
+      light: red,
+      dark: redDark,
     },
-
     success: {
-      palette: {
-        dark: Object.values(Colors.greenDark),
-        light: Object.values(Colors.green),
-      },
+      light: green,
+      dark: greenDark,
     },
   },
-
-  // optionally add more, can pass palette or template
-
-  // grandChildrenThemes: {
-  //   alt1: {
-  //     template: 'alt1',
-  //   },
-  //   alt2: {
-  //     template: 'alt2',
-  //   },
-  //   surface1: {
-  //     template: 'surface1',
-  //   },
-  //   surface2: {
-  //     template: 'surface2',
-  //   },
-  //   surface3: {
-  //     template: 'surface3',
-  //   },
-  // },
 })
 
 export type Themes = typeof builtThemes

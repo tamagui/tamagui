@@ -135,7 +135,7 @@ const OverlayCard = () => {
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph ta="left" size="$6" theme="alt2" fow="400">
+        <Paragraph ta="left" size="$6" color="$color8" fow="400">
           Typed, sizable fonts with control over every facet - weight, spacing,
           line-height, letter-spacing, color and more.
         </Paragraph>

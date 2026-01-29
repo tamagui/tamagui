@@ -45,7 +45,6 @@ function TabsComponent(props: TabsProps) {
       orientation="horizontal"
       flexDirection="column"
       borderWidth={0}
-      position="unset"
       {...props}
       value={value}
     />
@@ -61,7 +60,6 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
       size="$3"
       flex={1}
       ref={ref as any}
-      elevation="$0.5"
       px="$5"
       pointerEvents="auto"
       {...props}

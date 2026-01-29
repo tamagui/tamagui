@@ -1,17 +1,132 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
-import { ScrollView } from 'react-native'
+import { getGestureHandler } from '@tamagui/native'
+import { useState } from 'react'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { H1, ListItem, YGroup, YStack } from 'tamagui'
+import { Button, H1, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
+import * as TestCases from '../../usecases'
+
+const testCaseNames = Object.keys(TestCases)
+
+// grid of test case buttons for fast detox navigation
+// uses 44x44 buttons (iOS recommended min tap target) for reliable tap detection
+const BUTTON_SIZE = 44
+const BUTTONS_PER_ROW = 8
+
+function QuickNavItem({ name, index }: { name: string; index: number }) {
+  const linkProps = useLink({ href: `/test/${name}` })
+  // alternate colors for visibility
+  const colors = ['#93c5fd', '#86efac', '#fdba74', '#c4b5fd', '#f9a8d4', '#fde047']
+  const bg = colors[index % colors.length]
+
+  return (
+    <TouchableOpacity
+      testID={`detox-nav-${name}`}
+      style={{
+        width: BUTTON_SIZE,
+        height: BUTTON_SIZE,
+        backgroundColor: bg,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.1)',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      onPress={linkProps.onPress}
+      activeOpacity={0.7}
+    >
+      <Text style={{ fontSize: 16, fontWeight: '700', color: '#333' }}>{index + 1}</Text>
+    </TouchableOpacity>
+  )
+}
+
+function TestCasesSection() {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <YStack gap="$2">
+      <Button
+        testID="toggle-test-cases"
+        size="$3"
+        onPress={() => {
+          setExpanded(!expanded)
+        }}
+        theme="gray"
+      >
+        {`${expanded ? 'Hide' : 'Show'} Quick Test Links (${testCaseNames.length})`}
+      </Button>
+
+      {expanded && (
+        <View
+          testID="detox-quick-nav"
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            width: BUTTONS_PER_ROW * BUTTON_SIZE,
+          }}
+        >
+          {testCaseNames.map((name, index) => (
+            <QuickNavItem key={name} name={name} index={index} />
+          ))}
+        </View>
+      )}
+    </YStack>
+  )
+}
 
 export function HomeScreen() {
+  const gestureHandlerEnabled = getGestureHandler().isEnabled
+
   return (
     <ScrollView testID="home-scroll-view">
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
+
+        <Paragraph size="$2" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
+          RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
+        </Paragraph>
+
+        {/* Collapsible quick access to test cases for Detox */}
+        <TestCasesSection />
+
+        {/* Quick access to RNGH test case */}
+        <YGroup size="$4">
+          <YGroup.Item>
+            <LinkListItem
+              bg="$blue3"
+              href="/test/SheetScrollableDrag"
+              pressStyle={{ backgroundColor: '$blue4' }}
+              size="$5"
+              testID="home-sheet-scroll-test"
+            >
+              🧪 Sheet + ScrollView Test (RNGH)
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
+              bg="$green3"
+              href="/test/SheetKeyboardDragCase"
+              pressStyle={{ backgroundColor: '$green4' }}
+              size="$5"
+              testID="home-sheet-keyboard-test"
+            >
+              ⌨️ Sheet + Keyboard Test
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
+              bg="$purple3"
+              href="/test/ActionsSheetComparison"
+              pressStyle={{ backgroundColor: '$purple4' }}
+              size="$5"
+            >
+              🔄 Actions Sheet Comparison
+            </LinkListItem>
+          </YGroup.Item>
+        </YGroup>
 
         <YStack gap="$4" maxW={600}>
           {demos.map(({ pages }, i) => {
@@ -91,7 +206,7 @@ const demos = [
   },
   {
     pages: [
-      { title: 'Stacks', route: '/demo/stacks' },
+      { title: 'XStack, YStack', route: '/demo/stacks' },
       { title: 'Headings', route: '/demo/headings' },
       { title: 'Paragraph', route: '/demo/text' },
       { title: 'Animations', route: '/demo/animations' },

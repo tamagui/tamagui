@@ -17,6 +17,10 @@ export const animationsReactNative = c2({
     type: 'timing',
     duration: 200,
   },
+  '250ms': {
+    type: 'timing',
+    duration: 250,
+  },
   superBouncy: {
     type: 'spring',
     damping: 5,

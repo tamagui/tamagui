@@ -3,7 +3,7 @@ import type { GetProps, TamaguiElement } from 'tamagui'
 import {
   Paragraph,
   Separator,
-  Stack,
+  View,
   Text,
   XStack,
   YStack,
@@ -19,7 +19,7 @@ const StyledContext = createStyledContext({
   isFocused: false,
 })
 
-const Frame = styled(Stack, {
+const Frame = styled(View, {
   context: StyledContext,
   alignItems: 'center',
   justifyContent: 'center',
@@ -83,9 +83,9 @@ const FrameContainer = Frame.styleable((propsIn, ref) => {
 const ForwardRefContainer = React.forwardRef<TamaguiElement, GetProps<typeof Frame>>(
   (propsIn, ref) => {
     return (
-      <Stack>
+      <View>
         <Frame ref={ref} {...propsIn} />
-      </Stack>
+      </View>
     )
   }
 )
@@ -94,7 +94,7 @@ const ContainerWithStaticProperty = withStaticProperties(ForwardRefContainer, {}
 
 export function ComplexVariants() {
   return (
-    <Stack>
+    <View>
       {[
         [false, false, false],
         [true, false, false],
@@ -134,7 +134,7 @@ export function ComplexVariants() {
               </XStack>
             </StyledContext.Provider>
           </>
-          <Stack>
+          <View>
             <Text>Without Styled Context</Text>
             <XStack>
               <FrameContainer
@@ -156,9 +156,9 @@ export function ComplexVariants() {
                 isError={isError}
               />
             </XStack>
-          </Stack>
+          </View>
         </YStack>
       ))}
-    </Stack>
+    </View>
   )
 }

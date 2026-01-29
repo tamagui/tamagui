@@ -1,11 +1,11 @@
-import type { GetProps, StackProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
+import type { GetProps, ViewProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
 import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react';
-import type { View } from 'react-native';
+import type { View as RNView } from 'react-native';
 import type { SheetProps, SheetScopedProps } from './types';
 type SharedSheetProps = {
     open?: boolean;
 };
-type BaseProps = StackProps & SharedSheetProps;
+type BaseProps = ViewProps & SharedSheetProps;
 type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>;
 export declare function createSheet<H extends TamaguiComponent | SheetStyledComponent, F extends TamaguiComponent | SheetStyledComponent, O extends TamaguiComponent | SheetStyledComponent>({ Handle, Frame, Overlay }: {
     Handle: H;
@@ -39,8 +39,8 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     containerComponent?: React.ComponentType<any>;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-} & RefAttributes<View>> & {
-    Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & RefAttributes<View>> & {
+} & RefAttributes<RNView>> & {
+    Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & RefAttributes<RNView>> & {
         Frame: ForwardRefExoticComponent<SheetScopedProps<Omit<GetProps<F>, keyof {
             /**
              * By default the sheet adds a view below its bottom that extends down another 50%,

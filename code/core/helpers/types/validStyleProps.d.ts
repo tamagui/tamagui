@@ -118,7 +118,6 @@ export declare const stylePropsView: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
@@ -166,6 +165,8 @@ export declare const stylePropsView: {
     willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    backgroundImage: boolean;
+    experimental_backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -355,6 +356,7 @@ export declare const stylePropsTextOnly: {
     textDecorationDistance?: boolean | undefined;
     WebkitLineClamp?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
+    textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;
@@ -381,6 +383,7 @@ export declare const stylePropsText: {
     textDecorationDistance?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
+    textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;
@@ -412,7 +415,6 @@ export declare const stylePropsText: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
@@ -459,6 +461,8 @@ export declare const stylePropsText: {
     willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    backgroundImage: boolean;
+    experimental_backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -643,6 +647,7 @@ export declare const stylePropsAll: {
     textDecorationDistance?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
+    textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;
@@ -674,7 +679,6 @@ export declare const stylePropsAll: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
@@ -721,6 +725,8 @@ export declare const stylePropsAll: {
     willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    backgroundImage: boolean;
+    experimental_backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
@@ -922,7 +928,6 @@ export declare const validStyles: {
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
     backgroundClip?: boolean | undefined;
-    backgroundImage?: boolean | undefined;
     backgroundOrigin?: boolean | undefined;
     backgroundPosition?: boolean | undefined;
     backgroundRepeat?: boolean | undefined;
@@ -970,6 +975,8 @@ export declare const validStyles: {
     willChange?: boolean | undefined;
     boxShadow: boolean;
     filter: boolean;
+    backgroundImage: boolean;
+    experimental_backgroundImage: boolean;
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;

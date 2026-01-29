@@ -13,6 +13,8 @@ export type SelectImplProps = SelectScopedProps<SelectProps> & {
   activeIndexRef: any
   selectedIndexRef: any
   listContentRef: any
+  /** fast setter: updates ref + emits to subscribers (no re-render) - use for hover/navigation */
+  setActiveIndexFast: (index: number | null) => void
 }
 
 export interface SelectProps<Value extends string = string> {
@@ -86,6 +88,12 @@ export interface SelectItemParentContextValue {
   }
   shouldRenderWebNative?: boolean
   size?: SizeTokens
+  /** fast setter: updates ref + emits to subscribers (no re-render) - use for keyboard navigation */
+  setActiveIndexFast?: (index: number | null) => void
+  /** the rendered content of the currently selected item (for portaling to SelectValue) */
+  selectedItem: ReactNode
+  /** sets the selected item content */
+  setSelectedItem: (item: ReactNode) => void
 }
 
 export interface SelectContextValue {
@@ -93,10 +101,12 @@ export interface SelectContextValue {
   scopeName: string
   adaptScope: string
   value: any
-  selectedItem: ReactNode
-  setSelectedItem: (item: ReactNode) => void
   selectedIndex: number
+  /** current active index state - use for rendering, may lag behind ref */
   activeIndex: number | null
+  /** ref to current active index - always up to date, use for reads */
+  activeIndexRef: MutableRefObject<number | null>
+  /** slow setter: updates ref + emits + triggers re-render */
   setActiveIndex: (index: number | null) => void
   open: boolean
   valueNode: Element | null

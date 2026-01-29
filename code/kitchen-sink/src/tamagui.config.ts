@@ -2,16 +2,28 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
-import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { config } from '@tamagui/config/v3'
+import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import { tamaguiThemes } from '@tamagui/themes/v4'
-import { createTamagui } from 'tamagui'
+import { createTamagui, type CreateTamaguiProps } from 'tamagui'
 // TODO just move this into this folder
+import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
+// Generated theme from v5 theme builder for testing
+import { themes as generatedV5Themes } from './generatedV5Theme'
 
 export const animationsCSS = createAnimationsCSS({
-  '100ms': 'ease-in 100ms',
-  '1000ms': 'ease-in 1000ms',
+  '0ms': '0ms linear',
+  '50ms': '50ms linear',
+  '75ms': '75ms linear',
+  '100ms': '100ms ease-out',
+  '200ms': '200ms ease-out',
+  '250ms': '250ms ease-out',
+  '300ms': '300ms ease-out',
+  '400ms': '400ms ease-out',
+  '500ms': '500ms ease-out',
+  '1000ms': '1000ms ease-out',
   bouncy: 'ease-in 200ms',
   lazy: 'ease-in 600ms',
   slow: 'ease-in 500ms',
@@ -23,21 +35,35 @@ export const animationsCSS = createAnimationsCSS({
 })
 
 export const animationsMotion = createAnimationsMotion({
+  '0ms': {
+    duration: 0,
+  },
+  '50ms': {
+    duration: 50,
+  },
   '75ms': {
-    type: 'tween',
-    duration: 0.075,
+    duration: 75,
   },
   '100ms': {
-    type: 'tween',
-    duration: 0.1,
+    duration: 100,
   },
   '200ms': {
-    type: 'tween',
-    duration: 0.2,
+    duration: 200,
+  },
+  '250ms': {
+    duration: 250,
+  },
+  '300ms': {
+    duration: 300,
+  },
+  '400ms': {
+    duration: 400,
+  },
+  '500ms': {
+    duration: 500,
   },
   '1000ms': {
-    type: 'tween',
-    duration: 1,
+    duration: 1000,
   },
   bouncy: {
     type: 'spring',
@@ -87,6 +113,14 @@ export const animationsMotion = createAnimationsMotion({
 })
 
 export const animationsNative = createAnimationsNative({
+  '0ms': {
+    type: 'timing',
+    duration: 0,
+  },
+  '50ms': {
+    type: 'timing',
+    duration: 50,
+  },
   '75ms': {
     type: 'timing',
     duration: 75,
@@ -98,6 +132,22 @@ export const animationsNative = createAnimationsNative({
   '200ms': {
     type: 'timing',
     duration: 200,
+  },
+  '250ms': {
+    type: 'timing',
+    duration: 250,
+  },
+  '300ms': {
+    type: 'timing',
+    duration: 300,
+  },
+  '400ms': {
+    type: 'timing',
+    duration: 400,
+  },
+  '500ms': {
+    type: 'timing',
+    duration: 500,
   },
   '1000ms': {
     type: 'timing',
@@ -151,6 +201,14 @@ export const animationsNative = createAnimationsNative({
 })
 
 export const animationsReanimated = createAnimationsReanimated({
+  '0ms': {
+    type: 'timing',
+    duration: 0,
+  },
+  '50ms': {
+    type: 'timing',
+    duration: 50,
+  },
   '75ms': {
     type: 'timing',
     duration: 75,
@@ -162,6 +220,22 @@ export const animationsReanimated = createAnimationsReanimated({
   '200ms': {
     type: 'timing',
     duration: 200,
+  },
+  '250ms': {
+    type: 'timing',
+    duration: 250,
+  },
+  '300ms': {
+    type: 'timing',
+    duration: 300,
+  },
+  '400ms': {
+    type: 'timing',
+    duration: 400,
+  },
+  '500ms': {
+    type: 'timing',
+    duration: 500,
   },
   '1000ms': {
     type: 'timing',
@@ -242,6 +316,9 @@ config.themes = {
 const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
 
 const useV4Themes = search.includes('v4theme=true')
+const v5config = search.includes('v5config')
+const tamav5Config = search.includes('tamav5config')
+const generatedV5 = search.includes('generatedV5')
 
 const tokens = {
   ...config.tokens,
@@ -257,6 +334,14 @@ const tokens = {
   // },
 }
 
+const animations = search.includes('animationDriver=css')
+  ? animationsCSS
+  : search.includes('animationDriver=native')
+    ? animationsNative
+    : search.includes('animationDriver=motion')
+      ? animationsMotion
+      : animationsReanimated
+
 const tamaConf = createTamagui({
   ...config,
   // Use v4 themes when ?v4theme=true is in the URL
@@ -267,7 +352,6 @@ const tamaConf = createTamagui({
         ...themeDev,
       },
   shorthands: shorthands,
-  defaultFont: undefined,
   settings: {
     defaultFont: '$body',
     allowedStyleValues: 'somewhat-strict',
@@ -279,14 +363,7 @@ const tamaConf = createTamagui({
     ...configV4.media, // adds max queries
     ...config.media,
   },
-  animations: search.includes('animationDriver=css')
-    ? animationsCSS
-    : search.includes('animationDriver=native')
-      ? animationsNative
-      : search.includes('animationDriver=motion')
-        ? animationsMotion
-        : animationsReanimated, // default reanimated
-  themeClassNameOnRoot: false,
+  animations, // default reanimated
 
   defaultProps: {
     Square: {
@@ -305,4 +382,10 @@ declare module 'tamagui' {
   }
 }
 
-export default tamaConf
+export default tamav5Config
+  ? createTamagui(tamaguiDevConfig)
+  : generatedV5
+    ? createTamagui({ ...defaultConfig, themes: generatedV5Themes, animations })
+    : v5config
+      ? createTamagui({ ...defaultConfig, animations })
+      : tamaConf

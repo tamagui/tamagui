@@ -67,6 +67,7 @@
     "docs": "yarn workspace @tamagui/one-docs dev",
     "fix:deps": "yarn manypkg fix",
     "fix": "yarn lint:fix",
+    "generate-css": "yarn workspace @tamagui/themes generate && yarn workspace @tamagui/themes build && yarn workspace @tamagui/dot-dev build",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:build:android": "yarn workspace @tamagui/kitchen-sink android",
     "kitchen-sink:build:ios": "yarn workspace @tamagui/kitchen-sink ios",
@@ -114,10 +115,7 @@
     "upgrade:one:canary": "yarn up 'one'@canary '@vxrn/*'@canary",
     "upgrade:one": "yarn up 'one'@latest '@vxrn/*'@latest",
     "upgrade:starters:expo-router": "cd code/starters/expo-router && yarn && yarn upgrade:tamagui",
-    "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
-    "upgrade:starters:remix": "cd code/starters/remix && yarn && yarn upgrade:tamagui",
-    "upgrade:starters:simple-web": "cd code/starters/simple-web && yarn && yarn upgrade:tamagui",
-    "upgrade:starters": "yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router && yarn upgrade:starters:remix && yarn upgrade:starters:free",
+    "upgrade:starters": "yarn upgrade:starters:expo-router",
     "vercel:build": "yarn build:js && cd code/old-site && yarn ci:build",
     "watch:js": "SKIP_TYPES=1 bun run watch:packages",
     "watch:packages": "SKIP_INITIAL_BUILD=1 SKIP_TYPES_INITIAL=1 ./scripts/run.sh watch",
@@ -125,7 +123,10 @@
     "watch": "npm-run-all --parallel watch:ts watch:packages"
   },
   "manypkg": {
-    "workspaceProtocol": "require"
+    "workspaceProtocol": "require",
+    "ignoredRules": [
+      "INVALID_DEV_AND_PEER_DEPENDENCY_RELATIONSHIP"
+    ]
   },
   "packageManager": "bun@1.2.22",
   "devDependencies": {

@@ -116,13 +116,6 @@ test.describe('Sheet drag interactions', () => {
   })
 
   test('partial drag snaps back to original position', async ({ page }) => {
-    const testInfo = test.info()
-    const driver = (testInfo.project?.metadata as any)?.animationDriver
-    // skip on native driver - flaky with Playwright mouse events on this driver specifically
-    if (driver === 'native') {
-      test.skip()
-      return
-    }
 
     const trigger = page.getByTestId('drag-percent-trigger')
     const frame = page.getByTestId('drag-percent-frame')
@@ -148,7 +141,7 @@ test.describe('Sheet drag interactions', () => {
     await expect(positionIndicator).toContainText('0')
   })
 
-  // TODO: flaky with Playwright mouse events - subsequent drags don't trigger PanResponder consistently
+  // flaky: Playwright mouse events don't trigger PanResponder consistently for subsequent drags
   test.skip('dragging up from lower snap point returns to higher', async ({ page }) => {
     const trigger = page.getByTestId('drag-percent-trigger')
     const frame = page.getByTestId('drag-percent-frame')

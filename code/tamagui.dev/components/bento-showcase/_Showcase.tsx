@@ -11,7 +11,6 @@ import {
   ScrollView,
   SizableText,
   Spinner,
-  Stack,
   Text,
   ThemeableStack,
   View,
@@ -68,8 +67,6 @@ const ShowcaseView = forwardRef<any, Props>(
     ref
   ) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
-    // const [theme, setTheme] = useState
-    // const [phoneFocused, setPhoneFocused] = useState(false)
     const toast = useToastController()
 
     const { section, part } = useCurrentRouteParams()
@@ -460,7 +457,7 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
             justify="center"
             group
           >
-            <Stack
+            <View
               maxH="50%"
               width={8}
               bg="$background04"

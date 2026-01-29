@@ -37,7 +37,10 @@ export const ProLicense = () => {
           <Li>Bento premium components</Li>
           <Li>One year of updates included with purchase</Li>
           <Li>Unlimited team members for your project (no additional seat cost)</Li>
-          <Li>Basic chat support in Discord #takeout channel</Li>
+          <Li>
+            Chat support in Discord #takeout channel (no SLA, optional paid support tiers
+            available)
+          </Li>
           <Li>Lifetime rights to all code downloaded during license period</Li>
         </Ul>
       </Paragraph>

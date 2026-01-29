@@ -18,7 +18,6 @@ import {
 } from '@tamagui/helpers'
 import React from 'react'
 import { getConfig, getFont, getSetting } from '../config'
-import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -49,6 +48,7 @@ import type {
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getCSSStylesAtomic, getStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
+import { getDefaultProps } from './getDefaultProps'
 import {
   extractValueFromDynamic,
   getDynamicVal,
@@ -320,10 +320,15 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') continue // handled above first
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // skip the webViewFlexCompatStyles when asChild on web
-      if (asChild && webViewFlexCompatStyles[keyInit] === valInit) {
-        continue
+    // when asChild, skip default props - they shouldn't be passed down to children
+    if (asChild) {
+      const defaults = getDefaultProps(staticConfig)
+      if (defaults) {
+        // check both original key and expanded key (after shorthand expansion)
+        const defaultVal = defaults[keyOg] ?? defaults[keyInit]
+        if (defaultVal !== undefined && valInit === defaultVal) {
+          continue
+        }
       }
     }
 
@@ -758,7 +763,12 @@ export const getSplitStyles: StyleSplitter = (
         const priority = mediaStylesSeen
         mediaStylesSeen += 1
 
-        if (shouldDoClasses) {
+        // for theme media ($theme-light, $theme-dark), always generate CSS classes for proper SSR
+        // even when noClass is set (animation drivers with inline output still need theme CSS)
+        const shouldDoClassesForThisMedia =
+          shouldDoClasses || (isWeb && isMedia === 'theme')
+
+        if (shouldDoClassesForThisMedia) {
           const mediaStyle = getSubStyle(styleState, key, val, false)
           const mediaStyles = getCSSStylesAtomic(mediaStyle)
 

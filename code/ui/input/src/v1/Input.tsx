@@ -1,5 +1,6 @@
-import { View, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
+import { View, styled, useEvent, useTheme } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
+import { useWebRef } from '@tamagui/element'
 import React, { type HTMLAttributes, type HTMLInputTypeAttribute } from 'react'
 import { styledBody } from '../shared'
 import type { InputProps } from './types'
@@ -64,10 +65,8 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     ...rest
   } = inProps
 
-  const ref = React.useRef<HTMLInputElement>(null)
+  const { ref, composedRef } = useWebRef<HTMLInputElement>(forwardedRef)
   const theme = useTheme()
-
-  const composedRefs = useComposedRefs(forwardedRef, ref)
 
   const _onSelectionChange = useEvent(() => {
     const start = ref.current?.selectionStart ?? 0
@@ -152,7 +151,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
           theme[placeholderTextColor]?.variable || placeholderTextColor,
       }),
       ...(selectionColor && {
-        '--selectionColor': theme[selectionColor]?.variable || selectionColor,
+        '--selectionBackground': theme[selectionColor]?.variable || selectionColor,
       }),
     },
   } as any
@@ -185,7 +184,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
         </style>
       )}
 
-      <StyledInput ref={composedRefs} {...finalProps} />
+      <StyledInput ref={composedRef} {...finalProps} />
     </>
   )
 })

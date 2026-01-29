@@ -223,6 +223,10 @@ export const stylePropsView = {
   boxShadow: true,
   border: true,
   filter: true,
+  // RN 0.76+ supports linear-gradient via backgroundImage
+  backgroundImage: true,
+  // the actual RN 0.76+ prop name (backgroundImage expands to this on native)
+  experimental_backgroundImage: true,
   // RN 0.76/0.77+ style props (New Architecture)
   boxSizing: true,
   mixBlendMode: true,
@@ -253,6 +257,7 @@ export const stylePropsTextOnly = {
   textDecorationLine: true,
   textDecorationStyle: true,
   ...textColors,
+  textShadow: true,
   textShadowOffset: true,
   textShadowRadius: true,
   userSelect: true,

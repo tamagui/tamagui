@@ -1,6 +1,6 @@
 ---
 title: Select
-description: Show a menu of items that users can select from.
+description: Show a menu of items that users can select from
 name: select
 component: Select
 package: select
@@ -80,62 +80,67 @@ Contains every component for the select:
     {
       name: 'id',
       type: 'string',
-      description: `Optional for usage with Label`,
+      description: `Optional for usage with Label.`,
     },
     {
       name: 'size',
       type: 'SizeTokens',
-      description: `Set the size of itself and pass to all inner elements`,
+      description: `Set the size of itself and pass to all inner elements.`,
     },
     {
       name: 'children',
       type: 'React.ReactNode',
-      description: `Select children API components`,
+      description: `Select children API components.`,
     },
     {
       name: 'value',
       type: 'string',
-      description: `Controlled value`,
+      description: `Controlled value.`,
     },
     {
       name: 'defaultValue',
       type: 'string',
-      description: `Default value`,
+      description: `Default value.`,
     },
     {
       name: 'onValueChange',
       type: '(value: string) => void',
-      description: `Callback on value change`,
+      description: `Callback on value change.`,
     },
     {
       name: 'open',
       type: 'boolean',
-      description: `Controlled open value`,
+      description: `Controlled open value.`,
     },
     {
       name: 'defaultOpen',
       type: 'boolean',
-      description: `Default open value`,
+      description: `Default open value.`,
     },
     {
       name: 'onOpenChange',
       type: '(open: boolean) => void',
-      description: `Callback on open change`,
+      description: `Callback on open change.`,
     },
     {
       name: 'dir',
       type: 'Direction',
-      description: `Direction of text display`,
+      description: `Direction of text display.`,
     },
     {
       name: 'name',
       type: 'string',
-      description: `For use in forms`,
+      description: `For use in forms.`,
     },
     {
       name: 'native',
       type: 'NativeValue',
       description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
+    },
+    {
+      name: 'renderValue',
+      type: '(value: string) => ReactNode',
+      description: `Render function for the selected value. Useful for SSR when you need custom display text. By default, Select falls back to showing the raw value for SSR compatibility.`,
     },
   ]}
 />
@@ -144,7 +149,7 @@ Contains every component for the select:
 
 Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
 
-#### Select.Value
+### Select.Value
 
 Extends [Paragraph](/docs/components/text), adding:
 
@@ -153,16 +158,16 @@ Extends [Paragraph](/docs/components/text), adding:
     {
       name: 'placeholder',
       type: 'string',
-      description: `Optional placeholder to show when no value selected`,
+      description: `Optional placeholder to show when no value selected.`,
     },
   ]}
 />
 
-#### SelectContent
+### Select.Content
 
 Main container for Select content, used to contain the up/down arrows, no API beyond children.
 
-#### Select.ScrollUpButton
+### Select.ScrollUpButton
 
 Inside Content first, displays when you can scroll up, stuck to the top.
 
@@ -183,19 +188,19 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrol
     {
       name: 'disableScroll',
       type: 'boolean',
-      description: `Removes ability to scroll and all style and functionality related to scrolling`,
+      description: `Removes ability to scroll and all style and functionality related to scrolling.`,
     },
     {
       name: 'unstyled',
       type: 'boolean',
-      description: `Removes all default styles`,
+      description: `Removes all default styles.`,
     },
   ]}
 />
 
 <Notice>
   Make sure to not pass `height` prop as that is managed internally because of
-  UX reasons and having a fixed height will break that behaviour
+  UX reasons and having a fixed height will break that behavior.
 </Notice>
 
 ### Select.Group
@@ -204,7 +209,7 @@ Extends [YStack](/docs/components/stacks). Use only when grouping together items
 
 ### Select.Label
 
-Extends [ListItem](/docs/components/list-item). Used to label Groups.
+Extends [SizableText](/docs/components/text). Used to label Groups. Includes size-based padding and minHeight for consistent appearance with other Select items.
 
 ### Select.Item
 
@@ -224,8 +229,7 @@ Extends [ListItem](/docs/components/list-item). Used to add selectable values to
       type: 'string',
       description: `Provide a value that will be passed on selection.`,
     },
-
-]}
+  ]}
 />
 
 ### Select.ItemText
@@ -261,35 +265,35 @@ Provides access to the underlying FocusScope component used by Select for focus 
       name: 'enabled',
       type: 'boolean',
       default: 'true',
-      description: `Whether focus management is enabled`,
+      description: `Whether focus management is enabled.`,
     },
     {
       name: 'loop',
       type: 'boolean',
       default: 'false',
-      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable`,
+      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable.`,
     },
     {
       name: 'trapped',
       type: 'boolean',
       default: 'false',
-      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus.`,
     },
     {
       name: 'focusOnIdle',
       type: 'boolean | number',
       default: 'false',
-      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations`,
+      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations.`,
     },
     {
       name: 'onMountAutoFocus',
       type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on mount. Can be prevented`,
+      description: `Event handler called when auto-focusing on mount. Can be prevented.`,
     },
     {
       name: 'onUnmountAutoFocus',
       type: '(event: Event) => void',
-      description: `Event handler called when auto-focusing on unmount. Can be prevented`,
+      description: `Event handler called when auto-focusing on unmount. Can be prevented.`,
     },
   ]}
 />

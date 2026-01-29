@@ -8,7 +8,7 @@ import {
   Button,
   Paragraph,
   Separator,
-  Stack,
+  View,
   ScrollView,
   XStack,
   YStack,
@@ -206,7 +206,7 @@ const ScrollViewWithFade = ({
   }
 
   return (
-    <Stack flex={1} position="relative">
+    <View flex={1} position="relative">
       {(status === 'fade-top' || status === 'fade-both') && (
         <LinearGradient
           pointerEvents="none"
@@ -266,7 +266,7 @@ const ScrollViewWithFade = ({
           {children}
         </YStack>
       </ScrollView>
-    </Stack>
+    </View>
   )
 }
 

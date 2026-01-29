@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
@@ -64,7 +64,7 @@
     "@tamagui/types": "workspace:*",
     "@tamagui/web": "workspace:*",
     "babel-literal-to-ast": "^2.1.0",
-    "browserslist": "^4.22.2",
+    "browserslist": "^4.28.1",
     "check-dependency-version-consistency": "^4.1.0",
     "esbuild": "^0.25.11",
     "esbuild-register": "^3.6.0",
@@ -78,7 +78,6 @@
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
-    "@expo/match-media": "^0.4.0",
     "@tamagui/build": "workspace:*",
     "@types/babel__core": "^7.20.5",
     "@types/find-root": "^1.1.2",

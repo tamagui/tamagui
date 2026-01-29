@@ -2,13 +2,13 @@ import { createAnimations } from '@tamagui/animations-motion'
 
 export const animationsMotion = createAnimations({
   '75ms': {
-    duration: 0.75,
+    duration: 75,
   },
   '100ms': {
-    duration: 1,
+    duration: 100,
   },
   '200ms': {
-    duration: 2,
+    duration: 200,
   },
   superBouncy: {
     damping: 5,
@@ -32,6 +32,10 @@ export const animationsMotion = createAnimations({
   slow: {
     damping: 15,
     stiffness: 40,
+  },
+  superLazy: {
+    damping: 20,
+    stiffness: 20,
   },
   quick: {
     damping: 20,

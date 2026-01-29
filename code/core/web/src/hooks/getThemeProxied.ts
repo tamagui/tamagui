@@ -52,6 +52,7 @@ type ThemeGettable<Val> = Val & {
 const cache: Map<ThemeParsed, ThemeProxied> = new Map()
 
 let curKeys: MutableRefObject<Set<string> | null>
+let curSchemeKeys: MutableRefObject<Set<string> | null>
 let curProps: UseThemeWithStateProps
 let curState: ThemeState | null
 
@@ -61,13 +62,15 @@ export function getThemeProxied(
   // underscore to prevent accidental usage below
   _props: UseThemeWithStateProps,
   _state: ThemeState | null,
-  _keys: MutableRefObject<Set<string> | null>
+  _keys: MutableRefObject<Set<string> | null>,
+  _schemeKeys?: MutableRefObject<Set<string> | null>
 ): ThemeProxied {
   if (!_state?.theme) {
     return emptyObject
   }
 
   curKeys = _keys
+  curSchemeKeys = _schemeKeys!
   curProps = _props
   curState = _state
 
@@ -81,14 +84,26 @@ export function getThemeProxied(
 
   const config = getConfig()
 
-  function track(key: string) {
+  function track(key: string, schemeOptimized = false) {
     if (!curKeys) return
     if (!curKeys.current) {
       curKeys.current = new Set()
     }
     curKeys.current.add(key)
+
+    // track scheme-optimized keys separately so we know if a scheme-only
+    // change can skip re-render (when all accessed keys use DynamicColorIOS)
+    if (schemeOptimized && curSchemeKeys) {
+      if (!curSchemeKeys.current) {
+        curSchemeKeys.current = new Set()
+      }
+      curSchemeKeys.current.add(key)
+    }
+
     if (process.env.NODE_ENV === 'development' && curProps.debug) {
-      console.info(` 🎨 useTheme() tracking new key: ${key}`, curKeys)
+      console.info(
+        ` 🎨 useTheme() tracking key: ${key} schemeOptimized=${schemeOptimized}`
+      )
     }
   }
 
@@ -99,8 +114,8 @@ export function getThemeProxied(
         get val() {
           // when they touch the actual value we only track it if its a variable (web), its ignored!
           if (!globalThis.tamaguiAvoidTracking) {
-            // always track .val
-            track(key)
+            // always track .val - not scheme optimized since they're getting raw value
+            track(key, false)
           }
           return value.val
         },
@@ -111,16 +126,25 @@ export function getThemeProxied(
           const { name, scheme } = curState
 
           if (process.env.TAMAGUI_TARGET === 'native') {
-            // ios can avoid re-rendering in some cases when we are using a root light/dark
-            // disabled in cases where we have animations or when scheme changes from parent (isInverse)
+            // ios can avoid re-rendering for scheme changes (light↔dark) when using DynamicColorIOS
+            // this does NOT work for sub-theme changes (red→blue) or when scheme inverses from parent
+            const fastSchemeChange = getSetting('fastSchemeChange')
+            const rootMatchesSystem = doesRootSchemeMatchSystem()
             const shouldOptimize =
               scheme &&
               platform !== 'web' &&
               isIos &&
               !curProps.deopt &&
               !curState.isInverse &&
-              getSetting('fastSchemeChange') &&
-              doesRootSchemeMatchSystem()
+              fastSchemeChange &&
+              rootMatchesSystem
+
+            if (process.env.NODE_ENV === 'development' && curProps.debug === 'verbose') {
+              console.info(
+                ` 🎨 useTheme().get(${key}) theme=${name} scheme=${scheme}`,
+                `\n   shouldOptimize=${shouldOptimize} (iOS=${isIos} deopt=${curProps.deopt} isInverse=${curState.isInverse} fastScheme=${fastSchemeChange} rootMatch=${rootMatchesSystem})`
+              )
+            }
 
             if (shouldOptimize) {
               const oppositeScheme = scheme === 'dark' ? 'light' : 'dark'
@@ -128,25 +152,37 @@ export function getThemeProxied(
               const color = getVariable(config.themes[name]?.[key])
               const oppositeColor = getVariable(config.themes[oppositeName]?.[key])
 
+              if (
+                process.env.NODE_ENV === 'development' &&
+                curProps.debug === 'verbose'
+              ) {
+                console.info(
+                  ` 🎨 useTheme().get(${key}) using DynamicColorIOS`,
+                  `\n   color=${color} oppositeColor=${oppositeColor}`
+                )
+              }
+
               const dynamicVal = getDynamicVal({
                 scheme,
                 val: color,
                 oppositeVal: oppositeColor,
               })
 
+              // track as scheme-optimized - can skip re-render for scheme-only changes
+              track(key, true)
+
               return dynamicVal
             }
 
             if (process.env.NODE_ENV === 'development' && curProps.debug) {
-              console.info(` 🎨 useTheme() tracking new key because of: 
-                not web: ${platform !== 'web'}
-                isIOS: ${isIos}
-                deopt: ${curProps.deopt}
-                fastScheme: ${getSetting('fastSchemeChange')}
-              `)
+              console.info(
+                ` 🎨 useTheme().get(${key}) tracking key (not optimizing)`,
+                `\n   platform=${platform} isIOS=${isIos} deopt=${curProps.deopt} fastScheme=${fastSchemeChange}`
+              )
             }
 
-            track(key)
+            // not scheme-optimized
+            track(key, false)
           }
 
           return outVal

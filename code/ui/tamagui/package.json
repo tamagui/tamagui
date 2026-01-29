@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
@@ -85,18 +85,6 @@
       "module": "./dist/esm/linear-gradient.mjs",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs"
-    },
-    "./setup-native-portal": {
-      "react-native": {
-        "types": "./types/setup-native-portal.d.ts",
-        "module": "./dist/esm/setup-native-portal.js",
-        "import": "./dist/esm/setup-native-portal.js",
-        "require": "./dist/cjs/setup-native-portal.js"
-      },
-      "types": "./types/setup-native-portal.d.ts",
-      "module": "./dist/esm/setup-native-portal.mjs",
-      "import": "./dist/esm/setup-native-portal.mjs",
-      "require": "./dist/cjs/setup-native-portal.cjs"
     }
   },
   "dependencies": {
@@ -113,6 +101,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/dialog": "workspace:*",
+    "@tamagui/element": "workspace:*",
     "@tamagui/elements": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/focusable": "workspace:*",

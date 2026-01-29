@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-menu",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -59,13 +59,6 @@
     "@tamagui/web": "workspace:*",
     "tamagui": "workspace:*"
   },
-  "optionalDependencies": {
-    "@react-native-menu/menu": "^2.0.0",
-    "react-native-ios-context-menu": "^3.2.1",
-    "react-native-ios-utilities": "^5.2.0",
-    "sf-symbols-typescript": "*",
-    "zeego": "^3.0.0"
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
@@ -76,7 +69,29 @@
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
+    "@react-native-menu/menu": "^2.0.0",
     "react": ">=19",
-    "react-native": "0.81.5"
+    "react-native": "*",
+    "react-native-ios-context-menu": "^3.2.1",
+    "react-native-ios-utilities": "^5.2.0",
+    "sf-symbols-typescript": "*",
+    "zeego": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@react-native-menu/menu": {
+      "optional": true
+    },
+    "react-native-ios-context-menu": {
+      "optional": true
+    },
+    "react-native-ios-utilities": {
+      "optional": true
+    },
+    "sf-symbols-typescript": {
+      "optional": true
+    },
+    "zeego": {
+      "optional": true
+    }
   }
 }

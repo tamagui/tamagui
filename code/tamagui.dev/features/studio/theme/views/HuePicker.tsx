@@ -1,6 +1,6 @@
 import { hsla } from 'color2k'
 import { memo, useState } from 'react'
-import { Slider, Stack, XGroup, XStack, YStack, useDebounce, useEvent } from 'tamagui'
+import { Slider, View, XGroup, XStack, YStack, useDebounce, useEvent } from 'tamagui'
 
 export const HuePicker = memo(
   ({ value = 0, onChange }: { value: number; onChange: (next: number) => void }) => {
@@ -10,7 +10,7 @@ export const HuePicker = memo(
     return (
       <XStack gap="$4" items="center">
         <XGroup>
-          <Stack width="$2" height="$2" overflow="hidden">
+          <View width="$2" height="$2" overflow="hidden">
             <YStack
               select="none"
               pointerEvents="none"
@@ -21,7 +21,7 @@ export const HuePicker = memo(
             >
               <YStack fullscreen bg={hsla(cur, 0.5, 0.5, 1) as any} />
             </YStack>
-          </Stack>
+          </View>
         </XGroup>
 
         <XStack items="center" gap="$4" height="$3">

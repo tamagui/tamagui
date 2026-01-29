@@ -46,6 +46,9 @@ export declare function setupSignalHandlers(metro: MetroProcess): void;
  * Run a function with Metro bundler, ensuring proper cleanup.
  * This is a convenience wrapper that handles starting Metro, waiting for it,
  * pre-warming the bundle, and cleanup.
+ *
+ * If Metro is already running (e.g., in another terminal), it will be reused
+ * and not killed after the tests complete.
  */
 export declare function withMetro<T>(platform: Platform, fn: () => Promise<T>): Promise<T>;
 //# sourceMappingURL=metro.d.ts.map

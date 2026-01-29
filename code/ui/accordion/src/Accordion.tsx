@@ -2,7 +2,7 @@ import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/core'
+import type { GetProps, GetRef, TamaguiElement } from '@tamagui/core'
 import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
@@ -227,7 +227,7 @@ const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext }
   createStyledContext<AccordionImplContextValue>()
 
 type AccordionImplElement = TamaguiElement
-type PrimitiveDivProps = GetProps<typeof Stack>
+type PrimitiveDivProps = GetProps<typeof View>
 interface AccordionImplProps extends PrimitiveDivProps {
   /**
    * Whether or not an accordion is disabled from user interaction.
@@ -579,16 +579,27 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
 const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
-  const [height, setHeight] = React.useState(0)
+  const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)
+  const hasMeasured = measuredHeight > 0
+
+  // when open and not measured yet, use auto so SSR shows content
+  // once measured, use numeric height for animations
+  const height = itemContext.open ? (hasMeasured ? measuredHeight : 'auto') : 0
+
+  // for SSR: when open but not yet measured, use static positioning so content
+  // contributes to parent height. after measurement, use absolute for animations.
+  const shouldAbsolutePosition = hasMeasured || !itemContext.open
 
   return (
-    <View ref={ref} height={itemContext.open ? height : 0} position="relative" {...rest}>
+    <View ref={ref} height={height} position="relative" {...rest}>
       <View
-        position="absolute"
-        width="100%"
+        position={shouldAbsolutePosition ? 'absolute' : 'relative'}
+        top={shouldAbsolutePosition ? 0 : undefined}
+        left={shouldAbsolutePosition ? 0 : undefined}
+        right={shouldAbsolutePosition ? 0 : undefined}
         onLayout={({ nativeEvent }) => {
-          if (nativeEvent.layout.height) {
-            setHeight(nativeEvent.layout.height)
+          if (nativeEvent.layout.height && nativeEvent.layout.height !== measuredHeight) {
+            setMeasuredHeight(nativeEvent.layout.height)
           }
         }}
       >

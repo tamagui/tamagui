@@ -12,11 +12,11 @@ export function SliderDemo() {
 
 function SimpleSlider({ children, ...props }: SliderProps) {
   return (
-    <Slider theme="surface2" defaultValue={[50]} max={100} step={1} {...props}>
+    <Slider defaultValue={[50]} max={100} step={1} {...props}>
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb theme="accent" size="$2" index={0} circular />
+      <Slider.Thumb theme="accent" size={30} borderRadius={100} />
       {children}
     </Slider>
   )

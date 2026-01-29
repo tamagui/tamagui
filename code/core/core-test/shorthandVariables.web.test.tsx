@@ -1,23 +1,24 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { Stack, createTamagui, StyleObjectValue } from '../web/src'
+import { View, createTamagui, StyleObjectValue } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
 })
 
-// Helper to get boxShadow value from either style (no plugin) or rulesToInsert (with plugin)
-function getBoxShadowValue(styles: ReturnType<typeof simplifiedGetSplitStyles>): string | undefined {
-  // Check style first (when not using tamagui plugin/CSS extraction)
-  if (styles.style?.boxShadow) {
-    return styles.style.boxShadow as string
+// helper to get style value from either style object or rulesToInsert
+function getStyleValue(
+  styles: ReturnType<typeof simplifiedGetSplitStyles>,
+  prop: string
+): string | undefined {
+  if (styles.style?.[prop]) {
+    return styles.style[prop] as string
   }
-  // Check rulesToInsert (when using tamagui plugin with CSS extraction)
   if (styles.rulesToInsert) {
     const rule = Object.values(styles.rulesToInsert).find(
-      (r: any) => r[0] === 'boxShadow'
+      (r: any) => r[0] === prop
     ) as any
     return rule?.[StyleObjectValue]
   }
@@ -25,66 +26,94 @@ function getBoxShadowValue(styles: ReturnType<typeof simplifiedGetSplitStyles>):
 }
 
 describe('shorthand variables - web', () => {
+  // boxShadow/filter/backgroundImage support embedded $tokens which resolve to CSS vars
+
   test('boxShadow with $variable resolves to CSS var', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $white',
     })
-    const value = getBoxShadowValue(styles)
-    expect(value).toBeDefined()
-    // Should contain CSS var reference
-    expect(value).toContain('var(--')
-    expect(value).toContain('0 0 10px')
+    const value = getStyleValue(styles, 'boxShadow')
+
+    // CSS var format is --c-white (c- prefix for color tokens)
+    expect(value).toMatch(/^0 0 10px var\(--.*white.*\)$/)
   })
 
-  test('boxShadow with color token resolves', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
-      boxShadow: '0 0 10px $black',
-    })
-    const value = getBoxShadowValue(styles)
-    expect(value).toBeDefined()
-    expect(value).toContain('var(--')
-  })
-
-  test('boxShadow with multiple variables resolves all', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+  test('boxShadow with multiple tokens resolves all to CSS vars', () => {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $white, 0 0 20px $black',
     })
-    const value = getBoxShadowValue(styles)
-    expect(value).toBeDefined()
-    // Both variables should be resolved
-    expect(value!.match(/var\(--/g)?.length).toBe(2)
+    const value = getStyleValue(styles, 'boxShadow')
+
+    expect(value).toMatch(/var\(--.*white/)
+    expect(value).toMatch(/var\(--.*black/)
+    expect(value?.match(/var\(--/g)?.length).toBe(2)
   })
 
-  test('boxShadow without variables passes through unchanged', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+  test('boxShadow without variables passed through unchanged', () => {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px red',
     })
-    const value = getBoxShadowValue(styles)
+    const value = getStyleValue(styles, 'boxShadow')
+
     expect(value).toBe('0 0 10px red')
   })
 
-  // Note: CSS border shorthand (e.g., "1px solid $red") works on web but
-  // doesn't expand to individual props - it's passed through as a CSS value
-  // border shorthand token resolution was removed - use borderColor/borderWidth instead
-  test.skip('border with $variable resolves correctly (web-only)', () => {})
-  test.skip('borderTop with $variable resolves correctly (web-only)', () => {})
-
-  test('unresolvable $variable stays as-is', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+  test('boxShadow with unresolvable $variable keeps token string', () => {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $nonexistent',
     })
-    const value = getBoxShadowValue(styles)
-    expect(value).toBeDefined()
-    // Unresolved variable stays as the original token string
-    expect(value).toContain('$nonexistent')
+    const value = getStyleValue(styles, 'boxShadow')
+
+    expect(value).toBe('0 0 10px $nonexistent')
   })
 
-  test('$variable.with.dots resolves correctly', () => {
-    const styles = simplifiedGetSplitStyles(Stack, {
+  test('boxShadow with dotted token path resolves', () => {
+    const styles = simplifiedGetSplitStyles(View, {
       boxShadow: '0 0 10px $color.white',
     })
-    const value = getBoxShadowValue(styles)
-    expect(value).toBeDefined()
-    expect(value).toContain('var(--')
+    const value = getStyleValue(styles, 'boxShadow')
+
+    // dotted paths like $color.white resolve to the token value
+    expect(value).toMatch(/var\(--.*white/)
+  })
+
+  // backgroundImage - supports linear-gradient with tokens
+  test('backgroundImage with $variable resolves to CSS var', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      backgroundImage: 'linear-gradient(to bottom, $white, $black)',
+    })
+    const value = getStyleValue(styles, 'backgroundImage')
+
+    expect(value).toMatch(
+      /linear-gradient\(to bottom, var\(--.*white.*\), var\(--.*black.*\)\)/
+    )
+  })
+
+  test('backgroundImage with angle and multiple color stops', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      backgroundImage: 'linear-gradient(45deg, $black 0%, $white 50%, $black 100%)',
+    })
+    const value = getStyleValue(styles, 'backgroundImage')
+
+    expect(value).toMatch(/linear-gradient\(45deg/)
+    expect(value?.match(/var\(--/g)?.length).toBe(3)
+  })
+
+  test('backgroundImage without variables passed through unchanged', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      backgroundImage: 'linear-gradient(to bottom, red, blue)',
+    })
+    const value = getStyleValue(styles, 'backgroundImage')
+
+    expect(value).toBe('linear-gradient(to bottom, red, blue)')
+  })
+
+  test('backgroundImage with unresolvable $variable keeps token string', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      backgroundImage: 'linear-gradient($nonexistent, $white)',
+    })
+    const value = getStyleValue(styles, 'backgroundImage')
+
+    expect(value).toMatch(/linear-gradient\(\$nonexistent, var\(--.*white/)
   })
 })

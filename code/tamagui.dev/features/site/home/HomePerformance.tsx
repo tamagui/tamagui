@@ -24,7 +24,7 @@ export function HomePerformance() {
     <ContainerLarge position="relative">
       <YStack items="center" z={1} gap="$4">
         <YStack items="center" gap="$2">
-          <HomeH2 size="$10" maxW={500} ref={ref}>
+          <HomeH2 size="$10" maxW={500} ref={ref as any}>
             Automatically fast
           </HomeH2>
           <HomeH3>
@@ -52,7 +52,7 @@ export function HomePerformance() {
             size="$2"
             $sm={{ display: 'none' }}
           >
-            Lower is better. As of February 2022.
+            Lower is better.
           </Paragraph>
 
           {show && <BenchmarkChartWeb />}

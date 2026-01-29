@@ -1,9 +1,9 @@
-import { SandboxHeading, Stack } from '@tamagui/sandbox-ui'
+import { SandboxHeading, View } from '@tamagui/sandbox-ui'
 
 export const CodeExamplesInput = (props) => (
-  <Stack px="$2" width={550} $gtSm={{ px: '$6' }}>
+  <View px="$2" width={550} $gtSm={{ px: '$6' }}>
     <SandboxHeading size={props.big ? 'large' : 'small'}>
       Lorem ipsum dolor.
     </SandboxHeading>
-  </Stack>
+  </View>
 )

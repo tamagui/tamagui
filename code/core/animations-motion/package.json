@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-motion",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "source": "src/index.ts",
   "license": "MIT",
@@ -35,7 +35,7 @@
     "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "motion": "^12.23.26"
+    "motion": "^12.29.0"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

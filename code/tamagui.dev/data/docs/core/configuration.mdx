@@ -8,15 +8,10 @@ animations, shorthands, and settings.
 
 First, create a `tamagui.config.ts` file.
 
-We recommend
-[starting with our preset configuration, `@tamagui/config`](/docs/core/config-v4),
-the current version being `@tamagui/config/v4`:
-
 <Notice theme="blue">
-  **v5 config beta**: `@tamagui/config/v5` is now available in beta. It improves
-  themes and aligns default style values to modern React Native. Note that it
-  may not work perfectly with Bento or some docs examples until we move those to
-  v5 in the next major release.
+  We recommend starting with [`@tamagui/config/v5`](/docs/core/config-v5), our
+  preset configuration with sensible defaults, Tailwind-aligned shorthands, and
+  a complete theme system.
 </Notice>
 
 ```bash
@@ -24,7 +19,7 @@ npm install @tamagui/config
 ```
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import { createTamagui } from 'tamagui'
 
 export const config = createTamagui({
@@ -44,7 +39,7 @@ declare module 'tamagui' {
 
 We find most people are best off with this as it saves a lot of time, shares
 shorthands with Tailwind, and has a lot of refinement. For more on our default
-configuration, go to [the next page](/docs/core/config-v4).
+configuration, go to [the next page](/docs/core/config-v5).
 
 Here's an example of a stripped down configuration to get a feel for the most
 common concepts:
@@ -70,11 +65,11 @@ export const config = createTamagui({
   themes: {
     light: {
       bg: '#f2f2f2',
-      color: '#fff',
+      color: '#000',
     },
     dark: {
       bg: '#111',
-      color: '#000',
+      color: '#fff',
     },
     // sub-themes are a powerful feature of tamagui, explained later in the docs
     // user theme like <Theme name="dark"><Theme name="blue">
@@ -249,7 +244,7 @@ const config = createTamagui({
 
   // Change the default props for any styled() component with a name.
   // We are discouraging the use of this and have deprecated it, prefer to use
-  // styled() on any component to change it's styles.
+  // styled() on any component to change its styles.
   defaultProps: {
     Text: {
       color: 'green',
@@ -361,7 +356,7 @@ export default function App() {
 
 By default, Tamagui injects the CSS for your configuration on the client-side
 into `document.head`, but you probably will want something better for
-production. To do this, pass true to `disableInjectCSS` on `TamaguProvider`, and
+production. To do this, pass true to `disableInjectCSS` on `TamaguiProvider`, and
 then do one of the following three options:
 
 If your framework has server-side layouts, you can just render it inline:
@@ -581,10 +576,10 @@ const config = createTamagui({
 })
 ```
 
-Passing tokens to themes will be smart about sharing CSS, but is not requred.
+Passing tokens to themes will be smart about sharing CSS, but is not required.
 
 You can then access theme values for any style value, either through styled() or
-through a Styled Compoent like View or Text:
+through a Styled Component like View or Text:
 
 ```tsx
 const P = styled(Text, {
@@ -842,23 +837,38 @@ color.
 
 ### Environment Settings
 
-A few things in Tamagui can be configuring via environment variables. Doing it
-this way lets us avoid extra code being shipped to the client, as we your
-bundler can tree shake the unused code easily when using envronment variables.
+A few things in Tamagui can be configured via environment variables. Doing it
+this way lets us avoid extra code being shipped to the client, as your
+bundler can tree shake the unused code easily when using environment variables.
 You should be sure to either use the Vite or Webpack Tamagui plugins, or
 configure your bundler to define the environment variables for tree shaking. On
 native, it is not a concern as the extra size is minimal.
 
-#### React 19
+## Tree Shaking Themes (Production Optimization)
 
-We have early support for React 19, which mostly does a single thing: it moves
-our runtime CSS insertion from
-[`useInsertionEffect`](https://react.dev/reference/react/useInsertionEffect) to
-using inline `<style />` tags. React 19 supports hoisting and de-duplicating
-style tags, which simplifies our implementation and should improve performance.
+Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS
+variables, you can remove the themes JS from your client bundle for better
+Lighthouse scores.
 
-To enable set the `TAMAGUI_REACT_19` variable to `"1"`:
+This works because Tamagui generates CSS variables for all theme values. On the
+client, it reads these from the DOM instead of needing the JS object.
 
+### Setup
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig, themes } from '@tamagui/config/v5'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  // only load themes on server - client hydrates from CSS
+  // for non-One Vite apps, use import.meta.env.SSR instead
+  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+})
 ```
-TAMAGUI_REACT_19=1
-```
+
+<Notice theme="green">
+  This optimization requires server-side rendering. The CSS must be rendered on
+  the server for the client to hydrate from it. Make sure you're using
+  `config.getCSS()` or the bundler plugin's `outputCSS` option.
+</Notice>

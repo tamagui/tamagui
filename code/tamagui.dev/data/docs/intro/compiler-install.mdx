@@ -13,8 +13,8 @@ See the [Benchmarks](/docs/intro/benchmarks) or a more
 work at compile-time and runtime, so installing the compiler is optional, and in
 fact we recommend only setting it up once you're ready for production.
 
-The compiler uses Babel to analyze JSX and `styled` functions, then attempts
-statically analyze them and optimize them down to platform-native primitives.
+The compiler uses Babel to analyze JSX and `styled` functions, then attempts to
+statically analyze and optimize them down to platform-native primitives.
 The end result is less abstraction - like a `div` on web, or plain React Native
 `View` on native:
 
@@ -149,10 +149,10 @@ export default defineConfig({
 
 ### Next.js
 
-See the ([guide](/docs/guides/next-js)) for more complete setup.
+See the [guide](/docs/guides/next-js) for more complete setup.
 
 Add `@tamagui/next-plugin` and configure your `next.config.js`. Here we show a
-fuller scope of the options
+fuller scope of the options:
 
 ```js
 // note next-compose-plugins somewhat unmaintained
@@ -485,6 +485,14 @@ All compiler plugins accept the same options:
       default: 'false',
       description:
         '(Experimental) Enables further extracting of any styled component, even if not in your components. See below for more information.',
+    },
+    {
+      name: 'outputCSS',
+      required: false,
+      type: 'string',
+      typeSimple: 'enum',
+      description:
+        'Path to output extracted CSS. When set, the compiler automatically sets TAMAGUI_DID_OUTPUT_CSS which tree-shakes all runtime CSS generation code from your bundle (~6KB gzipped savings).',
     },
   ]}
 />

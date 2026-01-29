@@ -7,12 +7,12 @@ const ROOT = join(__dirname, '..')
 const SRC = join(ROOT, 'src/TestComponent.tsx')
 const CSS = join(ROOT, 'src/_TestComponent.css')
 
-const ORIGINAL_CONTENT = `import { Stack, Text, styled } from '@tamagui/core'
+const ORIGINAL_CONTENT = `import { View, Text, styled } from '@tamagui/core'
 import { useState } from 'react'
 
-const YStack = styled(Stack, { flexDirection: 'column' })
-const Button = styled(Stack, {
-  tag: 'button',
+const YStack = styled(View, { flexDirection: 'column' })
+const Button = styled(View, {
+  render: 'button',
   padding: '$3',
   backgroundColor: '$blue10',
   borderRadius: '$4',

@@ -17,7 +17,7 @@ import { optionValues } from './demoOptions'
 export const StudioPreviewComponentsBar = memo(({ scrollView }: { scrollView: any }) => {
   return (
     <XStack z={1000} mt={-10} data-tauri-drag-region className="all ease-in ms300">
-      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$3">
+      <XStack flexWrap="nowrap" flex={1} flexBasis="auto" gap="$3">
         <TooltipGroup delay={{ open: 0, close: 300 }}>
           <BorderRadiusInput />
 
@@ -63,8 +63,8 @@ export function BorderRadiusInput() {
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
+        flexDirection="row"
         type={'single'}
-        size="$2"
         value={store.demosOptions.borderRadius?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -130,8 +130,8 @@ export function BorderWidthInput() {
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
+        flexDirection="row"
         type={'single'}
-        size="$2"
         value={store.demosOptions.borderWidth?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -184,8 +184,8 @@ export function FontFamilyInput() {
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
+        flexDirection="row"
         type={'single'}
-        size="$2"
         value={store.demosOptions.headingFontFamily?.toString() ?? ''}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -227,8 +227,8 @@ export function FillStyleInput() {
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
+        flexDirection="row"
         type={'single'}
-        size="$2"
         value={store.demosOptions.fillStyle?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -266,8 +266,8 @@ export function ElevationInput() {
       <ToggleGroup
         disableDeactivation
         orientation="horizontal"
+        flexDirection="row"
         type="single"
-        size="$2"
         value={store.demosOptions.elevation?.toString() ?? ''}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -321,8 +321,8 @@ export function SpacingInput() {
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
+        flexDirection="row"
         type={'single'}
-        size="$2"
         value={store.demosOptions.spacing?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -385,8 +385,8 @@ export function TextAccentInput() {
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
+        flexDirection="row"
         type={'single'}
-        size="$2"
         value={store.demosOptions.textAccent?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -423,8 +423,8 @@ export function BackgroundAccentInput() {
       <ToggleGroup
         disableDeactivation
         orientation={'horizontal'}
+        flexDirection="row"
         type={'single'}
-        size="$2"
         value={store.demosOptions.backgroundAccent?.toString()}
         onValueChange={(value) => {
           store.demosOptions = {
@@ -459,7 +459,6 @@ export function InverseAccentInput() {
   return (
     <XStack gap="$3" items="center">
       <Label
-        size="$2"
         color="$color10"
         htmlFor="switch-accent-switch"
         onPress={() => {

@@ -1,4 +1,4 @@
-import type { GetProps, NativeValue, SizeTokens, StackProps } from '@tamagui/core';
+import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/core';
 import type { SwitchExtraProps as HeadlessSwitchExtraProps } from '@tamagui/switch-headless';
 import type { SwitchProps as NativeSwitchProps, ViewStyle } from 'react-native';
 import type { SwitchThumb } from './Switch';
@@ -6,7 +6,7 @@ export type SwitchSharedProps = {
     size?: SizeTokens | number;
     unstyled?: boolean;
 };
-export type SwitchBaseProps = StackProps & SwitchSharedProps;
+export type SwitchBaseProps = ViewProps & SwitchSharedProps;
 export type SwitchFrameActiveStyleProps = {
     activeStyle?: ViewStyle;
     activeTheme?: string | null;
@@ -19,7 +19,7 @@ export type SwitchExtraProps = HeadlessSwitchExtraProps & {
     nativeProps?: NativeSwitchProps;
 } & SwitchFrameActiveStyleProps;
 export type SwitchProps = SwitchBaseProps & SwitchExtraProps;
-export type SwitchThumbBaseProps = StackProps;
+export type SwitchThumbBaseProps = ViewProps;
 export type SwitchThumbProps = SwitchThumbBaseProps & SwitchSharedProps & SwitchThumbActiveStyleProps;
 export type SwitchComponent = (props: any) => any;
 export type SwitchThumbComponent = (props: any) => any;

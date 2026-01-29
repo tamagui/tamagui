@@ -17,17 +17,14 @@ export const Container = styled(YStack, {
 
   $gtSm: {
     maxW: 760,
-    pr: '$2',
   },
 
   $gtMd: {
-    maxW: 760,
-    pr: '$2',
+    maxW: 810,
   },
 
   $gtLg: {
-    maxW: 840,
-    pr: '$10',
+    maxW: 810,
   },
 
   variants,

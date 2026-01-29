@@ -1,6 +1,6 @@
 ---
 title: Sheet
-description: A bottom sheet that animates.
+description: A bottom sheet that animates
 name: sheet
 component: Sheet
 package: sheet
@@ -36,7 +36,7 @@ npm install @tamagui/sheet
   For native apps, we recommend [setting up native portals](/docs/components/portal#native-portal-setup-recommended) to preserve React context inside Sheet content.
 </Notice>
 
-### Anatomy
+## Anatomy
 
 ```tsx
 import { Sheet } from 'tamagui' // or '@tamagui/sheet'
@@ -50,9 +50,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### &lt;Sheet /&gt;
+### Sheet
 
 Contains every component for the sheet.
 
@@ -160,31 +160,89 @@ Contains every component for the sheet.
   ]}
 />
 
-#### &lt;Overlay /&gt;
+### Sheet.Overlay
 
 Displays behind Frame. Extends [YStack](/docs/components/stacks).
 
-#### &lt;Frame /&gt;
+### Sheet.Frame
 
 Contains the content. Extends [YStack](/docs/components/stacks).
 
-#### &lt;Handle /&gt;
+### Sheet.Handle
 
-Shows a handle above the frame by default, on tap it will cycle between
-`snapPoints` but this can be overridden with `onPress`.
+Shows a handle above the frame by default. On tap, it will cycle between
+`snapPoints`, but this can be overridden with `onPress`.
 
 Extends [XStack](/docs/components/stacks).
 
-#### &lt;ScrollView /&gt;
+### Sheet.ScrollView
 
 Allows scrolling within Sheet. Extends
-[Scrollview](/docs/components/scroll-view).
+[ScrollView](/docs/components/scroll-view).
 
-### Notes
+## Native Gesture Handler Integration
+
+For the best gesture experience on iOS and Android, Sheet supports optional integration with `react-native-gesture-handler`. This provides:
+
+- **Smooth scroll-to-drag handoffs** - Seamlessly transition between scrolling content and dragging the sheet
+- **No gesture conflicts** - Sheet and ScrollView gestures coordinate properly
+- **Native-quality feel** - Matches the behavior of system sheets
+
+#### Setup
+
+1. Install `react-native-gesture-handler`:
+
+```bash
+npm install react-native-gesture-handler
+```
+
+2. Add the setup import to your app entry point (before any Tamagui imports):
+
+```tsx
+// App.tsx or index.js
+import '@tamagui/native/setup-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {/* Your app */}
+    </GestureHandlerRootView>
+  )
+}
+```
+
+That's it! Sheet will automatically detect and use the native gesture handler when available.
+
+#### Using Sheet.ScrollView
+
+When using scrollable content inside a Sheet, use `Sheet.ScrollView` for proper gesture coordination:
+
+```tsx
+<Sheet>
+  <Sheet.Handle />
+  <Sheet.Frame>
+    <Sheet.ScrollView>
+      {/* Scrollable content */}
+    </Sheet.ScrollView>
+  </Sheet.Frame>
+</Sheet>
+```
+
+This ensures:
+- Scrolling up at the top of content works naturally
+- Dragging down when scroll is at top drags the sheet
+- Direction changes mid-gesture work smoothly
+
+#### Without Gesture Handler
+
+If you don't set up `react-native-gesture-handler`, Sheet falls back to React Native's built-in `PanResponder`. This works well for basic use cases but has some limitations on iOS where scroll and pan gestures can occasionally conflict.
+
+## Notes
 
 For Android you need to manually re-propagate any context when using `modal`.
 This is because React Native doesn't support portals yet.
 
-### Native support
+## Native Support
 
 We've deprecated the `native` prop in favor of using Adapt.

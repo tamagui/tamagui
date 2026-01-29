@@ -1,8 +1,10 @@
-import { TamaguiLogo, ThemeTintAlt } from '@tamagui/logo'
-import { H2, H3, Paragraph, styled, XStack, YStack } from 'tamagui'
+import { TamaguiLogo } from '@tamagui/logo'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { H2, H3, Paragraph, styled, View, XStack, YStack } from 'tamagui'
 
+import { Card3D } from '~/components/Card3D'
+import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
-import { HighlightText } from './HighlightText'
 import { SubTitle } from '../../components/SubTitle'
 
 // One logo - based on takeout2 reference
@@ -83,31 +85,58 @@ const ZeroLogo = ({ size = 32 }: { size?: number }) => (
   </svg>
 )
 
+// Wrapper that adds glow effect to Card3D
+function GlowCard3D({
+  children,
+  glowColor,
+}: {
+  children: React.ReactNode
+  glowColor: string
+}) {
+  const isHydrated = useDidFinishSSR()
+
+  const cardGlow = useHoverGlow({
+    resist: 50,
+    size: 300,
+    strategy: 'blur',
+    blurPct: 60,
+    color: glowColor,
+    opacity: 0.3,
+    background: 'transparent',
+    style: {
+      transition: 'all ease-out 200ms',
+    },
+  })
+
+  return (
+    <View
+      ref={cardGlow.parentRef as any}
+      flex={1}
+      minW={260}
+      maxW={340}
+      $md={{ minW: 300, maxW: 360 }}
+      position="relative"
+    >
+      {isHydrated && <cardGlow.Component />}
+      <Card3D tiltDivisor={25}>{children}</Card3D>
+    </View>
+  )
+}
+
 const TechCard = styled(YStack, {
   bg: '$background02',
   rounded: '$8',
   p: '$6',
   borderWidth: 0.5,
-  borderColor: '$borderColor',
-  flex: 1,
-  minW: 260,
-  maxW: 340,
+  borderColor: 'transparent',
   cursor: 'pointer',
   overflow: 'hidden',
   position: 'relative',
-  style: {
-    transition: 'all 200ms ease',
-    backdropFilter: 'blur(12px)',
-  },
+  className: 'blur-12',
+  height: '100%',
 
   hoverStyle: {
     borderColor: '$color6',
-    y: -4,
-  },
-
-  $md: {
-    minW: 300,
-    maxW: 360,
   },
 })
 
@@ -138,6 +167,7 @@ const techStack = [
     Logo: TamaguiLogo,
     color: '$yellow10',
     bgColor: 'rgba(236, 210, 10, 0.1)',
+    glowColor: 'var(--yellow7)',
   },
   {
     name: 'One',
@@ -149,6 +179,7 @@ const techStack = [
     Logo: OneLogo,
     color: '$yellow10',
     bgColor: 'rgba(245, 202, 5, 0.1)',
+    glowColor: 'var(--yellow7)',
   },
   {
     name: 'Zero',
@@ -160,118 +191,95 @@ const techStack = [
     Logo: ZeroLogo,
     color: '$blue10',
     bgColor: 'rgba(59, 130, 246, 0.1)',
+    glowColor: 'var(--blue7)',
   },
 ]
 
 export function TakeoutTechStack() {
   return (
     <YStack gap="$6" py="$8" px="$4" maxW={1200} self="center" width="100%">
-      <YStack items="center" gap="$4">
+      <YStack items="center" gap="$4" px="$2">
         <H2
-          fontSize={32}
+          fontSize={28}
           fontWeight="700"
           text="center"
           color="$color12"
           style={{ lineHeight: '1.2' }}
-          $sm={{ fontSize: 40 }}
+          $gtSm={{ fontSize: 40 }}
         >
           Designed for moving fast
         </H2>
         <SubTitle maxW={680} text="center">
           Vibe coding works best when you're building on a solid base. Takeout combines
-          three libraries that solve the hardest problems in cross-platform development
+          three libraries that solve the hardest problems in cross-platform development,
           with a ton of AI agent harnessing.
         </SubTitle>
       </YStack>
 
       <XStack flexWrap="wrap" gap="$5" justify="center" $md={{ flexWrap: 'nowrap' }}>
         {techStack.map((tech) => (
-          <Link key={tech.name} href={tech.url as any} target="_blank">
-            <TechCard>
-              <LogoWrapper bg={tech.bgColor as any}>
-                <tech.Logo size={32} />
-              </LogoWrapper>
+          <GlowCard3D key={tech.name} glowColor={tech.glowColor}>
+            <Link href={tech.url as any} target="_blank">
+              <TechCard style={{ transformStyle: 'preserve-3d' }}>
+                <Card3D.Item translateZ={25}>
+                  <LogoWrapper bg={tech.bgColor as any}>
+                    <tech.Logo size={32} />
+                  </LogoWrapper>
+                </Card3D.Item>
 
-              <Badge bg={tech.bgColor as any} mb="$3">
-                <Paragraph fontSize={12} color={tech.color as any} fontWeight="600">
-                  {tech.badge}
-                </Paragraph>
-              </Badge>
+                <Card3D.Item translateZ={20}>
+                  <Badge bg={tech.bgColor as any} mb="$3">
+                    <Paragraph fontSize={12} color={tech.color as any} fontWeight="600">
+                      {tech.badge}
+                    </Paragraph>
+                  </Badge>
+                </Card3D.Item>
 
-              <H3
-                fontSize={18}
-                fontWeight="600"
-                color="$color12"
-                mb="$2"
-                style={{ lineHeight: '1.3' }}
-              >
-                {tech.name}
-              </H3>
+                <Card3D.Item translateZ={15}>
+                  <H3
+                    fontSize={18}
+                    fontWeight="600"
+                    color="$color12"
+                    mb="$2"
+                    style={{ lineHeight: '1.3' }}
+                  >
+                    {tech.name}
+                  </H3>
+                </Card3D.Item>
 
-              <Paragraph size="$5" color="$color10" mb="$4">
-                {tech.description}
-              </Paragraph>
+                <Card3D.Item translateZ={10}>
+                  <Paragraph size="$5" color="$color10" mb="$4">
+                    {tech.description}
+                  </Paragraph>
+                </Card3D.Item>
 
-              <XStack items="center" gap="$2" mt="auto">
-                <YStack width={6} height={6} rounded={999} bg="$green10" />
-                <Paragraph fontSize={12} color="$green10" fontWeight="600">
-                  {tech.highlight}
-                </Paragraph>
-              </XStack>
+                <Card3D.Item translateZ={30}>
+                  <XStack items="center" gap="$2" mt="auto">
+                    <YStack width={6} height={6} rounded={999} bg="$green10" />
+                    <Paragraph fontSize={12} color="$green10" fontWeight="600">
+                      {tech.highlight}
+                    </Paragraph>
+                  </XStack>
+                </Card3D.Item>
 
-              {/* decorative gradient orb */}
-              {/* <YStack
-                position="absolute"
-                t={-30}
-                r={-30}
-                width={100}
-                height={100}
-                rounded={999}
-                bg={tech.color as any}
-                opacity={0.06}
-              /> */}
-            </TechCard>
-          </Link>
+                {/* Decorative gradient orb per card */}
+                <YStack
+                  position="absolute"
+                  t={-40}
+                  r={-40}
+                  width={120}
+                  height={120}
+                  rounded={999}
+                  bg={tech.color as any}
+                  opacity={0.08}
+                  pointerEvents="none"
+                  style={{ filter: 'blur(40px)' }}
+                />
+              </TechCard>
+            </Link>
+          </GlowCard3D>
         ))}
       </XStack>
-
-      {/* <YStack gap="$4" mt="$6">
-        <Paragraph
-          fontSize={16}
-          fontWeight="600"
-          text="center"
-          color="$color11"
-          style={{ lineHeight: '1.4' }}
-        >
-          Plus everything else you need
-        </Paragraph>
-
-        <XStack flexWrap="wrap" gap="$3" justify="center" maxW={900} self="center">
-          {additionalTools.map((tool) => (
-            <YStack
-              key={tool.name}
-              bg="$color2"
-              px="$4"
-              py="$2.5"
-              rounded="$4"
-              borderWidth={1}
-              borderColor="$color4"
-            >
-              <Paragraph
-                fontSize={14}
-                color="$color12"
-                fontWeight="500"
-                style={{ lineHeight: '1.4' }}
-              >
-                {tool.name}
-              </Paragraph>
-              <Paragraph fontSize={12} color="$color10" style={{ lineHeight: '1.4' }}>
-                {tool.description}
-              </Paragraph>
-            </YStack>
-          ))}
-        </XStack>
-      </YStack> */}
     </YStack>
   )
 }

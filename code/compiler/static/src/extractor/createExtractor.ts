@@ -72,8 +72,7 @@ export function createExtractor(
   { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
   if (!process.env.TAMAGUI_TARGET) {
-    console.warn('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
-    process.exit(1)
+    throw new Error('Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
   }
 
   const INLINE_EXTRACTABLE = {
@@ -189,6 +188,7 @@ export function createExtractor(
       mediaQueryConfig,
       propMapper,
       proxyThemeVariables,
+      getDefaultProps,
       pseudoDescriptors,
     } = requireTamaguiCore(platform)
 
@@ -824,10 +824,20 @@ export function createExtractor(
 
         try {
           const { staticConfig } = component
-          const defaultProps = { ...(staticConfig.defaultProps || {}) }
+
+          const defaultProps = {
+            ...getDefaultProps(staticConfig),
+          }
           const variants = staticConfig.variants || {}
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
+
+          if (process.env.NODE_ENV === 'production') {
+            if (isTextView) {
+              // temporarily disabled - need to fix css nesting dix
+              return
+            }
+          }
 
           // find render="a" render="main" etc dom indicators
           let tagName = defaultProps.render ?? (isTextView ? 'span' : 'div')
@@ -851,7 +861,6 @@ export function createExtractor(
 
           const inlineProps = new Set([
             // adding some always inline props
-            'dataSet',
             ...(restProps.inlineProps || []),
             ...(staticConfig.inlineProps || []),
           ])

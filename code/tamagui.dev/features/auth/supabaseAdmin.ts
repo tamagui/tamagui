@@ -10,11 +10,29 @@ import type { Database } from '../supabase/types'
 const SUPA_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
 const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
-console.info(`Connecting to supabase: ${SUPA_URL} with key? ${!!SUPA_KEY}`)
-
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
-export const supabaseAdmin = createClient<Database>(SUPA_URL, SUPA_KEY)
+// lazy init to avoid errors in dev mode when key isn't set
+let _supabaseAdmin: ReturnType<typeof createClient<Database>> | null = null
+
+export const supabaseAdmin = new Proxy({} as ReturnType<typeof createClient<Database>>, {
+  get(_, prop) {
+    if (!_supabaseAdmin) {
+      if (!SUPA_KEY) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`supabaseAdmin: no SUPABASE_SERVICE_ROLE_KEY set, skipping in dev`)
+          // return a no-op proxy for dev
+          return () =>
+            Promise.resolve({ data: null, error: new Error('No supabase key in dev') })
+        }
+        throw new Error('supabaseKey is required')
+      }
+      console.info(`Connecting to supabase: ${SUPA_URL}`)
+      _supabaseAdmin = createClient<Database>(SUPA_URL, SUPA_KEY)
+    }
+    return (_supabaseAdmin as any)[prop]
+  },
+})
 
 const toDateTime = (secs: number) => {
   const t = new Date('1970-01-01T00:30:00Z') // Unix epoch start.

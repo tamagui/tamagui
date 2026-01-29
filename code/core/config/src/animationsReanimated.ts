@@ -17,6 +17,10 @@ export const animationsReanimated = createAnimations({
     type: 'timing',
     duration: 200,
   },
+  '250ms': {
+    type: 'timing',
+    duration: 250,
+  },
   superBouncy: {
     damping: 5,
     mass: 0.7,

@@ -135,4 +135,4 @@ export const styledBody = [
 
     validStyles: Text.staticConfig.validStyles,
   },
-]
+] as const

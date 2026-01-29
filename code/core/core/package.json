@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "source": "src/index.tsx",
   "main": "dist/cjs",
@@ -36,7 +36,6 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/react-native-use-pressable": "workspace:*",
-    "@tamagui/react-native-use-responder-events": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/web": "workspace:*"

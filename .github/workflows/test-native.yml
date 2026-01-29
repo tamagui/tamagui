@@ -34,7 +34,7 @@ jobs:
     name: iOS Detox Tests
     needs: build-ios
     runs-on: macos-14
-    timeout-minutes: 45
+    timeout-minutes: 60
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -125,6 +125,7 @@ jobs:
           # Point Detox to the cached app (CI uses different path than local dev)
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
         run: |
+          # Note: parallel workers require multiple simulators, keeping single worker for now
           bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 2
 
       - name: Report iOS Test Status
@@ -155,6 +156,16 @@ jobs:
       android-path: code/kitchen-sink/android
       fingerprint: ${{ steps.calculate-fingerprint.outputs.fingerprint || steps.get-fingerprint-from-cache.outputs.fingerprint }}
     steps:
+      - name: Free Disk Space
+        run: |
+          # Android builds with debug symbols need significant disk space
+          # Remove unused tools to free ~10GB+
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android/sdk/ndk
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h /
+
       - name: Checkout
         uses: actions/checkout@v4
 

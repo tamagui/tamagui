@@ -1,30 +1,26 @@
 export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
     '0ms': {
-        type: "tween";
         duration: number;
     };
     '30ms': {
-        type: "tween";
         duration: number;
     };
     '50ms': {
-        type: "tween";
         duration: number;
     };
     '75ms': {
-        type: "tween";
         duration: number;
     };
     '100ms': {
-        type: "tween";
         duration: number;
     };
     '200ms': {
-        type: "tween";
+        duration: number;
+    };
+    '250ms': {
         duration: number;
     };
     '300ms': {
-        type: "tween";
         duration: number;
     };
     superBouncy: {
@@ -104,11 +100,13 @@ export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
         stiffness: number;
     };
     quickest: {
+        type: "spring";
         damping: number;
         mass: number;
         stiffness: number;
     };
     quickestLessBouncy: {
+        type: "spring";
         damping: number;
         mass: number;
         stiffness: number;

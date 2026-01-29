@@ -105,12 +105,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 )}
               </AnimatePresence>
 
-              <Tabs.List
-                disablePassBorderRadius
-                loop={false}
-                aria-label="package manager"
-                gap="$2"
-              >
+              <Tabs.List loop={false} aria-label="package manager" gap="$2">
                 <>
                   {PACKAGE_MANAGERS.map((pkgManager) => (
                     <Tab

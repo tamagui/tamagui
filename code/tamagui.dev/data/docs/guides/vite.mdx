@@ -47,7 +47,7 @@ export default {
 }
 ```
 
-Or a minimal manual setup for Vite that just adds some compatibility for react-native-web and react-native extensions:
+Or use a minimal manual setup for Vite that just adds compatibility for react-native-web and React Native extensions:
 
 ```tsx showMore
 config.define = {
@@ -78,3 +78,31 @@ config.optimizeDeps.esbuildOptions = {
   },
 }
 ```
+
+### Custom Aliases with tamaguiAliases
+
+For advanced use cases where you need more control over alias ordering in your Vite config, you can use the `tamaguiAliases` helper function:
+
+```tsx fileName="vite.config.ts"
+import { tamaguiAliases } from '@tamagui/vite-plugin'
+
+export default {
+  resolve: {
+    alias: [
+      // your custom aliases first
+      { find: '@app', replacement: '/src' },
+      // then tamagui aliases
+      ...tamaguiAliases({
+        // use @tamagui/react-native-web-lite for smaller bundle
+        rnwLite: true,
+        // or 'without-animated' for even smaller bundle (no Animated API)
+        // rnwLite: 'without-animated',
+        // alias react-native-svg to @tamagui/react-native-svg
+        svg: true,
+      }),
+    ],
+  },
+}
+```
+
+This is useful when you need to ensure specific alias resolution order or when using a custom Vite setup without the full `tamaguiPlugin`.

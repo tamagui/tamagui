@@ -1,12 +1,12 @@
 import type {
   SizeTokens,
   SizeVariantSpreadFunction,
-  StackProps,
+  ViewProps,
   VariantSpreadExtras,
 } from '@tamagui/core'
 import { getVariableValue, isAndroid, isVariable } from '@tamagui/core'
 
-export const getElevation: SizeVariantSpreadFunction<StackProps> = (size, extras) => {
+export const getElevation: SizeVariantSpreadFunction<ViewProps> = (size, extras) => {
   if (!size) return
   const { tokens } = extras
   const token = tokens.size[size]

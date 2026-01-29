@@ -13,6 +13,7 @@ export type AnimationConfig = {
  * 1. String: "bouncy"
  * 2. Object with property mappings: { x: 'quick', y: 'bouncy', default: 'slow' }
  * 3. Array with config: ['bouncy', { delay: 100, x: 'quick' }]
+ * 4. Object with enter/exit: { enter: 'bouncy', exit: 'quick', default: 'slow' }
  *
  * Note: Uses `any` to be compatible with the TransitionProp type from @tamagui/web
  * which has more complex union types.
@@ -26,6 +27,10 @@ export type TransitionPropInput = any
 export type NormalizedTransition = {
   /** Default animation key for properties not explicitly listed */
   default: string | null
+  /** Animation key to use during enter transitions (mount) */
+  enter: string | null
+  /** Animation key to use during exit transitions (unmount) */
+  exit: string | null
   /** Global delay in ms */
   delay: number | undefined
   /** Per-property animation configs: propertyName -> animationKey or config */

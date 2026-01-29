@@ -1,15 +1,39 @@
-export type { LinearGradientProps, LinearGradientPoint } from 'expo-linear-gradient'
+/**
+ * Adapted from expo-linear-gradient
+ * https://github.com/expo/expo/blob/main/packages/expo-linear-gradient/src/LinearGradient.web.tsx
+ *
+ * MIT License
+ * Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)
+ */
+
 import { normalizeColor } from '@tamagui/core'
 import type {
-  LinearGradientProps,
   LinearGradientPoint,
+  LinearGradientProps,
   NativeLinearGradientPoint,
 } from 'expo-linear-gradient'
 
-// copied from https://raw.githubusercontent.com/expo/expo/main/packages/expo-linear-gradient/src/LinearGradient.web.tsx
+export type { LinearGradientPoint, LinearGradientProps } from 'expo-linear-gradient'
 
 import * as React from 'react'
 import { View } from 'react-native'
+
+// check if start/end points require dimension-aware angle calculation
+function needsDimensionAwareAngle(
+  start?: NativeLinearGradientPoint | null,
+  end?: NativeLinearGradientPoint | null
+): boolean {
+  // default is top-to-bottom: start [0.5, 0] to end [0.5, 1]
+  // for this case (and any case where x values are equal), width doesn't matter
+  // we only need onLayout when x values differ AND could create non-standard angles
+  if (!start && !end) return false
+
+  const startX = start?.[0] ?? 0.5
+  const endX = end?.[0] ?? 0.5
+
+  // if x coordinates are different, angle depends on aspect ratio
+  return startX !== endX
+}
 
 export function LinearGradient({
   colors,
@@ -18,6 +42,18 @@ export function LinearGradient({
   end,
   ...props
 }: LinearGradientProps) {
+  const normalizedStart = start
+    ? Array.isArray(start)
+      ? start
+      : [start.x, start.y]
+    : undefined
+  const normalizedEnd = end ? (Array.isArray(end) ? end : [end.x, end.y]) : undefined
+
+  const needsLayout = needsDimensionAwareAngle(
+    normalizedStart as NativeLinearGradientPoint,
+    normalizedEnd as NativeLinearGradientPoint
+  )
+
   const [{ height, width }, setLayout] = React.useState({
     height: 1,
     width: 1,
@@ -28,12 +64,27 @@ export function LinearGradient({
       // @ts-expect-error ok
       colors,
       locations,
-      start ? (Array.isArray(start) ? start : [start.x, start.y]) : undefined,
-      end ? (Array.isArray(end) ? end : [end.x, end.y]) : undefined,
+      normalizedStart as NativeLinearGradientPoint,
+      normalizedEnd as NativeLinearGradientPoint,
       width,
       height
     )
-  }, [colors, locations, start, end, width, height])
+  }, [colors, locations, normalizedStart, normalizedEnd, width, height])
+
+  // if we don't need dimension-aware angles, skip the onLayout overhead
+  if (!needsLayout) {
+    return (
+      <View
+        {...props}
+        onLayout={props.onLayout}
+        style={[
+          props.style,
+          // @ts-ignore: [ts] Property 'backgroundImage' does not exist on type 'ViewStyle'.
+          { backgroundImage: linearGradientBackgroundImage },
+        ]}
+      />
+    )
+  }
 
   return (
     <View
@@ -118,7 +169,7 @@ function calculatePseudoAngle(
 function calculateGradientColors(colors: string[], locations?: number[] | null) {
   return colors.map((color: string, index: number): string | void => {
     const output = normalizeColor(color)
-    if (locations && locations[index]) {
+    if (locations && locations[index] !== undefined) {
       const location = Math.max(0, Math.min(1, locations[index]))
       // Convert 0...1 to 0...100
       const percentage = location * 100

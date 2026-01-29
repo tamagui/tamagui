@@ -1,4 +1,4 @@
-import { Stack, Text, createStyledContext, styled, useMedia } from 'tamagui'
+import { View, Text, createStyledContext, styled, useMedia } from 'tamagui'
 
 /**
  * Test case for styled context token preservation (issues #3670, #3676)
@@ -17,7 +17,7 @@ const GridContext = createStyledContext({
   columns: 2 as number,
 })
 
-const GridParent = styled(Stack, {
+const GridParent = styled(View, {
   name: 'GridParent',
   context: GridContext,
   flexDirection: 'row',
@@ -38,7 +38,7 @@ const GridParent = styled(Stack, {
   } as const,
 })
 
-const GridChild = styled(Stack, {
+const GridChild = styled(View, {
   name: 'GridChild',
   context: GridContext,
   height: 50,
@@ -91,11 +91,11 @@ function DebugDisplay({ id }: { id: string }) {
   const isToken = context.gap?.startsWith('$')
 
   return (
-    <Stack id={id} padding="$2" backgroundColor={isToken ? '$green5' : '$red5'}>
+    <View id={id} padding="$2" backgroundColor={isToken ? '$green5' : '$red5'}>
       <DebugInfo>gap: {context.gap}</DebugInfo>
       <DebugInfo>isToken: {String(isToken)}</DebugInfo>
       <DebugInfo id={`${id}-gap-value`}>{context.gap}</DebugInfo>
-    </Stack>
+    </View>
   )
 }
 
@@ -103,45 +103,45 @@ export function StyledContextTokens() {
   const media = useMedia()
 
   return (
-    <Stack padding="$4" gap="$4">
+    <View padding="$4" gap="$4">
       <Text fontWeight="bold">Styled Context Token Preservation Test</Text>
 
       {/* Test 1: Variant sets gap to $2 */}
-      <Stack>
+      <View>
         <Text>Test 1: spacing="small" should set gap="$2"</Text>
         <GridParent spacing="small" id="test-small">
           <DebugDisplay id="debug-small" />
           <GridChild columns={2} id="child-small-1" />
           <GridChild columns={2} id="child-small-2" />
         </GridParent>
-      </Stack>
+      </View>
 
       {/* Test 2: Variant sets gap to $8 */}
-      <Stack>
+      <View>
         <Text>Test 2: spacing="large" should set gap="$8"</Text>
         <GridParent spacing="large" id="test-large">
           <DebugDisplay id="debug-large" />
           <GridChild columns={2} id="child-large-1" />
           <GridChild columns={2} id="child-large-2" />
         </GridParent>
-      </Stack>
+      </View>
 
       {/* Test 3: Default gap (no variant) */}
-      <Stack>
+      <View>
         <Text>Test 3: no spacing prop, default gap="$4"</Text>
         <GridParent id="test-default">
           <DebugDisplay id="debug-default" />
           <GridChild columns={2} id="child-default-1" />
           <GridChild columns={2} id="child-default-2" />
         </GridParent>
-      </Stack>
+      </View>
 
       {/* Show current media state for debugging */}
-      <Stack padding="$2" backgroundColor="$gray5">
+      <View padding="$2" backgroundColor="$gray5">
         <Text fontSize={10}>
           Media: sm={String(media.sm)} md={String(media.md)} lg={String(media.lg)}
         </Text>
-      </Stack>
-    </Stack>
+      </View>
+    </View>
   )
 }

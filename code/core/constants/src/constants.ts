@@ -1,11 +1,11 @@
-import React, { useEffect, useLayoutEffect } from 'react'
-
-export const IS_REACT_19: boolean = typeof React.use !== 'undefined'
+import { useEffect, useLayoutEffect } from 'react'
 
 export const isWeb: boolean = true
-export const isWindowDefined: boolean = typeof window !== 'undefined'
-export const isServer: boolean = isWeb && !isWindowDefined
-export const isClient: boolean = isWeb && isWindowDefined
+export const isBrowser: boolean = typeof window !== 'undefined'
+export const isServer: boolean = isWeb && !isBrowser
+export const isClient: boolean = isWeb && isBrowser
+/** @deprecated use isBrowser instead */
+export const isWindowDefined: boolean = isBrowser
 
 export const useIsomorphicLayoutEffect: typeof useEffect = isServer
   ? useEffect

@@ -1,7 +1,7 @@
 import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
+import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
   getVariableValue,
@@ -13,13 +13,11 @@ import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ListItem, type ListItemProps } from '@tamagui/list-item'
 import { Separator } from '@tamagui/separator'
 import { SheetController } from '@tamagui/sheet/controller'
 import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { useDebounce } from '@tamagui/use-debounce'
 import * as React from 'react'
 import {
   SelectItemParentProvider,
@@ -66,14 +64,15 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     const composedRefs = useComposedRefs(
       // @ts-ignore TODO react 19 type needs fix
       forwardedRef,
-      context.onValueNodeChange
+      context.onValueNodeChange as any
     )
     const isEmptyValue = context.value == null || context.value === ''
 
     // Use renderValue for SSR support - called synchronously during render
-    // Falls back to the portal-based selectedItem for backward compatibility
+    // Falls back to the portal-based selectedItem, then to the raw value for SSR
     const renderedValue = context.renderValue?.(context.value)
-    const children = childrenProp ?? renderedValue ?? context.selectedItem
+    const children =
+      childrenProp ?? renderedValue ?? itemParentContext.selectedItem ?? context.value
     const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
@@ -162,7 +161,7 @@ const SelectIndicatorFrame = styled(YStack, {
         left: 0,
         pointerEvents: 'none',
         zIndex: 10,
-        backgroundColor: '$backgroundHover',
+        backgroundColor: '$background',
         borderRadius: 0,
       },
     },
@@ -201,8 +200,9 @@ const SelectIndicator = SelectIndicatorFrame.styleable<
       })
     }
 
-    if (context.open && context.activeIndex !== null) {
-      update(context.activeIndex)
+    // use ref for initial read to avoid depending on state
+    if (context.open && context.activeIndexRef.current !== null) {
+      update(context.activeIndexRef.current)
     }
 
     return itemContext.activeIndexSubscribe(update)
@@ -313,7 +313,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
                 itemParentContext.onChange(event.currentTarget.value)
               }}
               size={size as FontSizeTokens}
-              ref={nativeSelectRef}
+              ref={nativeSelectRef as any}
               style={{
                 color: 'var(--color)',
                 // @ts-ignore
@@ -352,14 +352,40 @@ SelectGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'SelectLabel'
 
-export type SelectLabelProps = SelectScopedProps<ListItemProps>
+const SelectLabelFrame = styled(SizableText, {
+  name: LABEL_NAME,
 
-const SelectLabelText = styled(ListItem.Text, {
-  fontWeight: '800',
+  variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        ellipsis: true,
+        maxWidth: '100%',
+        cursor: 'default',
+      },
+    },
+
+    size: {
+      '...size': (val: SizeTokens, { tokens }) => {
+        return {
+          paddingHorizontal: tokens.space[val],
+          paddingVertical: getSpace(tokens.space[val], {
+            shift: -4,
+          }),
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
-const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
-  (props: SelectScopedProps<SelectLabelProps>, forwardedRef) => {
+export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
+
+const SelectLabel = SelectLabelFrame.styleable<{ scope?: any }>(
+  (props: SelectLabelProps, forwardedRef) => {
     const { scope, ...labelProps } = props
     const context = useSelectItemParentContext(scope)
     const groupContext = useSelectGroupContext(scope)
@@ -369,10 +395,8 @@ const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
     }
 
     return (
-      <ListItem
+      <SelectLabelFrame
         render="div"
-        componentName={LABEL_NAME}
-        fontWeight="800"
         id={groupContext.id}
         size={context.size}
         {...labelProps}
@@ -381,12 +405,6 @@ const SelectLabelFrame = React.forwardRef<TamaguiElement, SelectLabelProps>(
     )
   }
 )
-
-const SelectLabel = withStaticProperties(SelectLabelFrame, {
-  Text: SelectLabelText,
-})
-
-SelectLabel.displayName = LABEL_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectSeparator
@@ -462,17 +480,14 @@ export const Select = withStaticProperties(
 )
 
 function useEmitter<A>() {
-  const listeners = React.useRef<Set<Function>>(null)
-  if (!listeners.current) {
-    listeners.current = new Set()
-  }
-  const emit = (value: A) => {
-    listeners.current!.forEach((l) => l(value))
-  }
+  const listenersRef = React.useRef<Set<Function>>(new Set())
+  const emit = React.useCallback((value: A) => {
+    listenersRef.current.forEach((l) => l(value))
+  }, [])
   const subscribe = React.useCallback((listener: (val: A) => void) => {
-    listeners.current!.add(listener)
+    listenersRef.current.add(listener)
     return () => {
-      listeners.current!.delete(listener)
+      listenersRef.current.delete(listener)
     }
   }, [])
   return [emit, subscribe] as const
@@ -539,20 +554,24 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
     }, [props.id])
   }
 
-  const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
+  // activeIndex is stored in a ref to avoid re-renders on every hover
+  // we have two setters:
+  // - setActiveIndexFast: updates ref + emits to subscribers (no re-render) - use for hover/navigation
+  // - setActiveIndex: updates ref + emits + triggers re-render - use when UI needs to update
+  // initialize to null so floating-ui starts from selectedIndex on first open
+  const activeIndexRef = React.useRef<number | null>(null)
+  const [activeIndex, setActiveIndexState] = React.useState<number | null>(null)
 
   const [emitValue, valueSubscribe] = useEmitter<any>()
   const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
 
   const selectedIndexRef = React.useRef<number | null>(null)
-  const activeIndexRef = React.useRef<number | null>(null)
   const listContentRef = React.useRef<string[]>([])
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
 
   useIsomorphicLayoutEffect(() => {
     selectedIndexRef.current = selectedIndex
-    activeIndexRef.current = activeIndex
   })
 
   const shouldRenderWebNative =
@@ -561,23 +580,28 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
       native === 'web' ||
       (Array.isArray(native) && native.includes('web')))
 
-  // TODO its calling this a bunch if you move mouse around on select items fast
-  // using a debounce for now but need to fix root issue
-  const setActiveIndexDebounced = useDebounce(
+  // fast setter: updates ref + emits to subscribers without causing re-renders
+  // use this for mouse hover / keyboard navigation where we don't need parent re-renders
+  const setActiveIndexFast = React.useCallback(
     (index: number | null) => {
-      setActiveIndex((prev) => {
-        if (prev !== index) {
-          if (typeof index === 'number') {
-            emitActiveIndex(index)
-          }
-          return index
+      if (activeIndexRef.current !== index) {
+        activeIndexRef.current = index
+        if (typeof index === 'number') {
+          emitActiveIndex(index)
         }
-        return prev
-      })
+      }
     },
-    0,
-    {},
-    []
+    [emitActiveIndex]
+  )
+
+  // slow setter: also triggers a re-render for components that need the state value
+  // use this sparingly, e.g., when controlled scrolling needs to scroll item into view
+  const setActiveIndex = React.useCallback(
+    (index: number | null) => {
+      setActiveIndexFast(index)
+      setActiveIndexState(index)
+    },
+    [setActiveIndexFast]
   )
 
   return (
@@ -603,6 +627,9 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         listContentRef.current[index] = value
       }, [])}
       shouldRenderWebNative={shouldRenderWebNative}
+      setActiveIndexFast={setActiveIndexFast}
+      selectedItem={selectedItem}
+      setSelectedItem={setSelectedItem}
     >
       <SelectProvider
         scope={scope}
@@ -612,14 +639,13 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         dir={dir}
         blockSelection={false}
         fallback={false}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
         forceUpdate={forceUpdate}
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
         activeIndex={activeIndex}
+        activeIndexRef={activeIndexRef}
         selectedIndex={selectedIndex}
-        setActiveIndex={setActiveIndexDebounced}
+        setActiveIndex={setActiveIndex}
         value={value}
         open={open}
         native={native}
@@ -633,6 +659,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
               activeIndexRef={activeIndexRef}
               listContentRef={listContentRef}
               selectedIndexRef={selectedIndexRef}
+              setActiveIndexFast={setActiveIndexFast}
               {...props}
               open={open}
               value={value}

@@ -1,4 +1,4 @@
-import { Stack, Text, YStack, styled } from 'tamagui'
+import { View, Text, YStack, styled } from 'tamagui'
 
 const CustomYStack = styled(YStack, {
   backgroundColor: 'yellow',
@@ -9,7 +9,7 @@ const CustomYStack = styled(YStack, {
 
 export function PseudoStyleMerge() {
   return (
-    <Stack flex={1} items="center" justify="center">
+    <View flex={1} items="center" justify="center">
       <CustomYStack
         width={100}
         height={100}
@@ -20,6 +20,6 @@ export function PseudoStyleMerge() {
       >
         <Text>hi</Text>
       </CustomYStack>
-    </Stack>
+    </View>
   )
 }

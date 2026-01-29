@@ -51,10 +51,10 @@ COPY . .
 RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
 
 # Clone bento repository as sibling directory (optional)
-# Use BENTO_BRANCH env var if set, otherwise default to migrate-tamagui-v2-bun
+# Use BENTO_BRANCH env var if set, otherwise default to main
 WORKDIR /root
 RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
-      BRANCH="${BENTO_BRANCH:-migrate-tamagui-v2-bun}"; \
+      BRANCH="${BENTO_BRANCH:-main}"; \
       echo "Cloning bento repository (branch: $BRANCH)..."; \
       unset GITHUB_TOKEN && \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \

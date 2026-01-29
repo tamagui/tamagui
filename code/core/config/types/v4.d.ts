@@ -36,6 +36,7 @@ export declare const defaultConfig: {
         '75ms': string;
         '100ms': string;
         '200ms': string;
+        '250ms': string;
         '300ms': string;
         superBouncy: string;
         bouncy: string;
@@ -381,8 +382,8 @@ export declare const defaultConfig: {
         };
     };
     fonts: {
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
-        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 12 | 16 | 11 | 14 | 4 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
+        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
     };
     selectionStyles: (theme: any) => {
         backgroundColor: any;

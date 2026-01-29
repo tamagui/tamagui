@@ -151,6 +151,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     // Text: Animated.Text,
     isReactNative: true,
     supportsCSS: false,
+    inputStyle: 'value',
+    outputStyle: 'inline',
     animations,
     usePresence,
     ResetPresence,

@@ -1,6 +1,6 @@
 ---
 title: RadioGroup
-description: Use in a form to allow selecting one option from multiple.
+description: Use in a form to allow selecting one option from multiple
 name: radio-group
 component: RadioGroup
 package: radio-group
@@ -130,18 +130,18 @@ Use the `createRadioGroup` export to create a fully custom radio group that stil
 
 ```tsx
 import { createRadioGroup, RadioGroupContext } from '@tamagui/radio-group'
-import { styled } from 'tamagui'
+import { styled, View } from 'tamagui'
 
-const CustomFrame = styled(Stack, {
+const CustomFrame = styled(View, {
   // your styles
 })
 
-const CustomItem = styled(Stack, {
+const CustomItem = styled(View, {
   context: RadioGroupContext,
   // your styles
 })
 
-const CustomIndicator = styled(Stack, {
+const CustomIndicator = styled(View, {
   context: RadioGroupContext,
   // your styles
 })
@@ -295,27 +295,27 @@ The `useRadioGroup` hook accepts these options:
     {
       name: 'name',
       type: 'string',
-      description: `Equivalent to input name.`,
+      description: `Equivalent to input name attribute.`,
     },
     {
       name: 'value',
       type: 'string',
-      description: `The controlled value of the selected radio item.`,
+      description: `Controlled value of the selected radio item.`,
     },
     {
       name: 'defaultValue',
       type: 'string',
-      description: `The default value for uncontrolled usage.`,
+      description: `Default value for uncontrolled usage.`,
     },
     {
       name: 'required',
       type: 'boolean',
-      description: `Sets aria-required.`,
+      description: `Sets aria-required attribute.`,
     },
     {
       name: 'disabled',
       type: 'boolean',
-      description: `Set aria-disabled on web, and disable touch on native for all children items`,
+      description: `Sets aria-disabled on web, and disables touch on native for all children items.`,
     },
     {
       name: 'native',
@@ -326,17 +326,17 @@ The `useRadioGroup` hook accepts these options:
     {
       name: 'onValueChange',
       type: '(value: string) => void',
-      description: 'Callback when the selected value changes.',
+      description: 'Called when the selected value changes.',
     },
     {
       name: 'orientation',
       type: '"horizontal" | "vertical"',
-      description: 'The orientation of the radio group.',
+      description: 'Orientation of the radio group.',
     },
     {
       name: 'accentColor',
       type: 'string',
-      description: 'Sets `accent-color` style when `native` prop is enabled',
+      description: 'Sets `accent-color` style when `native` prop is enabled.',
     },
   ]}
 />
@@ -350,7 +350,7 @@ The `useRadioGroup` hook accepts these options:
     {
       name: 'labeledBy',
       type: 'string',
-      description: `Set aria-labeled-by on web`,
+      description: `Sets aria-labelledby on web.`,
     },
     {
       name: 'value',
@@ -360,24 +360,24 @@ The `useRadioGroup` hook accepts these options:
     {
       name: 'disabled',
       type: 'boolean',
-      description: `Set aria-disabled on web, and disable touch on native`,
+      description: `Sets aria-disabled on web, and disables touch on native.`,
     },
     {
       name: 'id',
       type: 'string',
-      description: `Id used on the web`,
+      description: `ID used on the web.`,
     },
     {
       name: 'scaleSize',
       type: 'number',
       default: '0.5',
-      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+      description: `Scale factor for the radio item size. Tamagui size tokens map to button heights, so you typically want smaller radio buttons.`,
     },
     {
       name: 'unstyled',
       type: 'boolean',
       default: 'false',
-      description: `When true, remove all default tamagui styling.`,
+      description: `When true, removes all default Tamagui styling.`,
     },
   ]}
 />

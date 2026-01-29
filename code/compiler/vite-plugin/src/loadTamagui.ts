@@ -1,51 +1,71 @@
 import * as StaticWorker from '@tamagui/static-worker'
 import type { TamaguiOptions } from '@tamagui/types'
 
-export let tamaguiOptions: TamaguiOptions | null = null
-export let disableStatic = false
+let loadPromise: Promise<TamaguiOptions> | null = null
+let loadedOptions: TamaguiOptions | null = null
+let fullConfigLoaded = false
+let fullConfigLoadPromise: Promise<void> | null = null
 
-// Keep a reference to the watcher dispose function
-let watcherDispose: (() => void) | null = null
-let isLoading: null | Promise<void> = null
+export function getTamaguiOptions(): TamaguiOptions | null {
+  return loadedOptions
+}
 
-export async function loadTamaguiBuildConfig(optionsIn?: Partial<TamaguiOptions>) {
-  if (tamaguiOptions) return
-  if (isLoading) return await isLoading
+export function getLoadPromise(): Promise<TamaguiOptions> | null {
+  return loadPromise
+}
 
-  let resolve: () => void
-  isLoading = new Promise((res) => {
-    resolve = res!
-  })
+/**
+ * Load just the tamagui.build.ts config (lightweight)
+ * This doesn't bundle the full tamagui config - call ensureFullConfigLoaded() for that
+ */
+export async function loadTamaguiBuildConfig(
+  optionsIn?: Partial<TamaguiOptions>
+): Promise<TamaguiOptions> {
+  if (loadedOptions) return loadedOptions
+  if (loadPromise) return loadPromise
 
-  try {
-    tamaguiOptions = await StaticWorker.loadTamaguiBuildConfig({
+  loadPromise = (async () => {
+    const options = await StaticWorker.loadTamaguiBuildConfig({
       ...optionsIn,
       platform: 'web',
     })
 
-    disableStatic = Boolean(tamaguiOptions.disable)
+    loadedOptions = options
+    return options
+  })()
 
-    // Load full Tamagui config in worker (asynchronous)
-    if (!optionsIn?.disableWatchTamaguiConfig && !disableStatic) {
-      await StaticWorker.loadTamagui({
-        components: ['tamagui'],
-        platform: 'web',
-        ...tamaguiOptions,
-      })
-    }
-  } finally {
-    resolve!()
-    isLoading = null
-  }
+  return loadPromise
 }
 
 /**
- * Clean up resources on shutdown
+ * Ensure the full tamagui config is loaded (heavy - bundles config + components)
+ * Call this lazily when transform/extraction is actually needed
  */
+export async function ensureFullConfigLoaded(): Promise<void> {
+  if (fullConfigLoaded) return
+  if (fullConfigLoadPromise) return fullConfigLoadPromise
+
+  const options = await loadTamaguiBuildConfig()
+
+  fullConfigLoadPromise = (async () => {
+    // load full tamagui config in worker (asynchronous)
+    if (!options.disableWatchTamaguiConfig && !options.disable) {
+      await StaticWorker.loadTamagui({
+        components: ['tamagui'],
+        platform: 'web',
+        ...options,
+      })
+    }
+    fullConfigLoaded = true
+  })()
+
+  return fullConfigLoadPromise
+}
+
 export async function cleanup() {
-  if (watcherDispose) {
-    watcherDispose()
-    watcherDispose = null
-  }
   await StaticWorker.destroyPool()
+  loadPromise = null
+  loadedOptions = null
+  fullConfigLoaded = false
+  fullConfigLoadPromise = null
 }

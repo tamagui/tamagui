@@ -45,10 +45,10 @@ export declare const defaultStyles: {
 export declare const inputSizeVariant: SizeVariantSpreadFunction<any>;
 export declare const textAreaSizeVariant: SizeVariantSpreadFunction<any>;
 export declare const INPUT_NAME = "Input";
-export declare const styledBody: ({
-    name: string;
-    render: string;
-    variants: {
+export declare const styledBody: readonly [{
+    readonly name: "Input";
+    readonly render: "input";
+    readonly variants: {
         readonly unstyled: {
             readonly false: {
                 readonly borderColor: "$borderColor";
@@ -101,24 +101,17 @@ export declare const styledBody: ({
             readonly true: {};
         };
     };
-    defaultVariants: {
-        unstyled: boolean;
+    readonly defaultVariants: {
+        readonly unstyled: boolean;
     };
-    isInput?: undefined;
-    accept?: undefined;
-    validStyles?: undefined;
-} | {
-    isInput: boolean;
-    accept: {
+}, {
+    readonly isInput: true;
+    readonly accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
     };
-    validStyles: {
+    readonly validStyles: {
         [key: string]: boolean;
     } | undefined;
-    name?: undefined;
-    render?: undefined;
-    variants?: undefined;
-    defaultVariants?: undefined;
-})[];
+}];
 //# sourceMappingURL=shared.d.ts.map

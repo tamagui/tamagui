@@ -1,11 +1,11 @@
 import { isAndroid, isIos, isWeb } from '@tamagui/constants'
-import { getNativePortalState } from '@tamagui/native-portal'
+import { getPortal } from '@tamagui/native'
 
 /**
  * Check if teleport is enabled (best portal option - preserves React context)
  */
 export const isTeleportEnabled = () => {
-  const state = getNativePortalState()
+  const state = getPortal().state
   return state.enabled && state.type === 'teleport'
 }
 

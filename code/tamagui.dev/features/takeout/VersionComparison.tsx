@@ -222,7 +222,7 @@ export function VersionComparison() {
               </Button>
             </ThemeTintAlt>
           </Link>
-          <Link href="https://github.com/tamagui/starter-free" target="_blank">
+          <Link href="https://github.com/tamagui/takeout-free" target="_blank">
             <Button
               size="$4"
               bg="$color3"
@@ -233,7 +233,7 @@ export function VersionComparison() {
               pressStyle={{ bg: '$color5' }}
             >
               <Button.Text fontFamily="$mono" color="$color12">
-                Try v2-free (OSS)
+                Takeout Free
               </Button.Text>
             </Button>
           </Link>

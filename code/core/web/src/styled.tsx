@@ -46,7 +46,7 @@ export function styled<
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
     context?: StyledContext
-    render?: string
+    render?: string | React.ReactElement
   },
   config?: StyledConfig
 ) {

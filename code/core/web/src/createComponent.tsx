@@ -1,22 +1,19 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import {
-  IS_REACT_19,
-  isClient,
-  isServer,
-  isWeb,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/constants'
+import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { useMemo } from 'react'
-import { devConfig, onConfiguredOnce } from './config'
+import { devConfig, getConfig } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
+import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
+import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
+import { usePointerEvents } from './helpers/pointerEvents'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
@@ -37,7 +34,6 @@ import type {
   LayoutEvent,
   PseudoGroupState,
   SingleGroupContext,
-  StackProps,
   StaticConfig,
   StyleableOptions,
   TamaguiComponent,
@@ -49,8 +45,8 @@ import type {
   UseAnimationProps,
   UseStyleEmitter,
   UseThemeWithStateProps,
-  WebOnlyPressEvents,
 } from './types'
+import type { ViewProps } from './views/View'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 
@@ -228,37 +224,13 @@ export function createComponent<
   BaseProps = never,
   BaseStyles extends Object = never,
 >(staticConfig: StaticConfig) {
-  const { componentName } = staticConfig
-
   let config: TamaguiInternalConfig | null = null
 
-  let defaultProps = staticConfig.defaultProps
-
-  onConfiguredOnce((conf) => {
-    config = conf
-
-    if (componentName) {
-      // TODO this should be deprecated and removed likely or at least done differently
-      const defaultForComponent = conf.defaultProps?.[componentName]
-      if (defaultForComponent) {
-        defaultProps = { ...defaultForComponent, ...defaultProps }
-      }
-    }
-  })
-
-  const { Component, isText, isZStack, isHOC } = staticConfig
-
-  if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
-    if (process.env.IS_STATIC !== 'is_static') {
-      log(`🐛 [${componentName || 'Component'}]`, {
-        staticConfig,
-        defaultProps,
-        defaultPropsKeyOrder: defaultProps ? Object.keys(defaultProps) : [],
-      })
-    }
-  }
+  const { Component, isText, isHOC } = staticConfig
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+    config ||= getConfig()
+
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
     if (process.env.NODE_ENV === 'development') {
@@ -315,41 +287,26 @@ export function createComponent<
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
-    let props: StackProps | TextProps = propsIn
-
-    // merge both default props and styled context props - ensure order is preserved
-    if (styledContextValue || defaultProps) {
-      // For nested text, override base Text defaults to use CSS inheritance
-      // Only override if using base defaults, not styled component explicit values
-      let effectiveDefaults = defaultProps
-      if (
-        process.env.TAMAGUI_TARGET === 'web' &&
-        isText &&
-        hasTextAncestor &&
-        defaultProps
-      ) {
-        effectiveDefaults = { ...defaultProps }
-        if (effectiveDefaults.fontFamily === 'unset')
-          effectiveDefaults.fontFamily = 'inherit'
-        if (effectiveDefaults.whiteSpace === 'pre-wrap')
-          effectiveDefaults.whiteSpace = 'inherit'
-        if (!effectiveDefaults.color) effectiveDefaults.color = 'inherit'
-        if (!effectiveDefaults.letterSpacing) effectiveDefaults.letterSpacing = 'inherit'
-        if (!effectiveDefaults.textTransform) effectiveDefaults.textTransform = 'inherit'
-      }
-
-      const [nextProps, overrides] = mergeComponentProps(
-        effectiveDefaults,
-        styledContextValue,
-        propsIn
-      )
-      if (nextProps) {
-        props = nextProps as StackProps | TextProps
-      }
-      overriddenContextProps = overrides
-    }
+    let props: ViewProps | TextProps = propsIn
 
     const componentName = props.componentName || staticConfig.componentName
+
+    // merge both default props and styled context props - ensure order is preserved
+    const defaultProps = getDefaultProps(
+      staticConfig,
+      props.componentName,
+      isText && hasTextAncestor
+    )
+
+    // merge styled context props over defaults, ensure order is preserved
+    const [nextProps, overrides] = mergeComponentProps(
+      defaultProps,
+      styledContextValue,
+      propsIn
+    )
+
+    props = nextProps as ViewProps | TextProps
+    overriddenContextProps = overrides
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
@@ -556,6 +513,7 @@ export function createComponent<
       disable: disableTheme,
       shallow: props.themeShallow,
       debug: debugProp,
+      unstyled: props.unstyled,
     }
 
     // this is set conditionally if existing in props because we wrap children with
@@ -739,6 +697,19 @@ export function createComponent<
       const ogSetStateShallow = setStateShallow
 
       stateRef.current.updateStyleListener = () => {
+        const useStyleListener = stateRef.current.useStyleListener
+
+        // if no animation driver is listening for style updates, fall back to normal re-render
+        // this happens when a component has group prop but no transition/animation prop
+        if (!useStyleListener) {
+          const pendingState = stateRef.current.nextState
+          if (pendingState) {
+            stateRef.current.nextState = undefined
+            ogSetStateShallow(pendingState)
+          }
+          return
+        }
+
         const updatedState = stateRef.current.nextState || state
         const mediaState = stateRef.current.nextMedia
 
@@ -757,9 +728,7 @@ export function createComponent<
           debugProp
         )
 
-        const useStyleListener = stateRef.current.useStyleListener
-
-        useStyleListener?.((nextStyles?.style || {}) as any)
+        useStyleListener((nextStyles?.style || {}) as any)
       }
 
       function updateGroupListeners() {
@@ -781,9 +750,26 @@ export function createComponent<
       }
 
       // don't change this ever or else you break ComponentContext and cause re-rendering
+      // use a Set of listeners so multiple components can register
+      componentContext.mediaEmitListeners ||= new Set()
+
+      // only register once per component instance
+      if (!stateRef.current.mediaEmitCleanup) {
+        const updateListener = (next: Record<string, boolean>) => {
+          stateRef.current.nextMedia = next
+          stateRef.current.updateStyleListener?.()
+        }
+        componentContext.mediaEmitListeners.add(updateListener)
+        stateRef.current.mediaEmitCleanup = () => {
+          componentContext.mediaEmitListeners?.delete(updateListener)
+        }
+      }
+
       componentContext.mediaEmit ||= (next) => {
-        stateRef.current.nextMedia = next
-        stateRef.current.updateStyleListener?.()
+        // notify all registered components
+        for (const listener of componentContext.mediaEmitListeners!) {
+          listener(next)
+        }
       }
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
@@ -880,7 +866,6 @@ export function createComponent<
       pseudos,
       style: splitStylesStyle,
       classNames,
-      space,
       pseudoGroups,
       mediaGroups,
     } = splitStyles || {}
@@ -1037,6 +1022,9 @@ export function createComponent<
 
     viewProps.ref = stateRef.current.composedRef
 
+    // handle pointer events (native: maps to touch events, web: no-op)
+    usePointerEvents(props, viewProps)
+
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
         React.Children.toArray(props.children).forEach((item) => {
@@ -1118,6 +1106,7 @@ export function createComponent<
 
       return () => {
         componentSetStates.delete(setState)
+        stateRef.current.mediaEmitCleanup?.()
       }
     }, [state.unmounted, supportsCSS])
 
@@ -1345,8 +1334,11 @@ export function createComponent<
       log(`events`, { events, attachHover, attachPress })
     }
 
-    // EVENTS native
-    hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow, staticConfig)
+    // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
+    const pressGesture =
+      process.env.TAMAGUI_TARGET === 'native'
+        ? useEvents(events, viewProps, stateRef, staticConfig)
+        : null
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
@@ -1354,7 +1346,7 @@ export function createComponent<
 
     if (asChild) {
       elementType = Slot
-      // on native this is already merged into viewProps in hooks.useEvents
+      // on native this is already merged into viewProps in useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
         const webStyleEvents = asChild === 'web' || asChild === 'except-style-web'
         const passEvents = getWebEvents(
@@ -1417,6 +1409,11 @@ export function createComponent<
       }
     }
 
+    // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      content = wrapWithGestureDetector(content, pressGesture, stateRef)
+    }
+
     // needs to reset the presence state for nested children
     // Use the resolved animationDriver (handles multi-driver config)
     const ResetPresence = animationDriver?.ResetPresence
@@ -1461,7 +1458,7 @@ export function createComponent<
     }
 
     // Text components set inText context for children so nested Text can inherit styles
-    if (process.env.TAMAGUI_TARGET === 'web' && isText && !hasTextAncestor) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !asChild && isText && !hasTextAncestor) {
       content = (
         <ComponentContext.Provider {...componentContext} inText={true}>
           {content}
@@ -1528,7 +1525,7 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         const title = `render <${element} /> (${internalID}) with props`
-        if (!isWeb) {
+        if (!isWeb || !isClient) {
           log(title)
           log(`state: `, state)
           if (isDevTools) {
@@ -1551,7 +1548,6 @@ export function createComponent<
                 animationStyles,
                 classNames,
                 content,
-                defaultProps,
                 elementType,
                 events,
                 isAnimated,
@@ -1631,9 +1627,10 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (process.env.TAMAGUI_FORCE_MEMO || staticConfig.memo) {
-    res = React.memo(res) as any
-  }
+  // we now have avoid re-renders in many more cases so imo this is way more worth it
+  // Text/Button/string taking components
+  //  + react compiler can memoize children too
+  res = React.memo(res) as any
 
   res.staticConfig = staticConfig
 
@@ -1648,9 +1645,7 @@ export function createComponent<
   }
 
   function styleable(Component: any, options?: StyleableOptions) {
-    const skipForwardRef =
-      (IS_REACT_19 && typeof Component === 'function' && Component.length === 1) ||
-      Component.render?.length === 2
+    const skipForwardRef = typeof Component === 'function' && Component.length === 1
 
     let out = skipForwardRef ? Component : React.forwardRef(Component)
 
@@ -1670,23 +1665,6 @@ export function createComponent<
   res.styleable = styleable
 
   return res
-}
-
-type EventKeys = keyof (TamaguiComponentEvents & WebOnlyPressEvents)
-type EventLikeObject = { [key in EventKeys]?: any }
-
-function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
-  return {
-    onMouseEnter: events.onMouseEnter,
-    onMouseLeave: events.onMouseLeave,
-    [webStyle ? 'onClick' : 'onPress']: events.onPress,
-    onMouseDown: events.onPressIn,
-    onMouseUp: events.onPressOut,
-    onTouchStart: events.onPressIn,
-    onTouchEnd: events.onPressOut,
-    onFocus: events.onFocus,
-    onBlur: events.onBlur,
-  }
 }
 
 const fromPx = (val?: any): number => {

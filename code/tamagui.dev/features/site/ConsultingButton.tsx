@@ -1,17 +1,22 @@
-import { Button, type ButtonProps, Theme, YStack } from 'tamagui'
-import { AddevenIcon } from '../icons/AddevenIcon'
+import { Button, type ButtonProps } from 'tamagui'
+import { AddEvenBrandIcon } from '~/features/icons/AddEvenBrandIcon'
 
 export const ConsultingButton = (props: ButtonProps) => {
   return (
-    <Theme name="black">
-      <Button.Frame size="$3" rounded="$10" {...props}>
-        <Button.Text fontFamily="$silkscreen" fontSize={12}>
-          Build
-        </Button.Text>
-        <YStack display="inline-flex" mx="$2">
-          <AddevenIcon scale={0.75} />
-        </YStack>
-      </Button.Frame>
-    </Theme>
+    <Button
+      theme="gray"
+      borderColor="$color6"
+      elevation="$2"
+      size="$3"
+      rounded="$10"
+      {...props}
+    >
+      <Button.Text fontFamily="$silkscreen" fontSize={12}>
+        Hire Us
+      </Button.Text>
+      <Button.Icon>
+        <AddEvenBrandIcon scale={1} />
+      </Button.Icon>
+    </Button>
   )
 }

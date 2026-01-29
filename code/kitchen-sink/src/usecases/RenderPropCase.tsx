@@ -1,9 +1,9 @@
 import { isWeb } from '@tamagui/constants'
-import { Stack, Text, View, styled, TamaguiComponentState } from '@tamagui/core'
+import { Text, View, styled, TamaguiComponentState } from '@tamagui/core'
 import { forwardRef } from 'react'
 
 // Test: render prop with string in styled()
-const StyledButton = styled(Stack, {
+const StyledButton = styled(View, {
   render: 'button',
   padding: '$4',
   backgroundColor: '$background',
@@ -19,38 +19,38 @@ const StyledAnchor = styled(Text, {
 })
 
 // Test: render prop with semantic elements
-const StyledNav = styled(Stack, {
+const StyledNav = styled(View, {
   render: 'nav',
   padding: '$2',
   backgroundColor: '$backgroundHover',
 })
 
-const StyledMain = styled(Stack, {
+const StyledMain = styled(View, {
   render: 'main',
   padding: '$4',
   flex: 1,
 })
 
-const StyledSection = styled(Stack, {
+const StyledSection = styled(View, {
   render: 'section',
   padding: '$3',
   borderWidth: 1,
   borderColor: '$borderColor',
 })
 
-const StyledArticle = styled(Stack, {
+const StyledArticle = styled(View, {
   render: 'article',
   padding: '$3',
 })
 
-const StyledFooter = styled(Stack, {
+const StyledFooter = styled(View, {
   render: 'footer',
   padding: '$2',
   backgroundColor: '$backgroundPress',
 })
 
 // Test: render prop with form elements
-const StyledForm = styled(Stack, {
+const StyledForm = styled(View, {
   render: 'form',
   gap: '$3',
 })
@@ -60,7 +60,7 @@ const StyledLabel = styled(Text, {
   fontSize: '$3',
 })
 
-const StyledFieldset = styled(Stack, {
+const StyledFieldset = styled(View, {
   render: 'fieldset',
   padding: '$3',
   borderWidth: 1,
@@ -82,18 +82,18 @@ const StyledH2 = styled(Text, {
 })
 
 // Test: render prop with list elements
-const StyledUl = styled(Stack, {
+const StyledUl = styled(View, {
   render: 'ul',
   paddingLeft: '$4',
 })
 
-const StyledLi = styled(Stack, {
+const StyledLi = styled(View, {
   render: 'li',
   marginBottom: '$2',
 })
 
 // Test: render prop override at runtime
-const RuntimeOverrideStack = styled(Stack, {
+const RuntimeOverrideView = styled(View, {
   padding: '$2',
   backgroundColor: '$background',
 })
@@ -110,7 +110,7 @@ CustomButton.displayName = 'CustomButton'
 
 export function RenderPropCase() {
   return (
-    <Stack gap="$4" padding="$4" testID="render-prop-container">
+    <View gap="$4" padding="$4" testID="render-prop-container">
       {/* Test styled() render prop */}
       <StyledButton testID="styled-button" data-testid="styled-button">
         <Text testID="styled-button-text">Styled Button (render='button')</Text>
@@ -166,22 +166,22 @@ export function RenderPropCase() {
       </StyledUl>
 
       {/* Test runtime render prop override */}
-      <RuntimeOverrideStack data-testid="runtime-button" render="button">
+      <RuntimeOverrideView data-testid="runtime-button" render="button">
         <Text>Runtime Override to Button</Text>
-      </RuntimeOverrideStack>
+      </RuntimeOverrideView>
 
-      <RuntimeOverrideStack data-testid="runtime-anchor" render="a">
+      <RuntimeOverrideView data-testid="runtime-anchor" render="a">
         <Text>Runtime Override to Anchor</Text>
-      </RuntimeOverrideStack>
+      </RuntimeOverrideView>
 
       {/* Test Stack with runtime render */}
-      <Stack data-testid="stack-as-section" render="section" padding="$2">
+      <View data-testid="stack-as-section" render="section" padding="$2">
         <Text>Stack as Section</Text>
-      </Stack>
+      </View>
 
-      <Stack data-testid="stack-as-aside" render="aside" padding="$2">
+      <View data-testid="stack-as-aside" render="aside" padding="$2">
         <Text>Stack as Aside</Text>
-      </Stack>
+      </View>
 
       {/* Test Text with runtime render */}
       <Text data-testid="text-as-span" render="span">
@@ -197,26 +197,26 @@ export function RenderPropCase() {
       </Text>
 
       {/* Test JSX element render prop */}
-      <Stack
+      <View
         data-testid="jsx-element-render"
         render={<a href="/test-link" data-jsx-element="true" />}
         padding="$2"
         backgroundColor="$blue5"
       >
         <Text>JSX Element Render (anchor with href)</Text>
-      </Stack>
+      </View>
 
-      <Stack
+      <View
         data-testid="jsx-element-button"
         render={<button type="submit" data-jsx-button="true" />}
         padding="$3"
         backgroundColor="$green5"
       >
         <Text>JSX Element Render (button with type)</Text>
-      </Stack>
+      </View>
 
       {/* Test function render prop */}
-      <Stack
+      <View
         testID="function-render"
         data-testid="function-render"
         render={(props) => <CustomButton {...props} />}
@@ -224,10 +224,10 @@ export function RenderPropCase() {
         backgroundColor="$red5"
       >
         <Text testID="function-render-text">Function Render (CustomButton)</Text>
-      </Stack>
+      </View>
 
       {isWeb ? (
-        <Stack
+        <View
           data-testid="function-render-with-state"
           render={(props, state: TamaguiComponentState) => (
             <button
@@ -242,9 +242,9 @@ export function RenderPropCase() {
           pressStyle={{ backgroundColor: '$purple9' }}
         >
           <Text>Function Render with State</Text>
-        </Stack>
+        </View>
       ) : (
-        <Stack
+        <View
           testID="function-render-with-state"
           render={(props, state: TamaguiComponentState) => (
             <View
@@ -257,8 +257,8 @@ export function RenderPropCase() {
           pressStyle={{ backgroundColor: '$purple9' }}
         >
           <Text testID="function-render-state-text">Function Render with State</Text>
-        </Stack>
+        </View>
       )}
-    </Stack>
+    </View>
   )
 }

@@ -1,6 +1,6 @@
 ---
 title: Label
-description: Label form elements with accessibility.
+description: Label form elements with accessibility
 name: label
 component: Label
 package: label
@@ -48,11 +48,42 @@ export default () => (
 
 Use with Input or other form elements to automatically get correct labelling by id and aria-labelledby. You can also use the provided `useLabelContext` hook to build your own controls.
 
+Label supports all standard ARIA attributes for form accessibility. These work on both web and React Native - see the [React Native Accessibility docs](https://reactnative.dev/docs/accessibility) for native behavior.
+
+### Required Fields
+
+```tsx
+<Label htmlFor="email" aria-required>
+  Email
+</Label>
+<Input id="email" aria-required />
+```
+
+### Invalid State
+
+```tsx
+<Label htmlFor="email" aria-invalid={hasError}>
+  Email
+</Label>
+<Input id="email" aria-invalid={hasError} aria-errormessage="email-error" />
+{hasError && <Text id="email-error">Please enter a valid email</Text>}
+```
+
+### With Description
+
+```tsx
+<Label htmlFor="password" aria-describedby="password-hint">
+  Password
+</Label>
+<Input id="password" aria-describedby="password-hint" />
+<Text id="password-hint">Must be at least 8 characters</Text>
+```
+
 ## API Reference
 
 ### Label
 
-Labels extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+Labels extend SizableText inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -60,7 +91,7 @@ Labels extend Stack views inheriting all the [Tamagui standard props](/docs/intr
       name: 'htmlFor',
       type: 'string',
       required: true,
-      description: `Matching to a Tamagui form element id.`,
+      description: `Matches the \`id\` of a form element to associate with.`,
     },
     {
       name: 'unstyled',
@@ -70,3 +101,46 @@ Labels extend Stack views inheriting all the [Tamagui standard props](/docs/intr
     },
   ]}
 />
+
+### Accessibility Props
+
+Label passes through all ARIA attributes. These are the most commonly used for form labeling:
+
+<PropsTable
+  data={[
+    {
+      name: 'aria-required',
+      type: 'boolean',
+      description: `Indicates user input is required before form submission.`,
+    },
+    {
+      name: 'aria-invalid',
+      type: 'boolean',
+      description: `Indicates the associated field has a validation error.`,
+    },
+    {
+      name: 'aria-disabled',
+      type: 'boolean',
+      description: `Indicates the associated control is disabled.`,
+    },
+    {
+      name: 'aria-describedby',
+      type: 'string',
+      description: `References an element providing additional description such as hint text or error messages.`,
+    },
+    {
+      name: 'aria-labelledby',
+      type: 'string',
+      description: `References another element that labels this one. \`Label\` sets this automatically on the target input.`,
+    },
+    {
+      name: 'aria-details',
+      type: 'string',
+      description: `References an element providing extended description or instructions.`,
+    },
+  ]}
+/>
+
+<Notice theme="green">
+  These props work cross-platform. On web they render as standard ARIA attributes. On React Native they map to the native accessibility system. See the [React Native Accessibility docs](https://reactnative.dev/docs/accessibility) for details.
+</Notice>

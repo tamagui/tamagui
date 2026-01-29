@@ -101,9 +101,15 @@ export async function prewarmBundle(platform: Platform): Promise<void> {
 export function startMetro(): MetroProcess {
   console.info('\n--- Starting Metro bundler ---')
 
-  // Use --clear to reset the Metro cache - ensures fresh transforms
-  // This is important for CI where cache from previous runs might cause issues
-  const proc = Bun.spawn(['bun', 'expo', 'start', '--dev-client', '--offline', '--clear'], {
+  // Only clear cache in CI - locally we want fast startup using cached transforms
+  const isCI = !!process.env.CI
+  const args = ['bun', 'expo', 'start', '--dev-client', '--offline']
+  if (isCI) {
+    args.push('--clear')
+    console.info('CI detected: clearing Metro cache')
+  }
+
+  const proc = Bun.spawn(args, {
     env: { ...process.env, EXPO_NO_TELEMETRY: 'true' },
     stdout: 'inherit',
     stderr: 'inherit',
@@ -145,11 +151,38 @@ export function setupSignalHandlers(metro: MetroProcess): void {
 }
 
 /**
+ * Check if Metro is already running (e.g., developer has it open in another terminal)
+ */
+async function isMetroRunning(platform: Platform): Promise<boolean> {
+  try {
+    const response = await fetch(`${METRO_URL}/`, {
+      headers: { 'Expo-Platform': platform },
+    })
+    return response.ok
+  } catch {
+    return false
+  }
+}
+
+/**
  * Run a function with Metro bundler, ensuring proper cleanup.
  * This is a convenience wrapper that handles starting Metro, waiting for it,
  * pre-warming the bundle, and cleanup.
+ *
+ * If Metro is already running (e.g., in another terminal), it will be reused
+ * and not killed after the tests complete.
  */
 export async function withMetro<T>(platform: Platform, fn: () => Promise<T>): Promise<T> {
+  // Check if Metro is already running
+  const alreadyRunning = await isMetroRunning(platform)
+
+  if (alreadyRunning) {
+    console.info('\n--- Metro already running, reusing existing instance ---')
+    await prewarmBundle(platform)
+    return await fn()
+  }
+
+  // Start Metro ourselves
   const metro = startMetro()
   setupSignalHandlers(metro)
 

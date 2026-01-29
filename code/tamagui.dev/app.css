@@ -3,6 +3,7 @@ body {
   max-width: 100vw;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  scrollbar-color: #b1b1b1 transparent;
 }
 
 body {
@@ -25,9 +26,10 @@ body {
   outline: 0;
 }
 
-:is(body, html):not(:has(.is-sticky)) {
+html:not(:has(.is-sticky)),
+html:not(:has(.is-sticky)) > body {
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body .preview {
@@ -224,6 +226,25 @@ pre {
 ._fow-200 .link span,
 ._fow-200 .link {
   font-weight: inherit !important;
+}
+
+/* seasonal content - hidden by default, shown via html class */
+.season-emoji,
+.season-halloween-svg {
+  display: none !important;
+}
+
+/* show seasonal emojis based on active season */
+.xmas-season .season-emoji-xmas,
+.easter-season .season-emoji-easter,
+.halloween-season .season-emoji-halloween,
+.valentine-season .season-emoji-valentine,
+.lunar-season .season-emoji-lunar {
+  display: flex !important;
+}
+
+.halloween-season .season-halloween-svg {
+  display: flex !important;
 }
 
 .xmas-season .rainbow {
@@ -475,7 +496,7 @@ iframe {
 }
 
 .highlight-line[data-highlighted="false"] {
-  color: var(--gray12);
+  opacity: 0.5;
 }
 
 .token.deleted .highlight-word {
@@ -529,6 +550,22 @@ textarea {
 
 .t_dark .docs-paragraph {
   opacity: 0.88;
+}
+
+/* collapse margins between consecutive headings */
+[data-heading] + [data-heading] {
+  margin-top: 0;
+  padding-top: var(--t-space-2);
+}
+
+/* collapse margins: notice followed by headings */
+.no-opacity-fade + [data-heading] {
+  margin-top: var(--t-space-4);
+}
+
+/* collapse margins: code blocks followed by headings */
+.DocCodeBlock + [data-heading] {
+  margin-top: var(--t-space-4);
 }
 
 .custom-scroll ::-webkit-scrollbar {
@@ -663,17 +700,16 @@ textarea {
 
 @media (hover: hover) {
   .clip-slice {
-    mask-image: url(./public/takeouticon.svg);
-    mask-size: 50% 50%;
-    animation: clip-fade2 50s infinite alternate;
+    mask-image: url(/takeouticon.svg);
+    mask-size: 100% 100%;
+    animation: clip-fade2 40s infinite alternate;
     mix-blend-mode: difference !important;
   }
 
   .clip-slice-2 {
-    mask-image: url(./public/takeouticon.svg);
-    mask-size: 25% 25%;
-    transform: rotate(-2deg);
-    animation: clip-fade 70s infinite alternate;
+    mask-image: url(/takeouticon.svg);
+    mask-size: 1% 1%;
+    animation: clip-fade 150s infinite alternate;
     mix-blend-mode: difference !important;
   }
 

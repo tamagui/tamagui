@@ -1,6 +1,6 @@
-import { Stack, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
-export const VisuallyHidden = styled(Stack, {
+export const VisuallyHidden = styled(View, {
   position: 'absolute',
   width: 1,
   height: 1,

@@ -1,6 +1,6 @@
 import { type ResolveVariableAs } from '@tamagui/core';
 import { SizableContext } from '@tamagui/sizable-context';
-import React from 'react';
+import type { FC } from 'react';
 import type { IconProps } from './IconProps';
 export { SizableContext };
 type Options = {
@@ -10,7 +10,7 @@ type Options = {
     fallbackColor?: string;
     resolveValues?: ResolveVariableAs;
 };
-export declare function themed(Component: React.FC<IconProps>, optsIn?: Options): {
+export declare function themed(Component: FC<IconProps>, optsIn?: Options): {
     (propsIn: IconProps): import("react/jsx-runtime").JSX.Element;
     staticConfig: {
         isHOC: boolean;

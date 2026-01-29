@@ -1,20 +1,21 @@
-import { normalizeTransition } from '@tamagui/animation-helpers'
+import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimatedNumberStrategy,
   type AnimationDriver,
-  type TransitionProp,
   fixStyles,
+  getConfig,
   getSplitStyles,
   hooks,
   styleToCSS,
   Text,
+  type TransitionProp,
   type UniversalAnimatedNumber,
   useComposedRefs,
   useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
 } from '@tamagui/web'
-import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
@@ -53,11 +54,19 @@ type TransitionAnimationOptions = AnimationOptions & {
 
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 
+// regex to detect non-position transform operations (scale, rotate, skew, matrix, perspective)
+// used to identify position-only transforms for the popper animation fix
+const nonPositionTransformRe = /scale|rotate|skew|matrix|perspective/
+
 type AnimationProps = {
   doAnimate?: Record<string, unknown>
   dontAnimate?: Record<string, unknown>
   animationOptions?: AnimationOptions
 }
+
+// track if we're still in the initial hydration phase
+// TODO didnt realize claude took the wrong one here - this should uust be isComponentHydrating ideally
+// but this is fine for beta motion driver rc.0 fix in rc.1
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animationsProp: A
@@ -76,12 +85,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       config.mass === undefined
     animations[key] = {
       type: isTimingBased ? 'tween' : 'spring',
-      // Convert duration from ms to seconds for motion library
-      ...(isTimingBased && config.duration
-        ? { ...config, duration: config.duration / 1000 }
-        : config),
+      ...config,
+      // Convert duration/delay from ms to seconds for motion library
+      ...(config.duration ? { duration: config.duration / 1000 } : null),
+      ...(config.delay ? { delay: config.delay / 1000 } : null),
     }
   }
+
+  let isHydratingGlobal: boolean | undefined
+  const hydratingComponents = new Set<Function>()
 
   return {
     // this is only used by Sheet basically for now to pass result of useAnimatedStyle to
@@ -89,13 +101,24 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     Text: MotionText,
     isReactNative: false,
     supportsCSS: true,
+    inputStyle: 'css',
+    outputStyle: 'inline',
     needsWebStyles: true,
     avoidReRenders: true,
     animations,
     usePresence,
     ResetPresence,
 
+    onMount() {
+      isHydratingGlobal = false
+      hydratingComponents.forEach((cb) => cb())
+    },
+
     useAnimations: (animationProps) => {
+      if (isHydratingGlobal === undefined && !getConfig().settings.disableSSR) {
+        isHydratingGlobal = true
+      }
+
       const { props, style, componentState, stateRef, useStyleEmitter, presence } =
         animationProps
 
@@ -103,13 +126,30 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         ? props.transition[0]
         : props.transition
 
-      const isHydrating = componentState.unmounted === true
+      const isComponentHydrating = componentState.unmounted === true
       const isMounting = componentState.unmounted === 'should-enter'
-      // Disable animation during hydration AND during mounting (should-enter phase)
-      // This prevents the "flying across the page" effect on initial render
-      const disableAnimation = isHydrating || isMounting || !animationKey
+      const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+
+      // Track if we just finished entering (transition from entering to not entering)
+      const wasEnteringRef = useRef(isEntering)
+      const justFinishedEntering = wasEnteringRef.current && !isEntering
+      useEffect(() => {
+        wasEnteringRef.current = isEntering
+      })
+
+      // Determine animation state for enter/exit transitions
+      // Use 'enter' if we're mounting OR if we just finished entering
+      const animationState: 'enter' | 'exit' | 'default' = isExiting
+        ? 'exit'
+        : isMounting || justFinishedEntering
+          ? 'enter'
+          : 'default'
+
+      // Disable animation during hydration AND during mounting (should-enter phase)
+      // This prevents the "flying across the page" effect on initial render
+      const disableAnimation = isComponentHydrating || isMounting || !animationKey
 
       const isFirstRender = useRef(true)
       const [scope, animate] = useAnimate()
@@ -130,89 +170,32 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const motionAnimationState = getMotionAnimatedProps(
           props as any,
           style,
-          disableAnimation
+          disableAnimation,
+          animationState
         )
         return motionAnimationState
-      }, [isExiting, animationKey, styleKey])
+      }, [isExiting, animationKey, styleKey, animationState, disableAnimation])
 
-      const debugId = process.env.NODE_ENV === 'development' ? useId() : ''
+      const id = useId()
+      const debugId = process.env.NODE_ENV === 'development' ? id : ''
       const lastAnimateAt = useRef(0)
       const disposed = useRef(false)
       const [firstRenderStyle] = useState(style)
 
       // avoid first render returning wrong styles - always render all, after that we can just mutate
-      const lastDontAnimate = useRef<Record<string, unknown>>(firstRenderStyle)
+      const lastDontAnimate = useRef<Record<string, unknown> | null>(firstRenderStyle)
+      const [isHydrating, setIsHydrating] = useState(isHydratingGlobal)
 
       useLayoutEffect(() => {
+        if (isHydratingGlobal) {
+          hydratingComponents.add(() => {
+            setIsHydrating(false)
+          })
+        }
         return () => {
           disposed.current = true
         }
       }, [])
-
-      // const runAnimation = (props: AnimationProps) => {
-      //   const waitForNextAnimationFrame = () => {
-      //     if (disposed.current) return
-      //     // we just skip to the last one
-      //     const queue = animationsQueue.current
-      //     const last = queue[queue.length - 1]
-      //     animationsQueue.current = []
-
-      //     if (!last) {
-      //       console.error(`Should never hit`)
-      //       return
-      //     }
-
-      //     if (!props) return
-
-      //     if (scope.current) {
-      //       flushAnimation(props)
-      //     } else {
-      //       // frame.postRender(waitForNextAnimationFrame)
-      //       requestAnimationFrame(waitForNextAnimationFrame)
-      //     }
-      //   }
-
-      //   const hasQueue = animationsQueue.current.length
-      //   const shouldWait =
-      //     hasQueue ||
-      //     (lastAnimateAt.current &&
-      //       Date.now() - lastAnimateAt.current > minTimeBetweenAnimations)
-
-      //   if (isExiting || isFirstRender.current || (scope.current && !shouldWait)) {
-      //     flushAnimation(props)
-      //   } else {
-      //     animationsQueue.current.push(props)
-      //     if (!hasQueue) {
-      //       waitForNextAnimationFrame()
-      //     }
-      //   }
-      // }
-
-      const updateFirstAnimationStyle = () => {
-        const node = stateRef.current.host
-
-        if (!(node instanceof HTMLElement)) {
-          return false
-        }
-
-        if (!lastDoAnimate.current) {
-          lastAnimateAt.current = Date.now()
-          lastDoAnimate.current = doAnimate || {}
-          animate(scope.current, doAnimate || {}, {
-            type: false,
-          })
-          // scope.animations = []
-
-          if (shouldDebug) {
-            console.groupCollapsed(`[motion] ${debugId} 🌊 FIRST`)
-            console.info(doAnimate)
-            console.groupEnd()
-          }
-          return true
-        }
-
-        return false
-      }
 
       const flushAnimation = ({
         doAnimate = {},
@@ -221,6 +204,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }: AnimationProps) => {
         try {
           const node = stateRef.current.host
+
+          // on first render, reset stale animation refs - they can persist if component
+          // instance is reused (e.g. AnimatePresence keepChildrenMounted)
+          if (isFirstRender.current) {
+            lastDontAnimate.current = null
+            lastDoAnimate.current = null
+          }
 
           if (shouldDebug) {
             console.groupCollapsed(
@@ -254,7 +244,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           const prevDont = lastDontAnimate.current
           if (dontAnimate) {
             if (prevDont) {
-              removeRemovedStyles(prevDont, dontAnimate, node)
+              // Pass doAnimate as preserve to prevent clearing styles that moved to doAnimate
+              removeRemovedStyles(prevDont, dontAnimate, node, doAnimate)
               const changed = getDiff(prevDont, dontAnimate)
               if (changed) {
                 Object.assign(node.style, changed as any)
@@ -266,18 +257,17 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           }
 
           if (doAnimate) {
-            if (updateFirstAnimationStyle()) {
-              return
-            }
-
             // bugfix: going from non-animated to animated in motion -
             // motion batches things so the above removal can happen a frame before causing flickering
             // we see this with tooltips, this is not an ideal solution though, ideally we can remove/update
             // in the same batch/frame as motion
+            // Also sync motion's internal state for properties moving from dontAnimate to doAnimate
             if (prevDont) {
+              const movedToAnimate: Record<string, unknown> = {}
               for (const key in prevDont) {
                 if (key in doAnimate) {
                   node.style[key] = prevDont[key]
+                  movedToAnimate[key] = prevDont[key]
                   // Also update lastDoAnimate to include the previous value
                   // This prevents animating from undefined to the current value
                   // when a property transitions from dontAnimate to doAnimate
@@ -285,6 +275,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                     lastDoAnimate.current[key] = prevDont[key]
                   }
                 }
+              }
+              // Sync motion's internal state for moved properties
+              if (Object.keys(movedToAnimate).length > 0) {
+                animate(scope.current, { ...movedToAnimate }, { duration: 0 })
               }
             }
 
@@ -296,13 +290,102 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
             if (diff) {
-              controls.current = animate(scope.current, diff, animationOptions)
+              // FIX: Handle animation interruption for position-only animations
+              // Only apply this fix when:
+              // 1. There's a running animation
+              // 2. The transform change is POSITION-ONLY (just translate, no scale/rotate/skew)
+              // 3. animatePosition is being used (Popper/Tooltip pattern)
+              // This fixes tooltip position jumping without breaking AnimatePresence scale/rotate animations
+              // NOTE: We check for animatePosition to avoid this fix causing jitter
+              // on components like the TAMAGUI logo dot indicator which also use translate-only transforms
+
+              const isRunning = controls.current?.state === 'running'
+              const targetTransform =
+                typeof diff.transform === 'string' ? diff.transform : null
+
+              // only apply position fix for translate-only transforms
+              const isPositionOnlyTransform =
+                targetTransform &&
+                targetTransform.includes('translate') &&
+                !nonPositionTransformRe.test(targetTransform)
+
+              // Position fix for Popper/Tooltip elements with animatePosition.
+              // Only apply when:
+              // 1. Animation is actively running
+              // 2. Transform is position-only (translate without scale/rotate/etc)
+              // 3. Element has data-popper-animate-position attribute (set by Popper when
+              //    animatePosition is true)
+              //
+              // The issue: when a Popper animation is interrupted mid-flight, motion's
+              // animate() may start from wrong position causing jumps to origin.
+              //
+              // Why check data-popper-animate-position: This attribute is ONLY set on Popper
+              // elements that explicitly use animatePosition. Regular
+              // components like the logo Circle don't have this attribute, so they won't
+              // get this fix applied (which would cause jitter due to getComputedStyle
+              // overhead on rapid updates).
+
+              // check if this is a Popper element with animated position
+              const isPopperElement = node.hasAttribute('data-popper-animate-position')
+
+              // also apply fix for AnimatePresence children that just finished entering
+              // this fixes roving tabs indicator jumping when rapidly switching
+              const isEnteringPresenceChild = presence && justFinishedEntering
+
+              if (
+                isRunning &&
+                controls.current &&
+                isPositionOnlyTransform &&
+                (isPopperElement || isEnteringPresenceChild)
+              ) {
+                const currentTransform = getComputedStyle(node).transform
+
+                if (currentTransform && currentTransform !== 'none') {
+                  const matrixMatch = currentTransform.match(
+                    /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
+                  )
+
+                  if (matrixMatch) {
+                    // stop animation and preserve current position
+                    controls.current.stop()
+                    node.style.transform = currentTransform
+
+                    // animate from current matrix position to target
+                    const currentX = Number.parseFloat(matrixMatch[1])
+                    const currentY = Number.parseFloat(matrixMatch[2])
+                    const keyframeDiff = {
+                      ...diff,
+                      transform: [
+                        `translateX(${currentX}px) translateY(${currentY}px)`,
+                        targetTransform,
+                      ],
+                    }
+
+                    controls.current = animate(
+                      scope.current,
+                      keyframeDiff,
+                      animationOptions
+                    )
+                    lastAnimateAt.current = Date.now()
+                    lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
+                    lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
+                    return
+                  }
+                }
+              }
+
+              // IMPORTANT: Spread to create mutable copy - style objects may be frozen
+              // fix transparent colors to use rgba for motion.dev compatibility
+              const fixedDiff = fixTransparentColors({ ...diff }, lastDoAnimate.current)
+
+              controls.current = animate(scope.current, fixedDiff, animationOptions)
               lastAnimateAt.current = Date.now()
             }
           }
 
-          lastDontAnimate.current = dontAnimate || {}
-          lastDoAnimate.current = doAnimate
+          // IMPORTANT: Spread to create mutable copies - objects may be frozen
+          lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
+          lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
         } finally {
           if (isExiting) {
             if (controls.current) {
@@ -320,25 +403,63 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
-          disableAnimation
+          disableAnimation,
+          animationState
         )
 
         flushAnimation(animationProps)
       })
 
-      const animateKey = JSON.stringify(style)
-
       useIsomorphicLayoutEffect(() => {
         if (isFirstRender.current) {
-          updateFirstAnimationStyle()
           isFirstRender.current = false
-          lastDontAnimate.current = dontAnimate
-          lastDoAnimate.current = doAnimate || {}
+
+          // during hydration, use full sync logic to prevent flash
+          // doing this - will fix some of the enter (accordion) glitches but breaks animatepresence
+          //  isHydrating || (isMounting && !isEntering)
+          if (isHydrating) {
+            const node = stateRef.current.host
+
+            if (node instanceof HTMLElement) {
+              // IMPORTANT: On first render, we need to:
+              // 1. Apply dontAnimate styles to the DOM (enterStyle values like scale(0))
+              // 2. Tell motion about these styles so it knows the starting state
+              // This ensures AnimatePresence enter animations work correctly.
+
+              if (dontAnimate) {
+                // Apply initial styles to DOM
+                Object.assign(node.style, dontAnimate as any)
+
+                // Tell motion about the initial state by animating instantly to dontAnimate
+                // This syncs motion's internal state with what's actually on the DOM
+                // IMPORTANT: Spread to create mutable copy - React/Tamagui style objects may be frozen
+                animate(scope.current, { ...dontAnimate }, { duration: 0 })
+              }
+
+              // If there are styles to animate, set them up (but animation is disabled on first render)
+              if (doAnimate && Object.keys(doAnimate).length > 0) {
+                // IMPORTANT: Spread to create mutable copy - objects may be frozen
+                lastDoAnimate.current = { ...doAnimate }
+                animate(scope.current, { ...doAnimate }, { duration: 0 })
+              } else {
+                // doAnimate is empty, so track dontAnimate as the initial animated state
+                // This way on next render, getDiff will detect the change
+                // IMPORTANT: Spread to create mutable copy - objects may be frozen
+                lastDoAnimate.current = dontAnimate ? { ...dontAnimate } : {}
+              }
+            }
+
+            // IMPORTANT: Spread to create mutable copy - objects may be frozen
+            lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
+            lastAnimateAt.current = Date.now()
+            return
+          }
+
+          // after hydration, use simpler logic
+          lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
+          lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
           return
         }
-
-        // always clear queue if we re-render
-        // animationsQueue.current = []
 
         // don't ever queue on a render
         flushAnimation({
@@ -346,7 +467,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [animateKey, isExiting])
+      }, [styleKey, isExiting, disableAnimation])
 
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
@@ -354,7 +475,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           style,
           doAnimate,
           dontAnimate,
-          animateKey,
+          styleKey,
           scope,
           animationOptions,
           isExiting,
@@ -441,7 +562,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   function getMotionAnimatedProps(
     props: { transition: TransitionProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
-    disable: boolean
+    disable: boolean,
+    animationState: 'enter' | 'exit' | 'default' = 'default'
   ): AnimationProps {
     if (disable) {
       return {
@@ -449,7 +571,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = transitionPropToAnimationConfig(props.transition)
+    const animationOptions = transitionPropToAnimationConfig(
+      props.transition,
+      animationState
+    )
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
@@ -486,16 +611,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 
   function transitionPropToAnimationConfig(
-    transitionProp: TransitionProp | null
+    transitionProp: TransitionProp | null,
+    animationState: 'enter' | 'exit' | 'default' = 'default'
   ): TransitionAnimationOptions {
     const normalized = normalizeTransition(transitionProp)
 
+    // Get the effective animation key based on enter/exit/default state
+    const effectiveKey = getEffectiveAnimation(normalized, animationState)
+
     // If no animation defined, return empty config
-    if (!normalized.default && Object.keys(normalized.properties).length === 0) {
+    if (!effectiveKey && Object.keys(normalized.properties).length === 0) {
       return {}
     }
 
-    const defaultConfig = normalized.default ? animations[normalized.default] : null
+    const defaultConfig = effectiveKey ? animations[effectiveKey] : null
 
     // Framer Motion uses seconds, so convert from ms
     const delay =
@@ -519,6 +648,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const baseConfig = animationNameOrConfig.type
           ? animations[animationNameOrConfig.type]
           : defaultConfig
+
+        // @ts-expect-error
         result[propName] = {
           ...baseConfig,
           ...animationNameOrConfig,
@@ -708,4 +839,31 @@ function getDiff<T extends Record<string, unknown>>(
     }
   }
   return diff
+}
+
+// motion.dev can't animate to "transparent" - convert it to rgba based on previous value
+// if previous was rgba, use same rgb with alpha 0, otherwise use rgba(0,0,0,0)
+function fixTransparentColors(
+  diff: Record<string, unknown>,
+  previous: Record<string, unknown> | null
+): Record<string, unknown> {
+  let result = diff
+  for (const key in diff) {
+    if (diff[key] === 'transparent') {
+      const prev = previous?.[key]
+      let fixed = 'rgba(0, 0, 0, 0)'
+      if (typeof prev === 'string') {
+        // match rgba(r, g, b, a) or rgb(r, g, b)
+        const rgbaMatch = prev.match(/^rgba?\(([^,]+),\s*([^,]+),\s*([^,)]+)/)
+        if (rgbaMatch) {
+          fixed = `rgba(${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}, 0)`
+        }
+      }
+      if (result === diff) {
+        result = { ...diff }
+      }
+      result[key] = fixed
+    }
+  }
+  return result
 }

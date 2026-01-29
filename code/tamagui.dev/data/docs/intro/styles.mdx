@@ -1,11 +1,12 @@
 ---
-title: Style API
-description: The Tamagui superset of React Native styles
+title: Styling
+description: Tamagui accepts a superset of React Native styles
 ---
 
-Tamagui supports a superset of the React Native style properties - either to the
-`styled()` function as the second argument, or directly as props on the View and
-Text base components.
+Tamagui supports a superset of the React Native style properties on to any
+styled component like the base
+[Stack and Text components](/docs/core/stack-and-text), or through the
+[`styled()` function](/docs/core/styled) as the second argument.
 
 Here's how that looks in practice:
 
@@ -29,29 +30,31 @@ const MyView = () => (
 The types for the full set of styles accepted by styled, View and Text are
 exported as `ViewStyle` and `TextStyle`.
 
-For the full base styles, see the React Native docs:
+For the full base styles, see the React Native docs (version 2 targets React
+Native 0.82):
 
 - [React Native View style props](https://reactnative.dev/docs/view-style-props)
 - [React Native Text style props](https://reactnative.dev/docs/text-style-props)
 
 The full Tamagui typed style props can be simplified to something like this,
-except the values can accept `"unset"` or one of your design tokens:
+except the values can also accept one of your design tokens:
 
 ```tsx
 import { ViewStyle as RNViewStyle } from 'react-native'
 
 type BaseViewStyle = RNViewStyle & FlatTransformStyles & CrossPlatformStyles & WebOnlyStyles
 
-// Cross-platform styles (RN 0.76+ with New Architecture):
+// Cross-platform styles:
 type CrossPlatformStyles = {
-  // RN 0.76+
   boxShadow?: BoxShadowValue  // string, object, or array
   filter?: FilterValue        // brightness, opacity cross-platform; blur, contrast, etc. Android 12+
+  backgroundImage?: string    // linear-gradient, radial-gradient; supports $tokens
   cursor?: Properties['cursor'] // web + iOS 17+ (trackpad/stylus/gaze)
-  // RN 0.77+
   mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | ... // blend modes
   isolation?: 'auto' | 'isolate'
   boxSizing?: 'border-box' | 'content-box'
+  display?: 'flex' | 'none' | 'contents' | ...
+  position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky'  // 'fixed' converts to 'absolute' on native
   outlineColor?: ColorValue
   outlineOffset?: SpaceValue
   outlineStyle?: 'solid' | 'dotted' | 'dashed'
@@ -63,7 +66,6 @@ type WebOnlyStyles =  {
   contain?: Properties['contain']
   touchAction?: Properties['touchAction']
   backdropFilter?: Properties['backdropFilter']
-  backgroundImage?: Properties['backgroundImage']
   backgroundOrigin: Properties['backgroundOrigin'],
   backgroundPosition: Properties['backgroundPosition'],
   backgroundRepeat: Properties['backgroundRepeat'],
@@ -124,6 +126,7 @@ type WithStates = BaseViewStyle & {
   pressStyle?: BaseViewStyle
   focusStyle?: BaseViewStyle
   focusVisibleStyle?: BaseViewStyle
+  focusWithinStyle?: BaseViewStyle
   disabledStyle?: BaseViewStyle
   enterStyle?: BaseViewStyle
   exitStyle?: BaseViewStyle
@@ -187,31 +190,104 @@ type TextStyleBase = BaseViewStyle & {
 }
 ```
 
+## Pseudo States
+
+Tamagui supports several style states that apply based on interaction or focus:
+
+- **`hoverStyle`** - Styles applied when hovering over the element (web only, maps to CSS `:hover`)
+- **`pressStyle`** - Styles applied while the element is being pressed
+- **`focusStyle`** - Styles applied when the element has focus (maps to CSS `:focus`)
+- **`focusVisibleStyle`** - Styles applied when the element has keyboard focus (maps to CSS `:focus-visible`). Use this for keyboard navigation indicators.
+- **`focusWithinStyle`** - Styles applied when any child element has focus (maps to CSS `:focus-within`). Useful for styling containers when an input inside them is focused.
+- **`disabledStyle`** - Styles applied when `disabled={true}` is set
+
+```tsx
+<View
+  backgroundColor="$background"
+  hoverStyle={{ backgroundColor: '$backgroundHover' }}
+  pressStyle={{ backgroundColor: '$backgroundPress', scale: 0.98 }}
+  focusStyle={{ outlineColor: '$blue10', outlineWidth: 2, outlineStyle: 'solid' }}
+  focusVisibleStyle={{ outlineColor: '$blue10', outlineWidth: 2 }}
+  focusWithinStyle={{ borderColor: '$blue10' }}
+  disabledStyle={{ opacity: 0.5 }}
+/>
+```
+
+### Enter and Exit Styles
+
+For mount/unmount animations, use:
+
+- **`enterStyle`** - Initial styles when the component mounts (animates _from_ these values)
+- **`exitStyle`** - Final styles when the component unmounts (animates _to_ these values)
+
+See [Animations](/docs/core/animations) for more details on enter/exit animations.
+
+## rem Units
+
+Tamagui supports `rem` units cross-platform. On web, browsers handle rem natively. On native, Tamagui converts rem values to pixels using `PixelRatio.getFontScale()` to respect the user's font size preferences.
+
+```tsx
+// works on both web and native
+<View padding="1rem" />
+<Text fontSize="1.5rem" />
+```
+
+You can configure the base font size (default 16) in your config:
+
+```tsx
+createTamagui({
+  settings: {
+    remBaseFontSize: 16, // default
+  },
+})
+```
+
+On native, `1rem` with a base of 16 equals `16 * PixelRatio.getFontScale()` pixels, scaling with the user's accessibility settings.
+
 ## CSS Shorthand with Variables
 
 Tamagui supports using `$variables` directly inside CSS shorthand string values.
-This is particularly useful for `boxShadow` where you want to reference theme
-colors:
+This is particularly useful for `boxShadow` and `backgroundImage` where you want
+to reference theme colors:
 
 ```tsx
-// Single variable
+// boxShadow with variables
 <View boxShadow="0 0 10px $shadowColor" />
-
-// Multiple variables
 <View boxShadow="0 0 5px $shadowColor, 0 0 15px $color" />
+
+// backgroundImage with linear-gradient (cross-platform, RN 0.76+)
+<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
+<View backgroundImage="linear-gradient(45deg, $black 0%, $white 50%, $black 100%)" />
+
+// filter with variables
+<View filter="blur($2)" />
 
 // On web: resolves to CSS custom properties
 // boxShadow: "0 0 10px var(--t-shadow-shadowColor)"
+// backgroundImage: "linear-gradient(to bottom, var(--background), var(--color))"
 
-// On native (RN 0.76+): resolves to raw values
+// On native: resolves to raw values
 // boxShadow: "0 0 10px rgba(0,0,0,0.2)"
+// backgroundImage: "linear-gradient(to bottom, #fff, #000)"
 ```
 
 Supported shorthand properties with variable resolution:
 
-- `boxShadow` - Works on both web and native (RN 0.76+)
+- `boxShadow` - Works on both web and native
+- `backgroundImage` - Works on both web and native (see below)
+- `filter` - Works on both web and native
 - `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
 - `background` - Web only
+
+### backgroundImage
+
+Supports `linear-gradient()` and `radial-gradient()` cross-platform. Does not
+support `url()` on native - use `<ImageBackground>` for images.
+
+```tsx
+<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
+<View backgroundImage="radial-gradient(circle, $white, $black)" />
+```
 
 For native border styling, use individual props:
 
@@ -222,6 +298,38 @@ For native border styling, use individual props:
 // Native (or cross-platform)
 <View borderWidth={1} borderStyle="solid" borderColor="$borderColor" />
 ```
+
+### textShadow
+
+Text shadows support CSS shorthand with token resolution, just like `boxShadow`:
+
+```tsx
+import { Text } from 'tamagui'
+
+// CSS shorthand with tokens
+<Text textShadow="2px 2px 4px $shadowColor">
+  Shadowed Text
+</Text>
+
+// multiple shadows (web only)
+<Text textShadow="1px 1px 2px $shadowColor, 0 0 8px $color">
+  Glowing Text
+</Text>
+```
+
+You can also use the individual React Native props:
+
+```tsx
+<Text
+  textShadowColor="$shadowColor"
+  textShadowOffset={{ width: 2, height: 2 }}
+  textShadowRadius={4}
+>
+  Shadowed Text
+</Text>
+```
+
+On native, only a single text shadow is supported (React Native limitation).
 
 ## Parent based styling
 
@@ -311,7 +419,7 @@ Group styles also allow for targeting the parent pseudo state:
 Now only when the parent View is hovered the Text will turn white. The allowed
 pseudo modifiers are `hover` (web only), `press`, and `focus`.
 
-For more advanced usecases you can use named groups
+For more advanced use cases you can use named groups:
 
 ```tsx
 <View group="card">
@@ -402,13 +510,42 @@ can set width and height on the container. When either of these are set, the
 children will attempt to use these values on first render and if they satisfy
 the media query, you'll avoid the need for a double render altogether.
 
-## Style order is important
+## Order is important
 
-One thing that's very important to understand in Tamagui is that style props are
-sensitive to their order - a feature that without which would leave us with
-impossible styling challenges and awkward rules of inheritance we're trying to
-get away from with CSS in JS.
+It's important to note that the order of style properties is significant. This
+is really important for two reasons:
 
-For a detailed explanation of how prop order works and why it's necessary, see
-the [Order is important](/docs/core/styled#order-is-important) section in the
-styled() docs.
+1. You want to control which styles are overridden.
+2. You have a variant that expands into multiple style properties, and you need
+   to control it.
+
+Let's see how it lets us control overriding styles:
+
+```tsx
+import { View, ViewProps } from '@tamagui/core'
+
+export default (props: ViewProps) => (
+  <View background="red" {...props} width={200} />
+)
+```
+
+In this case we set a default `background` to red, but it can be overridden by
+props. But we set `width` _after_ the prop spread, so width is _always_ going to
+be set to 200.
+
+It also is necessary for variants to make sense. Say we have a variant `huge`
+that sets `scale` to 2 and `borderRadius` to 100:
+
+```tsx
+// this will be scale = 3
+export default (props: ViewProps) => <MyView huge scale={3} />
+
+// this will be scale = 2
+export default (props: ViewProps) => <MyView scale={3} huge />
+```
+
+If order wasn't important, how would you expect these two different usages to
+work? You'd have to make order important _somewhere_. If you do it in the
+`styled()` helper somewhere, you end up having no flexibility and would end up
+with boilerplate. Making the prop order important gives us maximum
+expressiveness and is easy to understand.

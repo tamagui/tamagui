@@ -1,0 +1,296 @@
+---
+title: Animation Drivers
+description: Choose and configure animation drivers for your platform
+---
+
+Tamagui supports four animation drivers, each with different strengths. The animation keys match between all drivers, so you can swap them out based on your platform needs.
+
+<SimpleTable
+  headers={['Driver', 'Platform', 'Bundle Impact', 'Performance', 'Spring Physics']}
+  rows={[
+    ['**CSS**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'No (easing only)'],
+    ['**React Native**', 'Web + Native', 'No extra beyond RNW', 'On-thread', 'Yes (basic)'],
+    ['**Reanimated**', 'Web + Native', 'Larger', 'Off-thread (native), slower (web)', 'Yes (advanced)'],
+    ['**Motion**', 'Web only', 'Medium', 'Off-thread (WAAPI)', 'Yes (excellent)'],
+  ]}
+/>
+
+## CSS Driver
+
+The lightest bundle size, but lacks spring physics (easing curves only). Best for simple web-only apps.
+
+### Installation
+
+```bash
+yarn add @tamagui/animations-css
+```
+
+### Configuration
+
+```tsx
+import { createAnimations } from '@tamagui/animations-css'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: 'ease-in 150ms',
+    medium: 'ease-in 300ms',
+    slow: 'ease-in 450ms',
+    bouncy: 'cubic-bezier(0.68, -0.55, 0.265, 1.55) 300ms',
+  }),
+  // ...
+})
+```
+
+The format is: `<easing-function> <duration>`
+
+**Supported easing functions:** `ease`, `linear`, `ease-in`, `ease-out`, `ease-in-out`, `cubic-bezier(x1, y1, x2, y2)`
+
+---
+
+## React Native Driver
+
+No extra bundle size beyond React Native Web, but runs on-thread. Good for basic cross-platform animations.
+
+### Installation
+
+```bash
+yarn add @tamagui/animations-react-native
+```
+
+### Configuration
+
+```tsx
+import { createAnimations } from '@tamagui/animations-react-native'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: {
+      damping: 20,
+      mass: 1.2,
+      stiffness: 250,
+    },
+    medium: {
+      damping: 10,
+      mass: 0.9,
+      stiffness: 100,
+    },
+    slow: {
+      damping: 20,
+      stiffness: 60,
+    },
+  }),
+  // ...
+})
+```
+
+**Spring parameters:**
+- `damping` - How quickly the spring settles (higher = less bouncy)
+- `mass` - Mass of the object (higher = more inertia)
+- `stiffness` - Spring stiffness coefficient (higher = faster)
+
+---
+
+## Reanimated Driver
+
+Supports both native and web with advanced features, but has a larger bundle size. Best performance on native platforms with off-thread animations.
+
+### Installation
+
+```bash
+yarn add @tamagui/animations-reanimated react-native-reanimated
+```
+
+Follow the [Reanimated installation guide](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/) to complete setup.
+
+### Configuration
+
+```tsx
+import { createAnimations } from '@tamagui/animations-reanimated'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: {
+      type: 'spring',
+      damping: 20,
+      mass: 1.2,
+      stiffness: 250,
+    },
+    medium: {
+      type: 'spring',
+      damping: 10,
+      mass: 0.9,
+      stiffness: 100,
+    },
+    // timing animations also supported
+    quick: {
+      type: 'timing',
+      duration: 300,
+    },
+  }),
+  // ...
+})
+```
+
+---
+
+## Motion Driver
+
+Off-thread performance via WAAPI with excellent spring physics and a medium bundle size. Best for web-only apps that need smooth, physics-based animations.
+
+### Installation
+
+```bash
+yarn add @tamagui/animations-motion motion
+```
+
+### Configuration
+
+```tsx
+import { createAnimations } from '@tamagui/animations-motion'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    '100ms': { duration: 100 },
+    '200ms': { duration: 200 },
+    bouncy: {
+      type: 'spring',
+      damping: 9,
+      mass: 0.9,
+      stiffness: 150,
+    },
+    quick: {
+      type: 'spring',
+      damping: 20,
+      mass: 1.2,
+      stiffness: 250,
+    },
+  }),
+  // ...
+})
+```
+
+Motion uses the Web Animations API (WAAPI) which runs animations on the compositor thread when possible.
+
+---
+
+## Platform-Specific Drivers
+
+Use different drivers per-platform with file extensions:
+
+```tsx
+// animations.ts (web)
+import { createAnimations } from '@tamagui/animations-motion'
+
+export const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    stiffness: 100,
+  },
+})
+```
+
+```tsx
+// animations.native.ts
+import { createAnimations } from '@tamagui/animations-reanimated'
+
+export const animations = createAnimations({
+  bouncy: {
+    type: 'spring',
+    damping: 10,
+    stiffness: 100,
+  },
+})
+```
+
+Then import without the extension:
+
+```tsx
+// tamagui.config.ts
+import { animations } from './animations'
+
+export default createTamagui({
+  animations,
+  // ...
+})
+```
+
+## Multiple Drivers
+
+Configure multiple drivers at the root and select per-component with `animatedBy`:
+
+```tsx
+import { createAnimations as createCSS } from '@tamagui/animations-css'
+import { createAnimations as createSpring } from '@tamagui/animations-motion'
+
+export default createTamagui({
+  animations: {
+    default: createCSS({ bouncy: 'ease-in 200ms' }),
+    spring: createSpring({ bouncy: { type: 'spring', damping: 10 } }),
+  },
+})
+```
+
+```tsx
+<Square transition="bouncy" />                    {/* uses default */}
+<Square animatedBy="spring" transition="bouncy" /> {/* uses spring */}
+```
+
+## Lazy Loading Drivers
+
+For apps that start static but need richer animations later, you can lazy load drivers.
+
+**Swap the default driver** with `Configuration`:
+
+```tsx
+import { Configuration } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-motion'
+
+const springDriver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
+
+export function AuthenticatedLayout({ children }) {
+  return (
+    <Configuration animationDriver={springDriver}>
+      {children}
+    </Configuration>
+  )
+}
+```
+
+**Add multiple drivers** with `loadAnimationDriver`:
+
+```tsx
+import { loadAnimationDriver } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-motion'
+
+const driver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
+loadAnimationDriver('spring', driver)
+
+// Now components can use animatedBy="spring"
+```
+
+## Bundle Size Optimization
+
+<Notice theme="green">
+  **Experimental:** Use `react-native-web-lite` to tree-shake animation drivers on web. Set `useReactNativeWebLite: true` in any Tamagui plugin configuration.
+</Notice>
+
+```tsx
+// next.config.js
+const { withTamagui } = require('@tamagui/next-plugin')
+
+module.exports = withTamagui({
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  useReactNativeWebLite: true,
+})
+```
+
+## See Also
+
+- [Animations Overview](/docs/core/animations)
+- [AnimatePresence](/docs/core/animate-presence)

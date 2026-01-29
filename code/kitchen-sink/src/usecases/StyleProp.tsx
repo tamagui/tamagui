@@ -1,15 +1,15 @@
-import { Stack } from '@tamagui/core'
+import { View } from '@tamagui/core'
 
 export function StyleProp(test) {
   return (
     <>
-      <Stack
+      <View
         testID="style-prop"
         style={{
           background: 'radial-gradient(var(--color9), transparent 70%)',
         }}
       />
-      <Stack
+      <View
         testID="class-name"
         className="test-bg"
         pointerEvents={!test ? 'none' : 'auto'}

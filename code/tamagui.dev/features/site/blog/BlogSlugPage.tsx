@@ -9,7 +9,6 @@ import {
   H6,
   Paragraph,
   Separator,
-  Spacer,
   View,
   XStack,
   YStack,
@@ -48,7 +47,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           </ThemeTint>
         </YStack>
 
-        <H1 letterSpacing={-1} mt="$5" mb="$2">
+        <H1 letterSpacing={-1} mt="$5" mb="$2" color="$color11">
           {frontmatter.title}
         </H1>
 
@@ -108,12 +107,6 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
           </YStack>
         </XStack>
       </Container>
-
-      <Spacer />
-
-      <Separator />
-
-      <Spacer />
     </YStack>
   )
 }
@@ -134,32 +127,33 @@ export function BlogSlugPage(props: BlogPost) {
 
       <Container>
         {frontmatter.image && (
-          <View
-            my="$4"
-            rounded="$4"
-            overflow="hidden"
-            style={{
-              aspectRatio: frontmatter.imageMeta
-                ? `${frontmatter.imageMeta.width} / ${frontmatter.imageMeta.height}`
-                : undefined,
-              background: frontmatter.imageMeta?.blurDataURL
-                ? `url(${frontmatter.imageMeta.blurDataURL}) center/cover no-repeat`
-                : undefined,
-            }}
-          >
-            <img
-              src={frontmatter.image}
-              alt={frontmatter.title || ''}
-              width={frontmatter.imageMeta?.width}
-              height={frontmatter.imageMeta?.height}
+          <YStack pb="$6">
+            <View
+              rounded="$4"
+              overflow="hidden"
               style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-                borderRadius: 8,
+                aspectRatio: frontmatter.imageMeta
+                  ? `${frontmatter.imageMeta.width} / ${frontmatter.imageMeta.height}`
+                  : undefined,
+                background: frontmatter.imageMeta?.blurDataURL
+                  ? `url(${frontmatter.imageMeta.blurDataURL}) center/cover no-repeat`
+                  : undefined,
               }}
-            />
-          </View>
+            >
+              <img
+                src={frontmatter.image}
+                alt={frontmatter.title || ''}
+                width={frontmatter.imageMeta?.width}
+                height={frontmatter.imageMeta?.height}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  borderRadius: 8,
+                }}
+              />
+            </View>
+          </YStack>
         )}
 
         <YStack render="article" px="$2">
@@ -167,21 +161,6 @@ export function BlogSlugPage(props: BlogPost) {
         </YStack>
 
         <Separator my="$8" mx="auto" />
-
-        <YStack mb="$8" items="center">
-          <Paragraph>
-            Share this post on{' '}
-            <Link
-              href={twitterShare}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share this post on Twitter"
-            >
-              Twitter
-            </Link>
-            .
-          </Paragraph>
-        </YStack>
 
         {relatedPosts && (
           <YStack>

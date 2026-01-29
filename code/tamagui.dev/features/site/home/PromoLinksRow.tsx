@@ -13,37 +13,35 @@ export const PromoLinksRow = () => {
   return (
     <TooltipGroup delay={tooltipDelay}>
       <Tooltip scope="promo-tooltip" offset={12} placement="bottom">
-        <XGroup elevation="$0.5" position="absolute" self="center" y={-80} rounded="$8">
+        <XGroup position="absolute" self="center" y={-80} rounded="$8">
           <Tooltip.Trigger
             scope="promo-tooltip"
             asChild
-            onMouseEnter={() => setLabel('Universal starter kit')}
+            onMouseEnter={() => setLabel('Takeout — universal RN starter kit')}
           >
             <Link href="/takeout">
               <XGroup.Item>
-                <TakeoutButton />
+                <TakeoutButton mr={-1} />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
 
-          <Theme name="green">
-            <Tooltip.Trigger
-              scope="promo-tooltip"
-              asChild
-              onMouseEnter={() => setLabel('Copy-paste components')}
-            >
-              <Link href="/bento">
-                <XGroup.Item>
-                  <BentoButton />
-                </XGroup.Item>
-              </Link>
-            </Tooltip.Trigger>
-          </Theme>
+          <Tooltip.Trigger
+            scope="promo-tooltip"
+            asChild
+            onMouseEnter={() => setLabel('Bento — Free + paid pre-made UI')}
+          >
+            <Link href="/bento">
+              <XGroup.Item>
+                <BentoButton mr={-1} />
+              </XGroup.Item>
+            </Link>
+          </Tooltip.Trigger>
 
           <Tooltip.Trigger
             scope="promo-tooltip"
             asChild
-            onMouseEnter={() => setLabel('Expert React Native help')}
+            onMouseEnter={() => setLabel('Add Even — Expert React Native developers')}
           >
             <Link href="https://addeven.com" target="_blank">
               <XGroup.Item>
@@ -54,7 +52,7 @@ export const PromoLinksRow = () => {
         </XGroup>
 
         <Tooltip.Content
-          enableAnimationForPositionChange
+          animatePosition
           transition="quick"
           bg="$background"
           elevation="$2"

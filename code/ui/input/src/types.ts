@@ -1,4 +1,5 @@
-import type { ColorTokens, StackProps, TextStylePropsBase } from '@tamagui/web'
+import type { ColorTokens, ViewProps, TextStyle } from '@tamagui/web'
+import type { InputNativeProps } from './InputNativeProps'
 
 /**
  * Web-aligned Input props
@@ -7,10 +8,10 @@ import type { ColorTokens, StackProps, TextStylePropsBase } from '@tamagui/web'
 
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>
 
-// Text style props supported by RN TextInput
-// Using TextStylePropsBase (not TextProps) to avoid Pick issues with mapped types
+// text style props supported by RN TextInput
+// using TextStyle to get theme-enhanced token types for these props
 type InputTextStyleProps = Pick<
-  TextStylePropsBase,
+  TextStyle,
   | 'color'
   | 'fontFamily'
   | 'fontSize'
@@ -21,12 +22,20 @@ type InputTextStyleProps = Pick<
   | 'textTransform'
 >
 
-export type InputProps = StackProps &
+// props that have different types on web vs native and need cross-platform definitions
+type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck'
+
+export type InputProps = ViewProps &
   Omit<
     HTMLInputProps,
     'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps
   > &
-  InputTextStyleProps & {
+  InputTextStyleProps &
+  Omit<InputNativeProps, OverlappingNativeProps> & {
+    // cross-platform props with unified types (web string | native boolean/enum)
+    autoCorrect?: boolean | 'on' | 'off'
+    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on'
+    spellCheck?: boolean
     // Core HTML input props are inherited from HTMLInputProps:
     // type, value, defaultValue, placeholder, disabled, readOnly,
     // onChange, onFocus, onBlur, onInput, autoComplete, autoFocus,
@@ -70,43 +79,61 @@ export type InputProps = StackProps &
       nativeEvent: { selection: { start: number; end: number } }
     }) => void
 
-    // Native-only props (no web equivalent)
-
     /**
-     * Keyboard appearance for iOS (native only, no web equivalent)
+     * Text content type for iOS autofill.
+     * Use `autoComplete` for web compatibility.
+     * @platform ios
      */
-    keyboardAppearance?: 'default' | 'light' | 'dark'
-
-    /**
-     * Text content type for iOS autofill (native only, use `autoComplete` on web)
-     */
-    textContentType?:
-      | 'none'
-      | 'URL'
-      | 'addressCity'
-      | 'addressCityAndState'
-      | 'addressState'
-      | 'countryName'
-      | 'creditCardNumber'
-      | 'emailAddress'
-      | 'familyName'
-      | 'fullStreetAddress'
-      | 'givenName'
-      | 'jobTitle'
-      | 'location'
-      | 'middleName'
-      | 'name'
-      | 'namePrefix'
-      | 'nameSuffix'
-      | 'nickname'
-      | 'organizationName'
-      | 'postalCode'
-      | 'streetAddressLine1'
-      | 'streetAddressLine2'
-      | 'sublocality'
-      | 'telephoneNumber'
-      | 'username'
-      | 'password'
-      | 'newPassword'
-      | 'oneTimeCode'
+    textContentType?: InputTextContentType
   }
+
+/**
+ * iOS text content types for autofill
+ */
+export type InputTextContentType =
+  | 'none'
+  | 'URL'
+  | 'addressCity'
+  | 'addressCityAndState'
+  | 'addressState'
+  | 'countryName'
+  | 'creditCardNumber'
+  | 'creditCardExpiration'
+  | 'creditCardExpirationMonth'
+  | 'creditCardExpirationYear'
+  | 'creditCardSecurityCode'
+  | 'creditCardType'
+  | 'creditCardName'
+  | 'creditCardGivenName'
+  | 'creditCardMiddleName'
+  | 'creditCardFamilyName'
+  | 'emailAddress'
+  | 'familyName'
+  | 'fullStreetAddress'
+  | 'givenName'
+  | 'jobTitle'
+  | 'location'
+  | 'middleName'
+  | 'name'
+  | 'namePrefix'
+  | 'nameSuffix'
+  | 'nickname'
+  | 'organizationName'
+  | 'postalCode'
+  | 'streetAddressLine1'
+  | 'streetAddressLine2'
+  | 'sublocality'
+  | 'telephoneNumber'
+  | 'username'
+  | 'password'
+  | 'newPassword'
+  | 'oneTimeCode'
+  | 'birthdate'
+  | 'birthdateDay'
+  | 'birthdateMonth'
+  | 'birthdateYear'
+  | 'cellularEID'
+  | 'cellularIMEI'
+  | 'dateTime'
+  | 'flightNumber'
+  | 'shipmentTrackingNumber'

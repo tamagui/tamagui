@@ -5,7 +5,7 @@ import React from 'react'
 import { Separator, Theme, XStack, YStack } from 'tamagui'
 import { Provider } from './provider'
 import { Sandbox } from './Sandbox'
-import * as TestCases from './usecases'
+import * as TestCases from './usecases/index.web'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack

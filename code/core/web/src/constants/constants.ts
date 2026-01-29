@@ -4,7 +4,7 @@ export const THEME_NAME_SEPARATOR = '_'
 export const THEME_CLASSNAME_PREFIX = 't_'
 export const FONT_DATA_ATTRIBUTE_NAME = 'data-tamagui-font'
 
-export const stackDefaultStyles: StackStyle = {}
+export const viewDefaultStyles: StackStyle = {}
 
 export const webViewFlexCompatStyles: StackStyle = {
   display: 'flex',
@@ -18,7 +18,7 @@ export const webViewFlexCompatStyles: StackStyle = {
 }
 
 if (process.env.TAMAGUI_TARGET === 'web') {
-  Object.assign(stackDefaultStyles, webViewFlexCompatStyles)
+  Object.assign(viewDefaultStyles, webViewFlexCompatStyles)
 }
 
 export const MISSING_THEME_MESSAGE =

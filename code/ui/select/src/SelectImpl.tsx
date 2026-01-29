@@ -15,7 +15,7 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react'
-import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent, useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
@@ -30,11 +30,11 @@ import type { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
 export const SelectInlineImpl = (props: SelectImplProps) => {
-  const { scope, children, open = false, listContentRef } = props
+  const { scope, children, open = false, listContentRef, setActiveIndexFast } = props
 
   const selectContext = useSelectContext(scope)
   const selectItemParentContext = useSelectItemParentContext(scope)
-  const { setActiveIndex, selectedIndex, activeIndex } = selectContext
+  const { setActiveIndex, selectedIndex, activeIndexRef } = selectContext
 
   const { setOpen, setSelectedIndex } = selectItemParentContext
 
@@ -59,21 +59,23 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const [blockSelection, setBlockSelection] = React.useState(false)
   const floatingStyle = React.useRef({})
 
-  // Wait for scroll position to settle before showing arrows to prevent
-  // interference with pointer events.
-  useIsomorphicLayoutEffect(() => {
-    queueMicrotask(() => {
-      if (!open) {
-        setScrollTop(0)
-        setFallback(false)
-        setActiveIndex(null)
-        setControlledScrolling(false)
-      }
-    })
-  }, [open, setActiveIndex])
+  // sync activeIndex on open/close
+  // use useEffect (not layout effect) so this runs AFTER SelectItem children have subscribed
+  React.useEffect(() => {
+    if (open) {
+      // use fast setter for initial focus - doesn't trigger re-render
+      setActiveIndexFast(selectedIndex ?? 0)
+    } else {
+      // reset state when closed
+      setScrollTop(0)
+      setFallback(false)
+      setActiveIndexFast(null)
+      setControlledScrolling(false)
+    }
+  }, [open, selectedIndex, setActiveIndexFast])
 
   // close when mouseup outside select
-  if (isWeb && isClient) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
     useIsomorphicLayoutEffect(() => {
       if (!open) return
       const mouseUp = (e: MouseEvent) => {
@@ -159,6 +161,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const isScrollable = showDownArrow || showUpArrow
 
   useIsomorphicLayoutEffect(() => {
+    if (typeof window === 'undefined') return
     window.addEventListener('resize', update)
     if (open) {
       update()
@@ -183,16 +186,21 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }),
     useListNavigation(context, {
       listRef: listItemsRef,
-      activeIndex: activeIndex || 0,
+      activeIndex: selectContext.activeIndex ?? 0,
       selectedIndex,
-      onNavigate: setActiveIndex,
+      // wrap onNavigate to prevent floating-ui from resetting activeIndex to null on focus loss
+      onNavigate: (index) => {
+        if (index !== null) {
+          setActiveIndex(index)
+        }
+      },
       scrollItemIntoView: false,
     }),
     useTypeahead(context, {
       listRef: listContentRef,
       onMatch,
       selectedIndex,
-      activeIndex,
+      activeIndex: selectContext.activeIndex,
       onTypingChange: (e) => {
         state.current.isTyping = e
       },
@@ -323,16 +331,23 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }, [open, refs, setOpen])
 
   // Scroll the `activeIndex` item into view only in "controlledScrolling"
-  // (keyboard nav) mode.
+  // (keyboard nav) mode. Use subscription to avoid re-renders on every activeIndex change.
   React.useEffect(() => {
-    if (open && controlledScrolling) {
-      if (activeIndex != null) {
-        listItemsRef.current[activeIndex]?.scrollIntoView({ block: 'nearest' })
+    if (!open) return
+
+    const scrollActiveIntoView = (index: number | null) => {
+      if (controlledScrolling && index != null) {
+        listItemsRef.current[index]?.scrollIntoView({ block: 'nearest' })
       }
+      setScrollTop(refs.floating.current?.scrollTop ?? 0)
     }
 
-    setScrollTop(refs.floating.current?.scrollTop ?? 0)
-  }, [open, refs, controlledScrolling, activeIndex])
+    // initial scroll
+    scrollActiveIntoView(activeIndexRef.current)
+
+    // subscribe to future changes
+    return selectItemParentContext.activeIndexSubscribe(scrollActiveIntoView)
+  }, [open, refs, controlledScrolling, selectItemParentContext.activeIndexSubscribe])
 
   // Scroll the `selectedIndex` into view upon opening the floating element.
   React.useEffect(() => {
@@ -364,7 +379,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       setInnerOffset={setInnerOffset}
       fallback={fallback}
       floatingContext={context}
-      activeIndex={activeIndex}
       canScrollDown={!!showDownArrow}
       canScrollUp={!!showUpArrow}
       controlledScrolling={controlledScrolling}

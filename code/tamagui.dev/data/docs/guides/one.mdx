@@ -3,7 +3,7 @@ title: One Guide
 description: How to set up Tamagui with One
 ---
 
-[One](https://onestack.dev) is a React framework for web, iOS, and Android, built on the power of Vite. It offers seamless cross-platform development capabilities and integrates well with Tamagui.
+[One](https://onestack.dev) is a React framework for web, iOS, and Android built on Vite. It offers seamless cross-platform development and integrates well with Tamagui.
 
 ## Install
 
@@ -23,7 +23,7 @@ yarn add tamagui @tamagui/config
 Create a `tamagui.config.ts` file in your project root:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import { createTamagui } from 'tamagui'
 
 const tamaguiConfig = createTamagui(defaultConfig)
@@ -113,7 +113,7 @@ export default function Home() {
 
 ## Themes
 
-To support light and dark modes, you can use One's built-in color scheme support along with Tamagui's theming system. Update your root layout:
+To support light and dark modes, use One's built-in color scheme support along with Tamagui's theming system. Update your root layout:
 
 ```tsx fileName="app/_layout.tsx"
 import { TamaguiProvider, Theme } from 'tamagui'
@@ -136,7 +136,7 @@ export default function Layout() {
 
 ## Performance
 
-For better performance, you can use the `outputCSS` option in the Tamagui Vite plugin:
+For better performance, use the `outputCSS` option in the Tamagui Vite plugin:
 
 ```tsx fileName="vite.config.ts"
 tamaguiPlugin({
@@ -153,6 +153,6 @@ import '../public/tamagui.css'
 // ... rest of your imports and component
 ```
 
-## Conclusion
+## Next Steps
 
-You now have Tamagui set up with [One](https://onestack.dev)! You can start building your cross-platform app using Tamagui's powerful styling system and One's seamless development experience.
+You now have Tamagui set up with [One](https://onestack.dev). Start building your cross-platform app using Tamagui's styling system and One's seamless development experience.

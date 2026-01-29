@@ -1,5 +1,6 @@
-import { View, styled, useComposedRefs, useTheme } from '@tamagui/core'
+import { View, styled, useTheme } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
+import { useWebRef } from '@tamagui/element'
 import React from 'react'
 import { styledBody } from './shared'
 import type { InputProps } from './types'
@@ -10,7 +11,7 @@ const StyledInput = styled(View, styledBody[0], styledBody[1])
  * A web-aligned input component.
  * @see — Docs https://tamagui.dev/ui/inputs#input
  */
-export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => {
+export const Input = StyledInput.styleable<InputProps>((props, _forwardedRef) => {
   const {
     disabled,
     id,
@@ -21,14 +22,65 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     placeholderTextColor,
     selectionColor,
     rows,
+
     // Native-only props (ignored on web)
     keyboardAppearance,
+    returnKeyType,
+    submitBehavior,
+    blurOnSubmit,
+    caretHidden,
+    contextMenuHidden,
+    selectTextOnFocus,
+    secureTextEntry,
+    maxFontSizeMultiplier,
+    allowFontScaling,
+    multiline,
+    keyboardType,
+    autoCapitalize,
+    autoCorrect,
+    autoFocusNative,
+    textContentType,
+    onEndEditing,
+    onContentSizeChange,
+    onScroll,
+    onKeyPress,
+
+    // iOS-only props (ignored on web)
+    clearButtonMode,
+    clearTextOnFocus,
+    enablesReturnKeyAutomatically,
+    dataDetectorTypes,
+    scrollEnabled,
+    passwordRules,
+    rejectResponderTermination,
+    spellCheck,
+    lineBreakStrategyIOS,
+    lineBreakModeIOS,
+    smartInsertDelete,
+    inputAccessoryViewID,
+    inputAccessoryViewButtonLabel,
+    disableKeyboardShortcuts,
+
+    // Android-only props (ignored on web)
+    cursorColor,
+    selectionHandleColor,
+    underlineColorAndroid,
+    importantForAutofill,
+    disableFullscreenUI,
+    inlineImageLeft,
+    inlineImagePadding,
+    returnKeyLabel,
+    textBreakStrategy,
+    textAlignVertical,
+    verticalAlign,
+    showSoftInputOnFocus,
+    numberOfLines,
+
     ...rest
   } = props
 
-  const ref = React.useRef<HTMLInputElement>(null)
+  const { ref, composedRef } = useWebRef<HTMLInputElement>(_forwardedRef)
   const theme = useTheme()
-  const composedRefs = useComposedRefs(forwardedRef, ref)
 
   // Handle selection changes
   React.useEffect(() => {
@@ -103,19 +155,5 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     },
   } as any
 
-  return (
-    <>
-      <style>
-        {`
-          input::selection, textarea::selection {
-            background-color: var(--selectionColor) !important;
-          }
-          input::placeholder, textarea::placeholder {
-            color: var(--placeholderColor) !important;
-          }
-        `}
-      </style>
-      <StyledInput ref={composedRefs} {...finalProps} />
-    </>
-  )
+  return <StyledInput ref={composedRef} {...finalProps} />
 })

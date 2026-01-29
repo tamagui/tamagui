@@ -1,11 +1,10 @@
-import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { ExternalLink, Figma, LogIn, Menu, Check } from '@tamagui/lucide-icons'
+import { LogoWords, TamaguiLogo, ThemeTint, setTintFamily, useTint } from '@tamagui/logo'
+import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { isTouchable, Theme, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import { useWindowDimensions, type LayoutRectangle } from 'react-native'
 import {
-  type PopoverProps,
   Adapt,
   AnimatePresence,
   Button,
@@ -17,6 +16,7 @@ import {
   Separator,
   Sheet,
   SizableText,
+  Span,
   styled,
   TooltipGroup,
   useComposedRefs,
@@ -25,14 +25,20 @@ import {
   XGroup,
   XStack,
   YStack,
+  type PopoverProps,
 } from 'tamagui'
 import { Link } from '~/components/Link'
 import { bannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
-import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
+import { SeasonTogglePopover, seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useLoginLink } from '../../auth/useLoginLink'
+import { useBentoStore } from '../../bento/BentoStore'
+import { useBentoTheme } from '../../bento/useBentoTheme'
 import { DocsMenuContents } from '../../docs/DocsMenuContents'
 import { useDocsMenu } from '../../docs/useDocsMenu'
+import { AddEvenBrandIcon } from '../../icons/AddEvenBrandIcon'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'
 import { useUser } from '../../user/useUser'
@@ -42,10 +48,6 @@ import { SearchButton } from './SearchButton'
 import { UpgradeToProPopover } from './UpgradeToProPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
-import { useLoginLink } from '../../auth/useLoginLink'
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { useBentoStore } from '../../bento/BentoStore'
-import { useBentoTheme } from '../../bento/useBentoTheme'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -65,7 +67,6 @@ export function Header(props: HeaderProps) {
   return (
     <>
       <XStack
-        // @ts-ignore
         position="fixed"
         t={0}
         l={0}
@@ -142,7 +143,7 @@ export function Header(props: HeaderProps) {
               $gtSm: {
                 py: '$2',
                 y: 5,
-                elevation: '$10',
+                elevation: '$5',
               },
             })}
           />
@@ -208,26 +209,27 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <UpgradeToProPopover />
 
-        <Theme name="green">
+        {/* <Theme name="teal">
           <Link href="/blog/version-two">
-            <XStack
-              bg="$color5"
-              px="$2"
-              py="$1"
-              rounded="$4"
-              hoverStyle={{
-                bg: '$color4',
+            <Button
+              size="$2"
+              bg="$color3"
+              borderWidth={0}
+              theme="teal"
+              // boxShadow="inset 0 -2px 0 1px $color1"
+              $theme-light={{
+                boxShadow: 'inset 0 -2px 0 1px $color8',
               }}
               pressStyle={{
-                bg: '$color6',
+                y: 1,
               }}
             >
-              <SizableText size="$3" color="$color11">
-                v2
-              </SizableText>
-            </XStack>
+              <Span fontSize="$2" y={-2} fontWeight="600">
+                v2 RC
+              </Span>
+            </Button>
           </Link>
-        </Theme>
+        </Theme> */}
       </XStack>
 
       <View flex={1} />
@@ -280,10 +282,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               Core
             </HeaderLink>
 
-            <HeaderLink id="compiler" href="/docs/intro/compiler-install">
-              Compiler
-            </HeaderLink>
-
             <HeaderLink id="ui" href="/ui/intro">
               UI
             </HeaderLink>
@@ -310,12 +308,11 @@ const HeaderMenuButton = () => {
     <Popover.Trigger>
       <SlidingPopoverTarget id="menu">
         <Button
-          size="$3"
-          my={10}
+          size="$5"
+          circular
+          my={2}
           bg="transparent"
-          rounded="$10"
-          borderWidth={2}
-          px="$2"
+          borderWidth={0}
           onPress={(e) => {
             if (isTouchable) {
               setOpen(!open)
@@ -337,11 +334,11 @@ const HeaderMenuButton = () => {
           }}
           aria-label="Open the main menu"
           hoverStyle={{
-            borderColor: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)' as any,
+            bg: '$shadow1',
           }}
         >
           <Circle size={34} items="center" justify="center">
-            {haveUser ? <UserAvatar /> : <Menu size={16} />}
+            {haveUser ? <UserAvatar /> : <Menu size={20} />}
           </Circle>
         </Button>
       </SlidingPopoverTarget>
@@ -429,7 +426,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
   )
 }
 
-type ID = 'core' | 'compiler' | 'ui' | 'theme' | 'menu'
+type ID = 'core' | 'ui' | 'theme' | 'menu'
 
 export const HeaderLink = (props: {
   id: ID
@@ -530,7 +527,7 @@ export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
   }
 )
 
-const order = ['', 'core', 'compiler', 'ui', 'theme', 'menu']
+const order = ['', 'core', 'ui', 'theme', 'menu']
 
 const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const { data } = useUser()
@@ -568,6 +565,13 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const { height } = useWindowDimensions()
   const maxHeight = height - 50
 
+  const maxMenuHeight = Math.min(maxHeight * 0.9, 900)
+
+  // track measured content heights per menu
+  const [contentHeights, setContentHeights] = React.useState<Partial<Record<ID, number>>>(
+    {}
+  )
+  const measuredHeight = contentHeights[active]
   const heights = {
     core: Math.min(maxHeight, 1300),
     compiler: 117,
@@ -584,16 +588,14 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       onMouseLeave={() => {
         isOnMenu = false
       }}
-      enableAnimationForPositionChange
+      animatePosition
       transition="medium"
-      bg="$color3"
+      bg="$background06"
       backdropFilter="blur(40px)"
       maxH="90vh"
       maxW={360}
       minW={360}
       elevation="$2"
-      borderWidth={3}
-      borderColor="$color2"
       p={0}
       rounded="$6"
       opacity={1}
@@ -607,7 +609,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
         opacity: 0,
       }}
     >
-      <Popover.Arrow bg="$color3" size="$3.5" />
+      <Popover.Arrow transition="medium" animatePosition bg="$background06" size="$4" />
 
       {pointerFine ? (
         <YStack
@@ -631,15 +633,9 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   )
 })
 
-const getDocsSectionFromPath = (pathName: string): 'core' | 'compiler' | 'ui' | null => {
+const getDocsSectionFromPath = (pathName: string): 'core' | 'ui' | null => {
   if (!pathName || pathName === '/' || pathName === '') return null
   if (pathName.startsWith('/ui/')) return 'ui'
-  if (
-    pathName.startsWith('/docs/intro/compiler') ||
-    pathName.startsWith('/docs/intro/benchmarks') ||
-    pathName.startsWith('/docs/intro/why-a-compiler')
-  )
-    return 'compiler'
   if (
     pathName.startsWith('/docs') ||
     pathName.startsWith('/community') ||
@@ -858,7 +854,7 @@ const HeaderMenuMoreContents = () => {
 
       {!userSwr.data?.userDetails && (
         <HeadAnchor grid onPress={handleLogin}>
-          Login
+          <span>Login</span>
           <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
             <LogIn color="$color10" size={14} />
           </YStack>
@@ -874,7 +870,7 @@ const HeaderMenuMoreContents = () => {
           }}
         >
           <XStack items="center" justify="center">
-            Account
+            <span>Account</span>
             <YStack flex={10} />
             <YStack display={'inline-block' as any} y={-2} my={-3} self="flex-end">
               <UserAvatar size={22} />
@@ -929,6 +925,27 @@ const HeaderMenuMoreContents = () => {
         </HeadAnchor>
       </Link>
 
+      <Link asChild href="https://addeven.com" target="_blank">
+        <HeadAnchor grid render="a">
+          <XStack items="center">
+            Add Even
+            <YStack
+              ml={3}
+              display={'inline-block' as any}
+              x={6}
+              y={-1}
+              my={-10}
+              opacity={0.8}
+            >
+              <AddEvenBrandIcon scale={0.65} />
+            </YStack>
+          </XStack>
+          <SizableText size="$2" color="$color9">
+            Expert Consulting
+          </SizableText>
+        </HeadAnchor>
+      </Link>
+
       <Separator borderColor="$color02" opacity={0.25} my="$2" />
 
       <Link asChild href="https://github.com/tamagui/tamagui">
@@ -964,7 +981,49 @@ const HeaderMenuMoreContents = () => {
           </YStack>
         </HeadAnchor>
       </Link>
+
+      <Separator borderColor="$color02" opacity={0.25} my="$2" />
+
+      <SeasonChooser />
     </YStack>
+  )
+}
+
+const SeasonChooser = () => {
+  const { name } = useTint()
+
+  return (
+    <XStack flexWrap="wrap" gap="$2" items="center">
+      {Object.keys(seasons).map((seasonName) => {
+        const isActive = name === seasonName
+        return (
+          <Circle
+            key={seasonName}
+            size="$4"
+            cursor="pointer"
+            items="center"
+            justify="center"
+            hoverStyle={{
+              bg: '$backgroundHover',
+            }}
+            pressStyle={{
+              bg: '$backgroundPress',
+            }}
+            {...(isActive && {
+              bg: '$color5',
+              hoverStyle: {
+                bg: '$color5',
+              },
+            })}
+            onPress={() => {
+              setTintFamily(seasonName as any)
+            }}
+          >
+            <SizableText size="$5">{seasons[seasonName]}</SizableText>
+          </Circle>
+        )
+      })}
+    </XStack>
   )
 }
 
@@ -1004,7 +1063,6 @@ const HeadAnchor = styled(Paragraph, {
       true: {
         fontWeight: '200',
         letterSpacing: 1,
-        textTransform: 'unset',
         width: '100%',
         flex: 1,
         flexBasis: 'auto',

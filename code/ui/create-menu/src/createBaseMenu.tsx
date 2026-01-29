@@ -17,15 +17,16 @@ import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
 import type { TamaguiComponent, TextProps } from '@tamagui/web'
 import {
-  type Stack,
   type ViewProps,
-  Text,
-  View,
   composeEventHandlers,
   composeRefs,
   createStyledContext,
   isWeb,
+  Text,
+  Theme,
   useComposedRefs,
+  useThemeName,
+  View,
   withStaticProperties,
 } from '@tamagui/web'
 import type { TamaguiElement } from '@tamagui/web/types'
@@ -270,8 +271,8 @@ interface MenuRadioItemProps extends MenuItemProps {
 
 type CheckboxContextValue = { checked: CheckedState }
 
-// type MenuItemIndicatorElement = React.ElementRef<typeof Stack>
-type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof Stack>
+// type MenuItemIndicatorElement = React.ElementRef<typeof View>
+type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>
 interface MenuItemIndicatorProps extends PrimitiveSpanProps {
   /**
    * Used to force mounting when more control is needed. Useful when
@@ -514,6 +515,14 @@ export function createBaseMenu({
     const rootContext = useMenuRootContext(scope)
     const popperContext = PopperPrimitive.usePopperContext(scope)
     const menuSubContext = useMenuSubContext(scope)
+    const themeName = useThemeName()
+
+    const themedChildren = (
+      <Theme forceClassName name={themeName}>
+        {children}
+      </Theme>
+    )
+
     const content = needsPortalRepropagation() ? (
       <RepropagateMenuAndMenuRootProvider
         menuContext={menuContext}
@@ -522,10 +531,10 @@ export function createBaseMenu({
         menuSubContext={menuSubContext}
         scope={scope}
       >
-        {children}
+        {themedChildren}
       </RepropagateMenuAndMenuRootProvider>
     ) : (
-      children
+      themedChildren
     )
 
     // For submenus, we need to check if the root menu is still open
@@ -921,7 +930,7 @@ export function createBaseMenu({
       const ref = React.useRef<HTMLDivElement>(null)
       const rootContext = useMenuRootContext(scope)
       const contentContext = useMenuContentContext(scope)
-      const composedRefs = useComposedRefs(forwardedRef, ref)
+      const composedRefs = useComposedRefs(forwardedRef, ref as any)
       const isPointerDownRef = React.useRef(false)
 
       const handleSelect = () => {
@@ -1096,7 +1105,7 @@ export function createBaseMenu({
    * MenuItemTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_TITLE_NAME = 'MenuItemTitle'
-  const MenuItemTitle = _Title.styleable((props, forwardedRef) => {
+  const MenuItemTitle = _Title.styleable<MenuItemTitleProps>((props, forwardedRef) => {
     return <_Title {...props} ref={forwardedRef} />
   })
 
@@ -1107,9 +1116,11 @@ export function createBaseMenu({
    * MenuItemSubTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
-  const MenuItemSubTitle = _SubTitle.styleable((props, forwardedRef) => {
-    return <_SubTitle {...props} ref={forwardedRef} />
-  })
+  const MenuItemSubTitle = _SubTitle.styleable<MenuItemSubTitleProps>(
+    (props, forwardedRef) => {
+      return <_SubTitle {...props} ref={forwardedRef} />
+    }
+  )
 
   MenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
 
@@ -1142,7 +1153,7 @@ export function createBaseMenu({
    * -----------------------------------------------------------------------------------------------*/
 
   const ITEM_ICON = 'MenuItemIcon'
-  const MenuItemIcon = _Icon.styleable((props: MenuItemIconProps, forwardedRef) => {
+  const MenuItemIcon = _Icon.styleable<MenuItemIconProps>((props, forwardedRef) => {
     // filter out native-only props that shouldn't reach the DOM
     const {
       // @ts-ignore
@@ -1333,7 +1344,15 @@ export function createBaseMenu({
     createStyledContext<MenuSubContextValue>()
 
   const MenuSub: React.FC<ScopedProps<MenuSubProps>> = (props) => {
-    const { scope = MENU_CONTEXT, children, open = false, onOpenChange, ...rest } = props
+    const {
+      scope = MENU_CONTEXT,
+      children,
+      open = false,
+      onOpenChange,
+      allowFlip = { padding: 10 },
+      stayInFrame = { padding: 10 },
+      ...rest
+    } = props
     const parentMenuContext = useMenuContext(scope)
     const [trigger, setTrigger] = React.useState<MenuSubTriggerElement | null>(null)
     const [content, setContent] = React.useState<MenuContentElement | null>(null)
@@ -1346,7 +1365,12 @@ export function createBaseMenu({
     }, [parentMenuContext.open, handleOpenChange])
 
     return (
-      <PopperPrimitive.Popper {...rest} scope={scope}>
+      <PopperPrimitive.Popper
+        allowFlip={allowFlip}
+        stayInFrame={stayInFrame}
+        {...rest}
+        scope={scope}
+      >
         <MenuProvider
           scope={scope}
           open={open}
@@ -1388,6 +1412,16 @@ export function createBaseMenu({
     const openTimerRef = React.useRef<number | null>(null)
     const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
 
+    // determine effective direction for keyboard navigation based on placement
+    // if submenu opens to the left, arrow keys should be flipped
+    const placementSide = popperContext.placement?.split('-')[0]
+    const effectiveDir: Direction =
+      placementSide === 'left'
+        ? 'rtl'
+        : placementSide === 'right'
+          ? 'ltr'
+          : rootContext.dir
+
     const clearOpenTimer = React.useCallback(() => {
       if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
       openTimerRef.current = null
@@ -1404,7 +1438,7 @@ export function createBaseMenu({
     }, [pointerGraceTimerRef, onPointerGraceIntentChange])
 
     return (
-      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild scope={scope}>
+      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild="except-style" scope={scope}>
         <MenuItemImpl
           id={subContext.triggerId}
           aria-haspopup="menu"
@@ -1473,8 +1507,14 @@ export function createBaseMenu({
               // Get side from data-side attribute (set by MenuSubContent)
               // This is critical - without it, side is undefined and isPointerMovingToSubmenu
               // always returns false because pointerDir === undefined is never true
+              // Note: data-side is on the inner PopperContentFrame, not the outer container,
+              // so we need to query for it or check child elements
               const contentEl = context.content as HTMLElement
-              const side: Side = (contentEl?.dataset?.side as Side) || 'right'
+              const sideEl = contentEl?.dataset?.side
+                ? contentEl
+                : contentEl?.querySelector('[data-side]')
+              const side: Side =
+                ((sideEl as HTMLElement)?.dataset?.side as Side) || 'right'
               const rightSide = side === 'right'
               const bleed = rightSide ? -5 : +5
               const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
@@ -1505,8 +1545,20 @@ export function createBaseMenu({
               const triggerEl = subContext.trigger as unknown as HTMLElement
               const triggerRect = triggerEl?.getBoundingClientRect()
               if (triggerRect) {
-                const rightSide = rootContext.dir !== 'rtl'
-                const side: Side = rightSide ? 'right' : 'left'
+                // determine side from popper placement, falling back to RTL direction
+                const placementSide = popperContext.placement?.split('-')[0] as
+                  | 'left'
+                  | 'right'
+                  | 'top'
+                  | 'bottom'
+                  | undefined
+                const side: Side =
+                  placementSide === 'left' || placementSide === 'right'
+                    ? placementSide
+                    : rootContext.dir === 'rtl'
+                      ? 'left'
+                      : 'right'
+                const rightSide = side === 'right'
                 const bleed = rightSide ? -5 : +5
                 // Estimate submenu position based on trigger
                 const nearEdge = rightSide ? triggerRect.right + 4 : triggerRect.left - 4
@@ -1541,8 +1593,25 @@ export function createBaseMenu({
                 onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
                   const isTypingAhead = contentContext.searchRef.current !== ''
                   if (props.disabled || (isTypingAhead && event.key === ' ')) return
-                  const willOpen = SUB_OPEN_KEYS[rootContext.dir].includes(event.key)
+                  // use effectiveDir so arrow keys match the submenu's actual position
+                  // (e.g., ArrowLeft opens a left-side submenu)
+                  const willOpen = SUB_OPEN_KEYS[effectiveDir].includes(event.key)
                   if (willOpen) {
+                    // if submenu is already open (e.g., opened via hover), focus the first item
+                    if (context.open && context.content) {
+                      // find and focus the first focusable item in the submenu
+                      const contentEl = context.content as unknown as HTMLElement
+                      const firstItem = contentEl.querySelector?.(
+                        '[role="menuitem"]:not([data-disabled])'
+                      ) as HTMLElement | null
+                      if (firstItem) {
+                        // @ts-ignore focusVisible is a newer API
+                        firstItem.focus({ focusVisible: true })
+                        event.preventDefault()
+                        return
+                      }
+                    }
+
                     // set the popper reference for keyboard-only open
                     // (normally set on mouseEnter, see PopperAnchor)
                     const triggerEl = event.currentTarget as HTMLElement
@@ -1555,7 +1624,9 @@ export function createBaseMenu({
                     })
                     // The trigger may hold focus if opened via pointer interaction
                     // so we ensure content is given focus again when switching to keyboard.
-                    context.content?.focus()
+                    // use focusVisible: true since this is keyboard navigation
+                    // @ts-ignore focusVisible is a newer API
+                    context.content?.focus({ focusVisible: true })
                     // prevent window from scrolling
                     event.preventDefault()
                   }
@@ -1585,8 +1656,35 @@ export function createBaseMenu({
     const context = useMenuContext(scope)
     const rootContext = useMenuRootContext(scope)
     const subContext = useMenuSubContext(scope)
+    const popperContext = PopperPrimitive.usePopperContext(scope)
     const ref = React.useRef<MenuSubContentElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
+
+    // determine side from actual placement, not just RTL direction
+    // placement like "left-start" or "right-end" - extract the side
+    const placementSide = popperContext.placement?.split('-')[0] as
+      | 'left'
+      | 'right'
+      | 'top'
+      | 'bottom'
+      | undefined
+    // for submenus, we care about horizontal placement (left/right)
+    // default to 'right' for LTR, 'left' for RTL
+    const dataSide: Side =
+      placementSide === 'left' || placementSide === 'right'
+        ? placementSide
+        : rootContext.dir === 'rtl'
+          ? 'left'
+          : 'right'
+
+    // effective direction for keyboard navigation - if submenu is on left, flip arrow keys
+    const effectiveDir: Direction =
+      placementSide === 'left'
+        ? 'rtl'
+        : placementSide === 'right'
+          ? 'ltr'
+          : rootContext.dir
+
     return (
       <Collection.Provider scope={scope}>
         <Collection.Slot scope={scope}>
@@ -1595,7 +1693,7 @@ export function createBaseMenu({
             aria-labelledby={subContext.triggerId}
             {...subContentProps}
             ref={composedRefs}
-            data-side={rootContext.dir === 'rtl' ? 'left' : 'right'}
+            data-side={dataSide}
             disableOutsidePointerEvents={false}
             disableOutsideScroll={false}
             trapFocus={false}
@@ -1622,8 +1720,9 @@ export function createBaseMenu({
             onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
               // close only this submenu, not the root menu
               context.onOpenChange(false)
-              // return focus to the submenu trigger
-              subContext.trigger?.focus()
+              // return focus to the submenu trigger with focusVisible since this is keyboard navigation
+              // @ts-ignore focusVisible is a newer API
+              subContext.trigger?.focus({ focusVisible: true })
               // ensure pressing escape in submenu doesn't escape full screen mode
               event.preventDefault()
             })}
@@ -1635,11 +1734,15 @@ export function createBaseMenu({
                     const isKeyDownInside = event.currentTarget.contains(
                       event.target as HTMLElement
                     )
-                    const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(event.key)
+                    // use effectiveDir so arrow keys match the submenu's actual position
+                    // (e.g., ArrowRight closes a left-side submenu)
+                    const isCloseKey = SUB_CLOSE_KEYS[effectiveDir].includes(event.key)
                     if (isKeyDownInside && isCloseKey) {
                       context.onOpenChange(false)
                       // We focus manually because we prevented it in `onCloseAutoFocus`
-                      subContext.trigger?.focus()
+                      // use focusVisible: true since this is keyboard navigation
+                      // @ts-ignore focusVisible is a newer API
+                      subContext.trigger?.focus({ focusVisible: true })
                       // prevent window from scrolling
                       event.preventDefault()
                     }
@@ -1657,14 +1760,23 @@ export function createBaseMenu({
   const Anchor = MenuAnchor
   const Portal = MenuPortal
   const Content = MenuContent
-  const Group = _MenuGroup
-  const Label = _Label
+  const Group = _MenuGroup.styleable<MenuGroupProps>((props, ref) => {
+    return <_MenuGroup {...props} ref={ref} />
+  })
+  Group.displayName = 'MenuGroup'
+  const Label = _Label.styleable<MenuLabelProps>((props, ref) => {
+    return <_Label {...props} ref={ref} />
+  })
+  Label.displayName = 'MenuLabel'
   const Item = MenuItem
   const CheckboxItem = MenuCheckboxItem
   const RadioGroup = MenuRadioGroup
   const RadioItem = MenuRadioItem
   const ItemIndicator = MenuItemIndicator
-  const Separator = _Separator
+  const Separator = _Separator.styleable<MenuSeparatorProps>((props, ref) => {
+    return <_Separator {...props} ref={ref} />
+  })
+  Separator.displayName = 'MenuSeparator'
   const Arrow = MenuArrow
   const Sub = MenuSub
   const SubTrigger = MenuSubTrigger

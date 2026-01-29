@@ -1,8 +1,9 @@
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
+import { getIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, getElevation, themeableVariants } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { ColorTokens, GetProps, RNExtraProps, SizeTokens, Token } from '@tamagui/web'
+import type { ColorTokens, GetProps, SizeTokens, Token } from '@tamagui/web'
 import {
   createStyledContext,
   getTokenValue,
@@ -11,12 +12,10 @@ import {
   View,
   withStaticProperties,
 } from '@tamagui/web'
+import type { FunctionComponent, JSX } from 'react'
 import { useContext } from 'react'
-import { useGetIcon } from '@tamagui/helpers-tamagui'
 
 type ButtonVariant = 'outlined'
-
-export type ButtonProps = GetProps<typeof Frame>
 
 const context = createStyledContext<{
   size?: SizeTokens
@@ -33,10 +32,8 @@ const context = createStyledContext<{
 const Frame = styled(View, {
   context,
   name: 'Button',
-  group: 'Button' as any,
-  containerType: 'normal',
   role: 'button',
-  render: 'button',
+  render: <button type="button" />,
   tabIndex: 0,
 
   variants: {
@@ -76,7 +73,7 @@ const Frame = styled(View, {
           ? {}
           : {
               backgroundColor: 'transparent',
-              borderWidth: 2,
+              borderWidth: 1,
               borderColor: '$borderColor',
 
               hoverStyle: {
@@ -88,22 +85,12 @@ const Frame = styled(View, {
                 backgroundColor: 'transparent',
                 borderColor: '$borderColorPress',
               },
-
-              focusVisibleStyle: {
-                backgroundColor: 'transparent',
-                borderColor: '$borderColorFocus',
-                outlineColor: '$outlineColor',
-                outlineStyle: 'solid',
-                outlineWidth: 2,
-              },
             },
     },
 
     circular: themeableVariants.circular,
 
     chromeless: themeableVariants.chromeless,
-
-    bordered: themeableVariants.bordered,
 
     size: {
       '...size': (val, extras) => {
@@ -132,6 +119,8 @@ const Frame = styled(View, {
     disabled: {
       true: {
         pointerEvents: 'none',
+        // @ts-ignore
+        'aria-disabled': true,
       },
     },
   } as const,
@@ -163,13 +152,16 @@ const Text = styled(SizableText, {
   },
 })
 
-const Icon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
-  const { children, scaleIcon = 1, marginLeft, marginRight, size } = props as any
+const Icon = (props: {
+  children: React.ReactNode
+  scaleIcon?: number
+  size?: SizeTokens
+}) => {
+  const { children, scaleIcon = 1, size } = props
   const styledContext = context.useStyledContext()
   if (!styledContext) {
     throw new Error('Button.Icon must be used within a Button')
   }
-  const getIcon = useGetIcon()
 
   const sizeToken = size ?? styledContext.size
 
@@ -180,8 +172,6 @@ const Icon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   return getIcon(children, {
     size: iconSize,
     color: styledContext.color,
-    marginLeft,
-    marginRight,
   })
 }
 
@@ -195,13 +185,16 @@ export const ButtonContext = createStyledContext<{
   color: undefined,
 })
 
-const ButtonComponent = Frame.styleable<{
-  icon?: any
-  iconAfter?: any
+type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
+
+type ButtonExtraProps = {
+  icon?: IconProp
+  iconAfter?: IconProp
   scaleIcon?: number
   iconSize?: SizeTokens
-  onLayout?: RNExtraProps['onLayout']
-}>((propsIn: any, ref) => {
+}
+
+const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
   const isNested = useContext(ButtonNestingContext)
 
   // Process props through useProps to expand shorthands (like br -> borderRadius)
@@ -210,15 +203,7 @@ const ButtonComponent = Frame.styleable<{
     noExpand: true,
   })
 
-  const {
-    children,
-    iconSize,
-    icon,
-    iconAfter,
-    scaleIcon = 1,
-    noTextWrap,
-    ...props
-  } = processedProps
+  const { children, iconSize, icon, iconAfter, scaleIcon = 1, ...props } = processedProps
 
   const size = propsIn.size || (propsIn.unstyled ? undefined : '$true')
 
@@ -227,8 +212,6 @@ const ButtonComponent = Frame.styleable<{
   const iconSizeNumber =
     (typeof finalSize === 'number' ? finalSize * 0.5 : getFontSize(finalSize as Token)) *
     scaleIcon
-
-  const getIcon = useGetIcon()
 
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon) => {
     if (!icon) return null
@@ -241,7 +224,7 @@ const ButtonComponent = Frame.styleable<{
 
   const wrappedChildren = wrapChildrenInText(
     Text,
-    { children, noTextWrap },
+    { children },
     {
       unstyled: process.env.TAMAGUI_HEADLESS === '1',
       size: finalSize ?? styledContext?.size,
@@ -272,3 +255,5 @@ export const Button = withStaticProperties(ButtonComponent, {
   Text,
   Icon,
 })
+
+export type ButtonProps = GetProps<typeof ButtonComponent>

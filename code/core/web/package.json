@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "2.0.0-1768992908401",
+  "version": "2.0.0-rc.0",
   "type": "module",
   "source": "src/index.ts",
   "main": "dist/cjs",
@@ -32,6 +32,7 @@
     "@tamagui/constants": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/is-equal-shallow": "workspace:*",
+    "@tamagui/native": "workspace:*",
     "@tamagui/normalize-css-color": "workspace:*",
     "@tamagui/timer": "workspace:*",
     "@tamagui/types": "workspace:*",

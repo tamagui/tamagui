@@ -57,7 +57,7 @@ re-rendering there too - unless you do `get('web')` in which case it will only
 optimize for web.
 
 ```tsx
-import { Stack, useTheme } from '@tamagui/core'
+import { View, useTheme } from '@tamagui/core'
 import { SomeExternalComponent } from 'some-external-component'
 
 const App = () => {
@@ -82,7 +82,7 @@ const App = () => {
 
 You can mix and match `useMedia` and `useTheme`, and the compiler understands
 most basic usages, even with nested logic or constants within the file or
-imports [white-listed in your build setup](/docs/compiler/install):
+imports [whitelisted in your build setup](/docs/intro/compiler-install):
 
 ```tsx
 import { YStack, useMedia, useTheme } from 'tamagui'
@@ -195,7 +195,7 @@ If you access `theme.bg.val` in your render function, the component will only
 re-render when theme.bg changes.
 
 ```tsx
-import { theme, View } from '@tamagui/core'
+import { useTheme, View } from '@tamagui/core'
 
 export default () => {
   const theme = useTheme()
@@ -213,7 +213,7 @@ export default () => {
 
 This is a more advanced use for building custom hooks or components, but you can
 pass in a theme name and a component theme name (as
-[discussed here](/docs/intro/themes#component-subset-themes)) to grab the right
+[discussed here](/docs/intro/themes#component-themes)) to grab the right
 subset theme:
 
 ```tsx

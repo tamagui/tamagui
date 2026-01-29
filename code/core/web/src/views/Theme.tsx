@@ -30,7 +30,9 @@ export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, r
 
   let finalChildren = disableDirectChildTheme
     ? Children.map(props.children, (child) =>
-        passThrough ? child : cloneElement(child, { ['data-disable-theme']: true })
+        passThrough || !isValidElement(child)
+          ? child
+          : cloneElement(child, { ['data-disable-theme']: true } as any)
       )
     : props.children
 
@@ -219,7 +221,7 @@ function getThemeClassNameAndColor(
 
   // Build full hierarchy of theme classes for CSS variable inheritance
   // Examples:
-  // - "red_alt1" → "t_red t_red_alt1"
+  // - "red_surface1" → "t_red t_red_surface1"
   // - "green_active_Button" → "t_green t_green_active t_green_active_Button"
   const themeNameParts = themeClassName.split('_')
   let themeClasses = `t_${themeClassName}`

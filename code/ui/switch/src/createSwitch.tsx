@@ -103,7 +103,8 @@ export function createSwitch<
         defaultChecked,
         onCheckedChange,
         activeStyle,
-        activeTheme,
+        unstyled: unstyledProp,
+        activeTheme: activeThemeProp,
         ...props
       } = _props
       const [checked, setChecked] = useControllableState({
@@ -147,7 +148,7 @@ export function createSwitch<
         }
       }
 
-      const unstyled = styledContext.unstyled ?? props.unstyled ?? false
+      const unstyled = styledContext.unstyled ?? unstyledProp ?? false
 
       return (
         <>
@@ -161,7 +162,8 @@ export function createSwitch<
             <Frame
               ref={switchRef}
               render="button"
-              theme={activeTheme ?? null}
+              // activeThemeProp should be a theme name string like "active", not a style object
+              theme={activeThemeProp ?? null}
               {...(isWeb && { type: 'button' })}
               {...(!unstyled && {
                 size: styledContext.size ?? props.size ?? '$true',

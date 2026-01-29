@@ -5,11 +5,20 @@ import { getSubscriptions } from '../user/helpers'
 export const hasBentoAccess = async (userId: string) => {
   const subscriptions = await getSubscriptions(userId)
 
+  // Valid Pro products that grant Bento access
+  const validProProducts = [
+    ProductName.TamaguiPro,
+    ProductName.TamaguiProV2,
+    ProductName.TamaguiProV2Upgrade,
+    ProductName.TamaguiSupportDirect,
+    ProductName.TamaguiSupportSponsor,
+  ]
+
   // Check for current subscription-based access
   const hasSubscriptionAccess = Boolean(
     subscriptions?.some((subscription) =>
       subscription.subscription_items?.some((item) =>
-        item.price?.product?.name?.includes(ProductName.TamaguiPro)
+        validProProducts.some((product) => item.price?.product?.name?.includes(product))
       )
     )
   )

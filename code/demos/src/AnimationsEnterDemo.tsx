@@ -11,7 +11,7 @@ export function AnimationsEnterDemo(props: any) {
   const hasIntersected = useIsIntersecting(ref, { once: true })
 
   if (isWeb && !hasIntersected) {
-    return <YStack ref={ref} />
+    return <YStack ref={ref as any} />
   }
 
   return (

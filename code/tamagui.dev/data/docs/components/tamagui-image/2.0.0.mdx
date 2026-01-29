@@ -1,8 +1,7 @@
 ---
 title: Image
-description:
-  Web compatible and super light image component with Tamagui style props.
-name: html
+description: Web compatible and super light image component with Tamagui style props
+name: tamagui-image
 component: Image
 package: image
 demoName: WebNativeImageDemo
@@ -21,8 +20,8 @@ demoName: WebNativeImageDemo
     'Web compatible.',
     'Supports SSR.',
     'Works on native and web.',
-    'No react-native-web dependency',
-    'Super light',
+    'No react-native-web dependency.',
+    'Super light.',
   ]}
 />
 
@@ -52,8 +51,8 @@ export default () => <Image src="https://..." width={300} height={400} />
   All web [img](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img)
   props are supported on web, and all native
   [Image](https://necolas.github.io/react-native-web/docs/image/) props are
-  supported on native. on native we are still using web img APIs, but not all
-  web img props are supported. like `decoding`
+  supported on native. On native we are still using web img APIs, but not all
+  web img props are supported, like `decoding`.
 </Notice>
 
 #### Some common props
@@ -70,31 +69,31 @@ export default () => <Image src="https://..." width={300} height={400} />
       name: 'alt',
       required: false,
       type: 'string',
-      description: `mandatory and incredibly useful for accessibility`,
+      description: `Mandatory and incredibly useful for accessibility.`,
     },
     {
       name: 'objectFit',
       required: false,
       type: 'CSS.ObjectFit',
-      description: `sets how the content of image is resized to fit its container. it's alternative to resizeMode prop`,
+      description: `Sets how the content of the image is resized to fit its container. An alternative to the \`resizeMode\` prop.`,
     },
     {
       name: 'unstyled',
       required: false,
       type: 'boolean',
-      description: `When true will remove all default styles`,
+      description: `When true, removes all default styles.`,
     },
     {
       name: 'onLoad',
       required: false,
       type: 'function',
-      description: `Callback when image is loaded`,
+      description: `Callback when the image is loaded.`,
     },
     {
       name: 'onError',
       required: false,
       type: 'function',
-      description: `Callback when image fails to load`,
+      description: `Callback when the image fails to load.`,
     },
   ]}
 />

@@ -11,6 +11,6 @@ export { runWithCache, setGitHubOutput, isGitHubActions, isCI, type RunWithCache
 export { waitForMetro, prewarmBundle, startMetro, setupSignalHandlers, withMetro, type MetroOptions, type MetroProcess, } from './metro';
 export { parseDetoxArgs, buildDetoxArgs, runDetoxTests, type DetoxRunnerOptions, } from './detox';
 export { waitForDevice, setupAdbReverse, setupAndroidDevice, ensureAndroidFolder } from './android';
-export { ensureIOSFolder } from './ios';
+export { ensureIOSFolder, ensureIOSApp, cleanupSimulators } from './ios';
 export { checkDeps, ensureIosDeps, ensureAndroidDeps, ensureMaestro, printDepsStatus, type DepsCheckResult, } from './deps';
 //# sourceMappingURL=index.d.ts.map
