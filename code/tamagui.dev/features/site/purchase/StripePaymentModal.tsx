@@ -789,7 +789,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       // Support Tier Upgrade Only (for existing V2 Pro users)
       if (isSupportUpgradeOnly && supportTier !== 'chat') {
         const supportPrice = SUPPORT_TIERS[supportTier].price
-        const discountedSupportPrice = calculateDiscountedAmount(supportPrice, finalCoupon)
+        const discountedSupportPrice = calculateDiscountedAmount(
+          supportPrice,
+          finalCoupon
+        )
         return (
           <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
             <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
