@@ -496,7 +496,7 @@ iframe {
 }
 
 .highlight-line[data-highlighted="false"] {
-  color: var(--gray12);
+  opacity: 0.5;
 }
 
 .token.deleted .highlight-word {
@@ -556,6 +556,16 @@ textarea {
 [data-heading] + [data-heading] {
   margin-top: 0;
   padding-top: var(--t-space-2);
+}
+
+/* collapse margins: notice followed by headings */
+.no-opacity-fade + [data-heading] {
+  margin-top: var(--t-space-4);
+}
+
+/* collapse margins: code blocks followed by headings */
+.DocCodeBlock + [data-heading] {
+  margin-top: var(--t-space-4);
 }
 
 .custom-scroll ::-webkit-scrollbar {
