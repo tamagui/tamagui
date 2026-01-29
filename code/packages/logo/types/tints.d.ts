@@ -7,6 +7,7 @@ declare const familiesValues: {
 	halloween: ThemeName[];
 	valentine: ThemeName[];
 	lunar: ThemeName[];
+	stpatricks: ThemeName[];
 };
 type Family = keyof typeof familiesValues;
 type Families = { [key in Family] : ThemeName[] };

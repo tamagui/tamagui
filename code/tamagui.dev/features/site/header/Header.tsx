@@ -30,10 +30,7 @@ import {
 import { Link } from '~/components/Link'
 import { bannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
-import {
-  SeasonTogglePopover,
-  seasonLogos,
-} from '~/features/site/seasons/SeasonTogglePopover'
+import { SeasonTogglePopover, seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useLoginLink } from '../../auth/useLoginLink'
@@ -212,14 +209,14 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <UpgradeToProPopover />
 
-        <Theme name="teal">
+        {/* <Theme name="teal">
           <Link href="/blog/version-two">
             <Button
               size="$2"
               bg="$color3"
               borderWidth={0}
               theme="teal"
-              boxShadow="inset 0 -2px 0 1px $color1"
+              // boxShadow="inset 0 -2px 0 1px $color1"
               $theme-light={{
                 boxShadow: 'inset 0 -2px 0 1px $color8',
               }}
@@ -232,7 +229,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               </Span>
             </Button>
           </Link>
-        </Theme>
+        </Theme> */}
       </XStack>
 
       <View flex={1} />
@@ -997,12 +994,12 @@ const SeasonChooser = () => {
 
   return (
     <XStack flexWrap="wrap" gap="$2" items="center">
-      {Object.keys(seasonLogos).map((seasonName) => {
+      {Object.keys(seasons).map((seasonName) => {
         const isActive = name === seasonName
         return (
           <Circle
             key={seasonName}
-            size="$6"
+            size="$4"
             cursor="pointer"
             items="center"
             justify="center"
@@ -1022,7 +1019,7 @@ const SeasonChooser = () => {
               setTintFamily(seasonName as any)
             }}
           >
-            {seasonLogos[seasonName]}
+            <SizableText size="$5">{seasons[seasonName]}</SizableText>
           </Circle>
         )
       })}
