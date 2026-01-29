@@ -5,7 +5,7 @@ export const ConsultingButton = (props: ButtonProps) => {
   return (
     <Button
       theme="black"
-      borderColor="$color5"
+      borderColor="$color6"
       elevation="$2"
       size="$3"
       rounded="$10"

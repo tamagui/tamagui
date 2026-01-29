@@ -5,7 +5,7 @@ export const TakeoutButton = (props: ButtonProps) => {
   return (
     <Button
       theme="red"
-      borderColor="$color5"
+      borderColor="$color6"
       elevation="$2"
       size="$3"
       rounded="$10"
