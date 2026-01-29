@@ -105,8 +105,9 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     colorTransparent: -1,
   }
 
-  const surface1 = makeSurface(3, 1)
-  const surface2 = makeSurface(5, 1)
+  const surface1 = makeSurface(2, 1)
+  const surface2 = makeSurface(3, 1)
+  const surface3 = makeSurface(5, 1)
 
   const accent = Object.fromEntries(
     Object.entries(base).map(([key, index]) => {
@@ -118,6 +119,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     base,
     surface1,
     surface2,
+    surface3,
     accent,
   } satisfies BuildTemplates
 }

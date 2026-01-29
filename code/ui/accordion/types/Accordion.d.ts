@@ -105,14 +105,14 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Header: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").TextNonStyleProps, "unstyled" | "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     }>> & React.RefAttributes<import("@tamagui/core").TamaguiTextElement>, "ref"> & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").Text>>;
     Content: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentExtraProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;

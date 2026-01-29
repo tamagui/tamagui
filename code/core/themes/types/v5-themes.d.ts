@@ -3,37 +3,72 @@ export declare const V5_BG_OFFSET: number;
 export { interpolateColor, opacify } from './opacify';
 export declare const v5ComponentThemes: {
     readonly Button: {
-        readonly template: "surface1";
+        readonly template: "surface3";
     };
     readonly Input: {
         readonly template: "surface1";
     };
     readonly Progress: {
-        readonly template: "surface2";
+        readonly template: "surface1";
     };
     readonly ProgressIndicator: {
-        readonly template: "accent";
+        readonly template: "surface3";
     };
     readonly Slider: {
         readonly template: "surface1";
     };
     readonly SliderActive: {
-        readonly template: "surface2";
+        readonly template: "surface3";
     };
     readonly SliderThumb: {
-        readonly template: "accent";
-    };
-    readonly Switch: {
         readonly template: "surface2";
     };
-    readonly SwitchThumb: {
-        readonly template: "accent";
+    readonly Switch: {
+        readonly template: "surface1";
     };
     readonly TextArea: {
         readonly template: "surface1";
     };
     readonly Tooltip: {
+        readonly template: "surface3";
+    };
+    readonly SwitchThumb: {
+        readonly template: "surface3";
+    };
+};
+export declare const v5ComponentThemesWithInverses: {
+    readonly ProgressIndicator: {
         readonly template: "accent";
+    };
+    readonly SliderThumb: {
+        readonly template: "accent";
+    };
+    readonly SwitchThumb: {
+        readonly template: "accent";
+    };
+    readonly Tooltip: {
+        readonly template: "accent";
+    };
+    readonly Button: {
+        readonly template: "surface3";
+    };
+    readonly Input: {
+        readonly template: "surface1";
+    };
+    readonly Progress: {
+        readonly template: "surface1";
+    };
+    readonly Slider: {
+        readonly template: "surface1";
+    };
+    readonly SliderActive: {
+        readonly template: "surface3";
+    };
+    readonly Switch: {
+        readonly template: "surface1";
+    };
+    readonly TextArea: {
+        readonly template: "surface1";
     };
 };
 /** Default grandchildren themes available in v5 */

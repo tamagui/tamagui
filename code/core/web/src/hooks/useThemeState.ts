@@ -358,9 +358,12 @@ function getScheme(name: string) {
 
 function getNewThemeName(
   parentName = '',
-  { name, reset, componentName }: UseThemeWithStateProps,
+  props: UseThemeWithStateProps,
   forceUpdate = false
 ): string | null {
+  const { name, reset } = props
+  const componentName = props.unstyled ? undefined : props.componentName
+
   if (name && reset) {
     throw new Error(
       process.env.NODE_ENV === 'production'

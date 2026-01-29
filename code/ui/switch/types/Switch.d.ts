@@ -10,9 +10,9 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<impor
     }>> | undefined;
 }, {
     size?: SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic & {
     accept: {
         readonly activeStyle: "style";
@@ -29,9 +29,9 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<impor
     }>> | undefined;
 }, {
     size?: SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic & {
     accept: {
         readonly activeStyle: "style";

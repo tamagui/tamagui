@@ -63,6 +63,10 @@ export type TamaguiComponentPropsBaseBase = {
      */
     themeShallow?: boolean;
     /**
+     * If true, component themes will not be applied
+     */
+    unstyled?: boolean;
+    /**
      * Same as the web id property for setting a uid on an element
      */
     id?: string;
@@ -553,6 +557,7 @@ export type UseThemeWithStateProps = ThemeProps & {
     passThrough?: boolean;
     disable?: boolean;
     needsUpdate?: () => boolean;
+    unstyled?: boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;

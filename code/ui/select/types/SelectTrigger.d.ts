@@ -3,7 +3,7 @@ import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 import type { SelectScopedProps } from './types';
 export type SelectTriggerProps = SelectScopedProps<ListItemProps>;
-export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | keyof import("@tamagui/core").StackStyleBase | "active" | "variant" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | "unstyled" | keyof import("@tamagui/core").StackStyleBase | "active" | "variant"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
