@@ -47,8 +47,8 @@ RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-
 WORKDIR /root/tamagui
 COPY . .
 
-# init git
-RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
+# init git (allow empty commit if nothing to commit)
+RUN git config --global user.email "you@example.com" && git config --global user.name "Docker Build" && git init . && git add -A && (git commit -m 'add' > /dev/null || true)
 
 # Clone bento repository as sibling directory (optional)
 # Use BENTO_BRANCH env var if set, otherwise default to main
@@ -75,10 +75,8 @@ RUN export $(cat /tmp/bento_status)
 # First install without bento deps
 RUN bun install
 
-# Merge bento dependencies into root package.json and reinstall
-RUN node scripts/with-bento.mjs
-# Re-link workspaces after bento setup
-RUN bun install
+# Merge bento dependencies into root package.json and reinstall (only if bento was cloned)
+RUN if [ -d "../bento" ]; then node scripts/with-bento.mjs && bun install; fi
 RUN bun run build:js
 RUN bun run build:app
 
