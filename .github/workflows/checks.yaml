@@ -49,8 +49,6 @@ jobs:
 
       - uses: nick-fields/retry@v3
         name: 'Run web tests'
-        env:
-          NODE_OPTIONS: '--max-old-space-size=6144'
         with:
           timeout_minutes: 25
           max_attempts: 2
