@@ -8,7 +8,12 @@ export const TooltipLabelLarge = ({
   subtitle,
   icon,
   href,
-}: { href?: string; icon: any; title: string; subtitle: string }) => {
+}: {
+  href?: string
+  icon: any
+  title: string
+  subtitle: string
+}) => {
   const content = (
     <YStack
       cursor={href ? 'pointer' : 'default'}

@@ -100,7 +100,8 @@ export const FaqTabContent = () => {
 
       <Question>How do I use a coupon?</Question>
       <Answer>
-        Enter it at checkout and click apply. Valid coupons update the price automatically.
+        Enter it at checkout and click apply. Valid coupons update the price
+        automatically.
       </Answer>
 
       <Question>How do I get my invoice?</Question>

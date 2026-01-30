@@ -9,8 +9,20 @@ Tamagui supports four animation drivers, each with different strengths. The anim
   headers={['Driver', 'Platform', 'Bundle Impact', 'Performance', 'Spring Physics']}
   rows={[
     ['**CSS**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'No (easing only)'],
-    ['**React Native**', 'Web + Native', 'No extra beyond RNW', 'On-thread', 'Yes (basic)'],
-    ['**Reanimated**', 'Web + Native', 'Larger', 'Off-thread (native), slower (web)', 'Yes (advanced)'],
+    [
+      '**React Native**',
+      'Web + Native',
+      'No extra beyond RNW',
+      'On-thread',
+      'Yes (basic)',
+    ],
+    [
+      '**Reanimated**',
+      'Web + Native',
+      'Larger',
+      'Off-thread (native), slower (web)',
+      'Yes (advanced)',
+    ],
     ['**Motion**', 'Web only', 'Medium', 'Off-thread (WAAPI)', 'Yes (excellent)'],
   ]}
 />
@@ -86,6 +98,7 @@ export default createTamagui({
 ```
 
 **Spring parameters:**
+
 - `damping` - How quickly the spring settles (higher = less bouncy)
 - `mass` - Mass of the object (higher = more inertia)
 - `stiffness` - Spring stiffness coefficient (higher = faster)
@@ -253,11 +266,7 @@ import { createAnimations } from '@tamagui/animations-motion'
 const springDriver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
 
 export function AuthenticatedLayout({ children }) {
-  return (
-    <Configuration animationDriver={springDriver}>
-      {children}
-    </Configuration>
-  )
+  return <Configuration animationDriver={springDriver}>{children}</Configuration>
 }
 ```
 

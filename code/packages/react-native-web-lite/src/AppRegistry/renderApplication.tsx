@@ -16,7 +16,7 @@ import { invariant } from '@tamagui/react-native-web-internals'
 import { renderLegacy, hydrate, hydrateLegacy, render } from '../render/index'
 import { AppContainer } from './AppContainer'
 
-export function renderApplication<Props extends Object>(
+export function renderApplication<Props extends object>(
   RootComponent: ComponentType<Props>,
   WrapperComponent: FunctionComponent<any> | null = null,
   callback: () => void = () => {},
@@ -48,12 +48,12 @@ export function renderApplication<Props extends Object>(
 }
 
 export function getApplication(
-  RootComponent: ComponentType<Object>,
-  initialProps: Object,
+  RootComponent: ComponentType<object>,
+  initialProps: object,
   WrapperComponent?: FunctionComponent<any> | null
 ): {
   element: ReactNode
-  getStyleElement: (object: Object) => ReactNode
+  getStyleElement: (object: object) => ReactNode
 } {
   const element = (
     <AppContainer WrapperComponent={WrapperComponent} rootTag={{}}>

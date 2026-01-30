@@ -1,9 +1,11 @@
 # Motion Hydration Position Bug Analysis
 
 ## The Bug
+
 HomeGlow elements on tamagui.dev briefly flash to origin (0,0) with scale=0 around 500-550ms after page load, then snap back to correct position. Users see a jarring visual glitch.
 
 ## Evidence from Debug Script
+
 ```
 First 5 frames:
   0: transform=matrix(1.88, 0, 0, 1.88, 251, 350), opacity=0.5, time=88ms  ✓ correct
@@ -17,6 +19,7 @@ First 5 frames:
 The elements START correct, then jump to origin, then return to correct.
 
 ## Component Structure
+
 ```jsx
 // HomeGlow.tsx
 <AnimatePresence initial={false}>  {/* we added initial={false} */}
@@ -36,6 +39,7 @@ The elements START correct, then jump to origin, then return to correct.
 ```
 
 ## Render Sequence (from logs)
+
 ```
 render #1: {
   disableAnimation: true,      // animation disabled during mount
@@ -65,6 +69,7 @@ render #3: animationState changes from 'enter' to 'default'
 ```
 
 ## The Mystery
+
 Despite our hydration fix applying correct styles at ~440ms (seen in logs), something resets transform to `matrix(0,0,0,0,0,0)` at ~550ms.
 
 This zero-matrix is NOT just "no transform" - it's scale=0, which means something is actively setting it.
@@ -72,23 +77,29 @@ This zero-matrix is NOT just "no transform" - it's scale=0, which means somethin
 ## Hypotheses
 
 ### H1: Motion library queues conflicting animation
+
 The motion library's `animate()` function might have queued an animation that runs AFTER our instant style application. Our `type: false` should prevent animation, but maybe there's a race condition.
 
 ### H2: Another layout effect or render triggers animation
+
 When `animationState` changes from 'enter' to 'default', the useMemo recomputes and might trigger another animation pass that animates from some default/zero state.
 
 ### H3: enterStyle being applied incorrectly
+
 The `enterStyle={{ opacity: 0.5 }}` might be causing motion to think it should animate FROM enterStyle values. But enterStyle doesn't have transform, so where does zero-transform come from?
 
 ### H4: CSS/Style conflict
+
 Some CSS transition or animation on the element might be interfering. The elements have `className="all ease-in-out s1"` on the parent.
 
 ### H5: AnimatePresence re-mounting elements
+
 When tint changes (via useTint), the keys change `${i}${tint}${tintAlt}`, causing AnimatePresence to treat them as new elements and trigger enter animation.
 
 ## Key Code Locations
 
 ### createAnimations.tsx - Layout Effect
+
 ```typescript
 useIsomorphicLayoutEffect(() => {
   if (isFirstRender.current) {
@@ -97,7 +108,7 @@ useIsomorphicLayoutEffect(() => {
       applyStylesInstantly(doAnimate, 'FIRST LAYOUT')
     }
     isFirstRender.current = false
-    lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}  // sets to {}
+    lastDoAnimate.current = doAnimate ? { ...doAnimate } : {} // sets to {}
     return
   }
   flushAnimation({ doAnimate, dontAnimate, animationOptions })
@@ -105,21 +116,23 @@ useIsomorphicLayoutEffect(() => {
 ```
 
 ### createAnimations.tsx - Hydration Fix
+
 ```typescript
 // Inside flushAnimation:
 if (
-  skipInitialAnimation &&                              // AnimatePresence initial={false}
+  skipInitialAnimation && // AnimatePresence initial={false}
   !appliedInitialFixRef.current &&
-  Object.keys(lastDoAnimate.current).length === 0 &&   // was empty from first render
+  Object.keys(lastDoAnimate.current).length === 0 && // was empty from first render
   Object.keys(doAnimate).length > 0
 ) {
   appliedInitialFixRef.current = true
-  applyStylesInstantly(doAnimate, 'HYDRATION FIX')     // applies correct transform
+  applyStylesInstantly(doAnimate, 'HYDRATION FIX') // applies correct transform
   return
 }
 ```
 
 ### Where animate() is called
+
 1. `applyStylesInstantly()` - line 213 - uses `type: false` (instant)
 2. Popper position fix - line 421 - only for data-popper-animate-position elements
 3. Main animation - line 438 - `animate(scope.current, fixedDiff, animationOptions)`
@@ -148,6 +161,7 @@ if (
 ## Key Insight from Quan's Commit (cf54108)
 
 Quan's fix that worked (but broke other things) did:
+
 1. Added `disableAnimation` to useMemo deps
 2. On first render, called `animate(scope.current, { ...dontAnimate }, { duration: 0 })` to **sync motion's internal state**
 3. Added `disableAnimation` to layout effect deps
@@ -157,6 +171,7 @@ The key was **syncing motion's internal state**. Motion library has internal tra
 ## Motion Library Controls
 
 The `useAnimate()` hook returns `[scope, animate]` and we track `controls.current` from animate() calls. Motion has internal state that may need explicit syncing:
+
 - `controls.current?.state` - 'running', 'finished', etc.
 - Motion tracks "from" values internally
 - If motion doesn't know the starting state, it may animate from wrong position
@@ -166,6 +181,7 @@ The `useAnimate()` hook returns `[scope, animate]` and we track `controls.curren
 The fix has two parts:
 
 ### 1. Hydration Window Tracking
+
 ```typescript
 let isInitialHydrationWindow = typeof window !== 'undefined'
 if (isInitialHydrationWindow) {
@@ -176,7 +192,9 @@ if (isInitialHydrationWindow) {
 ```
 
 ### 2. Sync Motion State During Hydration
+
 In the first render layout effect, if `mountedDuringHydration` is true:
+
 - Apply dontAnimate styles to DOM AND call `animate(scope, dontAnimate, { duration: 0 })`
 - Apply doAnimate styles AND call `animate(scope, doAnimate, { duration: 0 })`
 

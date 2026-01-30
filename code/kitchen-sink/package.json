@@ -98,7 +98,6 @@
     "vitest": "^4.0.4",
     "zeego": "^3.0.0"
   },
-  "packageManager": "yarn@4.5.0",
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@expo/fingerprint": "^0.15.3",
@@ -121,5 +120,6 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
-  }
+  },
+  "packageManager": "yarn@4.5.0"
 }

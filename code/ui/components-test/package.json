@@ -1,13 +1,13 @@
 {
   "name": "@tamagui/components-test",
   "version": "2.0.0-rc.0",
-  "module": "dist/esm",
+  "private": true,
+  "license": "MIT",
   "type": "module",
   "sideEffects": [
     "*.css"
   ],
-  "private": true,
-  "license": "MIT",
+  "module": "dist/esm",
   "scripts": {
     "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.web.test.tsx",
     "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.native.test.tsx",

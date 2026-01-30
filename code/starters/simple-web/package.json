@@ -1,7 +1,6 @@
 {
   "name": "simple-web-starter",
   "private": true,
-  "packageManager": "bun@1.2.22",
   "scripts": {
     "web": "bun run dev",
     "dev:vite": "NODE_ENV=development vite --host --clearScreen false",
@@ -44,5 +43,6 @@
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"
-  }
+  },
+  "packageManager": "bun@1.2.22"
 }

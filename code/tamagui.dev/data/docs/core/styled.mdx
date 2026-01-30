@@ -4,8 +4,8 @@ description: Extend and build custom and optimizable components
 ---
 
 <Notice theme="green">
-  If you're looking for a full list of style properties accepted by Tamagui, see
-  the [Styles page](/docs/intro/styles).
+  If you're looking for a full list of style properties accepted by Tamagui, see the
+  [Styles page](/docs/intro/styles).
 </Notice>
 
 Create a new component by extending an existing one:
@@ -69,8 +69,8 @@ export const RoundedSquare = styled(View, {
 ```
 
 <Notice theme="blue">
-  Please use `as const` for the variants definition until Typescript gains the
-  ability to infer generics as const.
+  Please use `as const` for the variants definition until Typescript gains the ability to
+  infer generics as const.
 </Notice>
 
 We can use these like so:
@@ -153,14 +153,9 @@ For full control, pass a render function that receives props and component state
 
 ```tsx
 import { TamaguiComponentState } from '@tamagui/core'
-
-<Stack
+;<Stack
   render={(props, state: TamaguiComponentState) => (
-    <CustomButton
-      {...props}
-      isHovered={state.hover}
-      isPressed={state.press}
-    />
+    <CustomButton {...props} isHovered={state.hover} isPressed={state.press} />
   )}
   padding="$4"
   hoverStyle={{ backgroundColor: '$blue5' }}
@@ -170,6 +165,7 @@ import { TamaguiComponentState } from '@tamagui/core'
 ```
 
 The state object includes:
+
 - `hover` - true when hovered (web)
 - `press` - true when pressed
 - `focus` - true when focused
@@ -199,7 +195,7 @@ const Box = styled(View, {
 
 Any component created with `styled()` has a new static property on it called `.styleable()`.
 
-If you want a functional component that renders a Tamagui-styled component inside of it to *also* be able to be `styled()`, you need to wrap it with `styleable`. This is a mouthful, let's see an example:
+If you want a functional component that renders a Tamagui-styled component inside of it to _also_ be able to be `styled()`, you need to wrap it with `styleable`. This is a mouthful, let's see an example:
 
 ```tsx
 // 1. you create a `styled` component as usual:
@@ -264,11 +260,15 @@ const Custom = View.styleable<ExtraProps>((props) => {
 If you are wrapping something like an SVG, you may want it to accept theme and token values on certain props, for example `fill`. You can do so using `accept`:
 
 ```tsx
-const StyledSVG = styled(SVG, {}, {
-  accept: {
-    fill: 'color'
-  } as const
-})
+const StyledSVG = styled(
+  SVG,
+  {},
+  {
+    accept: {
+      fill: 'color',
+    } as const,
+  }
+)
 ```
 
 Now your StyledSVG will properly type the `fill` property to accept token and theme values and will pass the resolved colors to the SVG component.
@@ -276,9 +276,13 @@ Now your StyledSVG will properly type the `fill` property to accept token and th
 You can also use `accept` to take in Tamagui style objects and output React Native style objects. This is useful for things like the `contentContainerStyle` prop on `ScrollView`, which expects a style object:
 
 ```tsx
-const MyScrollView = styled(ScrollView, {}, {
-  accept: {
-    contentContainerStyle: 'style' // or 'textStyle'
-  } as const
-})
+const MyScrollView = styled(
+  ScrollView,
+  {},
+  {
+    accept: {
+      contentContainerStyle: 'style', // or 'textStyle'
+    } as const,
+  }
+)
 ```

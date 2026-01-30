@@ -40,7 +40,7 @@ function error(message) {
   console.error(message)
 }
 
-export function validate(obj: Object) {
+export function validate(obj: object) {
   for (const k in obj) {
     const prop = k.trim()
     const value = obj[prop]

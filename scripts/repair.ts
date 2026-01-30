@@ -41,7 +41,10 @@ async function repair() {
       if (!pkgJson.scripts?.build?.includes('tamagui-build')) {
         return
       }
-      if (!pkg.location.startsWith('code/core/') && !pkg.location.startsWith('code/ui/')) {
+      if (
+        !pkg.location.startsWith('code/core/') &&
+        !pkg.location.startsWith('code/ui/')
+      ) {
         return
       }
       // Skip packages that explicitly opt out of compiler

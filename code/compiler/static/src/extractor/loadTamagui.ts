@@ -393,7 +393,7 @@ export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
         name: `on-rebuild`,
         setup({ onEnd, onResolve }) {
           // external node modules
-          let filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/ // Must not start with "/" or "./" or "../"
+          let filter = /^[^./]|^\.[^./]|^\.\.[^/]/ // Must not start with "/" or "./" or "../"
           onResolve({ filter }, (args) => ({ path: args.path, external: true }))
 
           onEnd(() => {

@@ -4,9 +4,8 @@ description: Easy config and themes with @tamagui/config/v4
 ---
 
 <IntroParagraph>
-  Config v4 simplifies configuration, generates much more useful themes, and
-  adds a new helper function for generating your own theme suite called
-  `createThemes`.
+  Config v4 simplifies configuration, generates much more useful themes, and adds a new
+  helper function for generating your own theme suite called `createThemes`.
 </IntroParagraph>
 
 Tamagui is incredibly customizable, but if you want to get started faster and
@@ -43,9 +42,8 @@ If you like it but want to make some changes, you can
 into your app and customize to your taste.
 
 <Notice theme="green" title="Custom Themes">
-  If you want to learn to create your own custom theme suite rather than use the
-  included defaults, check out the [Creating Custom Themes
-  Guide](/docs/guides/theme-builder).
+  If you want to learn to create your own custom theme suite rather than use the included
+  defaults, check out the [Creating Custom Themes Guide](/docs/guides/theme-builder).
 </Notice>
 
 We recommend adding `settings.styleCompat` to the default config, setting it to
@@ -228,8 +226,7 @@ export type TamaguiThemes = typeof generatedThemes
 export const themes: TamaguiThemes =
   // we define this in our bundler plugins, but you can also use your framework/bundlers
   // built in environment variables to ensure this is shaken away on client js bundles
-  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
-  process.env.NODE_ENV === 'production'
+  process.env.TAMAGUI_ENVIRONMENT === 'client' && process.env.NODE_ENV === 'production'
     ? {}
     : (generatedThemes as any)
 ```
@@ -283,8 +280,7 @@ So what have we done?
     },
     {
       name: 'onlyAllowShorthands',
-      description:
-        'true - For any shorthand defined, remove the types for the longhand.',
+      description: 'true - For any shorthand defined, remove the types for the longhand.',
     },
   ]}
 />

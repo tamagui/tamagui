@@ -121,6 +121,7 @@ Themes are organized hierarchically and can be combined:
 ### Theme Usage
 
 Themes are combined hierarchically. For example, `light_blue_alt1_Button` combines:
+
 - Base: `light`
 - Color: `blue`
 - Variant: `alt1`
@@ -339,7 +340,7 @@ Media queries can be used as style props or with the `useMedia` hook:
 
 ```tsx
 // As style props (prefix with $)
-<View width="100%" $gtLarge={{ width: "50%" }} />
+;<View width="100%" $gtLarge={{ width: '50%' }} />
 
 // Using the useMedia hook
 const media = useMedia()
@@ -489,4 +490,3 @@ The following components are available:
 - YGroup
 - YStack
 - ZStack
-

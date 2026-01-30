@@ -2,17 +2,16 @@
   "name": "@tamagui/sandbox-ui",
   "version": "2.0.0-rc.0",
   "private": true,
-  "sideEffects": [
-    "*.css"
-  ],
-  "types": "./types/index",
-  "main": "dist/cjs",
-  "module": "dist/esm/index.mjs",
-  "module:jsx": "dist/jsx",
   "files": [
     "types",
     "dist"
   ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "./types/index",
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -38,5 +37,6 @@
   },
   "peerDependencies": {
     "react": ">=19"
-  }
+  },
+  "module:jsx": "dist/jsx"
 }

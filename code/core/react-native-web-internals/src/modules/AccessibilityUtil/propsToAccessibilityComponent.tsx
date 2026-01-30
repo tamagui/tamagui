@@ -32,7 +32,9 @@ const roleComponents = {
 
 const emptyObject = {}
 
-export const propsToAccessibilityComponent = (props: Object = emptyObject): void | string => {
+export const propsToAccessibilityComponent = (
+  props: object = emptyObject
+): void | string => {
   // special-case for "label" role which doesn't map to an ARIA role
   if (props.accessibilityRole === 'label') {
     return 'label'

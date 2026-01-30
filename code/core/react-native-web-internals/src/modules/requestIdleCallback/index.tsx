@@ -8,7 +8,7 @@
  */
 import { canUseDOM } from '../canUseDOM'
 
-const _requestIdleCallback = function (cb: Function, options?: Object) {
+const _requestIdleCallback = function (cb: Function, options?: object) {
   return setTimeout(() => {
     const start = Date.now()
     cb({
@@ -30,4 +30,6 @@ export const requestIdleCallback = isSupported
   ? window.requestIdleCallback
   : _requestIdleCallback
 
-export const cancelIdleCallback = isSupported ? window.cancelIdleCallback : _cancelIdleCallback
+export const cancelIdleCallback = isSupported
+  ? window.cancelIdleCallback
+  : _cancelIdleCallback

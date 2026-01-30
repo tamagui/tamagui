@@ -222,7 +222,7 @@ export function createComponent<
   ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
   BaseProps = never,
-  BaseStyles extends Object = never,
+  BaseStyles extends object = never,
 >(staticConfig: StaticConfig) {
   let config: TamaguiInternalConfig | null = null
 
@@ -1142,26 +1142,26 @@ export function createComponent<
     const runtimeFocusVisibleStyle = !disabled && noClass && pseudos?.focusVisibleStyle
     const attachFocus = Boolean(
       runtimePressStyle ||
-        runtimeFocusStyle ||
-        runtimeFocusVisibleStyle ||
-        onFocus ||
-        onBlur ||
-        !!componentContext.setParentFocusState
+      runtimeFocusStyle ||
+      runtimeFocusVisibleStyle ||
+      onFocus ||
+      onBlur ||
+      !!componentContext.setParentFocusState
     )
 
     const hasDynamicGroupChildren = Boolean(groupName && state.hasDynGroupChildren)
 
     const attachPress = Boolean(
       hasDynamicGroupChildren ||
-        runtimePressStyle ||
-        onPress ||
-        onPressOut ||
-        onPressIn ||
-        onMouseDown ||
-        onMouseUp ||
-        onLongPress ||
-        onClick ||
-        pseudos?.focusVisibleStyle
+      runtimePressStyle ||
+      onPress ||
+      onPressOut ||
+      onPressIn ||
+      onMouseDown ||
+      onMouseUp ||
+      onLongPress ||
+      onClick ||
+      pseudos?.focusVisibleStyle
     )
 
     const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
@@ -1177,11 +1177,11 @@ export function createComponent<
       !props.asChild &&
       Boolean(
         attachFocus ||
-          attachPress ||
-          attachHover ||
-          runtimePressStyle ||
-          runtimeHoverStyle ||
-          runtimeFocusStyle
+        attachPress ||
+        attachHover ||
+        runtimePressStyle ||
+        runtimeHoverStyle ||
+        runtimeFocusStyle
       )
 
     const needsPressState = Boolean(hasDynamicGroupChildren || runtimePressStyle)
@@ -1420,13 +1420,13 @@ export function createComponent<
     const needsReset = Boolean(
       // not when passing down to child
       !asChild &&
-        // not when passThrough
-        splitStyles &&
-        // not when HOC
-        !isHOC &&
-        ResetPresence &&
-        willBeAnimated &&
-        (hasEnterStyle || presenceState)
+      // not when passThrough
+      splitStyles &&
+      // not when HOC
+      !isHOC &&
+      ResetPresence &&
+      willBeAnimated &&
+      (hasEnterStyle || presenceState)
     )
     // avoid re-parenting
     const hasEverReset = stateRef.current.hasEverResetPresence
@@ -1578,7 +1578,6 @@ export function createComponent<
         }
         if (debugProp === 'break') {
           // biome-ignore lint/suspicious/noDebugger: ok
-          debugger
         }
       }
     }

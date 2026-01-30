@@ -20,7 +20,7 @@ test.describe('Dialog Focus Scope', () => {
     // Focus should be on the first input
     // Wait for focus trap to activate (no idle wait now)
     await page.waitForTimeout(300)
-    
+
     const firstInput = dialogContent.getByTestId('first-input')
     await expect(firstInput).toBeFocused()
 
@@ -82,7 +82,6 @@ test.describe('Dialog Focus Scope', () => {
     // Wait for dialog to be visible
     const dialogContent = page.getByTestId('non-modal-dialog-content')
     await expect(dialogContent).toBeVisible({ timeout: 5000 })
-    
 
     // Focus on the first input
     const firstInput = dialogContent.getByTestId('first-input')
@@ -99,13 +98,15 @@ test.describe('Dialog Focus Scope', () => {
     // Focus should have left the dialog
     const focusedElement = await page.evaluate(() => document.activeElement?.tagName)
     expect(focusedElement).toBeTruthy()
-    
+
     // Click outside should close non-modal dialog
     await page.click('body', { position: { x: 10, y: 10 } })
     await expect(dialogContent).not.toBeVisible()
   })
 
-  test('modal dialogs prevent right-click dismiss but allow left-click dismiss', async ({ page }) => {
+  test('modal dialogs prevent right-click dismiss but allow left-click dismiss', async ({
+    page,
+  }) => {
     await page.waitForLoadState('networkidle')
 
     // Open a modal dialog
@@ -114,32 +115,34 @@ test.describe('Dialog Focus Scope', () => {
 
     const dialogContent = page.getByTestId('modal-dialog-content')
     await expect(dialogContent).toBeVisible({ timeout: 5000 })
-    
+
     // Wait for auto-focus
     await page.waitForTimeout(300)
-    
+
     // Try to right-click outside the dialog - should NOT close
     const dialogBounds = await dialogContent.boundingBox()
-    
+
     if (dialogBounds) {
       // Right-click to the left of the dialog (on overlay/backdrop)
-      await page.mouse.click(dialogBounds.x - 50, dialogBounds.y + 50, { button: 'right' })
+      await page.mouse.click(dialogBounds.x - 50, dialogBounds.y + 50, {
+        button: 'right',
+      })
     }
-    
+
     // Wait a bit
     await page.waitForTimeout(500)
-    
+
     // Modal dialogs prevent right-click dismiss
     await expect(dialogContent).toBeVisible()
-    
+
     // Now try left-click - should close
     if (dialogBounds) {
       await page.mouse.click(dialogBounds.x - 50, dialogBounds.y + 50, { button: 'left' })
     }
-    
+
     // Wait for dialog to close
     await page.waitForTimeout(500)
-    
+
     // Dialog should be closed after left-click
     await expect(dialogContent).not.toBeVisible()
   })
@@ -171,16 +174,18 @@ test.describe('Dialog Focus Scope', () => {
 
     const dialogContent = page.getByTestId('modal-dialog-content')
     await expect(dialogContent).toBeVisible({ timeout: 5000 })
-    
+
     // Wait for animations to complete
     await page.waitForTimeout(500)
-    
+
     // Click cancel button via JavaScript (since it may be outside viewport in dialog scroll container)
     await page.evaluate(() => {
-      const button = document.querySelector('[data-testid="cancel-button"]') as HTMLElement
+      const button = document.querySelector(
+        '[data-testid="cancel-button"]'
+      ) as HTMLElement
       if (button) button.click()
     })
-    
+
     // Wait for dialog to close with animation
     await expect(dialogContent).not.toBeVisible({ timeout: 5000 })
 
@@ -234,7 +239,9 @@ test.describe('Dialog Focus Scope', () => {
     await expect(parentTrigger).toBeFocused()
   })
 
-  test('nested dialog appears above parent dialog (z-index stacking)', async ({ page }) => {
+  test('nested dialog appears above parent dialog (z-index stacking)', async ({
+    page,
+  }) => {
     await page.waitForLoadState('networkidle')
 
     // Open parent dialog
@@ -260,7 +267,7 @@ test.describe('Dialog Focus Scope', () => {
       const portals = document.querySelectorAll('body > span[style*="z-index"]')
       const zIndices: number[] = []
 
-      portals.forEach(portal => {
+      portals.forEach((portal) => {
         const style = window.getComputedStyle(portal)
         const zIndex = parseInt(style.zIndex, 10)
         if (!isNaN(zIndex)) {
@@ -289,10 +296,13 @@ test.describe('Dialog Focus Scope', () => {
       const centerX = nestedBounds.x + nestedBounds.width / 2
       const centerY = nestedBounds.y + nestedBounds.height / 2
 
-      const elementAtPoint = await page.evaluate(({ x, y }) => {
-        const el = document.elementFromPoint(x, y)
-        return el?.closest('[data-testid="nested-dialog-content"]') !== null
-      }, { x: centerX, y: centerY })
+      const elementAtPoint = await page.evaluate(
+        ({ x, y }) => {
+          const el = document.elementFromPoint(x, y)
+          return el?.closest('[data-testid="nested-dialog-content"]') !== null
+        },
+        { x: centerX, y: centerY }
+      )
 
       expect(elementAtPoint).toBe(true)
     }

@@ -4,7 +4,10 @@ import { ZIndexHardcodedContext, ZIndexStackContext } from './context'
 export const StackZIndexContext = ({
   children,
   zIndex,
-}: { children: React.ReactNode; zIndex?: number }) => {
+}: {
+  children: React.ReactNode
+  zIndex?: number
+}) => {
   const existing = useContext(ZIndexStackContext)
 
   let content = (

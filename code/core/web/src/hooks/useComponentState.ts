@@ -50,7 +50,7 @@ export const useComponentState = (
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
     (!isHOC && 'transition' in props) ||
-      (props.style && hasAnimatedStyleValue(props.style))
+    (props.style && hasAnimatedStyleValue(props.style))
   )
 
   // for backwards compat, derive from supportsCSS if new props not set
@@ -247,7 +247,7 @@ export const useComponentState = (
   }
 }
 
-function hasAnimatedStyleValue(style: Object) {
+function hasAnimatedStyleValue(style: object) {
   return Object.keys(style).some((k) => {
     const val = style[k]
     return val && typeof val === 'object' && '_animation' in val

@@ -1,11 +1,11 @@
 {
-  "version": "2.0.0-rc.0",
   "name": "app",
-  "main": "index.ts",
+  "version": "2.0.0-rc.0",
   "private": true,
   "sideEffects": [
     "*.css"
   ],
+  "main": "index.ts",
   "dependencies": {
     "@my/ui": "workspace:^",
     "@react-navigation/native": "^7.0.14",

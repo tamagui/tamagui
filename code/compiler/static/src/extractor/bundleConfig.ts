@@ -185,9 +185,7 @@ export async function bundleConfig(props: TamaguiOptions) {
           Color.Dim,
           `
           Config     .${sep}${relative(process.cwd(), configOutPath)}
-          Components ${[
-            ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-          ].join('\n             ')}
+          Components ${componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`).join('\n             ')}
           `
         )
       }
@@ -201,7 +199,7 @@ export async function bundleConfig(props: TamaguiOptions) {
         // clear cache to get new files
         for (const key in require.cache) {
           // avoid clearing core/web it seems to break things
-          if (!/(core|web)[\/\\]dist/.test(key)) {
+          if (!/(core|web)[/\\]dist/.test(key)) {
             delete require.cache[key]
           }
         }

@@ -124,7 +124,10 @@ export function startMetro(): MetroProcess {
       if (pid) {
         try {
           // Kill all child processes first (works on macOS and Linux)
-          await Bun.spawn(['pkill', '-P', String(pid)], { stdout: 'ignore', stderr: 'ignore' }).exited
+          await Bun.spawn(['pkill', '-P', String(pid)], {
+            stdout: 'ignore',
+            stderr: 'ignore',
+          }).exited
         } catch {
           // Ignore errors - children may already be dead
         }

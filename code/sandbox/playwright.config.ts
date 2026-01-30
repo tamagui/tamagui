@@ -17,7 +17,11 @@ const prodProject = {
 }
 
 const projects =
-  mode === 'both' ? [devProject, prodProject] : mode === 'prod' ? [prodProject] : [devProject]
+  mode === 'both'
+    ? [devProject, prodProject]
+    : mode === 'prod'
+      ? [prodProject]
+      : [devProject]
 
 const webServers: any[] = []
 
@@ -53,5 +57,9 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   projects,
-  webServer: process.env.CI ? undefined : webServers.length === 1 ? webServers[0] : webServers,
+  webServer: process.env.CI
+    ? undefined
+    : webServers.length === 1
+      ? webServers[0]
+      : webServers,
 })

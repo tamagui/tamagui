@@ -7,6 +7,7 @@
 ### Final Implementation Summary
 
 **What was implemented:**
+
 - Native gesture handler integration for Sheet + ScrollView coordination
 - Smooth scroll-to-drag handoffs without jitter
 - Rubber band resistance at top
@@ -15,11 +16,13 @@
 - Clean fallback to PanResponder on web and when RNGH not set up
 
 **Test Results:**
+
 - ✅ 11 native Detox tests pass (all RNGH coordination scenarios)
 - ✅ Web Playwright tests pass (CSS and Motion drivers)
 - ✅ Video analysis confirms no visible jumping
 
 **User Feedback:**
+
 - "not jittering or locking as much"
 - "feels less jittery"
 
@@ -41,6 +44,7 @@
 ### The Core Problem
 
 When sheet is at middle position and user does FAST swipe up:
+
 - Native scroll fires BEFORE our JS-thread `onBegin` callback
 - Scroll reaches 20-30px before we can lock it
 - If we use `scrollEnabled={false}`, scroll is locked BUT handoff breaks (Case 9 fails)
@@ -51,10 +55,11 @@ When sheet is at middle position and user does FAST swipe up:
 Like gorhom/bottom-sheet and react-native-actions-sheet, we need synchronous native-thread control. Instead of requiring full Reanimated, we can use the lighter `react-native-worklets-core` package.
 
 **New Architecture** - `@tamagui/native` package:
+
 ```tsx
 // Entry points (side-effect imports only, no setup() functions):
-import '@tamagui/native/setup-gesture-handler'  // RNGH
-import '@tamagui/native/setup-worklets'         // react-native-worklets-core
+import '@tamagui/native/setup-gesture-handler' // RNGH
+import '@tamagui/native/setup-worklets' // react-native-worklets-core
 
 // In your app:
 import '@tamagui/native/setup-gesture-handler'
@@ -69,6 +74,7 @@ See: https://docs.swmansion.com/react-native-worklets/docs/
 ## Previous Status: ALL 10 TESTS PASS ✓
 
 ### All 10 Detox Tests PASS
+
 ```
 ✓ should show RNGH enabled
 ✓ should open sheet at position 0
@@ -89,6 +95,7 @@ See: https://docs.swmansion.com/react-native-worklets/docs/
 **Root Cause**: Scroll events were being processed BEFORE pan gesture's `onBegin` callback had a chance to set the scroll lock. The simultaneousHandlers pattern means both gestures run, but JS callbacks can't prevent native scroll events in time.
 
 **Solution**: Preemptive scroll state management based on sheet position:
+
 1. In `useAnimatedNumberReaction`, track when sheet reaches/leaves top position
 2. When sheet leaves top → immediately disable scroll via `setScrollEnabled(false)` and `setNativeProps`
 3. When sheet reaches top → enable scroll
@@ -112,16 +119,19 @@ if (wasAtTop !== nowAtTop) {
 ### Test Comparison with Reference Implementations
 
 **gorhom/bottom-sheet**:
+
 - Uses Reanimated worklets for synchronous native thread control
 - `SCROLLABLE_STATUS.LOCKED` sets `decelerationRate: 0` to effectively freeze scroll
 - Uses `animatedScrollableState` shared value for immediate state changes
 
 **react-native-actions-sheet**:
+
 - Uses `scrollable(true/false)` function called in `onChange` handler
 - Relies on `setNativeProps({ scrollEnabled: value })` for fast updates
 - Has same simultaneousHandlers pattern we use
 
 **Our approach** (without Reanimated):
+
 - Preemptively set scroll state based on sheet position
 - Use both `setNativeProps` and React state as backup
 - Track `isAtTop` flag that changes when animated position crosses threshold
@@ -144,7 +154,9 @@ if (wasAtTop !== nowAtTop) {
 ### Delta-based Multi-Handoff Pattern
 
 ### Manual Testing Needed
+
 The "big test" from user requirements:
+
 1. Start at position 2 (halfway)
 2. Swipe up to drag sheet to top (pan handles)
 3. Keep swiping up → scroll content (handoff TO scroll)
@@ -158,6 +170,7 @@ ALL WITHOUT LIFTING FINGER
 ### Critical Bug Fixed (This Session)
 
 **Problem**: `require('react-native-gesture-handler')` inside `setupGestureHandler()` caused:
+
 ```
 Invariant Violation: Tried to register two views with the same name RNGestureHandlerButton
 ```
@@ -173,12 +186,17 @@ import { setupGestureHandler } from '@tamagui/sheet/setup-gesture-handler'
 setupGestureHandler() // ❌ tries to require RNGH again, double registration
 
 // NEW (fixed):
-import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler'
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler'
 import { setupGestureHandler } from '@tamagui/sheet/setup-gesture-handler'
 setupGestureHandler({ Gesture, GestureDetector }) // ✅ uses already-imported refs
 ```
 
 ### Test Results (5 PASS, 1 SKIPPED)
+
 - ✓ should render the test case screen
 - ✓ should open sheet and show scroll Y at 0
 - ✓ **should scroll content when swiping up at top snap point**
@@ -190,6 +208,7 @@ setupGestureHandler({ Gesture, GestureDetector }) // ✅ uses already-imported r
 
 **1. manualActivation Pattern**
 Instead of `activeOffsetY([-5, 5])` which always activates after 5px movement, we use:
+
 ```tsx
 Gesture.Pan()
   .manualActivation(true)
@@ -214,12 +233,14 @@ Read `scrollBridge.hasScrollableContent` inside gesture handlers (not captured p
 The ScrollView uses `Gesture.Native().simultaneousWithExternalGesture(panGesture)` to coordinate with the sheet's pan gesture.
 
 ### Files Modified
+
 - `useGestureHandlerPan.tsx` - manualActivation pattern, removed hasScrollView prop
 - `SheetScrollView.tsx` - cleaned up debug code
 - `SheetImplementationCustom.tsx` - removed hasScrollView prop
 - `e2e/SheetScrollableDrag.test.ts` - fixed assertions, added item visibility checks
 
 ### TODO: Advanced Handoff
+
 The scroll→drag handoff (scroll back to 0 then drag sheet) needs dynamic re-evaluation during gesture. This is an advanced feature for future work.
 
 ## Problem Summary
@@ -244,6 +265,7 @@ Sheet + Sheet.ScrollView gesture coordination on iOS is fundamentally broken wit
 ## Files Implemented So Far
 
 ### Core Infrastructure (DONE)
+
 - `code/ui/sheet/src/gestureState.ts` - Global state (no native deps)
 - `code/ui/sheet/src/setupGestureHandler.ts` - Auto-detects RNGH via require()
 - `code/ui/sheet/src/useGestureHandlerPan.tsx` - Pan gesture hook with blockPan
@@ -251,11 +273,13 @@ Sheet + Sheet.ScrollView gesture coordination on iOS is fundamentally broken wit
 - `code/ui/sheet/src/GestureSheetContext.tsx` - Context for gesture refs
 
 ### Integration (DONE)
+
 - `code/ui/sheet/src/SheetImplementationCustom.tsx` - Uses hook, falls back to PanResponder
 - `code/ui/sheet/src/SheetScrollView.tsx` - simultaneousWithExternalGesture
 - `code/ui/sheet/package.json` - Export and optional peer dep
 
 ### Kitchen Sink (DONE)
+
 - `code/kitchen-sink/src/App.native.tsx` - Calls setupGestureHandler()
 - `code/kitchen-sink/src/usecases/SheetScrollableDrag.tsx` - Test case
 - `code/kitchen-sink/src/features/home/screen.tsx` - RNGH status indicator
@@ -271,6 +295,7 @@ The `scrollBridge.y` must be updated continuously even when RNGH is handling ges
 **Approach C**: Track scroll offset via Gesture.Native() event handlers
 
 Look at how gorhom/bottom-sheet tracks `animatedScrollableState.contentOffsetY`:
+
 ```tsx
 // They use Reanimated's scrollTo and track via worklets
 // We need a JS-based equivalent since we don't require Reanimated
@@ -302,10 +327,14 @@ describe('Sheet + ScrollView RNGH Integration', () => {
 
     // Take screenshot to verify scroll position changed
     // Check scroll-y indicator shows > 0
-    await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).not.toHaveText('ScrollView Y: 0')
+    await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).not.toHaveText(
+      'ScrollView Y: 0'
+    )
 
     // Sheet position should still be 0 (top snap)
-    await expect(element(by.id('sheet-scrollable-drag-position'))).toHaveText('Sheet position: 0')
+    await expect(element(by.id('sheet-scrollable-drag-position'))).toHaveText(
+      'Sheet position: 0'
+    )
   })
 
   it('drags sheet when swiping down from scrollY=0', async () => {
@@ -317,7 +346,9 @@ describe('Sheet + ScrollView RNGH Integration', () => {
     await element(by.id('sheet-scrollable-drag-handle')).swipe('down', 'slow', 0.3)
 
     // Sheet should have moved to lower snap point
-    await expect(element(by.id('sheet-scrollable-drag-position'))).toHaveText('Sheet position: 1')
+    await expect(element(by.id('sheet-scrollable-drag-position'))).toHaveText(
+      'Sheet position: 1'
+    )
   })
 
   it('hands off from scroll to sheet drag seamlessly', async () => {
@@ -329,7 +360,9 @@ describe('Sheet + ScrollView RNGH Integration', () => {
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('down', 'slow', 0.8)
 
     // Check: scroll should be at 0
-    await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).toHaveText('ScrollView Y: 0')
+    await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).toHaveText(
+      'ScrollView Y: 0'
+    )
 
     // Check: sheet should have moved down (position > 0 or dismissed)
     // This is the key handoff test
@@ -353,7 +386,9 @@ Once we have failing tests, we can properly debug with evidence.
 ## How Reference Implementations Solve This
 
 ### gorhom/bottom-sheet
+
 Uses Reanimated worklets to track scroll offset in real-time:
+
 ```tsx
 const animatedScrollableState = useSharedValue({
   contentOffsetY: 0,
@@ -367,12 +402,14 @@ const scrollHandler = useAnimatedScrollHandler({
       contentOffsetY: event.contentOffset.y,
       // ...
     }
-  }
+  },
 })
 ```
 
 ### react-native-actions-sheet
+
 Tracks scroll via refs and direct measurements:
+
 ```tsx
 // They store scroll offset per-node
 const offsets = useRef<number[]>([])
@@ -431,6 +468,7 @@ Studied both `~/github/react-native-bottom-sheet` and `~/github/react-native-act
 **Critical Finding: Neither uses `manualActivation`!**
 
 Both use:
+
 1. `simultaneousHandlers` - let both gestures run simultaneously
 2. **State-based decision logic** in `onChange` - decide who "owns" the gesture
 3. `blockPan` flag - skip pan processing when scroll should handle it
@@ -470,13 +508,11 @@ if (!isFullOpen && !isSwipingDown) {
   // Case 1: sheet not fully open, swiping up -> pan handles
   scrollBridge.setScrollEnabled?.(false)
   // process pan...
-}
-else if (isFullOpen && !isSwipingDown) {
+} else if (isFullOpen && !isSwipingDown) {
   // Case 2: sheet fully open, swiping up -> scroll handles
   scrollBridge.setScrollEnabled?.(true)
   return // blockPan
-}
-else if (!isFullOpen && isSwipingDown) {
+} else if (!isFullOpen && isSwipingDown) {
   // Case 3: sheet not fully open, swiping down
   if (nodeIsScrolling) {
     scrollBridge.setScrollEnabled?.(true)
@@ -484,8 +520,7 @@ else if (!isFullOpen && isSwipingDown) {
   }
   scrollBridge.setScrollEnabled?.(false)
   // process pan...
-}
-else if (isFullOpen && isSwipingDown) {
+} else if (isFullOpen && isSwipingDown) {
   // Case 4: sheet fully open, swiping down
   if (nodeIsScrolling) {
     scrollBridge.setScrollEnabled?.(true)
@@ -503,11 +538,13 @@ The `manualActivation` pattern I tried doesn't work - the `onTouchesMove` callba
 ## Current Debug Session
 
 Testing with debug logs in:
+
 - `SheetScrollView.tsx` - logs `[SheetScrollView] onScroll called, y: <number>`
 - `useGestureHandlerPan.tsx` - logs gesture activation decisions
 - `App.native.tsx` / `HomeScreen` - logs RNGH status
 
 **To verify:**
+
 1. Home screen should show "RNGH: ✓ enabled"
 2. Open sheet, swipe up → should see onScroll logs in Metro console
 3. ScrollView Y should update from 0

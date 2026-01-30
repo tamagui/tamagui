@@ -2,14 +2,17 @@
   "name": "@tamagui/code-to-html",
   "version": "2.0.0-rc.0",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -31,8 +34,5 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

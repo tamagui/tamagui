@@ -1,9 +1,8 @@
 {
   "name": "expo-router",
-  "main": "expo-router/entry",
   "version": "1.0.0",
-  "packageManager": "yarn@4.5.0",
   "private": true,
+  "main": "expo-router/entry",
   "scripts": {
     "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest",
     "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary",
@@ -16,9 +15,6 @@
     "build:web": "expo export --platform web",
     "build:web:optimized": "tamagui build --target web ./app -- expo export --platform web",
     "test": "jest --watchAll"
-  },
-  "jest": {
-    "preset": "jest-expo"
   },
   "dependencies": {
     "@react-navigation/native": "^7.1.6",
@@ -57,5 +53,9 @@
     "@types/react": "~19.1.10",
     "@types/react-native": "^0.73.0",
     "typescript": "~5.9.2"
-  }
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "packageManager": "yarn@4.5.0"
 }

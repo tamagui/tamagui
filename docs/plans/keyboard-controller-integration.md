@@ -11,6 +11,7 @@ Add `react-native-keyboard-controller` integration to Tamagui following the same
 ## Current State
 
 The current `moveOnKeyboardChange` prop in Sheet (lines 508-539 of `SheetImplementationCustom.tsx`) uses basic `Keyboard.addListener()` which:
+
 - Only gets start/end events, not frame-by-frame
 - Has timing-based animation (250ms hardcoded)
 - No coordination with gesture handler
@@ -42,10 +43,14 @@ export interface KeyboardControllerState {
   KeyboardStickyView: any
 }
 
-function getGlobalState(): KeyboardControllerState { /* ... */ }
+function getGlobalState(): KeyboardControllerState {
+  /* ... */
+}
 export function isKeyboardControllerEnabled(): boolean
 export function getKeyboardControllerState(): KeyboardControllerState
-export function setKeyboardControllerState(updates: Partial<KeyboardControllerState>): void
+export function setKeyboardControllerState(
+  updates: Partial<KeyboardControllerState>
+): void
 ```
 
 ### 2. Setup Module (`setup-keyboard-controller.ts`)
@@ -66,7 +71,7 @@ function setup() {
       useKeyboardHandler,
       useReanimatedKeyboardAnimation,
       KeyboardController,
-      KeyboardStickyView
+      KeyboardStickyView,
     } = rnkc
 
     if (useKeyboardHandler && KeyboardProvider) {
@@ -207,6 +212,7 @@ interface SheetProps {
 ## Files to Create/Modify
 
 ### Create
+
 1. `code/core/native/src/keyboardControllerState.ts`
 2. `code/core/native/src/setup-keyboard-controller.ts`
 3. `code/core/native/src/setup-keyboard-controller.web.ts`
@@ -216,6 +222,7 @@ interface SheetProps {
 7. `code/kitchen-sink/e2e/SheetKeyboardDrag.test.ts`
 
 ### Modify
+
 1. `code/core/native/package.json` - add peer dep + exports
 2. `code/core/native/src/index.ts` - export state functions
 3. `code/ui/sheet/src/SheetImplementationCustom.tsx` - integrate hook

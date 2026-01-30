@@ -83,14 +83,11 @@ describe('Package.json exports support', () => {
 
   it('should recognize imports from path-specific exports during optimization', () => {
     // Build just the screen.tsx which uses path-specific imports
-    const result = execSync(
-      `bun tamagui build ./packages/app/features/home/screen.tsx`,
-      {
-        cwd: ROOT_DIR,
-        encoding: 'utf-8',
-        stdio: 'pipe',
-      }
-    )
+    const result = execSync(`bun tamagui build ./packages/app/features/home/screen.tsx`, {
+      cwd: ROOT_DIR,
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    })
 
     // Should show optimization happened
     expect(result).toMatch(/\d+\s+opt/) // Has optimization count

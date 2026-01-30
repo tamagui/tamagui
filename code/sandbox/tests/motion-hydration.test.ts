@@ -60,7 +60,9 @@ test.describe('Motion Hydration', () => {
                   style: (node.getAttribute('style') || '').substring(0, 200),
                   event: 'element-added',
                   time: performance.now() - (window as any).__captureStartTime,
-                  sinceLoad: (window as any).__pageLoadTime ? performance.now() - (window as any).__pageLoadTime : 0,
+                  sinceLoad: (window as any).__pageLoadTime
+                    ? performance.now() - (window as any).__pageLoadTime
+                    : 0,
                 })
               }
             }
@@ -96,9 +98,7 @@ test.describe('Motion Hydration', () => {
     await page.waitForTimeout(2500)
 
     // get transform history
-    const history = await page.evaluate(
-      () => (window as any).__transformHistory || []
-    )
+    const history = await page.evaluate(() => (window as any).__transformHistory || [])
 
     // filter to just glow-1
     const glow1History = history.filter((h: any) => h.id === 'glow-1')
@@ -108,10 +108,7 @@ test.describe('Motion Hydration', () => {
     if (glow1History.length > 0) {
       // log first few and last few frames
       console.log('First 3 frames:', JSON.stringify(glow1History.slice(0, 3), null, 2))
-      console.log(
-        'Last 3 frames:',
-        JSON.stringify(glow1History.slice(-3), null, 2)
-      )
+      console.log('Last 3 frames:', JSON.stringify(glow1History.slice(-3), null, 2))
 
       // the element should be at x=400, y=50 (from our test case)
       // check if the FIRST frame had the element at the wrong position
@@ -151,9 +148,7 @@ test.describe('Motion Hydration', () => {
           Math.abs(firstPos.tx) < 50 && Math.abs(firstPos.ty) < 50
 
         // also check early frames (first 10 frames within 100ms of load)
-        const earlyFrames = glow1History.filter(
-          (h: any) => h.sinceLoad < 100
-        )
+        const earlyFrames = glow1History.filter((h: any) => h.sinceLoad < 100)
         console.log(`Early frames (within 100ms of load): ${earlyFrames.length}`)
 
         const hadOriginInEarlyFrames = earlyFrames.some((frame: any) => {
@@ -169,18 +164,12 @@ test.describe('Motion Hydration', () => {
         })
 
         if (firstFrameAtOrigin) {
-          console.log(
-            'CRITICAL REGRESSION: First frame was at origin!'
-          )
-          console.log(
-            'Element should have rendered at x=400, y=50 immediately'
-          )
+          console.log('CRITICAL REGRESSION: First frame was at origin!')
+          console.log('Element should have rendered at x=400, y=50 immediately')
         }
 
         if (hadOriginInEarlyFrames) {
-          console.log(
-            'REGRESSION: Element was at origin during early hydration frames'
-          )
+          console.log('REGRESSION: Element was at origin during early hydration frames')
         }
 
         // the element should NOT start at origin - it should render at (400, 50) immediately

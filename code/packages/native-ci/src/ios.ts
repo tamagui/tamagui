@@ -145,7 +145,8 @@ export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<vo
 
   // Check cached fingerprint
   const cache = loadFingerprintCache(projectRoot)
-  const fingerprintMatch = cache?.fingerprint === currentFingerprint && currentFingerprint !== ''
+  const fingerprintMatch =
+    cache?.fingerprint === currentFingerprint && currentFingerprint !== ''
 
   if (fingerprintMatch) {
     console.info(`iOS app found at ${appPath} (fingerprint matches - no native changes)`)

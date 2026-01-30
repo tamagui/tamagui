@@ -90,7 +90,9 @@ export function PressStyleNative() {
         </ColorTestPressable>
         <XStack gap="$2">
           <Text testID="simple-press-in-count">In: {simplePressState.pressInCount}</Text>
-          <Text testID="simple-press-out-count">Out: {simplePressState.pressOutCount}</Text>
+          <Text testID="simple-press-out-count">
+            Out: {simplePressState.pressOutCount}
+          </Text>
           <Text testID="simple-is-pressed">
             Pressed: {simplePressState.isPressed ? 'YES' : 'NO'}
           </Text>
@@ -125,8 +127,12 @@ export function PressStyleNative() {
           </Text>
         </ColorTestPressableAnimated>
         <XStack gap="$2">
-          <Text testID="animated-press-in-count">In: {animatedPressState.pressInCount}</Text>
-          <Text testID="animated-press-out-count">Out: {animatedPressState.pressOutCount}</Text>
+          <Text testID="animated-press-in-count">
+            In: {animatedPressState.pressInCount}
+          </Text>
+          <Text testID="animated-press-out-count">
+            Out: {animatedPressState.pressOutCount}
+          </Text>
           <Text testID="animated-is-pressed">
             Pressed: {animatedPressState.isPressed ? 'YES' : 'NO'}
           </Text>

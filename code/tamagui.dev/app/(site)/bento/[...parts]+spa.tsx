@@ -193,7 +193,12 @@ export const DetailHeader = (props: { children: string }) => {
 
         <XStack p={0.5} items="center" gap="$2">
           <Link href="/bento/">
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize" color="$color9">
+            <Anchor
+              fontFamily="$mono"
+              render="span"
+              textTransform="capitalize"
+              color="$color9"
+            >
               Bento
             </Anchor>
           </Link>
@@ -203,7 +208,12 @@ export const DetailHeader = (props: { children: string }) => {
           </SizableText>
 
           <Link href={`/bento#${category}`}>
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize" color="$color9">
+            <Anchor
+              fontFamily="$mono"
+              render="span"
+              textTransform="capitalize"
+              color="$color9"
+            >
               {category}
             </Anchor>
           </Link>
@@ -213,7 +223,12 @@ export const DetailHeader = (props: { children: string }) => {
           </SizableText>
 
           <Link href={`/bento/${category}/${subCategory}`}>
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize" color="$color9">
+            <Anchor
+              fontFamily="$mono"
+              render="span"
+              textTransform="capitalize"
+              color="$color9"
+            >
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>

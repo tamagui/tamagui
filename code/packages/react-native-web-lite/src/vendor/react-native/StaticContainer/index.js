@@ -8,9 +8,9 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import * as React from 'react';
+import * as React from 'react'
 
 /**
  * Renders static content efficiently by allowing React to short-circuit the
@@ -28,19 +28,16 @@ import * as React from 'react';
  * React reconciliation.
  */
 
-;
 class StaticContainer extends React.Component {
   shouldComponentUpdate(nextProps) {
-    return !!nextProps.shouldUpdate;
+    return !!nextProps.shouldUpdate
   }
 
   render() {
-    const child = this.props.children;
-    return child === null || child === false
-      ? null
-      : React.Children.only(child);
+    const child = this.props.children
+    return child === null || child === false ? null : React.Children.only(child)
   }
 }
 
 export { StaticContainer }
-export default StaticContainer;
+export default StaticContainer

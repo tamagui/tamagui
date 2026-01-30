@@ -12,8 +12,8 @@ For example, if you define some tokens:
 ```tsx
 const tokens = createTokens({
   size: {
-    small: 10
-  }
+    small: 10,
+  },
 })
 ```
 
@@ -128,7 +128,7 @@ This, like all token values, works the same with `styled`:
 import { styled, View } from '@tamagui/core'
 
 export const MyView = styled(View, {
-  width: '$icon.small'
+  width: '$icon.small',
 })
 ```
 
@@ -139,12 +139,12 @@ import { createTokens, px } from '@tamagui/core'
 
 const tokens = createTokens({
   customSize: {
-    small: px(100),   // → "100px" on web, 100 on native
+    small: px(100), // → "100px" on web, 100 on native
     medium: px(200),
     large: px(300),
   },
   opacity: {
-    low: 0.25,        // → 0.25 (unitless on both platforms)
+    low: 0.25, // → 0.25 (unitless on both platforms)
     medium: 0.5,
     high: 0.75,
   },
@@ -152,5 +152,6 @@ const tokens = createTokens({
 ```
 
 <Notice theme="blue">
-  The predefined token categories like `size`, `space`, and `radius` automatically add pixel units where appropriate, so you don't need to use the `px` helper for them.
+  The predefined token categories like `size`, `space`, and `radius` automatically add
+  pixel units where appropriate, so you don't need to use the `px` helper for them.
 </Notice>

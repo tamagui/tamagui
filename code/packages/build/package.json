@@ -1,15 +1,16 @@
 {
   "name": "@tamagui/build",
   "version": "2.0.0-rc.0",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": {
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"
   },
-  "scripts": {
-    "test": "vitest --run"
-  },
   "publishConfig": {
     "access": "public"
+  },
+  "scripts": {
+    "test": "vitest --run"
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
@@ -30,7 +31,6 @@
     "oxc-transform": "^0.95.0",
     "typescript": "~5.9.2"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "devDependencies": {
     "vitest": "^4.0.4"
   }

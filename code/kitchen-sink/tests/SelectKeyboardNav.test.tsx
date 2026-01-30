@@ -121,7 +121,9 @@ test.describe('Select Keyboard Navigation', () => {
   })
 
   // tests for selects with default/initial values (like the demo page)
-  test('default value select: selected item is focused on first open', async ({ page }) => {
+  test('default value select: selected item is focused on first open', async ({
+    page,
+  }) => {
     const trigger = page.getByTestId('default-select-trigger')
     await trigger.click()
     await page.waitForTimeout(300)

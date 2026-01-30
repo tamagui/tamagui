@@ -23,8 +23,8 @@ export const ThemeStateContext = createContext<ID>('')
 
 const allListeners = new Map<ID, Function>()
 const listenersByParent: Record<ID, Set<ID>> = {}
-const HasRenderedOnce = new WeakMap<Object, boolean>()
-const HadTheme = new WeakMap<Object, boolean>()
+const HasRenderedOnce = new WeakMap<object, boolean>()
+const HadTheme = new WeakMap<object, boolean>()
 const PendingUpdate = new Map<any, boolean | 'force'>()
 
 // TODO this will gain memory over time but its not going to be a ton
@@ -243,7 +243,7 @@ const getNextState = (
   const isSameAsParent = parentState && (!name || name === parentState.name)
   const shouldRerender = Boolean(
     pendingUpdate === 'force' ||
-      (needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name))
+    (needsUpdate && (pendingUpdate || lastState?.name !== parentState?.name))
   )
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {

@@ -1,23 +1,17 @@
 {
   "name": "@tamagui/static",
   "version": "2.0.0-rc.0",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "license": "MIT",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "type": "commonjs",
-  "main": "dist",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src"
-  },
+  "type": "commonjs",
+  "main": "dist",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -33,13 +27,17 @@
       "import": "./dist/worker.cjs"
     }
   },
-  "tests": {
-    "parallel": true
-  },
   "publishConfig": {
     "access": "public"
   },
-  "license": "MIT",
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src"
+  },
   "dependencies": {
     "@babel/core": "^7.25.2",
     "@babel/generator": "^7.25.5",
@@ -90,9 +88,11 @@
     "react-native": "0.81.5",
     "typescript": "~5.9.2"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
     "react": ">=19",
     "react-native": "*"
+  },
+  "tests": {
+    "parallel": true
   }
 }

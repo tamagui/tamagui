@@ -37,11 +37,7 @@ export function RadioGroupHeadlessDemo() {
   )
 }
 
-function RadioGroupItem(props: {
-  value: string
-  id: string
-  label: string
-}) {
+function RadioGroupItem(props: { value: string; id: string; label: string }) {
   const theme = useTheme()
   const { value, id, label } = props
   const {
@@ -68,7 +64,7 @@ function RadioGroupItem(props: {
             <Pressable
               style={{
                 ...styles.radioGroupItem,
-                ...{ borderColor: theme.borderColor?.get() },
+                borderColor: theme.borderColor?.get(),
                 ...(checked
                   ? { borderWidth: 4 }
                   : { backgroundColor: theme.background?.get() }),

@@ -48,7 +48,7 @@ jobs:
         run: bunx playwright install
 
       - uses: nick-fields/retry@v3
-        name: "Run web tests"
+        name: 'Run web tests'
         with:
           timeout_minutes: 25
           max_attempts: 2

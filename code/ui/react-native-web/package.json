@@ -1,28 +1,18 @@
 {
   "name": "@tamagui/react-native-web",
   "version": "2.0.0-rc.0",
-  "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "check": "yarn check-circular-deps",
-    "check-circular-deps": "npx madge --circular ./src/index.ts"
-  },
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
@@ -32,6 +22,16 @@
       "react-native": "./dist/cjs/index.native.js",
       "default": "./dist/cjs/index.native.js"
     }
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "check": "yarn check-circular-deps",
+    "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
     "@tamagui/react-native-use-pressable": "workspace:*",

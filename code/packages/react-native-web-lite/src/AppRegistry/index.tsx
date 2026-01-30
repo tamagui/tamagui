@@ -15,7 +15,7 @@ import { invariant } from '@tamagui/react-native-web-internals'
 
 import { renderApplication, getApplication } from './renderApplication'
 
-type AppParams = Object
+type AppParams = object
 
 type Runnable = {
   getApplication?: (appParams: AppParams) => {

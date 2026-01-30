@@ -662,10 +662,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 }
 
 function removeRemovedStyles(
-  prev: Object,
-  next: Object,
+  prev: object,
+  next: object,
   node: HTMLElement,
-  dontClearIfIn?: Object
+  dontClearIfIn?: object
 ) {
   for (const key in prev) {
     if (!(key in next)) {
@@ -756,8 +756,8 @@ function createMotionView(defaultTag: string) {
       const out = getSplitStyles(
         props,
         isText ? Text.staticConfig : View.staticConfig,
-        state?.theme!,
-        state?.name!,
+        state?.theme,
+        state?.name,
         {
           unmounted: false,
         },

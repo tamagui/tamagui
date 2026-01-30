@@ -23,28 +23,13 @@ demoName: RadioGroup
 </Tabs.List>
 
 <HeroContainer>
-  <Tabs.Content
-    value="styled"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="styled" justifyContent="center" alignItems="center" width="100%">
     <RadioGroupDemo />
   </Tabs.Content>
-  <Tabs.Content
-    value="unstyled"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
     <RadioGroupDemo />
   </Tabs.Content>
-  <Tabs.Content
-    value="headless"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
     <RadioGroupHeadlessDemo />
   </Tabs.Content>
 </HeroContainer>
@@ -52,17 +37,18 @@ demoName: RadioGroup
 <Tabs.Content value="styled">
 ```tsx hero template=RadioGroup
 
-```
+````
 </Tabs.Content>
 <Tabs.Content value="unstyled">
 ```tsx hero template=RadioGroup
 
-```
+````
+
 </Tabs.Content>
 <Tabs.Content value="headless">
 ```tsx hero template=RadioGroupHeadless
 
-```
+````
 </Tabs.Content>
 
 <Highlights
@@ -80,7 +66,7 @@ RadioGroup is already installed in `tamagui`, or you can install it independentl
 
 ```bash
 npm install @tamagui/radio-group
-```
+````
 
 </Tabs.Content>
 
@@ -177,7 +163,9 @@ import { createContext, useContext } from 'react'
 
 // Create contexts for the group and item
 const RadioGroupContext = createContext<RadioGroupContextValue>({})
-const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({ checked: false })
+const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
+  checked: false,
+})
 
 function RadioGroup({ children, ...props }) {
   const { providerValue, frameAttrs } = useRadioGroup({
@@ -195,12 +183,7 @@ function RadioGroup({ children, ...props }) {
 }
 
 function RadioItem({ value, children }) {
-  const {
-    checked,
-    providerValue,
-    frameAttrs,
-    bubbleInput,
-  } = useRadioGroupItem({
+  const { checked, providerValue, frameAttrs, bubbleInput } = useRadioGroupItem({
     radioGroupContext: RadioGroupContext,
     value,
   })
@@ -246,7 +229,9 @@ function RadioIndicator() {
       }}
     >
       {checked && (
-        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#3b82f6' }} />
+        <div
+          style={{ width: 8, height: 8, borderRadius: '50%', background: '#3b82f6' }}
+        />
       )}
     </div>
   )
@@ -403,11 +388,11 @@ RadioGroup.Indicator appears only when the parent Item is checked. It extends [T
 
 ### useRadioGroup Return Value
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `providerValue` | `RadioGroupContextValue` | Value to pass to your context provider |
-| `frameAttrs` | `object` | Props to spread on the group container (role, aria-orientation, etc.) |
-| `rovingFocusGroupAttrs` | `object` | Props for roving focus behavior (optional) |
+| Property                | Type                     | Description                                                           |
+| ----------------------- | ------------------------ | --------------------------------------------------------------------- |
+| `providerValue`         | `RadioGroupContextValue` | Value to pass to your context provider                                |
+| `frameAttrs`            | `object`                 | Props to spread on the group container (role, aria-orientation, etc.) |
+| `rovingFocusGroupAttrs` | `object`                 | Props for roving focus behavior (optional)                            |
 
 ### useRadioGroupItem
 
@@ -434,14 +419,14 @@ const {
 })
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `checked` | `boolean` | Whether this item is currently selected |
-| `providerValue` | `object` | Context value for the indicator |
-| `frameAttrs` | `object` | Props to spread on the item element |
-| `bubbleInput` | `ReactNode` | Hidden input for form compatibility |
-| `native` | `boolean` | Whether using native radio |
-| `isFormControl` | `boolean` | Whether inside a form |
+| Property        | Type        | Description                             |
+| --------------- | ----------- | --------------------------------------- |
+| `checked`       | `boolean`   | Whether this item is currently selected |
+| `providerValue` | `object`    | Context value for the indicator         |
+| `frameAttrs`    | `object`    | Props to spread on the item element     |
+| `bubbleInput`   | `ReactNode` | Hidden input for form compatibility     |
+| `native`        | `boolean`   | Whether using native radio              |
+| `isFormControl` | `boolean`   | Whether inside a form                   |
 
 ### useRadioGroupItemIndicator
 
@@ -454,11 +439,11 @@ const { checked, ...dataAttrs } = useRadioGroupItemIndicator({
 })
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `checked` | `boolean` | Whether the parent item is checked |
-| `data-state` | `string` | 'checked' or 'unchecked' |
-| `data-disabled` | `string \| undefined` | Present when disabled |
+| Property        | Type                  | Description                        |
+| --------------- | --------------------- | ---------------------------------- |
+| `checked`       | `boolean`             | Whether the parent item is checked |
+| `data-state`    | `string`              | 'checked' or 'unchecked'           |
+| `data-disabled` | `string \| undefined` | Present when disabled              |
 
 </Tabs.Content>
 

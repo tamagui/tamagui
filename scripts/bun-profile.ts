@@ -30,7 +30,9 @@ async function getWorkspacePackages(workspacePath: string, exclude: string[] = [
   for (const pattern of workspaceGlobs) {
     const baseDir = pattern.replace(/\/\*$/, '').replace(/^\.\//, '')
     try {
-      const entries = await fs.readdir(path.join(workspacePath, baseDir), { withFileTypes: true })
+      const entries = await fs.readdir(path.join(workspacePath, baseDir), {
+        withFileTypes: true,
+      })
       for (const entry of entries) {
         if (!entry.isDirectory()) continue
         const pkgPath = path.join(workspacePath, baseDir, entry.name, 'package.json')
@@ -90,7 +92,9 @@ const main = async (name: string) => {
   console.info(`Applying profile "${name}"`)
 
   try {
-    await execy(args.includes('--debug') ? `BUN_DEBUG_LEVEL=2 bun install` : `bun install`)
+    await execy(
+      args.includes('--debug') ? `BUN_DEBUG_LEVEL=2 bun install` : `bun install`
+    )
   } catch {
     console.error(`Failed to apply resolutions`, processedResolutions)
     console.error(`You can re-run with --debug flag to see debug output`)

@@ -1,9 +1,8 @@
 {
   "name": "@tamagui/remix-starter",
   "private": true,
-  "sideEffects": false,
   "type": "module",
-  "packageManager": "bun@1.2.22",
+  "sideEffects": false,
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
@@ -50,5 +49,6 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  }
+  },
+  "packageManager": "bun@1.2.22"
 }

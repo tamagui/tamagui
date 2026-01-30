@@ -1,5 +1,5 @@
 // Must not start with "/" or "./" or "../"
-const NON_NODE_MODULE_RE = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/
+const NON_NODE_MODULE_RE = /^[^./]|^\.[^./]|^\.\.[^/]/
 
 module.exports = ({ patterns, skipNodeModulesBundle, disabled }) => {
   return {

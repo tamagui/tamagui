@@ -222,7 +222,7 @@ export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInterna
 
 const variableToFontNameCache = new WeakMap<Variable, string>()
 
-const resolveTokensAndVariants: StyleResolver<Object> = (
+const resolveTokensAndVariants: StyleResolver<object> = (
   key, // we dont use key assume value is object instead
   value,
   styleProps,

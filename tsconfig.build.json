@@ -9,6 +9,6 @@
   "references": [
     { "path": "code/kitchen-sink" },
     { "path": "code/demos" },
-    { "path": "code/tamagui.dev" },
+    { "path": "code/tamagui.dev" }
   ]
 }

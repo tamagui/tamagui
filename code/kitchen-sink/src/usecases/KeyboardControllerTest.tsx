@@ -64,8 +64,8 @@ function TestContent() {
         <Text style={styles.instruction}>
           Tap the input below - watch if the content moves smoothly with the keyboard.
           {'\n\n'}
-          With keyboard-controller, this should be butter smooth (60/120 FPS).
-          Without it, you may see slight jank.
+          With keyboard-controller, this should be butter smooth (60/120 FPS). Without it,
+          you may see slight jank.
         </Text>
 
         <View style={styles.spacer} />

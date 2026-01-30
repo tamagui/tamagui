@@ -1,35 +1,47 @@
 {
   "name": "@tamagui/animations-moti",
   "version": "2.0.0-rc.0",
-  "type": "module",
-  "source": "src/index.ts",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "license": "MIT",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "sideEffects": [
-    "polyfill.js",
-    "polyfill.mjs"
-  ],
+  "source": "src/index.ts",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "type": "module",
+  "sideEffects": [
+    "polyfill.js",
+    "polyfill.mjs"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
@@ -41,20 +53,8 @@
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1"
   },
-  "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
   "peerDependencies": {
     "react": ">=19",
     "react-native": "*"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  }
 }

@@ -20,7 +20,7 @@ Add to `TamaguiComponentStateRef` (around line 535):
 ```typescript
 export type TamaguiComponentStateRef = {
   // ... existing fields ...
-  hasEverHadPressEvents?: boolean  // <-- add this
+  hasEverHadPressEvents?: boolean // <-- add this
 }
 ```
 
@@ -120,6 +120,7 @@ export function wrapWithGestureDetector(
 ## How It Works
 
 1. **User Setup** (optional):
+
    ```typescript
    // app entry
    import '@tamagui/native/setup-gesture-handler'
@@ -139,11 +140,11 @@ export function wrapWithGestureDetector(
 
 ## Gesture Callback Flow
 
-| User Action | Callback | RNGH Event |
-|-------------|----------|------------|
-| Touch down | `onPressIn` | Tap's `onBegin` |
-| Quick release (< 500ms) | `onPress` + `onPressOut` | Tap's `onEnd` + `onFinalize` |
-| Hold 500ms+ | `onLongPress` + `onPressOut` | LongPress's `onStart` + `onFinalize` |
+| User Action             | Callback                     | RNGH Event                           |
+| ----------------------- | ---------------------------- | ------------------------------------ |
+| Touch down              | `onPressIn`                  | Tap's `onBegin`                      |
+| Quick release (< 500ms) | `onPress` + `onPressOut`     | Tap's `onEnd` + `onFinalize`         |
+| Hold 500ms+             | `onLongPress` + `onPressOut` | LongPress's `onStart` + `onFinalize` |
 
 ## Testing
 

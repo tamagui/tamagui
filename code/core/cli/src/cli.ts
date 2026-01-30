@@ -79,7 +79,8 @@ const COMMAND_MAP = {
         loadTamaguiOptions: true,
       })
 
-      const outputPath = flags['--output'] || options.tamaguiOptions.outputCSS || './tamagui.css'
+      const outputPath =
+        flags['--output'] || options.tamaguiOptions.outputCSS || './tamagui.css'
 
       process.env.TAMAGUI_KEEP_THEMES = '1'
       await loadTamagui({

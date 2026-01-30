@@ -1,21 +1,20 @@
 {
   "name": "@my/ui",
   "version": "2.0.0-rc.0",
-  "sideEffects": [
-    "*.css"
-  ],
   "private": true,
-  "types": "./src",
-  "main": "src/index.tsx",
-  "module:jsx": "src",
-  "exports": {
-    ".": "./src/index.tsx",
-    "./components/*": "./src/*.tsx"
-  },
   "files": [
     "types",
     "dist"
   ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "src/index.tsx",
+  "types": "./src",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./components/*": "./src/*.tsx"
+  },
   "scripts": {
     "build": "tamagui-build --skip-types",
     "watch": "tamagui-build --skip-types --watch"
@@ -33,5 +32,6 @@
   },
   "peerDependencies": {
     "react": ">=19"
-  }
+  },
+  "module:jsx": "src"
 }

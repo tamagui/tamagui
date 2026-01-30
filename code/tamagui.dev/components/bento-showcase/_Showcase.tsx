@@ -540,7 +540,10 @@ export const { Provider: RawSizeProvider, useStyledContext: useSize } =
 const SizeProvider = ({
   children,
   defaultSize = '$3',
-}: { children: any; defaultSize?: SizeTokens }) => {
+}: {
+  children: any
+  defaultSize?: SizeTokens
+}) => {
   const [sizes, setSizes] = useState<SizeTokens[]>(['$3', '$4', '$5', '$6', '$7'])
   const [size, setSize] = useState<SizeTokens>(defaultSize)
   const [showController, setShowController] = useState(false)

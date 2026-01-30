@@ -117,7 +117,11 @@ export function RenderPropCase() {
       </StyledButton>
 
       {/* @ts-expect-error - href only valid on web */}
-      <StyledAnchor testID="styled-anchor" data-testid="styled-anchor" href={isWeb ? '#' : undefined}>
+      <StyledAnchor
+        testID="styled-anchor"
+        data-testid="styled-anchor"
+        href={isWeb ? '#' : undefined}
+      >
         Styled Anchor (render='a')
       </StyledAnchor>
 

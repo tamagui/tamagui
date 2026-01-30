@@ -3,16 +3,7 @@ import { LocationNotification } from '@tamagui/bento/component/user/preferences/
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
-import {
-  Button,
-  Circle,
-  H4,
-  Paragraph,
-  Spacer,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Circle, H4, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { BentoStore, ComponentSection } from '~/components/BentoComponentSection'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -87,7 +78,11 @@ const IntermediateCard = ({
   title,
   children,
   Icon,
-}: { title?: any; children?: any; Icon?: any }) => {
+}: {
+  title?: any
+  children?: any
+  Icon?: any
+}) => {
   return (
     <XStack overflow="hidden" flex={1} gap="$5" px="$5" py="$4" minHeight={80}>
       <YStack flex={1} gap="$2">

@@ -1,3 +1,3 @@
 module.exports = {
-  commands: [...require('vxrn/react-native-commands')]
+  commands: [...require('vxrn/react-native-commands')],
 }

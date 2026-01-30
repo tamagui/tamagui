@@ -13,10 +13,7 @@ import type { TamaguiOptions } from '@tamagui/types'
 import { createSyncFn } from 'synckit'
 import { fileURLToPath } from 'node:url'
 
-export type {
-  ExtractedResponse,
-  TamaguiProjectInfo,
-} from '@tamagui/static'
+export type { ExtractedResponse, TamaguiProjectInfo } from '@tamagui/static'
 export type { TamaguiOptions } from '@tamagui/types'
 
 // Resolve worker path - works for both CJS and ESM
@@ -37,10 +34,7 @@ const runTaskSync = createSyncFn(getWorkerPath(), {
   timeout: 60000, // 60s timeout for sync operations
 })
 
-export const getPragmaOptions = (props: {
-  source: string
-  path: string
-}) => {
+export const getPragmaOptions = (props: { source: string; path: string }) => {
   // This doesn't need worker, just use static directly
   const { default: Static } = require('@tamagui/static')
   return Static.getPragmaOptions(props)

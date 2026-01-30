@@ -147,8 +147,10 @@ interface MenuContentProps extends MenuRootContentTypeProps {
 /* ---------------------------------------------------------------------------------------------- */
 
 type MenuRootContentTypeElement = MenuContentImplElement
-interface MenuRootContentTypeProps
-  extends Omit<MenuContentImplProps, keyof MenuContentImplPrivateProps> {}
+interface MenuRootContentTypeProps extends Omit<
+  MenuContentImplProps,
+  keyof MenuContentImplPrivateProps
+> {}
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -173,8 +175,7 @@ type MenuContentImplPrivateProps = {
   trapFocus?: FocusScopeProps['trapped']
 }
 interface MenuContentImplProps
-  extends MenuContentImplPrivateProps,
-    Omit<PopperContentProps, 'dir' | 'onPlaced'> {
+  extends MenuContentImplPrivateProps, Omit<PopperContentProps, 'dir' | 'onPlaced'> {
   /**
    * Event handler called when auto-focusing on close.
    * Can be prevented.
@@ -327,15 +328,14 @@ interface MenuSubTriggerProps extends MenuItemImplProps {}
  * -----------------------------------------------------------------------------------------------*/
 
 export type MenuSubContentElement = MenuContentImplElement
-export interface MenuSubContentProps
-  extends Omit<
-    MenuContentImplProps,
-    | keyof MenuContentImplPrivateProps
-    | 'onCloseAutoFocus'
-    | 'onEntryFocus'
-    | 'side'
-    | 'align'
-  > {
+export interface MenuSubContentProps extends Omit<
+  MenuContentImplProps,
+  | keyof MenuContentImplPrivateProps
+  | 'onCloseAutoFocus'
+  | 'onEntryFocus'
+  | 'side'
+  | 'align'
+> {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.

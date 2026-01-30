@@ -19,7 +19,9 @@ export function FormButtonTypeCase() {
             Regular Button (type=button)
           </Button>
 
-          <Form.Trigger data-testid="submit-button">Submit Button (type=submit)</Form.Trigger>
+          <Form.Trigger data-testid="submit-button">
+            Submit Button (type=submit)
+          </Form.Trigger>
         </YStack>
       </Form>
 

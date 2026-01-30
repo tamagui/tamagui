@@ -1,26 +1,37 @@
 {
   "name": "@tamagui/animate",
   "version": "2.0.0-rc.0",
-  "type": "module",
-  "source": "src/index.ts",
-  "sideEffects": [
-    "*.css"
-  ],
   "license": "MIT",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "source": "src/index.ts",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "dependencies": {
-    "@tamagui/animate-presence": "workspace:*"
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": {
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
   },
-  "devDependencies": {
-    "@tamagui/build": "workspace:*",
-    "react": ">=19"
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -30,23 +41,12 @@
     "lint": "biome check src",
     "lint:fix": "biome check --write src"
   },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "react-native": {
-        "module": "./dist/esm/index.native.js",
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
-      "types": "./types/index.d.ts",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
-    }
+  "dependencies": {
+    "@tamagui/animate-presence": "workspace:*"
   },
-  "publishConfig": {
-    "access": "public"
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": ">=19"
   },
   "peerDependencies": {
     "react": ">=19"

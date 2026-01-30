@@ -1,20 +1,37 @@
 {
   "name": "@tamagui/v2-toast",
   "version": "2.0.0-rc.0",
-  "type": "module",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
-  "sideEffects": [
-    "*.css"
-  ],
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": {
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -22,21 +39,6 @@
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "react-native": {
-        "module": "./dist/esm/index.native.js",
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
-      "types": "./types/index.d.ts",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
-    }
   },
   "dependencies": {
     "@tamagui/animate-presence": "workspace:*",
@@ -55,6 +57,12 @@
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*"
   },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "burnt": "^0.12.2",
+    "react": ">=19",
+    "react-native": "0.81.5"
+  },
   "peerDependencies": {
     "burnt": "^0.12.2",
     "react": "*",
@@ -65,13 +73,5 @@
       "optional": true
     }
   },
-  "devDependencies": {
-    "@tamagui/build": "workspace:*",
-    "burnt": "^0.12.2",
-    "react": ">=19",
-    "react-native": "0.81.5"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+  "module:jsx": "dist/jsx"
 }

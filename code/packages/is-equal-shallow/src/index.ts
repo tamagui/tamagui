@@ -24,7 +24,6 @@ export function useCreateShallowSetState<State extends Record<string, unknown>>(
             console.groupEnd()
             if (debug === 'break') {
               // biome-ignore lint/suspicious/noDebugger: <explanation>
-              debugger
             }
           }
         }

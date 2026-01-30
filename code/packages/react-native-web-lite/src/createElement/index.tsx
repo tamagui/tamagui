@@ -28,14 +28,11 @@ export const useCreateElement = (component, props, options?) => {
   const isHydrated = useDidFinishSSR()
 
   // only for ssr
-  const styleTags = useMemo(
-    () => {
-      return isHydrated || !styles ? null : getStyleTags(styles)
-    },
-    [
-      // never changes
-    ]
-  )
+  const styleTags = useMemo(() => {
+    return isHydrated || !styles ? null : getStyleTags(styles)
+  }, [
+    // never changes
+  ])
 
   // after that we insert
   useInsertionEffect(() => {

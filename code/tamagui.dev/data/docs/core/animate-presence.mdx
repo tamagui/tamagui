@@ -39,16 +39,16 @@ export const MyComponent = ({ isVisible }) => (
 ```
 
 <Notice theme="blue">
-  Note you don't even need to set `opacity` on the base style. Tamagui knows to
-  normalize styles like opacity and scale to 1 (and y to 0) if it's not defined
-  on the base styles but is defined on `enterStyle` or `exitStyle`.
+  Note you don't even need to set `opacity` on the base style. Tamagui knows to normalize
+  styles like opacity and scale to 1 (and y to 0) if it's not defined on the base styles
+  but is defined on `enterStyle` or `exitStyle`.
 </Notice>
 
 Wrap one or more Tamagui components with AnimatePresence. The child components will animate on enter and exit.
 
 <Notice theme="blue">
-  Animated child components must each have a unique key prop so AnimatePresence
-  can track their presence in the tree.
+  Animated child components must each have a unique key prop so AnimatePresence can track
+  their presence in the tree.
 </Notice>
 
 ## Enter/Exit Transitions

@@ -54,7 +54,9 @@ ${takeoutAsciiArt}
         })
 
         if (setUpSupabaseEnv) {
-          const envs = getEnvFromSupabaseStatus(execSync('bun run supa status').toString())
+          const envs = getEnvFromSupabaseStatus(
+            execSync('bun run supa status').toString()
+          )
           const newEnvContent = Object.entries(envs)
             .map(([key, value]) => `${key}=${value}`)
             .join('\n')

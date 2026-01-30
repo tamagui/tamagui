@@ -1,21 +1,30 @@
 {
   "name": "@tamagui/react-native-web-lite",
   "version": "2.0.0-rc.0",
-  "type": "module",
   "description": "React Native for Web",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "keywords": [
+    "react",
+    "react-component",
+    "react-native",
+    "web"
+  ],
+  "bugs": {
+    "url": "https://github.com/tamagui/tamagui/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "packages/react-native-web-lite"
+  },
   "files": [
     "types",
     "dist",
     "src"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-types --skip-native",
-    "watch": "tamagui-build --watch --skip-types --skip-native",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
+  "type": "module",
+  "main": "dist/cjs",
+  "module": "dist/esm",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -60,6 +69,12 @@
       "require": "./dist/cjs/*/index.cjs"
     }
   },
+  "scripts": {
+    "build": "tamagui-build --skip-types --skip-native",
+    "watch": "tamagui-build --watch --skip-types --skip-native",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
   "dependencies": {
     "@tamagui/normalize-css-color": "workspace:*",
     "@tamagui/react-native-use-pressable": "workspace:*",
@@ -78,22 +93,7 @@
     "react": ">=19",
     "react-dom": "*"
   },
-  "license": "MIT",
   "tags": [
     "react"
-  ],
-  "keywords": [
-    "react",
-    "react-component",
-    "react-native",
-    "web"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "packages/react-native-web-lite"
-  },
-  "bugs": {
-    "url": "https://github.com/tamagui/tamagui/issues"
-  }
+  ]
 }

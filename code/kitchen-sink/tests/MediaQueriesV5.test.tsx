@@ -30,7 +30,9 @@ test.describe.skip('v5 Media Queries', () => {
       })
     })
 
-    test('on large viewport (1280px), $lg should win over $sm and $md', async ({ page }) => {
+    test('on large viewport (1280px), $lg should win over $sm and $md', async ({
+      page,
+    }) => {
       await page.setViewportSize({ width: 1280, height: 800 })
       const element = page.locator('[data-testid="test-mobile-first"]')
       const styles = await getStyles(element)
@@ -82,7 +84,9 @@ test.describe.skip('v5 Media Queries', () => {
       expect(styles.backgroundColor).toBe('rgb(255, 255, 0)') // yellow from $max-sm
     })
 
-    test('on medium viewport (700px), $max-md should win over $max-lg', async ({ page }) => {
+    test('on medium viewport (700px), $max-md should win over $max-lg', async ({
+      page,
+    }) => {
       await page.setViewportSize({ width: 700, height: 800 })
       const element = page.locator('[data-testid="test-desktop-first"]')
       const styles = await getStyles(element)

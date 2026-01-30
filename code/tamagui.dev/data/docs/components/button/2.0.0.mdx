@@ -153,11 +153,7 @@ export default () => (
     <Button type="button">Regular Button (default)</Button>
 
     {/* Override form attributes */}
-    <Button
-      type="submit"
-      formAction="/alternative-endpoint"
-      formMethod="post"
-    >
+    <Button type="submit" formAction="/alternative-endpoint" formMethod="post">
       Submit to Different Endpoint
     </Button>
   </Form>
@@ -165,8 +161,8 @@ export default () => (
 ```
 
 <Notice>
-  Button defaults to `type="button"` to prevent unintended form submissions.
-  Use `type="submit"` explicitly when you want form submission behavior.
+  Button defaults to `type="button"` to prevent unintended form submissions. Use
+  `type="submit"` explicitly when you want form submission behavior.
 </Notice>
 
 ## Creating Your Own Button
@@ -261,13 +257,14 @@ Buttons extend Stack views inheriting all the
       name: 'type',
       required: false,
       type: '"button" | "submit" | "reset"',
-      description: 'Web-only. The button type. Defaults to "button" to prevent unintended form submissions.',
+      description:
+        'Web-only. The button type. Defaults to "button" to prevent unintended form submissions.',
     },
     {
       name: 'formAction',
       required: false,
       type: 'string',
-      description: 'Web-only. URL for form submission, overrides the form\'s action.',
+      description: "Web-only. URL for form submission, overrides the form's action.",
     },
     {
       name: 'formMethod',

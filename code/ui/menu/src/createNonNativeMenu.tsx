@@ -67,8 +67,10 @@ type MenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>
  * -----------------------------------------------------------------------------------------------*/
 
 type MenuContentElement = React.ElementRef<BaseMenu['Content']>
-interface MenuContentProps
-  extends Omit<React.ComponentPropsWithoutRef<BaseMenu['Content']>, 'onEntryFocus'> {}
+interface MenuContentProps extends Omit<
+  React.ComponentPropsWithoutRef<BaseMenu['Content']>,
+  'onEntryFocus'
+> {}
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
@@ -339,7 +341,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             const isRightClick = originalEvent.button === 2 || ctrlLeftClick
             if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
           })}
-          {...(props.style as Object)}
+          {...(props.style as object)}
         />
       )
     }
@@ -620,7 +622,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
         style={
           isWeb
             ? {
-                ...(props.style as Object),
+                ...(props.style as object),
                 // re-namespace exposed content custom properties
                 // TODO: find a better way to do this, or maybe not do it at all
                 ...({

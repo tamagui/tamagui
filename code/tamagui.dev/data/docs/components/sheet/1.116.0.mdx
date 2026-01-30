@@ -181,11 +181,7 @@ setupNativeSheet('ios', NativeModal)
 
 // now you can use the `native` prop:
 
-export default (
-  <Sheet native>
-    {/* ... the rest of your sheet */}
-  </Sheet>
-)
+export default <Sheet native>{/* ... the rest of your sheet */}</Sheet>
 ```
 
 ## API Reference
@@ -284,7 +280,7 @@ Contains every component for the sheet.
       description:
         'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
     },
-      {
+    {
       name: 'unmountChildrenWhenHidden',
       type: 'boolean',
       default: 'false',
@@ -294,9 +290,9 @@ Contains every component for the sheet.
   ]}
 />
 
-
 <Notice>
-  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider installation](/ui/sheet/1.59.0#portalprovider) for more information.
+  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider
+  installation](/ui/sheet/1.59.0#portalprovider) for more information.
 </Notice>
 
 ### Sheet.Overlay

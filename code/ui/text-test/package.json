@@ -1,12 +1,12 @@
 {
   "name": "@tamagui/text-test",
   "version": "2.0.0-rc.0",
-  "main": "dist/cjs",
+  "private": true,
   "type": "module",
   "sideEffects": [
     "*.css"
   ],
-  "private": true,
+  "main": "dist/cjs",
   "module": "dist/esm",
   "scripts": {
     "test": "TAMAGUI_TARGET=web vitest --config ../../packages/vite-plugin-internal/src/vite.config.ts --run"

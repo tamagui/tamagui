@@ -17,9 +17,14 @@ export async function waitForDevice(): Promise<void> {
   // Check if any device is connected first (with a quick timeout)
   try {
     const result = await $`adb devices`.quiet()
-    const lines = result.stdout.toString().split('\n').filter(line => line.includes('\tdevice'))
+    const lines = result.stdout
+      .toString()
+      .split('\n')
+      .filter((line) => line.includes('\tdevice'))
     if (lines.length === 0) {
-      throw new Error('No Android device/emulator connected. Please start an emulator first.')
+      throw new Error(
+        'No Android device/emulator connected. Please start an emulator first.'
+      )
     }
   } catch (error) {
     const err = error as Error

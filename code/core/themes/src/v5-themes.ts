@@ -365,10 +365,8 @@ type BaseExtraDark = BaseExtraCommon &
 
 export type CreateV5ThemeOptions<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
-  GrandChildren extends Record<
-    string,
-    GrandChildrenThemeDefinition
-  > = typeof v5GrandchildrenThemes,
+  GrandChildren extends Record<string, GrandChildrenThemeDefinition> =
+    typeof v5GrandchildrenThemes,
 > = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: string[]
@@ -415,10 +413,8 @@ export type CreateV5ThemeOptions<
  */
 export function createV5Theme<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
-  GrandChildren extends Record<
-    string,
-    GrandChildrenThemeDefinition
-  > = typeof v5GrandchildrenThemes,
+  GrandChildren extends Record<string, GrandChildrenThemeDefinition> =
+    typeof v5GrandchildrenThemes,
 >(
   options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<
     Children,

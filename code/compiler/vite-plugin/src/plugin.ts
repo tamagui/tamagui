@@ -6,7 +6,12 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, transformWithEsbuild, type Environment } from 'vite'
-import { loadTamaguiBuildConfig, getLoadPromise, getTamaguiOptions, ensureFullConfigLoaded } from './loadTamagui'
+import {
+  loadTamaguiBuildConfig,
+  getLoadPromise,
+  getTamaguiOptions,
+  ensureFullConfigLoaded,
+} from './loadTamagui'
 
 const resolve = (name: string) => fileURLToPath(import.meta.resolve(name))
 

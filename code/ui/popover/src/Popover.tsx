@@ -202,8 +202,10 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
 
 type PopoverContentTypeElement = PopoverContentImplElement
 
-export interface PopoverContentTypeProps
-  extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
+export interface PopoverContentTypeProps extends Omit<
+  PopoverContentImplProps,
+  'disableOutsidePointerEvents'
+> {
   /**
    * Enable smooth animation when the content position changes (e.g., when flipping sides)
    */

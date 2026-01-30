@@ -134,9 +134,7 @@ export const build = async (
           f === `${basePath}.android.jsx`
       )
       const hasWeb = allFiles.some(
-        (f) =>
-          f === `${basePath}.web.tsx` ||
-          f === `${basePath}.web.jsx`
+        (f) => f === `${basePath}.web.tsx` || f === `${basePath}.web.jsx`
       )
 
       // Only optimize for targets that don't have platform-specific files
@@ -235,7 +233,8 @@ export const build = async (
             const cssName = '_' + basename(sourcePath, extname(sourcePath))
             const stylePath = join(dirname(sourcePath), cssName + '.css')
             const cssImport = `import "./${cssName}.css"`
-            const jsContent = typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
+            const jsContent =
+              typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
             const code = insertCssImport(jsContent, cssImport)
 
             // Track original file before modifying

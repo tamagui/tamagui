@@ -3,9 +3,7 @@ import { isClient } from '@tamagui/constants'
 
 import type { ColorScheme } from './types'
 
-export const useRootTheme = ({
-  fallback = 'light',
-}: { fallback?: ColorScheme } = {}): [
+export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme } = {}): [
   ColorScheme,
   Dispatch<SetStateAction<ColorScheme>>,
 ] => {

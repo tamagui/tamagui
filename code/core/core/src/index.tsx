@@ -44,8 +44,7 @@ export {
 
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>
 export interface RNTamaguiViewNonStyleProps
-  extends StackNonStyleProps,
-    RNExclusiveViewProps {}
+  extends StackNonStyleProps, RNExclusiveViewProps {}
 
 type RNTamaguiView = TamaguiComponent<
   TamaDefer,
@@ -57,8 +56,7 @@ type RNTamaguiView = TamaguiComponent<
 
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>
 export interface RNTamaguiTextNonStyleProps
-  extends TextNonStyleProps,
-    RNExclusiveTextProps {}
+  extends TextNonStyleProps, RNExclusiveTextProps {}
 
 type RNTamaguiText = TamaguiComponent<
   TamaDefer,

@@ -28,9 +28,8 @@ pressed, floating above the current content. Be sure to open the code example
 above for a copy-paste implementation.
 
 <Notice>
-  Note: Popovers are not a recommended pattern for mobile apps. Instead you can
-  use Adapt and render them as a Sheet, or just conditionally render them to
-  some native UI.
+  Note: Popovers are not a recommended pattern for mobile apps. Instead you can use Adapt
+  and render them as a Sheet, or just conditionally render them to some native UI.
 </Notice>
 
 ## Installation
@@ -241,9 +240,8 @@ For most of these properties, you'll want to reference the
 [floating-ui docs](https://floating-ui.com/docs/getting-started).
 
 <Notice>
-  If using `modal={true}` (which is `true` by default), refer to the
-  [PortalProvider installation](#portalprovider) for more
-  information.
+  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider
+  installation](#portalprovider) for more information.
 </Notice>
 
 ### Popover.Arrow
@@ -278,8 +276,7 @@ Used to display the content of the popover.
       name: 'size',
       type: 'SizeTokens',
       required: false,
-      description:
-        'Controls default padding/borderRadius when unstyled is false.',
+      description: 'Controls default padding/borderRadius when unstyled is false.',
     },
     {
       name: 'unstyled',
@@ -304,15 +301,13 @@ Used to display the content of the popover.
       name: 'onOpenAutoFocus',
       type: `FocusScopeProps['onMountAutoFocus']`,
       default: false,
-      description:
-        'Event handler called when auto-focusing on open. Can be prevented.',
+      description: 'Event handler called when auto-focusing on open. Can be prevented.',
     },
     {
       name: 'onCloseAutoFocus',
       type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
       default: false,
-      description:
-        'Event handler called when auto-focusing on close. Can be prevented.',
+      description: 'Event handler called when auto-focusing on close. Can be prevented.',
     },
     {
       name: 'lazyMount',

@@ -32,7 +32,7 @@ export class KeyboardAvoidingView extends React.Component<KeyboardAvoidingViewPr
     return Math.max(frame.y + frame.height - keyboardY, 0)
   }
 
-  onKeyboardChange(event: Object) {}
+  onKeyboardChange(event: object) {}
 
   onLayout: (event: LayoutEvent) => void = (event: LayoutEvent) => {
     this.frame = event.nativeEvent.layout

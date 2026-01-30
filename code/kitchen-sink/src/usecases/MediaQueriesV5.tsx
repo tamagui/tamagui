@@ -57,7 +57,9 @@ export const MediaQueriesV5 = () => {
       {/* Test 2: Desktop-first (maxWidth) - smaller should win */}
       <YStack gap="$2">
         <Text fontWeight="bold">Test 2: Desktop-first (smaller wins)</Text>
-        <Text fontSize={12}>On small screen: should be yellow ($max-sm wins over $max-lg)</Text>
+        <Text fontSize={12}>
+          On small screen: should be yellow ($max-sm wins over $max-lg)
+        </Text>
         <YStack
           testID="test-desktop-first"
           height={60}

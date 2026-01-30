@@ -530,7 +530,11 @@ const DataItem = ({
   labelTop,
   labelBottom,
   width,
-}: { labelTop: any; labelBottom: any; width?: any }) => {
+}: {
+  labelTop: any
+  labelBottom: any
+  width?: any
+}) => {
   return (
     <YStack width={width} maxW={width}>
       <SizableText lineHeight="$1" select="none">

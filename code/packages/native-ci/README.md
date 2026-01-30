@@ -75,13 +75,13 @@ bun run node_modules/@tamagui/native-ci/src/run-detox-android.ts \
 
 ### Runner Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--config` | Detox configuration name | `ios.sim.debug` / `android.emu.ci.debug` |
-| `--project-root` | Project root directory | Current directory |
-| `--record-logs` | Log recording: none, failing, all | `all` |
-| `--retries` | Number of test retries | `0` |
-| `--headless` | Run in headless mode (Android only) | `false` |
+| Option           | Description                         | Default                                  |
+| ---------------- | ----------------------------------- | ---------------------------------------- |
+| `--config`       | Detox configuration name            | `ios.sim.debug` / `android.emu.ci.debug` |
+| `--project-root` | Project root directory              | Current directory                        |
+| `--record-logs`  | Log recording: none, failing, all   | `all`                                    |
+| `--retries`      | Number of test retries              | `0`                                      |
+| `--headless`     | Run in headless mode (Android only) | `false`                                  |
 
 ## GitHub Actions
 
@@ -103,23 +103,23 @@ bun run node_modules/@tamagui/native-ci/src/run-detox-android.ts \
 
 #### Inputs
 
-| Input | Description | Default |
-|-------|-------------|---------|
-| `platform` | Platform (ios or android) | Required |
-| `project-root` | Path to Expo project | `.` |
-| `cache-prefix` | Prefix for cache keys | `native-build` |
-| `kv-url` | Redis KV REST URL (optional) | - |
-| `kv-token` | Redis KV REST token (optional) | - |
+| Input            | Description                    | Default                                |
+| ---------------- | ------------------------------ | -------------------------------------- |
+| `platform`       | Platform (ios or android)      | Required                               |
+| `project-root`   | Path to Expo project           | `.`                                    |
+| `cache-prefix`   | Prefix for cache keys          | `native-build`                         |
+| `kv-url`         | Redis KV REST URL (optional)   | -                                      |
+| `kv-token`       | Redis KV REST token (optional) | -                                      |
 | `pre-hash-files` | Files for pre-fingerprint hash | `yarn.lock,package-lock.json,app.json` |
 
 #### Outputs
 
-| Output | Description |
-|--------|-------------|
-| `fingerprint` | Generated fingerprint hash |
-| `cache-key` | Cache key for this build |
-| `pre-fingerprint-hash` | Quick pre-fingerprint hash |
-| `cache-hit` | Whether fingerprint was cached |
+| Output                 | Description                    |
+| ---------------------- | ------------------------------ |
+| `fingerprint`          | Generated fingerprint hash     |
+| `cache-key`            | Cache key for this build       |
+| `pre-fingerprint-hash` | Quick pre-fingerprint hash     |
+| `cache-hit`            | Whether fingerprint was cached |
 
 ### iOS Detox Tests Action
 
@@ -134,15 +134,15 @@ bun run node_modules/@tamagui/native-ci/src/run-detox-android.ts \
 
 #### Inputs
 
-| Input | Description | Default |
-|-------|-------------|---------|
-| `project-root` | Path to project root | `.` |
-| `working-directory` | Working directory for tests | `.` |
-| `config` | Detox configuration name | `ios.sim.debug` |
-| `record-logs` | Log recording: none, failing, all | `all` |
-| `retries` | Number of test retries | `0` |
-| `simulator` | iOS simulator device type | `iPhone 15` |
-| `app-path` | Path to built app (optional) | - |
+| Input               | Description                       | Default         |
+| ------------------- | --------------------------------- | --------------- |
+| `project-root`      | Path to project root              | `.`             |
+| `working-directory` | Working directory for tests       | `.`             |
+| `config`            | Detox configuration name          | `ios.sim.debug` |
+| `record-logs`       | Log recording: none, failing, all | `all`           |
+| `retries`           | Number of test retries            | `0`             |
+| `simulator`         | iOS simulator device type         | `iPhone 15`     |
+| `app-path`          | Path to built app (optional)      | -               |
 
 ### Android Detox Tests Action
 
@@ -156,15 +156,15 @@ bun run node_modules/@tamagui/native-ci/src/run-detox-android.ts \
 
 #### Inputs
 
-| Input | Description | Default |
-|-------|-------------|---------|
-| `project-root` | Path to project root | `.` |
-| `working-directory` | Working directory for tests | `.` |
-| `config` | Detox configuration name | `android.emu.ci.debug` |
-| `record-logs` | Log recording: none, failing, all | `all` |
-| `retries` | Number of test retries | `0` |
-| `api-level` | Android API level | `30` |
-| `emulator-options` | Emulator options | See defaults |
+| Input               | Description                       | Default                |
+| ------------------- | --------------------------------- | ---------------------- |
+| `project-root`      | Path to project root              | `.`                    |
+| `working-directory` | Working directory for tests       | `.`                    |
+| `config`            | Detox configuration name          | `android.emu.ci.debug` |
+| `record-logs`       | Log recording: none, failing, all | `all`                  |
+| `retries`           | Number of test retries            | `0`                    |
+| `api-level`         | Android API level                 | `30`                   |
+| `emulator-options`  | Emulator options                  | See defaults           |
 
 ## Programmatic API
 
@@ -295,6 +295,7 @@ jobs:
 4. **Cache build artifacts**: Use fingerprint as cache key
 
 This 2-level approach means:
+
 - Cache hits are instant (no fingerprint generation needed)
 - Rebuilds only happen when native dependencies actually change
 - Works across CI runs with KV persistence

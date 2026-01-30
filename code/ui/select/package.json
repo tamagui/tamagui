@@ -1,21 +1,37 @@
 {
   "name": "@tamagui/select",
   "version": "2.0.0-rc.0",
-  "type": "module",
-  "removeSideEffects": "true",
-  "sideEffects": [
-    "*.css"
-  ],
   "source": "src/index.tsx",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": {
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -23,21 +39,6 @@
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",
     "lint:fix": "biome check --write src"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "react-native": {
-        "module": "./dist/esm/index.native.js",
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
-      "types": "./types/index.d.ts",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
-    }
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.16",
@@ -67,18 +68,17 @@
     "@tamagui/use-event": "workspace:*",
     "@tamagui/use-previous": "workspace:*"
   },
-  "peerDependencies": {
-    "react": ">=19",
-    "react-dom": "*",
-    "react-native": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-dom": "*",
     "react-native": "0.81.5"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": "*",
+    "react-native": "*"
+  },
+  "module:jsx": "dist/jsx",
+  "removeSideEffects": "true"
 }

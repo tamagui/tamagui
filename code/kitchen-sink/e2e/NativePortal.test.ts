@@ -111,4 +111,3 @@ describe('NativePortal', () => {
     }
   })
 })
-

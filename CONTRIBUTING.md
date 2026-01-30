@@ -32,7 +32,6 @@ lllink ~/path/to/tamagui
 
 There's a few ways to run code in the repo, generally for native, there's two ways:
 
-
 ```bash
 bun run sandbox
 ```

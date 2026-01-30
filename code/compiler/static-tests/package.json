@@ -1,8 +1,12 @@
 {
   "name": "@tamagui/static-tests",
   "version": "2.0.0-rc.0",
-  "module": "dist/esm/index.js",
   "private": true,
+  "license": "MIT",
+  "module": "dist/esm/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.js",
     "test-output": "node -r esbuild-register ./test-output.tsx",
@@ -20,13 +24,6 @@
     "test:web": "bun run test:run:web tests/*.web.test.tsx && bun run test:webpack",
     "test:native": "bun run test:run tests/*.native.test.tsx"
   },
-  "tests": {
-    "parallel": true
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "license": "MIT",
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
     "@babel/types": "^7.25.4",
@@ -54,5 +51,8 @@
   "peerDependencies": {
     "react": ">=19",
     "react-native-web": "*"
+  },
+  "tests": {
+    "parallel": true
   }
 }

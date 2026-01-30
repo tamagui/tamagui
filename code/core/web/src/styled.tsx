@@ -26,7 +26,7 @@ type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
   Required<Variants> extends { _isEmpty: 1 } ? true : false
 
-type GetVariantAcceptedValues<V> = V extends Object
+type GetVariantAcceptedValues<V> = V extends object
   ? {
       [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val>
         ? Val
@@ -58,32 +58,33 @@ export function styled<
   type ParentStylesBase = GetBaseStyles<ParentComponent, StyledConfig>
   type ParentVariants = GetStyledVariants<ParentComponent>
 
-  type OurVariantProps = AreVariantsUndefined<Variants> extends true
-    ? {}
-    : GetVariantAcceptedValues<Variants>
-  type MergedVariants = AreVariantsUndefined<Variants> extends true
-    ? ParentVariants
-    : AreVariantsUndefined<ParentVariants> extends true
-      ? Omit<OurVariantProps, '_isEmpty'>
-      : {
-          // exclude _isEmpty as it no longer is empty
-          [Key in Exclude<keyof ParentVariants | keyof OurVariantProps, '_isEmpty'>]?:
-            | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
-            | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
-        }
+  type OurVariantProps =
+    AreVariantsUndefined<Variants> extends true ? {} : GetVariantAcceptedValues<Variants>
+  type MergedVariants =
+    AreVariantsUndefined<Variants> extends true
+      ? ParentVariants
+      : AreVariantsUndefined<ParentVariants> extends true
+        ? Omit<OurVariantProps, '_isEmpty'>
+        : {
+            // exclude _isEmpty as it no longer is empty
+            [Key in Exclude<keyof ParentVariants | keyof OurVariantProps, '_isEmpty'>]?:
+              | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
+              | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
+          }
 
   type Accepted = StyledConfig['accept']
-  type CustomTokenProps = Accepted extends Record<string, any>
-    ? {
-        [Key in keyof Accepted]?:
-          | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
-          | (Accepted[Key] extends 'style'
-              ? Partial<InferStyleProps<ParentComponent, StyledConfig>>
-              : Accepted[Key] extends 'textStyle'
-                ? Partial<InferStyleProps<typeof Text, StyledConfig>>
-                : Omit<ThemeValueGet<Accepted[Key]>, 'unset'>)
-      }
-    : {}
+  type CustomTokenProps =
+    Accepted extends Record<string, any>
+      ? {
+          [Key in keyof Accepted]?:
+            | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
+            | (Accepted[Key] extends 'style'
+                ? Partial<InferStyleProps<ParentComponent, StyledConfig>>
+                : Accepted[Key] extends 'textStyle'
+                  ? Partial<InferStyleProps<typeof Text, StyledConfig>>
+                  : Omit<ThemeValueGet<Accepted[Key]>, 'unset'>)
+        }
+      : {}
 
   /**
    * de-opting a bit of type niceness because were hitting depth issues too soon

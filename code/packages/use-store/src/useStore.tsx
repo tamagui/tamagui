@@ -16,7 +16,7 @@ import { DebugStores, shouldDebug, useCurrentComponent } from './useStoreDebug'
 const idFn = (_) => _
 
 // no singleton, just react
-export function useStore<A, B extends Object>(
+export function useStore<A, B extends object>(
   StoreKlass: (new (props: B) => A) | (new () => A) | null | undefined,
   props?: B | null,
   options: UseStoreOptions<A, any> = defaultOptions
@@ -25,7 +25,7 @@ export function useStore<A, B extends Object>(
   return useStoreFromInfo(info, options.selector, options)
 }
 
-export function useStoreDebug<A, B extends Object>(
+export function useStoreDebug<A, B extends object>(
   StoreKlass: (new (props: B) => A) | (new () => A),
   props?: B
 ): A {
@@ -33,7 +33,7 @@ export function useStoreDebug<A, B extends Object>(
 }
 
 // singleton
-export function createStore<A, B extends Object>(
+export function createStore<A, B extends object>(
   StoreKlass: new (props: B) => A | (new () => A) | null | undefined,
   props?: B,
   options?: UseStoreOptions<A, any>
@@ -43,7 +43,7 @@ export function createStore<A, B extends Object>(
 // use singleton with react
 // TODO selector support with types...
 
-export function useGlobalStore<A, B extends Object>(instance: A, debug?: boolean): A {
+export function useGlobalStore<A, B extends object>(instance: A, debug?: boolean): A {
   const store = instance[UNWRAP_PROXY]
   const uid = getStoreUid(store.constructor, store.props)
   const info = cache.get(uid)
@@ -71,17 +71,17 @@ export function useGlobalStoreSelector<A, Selector extends (store: A) => any>(
 export function createUseStore<Props, Store>(
   StoreKlass: (new (props: Props) => Store) | (new () => Store)
 ) {
-  return <Res, C extends Selector<Store, Res>, Props extends Object>(
+  return <Res, C extends Selector<Store, Res>, Props extends object>(
     props?: Props,
     options?: UseStoreOptions
-  ): C extends Selector<any, infer B> ? (B extends Object ? B : Store) : Store =>
+  ): C extends Selector<any, infer B> ? (B extends object ? B : Store) : Store =>
     useStore(StoreKlass as any, props, options)
 }
 
 // for creating a usable selector hook
 export function createUseStoreSelector<
   A extends Store<Props>,
-  Props extends Object,
+  Props extends object,
   Selected,
 >(
   StoreKlass: (new (props: Props) => A) | (new () => A),
@@ -93,7 +93,7 @@ export function createUseStoreSelector<
 }
 
 // selector hook
-export function useStoreSelector<A, B extends Object, S extends Selector<A, any>>(
+export function useStoreSelector<A, B extends object, S extends Selector<A, any>>(
   StoreKlass: (new (props: B) => A) | (new () => A),
   selector: S,
   props?: B
@@ -110,14 +110,14 @@ export function trackStoresAccess(cb: StoreAccessTracker) {
   }
 }
 
-export function getStore<A, B extends Object>(
+export function getStore<A, B extends object>(
   StoreKlass: (new (props: B) => A) | (new () => A) | null | undefined,
   props?: B
 ): A {
   return getStoreInfo(StoreKlass, props)?.store as any
 }
 
-export function getOrCreateStore<A, B extends Object>(
+export function getOrCreateStore<A, B extends object>(
   StoreKlass: (new (props: B) => A) | (new () => A) | null | undefined,
   props?: B
 ): A {

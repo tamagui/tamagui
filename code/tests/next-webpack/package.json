@@ -1,5 +1,6 @@
 {
   "name": "next15-plus-cli-optimize",
+  "version": "2.0.0-rc.0",
   "private": true,
   "workspaces": [
     "./packages/*"
@@ -16,6 +17,5 @@
   },
   "devDependencies": {
     "vitest": "^4.0.4"
-  },
-  "version": "2.0.0-rc.0"
+  }
 }

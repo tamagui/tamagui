@@ -33,7 +33,9 @@ npm install @tamagui/sheet
 ```
 
 <Notice theme="blue">
-  For native apps, we recommend [setting up native portals](/docs/components/portal#native-portal-setup-recommended) to preserve React context inside Sheet content.
+  For native apps, we recommend [setting up native
+  portals](/docs/components/portal#native-portal-setup-recommended) to preserve React
+  context inside Sheet content.
 </Notice>
 
 ## Anatomy
@@ -205,9 +207,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* Your app */}
-    </GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>{/* Your app */}</GestureHandlerRootView>
   )
 }
 ```
@@ -222,14 +222,13 @@ When using scrollable content inside a Sheet, use `Sheet.ScrollView` for proper 
 <Sheet>
   <Sheet.Handle />
   <Sheet.Frame>
-    <Sheet.ScrollView>
-      {/* Scrollable content */}
-    </Sheet.ScrollView>
+    <Sheet.ScrollView>{/* Scrollable content */}</Sheet.ScrollView>
   </Sheet.Frame>
 </Sheet>
 ```
 
 This ensures:
+
 - Scrolling up at the top of content works naturally
 - Dragging down when scroll is at top drags the sheet
 - Direction changes mid-gesture work smoothly

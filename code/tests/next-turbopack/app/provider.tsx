@@ -16,7 +16,10 @@ export function TamaguiProvider({ children }: { children: React.ReactNode }) {
       <>
         {/* Pre-generated CSS from tamagui build */}
         <link rel="stylesheet" href="/tamagui.css" />
-        <style dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }} id={rnwStyle.id} />
+        <style
+          dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
+          id={rnwStyle.id}
+        />
         <style
           dangerouslySetInnerHTML={{
             __html: config.getNewCSS(),

@@ -1,15 +1,18 @@
 {
   "name": "@tamagui/helpers-node",
   "version": "2.0.0-rc.0",
-  "sideEffects": false,
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "./dist",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "sideEffects": false,
+  "main": "./dist",
+  "types": "./types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -22,8 +25,5 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "fs-extra": "^11.2.0"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

@@ -26,7 +26,11 @@ export const BentoLogo = ({
   children = 'BENTO',
   scale = 1,
   backgrounded,
-}: { children?: string; scale?: number; backgrounded?: boolean }) => {
+}: {
+  children?: string
+  scale?: number
+  backgrounded?: boolean
+}) => {
   const fontLoaded = useFontLoaded('Cherry Bomb')
 
   return (

@@ -44,8 +44,8 @@ export function DialogPointerEventsCase() {
           >
             <Dialog.Title>Slow Animation Dialog</Dialog.Title>
             <Dialog.Description>
-              This dialog has a slow exit animation. When closed, the background button should be
-              clickable immediately, not after the animation finishes.
+              This dialog has a slow exit animation. When closed, the background button
+              should be clickable immediately, not after the animation finishes.
             </Dialog.Description>
             <Dialog.Close asChild>
               <Button data-testid="dialog-close">Close</Button>

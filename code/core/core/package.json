@@ -1,27 +1,17 @@
 {
   "name": "@tamagui/core",
   "version": "2.0.0-rc.0",
-  "type": "module",
-  "source": "src/index.tsx",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "types": "./types/index.d.ts",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "license": "MIT",
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": [
-    "*.css"
-  ],
-  "scripts": {
-    "build": "tamagui-build",
-    "afterBuild": "node bundle-native.mjs",
-    "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "packages/core"
   },
+  "source": "src/index.tsx",
   "files": [
     "types",
     "dist",
@@ -32,39 +22,23 @@
     "native-test.cjs",
     "native-test.d.ts"
   ],
-  "dependencies": {
-    "@tamagui/helpers": "workspace:*",
-    "@tamagui/react-native-media-driver": "workspace:*",
-    "@tamagui/react-native-use-pressable": "workspace:*",
-    "@tamagui/use-element-layout": "workspace:*",
-    "@tamagui/use-event": "workspace:*",
-    "@tamagui/web": "workspace:*"
-  },
-  "devDependencies": {
-    "@tamagui/build": "workspace:*",
-    "@tamagui/native-bundle": "workspace:*",
-    "@tamagui/react-native-web-lite": "workspace:*",
-    "@testing-library/react": "^16.1.0",
-    "csstype": "^3.0.10",
-    "react": ">=19",
-    "react-native": "0.81.5",
-    "typescript": "~5.9.2",
-    "vitest": "^4.0.4"
-  },
-  "peerDependencies": {
-    "react": ">=19",
-    "react-native": "*"
-  },
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -97,13 +71,39 @@
       "react-native": "./dist/cjs/reactNativeTypes.native.js"
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "packages/core"
-  },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "scripts": {
+    "build": "tamagui-build",
+    "afterBuild": "node bundle-native.mjs",
+    "watch": "tamagui-build --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/react-native-media-driver": "workspace:*",
+    "@tamagui/react-native-use-pressable": "workspace:*",
+    "@tamagui/use-element-layout": "workspace:*",
+    "@tamagui/use-event": "workspace:*",
+    "@tamagui/web": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "@tamagui/native-bundle": "workspace:*",
+    "@tamagui/react-native-web-lite": "workspace:*",
+    "@testing-library/react": "^16.1.0",
+    "csstype": "^3.0.10",
+    "react": ">=19",
+    "react-native": "0.81.5",
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.4"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-native": "*"
+  }
 }

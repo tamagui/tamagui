@@ -27,11 +27,10 @@ Popovers are a great way to show content that's only visible when trigger is
 pressed, floating above the current content.
 
 <Notice>
-  Note: Popovers are not a recommended pattern for mobile apps, and so aren't
-  supported on native. Instead you can use Adapt and render them as a Sheet, or
-  just conditionally render them. We landed support for them at one point, but
-  we need the community to contribute tests in order to support them for mobile
-  again.
+  Note: Popovers are not a recommended pattern for mobile apps, and so aren't supported on
+  native. Instead you can use Adapt and render them as a Sheet, or just conditionally
+  render them. We landed support for them at one point, but we need the community to
+  contribute tests in order to support them for mobile again.
 </Notice>
 
 ## Installation
@@ -200,9 +199,8 @@ For most of these properties, you'll want to reference the
 [floating-ui docs](https://floating-ui.com/docs/getting-started).
 
 <Notice>
-  If using `modal={true}` (which is `true` by default), refer to the
-  [PortalProvider installation](/ui/popover/1.83.0#portalprovider) for more
-  information.
+  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider
+  installation](/ui/popover/1.83.0#portalprovider) for more information.
 </Notice>
 
 ### Popover.Arrow
@@ -230,13 +228,14 @@ Used to display the content of the popover.
     {
       name: 'enableAnimationForPositionChange',
       type: 'boolean',
-      description: 'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.'
+      description:
+        'Disabled animate presence animations in favor of regular animation, useful for doing sliding popovers.',
     },
     {
       name: 'size',
       type: 'SizeTokens',
       required: false,
-      description: 'Controls default padding/borderRadius when unstyled is false.'
+      description: 'Controls default padding/borderRadius when unstyled is false.',
     },
     {
       name: 'unstyled',
@@ -255,19 +254,19 @@ Used to display the content of the popover.
       name: 'disableFocusScope',
       type: 'boolean',
       default: false,
-      description: 'Whether popover should not focus contents on open'
+      description: 'Whether popover should not focus contents on open',
     },
     {
       name: 'onOpenAutoFocus',
       type: `FocusScopeProps['onMountAutoFocus']`,
       default: false,
-      description: 'Event handler called when auto-focusing on open. Can be prevented.'
+      description: 'Event handler called when auto-focusing on open. Can be prevented.',
     },
     {
       name: 'onCloseAutoFocus',
       type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
       default: false,
-      description: 'Event handler called when auto-focusing on close. Can be prevented.'
+      description: 'Event handler called when auto-focusing on close. Can be prevented.',
     },
     {
       name: 'lazyMount',

@@ -13,16 +13,10 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Piscina from 'piscina'
 
-export type {
-  ExtractedResponse,
-  TamaguiProjectInfo,
-} from '@tamagui/static'
+export type { ExtractedResponse, TamaguiProjectInfo } from '@tamagui/static'
 export type { TamaguiOptions } from '@tamagui/types'
 
-export const getPragmaOptions = async (props: {
-  source: string
-  path: string
-}) => {
+export const getPragmaOptions = async (props: { source: string; path: string }) => {
   const { default: Static } = await import('@tamagui/static')
   return Static.getPragmaOptions(props)
 }

@@ -38,9 +38,8 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
-  const { getMDXBySlug, getAllVersionsFromPath } = await import(
-    '~/features/mdx/getMDXBySlug'
-  )
+  const { getMDXBySlug, getAllVersionsFromPath } =
+    await import('~/features/mdx/getMDXBySlug')
 
   const subpath = Array.isArray(props.params.subpath)
     ? props.params.subpath[0]

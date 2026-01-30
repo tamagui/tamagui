@@ -37,7 +37,9 @@ function useSeasonSync() {
 
 export function SeasonProvider({
   children,
-}: { children: React.ReactNode }): React.ReactNode {
+}: {
+  children: React.ReactNode
+}): React.ReactNode {
   useSeasonSync()
 
   return (

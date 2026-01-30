@@ -21,7 +21,8 @@ const _cancelIdleCallback = function (id: any) {
   clearTimeout(id)
 }
 
-const isSupported = typeof window !== 'undefined' && typeof window.requestIdleCallback !== 'undefined'
+const isSupported =
+  typeof window !== 'undefined' && typeof window.requestIdleCallback !== 'undefined'
 
 export const requestIdleCallback: (cb: any, options?: any) => any = isSupported
   ? window.requestIdleCallback

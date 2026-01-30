@@ -115,8 +115,12 @@ function parseImportsFromOutput(stdout: string): Map<string, Set<string>> {
     const importPath = quoteMatch[1]
 
     // Skip relative imports, node: prefixed, etc
-    if (importPath.startsWith('.') || importPath.startsWith('/') ||
-        importPath.startsWith('~') || importPath.startsWith('node:')) {
+    if (
+      importPath.startsWith('.') ||
+      importPath.startsWith('/') ||
+      importPath.startsWith('~') ||
+      importPath.startsWith('node:')
+    ) {
       continue
     }
 
@@ -146,7 +150,9 @@ async function scanAllImports(): Promise<Map<string, string[]>> {
     await exec('which rg')
     // console.info('[DEBUG] scanAllImports: rg found')
   } catch {
-    console.warn('Warning: ripgrep (rg) is not installed. Please install it with: brew install ripgrep')
+    console.warn(
+      'Warning: ripgrep (rg) is not installed. Please install it with: brew install ripgrep'
+    )
     process.exit(0)
   }
 
@@ -228,7 +234,11 @@ async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
     // expo-image is an optional dependency
     // expo-linear-gradient is handled by expo
     // moti is deprecated and animations-moti package intentionally doesn't list it
-    const isBlacklisted = dep === 'expo-linear-gradient' || dep === 'bun' || dep === 'expo-image' || dep === 'moti'
+    const isBlacklisted =
+      dep === 'expo-linear-gradient' ||
+      dep === 'bun' ||
+      dep === 'expo-image' ||
+      dep === 'moti'
     // Filter out self-references (package importing itself, often from JSDoc comments)
     const isSelfReference = dep === pkg.name
     return !isViteOrTest && !isBlacklisted && !isSelfReference

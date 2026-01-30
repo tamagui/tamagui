@@ -34,11 +34,7 @@ export function SheetKeyboardFitContentCase() {
         Load a mock image URL to change content height while keyboard may be open.
       </Text>
 
-      <Button
-        testID="sheet-kb-fit-trigger"
-        theme="green"
-        onPress={() => setOpen(true)}
-      >
+      <Button testID="sheet-kb-fit-trigger" theme="green" onPress={() => setOpen(true)}>
         Open Sheet
       </Button>
 

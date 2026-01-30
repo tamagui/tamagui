@@ -10,7 +10,11 @@ export function ThemeDebug({
   themeState,
   themeProps,
   children,
-}: { themeState: ThemeState; themeProps: ThemeProps; children: any }) {
+}: {
+  themeState: ThemeState
+  themeProps: ThemeProps
+  children: any
+}) {
   if (process.env.NODE_ENV === 'development') {
     const isHydrated = useDidFinishSSR()
 

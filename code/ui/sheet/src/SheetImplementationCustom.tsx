@@ -120,7 +120,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       // look up named animation config from driver if available
       if (animationProp && animationDriver.animations?.[animationProp as string]) {
         return {
-          ...(animationDriver.animations[animationProp as string] as Object),
+          ...(animationDriver.animations[animationProp as string] as object),
           ...animationPropConfig,
         }
       }

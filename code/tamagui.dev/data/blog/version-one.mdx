@@ -7,15 +7,14 @@ poster: banner-one.jpg
 ---
 
 <IntroParagraph large>
-  React Native is amazing for building mobile apps, but sharing components
-  between web and native [sacrifices performance, productivity and
-  UX](/docs/intro/why-a-compiler).
+  React Native is amazing for building mobile apps, but sharing components between web and
+  native [sacrifices performance, productivity and UX](/docs/intro/why-a-compiler).
 </IntroParagraph>
 
 <IntroParagraph>
-  Tamagui introduces a novel optimizing compiler for React that evaluates your
-  code at build-time, turning heavy JS into flatter trees and much faster CSS.
-  The result is more code share %, less dev time, and lighter, faster apps.
+  Tamagui introduces a novel optimizing compiler for React that evaluates your code at
+  build-time, turning heavy JS into flatter trees and much faster CSS. The result is more
+  code share %, less dev time, and lighter, faster apps.
 </IntroParagraph>
 
 Tamagui's optimizing compiler makes advanced optimizations using partial
@@ -400,10 +399,7 @@ import { Stack, StackProps, useMediaPropsActive } from 'tamagui' // or '@tamagui
 const CustomWidget = (props: StackProps) => {
   const activeProps = useMediaPropsActive(props)
 
-  console.log(
-    `The current color for this screen size is`,
-    activeProps.backgroundColor,
-  )
+  console.log(`The current color for this screen size is`, activeProps.backgroundColor)
 
   return <Stack {...modifyProps(activeProps)} />
 }
@@ -844,8 +840,8 @@ for it to mature. The motivation is to take things slowly, do them right, and
 stay fully OSS.
 
 <IntroParagraph>
-  In order to make this work, I'll need sponsors, and I want to make that worth
-  it. I'm setting up a range of pretty cool **Sponsor Benefits** going forward:
+  In order to make this work, I'll need sponsors, and I want to make that worth it. I'm
+  setting up a range of pretty cool **Sponsor Benefits** going forward:
 </IntroParagraph>
 
 - New features as they are being developed.
@@ -857,12 +853,10 @@ stay fully OSS.
 <Spacer />
 <XStack space ai="stretch" maw="100%" $sm={{ fd: 'column' }}>
   <Card flex={1} title="📚 Docs">
-    Your design system and UI auto-generates a beautiful docs site, just like
-    tamagui.dev.
+    Your design system and UI auto-generates a beautiful docs site, just like tamagui.dev.
   </Card>
   <Card flex={1} title="🖼️ Studio">
-    A frontend realtime editor for colors, themes, tokens, default styles and
-    more.
+    A frontend realtime editor for colors, themes, tokens, default styles and more.
   </Card>
   <Card flex={1} title="❓·····">
     A simpler way to build universal apps.
@@ -878,13 +872,7 @@ stay fully OSS.
     height={350}
     src="/screen-studio-colors.webp"
   />
-  <Image
-    linked
-    resizeMode="contain"
-    width={420}
-    height={350}
-    src="/screen-studio.webp"
-  />
+  <Image linked resizeMode="contain" width={420} height={350} src="/screen-studio.webp" />
 </XStack>
 <Aside>The Tamagui Studio, early beta</Aside>
 <Spacer />

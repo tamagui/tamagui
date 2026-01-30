@@ -1,17 +1,35 @@
 {
   "name": "@tamagui/cubic-bezier-animator",
   "version": "2.0.0-rc.0",
-  "type": "module",
-  "sideEffects": false,
   "source": "src/index.tsx",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": {
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -22,23 +40,5 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "react-native": {
-        "module": "./dist/esm/index.native.js",
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
-      "types": "./types/index.d.ts",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
-    }
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

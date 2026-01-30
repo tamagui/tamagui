@@ -1,20 +1,38 @@
 {
   "name": "@tamagui/checkbox-headless",
   "version": "2.0.0-rc.0",
-  "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": {
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -34,32 +52,14 @@
     "@tamagui/use-previous": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "react-native": {
-        "module": "./dist/esm/index.native.js",
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
-      "types": "./types/index.d.ts",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
-    }
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-native": "0.81.5"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
     "react": ">=19",
     "react-native": "*"
-  }
+  },
+  "module:jsx": "dist/jsx"
 }

@@ -258,7 +258,10 @@ async function run() {
                 title: `${major}.${minor}.${patch + 1}-rc.0 (next patch)`,
                 value: `${major}.${minor}.${patch + 1}-rc.0`,
               },
-              { title: `${major + 1}.0.0-rc.0 (next major)`, value: `${major + 1}.0.0-rc.0` },
+              {
+                title: `${major + 1}.0.0-rc.0 (next major)`,
+                value: `${major + 1}.0.0-rc.0`,
+              },
             ]
 
         const rcAnswer = await prompts({

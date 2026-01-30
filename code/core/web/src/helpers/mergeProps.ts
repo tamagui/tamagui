@@ -19,7 +19,7 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type GenericProps = Record<string, any>
 
-export const mergeProps = (defaultProps: Object, props: Object) => {
+export const mergeProps = (defaultProps: object, props: object) => {
   const out: GenericProps = {}
 
   // in general objects keys are sorted by order of insertion
@@ -45,10 +45,10 @@ export const mergeProps = (defaultProps: Object, props: Object) => {
 // merge props but also handles defaultProps + styledContext
 export const mergeComponentProps = (
   // this is "a" in mergeProps
-  defaultProps: Object | null | undefined,
-  contextProps: Object | undefined,
+  defaultProps: object | null | undefined,
+  contextProps: object | undefined,
   // this is "b" in mergeProps
-  props: Object
+  props: object
 ) => {
   let overriddenContext: GenericProps | null = null
 
@@ -95,9 +95,9 @@ export const mergeComponentProps = (
 }
 
 function mergeProp(
-  out: Object,
-  defaultProps: Object | undefined | null,
-  props: Object,
+  out: object,
+  defaultProps: object | undefined | null,
+  props: object,
   key: string
 ) {
   let val = props[key]

@@ -7,7 +7,9 @@ test.beforeEach(async ({ page }) => {
 })
 
 // TODO: test passes on actual site but fails here - likely test setup difference
-test.skip('popover with animatePosition shows correct position on re-open', async ({ page }) => {
+test.skip('popover with animatePosition shows correct position on re-open', async ({
+  page,
+}) => {
   await page.waitForLoadState('networkidle')
 
   const trigger = page.locator('#animate-position-trigger')

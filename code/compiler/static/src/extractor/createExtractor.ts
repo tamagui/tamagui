@@ -888,9 +888,7 @@ export function createExtractor(
               : []),
           ])
 
-          const inlineWhenUnflattened = new Set([
-            ...(staticConfig.inlineWhenUnflattened || []),
-          ])
+          const inlineWhenUnflattened = new Set(staticConfig.inlineWhenUnflattened || [])
 
           // Generate scope object at this level
           const staticNamespace = getStaticBindingsForScope(
@@ -1622,14 +1620,14 @@ export function createExtractor(
 
           let shouldFlatten = Boolean(
             flatNodeName &&
-              !shouldDeopt &&
-              canFlattenProps &&
-              !hasSpread &&
-              !staticConfig.isStyledHOC &&
-              !staticConfig.isHOC &&
-              !staticConfig.isReactNative &&
-              staticConfig.neverFlatten !== true &&
-              (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+            !shouldDeopt &&
+            canFlattenProps &&
+            !hasSpread &&
+            !staticConfig.isStyledHOC &&
+            !staticConfig.isHOC &&
+            !staticConfig.isReactNative &&
+            staticConfig.neverFlatten !== true &&
+            (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
           )
 
           const usedThemeKeys = new Set<string>()
@@ -1818,7 +1816,7 @@ export function createExtractor(
             )
           }
 
-          function mergeToEnd(obj: Object, key: string, val: any) {
+          function mergeToEnd(obj: object, key: string, val: any) {
             if (key in obj) {
               delete obj[key]
             }
@@ -2022,7 +2020,7 @@ export function createExtractor(
 
           // post process
           const getProps = (
-            props: Object | null,
+            props: object | null,
             includeProps = false,
             debugName = ''
           ) => {

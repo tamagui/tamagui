@@ -8,11 +8,11 @@
  */
 
 export function pick(
-  obj: Object,
+  obj: object,
   list: {
     [K in string]: boolean
   }
-): Object {
+): object {
   const nextObj = {}
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {

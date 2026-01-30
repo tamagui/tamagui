@@ -77,7 +77,7 @@ class Linking {
    * If the url opens, the promise is resolved. If not, the promise is rejected.
    * Dispatches the `onOpen` event if `url` is opened successfully.
    */
-  openURL(url: string, target?: string): Promise<Object | void> {
+  openURL(url: string, target?: string): Promise<object | void> {
     if (arguments.length === 1) {
       target = '_blank'
     }

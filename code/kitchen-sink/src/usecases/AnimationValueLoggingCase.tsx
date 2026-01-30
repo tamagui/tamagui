@@ -61,7 +61,9 @@ function OpacityAnimationTest() {
       const opacity = parseFloat(style.opacity)
 
       if (lastOpacityRef.current !== opacity) {
-        console.log(`[ANIM_LOG] id:${testId} prop:opacity value:${opacity.toFixed(4)} time:${Date.now()}`)
+        console.log(
+          `[ANIM_LOG] id:${testId} prop:opacity value:${opacity.toFixed(4)} time:${Date.now()}`
+        )
         lastOpacityRef.current = opacity
       }
     }
@@ -146,7 +148,9 @@ function ScaleAnimationTest() {
       }
 
       if (lastScaleRef.current !== scale) {
-        console.log(`[ANIM_LOG] id:${testId} prop:scale value:${scale.toFixed(4)} time:${Date.now()}`)
+        console.log(
+          `[ANIM_LOG] id:${testId} prop:scale value:${scale.toFixed(4)} time:${Date.now()}`
+        )
         lastScaleRef.current = scale
       }
     }
@@ -217,7 +221,9 @@ function TranslateAnimationTest() {
       // Parse translateY from transform matrix: matrix(a, b, c, d, tx, ty) - ty is the 6th value
       let y = 0
       if (transform && transform !== 'none') {
-        const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^\)]+)\)/)
+        const match = transform.match(
+          /matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^)]+)\)/
+        )
         if (match && match[1]) {
           const parsed = parseFloat(match[1])
           if (Number.isFinite(parsed)) {
@@ -227,7 +233,9 @@ function TranslateAnimationTest() {
       }
 
       if (lastYRef.current !== y) {
-        console.log(`[ANIM_LOG] id:${testId} prop:translateY value:${y.toFixed(4)} time:${Date.now()}`)
+        console.log(
+          `[ANIM_LOG] id:${testId} prop:translateY value:${y.toFixed(4)} time:${Date.now()}`
+        )
         lastYRef.current = y
       }
     }
@@ -311,8 +319,12 @@ function EnterExitAnimationTest() {
       const last = lastValuesRef.current
 
       if (!last || last.opacity !== current.opacity || last.scale !== current.scale) {
-        console.log(`[ANIM_LOG] id:${testId} prop:opacity value:${opacity.toFixed(4)} time:${Date.now()}`)
-        console.log(`[ANIM_LOG] id:${testId} prop:scale value:${scale.toFixed(4)} time:${Date.now()}`)
+        console.log(
+          `[ANIM_LOG] id:${testId} prop:opacity value:${opacity.toFixed(4)} time:${Date.now()}`
+        )
+        console.log(
+          `[ANIM_LOG] id:${testId} prop:scale value:${scale.toFixed(4)} time:${Date.now()}`
+        )
         lastValuesRef.current = current
       }
     }
@@ -390,7 +402,9 @@ function ColorAnimationTest() {
       const color = style.backgroundColor
 
       if (lastColorRef.current !== color) {
-        console.log(`[ANIM_LOG] id:${testId} prop:backgroundColor value:${color} time:${Date.now()}`)
+        console.log(
+          `[ANIM_LOG] id:${testId} prop:backgroundColor value:${color} time:${Date.now()}`
+        )
         lastColorRef.current = color
       }
     }
@@ -458,7 +472,9 @@ function AnimationConfigTest() {
       const width = Math.round(rect.width)
 
       if (lastWidthRef.current !== width) {
-        console.log(`[ANIM_LOG] id:${testId} prop:width value:${width} time:${Date.now()}`)
+        console.log(
+          `[ANIM_LOG] id:${testId} prop:width value:${width} time:${Date.now()}`
+        )
         lastWidthRef.current = width
       }
     }

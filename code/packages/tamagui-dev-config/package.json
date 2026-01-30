@@ -2,15 +2,15 @@
   "name": "@tamagui/tamagui-dev-config",
   "version": "2.0.0-rc.0",
   "source": "src/index.ts",
-  "types": "./src/index.ts",
-  "type": "module",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "type": "module",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./src/index.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -26,6 +26,9 @@
       "import": "./dist/esm/animations.motion.mjs",
       "require": "./dist/cjs/animations.motion.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tamagui-build --skip-types --skip-native",
@@ -57,8 +60,5 @@
   },
   "peerDependencies": {
     "react": ">=19"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

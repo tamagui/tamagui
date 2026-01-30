@@ -94,5 +94,7 @@ export const LoadCherryBomb = ({ prefetch }: { prefetch?: boolean }) => (
 
 export const CherryBombFontProvider = ({ children }: { children: React.ReactNode }) => {
   const loaded = useFontLoaded('Cherry Bomb')
-  return <FontLoadedContext.Provider value={loaded}>{children}</FontLoadedContext.Provider>
+  return (
+    <FontLoadedContext.Provider value={loaded}>{children}</FontLoadedContext.Provider>
+  )
 }

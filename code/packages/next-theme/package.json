@@ -1,24 +1,16 @@
 {
   "name": "@tamagui/next-theme",
   "version": "2.0.0-rc.0",
-  "type": "module",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
+  "type": "module",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -28,6 +20,17 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
@@ -41,8 +44,5 @@
   "peerDependencies": {
     "next": ">=14",
     "react": ">=19"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

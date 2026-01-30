@@ -427,11 +427,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
 
 type ID = 'core' | 'ui' | 'theme' | 'menu'
 
-export const HeaderLink = (props: {
-  id: ID
-  children: string
-  href: string
-}) => {
+export const HeaderLink = (props: { id: ID; children: string; href: string }) => {
   const pathname = usePathname()
   const section = getDocsSectionFromPath(pathname)
   const isActive =

@@ -24,13 +24,13 @@ on:
         description: "Either 'Debug' or 'Release'."
     outputs:
       build-hash:
-        description: "A hash to identify the build (expo fingerprint)."
+        description: 'A hash to identify the build (expo fingerprint).'
         value: ${{ jobs.build-ios.outputs.build-hash }}
       built-app-cache-key:
-        description: "The GitHub Actions cache key of the built .app, can be used in subsequent workflows to get the built app from cache using this key."
+        description: 'The GitHub Actions cache key of the built .app, can be used in subsequent workflows to get the built app from cache using this key.'
         value: ${{ jobs.build-ios.outputs.built-app-cache-key }}
       built-app-path:
-        description: "The path to the built .app relative to the repository root."
+        description: 'The path to the built .app relative to the repository root.'
         value: ${{ jobs.build-ios.outputs.built-app-path }}
 
 jobs:
@@ -206,7 +206,7 @@ jobs:
 
       - name: Upload Build Log
         uses: actions/upload-artifact@v4.3.1
-        if:  ${{ always() && !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
+        if: ${{ always() && !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
         with:
           name: xcodebuild-${{ env.app_id }}-${{ inputs.configuration }}.log
           path: |
@@ -214,7 +214,7 @@ jobs:
 
       - name: Save Build Cache
         uses: actions/cache/save@v4
-        if:  ${{ always() && !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
+        if: ${{ always() && !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
         with:
           key: ${{ steps.restore-build-cache.outputs.cache-primary-key }}
           path: |

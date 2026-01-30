@@ -21,9 +21,8 @@ export async function generateStaticParams() {
 }
 
 export async function loader({ params }) {
-  const { getMDXBySlug, getCompilationExamples } = await import(
-    '~/features/mdx/getMDXBySlug'
-  )
+  const { getMDXBySlug, getCompilationExamples } =
+    await import('~/features/mdx/getMDXBySlug')
   const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug)
   return {
     frontmatter,

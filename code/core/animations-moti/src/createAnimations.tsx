@@ -77,8 +77,8 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
       const result = getSplitStyles(
         propsRest,
         isText ? Text.staticConfig : View.staticConfig,
-        state?.theme!,
-        state?.name!,
+        state?.theme,
+        state?.name,
         {
           unmounted: false,
         } as any,
