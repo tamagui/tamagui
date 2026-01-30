@@ -50,19 +50,22 @@ export const DropTamaguiConfig = () => {
       }
     }
 
-    document.addEventListener('dragover', (e) => {
+    const handleDragOver = (e: DragEvent) => {
       e.preventDefault()
       setDragging(true)
-    })
+    }
+    const handleDragLeave = () => setDragging(false)
+    const handleDragEnd = () => setDragging(false)
 
-    document.addEventListener('dragleave', () => setDragging(false))
-    document.addEventListener('dragend', () => setDragging(false))
+    document.addEventListener('dragover', handleDragOver)
+    document.addEventListener('dragleave', handleDragLeave)
+    document.addEventListener('dragend', handleDragEnd)
     document.addEventListener('drop', handleDrop)
 
     return () => {
-      document.removeEventListener('dragover', (e) => setDragging(true))
-      document.removeEventListener('dragleave', () => setDragging(false))
-      document.removeEventListener('dragend', () => setDragging(false))
+      document.removeEventListener('dragover', handleDragOver)
+      document.removeEventListener('dragleave', handleDragLeave)
+      document.removeEventListener('dragend', handleDragEnd)
       document.removeEventListener('drop', handleDrop)
     }
   }, [])

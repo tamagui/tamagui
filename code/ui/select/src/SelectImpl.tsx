@@ -95,7 +95,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     onOpenChange: setOpen,
     placement: 'bottom-start',
     whileElementsMounted: autoUpdate,
-    // biome-ignore lint/correctness/noConstantCondition: <explanation>
+    // eslint-disable-next-line no-constant-condition
     middleware: false
       ? // this is the logic from floating-ui
         // but i find it causes issues (open, drag select, close, then re-open its not positioned "over")

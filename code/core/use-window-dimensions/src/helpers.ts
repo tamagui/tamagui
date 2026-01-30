@@ -36,7 +36,7 @@ const cbs = new Set<WindowSizeListener>()
 // only attach resize listener on client (not during SSR)
 if (isClient) {
   let lastUpdate = Date.now()
-  let tm
+  let tm: ReturnType<typeof setTimeout> | undefined
   const USER_MAX_MS = process.env.TAMAGUI_USE_WINDOW_DIMENSIONS_MAX_UPDATE_MS
   const updateMaxMs = USER_MAX_MS ? +USER_MAX_MS : 100
 
@@ -51,7 +51,7 @@ if (isClient) {
     // only update every few frames
     const timeSinceLast = Date.now() - lastUpdate
     if (timeSinceLast < updateMaxMs) {
-      setTimeout(() => {
+      tm = setTimeout(() => {
         flushUpdate()
       }, updateMaxMs - timeSinceLast)
     } else {

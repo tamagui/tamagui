@@ -208,9 +208,6 @@ export async function bundleConfig(props: TamaguiOptions) {
       }
 
       out = require(configOutPath)
-    } catch (err) {
-      // biome-ignore lint/complexity/noUselessCatch: <explanation>
-      throw err
     } finally {
       unregister()
     }

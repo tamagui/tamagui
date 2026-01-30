@@ -19,13 +19,13 @@ export const subscribeToContextGroup = (props: SubscribeToContextGroupProps) => 
     const disposables = new Set<DisposeFn>()
 
     if (pseudoGroups) {
-      for (const name of [...pseudoGroups]) {
+      for (const name of pseudoGroups) {
         disposables.add(createGroupListener(name, props))
       }
     }
 
     if (mediaGroups) {
-      for (const name of [...mediaGroups]) {
+      for (const name of mediaGroups) {
         disposables.add(createGroupListener(name, props))
       }
     }

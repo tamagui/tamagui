@@ -1608,7 +1608,7 @@ export function createExtractor(
             inlined.delete('theme')
           }
 
-          for (const [key] of [...inlined]) {
+          for (const [key] of inlined) {
             const isStaticObjectVariant =
               staticConfig.variants?.[key] && variantValues.has(key)
             if (INLINE_EXTRACTABLE[key] || isStaticObjectVariant) {

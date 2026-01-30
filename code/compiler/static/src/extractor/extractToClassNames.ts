@@ -381,7 +381,7 @@ export async function extractToClassNames({
             expandTernary(ternary)
             continue
           }
-          for (const prev of [...expandedTernaries]) {
+          for (const prev of expandedTernaries) {
             expandTernary(ternary, prev)
           }
         }

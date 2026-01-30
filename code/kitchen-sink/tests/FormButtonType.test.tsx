@@ -21,7 +21,9 @@ test('Form.Trigger renders with type="submit"', async ({ page }) => {
   expect(type).toBe('submit')
 })
 
-test('pressing Enter in input submits form, not regular button click', async ({ page }) => {
+test('pressing Enter in input submits form, not regular button click', async ({
+  page,
+}) => {
   const input = page.getByTestId('form-input')
   const submitStatus = page.getByTestId('submit-status')
   const buttonStatus = page.getByTestId('button-status')

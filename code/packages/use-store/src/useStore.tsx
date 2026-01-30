@@ -488,7 +488,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
               if (isTopLevelLogger) {
                 let error = null
                 try {
-                  for (const item of [...logStack]) {
+                  for (const item of logStack) {
                     if (item === 'end') {
                       console.groupEnd()
                       continue
@@ -515,7 +515,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
                 } catch (err: any) {
                   error = err
                 }
-                for (const _ of [...logStack]) {
+                for (const _ of logStack) {
                   console.groupEnd()
                 }
                 if (error) {
