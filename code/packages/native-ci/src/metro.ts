@@ -103,7 +103,7 @@ export function startMetro(): MetroProcess {
 
   // Only clear cache in CI - locally we want fast startup using cached transforms
   const isCI = !!process.env.CI
-  const args = ['yarn', 'expo', 'start', '--dev-client', '--offline']
+  const args = ['bun', 'expo', 'start', '--dev-client', '--offline']
   if (isCI) {
     args.push('--clear')
     console.info('CI detected: clearing Metro cache')

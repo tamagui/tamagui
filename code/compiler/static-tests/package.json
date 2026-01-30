@@ -6,19 +6,19 @@
   "scripts": {
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.js",
     "test-output": "node -r esbuild-register ./test-output.tsx",
-    "test": "yarn test:native && yarn test:web",
-    "test:update": "yarn test:extract:web --update && yarn test:babel:native --update && yarn test:babel:web --update && yarn test:styled:web --update && yarn test:flatten:native --update && yarn test:webpack --update",
+    "test": "bun run test:native && bun run test:web",
+    "test:update": "bun run test:extract:web --update && bun run test:babel:native --update && bun run test:babel:web --update && bun run test:styled:web --update && bun run test:flatten:native --update && bun run test:webpack --update",
     "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run",
-    "test:run:web": "DISABLE_NATIVE_TEST=1 yarn test:run",
-    "test:concatClassName": "yarn test:run tests/concatClassName.web.test.tsx",
-    "test:webpack": "yarn pretest && yarn test:run tests/webpack.test.tsx --reporter=verbose --pool=forks",
-    "test:flatten:native": "yarn test:run tests/flatten.native.test.tsx",
-    "test:babel:native": "yarn test:run tests/babel.native.test.tsx",
-    "test:babel:web": "yarn test:run tests/babel.web.test.tsx",
-    "test:extract:web": "yarn test:run:web tests/extract.web.test.tsx",
-    "test:styled:web": "yarn test:run tests/styled.web.test.tsx",
-    "test:web": "yarn test:run:web tests/*.web.test.tsx && yarn test:webpack",
-    "test:native": "yarn test:run tests/*.native.test.tsx"
+    "test:run:web": "DISABLE_NATIVE_TEST=1 bun run test:run",
+    "test:concatClassName": "bun run test:run tests/concatClassName.web.test.tsx",
+    "test:webpack": "bun run pretest && bun run test:run tests/webpack.test.tsx --reporter=verbose --pool=forks",
+    "test:flatten:native": "bun run test:run tests/flatten.native.test.tsx",
+    "test:babel:native": "bun run test:run tests/babel.native.test.tsx",
+    "test:babel:web": "bun run test:run tests/babel.web.test.tsx",
+    "test:extract:web": "bun run test:run:web tests/extract.web.test.tsx",
+    "test:styled:web": "bun run test:run tests/styled.web.test.tsx",
+    "test:web": "bun run test:run:web tests/*.web.test.tsx && bun run test:webpack",
+    "test:native": "bun run test:run tests/*.native.test.tsx"
   },
   "tests": {
     "parallel": true
@@ -42,7 +42,8 @@
     "css-loader": "^6.7.4",
     "dedent": "^0.7.0",
     "esbuild-loader": "^4.2.2",
-    "react": "*",
+    "null-loader": "^4.0.1",
+    "react": ">=19",
     "react-native-web": "^0.21.0",
     "react-test-renderer": "^19.0.0",
     "style-loader": "^3.3.3",
@@ -51,7 +52,7 @@
     "webpack": "^5.88.2"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native-web": "*"
   }
 }

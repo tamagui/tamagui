@@ -14,8 +14,10 @@
         "@biomejs/biome",
         "@manypkg/cli",
         "@playwright/test",
+        "@take-out/cli",
         "@testing-library/dom",
         "turbo",
+        "tsx",
         "typescript",
         "ultra-runner",
         "lllink",
@@ -27,7 +29,10 @@
         "tamagui",
         "create-tamagui",
         "lighthouse",
-        "expo"
+        "expo",
+        "detox",
+        "tsx",
+        "tko"
       ]
     }
   },

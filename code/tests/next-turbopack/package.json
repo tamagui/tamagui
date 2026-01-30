@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack --port 3456",
     "next-build": "next build",
     "start": "next start --port 3456",
-    "test": "yarn test:unit && yarn test:integration",
-    "test:web": "yarn test:unit && yarn test:integration",
+    "test": "bun run test:unit && bun run test:integration",
+    "test:web": "bun run test:unit && bun run test:integration",
     "test:unit": "vitest run",
     "test:integration": "playwright test",
     "test:clean": "git checkout src/ public/ && git clean -fd src/"
@@ -17,7 +17,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/next-theme": "workspace:*",
     "next": "16.1.1",
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*",
     "react-native-web": "^0.21.0"
   },

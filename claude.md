@@ -1,8 +1,8 @@
 Please read ./CONTRIBUTING.md as well
 
-YOU NEED TO re-build packages (`yarn build` in the package directory) as you change them.
+Note you need to re-build packages (`bun run build` in the package directory) as you change them, unless you or someone is running a `bun run watch` at root.
 
-FOR LONG RUNNNING DEBUGGING run `yarn watch` in the background its faster and rebuilds all packages.
+FOR LONG RUNNNING DEBUGGING run `bun run watch` in the background its faster and rebuilds all packages.
 
 keep commits to one line, add a trailing "Fixes #" if associated with a GH issue, and start with a convential commit style - UNLESS its a change that shouldn't go into the changelog, in those cases you can do things like `docs: ` or `site: `.
 
@@ -17,7 +17,7 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
 1. **Start the web server** (in the background):
    ```bash
    cd code/kitchen-sink
-   yarn start:web
+   bun run start:web
    ```
 
    To open a specific test case in the browser:
@@ -34,20 +34,20 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
 
 2. **Run all web tests** with different animation drivers:
    ```bash
-   yarn test:web
+   bun run test:web
    ```
    This runs tests with CSS, React Native, and Reanimated animation drivers.
 
 3. **Run tests with a specific animation driver**:
    ```bash
    # CSS animations driver
-   yarn test:web:driver-css
+   bun run test:web:driver-css
 
    # React Native animations driver
-   yarn test:web:driver-rn
+   bun run test:web:driver-rn
 
    # Reanimated animations driver
-   yarn test:web:driver-reanimated
+   bun run test:web:driver-reanimated
    ```
 
 4. **Run a specific test file**:
@@ -55,14 +55,14 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    # Using playwright directly
    cd code/kitchen-sink
    npx playwright test tests/PopoverFocusScope.test.tsx
-   
+
    # Or with a specific driver
    NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test tests/YourTest.test.tsx
    ```
 
 5. **Debug tests**:
    ```bash
-   yarn test:web:debug
+   bun run test:web:debug
    # or
    npx playwright test --debug
    ```

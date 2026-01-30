@@ -42,11 +42,11 @@
     "@tamagui/use-direction": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=19"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": ">=19"
   },
   "publishConfig": {
     "access": "public"

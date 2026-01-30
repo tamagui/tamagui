@@ -68,13 +68,13 @@
     "@tamagui/use-previous": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*",
     "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*",
     "react-native": "0.81.5"
   },

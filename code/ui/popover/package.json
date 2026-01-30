@@ -62,12 +62,12 @@
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5"
   },
   "publishConfig": {

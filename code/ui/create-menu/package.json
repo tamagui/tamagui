@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5"
   },
   "publishConfig": {
@@ -70,7 +70,7 @@
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
     "@react-native-menu/menu": "^2.0.0",
-    "react": "*",
+    "react": ">=19",
     "react-native": "*",
     "react-native-ios-context-menu": "^3.2.1",
     "react-native-ios-utilities": "^5.2.0",

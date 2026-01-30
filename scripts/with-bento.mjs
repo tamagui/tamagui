@@ -38,7 +38,7 @@ if (bentoTamaguiVersion && rootTamaguiVersion && bentoTamaguiVersion !== rootTam
 
 // 4. Install bento dependencies
 console.info('📦 Installing bento dependencies...')
-execSync('yarn install', {
+execSync('bun install', {
   cwd: BENTO_PATH,
   stdio: 'inherit',
 })

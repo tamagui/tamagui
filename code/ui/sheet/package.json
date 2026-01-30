@@ -92,7 +92,7 @@
     "@tamagui/z-index-stack": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native": "*",
     "react-native-gesture-handler": ">=2.0.0"
   },
@@ -103,7 +103,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0"
   },

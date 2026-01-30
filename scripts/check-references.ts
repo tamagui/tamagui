@@ -12,9 +12,11 @@ interface Package {
 }
 
 interface PackageJson {
+  name?: string
   dependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
   devDependencies?: Record<string, string>
+  optionalDependencies?: Record<string, string>
 }
 
 interface MissingDepReport {
@@ -25,8 +27,48 @@ interface MissingDepReport {
 }
 
 async function findAllPackages(): Promise<Package[]> {
-  const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
-  return workspaces.map((p) => JSON.parse(p)) as Package[]
+  // console.info('[DEBUG] findAllPackages: reading root package.json...')
+  // Read workspace patterns from package.json
+  const rootPkgJson = JSON.parse(
+    await readFile(join(process.cwd(), 'package.json'), { encoding: 'utf-8' })
+  )
+  // console.info('[DEBUG] findAllPackages: got root package.json')
+
+  // Use shell find command instead of fast-glob (bun compatibility)
+  // console.info('[DEBUG] findAllPackages: finding package.json files with shell...')
+  const { stdout } = await exec(
+    `find ./code -name package.json -type f -not -path "*/node_modules/*"`,
+    { cwd: process.cwd(), maxBuffer: 10 * 1024 * 1024 }
+  )
+  const packageJsonPaths = stdout.trim().split('\n').filter(Boolean)
+  // console.info('[DEBUG] findAllPackages: found', packageJsonPaths.length, 'paths')
+
+  // Read each package.json and extract name and location
+  const packages: Package[] = []
+  for (const pkgPath of packageJsonPaths) {
+    try {
+      const location = pkgPath.replace(/^\.\//, '').replace('/package.json', '')
+      const pkgJson: PackageJson = JSON.parse(
+        await readFile(join(process.cwd(), pkgPath), { encoding: 'utf-8' })
+      )
+      if (pkgJson.name) {
+        packages.push({
+          name: pkgJson.name,
+          location,
+        })
+      }
+    } catch {
+      // Skip packages that can't be read
+    }
+  }
+
+  // Add root package
+  packages.unshift({
+    name: rootPkgJson.name || 'root',
+    location: '.',
+  })
+
+  return packages
 }
 
 async function getPackageJson(location: string): Promise<PackageJson | null> {
@@ -39,94 +81,122 @@ async function getPackageJson(location: string): Promise<PackageJson | null> {
   }
 }
 
-async function findImports(location: string): Promise<string[]> {
+// Cache for all imports across all packages - populated once by scanAllImports
+let allImportsCache: Map<string, string[]> | null = null
+
+function extractPackageName(imp: string): string {
+  if (imp.startsWith('@')) {
+    // Scoped package: @scope/package-name/sub-path -> @scope/package-name
+    const parts = imp.split('/')
+    return parts.length >= 2 ? `${parts[0]}/${parts[1]}` : imp
+  } else {
+    // Regular package: package-name/sub-path -> package-name
+    return imp.split('/')[0]
+  }
+}
+
+function parseImportsFromOutput(stdout: string): Map<string, Set<string>> {
+  const result = new Map<string, Set<string>>()
+
+  for (const line of stdout.split('\n')) {
+    if (!line) continue
+
+    // Format is: path/to/file.tsx:from 'package-name'
+    const colonIdx = line.indexOf(':from ')
+    if (colonIdx === -1) continue
+
+    const filePath = line.substring(0, colonIdx)
+    const importPart = line.substring(colonIdx + 1)
+
+    // Extract package from "from 'package'" or 'from "package"'
+    const quoteMatch = importPart.match(/from ['"]([^'"]+)['"]/)
+    if (!quoteMatch) continue
+
+    const importPath = quoteMatch[1]
+
+    // Skip relative imports, node: prefixed, etc
+    if (importPath.startsWith('.') || importPath.startsWith('/') ||
+        importPath.startsWith('~') || importPath.startsWith('node:')) {
+      continue
+    }
+
+    const packageName = extractPackageName(importPath)
+
+    // Find the package directory (everything before /src/)
+    const srcIdx = filePath.indexOf('/src/')
+    if (srcIdx === -1) continue
+
+    const pkgDir = filePath.substring(0, srcIdx)
+
+    if (!result.has(pkgDir)) {
+      result.set(pkgDir, new Set())
+    }
+    result.get(pkgDir)!.add(packageName)
+  }
+
+  return result
+}
+
+async function scanAllImports(): Promise<Map<string, string[]>> {
+  if (allImportsCache) return allImportsCache
+
+  // console.info('[DEBUG] scanAllImports: checking rg...')
+  // Check if rg is available
   try {
-    // Skip if no location or root location
-    if (!location || location === '.' || location === '') {
-      return []
-    }
+    await exec('which rg')
+    // console.info('[DEBUG] scanAllImports: rg found')
+  } catch {
+    console.warn('Warning: ripgrep (rg) is not installed. Please install it with: brew install ripgrep')
+    process.exit(0)
+  }
 
-    const searchPath = join(process.cwd(), location, 'src')
-
-    // Check if src directory exists
-    const { existsSync } = await import('node:fs')
-    if (!existsSync(searchPath)) {
-      return []
-    }
-
-    // Check if rg (ripgrep) is available
-    try {
-      await exec('which rg')
-    } catch (err: any) {
-      console.warn(
-        'Warning: ripgrep (rg) is not installed. Please install it with: brew install ripgrep'
-      )
-      process.exit(0)
-    }
-
-    // Use rg to find import statements in tsx/ts files
-    let stdout = ''
-    try {
-      const result = await exec(
-        `rg 'from ['"'"'"][^'"'"'"]+['"'"'"]' ${searchPath} --glob "*.tsx" --glob "*.ts" --glob "!*.test.ts" --glob "!*.test.tsx" --only-matching --no-filename --no-line-number`,
-        {
-          cwd: process.cwd(),
-        }
-      )
-      stdout = result.stdout
-    } catch (err: any) {
-      // ripgrep returns exit code 1 when no matches are found, which is not an error
-      if (err.code === 1) {
-        stdout = ''
-      } else {
-        throw err
+  // console.info('[DEBUG] scanAllImports: running ripgrep...')
+  // Single ripgrep scan of entire code directory
+  let stdout = ''
+  try {
+    // Use simpler grep pattern with escaped quotes
+    const result = await exec(
+      String.raw`rg "from ['\x22]" ./code --glob "**/src/**/*.tsx" --glob "**/src/**/*.ts" --glob "!**/*.test.ts" --glob "!**/*.test.tsx" --glob "!**/node_modules/**" --with-filename`,
+      {
+        cwd: process.cwd(),
+        maxBuffer: 50 * 1024 * 1024, // 50MB buffer
       }
-    }
-
-    const imports = stdout.trim().split('\n').filter(Boolean)
-
-    // Extract package names from the full match "from 'package-name'"
-    const packageImports = imports
-      .map((match) => {
-        // Extract the quoted string from "from 'package-name'" or 'from "package-name"'
-        const quoteMatch = match.match(/from ['"]([^'"]+)['"]/)
-        return quoteMatch ? quoteMatch[1] : null
-      })
-      .filter(Boolean) as string[]
-
-    // Filter out relative imports (starting with . or /) and node: prefixed modules
-    const externalImports = packageImports.filter(
-      (imp) =>
-        !imp.startsWith('.') &&
-        !imp.startsWith('/') &&
-        !imp.startsWith('~') &&
-        !imp.startsWith('node:')
     )
-
-    // Extract package names (handle scoped packages)
-    const packageNames = externalImports.map((imp) => {
-      if (imp.startsWith('@')) {
-        // Scoped package: @scope/package-name/sub-path -> @scope/package-name
-        const parts = imp.split('/')
-        return parts.length >= 2 ? `${parts[0]}/${parts[1]}` : imp
-      } else {
-        // Regular package: package-name/sub-path -> package-name
-        return imp.split('/')[0]
-      }
-    })
-
-    const unique = [...new Set(packageNames)]
-
-    // Return unique set
-    return unique
-  } catch (err) {
-    if (err) {
-      console.error(err)
-      process.exit(1)
+    stdout = result.stdout
+    // console.info('[DEBUG] scanAllImports: ripgrep done, got', stdout.length, 'chars')
+  } catch (err: any) {
+    if (err.code === 1) {
+      stdout = ''
+      // console.info('[DEBUG] scanAllImports: ripgrep returned empty')
+    } else {
+      throw err
     }
-    // If rg fails or no src directory, return empty array
+  }
+
+  const importsByDir = parseImportsFromOutput(stdout)
+
+  // Convert Sets to Arrays
+  allImportsCache = new Map()
+  for (const [dir, imports] of importsByDir) {
+    allImportsCache.set(dir, [...imports])
+  }
+
+  return allImportsCache
+}
+
+async function findImports(location: string): Promise<string[]> {
+  // Skip if no location or root location
+  if (!location || location === '.' || location === '') {
     return []
   }
+
+  const allImports = await scanAllImports()
+
+  // Try to find imports for this location
+  // The location might be like "code/core/web" and we stored "./code/core/web"
+  const normalizedLocation = location.startsWith('./') ? location : `./${location}`
+
+  return allImports.get(normalizedLocation) || allImports.get(location) || []
 }
 
 async function analyzePackage(pkg: Package): Promise<MissingDepReport | null> {
@@ -348,22 +418,25 @@ async function main() {
   const fixAll = args.includes('--fix')
 
   console.info('Analyzing package dependencies...\n')
+  // console.info('[DEBUG] Finding all packages...')
 
   const allPackages = await findAllPackages()
+  // console.info('[DEBUG] Found all packages, filtering...')
   const packages = allPackages.filter((pkg) => pkg.name !== '@tamagui/bento')
   console.info(`Found ${packages.length} packages to analyze (excluding @tamagui/bento)`)
+  // console.info('[DEBUG] Starting scanAllImports...')
 
   const reports = await pMap(
     packages,
     async (pkg) => {
       try {
         return await analyzePackage(pkg)
-      } catch (err) {
+      } catch (err: any) {
         console.error(`Error analyzing ${pkg.name}:`, err.message)
         return null
       }
     },
-    { concurrency: 10 }
+    { concurrency: 5 }
   )
 
   const validReports = reports.filter(Boolean) as MissingDepReport[]
@@ -394,7 +467,7 @@ async function main() {
           await fixAllDependencies(pkg, report, existingDeps)
         }
       },
-      { concurrency: 5 }
+      { concurrency: 3 }
     )
 
     console.info('\nFixed all dependencies!')
@@ -406,11 +479,11 @@ async function main() {
       async (pkg) => {
         try {
           return await analyzePackage(pkg)
-        } catch (err) {
+        } catch {
           return null
         }
       },
-      { concurrency: 10 }
+      { concurrency: 5 }
     )
 
     const newValidReports = newReports.filter(Boolean) as MissingDepReport[]
@@ -449,7 +522,7 @@ async function main() {
           await fixTamaguiDependencies(pkg, report)
         }
       },
-      { concurrency: 5 }
+      { concurrency: 3 }
     )
 
     console.info('\nFixed @tamagui/* dependencies!')
@@ -461,11 +534,11 @@ async function main() {
       async (pkg) => {
         try {
           return await analyzePackage(pkg)
-        } catch (err) {
+        } catch {
           return null
         }
       },
-      { concurrency: 10 }
+      { concurrency: 5 }
     )
 
     const newValidReports = newReports.filter(Boolean) as MissingDepReport[]

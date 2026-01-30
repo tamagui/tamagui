@@ -147,7 +147,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5",
     "react-native-web": "^0.21.0"
   },
@@ -158,7 +158,7 @@
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native": "*"
   }
 }

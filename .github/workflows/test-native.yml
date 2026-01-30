@@ -46,26 +46,41 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
       - name: Restore Built App from Cache
+        id: restore-ios-cache
         uses: actions/cache/restore@v4
         with:
           key: ${{ needs.build-ios.outputs.built-app-cache-key }}
           path: ${{ needs.build-ios.outputs.built-app-path }}
-          fail-on-cache-miss: true
+
+      - name: Check iOS Cache Restore
+        if: steps.restore-ios-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "::warning::iOS cache not restored (key: ${{ needs.build-ios.outputs.built-app-cache-key }}). This may happen on first run after cache key changes."
+          echo "SKIP_IOS_TESTS=true" >> $GITHUB_ENV
 
       - name: Install Dependencies
+        if: env.SKIP_IOS_TESTS != 'true'
         uses: ./.github/actions/install
         with:
           workspace-focus: '@tamagui/kitchen-sink'
 
       - name: Install Detox CLI
+        if: env.SKIP_IOS_TESTS != 'true'
         run: npm install -g detox-cli
 
+      - name: Rebuild Detox Framework Cache
+        if: env.SKIP_IOS_TESTS != 'true'
+        working-directory: ${{ github.workspace }}
+        run: npx detox rebuild-framework-cache
+
       - name: Install applesimutils
+        if: env.SKIP_IOS_TESTS != 'true'
         run: |
           brew tap wix/brew
           brew install applesimutils
 
       - name: Boot iOS Simulator
+        if: env.SKIP_IOS_TESTS != 'true'
         id: boot-simulator
         working-directory: ${{ github.workspace }}
         run: |
@@ -93,16 +108,19 @@ jobs:
           echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
 
       - name: Install App on Simulator
+        if: env.SKIP_IOS_TESTS != 'true'
         working-directory: ${{ github.workspace }}
         run: |
           xcrun simctl install booted "${{ needs.build-ios.outputs.built-app-path }}"
 
       - name: Setup Bun
+        if: env.SKIP_IOS_TESTS != 'true'
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
       - name: Run iOS Detox Tests
+        if: env.SKIP_IOS_TESTS != 'true'
         env:
           # Point Detox to the cached app (CI uses different path than local dev)
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
@@ -110,8 +128,13 @@ jobs:
           # Note: parallel workers require multiple simulators, keeping single worker for now
           bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 2
 
+      - name: Report iOS Test Status
+        if: always() && env.SKIP_IOS_TESTS == 'true'
+        run: |
+          echo "::warning::iOS Detox tests skipped - cache was not available (will be available on next run)"
+
       - name: Upload Detox Artifacts on Failure
-        if: failure()
+        if: failure() && env.SKIP_IOS_TESTS != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: detox-artifacts-ios
@@ -150,7 +173,7 @@ jobs:
         id: calculate-pre-fingerprint
         env:
           # Include cache version to allow manual cache busting
-          PRE_FINGERPRINT_HASH: ${{ hashFiles('yarn.lock', 'code/kitchen-sink/app.json', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', 'code/kitchen-sink/app.json', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
         run: |
           echo "Pre-fingerprint hash: $PRE_FINGERPRINT_HASH"
           echo "pre_fingerprint_hash=$PRE_FINGERPRINT_HASH" >> $GITHUB_OUTPUT
@@ -202,7 +225,7 @@ jobs:
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
         working-directory: code/kitchen-sink
         run: |
-          npx expo prebuild --platform android --clean
+          bunx expo prebuild --platform android --clean
 
       - name: Setup Detox Test Infrastructure
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
@@ -325,7 +348,7 @@ jobs:
         id: calculate-fingerprint
         working-directory: code/kitchen-sink
         run: |
-          FINGERPRINT=$(npx @expo/fingerprint fingerprint:generate --platform android | jq -r '.hash')
+          FINGERPRINT=$(bunx @expo/fingerprint fingerprint:generate --platform android | jq -r '.hash')
           if [ -z "$FINGERPRINT" ]; then
             echo '[ERROR] Failed to calculate fingerprint.'
             exit 1
@@ -424,7 +447,7 @@ jobs:
       - name: Check Cache Restore
         if: steps.restore-android-cache.outputs.cache-hit != 'true'
         run: |
-          echo "::warning::Android cache not found, skipping tests"
+          echo "::warning::Android cache not restored (key: ${{ needs.build-android.outputs.android-cache-key }}). This may happen on first run after cache key changes."
           echo "SKIP_ANDROID_TESTS=true" >> $GITHUB_ENV
 
       - name: Install Dependencies
@@ -499,14 +522,16 @@ jobs:
       - name: Report Android Test Status
         if: always()
         run: |
-          if [ "$ANDROID_TESTS_FAILED" = "true" ]; then
+          if [ "$SKIP_ANDROID_TESTS" = "true" ]; then
+            echo "::warning::Android Detox tests skipped - cache was not available (will be available on next run)"
+          elif [ "$ANDROID_TESTS_FAILED" = "true" ]; then
             echo "::warning::Android Detox tests failed - this is expected flakiness and does not block CI"
           else
             echo "Android Detox tests passed"
           fi
 
       - name: Upload Detox Artifacts on Failure
-        if: env.ANDROID_TESTS_FAILED == 'true'
+        if: env.ANDROID_TESTS_FAILED == 'true' && env.SKIP_ANDROID_TESTS != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: detox-artifacts-android-attempt-${{ matrix.attempt }}

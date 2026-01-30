@@ -10,11 +10,17 @@ const exec = promisify(proc.exec)
 repair()
 
 async function repair() {
-  const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
-  const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
-    name: string
-    location: string
-  }[]
+  const output = (await exec(`bun pm ls`)).stdout
+  const lines = output.split('\n').filter((line) => line.includes('workspace:'))
+  const packagePaths = lines
+    .map((line) => {
+      const match = line.match(/([^\s]+)@workspace:(.+)$/)
+      if (match) {
+        return { name: match[1], location: match[2] }
+      }
+      return null
+    })
+    .filter(Boolean) as { name: string; location: string }[]
 
   console.info(`Found ${packagePaths.length} packages`)
   console.info(`Adding react-compiler-runtime to core and ui packages...`)

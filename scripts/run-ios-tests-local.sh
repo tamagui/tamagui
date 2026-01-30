@@ -103,7 +103,7 @@ export IOS_TEST_CONTAINER_PATH_DEV="$(pwd)/$APP_PATH"
 
 # Run the tests
 echo "🧪 Running tests..."
-yarn test-ios
+bun run test-ios
 
 # Cleanup
 if [ ! -z "$APPIUM_PID" ]; then
