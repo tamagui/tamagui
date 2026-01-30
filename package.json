@@ -131,8 +131,8 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@manypkg/cli": "^0.23.0",
-    "@take-out/cli": "0.0.57",
     "@playwright/test": "^1.49.1",
+    "@take-out/cli": "0.0.57",
     "@testing-library/dom": "^10.4.0",
     "dotenv-cli": "^7.4.2",
     "esbuild": "^0.25.11",
@@ -149,10 +149,25 @@
     "ultra-runner": "^3.10.5"
   },
   "upgradeSets": {
-    "takeout": ["@take-out/*", "over-zero"],
-    "tamagui": ["tamagui", "@tamagui/*"],
-    "one": ["one", "vxrn", "@vxrn/*"],
-    "zero": ["@rocicorp/zero"],
-    "better-auth": ["better-auth", "@better-auth/*"]
+    "takeout": [
+      "@take-out/*",
+      "over-zero"
+    ],
+    "tamagui": [
+      "tamagui",
+      "@tamagui/*"
+    ],
+    "one": [
+      "one",
+      "vxrn",
+      "@vxrn/*"
+    ],
+    "zero": [
+      "@rocicorp/zero"
+    ],
+    "better-auth": [
+      "better-auth",
+      "@better-auth/*"
+    ]
   }
 }
