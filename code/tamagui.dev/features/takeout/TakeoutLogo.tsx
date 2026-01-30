@@ -1,6 +1,7 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { H1, Theme, YStack } from 'tamagui'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
+import { useFontLoaded } from '~/features/site/fonts/LoadFonts'
 
 export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
@@ -26,10 +27,12 @@ export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props
 
 export const TakeoutLogo = (props: { scale?: number }) => {
   const disableMotion = useDisableMotion()
+  const fontLoaded = useFontLoaded('Cherry Bomb')
 
   return (
     <YStack
       contain="paint"
+      opacity={fontLoaded ? 1 : 0}
       {...(typeof props.scale === 'number' && {
         scale: props.scale,
         margin: -(1 - props.scale) * 295,

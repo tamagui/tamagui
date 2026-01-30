@@ -1,13 +1,11 @@
 // @ts-expect-error - bento component wildcard import
 import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { AlertCircle, Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
+import { Globe, Leaf, Puzzle } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import {
   Button,
   Circle,
-  EnsureFlexed,
-  H3,
   H4,
   Paragraph,
   Spacer,
@@ -16,13 +14,11 @@ import {
   YStack,
 } from 'tamagui'
 import { BentoStore, ComponentSection } from '~/components/BentoComponentSection'
-import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
-import { PageThemeCarousel } from '~/features/site/PageThemeCarousel'
 import { useSubscriptionModal } from '~/features/site/purchase/useSubscriptionModal'
 
 export default function BentoPage() {
@@ -44,8 +40,6 @@ export default function BentoPage() {
           ],
         }}
       />
-
-      <PageThemeCarousel />
 
       <BentoPageFrame>
         <YStack
@@ -72,6 +66,7 @@ const Intermediate = () => {
         mb={-20}
         $sm={{
           flexDirection: 'column',
+          px: '$2',
         }}
       >
         <IntermediateCard Icon={Globe} title="Universal">
@@ -94,7 +89,7 @@ const IntermediateCard = ({
   Icon,
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
-    <XStack className="" overflow="hidden" flex={1} gap="$5" px="$5" py="$4">
+    <XStack overflow="hidden" flex={1} gap="$5" px="$5" py="$4" minHeight={80}>
       <YStack flex={1} gap="$2">
         <H4
           opacity={0.5}
@@ -108,7 +103,6 @@ const IntermediateCard = ({
         <Paragraph mb={-5} size="$3" color="$color12" opacity={0.7}>
           {children}
         </Paragraph>
-        <EnsureFlexed />
       </YStack>
       <Circle
         outlineColor="$color02"
@@ -259,48 +253,6 @@ const Hero = () => {
             </YStack>
           </YStack>
 
-          {/* disable - bento-get has a bug atm */}
-          <YStack
-            position="absolute"
-            b="6%"
-            r="$2"
-            z={100}
-            $sm={{
-              position: 'relative',
-              mt: -30,
-              mb: 20,
-            }}
-          >
-            <XStack
-              borderWidth={0.5}
-              borderColor="$color02"
-              maxW={300}
-              self="center"
-              rounded="$6"
-              overflow="hidden"
-              className="blur-8"
-              elevation="$3"
-            >
-              <YStack py="$3.5" px="$4" flex={1}>
-                <H3 fontFamily="$silkscreen" size="$2" color="$color12" mb="$1.5">
-                  The latest
-                </H3>
-                <Paragraph fontFamily="$mono" color="$color12" size="$3" lineHeight="$2">
-                  Use <CodeInline fontFamily="$mono">npx bento-get</CodeInline> to search
-                  and copy directly to your repo.
-                </Paragraph>
-              </YStack>
-              <AlertCircle
-                position="absolute"
-                t="$3"
-                r="$3"
-                z={100}
-                color="$color10"
-                size={16}
-              />
-            </XStack>
-          </YStack>
-
           <YStack
             className="ms300 ease-in all"
             mr={-300}
@@ -337,7 +289,7 @@ const Hero = () => {
             >
               <YStack rounded="$4" shadowColor="rgba(0,0,0,0.1)" shadowRadius="$8">
                 <ThemeTintAlt>
-                  <Theme name="accent">
+                  <Theme name="surface2">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -352,7 +304,7 @@ const Hero = () => {
                 }}
               >
                 <ThemeTintAlt>
-                  <Theme name="accent">
+                  <Theme name="surface1">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -367,9 +319,7 @@ const Hero = () => {
                 }}
               >
                 <ThemeTintAlt>
-                  <Theme name="accent">
-                    <LocationNotification />
-                  </Theme>
+                  <LocationNotification />
                 </ThemeTintAlt>
               </YStack>
 
@@ -395,7 +345,7 @@ const Hero = () => {
                 shadowRadius="$8"
               >
                 <ThemeTint>
-                  <Theme name="accent">
+                  <Theme name="surface1">
                     <LocationNotification />
                   </Theme>
                 </ThemeTint>

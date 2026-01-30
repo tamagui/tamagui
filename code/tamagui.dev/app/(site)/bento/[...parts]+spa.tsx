@@ -176,7 +176,7 @@ export const DetailHeader = (props: { children: string }) => {
               <DropTamaguiConfig />
 
               <Button
-                icon={bentoStore.disableTint ? CircleDashed : Paintbrush}
+                icon={bentoStore.disableTint ? Paintbrush : CircleDashed}
                 size="$3"
                 rounded="$6"
                 onPress={() => {
@@ -185,7 +185,7 @@ export const DetailHeader = (props: { children: string }) => {
                   })
                 }}
               >
-                {bentoStore.disableTint ? 'Dark/Light' : 'Tinted'}
+                {bentoStore.disableTint ? 'Tinted' : 'Dark/Light'}
               </Button>
             </XStack>
           </YStack>
@@ -193,27 +193,27 @@ export const DetailHeader = (props: { children: string }) => {
 
         <XStack p={0.5} items="center" gap="$2">
           <Link href="/bento/">
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize">
+            <Anchor fontFamily="$mono" render="span" textTransform="capitalize" color="$color9">
               Bento
             </Anchor>
           </Link>
 
-          <SizableText color="$color10" render="span" select="none" size="$2">
+          <SizableText color="$color9" render="span" select="none" size="$2">
             &raquo;
           </SizableText>
 
           <Link href={`/bento#${category}`}>
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize">
+            <Anchor fontFamily="$mono" render="span" textTransform="capitalize" color="$color9">
               {category}
             </Anchor>
           </Link>
 
-          <SizableText color="$color10" render="span" select="none" size="$2">
+          <SizableText color="$color9" render="span" select="none" size="$2">
             &raquo;
           </SizableText>
 
           <Link href={`/bento/${category}/${subCategory}`}>
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize">
+            <Anchor fontFamily="$mono" render="span" textTransform="capitalize" color="$color9">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>

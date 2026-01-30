@@ -1,4 +1,43 @@
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { isClient } from 'tamagui'
+
+const FontLoadedContext = createContext(false)
+
+export const useFontLoaded = (fontFamily: string) => {
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    if (!isClient) return
+
+    // check if already loaded
+    if (document.fonts.check(`16px "${fontFamily}"`)) {
+      setLoaded(true)
+      return
+    }
+
+    // wait for font to load
+    document.fonts.ready.then(() => {
+      if (document.fonts.check(`16px "${fontFamily}"`)) {
+        setLoaded(true)
+      }
+    })
+
+    // also listen for load event
+    const onFontLoad = () => {
+      if (document.fonts.check(`16px "${fontFamily}"`)) {
+        setLoaded(true)
+      }
+    }
+    document.fonts.addEventListener('loadingdone', onFontLoad)
+    return () => {
+      document.fonts.removeEventListener('loadingdone', onFontLoad)
+    }
+  }, [fontFamily])
+
+  return loaded
+}
+
+export const useCherryBombLoaded = () => useContext(FontLoadedContext)
 
 export function LoadFont(props: {
   cssFile?: string
@@ -52,3 +91,8 @@ export const LoadCherryBomb = ({ prefetch }: { prefetch?: boolean }) => (
     cssFile="/fonts/cherry-bomb.css"
   />
 )
+
+export const CherryBombFontProvider = ({ children }: { children: React.ReactNode }) => {
+  const loaded = useFontLoaded('Cherry Bomb')
+  return <FontLoadedContext.Provider value={loaded}>{children}</FontLoadedContext.Provider>
+}

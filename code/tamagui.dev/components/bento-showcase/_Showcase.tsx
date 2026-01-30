@@ -13,6 +13,7 @@ import {
   Spinner,
   Text,
   ThemeableStack,
+  ToggleGroup,
   View,
   XGroup,
   XStack,
@@ -148,28 +149,41 @@ const ShowcaseView = forwardRef<any, Props>(
                   <Link />
                 </Button.Icon>
               </Button>
-              <XGroup rounded="$10">
-                <Button
-                  icon={Eye}
-                  theme={view === 'preview' ? 'accent' : null}
-                  size="$3"
-                  onPress={() => setView('preview')}
-                >
-                  <Button.Text display="none" $gtMd={{ display: 'block' }}>
-                    Preview
-                  </Button.Text>
-                </Button>
-                <Button
-                  icon={approved ? Code : Lock}
-                  theme={view === 'code' ? 'accent' : null}
-                  size="$3"
-                  onPress={() => setView('code')}
-                >
-                  <Button.Text display="none" $gtMd={{ display: 'block' }}>
-                    Code
-                  </Button.Text>
-                </Button>
-              </XGroup>
+              <ToggleGroup
+                type="single"
+                value={view}
+                onValueChange={(val) => val && setView(val as 'preview' | 'code')}
+                disableDeactivation
+              >
+                <XGroup rounded="$10">
+                  <XGroup.Item>
+                    <ToggleGroup.Item
+                      value="preview"
+                      aria-label="Preview"
+                      size="$3"
+                      activeStyle={{ bg: '$color5' }}
+                    >
+                      <Eye size={16} />
+                      <SizableText size="$3" display="none" $gtMd={{ display: 'block' }}>
+                        Preview
+                      </SizableText>
+                    </ToggleGroup.Item>
+                  </XGroup.Item>
+                  <XGroup.Item>
+                    <ToggleGroup.Item
+                      value="code"
+                      aria-label="Code"
+                      size="$3"
+                      activeStyle={{ bg: '$color5' }}
+                    >
+                      {approved ? <Code size={16} /> : <Lock size={16} />}
+                      <SizableText size="$3" display="none" $gtMd={{ display: 'block' }}>
+                        Code
+                      </SizableText>
+                    </ToggleGroup.Item>
+                  </XGroup.Item>
+                </XGroup>
+              </ToggleGroup>
             </XStack>
           </XStack>
 
@@ -250,18 +264,18 @@ const MessagesFrame = (props: {
       width="100%"
       position="relative"
       minH={minHeight}
-      bg="$background"
+      bg="$color1"
       rounded="$4"
       overflow="hidden"
       borderWidth={1}
       borderColor={'$borderColor'}
       $theme-light={{
         borderColor: '$gray6',
-        bg: '$gray3',
+        bg: '$color1',
       }}
     >
       <XStack
-        bg="$backgroundPress"
+        bg="$color1"
         borderBottomWidth={1}
         borderColor="$borderColor"
         $theme-light={{
@@ -283,7 +297,7 @@ const MessagesFrame = (props: {
 
       <ResizableBox hideDragHandle={props.hideDragHandle}>
         <YStack
-          bg="$backgroundPress"
+          bg="$color1"
           borderColor="$borderColor"
           width="100%"
           height="100%"

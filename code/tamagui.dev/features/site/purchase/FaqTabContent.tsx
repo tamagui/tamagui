@@ -1,97 +1,118 @@
-import { Spacer, styled, YStack } from 'tamagui'
+import { Paragraph, Spacer, styled, YStack } from 'tamagui'
 import { Link } from '../../../components/Link'
 import { P } from './BigP'
 
 const Question = styled(P, {
-  size: '$6',
+  size: '$5',
   fontWeight: 'bold',
   $gtXs: {
-    size: '$8',
+    size: '$6',
+  },
+})
+
+const Answer = styled(Paragraph, {
+  fontFamily: '$mono',
+  color: '$color10',
+  size: '$3',
+  lineHeight: '$4',
+  $gtXs: {
+    px: '$8',
+    size: '$4',
+    lineHeight: '$5',
   },
 })
 
 export const FaqTabContent = () => {
   return (
-    <YStack gap="$6">
-      <Question>Why the high price?</Question>
-      <P>
-        The new Takeout stack took immense, loving effort. We considered not selling it
-        all and keeping it a trade secret, especially as its AI integration + docs +
-        scripting + setup makes it incredible at moving fast. Still, we do like the idea
-        that Tamagui supports itself, and we hope the stack leads to{' '}
+    <YStack gap="$5">
+      <Question>What's included with Pro?</Question>
+      <Answer>
+        Two starter kits (v1 with Next.js + Expo, v2 with One framework), Bento copy-paste
+        components, Theme AI generator, private Discord support, and all future updates
+        during your license period. See our{' '}
+        <Link href="/pro-license">full license terms</Link> for details.
+      </Answer>
+
+      <Question>What's the difference between Takeout v1 and v2?</Question>
+      <Answer>
+        v1 uses Next.js + Expo with Supabase - a more conservative, proven stack. v2 is
+        our next-gen stack using One framework, Zero for real-time sync, Better Auth,
+        Postgres + Drizzle, and SST/Uncloud for deployment. v2 includes CLI tools and IaC.
+        Both are included with Pro.
+      </Answer>
+
+      <Question>Do I own the code?</Question>
+      <Answer>
+        For Bento - yes, you have full rights and can use it in public projects. For
+        Takeout - the code is private, all team members must be added to your project on
+        tamagui.dev. See our <Link href="/pro-license">license</Link> for full details.
+      </Answer>
+
+      <Question>What support do I get?</Question>
+      <Answer>
+        Base plan includes private #takeout Discord channel. We respond within a few days
+        but no SLA. For guaranteed response times, see Direct ($500/mo, 2-day response, 5
+        bug fixes/year) and Sponsor ($2,000/mo, 1-day response, unlimited fixes, monthly
+        call) tiers.
+      </Answer>
+
+      <Question>Can I use this for multiple projects?</Question>
+      <Answer>
+        Each license covers one project (web domain + iOS + Android apps). Purchase
+        additional licenses for more projects. Updates are $100/year per project after
+        year one.
+      </Answer>
+
+      <Question>What about teams?</Question>
+      <Answer>
+        Unlimited team members at no extra cost. Add them through your project dashboard
+        on tamagui.dev to grant access to private repos.
+      </Answer>
+
+      <Question>Is there a free version?</Question>
+      <Answer>
+        Yes! Takeout v2-free is open source on GitHub with the same core stack, just
+        without deployment configs, CLI tools, and private repo access.
+      </Answer>
+
+      <Question>What about refunds?</Question>
+      <Answer>
+        All sales are final. Please review the{' '}
+        <Link href="/pro-license">license agreement</Link> and{' '}
+        <Link href="/pro-policy">policies</Link> before purchasing.
+      </Answer>
+
+      <Question>Enterprise pricing?</Question>
+      <Answer>
+        Companies with over $1M annual revenue should contact{' '}
+        <Link href="mailto:support@tamagui.dev">support@tamagui.dev</Link>.
+      </Answer>
+
+      <Question>Why the price?</Question>
+      <Answer>
+        Two years of effort went into this stack. The AI integration, docs, scripting, and
+        setup make it incredible for moving fast. We hope it leads to{' '}
         <Link target="_blank" href="https://addeven.com">
-          higher quality consulting gigs
-        </Link>
-        .
-      </P>
-
-      <Question>Do I own the code? Can I publish it publicly?</Question>
-      <P>
-        For Bento - yes. For Takeout - no. Takeout is closed source, but the Bento license
-        is liberal, you have all rights to the code. The only limit we have is that you
-        don't directly list or sell the majority of Bento code in one place, but you can
-        absolutely use it in public projects.
-      </P>
-
-      <Question>What is Theme AI?</Question>
-      <P>
-        If you go to the Theme page from the header, we have an input box to prompt. We've
-        spent a lot of effort putting together a prompt and examples for LLMs to generate
-        great looking themes based on your input. It's quite fun and generates some great
-        themes.
-      </P>
-
-      <Question>Can I buy licenses for multiple projects?</Question>
-      <P>
-        Yes! Each license covers one project (web domain + iOS + Android apps). You can
-        purchase additional project licenses anytime. Update subscriptions are always
-        $100/year per project regardless of when you buy.
-      </P>
-
-      <Question>What support do I get in the base plan?</Question>
-      <P>
-        The base plan includes access to the private #takeout Discord channel. We
-        prioritize responses there over the public Discord, but there is no guaranteed
-        SLA. We typically respond within a few days. For guaranteed response times and bug
-        fix commitments, see our Direct and Sponsor support tiers.
-      </P>
-
-      <Question>What's the difference between support levels?</Question>
-      <P>
-        <strong>Chat (Included):</strong> Access to the private #takeout Discord channel.
-        No SLA guarantee, but we typically respond within a few days.
-        {'\n\n'}
-        <strong>Direct ($500/mo):</strong> 5 bug fixes per year, guaranteed response
-        within 2 business days, your issues get prioritized in our queue.
-        {'\n\n'}
-        <strong>Sponsor ($2,000/mo):</strong> Unlimited higher priority bug fixes, 1 day
-        response time, plus a monthly video call with the team.
-      </P>
-
-      <Question>What about companies with significant revenue?</Question>
-      <P>
-        Companies with over $1M in annual revenue should contact us at{' '}
-        <Link href="mailto:support@tamagui.dev">support@tamagui.dev</Link> for enterprise
-        pricing. The standard license is intended for bootstrapped companies, solo
-        developers, and early-stage startups.
-      </P>
+          quality consulting work
+        </Link>{' '}
+        too.
+      </Answer>
 
       <Question>How do I use a coupon?</Question>
-      <P>
-        When you checkout, you'll see an input box to enter a coupon. If you have a
-        coupon, enter it and click apply. If it's valid, the price will update.
-      </P>
+      <Answer>
+        Enter it at checkout and click apply. Valid coupons update the price automatically.
+      </Answer>
 
       <Question>How do I get my invoice?</Question>
-      <P>
-        You can access all your invoices through our billing partner Zenvoice.{' '}
+      <Answer>
+        Access invoices through{' '}
         <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
-          Click here to view your invoices
+          Zenvoice
         </Link>
         .
-      </P>
+      </Answer>
 
-      <Spacer height="$10" />
+      <Spacer height="$6" />
     </YStack>
   )
 }

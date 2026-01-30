@@ -884,17 +884,33 @@ const HeaderMenuMoreContents = () => {
         <Link asChild href="/takeout">
           <HeadAnchor grid half render="a">
             <XStack items="center">
-              <span>Takeout </span>
+              <span>Takeout v1 </span>
               <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
                 <TakeoutIcon scale={0.65} />
               </YStack>
             </XStack>
             <SizableText size="$2" color="$color9">
-              Starter Kit
+              Next.js + Expo
             </SizableText>
           </HeadAnchor>
         </Link>
 
+        <Link asChild href="/takeout">
+          <HeadAnchor grid half render="a">
+            <XStack items="center">
+              <span>Takeout v2 </span>
+              <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
+                <TakeoutIcon scale={0.65} />
+              </YStack>
+            </XStack>
+            <SizableText size="$2" color="$color9">
+              One + Zero + IaC
+            </SizableText>
+          </HeadAnchor>
+        </Link>
+      </XStack>
+
+      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$2" width="100%">
         <Link asChild href="/bento">
           <HeadAnchor grid half render="a">
             <XStack items="center">
@@ -915,6 +931,15 @@ const HeaderMenuMoreContents = () => {
             </SizableText>
           </HeadAnchor>
         </Link>
+
+        <HeadAnchor grid half>
+          <XStack items="center">
+            <span>Discord </span>
+          </XStack>
+          <SizableText size="$2" color="$color9">
+            Private chat support
+          </SizableText>
+        </HeadAnchor>
       </XStack>
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
