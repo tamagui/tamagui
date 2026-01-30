@@ -152,14 +152,6 @@ export function PurchaseModalContents() {
   // Support tier monthly price
   const supportTierMonthly = SUPPORT_TIERS[supportTier].price
 
-  // V2 subscription message
-  const subscriptionMessage = useMemo(() => {
-    if (supportTierMonthly > 0) {
-      return `$${V2_PRICE.toLocaleString()} one-time + $${supportTierMonthly.toLocaleString()}/mo support`
-    }
-    return `$${V2_PRICE.toLocaleString()} one-time. 1 year of updates, then $100/year.`
-  }, [supportTierMonthly])
-
   const tabContents = {
     pro: () => {
       return (
@@ -411,20 +403,6 @@ export function PurchaseModalContents() {
                     $gtXs={{ flex: 1, flexBasis: 'auto', width: '40%' }}
                   >
                     <XStack items="baseline" gap="$2" flexWrap="wrap">
-                      {store.activePromo && (
-                        <H3
-                          size="$8"
-                          $gtXs={{ size: '$10' }}
-                          fontWeight="200"
-                          opacity={0.5}
-                          textDecorationLine="line-through"
-                          color="$green10"
-                          y={-3}
-                          letterSpacing={-2}
-                        >
-                          ${Intl.NumberFormat('en-US').format(V2_PRICE)}
-                        </H3>
-                      )}
                       <H3 size="$9" $gtXs={{ size: '$11' }} letterSpacing={-2}>
                         $
                         {Intl.NumberFormat('en-US').format(
@@ -433,16 +411,23 @@ export function PurchaseModalContents() {
                       </H3>
 
                       {store.activePromo && (
-                        <Paragraph size="$2" color="$color8">
-                          Discounted {store.activePromo.description}
-                        </Paragraph>
+                        <XStack items="baseline" gap="$1">
+                          <Paragraph
+                            size="$4"
+                            color="$color8"
+                            textDecorationLine="line-through"
+                          >
+                            ${Intl.NumberFormat('en-US').format(V2_PRICE)}
+                          </Paragraph>
+                          <Paragraph size="$2" color="$color8">
+                            {store.activePromo.description}
+                          </Paragraph>
+                        </XStack>
                       )}
                     </XStack>
 
                     <Paragraph color="$color9" size="$3">
-                      {store.activePromo
-                        ? `${store.activePromo.label}! ${subscriptionMessage}`
-                        : subscriptionMessage}
+                      One payment, one year updates, $100/year subscription
                     </Paragraph>
                   </YStack>
 
