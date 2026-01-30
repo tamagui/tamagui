@@ -499,8 +499,10 @@ export default () => (
 ```
 
 Not to mention by staying with the `styled` world, the Tamagui optimizing
-compiler confidently flattens our Button components down to ridiculously fast
-DOM output on the web, and pulls out all styles from the render loop on native.
+compiler extracts CSS and optimizes our Button components. Note that components
+using `createStyledContext` won't be flattened, but CSS extraction and style
+optimization still apply - see the [createStyledContext docs](/docs/core/create-styled-context)
+for details.
 
 So we want our compound component API both for ergonomics and for performance,
 but we need some way to thread our `size` property down from the parent frame to
@@ -741,7 +743,9 @@ some of the benefits and ideas behind compound components.
 
 There's certainly further you can go in building out your Button, but we think
 that in under 150 lines of code you're getting a nearly ideal API, fully typed
-sizing and themes, and a great balance of customization to performance.
+sizing and themes, and a great balance of customization to optimization. Note
+that the compiler will still extract CSS and optimize these components, though
+flattening won't apply when using `createStyledContext`.
 
 If you are working on a smaller app, say one that shows only a few buttons at a
 time or with a small set of button variations, then abstracting your Button into

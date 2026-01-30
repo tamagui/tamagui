@@ -335,9 +335,9 @@ If the compiler produces fewer than the expected number of optimizations, the bu
 The CLI automatically handles platform-specific files (`.web.tsx`,
 `.native.tsx`, `.ios.tsx`, `.android.tsx`):
 
-- Files with `.web.tsx` or `.ios.tsx` extensions are optimized for web only
-- Files with `.native.tsx` or `.android.tsx` extensions are optimized for native
-  only
+- Files with `.web.tsx` extensions are optimized for web only
+- Files with `.native.tsx`, `.ios.tsx`, or `.android.tsx` extensions are
+  optimized for native only
 - Base files (`.tsx`) without platform-specific versions are optimized for all
   platforms
 - If both `.web.tsx` and `.native.tsx` exist, the base `.tsx` file is skipped

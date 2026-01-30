@@ -153,7 +153,7 @@ export default function Community() {
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" gap="$4">
               <StarterRepoCard
-                url="https://galaxies.dev/course/react-native-tamagui  "
+                url="https://galaxies.dev/course/react-native-tamagui"
                 name="Universal Apps with Tamagui (Guide)"
                 author="Simon Grimm"
               />

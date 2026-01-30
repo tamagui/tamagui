@@ -234,7 +234,8 @@ const ButtonText = styled(Text, {
 
 type ButtonProps = GetProps<typeof ButtonFrame>
 
-// note: styleable will tell the tamagui compiler to optimize usages of this:
+// styleable() wraps a functional component so it can be further styled with styled()
+// see /docs/core/styled#styleable for full documentation
 export const Button = ButtonFrame.styleable<ButtonProps>(
   ({ children, ...props }, ref) => {
     return (

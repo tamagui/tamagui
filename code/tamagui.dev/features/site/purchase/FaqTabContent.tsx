@@ -45,7 +45,7 @@ export const FaqTabContent = () => {
       <P>
         Yes! Each license covers one project (web domain + iOS + Android apps). You can
         purchase additional project licenses anytime. Update subscriptions are always
-        $300/year per project regardless of when you buy.
+        $100/year per project regardless of when you buy.
       </P>
 
       <Question>What support do I get in the base plan?</Question>

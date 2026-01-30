@@ -441,9 +441,10 @@ set up your Tamagui types:
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 
-  // if you want types for group styling props, define them like so:
+  // if you want types for named group styling props (e.g. $group-card-hover),
+  // define your group names here:
   interface TypeOverride {
-    groupNames(): 'a' | 'b' | 'c'
+    groupNames(): 'card' | 'header' | 'sidebar'
   }
 }
 ```

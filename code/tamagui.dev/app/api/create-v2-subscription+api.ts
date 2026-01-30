@@ -30,8 +30,8 @@ const generateIdempotencyKey = (userId: string, action: string, uniqueData: stri
 
 /**
  * V2 Pro Purchase Flow:
- * 1. Charge $999 one-time for license
- * 2. Create $300/year upgrade subscription (starts in 1 year)
+ * 1. Charge $400 one-time for license
+ * 2. Create $100/year upgrade subscription (starts in 1 year)
  * 3. If support tier selected (direct/sponsor), create monthly subscription
  * 4. Project is created after successful payment via webhook
  *
@@ -156,7 +156,7 @@ export default apiRoute(async (req) => {
     const upgradeStartDate = new Date()
     upgradeStartDate.setFullYear(upgradeStartDate.getFullYear() + 1)
 
-    // Create invoice for the $999 one-time license fee
+    // Create invoice for the $400 one-time license fee
     await stripe.invoiceItems.create(
       {
         customer: stripeCustomerId,
@@ -220,7 +220,7 @@ export default apiRoute(async (req) => {
       )
     }
 
-    // Create the upgrade subscription (starts in 1 year, $300/year)
+    // Create the upgrade subscription (starts in 1 year, $100/year)
     // This is auto-subscribed as per requirements
     try {
       upgradeSubscription = await stripe.subscriptions.create(

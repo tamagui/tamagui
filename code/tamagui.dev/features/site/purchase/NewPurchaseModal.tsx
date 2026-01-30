@@ -146,8 +146,8 @@ export function PurchaseModalContents() {
     paymentModal.prefilledCouponCode = store.prefilledCouponCode
   }
 
-  // V2 Pricing: $999 one-time per project
-  const V2_PRICE = 999
+  // V2 Pricing: $400 one-time per project
+  const V2_PRICE = 400
 
   // Support tier monthly price
   const supportTierMonthly = SUPPORT_TIERS[supportTier].price
@@ -157,7 +157,7 @@ export function PurchaseModalContents() {
     if (supportTierMonthly > 0) {
       return `$${V2_PRICE.toLocaleString()} one-time + $${supportTierMonthly.toLocaleString()}/mo support`
     }
-    return `$${V2_PRICE.toLocaleString()} one-time. 1 year of updates, then $300/year.`
+    return `$${V2_PRICE.toLocaleString()} one-time. 1 year of updates, then $100/year.`
   }, [supportTierMonthly])
 
   const tabContents = {
@@ -255,7 +255,7 @@ export function PurchaseModalContents() {
 
             <P size="$2" color="$color9">
               License covers one project: your web domain + iOS app + Android app. After
-              the first year, continue receiving updates for $300/year (auto-subscribed).
+              the first year, continue receiving updates for $100/year (auto-subscribed).
             </P>
 
             {/* Enterprise Notice */}

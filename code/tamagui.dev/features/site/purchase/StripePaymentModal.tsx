@@ -777,7 +777,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       },
     }
 
-    // V2: $999 one-time, V1: legacy monthly + yearly
+    // V2: $400 one-time, V1: legacy monthly + yearly
     const baseAmount = isV2
       ? V2_LICENSE_PRICE * 100
       : monthlyTotal * 100 + yearlyTotal * 100
@@ -986,7 +986,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
             <XStack justify="space-between" items="center">
               <Paragraph size="$3" color="$color9">
-                After 1 year: $300/year for updates
+                After 1 year: $100/year for updates
               </Paragraph>
               <Paragraph size="$2" color="$color9">
                 (auto-subscribed)
