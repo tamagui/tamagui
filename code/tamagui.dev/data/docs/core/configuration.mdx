@@ -389,13 +389,13 @@ export default {
   plugins: [
     tamaguiPlugin({
       config: './src/tamagui.config.ts',
-      outputCSS: './src/tamagui.css',
+      outputCSS: './src/tamagui.generated.css',
     }),
   ],
 }
 ```
 
-And then you'll want to import the resulting `tamagui.css` into your app.
+And then you'll want to import the resulting `tamagui.generated.css` into your app.
 
 As final option, you can also generate it yourself with the CLI. First create a
 `tamagui.build.ts`:
@@ -406,7 +406,7 @@ import type { TamaguiBuildOptions } from 'tamagui'
 export default {
   components: ['tamagui'],
   config: './config/tamagui.config.ts',
-  outputCSS: './tamagui.css',
+  outputCSS: './tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 

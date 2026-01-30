@@ -3,7 +3,7 @@ import type { GetBaseStyles, GetNonStyledProps, GetStaticConfig, GetStyledVarian
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
 } ? true : false;
-type GetVariantAcceptedValues<V> = V extends Object ? {
+type GetVariantAcceptedValues<V> = V extends object ? {
     [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof V[Key]>;
 } : undefined;
 export declare function styled<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>>(ComponentIn: ParentComponent, options?: Partial<InferStyledProps<ParentComponent, StyledConfig>> & {

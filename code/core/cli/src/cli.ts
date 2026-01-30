@@ -65,7 +65,7 @@ const COMMAND_MAP = {
 
   'generate-css': {
     shorthands: [],
-    description: `Generate the tamagui.css file from your config`,
+    description: `Generate the tamagui.generated.css file from your config`,
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
@@ -80,7 +80,7 @@ const COMMAND_MAP = {
       })
 
       const outputPath =
-        flags['--output'] || options.tamaguiOptions.outputCSS || './tamagui.css'
+        flags['--output'] || options.tamaguiOptions.outputCSS || './tamagui.generated.css'
 
       process.env.TAMAGUI_KEEP_THEMES = '1'
       await loadTamagui({

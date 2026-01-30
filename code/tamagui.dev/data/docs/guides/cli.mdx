@@ -78,7 +78,7 @@ export default {
   config: './tamagui.config.ts',
   components: ['tamagui'],
   importsWhitelist: ['constants.js', 'colors.js'],
-  outputCSS: './public/tamagui.css',
+  outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 
@@ -159,7 +159,7 @@ npx tamagui generate
 
 ### generate-css
 
-Generate the `tamagui.css` file from your configuration. Useful for build
+Generate the `tamagui.generated.css` file from your configuration. Useful for build
 pipelines or when you need to regenerate CSS without running a full build.
 
 ```bash
@@ -168,14 +168,14 @@ npx tamagui generate-css
 
 **Flags:**
 
-- `--output <path>` - Custom output path (default: `tamagui.css`)
+- `--output <path>` - Custom output path (default: `tamagui.generated.css`)
 - `--debug` - Enable debug output
 - `--verbose` - Enable verbose debug output
 
 **Example:**
 
 ```bash
-npx tamagui generate-css --output ./public/styles/tamagui.css
+npx tamagui generate-css --output ./public/styles/tamagui.generated.css
 ```
 
 ### generate-themes

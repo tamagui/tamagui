@@ -1,6 +1,6 @@
 import { Image } from '@tamagui/image'
 import './_layout.css'
-import './tamagui.css'
+import './tamagui.generated.css'
 
 // import { Toaster } from '@tamagui/toast'
 import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'

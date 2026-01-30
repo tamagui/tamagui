@@ -23,7 +23,9 @@ const GITHUB_ADMIN_TOKEN = process.env.GITHUB_ADMIN_TOKEN!
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   console.error('Missing required environment variables')
-  console.error('Make sure NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set')
+  console.error(
+    'Make sure NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set'
+  )
   process.exit(1)
 }
 
@@ -187,7 +189,9 @@ async function main() {
   const shouldFix = args.includes('--fix')
 
   console.info('\n=== V1 Subscription GitHub Access Fix ===\n')
-  console.info(`Mode: ${shouldFix ? 'FIX (will send invites)' : 'DRY RUN (audit only)'}\n`)
+  console.info(
+    `Mode: ${shouldFix ? 'FIX (will send invites)' : 'DRY RUN (audit only)'}\n`
+  )
 
   // get all active V1 subscriptions
   console.info('Fetching active V1 subscriptions...')

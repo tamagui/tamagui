@@ -83,12 +83,11 @@ function SizeSection({ section }: { section: Section }) {
                   backgroundColor="$color5"
                   {...(section === 'spaceNegative' && {
                     backgroundColor: '$red5',
-                    size:
-                      -tokens[
-                        spaceTokensNegative.find(
-                          (t) => Number.parseFloat(t) === -Number.parseFloat(token)
-                        ) ?? token
-                      ]?.val,
+                    size: -tokens[
+                      spaceTokensNegative.find(
+                        (t) => Number.parseFloat(t) === -Number.parseFloat(token)
+                      ) ?? token
+                    ]?.val,
                   })}
                   {...(section === 'radius' && {
                     size: allTokens.size[token]?.val as any,

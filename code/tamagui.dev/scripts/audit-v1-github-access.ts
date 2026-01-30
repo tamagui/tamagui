@@ -229,7 +229,9 @@ async function main() {
 
   console.info(`\n⚠️  No GitHub username (${usersWithoutGithub.length}):`)
   for (const user of usersWithoutGithub) {
-    console.info(`   ${user.email} (${user.productName}) - expires: ${user.currentPeriodEnd}`)
+    console.info(
+      `   ${user.email} (${user.productName}) - expires: ${user.currentPeriodEnd}`
+    )
   }
 
   // send invites if --fix flag is set

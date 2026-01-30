@@ -140,14 +140,14 @@ For better performance, use the `outputCSS` option in the Tamagui Vite plugin:
 tamaguiPlugin({
   config: './tamagui.config.ts',
   components: ['tamagui'],
-  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.generated.css' : null,
 })
 ```
 
 Then import the CSS in your root layout:
 
 ```tsx fileName="app/_layout.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 // ... rest of your imports and component
 ```
 

@@ -188,7 +188,9 @@ export const AnimatePresence: FunctionComponent<
 
   return (
     <>
-      {exiting.size ? childrenToRender : childrenToRender.map((child) => cloneElement(child))}
+      {exiting.size
+        ? childrenToRender
+        : childrenToRender.map((child) => cloneElement(child))}
     </>
   )
 }

@@ -55,7 +55,7 @@ import type { TamaguiBuildOptions } from '@tamagui/core'
 export default {
   components: ['@tamagui/core'], // or ['tamagui']
   config: './tamagui.config.ts',
-  outputCSS: './public/tamagui.css',
+  outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 
@@ -120,7 +120,7 @@ The CLI generates theme CSS to `outputCSS`. Commit this file to git and import
 it in your layout:
 
 ```tsx fileName="app/layout.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 import { TamaguiProvider } from '@tamagui/core'
 import config from '../tamagui.config'
 
@@ -200,7 +200,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 Then update your `app/layout.tsx`:
 
 ```tsx fileName="app/layout.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 import { Metadata } from 'next'
 import { NextTamaguiProvider } from './NextTamaguiProvider'
 
@@ -543,7 +543,7 @@ The simplest approach is to use the Tamagui CLI to generate the CSS file:
 npx tamagui generate
 ```
 
-This outputs CSS to `.tamagui/tamagui.css`. Copy it to your public folder or
+This outputs CSS to `.tamagui/tamagui.generated.css`. Copy it to your public folder or
 configure `outputCSS` in your `tamagui.build.ts`:
 
 ```ts fileName="tamagui.build.ts"
@@ -552,14 +552,14 @@ import type { TamaguiBuildOptions } from '@tamagui/core'
 export default {
   components: ['tamagui'],
   config: './tamagui.config.ts',
-  outputCSS: './public/tamagui.css',
+  outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 
 Then import it in your `_app.tsx`:
 
 ```tsx fileName="_app.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 ```
 
 #### Option 2: Using the Next.js Plugin
@@ -570,7 +570,7 @@ You can also have the plugin generate CSS during your Next.js build:
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
-  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.generated.css' : null,
   // faster dev mode, keeps debugging helpers:
   disableExtraction: process.env.NODE_ENV === 'development',
 })
@@ -579,7 +579,7 @@ const tamaguiPlugin = withTamagui({
 Then import it in your `_app.tsx`:
 
 ```tsx fileName="_app.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 ```
 
 <Notice theme="green">
@@ -784,7 +784,7 @@ CLI or the Next.js plugin:
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
-  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.generated.css' : null,
   // faster dev mode, keeps debugging helpers:
   disableExtraction: process.env.NODE_ENV === 'development',
 })
@@ -793,7 +793,7 @@ const tamaguiPlugin = withTamagui({
 Then link the generated CSS file in your `app/layout.tsx`:
 
 ```tsx fileName="app/layout.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 ```
 
 <Notice theme="green">

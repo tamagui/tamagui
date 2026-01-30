@@ -92,11 +92,11 @@ describe('tamagui-build integration test', () => {
         let fileModified = false
 
         watchProcess.stdout.on('data', (data) => {
-                    console.log('Watch process output:', data.toString())
+          console.log('Watch process output:', data.toString())
           if (data.toString().includes('built tamagui-build-test-watch-package')) {
             if (!initialBuildComplete) {
               initialBuildComplete = true
-                            console.log('Initial build complete, modifying file...')
+              console.log('Initial build complete, modifying file...')
               // Modify the source file
               const newContent = `export const greet = (name: string): string => {
   return \`Hi, \${name}!\`;
@@ -104,7 +104,7 @@ describe('tamagui-build integration test', () => {
               writeFileSync(watchSrcFilePath, newContent)
               fileModified = true
             } else if (fileModified) {
-                            console.log('Rebuild after file modification complete')
+              console.log('Rebuild after file modification complete')
               // Check the updated content of the output file
               const output = readFileSync(watchDistCjsFilePath, 'utf-8')
               expect(output).toContain('Hi,')

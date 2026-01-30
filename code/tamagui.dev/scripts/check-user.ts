@@ -40,7 +40,9 @@ async function check() {
 
   console.log('\nSubscriptions:')
   for (const sub of subs || []) {
-    const products = (sub.subscription_items as any)?.map((i: any) => i.prices?.products?.name).filter(Boolean)
+    const products = (sub.subscription_items as any)
+      ?.map((i: any) => i.prices?.products?.name)
+      .filter(Boolean)
     console.log('  - Status:', sub.status)
     console.log('    Products:', products?.join(', '))
     console.log('    Period:', sub.current_period_start, 'to', sub.current_period_end)

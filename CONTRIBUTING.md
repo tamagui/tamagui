@@ -16,8 +16,7 @@ If you are developing actively you can run this to watch and rebuild js and type
 bun run watch
 ```
 
-We compile out js to `dist` for "0-setup" installs by compiling a .native version of every file, and then in every web file we replace react-native with react-native-web. We also build our types out to ./types/*.d.ts for a variety of reasons - it means we can't cause type issues for people with stricter configurations using our packages, it means we can track type regressions (the styled() type setup is impossible delicate to explosions of complexity), and it's generally faster for end users. 
-
+We compile out js to `dist` for "0-setup" installs by compiling a .native version of every file, and then in every web file we replace react-native with react-native-web. We also build our types out to ./types/\*.d.ts for a variety of reasons - it means we can't cause type issues for people with stricter configurations using our packages, it means we can track type regressions (the styled() type setup is impossible delicate to explosions of complexity), and it's generally faster for end users.
 
 ### Linking tamagui into your existing project
 
