@@ -1,7 +1,7 @@
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
 import { listingData } from '~/components/bento-showcase/data'
 import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
-import { useToastController } from '@tamagui/toast'
+import { useToastController } from '@tamagui/toast/v1'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
 import { startTransition } from 'react'

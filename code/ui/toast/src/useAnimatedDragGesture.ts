@@ -68,6 +68,9 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
       if (disabled) return
       if (event.button !== 0) return
 
+      // don't start drag if user has text selected (let them copy it)
+      const hasSelection = (window.getSelection()?.toString().length ?? 0) > 0
+      if (hasSelection) return
       ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
 
       dragStartRef.current = {
@@ -85,11 +88,6 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
   const handlePointerMove = React.useCallback(
     (event: React.PointerEvent) => {
       if (!dragStartRef.current || disabled) return
-
-      // skip swipe if user is selecting text (same as Sonner)
-      const isHighlighted = typeof window !== 'undefined' &&
-        (window.getSelection()?.toString().length ?? 0) > 0
-      if (isHighlighted) return
 
       const deltaX = event.clientX - dragStartRef.current.startX
       const deltaY = event.clientY - dragStartRef.current.startY

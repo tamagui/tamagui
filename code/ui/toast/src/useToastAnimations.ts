@@ -191,11 +191,16 @@ export function useToastAnimations(
 
   // set drag offset directly (no animation) - used during gesture
   const setDragOffset = useEvent((x: number, y: number) => {
+    // cancel any running animation (e.g., spring back from previous gesture)
+    cancelAnimationRef.current?.()
+    cancelAnimationRef.current = null
+
     currentOffsetRef.current = { x, y }
 
     if (useDirectDom && dragRef.current) {
       // direct DOM manipulation for CSS driver
       dragRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`
+      dragRef.current.style.opacity = '1' // reset in case previous animation faded it
     } else {
       // use animation driver for motion/reanimated
       translateX.setValue(x, { type: 'direct' })

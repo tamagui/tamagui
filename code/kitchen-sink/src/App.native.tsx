@@ -19,7 +19,7 @@ if (launchArgs.disableGestureHandler) {
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
-import { Toast, ToastViewport, useToastState } from '@tamagui/toast'
+import { Toast, ToastViewport, useToastState } from '@tamagui/toast/v1'
 import { useFonts } from 'expo-font'
 import { YStack } from 'tamagui'
 import React from 'react'
