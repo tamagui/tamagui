@@ -106,7 +106,7 @@
   "devDependencies": {
     "@manypkg/cli": "^0.23.0",
     "@playwright/test": "^1.49.1",
-    "@take-out/cli": "0.0.57",
+    "@take-out/cli": "0.0.58",
     "@testing-library/dom": "^10.4.0",
     "dotenv-cli": "^7.4.2",
     "esbuild": "^0.25.11",
