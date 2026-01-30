@@ -115,6 +115,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             justify="flex-end"
             t={-82}
             r="$6"
+            z={0}
           >
             <Button
               aria-label="Show or hide code"
