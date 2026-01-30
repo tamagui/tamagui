@@ -25,6 +25,12 @@ export type ExtractedResponse = {
   stylesPath?: string
   ast: t.File
   map: any
+  stats: {
+    styled: number
+    flattened: number
+    optimized: number
+    found: number
+  }
 }
 
 export type ExtractToClassNamesProps = {
@@ -554,6 +560,12 @@ export async function extractToClassNames({
     styles,
     js: result.code,
     map: result.map,
+    stats: {
+      styled: res.styled,
+      flattened: res.flattened,
+      optimized: res.optimized,
+      found: res.found,
+    },
   }
 }
 
