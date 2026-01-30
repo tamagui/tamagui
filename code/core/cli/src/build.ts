@@ -227,6 +227,10 @@ export const build = async (
 
           if (out) {
             stats.filesProcessed++
+            stats.optimized += out.stats.optimized
+            stats.flattened += out.stats.flattened
+            stats.styled += out.stats.styled
+            stats.found += out.stats.found
 
             const cssName = '_' + basename(sourcePath, extname(sourcePath))
             const stylePath = join(dirname(sourcePath), cssName + '.css')
