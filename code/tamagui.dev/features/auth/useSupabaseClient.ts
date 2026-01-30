@@ -119,7 +119,9 @@ export function useSupabaseSession(client?: SupabaseAuthOnlyClient) {
     run()
 
     // Listen for auth changes to update session state
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
 
