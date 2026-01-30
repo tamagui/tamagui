@@ -32,7 +32,9 @@
         "expo",
         "detox",
         "tsx",
-        "tko"
+        "tko",
+        "up",
+        "workspaces"
       ]
     }
   },
