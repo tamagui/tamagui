@@ -102,6 +102,7 @@ function updateLastLoaded(config: any) {
 }
 
 let hasBundledOnce = false
+let hasLoggedBuild = false
 
 export async function bundleConfig(props: TamaguiOptions) {
   // webpack is calling this a ton for no reason
@@ -174,20 +175,24 @@ export async function bundleConfig(props: TamaguiOptions) {
         }),
       ])
 
-      colorLog(
-        Color.FgYellow,
-        `
-  ➡ [tamagui] built config, components, prompt (${Date.now() - start}ms)`
-      )
-
-      if (process.env.DEBUG?.startsWith('tamagui')) {
+      // only log once per process to avoid duplicate messages
+      if (!hasLoggedBuild) {
+        hasLoggedBuild = true
         colorLog(
-          Color.Dim,
+          Color.FgYellow,
           `
+  ➡ [tamagui] built config, components, prompt (${Date.now() - start}ms)`
+        )
+
+        if (process.env.DEBUG?.startsWith('tamagui')) {
+          colorLog(
+            Color.Dim,
+            `
           Config     .${sep}${relative(process.cwd(), configOutPath)}
           Components ${componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`).join('\n             ')}
           `
-        )
+          )
+        }
       }
     }
 

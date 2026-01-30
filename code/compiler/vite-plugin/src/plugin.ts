@@ -15,6 +15,36 @@ import {
 
 const resolve = (name: string) => fileURLToPath(import.meta.resolve(name))
 
+// shared cache across all plugin instances/environments via globalThis
+type CacheEntry = {
+  js: string
+  map: any
+  cssImport: string | null
+}
+
+const CACHE_KEY = '__tamagui_vite_cache__'
+const CACHE_SIZE_KEY = '__tamagui_vite_cache_size__'
+
+function getSharedCache(): Record<string, CacheEntry> {
+  if (!(globalThis as any)[CACHE_KEY]) {
+    ;(globalThis as any)[CACHE_KEY] = {}
+  }
+  return (globalThis as any)[CACHE_KEY]
+}
+
+function getSharedCacheSize(): number {
+  return (globalThis as any)[CACHE_SIZE_KEY] || 0
+}
+
+function setSharedCacheSize(size: number) {
+  ;(globalThis as any)[CACHE_SIZE_KEY] = size
+}
+
+function clearSharedCache() {
+  ;(globalThis as any)[CACHE_KEY] = {}
+  ;(globalThis as any)[CACHE_SIZE_KEY] = 0
+}
+
 type AliasOptions = {
   /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
   rnwLite?: boolean | 'without-animated'
@@ -117,19 +147,8 @@ export function tamaguiPlugin({
   // extract plugin state (only used when optimize=true)
   const getHash = (input: string) => createHash('sha1').update(input).digest('base64')
 
-  type CacheEntry = {
-    js: string
-    map: any
-    cssImport: string | null
-  }
-
-  let memoryCache: Record<string, CacheEntry> = {}
-  let cacheSize = 0
-
-  const clearCompilerCache = () => {
-    memoryCache = {}
-    cacheSize = 0
-  }
+  // use shared cache across environments
+  const memoryCache = getSharedCache()
 
   const cssMap = new Map<string, string>()
   let config: ResolvedConfig
@@ -439,10 +458,12 @@ export function tamaguiPlugin({
           cssImport,
         }
 
-        cacheSize += jsCode.length
-        // 64MB cache
-        if (cacheSize > 67108864) {
-          clearCompilerCache()
+        // track cache size and clear if too large (64MB)
+        const newSize = getSharedCacheSize() + jsCode.length
+        if (newSize > 67108864) {
+          clearSharedCache()
+        } else {
+          setSharedCacheSize(newSize)
         }
         memoryCache[cacheKey] = cacheEntry
 

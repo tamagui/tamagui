@@ -361,5 +361,3 @@ export const LocationNotification = BentoComponentStub
       : []),
   ],
 } satisfies UserConfig
-
-console.warn('done')
