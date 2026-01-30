@@ -108,15 +108,22 @@ export function useSupabaseSession(client?: SupabaseAuthOnlyClient) {
 
       if (reply.error) {
         console.error(`Error authenticating`, reply.error)
+        setSession(null)
         return
       }
 
-      if (reply.data.session) {
-        setSession(reply.data.session)
-      }
+      // Always update session state (including when null after logout)
+      setSession(reply.data.session)
     }
 
     run()
+
+    // Listen for auth changes to update session state
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
   }, [supabase])
 
   return session
@@ -131,6 +138,14 @@ export const useSupabase = () => {
     if (!supabase) return
 
     const listener = supabase.auth.onAuthStateChange(async (event, currentSession) => {
+      // Skip events that shouldn't trigger user data refetch:
+      // - TOKEN_REFRESHED: fires periodically (~hourly), would cause unnecessary refetches
+      // - INITIAL_SESSION: fires on page load, SWR already handles initial fetch
+      if (event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
+        return
+      }
+
+      // Skip if same user already signed in (prevents duplicate fetches)
       if (event === 'SIGNED_IN') {
         if (session?.user.id === currentSession?.user.id) {
           return

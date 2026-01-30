@@ -349,17 +349,26 @@ const AccountHeader = () => {
   }
   const { userDetails, user, githubUsername } = data
 
+  const supabase = useSupabaseClient()
+
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/logout', {
+      // Sign out on client side first - this clears localStorage and triggers auth state change
+      if (supabase) {
+        await supabase.auth.signOut()
+      }
+
+      // Also call server to clear any server-side session
+      await fetch('/api/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      if (response.ok) {
-        window.location.href = '/'
-      }
+
+      // Clear SWR cache and redirect
+      await mutate('user', null)
+      window.location.href = '/'
     } catch (error) {
       console.error('Logout failed:', error)
     }

@@ -852,7 +852,7 @@ const HeaderMenuMoreContents = () => {
 
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      {!userSwr.data?.userDetails && (
+      {!userSwr.data?.user && (
         <HeadAnchor grid onPress={handleLogin}>
           <span>Login</span>
           <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
@@ -861,7 +861,7 @@ const HeaderMenuMoreContents = () => {
         </HeadAnchor>
       )}
 
-      {userSwr.data?.userDetails && (
+      {userSwr.data?.user && (
         <HeadAnchor
           grid
           onPress={() => {
