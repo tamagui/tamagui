@@ -34,16 +34,24 @@
       "dependsOn": ["^build:js"],
       "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
       "outputs": [],
-      "env": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE", "SKIP_NATIVE_TESTS"],
-      "passThroughEnv": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE", "SKIP_NATIVE_TESTS"]
+      "env": [
+        "TAMAGUI_TARGET",
+        "TEST_NATIVE_PLATFORM",
+        "DISABLE_NATIVE_TEST",
+        "DISABLE_REACT_NATIVE",
+        "SKIP_NATIVE_TESTS"
+      ],
+      "passThroughEnv": [
+        "TAMAGUI_TARGET",
+        "TEST_NATIVE_PLATFORM",
+        "DISABLE_NATIVE_TEST",
+        "DISABLE_REACT_NATIVE",
+        "SKIP_NATIVE_TESTS"
+      ]
     },
     "test:web": {
       "dependsOn": ["^build:js"],
       "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
-      "outputs": []
-    },
-    "test-ios": {
-      "cache": false,
       "outputs": []
     },
     "clean": {

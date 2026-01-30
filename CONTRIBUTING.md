@@ -1,29 +1,23 @@
 # Contributing to `tamagui`
 
-To set up your development environment you'll first need clone the Tamagui repo:
+To set up your development environment you'll need [bun](https://bun.sh) installed, then clone and install:
 
 ```bash
 git clone https://github.com/tamagui/tamagui
-```
-
-This might take some time depending on your internet speed. Once it's done run the following command to install the dependencies:
-
-```bash
+cd tamagui
 bun install
 ```
 
-And then build once:
+The first install will automatically build all packages.
+
+If you are developing actively you can run this to watch and rebuild js and types as you edit:
 
 ```bash
-bun run build:js
-```
-
-As you develop you should run this in a separate terminal, we use `bun` as a quick ts runner:
-
-```bash
-npm i -g bun
 bun run watch
 ```
+
+We compile out js to `dist` for "0-setup" installs by compiling a .native version of every file, and then in every web file we replace react-native with react-native-web. We also build our types out to ./types/*.d.ts for a variety of reasons - it means we can't cause type issues for people with stricter configurations using our packages, it means we can track type regressions (the styled() type setup is impossible delicate to explosions of complexity), and it's generally faster for end users. 
+
 
 ### Linking tamagui into your existing project
 

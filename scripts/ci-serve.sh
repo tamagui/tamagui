@@ -4,9 +4,9 @@ app="$APP_NAME"
 echo "Serving $app"
 
 if [ "$app" = "takeout" ]; then
-  bun run workspace @tamagui/takeout serve:railway
+  cd code/takeout && bun run serve:railway
 elif [ "$app" = "docs" ]; then
-  bun run workspace @tamagui/one-docs serve:railway
+  cd code/one-docs && bun run serve:railway
 else
-  bun run workspace @tamagui/dot-dev serve:railway
+  cd code/tamagui.dev && bun run serve:railway
 fi
