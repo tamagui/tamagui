@@ -6,6 +6,7 @@ import {
   type ThemeSuiteItem,
 } from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
+import { getAccessToken } from '~/features/auth/useSupabaseClient'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
@@ -145,7 +146,12 @@ export class ThemeBuilderStore {
   async load(themeId?: string) {
     if (themeId) {
       try {
-        const res = await fetch(`/api/theme/histories?id=${themeId}`)
+        const accessToken = await getAccessToken()
+        const res = await fetch(`/api/theme/histories?id=${themeId}`, {
+          headers: {
+            ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+          },
+        })
         const data = await res.json()
 
         if (data?.theme_data) {

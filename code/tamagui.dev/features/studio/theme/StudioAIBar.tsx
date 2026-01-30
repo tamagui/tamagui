@@ -19,6 +19,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { getAccessToken } from '../../auth/useSupabaseClient'
 import { defaultModel } from '../../api/generateModels'
 import { getActivePromo } from '../../site/purchase/promoConfig'
 import { purchaseModal } from '../../site/purchase/purchaseModalStore'
@@ -140,6 +141,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
       const lastId = `${type === 'delete' ? themeIdToDelete : id}`
 
+      const accessToken = await getAccessToken()
       const res = await fetch(`/api/theme/generate`, {
         body: JSON.stringify({
           prompt,
@@ -152,6 +154,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         }),
         headers: {
           'Content-Type': 'application/json',
+          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
         },
         method: 'POST',
       })
