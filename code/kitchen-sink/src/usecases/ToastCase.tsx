@@ -1,4 +1,4 @@
-import { Toast, ToastProvider, ToastViewport } from '@tamagui/toast'
+import { Toast, ToastProvider, ToastViewport } from '@tamagui/toast/v1'
 import React from 'react'
 import { Button, YStack } from 'tamagui'
 
