@@ -8,7 +8,7 @@
  * implementation without exposing any sync/legacy APIs.
  */
 import type { TamaguiOptions } from '@tamagui/types';
-export type { ExtractedResponse, TamaguiProjectInfo, } from '@tamagui/static';
+export type { ExtractedResponse, TamaguiProjectInfo } from '@tamagui/static';
 export type { TamaguiOptions } from '@tamagui/types';
 export declare const getPragmaOptions: (props: {
     source: string;

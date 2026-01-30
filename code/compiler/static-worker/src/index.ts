@@ -69,6 +69,11 @@ function getPool(): Piscina {
       // Never terminate due to idle - worker stays alive until close() or process exit
       // This prevents "Terminating worker thread" errors from Piscina during idle
       idleTimeout: Number.POSITIVE_INFINITY,
+      // Give worker thread enough memory for large component extraction
+      resourceLimits: {
+        maxOldGenerationSizeMb: 1024,
+        maxYoungGenerationSizeMb: 256,
+      },
     })
 
     // Handle error events to prevent uncaught exceptions during pool destruction
