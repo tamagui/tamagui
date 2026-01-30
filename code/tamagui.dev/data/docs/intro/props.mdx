@@ -198,6 +198,19 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
 <PropsTable
   data={[
     {
+      name: 'render',
+      required: false,
+      type: `string | JSX.Element | ((props, state) => JSX.Element)`,
+      description: (
+        <span>
+          Control which element or component is rendered. Accepts an HTML tag name (e.g., <code>"button"</code>, <code>"a"</code>),
+          a JSX element, or a render function receiving props and component state. String render props are compiler-optimized.
+          See <a href="/docs/core/styled#render">styled() render documentation</a> for details.
+        </span>
+      ),
+    },
+
+    {
       name: 'transition',
       required: false,
       type: 'string',

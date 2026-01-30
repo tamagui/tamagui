@@ -854,6 +854,13 @@ Lighthouse scores.
 This works because Tamagui generates CSS variables for all theme values. On the
 client, it reads these from the DOM instead of needing the JS object.
 
+<Notice>
+  This optimization only applies to SSR web apps (Next.js, One, Vite SSR). It
+  doesn't apply to Metro/Expo or static sites. Note that v5 themes are already
+  more optimized than v4, so this is mainly relevant if chasing the last few
+  Lighthouse points.
+</Notice>
+
 ### Setup
 
 ```tsx fileName="tamagui.config.ts"

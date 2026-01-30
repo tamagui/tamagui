@@ -273,23 +273,6 @@ loadAnimationDriver('spring', driver)
 // Now components can use animatedBy="spring"
 ```
 
-## Bundle Size Optimization
-
-<Notice theme="green">
-  **Experimental:** Use `react-native-web-lite` to tree-shake animation drivers on web. Set `useReactNativeWebLite: true` in any Tamagui plugin configuration.
-</Notice>
-
-```tsx
-// next.config.js
-const { withTamagui } = require('@tamagui/next-plugin')
-
-module.exports = withTamagui({
-  config: './tamagui.config.ts',
-  components: ['tamagui'],
-  useReactNativeWebLite: true,
-})
-```
-
 ## See Also
 
 - [Animations Overview](/docs/core/animations)
