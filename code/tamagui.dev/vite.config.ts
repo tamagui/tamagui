@@ -32,7 +32,7 @@ if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
     })
     console.info('Build complete!')
   } catch (e) {
-    console.error('Build failed. You may need to run `yarn build` from the repo root.')
+    console.error('Build failed. You may need to run `bun run build` from the repo root.')
     throw e
   }
 }

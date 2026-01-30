@@ -123,7 +123,6 @@ export class AppRegistry {
       const params = { ...appParameters }
       params.rootTag = `#${params.rootTag.id}`
 
-      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log(
         `Running application "${appKey}" with appParams:\n`,
         params,

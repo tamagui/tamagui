@@ -2,7 +2,6 @@
   "workbench.preferredDarkColorTheme": "Monochrome Dark",
   "workbench.preferredLightColorTheme": "Min Light",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "biome.enabled": false,
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "[json]": {

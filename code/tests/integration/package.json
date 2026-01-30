@@ -4,14 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "web": "yarn dev",
+    "web": "bun run dev",
     "test": "node -r esbuild-register ../../../node_modules/.bin/playwright test simple.integration.test.js",
     "build:prod": "vite build",
     "preview": "vite preview",
     "dev": "NODE_ENV=development vite --host --clearScreen false",
-    "dev:extract": "EXTRACT=1 yarn dev",
+    "dev:extract": "EXTRACT=1 bun run dev",
     "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest"
+    "upgrade:tamagui": "bunx npm-check-updates -u '*tamagui*' '@tamagui/*' && bun install"
   },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",

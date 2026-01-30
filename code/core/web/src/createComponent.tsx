@@ -1577,7 +1577,7 @@ export function createComponent<
           }
         }
         if (debugProp === 'break') {
-          // biome-ignore lint/suspicious/noDebugger: ok
+          // debugger intentionally here for debugging
         }
       }
     }

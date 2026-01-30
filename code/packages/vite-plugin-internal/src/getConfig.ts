@@ -123,6 +123,13 @@ export function getConfig(tamaguiPlugin: any) {
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+      // limit workers to avoid OOM in CI
+      pool: 'forks',
+      poolOptions: {
+        forks: {
+          maxForks: process.env.CI ? 2 : undefined,
+        },
+      },
     },
   })
 }

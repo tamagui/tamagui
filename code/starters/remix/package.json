@@ -10,7 +10,7 @@
     "typecheck": "tsc",
     "prod": "npm run build && npm run start",
     "check:tamagui": "tamagui check",
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest"
+    "upgrade:tamagui": "bunx npm-check-updates -u '*tamagui*' '@tamagui/*' && bun install"
   },
   "dependencies": {
     "@remix-run/node": "^2.12.1",
@@ -25,7 +25,6 @@
     "tamagui": "^1.143.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.2",
     "@remix-run/dev": "^2.12.1",
     "@tamagui/cli": "^1.143.1",
     "@types/react": "~19.1.10",

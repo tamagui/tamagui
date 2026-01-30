@@ -83,7 +83,7 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "check": "yarn check-circular-deps",
+    "check": "bun run check-circular-deps",
     "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {

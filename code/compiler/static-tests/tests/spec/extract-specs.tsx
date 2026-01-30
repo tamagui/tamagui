@@ -13,7 +13,7 @@ import {
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'
 
-// biome-ignore lint/security/noGlobalEval: intentionally non-static for compiler testing
+// intentionally non-static for compiler testing
 const nonStaticInt = eval(`10`)
 
 type TestProps = {

@@ -32,7 +32,7 @@
   },
   "scripts": {
     "build": "tamagui-build --skip-types",
-    "watch": "yarn build --watch",
+    "watch": "bun run build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "local-npm-link": "npm link --local --force"

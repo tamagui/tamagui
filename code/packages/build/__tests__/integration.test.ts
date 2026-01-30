@@ -15,7 +15,6 @@ const distCjsFilePath = join(distPath, 'cjs', 'index.cjs')
 const watchDistCjsFilePath = join(watchDistPath, 'cjs', 'watch.cjs')
 const distEsmFilePath = join(distPath, 'esm', 'index.mjs')
 const distTypesFilePath = join(simplePackagePath, 'types', 'index.d.ts')
-// // biome-ignore lint/suspicious/noConsoleLog: <explanation>
 // console.log({
 //   distCjsFilePath,
 //   distEsmFilePath,
@@ -93,13 +92,11 @@ describe('tamagui-build integration test', () => {
         let fileModified = false
 
         watchProcess.stdout.on('data', (data) => {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('Watch process output:', data.toString())
+                    console.log('Watch process output:', data.toString())
           if (data.toString().includes('built tamagui-build-test-watch-package')) {
             if (!initialBuildComplete) {
               initialBuildComplete = true
-              // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-              console.log('Initial build complete, modifying file...')
+                            console.log('Initial build complete, modifying file...')
               // Modify the source file
               const newContent = `export const greet = (name: string): string => {
   return \`Hi, \${name}!\`;
@@ -107,8 +104,7 @@ describe('tamagui-build integration test', () => {
               writeFileSync(watchSrcFilePath, newContent)
               fileModified = true
             } else if (fileModified) {
-              // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-              console.log('Rebuild after file modification complete')
+                            console.log('Rebuild after file modification complete')
               // Check the updated content of the output file
               const output = readFileSync(watchDistCjsFilePath, 'utf-8')
               expect(output).toContain('Hi,')

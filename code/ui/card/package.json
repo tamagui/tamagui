@@ -45,7 +45,6 @@
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-native": "0.81.5"

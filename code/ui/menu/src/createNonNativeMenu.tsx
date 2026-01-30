@@ -228,7 +228,6 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           componentName={TRIGGER_NAME}
           scope={scope || DROPDOWN_MENU_CONTEXT}
         >
-          {/* biome-ignore lint/a11y/useSemanticElements: intentionally not using button element for styling flexibility */}
           <Comp
             role="button"
             id={context.triggerId}

@@ -524,7 +524,6 @@ function createProxiedStore(storeInfo: StoreInfo) {
                 logStack.clear()
               }
 
-              // biome-ignore lint/correctness/noUnsafeFinally: ok
               return res
             }
           },

@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "tamagui-build --skip-native",
-    "watch": "yarn build --skip-native --watch",
+    "watch": "bun run build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "test": "vitest run"

@@ -4,8 +4,8 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest",
-    "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary",
+    "upgrade:tamagui": "bunx npm-check-updates -u '*tamagui*' '@tamagui/*' && bun install",
+    "upgrade:tamagui:canary": "bunx npm-check-updates -u '*tamagui*@canary' '@tamagui/*@canary' && bun install",
     "check:tamagui": "tamagui check",
     "generate": "tamagui generate",
     "start": "bunx expo start -c",
@@ -57,5 +57,5 @@
   "jest": {
     "preset": "jest-expo"
   },
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "bun@1.2.22"
 }

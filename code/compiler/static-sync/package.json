@@ -25,7 +25,7 @@
   },
   "scripts": {
     "build": "tamagui-build --skip-native --bundle",
-    "watch": "yarn build --watch",
+    "watch": "bun run build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

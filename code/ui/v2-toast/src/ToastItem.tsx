@@ -562,7 +562,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   return (
     <ToastItemFrame
       ref={toastRef}
-      // biome-ignore lint/a11y/useSemanticElements: we can't use <output> element as this is a styled Tamagui component
       role="status"
       aria-live="polite"
       aria-atomic
