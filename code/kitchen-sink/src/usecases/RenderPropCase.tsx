@@ -116,11 +116,12 @@ export function RenderPropCase() {
         <Text testID="styled-button-text">Styled Button (render='button')</Text>
       </StyledButton>
 
-      {/* @ts-expect-error - href only valid on web */}
+      {/* href is valid because render='a' makes this an anchor element */}
+      {/* @ts-ignore - href typing for render prop anchor not fully supported yet */}
       <StyledAnchor
         testID="styled-anchor"
         data-testid="styled-anchor"
-        href={isWeb ? '#' : undefined}
+        {...(isWeb ? { href: '#' } : {})}
       >
         Styled Anchor (render='a')
       </StyledAnchor>

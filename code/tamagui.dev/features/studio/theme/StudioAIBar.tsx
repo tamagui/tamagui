@@ -380,7 +380,7 @@ const ThemeToggle = () => {
           outlineWidth={0}
           outlineStyle="solid"
           activeStyle={{
-            bg: '$accent10',
+            backgroundColor: '$accent10',
           }}
           onCheckedChange={(on) => {
             setChecked(on)
