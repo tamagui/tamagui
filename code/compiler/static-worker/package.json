@@ -29,8 +29,6 @@
     "watch": "tamagui-build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "test": "vitest run",
     "test:watch": "vitest"
   },

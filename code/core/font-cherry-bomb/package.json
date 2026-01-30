@@ -35,8 +35,6 @@
     "build": "tamagui-build",
     "subset": "node -r esbuild-register subset.ts",
     "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

@@ -30,8 +30,6 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "test": "vitest --run"
   },
   "dependencies": {

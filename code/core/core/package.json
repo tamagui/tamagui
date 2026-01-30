@@ -78,8 +78,6 @@
     "build": "tamagui-build",
     "afterBuild": "node bundle-native.mjs",
     "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

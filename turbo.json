@@ -10,7 +10,6 @@
       "dependsOn": ["^build"],
       "inputs": [
         "tsconfig.json",
-        "biome.json",
         "package.json",
         "src/**/*",
         "tamagui-build.js",
@@ -61,14 +60,6 @@
     "clean:build": {
       "outputs": [],
       "cache": false
-    },
-    "lint": {
-      "cache": false,
-      "outputs": []
-    },
-    "lint:fix": {
-      "cache": false,
-      "outputs": ["src/**/*"]
     },
     "dev": {
       "cache": false

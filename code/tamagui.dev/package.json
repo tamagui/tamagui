@@ -10,8 +10,6 @@
     "dev": "one dev",
     "dev:clean": "one dev --clean",
     "clean": "one clean",
-    "lint": "biome check",
-    "lint:fix": "biome check --write",
     "serve": "one serve --port 8081",
     "build": "tamagui generate-css || true",
     "build:prod": "one build",

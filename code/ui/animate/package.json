@@ -37,9 +37,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src"
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/animate-presence": "workspace:*"

@@ -9,9 +9,7 @@
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
     "prod": "npm run build && npm run start",
-    "lint": "biome check ./app",
     "check:tamagui": "tamagui check",
-    "lint:fix": "biome check ./app --fix",
     "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest"
   },
   "dependencies": {

@@ -8836,8 +8836,6 @@
     "build": "TAMAGUI_BUILD_CLEANUP_JS_FILES=1 tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean:build": "tamagui-build clean:build",
     "generate": "node ./bin/build.cjs"
   },

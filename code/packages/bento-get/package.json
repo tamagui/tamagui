@@ -33,8 +33,6 @@
   "scripts": {
     "build": "tamagui-build --skip-types",
     "watch": "yarn build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "local-npm-link": "npm link --local --force"

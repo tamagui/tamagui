@@ -27,9 +27,7 @@
     "build": "tamagui-build --skip-native --bundle",
     "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src"
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
