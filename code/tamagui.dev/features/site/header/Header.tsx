@@ -209,14 +209,13 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <UpgradeToProPopover />
 
-        {/* <Theme name="teal">
+        <Theme name="teal">
           <Link href="/blog/version-two">
             <Button
               size="$2"
               bg="$color3"
               borderWidth={0}
               theme="teal"
-              // boxShadow="inset 0 -2px 0 1px $color1"
               $theme-light={{
                 boxShadow: 'inset 0 -2px 0 1px $color8',
               }}
@@ -229,7 +228,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               </Span>
             </Button>
           </Link>
-        </Theme> */}
+        </Theme>
       </XStack>
 
       <View flex={1} />
