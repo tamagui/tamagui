@@ -11,12 +11,13 @@ on:
       - v2
       - 'v2-*'
 
+# cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
 concurrency:
   group: checks-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  tests:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,18 +26,32 @@ jobs:
       - name: Install
         uses: ./.github/actions/install
 
-      - name: Run web tests
-        run: |
-          cd code/compiler/static-tests
-          # capture output to check for passed tests even if worker cleanup fails
-          set +e
-          output=$(DISABLE_NATIVE_TEST=1 INCLUDE_CSS_COLOR_NAMES=1 npx vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run tests/*.web.test.tsx 2>&1)
-          exit_code=$?
-          echo "$output"
-          # check if tests passed (vitest 4 has worker cleanup bug that causes non-zero exit even when tests pass)
-          if echo "$output" | grep -q "Test Files.*passed"; then
-            echo "Tests passed!"
-            exit 0
-          else
-            exit $exit_code
-          fi
+      - name: Check
+        run: bun run check
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Lint
+        run: bun run lint
+
+  tests:
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Install playwright
+        run: bunx playwright install
+
+      - uses: nick-fields/retry@v3
+        name: 'Run web tests'
+        with:
+          timeout_minutes: 25
+          max_attempts: 2
+          command: 'bun run test:web'

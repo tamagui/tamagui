@@ -343,19 +343,6 @@ export async function watchTamaguiConfig(
 }
 
 /**
- * Load Tamagui build configuration synchronously
- * This is only used for loading tamagui.build.ts config, not the full tamagui config
- */
-export async function loadTamaguiBuildConfig(
-  tamaguiOptions: Partial<TamaguiOptions> | undefined
-): Promise<TamaguiOptions> {
-  // Import from static package for this sync operation
-  const { default: Static } = await import('@tamagui/static')
-
-  return Static.loadTamaguiBuildConfigSync(tamaguiOptions)
-}
-
-/**
  * Clear the worker's config cache
  * Call this when config files change
  */
