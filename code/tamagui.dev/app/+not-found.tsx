@@ -1,4 +1,4 @@
-import { LogoIcon } from '@tamagui/logo/types'
+import { LogoIcon } from '@tamagui/logo'
 import { Container } from '../components/Containers'
 import { H1, YStack } from 'tamagui'
 
