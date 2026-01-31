@@ -37,6 +37,7 @@ export default function Blog() {
                 title={frontmatter.title}
                 render="a"
                 width="calc(50% - var(--space-2))"
+                minH="max-content"
                 $md={{
                   width: '100%',
                   maxWidth: '100%',
