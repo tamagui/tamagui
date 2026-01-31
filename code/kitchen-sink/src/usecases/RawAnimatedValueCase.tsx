@@ -29,24 +29,30 @@ export function RawAnimatedValueCase() {
   useEffect(() => {
     const styleObj = {
       opacity,
-      transform: [
-        { translateY },
-        { scale },
-      ],
+      transform: [{ translateY }, { scale }],
     }
 
     // check what __getValue returns
+    // @ts-expect-error
     const opacityValue = opacity.__getValue?.() ?? 'no __getValue'
+    // @ts-expect-error
     const translateYValue = translateY.__getValue?.() ?? 'no __getValue'
+    // @ts-expect-error
     const scaleValue = scale.__getValue?.() ?? 'no __getValue'
 
-    setDebugInfo(JSON.stringify({
-      opacityValue,
-      translateYValue,
-      scaleValue,
-      opacityType: typeof opacity,
-      opacityConstructor: opacity?.constructor?.name,
-    }, null, 2))
+    setDebugInfo(
+      JSON.stringify(
+        {
+          opacityValue,
+          translateYValue,
+          scaleValue,
+          opacityType: typeof opacity,
+          opacityConstructor: opacity?.constructor?.name,
+        },
+        null,
+        2
+      )
+    )
 
     console.log('[RAW_ANIMATED] Initial values:', {
       opacity: opacityValue,
@@ -119,18 +125,10 @@ export function RawAnimatedValueCase() {
       </Paragraph>
 
       <XStack gap="$4">
-        <Button
-          testID="animate-in-trigger"
-          onPress={animateIn}
-          disabled={isAnimated}
-        >
+        <Button testID="animate-in-trigger" onPress={animateIn} disabled={isAnimated}>
           Animate In
         </Button>
-        <Button
-          testID="animate-out-trigger"
-          onPress={animateOut}
-          disabled={!isAnimated}
-        >
+        <Button testID="animate-out-trigger" onPress={animateOut} disabled={!isAnimated}>
           Animate Out
         </Button>
       </XStack>
@@ -143,10 +141,7 @@ export function RawAnimatedValueCase() {
           {
             opacity,
             backgroundColor,
-            transform: [
-              { translateY },
-              { scale },
-            ],
+            transform: [{ translateY }, { scale }],
           },
         ]}
       />
@@ -162,12 +157,7 @@ export function RawAnimatedValueCase() {
         <Paragraph size="$1" fontFamily="$mono">
           Debug Info:
         </Paragraph>
-        <Paragraph
-          testID="debug-info"
-          size="$1"
-          fontFamily="$mono"
-          whiteSpace="pre"
-        >
+        <Paragraph testID="debug-info" size="$1" fontFamily="$mono" whiteSpace="pre">
           {debugInfo}
         </Paragraph>
       </YStack>
@@ -201,7 +191,7 @@ function ComputedStyleDisplay({ targetId }: { targetId: string }) {
         }
 
         const newStyles = JSON.stringify(info, null, 2)
-        setComputedStyles(prev => {
+        setComputedStyles((prev) => {
           if (prev !== newStyles) {
             console.log('[RAW_ANIMATED] Computed style changed:', info)
           }
@@ -221,20 +211,11 @@ function ComputedStyleDisplay({ targetId }: { targetId: string }) {
   }, [targetId])
 
   return (
-    <YStack
-      backgroundColor="$backgroundHover"
-      padding="$2"
-      borderRadius="$2"
-    >
+    <YStack backgroundColor="$backgroundHover" padding="$2" borderRadius="$2">
       <Paragraph size="$1" fontFamily="$mono">
         Computed Styles:
       </Paragraph>
-      <Paragraph
-        testID="computed-styles"
-        size="$1"
-        fontFamily="$mono"
-        whiteSpace="pre"
-      >
+      <Paragraph testID="computed-styles" size="$1" fontFamily="$mono" whiteSpace="pre">
         {computedStyles}
       </Paragraph>
     </YStack>
