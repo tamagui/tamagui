@@ -12,7 +12,7 @@
     "test-output": "node -r esbuild-register ./test-output.tsx",
     "test": "bun run test:native && bun run test:web",
     "test:update": "bun run test:extract:web --update && bun run test:babel:native --update && bun run test:babel:web --update && bun run test:styled:web --update && bun run test:flatten:native --update && bun run test:webpack --update",
-    "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run",
+    "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run --no-file-parallelism",
     "test:run:web": "DISABLE_NATIVE_TEST=1 bun run test:run",
     "test:concatClassName": "bun run test:run tests/concatClassName.web.test.tsx",
     "test:webpack": "bun run pretest && bun run test:run tests/webpack.test.tsx --reporter=verbose --pool=forks",
