@@ -1,4 +1,4 @@
-import { Check, Edit3, LogOut, Plus, Search, X } from '@tamagui/lucide-icons'
+import { Check, Edit3, Gift, LogOut, Plus, Search, X } from '@tamagui/lucide-icons'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
@@ -31,7 +31,7 @@ import {
 } from 'tamagui'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
-import { CURRENT_PRODUCTS } from '~/features/stripe/products'
+import { CURRENT_PRODUCTS, V1_PRODUCTS } from '~/features/stripe/products'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
 import { useClipboard } from '~/hooks/useClipboard'
@@ -1398,6 +1398,146 @@ const SupportTabContent = ({
   )
 }
 
+// card for V1 users to enable automatic V2 renewal
+const V2RenewalCard = ({ subscription }: { subscription: Subscription }) => {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [error, setError] = useState<string | null>(null)
+
+  // check if already enabled from metadata
+  const metadata = subscription.metadata as Record<string, any> | null
+  const isEnabled = metadata?.v2_renewal_enabled === 'true'
+
+  if (isEnabled) {
+    return (
+      <YStack
+        gap="$3"
+        p="$4"
+        borderWidth={1}
+        borderColor="$green6"
+        bg="$green2"
+        rounded="$4"
+      >
+        <XStack gap="$3" alignItems="center">
+          <Gift size={24} color="$green10" />
+          <YStack flex={1}>
+            <H4 fontFamily="$mono" color="$green11">
+              New Pro Plan Enabled ✓
+            </H4>
+            <Paragraph size="$3" color="$green10">
+              When your subscription renews, you'll automatically get the new Pro plan
+              with 35% off.
+            </Paragraph>
+          </YStack>
+        </XStack>
+      </YStack>
+    )
+  }
+
+  const handleEnable = async () => {
+    setStatus('loading')
+    setError(null)
+
+    try {
+      const response = await fetch('/api/enable-v2-renewal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscription_id: subscription.id }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setStatus('error')
+        setError(data.error || 'Failed to enable V2 renewal')
+        return
+      }
+
+      setStatus('success')
+    } catch (err) {
+      setStatus('error')
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <YStack
+        gap="$3"
+        p="$4"
+        borderWidth={1}
+        borderColor="$green6"
+        bg="$green2"
+        rounded="$4"
+      >
+        <XStack gap="$3" alignItems="center">
+          <Gift size={24} color="$green10" />
+          <YStack flex={1}>
+            <H4 fontFamily="$mono" color="$green11">
+              New Pro Plan Enabled! 🎉
+            </H4>
+            <Paragraph size="$3" color="$green10">
+              When your subscription renews, you'll automatically get the new Pro plan
+              with 35% off.
+            </Paragraph>
+          </YStack>
+        </XStack>
+      </YStack>
+    )
+  }
+
+  return (
+    <YStack
+      gap="$4"
+      p="$4"
+      borderWidth={1}
+      borderColor="$purple6"
+      bg="$purple2"
+      rounded="$4"
+    >
+      <XStack gap="$3" alignItems="flex-start">
+        <Gift size={24} color="$purple10" />
+        <YStack flex={1} gap="$2">
+          <H4 fontFamily="$mono" color="$purple11">
+            Upgrade to New Pro Plan
+          </H4>
+          <Paragraph size="$3" color="$purple10">
+            Enable automatic upgrade and get <strong>35% off</strong> when your
+            subscription renews. You'll get access to:
+          </Paragraph>
+          <YStack gap="$1" pl="$2">
+            <Paragraph size="$2" color="$purple10">
+              • Takeout 2 - Tamagui 2, One 1, and Zero stack
+            </Paragraph>
+            <Paragraph size="$2" color="$purple10">
+              • Takeout Static - Web-only starter with 100 Lighthouse
+            </Paragraph>
+            <Paragraph size="$2" color="$purple10">
+              • Unlimited team members - No per-seat pricing
+            </Paragraph>
+          </YStack>
+        </YStack>
+      </XStack>
+
+      {error && (
+        <Paragraph size="$3" color="$red10">
+          {error}
+        </Paragraph>
+      )}
+
+      <Button
+        theme="purple"
+        disabled={status === 'loading'}
+        onPress={handleEnable}
+        alignSelf="flex-start"
+      >
+        <Button.Text>
+          {status === 'loading' ? 'Enabling...' : 'Enable New Pro Plan (35% off)'}
+        </Button.Text>
+      </Button>
+    </YStack>
+  )
+}
+
 const ManageTab = ({
   subscriptions,
   isTeamMember,
@@ -1684,6 +1824,24 @@ const ManageTab = ({
           })}
         </YStack>
       )}
+
+      {/* V2 Renewal Section for V1 Subscriptions */}
+      {!isTeamMember &&
+        sortedSubscriptions
+          .filter((sub) => {
+            // check if this is a V1 subscription
+            return sub.subscription_items?.some((item) => {
+              const productId = item.price?.product?.id
+              return productId && V1_PRODUCTS.includes(productId as any)
+            })
+          })
+          .map((v1Sub) => (
+            <YStack key={`v2-renewal-${v1Sub.id}`} gap="$4">
+              <Separator />
+              <H3>Upgrade to New Pro Plan</H3>
+              <V2RenewalCard subscription={v1Sub} />
+            </YStack>
+          ))}
 
       {/* Support Tier Section */}
       {!isTeamMember && (hasProjects || hasSubscriptions) && (
