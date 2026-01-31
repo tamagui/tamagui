@@ -124,9 +124,14 @@ export function getConfig(tamaguiPlugin: any) {
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
       // increase teardown timeout to prevent worker cleanup timeout issues
-      teardownTimeout: 30000,
-      // use threads pool instead of forks to avoid worker cleanup issues
-      pool: 'threads',
+      teardownTimeout: 60000,
+      // use forks with higher timeout and singleFork to avoid worker cleanup issues
+      pool: 'forks',
+      poolOptions: {
+        forks: {
+          singleFork: true,
+        },
+      },
     },
   })
 }
