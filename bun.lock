@@ -186,7 +186,7 @@
         "babel-loader": "^9.1.3",
         "css-loader": "^6.7.4",
         "dedent": "^0.7.0",
-        "esbuild-loader": "^4.2.2",
+        "esbuild-loader": "4.3.0",
         "null-loader": "^4.0.1",
         "react": ">=19",
         "react-native-web": "^0.21.0",
@@ -194,8 +194,7 @@
         "style-loader": "^3.3.3",
         "typescript": "~5.9.2",
         "vitest": "4.0.4",
-        "webpack": "^5.88.2",
-        "whatwg-url": "^5.0.0",
+        "webpack": "5.99.7",
       },
       "peerDependencies": {
         "react": ">=19",
@@ -217,7 +216,7 @@
     },
     "code/compiler/vite-plugin": {
       "name": "@tamagui/vite-plugin",
-      "version": "2.0.0-rc.0",
+      "version": "2.0.0-rc.0-1769885482630",
       "dependencies": {
         "@tamagui/fake-react-native": "workspace:*",
         "@tamagui/proxy-worm": "workspace:*",
@@ -1489,7 +1488,7 @@
     },
     "code/packages/build/__tests__/fixtures/simple-package": {
       "name": "tamagui-build-test-simple-tpackage",
-      "version": "2.0.0-rc.0",
+      "version": "2.0.0-rc.0-1769885482630",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "typescript": "~5.9.2",
@@ -1497,7 +1496,7 @@
     },
     "code/packages/build/__tests__/fixtures/watch-package": {
       "name": "tamagui-build-test-watch-package",
-      "version": "2.0.0-rc.0",
+      "version": "2.0.0-rc.0-1769885482630",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "typescript": "~5.9.2",
@@ -1998,7 +1997,7 @@
     },
     "code/tests/next-webpack/packages/app": {
       "name": "app",
-      "version": "2.0.0-rc.0",
+      "version": "2.0.0-rc.0-1769885482630",
       "dependencies": {
         "@my/ui": "workspace:^",
         "@react-navigation/native": "^7.0.14",
@@ -2021,7 +2020,7 @@
     },
     "code/tests/next-webpack/packages/config": {
       "name": "@my/config",
-      "version": "2.0.0-rc.0",
+      "version": "2.0.0-rc.0-1769885482630",
       "dependencies": {
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/config": "workspace:*",
@@ -2036,7 +2035,7 @@
     },
     "code/tests/next-webpack/packages/ui": {
       "name": "@my/ui",
-      "version": "2.0.0-rc.0",
+      "version": "2.0.0-rc.0-1769885482630",
       "dependencies": {
         "@my/config": "workspace:^",
         "@tamagui/next-theme": "workspace:*",
