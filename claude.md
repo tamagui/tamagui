@@ -109,3 +109,18 @@ When writing tests for focus behavior or component interactions:
 ## iOS Development
 
 See [docs/using-ios.md](./docs/using-ios.md) for iOS native development and Detox testing tips.
+
+## tamagui.dev API Authentication
+
+When making authenticated API calls from the client side in tamagui.dev, always use the `authFetch` helper:
+
+```ts
+import { authFetch } from '~/features/api/authFetch'
+
+const response = await authFetch('/api/some-endpoint', {
+  method: 'POST',
+  body: JSON.stringify({ ... }),
+})
+```
+
+**Why this matters:** Cookies alone are not reliable for auth in production due to cross-origin/SameSite issues. The `authFetch` helper automatically includes the Authorization header with the user's access token. All payment/subscription endpoints require this.
