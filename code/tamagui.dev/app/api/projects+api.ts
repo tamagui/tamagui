@@ -109,7 +109,8 @@ const createProject = async (req: Request) => {
     )
   }
 
-  // Calculate updates_expire_at (1 year from now)
+  // Calculate dates
+  const now = new Date()
   const updatesExpireAt = new Date()
   updatesExpireAt.setFullYear(updatesExpireAt.getFullYear() + 1)
 
@@ -119,6 +120,7 @@ const createProject = async (req: Request) => {
       user_id: user.id,
       name,
       domain,
+      license_purchased_at: now.toISOString(),
       updates_expire_at: updatesExpireAt.toISOString(),
     })
     .select()
