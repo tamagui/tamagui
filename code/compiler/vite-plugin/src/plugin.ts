@@ -118,9 +118,7 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
 export function tamaguiPlugin({
   disableResolveConfig,
   ...tamaguiOptionsIn
-}: TamaguiOptions & { disableResolveConfig?: boolean } = {}):
-  | Plugin
-  | Plugin[] {
+}: TamaguiOptions & { disableResolveConfig?: boolean } = {}): Plugin | Plugin[] {
   // extraction ON by default, set disableExtraction: true to opt out
   let shouldExtract = !tamaguiOptionsIn.disableExtraction
   let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined
