@@ -134,65 +134,83 @@ export function sendProductRenewalEmail(
 }
 
 /**
- * Send email to V1 subscribers when their subscription is expiring
- * Informs them they need to purchase the new V2 plan to continue access
+ * Send email to V1 subscribers about Takeout 2 with 35% discount
+ * Used for both expiring subscriptions and general announcements
  */
-export function sendV1ExpirationEmail(email: string, args: { name: string }) {
+export function sendV1UpgradeEmail(email: string, args: { name: string }) {
   if (process.env.NODE_ENV !== 'production') {
-    console.info(`Not sending V1 expiration email to ${email} since we're not on prod.`)
+    console.info(`Not sending V1 upgrade email to ${email} since we're not on prod.`)
     return
   }
 
   const client = new postmark.ServerClient(serverToken)
+  const couponCode = 'V1_UPGRADE_35'
 
   const htmlBody = `
 <!DOCTYPE html>
 <html>
+<head>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    h1 { color: #000; }
+    h2 { color: #333; margin-top: 30px; }
+    .cta-button { background-color: #000; color: #fff !important; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 20px 0; font-weight: 600; }
+    .coupon-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 20px; border-radius: 12px; text-align: center; margin: 24px 0; }
+    .coupon-code { font-size: 28px; font-weight: bold; letter-spacing: 2px; margin: 10px 0; font-family: monospace; }
+    .coupon-discount { font-size: 18px; opacity: 0.9; }
+    ul { padding-left: 20px; }
+    li { margin: 8px 0; }
+    .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 14px; }
+  </style>
+</head>
 <body>
-  <h1>Hello ${args.name}!</h1>
+  <h1>Hey ${args.name}! 👋</h1>
 
-  <p>Your Tamagui Pro subscription is expiring soon and will not be renewed.</p>
+  <p>Thank you for being a Tamagui Pro subscriber - we really appreciate your support!</p>
 
-  <h2>Important: We've Updated Our Pro Plan</h2>
+  <p>We're excited to announce <strong>Takeout 2</strong> is here, and it's the realization of years of effort to make a more realtime, responsive and Rails-like starter for React Native + Web.</p>
 
-  <p>We've completely revamped Tamagui Pro for V2 with a new per-project licensing model that includes:</p>
-
-  <ul>
-    <li><strong>All Templates</strong> - V1 Takeout, V2 Takeout, and the new Takeout Static (100 Lighthouse score)</li>
-    <li><strong>Unlimited Team Members</strong> - No more per-seat pricing</li>
-    <li><strong>1 Year of Updates</strong> - Included with your purchase</li>
-    <li><strong>Basic Chat Support</strong> - Included at no extra cost</li>
-    <li><strong>Lifetime Code Rights</strong> - Keep the code forever</li>
-  </ul>
-
-  <h2>How to Continue Access</h2>
-
-  <p>To maintain access to Tamagui Pro features, you'll need to purchase the new plan:</p>
-
-  <p><a href="https://tamagui.dev/takeout" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Get Tamagui Pro V2 - $400</a></p>
-
-  <p>The new plan is $400 per project (one web domain + iOS + Android), with optional $100/year upgrades to continue receiving updates after the first year.</p>
-
-  <h2>What Happens When Your Subscription Expires?</h2>
+  <h2>What's New in Takeout 2</h2>
 
   <ul>
-    <li>You'll lose access to the private GitHub repositories</li>
-    <li>Your existing code will continue to work (you own what you've downloaded)</li>
-    <li>You won't receive new updates or features</li>
+    <li><strong>Takeout 2</strong> - Featuring Tamagui 2, One 1, and Zero, it's a stack we poured effort into for years with way more refinement, great deployment / IaC options, and tons of scripts, helpers, hooks and UI in the box. Gets a >95 Lighthouse on a beautiful landing page that seamlessly transitions into a fully-loaded app experience.</li>
+    <li><strong>Takeout Static</strong> - A nice simplified web-only starter with Vercel deploy, MDX blog and docs, and 100 Lighthouse.</li>
+    <li><strong>Unlimited Team Members</strong> - No more per-seat pricing, instead per-project with friendly pricing.</li>
   </ul>
 
-  <p>If you have any questions about the transition, please reach out to us at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
+  <h2>New Pricing</h2>
 
-  <p>Thank you for being a Tamagui Pro subscriber!<br>The Tamagui Team</p>
+  <p>The new plan is <strong>$400 per project</strong> (one web domain + iOS + Android), with an optional <strong>$100/year</strong> to continue receiving updates after the first year.</p>
 
-  <table class="body-sub">
-    <tr>
-      <td>
-        <p class="sub">If you're having trouble with the button above, copy and paste this URL into your web browser:</p>
-        <p class="sub">https://tamagui.dev/takeout</p>
-      </td>
-    </tr>
-  </table>
+  <h2>Fixed Checkout</h2>
+
+  <p>We recently fixed an issue where some V1 subscribers couldn't complete the V2 checkout. If you experienced any trouble purchasing before, it should be working now!</p>
+
+  <p>As a thank you for being an early supporter, here's an exclusive discount:</p>
+
+  <div class="coupon-box">
+    <div class="coupon-discount">35% off</div>
+    <div class="coupon-code">${couponCode}</div>
+  </div>
+
+  <p style="text-align: center;">
+    <a href="https://tamagui.dev/takeout" class="cta-button">Get Takeout 2</a>
+  </p>
+
+  <p>You can also check out the dedicated demo/landing for Takeout 2:</p>
+  <ul>
+    <li><a href="https://takeout.tamagui.dev">https://takeout.tamagui.dev</a></li>
+  </ul>
+
+  <h2>Your Current Subscription</h2>
+
+  <p>You can manage your V1 subscription anytime from your <a href="https://tamagui.dev/account">account page</a>.</p>
+
+  <p>If you have any questions or need help, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
+
+  <div class="footer">
+    <p>Thanks for being part of the Tamagui family!<br><strong>- Nate & the Tamagui Team</strong></p>
+  </div>
 </body>
 </html>
   `.trim()
@@ -200,7 +218,12 @@ export function sendV1ExpirationEmail(email: string, args: { name: string }) {
   return client.sendEmail({
     From: 'support@tamagui.dev',
     To: email,
-    Subject: 'Your Tamagui Pro subscription is expiring - Action required',
+    Subject: 'Introducing Takeout 2 + 35% Off for V1 Customers 🎉',
     HtmlBody: htmlBody,
   })
 }
+
+/**
+ * @deprecated Use sendV1UpgradeEmail instead
+ */
+export const sendV1ExpirationEmail = sendV1UpgradeEmail
