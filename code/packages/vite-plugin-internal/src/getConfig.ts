@@ -123,15 +123,6 @@ export function getConfig(tamaguiPlugin: any) {
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-      // increase teardown timeout to prevent worker cleanup timeout issues
-      teardownTimeout: 60000,
-      // use forks with higher timeout and singleFork to avoid worker cleanup issues
-      pool: 'forks',
-      poolOptions: {
-        forks: {
-          singleFork: true,
-        },
-      },
     },
   })
 }
