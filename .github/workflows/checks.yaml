@@ -37,8 +37,6 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,11 +45,11 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Install playwright
-        run: bunx playwright install
+        run: npx playwright install
 
       - uses: nick-fields/retry@v3
         name: 'Run web tests'
         with:
           timeout_minutes: 25
           max_attempts: 2
-          command: 'bun run test:web'
+          command: 'npm run test:web -w @tamagui/static-tests'
