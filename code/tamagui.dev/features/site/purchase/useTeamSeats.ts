@@ -29,11 +29,18 @@ export type TeamSubscription = {
 }
 
 export const useTeamSeats = (shouldFetch = true) => {
-  return useSWR<TeamSubscription>(shouldFetch ? '/api/team-seat' : null, (url) =>
-    fetch(url).then((res) => {
-      if (!res.ok) throw new Error('Failed to fetch team seats')
-      return res.json()
-    })
+  return useSWR<TeamSubscription>(
+    shouldFetch ? '/api/team-seat' : null,
+    (url) =>
+      fetch(url).then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch team seats')
+        return res.json()
+      }),
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      keepPreviousData: true,
+    }
   )
 }
 

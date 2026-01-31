@@ -343,16 +343,15 @@ export async function watchTamaguiConfig(
 }
 
 /**
- * Load Tamagui build configuration synchronously
- * This is only used for loading tamagui.build.ts config, not the full tamagui config
+ * Load Tamagui build configuration asynchronously
+ * Uses esbuild.transform() instead of esbuild-register to avoid EPIPE errors
  */
 export async function loadTamaguiBuildConfig(
   tamaguiOptions: Partial<TamaguiOptions> | undefined
 ): Promise<TamaguiOptions> {
-  // Import from static package for this sync operation
   const { default: Static } = await import('@tamagui/static')
 
-  return Static.loadTamaguiBuildConfigSync(tamaguiOptions)
+  return Static.loadTamaguiBuildConfigAsync(tamaguiOptions)
 }
 
 /**

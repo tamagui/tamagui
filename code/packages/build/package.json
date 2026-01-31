@@ -21,7 +21,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "baseline-browser-mapping": "^2.9.15",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.25.11",
+    "esbuild": "^0.27.2",
     "esbuild-plugin-es5": "^2.1.1",
     "esbuild-register": "^3.6.0",
     "execa": "^5.0.0",

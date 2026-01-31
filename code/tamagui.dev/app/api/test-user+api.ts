@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js'
 import { apiRoute } from '~/features/api/apiRoute'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
@@ -23,7 +24,7 @@ type TestUserType = 'new' | 'v1' | 'v2'
  * - v1: user with V1 TamaguiPro subscription (should see upgrade card)
  * - v2: user with V2 TamaguiProV2 subscription (normal account state)
  *
- * Returns a magic link to log in as the test user
+ * Sets session cookies and redirects to /account
  */
 export default apiRoute(async (req) => {
   const url = new URL(req.url)
@@ -45,10 +46,7 @@ export default apiRoute(async (req) => {
   }
 
   if (!type || !['new', 'v1', 'v2'].includes(type)) {
-    return Response.json(
-      { error: 'Invalid type. Use ?type=new|v1|v2' },
-      { status: 400 }
-    )
+    return Response.json({ error: 'Invalid type. Use ?type=new|v1|v2' }, { status: 400 })
   }
 
   try {
@@ -69,31 +67,50 @@ export default apiRoute(async (req) => {
     }
     // type === 'new' leaves the user with no subscriptions
 
-    // step 5: generate magic link for login
-    const { data: linkData, error: linkError } =
-      await supabaseAdmin.auth.admin.generateLink({
-        type: 'magiclink',
-        email: TEST_USER_EMAIL,
-        options: {
-          redirectTo: `${url.origin}/account`,
-        },
-      })
+    // step 5: sign in as the test user and get session
+    const supabaseUrl = import.meta.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseAnonKey = import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    if (linkError || !linkData?.properties?.action_link) {
-      throw new Error(`Failed to generate magic link: ${linkError?.message}`)
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error('Missing Supabase environment variables')
     }
 
-    // the action_link from generateLink contains the token we need
-    // but we want to redirect through our callback
-    const actionLink = linkData.properties.action_link
+    const supabase = createClient(supabaseUrl, supabaseAnonKey)
+    const { data: signInData, error: signInError } =
+      await supabase.auth.signInWithPassword({
+        email: TEST_USER_EMAIL,
+        password: TEST_USER_PASSWORD,
+      })
 
-    return Response.json({
-      success: true,
-      type,
-      userId,
-      email: TEST_USER_EMAIL,
-      loginUrl: actionLink,
-      message: `Test user set up as "${type}". Click loginUrl to log in.`,
+    if (signInError || !signInData.session) {
+      throw new Error(`Failed to sign in test user: ${signInError?.message}`)
+    }
+
+    const session = signInData.session
+    const sessionJson = JSON.stringify(session)
+
+    // return an HTML page that sets localStorage and redirects
+    // this is needed because the client-side auth reads from localStorage
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Logging in...</title>
+</head>
+<body>
+  <p>Logging in as test user (${type})...</p>
+  <script>
+    localStorage.setItem('sb-auth-token', ${JSON.stringify(sessionJson)});
+    window.location.href = '/account';
+  </script>
+</body>
+</html>`
+
+    return new Response(html, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html',
+      },
     })
   } catch (error) {
     console.error('Error setting up test user:', error)
@@ -105,9 +122,7 @@ export default apiRoute(async (req) => {
 async function getOrCreateTestUser(): Promise<string> {
   // check if user exists
   const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers()
-  const existingUser = existingUsers?.users?.find(
-    (u) => u.email === TEST_USER_EMAIL
-  )
+  const existingUser = existingUsers?.users?.find((u) => u.email === TEST_USER_EMAIL)
 
   if (existingUser) {
     return existingUser.id
@@ -157,10 +172,7 @@ async function cleanupUserData(userId: string) {
     const subIds = subscriptions.map((s) => s.id)
 
     // delete subscription_items
-    await supabaseAdmin
-      .from('subscription_items')
-      .delete()
-      .in('subscription_id', subIds)
+    await supabaseAdmin.from('subscription_items').delete().in('subscription_id', subIds)
 
     // delete subscriptions
     await supabaseAdmin.from('subscriptions').delete().in('id', subIds)
@@ -192,30 +204,34 @@ async function createV1Subscription(userId: string) {
   const subscriptionId = `test_sub_v1_${userId.slice(0, 8)}`
   const subscriptionItemId = `test_si_v1_${userId.slice(0, 8)}`
 
-  // insert subscription
-  const { error: subError } = await supabaseAdmin.from('subscriptions').insert({
-    id: subscriptionId,
-    user_id: userId,
-    status: 'active',
-    metadata: { test: true, version: 'v1' },
-    created: now.toISOString(),
-    current_period_start: now.toISOString(),
-    current_period_end: oneYearFromNow.toISOString(),
-    cancel_at_period_end: false,
-  })
+  // upsert subscription (in case cleanup failed to delete it)
+  const { error: subError } = await supabaseAdmin.from('subscriptions').upsert(
+    {
+      id: subscriptionId,
+      user_id: userId,
+      status: 'active',
+      metadata: { test: true, version: 'v1' },
+      created: now.toISOString(),
+      current_period_start: now.toISOString(),
+      current_period_end: oneYearFromNow.toISOString(),
+      cancel_at_period_end: false,
+    },
+    { onConflict: 'id' }
+  )
 
   if (subError) {
     throw new Error(`Failed to create V1 subscription: ${subError.message}`)
   }
 
-  // insert subscription item linking to V1 Pro price
-  const { error: itemError } = await supabaseAdmin
-    .from('subscription_items')
-    .insert({
+  // upsert subscription item linking to V1 Pro price
+  const { error: itemError } = await supabaseAdmin.from('subscription_items').upsert(
+    {
       id: subscriptionItemId,
       subscription_id: subscriptionId,
       price_id: STRIPE_PRODUCTS.PRO_SUBSCRIPTION.priceId,
-    })
+    },
+    { onConflict: 'id' }
+  )
 
   if (itemError) {
     throw new Error(`Failed to create V1 subscription item: ${itemError.message}`)
@@ -233,10 +249,9 @@ async function createV2Subscription(userId: string) {
   const upgradeSubId = `test_sub_v2_upgrade_${userId.slice(0, 8)}`
   const upgradeItemId = `test_si_v2_upgrade_${userId.slice(0, 8)}`
 
-  // insert license subscription (the one-time purchase shows as active subscription)
-  const { error: licenseSubError } = await supabaseAdmin
-    .from('subscriptions')
-    .insert({
+  // upsert license subscription (the one-time purchase shows as active subscription)
+  const { error: licenseSubError } = await supabaseAdmin.from('subscriptions').upsert(
+    {
       id: licenseSubId,
       user_id: userId,
       status: 'active',
@@ -245,7 +260,9 @@ async function createV2Subscription(userId: string) {
       current_period_start: now.toISOString(),
       current_period_end: oneYearFromNow.toISOString(),
       cancel_at_period_end: false,
-    })
+    },
+    { onConflict: 'id' }
+  )
 
   if (licenseSubError) {
     throw new Error(
@@ -253,14 +270,17 @@ async function createV2Subscription(userId: string) {
     )
   }
 
-  // insert license subscription item
+  // upsert license subscription item
   const { error: licenseItemError } = await supabaseAdmin
     .from('subscription_items')
-    .insert({
-      id: licenseItemId,
-      subscription_id: licenseSubId,
-      price_id: STRIPE_PRODUCTS.PRO_V2_LICENSE.priceId,
-    })
+    .upsert(
+      {
+        id: licenseItemId,
+        subscription_id: licenseSubId,
+        price_id: STRIPE_PRODUCTS.PRO_V2_LICENSE.priceId,
+      },
+      { onConflict: 'id' }
+    )
 
   if (licenseItemError) {
     throw new Error(
@@ -268,10 +288,9 @@ async function createV2Subscription(userId: string) {
     )
   }
 
-  // insert upgrade subscription (trialing until 1 year from now)
-  const { error: upgradeSubError } = await supabaseAdmin
-    .from('subscriptions')
-    .insert({
+  // upsert upgrade subscription (trialing until 1 year from now)
+  const { error: upgradeSubError } = await supabaseAdmin.from('subscriptions').upsert(
+    {
       id: upgradeSubId,
       user_id: userId,
       status: 'trialing',
@@ -282,7 +301,9 @@ async function createV2Subscription(userId: string) {
       trial_start: now.toISOString(),
       trial_end: oneYearFromNow.toISOString(),
       cancel_at_period_end: false,
-    })
+    },
+    { onConflict: 'id' }
+  )
 
   if (upgradeSubError) {
     throw new Error(
@@ -290,14 +311,17 @@ async function createV2Subscription(userId: string) {
     )
   }
 
-  // insert upgrade subscription item
+  // upsert upgrade subscription item
   const { error: upgradeItemError } = await supabaseAdmin
     .from('subscription_items')
-    .insert({
-      id: upgradeItemId,
-      subscription_id: upgradeSubId,
-      price_id: STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId,
-    })
+    .upsert(
+      {
+        id: upgradeItemId,
+        subscription_id: upgradeSubId,
+        price_id: STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId,
+      },
+      { onConflict: 'id' }
+    )
 
   if (upgradeItemError) {
     throw new Error(
