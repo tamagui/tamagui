@@ -27,7 +27,7 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@vxrn/color-scheme": "^1.4.2-1769811608209",
+    "@vxrn/color-scheme": "^1.4.3",
     "expo": "^54.0.23",
     "one": "1.4.2-1769811608209",
     "react": ">=19",
