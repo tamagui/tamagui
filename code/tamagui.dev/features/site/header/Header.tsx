@@ -920,15 +920,6 @@ const HeaderMenuMoreContents = () => {
             </SizableText>
           </HeadAnchor>
         </Link>
-
-        <HeadAnchor grid half>
-          <XStack items="center">
-            <span>Discord </span>
-          </XStack>
-          <SizableText size="$2" color="$color9">
-            Private chat support
-          </SizableText>
-        </HeadAnchor>
       </XStack>
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
