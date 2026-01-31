@@ -45,6 +45,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vitest": "^4.0.18"
+    "vitest": "4.0.4"
   }
 }

@@ -8,11 +8,11 @@
     "access": "public"
   },
   "scripts": {
-    "pretest": "RUN_PRETEST=1 node --max-old-space-size=8192 -r esbuild-register ./tests/lib/preTest.js",
+    "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.js",
     "test-output": "node -r esbuild-register ./test-output.tsx",
     "test": "bun run test:native && bun run test:web",
     "test:update": "bun run test:extract:web --update && bun run test:babel:native --update && bun run test:babel:web --update && bun run test:styled:web --update && bun run test:flatten:native --update && bun run test:webpack --update",
-    "test:run": "INCLUDE_CSS_COLOR_NAMES=1 NODE_OPTIONS='--max-old-space-size=8192' vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run --no-file-parallelism --poolOptions.forks.execArgv='[\"--max-old-space-size=8192\"]'",
+    "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run",
     "test:run:web": "DISABLE_NATIVE_TEST=1 bun run test:run",
     "test:concatClassName": "bun run test:run tests/concatClassName.web.test.tsx",
     "test:webpack": "bun run pretest && bun run test:run tests/webpack.test.tsx --reporter=verbose --pool=forks",
@@ -45,7 +45,7 @@
     "react-test-renderer": "^19.0.0",
     "style-loader": "^3.3.3",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.18",
+    "vitest": "4.0.4",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {
