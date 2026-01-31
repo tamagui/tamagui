@@ -49,9 +49,11 @@ jobs:
 
       - uses: nick-fields/retry@v3
         name: 'Run web tests'
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
         with:
           timeout_minutes: 25
           max_attempts: 2
-          command: 'yarn test:web'
+          command: |
+            cd code/compiler/static-tests
+            DISABLE_NATIVE_TEST=1 INCLUDE_CSS_COLOR_NAMES=1 npx vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run tests/*.web.test.tsx
+            npm run pretest
+            INCLUDE_CSS_COLOR_NAMES=1 npx vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run tests/webpack.test.tsx --reporter=verbose --pool=forks
