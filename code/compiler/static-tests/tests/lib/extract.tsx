@@ -11,12 +11,22 @@ export async function extractForNative(code: string) {
   return out
 }
 
+// cache extractor to avoid OOM in CI from repeated config loading
+let cachedExtractor: ReturnType<typeof createExtractor> | null = null
+
+function getExtractor() {
+  if (!cachedExtractor) {
+    cachedExtractor = createExtractor()
+  }
+  return cachedExtractor
+}
+
 export async function extractForWeb(
   source: string,
   opts?: Partial<ExtractToClassNamesProps>
 ) {
   return await extractToClassNames({
-    extractor: createExtractor(),
+    extractor: getExtractor(),
     shouldPrintDebug: source.startsWith('// debug'),
     source,
     sourcePath: `/test.tsx`,
