@@ -37,8 +37,6 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: '--max-old-space-size=8192'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,7 +49,9 @@ jobs:
 
       - uses: nick-fields/retry@v3
         name: 'Run web tests'
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
         with:
           timeout_minutes: 25
           max_attempts: 2
-          command: 'npm run test:web -w @tamagui/static-tests'
+          command: 'yarn test:web'
