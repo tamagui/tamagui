@@ -98,7 +98,7 @@ const FeatureRow = ({
 
 const features = [
   { feature: 'Framework', v1: 'Next.js + Expo', v2: 'One', v2free: 'One' },
-  { feature: 'Real-time Sync', v1: false, v2: 'Zero', v2free: 'Zero' },
+  { feature: 'Real-time Sync', v1: false, v2: true, v2free: true },
   { feature: 'Authentication', v1: 'Supabase', v2: 'Better Auth', v2free: 'Better Auth' },
   {
     feature: 'Database',
@@ -110,8 +110,8 @@ const features = [
   { feature: 'CLI Scripts', v1: false, v2: '46+', v2free: false },
   { feature: 'Agent Docs', v1: false, v2: '25+', v2free: false },
   { feature: 'Hot Updates', v1: false, v2: 'OTA', v2free: false },
-  { feature: 'Robust Screens', v1: '3', v2: '7+', v2free: false },
-  { feature: 'UI Primitives', v1: 'Few', v2: '50+', v2free: 'A few' },
+  { feature: 'Robust Flows', v1: '3', v2: '7+', v2free: false },
+  { feature: 'UI Primitives', v1: '~30', v2: '50+', v2free: 'Few' },
   { feature: 'Support', v1: 'Chat', v2: 'Chat', v2free: false },
   { feature: 'Private GitHub', v1: true, v2: true, v2free: false },
   { feature: 'Native Apps', v1: true, v2: true, v2free: true },
