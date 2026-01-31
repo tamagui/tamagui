@@ -381,7 +381,9 @@ export async function extractToClassNames({
             expandTernary(ternary)
             continue
           }
-          for (const prev of expandedTernaries) {
+          // snapshot current array before iterating - expandTernary mutates expandedTernaries
+          const prevTernaries = [...expandedTernaries]
+          for (const prev of prevTernaries) {
             expandTernary(ternary, prev)
           }
         }
