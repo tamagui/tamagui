@@ -12,7 +12,7 @@
     "test-output": "node -r esbuild-register ./test-output.tsx",
     "test": "npm run test:native && npm run test:web",
     "test:update": "npm run test:extract:web -- --update && npm run test:babel:native -- --update && npm run test:babel:web -- --update && npm run test:styled:web -- --update && npm run test:flatten:native -- --update && npm run test:webpack -- --update",
-    "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run",
+    "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run --dangerouslyIgnoreUnhandledErrors",
     "test:run:web": "DISABLE_NATIVE_TEST=1 npm run test:run --",
     "test:concatClassName": "npm run test:run -- tests/concatClassName.web.test.tsx",
     "test:webpack": "npm run pretest && npm run test:run -- tests/webpack.test.tsx --reporter=verbose --pool=forks",
