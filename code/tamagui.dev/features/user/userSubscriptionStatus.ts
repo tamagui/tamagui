@@ -4,10 +4,19 @@
 import type { UserContextType } from '~/features/auth/types'
 import {
   ProductName,
-  SubscriptionStatus,
   type ProductNameType,
+  SubscriptionStatus,
   type UserSubscriptionStatus,
 } from '~/shared/types/subscription'
+
+/**
+ * GitHub usernames that are allowed to test the purchase flow even if they already have Pro.
+ * These users can:
+ * - See the checkout flow even with an active subscription
+ * - Use the DEV_TEST_99 coupon for 99% off test purchases
+ * - Purchase multiple times to the same domain (for testing)
+ */
+export const DEVELOPER_GITHUB_USERNAMES = ['natew'] as const
 
 /**
  * Check if a subscription has specific product access
@@ -87,6 +96,16 @@ const calculateTeamSeats = (subscriptions: UserContextType['subscriptions']): nu
 }
 
 /**
+ * Check if a user is a developer who can test the purchase flow
+ */
+const isDeveloperUser = (userData?: UserContextType): boolean => {
+  if (!userData?.githubUsername) return false
+  return DEVELOPER_GITHUB_USERNAMES.includes(
+    userData.githubUsername.toLowerCase() as (typeof DEVELOPER_GITHUB_USERNAMES)[number]
+  )
+}
+
+/**
  * Get the subscription status of a user.
  */
 export const userSubscriptionStatus = (
@@ -99,6 +118,7 @@ export const userSubscriptionStatus = (
       supportTier: 0,
       teamSeats: 0,
       couponCodes: { previouslySubscribed: 'TAMAGUI_PRO_RENEWAL' },
+      isDeveloper: false,
     }
 
   const isPro =
@@ -132,5 +152,6 @@ export const userSubscriptionStatus = (
     couponCodes: {
       previouslySubscribed: 'RENEWAL04',
     },
+    isDeveloper: isDeveloperUser(userData),
   }
 }

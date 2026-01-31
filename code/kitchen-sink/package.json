@@ -95,7 +95,7 @@
     "sf-symbols-typescript": "^2.2.0",
     "solito": "^4.3.0",
     "tamagui": "workspace:*",
-    "vitest": "^4.0.4",
+    "vitest": "^4.0.18",
     "zeego": "^3.0.0"
   },
   "devDependencies": {

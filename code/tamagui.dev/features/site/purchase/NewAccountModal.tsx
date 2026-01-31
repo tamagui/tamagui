@@ -41,7 +41,7 @@ import { accountModal, useAccountModal } from './accountModalStore'
 import { addTeamMemberModal } from './addTeamMemberModalStore'
 import { FaqTabContent } from './FaqTabContent'
 import { paymentModal, SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
-import { useProjects, updateProject, type Project } from './useProjects'
+import { useProjects, createProject, updateProject, type Project } from './useProjects'
 import {
   useInviteTeamMember,
   useRemoveTeamMember,
@@ -941,6 +941,91 @@ const DiscordMember = ({
     </XStack>
   )
 }
+// Project setup form shown when user has Pro but no project configured
+const ProjectSetupForm = ({ onComplete }: { onComplete: () => void }) => {
+  const [projectName, setProjectName] = useState('')
+  const [projectDomain, setProjectDomain] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleSubmit = async () => {
+    setError(null)
+
+    if (!projectName || projectName.length <= 2) {
+      setError('Project name must be more than 2 characters')
+      return
+    }
+    if (!projectDomain || projectDomain.length <= 2) {
+      setError('Domain must be more than 2 characters')
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      await createProject({ name: projectName, domain: projectDomain })
+      onComplete()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create project')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <YStack gap="$6" p="$4" maxWidth={500}>
+      <YStack gap="$2">
+        <H3 fontFamily="$mono">Set Up Your Project</H3>
+        <Paragraph size="$4" color="$color10">
+          Enter your project name and domain to activate your license. You can change this
+          later.
+        </Paragraph>
+      </YStack>
+
+      <YStack gap="$4">
+        <Fieldset gap="$2">
+          <Label fontFamily="$mono" size="$3">
+            Project Name
+          </Label>
+          <Input
+            placeholder="My Awesome App"
+            value={projectName}
+            onChangeText={setProjectName}
+            fontFamily="$mono"
+          />
+        </Fieldset>
+
+        <Fieldset gap="$2">
+          <Label fontFamily="$mono" size="$3">
+            Domain
+          </Label>
+          <Input
+            placeholder="myapp.com"
+            value={projectDomain}
+            onChangeText={setProjectDomain}
+            fontFamily="$mono"
+          />
+          <Paragraph size="$2" color="$color9">
+            Primary web domain for your project. Your license covers this domain plus
+            iOS/Android apps.
+          </Paragraph>
+        </Fieldset>
+
+        {error && (
+          <Paragraph size="$3" color="$red10">
+            {error}
+          </Paragraph>
+        )}
+
+        <Button theme="accent" onPress={handleSubmit} disabled={isSubmitting}>
+          <Button.Text fontFamily="$mono">
+            {isSubmitting ? 'Saving...' : 'Save Project'}
+          </Button.Text>
+        </Button>
+      </YStack>
+    </YStack>
+  )
+}
+
 const PlanTab = ({
   subscription,
   supportSubscription,
@@ -956,6 +1041,13 @@ const PlanTab = ({
   const [showSupportAccess, setShowSupportAccess] = useState(false)
   const [isResendingInvite, setIsResendingInvite] = useState(false)
 
+  // Check for projects
+  const {
+    projects,
+    isLoading: projectsLoading,
+    refresh: refreshProjects,
+  } = useProjects(!!subscription)
+
   // Check if this is a one-time payment plan
   const isOneTimePlan =
     subscription?.subscription_items?.[0]?.price?.type === Pricing.OneTime
@@ -968,6 +1060,14 @@ const PlanTab = ({
       item.price?.product?.name === ProductName.TamaguiSupportDirect ||
       item.price?.product?.name === ProductName.TamaguiSupportSponsor
   )
+
+  // V2 users need to set up a project after purchase
+  const needsProjectSetup = isV2Pro && !projectsLoading && projects.length === 0
+
+  // Show project setup form if needed
+  if (needsProjectSetup) {
+    return <ProjectSetupForm onComplete={() => refreshProjects()} />
+  }
 
   const handleTakeoutAccess = (repoUrl = 'https://github.com/tamagui/takeout') => {
     // Just open the repo URL directly - invite handling is done via "Resend Invite" button

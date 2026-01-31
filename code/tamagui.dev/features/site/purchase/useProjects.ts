@@ -46,6 +46,21 @@ export const useProjects = (shouldFetch = true) => {
   }
 }
 
+export const createProject = async (project: { name: string; domain: string }) => {
+  const res = await fetch('/api/projects', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(project),
+  })
+
+  if (!res.ok) {
+    const data = await res.json()
+    throw new Error(data.error || 'Failed to create project')
+  }
+
+  return res.json()
+}
+
 export const updateProject = async (
   projectId: string,
   updates: { name?: string; domain?: string }

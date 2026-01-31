@@ -48,4 +48,6 @@ export type UserSubscriptionStatus = {
   couponCodes: {
     [key: string]: string
   }
+  /** Whether this user is a developer who can test the purchase flow */
+  isDeveloper?: boolean
 }

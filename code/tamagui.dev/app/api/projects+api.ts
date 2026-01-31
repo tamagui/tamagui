@@ -154,10 +154,10 @@ const updateProject = async (req: Request) => {
     return Response.json({ error: 'Project ID is required' }, { status: 400 })
   }
 
-  // Verify ownership
+  // Verify ownership and get current domain for history tracking
   const { data: existing, error: existingError } = await supabase
     .from('projects')
-    .select('id')
+    .select('id, domain')
     .eq('id', project_id)
     .eq('user_id', user.id)
     .single()
@@ -172,6 +172,15 @@ const updateProject = async (req: Request) => {
 
   if (Object.keys(updates).length === 0) {
     return Response.json({ error: 'No valid updates provided' }, { status: 400 })
+  }
+
+  // If domain is changing, record it in history
+  if (updates.domain && existing.domain && updates.domain !== existing.domain) {
+    await supabase.from('project_domain_history').insert({
+      project_id,
+      domain: existing.domain,
+      changed_by: user.id,
+    })
   }
 
   const { data: project, error: updateError } = await supabase

@@ -27,7 +27,7 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
           icon={<TakeoutIcon />}
           href="/takeout"
           title="Takeout v1"
-          subtitle="Next.js + Expo with Supabase."
+          subtitle="Next.js + Expo with Supabase, tRPC, Vercel."
         />
       </Card>
 
@@ -36,7 +36,7 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
           icon={<TakeoutIcon />}
           href="/takeout"
           title="Takeout v2"
-          subtitle="One framework, Zero sync, IaC, CLI."
+          subtitle="One framework, Zero sync, SST/Uncloud IaC, Agents."
         />
       </Card>
 

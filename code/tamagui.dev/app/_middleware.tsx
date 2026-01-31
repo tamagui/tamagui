@@ -34,7 +34,8 @@ function getLlmsTxt() {
 
   const docsDir = path.join(process.cwd(), 'data/docs')
   let combined = '# Tamagui Complete Documentation\n\n'
-  combined += '> Tamagui is a complete UI solution for React Native and Web, with a fully-featured UI kit, styling engine, and optimizing compiler.\n\n'
+  combined +=
+    '> Tamagui is a complete UI solution for React Native and Web, with a fully-featured UI kit, styling engine, and optimizing compiler.\n\n'
 
   const allFiles = getAllMdxFiles(docsDir)
 
@@ -81,7 +82,11 @@ export default createMiddleware(async ({ request, next }) => {
   const url = new URL(request.url)
 
   // handle llms.txt - serve full docs directly (no redirect)
-  if (url.pathname === '/llms.txt' || url.pathname === '/llms-full.txt' || url.pathname === '/docs.txt') {
+  if (
+    url.pathname === '/llms.txt' ||
+    url.pathname === '/llms-full.txt' ||
+    url.pathname === '/docs.txt'
+  ) {
     try {
       const content = getLlmsTxt()
       return new Response(content, {

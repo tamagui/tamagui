@@ -2,8 +2,8 @@ import type Stripe from 'stripe'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
-import { stripe } from '~/features/stripe/stripe'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
+import { stripe } from '~/features/stripe/stripe'
 
 // V2 Price IDs
 const PRO_V2_LICENSE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_LICENSE.priceId
@@ -45,26 +45,11 @@ export default apiRoute(async (req) => {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
-  const { paymentMethodId, projectName, projectDomain, couponId, supportTier } =
-    await req.json()
+  const { paymentMethodId, couponId, supportTier } = await req.json()
 
   // Validate required fields
   if (!paymentMethodId) {
     return Response.json({ error: 'Payment method is required' }, { status: 400 })
-  }
-
-  if (!projectName || projectName.length <= 2) {
-    return Response.json(
-      { error: 'Project name must be more than 2 characters' },
-      { status: 400 }
-    )
-  }
-
-  if (!projectDomain || projectDomain.length <= 2) {
-    return Response.json(
-      { error: 'Project domain must be more than 2 characters' },
-      { status: 400 }
-    )
   }
 
   // Track created resources for rollback
@@ -73,22 +58,9 @@ export default apiRoute(async (req) => {
   let supportSubscription: Stripe.Subscription | null = null
 
   try {
-    const { supabase, user } = await ensureAuth({ req })
-    const idempotencyBase = `${user.id}_${projectDomain}`
-
-    // Check if domain is already in use
-    const { data: existingProject } = await supabase
-      .from('projects')
-      .select('id')
-      .eq('domain', projectDomain)
-      .single()
-
-    if (existingProject) {
-      return Response.json(
-        { error: 'This domain is already registered to a project' },
-        { status: 409 }
-      )
-    }
+    const { user } = await ensureAuth({ req })
+    // use timestamp for idempotency since we no longer have project domain at purchase time
+    const idempotencyBase = `${user.id}_${Date.now()}`
 
     const stripeCustomerId = await createOrRetrieveCustomer({
       email: user.email!,
@@ -104,13 +76,17 @@ export default apiRoute(async (req) => {
       await stripe.paymentMethods.attach(
         paymentMethodId,
         { customer: stripeCustomerId },
-        { idempotencyKey: generateIdempotencyKey(user.id, 'attach_pm', idempotencyBase) }
+        {
+          idempotencyKey: generateIdempotencyKey(user.id, 'attach_pm', idempotencyBase),
+        }
       )
     } catch (attachError) {
       const err = attachError as Stripe.errors.StripeError
       if (err.code === 'card_declined') {
         return Response.json(
-          { error: 'Your card was declined. Please try a different payment method.' },
+          {
+            error: 'Your card was declined. Please try a different payment method.',
+          },
           { status: 402 }
         )
       }
@@ -157,21 +133,21 @@ export default apiRoute(async (req) => {
     upgradeStartDate.setFullYear(upgradeStartDate.getFullYear() + 1)
 
     // Create invoice for the $400 one-time license fee
+    // Project info is collected after payment in the account modal
     await stripe.invoiceItems.create(
       {
         customer: stripeCustomerId,
         price: PRO_V2_LICENSE_PRICE_ID,
         metadata: {
-          project_name: projectName,
-          project_domain: projectDomain,
           version: 'v2',
         },
       },
-      { idempotencyKey: generateIdempotencyKey(user.id, 'invoice_item', idempotencyBase) }
+      {
+        idempotencyKey: generateIdempotencyKey(user.id, 'invoice_item', idempotencyBase),
+      }
     )
 
     // Create and pay the invoice
-    // Include support_tier in metadata for webhook to create subscriptions if 3DS required
     const invoice = await stripe.invoices.create(
       {
         customer: stripeCustomerId,
@@ -179,8 +155,6 @@ export default apiRoute(async (req) => {
         auto_advance: true,
         discounts: couponId ? [{ coupon: couponId }] : [],
         metadata: {
-          project_name: projectName,
-          project_domain: projectDomain,
           version: 'v2',
           type: 'pro_v2_license',
           support_tier: supportTier || 'chat',
@@ -232,8 +206,6 @@ export default apiRoute(async (req) => {
           payment_settings: { save_default_payment_method: 'on_subscription' },
           default_payment_method: paymentMethodId,
           metadata: {
-            project_name: projectName,
-            project_domain: projectDomain,
             version: 'v2',
             type: 'pro_v2_upgrade',
           },
@@ -260,11 +232,11 @@ export default apiRoute(async (req) => {
           {
             customer: stripeCustomerId,
             items: [{ price: supportPriceId }],
-            payment_settings: { save_default_payment_method: 'on_subscription' },
+            payment_settings: {
+              save_default_payment_method: 'on_subscription',
+            },
             default_payment_method: paymentMethodId,
             metadata: {
-              project_name: projectName,
-              project_domain: projectDomain,
               version: 'v2',
               type: 'pro_v2_support',
               support_tier: supportTier,
@@ -297,8 +269,6 @@ export default apiRoute(async (req) => {
       upgradeStartDate: upgradeStartDate.toISOString(),
       supportSubscriptionId: supportSubscription?.id || null,
       supportTier: supportTier || 'chat',
-      projectName,
-      projectDomain,
     })
   } catch (error) {
     console.error('Error creating v2 subscription:', error)

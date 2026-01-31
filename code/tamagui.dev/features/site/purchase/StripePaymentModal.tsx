@@ -52,12 +52,12 @@ import {
   Spinner,
   Theme,
   Unspaced,
-  useMedia,
-  useTheme,
-  useThemeName,
   View,
   XStack,
   YStack,
+  useMedia,
+  useTheme,
+  useThemeName,
 } from 'tamagui'
 import { z } from 'zod'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
@@ -105,9 +105,23 @@ const ErrorMessage = ({ error }: { error: Error | StripeError }) => {
     if (typeof error === 'string') {
       return error
     }
+    // check for Stripe error schema first
     const parsed = stripeErrorSchema.safeParse(error)
     if (parsed.success) {
       return parsed.data.message
+    }
+    // check for standard Error with message
+    if (error instanceof Error && error.message) {
+      // try to parse JSON error message from API responses
+      try {
+        const jsonError = JSON.parse(error.message)
+        if (jsonError.error) {
+          return jsonError.error
+        }
+      } catch {
+        // not JSON, use message directly
+      }
+      return error.message
     }
     return 'An error occurred during payment processing'
   }, [error])
@@ -148,10 +162,10 @@ export {
 
 // also import for internal use
 import {
-  usePaymentModal,
-  V2_LICENSE_PRICE,
   SUPPORT_TIERS,
   type SupportTier,
+  V2_LICENSE_PRICE,
+  usePaymentModal,
 } from './paymentModalStore'
 import { calculatePromoPrice } from './promoConfig'
 
@@ -183,10 +197,6 @@ const PaymentForm = ({
   // V2 fields
   isV2,
   isSupportUpgradeOnly,
-  projectName,
-  projectDomain,
-  onProjectNameChange,
-  onProjectDomainChange,
 }: {
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
@@ -209,46 +219,14 @@ const PaymentForm = ({
   // V2 fields
   isV2: boolean
   isSupportUpgradeOnly: boolean
-  projectName: string
-  projectDomain: string
-  onProjectNameChange: (value: string) => void
-  onProjectDomainChange: (value: string) => void
 }) => {
   const stripe = useStripe()
   const elements = useElements()
   const [error, setError] = useState<Error | StripeError | null>(null)
 
-  // V2 validation - per-field errors (skip for support-only upgrades)
-  const [showValidation, setShowValidation] = useState(false)
-
-  const projectNameError = useMemo(() => {
-    if (!isV2 || isSupportUpgradeOnly) return null
-    if (!projectName || projectName.length <= 2)
-      return 'Project name must be more than 2 characters'
-    return null
-  }, [isV2, isSupportUpgradeOnly, projectName])
-
-  const projectDomainError = useMemo(() => {
-    if (!isV2 || isSupportUpgradeOnly) return null
-    if (!projectDomain || projectDomain.length <= 2)
-      return 'Domain must be more than 2 characters'
-    return null
-  }, [isV2, isSupportUpgradeOnly, projectDomain])
-
-  const v2ValidationError = projectNameError || projectDomainError
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setError(null)
-
-    // V2 validation
-    if (isV2 && v2ValidationError) {
-      setShowValidation(true)
-      const validationErr = new Error(v2ValidationError)
-      setError(validationErr)
-      onError(validationErr)
-      return
-    }
 
     if (!stripe || !elements) {
       return
@@ -258,32 +236,39 @@ const PaymentForm = ({
 
     try {
       // Submit the form first
+      console.log('[Payment] Submitting elements...')
       const { error: submitError } = await elements.submit()
 
       if (submitError) {
+        console.error('[Payment] Submit error:', submitError)
         setError(submitError)
         onError(submitError)
         return
       }
+      console.log('[Payment] Elements submitted successfully')
 
       // Create payment method
+      console.log('[Payment] Creating payment method...')
       const { error: paymentMethodError, paymentMethod } =
         await stripe.createPaymentMethod({
           elements,
         })
 
       if (paymentMethodError) {
+        console.error('[Payment] Payment method error:', paymentMethodError)
         setError(paymentMethodError)
         onError(paymentMethodError)
         return
       }
+      console.log('[Payment] Payment method created:', paymentMethod.id)
 
       let data: any = null
 
       // Only create Pro subscription if user doesn't already have PRO
       if (!subscriptionStatus.pro) {
-        // V2 purchase flow
+        // V2 purchase flow (project info collected after payment)
         if (isV2) {
+          console.log('[Payment] Creating V2 subscription...')
           const response = await fetch('/api/create-v2-subscription', {
             method: 'POST',
             headers: {
@@ -291,16 +276,16 @@ const PaymentForm = ({
             },
             body: JSON.stringify({
               paymentMethodId: paymentMethod.id,
-              projectName,
-              projectDomain,
               couponId: finalCoupon?.id,
               supportTier: selectedPrices.supportTier,
             }),
           })
 
           data = await response.json()
+          console.log('[Payment] V2 subscription response:', response.status, data)
 
           if (!response.ok) {
+            console.error('[Payment] V2 subscription failed:', data)
             const error = new Error(data.error || JSON.stringify(data))
             setError(error)
             onError(error)
@@ -496,71 +481,6 @@ const PaymentForm = ({
           }}
           py="$4"
         >
-          {/* V2 Project Information Fields - only show for new V2 purchases, not support upgrades */}
-          {isV2 && !isSupportUpgradeOnly && (
-            <YStack gap="$4" mb="$4">
-              <YStack gap="$2">
-                <Paragraph fontFamily="$mono" fontWeight="600" size="$4">
-                  Project Information
-                </Paragraph>
-                <Paragraph size="$3" color="$color9">
-                  Enter your project name and primary domain. Your license covers this
-                  domain plus iOS/Android apps.
-                </Paragraph>
-              </YStack>
-
-              <YStack gap="$2">
-                <Paragraph fontFamily="$mono" size="$3">
-                  Project Name
-                </Paragraph>
-                <Input
-                  placeholder="My Awesome App"
-                  value={projectName}
-                  onChangeText={onProjectNameChange}
-                  fontFamily="$mono"
-                  {...(showValidation &&
-                    projectNameError && {
-                      borderColor: '$red9',
-                      borderWidth: 2,
-                    })}
-                />
-                {showValidation && projectNameError && (
-                  <Paragraph size="$2" color="$red10">
-                    {projectNameError}
-                  </Paragraph>
-                )}
-              </YStack>
-
-              <YStack gap="$2">
-                <Paragraph fontFamily="$mono" size="$3">
-                  Domain
-                </Paragraph>
-                <Input
-                  placeholder="myapp.com"
-                  value={projectDomain}
-                  onChangeText={onProjectDomainChange}
-                  fontFamily="$mono"
-                  {...(showValidation &&
-                    projectDomainError && {
-                      borderColor: '$red9',
-                      borderWidth: 2,
-                    })}
-                />
-                {showValidation && projectDomainError ? (
-                  <Paragraph size="$2" color="$red10">
-                    {projectDomainError}
-                  </Paragraph>
-                ) : (
-                  <Paragraph size="$2" color="$color9">
-                    Primary web domain for your project
-                  </Paragraph>
-                )}
-              </YStack>
-
-              <Separator my="$2" />
-            </YStack>
-          )}
-
           <PaymentElement
             options={{
               layout: 'accordion',
@@ -643,9 +563,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const [couponError, setCouponError] = useState<string | null>(null)
   const { handleLogin } = useLoginLink()
 
-  // V2 project fields
-  const [projectName, setProjectName] = useState(store.projectName || '')
-  const [projectDomain, setProjectDomain] = useState(store.projectDomain || '')
+  // V2 mode flags
   const isV2 = store.isV2 ?? true // Default to V2 for new purchases
   const isSupportUpgradeOnly = store.isSupportUpgradeOnly ?? false
 
@@ -1137,7 +1055,8 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       </Paragraph>
                     )}
                     <Paragraph fontFamily="$mono">
-                      ${Math.ceil(calculateDiscountedAmount(200, finalCoupon))}/month
+                      ${Math.ceil(calculateDiscountedAmount(200, finalCoupon))}
+                      /month
                     </Paragraph>
                   </YStack>
                 </XStack>
@@ -1311,7 +1230,6 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 currency: 'usd',
                 amount,
                 paymentMethodTypes: ['card', 'link'],
-                payment_method_types: ['card', 'link'],
                 paymentMethodCreation: 'manual',
                 ...(monthlyTotal > 0 && {
                   setup_future_usage: 'off_session',
@@ -1339,10 +1257,6 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 // V2 fields
                 isV2={isV2}
                 isSupportUpgradeOnly={isSupportUpgradeOnly}
-                projectName={projectName}
-                projectDomain={projectDomain}
-                onProjectNameChange={setProjectName}
-                onProjectDomainChange={setProjectDomain}
               >
                 {maxMd && renderTotalView()}
               </PaymentForm>
