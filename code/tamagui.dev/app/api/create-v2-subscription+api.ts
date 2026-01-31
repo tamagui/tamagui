@@ -1,13 +1,9 @@
 import type Stripe from "stripe";
 import { apiRoute } from "~/features/api/apiRoute";
 import { ensureAuth } from "~/features/api/ensureAuth";
-import {
-	createOrRetrieveCustomer,
-	supabaseAdmin,
-} from "~/features/auth/supabaseAdmin";
+import { createOrRetrieveCustomer } from "~/features/auth/supabaseAdmin";
 import { STRIPE_PRODUCTS } from "~/features/stripe/products";
 import { stripe } from "~/features/stripe/stripe";
-import { DEVELOPER_GITHUB_USERNAMES } from "~/features/user/userSubscriptionStatus";
 
 // V2 Price IDs
 const PRO_V2_LICENSE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_LICENSE.priceId;
@@ -36,22 +32,6 @@ const generateIdempotencyKey = (
 	return `v2_${userId}_${action}_${uniqueData}`;
 };
 
-// Check if a user is a developer who can test purchases
-const isDeveloperUser = async (userId: string): Promise<boolean> => {
-	const { data: userData } = await supabaseAdmin
-		.from("users_private")
-		.select("github_user_name")
-		.eq("id", userId)
-		.single();
-
-	const githubUsername = userData?.github_user_name;
-	if (!githubUsername) return false;
-
-	return DEVELOPER_GITHUB_USERNAMES.includes(
-		githubUsername.toLowerCase() as (typeof DEVELOPER_GITHUB_USERNAMES)[number],
-	);
-};
-
 /**
  * V2 Pro Purchase Flow:
  * 1. Charge $400 one-time for license
@@ -69,27 +49,13 @@ export default apiRoute(async (req) => {
 		return Response.json({ error: "Method not allowed" }, { status: 405 });
 	}
 
-	const { paymentMethodId, projectName, projectDomain, couponId, supportTier } =
-		await req.json();
+	// Project info is now collected after payment in the account modal
+	const { paymentMethodId, couponId, supportTier } = await req.json();
 
 	// Validate required fields
 	if (!paymentMethodId) {
 		return Response.json(
 			{ error: "Payment method is required" },
-			{ status: 400 },
-		);
-	}
-
-	if (!projectName || projectName.length <= 2) {
-		return Response.json(
-			{ error: "Project name must be more than 2 characters" },
-			{ status: 400 },
-		);
-	}
-
-	if (!projectDomain || projectDomain.length <= 2) {
-		return Response.json(
-			{ error: "Project domain must be more than 2 characters" },
 			{ status: 400 },
 		);
 	}
@@ -100,31 +66,9 @@ export default apiRoute(async (req) => {
 	let supportSubscription: Stripe.Subscription | null = null;
 
 	try {
-		const { supabase, user } = await ensureAuth({ req });
-		const idempotencyBase = `${user.id}_${projectDomain}`;
-
-		// Check if user is a developer (can bypass domain check for testing)
-		const isDeveloper = await isDeveloperUser(user.id);
-
-		// Check if domain is already in use (developers can bypass for testing)
-		const { data: existingProject } = await supabase
-			.from("projects")
-			.select("id")
-			.eq("domain", projectDomain)
-			.single();
-
-		if (existingProject && !isDeveloper) {
-			return Response.json(
-				{ error: "This domain is already registered to a project" },
-				{ status: 409 },
-			);
-		}
-
-		// For developers with existing domain, add timestamp to make domain unique for testing
-		const effectiveDomain =
-			existingProject && isDeveloper
-				? `${projectDomain}-test-${Date.now()}`
-				: projectDomain;
+		const { user } = await ensureAuth({ req });
+		// use timestamp for idempotency since we no longer have project domain at purchase time
+		const idempotencyBase = `${user.id}_${Date.now()}`;
 
 		const stripeCustomerId = await createOrRetrieveCustomer({
 			email: user.email!,
@@ -205,13 +149,12 @@ export default apiRoute(async (req) => {
 		upgradeStartDate.setFullYear(upgradeStartDate.getFullYear() + 1);
 
 		// Create invoice for the $400 one-time license fee
+		// Project info is collected after payment in the account modal
 		await stripe.invoiceItems.create(
 			{
 				customer: stripeCustomerId,
 				price: PRO_V2_LICENSE_PRICE_ID,
 				metadata: {
-					project_name: projectName,
-					project_domain: effectiveDomain,
 					version: "v2",
 				},
 			},
@@ -225,7 +168,6 @@ export default apiRoute(async (req) => {
 		);
 
 		// Create and pay the invoice
-		// Include support_tier in metadata for webhook to create subscriptions if 3DS required
 		const invoice = await stripe.invoices.create(
 			{
 				customer: stripeCustomerId,
@@ -233,8 +175,6 @@ export default apiRoute(async (req) => {
 				auto_advance: true,
 				discounts: couponId ? [{ coupon: couponId }] : [],
 				metadata: {
-					project_name: projectName,
-					project_domain: effectiveDomain,
 					version: "v2",
 					type: "pro_v2_license",
 					support_tier: supportTier || "chat",
@@ -287,8 +227,6 @@ export default apiRoute(async (req) => {
 					payment_settings: { save_default_payment_method: "on_subscription" },
 					default_payment_method: paymentMethodId,
 					metadata: {
-						project_name: projectName,
-						project_domain: effectiveDomain,
 						version: "v2",
 						type: "pro_v2_upgrade",
 					},
@@ -326,8 +264,6 @@ export default apiRoute(async (req) => {
 						},
 						default_payment_method: paymentMethodId,
 						metadata: {
-							project_name: projectName,
-							project_domain: effectiveDomain,
 							version: "v2",
 							type: "pro_v2_support",
 							support_tier: supportTier,
@@ -360,8 +296,6 @@ export default apiRoute(async (req) => {
 			upgradeStartDate: upgradeStartDate.toISOString(),
 			supportSubscriptionId: supportSubscription?.id || null,
 			supportTier: supportTier || "chat",
-			projectName,
-			projectDomain: effectiveDomain,
 		});
 	} catch (error) {
 		console.error("Error creating v2 subscription:", error);
