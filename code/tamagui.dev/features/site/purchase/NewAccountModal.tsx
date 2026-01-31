@@ -1062,7 +1062,16 @@ const PlanTab = ({
   )
 
   // V2 users need to set up a project after purchase
-  const needsProjectSetup = isV2Pro && !projectsLoading && projects.length === 0
+  // Show loading while we check if they have projects
+  if (isV2Pro && projectsLoading) {
+    return (
+      <YStack flex={1} items="center" justify="center" p="$6">
+        <Spinner size="large" />
+      </YStack>
+    )
+  }
+
+  const needsProjectSetup = isV2Pro && projects.length === 0
 
   // Show project setup form if needed
   if (needsProjectSetup) {
@@ -1192,7 +1201,7 @@ const PlanTab = ({
             }}
           />
 
-          <ChatAccessCard />
+          {/* <ChatAccessCard /> */}
           {/* Add Members card - V1 only (V2 has unlimited team included in license) */}
           {!isTeamMember && !isOneTimePlan && !isV2Pro ? (
             <ServiceCard
@@ -1418,12 +1427,12 @@ const V2RenewalCard = ({ subscription }: { subscription: Subscription }) => {
         rounded="$4"
       >
         <XStack gap="$3" alignItems="center">
-          <Gift size={24} color="$green10" />
+          <Gift y={5} size={24} color="$green10" />
           <YStack flex={1}>
             <H4 fontFamily="$mono" color="$green11">
               New Pro Plan Enabled ✓
             </H4>
-            <Paragraph size="$3" color="$green10">
+            <Paragraph color="$green10">
               When your subscription renews, you'll automatically get the new Pro plan
               with 35% off.
             </Paragraph>
@@ -1475,7 +1484,7 @@ const V2RenewalCard = ({ subscription }: { subscription: Subscription }) => {
             <H4 fontFamily="$mono" color="$green11">
               New Pro Plan Enabled! 🎉
             </H4>
-            <Paragraph size="$3" color="$green10">
+            <Paragraph color="$green10">
               When your subscription renews, you'll automatically get the new Pro plan
               with 35% off.
             </Paragraph>
@@ -1495,34 +1504,30 @@ const V2RenewalCard = ({ subscription }: { subscription: Subscription }) => {
       rounded="$4"
     >
       <XStack gap="$3" alignItems="flex-start">
-        <Gift size={24} color="$purple10" />
-        <YStack flex={1} gap="$2">
+        <Gift y={5} size={24} color="$purple10" />
+        <YStack flex={1} gap="$1">
           <H4 fontFamily="$mono" color="$purple11">
             Upgrade to New Pro Plan
           </H4>
-          <Paragraph size="$3" color="$purple10">
+          <Paragraph color="$purple10">
             Enable automatic upgrade and get <strong>35% off</strong> when your
             subscription renews. You'll get access to:
           </Paragraph>
           <YStack gap="$1" pl="$2">
-            <Paragraph size="$2" color="$purple10">
+            <Paragraph color="$purple10">
               • Takeout 2 - Tamagui 2, One 1, and Zero stack
             </Paragraph>
-            <Paragraph size="$2" color="$purple10">
+            <Paragraph color="$purple10">
               • Takeout Static - Web-only starter with 100 Lighthouse
             </Paragraph>
-            <Paragraph size="$2" color="$purple10">
+            <Paragraph color="$purple10">
               • Unlimited team members - No per-seat pricing
             </Paragraph>
           </YStack>
         </YStack>
       </XStack>
 
-      {error && (
-        <Paragraph size="$3" color="$red10">
-          {error}
-        </Paragraph>
-      )}
+      {error && <Paragraph color="$red10">{error}</Paragraph>}
 
       <Button
         theme="purple"
@@ -1608,6 +1613,11 @@ const ManageTab = ({
 
   // Cancel handler for a specific subscription
   const handleCancelSubscription = async (subscriptionId: string) => {
+    const confirmed = window.confirm(
+      'Are you sure you want to cancel this subscription? This action cannot be undone.'
+    )
+    if (!confirmed) return
+
     setIsLoading(true)
     try {
       const res = await fetch('/api/cancel-subscription', {
@@ -1656,6 +1666,22 @@ const ManageTab = ({
 
   return (
     <YStack gap="$8">
+      {/* V2 Renewal Section for V1 Subscriptions */}
+      {!isTeamMember &&
+        sortedSubscriptions
+          .filter((sub) => {
+            // check if this is a V1 subscription
+            return sub.subscription_items?.some((item) => {
+              const productId = item.price?.product?.id
+              return productId && V1_PRODUCTS.includes(productId as any)
+            })
+          })
+          .map((v1Sub) => (
+            <YStack key={`v2-renewal-${v1Sub.id}`} gap="$4">
+              <V2RenewalCard subscription={v1Sub} />
+            </YStack>
+          ))}
+
       {/* Projects Section (V2) */}
       {hasProjects && (
         <YStack gap="$4">
@@ -1824,24 +1850,6 @@ const ManageTab = ({
           })}
         </YStack>
       )}
-
-      {/* V2 Renewal Section for V1 Subscriptions */}
-      {!isTeamMember &&
-        sortedSubscriptions
-          .filter((sub) => {
-            // check if this is a V1 subscription
-            return sub.subscription_items?.some((item) => {
-              const productId = item.price?.product?.id
-              return productId && V1_PRODUCTS.includes(productId as any)
-            })
-          })
-          .map((v1Sub) => (
-            <YStack key={`v2-renewal-${v1Sub.id}`} gap="$4">
-              <Separator />
-              <H3>Upgrade to New Pro Plan</H3>
-              <V2RenewalCard subscription={v1Sub} />
-            </YStack>
-          ))}
 
       {/* Support Tier Section */}
       {!isTeamMember && (hasProjects || hasSubscriptions) && (

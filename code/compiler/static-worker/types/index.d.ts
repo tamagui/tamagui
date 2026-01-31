@@ -42,8 +42,8 @@ export declare function watchTamaguiConfig(options: TamaguiOptions): Promise<{
     dispose: () => void;
 } | undefined>;
 /**
- * Load Tamagui build configuration synchronously
- * This is only used for loading tamagui.build.ts config, not the full tamagui config
+ * Load Tamagui build configuration asynchronously
+ * Uses esbuild.transform() instead of esbuild-register to avoid EPIPE errors
  */
 export declare function loadTamaguiBuildConfig(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
 /**

@@ -33,7 +33,12 @@ const fetcher = async (url: string) => {
 export const useProjects = (shouldFetch = true) => {
   const { data, error, isLoading, mutate } = useSWR<ProjectsResponse>(
     shouldFetch ? '/api/projects' : null,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      keepPreviousData: true,
+    }
   )
 
   return {
