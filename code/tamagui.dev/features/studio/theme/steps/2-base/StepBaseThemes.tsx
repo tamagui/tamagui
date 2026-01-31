@@ -3,13 +3,14 @@ import type { BuildPalette, BuildThemeAnchor } from '@tamagui/theme-builder'
 import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
 import { getStore, Store, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import {
   Anchor,
   Button,
+  Paragraph,
   SizableText,
   Theme,
-  TooltipGroup,
+  Tooltip,
   TooltipSimple,
   useThemeName,
   View,
@@ -559,11 +560,13 @@ type PaletteProps = {
 }
 
 export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
-  const { colors, size = 'medium' } = props
+  const { colors, size = 'medium', palette } = props
   const borderRadius = size === 'medium' ? 200 : 100
+  const [tooltipLabel, setTooltipLabel] = useState('')
+  const scope = `palette-${palette.name}`
 
   return (
-    <TooltipGroup delay={0}>
+    <Tooltip scope={scope} offset={8} placement="top">
       <XStack
         flex={1}
         flexBasis="auto"
@@ -572,10 +575,39 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
         borderColor="$color7"
       >
         {colors.map((color, i) => {
-          return <PaletteColor {...props} color={color} index={i} key={i} />
+          return (
+            <Tooltip.Trigger
+              scope={scope}
+              key={i}
+              asChild
+              onMouseEnter={() =>
+                setTooltipLabel(`${i + 1}: ${defaultScaleGrouped[i]?.name ?? color}`)
+              }
+            >
+              <XStack flex={1} width={`${(1 / colors.length) * 100}%`}>
+                <PaletteColor {...props} color={color} index={i} />
+              </XStack>
+            </Tooltip.Trigger>
+          )
         })}
       </XStack>
-    </TooltipGroup>
+
+      <Tooltip.Content
+        scope={scope}
+        animatePosition
+        transition="quick"
+        bg="$background"
+        elevation="$2"
+        rounded="$4"
+        px="$2.5"
+        py="$1"
+        enterStyle={{ y: 4, opacity: 0 }}
+        exitStyle={{ y: 4, opacity: 0 }}
+      >
+        <Tooltip.Arrow scope={scope} />
+        <Paragraph size="$3">{tooltipLabel}</Paragraph>
+      </Tooltip.Content>
+    </Tooltip>
   )
 })
 
@@ -656,67 +688,65 @@ const PaletteColor = memo(
     }
 
     return (
-      <TooltipSimple label={defaultScaleGrouped[index]?.name ?? `${index + 1}`}>
-        <XStack
-          height={isActive ? 42 : 26}
-          width={`${(1 / colors.length) * 100}%`}
-          overflow="hidden"
-          borderWidth={2}
-          borderColor={color as any}
-          onMouseEnter={() => {
-            mouseEnter(index, palette.name)
-          }}
-          hoverStyle={{
-            scale: 1.05,
-          }}
-          position="relative"
-          {...(hoveredColor === index && {
-            z: 10000,
-            outlineColor: '$accent10',
-            outlineStyle: 'solid',
-            outlineWidth: 1.5,
+      <XStack
+        height={isActive ? 42 : 26}
+        flex={1}
+        overflow="hidden"
+        borderWidth={2}
+        borderColor={color as any}
+        onMouseEnter={() => {
+          mouseEnter(index, palette.name)
+        }}
+        hoverStyle={{
+          scale: 1.05,
+        }}
+        position="relative"
+        {...(hoveredColor === index && {
+          z: 10000,
+          outlineColor: '$accent10',
+          outlineStyle: 'solid',
+          outlineWidth: 1.5,
+          shadowColor: '$blue10',
+          shadowRadius: 5,
+          shadowOpacity: 1,
+        })}
+        {...((isAnchor || selectedColor === index) && {
+          z: 10000,
+          outlineColor: '$accent10',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+        })}
+        {...(selectedColor === index && {
+          outlineColor: '$accent1',
+        })}
+        {...(selectedColor === hoveredColor &&
+          hoveredColor === index && {
             shadowColor: '$blue10',
-            shadowRadius: 5,
+            shadowRadius: 10,
             shadowOpacity: 1,
+            z: 100000,
           })}
-          {...((isAnchor || selectedColor === index) && {
-            z: 10000,
-            outlineColor: '$accent10',
-            outlineStyle: 'solid',
-            outlineWidth: 2,
-          })}
-          {...(selectedColor === index && {
-            outlineColor: '$accent1',
-          })}
-          {...(selectedColor === hoveredColor &&
-            hoveredColor === index && {
-              shadowColor: '$blue10',
-              shadowRadius: 10,
-              shadowOpacity: 1,
-              z: 100000,
-            })}
-          {...radiusStyle}
-          {...doublePressProps}
-          onMouseLeave={() => {
-            mouseLeave(index)
-            doublePressProps.onMouseLeave()
-            if (store.hoveredColor === index) {
-              store.hoveredColor = store.selectedColor
-            }
-          }}
-        >
-          <XStack fullscreen bg={color as any} items="center" justify="center">
-            <SizableText
-              selectable={false}
-              color={index > 4 ? '$background' : '$color'}
-              size="$1"
-              scale={size === 'small' ? 0.8 : 1}
-            >
-              {children?.(color, index)}
-            </SizableText>
-          </XStack>
+        {...radiusStyle}
+        {...doublePressProps}
+        onMouseLeave={() => {
+          mouseLeave(index)
+          doublePressProps.onMouseLeave()
+          if (store.hoveredColor === index) {
+            store.hoveredColor = store.selectedColor
+          }
+        }}
+      >
+        <XStack fullscreen bg={color as any} items="center" justify="center">
+          <SizableText
+            selectable={false}
+            color={index > 4 ? '$background' : '$color'}
+            size="$1"
+            scale={size === 'small' ? 0.8 : 1}
+          >
+            {children?.(color, index)}
+          </SizableText>
         </XStack>
-      </TooltipSimple>
+      </XStack>
     )
   }
 )
