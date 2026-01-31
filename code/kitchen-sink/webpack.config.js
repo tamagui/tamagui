@@ -38,7 +38,6 @@ module.exports = {
       'react-dom': require.resolve('react-dom'),
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',
-      '@expo/vector-icons': '@tamagui/proxy-worm',
     },
   },
   devServer: {
