@@ -60,6 +60,7 @@ export function getConfig(tamaguiPlugin: any) {
         components: ['tamagui'],
         config: './tamagui.config.ts',
         disableWatchTamaguiConfig: true,
+        disableExtraction: true,
       }),
 
       {

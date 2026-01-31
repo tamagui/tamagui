@@ -116,13 +116,13 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
 }
 
 export function tamaguiPlugin({
-  optimize,
   disableResolveConfig,
   ...tamaguiOptionsIn
-}: TamaguiOptions & { optimize?: boolean; disableResolveConfig?: boolean } = {}):
+}: TamaguiOptions & { disableResolveConfig?: boolean } = {}):
   | Plugin
   | Plugin[] {
-  const shouldExtract = !!optimize
+  // extraction ON by default, set disableExtraction: true to opt out
+  let shouldExtract = !tamaguiOptionsIn.disableExtraction
   let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined
 
   // TODO temporary fix
@@ -150,10 +150,15 @@ export function tamaguiPlugin({
   const ensureLoaded = async () => {
     const promise = getLoadPromise()
     if (promise) await promise
-    return getTamaguiOptions()
+    const options = getTamaguiOptions()
+    // update shouldExtract from loaded config (tamagui.build.ts)
+    if (options) {
+      shouldExtract = !options.disableExtraction
+    }
+    return options
   }
 
-  // extract plugin state (only used when optimize=true)
+  // extract plugin state
   const getHash = (input: string) => createHash('sha1').update(input).digest('base64')
 
   // use shared cache across environments
@@ -304,16 +309,17 @@ export function tamaguiPlugin({
     },
   }
 
-  if (!shouldExtract) {
-    return [basePlugin, rnwLitePlugin]
-  }
-
   // extract plugin for optimize mode
+  // always included, but checks shouldExtract dynamically after config loads
   const extractPlugin: Plugin = {
     name: 'tamagui-extract',
     enforce: 'pre',
 
-    config(userConf) {
+    async config(userConf) {
+      // wait for config to load to know if we should extract
+      await ensureLoaded()
+      if (!shouldExtract) return
+
       userConf.optimizeDeps ||= {}
       userConf.optimizeDeps.include ||= []
       userConf.optimizeDeps.include.push('@tamagui/core/inject-styles')
@@ -324,6 +330,8 @@ export function tamaguiPlugin({
     },
 
     async resolveId(source) {
+      if (!shouldExtract) return
+
       if (isNative(this.environment)) {
         return
       }
@@ -348,6 +356,8 @@ export function tamaguiPlugin({
     },
 
     async load(id) {
+      if (!shouldExtract) return
+
       const options = getTamaguiOptions()
       if (options?.disable) {
         return
@@ -370,6 +380,11 @@ export function tamaguiPlugin({
       async handler(code, id) {
         // ensure tamagui is loaded before transform
         const options = await ensureLoaded()
+
+        // check if extraction is enabled (may come from tamagui.build.ts)
+        if (!shouldExtract) {
+          return
+        }
 
         // ensure full config (heavy bundling) is loaded before extraction
         await ensureFullConfigLoaded()
