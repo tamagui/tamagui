@@ -214,12 +214,24 @@ async function recyclePool(options: TamaguiOptions): Promise<void> {
     setTimeout(() => {
       process.stderr.write = originalStderr
       process.stdout.write = originalStdout
-    }, 500)
+    })
 
     console.log(`  ♻️  [tamagui] recycled worker pool (${Date.now() - start}ms)`)
   } finally {
     setRecycling(false)
   }
+}
+
+/**
+ * Load Tamagui build configuration asynchronously
+ * Uses esbuild-wasm to avoid EPIPE errors from native esbuild service lifecycle
+ */
+export async function loadTamaguiBuildConfig(
+  tamaguiOptions: Partial<TamaguiOptions> | undefined
+): Promise<TamaguiOptions> {
+  const { default: Static } = await import('@tamagui/static')
+
+  return Static.loadTamaguiBuildConfigAsync(tamaguiOptions)
 }
 
 /**
@@ -340,18 +352,6 @@ export async function watchTamaguiConfig(
       }
     },
   }
-}
-
-/**
- * Load Tamagui build configuration asynchronously
- * Uses esbuild.transform() instead of esbuild-register to avoid EPIPE errors
- */
-export async function loadTamaguiBuildConfig(
-  tamaguiOptions: Partial<TamaguiOptions> | undefined
-): Promise<TamaguiOptions> {
-  const { default: Static } = await import('@tamagui/static')
-
-  return Static.loadTamaguiBuildConfigAsync(tamaguiOptions)
 }
 
 /**

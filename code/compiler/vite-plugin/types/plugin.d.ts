@@ -15,8 +15,7 @@ type AliasEntry = {
  * use this when you need control over alias ordering in your config
  */
 export declare function tamaguiAliases(options?: AliasOptions): AliasEntry[];
-export declare function tamaguiPlugin({ optimize: optimizeIn, disableResolveConfig, ...tamaguiOptionsIn }?: TamaguiOptions & {
-    optimize?: boolean;
+export declare function tamaguiPlugin({ disableResolveConfig, ...tamaguiOptionsIn }?: TamaguiOptions & {
     disableResolveConfig?: boolean;
 }): Plugin | Plugin[];
 export {};

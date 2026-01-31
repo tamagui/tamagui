@@ -116,15 +116,11 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
 }
 
 export function tamaguiPlugin({
-  optimize: optimizeIn,
   disableResolveConfig,
   ...tamaguiOptionsIn
-}: TamaguiOptions & { optimize?: boolean; disableResolveConfig?: boolean } = {}):
-  | Plugin
-  | Plugin[] {
-  // track if optimize was explicitly passed vs coming from tamagui.build.ts
-  const optimizeExplicit = optimizeIn !== undefined
-  let shouldExtract = !!optimizeIn
+}: TamaguiOptions & { disableResolveConfig?: boolean } = {}): Plugin | Plugin[] {
+  // extraction ON by default, set disableExtraction: true to opt out
+  let shouldExtract = !tamaguiOptionsIn.disableExtraction
   let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined
 
   // TODO temporary fix
@@ -153,15 +149,14 @@ export function tamaguiPlugin({
     const promise = getLoadPromise()
     if (promise) await promise
     const options = getTamaguiOptions()
-    // update shouldExtract from loaded config if not explicitly set
-    // optimize is a vite-plugin-specific option that can be in tamagui.build.ts
-    if (!optimizeExplicit && options && (options as any).optimize !== undefined) {
-      shouldExtract = !!(options as any).optimize
+    // update shouldExtract from loaded config (tamagui.build.ts)
+    if (options) {
+      shouldExtract = !options.disableExtraction
     }
     return options
   }
 
-  // extract plugin state (only used when optimize=true)
+  // extract plugin state
   const getHash = (input: string) => createHash('sha1').update(input).digest('base64')
 
   // use shared cache across environments
@@ -384,14 +379,10 @@ export function tamaguiPlugin({
         // ensure tamagui is loaded before transform
         const options = await ensureLoaded()
 
-        // check if extraction is enabled (may come from tamagui.build.ts)
-        if (!shouldExtract) {
-          return
-        }
-
         // ensure full config (heavy bundling) is loaded before extraction
         await ensureFullConfigLoaded()
 
+        // fully disabled = no extraction AND no debug attrs
         if (options?.disable) {
           return
         }

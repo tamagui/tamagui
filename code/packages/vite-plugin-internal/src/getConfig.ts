@@ -60,6 +60,7 @@ export function getConfig(tamaguiPlugin: any) {
         components: ['tamagui'],
         config: './tamagui.config.ts',
         disableWatchTamaguiConfig: true,
+        disable: true,
       }),
 
       {
@@ -123,6 +124,8 @@ export function getConfig(tamaguiPlugin: any) {
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+      // increase teardown timeout to avoid worker cleanup issues
+      teardownTimeout: 10000,
     },
   })
 }

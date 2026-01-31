@@ -41,18 +41,6 @@ export const getPragmaOptions = (props: { source: string; path: string }) => {
 }
 
 /**
- * Load Tamagui build configuration synchronously
- * This is only used for loading tamagui.build.ts config
- */
-export function loadTamaguiBuildConfigSync(
-  tamaguiOptions: Partial<TamaguiOptions> | undefined
-): TamaguiOptions {
-  // Import from static package for this sync operation
-  const { default: Static } = require('@tamagui/static')
-  return Static.loadTamaguiBuildConfigSync(tamaguiOptions)
-}
-
-/**
  * Extract Tamagui components to className-based CSS for web (synchronous)
  */
 export function extractToClassNamesSync(params: {

@@ -140,8 +140,9 @@ export default defineConfig({
       // points to any linked packages or node_modules
       // that have tamagui components to optimize
       components: ['tamagui'],
-      // turns on the optimizing compiler
-      optimize: true,
+      // disable optimizing compiler but keep debug helper transforms,
+      // or other options like pre-building CSS
+      disableExtraction: true,
     }),
   ],
 })

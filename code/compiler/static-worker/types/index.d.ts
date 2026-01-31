@@ -23,6 +23,11 @@ export declare const getPragmaOptions: (props: {
  */
 export declare function loadTamagui(options: Partial<TamaguiOptions>): Promise<any>;
 /**
+ * Load Tamagui build configuration asynchronously
+ * Uses esbuild-wasm to avoid EPIPE errors from native esbuild service lifecycle
+ */
+export declare function loadTamaguiBuildConfig(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
+/**
  * Extract Tamagui components to className-based CSS for web
  */
 export declare function extractToClassNames(params: {
@@ -41,11 +46,6 @@ export declare function extractToNative(sourceFileName: string, sourceCode: stri
 export declare function watchTamaguiConfig(options: TamaguiOptions): Promise<{
     dispose: () => void;
 } | undefined>;
-/**
- * Load Tamagui build configuration asynchronously
- * Uses esbuild.transform() instead of esbuild-register to avoid EPIPE errors
- */
-export declare function loadTamaguiBuildConfig(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
 /**
  * Clear the worker's config cache
  * Call this when config files change

@@ -110,7 +110,7 @@
     "@take-out/cli": "0.0.60",
     "@testing-library/dom": "^10.4.0",
     "dotenv-cli": "^7.4.2",
-    "esbuild": "^0.27.2",
+    "esbuild": "^0.25.11",
     "esbuild-register": "^3.6.0",
     "fs-extra": "^11.2.0",
     "knip": "^5.70.2",
@@ -132,8 +132,9 @@
     "@react-navigation/native-stack": "7.6.2",
     "@react-navigation/routers": "7.4.0",
     "@swc/core": "1.14.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "whatwg-url": "14.1.1"
   },
   "packageManager": "bun@1.2.22",
   "manypkg": {
