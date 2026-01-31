@@ -1,23 +1,24 @@
+/**
+ * Tamagui Vite Plugin
+ *
+ * Config comes from tamagui.build.ts:
+ * - disableExtraction: false → full extraction to CSS with flattening (🐥 with flat counts)
+ * - disableExtraction: true → just aliases/defines, babel runs for dev helpers (🐥 with 0 flat)
+ */
 import type { TamaguiOptions } from '@tamagui/static-worker';
 import type { Plugin } from 'vite';
 type AliasOptions = {
-    /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
     rnwLite?: boolean | 'without-animated';
-    /** alias react-native-svg to @tamagui/react-native-svg */
     svg?: boolean;
 };
 type AliasEntry = {
     find: string | RegExp;
     replacement: string;
 };
-/**
- * returns vite-compatible aliases for tamagui
- * use this when you need control over alias ordering in your config
- */
 export declare function tamaguiAliases(options?: AliasOptions): AliasEntry[];
-export declare function tamaguiPlugin({ optimize: optimizeIn, disableResolveConfig, ...tamaguiOptionsIn }?: TamaguiOptions & {
-    optimize?: boolean;
+type PluginOptions = Partial<TamaguiOptions> & {
     disableResolveConfig?: boolean;
-}): Plugin | Plugin[];
+};
+export declare function tamaguiPlugin(pluginOptions?: PluginOptions): Plugin[];
 export {};
 //# sourceMappingURL=plugin.d.ts.map
