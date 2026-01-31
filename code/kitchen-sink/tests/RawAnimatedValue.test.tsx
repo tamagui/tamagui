@@ -61,12 +61,8 @@ test.describe('Raw Animated.Value', () => {
     const finalOpacity = await box.evaluate((el) =>
       parseFloat(getComputedStyle(el).opacity)
     )
-    const finalTransform = await box.evaluate((el) =>
-      getComputedStyle(el).transform
-    )
-    const finalBgColor = await box.evaluate((el) =>
-      getComputedStyle(el).backgroundColor
-    )
+    const finalTransform = await box.evaluate((el) => getComputedStyle(el).transform)
+    const finalBgColor = await box.evaluate((el) => getComputedStyle(el).backgroundColor)
 
     // final values should be: opacity=1, scale=1, translateY=0, backgroundColor=green
     expect(finalOpacity).toBeCloseTo(1, 1)
@@ -82,7 +78,9 @@ test.describe('Raw Animated.Value', () => {
 
     // the mid-animation value should show progress (not jumped instantly)
     // if animation is working, mid should be between 0 and 1
-    console.log(`Animation progress: initial=${initialOpacity}, mid=${midOpacity}, final=${finalOpacity}`)
+    console.log(
+      `Animation progress: initial=${initialOpacity}, mid=${midOpacity}, final=${finalOpacity}`
+    )
 
     // key test: animation should have progressed, not jumped
     const animationProgressed = midOpacity > 0.05 && midOpacity < 0.95

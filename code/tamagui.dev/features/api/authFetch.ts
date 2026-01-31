@@ -1,4 +1,4 @@
-import { getAccessToken } from "~/features/auth/useSupabaseClient";
+import { getAccessToken } from '~/features/auth/useSupabaseClient'
 
 /**
  * authenticated fetch helper for client-side API calls
@@ -18,20 +18,20 @@ import { getAccessToken } from "~/features/auth/useSupabaseClient";
  *   })
  */
 export async function authFetch(
-	url: string,
-	options: RequestInit = {},
+  url: string,
+  options: RequestInit = {}
 ): Promise<Response> {
-	const accessToken = await getAccessToken();
+  const accessToken = await getAccessToken()
 
-	const headers = new Headers(options.headers);
-	headers.set("Content-Type", "application/json");
+  const headers = new Headers(options.headers)
+  headers.set('Content-Type', 'application/json')
 
-	if (accessToken) {
-		headers.set("Authorization", `Bearer ${accessToken}`);
-	}
+  if (accessToken) {
+    headers.set('Authorization', `Bearer ${accessToken}`)
+  }
 
-	return fetch(url, {
-		...options,
-		headers,
-	});
+  return fetch(url, {
+    ...options,
+    headers,
+  })
 }

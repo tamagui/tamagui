@@ -33,15 +33,16 @@ async function getV1Users() {
   }
 
   // Filter for V1 products
-  const v1Subs = subscriptions.filter(sub =>
-    sub.subscription_items?.some(item =>
-      item.price?.product?.name === 'Tamagui Pro' ||
-      item.price?.product?.name === 'Tamagui Pro Team Seats'
+  const v1Subs = subscriptions.filter((sub) =>
+    sub.subscription_items?.some(
+      (item) =>
+        item.price?.product?.name === 'Tamagui Pro' ||
+        item.price?.product?.name === 'Tamagui Pro Team Seats'
     )
   )
 
   // Get unique user IDs
-  const userIds = [...new Set(v1Subs.map(s => s.user_id))]
+  const userIds = [...new Set(v1Subs.map((s) => s.user_id))]
 
   // Get user details
   const { data: users, error: usersError } = await supabase
@@ -55,10 +56,8 @@ async function getV1Users() {
   }
 
   // Filter out test emails
-  const realUsers = users.filter(u =>
-    u.email &&
-    !u.email.includes('takeout') &&
-    !u.email.includes('@tamagui.dev')
+  const realUsers = users.filter(
+    (u) => u.email && !u.email.includes('takeout') && !u.email.includes('@tamagui.dev')
   )
 
   console.log('V1 Users to email:')

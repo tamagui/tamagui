@@ -1,17 +1,17 @@
-import { useUser } from "~/features/user/useUser";
-import { accountModal } from "./accountModalStore";
-import { getActivePromo } from "./promoConfig";
-import { purchaseModal } from "./purchaseModalStore";
+import { useUser } from '~/features/user/useUser'
+import { accountModal } from './accountModalStore'
+import { getActivePromo } from './promoConfig'
+import { purchaseModal } from './purchaseModalStore'
 
 /**
  * Check if the URL has the test purchase query param
  * Only works for developers in the whitelist
  */
 const isTestPurchaseMode = (): boolean => {
-	if (typeof window === "undefined") return false;
-	const params = new URLSearchParams(window.location.search);
-	return params.get("testPurchase") === "true";
-};
+  if (typeof window === 'undefined') return false
+  const params = new URLSearchParams(window.location.search)
+  return params.get('testPurchase') === 'true'
+}
 
 /**
  * This hook is used to show the appropriate modal based on the user's subscription status.
@@ -23,40 +23,40 @@ const isTestPurchaseMode = (): boolean => {
  * automatically applies any active promo from promoConfig
  */
 export const useSubscriptionModal = () => {
-	const { data: userData, isLoading, subscriptionStatus } = useUser();
+  const { data: userData, isLoading, subscriptionStatus } = useUser()
 
-	const showAppropriateModal = () => {
-		if (isLoading) return;
+  const showAppropriateModal = () => {
+    if (isLoading) return
 
-		// developers can bypass pro check with ?testPurchase=true
-		const devTestMode = subscriptionStatus.isDeveloper && isTestPurchaseMode();
+    // developers can bypass pro check with ?testPurchase=true
+    const devTestMode = subscriptionStatus.isDeveloper && isTestPurchaseMode()
 
-		if (subscriptionStatus.pro && !devTestMode) {
-			accountModal.show = true;
-		} else {
-			// always apply active promo if one exists
-			const activePromo = getActivePromo();
-			if (activePromo) {
-				purchaseModal.activePromo = activePromo;
-				purchaseModal.prefilledCouponCode = activePromo.code;
-			} else {
-				purchaseModal.activePromo = null;
-				purchaseModal.prefilledCouponCode = null;
-			}
+    if (subscriptionStatus.pro && !devTestMode) {
+      accountModal.show = true
+    } else {
+      // always apply active promo if one exists
+      const activePromo = getActivePromo()
+      if (activePromo) {
+        purchaseModal.activePromo = activePromo
+        purchaseModal.prefilledCouponCode = activePromo.code
+      } else {
+        purchaseModal.activePromo = null
+        purchaseModal.prefilledCouponCode = null
+      }
 
-			// for dev test mode, prefill the test coupon
-			if (devTestMode) {
-				purchaseModal.prefilledCouponCode = "DEV_TEST_99";
-			}
+      // for dev test mode, prefill the test coupon
+      if (devTestMode) {
+        purchaseModal.prefilledCouponCode = 'DEV_TEST_99'
+      }
 
-			purchaseModal.show = true;
-		}
-	};
+      purchaseModal.show = true
+    }
+  }
 
-	return {
-		showAppropriateModal,
-		isLoading,
-		userData,
-		subscriptionStatus,
-	};
-};
+  return {
+    showAppropriateModal,
+    isLoading,
+    userData,
+    subscriptionStatus,
+  }
+}
