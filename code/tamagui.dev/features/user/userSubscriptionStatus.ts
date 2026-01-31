@@ -1,13 +1,13 @@
 /**
  * This file contains the whitelist of users who are allowed to access the subscription features.
  */
-import type { UserContextType } from '~/features/auth/types'
+import type { UserContextType } from "~/features/auth/types";
 import {
-  ProductName,
-  type ProductNameType,
-  SubscriptionStatus,
-  type UserSubscriptionStatus,
-} from '~/shared/types/subscription'
+	ProductName,
+	type ProductNameType,
+	SubscriptionStatus,
+	type UserSubscriptionStatus,
+} from "~/shared/types/subscription";
 
 /**
  * GitHub usernames that are allowed to test the purchase flow even if they already have Pro.
@@ -16,24 +16,26 @@ import {
  * - Use the DEV_TEST_99 coupon for 99% off test purchases
  * - Purchase multiple times to the same domain (for testing)
  */
-export const DEVELOPER_GITHUB_USERNAMES = ['natew'] as const
+export const DEVELOPER_GITHUB_USERNAMES = ["natew"] as const;
 
 /**
  * Check if a subscription has specific product access
  */
 const hasProductAccess = (
-  subscriptions: UserContextType['subscriptions'],
-  productName: ProductNameType
+	subscriptions: UserContextType["subscriptions"],
+	productName: ProductNameType,
 ): boolean => {
-  return (
-    subscriptions?.some(
-      (sub) =>
-        (sub.status === SubscriptionStatus.Active ||
-          sub.status === SubscriptionStatus.Trialing) &&
-        sub.subscription_items?.some((item) => item.price?.product?.name === productName)
-    ) ?? false
-  )
-}
+	return (
+		subscriptions?.some(
+			(sub) =>
+				(sub.status === SubscriptionStatus.Active ||
+					sub.status === SubscriptionStatus.Trialing) &&
+				sub.subscription_items?.some(
+					(item) => item.price?.product?.name === productName,
+				),
+		) ?? false
+	);
+};
 
 /**
  * Calculate support tier from subscription data
@@ -41,117 +43,127 @@ const hasProductAccess = (
  * V1 support tier: based on quantity
  */
 const calculateSupportTier = (
-  subscriptions: UserContextType['subscriptions']
+	subscriptions: UserContextType["subscriptions"],
 ): number => {
-  if (!subscriptions) return 0
+	if (!subscriptions) return 0;
 
-  // Check V2 sponsor support first (highest tier)
-  const hasSponsor = subscriptions.some(
-    (sub) =>
-      sub.subscription_items?.some(
-        (item) => item.price?.product?.name === ProductName.TamaguiSupportSponsor
-      ) &&
-      (sub.status === SubscriptionStatus.Active ||
-        sub.status === SubscriptionStatus.Trialing)
-  )
-  if (hasSponsor) return 2
+	// Check V2 sponsor support first (highest tier)
+	const hasSponsor = subscriptions.some(
+		(sub) =>
+			sub.subscription_items?.some(
+				(item) =>
+					item.price?.product?.name === ProductName.TamaguiSupportSponsor,
+			) &&
+			(sub.status === SubscriptionStatus.Active ||
+				sub.status === SubscriptionStatus.Trialing),
+	);
+	if (hasSponsor) return 2;
 
-  // Check V2 direct support
-  const hasDirect = subscriptions.some(
-    (sub) =>
-      sub.subscription_items?.some(
-        (item) => item.price?.product?.name === ProductName.TamaguiSupportDirect
-      ) &&
-      (sub.status === SubscriptionStatus.Active ||
-        sub.status === SubscriptionStatus.Trialing)
-  )
-  if (hasDirect) return 1
+	// Check V2 direct support
+	const hasDirect = subscriptions.some(
+		(sub) =>
+			sub.subscription_items?.some(
+				(item) =>
+					item.price?.product?.name === ProductName.TamaguiSupportDirect,
+			) &&
+			(sub.status === SubscriptionStatus.Active ||
+				sub.status === SubscriptionStatus.Trialing),
+	);
+	if (hasDirect) return 1;
 
-  // V1 support (legacy)
-  const supportItem = subscriptions.find((sub) =>
-    sub.subscription_items?.some(
-      (item) =>
-        item.price?.product?.name === ProductName.TamaguiSupport &&
-        (sub.status === SubscriptionStatus.Active ||
-          sub.status === SubscriptionStatus.Trialing)
-    )
-  )
+	// V1 support (legacy)
+	const supportItem = subscriptions.find((sub) =>
+		sub.subscription_items?.some(
+			(item) =>
+				item.price?.product?.name === ProductName.TamaguiSupport &&
+				(sub.status === SubscriptionStatus.Active ||
+					sub.status === SubscriptionStatus.Trialing),
+		),
+	);
 
-  return supportItem?.quantity ?? 0
-}
+	return supportItem?.quantity ?? 0;
+};
 
-const calculateTeamSeats = (subscriptions: UserContextType['subscriptions']): number => {
-  if (!subscriptions) return 0
+const calculateTeamSeats = (
+	subscriptions: UserContextType["subscriptions"],
+): number => {
+	if (!subscriptions) return 0;
 
-  return (
-    subscriptions.find((sub) =>
-      sub.subscription_items?.some(
-        (item) =>
-          item.price?.product?.name === ProductName.TamaguiProTeamSeats &&
-          (sub.status === SubscriptionStatus.Active ||
-            sub.status === SubscriptionStatus.Trialing)
-      )
-    )?.quantity ?? 0
-  )
-}
+	return (
+		subscriptions.find((sub) =>
+			sub.subscription_items?.some(
+				(item) =>
+					item.price?.product?.name === ProductName.TamaguiProTeamSeats &&
+					(sub.status === SubscriptionStatus.Active ||
+						sub.status === SubscriptionStatus.Trialing),
+			),
+		)?.quantity ?? 0
+	);
+};
 
 /**
  * Check if a user is a developer who can test the purchase flow
  */
 const isDeveloperUser = (userData?: UserContextType): boolean => {
-  if (!userData?.githubUsername) return false
-  return DEVELOPER_GITHUB_USERNAMES.includes(
-    userData.githubUsername.toLowerCase() as (typeof DEVELOPER_GITHUB_USERNAMES)[number]
-  )
-}
+	if (!userData?.githubUsername) return false;
+	return DEVELOPER_GITHUB_USERNAMES.includes(
+		userData.githubUsername.toLowerCase() as (typeof DEVELOPER_GITHUB_USERNAMES)[number],
+	);
+};
 
 /**
  * Get the subscription status of a user.
  */
 export const userSubscriptionStatus = (
-  userData?: UserContextType
+	userData?: UserContextType,
 ): UserSubscriptionStatus => {
-  if (!userData)
-    return {
-      pro: false,
-      chat: false,
-      supportTier: 0,
-      teamSeats: 0,
-      couponCodes: { previouslySubscribed: 'TAMAGUI_PRO_RENEWAL' },
-      isDeveloper: false,
-    }
+	if (!userData)
+		return {
+			pro: false,
+			chat: false,
+			supportTier: 0,
+			teamSeats: 0,
+			couponCodes: { previouslySubscribed: "TAMAGUI_PRO_RENEWAL" },
+			isDeveloper: false,
+		};
 
-  const isPro =
-    // V1 products
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiPro) ||
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiProTeamSeats) ||
-    // V2 products
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2) ||
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2Upgrade) ||
-    // V2 support tiers also imply Pro access (support is add-on to Pro license)
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportDirect) ||
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportSponsor)
+	const isPro =
+		// V1 products
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiPro) ||
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiProTeamSeats) ||
+		// V2 products
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2) ||
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2Upgrade) ||
+		// V2 support tiers also imply Pro access (support is add-on to Pro license)
+		hasProductAccess(
+			userData.subscriptions,
+			ProductName.TamaguiSupportDirect,
+		) ||
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportSponsor);
 
-  const isChat =
-    // V1 chat
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiChat) ||
-    // V2 Pro includes basic chat support
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2) ||
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2Upgrade) ||
-    // V2 support tiers include chat
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportDirect) ||
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportSponsor)
+	const isChat =
+		// V1 chat
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiChat) ||
+		// V2 Pro includes basic chat support
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2) ||
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2Upgrade) ||
+		// V2 support tiers include chat
+		hasProductAccess(
+			userData.subscriptions,
+			ProductName.TamaguiSupportDirect,
+		) ||
+		hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportSponsor);
 
-  const supportTier = calculateSupportTier(userData.subscriptions) || 0
+	const supportTier = calculateSupportTier(userData.subscriptions) || 0;
 
-  return {
-    pro: isPro,
-    chat: isChat,
-    supportTier,
-    teamSeats: calculateTeamSeats(userData.subscriptions),
-    couponCodes: {
-      previouslySubscribed: 'RENEWAL04',
-    },
-    isDeveloper: isDeveloperUser(userData),
-  }
-}
+	return {
+		pro: isPro,
+		chat: isChat,
+		supportTier,
+		teamSeats: calculateTeamSeats(userData.subscriptions),
+		couponCodes: {
+			previouslySubscribed: "RENEWAL04",
+		},
+		isDeveloper: isDeveloperUser(userData),
+	};
+};
