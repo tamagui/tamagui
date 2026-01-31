@@ -65,6 +65,7 @@ import {
 	useThemeName,
 } from "tamagui";
 import { z } from "zod";
+import { authFetch } from "~/features/api/authFetch";
 import { useSupabaseClient } from "~/features/auth/useSupabaseClient";
 import { GithubIcon } from "~/features/icons/GithubIcon";
 import { useUser } from "~/features/user/useUser";
@@ -274,11 +275,8 @@ const PaymentForm = ({
 				// V2 purchase flow (project info collected after payment)
 				if (isV2) {
 					console.log("[Payment] Creating V2 subscription...");
-					const response = await fetch("/api/create-v2-subscription", {
+					const response = await authFetch("/api/create-v2-subscription", {
 						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
 						body: JSON.stringify({
 							paymentMethodId: paymentMethod.id,
 							couponId: finalCoupon?.id,
@@ -330,11 +328,8 @@ const PaymentForm = ({
 				}
 
 				// Legacy V1 subscription/payment flow
-				const response = await fetch("/api/create-subscription", {
+				const response = await authFetch("/api/create-subscription", {
 					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
 					body: JSON.stringify({
 						paymentMethodId: paymentMethod.id,
 						disableAutoRenew: selectedPrices.disableAutoRenew,
@@ -374,11 +369,8 @@ const PaymentForm = ({
 
 			// If Chat or Support is selected, create additional subscription
 			if (selectedPrices.chatSupport || selectedPrices.supportTier !== "chat") {
-				const upgradeResponse = await fetch("/api/upgrade-subscription", {
+				const upgradeResponse = await authFetch("/api/upgrade-subscription", {
 					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
 					body: JSON.stringify({
 						paymentMethodId: paymentMethod.id,
 						chatSupport: selectedPrices.chatSupport,
