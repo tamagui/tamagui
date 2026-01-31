@@ -1,29 +1,15 @@
-/**
- * Tamagui config loading for vite plugin
- *
- * Simple API:
- * - loadTamagui(options) - start loading (non-blocking)
- * - getLoadedConfig() - await fully loaded config
- *
- * Internally handles two-phase loading (light build config, then heavy full config)
- * but consumers don't need to know about that.
- */
 import type { TamaguiOptions } from '@tamagui/types';
+export declare function getTamaguiOptions(): TamaguiOptions | null;
+export declare function getLoadPromise(): Promise<TamaguiOptions> | null;
 /**
- * Start loading tamagui config (non-blocking)
- * Call early to start loading, then await getLoadedConfig() when needed
+ * Load just the tamagui.build.ts config (lightweight)
+ * This doesn't bundle the full tamagui config - call ensureFullConfigLoaded() for that
  */
-export declare function loadTamagui(optionsIn?: Partial<TamaguiOptions>): void;
+export declare function loadTamaguiBuildConfig(optionsIn?: Partial<TamaguiOptions>): Promise<TamaguiOptions>;
 /**
- * Get the fully loaded config (awaits if still loading)
+ * Ensure the full tamagui config is loaded (heavy - bundles config + components)
+ * Call this lazily when transform/extraction is actually needed
  */
-export declare function getLoadedConfig(): Promise<TamaguiOptions>;
-/**
- * Get config if already loaded (null if not ready)
- */
-export declare function getConfigSync(): TamaguiOptions | null;
-/**
- * Clean up resources
- */
+export declare function ensureFullConfigLoaded(): Promise<void>;
 export declare function cleanup(): Promise<void>;
 //# sourceMappingURL=loadTamagui.d.ts.map

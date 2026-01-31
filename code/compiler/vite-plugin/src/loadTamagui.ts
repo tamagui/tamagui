@@ -1,89 +1,94 @@
-/**
- * Tamagui config loading for vite plugin
- *
- * Simple API:
- * - loadTamagui(options) - start loading (non-blocking)
- * - getLoadedConfig() - await fully loaded config
- *
- * Internally handles two-phase loading (light build config, then heavy full config)
- * but consumers don't need to know about that.
- */
-
 import * as StaticWorker from '@tamagui/static-worker'
 import type { TamaguiOptions } from '@tamagui/types'
 
-const STATE_KEY = '__tamagui_load_state__'
+// use globalThis to share state across vite environments (SSR, client, etc.)
+const LOAD_STATE_KEY = '__tamagui_load_state__'
 
 type LoadState = {
-  options: TamaguiOptions | null
   loadPromise: Promise<TamaguiOptions> | null
+  loadedOptions: TamaguiOptions | null
+  fullConfigLoaded: boolean
+  fullConfigLoadPromise: Promise<void> | null
 }
 
-function getState(): LoadState {
-  if (!(globalThis as any)[STATE_KEY]) {
-    ;(globalThis as any)[STATE_KEY] = {
-      options: null,
+function getLoadState(): LoadState {
+  if (!(globalThis as any)[LOAD_STATE_KEY]) {
+    ;(globalThis as any)[LOAD_STATE_KEY] = {
       loadPromise: null,
+      loadedOptions: null,
+      fullConfigLoaded: false,
+      fullConfigLoadPromise: null,
     }
   }
-  return (globalThis as any)[STATE_KEY]
+  return (globalThis as any)[LOAD_STATE_KEY]
+}
+
+export function getTamaguiOptions(): TamaguiOptions | null {
+  return getLoadState().loadedOptions
+}
+
+export function getLoadPromise(): Promise<TamaguiOptions> | null {
+  return getLoadState().loadPromise
 }
 
 /**
- * Start loading tamagui config (non-blocking)
- * Call early to start loading, then await getLoadedConfig() when needed
+ * Load just the tamagui.build.ts config (lightweight)
+ * This doesn't bundle the full tamagui config - call ensureFullConfigLoaded() for that
  */
-export function loadTamagui(optionsIn?: Partial<TamaguiOptions>): void {
-  const state = getState()
-  if (state.loadPromise) return
+export async function loadTamaguiBuildConfig(
+  optionsIn?: Partial<TamaguiOptions>
+): Promise<TamaguiOptions> {
+  const state = getLoadState()
+  if (state.loadedOptions) return state.loadedOptions
+  if (state.loadPromise) return state.loadPromise
 
   state.loadPromise = (async () => {
-    // phase 1: load tamagui.build.ts (lightweight)
-    const buildOptions = await StaticWorker.loadTamaguiBuildConfig({
+    const options = await StaticWorker.loadTamaguiBuildConfig({
       ...optionsIn,
       platform: 'web',
     })
 
-    // phase 2: load full config (heavy - bundles config + components)
-    // this triggers the 🐥 "built config, components, prompt" log
-    if (!buildOptions.disableWatchTamaguiConfig && !buildOptions.disable) {
+    state.loadedOptions = options
+    return options
+  })()
+
+  return state.loadPromise
+}
+
+/**
+ * Ensure the full tamagui config is loaded (heavy - bundles config + components)
+ * Call this lazily when transform/extraction is actually needed
+ */
+export async function ensureFullConfigLoaded(): Promise<void> {
+  const state = getLoadState()
+
+  if (state.fullConfigLoaded) return
+  if (state.fullConfigLoadPromise) return state.fullConfigLoadPromise
+
+  // set promise immediately to prevent race conditions
+  // (don't await loadTamaguiBuildConfig before setting this)
+  state.fullConfigLoadPromise = (async () => {
+    const options = await loadTamaguiBuildConfig()
+
+    // load full tamagui config in worker (asynchronous)
+    if (!options.disableWatchTamaguiConfig && !options.disable) {
       await StaticWorker.loadTamagui({
         components: ['tamagui'],
         platform: 'web',
-        ...buildOptions,
+        ...options,
       })
     }
-
-    state.options = buildOptions
-    return buildOptions
+    state.fullConfigLoaded = true
   })()
+
+  return state.fullConfigLoadPromise
 }
 
-/**
- * Get the fully loaded config (awaits if still loading)
- */
-export async function getLoadedConfig(): Promise<TamaguiOptions> {
-  const state = getState()
-
-  if (state.options) return state.options
-  if (state.loadPromise) return state.loadPromise
-
-  throw new Error('[tamagui] Config not loaded - call loadTamagui() first')
-}
-
-/**
- * Get config if already loaded (null if not ready)
- */
-export function getConfigSync(): TamaguiOptions | null {
-  return getState().options
-}
-
-/**
- * Clean up resources
- */
-export async function cleanup(): Promise<void> {
+export async function cleanup() {
   await StaticWorker.destroyPool()
-  const state = getState()
-  state.options = null
+  const state = getLoadState()
   state.loadPromise = null
+  state.loadedOptions = null
+  state.fullConfigLoaded = false
+  state.fullConfigLoadPromise = null
 }
