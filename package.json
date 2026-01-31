@@ -132,8 +132,17 @@
     "@react-navigation/native-stack": "7.6.2",
     "@react-navigation/routers": "7.4.0",
     "@swc/core": "1.14.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "vite": "7.1.12",
+    "esbuild": "0.25.12",
+    "@babel/core": "7.28.6",
+    "@babel/generator": "7.28.6",
+    "@babel/parser": "7.28.6",
+    "@babel/traverse": "7.28.6",
+    "@babel/types": "7.28.6",
+    "@babel/template": "7.28.6",
+    "@babel/code-frame": "7.28.6"
   },
   "packageManager": "bun@1.2.22",
   "manypkg": {
