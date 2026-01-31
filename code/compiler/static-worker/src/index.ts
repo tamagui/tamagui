@@ -214,12 +214,25 @@ async function recyclePool(options: TamaguiOptions): Promise<void> {
     setTimeout(() => {
       process.stderr.write = originalStderr
       process.stdout.write = originalStdout
-    }, 500)
+    })
 
     console.log(`  ♻️  [tamagui] recycled worker pool (${Date.now() - start}ms)`)
   } finally {
     setRecycling(false)
   }
+}
+
+/**
+ * Load Tamagui build configuration synchronously
+ * This is only used for loading tamagui.build.ts config, not the full tamagui config
+ */
+export async function loadTamaguiBuildConfig(
+  tamaguiOptions: Partial<TamaguiOptions> | undefined
+): Promise<TamaguiOptions> {
+  // Import from static package for this sync operation
+  const { default: Static } = await import('@tamagui/static')
+
+  return Static.loadTamaguiBuildConfigSync(tamaguiOptions)
 }
 
 /**
