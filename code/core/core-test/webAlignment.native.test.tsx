@@ -205,33 +205,42 @@ describe('Web Alignment - Native Event Mapping', () => {
     // 1. Remove these from webPropsToSkip.native.ts
     // 2. Add mapping in createComponent/createOptimizedView to convert onClick → onPress
 
-    test.fails('onClick should be passed through on native (needs migration: currently filtered)', () => {
-      const handler = () => {}
-      const result = getSplitStylesFor({
-        onClick: handler,
-      })
+    test.fails(
+      'onClick should be passed through on native (needs migration: currently filtered)',
+      () => {
+        const handler = () => {}
+        const result = getSplitStylesFor({
+          onClick: handler,
+        })
 
-      // After migration, onClick should pass through and be mapped to onPress
-      expect(result.viewProps.onClick).toBe(handler)
-    })
+        // After migration, onClick should pass through and be mapped to onPress
+        expect(result.viewProps.onClick).toBe(handler)
+      }
+    )
 
-    test.fails('onPointerDown should be passed through on native (needs migration: currently filtered)', () => {
-      const handler = () => {}
-      const result = getSplitStylesFor({
-        onPointerDown: handler,
-      })
+    test.fails(
+      'onPointerDown should be passed through on native (needs migration: currently filtered)',
+      () => {
+        const handler = () => {}
+        const result = getSplitStylesFor({
+          onPointerDown: handler,
+        })
 
-      expect(result.viewProps.onPointerDown).toBe(handler)
-    })
+        expect(result.viewProps.onPointerDown).toBe(handler)
+      }
+    )
 
-    test.fails('onPointerUp should be passed through on native (needs migration: currently filtered)', () => {
-      const handler = () => {}
-      const result = getSplitStylesFor({
-        onPointerUp: handler,
-      })
+    test.fails(
+      'onPointerUp should be passed through on native (needs migration: currently filtered)',
+      () => {
+        const handler = () => {}
+        const result = getSplitStylesFor({
+          onPointerUp: handler,
+        })
 
-      expect(result.viewProps.onPointerUp).toBe(handler)
-    })
+        expect(result.viewProps.onPointerUp).toBe(handler)
+      }
+    )
   })
 
   describe('RN event props still work (kept for cross-platform compatibility)', () => {

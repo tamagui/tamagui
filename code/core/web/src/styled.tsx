@@ -114,9 +114,8 @@ type HTMLElementSpecificProps<T extends keyof HTMLElementTagNameMap> = T extends
 
 // base style props based on element type
 // use StackStyle/TextStyle to get token support (WithThemeShorthandsPseudosMedia)
-type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> = T extends TextLikeElements
-  ? TextStyle
-  : StackStyle
+type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> =
+  T extends TextLikeElements ? TextStyle : StackStyle
 
 // runtime check for text-like elements
 const textLikeElements = new Set<string>([

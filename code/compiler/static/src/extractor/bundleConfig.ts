@@ -102,6 +102,10 @@ function updateLastLoaded(config: any) {
 }
 
 let hasBundledOnce = false
+
+// use global to dedupe logging - this works within a single process
+// but may log multiple times if worker threads are recreated
+// that's acceptable - better than nothing
 let hasLoggedBuild = false
 
 export async function bundleConfig(props: TamaguiOptions) {
@@ -176,7 +180,8 @@ export async function bundleConfig(props: TamaguiOptions) {
       ])
 
       // only log once per process to avoid duplicate messages
-      if (!hasLoggedBuild) {
+      // also skip if _skipBuildLog is set (used during worker recycle warmup)
+      if (!hasLoggedBuild && !props['_skipBuildLog']) {
         hasLoggedBuild = true
         colorLog(
           Color.FgYellow,
