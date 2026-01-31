@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-tamagui",
-  "version": "2.0.0-rc.0",
+  "version": "2.0.0-rc.0-1769885482630",
   "source": "src/index.ts",
   "files": [
     "src",

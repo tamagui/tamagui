@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "2.0.0-rc.0",
+  "version": "2.0.0-rc.0-1769885482630",
   "description": "Utilities for icon packages",
   "license": "MIT",
   "source": "src/index.ts",
