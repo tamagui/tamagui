@@ -6,7 +6,7 @@
  *
  * @flow
  */
-export declare function pick(obj: Object, list: {
+export declare function pick(obj: object, list: {
     [K in string]: boolean;
-}): Object;
+}): object;
 //# sourceMappingURL=index.d.ts.map

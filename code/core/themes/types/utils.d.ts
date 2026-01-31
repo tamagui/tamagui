@@ -17,5 +17,5 @@ export type MergeIntersectingObjects<ObjT> = {
     [key in keyof ObjT]: ObjT[key];
 };
 export type EntriesToObject<ARR_T extends EntriesType> = MergeIntersectingObjects<UnionToIntersection<UnionObjectFromArrayOfPairs<ARR_T>>>;
-export declare function objectKeys<O extends Object>(obj: O): Array<keyof O>;
+export declare function objectKeys<O extends object>(obj: O): Array<keyof O>;
 //# sourceMappingURL=utils.d.ts.map

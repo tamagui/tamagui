@@ -6,7 +6,7 @@ export type ThemeBuilderInternalState = {
     themes?: ThemeDefinitions;
     masks?: MaskDefinitions;
 };
-type ObjectStringKeys<A extends Object | undefined> = A extends Object ? Exclude<keyof A, symbol | number> : never;
+type ObjectStringKeys<A extends object | undefined> = A extends object ? Exclude<keyof A, symbol | number> : never;
 type GetGeneratedThemeFromTemplate<Template, TD> = {
     [key in keyof Template]: string;
 };
