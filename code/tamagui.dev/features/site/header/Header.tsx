@@ -674,7 +674,14 @@ const HeaderMenuContents = (props: { id: ID }) => {
       return (
         <>
           <HeaderMenuMoreContents />
-          {isOnlyShowingMenu && <ActivePageDocsMenuContents />}
+          <Separator borderColor="$color02" opacity={0.25} my="$2" />
+          {isOnlyShowingMenu && (
+            <>
+              <ActivePageDocsMenuContents />
+              <Separator borderColor="$color02" opacity={0.25} my="$2" />
+            </>
+          )}
+          <SeasonChooser />
         </>
       )
     }
@@ -880,27 +887,13 @@ const HeaderMenuMoreContents = () => {
         <Link asChild href="/takeout">
           <HeadAnchor grid half render="a">
             <XStack items="center">
-              <span>Takeout v1 </span>
+              <span>Takeout</span>
               <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
                 <TakeoutIcon scale={0.65} />
               </YStack>
             </XStack>
             <SizableText size="$2" color="$color9">
-              Next.js + Expo
-            </SizableText>
-          </HeadAnchor>
-        </Link>
-
-        <Link asChild href="/takeout">
-          <HeadAnchor grid half render="a">
-            <XStack items="center">
-              <span>Takeout v2 </span>
-              <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
-                <TakeoutIcon scale={0.65} />
-              </YStack>
-            </XStack>
-            <SizableText size="$2" color="$color9">
-              One + Zero + IaC
+              Starter Kit
             </SizableText>
           </HeadAnchor>
         </Link>
@@ -1001,10 +994,6 @@ const HeaderMenuMoreContents = () => {
           </YStack>
         </HeadAnchor>
       </Link>
-
-      <Separator borderColor="$color02" opacity={0.25} my="$2" />
-
-      <SeasonChooser />
     </YStack>
   )
 }
