@@ -23,7 +23,7 @@
     "csstype": "^3.0.10",
     "react": ">=19",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.18"
+    "vitest": "4.0.4"
   },
   "peerDependencies": {
     "react": ">=19"
