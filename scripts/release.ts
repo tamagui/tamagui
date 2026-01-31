@@ -112,23 +112,60 @@ async function getWorkspacePackages() {
   const packages: { name: string; location: string }[] = []
 
   for (const pattern of workspaceGlobs) {
-    const baseDir = pattern.replace(/\/\*+$/, '').replace(/^\.\//, '')
-    try {
-      const entries = await fs.readdir(baseDir, { withFileTypes: true })
-      for (const entry of entries) {
-        if (!entry.isDirectory()) continue
-        const pkgPath = path.join(baseDir, entry.name, 'package.json')
-        try {
-          const pkg = await fs.readJSON(pkgPath)
-          if (pkg.name) {
-            packages.push({ name: pkg.name, location: path.join(baseDir, entry.name) })
+    // normalize pattern: remove leading ./ and handle glob patterns
+    const normalizedPattern = pattern.replace(/^\.\//, '')
+
+    if (normalizedPattern.includes('**')) {
+      // for **/* patterns, we need to scan subdirectories
+      // e.g., code/ui/**/* -> scan all subdirs of code/ui/
+      const baseDir = normalizedPattern.split('**')[0].replace(/\/$/, '')
+      try {
+        const entries = await fs.readdir(baseDir, { withFileTypes: true })
+        for (const entry of entries) {
+          if (!entry.isDirectory()) continue
+          const pkgPath = path.join(baseDir, entry.name, 'package.json')
+          try {
+            const pkg = await fs.readJSON(pkgPath)
+            if (pkg.name) {
+              packages.push({ name: pkg.name, location: path.join(baseDir, entry.name) })
+            }
+          } catch {
+            // skip directories without package.json
           }
-        } catch {
-          // Skip directories without package.json
         }
+      } catch {
+        // skip patterns that don't resolve
       }
-    } catch {
-      // Skip patterns that don't resolve
+    } else if (normalizedPattern.includes('*')) {
+      // for single * patterns, scan the parent directory
+      const baseDir = normalizedPattern.replace(/\/\*$/, '')
+      try {
+        const entries = await fs.readdir(baseDir, { withFileTypes: true })
+        for (const entry of entries) {
+          if (!entry.isDirectory()) continue
+          const pkgPath = path.join(baseDir, entry.name, 'package.json')
+          try {
+            const pkg = await fs.readJSON(pkgPath)
+            if (pkg.name) {
+              packages.push({ name: pkg.name, location: path.join(baseDir, entry.name) })
+            }
+          } catch {
+            // skip directories without package.json
+          }
+        }
+      } catch {
+        // skip patterns that don't resolve
+      }
+    } else {
+      // exact path - just check if it has a package.json
+      try {
+        const pkg = await fs.readJSON(path.join(normalizedPattern, 'package.json'))
+        if (pkg.name) {
+          packages.push({ name: pkg.name, location: normalizedPattern })
+        }
+      } catch {
+        // skip if no package.json
+      }
     }
   }
 
