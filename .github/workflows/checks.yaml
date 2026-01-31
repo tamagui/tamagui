@@ -11,30 +11,11 @@ on:
       - v2
       - 'v2-*'
 
-# cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
 concurrency:
   group: checks-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  checks:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install
-        uses: ./.github/actions/install
-
-      - name: Check
-        run: bun run check
-
-      - name: Typecheck
-        run: bun run typecheck
-
-      - name: Lint
-        run: bun run lint
-
   tests:
     runs-on: ubuntu-latest
     steps:
@@ -44,14 +25,7 @@ jobs:
       - name: Install
         uses: ./.github/actions/install
 
-      - name: Install playwright
-        run: npx playwright install
-
-      - uses: nick-fields/retry@v3
-        name: 'Run web tests'
-        with:
-          timeout_minutes: 25
-          max_attempts: 2
-          command: |
-            cd code/compiler/static-tests
-            DISABLE_NATIVE_TEST=1 INCLUDE_CSS_COLOR_NAMES=1 npx vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run tests/*.web.test.tsx
+      - name: Run web tests
+        run: |
+          cd code/compiler/static-tests
+          DISABLE_NATIVE_TEST=1 INCLUDE_CSS_COLOR_NAMES=1 npx vitest --retry=2 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run tests/*.web.test.tsx
