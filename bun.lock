@@ -2364,7 +2364,6 @@
         "@tamagui/focus-guard": "workspace:*",
         "@tamagui/focus-scope": "workspace:*",
         "@tamagui/get-token": "workspace:*",
-        "@tamagui/helpers": "workspace:*",
         "@tamagui/image": "workspace:*",
         "@tamagui/popover": "workspace:*",
         "@tamagui/popper": "workspace:*",
@@ -2373,10 +2372,8 @@
         "@tamagui/roving-focus": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/use-callback-ref": "workspace:*",
-        "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-direction": "workspace:*",
         "@tamagui/web": "workspace:*",
-        "tamagui": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",

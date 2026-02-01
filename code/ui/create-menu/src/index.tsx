@@ -1,5 +1,3 @@
-import '@tamagui/polyfill-dev'
-
 export * from './createBaseMenu'
 export * from './createNativeMenu/index'
 export type {

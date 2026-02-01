@@ -70,58 +70,36 @@ Themes are organized hierarchically and can be combined:
 - accent
 - black
 - blue
-- burgundy
-- cyan
-- forest
 - gray
 - green
-- jade
+- neutral
 - orange
-- orangeRed
 - pink
 - purple
 - red
-- royalBlue
-- supreme
 - surface1
 - surface2
-- surface3
-- tan
 - teal
 - white
 - yellow
 
-**Level 3 (Variants):**
-
-- alt1
-- alt2
-
 **Component Themes:**
 
 - Button
-- Card
-- Checkbox
 - Input
-- ListItem
 - Progress
 - ProgressIndicator
-- RadioGroupItem
-- SelectItem
-- SelectTrigger
+- Slider
+- SliderActive
 - SliderThumb
-- SliderTrack
-- SliderTrackActive
 - Switch
 - SwitchThumb
 - TextArea
 - Tooltip
-- TooltipArrow
-- TooltipContent
 
 ### Theme Usage
 
 Themes are combined hierarchically. For example, `light_blue_alt1_Button` combines:
-
 - Base: `light`
 - Color: `blue`
 - Variant: `alt1`
@@ -340,7 +318,7 @@ Media queries can be used as style props or with the `useMedia` hook:
 
 ```tsx
 // As style props (prefix with $)
-;<View width="100%" $gtLarge={{ width: '50%' }} />
+<View width="100%" $gtLarge={{ width: "50%" }} />
 
 // Using the useMedia hook
 const media = useMedia()
@@ -362,23 +340,6 @@ Available font families:
 ## Animations
 
 Available animation presets:
-
-- 100ms
-- 200ms
-- 75ms
-- bouncy
-- kindaBouncy
-- lazy
-- medium
-- quick
-- quicker
-- quickest
-- select
-- slow
-- slowest
-- superBouncy
-- superLazy
-- tooltip
 
 ## Components
 
@@ -415,6 +376,7 @@ The following components are available:
 - DialogPortalFrame
 - DialogTitle
 - DialogTrigger
+- Em
 - EnsureFlexed
 - Fieldset
 - Footer
@@ -463,17 +425,16 @@ The following components are available:
 - Separator
 - SizableStack
 - SizableText
+- SliderActiveFrame
 - SliderFrame
 - SliderThumb
   - SliderThumb.Frame
-- SliderTrackActiveFrame
 - SliderTrackFrame
 - Spacer
-- Spacer
+- Span
 - Spinner
 - Square
-- View
-- View
+- Strong
 - Switch
   - Switch.Frame
   - Switch.Thumb
@@ -490,3 +451,4 @@ The following components are available:
 - YGroup
 - YStack
 - ZStack
+
