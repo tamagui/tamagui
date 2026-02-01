@@ -9,7 +9,7 @@ export function ToggleGroupDemo() {
           <ToggleGroupComponent type="single" orientation="horizontal" />
           <ToggleGroupComponent type="multiple" orientation="horizontal" />
         </YStack>
-        <XStack items="center" gap="$6">
+        <XStack items="center" gap="$6" y={-28}>
           <ToggleGroupComponent type="single" orientation="vertical" />
           <ToggleGroupComponent type="multiple" orientation="vertical" />
         </XStack>
