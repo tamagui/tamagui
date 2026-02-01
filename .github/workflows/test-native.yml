@@ -83,6 +83,7 @@ jobs:
         if: env.SKIP_IOS_TESTS != 'true'
         id: boot-simulator
         working-directory: ${{ github.workspace }}
+        timeout-minutes: 10
         run: |
           # Find iPhone 15 simulator
           DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
@@ -103,8 +104,31 @@ jobs:
           fi
 
           echo "Booting simulator: $DEVICE_ID"
+
+          # Shutdown any existing simulator state first to avoid stale boot issues
+          xcrun simctl shutdown all 2>/dev/null || true
+          sleep 2
+
+          # Boot the simulator
           xcrun simctl boot "$DEVICE_ID" || true
-          xcrun simctl bootstatus "$DEVICE_ID" -b
+
+          # Wait for boot with timeout (bootstatus can hang indefinitely)
+          echo "Waiting for simulator boot status..."
+          timeout 300 xcrun simctl bootstatus "$DEVICE_ID" -b || {
+            echo "Boot status timed out, checking if simulator is usable..."
+            # Even if bootstatus hangs, the simulator might be ready
+            if xcrun simctl list devices booted | grep -q "Booted"; then
+              echo "Simulator appears to be booted despite timeout"
+            else
+              echo "Simulator failed to boot"
+              exit 1
+            fi
+          }
+
+          # Additional settle time for system services
+          echo "Waiting for simulator to stabilize..."
+          sleep 10
+
           echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
 
       - name: Install App on Simulator
