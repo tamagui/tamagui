@@ -1,3 +1,6 @@
+- maxXXL => max-xxl to further align w tailwind-style
+  - probably ok for RC, it's a single find/replace
+
 ## Fix ref type issues properly
 
 Many components have `as any` casts for refs due to `HTMLElement` subtypes not being assignable to `TamaguiElement`. These were pre-existing issues exposed during the `@tamagui/element` package work. Files with `as any` ref casts that could be fixed properly:

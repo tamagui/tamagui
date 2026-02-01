@@ -223,7 +223,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 y: 1,
               }}
             >
-              <Span fontSize="$2" y={-2} fontWeight="600">
+              <Span fontSize="$2" fontWeight="600">
                 v2 RC
               </Span>
             </Button>
@@ -883,49 +883,38 @@ const HeaderMenuMoreContents = () => {
 
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$2" width="100%">
-        <Link asChild href="/takeout">
-          <HeadAnchor grid half render="a">
-            <XStack items="center">
-              <span>Takeout</span>
-              <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
-                <TakeoutIcon scale={0.65} />
-              </YStack>
-            </XStack>
-            <SizableText size="$2" color="$color9">
-              Starter Kit
-            </SizableText>
-          </HeadAnchor>
-        </Link>
-      </XStack>
-
-      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$2" width="100%">
-        <Link asChild href="/bento">
-          <HeadAnchor grid half render="a">
-            <XStack items="center">
-              <span>Bento </span>
-              <YStack
-                ml={3}
-                display={'inline-block' as any}
-                x={6}
-                y={-1}
-                my={-10}
-                opacity={0.8}
-              >
-                <BentoIcon scale={0.65} />
-              </YStack>
-            </XStack>
-            <SizableText size="$2" color="$color9">
-              Copy-paste UI
-            </SizableText>
-          </HeadAnchor>
-        </Link>
-      </XStack>
-      <Separator bg="$color02" opacity={0.25} my="$2" />
-
-      <Link asChild href="/community">
+      <Link asChild href="/takeout">
         <HeadAnchor grid render="a">
-          Community
+          <XStack items="center">
+            <span>Takeout</span>
+            <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
+              <TakeoutIcon scale={0.65} />
+            </YStack>
+          </XStack>
+          <SizableText size="$2" color="$color9">
+            Starter Kit
+          </SizableText>
+        </HeadAnchor>
+      </Link>
+
+      <Link asChild href="/bento">
+        <HeadAnchor grid render="a">
+          <XStack items="center">
+            <span>Bento</span>
+            <YStack
+              ml={3}
+              display={'inline-block' as any}
+              x={6}
+              y={-1}
+              my={-10}
+              opacity={0.8}
+            >
+              <BentoIcon scale={0.65} />
+            </YStack>
+          </XStack>
+          <SizableText size="$2" color="$color9">
+            Copy-paste UI
+          </SizableText>
         </HeadAnchor>
       </Link>
 
@@ -947,6 +936,14 @@ const HeaderMenuMoreContents = () => {
           <SizableText size="$2" color="$color9">
             Expert Consulting
           </SizableText>
+        </HeadAnchor>
+      </Link>
+
+      <Separator bg="$color02" opacity={0.25} my="$2" />
+
+      <Link asChild href="/community">
+        <HeadAnchor grid render="a">
+          Community
         </HeadAnchor>
       </Link>
 
@@ -993,7 +990,7 @@ const SeasonChooser = () => {
   const { name } = useTint()
 
   return (
-    <XStack flexWrap="wrap" gap="$2" items="center">
+    <XStack flexWrap="wrap" items="center" justify="center">
       {Object.keys(seasons).map((seasonName) => {
         const isActive = name === seasonName
         return (
