@@ -1,98 +1,73 @@
-import { useEffect, useRef, useState } from 'react'
-import z from 'zod'
+import { useEffect, useState } from 'react'
 
-const ParityDealsSchema = z.object({
-  country: z.string(),
-  couponCode: z.string(),
-  discountPercentage: z.string(),
-})
-
-type ParityDeals = z.infer<typeof ParityDealsSchema>
+type ParityDiscount = {
+  country: string | null
+  countryName: string
+  discount: number
+}
 
 /**
- * A hook that detects and extracts data from Parity Deals banner.
- * When the banner is detected, it extracts the country, coupon code, and discount information,
- * then removes the original banner from the DOM.
+ * Convert ISO country code to flag emoji
+ * Each letter is offset to the regional indicator symbol range
+ */
+function countryCodeToFlag(countryCode: string | null): string {
+  if (!countryCode || countryCode.length !== 2) return '🌍'
+  const code = countryCode.toUpperCase()
+  const offset = 127397 // regional indicator symbol 'A' minus 'A'
+  return String.fromCodePoint(code.charCodeAt(0) + offset, code.charCodeAt(1) + offset)
+}
+
+/**
+ * Hook that fetches parity discount based on user's geo location.
+ * Uses Cloudflare CF-IPCountry header on the server side.
  *
- * @returns An object containing the extracted parity deals data
- * @example
- * ```tsx
- * const { parityDeals } = useParityDiscount()
- * if (parityDeals) {
- *   console.log(parityDeals.country, parityDeals.couponCode, parityDeals.discountPercentage)
- * }
- * ```
+ * Replaces the old Parity Deals banner scraping approach.
  */
 export const useParityDiscount = () => {
-  const observerRef = useRef<MutationObserver | null>(null)
-  const [parityDeals, setParityDeals] = useState<ParityDeals | null>(null)
-
-  /**
-   * If the banner is present, the text is like this:
-   * `Looks like you are from <b>Japan</b>. If you need it, use code <b>"pdsiurjf20"</b> to get <b>20%</b> off your subscription at checkout.`
-   * This function extracts the country, coupon code, and discount percentage from the banner.
-   */
-  const extractParityData = (element: Element): ParityDeals | null => {
-    const bannerInner = element.querySelector('.parity-banner-inner')
-    if (!bannerInner) return null
-
-    const boldElements = bannerInner.querySelectorAll('b')
-    if (boldElements.length < 3) return null
-
-    const [country, code, discount] = Array.from(boldElements).map((el) => el.textContent)
-
-    if (!country || !code || !discount) return null
-
-    const result = ParityDealsSchema.safeParse({
-      country: country.trim(),
-      couponCode: code.replace(/"/g, '').trim(),
-      discountPercentage: discount.replace('%', '').trim(),
-    })
-
-    return result.success ? result.data : null
-  }
+  const [parityDiscount, setParityDiscount] = useState<ParityDiscount | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // Check for existing banner first
-    const existingBanner = document.querySelector('.parity-banner')
-    if (existingBanner instanceof HTMLElement) {
-      const data = extractParityData(existingBanner)
-      if (data) {
-        setParityDeals(data)
-        existingBanner.remove()
-        return // No need to observe if we already found the banner
+    const fetchParityDiscount = async () => {
+      try {
+        const response = await fetch('/api/parity-discount')
+        if (!response.ok) {
+          throw new Error('Failed to fetch parity discount')
+        }
+        const data = await response.json()
+
+        // only set if there's actually a discount
+        if (data.discount > 0) {
+          setParityDiscount(data)
+        }
+      } catch (err) {
+        console.error('Error fetching parity discount:', err)
+        setError(err instanceof Error ? err.message : 'Unknown error')
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    // If no existing banner, observe for dynamically added ones
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        mutation.addedNodes.forEach((node) => {
-          if (node instanceof HTMLElement && node.classList.contains('parity-banner')) {
-            const data = extractParityData(node)
-            if (data) {
-              setParityDeals(data)
-              node.remove()
-              observer.disconnect()
-            }
-          }
-        })
-      }
-    })
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    })
-
-    observerRef.current = observer
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-      }
-    }
+    fetchParityDiscount()
   }, [])
 
-  return { parityDeals }
+  // backwards compat + enhanced shape
+  const parityDeals = parityDiscount
+    ? {
+        country: parityDiscount.countryName,
+        countryCode: parityDiscount.country,
+        discountPercentage: String(parityDiscount.discount),
+        flag: countryCodeToFlag(parityDiscount.country),
+        // no coupon code needed - we apply discount directly
+        couponCode: null as string | null,
+      }
+    : null
+
+  return {
+    parityDeals,
+    parityDiscount,
+    isLoading,
+    error,
+  }
 }

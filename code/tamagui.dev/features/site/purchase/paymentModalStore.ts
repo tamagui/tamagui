@@ -51,6 +51,9 @@ class PaymentModal {
   // promo support
   activePromo: PromoConfig | null = null
   prefilledCouponCode: string | null = null
+  // parity discount (stacks with promo)
+  parityDiscount: number = 0
+  parityCountry: string | null = null
 }
 
 export const paymentModal = createStore(PaymentModal)

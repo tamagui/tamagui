@@ -2,12 +2,16 @@ import type Stripe from 'stripe'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
+import { getParityDiscount } from '~/features/geo-pricing/parityConfig'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
 
 // V2 Price IDs
 const PRO_V2_LICENSE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_LICENSE.priceId
 const PRO_V2_UPGRADE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId
+
+// base price in cents
+const V2_LICENSE_PRICE_CENTS = 40000
 
 // V2 support tier type
 type SupportTier = 'chat' | 'direct' | 'sponsor'
@@ -52,6 +56,10 @@ export default apiRoute(async (req) => {
   if (!paymentMethodId) {
     return Response.json({ error: 'Payment method is required' }, { status: 400 })
   }
+
+  // Get parity discount from Cloudflare header (server-side validation - can't be spoofed)
+  const countryCode = req.headers.get('CF-IPCountry')
+  const parityDiscountPercent = getParityDiscount(countryCode)
 
   // Track created resources for rollback
   let paidInvoice: Stripe.Invoice | null = null
@@ -133,22 +141,60 @@ export default apiRoute(async (req) => {
     const upgradeStartDate = new Date()
     upgradeStartDate.setFullYear(upgradeStartDate.getFullYear() + 1)
 
-    // Create invoice for the $400 one-time license fee
-    // Project info is collected after payment in the account modal
-    await stripe.invoiceItems.create(
-      {
-        customer: stripeCustomerId,
-        price: PRO_V2_LICENSE_PRICE_ID,
-        metadata: {
-          version: 'v2',
+    // Calculate price with parity discount applied
+    // Parity discount is applied first, then coupon (beta discount) stacks on top
+    const parityAdjustedPrice =
+      parityDiscountPercent > 0
+        ? Math.round(V2_LICENSE_PRICE_CENTS * (1 - parityDiscountPercent / 100))
+        : V2_LICENSE_PRICE_CENTS
+
+    // Create invoice for the license fee (with parity discount baked in)
+    // If parity applies, use custom amount. Otherwise use standard price.
+    if (parityDiscountPercent > 0) {
+      // custom price with parity discount
+      await stripe.invoiceItems.create(
+        {
+          customer: stripeCustomerId,
+          amount: parityAdjustedPrice,
+          currency: 'usd',
+          description: `Tamagui Pro V2 License (${parityDiscountPercent}% parity discount for ${countryCode})`,
+          metadata: {
+            version: 'v2',
+            parity_discount: String(parityDiscountPercent),
+            parity_country: countryCode || '',
+            original_price_cents: String(V2_LICENSE_PRICE_CENTS),
+          },
         },
-      },
-      {
-        idempotencyKey: generateIdempotencyKey(user.id, 'invoice_item', idempotencyBase),
-      }
-    )
+        {
+          idempotencyKey: generateIdempotencyKey(
+            user.id,
+            'invoice_item',
+            idempotencyBase
+          ),
+        }
+      )
+    } else {
+      // standard price, no parity
+      await stripe.invoiceItems.create(
+        {
+          customer: stripeCustomerId,
+          price: PRO_V2_LICENSE_PRICE_ID,
+          metadata: {
+            version: 'v2',
+          },
+        },
+        {
+          idempotencyKey: generateIdempotencyKey(
+            user.id,
+            'invoice_item',
+            idempotencyBase
+          ),
+        }
+      )
+    }
 
     // Create and pay the invoice
+    // Coupon (beta discount) applies on top of parity-adjusted price
     const invoice = await stripe.invoices.create(
       {
         customer: stripeCustomerId,
@@ -160,6 +206,10 @@ export default apiRoute(async (req) => {
           type: 'pro_v2_license',
           support_tier: supportTier || 'chat',
           payment_method_id: paymentMethodId,
+          ...(parityDiscountPercent > 0 && {
+            parity_discount: String(parityDiscountPercent),
+            parity_country: countryCode || '',
+          }),
         },
       },
       {

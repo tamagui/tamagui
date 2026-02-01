@@ -144,6 +144,11 @@ export function PurchaseModalContents() {
     // pass promo info from purchase modal
     paymentModal.activePromo = store.activePromo
     paymentModal.prefilledCouponCode = store.prefilledCouponCode
+    // pass parity discount (fetched via API, validated server-side)
+    if (parityDeals) {
+      paymentModal.parityDiscount = Number(parityDeals.discountPercentage)
+      paymentModal.parityCountry = parityDeals.country
+    }
   }
 
   // V2 Pricing: $400 one-time per project
@@ -433,7 +438,7 @@ export function PurchaseModalContents() {
 
                   <YStack gap="$2" width="100%" pt="$4" $gtXs={{ width: '42%', pt: 0 }}>
                     {parityDeals && (
-                      <Theme name="yellow">
+                      <Theme name="green">
                         <XStack
                           mb="$2"
                           bg="$color3"
@@ -447,11 +452,9 @@ export function PurchaseModalContents() {
                             color="$color11"
                             style={{ textWrap: 'balance' }}
                           >
-                            You are from {parityDeals.country}.{`\n`} Use code{' '}
-                            <Text fontWeight="bold" fontFamily="$mono" color="$color12">
-                              {parityDeals.couponCode}
-                            </Text>{' '}
-                            at checkout for {parityDeals.discountPercentage}% off
+                            {parityDeals.flag} {parityDeals.discountPercentage}% parity
+                            discount for {parityDeals.country} — auto-applied
+                            {store.activePromo && ' (stacks with beta discount!)'}
                           </Paragraph>
                         </XStack>
                       </Theme>
