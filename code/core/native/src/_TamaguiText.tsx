@@ -1,6 +1,15 @@
 import type React from 'react'
+import { useRef, useEffect, useCallback } from 'react'
 import { useThemeName } from '@tamagui/core'
 import { Text, type TextProps, type TextStyle } from 'react-native'
+
+// conditional import for native-style-registry
+let registry: typeof import('@tamagui/native-style-registry') | undefined
+try {
+  registry = require('@tamagui/native-style-registry')
+} catch {
+  // package not installed, use JS-only mode
+}
 
 interface DeduplicatedStyle extends TextStyle {
   // array of theme names that share this style (for deduplication)
@@ -84,6 +93,9 @@ function cacheResult(
  * The compiler generates __styles with resolved values for each theme,
  * eliminating runtime style computation.
  *
+ * When native-style-registry is available and native module is loaded,
+ * theme changes update the view directly via ShadowTree without React re-renders.
+ *
  * Supports deduplicated styles where multiple themes share the same values.
  */
 export function _TamaguiText({
@@ -91,8 +103,43 @@ export function _TamaguiText({
   style,
   ...props
 }: TamaguiTextProps): React.ReactElement {
+  const unlinkRef = useRef<(() => void) | null>(null)
   const themeName = useThemeName()
+
+  // check if native module is available
+  const nativeAvailable = registry?.isNativeModuleAvailable?.() ?? false
+
+  // ref callback - link/unlink with native registry
+  const handleRef = useCallback(
+    (instance: Text | null) => {
+      // cleanup previous link
+      if (unlinkRef.current) {
+        unlinkRef.current()
+        unlinkRef.current = null
+      }
+
+      // link new instance
+      if (instance && __styles && registry && nativeAvailable) {
+        unlinkRef.current = registry.link(instance, __styles)
+      }
+    },
+    [__styles, nativeAvailable]
+  )
+
+  // cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (unlinkRef.current) {
+        unlinkRef.current()
+        unlinkRef.current = null
+      }
+    }
+  }, [])
+
+  // compute initial style for first render (and JS fallback mode)
   const themedStyle = __styles ? findStyleForTheme(__styles, themeName) : undefined
 
-  return <Text {...props} style={themedStyle ? [themedStyle, style] : style} />
+  return (
+    <Text ref={handleRef} {...props} style={themedStyle ? [themedStyle, style] : style} />
+  )
 }

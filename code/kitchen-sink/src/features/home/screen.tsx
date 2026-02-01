@@ -153,6 +153,7 @@ const demos = [
     pages: [
       { title: 'Sandbox', route: '/sandbox' },
       { title: 'Benchmark', route: '/test/Benchmark' },
+      { title: '🔧 Native Style Optimization', route: '/test/NativeStyleOptimization' },
       {
         title: 'Test Cases',
         route: '/tests',

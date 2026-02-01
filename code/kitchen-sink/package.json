@@ -59,6 +59,7 @@
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/menu": "workspace:*",
     "@tamagui/native": "workspace:*",
+    "@tamagui/native-style-registry": "workspace:*",
     "@tamagui/portal": "workspace:*",
     "@tamagui/sandbox-ui": "workspace:*",
     "@tamagui/scroll-view": "workspace:*",

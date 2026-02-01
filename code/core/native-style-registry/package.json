@@ -1,0 +1,86 @@
+{
+  "name": "@tamagui/native-style-registry",
+  "version": "2.0.0",
+  "description": "Native style registry for zero-re-render theme switching in React Native",
+  "type": "module",
+  "sideEffects": false,
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "babel",
+    "ios",
+    "android",
+    "cpp"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "test": "vitest"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": {
+        "types": "./types/index.d.ts",
+        "module": "./dist/esm/index.native.js",
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "types": "./types/index.d.ts",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./babel": "./babel/index.js",
+    "./components/View": {
+      "react-native": {
+        "types": "./types/components/View.d.ts",
+        "import": "./dist/esm/components/View.native.js",
+        "require": "./dist/cjs/components/View.native.js"
+      },
+      "default": "./dist/esm/components/View.js"
+    },
+    "./components/Text": {
+      "react-native": {
+        "types": "./types/components/Text.d.ts",
+        "import": "./dist/esm/components/Text.native.js",
+        "require": "./dist/cjs/components/Text.native.js"
+      },
+      "default": "./dist/esm/components/Text.js"
+    }
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": "*",
+    "react-native": "0.81.5",
+    "vitest": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "code/core/native-style-registry"
+  },
+  "license": "MIT",
+  "react-native": "src/index.ts",
+  "codegenConfig": {
+    "name": "rnstyleregistry",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.tamagui.styleregistry"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

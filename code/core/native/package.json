@@ -126,6 +126,7 @@
     "react-native-worklets-core": "^1.0.0"
   },
   "peerDependencies": {
+    "@tamagui/native-style-registry": ">=2.0.0",
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=2.0.0",
@@ -134,6 +135,9 @@
     "react-native-worklets-core": ">=1.0.0"
   },
   "peerDependenciesMeta": {
+    "@tamagui/native-style-registry": {
+      "optional": true
+    },
     "react-native-gesture-handler": {
       "optional": true
     },
