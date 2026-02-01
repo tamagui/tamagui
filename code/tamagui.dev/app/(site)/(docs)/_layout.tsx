@@ -3,19 +3,12 @@ import { Slot } from 'one'
 import { ScrollView } from 'react-native'
 import { View, XStack, YStack } from 'tamagui'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
-import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { Footer } from '~/features/site/Footer'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function DocsLayout() {
-  const { section } = useDocsMenu()
-
-  const themeName =
-    section === 'core' || section === 'compiler'
-      ? 'red'
-      : section === 'ui'
-        ? 'blue'
-        : null
+  // disabled route-based tint changes
+  const themeName = null
 
   return (
     <ThemeNameEffect theme={themeName} colorKey="$color1">
