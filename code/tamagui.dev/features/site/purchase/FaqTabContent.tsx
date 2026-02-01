@@ -90,13 +90,9 @@ export const FaqTabContent = () => {
 
       <Question>Why the price?</Question>
       <Answer>
-        Two years of effort went into this stack. Robust deployment, AI setup,
-        docs/scripting, and refinment make it incredible for moving fast. We hope it leads
-        to{' '}
-        <Link target="_blank" href="https://addeven.com">
-          quality consulting work
-        </Link>{' '}
-        too.
+        Two years of effort went into this stack, with a ton of offert into CI/CD, robust
+        production, AI integration, docs and scripting, and overall refinement. We think
+        it's a lot more than the current price, if anything.
       </Answer>
 
       <Question>How do I use a coupon?</Question>
