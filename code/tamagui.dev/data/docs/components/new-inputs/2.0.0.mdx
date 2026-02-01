@@ -202,6 +202,40 @@ Some props only apply on native platforms and have no web equivalent:
 
 For web autofill, use the standard `autoComplete` attribute instead.
 
+## Cross-Platform Text Behavior
+
+These props work on both web and native with automatic value conversion:
+
+### autoCorrect
+
+Controls automatic spelling correction:
+
+```tsx
+// Boolean values (work everywhere)
+<Input autoCorrect={false} />
+<Input autoCorrect={true} />
+
+// String values (web-style, converted on native)
+<Input autoCorrect="off" />
+<Input autoCorrect="on" />
+```
+
+### autoCapitalize
+
+Controls automatic text capitalization. Native values provide more granular control:
+
+```tsx
+// Native-style values (recommended - work everywhere)
+<Input autoCapitalize="none" />        // No capitalization
+<Input autoCapitalize="sentences" />   // Capitalize first letter of sentences
+<Input autoCapitalize="words" />       // Capitalize first letter of each word
+<Input autoCapitalize="characters" />  // Capitalize all characters
+
+// Web-style values (mapped on native)
+<Input autoCapitalize="off" />  // Maps to "none" on native
+<Input autoCapitalize="on" />   // Maps to "sentences" on native
+```
+
 ## Migration from v1
 
 If you're migrating from v1 Input, here are the key changes:

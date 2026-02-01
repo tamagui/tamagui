@@ -57,8 +57,8 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     multiline: multilineProp,
     keyboardType: keyboardTypeProp,
     inputMode: inputModeProp,
-    autoCapitalize,
-    autoCorrect,
+    autoCapitalize: autoCapitalizeProp,
+    autoCorrect: autoCorrectProp,
     autoFocusNative,
     textContentType,
 
@@ -167,6 +167,18 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
   // Determine multiline
   const multiline = multilineProp ?? (render === 'textarea' || (rows && rows > 1))
   const numberOfLines = numberOfLinesProp ?? rows
+
+  // convert web-style autoCorrect string to native boolean
+  const autoCorrect =
+    autoCorrectProp === 'on' ? true : autoCorrectProp === 'off' ? false : autoCorrectProp
+
+  // convert web-style autoCapitalize to native values
+  const autoCapitalize =
+    autoCapitalizeProp === 'on'
+      ? 'sentences'
+      : autoCapitalizeProp === 'off'
+        ? 'none'
+        : autoCapitalizeProp
 
   // Resolve color tokens
   const resolveColor = (color: any) => {

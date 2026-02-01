@@ -28,13 +28,55 @@ type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck'
 export type InputProps = ViewProps &
   Omit<
     HTMLInputProps,
-    'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps
+    | 'size'
+    | 'color'
+    | 'style'
+    | 'children'
+    | 'className'
+    | keyof InputTextStyleProps
+    | OverlappingNativeProps
   > &
   InputTextStyleProps &
   Omit<InputNativeProps, OverlappingNativeProps> & {
-    // cross-platform props with unified types (web string | native boolean/enum)
+    /**
+     * Controls automatic spelling correction.
+     *
+     * Cross-platform values:
+     * - `true` or `'on'` - Enable auto-correction
+     * - `false` or `'off'` - Disable auto-correction
+     *
+     * @example
+     * ```tsx
+     * <Input autoCorrect={false} />
+     * <Input autoCorrect="off" />
+     * ```
+     */
     autoCorrect?: boolean | 'on' | 'off'
+
+    /**
+     * Controls automatic text capitalization.
+     *
+     * Native values (work on all platforms):
+     * - `'none'` - No automatic capitalization
+     * - `'sentences'` - Capitalize first letter of sentences
+     * - `'words'` - Capitalize first letter of each word
+     * - `'characters'` - Capitalize all characters
+     *
+     * Web compatibility values (mapped on native):
+     * - `'off'` - Maps to `'none'` on native
+     * - `'on'` - Maps to `'sentences'` on native
+     *
+     * @example
+     * ```tsx
+     * <Input autoCapitalize="none" />
+     * <Input autoCapitalize="words" />
+     * ```
+     */
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on'
+
+    /**
+     * Controls spell checking.
+     */
     spellCheck?: boolean
     // Core HTML input props are inherited from HTMLInputProps:
     // type, value, defaultValue, placeholder, disabled, readOnly,
