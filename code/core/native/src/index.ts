@@ -55,3 +55,7 @@ export type { LinearGradientAccessor } from './linearGradientState'
 
 // components
 export { NativePortal, NativePortalHost, NativePortalProvider } from './components'
+
+// optimized components for compiler output
+export { _TamaguiView, type TamaguiViewProps } from './_TamaguiView'
+export { _TamaguiText, type TamaguiTextProps } from './_TamaguiText'

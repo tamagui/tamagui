@@ -29,5 +29,7 @@ export type { SafeAreaAccessor } from "./safeAreaState";
 export { getLinearGradient } from "./linearGradientState";
 export type { LinearGradientAccessor } from "./linearGradientState";
 export { NativePortal, NativePortalHost, NativePortalProvider } from "./components";
+export { _TamaguiView, type TamaguiViewProps } from "./_TamaguiView";
+export { _TamaguiText, type TamaguiTextProps } from "./_TamaguiText";
 
 //# sourceMappingURL=index.d.ts.map
