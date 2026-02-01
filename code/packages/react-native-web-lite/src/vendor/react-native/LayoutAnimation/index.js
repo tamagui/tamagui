@@ -8,12 +8,12 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import { Platform } from '../../../exports/Platform';
-import { UIManager } from '../../../exports/UIManager';
+import { Platform } from '../../../exports/Platform'
+import { UIManager } from '../../../exports/UIManager'
 
-const __DEV__ = process.env.NODE_ENV !== 'production';
+const __DEV__ = process.env.NODE_ENV !== 'production'
 
 const Type = {
   spring: 'spring',
@@ -21,29 +21,26 @@ const Type = {
   easeInEaseOut: 'easeInEaseOut',
   easeIn: 'easeIn',
   easeOut: 'easeOut',
-  keyboard: 'keyboard'
-};
+  keyboard: 'keyboard',
+}
 
-function configureNext(
-  config,
-  onAnimationDidEnd,
-) {
+function configureNext(config, onAnimationDidEnd) {
   if (!Platform.isTesting) {
     UIManager.configureNextLayoutAnimation(
       config,
-      onAnimationDidEnd ?? function() {},
-      function() {} /* unused onError */,
-    );
+      onAnimationDidEnd ?? function () {},
+      function () {} /* unused onError */
+    )
   }
 }
 
 function create(duration, type, property) {
   return {
     duration,
-    create: {type, property},
-    update: {type},
-    delete: {type, property},
-  };
+    create: { type, property },
+    update: { type },
+    delete: { type, property },
+  }
 }
 
 const Presets = {
@@ -64,7 +61,7 @@ const Presets = {
       property: 'opacity',
     },
   },
-};
+}
 
 /**
  * Automatically animates views to their new positions when the
@@ -110,13 +107,13 @@ const LayoutAnimation = {
     scaleXY: 'scaleXY',
   }),
   checkConfig(...args) {
-    console.error('LayoutAnimation.checkConfig(...) has been disabled.');
+    console.error('LayoutAnimation.checkConfig(...) has been disabled.')
   },
   Presets,
   easeInEaseOut: configureNext.bind(null, Presets.easeInEaseOut),
   linear: configureNext.bind(null, Presets.linear),
   spring: configureNext.bind(null, Presets.spring),
-};
+}
 
 export { LayoutAnimation }
-export default LayoutAnimation;
+export default LayoutAnimation

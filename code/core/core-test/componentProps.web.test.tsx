@@ -10,13 +10,7 @@ describe('animation props', () => {
   test(`renders with animation props`, () => {
     const tree = render(
       <TamaguiProvider config={config} defaultTheme="light">
-        <View
-          id="test-id"
-          transition="quick"
-          x={0}
-          backgroundColor="red"
-          margin={200}
-        />
+        <View id="test-id" transition="quick" x={0} backgroundColor="red" margin={200} />
       </TamaguiProvider>
     )
 

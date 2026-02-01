@@ -18,7 +18,10 @@ export function ThemeChange() {
 export function Inner({
   children,
   level,
-}: { children?: React.ReactNode; level: number }) {
+}: {
+  children?: React.ReactNode
+  level: number
+}) {
   const themes = [
     'yellow',
     'blue',

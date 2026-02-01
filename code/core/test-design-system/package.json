@@ -1,19 +1,20 @@
 {
   "name": "@tamagui/test-design-system",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0-1769885482630",
+  "source": "src/index.ts",
+  "files": [],
   "sideEffects": [
     "*.css"
   ],
-  "source": "src/index.ts",
-  "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
-  "files": [],
+  "types": "./types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -22,8 +23,5 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

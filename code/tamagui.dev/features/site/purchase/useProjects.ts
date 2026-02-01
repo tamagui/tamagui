@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import { authFetch } from '~/features/api/authFetch'
 
 export type Project = {
   id: string
@@ -23,7 +24,7 @@ export type ProjectsResponse = {
 }
 
 const fetcher = async (url: string) => {
-  const res = await fetch(url)
+  const res = await authFetch(url)
   if (!res.ok) {
     throw new Error('Failed to fetch projects')
   }
@@ -33,7 +34,12 @@ const fetcher = async (url: string) => {
 export const useProjects = (shouldFetch = true) => {
   const { data, error, isLoading, mutate } = useSWR<ProjectsResponse>(
     shouldFetch ? '/api/projects' : null,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      keepPreviousData: true,
+    }
   )
 
   return {
@@ -46,13 +52,26 @@ export const useProjects = (shouldFetch = true) => {
   }
 }
 
+export const createProject = async (project: { name: string; domain: string }) => {
+  const res = await authFetch('/api/projects', {
+    method: 'POST',
+    body: JSON.stringify(project),
+  })
+
+  if (!res.ok) {
+    const data = await res.json()
+    throw new Error(data.error || 'Failed to create project')
+  }
+
+  return res.json()
+}
+
 export const updateProject = async (
   projectId: string,
   updates: { name?: string; domain?: string }
 ) => {
-  const res = await fetch('/api/projects', {
+  const res = await authFetch('/api/projects', {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ project_id: projectId, ...updates }),
   })
 

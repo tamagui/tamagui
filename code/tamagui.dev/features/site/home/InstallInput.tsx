@@ -45,6 +45,7 @@ export const InstallInput = memo(() => {
             size="$3"
             rounded="$8"
             mr="$-6"
+            zIndex={1}
             icon={hasCopied ? Check : Copy}
             onPress={onCopy}
           />

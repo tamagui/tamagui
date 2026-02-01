@@ -7,7 +7,7 @@ tag:
 
 # Dismiss any system dialogs (Apple Account Verification, etc.)
 - tapOn:
-    text: "Not Now"
+    text: 'Not Now'
     optional: true
 
 # if on dev builds - tap the dev server URL
@@ -17,7 +17,7 @@ tag:
 
 # Wait for app to load (60s timeout for CI where bundle download can be slow)
 - extendedWaitUntil:
-    visible: "Kitchen Sink"
+    visible: 'Kitchen Sink'
     timeout: 60000
 
 # dismiss expo's first time bottom sheet if present

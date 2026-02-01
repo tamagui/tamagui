@@ -7,9 +7,9 @@ image: /blog/version-two.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui brings high performing, consistent, typed inline styles to React
-  Native and React Web, plus composable UI components, a novel theme system and
-  an optimizing compiler.
+  Tamagui brings high performing, consistent, typed inline styles to React Native and
+  React Web, plus composable UI components, a novel theme system and an optimizing
+  compiler.
 </IntroParagraph>
 
 We're excited to announce **the first release candidate for Tamagui v2 is
@@ -75,16 +75,14 @@ In comparison to other solutions, Tamagui is especially strong at:
 
 ## New in v2
 
-Version 2 is a relatively easy migration. It mostly removes deprecated APIs,
-improves performance, aligns with modern React, React Native, and web standards,
-and includes a few new features and components. It does simplify a few component
-API surfaces.
+Version 2 is a huge release but the migration from v1 should only be moderate.
+We removed mostly deprecated APIs, aligned to web and modern React Native,
+improved performance and native library integrations, and dropped a few new
+features and components.
 
 Find a [list of breaking changes at the bottom of the post](#breaking-changes).
 
-<Notice>
-  Give this blog post URL to your favorite coding agent to help upgrade!
-</Notice>
+<Notice>Give this blog post URL to your favorite coding agent to help upgrade!</Notice>
 
 ### Features
 
@@ -528,7 +526,7 @@ with your design system:
   restore files after.
 - **`tamagui generate`** - Build your full Tamagui configuration and output CSS.
   Validates your config and pre-generates your design system.
-- **`tamagui generate-css`** - Generate the `tamagui.css` file from your config.
+- **`tamagui generate-css`** - Generate the `tamagui.generated.css` file from your config.
   Use `--output` to specify a custom output path.
 - **`tamagui generate-prompt`** - Generate an LLM-friendly markdown file from
   your config, documenting all tokens, themes, components, and shorthands for
@@ -559,8 +557,8 @@ code.
 - **Config v5 changes from v4.** Media query names change (`2xl` → `xxl`, `2xs`
   → `xxs`), style defaults align with React Native. See
   [Config v5 docs](/docs/core/config-v5).
-- **React Native 0.82+, React 19+, and TypeScript 5+ required.** Tamagui 2
-  targets React Native 0.82, React 19, and TypeScript 5 and above with New
+- **React Native 0.81+, React 19+, and TypeScript 5+ required.** Tamagui 2
+  targets React Native 0.81, React 19, and TypeScript 5 and above with New
   Architecture support. This enables significant new style features, improved
   type inference, and simplified internals.
 - Default flex and position styles align with the latest React Native versions,
@@ -588,9 +586,6 @@ code.
   control their own sizing - apply size/responsive props directly to child
   components. Add `<Separator />` manually between items when needed.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
-- Toast API completely rewritten. Removed `Toast`, `ToastProvider`,
-  `ToastViewport`, `useToastController`, and `useToastState`. Use `toast()` and
-  `<Toaster />` instead. See [Toast docs](/docs/components/toast).
 - Moved all settings on `createTamagui` to the `settings` object.
 - Native portals no longer auto-import React internals hack. If you want native
   portals for better context preservation, add

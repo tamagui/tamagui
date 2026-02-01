@@ -8,7 +8,7 @@
  * implementation without exposing any sync/legacy APIs.
  */
 import type { TamaguiOptions } from '@tamagui/types';
-export type { ExtractedResponse, TamaguiProjectInfo, } from '@tamagui/static';
+export type { ExtractedResponse, TamaguiProjectInfo } from '@tamagui/static';
 export type { TamaguiOptions } from '@tamagui/types';
 export declare const getPragmaOptions: (props: {
     source: string;
@@ -22,6 +22,11 @@ export declare const getPragmaOptions: (props: {
  * This is cached in the worker, so subsequent calls are fast
  */
 export declare function loadTamagui(options: Partial<TamaguiOptions>): Promise<any>;
+/**
+ * Load Tamagui build configuration asynchronously
+ * Uses esbuild-wasm to avoid EPIPE errors from native esbuild service lifecycle
+ */
+export declare function loadTamaguiBuildConfig(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
 /**
  * Extract Tamagui components to className-based CSS for web
  */
@@ -41,11 +46,6 @@ export declare function extractToNative(sourceFileName: string, sourceCode: stri
 export declare function watchTamaguiConfig(options: TamaguiOptions): Promise<{
     dispose: () => void;
 } | undefined>;
-/**
- * Load Tamagui build configuration synchronously
- * This is only used for loading tamagui.build.ts config, not the full tamagui config
- */
-export declare function loadTamaguiBuildConfig(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
 /**
  * Clear the worker's config cache
  * Call this when config files change

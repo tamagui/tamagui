@@ -27,8 +27,7 @@ const AnimatedExports = {
   Text,
   View,
   ...Animated,
-};
+}
 
 export { AnimatedExports }
 export default AnimatedExports
-  

@@ -28,7 +28,7 @@ import { ScrollViewBase } from './ScrollViewBase'
 const emptyObject = {} as any
 const IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16
 
-type Event = Object
+type Event = object
 
 class ScrollView extends React.Component<any> {
   _scrollNodeRef: any
@@ -253,7 +253,7 @@ class ScrollView extends React.Component<any> {
     this.props.onContentSizeChange?.(width, height)
   }
 
-  _handleScroll(e: Object) {
+  _handleScroll(e: object) {
     if (process.env.NODE_ENV !== 'production') {
       if (this.props.onScroll && this.props.scrollEventThrottle == null) {
         console.info(
@@ -771,9 +771,11 @@ export interface ScrollViewMethods {
 
 export type ScrollViewRef = HTMLElement & ScrollViewMethods
 
-const ForwardedScrollView = React.forwardRef<ScrollViewRef, any>((props, forwardedRef) => {
-  return <ScrollView {...props} forwardedRef={forwardedRef} />
-})
+const ForwardedScrollView = React.forwardRef<ScrollViewRef, any>(
+  (props, forwardedRef) => {
+    return <ScrollView {...props} forwardedRef={forwardedRef} />
+  }
+)
 
 ForwardedScrollView.displayName = 'ScrollView'
 

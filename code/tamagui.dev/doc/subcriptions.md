@@ -7,6 +7,7 @@ This document provides a comprehensive guide to the Tamagui subscription system,
 ## 1. 💳 Current Subscription Plans
 
 ### 🚀 PRO Plan
+
 **Database Tables**: `subscriptions`, `subscription_items`, `products`, `prices`
 
 - **🔄 Recurring Subscription** (Annual): $240/year
@@ -15,7 +16,6 @@ This document provides a comprehensive guide to the Tamagui subscription system,
   - 💬 Private community Discord chat room (#takeout-general)
   - ♾️ Lifetime rights to all code and assets (even after subscription expires)
   - 👥 Supports team seats addition
-  
 - **💰 One-Time Payment**: $400 (one year access)
   - ✅ Same benefits as recurring except:
   - ❌ **No Discord takeout channel access** (limitation by design)
@@ -24,6 +24,7 @@ This document provides a comprehensive guide to the Tamagui subscription system,
   - 📄 Creates invoice record instead of subscription
 
 ### 👥 Team Seats
+
 **Database Tables**: `team_subscriptions`, `team_members`, `subscription_items`
 
 - **💵 Price**: $100/seat/year (only available with PRO recurring)
@@ -37,6 +38,7 @@ This document provides a comprehensive guide to the Tamagui subscription system,
   - 🔗 Linked to main PRO subscription via `subscription_items`
 
 ### 💬 Chat Support
+
 **Database Tables**: `subscriptions`, `discord_invites`
 
 - **💵 Price**: $200/month
@@ -48,10 +50,11 @@ This document provides a comprehensive guide to the Tamagui subscription system,
 - **⚙️ Implementation**: Creates separate monthly subscription
 
 ### 🎯 Support Tiers (1-3)
+
 **Database Tables**: `subscriptions`, `subscription_items`
 
 - **🥉 Tier 1**: $800/month
-- **🥈 Tier 2**: $1,600/month  
+- **🥈 Tier 2**: $1,600/month
 - **🥇 Tier 3**: $2,400/month
 - **🎁 Benefits per tier**:
   - ⏰ 4 hours of development time per month
@@ -65,45 +68,51 @@ This document provides a comprehensive guide to the Tamagui subscription system,
 ### 🚀 PRO Plan Implementation
 
 #### 🔄 Recurring Subscription Flow
+
 ```
 User Purchase → create-subscription+api.ts → Stripe Subscription Creation
 ```
 
 **🗄️ Database Flow**:
+
 1. **🔌 API**: `create-subscription+api.ts`
 2. **💳 Stripe**: Creates subscription with `PRO_SUBSCRIPTION_PRICE_ID`
 3. **🪝 Webhook**: `webhook+api.ts` handles `customer.subscription.created`
-4. **🗄️ Database**: 
+4. **🗄️ Database**:
    - ➕ Insert into `subscriptions` table
    - ➕ Insert into `subscription_items` table
    - 🔗 Link via `subscription_items.subscription_id`
 
 **🔑 Key Code Points**:
+
 ```typescript
 // create-subscription+api.ts
 const subscription = await stripe.subscriptions.create({
   customer: stripeCustomerId,
   items: [{ price: PRO_SUBSCRIPTION_PRICE_ID }],
   payment_behavior: 'default_incomplete',
-  expand: ['latest_invoice.payment_intent']
+  expand: ['latest_invoice.payment_intent'],
 })
 ```
 
 #### 💰 One-Time Payment Flow
+
 ```
 User Purchase → create-subscription+api.ts → Stripe Invoice Creation
 ```
 
 **🗄️ Database Flow**:
+
 1. **🔌 API**: `create-subscription+api.ts` (when `disableAutoRenew: true`)
 2. **💳 Stripe**: Creates invoice with `PRO_ONE_TIME_PRICE_ID`
 3. **🪝 Webhook**: `webhook+api.ts` handles `invoice.paid`
-4. **🗄️ Database**: 
+4. **🗄️ Database**:
    - ➕ Insert into `subscriptions` with `cancel_at_period_end: true`
    - 📅 Set `cancel_at` to one year from creation
    - ➕ Insert into `subscription_items`
 
 **🔑 Key Code Points**:
+
 ```typescript
 // webhook+api.ts - manageOneTimePayment()
 await supabaseAdmin.from('subscriptions').insert({
@@ -111,18 +120,20 @@ await supabaseAdmin.from('subscriptions').insert({
   user_id: uuid,
   status: 'active',
   cancel_at: oneYearFromNow.toISOString(),
-  cancel_at_period_end: true
+  cancel_at_period_end: true,
 })
 ```
 
 ### 👥 Team Seats Implementation
 
 #### 🛒 Purchase Flow
+
 ```
 User Purchase → create-subscription+api.ts → Update Existing PRO Subscription
 ```
 
 **🗄️ Database Flow**:
+
 1. **🔌 API**: `create-subscription+api.ts` (with `teamSeats > 0`)
 2. **💳 Stripe**: Adds `TEAM_SEATS_SUBSCRIPTION_PRICE_ID` to existing subscription
 3. **🪝 Webhook**: `webhook+api.ts` handles `customer.subscription.updated`
@@ -132,32 +143,35 @@ User Purchase → create-subscription+api.ts → Update Existing PRO Subscriptio
    - 📊 Track seats in `team_subscriptions.total_seats`
 
 **🔑 Key Code Points**:
+
 ```typescript
 // create-subscription+api.ts
-let items: Stripe.SubscriptionCreateParams.Item[] = [
-  { price: PRO_SUBSCRIPTION_PRICE_ID },
-]
+let items: Stripe.SubscriptionCreateParams.Item[] = [{ price: PRO_SUBSCRIPTION_PRICE_ID }]
 if (teamSeatCount > 0) {
   items.push({ price: TEAM_SEATS_SUBSCRIPTION_PRICE_ID, quantity: teamSeatCount })
 }
 ```
 
 #### 👤 Team Member Management
+
 **🗄️ Database Tables**: `team_members`, `team_subscriptions`, `users`
 
 **➕ Add Member Flow**:
+
 1. **🔌 API**: `team-seat+api.ts` POST endpoint
 2. **🗄️ Database**: Insert into `team_members` table
 3. **🐙 GitHub**: Invite to repository via `resend-github-invite+api.ts`
 4. **💬 Discord**: Manual invitation through Discord panel
 
 **➖ Remove Member Flow**:
+
 1. **🔌 API**: `team-seat+api.ts` DELETE endpoint
 2. **🗄️ Database**: Delete from `team_members` table
 3. **🐙 GitHub**: Remove repository access
 4. **💬 Discord**: Manual removal through Discord panel
 
 #### 💬 Discord Seats Calculation
+
 **📍 Logic Location**: `ensureSubscription.ts`, Discord API endpoints
 
 ```typescript
@@ -172,19 +186,22 @@ const totalDiscordSeats = baseSeats + teamSeats
 ### 💬 Chat Support & 🎯 Support Tiers Implementation
 
 #### 🛒 Purchase Flow
+
 ```
 User Purchase → upgrade-subscription+api.ts → Separate Monthly Subscription
 ```
 
 **🗄️ Database Flow**:
+
 1. **🔌 API**: `upgrade-subscription+api.ts`
 2. **💳 Stripe**: Creates separate monthly subscription
 3. **🪝 Webhook**: `webhook+api.ts` handles subscription events
-4. **🗄️ Database**: 
+4. **🗄️ Database**:
    - ➕ Insert separate record in `subscriptions` table
    - 📅 Different billing cycle from PRO plan
 
 **🔑 Key Code Points**:
+
 ```typescript
 // upgrade-subscription+api.ts
 const items: Array<{ price: string; quantity?: number }> = []
@@ -197,14 +214,18 @@ if (supportTier > 0) {
 ```
 
 #### 💬 Discord Integration
+
 **🗄️ Database Tables**: `subscriptions` (metadata), `discord_invites`
 
 **🏗️ Channel Creation**:
+
 - **🌐 General Channel**: For PRO users (#takeout-general)
 - **🔒 Support Channel**: For Chat/Support tier users (private)
 
 **📊 Metadata Storage**:
+
 - Discord channel IDs stored in `subscriptions` table metadata:
+
 ```json
 {
   "discord_channel": "1132001717215559691"
@@ -212,11 +233,13 @@ if (supportTier > 0) {
 ```
 
 **👥 Member Management**:
+
 - `discord_invites` table stores channel members and invitation status
 - Tracks which users have been invited to which Discord channels
 - Prevents duplicate invitations
 
 **🔄 Reset Functionality**:
+
 - **🔴 UI Reset Button**: Deletes entire Discord channel
 - **🔌 API**: `discord/support+api.ts` and `discord/channel+api.ts` DELETE endpoints
 - **⚠️ Effect**: All members lose access, channel must be recreated
@@ -224,14 +247,17 @@ if (supportTier > 0) {
 ## 3. 🕰️ Legacy Products & Migration
 
 ### 🏷️ Product Ownership System
+
 **🗄️ Database Table**: `product_ownership`
 
-**🎯 Purpose**: 
+**🎯 Purpose**:
+
 - 📊 Track one-time purchases before subscription system
 - 🍱 Provide Bento access for legacy users
 - 🔧 Handle data migration issues
 
 **💻 Usage**:
+
 ```typescript
 // Check legacy 🍱 Bento access
 const { data: ownership } = await supabase
@@ -242,9 +268,11 @@ const { data: ownership } = await supabase
 ```
 
 ### 🕰️ Legacy Discord Seats Calculation
+
 **📍 Location**: `ensureSubscription.ts`
 
 For old takeout subscriptions, Discord seats are calculated by parsing the price description:
+
 ```typescript
 // Legacy price description parsing
 const description = price.description || ''
@@ -253,6 +281,7 @@ const seats = seatsMatch ? parseInt(seatsMatch[1]) : 1
 ```
 
 ### 🔄 Migration Scripts
+
 **🎯 Purpose**: Add users to `product_ownership` for data recovery
 
 **💻 Usage**: When users lose access after system migration, manually add records to restore their benefits.
@@ -260,9 +289,11 @@ const seats = seatsMatch ? parseInt(seatsMatch[1]) : 1
 ## 4. 🐙 Repository Access System
 
 ### 🐙 GitHub Integration
+
 **🗄️ Database Table**: `claims`
 
 **🔄 Flow**:
+
 1. **👆 User Action**: Click "Takeout 1" or "Takeout 2" to open repos directly, or "Resend Invite" to send/resend GitHub team invite
 2. **🔌 API**: `resend-github-invite+api.ts` handles invite requests
 3. **🔍 GitHub Check**: `checkIfUserIsTeamMember()` in `github/helpers.ts`
@@ -273,6 +304,7 @@ const seats = seatsMatch ? parseInt(seatsMatch[1]) : 1
 ## 5. 🗄️ Database Schema Summary
 
 ### 🏗️ Core Tables
+
 - **`subscriptions`**: Main subscription records
 - **`subscription_items`**: Links subscriptions to products/prices
 - **`products`**: Product definitions (PRO, Team Seats, Chat, Support)
@@ -280,16 +312,19 @@ const seats = seatsMatch ? parseInt(seatsMatch[1]) : 1
 - **`customers`**: Stripe customer ID mapping
 
 ### 👥 Team Management
+
 - **`team_subscriptions`**: Team subscription metadata
 - **`team_members`**: Team member relationships
 - **`team_invoices`**: Team-specific invoice tracking
 
 ### 🔐 Access Control
+
 - **`claims`**: Repository and service access claims
 - **`product_ownership`**: Legacy one-time purchase tracking
 - **`users_private`**: GitHub tokens and private data
 
 ### 💬 Discord Integration
+
 - **`subscriptions`**: Discord channel metadata (stores channel IDs in JSON)
 - **`discord_invites`**: Discord member invitations and invitation status
 
@@ -320,6 +355,7 @@ const seats = seatsMatch ? parseInt(seatsMatch[1]) : 1
 ### 🚀 Planned Improvements
 
 1. **🔗 Consolidate Chat + Support Subscriptions**
+
    ```typescript
    // TODO: When user has Chat and purchases Support tier,
    // upgrade existing Chat subscription instead of creating new one
@@ -338,6 +374,7 @@ const seats = seatsMatch ? parseInt(seatsMatch[1]) : 1
 ## 7. 🧪 Testing & Development
 
 ### 🎭 User Impersonation Tool
+
 For testing user access and subscriptions, use the [Supabase SSR User Impersonate Tool](https://github.com/zetavg/supabase-ssr-user-impersonate-tool):
 
 ```bash
@@ -349,6 +386,7 @@ node main.mjs --email <user-email>
 This tool allows developers to impersonate any user for testing subscription flows, Discord access, and repository claims.
 
 ### 🎯 Key Testing Scenarios
+
 1. **🚀 PRO Subscription**: Test both recurring and one-time flows
 2. **👥 Team Seats**: Test member addition/removal and Discord access
 3. **🎯 Support Tiers**: Test private channel creation and seat calculation
@@ -358,20 +396,24 @@ This tool allows developers to impersonate any user for testing subscription flo
 ## 8. 🔌 API Endpoints Summary
 
 ### 💳 Subscription Management
+
 - **`/api/create-subscription`**: Create PRO + Team Seats subscriptions
 - **`/api/upgrade-subscription`**: Add Chat/Support tier subscriptions
 - **`/api/add-team-seats`**: Add additional team seats to existing subscription
 - **`/api/cancel-subscription`**: Cancel subscription with period end
 
 ### 👥 Team Management
+
 - **`/api/team-seat`**: GET (list), POST (invite), DELETE (remove) team members
 
 ### 💬 Discord Integration
+
 - **`/api/discord/channel`**: Manage general Discord channel access
 - **`/api/discord/support`**: Manage private support channel access
 - **`/api/discord/search-member`**: Search Discord members for invitations
 
 ### 🪝 Webhooks
+
 - **`/api/stripe/webhook`**: Handle all Stripe webhook events for subscription lifecycle
 
 This documentation provides a complete overview of the Tamagui subscription system architecture and implementation details for team members to understand and maintain the codebase effectively.

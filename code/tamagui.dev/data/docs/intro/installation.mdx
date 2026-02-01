@@ -4,20 +4,19 @@ description: Get Tamagui set up, step by step
 ---
 
 <IntroParagraph>
-  Tamagui is easy to set up as we've invested into "0-config" installs for all
-  bundlers. That said, it's easy to get lost if you start configuring too many
-  things too early.
+  Tamagui is easy to set up as we've invested into "0-config" installs for all bundlers.
+  That said, it's easy to get lost if you start configuring too many things too early.
 </IntroParagraph>
 
 Use `npm create tamagui@latest` to pick one of our starter templates.
 
 ## Requirements
 
-- **React Native 0.82+** with New Architecture enabled (for native apps)
+- **React Native 0.81+** with New Architecture enabled (for native apps)
 - **React 19+**
 - **TypeScript 5+** (required)
 
-Tamagui 2 takes advantage of new style features in React Native 0.82+ including
+Tamagui 2 takes advantage of new style features in React Native 0.81+ including
 `boxShadow`, `filter`, and more. On web, there are no version restrictions.
 
 ## Installation
@@ -77,9 +76,7 @@ declare module '@tamagui/core' {
 }
 
 export default () => {
-  return (
-    <TamaguiProvider config={config}>{/* your app here */}</TamaguiProvider>
-  )
+  return <TamaguiProvider config={config}>{/* your app here */}</TamaguiProvider>
 }
 ```
 

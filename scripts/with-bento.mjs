@@ -26,10 +26,16 @@ const rootPackage = JSON.parse(readFileSync(ROOT_PACKAGE_JSON, 'utf-8'))
 
 // 3. Validate tamagui versions match
 console.info('🔍 Validating tamagui versions...')
-const bentoTamaguiVersion = bentoPackage.dependencies?.tamagui || bentoPackage.devDependencies?.tamagui
-const rootTamaguiVersion = rootPackage.dependencies?.tamagui || rootPackage.devDependencies?.tamagui
+const bentoTamaguiVersion =
+  bentoPackage.dependencies?.tamagui || bentoPackage.devDependencies?.tamagui
+const rootTamaguiVersion =
+  rootPackage.dependencies?.tamagui || rootPackage.devDependencies?.tamagui
 
-if (bentoTamaguiVersion && rootTamaguiVersion && bentoTamaguiVersion !== rootTamaguiVersion) {
+if (
+  bentoTamaguiVersion &&
+  rootTamaguiVersion &&
+  bentoTamaguiVersion !== rootTamaguiVersion
+) {
   console.warn(`⚠️  WARNING: Tamagui version mismatch!`)
   console.warn(`   Bento: ${bentoTamaguiVersion}`)
   console.warn(`   Root:  ${rootTamaguiVersion}`)
@@ -38,7 +44,7 @@ if (bentoTamaguiVersion && rootTamaguiVersion && bentoTamaguiVersion !== rootTam
 
 // 4. Install bento dependencies
 console.info('📦 Installing bento dependencies...')
-execSync('yarn install', {
+execSync('bun install', {
   cwd: BENTO_PATH,
   stdio: 'inherit',
 })

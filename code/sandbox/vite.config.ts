@@ -37,8 +37,6 @@ export default {
       },
     }),
 
-    tamaguiPlugin({
-      optimize: true,
-    }),
+    tamaguiPlugin(),
   ],
 } satisfies UserConfig

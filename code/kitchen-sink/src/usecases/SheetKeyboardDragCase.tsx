@@ -304,9 +304,7 @@ export function SheetKeyboardDragCase() {
               Dismiss Keyboard
             </Button>
 
-            <Button onPress={() => actionsSheetRef.current?.hide()}>
-              Close Sheet
-            </Button>
+            <Button onPress={() => actionsSheetRef.current?.hide()}>Close Sheet</Button>
 
             {/* spacer for testing scroll + keyboard */}
             <YStack

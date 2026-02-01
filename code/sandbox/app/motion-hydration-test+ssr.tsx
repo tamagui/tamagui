@@ -57,13 +57,7 @@ export default function MotionHydrationTest() {
   }, [tint])
 
   return (
-    <YStack
-      f={1}
-      position="relative"
-      bg="$background"
-      height="100vh"
-      overflow="hidden"
-    >
+    <YStack f={1} position="relative" bg="$background" height="100vh" overflow="hidden">
       <AnimatePresence>{glows}</AnimatePresence>
     </YStack>
   )

@@ -8,9 +8,9 @@ export declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComp
         };
     }>> | undefined;
 }, {
+    unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic & {
     accept: {
         readonly activeStyle: "style";
@@ -28,9 +28,9 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<imp
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
+    unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic & {
     accept: {
         readonly activeStyle: "style";

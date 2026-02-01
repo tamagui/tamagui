@@ -23,28 +23,13 @@ demoName: Tabs
 </Tabs.List>
 
 <HeroContainer>
-  <Tabs.Content
-    value="styled"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="styled" justifyContent="center" alignItems="center" width="100%">
     <TabsDemo />
   </Tabs.Content>
-  <Tabs.Content
-    value="unstyled"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
     <TabsHeadlessDemo />
   </Tabs.Content>
-  <Tabs.Content
-    value="headless"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
     <TabsHeadlessDemo />
   </Tabs.Content>
 </HeroContainer>
@@ -52,17 +37,18 @@ demoName: Tabs
 <Tabs.Content value="styled">
 ```tsx hero template=Tabs
 
-```
+````
 </Tabs.Content>
 <Tabs.Content value="unstyled">
 ```tsx hero template=TabsHeadless
 
-```
+````
+
 </Tabs.Content>
 <Tabs.Content value="headless">
 ```tsx hero template=TabsHeadless
 
-```
+````
 </Tabs.Content>
 
 <Highlights
@@ -81,7 +67,7 @@ Tabs is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/tabs
-```
+````
 
 </Tabs.Content>
 
@@ -109,7 +95,7 @@ npm install @tamagui/tabs-headless
 <Tabs.Content value="styled">
 
 ```tsx
-import { SizableText, Tabs } from "tamagui";
+import { SizableText, Tabs } from 'tamagui'
 
 export default () => (
   <Tabs defaultValue="tab1" width={400}>
@@ -129,7 +115,7 @@ export default () => (
       <H5>Tab 2</H5>
     </Tabs.Content>
   </Tabs>
-);
+)
 ```
 
 </Tabs.Content>
@@ -164,12 +150,8 @@ function MyTabs() {
         <button {...getTabProps('tab2')}>Tab 2</button>
       </div>
 
-      <div {...getContentProps('tab1')}>
-        {value === 'tab1' && <p>Content 1</p>}
-      </div>
-      <div {...getContentProps('tab2')}>
-        {value === 'tab2' && <p>Content 2</p>}
-      </div>
+      <div {...getContentProps('tab1')}>{value === 'tab1' && <p>Content 1</p>}</div>
+      <div {...getContentProps('tab2')}>{value === 'tab2' && <p>Content 2</p>}</div>
     </div>
   )
 }
@@ -180,12 +162,7 @@ function MyTabs() {
 For more complex use cases, you can use the context-based hooks:
 
 ```tsx
-import {
-  useTabs,
-  TabsProvider,
-  useTab,
-  useTabContent
-} from '@tamagui/tabs-headless'
+import { useTabs, TabsProvider, useTab, useTabContent } from '@tamagui/tabs-headless'
 
 function Tabs({ children, ...props }) {
   const { contextValue, tabsProps } = useTabs(props)
@@ -241,41 +218,41 @@ The `useTabs` hook accepts these options and returns props/helpers:
 <PropsTable
   data={[
     {
-      name: "value",
-      type: "string",
+      name: 'value',
+      type: 'string',
       description: `The value for the selected tab, if controlled.`,
     },
     {
-      name: "defaultValue",
-      type: "string",
+      name: 'defaultValue',
+      type: 'string',
       description: `The value of the tab to select by default, if uncontrolled.`,
     },
     {
-      name: "onValueChange",
-      type: "(value: string) => void",
+      name: 'onValueChange',
+      type: '(value: string) => void',
       description: `A function called when a new tab is selected.`,
     },
     {
-      name: "orientation",
+      name: 'orientation',
       type: '"horizontal" | "vertical"',
-      default: "horizontal",
+      default: 'horizontal',
       description: `The orientation the tabs are laid out in.`,
     },
     {
-      name: "dir",
+      name: 'dir',
       type: '"ltr" | "rtl"',
       description: `The direction of navigation between toolbar items.`,
     },
     {
-      name: "activationMode",
+      name: 'activationMode',
       type: '"manual" | "automatic"',
-      default: "manual",
+      default: 'manual',
       description: `Whether a tab is activated automatically (on focus) or manually (on click/enter).`,
     },
     {
-      name: "loop",
-      type: "boolean",
-      default: "true",
+      name: 'loop',
+      type: 'boolean',
+      default: 'true',
       description: `Whether keyboard navigation should loop from last to first and vice versa.`,
     },
   ]}
@@ -285,16 +262,16 @@ The `useTabs` hook accepts these options and returns props/helpers:
 
 ### useTabs Return Value
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `value` | `string` | The currently selected tab value |
-| `setValue` | `(value: string) => void` | Function to change the selected tab |
-| `direction` | `'ltr' \| 'rtl'` | The resolved text direction |
-| `tabsProps` | `object` | Props to spread on the tabs container |
-| `listProps` | `object` | Props to spread on the tab list |
-| `getTabProps` | `(value: string, disabled?: boolean) => object` | Get props for a tab trigger |
-| `getContentProps` | `(value: string) => object` | Get props for a tab content panel |
-| `contextValue` | `TabsContextValue` | Context value for component-based API |
+| Property          | Type                                            | Description                           |
+| ----------------- | ----------------------------------------------- | ------------------------------------- |
+| `value`           | `string`                                        | The currently selected tab value      |
+| `setValue`        | `(value: string) => void`                       | Function to change the selected tab   |
+| `direction`       | `'ltr' \| 'rtl'`                                | The resolved text direction           |
+| `tabsProps`       | `object`                                        | Props to spread on the tabs container |
+| `listProps`       | `object`                                        | Props to spread on the tab list       |
+| `getTabProps`     | `(value: string, disabled?: boolean) => object` | Get props for a tab trigger           |
+| `getContentProps` | `(value: string) => object`                     | Get props for a tab content panel     |
+| `contextValue`    | `TabsContextValue`                              | Context value for component-based API |
 
 ### useTab
 
@@ -332,16 +309,19 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
 <PropsTable
   data={[
     {
-      name: "loop",
-      type: "boolean",
-      default: "true",
+      name: 'loop',
+      type: 'boolean',
+      default: 'true',
       description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation.`,
     },
   ]}
 />
 
 <Notice>
-  Since Tabs.List extends Group, the same limitation applies: automatic border radius detection only works when `Tabs.Tab` is a **direct child** of `Tabs.List`. If you wrap tabs in custom components, see the [Group docs on nested items](/docs/components/group#custom-components--nested-items) for workarounds.
+  Since Tabs.List extends Group, the same limitation applies: automatic border radius
+  detection only works when `Tabs.Tab` is a **direct child** of `Tabs.List`. If you wrap
+  tabs in custom components, see the [Group docs on nested
+  items](/docs/components/group#custom-components--nested-items) for workarounds.
 </Notice>
 
 ### Tabs.Tab
@@ -351,32 +331,32 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 <PropsTable
   data={[
     {
-      name: "value",
-      type: "string",
+      name: 'value',
+      type: 'string',
       description: `The value for the tabs state to be changed to after activation of the trigger.`,
     },
     {
-      name: "onInteraction",
+      name: 'onInteraction',
       type: `(type: InteractionType, layout: TabLayout | null) => void`,
       description: `Used for making custom indicators when trigger is interacted with.`,
     },
     {
-      name: "disabled",
+      name: 'disabled',
       type: `boolean`,
       description: `Whether the tab is disabled.`,
     },
     {
-      name: "unstyled",
+      name: 'unstyled',
       type: `boolean`,
       description: `When true, removes all default Tamagui styling.`,
     },
     {
-      name: "activeStyle",
+      name: 'activeStyle',
       type: `StyleProp`,
       description: `Styles to apply when the tab is selected.`,
     },
     {
-      name: "activeTheme",
+      name: 'activeTheme',
       type: `string | null`,
       description: `Theme to apply when the tab is selected. Set to null for no theme change.`,
     },
@@ -390,14 +370,14 @@ Where each tab's content will be shown. Extends [ThemeableStack](/docs/component
 <PropsTable
   data={[
     {
-      name: "value",
-      type: "string",
+      name: 'value',
+      type: 'string',
       description: `Will show the content when the value matches the state of Tabs root.`,
     },
     {
-      name: "forceMount",
-      type: "boolean",
-      default: "false",
+      name: 'forceMount',
+      type: 'boolean',
+      default: 'false',
       description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations.`,
     },
   ]}

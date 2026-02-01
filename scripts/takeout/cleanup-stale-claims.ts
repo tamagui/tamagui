@@ -23,10 +23,12 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 async function main() {
   const args = process.argv.slice(2)
   const dryRun = args.includes('--dry-run')
-  const analysisFile = args.find(arg => !arg.startsWith('--'))
+  const analysisFile = args.find((arg) => !arg.startsWith('--'))
 
   if (!analysisFile) {
-    console.error('Usage: tsx cleanup-stale-claims.ts <stale-claims-file.json> [--dry-run]')
+    console.error(
+      'Usage: tsx cleanup-stale-claims.ts <stale-claims-file.json> [--dry-run]'
+    )
     process.exit(1)
   }
 
@@ -55,7 +57,7 @@ async function main() {
 
   if (!dryRun) {
     console.log('\n⏸️  Starting in 3 seconds... (Ctrl+C to cancel)')
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise((resolve) => setTimeout(resolve, 3000))
   }
 
   console.log('\n' + '='.repeat(80))
@@ -77,7 +79,9 @@ async function main() {
   for (let i = 0; i < claimIds.length; i += batchSize) {
     const batch = claimIds.slice(i, i + batchSize)
 
-    console.log(`Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(claimIds.length / batchSize)} (${batch.length} claims)...`)
+    console.log(
+      `Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(claimIds.length / batchSize)} (${batch.length} claims)...`
+    )
 
     try {
       const { error } = await supabase

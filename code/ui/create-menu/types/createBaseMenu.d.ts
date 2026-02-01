@@ -63,6 +63,11 @@ type MenuContentImplPrivateProps = {
      * (default: false)
      */
     trapFocus?: FocusScopeProps['trapped'];
+    /**
+     * Whether to disable dismissing the menu when the user scrolls outside of it
+     * (default: false, meaning scroll will dismiss on web)
+     */
+    disableDismissOnScroll?: boolean;
 };
 interface MenuContentImplProps extends MenuContentImplPrivateProps, Omit<PopperContentProps, 'dir' | 'onPlaced'> {
     /**

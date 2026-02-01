@@ -6,7 +6,7 @@ type PickByValue<OBJ_T, VALUE_T> = // From https://stackoverflow.com/a/55153000
 type ObjectEntries<OBJ_T> = // From https://stackoverflow.com/a/60142095
   { [K in keyof OBJ_T]: [keyof PickByValue<OBJ_T, OBJ_T[K]>, OBJ_T[K]] }[keyof OBJ_T][]
 
-export const objectKeys = <O extends Object>(obj: O) => Object.keys(obj) as Array<keyof O>
+export const objectKeys = <O extends object>(obj: O) => Object.keys(obj) as Array<keyof O>
 
 export function objectEntries<OBJ_T extends ObjectType>(
   obj: OBJ_T

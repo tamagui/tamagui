@@ -4,9 +4,9 @@ description: Modern config and themes with @tamagui/config/v5
 ---
 
 <IntroParagraph>
-  The recommended Tamagui configuration gives you a complete design system,
-  flexible theme generation, Tailwind aligned shorthands, multiple animation
-  drivers, and easy customization.
+  The recommended Tamagui configuration gives you a complete design system, flexible theme
+  generation, Tailwind aligned shorthands, multiple animation drivers, and easy
+  customization.
 </IntroParagraph>
 
 V5 builds on v4 with more colors, theme helpers, and expanded media queries.
@@ -169,11 +169,7 @@ easiest way to add or change colors is using `@tamagui/colors` which provides
 Radix color palettes:
 
 ```tsx fileName="tamagui.config.ts"
-import {
-  createV5Theme,
-  defaultChildrenThemes,
-  defaultConfig,
-} from '@tamagui/config/v5'
+import { createV5Theme, defaultChildrenThemes, defaultConfig } from '@tamagui/config/v5'
 import { cyan, cyanDark, amber, amberDark } from '@tamagui/colors'
 import { createTamagui } from 'tamagui'
 
@@ -221,14 +217,12 @@ const themes = createV5Theme({
     {
       name: 'darkPalette',
       type: 'string[]',
-      description:
-        'Override the dark base palette (12 colors from darkest to lightest)',
+      description: 'Override the dark base palette (12 colors from darkest to lightest)',
     },
     {
       name: 'lightPalette',
       type: 'string[]',
-      description:
-        'Override the light base palette (12 colors from lightest to darkest)',
+      description: 'Override the light base palette (12 colors from lightest to darkest)',
     },
     {
       name: 'grandChildrenThemes',
@@ -461,13 +455,11 @@ V5 config includes these default settings:
     },
     {
       name: 'allowedStyleValues',
-      description:
-        '"somewhat-strict-web" - Allows web-only values like vh, vw.',
+      description: '"somewhat-strict-web" - Allows web-only values like vh, vw.',
     },
     {
       name: 'addThemeClassName',
-      description:
-        '"html" - Adds theme className to html tag for CSS variable access.',
+      description: '"html" - Adds theme className to html tag for CSS variable access.',
     },
     {
       name: 'onlyAllowShorthands',
@@ -569,15 +561,14 @@ export const config = createTamagui({
   ...defaultConfig,
   // only load themes on server - client hydrates from CSS
   // for non-One Vite apps, use import.meta.env.SSR instead
-  themes:
-    process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
 })
 ```
 
 <Notice theme="green">
-  This optimization requires server-side rendering. The CSS must be rendered on
-  the server for the client to hydrate from it. Make sure you're using
-  `config.getCSS()` or the bundler plugin's `outputCSS` option.
+  This optimization requires server-side rendering. The CSS must be rendered on the server
+  for the client to hydrate from it. Make sure you're using `config.getCSS()` or the
+  bundler plugin's `outputCSS` option.
 </Notice>
 
 ---

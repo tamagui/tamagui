@@ -1,4 +1,4 @@
-import { Check, Edit3, LogOut, Plus, Search, X } from '@tamagui/lucide-icons'
+import { Check, Edit3, Gift, LogOut, Plus, Search, X } from '@tamagui/lucide-icons'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
@@ -29,9 +29,10 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { authFetch } from '~/features/api/authFetch'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
-import { CURRENT_PRODUCTS } from '~/features/stripe/products'
+import { CURRENT_PRODUCTS, V1_PRODUCTS } from '~/features/stripe/products'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import { useUser } from '~/features/user/useUser'
 import { useClipboard } from '~/hooks/useClipboard'
@@ -41,7 +42,7 @@ import { accountModal, useAccountModal } from './accountModalStore'
 import { addTeamMemberModal } from './addTeamMemberModalStore'
 import { FaqTabContent } from './FaqTabContent'
 import { paymentModal, SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
-import { useProjects, updateProject, type Project } from './useProjects'
+import { useProjects, createProject, updateProject, type Project } from './useProjects'
 import {
   useInviteTeamMember,
   useRemoveTeamMember,
@@ -349,17 +350,26 @@ const AccountHeader = () => {
   }
   const { userDetails, user, githubUsername } = data
 
+  const supabase = useSupabaseClient()
+
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/logout', {
+      // Sign out on client side first - this clears localStorage and triggers auth state change
+      if (supabase) {
+        await supabase.auth.signOut()
+      }
+
+      // Also call server to clear any server-side session
+      await fetch('/api/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      if (response.ok) {
-        window.location.href = '/'
-      }
+
+      // Clear SWR cache and redirect
+      await mutate('user', null)
+      window.location.href = '/'
     } catch (error) {
       console.error('Logout failed:', error)
     }
@@ -932,6 +942,91 @@ const DiscordMember = ({
     </XStack>
   )
 }
+// Project setup form shown when user has Pro but no project configured
+const ProjectSetupForm = ({ onComplete }: { onComplete: () => void }) => {
+  const [projectName, setProjectName] = useState('')
+  const [projectDomain, setProjectDomain] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleSubmit = async () => {
+    setError(null)
+
+    if (!projectName || projectName.length <= 2) {
+      setError('Project name must be more than 2 characters')
+      return
+    }
+    if (!projectDomain || projectDomain.length <= 2) {
+      setError('Domain must be more than 2 characters')
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      await createProject({ name: projectName, domain: projectDomain })
+      onComplete()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create project')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <YStack gap="$6" p="$4" maxWidth={500}>
+      <YStack gap="$2">
+        <H3 fontFamily="$mono">Set Up Your Project</H3>
+        <Paragraph size="$4" color="$color10">
+          Enter your project name and domain to activate your license. You can change this
+          later.
+        </Paragraph>
+      </YStack>
+
+      <YStack gap="$4">
+        <Fieldset gap="$2">
+          <Label fontFamily="$mono" size="$3">
+            Project Name
+          </Label>
+          <Input
+            placeholder="My Awesome App"
+            value={projectName}
+            onChangeText={setProjectName}
+            fontFamily="$mono"
+          />
+        </Fieldset>
+
+        <Fieldset gap="$2">
+          <Label fontFamily="$mono" size="$3">
+            Domain
+          </Label>
+          <Input
+            placeholder="myapp.com"
+            value={projectDomain}
+            onChangeText={setProjectDomain}
+            fontFamily="$mono"
+          />
+          <Paragraph size="$2" color="$color9">
+            Primary web domain for your project. Your license covers this domain plus
+            iOS/Android apps.
+          </Paragraph>
+        </Fieldset>
+
+        {error && (
+          <Paragraph size="$3" color="$red10">
+            {error}
+          </Paragraph>
+        )}
+
+        <Button theme="accent" onPress={handleSubmit} disabled={isSubmitting}>
+          <Button.Text fontFamily="$mono">
+            {isSubmitting ? 'Saving...' : 'Save Project'}
+          </Button.Text>
+        </Button>
+      </YStack>
+    </YStack>
+  )
+}
+
 const PlanTab = ({
   subscription,
   supportSubscription,
@@ -947,6 +1042,13 @@ const PlanTab = ({
   const [showSupportAccess, setShowSupportAccess] = useState(false)
   const [isResendingInvite, setIsResendingInvite] = useState(false)
 
+  // Check for projects
+  const {
+    projects,
+    isLoading: projectsLoading,
+    refresh: refreshProjects,
+  } = useProjects(!!subscription)
+
   // Check if this is a one-time payment plan
   const isOneTimePlan =
     subscription?.subscription_items?.[0]?.price?.type === Pricing.OneTime
@@ -959,6 +1061,23 @@ const PlanTab = ({
       item.price?.product?.name === ProductName.TamaguiSupportDirect ||
       item.price?.product?.name === ProductName.TamaguiSupportSponsor
   )
+
+  // V2 users need to set up a project after purchase
+  // Show loading while we check if they have projects
+  if (isV2Pro && projectsLoading) {
+    return (
+      <YStack flex={1} items="center" justify="center" p="$6">
+        <Spinner size="large" />
+      </YStack>
+    )
+  }
+
+  const needsProjectSetup = isV2Pro && projects.length === 0
+
+  // Show project setup form if needed
+  if (needsProjectSetup) {
+    return <ProjectSetupForm onComplete={() => refreshProjects()} />
+  }
 
   const handleTakeoutAccess = (repoUrl = 'https://github.com/tamagui/takeout') => {
     // Just open the repo URL directly - invite handling is done via "Resend Invite" button
@@ -1083,7 +1202,7 @@ const PlanTab = ({
             }}
           />
 
-          <ChatAccessCard />
+          {/* <ChatAccessCard /> */}
           {/* Add Members card - V1 only (V2 has unlimited team included in license) */}
           {!isTeamMember && !isOneTimePlan && !isV2Pro ? (
             <ServiceCard
@@ -1289,6 +1408,142 @@ const SupportTabContent = ({
   )
 }
 
+// card for V1 users to enable automatic V2 renewal
+const V2RenewalCard = ({ subscription }: { subscription: Subscription }) => {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [error, setError] = useState<string | null>(null)
+
+  // check if already enabled from metadata
+  const metadata = subscription.metadata as Record<string, any> | null
+  const isEnabled = metadata?.v2_renewal_enabled === 'true'
+
+  if (isEnabled) {
+    return (
+      <YStack
+        gap="$3"
+        p="$4"
+        borderWidth={1}
+        borderColor="$green6"
+        bg="$green2"
+        rounded="$4"
+      >
+        <XStack gap="$3" alignItems="center">
+          <Gift y={5} size={24} color="$green10" />
+          <YStack flex={1}>
+            <H4 fontFamily="$mono" color="$green11">
+              New Pro Plan Enabled ✓
+            </H4>
+            <Paragraph color="$green10">
+              When your subscription renews, you'll automatically get the new Pro plan
+              with 35% off.
+            </Paragraph>
+          </YStack>
+        </XStack>
+      </YStack>
+    )
+  }
+
+  const handleEnable = async () => {
+    setStatus('loading')
+    setError(null)
+
+    try {
+      const response = await fetch('/api/enable-v2-renewal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscription_id: subscription.id }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setStatus('error')
+        setError(data.error || 'Failed to enable V2 renewal')
+        return
+      }
+
+      setStatus('success')
+    } catch (err) {
+      setStatus('error')
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <YStack
+        gap="$3"
+        p="$4"
+        borderWidth={1}
+        borderColor="$green6"
+        bg="$green2"
+        rounded="$4"
+      >
+        <XStack gap="$3" alignItems="center">
+          <Gift size={24} color="$green10" />
+          <YStack flex={1}>
+            <H4 fontFamily="$mono" color="$green11">
+              New Pro Plan Enabled! 🎉
+            </H4>
+            <Paragraph color="$green10">
+              When your subscription renews, you'll automatically get the new Pro plan
+              with 35% off.
+            </Paragraph>
+          </YStack>
+        </XStack>
+      </YStack>
+    )
+  }
+
+  return (
+    <YStack
+      gap="$4"
+      p="$4"
+      borderWidth={1}
+      borderColor="$purple6"
+      bg="$purple2"
+      rounded="$4"
+    >
+      <XStack gap="$3" alignItems="flex-start">
+        <Gift y={5} size={24} color="$purple10" />
+        <YStack flex={1} gap="$1">
+          <H4 fontFamily="$mono" color="$purple11">
+            Upgrade to New Pro Plan
+          </H4>
+          <Paragraph color="$purple10">
+            Enable automatic upgrade and get <strong>35% off</strong> when your
+            subscription renews. You'll get access to:
+          </Paragraph>
+          <YStack gap="$1" pl="$2">
+            <Paragraph color="$purple10">
+              • Takeout 2 - Tamagui 2, One 1, and Zero stack
+            </Paragraph>
+            <Paragraph color="$purple10">
+              • Takeout Static - Web-only starter with 100 Lighthouse
+            </Paragraph>
+            <Paragraph color="$purple10">
+              • Unlimited team members - No per-seat pricing
+            </Paragraph>
+          </YStack>
+        </YStack>
+      </XStack>
+
+      {error && <Paragraph color="$red10">{error}</Paragraph>}
+
+      <Button
+        theme="purple"
+        disabled={status === 'loading'}
+        onPress={handleEnable}
+        alignSelf="flex-start"
+      >
+        <Button.Text>
+          {status === 'loading' ? 'Enabling...' : 'Enable New Pro Plan (35% off)'}
+        </Button.Text>
+      </Button>
+    </YStack>
+  )
+}
+
 const ManageTab = ({
   subscriptions,
   isTeamMember,
@@ -1359,13 +1614,15 @@ const ManageTab = ({
 
   // Cancel handler for a specific subscription
   const handleCancelSubscription = async (subscriptionId: string) => {
+    const confirmed = window.confirm(
+      'Are you sure you want to cancel this subscription? This action cannot be undone.'
+    )
+    if (!confirmed) return
+
     setIsLoading(true)
     try {
-      const res = await fetch('/api/cancel-subscription', {
+      const res = await authFetch('/api/cancel-subscription', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           subscription_id: subscriptionId,
         }),
@@ -1407,6 +1664,25 @@ const ManageTab = ({
 
   return (
     <YStack gap="$8">
+      {/* V2 Renewal Section for V1 Subscriptions */}
+      {!isTeamMember &&
+        sortedSubscriptions
+          .filter((sub) => {
+            // check if this is a V1 subscription (not a one-time invoice)
+            // one-time purchases have invoice IDs (in_...) not subscription IDs (sub_...)
+            // they don't renew, so V2 renewal doesn't apply
+            if (!sub.id.startsWith('sub_')) return false
+            return sub.subscription_items?.some((item) => {
+              const productId = item.price?.product?.id
+              return productId && V1_PRODUCTS.includes(productId as any)
+            })
+          })
+          .map((v1Sub) => (
+            <YStack key={`v2-renewal-${v1Sub.id}`} gap="$4">
+              <V2RenewalCard subscription={v1Sub} />
+            </YStack>
+          ))}
+
       {/* Projects Section (V2) */}
       {hasProjects && (
         <YStack gap="$4">

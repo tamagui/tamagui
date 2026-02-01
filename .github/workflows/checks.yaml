@@ -8,6 +8,13 @@ on:
       - '.vscode/**'
     branches:
       - main
+      - v2
+      - 'v2-*'
+
+# cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   checks:
@@ -20,16 +27,18 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Check
-        run: yarn && yarn check
+        run: bun run check
 
       - name: Typecheck
-        run: yarn typecheck
+        run: bun run typecheck
 
       - name: Lint
-        run: yarn lint
+        run: bun run lint
 
   tests:
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,14 +47,12 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Install playwright
-        run: npx playwright install
+        run: bunx playwright install
 
       - uses: nick-fields/retry@v3
-        name: "Run tests"
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
-          SKIP_NATIVE_TESTS: true
+        name: 'Run web tests'
         with:
           timeout_minutes: 25
           max_attempts: 2
-          command: 'yarn test'
+          command: 'bun run test:web'
+

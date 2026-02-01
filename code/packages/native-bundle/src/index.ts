@@ -84,9 +84,7 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
   // For test bundles, bundle a fake react-native implementation
   // For production bundles, bundle react-native-web-lite
   // Note: react and all its subpaths (jsx-runtime, compiler-runtime, etc.) must be external
-  const external = isTest
-    ? [/^react($|\/)/, /^react-native($|\/)/]
-    : [/^react($|\/)/]
+  const external = isTest ? [/^react($|\/)/, /^react-native($|\/)/] : [/^react($|\/)/]
   const alias = isTest
     ? [
         // Aliases don't work for pre-bundled deps, so we externalize and alias in vitest config

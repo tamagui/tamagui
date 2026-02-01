@@ -1,6 +1,9 @@
 import { apiRoute } from '~/features/api/apiRoute'
-import { ensureAuth } from '~/features/api/ensureAuth'
+import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
+
+// V2 product ID that coupons must support
+const V2_PRODUCT_ID = STRIPE_PRODUCTS.PRO_V2_LICENSE.productId
 
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
@@ -52,6 +55,19 @@ export default apiRoute(async (req) => {
         valid: false,
         message: 'This coupon has expired',
       })
+    }
+
+    // check if coupon has product restrictions that exclude V2
+    // applies_to.products is set by services like Parity Deals
+    if (coupon.applies_to?.products && coupon.applies_to.products.length > 0) {
+      const appliesToV2 = coupon.applies_to.products.includes(V2_PRODUCT_ID)
+      if (!appliesToV2) {
+        return Response.json({
+          valid: false,
+          message:
+            'This coupon is not valid for Pro V2. Please contact support@tamagui.dev for assistance.',
+        })
+      }
     }
 
     return Response.json({

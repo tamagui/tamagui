@@ -1,7 +1,5 @@
 import { View, ThemeableStack, YStack, styled } from 'tamagui'
 
-export * as lucideIcons from '@tamagui/lucide-icons'
-
 export * from 'tamagui'
 export * from '@tamagui/toast'
 export * from './SandboxHeading'
@@ -11,7 +9,7 @@ export * from './views'
 // export * from './TestSolito'
 // export * from './TestExpoVectorIcons'
 // export { Image as ExpoImage } from 'expo-image'
-export * from 'expo-constants'
+// export * from 'expo-constants'
 
 export const SimpleTest = styled(View, {
   width: 100,

@@ -1,11 +1,7 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { describe, expectTypeOf, test } from 'vitest'
-import {
-  createTamagui,
-  type AnimationDriver,
-  type InferTamaguiConfig,
-} from '../core/src'
+import { createTamagui, type AnimationDriver, type InferTamaguiConfig } from '../core/src'
 import config from '../config-default'
 
 describe('transition type inference', () => {

@@ -1,51 +1,51 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "2.0.0-1769680173943",
-  "type": "module",
-  "sideEffects": false,
+  "version": "2.0.0-rc.0-1769885482630",
   "description": "Utilities for icon packages",
+  "license": "MIT",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "@tamagui/core": "workspace:*",
-    "@tamagui/sizable-context": "workspace:*"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
   },
-  "peerDependencies": {
-    "react": "*",
-    "react-native-svg": ">=12"
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/core": "workspace:*",
+    "@tamagui/sizable-context": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native-svg": "15.12.1"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-native-svg": ">=12"
   }
 }

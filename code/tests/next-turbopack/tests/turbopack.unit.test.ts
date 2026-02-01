@@ -49,7 +49,10 @@ describe('Turbopack + Tamagui CLI optimization', () => {
   afterAll(() => reset())
 
   it('CLI optimization flattens Text to span with className', () => {
-    execSync(`yarn tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
+    execSync(`bun tamagui build --target web ./src/TestComponent.tsx`, {
+      cwd: ROOT,
+      stdio: 'pipe',
+    })
 
     const optimized = readFileSync(SRC, 'utf-8')
 
@@ -65,7 +68,10 @@ describe('Turbopack + Tamagui CLI optimization', () => {
   })
 
   it('CLI generates atomic CSS file', () => {
-    execSync(`yarn tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
+    execSync(`bun tamagui build --target web ./src/TestComponent.tsx`, {
+      cwd: ROOT,
+      stdio: 'pipe',
+    })
 
     expect(existsSync(CSS)).toBe(true)
     const css = readFileSync(CSS, 'utf-8')
@@ -80,14 +86,24 @@ describe('Turbopack + Tamagui CLI optimization', () => {
   })
 
   it('prod build works after CLI optimization', () => {
-    execSync(`yarn tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
-    const result = execSync(`yarn next-build`, { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
+    execSync(`bunx tamagui build --target web ./src/TestComponent.tsx`, {
+      cwd: ROOT,
+      stdio: 'pipe',
+    })
+    const result = execSync(`bun run next-build`, {
+      cwd: ROOT,
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    })
     expect(result).toContain('Generating static pages')
   }, 120000)
 
   it('reset properly restores original file', () => {
     // Optimize
-    execSync(`yarn tamagui build --target web ./src/TestComponent.tsx`, { cwd: ROOT, stdio: 'pipe' })
+    execSync(`bun tamagui build --target web ./src/TestComponent.tsx`, {
+      cwd: ROOT,
+      stdio: 'pipe',
+    })
     expect(existsSync(CSS)).toBe(true)
     expect(readFileSync(SRC, 'utf-8')).toContain('.css')
 

@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Berkeley Mono";
-  src: url("/fonts/berkeley.woff2") format("woff2");
+  font-family: 'Berkeley Mono';
+  src: url('/fonts/berkeley.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: block;

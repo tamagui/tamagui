@@ -197,14 +197,12 @@ function createInterpolationFromStringOutputRange(config) {
     })
   })
 
-  const interpolations = outputRange[0]
-    .match(stringShapeRegex)
-    .map((value, i) => {
-      return createInterpolation({
-        ...config,
-        outputRange: outputRanges[i],
-      })
+  const interpolations = outputRange[0].match(stringShapeRegex).map((value, i) => {
+    return createInterpolation({
+      ...config,
+      outputRange: outputRanges[i],
     })
+  })
 
   // rgba requires that the r,g,b are integers.... so we want to round them, but we *dont* want to
   // round the opacity (4th column).
@@ -251,8 +249,7 @@ function findRange(input, inputRange) {
 
 function checkValidInputRange(arr) {
   invariant(arr.length >= 2, 'inputRange must have at least 2 elements')
-  const message =
-    'inputRange must be monotonically non-decreasing ' + String(arr)
+  const message = 'inputRange must be monotonically non-decreasing ' + String(arr)
   for (let i = 1; i < arr.length; ++i) {
     invariant(arr[i] >= arr[i - 1], message)
   }

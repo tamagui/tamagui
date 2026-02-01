@@ -26,48 +26,48 @@ export const MediaQueryGtMd = () => {
       <Text testID="media-state-md">{`md: ${media.md}`}</Text>
       <Text testID="media-state-gtMd">{`gtMd: ${media.gtMd}`}</Text>
 
-    {/* Test 1: Both $md and $gtMd - should respect breakpoint boundaries */}
-    <YStack
-      id="media-test-both"
-      testID="media-test-both"
-      height={100}
-      width={100}
-      backgroundColor="red"
-      $md={{ backgroundColor: 'yellow' }}
-      $gtMd={{ backgroundColor: 'green' }}
-    />
+      {/* Test 1: Both $md and $gtMd - should respect breakpoint boundaries */}
+      <YStack
+        id="media-test-both"
+        testID="media-test-both"
+        height={100}
+        width={100}
+        backgroundColor="red"
+        $md={{ backgroundColor: 'yellow' }}
+        $gtMd={{ backgroundColor: 'green' }}
+      />
 
-    {/* Test 2: Only $gtMd - should NOT apply on small screens */}
-    <YStack
-      id="media-test-gtmd-only"
-      testID="media-test-gtmd-only"
-      height={100}
-      width={100}
-      backgroundColor="red"
-      $gtMd={{ backgroundColor: 'green' }}
-    />
+      {/* Test 2: Only $gtMd - should NOT apply on small screens */}
+      <YStack
+        id="media-test-gtmd-only"
+        testID="media-test-gtmd-only"
+        height={100}
+        width={100}
+        backgroundColor="red"
+        $gtMd={{ backgroundColor: 'green' }}
+      />
 
-    {/* Test 3: Only $md - should apply on small screens */}
-    <YStack
-      id="media-test-md-only"
-      testID="media-test-md-only"
-      height={100}
-      width={100}
-      backgroundColor="red"
-      $md={{ backgroundColor: 'yellow' }}
-    />
+      {/* Test 3: Only $md - should apply on small screens */}
+      <YStack
+        id="media-test-md-only"
+        testID="media-test-md-only"
+        height={100}
+        width={100}
+        backgroundColor="red"
+        $md={{ backgroundColor: 'yellow' }}
+      />
 
-    {/* Test 4: $sm, $md, and $gtMd together */}
-    <YStack
-      id="media-test-all"
-      testID="media-test-all"
-      height={100}
-      width={100}
-      backgroundColor="red"
-      $sm={{ backgroundColor: 'blue' }}
-      $md={{ backgroundColor: 'yellow' }}
-      $gtMd={{ backgroundColor: 'green' }}
-    />
+      {/* Test 4: $sm, $md, and $gtMd together */}
+      <YStack
+        id="media-test-all"
+        testID="media-test-all"
+        height={100}
+        width={100}
+        backgroundColor="red"
+        $sm={{ backgroundColor: 'blue' }}
+        $md={{ backgroundColor: 'yellow' }}
+        $gtMd={{ backgroundColor: 'green' }}
+      />
     </YStack>
   )
 }

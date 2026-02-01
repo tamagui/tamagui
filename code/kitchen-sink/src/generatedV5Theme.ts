@@ -11,38 +11,64 @@ import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5'
 import { v5ComponentThemes } from '@tamagui/themes/v5'
 import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'
 
-const darkPalette = ['hsla(228, 53%, 1%, 1)','hsla(228, 53%, 6%, 1)','hsla(228, 53%, 12%, 1)','hsla(228, 53%, 17%, 1)','hsla(228, 53%, 23%, 1)','hsla(228, 53%, 28%, 1)','hsla(228, 53%, 34%, 1)','hsla(228, 53%, 39%, 1)','hsla(228, 53%, 45%, 1)','hsla(228, 53%, 50%, 1)','hsla(0, 15%, 93%, 1)','hsla(0, 15%, 99%, 1)']
-const lightPalette = ['hsla(228, 53%, 25%, 1)','hsla(228, 53%, 28%, 1)','hsla(228, 53%, 31%, 1)','hsla(228, 53%, 33%, 1)','hsla(228, 53%, 36%, 1)','hsla(228, 53%, 39%, 1)','hsla(228, 53%, 42%, 1)','hsla(228, 53%, 44%, 1)','hsla(228, 53%, 47%, 1)','hsla(228, 53%, 50%, 1)','hsla(0, 15%, 15%, 1)','hsla(0, 15%, 1%, 1)']
+const darkPalette = [
+  'hsla(228, 53%, 1%, 1)',
+  'hsla(228, 53%, 6%, 1)',
+  'hsla(228, 53%, 12%, 1)',
+  'hsla(228, 53%, 17%, 1)',
+  'hsla(228, 53%, 23%, 1)',
+  'hsla(228, 53%, 28%, 1)',
+  'hsla(228, 53%, 34%, 1)',
+  'hsla(228, 53%, 39%, 1)',
+  'hsla(228, 53%, 45%, 1)',
+  'hsla(228, 53%, 50%, 1)',
+  'hsla(0, 15%, 93%, 1)',
+  'hsla(0, 15%, 99%, 1)',
+]
+const lightPalette = [
+  'hsla(228, 53%, 25%, 1)',
+  'hsla(228, 53%, 28%, 1)',
+  'hsla(228, 53%, 31%, 1)',
+  'hsla(228, 53%, 33%, 1)',
+  'hsla(228, 53%, 36%, 1)',
+  'hsla(228, 53%, 39%, 1)',
+  'hsla(228, 53%, 42%, 1)',
+  'hsla(228, 53%, 44%, 1)',
+  'hsla(228, 53%, 47%, 1)',
+  'hsla(228, 53%, 50%, 1)',
+  'hsla(0, 15%, 15%, 1)',
+  'hsla(0, 15%, 1%, 1)',
+]
 
 // Your custom accent color theme
 const accentLight = {
-  "accent1": "hsla(46, 67%, 45%, 1)",
-  "accent2": "hsla(46, 67%, 47%, 1)",
-  "accent3": "hsla(46, 67%, 49%, 1)",
-  "accent4": "hsla(46, 67%, 52%, 1)",
-  "accent5": "hsla(46, 67%, 54%, 1)",
-  "accent6": "hsla(46, 67%, 56%, 1)",
-  "accent7": "hsla(46, 67%, 58%, 1)",
-  "accent8": "hsla(46, 67%, 61%, 1)",
-  "accent9": "hsla(46, 67%, 63%, 1)",
-  "accent10": "hsla(46, 67%, 65%, 1)",
-  "accent11": "hsla(250, 50%, 95%, 1)",
-  "accent12": "hsla(250, 50%, 95%, 1)"
+  accent1: 'hsla(46, 67%, 45%, 1)',
+  accent2: 'hsla(46, 67%, 47%, 1)',
+  accent3: 'hsla(46, 67%, 49%, 1)',
+  accent4: 'hsla(46, 67%, 52%, 1)',
+  accent5: 'hsla(46, 67%, 54%, 1)',
+  accent6: 'hsla(46, 67%, 56%, 1)',
+  accent7: 'hsla(46, 67%, 58%, 1)',
+  accent8: 'hsla(46, 67%, 61%, 1)',
+  accent9: 'hsla(46, 67%, 63%, 1)',
+  accent10: 'hsla(46, 67%, 65%, 1)',
+  accent11: 'hsla(250, 50%, 95%, 1)',
+  accent12: 'hsla(250, 50%, 95%, 1)',
 }
 
 const accentDark = {
-  "accent1": "hsla(46, 67%, 35%, 1)",
-  "accent2": "hsla(46, 67%, 38%, 1)",
-  "accent3": "hsla(46, 67%, 41%, 1)",
-  "accent4": "hsla(46, 67%, 43%, 1)",
-  "accent5": "hsla(46, 67%, 46%, 1)",
-  "accent6": "hsla(46, 67%, 49%, 1)",
-  "accent7": "hsla(46, 67%, 52%, 1)",
-  "accent8": "hsla(46, 67%, 54%, 1)",
-  "accent9": "hsla(46, 67%, 57%, 1)",
-  "accent10": "hsla(46, 67%, 60%, 1)",
-  "accent11": "hsla(250, 50%, 90%, 1)",
-  "accent12": "hsla(250, 50%, 95%, 1)"
+  accent1: 'hsla(46, 67%, 35%, 1)',
+  accent2: 'hsla(46, 67%, 38%, 1)',
+  accent3: 'hsla(46, 67%, 41%, 1)',
+  accent4: 'hsla(46, 67%, 43%, 1)',
+  accent5: 'hsla(46, 67%, 46%, 1)',
+  accent6: 'hsla(46, 67%, 49%, 1)',
+  accent7: 'hsla(46, 67%, 52%, 1)',
+  accent8: 'hsla(46, 67%, 54%, 1)',
+  accent9: 'hsla(46, 67%, 57%, 1)',
+  accent10: 'hsla(46, 67%, 60%, 1)',
+  accent11: 'hsla(250, 50%, 90%, 1)',
+  accent12: 'hsla(250, 50%, 95%, 1)',
 }
 
 const builtThemes = createV5Theme({
@@ -83,7 +109,6 @@ export type Themes = typeof builtThemes
 // long as you are using the Vite, Next, Webpack plugins this should just work,
 // but if not you can just export builtThemes directly as themes:
 export const themes: Themes =
-  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
-  process.env.NODE_ENV === 'production'
+  process.env.TAMAGUI_ENVIRONMENT === 'client' && process.env.NODE_ENV === 'production'
     ? ({} as any)
     : (builtThemes as any)

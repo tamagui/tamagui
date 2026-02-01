@@ -76,8 +76,8 @@ export type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedCom
 export interface Ternary {
     test: t.Expression;
     remove: Function;
-    consequent: Object | null;
-    alternate: Object | null;
+    consequent: object | null;
+    alternate: object | null;
     fontFamily?: string;
     inlineMediaQuery?: string;
 }

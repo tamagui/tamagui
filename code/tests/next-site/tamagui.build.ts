@@ -7,7 +7,7 @@ const disableExtraction =
 export default {
   config: './tamagui.config.ts',
   components: ['tamagui'],
-  outputCSS: './public/tamagui.css',
+  outputCSS: './public/tamagui.generated.css',
   importsWhitelist: ['constants.js', 'colors.js'],
   disableExtraction,
   excludeReactNativeWebExports: [

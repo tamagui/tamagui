@@ -1,70 +1,39 @@
 {
   "name": "@tamagui/web",
-  "version": "2.0.0-1769680173943",
-  "type": "module",
-  "source": "src/index.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "types": "./types/index.d.ts",
+  "version": "2.0.0-rc.0-1769885482630",
   "license": "MIT",
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": [
-    "*.css"
-  ],
-  "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "packages/web"
   },
+  "source": "src/index.ts",
   "files": [
     "types",
     "dist",
     "src",
     "reset.css"
   ],
-  "dependencies": {
-    "@tamagui/compose-refs": "workspace:*",
-    "@tamagui/constants": "workspace:*",
-    "@tamagui/helpers": "workspace:*",
-    "@tamagui/is-equal-shallow": "workspace:*",
-    "@tamagui/native": "workspace:*",
-    "@tamagui/normalize-css-color": "workspace:*",
-    "@tamagui/timer": "workspace:*",
-    "@tamagui/types": "workspace:*",
-    "@tamagui/use-did-finish-ssr": "workspace:*",
-    "@tamagui/use-event": "workspace:*",
-    "@tamagui/use-force-update": "workspace:*"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-dom": "*",
-    "react-native": "*"
-  },
-  "devDependencies": {
-    "@tamagui/build": "workspace:*",
-    "@testing-library/react": "^16.1.0",
-    "csstype": "^3.0.10",
-    "react": "*",
-    "react-dom": "*",
-    "react-native": "0.81.5",
-    "typescript": "~5.9.2",
-    "vitest": "^4.0.4"
-  },
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -78,12 +47,41 @@
       "default": "./dist/cjs/inject-styles.cjs"
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "packages/web"
-  },
   "publishConfig": {
     "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/is-equal-shallow": "workspace:*",
+    "@tamagui/native": "workspace:*",
+    "@tamagui/normalize-css-color": "workspace:*",
+    "@tamagui/timer": "workspace:*",
+    "@tamagui/types": "workspace:*",
+    "@tamagui/use-did-finish-ssr": "workspace:*",
+    "@tamagui/use-event": "workspace:*",
+    "@tamagui/use-force-update": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "@testing-library/react": "^16.1.0",
+    "csstype": "^3.0.10",
+    "react": ">=19",
+    "react-dom": "*",
+    "react-native": "0.81.5",
+    "typescript": "~5.9.2",
+    "vitest": "4.0.4"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": "*",
+    "react-native": "*"
   }
 }

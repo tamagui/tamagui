@@ -6,7 +6,9 @@ test.describe('ToggleGroup', () => {
     await page.waitForLoadState('networkidle')
   })
 
-  test('single mode: clicking toggle item should toggle active state', async ({ page }) => {
+  test('single mode: clicking toggle item should toggle active state', async ({
+    page,
+  }) => {
     await page.waitForSelector('[aria-label="Left aligned"]')
 
     const leftButton = page.locator('[aria-label="Left aligned"]').first()
@@ -21,7 +23,9 @@ test.describe('ToggleGroup', () => {
     expect(stateAfterClick).toBe('on')
   })
 
-  test('single mode with disableDeactivation: cannot turn off active item', async ({ page }) => {
+  test('single mode with disableDeactivation: cannot turn off active item', async ({
+    page,
+  }) => {
     await page.waitForSelector('[aria-label="Left aligned"]')
 
     const leftButton = page.locator('[aria-label="Left aligned"]').first()
@@ -36,7 +40,9 @@ test.describe('ToggleGroup', () => {
     expect(await leftButton.getAttribute('data-state')).toBe('on')
   })
 
-  test('single mode: clicking different item should change selection', async ({ page }) => {
+  test('single mode: clicking different item should change selection', async ({
+    page,
+  }) => {
     await page.waitForSelector('[aria-label="Left aligned"]')
 
     const leftButton = page.locator('[aria-label="Left aligned"]').first()

@@ -4,23 +4,23 @@ export const STRIPE_PRODUCTS = {
   // ============================================
 
   /**
-   * V2 Pro License - $999 one-time per project
+   * V2 Pro License - $400 one-time per project
    * Includes: all templates (v1 takeout, v2 takeout, takeout static)
    * Includes: 1 year of updates, basic chat support, unlimited team
    */
   PRO_V2_LICENSE: {
     productId: 'prod_TneqayKPO32G63',
-    priceId: 'price_1SqrKiFQGtHoG6xcdtyX4gqX',
+    priceId: 'price_1Sv5TSFQGtHoG6xcMB42xb7d',
   },
 
   /**
-   * V2 Pro Upgrade - $300/year recurring
+   * V2 Pro Upgrade - $100/year recurring
    * Auto-subscribed on purchase, starts after 1 year
    * Continues access to updates
    */
   PRO_V2_UPGRADE: {
     productId: 'prod_TneqayKPO32G63',
-    priceId: 'price_1Sq3WuFQGtHoG6xcVkYcfauv',
+    priceId: 'price_1Sv5TTFQGtHoG6xcm8GJ3Uhg',
   },
 
   // ============================================

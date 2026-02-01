@@ -1,4 +1,4 @@
-export function objectIdentityKey(obj: Object) {
+export function objectIdentityKey(obj: object) {
   let k = ''
   for (const key in obj) {
     k += key

@@ -37,7 +37,7 @@ async function getDiscordClient() {
   return discordClient
 }
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 async function removeRoleFromUser(
   discordClient: Client,
@@ -67,10 +67,12 @@ async function removeRoleFromUser(
 async function main() {
   const args = process.argv.slice(2)
   const dryRun = args.includes('--dry-run')
-  const usersFile = args.find(arg => !arg.startsWith('--'))
+  const usersFile = args.find((arg) => !arg.startsWith('--'))
 
   if (!usersFile) {
-    console.error('Usage: tsx remove-discord-users.ts <users-to-remove-file.json> [--dry-run]')
+    console.error(
+      'Usage: tsx remove-discord-users.ts <users-to-remove-file.json> [--dry-run]'
+    )
     process.exit(1)
   }
 
@@ -91,7 +93,9 @@ async function main() {
     return
   }
 
-  console.log(`\n⚠️  WARNING: This will remove the Takeout role from ${usersToRemove.length} Discord users`)
+  console.log(
+    `\n⚠️  WARNING: This will remove the Takeout role from ${usersToRemove.length} Discord users`
+  )
 
   if (!dryRun) {
     console.log('\n⏸️  Starting in 3 seconds... (Ctrl+C to cancel)')
@@ -109,9 +113,13 @@ async function main() {
 
   for (let i = 0; i < usersToRemove.length; i++) {
     const user = usersToRemove[i]
-    console.log(`[${i + 1}/${usersToRemove.length}] ${user.username} (${user.global_name || 'no global name'})`)
+    console.log(
+      `[${i + 1}/${usersToRemove.length}] ${user.username} (${user.global_name || 'no global name'})`
+    )
     console.log(`   Discord ID: ${user.discord_id}`)
-    console.log(`   Inactive subs: ${user.inactive_subscription_ids?.join(', ') || 'none'}`)
+    console.log(
+      `   Inactive subs: ${user.inactive_subscription_ids?.join(', ') || 'none'}`
+    )
 
     const success = await removeRoleFromUser(
       discordClient,

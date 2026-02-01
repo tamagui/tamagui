@@ -38,7 +38,9 @@ test.describe('Menu hover/keyboard bug fixes', () => {
 
     // item1 should be focused and highlighted
     await expect(item1).toBeFocused()
-    const item1BgAfterHover = await item1.evaluate((el) => getComputedStyle(el).backgroundColor)
+    const item1BgAfterHover = await item1.evaluate(
+      (el) => getComputedStyle(el).backgroundColor
+    )
 
     // item1 should have a different (highlighted) background
     expect(item1BgAfterHover).not.toBe(defaultBg)
@@ -53,8 +55,12 @@ test.describe('Menu hover/keyboard bug fixes', () => {
     await expect(item2).toBeFocused()
 
     // get backgrounds - CRITICAL TEST: only item2 should have highlight bg
-    const item1BgAfterArrow = await item1.evaluate((el) => getComputedStyle(el).backgroundColor)
-    const item2BgAfterArrow = await item2.evaluate((el) => getComputedStyle(el).backgroundColor)
+    const item1BgAfterArrow = await item1.evaluate(
+      (el) => getComputedStyle(el).backgroundColor
+    )
+    const item2BgAfterArrow = await item2.evaluate(
+      (el) => getComputedStyle(el).backgroundColor
+    )
 
     // item2 should have highlighted bg (via data-highlighted/focusStyle)
     expect(item2BgAfterArrow).not.toBe(defaultBg)

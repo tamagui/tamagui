@@ -36,22 +36,28 @@ describe.skip('GroupPressNative', () => {
   describe('unnamed group without transition', () => {
     it('should show blue at rest and return to blue after press', async () => {
       // verify starts blue
-      const beforeScreenshot = await element(by.id('group-child-no-transition')).takeScreenshot(
-        'group1-before'
-      )
+      const beforeScreenshot = await element(
+        by.id('group-child-no-transition')
+      ).takeScreenshot('group1-before')
       const beforeColor = getDominantColor(beforeScreenshot)
-      assert.ok(isBlueish(beforeColor), `Expected blue before tap, got ${formatRGB(beforeColor)}`)
+      assert.ok(
+        isBlueish(beforeColor),
+        `Expected blue before tap, got ${formatRGB(beforeColor)}`
+      )
 
       // tap the group
       await element(by.id('group-no-transition')).tap()
       await new Promise((r) => setTimeout(r, 100))
 
       // verify returns to blue after release
-      const afterScreenshot = await element(by.id('group-child-no-transition')).takeScreenshot(
-        'group1-after'
-      )
+      const afterScreenshot = await element(
+        by.id('group-child-no-transition')
+      ).takeScreenshot('group1-after')
       const afterColor = getDominantColor(afterScreenshot)
-      assert.ok(isBlueish(afterColor), `Expected blue after tap, got ${formatRGB(afterColor)}`)
+      assert.ok(
+        isBlueish(afterColor),
+        `Expected blue after tap, got ${formatRGB(afterColor)}`
+      )
 
       // verify press events fired and not stuck
       await expect(element(by.id('group1-press-in'))).toHaveText('In: 1')
@@ -63,11 +69,14 @@ describe.skip('GroupPressNative', () => {
   describe('unnamed group with transition', () => {
     it('should show blue at rest and return to blue after press', async () => {
       // verify starts blue
-      const beforeScreenshot = await element(by.id('group-child-with-transition')).takeScreenshot(
-        'group2-before'
-      )
+      const beforeScreenshot = await element(
+        by.id('group-child-with-transition')
+      ).takeScreenshot('group2-before')
       const beforeColor = getDominantColor(beforeScreenshot)
-      assert.ok(isBlueish(beforeColor), `Expected blue before tap, got ${formatRGB(beforeColor)}`)
+      assert.ok(
+        isBlueish(beforeColor),
+        `Expected blue before tap, got ${formatRGB(beforeColor)}`
+      )
 
       // tap the group
       await element(by.id('group-with-transition')).tap()
@@ -75,11 +84,14 @@ describe.skip('GroupPressNative', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       // verify returns to blue after release
-      const afterScreenshot = await element(by.id('group-child-with-transition')).takeScreenshot(
-        'group2-after'
-      )
+      const afterScreenshot = await element(
+        by.id('group-child-with-transition')
+      ).takeScreenshot('group2-after')
       const afterColor = getDominantColor(afterScreenshot)
-      assert.ok(isBlueish(afterColor), `Expected blue after tap, got ${formatRGB(afterColor)}`)
+      assert.ok(
+        isBlueish(afterColor),
+        `Expected blue after tap, got ${formatRGB(afterColor)}`
+      )
 
       // verify press events fired and not stuck
       await expect(element(by.id('group2-press-in'))).toHaveText('In: 1')
@@ -95,7 +107,10 @@ describe.skip('GroupPressNative', () => {
         by.id('named-group-child-no-transition')
       ).takeScreenshot('group3-before')
       const beforeColor = getDominantColor(beforeScreenshot)
-      assert.ok(isBlueish(beforeColor), `Expected blue before tap, got ${formatRGB(beforeColor)}`)
+      assert.ok(
+        isBlueish(beforeColor),
+        `Expected blue before tap, got ${formatRGB(beforeColor)}`
+      )
 
       // tap the group
       await element(by.id('named-group-no-transition')).tap()
@@ -106,7 +121,10 @@ describe.skip('GroupPressNative', () => {
         by.id('named-group-child-no-transition')
       ).takeScreenshot('group3-after')
       const afterColor = getDominantColor(afterScreenshot)
-      assert.ok(isBlueish(afterColor), `Expected blue after tap, got ${formatRGB(afterColor)}`)
+      assert.ok(
+        isBlueish(afterColor),
+        `Expected blue after tap, got ${formatRGB(afterColor)}`
+      )
 
       // verify press events fired
       await expect(element(by.id('group3-press-in'))).toHaveText('In: 1')
@@ -121,7 +139,10 @@ describe.skip('GroupPressNative', () => {
         by.id('named-group-child-with-transition')
       ).takeScreenshot('group4-before')
       const beforeColor = getDominantColor(beforeScreenshot)
-      assert.ok(isBlueish(beforeColor), `Expected blue before tap, got ${formatRGB(beforeColor)}`)
+      assert.ok(
+        isBlueish(beforeColor),
+        `Expected blue before tap, got ${formatRGB(beforeColor)}`
+      )
 
       // tap the group
       await element(by.id('named-group-with-transition')).tap()
@@ -133,7 +154,10 @@ describe.skip('GroupPressNative', () => {
         by.id('named-group-child-with-transition')
       ).takeScreenshot('group4-after')
       const afterColor = getDominantColor(afterScreenshot)
-      assert.ok(isBlueish(afterColor), `Expected blue after tap, got ${formatRGB(afterColor)}`)
+      assert.ok(
+        isBlueish(afterColor),
+        `Expected blue after tap, got ${formatRGB(afterColor)}`
+      )
 
       // verify press events fired
       await expect(element(by.id('group4-press-in'))).toHaveText('In: 1')

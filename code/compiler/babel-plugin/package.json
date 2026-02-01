@@ -1,24 +1,23 @@
 {
   "name": "@tamagui/babel-plugin",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0-1769885482630",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "license": "MIT",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "build": "tamagui-build --skip-native",
     "watch": "tamagui-build --skip-native --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "node ../../../node_modules/.bin/tamagui-build clean",
     "clean:build": "node ../../../node_modules/.bin/tamagui-build clean:build"
   },
@@ -33,6 +32,5 @@
   "devDependencies": {
     "@babel/types": "^7.25.4",
     "@tamagui/build": "workspace:*"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  }
 }

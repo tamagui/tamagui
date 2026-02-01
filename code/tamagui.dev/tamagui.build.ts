@@ -4,7 +4,8 @@ export default {
   components: ['tamagui'],
   logTimings: true,
   config: '@tamagui/tamagui-dev-config',
-  outputCSS: './tamagui.css',
+  outputCSS: './tamagui.generated.css',
+  disableExtraction: process.env.NODE_ENV !== 'production',
   // bento lists some last issues
   // useReactNativeWebLite: true,
-} satisfies TamaguiBuildOptions
+} as TamaguiBuildOptions

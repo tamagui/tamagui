@@ -429,6 +429,7 @@ export function ElevationInput() {
       <ToggleGroup
         disableDeactivation
         orientation="horizontal"
+        flexDirection="row"
         type="single"
         value={store.demosOptions.elevation?.toString() ?? ''}
         onValueChange={(value) => {

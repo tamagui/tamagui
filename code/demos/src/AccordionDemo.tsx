@@ -12,11 +12,7 @@ export function AccordionDemo() {
           borderWidth={1}
           borderColor="$borderColor"
         >
-          {({
-            open,
-          }: {
-            open: boolean
-          }) => (
+          {({ open }: { open: boolean }) => (
             <>
               <Paragraph>1. Take a cold shower</Paragraph>
               <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
@@ -48,11 +44,7 @@ export function AccordionDemo() {
           borderWidth={1}
           borderColor="$borderColor"
         >
-          {({
-            open,
-          }: {
-            open: boolean
-          }) => (
+          {({ open }: { open: boolean }) => (
             <>
               <Paragraph>2. Eat 4 eggs</Paragraph>
               <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>

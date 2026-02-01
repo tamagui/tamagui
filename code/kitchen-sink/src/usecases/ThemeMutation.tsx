@@ -1,13 +1,6 @@
 import React from 'react'
 import { addTheme, updateTheme } from '@tamagui/theme'
-import {
-  Button,
-  Square,
-  Text,
-  Theme,
-  YStack,
-  useIsomorphicLayoutEffect,
-} from 'tamagui'
+import { Button, Square, Text, Theme, YStack, useIsomorphicLayoutEffect } from 'tamagui'
 
 import { TEST_IDS } from '../constants/test-ids'
 

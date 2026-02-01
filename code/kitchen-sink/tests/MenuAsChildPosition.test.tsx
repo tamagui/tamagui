@@ -4,7 +4,9 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/?test=MenuAsChildPositionCase')
 })
 
-test('Menu.Trigger asChild does not leak position static class to child', async ({ page }) => {
+test('Menu.Trigger asChild does not leak position static class to child', async ({
+  page,
+}) => {
   const menuTrigger = page.locator('[data-testid="menu-trigger-button"]')
   await expect(menuTrigger).toBeVisible()
 

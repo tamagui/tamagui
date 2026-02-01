@@ -24,21 +24,21 @@ test(`concatClassName - leave pseudo`, () => {
 test(`concatClassName - merge media queries with same property and breakpoint`, () => {
   // this is the bug: _pr-_lg_0px and _pr-_lg_260px should merge to just _pr-_lg_260px
   // because they both target the same property (pr) at the same breakpoint (lg)
-  expect(
-    concatClassName(`_pr-_lg_0px _dsp-flex _pr-_lg_260px`)
-  ).toEqual(`_dsp-flex _pr-_lg_260px`)
+  expect(concatClassName(`_pr-_lg_0px _dsp-flex _pr-_lg_260px`)).toEqual(
+    `_dsp-flex _pr-_lg_260px`
+  )
 })
 
 test(`concatClassName - keep media queries with different breakpoints`, () => {
   // different breakpoints should be kept
-  expect(
-    concatClassName(`_pr-_lg_0px _pr-_md_260px`)
-  ).toEqual(`_pr-_lg_0px _pr-_md_260px`)
+  expect(concatClassName(`_pr-_lg_0px _pr-_md_260px`)).toEqual(
+    `_pr-_lg_0px _pr-_md_260px`
+  )
 })
 
 test(`concatClassName - keep media queries with different properties`, () => {
   // different properties should be kept
-  expect(
-    concatClassName(`_pr-_lg_0px _pl-_lg_260px`)
-  ).toEqual(`_pr-_lg_0px _pl-_lg_260px`)
+  expect(concatClassName(`_pr-_lg_0px _pl-_lg_260px`)).toEqual(
+    `_pr-_lg_0px _pl-_lg_260px`
+  )
 })

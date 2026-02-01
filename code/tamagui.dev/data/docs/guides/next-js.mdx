@@ -4,9 +4,8 @@ description: How to set up Tamagui with Next.js
 ---
 
 <Notice theme="green">
-  Running `npm create tamagui@latest` lets you choose the `starter-free` starter
-  which is a nicely configured Next.js app where you can take or leave whatever
-  you want.
+  Running `npm create tamagui@latest` lets you choose the `starter-free` starter which is
+  a nicely configured Next.js app where you can take or leave whatever you want.
 </Notice>
 
 Create a new [Next.js](https://nextjs.org/docs/getting-started/installation)
@@ -56,7 +55,7 @@ import type { TamaguiBuildOptions } from '@tamagui/core'
 export default {
   components: ['@tamagui/core'], // or ['tamagui']
   config: './tamagui.config.ts',
-  outputCSS: './public/tamagui.css',
+  outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 
@@ -83,9 +82,9 @@ export default nextConfig
 ```
 
 <Notice theme="blue">
-  The `transpilePackages` array may need additional packages depending on which
-  Tamagui packages you use. If you see module resolution errors, try adding the
-  problematic package to this array.
+  The `transpilePackages` array may need additional packages depending on which Tamagui
+  packages you use. If you see module resolution errors, try adding the problematic
+  package to this array.
 </Notice>
 
 ### Build Scripts
@@ -121,15 +120,11 @@ The CLI generates theme CSS to `outputCSS`. Commit this file to git and import
 it in your layout:
 
 ```tsx fileName="app/layout.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 import { TamaguiProvider } from '@tamagui/core'
 import config from '../tamagui.config'
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
@@ -141,9 +136,8 @@ export default function RootLayout({
 ```
 
 <Notice theme="blue">
-  With React 19, Tamagui automatically injects runtime styles via style tags.
-  The `outputCSS` file handles themes and tokens that are generated at build
-  time.
+  With React 19, Tamagui automatically injects runtime styles via style tags. The
+  `outputCSS` file handles themes and tokens that are generated at build time.
 </Notice>
 
 Run `npx tamagui build` once to generate the initial CSS file, then commit it.
@@ -195,11 +189,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
         setTheme(next as any)
       }}
     >
-      <TamaguiProvider
-        config={tamaguiConfig}
-        disableRootThemeClass
-        defaultTheme={theme}
-      >
+      <TamaguiProvider config={tamaguiConfig} disableRootThemeClass defaultTheme={theme}>
         {children}
       </TamaguiProvider>
     </NextThemeProvider>
@@ -210,7 +200,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 Then update your `app/layout.tsx`:
 
 ```tsx fileName="app/layout.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 import { Metadata } from 'next'
 import { NextTamaguiProvider } from './NextTamaguiProvider'
 
@@ -220,11 +210,7 @@ export const metadata: Metadata = {
   icons: '/favicon.ico',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
@@ -338,9 +324,7 @@ export const SwitchThemeButton = () => {
     setClientTheme(themeSetting.forcedTheme || themeSetting.current || theme)
   }, [themeSetting.current, themeSetting.resolvedTheme])
 
-  return (
-    <Button onPress={themeSetting.toggle}>Change theme: {clientTheme}</Button>
-  )
+  return <Button onPress={themeSetting.toggle}>Change theme: {clientTheme}</Button>
 }
 ```
 
@@ -438,8 +422,8 @@ export default class Document extends NextDocument {
 ```
 
 <Notice theme="blue">
-  Tamagui automatically injects styles at runtime. You can optionally generate a
-  static CSS file - see the [Static CSS Output](#static-css-output) section.
+  Tamagui automatically injects styles at runtime. You can optionally generate a static
+  CSS file - see the [Static CSS Output](#static-css-output) section.
 </Notice>
 
 ### pages/\_app.tsx
@@ -468,11 +452,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NextThemeProvider>
-        <TamaguiProvider
-          config={tamaguiConfig}
-          disableInjectCSS
-          disableRootThemeClass
-        >
+        <TamaguiProvider config={tamaguiConfig} disableInjectCSS disableRootThemeClass>
           {contents}
         </TamaguiProvider>
       </NextThemeProvider>
@@ -482,8 +462,8 @@ export default function App({ Component, pageProps }: AppProps) {
 ```
 
 <Notice theme="blue">
-  Use `disableInjectCSS` for SSR apps to prevent duplicate style injection. Only
-  omit it for client-only apps without server rendering.
+  Use `disableInjectCSS` for SSR apps to prevent duplicate style injection. Only omit it
+  for client-only apps without server rendering.
 </Notice>
 
 ### Themes (Pages Router)
@@ -563,7 +543,7 @@ The simplest approach is to use the Tamagui CLI to generate the CSS file:
 npx tamagui generate
 ```
 
-This outputs CSS to `.tamagui/tamagui.css`. Copy it to your public folder or
+This outputs CSS to `.tamagui/tamagui.generated.css`. Copy it to your public folder or
 configure `outputCSS` in your `tamagui.build.ts`:
 
 ```ts fileName="tamagui.build.ts"
@@ -572,14 +552,14 @@ import type { TamaguiBuildOptions } from '@tamagui/core'
 export default {
   components: ['tamagui'],
   config: './tamagui.config.ts',
-  outputCSS: './public/tamagui.css',
+  outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 
 Then import it in your `_app.tsx`:
 
 ```tsx fileName="_app.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 ```
 
 #### Option 2: Using the Next.js Plugin
@@ -590,8 +570,7 @@ You can also have the plugin generate CSS during your Next.js build:
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
-  outputCSS:
-    process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.generated.css' : null,
   // faster dev mode, keeps debugging helpers:
   disableExtraction: process.env.NODE_ENV === 'development',
 })
@@ -600,12 +579,12 @@ const tamaguiPlugin = withTamagui({
 Then import it in your `_app.tsx`:
 
 ```tsx fileName="_app.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 ```
 
 <Notice theme="green">
-  With `outputCSS`, you don't need `getCSS()` in your `_document.tsx` - all
-  styles are handled by the static CSS file and runtime style injection.
+  With `outputCSS`, you don't need `getCSS()` in your `_document.tsx` - all styles are
+  handled by the static CSS file and runtime style injection.
 </Notice>
 
 ## App Router (Webpack)
@@ -695,8 +674,8 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 ```
 
 <Notice theme="green">
-  The `getNewCSS` helper in Tamagui will keep track of the last call and only
-  return new styles generated since the last usage.
+  The `getNewCSS` helper in Tamagui will keep track of the last call and only return new
+  styles generated since the last usage.
 </Notice>
 
 Then add it to your `app/layout.tsx`:
@@ -711,11 +690,7 @@ export const metadata: Metadata = {
   icons: '/favicon.ico',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
@@ -727,8 +702,8 @@ export default function RootLayout({
 ```
 
 <Notice theme="green">
-  You can use `suppressHydrationWarning` to avoid the warning about mismatched
-  content during hydration in dev mode.
+  You can use `suppressHydrationWarning` to avoid the warning about mismatched content
+  during hydration in dev mode.
 </Notice>
 
 ### app/page.tsx
@@ -792,11 +767,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
         setTheme(next as any)
       }}
     >
-      <TamaguiProvider
-        config={tamaguiConfig}
-        disableRootThemeClass
-        defaultTheme={theme}
-      >
+      <TamaguiProvider config={tamaguiConfig} disableRootThemeClass defaultTheme={theme}>
         {children}
       </TamaguiProvider>
     </NextThemeProvider>
@@ -813,8 +784,7 @@ CLI or the Next.js plugin:
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
-  outputCSS:
-    process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.generated.css' : null,
   // faster dev mode, keeps debugging helpers:
   disableExtraction: process.env.NODE_ENV === 'development',
 })
@@ -823,11 +793,11 @@ const tamaguiPlugin = withTamagui({
 Then link the generated CSS file in your `app/layout.tsx`:
 
 ```tsx fileName="app/layout.tsx"
-import '../public/tamagui.css'
+import '../public/tamagui.generated.css'
 ```
 
 <Notice theme="green">
-  With React 19, Tamagui automatically injects runtime styles via style tags on
-  the server. The `outputCSS` file handles themes and tokens generated at build
-  time, so you don't need any `getCSS()` calls in your provider.
+  With React 19, Tamagui automatically injects runtime styles via style tags on the
+  server. The `outputCSS` file handles themes and tokens generated at build time, so you
+  don't need any `getCSS()` calls in your provider.
 </Notice>

@@ -1,24 +1,22 @@
 {
   "name": "@tamagui/metro-plugin",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0-1769885482630",
+  "license": "MIT",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "build": "tamagui-build --skip-native",
     "watch": "tamagui-build --skip-native --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

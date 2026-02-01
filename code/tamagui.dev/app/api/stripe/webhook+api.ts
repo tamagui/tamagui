@@ -93,9 +93,16 @@ export default apiRoute(async (req) => {
 
         if (isV1Subscription) {
           // Send V1 expiration email with upgrade info
-          await sendV1ExpirationEmail(info.customer_email, {
-            name: 'friend',
-          })
+          const subscriptionId =
+            typeof info.subscription === 'string'
+              ? info.subscription
+              : info.subscription?.id
+          if (subscriptionId) {
+            await sendV1ExpirationEmail(info.customer_email, {
+              name: 'friend',
+              subscriptionId,
+            })
+          }
         } else {
           // Regular renewal email for V2 upgrades
           await sendProductRenewalEmail(info.customer_email, {

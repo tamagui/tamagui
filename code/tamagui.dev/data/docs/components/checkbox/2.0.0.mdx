@@ -23,28 +23,13 @@ demoName: Checkbox
 </Tabs.List>
 
 <HeroContainer showAnimationDriverControl>
-  <Tabs.Content
-    value="styled"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="styled" justifyContent="center" alignItems="center" width="100%">
     <CheckboxDemo />
   </Tabs.Content>
-  <Tabs.Content
-    value="unstyled"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
     <CheckboxUnstyledDemo />
   </Tabs.Content>
-  <Tabs.Content
-    value="headless"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
     <CheckboxHeadlessDemo />
   </Tabs.Content>
 </HeroContainer>
@@ -181,9 +166,7 @@ function MyCheckbox({ defaultChecked, onCheckedChange, ...props }) {
           alignItems: 'center',
         }}
       >
-        {checked && (
-          <View style={{ width: 12, height: 12, backgroundColor: 'white' }} />
-        )}
+        {checked && <View style={{ width: 12, height: 12, backgroundColor: 'white' }} />}
       </Pressable>
       {bubbleInput}
     </>
@@ -310,15 +293,16 @@ The `useCheckbox` hook accepts three arguments:
 
 ```tsx
 const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
-  props,        // CheckboxProps
-  state,        // [checked: CheckedState, setChecked: (checked: CheckedState) => void]
-  ref           // React.Ref
+  props, // CheckboxProps
+  state, // [checked: CheckedState, setChecked: (checked: CheckedState) => void]
+  ref // React.Ref
 )
 ```
 
 #### CheckedState
 
 The checkbox supports three states:
+
 - `true` - checked
 - `false` - unchecked
 - `'indeterminate'` - indeterminate/mixed state (useful for "select all" patterns)
@@ -369,16 +353,17 @@ The checkbox supports three states:
 #### State (second argument)
 
 A tuple of `[checked, setChecked]` where:
+
 - `checked`: Current state (`boolean | 'indeterminate'`)
 - `setChecked`: React state setter function
 
 #### Return Value
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `checkboxProps` | `object` | Props to spread on your checkbox element (role, aria-checked, onPress, etc.) |
-| `checkboxRef` | `Ref` | Composed ref to attach to your checkbox element |
-| `bubbleInput` | `ReactNode \| null` | Hidden input for form compatibility (render as sibling, web only) |
+| Property        | Type                | Description                                                                  |
+| --------------- | ------------------- | ---------------------------------------------------------------------------- |
+| `checkboxProps` | `object`            | Props to spread on your checkbox element (role, aria-checked, onPress, etc.) |
+| `checkboxRef`   | `Ref`               | Composed ref to attach to your checkbox element                              |
+| `bubbleInput`   | `ReactNode \| null` | Hidden input for form compatibility (render as sibling, web only)            |
 
 </Tabs.Content>
 

@@ -19,7 +19,11 @@ export function Provider({
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme} {...rest}>
-      <ToastProvider swipeDirection="horizontal" duration={6000} native={isWeb ? [] : ['mobile']}>
+      <ToastProvider
+        swipeDirection="horizontal"
+        duration={6000}
+        native={isWeb ? [] : ['mobile']}
+      >
         {children}
         <CustomToast />
         <ToastViewport />

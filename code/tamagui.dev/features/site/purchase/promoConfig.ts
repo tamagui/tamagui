@@ -33,13 +33,24 @@ export type PromoConfig = {
 // define active promotions here
 export const ACTIVE_PROMOS: PromoConfig[] = [
   {
+    id: 'beta-discount',
+    code: 'BETA20',
+    couponId: '5gXstiW7',
+    label: '20% off',
+    description: 'beta discount',
+    percentOff: 20,
+    active: true,
+    theme: 'green',
+  },
+  // legacy promo - deactivated
+  {
     id: 'tko2-launch',
     code: 'TKO2',
     couponId: 'ULFkuEYE',
     label: '50% off',
     description: 'during Takeout 2 beta',
     percentOff: 50,
-    active: true,
+    active: false,
     theme: 'green',
   },
 ]

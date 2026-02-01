@@ -15,8 +15,7 @@ const EVENT_OPTIONS = { bubbles: false, cancelable: true }
 type RovingFocusGroupImplElement = React.ElementRef<typeof View>
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusGroupImplProps
-  extends Omit<PrimitiveDivProps, 'dir'>,
-    RovingFocusGroupOptions {
+  extends Omit<PrimitiveDivProps, 'dir'>, RovingFocusGroupOptions {
   currentTabStopId?: string | null
   defaultCurrentTabStopId?: string
   onCurrentTabStopIdChange?: (tabStopId: string | null) => void

@@ -4,10 +4,19 @@
 import type { UserContextType } from '~/features/auth/types'
 import {
   ProductName,
-  SubscriptionStatus,
   type ProductNameType,
+  SubscriptionStatus,
   type UserSubscriptionStatus,
 } from '~/shared/types/subscription'
+
+/**
+ * GitHub usernames that are allowed to test the purchase flow even if they already have Pro.
+ * These users can:
+ * - See the checkout flow even with an active subscription
+ * - Use the DEV_TEST_99 coupon for 99% off test purchases
+ * - Purchase multiple times to the same domain (for testing)
+ */
+export const DEVELOPER_GITHUB_USERNAMES = ['natew'] as const
 
 /**
  * Check if a subscription has specific product access
@@ -87,6 +96,16 @@ const calculateTeamSeats = (subscriptions: UserContextType['subscriptions']): nu
 }
 
 /**
+ * Check if a user is a developer who can test the purchase flow
+ */
+const isDeveloperUser = (userData?: UserContextType): boolean => {
+  if (!userData?.githubUsername) return false
+  return DEVELOPER_GITHUB_USERNAMES.includes(
+    userData.githubUsername.toLowerCase() as (typeof DEVELOPER_GITHUB_USERNAMES)[number]
+  )
+}
+
+/**
  * Get the subscription status of a user.
  */
 export const userSubscriptionStatus = (
@@ -95,22 +114,27 @@ export const userSubscriptionStatus = (
   if (!userData)
     return {
       pro: false,
+      proV1: false,
+      proV2: false,
       chat: false,
       supportTier: 0,
       teamSeats: 0,
       couponCodes: { previouslySubscribed: 'TAMAGUI_PRO_RENEWAL' },
+      isDeveloper: false,
     }
 
-  const isPro =
-    // V1 products
+  const hasV1Pro =
     hasProductAccess(userData.subscriptions, ProductName.TamaguiPro) ||
-    hasProductAccess(userData.subscriptions, ProductName.TamaguiProTeamSeats) ||
-    // V2 products
+    hasProductAccess(userData.subscriptions, ProductName.TamaguiProTeamSeats)
+
+  const hasV2Pro =
     hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2) ||
     hasProductAccess(userData.subscriptions, ProductName.TamaguiProV2Upgrade) ||
     // V2 support tiers also imply Pro access (support is add-on to Pro license)
     hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportDirect) ||
     hasProductAccess(userData.subscriptions, ProductName.TamaguiSupportSponsor)
+
+  const isPro = hasV1Pro || hasV2Pro
 
   const isChat =
     // V1 chat
@@ -126,11 +150,14 @@ export const userSubscriptionStatus = (
 
   return {
     pro: isPro,
+    proV1: hasV1Pro,
+    proV2: hasV2Pro,
     chat: isChat,
     supportTier,
     teamSeats: calculateTeamSeats(userData.subscriptions),
     couponCodes: {
       previouslySubscribed: 'RENEWAL04',
     },
+    isDeveloper: isDeveloperUser(userData),
   }
 }

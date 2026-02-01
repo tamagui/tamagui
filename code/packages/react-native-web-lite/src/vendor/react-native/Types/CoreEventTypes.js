@@ -8,7 +8,7 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
 const SyntheticEvent = {
   bubbles: null,
@@ -27,19 +27,19 @@ const SyntheticEvent = {
   target: null,
   timeStamp: 0,
   type: null,
-};
+}
 
 const ResponderSyntheticEvent = {
   ...SyntheticEvent,
   touchHistory: null,
-};
+}
 
 const Layout = {
   x: 0,
   y: 0,
   width: 0,
   height: 0,
-};
+}
 
 const TextLayout = {
   ...Layout,
@@ -48,22 +48,22 @@ const TextLayout = {
   descender: 0,
   text: '',
   xHeight: 0,
-};
+}
 
 const LayoutEvent = {
   layout: null,
-};
+}
 
 const TextLayoutEvent = {
   lines: null,
-};
+}
 
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/UIEvent
  */
 export const NativeUIEvent = {
   detail: 0,
-};
+}
 
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
@@ -86,7 +86,7 @@ export const NativeMouseEvent = {
   relatedTarget: null,
   offsetX: 0,
   offsetY: 0,
-};
+}
 
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent
@@ -103,7 +103,7 @@ export const NativePointerEvent = {
   twist: 0,
   pointerType: '',
   isPrimary: false,
-};
+}
 
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent
@@ -118,7 +118,7 @@ export const NativeTouchEvent = {
   target: null,
   timestamp: 0,
   touches: [],
-};
+}
 
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
@@ -135,7 +135,7 @@ export const NativeKeyboardEvent = {
   keyCode: 0,
   charCode: 0,
   which: 0,
-};
+}
 
 export const ScrollEvent = {
   ...SyntheticEvent,
@@ -148,5 +148,4 @@ export const ScrollEvent = {
   responderIgnoreScroll: false,
   target: null,
   responder: null,
-};
-
+}

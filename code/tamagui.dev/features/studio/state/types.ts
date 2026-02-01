@@ -125,19 +125,15 @@ export type DeepMutable<T> = T extends (infer R)[]
       ? DeepMutableObject<T>
       : T
 
-export type DeepMutableArray<T> = T extends ReadonlyArray<infer X>
-  ? DeepMutable<X>
-  : DeepMutable<T>
+export type DeepMutableArray<T> =
+  T extends ReadonlyArray<infer X> ? DeepMutable<X> : DeepMutable<T>
 
 export type DeepMutableObject<T> = {
   -readonly [Key in keyof T]: DeepMutable<T[Key]>
 }
 
-type UnwrapReadonly<T> = T extends DeepReadonlyArray<infer X>
-  ? X
-  : T extends DeepReadonlyObject<infer X>
-    ? X
-    : T
+type UnwrapReadonly<T> =
+  T extends DeepReadonlyArray<infer X> ? X : T extends DeepReadonlyObject<infer X> ? X : T
 
 export type DeepReadonly<T> = T extends (infer R)[]
   ? DeepReadonlyArray<R>

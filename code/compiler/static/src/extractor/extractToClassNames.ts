@@ -158,7 +158,7 @@ export async function extractToClassNames({
       // save for the end
       const finalAttrs: t.JSXAttribute[] = []
 
-      let mergeForwardBaseStyle: Object | null = null
+      let mergeForwardBaseStyle: object | null = null
       let attrClassName: t.Expression | null = null
       let baseFontFamily = ''
       let mediaStylesSeen = 1
@@ -186,7 +186,7 @@ export async function extractToClassNames({
         return identifier
       }
 
-      function addStyles(style: Object) {
+      function addStyles(style: object) {
         const cssStyles = getCSSStylesAtomic(style as any)
         const classNames: string[] = []
 
@@ -381,7 +381,9 @@ export async function extractToClassNames({
             expandTernary(ternary)
             continue
           }
-          for (const prev of [...expandedTernaries]) {
+          // snapshot current array before iterating - expandTernary mutates expandedTernaries
+          const prevTernaries = [...expandedTernaries]
+          for (const prev of prevTernaries) {
             expandTernary(ternary, prev)
           }
         }

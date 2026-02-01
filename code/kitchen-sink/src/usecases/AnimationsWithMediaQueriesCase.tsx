@@ -13,7 +13,7 @@ import { YStack, XStack, Text, Square } from 'tamagui'
 
 export function AnimationsWithMediaQueriesCase() {
   return (
-    <YStack p="$4" gap="$6" height={"100vh" as any}>
+    <YStack p="$4" gap="$6" height={'100vh' as any}>
       <Text fontSize="$5" fontWeight="bold">
         Animations With Media Queries Test
       </Text>
@@ -24,15 +24,8 @@ export function AnimationsWithMediaQueriesCase() {
       {/* Test 1: scale only */}
       <YStack gap="$2">
         <Text fontWeight="bold">Test 1: Scale in media query</Text>
-        <Text fontSize="$2">
-          Base: scale=1 (blue), $sm: scale=0.75 (green)
-        </Text>
-        <XStack
-          height={150}
-          bg="$color3"
-          alignItems="center"
-          justifyContent="center"
-        >
+        <Text fontSize="$2">Base: scale=1 (blue), $sm: scale=0.75 (green)</Text>
+        <XStack height={150} bg="$color3" alignItems="center" justifyContent="center">
           <Square
             testID="test-scale"
             data-testid="test-scale"
@@ -85,9 +78,7 @@ export function AnimationsWithMediaQueriesCase() {
       {/* Test 3: combined scale + translate (mimics promo badge) */}
       <YStack gap="$2">
         <Text fontWeight="bold">Test 3: Combined scale + translateX</Text>
-        <Text fontSize="$2">
-          Base: scale=1, x=-50%, $sm: scale=0.75, x=-90%
-        </Text>
+        <Text fontSize="$2">Base: scale=1, x=-50%, $sm: scale=0.75, x=-90%</Text>
         <XStack height={150} bg="$color3" position="relative" overflow="hidden">
           <XStack
             testID="test-combined"

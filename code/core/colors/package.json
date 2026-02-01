@@ -1,9 +1,17 @@
 {
   "name": "@tamagui/colors",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0-1769885482630",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "source": "src/index.ts",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "type": "module",
   "sideEffects": false,
-  "source": "src/index.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
   "types": "./types/index.d.ts",
   "typesVersions": {
     "*": {
@@ -12,45 +20,27 @@
       ]
     }
   },
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
-  "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
-  "devDependencies": {
-    "@tamagui/build": "workspace:*"
-  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./legacy": {
+      "types": "./types/legacy.d.ts",
       "react-native": {
         "module": "./dist/esm/legacy.native.js",
         "import": "./dist/esm/legacy.native.js",
         "require": "./dist/cjs/legacy.native.js"
       },
-      "types": "./types/legacy.d.ts",
       "module": "./dist/esm/legacy.mjs",
       "import": "./dist/esm/legacy.mjs",
       "require": "./dist/cjs/legacy.cjs",
@@ -60,5 +50,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*"
+  }
 }

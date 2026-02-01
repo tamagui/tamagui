@@ -3,7 +3,7 @@ name: Changelog
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
 
 jobs:
   tagged-release:
@@ -14,5 +14,5 @@ jobs:
     steps:
       - uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ github.token }}"
+          repo_token: '${{ github.token }}'
           prerelease: false

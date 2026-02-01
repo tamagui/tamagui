@@ -15,7 +15,6 @@ const distCjsFilePath = join(distPath, 'cjs', 'index.cjs')
 const watchDistCjsFilePath = join(watchDistPath, 'cjs', 'watch.cjs')
 const distEsmFilePath = join(distPath, 'esm', 'index.mjs')
 const distTypesFilePath = join(simplePackagePath, 'types', 'index.d.ts')
-// // biome-ignore lint/suspicious/noConsoleLog: <explanation>
 // console.log({
 //   distCjsFilePath,
 //   distEsmFilePath,
@@ -32,7 +31,7 @@ describe('tamagui-build integration test', () => {
   })
 
   it('should build the package correctly', () => {
-    execSync('yarn build', { cwd: simplePackagePath })
+    execSync('bun run build', { cwd: simplePackagePath })
 
     // Check if the output files exist
     expect(existsSync(distCjsFilePath)).toBe(true)
@@ -47,7 +46,7 @@ describe('tamagui-build integration test', () => {
   })
 
   it('should bundle the package correctly', () => {
-    execSync('yarn build:bundle', { cwd: simplePackagePath })
+    execSync('bun run build:bundle', { cwd: simplePackagePath })
 
     // Check if the output files exist
     expect(existsSync(distCjsFilePath)).toBe(true)
@@ -62,25 +61,15 @@ describe('tamagui-build integration test', () => {
 
   it('should skip mjs files when --skip-mjs is used', () => {
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
-    execSync('yarn build:skip-mjs', { cwd: simplePackagePath })
+    execSync('bun run build:skip-mjs', { cwd: simplePackagePath })
 
     // Check if the output files exist
     expect(existsSync(distCjsFilePath)).toBe(true)
     expect(existsSync(distEsmFilePath)).toBe(false)
   })
 
-  // it('should set declaration root correctly', () => {
-  //   execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
-
-  //   execSync('yarn build:declaration-root', { cwd: simplePackagePath })
-  //   // Check if the output files exist
-  //   expect(existsSync(distTypesFilePath)).toBe(true)
-  //   // clear up declaration root files
-  //   execSync('rm -rf index.d.ts && index.d', { cwd: simplePackagePath })
-  // })
-
   it('should ignore base URL when --ignore-base-url is used', () => {
-    execSync('yarn build:ignore-base-url', { cwd: simplePackagePath })
+    execSync('bun run build:ignore-base-url', { cwd: simplePackagePath })
 
     // Check if the output files exist
     expect(existsSync(distCjsFilePath)).toBe(true)
@@ -88,7 +77,7 @@ describe('tamagui-build integration test', () => {
   })
 
   it('should rebuild the package on file change when --watch is used', async () => {
-    const watchProcess = spawn('yarn', ['build:watch'], { cwd: watchPackagePath })
+    const watchProcess = spawn('bun', ['run', 'build:watch'], { cwd: watchPackagePath })
 
     // Cache existing content
     const originalContent = readFileSync(watchSrcFilePath, 'utf-8')
@@ -103,12 +92,10 @@ describe('tamagui-build integration test', () => {
         let fileModified = false
 
         watchProcess.stdout.on('data', (data) => {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('Watch process output:', data.toString())
           if (data.toString().includes('built tamagui-build-test-watch-package')) {
             if (!initialBuildComplete) {
               initialBuildComplete = true
-              // biome-ignore lint/suspicious/noConsoleLog: <explanation>
               console.log('Initial build complete, modifying file...')
               // Modify the source file
               const newContent = `export const greet = (name: string): string => {
@@ -117,7 +104,6 @@ describe('tamagui-build integration test', () => {
               writeFileSync(watchSrcFilePath, newContent)
               fileModified = true
             } else if (fileModified) {
-              // biome-ignore lint/suspicious/noConsoleLog: <explanation>
               console.log('Rebuild after file modification complete')
               // Check the updated content of the output file
               const output = readFileSync(watchDistCjsFilePath, 'utf-8')
@@ -138,7 +124,7 @@ describe('tamagui-build integration test', () => {
   }, 15000)
 
   it('should generate correct platform-specific output', async () => {
-    execSync('yarn build', { cwd: simplePackagePath })
+    execSync('bun run build', { cwd: simplePackagePath })
 
     const distCjsWebFilePath = join(distPath, 'cjs', 'index.cjs')
     const distCjsNativeFilePath = join(distPath, 'cjs', 'index.native.js')
@@ -168,7 +154,7 @@ describe('tamagui-build integration test', () => {
 
   it('should minify the output when MINIFY=true is set', () => {
     // Build without minification and cache file sizes
-    execSync('yarn build', { cwd: simplePackagePath })
+    execSync('bun run build', { cwd: simplePackagePath })
     const originalCjsSize = statSync(distCjsFilePath).size
     const originalEsmSize = statSync(distEsmFilePath).size
 
@@ -176,7 +162,7 @@ describe('tamagui-build integration test', () => {
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
 
     // Build with minification
-    execSync('yarn build:minify', { cwd: simplePackagePath })
+    execSync('bun run build:minify', { cwd: simplePackagePath })
 
     // Check if the output files exist
     expect(existsSync(distCjsFilePath)).toBe(true)

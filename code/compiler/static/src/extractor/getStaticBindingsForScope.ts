@@ -86,6 +86,9 @@ function importModule(path: string) {
     }
     child.once('message', listener)
     child.send(`${path.replace('.js', '')}`)
+  }).finally(() => {
+    // clean up pending map to prevent memory leak
+    pending.delete(path)
   })
   pending.set(path, promise)
   return promise

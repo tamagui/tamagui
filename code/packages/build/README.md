@@ -80,4 +80,3 @@ It assumes your package.json looks something like this:
     - `tamagui-build --swap-exports -- npm publish` - build, swap, publish, swap back
 - `tamagui-build --watch` - watches for changes and does the above
 - `tamagui-build clean` - cleans dist, types, node_modules folders
-

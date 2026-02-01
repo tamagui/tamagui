@@ -1,4 +1,4 @@
-type Events = Object
+type Events = object
 
 export type EventHandler<E extends Events> = (event: E) => void
 

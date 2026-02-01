@@ -189,7 +189,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
                 const themeKeysUsed = new Set<string>()
 
-                function getStyleExpression(style: Object | null) {
+                function getStyleExpression(style: object | null) {
                   if (!style) return
 
                   // split theme properties and leave them as props since RN has no concept of theme
@@ -223,7 +223,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   }
                 }
 
-                function getThemedStyleExpression(styles: Object) {
+                function getThemedStyleExpression(styles: object) {
                   const themedStylesAst = literalToAst(styles) as t.ObjectExpression
                   themedStylesAst.properties.forEach((_) => {
                     const prop = _ as t.ObjectProperty
@@ -439,9 +439,9 @@ function assertValidTag(node: t.JSXOpeningElement) {
   }
 }
 
-function splitThemeStyles(style: Object) {
-  const themed: Object = {}
-  const plain: Object = {}
+function splitThemeStyles(style: object) {
+  const themed: object = {}
+  const plain: object = {}
   let noTheme = true
   for (const key in style) {
     const val = style[key]

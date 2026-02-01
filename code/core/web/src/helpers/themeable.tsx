@@ -18,7 +18,7 @@ export function themeable<ComponentType extends (props: any) => any>(
     const defaultResetTheme = userDefaults?.themeReset
     const { theme, componentName, themeReset, ...rest } = props
 
-    let overriddenContextProps: Object | undefined
+    let overriddenContextProps: object | undefined
     const context = staticConfig?.context
     if (context) {
       for (const key in context.props) {

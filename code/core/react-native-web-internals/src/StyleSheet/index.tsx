@@ -8,7 +8,7 @@
  * @flow
  */
 
-const staticStyleMap: WeakMap<Object, Object> = new WeakMap()
+const staticStyleMap: WeakMap<object, object> = new WeakMap()
 
 function insertRules(compiledOrderedRules) {}
 
@@ -89,8 +89,8 @@ StyleSheet.hairlineWidth = 1
 
 export type IStyleSheet = {
   (styles: any, options?: Options): StyleProps
-  absoluteFill: Object
-  absoluteFillObject: Object
+  absoluteFill: object
+  absoluteFillObject: object
   create: typeof create
   compose: typeof compose
   flatten: typeof flatten

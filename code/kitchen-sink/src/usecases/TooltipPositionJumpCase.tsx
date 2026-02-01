@@ -1,4 +1,12 @@
-import { Button, Paragraph, Tooltip, TooltipGroup, XStack, YStack, SizableText } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  Tooltip,
+  TooltipGroup,
+  XStack,
+  YStack,
+  SizableText,
+} from 'tamagui'
 import { useState } from 'react'
 
 /**
@@ -23,7 +31,14 @@ export function TooltipPositionJumpCase() {
   const [label, setLabel] = useState('')
 
   return (
-    <YStack flex={1} gap="$4" p="$4" bg="$background" alignItems="center" justifyContent="center">
+    <YStack
+      flex={1}
+      gap="$4"
+      p="$4"
+      bg="$background"
+      alignItems="center"
+      justifyContent="center"
+    >
       <SizableText fontWeight="bold">Tooltip Position Jump Test</SizableText>
       <SizableText size="$2" color="$gray11" textAlign="center">
         1. Hover rightmost button, wait for tooltip{'\n'}
@@ -42,10 +57,7 @@ export function TooltipPositionJumpCase() {
                 asChild
                 onMouseEnter={() => setLabel(btn.label)}
               >
-                <Button
-                  data-testid={`tooltip-trigger-${btn.id}`}
-                  size="$4"
-                >
+                <Button data-testid={`tooltip-trigger-${btn.id}`} size="$4">
                   {btn.id.toUpperCase()}
                 </Button>
               </Tooltip.Trigger>

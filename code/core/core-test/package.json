@@ -1,31 +1,31 @@
 {
   "name": "@tamagui/core-test",
-  "version": "2.0.0-1769680173943",
-  "module": "dist/esm",
-  "type": "module",
+  "version": "2.0.0-rc.0-1769885482630",
   "private": true,
   "license": "MIT",
   "author": {
     "name": "Nate Wienert"
   },
+  "type": "module",
+  "module": "dist/esm",
   "scripts": {
     "test:run": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts",
-    "test:web": "TAMAGUI_TARGET=web yarn test:run **/*.web.test.tsx",
-    "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native yarn test:run **/*.ios.test.tsx",
-    "test:native": "TAMAGUI_TARGET=native yarn test:run **/*.native.test.tsx",
-    "test": "yarn test:native && yarn test:web && yarn test:ios",
-    "test:update": "yarn test:native --update && yarn test:web --update"
+    "test:web": "TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.web.test.tsx",
+    "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.ios.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.native.test.tsx",
+    "test": "bun run test:native && bun run test:web && bun run test:ios",
+    "test:update": "bun run test:native --update && bun run test:web --update"
   },
   "devDependencies": {
     "@tamagui/core": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "@testing-library/react-native": "^12.9.0",
     "csstype": "^3.0.10",
-    "react": "*",
+    "react": ">=19",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.4"
+    "vitest": "4.0.4"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=19"
   }
 }

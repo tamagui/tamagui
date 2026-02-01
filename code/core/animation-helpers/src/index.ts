@@ -6,8 +6,4 @@ export {
   getEffectiveAnimation,
 } from './normalizeTransition'
 
-export type {
-  AnimationConfig,
-  NormalizedTransition,
-  TransitionPropInput,
-} from './types'
+export type { AnimationConfig, NormalizedTransition, TransitionPropInput } from './types'

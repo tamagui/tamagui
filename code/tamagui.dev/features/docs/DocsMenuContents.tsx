@@ -38,7 +38,10 @@ const sections = {
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   section: propsSection,
   inMenu,
-}: { inMenu?: boolean; section?: keyof typeof sections }) {
+}: {
+  inMenu?: boolean
+  section?: keyof typeof sections
+}) {
   const { currentPath, section: docsSection } = useDocsMenu()
   // compiler pages now show core section (merged)
   const rawSection = propsSection ?? docsSection

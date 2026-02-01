@@ -1,0 +1,539 @@
+name: Native Tests (Detox)
+
+on:
+  push:
+    branches:
+      - main
+      - 'native-*'
+      - 'v*'
+  workflow_dispatch:
+
+# Cancel in-progress runs when a new run is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  test_container_app_path: code/kitchen-sink
+  # Increment this to force a fresh Android build (invalidates Redis KV cache)
+  android_cache_version: v4
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # iOS Build & Test
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  build-ios:
+    name: Build iOS App
+    uses: ./.github/workflows/build-ios-kitchensink-app.yml
+    with:
+      configuration: Debug
+    secrets: inherit
+
+  test-ios:
+    name: iOS Detox Tests
+    needs: build-ios
+    runs-on: macos-14
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: ${{ env.test_container_app_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+
+      - name: Restore Built App from Cache
+        id: restore-ios-cache
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.build-ios.outputs.built-app-cache-key }}
+          path: ${{ needs.build-ios.outputs.built-app-path }}
+
+      - name: Check iOS Cache Restore
+        if: steps.restore-ios-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "::warning::iOS cache not restored (key: ${{ needs.build-ios.outputs.built-app-cache-key }}). This may happen on first run after cache key changes."
+          echo "SKIP_IOS_TESTS=true" >> $GITHUB_ENV
+
+      - name: Install Dependencies
+        if: env.SKIP_IOS_TESTS != 'true'
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Install Detox CLI
+        if: env.SKIP_IOS_TESTS != 'true'
+        run: npm install -g detox-cli
+
+      - name: Rebuild Detox Framework Cache
+        if: env.SKIP_IOS_TESTS != 'true'
+        working-directory: ${{ github.workspace }}
+        run: npx detox rebuild-framework-cache
+
+      - name: Install applesimutils
+        if: env.SKIP_IOS_TESTS != 'true'
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: Boot iOS Simulator
+        if: env.SKIP_IOS_TESTS != 'true'
+        id: boot-simulator
+        working-directory: ${{ github.workspace }}
+        run: |
+          # Find iPhone 15 simulator
+          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
+            .devices | to_entries[]
+            | select(.key | contains("iOS"))
+            | .value[]
+            | select(.name == "iPhone 15")
+            | .udid' | head -1)
+
+          if [ -z "$DEVICE_ID" ]; then
+            echo "iPhone 15 not found, using first available iPhone"
+            DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
+              .devices | to_entries[]
+              | select(.key | contains("iOS"))
+              | .value[]
+              | select(.name | contains("iPhone"))
+              | .udid' | head -1)
+          fi
+
+          echo "Booting simulator: $DEVICE_ID"
+          xcrun simctl boot "$DEVICE_ID" || true
+          xcrun simctl bootstatus "$DEVICE_ID" -b
+          echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
+
+      - name: Install App on Simulator
+        if: env.SKIP_IOS_TESTS != 'true'
+        working-directory: ${{ github.workspace }}
+        run: |
+          xcrun simctl install booted "${{ needs.build-ios.outputs.built-app-path }}"
+
+      - name: Setup Bun
+        if: env.SKIP_IOS_TESTS != 'true'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Run iOS Detox Tests
+        if: env.SKIP_IOS_TESTS != 'true'
+        env:
+          # Point Detox to the cached app (CI uses different path than local dev)
+          DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
+        run: |
+          # Note: parallel workers require multiple simulators, keeping single worker for now
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 2
+
+      - name: Report iOS Test Status
+        if: always() && env.SKIP_IOS_TESTS == 'true'
+        run: |
+          echo "::warning::iOS Detox tests skipped - cache was not available (will be available on next run)"
+
+      - name: Upload Detox Artifacts on Failure
+        if: failure() && env.SKIP_IOS_TESTS != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-artifacts-ios
+          path: ${{ env.test_container_app_path }}/e2e/artifacts/
+          retention-days: 7
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Android Build & Test
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  build-android:
+    name: Build Android App
+    # Only run on main/v* branches (not PRs)
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      android-cache-key: ${{ steps.final-cache-key.outputs.cache_key }}
+      android-path: code/kitchen-sink/android
+      fingerprint: ${{ steps.calculate-fingerprint.outputs.fingerprint || steps.get-fingerprint-from-cache.outputs.fingerprint }}
+    steps:
+      - name: Free Disk Space
+        run: |
+          # Android builds with debug symbols need significant disk space
+          # Remove unused tools to free ~10GB+
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android/sdk/ndk
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h /
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Calculate Pre-Fingerprint Hash
+        id: calculate-pre-fingerprint
+        env:
+          # Include cache version to allow manual cache busting
+          PRE_FINGERPRINT_HASH: ${{ hashFiles('bun.lock', 'code/kitchen-sink/app.json', 'packages/vxrn/expo-plugin.cjs') }}-${{ env.android_cache_version }}
+        run: |
+          echo "Pre-fingerprint hash: $PRE_FINGERPRINT_HASH"
+          echo "pre_fingerprint_hash=$PRE_FINGERPRINT_HASH" >> $GITHUB_OUTPUT
+
+      - name: Read Cached Fingerprint
+        id: get-fingerprint-from-cache
+        env:
+          KV_STORE_REDIS_REST_URL: ${{ secrets.KV_STORE_REDIS_REST_URL }}
+          KV_STORE_REDIS_REST_TOKEN: ${{ secrets.KV_STORE_REDIS_REST_TOKEN }}
+        run: |
+          FINGERPRINT_FROM_CACHE=$(curl -s "$KV_STORE_REDIS_REST_URL/get/android-tamaguikitchensink-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN" | jq -r '.result')
+
+          if [ "$FINGERPRINT_FROM_CACHE" != "null" ]; then
+            curl -s -X POST "$KV_STORE_REDIS_REST_URL/EXPIRE/android-tamaguikitchensink-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}/2592000" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN"
+            echo "Fingerprint from cache: $FINGERPRINT_FROM_CACHE"
+            echo "fingerprint=$FINGERPRINT_FROM_CACHE" >> $GITHUB_OUTPUT
+          else
+            echo 'No cached fingerprint found.'
+            echo "fingerprint=null" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if Android folder is already cached
+        id: android-cache-check
+        if: ${{ steps.get-fingerprint-from-cache.outputs.fingerprint != 'null' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: code/kitchen-sink/android
+          key: android-detox-${{ env.android_cache_version }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}
+          lookup-only: true
+
+      - name: Install Dependencies
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Setup Java
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        uses: android-actions/setup-android@v3
+
+      - name: Prebuild Android
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        working-directory: code/kitchen-sink
+        run: |
+          bunx expo prebuild --platform android --clean
+
+      - name: Setup Detox Test Infrastructure
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        working-directory: code/kitchen-sink
+        run: |
+          # Create Gradle init script for JNI library conflicts
+          cat > android/init.gradle << 'INITGRADLE'
+          // Gradle init script to fix JNI library conflicts for Detox tests
+          allprojects {
+              afterEvaluate {
+                  if (it.hasProperty('android')) {
+                      android {
+                          packagingOptions {
+                              jniLibs {
+                                  pickFirsts += ['**/libfbjni.so']
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          INITGRADLE
+          # Remove leading whitespace from heredoc
+          sed -i 's/^          //' android/init.gradle
+
+          # Add Detox repository to build.gradle (using node for reliable file editing)
+          node -e "
+            const fs = require('fs');
+            let content = fs.readFileSync('android/build.gradle', 'utf8');
+            content = content.replace(
+              \"maven { url 'https://www.jitpack.io' }\",
+              \"maven { url 'https://www.jitpack.io' }\\n    // Detox repository\\n    maven { url \\\"\\\$rootDir/../../../node_modules/detox/Detox-android\\\" }\"
+            );
+            fs.writeFileSync('android/build.gradle', content);
+          "
+
+          # Add Detox test runner config and dependencies to app/build.gradle
+          node -e "
+            const fs = require('fs');
+            let content = fs.readFileSync('android/app/build.gradle', 'utf8');
+
+            // Add testInstrumentationRunner after versionName
+            content = content.replace(
+              'versionName \"1.0.0\"',
+              'versionName \"1.0.0\"\\n\\n        // Detox instrumentation test runner\\n        testBuildType System.getProperty(\\'testBuildType\\', \\'debug\\')\\n        testInstrumentationRunner \\'androidx.test.runner.AndroidJUnitRunner\\''
+            );
+
+            // Add Detox dependencies before the final closing brace of dependencies block
+            content = content.replace(
+              /(implementation jscFlavor\s*\n\s*}\s*\n})/,
+              'implementation jscFlavor\\n    }\\n\\n    // Detox dependencies\\n    androidTestImplementation(\\'com.wix:detox:+\\')\\n    androidTestImplementation \\'junit:junit:4.13.2\\'\\n}'
+            );
+
+            fs.writeFileSync('android/app/build.gradle', content);
+          "
+
+          # Create androidTest directory structure
+          mkdir -p android/app/src/androidTest/java/com/tamagui/tamaguikitchensink
+
+          # Create DetoxTest.java
+          cat > android/app/src/androidTest/java/com/tamagui/tamaguikitchensink/DetoxTest.java << 'DETOXTEST'
+          package com.tamagui.tamaguikitchensink;
+
+          import com.wix.detox.Detox;
+          import com.wix.detox.config.DetoxConfig;
+
+          import org.junit.Rule;
+          import org.junit.Test;
+          import org.junit.runner.RunWith;
+
+          import androidx.test.ext.junit.runners.AndroidJUnit4;
+          import androidx.test.filters.LargeTest;
+          import androidx.test.rule.ActivityTestRule;
+
+          @RunWith(AndroidJUnit4.class)
+          @LargeTest
+          public class DetoxTest {
+              @Rule
+              public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, false, false);
+
+              @Test
+              public void runDetoxTests() {
+                  DetoxConfig detoxConfig = new DetoxConfig();
+                  detoxConfig.idlePolicyConfig.masterTimeoutSec = 90;
+                  detoxConfig.idlePolicyConfig.idleResourceTimeoutSec = 60;
+                  detoxConfig.rnContextLoadTimeoutSec = 180;
+
+                  Detox.runTests(mActivityRule, detoxConfig);
+              }
+          }
+          DETOXTEST
+
+          # Create AndroidManifest.xml for androidTest (fixes Android 12+ exported requirement)
+          cat > android/app/src/androidTest/AndroidManifest.xml << 'MANIFEST'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools">
+
+              <!-- Fix for Android 12+ requiring explicit android:exported -->
+              <application>
+                  <activity
+                      android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
+                      android:exported="true"
+                      tools:node="merge" />
+                  <activity
+                      android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
+                      android:exported="true"
+                      tools:node="merge" />
+                  <activity
+                      android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity"
+                      android:exported="true"
+                      tools:node="merge" />
+              </application>
+
+          </manifest>
+          MANIFEST
+
+      - name: Calculate Fingerprint
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        id: calculate-fingerprint
+        working-directory: code/kitchen-sink
+        run: |
+          FINGERPRINT=$(bunx @expo/fingerprint fingerprint:generate --platform android | jq -r '.hash')
+          if [ -z "$FINGERPRINT" ]; then
+            echo '[ERROR] Failed to calculate fingerprint.'
+            exit 1
+          fi
+          echo "Fingerprint: $FINGERPRINT"
+          echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
+
+      - name: Write Fingerprint to Cache
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        env:
+          KV_STORE_REDIS_REST_URL: ${{ secrets.KV_STORE_REDIS_REST_URL }}
+          KV_STORE_REDIS_REST_TOKEN: ${{ secrets.KV_STORE_REDIS_REST_TOKEN }}
+        run: |
+          curl -s -X POST "$KV_STORE_REDIS_REST_URL/SETEX/android-tamaguikitchensink-fingerprint-from-pre-hash-${{ steps.calculate-pre-fingerprint.outputs.pre_fingerprint_hash }}/2592000/${{ steps.calculate-fingerprint.outputs.fingerprint }}" -H "Authorization: Bearer $KV_STORE_REDIS_REST_TOKEN"
+
+      - name: Check If Build Already Exists (with new fingerprint)
+        if: ${{ !steps.android-cache-check.outputs.cache-hit }}
+        id: android-cache-check-new
+        uses: actions/cache/restore@v4
+        with:
+          path: code/kitchen-sink/android
+          key: android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+          lookup-only: true
+
+      - name: Cache Gradle
+        if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build Android App (Debug + Test APKs)
+        if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
+        working-directory: code/kitchen-sink
+        env:
+          # Limit Gradle memory to avoid OOM on free runners
+          GRADLE_OPTS: '-Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError'
+        run: |
+          cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle --no-daemon --max-workers=2
+
+      - name: Cache Android Folder
+        if: ${{ !steps.android-cache-check.outputs.cache-hit && !steps.android-cache-check-new.outputs.cache-hit }}
+        uses: actions/cache/save@v4
+        with:
+          path: code/kitchen-sink/android
+          key: android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
+
+      - name: Set Final Cache Key
+        id: final-cache-key
+        run: |
+          if [ "${{ steps.android-cache-check.outputs.cache-hit }}" = "true" ]; then
+            echo "cache_key=android-detox-${{ env.android_cache_version }}-${{ steps.get-fingerprint-from-cache.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+          else
+            echo "cache_key=android-detox-${{ env.android_cache_version }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}" >> $GITHUB_OUTPUT
+          fi
+
+  test-android:
+    name: Android Detox Tests
+    needs: build-android
+    # Only run on main/v* branches (not PRs)
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    # Android emulator in CI is flaky with window focus issues - don't block on failures
+    continue-on-error: true
+    # Retry matrix - run up to 2 attempts sequentially to handle flakiness
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        attempt: [1, 2]
+    defaults:
+      run:
+        working-directory: ${{ env.test_container_app_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Restore Android Folder from Cache
+        id: restore-android-cache
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.build-android.outputs.android-cache-key }}
+          path: ${{ needs.build-android.outputs.android-path }}
+
+      - name: Check Cache Restore
+        if: steps.restore-android-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "::warning::Android cache not restored (key: ${{ needs.build-android.outputs.android-cache-key }}). This may happen on first run after cache key changes."
+          echo "SKIP_ANDROID_TESTS=true" >> $GITHUB_ENV
+
+      - name: Install Dependencies
+        if: env.SKIP_ANDROID_TESTS != 'true'
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Setup Java
+        if: env.SKIP_ANDROID_TESTS != 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Detox CLI
+        if: env.SKIP_ANDROID_TESTS != 'true'
+        run: npm install -g detox-cli
+
+      - name: Setup Bun
+        if: env.SKIP_ANDROID_TESTS != 'true'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Start Android Emulator and Run Tests
+        if: env.SKIP_ANDROID_TESTS != 'true'
+        id: android-tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          target: google_apis
+          arch: x86_64
+          profile: pixel_4
+          avd-name: test
+          ram-size: 2048M
+          heap-size: 512M
+          disk-size: 4G
+          force-avd-creation: false
+          emulator-boot-timeout: 600
+          disable-animations: true
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none -memory 2048
+          working-directory: code/kitchen-sink
+          script: |
+            # Free up memory before tests
+            sudo swapoff -a || true
+            sudo swapon -a || true
+
+            # Verify emulator is ready
+            adb devices
+            adb wait-for-device
+
+            # Wait for boot to complete
+            adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
+
+            # More robust screen unlock and focus sequence
+            adb shell wm dismiss-keyguard
+            adb shell input keyevent 82   # KEYEVENT_MENU - wake/unlock
+            adb shell input keyevent 3    # KEYEVENT_HOME - go home first
+            sleep 1
+            adb shell input keyevent 82   # Unlock again
+            adb shell input keyevent 4    # Back button to dismiss any dialogs
+            sleep 3
+
+            # Verify screen is on and unlocked
+            adb shell dumpsys window | grep -E "mAwake|mScreenOn" || true
+
+            # Let Detox handle APK installation and ADB reverse setup via reversePorts config
+            # Android emulator is flaky - capture exit code but don't fail the job
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 2 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
+
+      - name: Report Android Test Status
+        if: always()
+        run: |
+          if [ "$SKIP_ANDROID_TESTS" = "true" ]; then
+            echo "::warning::Android Detox tests skipped - cache was not available (will be available on next run)"
+          elif [ "$ANDROID_TESTS_FAILED" = "true" ]; then
+            echo "::warning::Android Detox tests failed - this is expected flakiness and does not block CI"
+          else
+            echo "Android Detox tests passed"
+          fi
+
+      - name: Upload Detox Artifacts on Failure
+        if: env.ANDROID_TESTS_FAILED == 'true' && env.SKIP_ANDROID_TESTS != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-artifacts-android-attempt-${{ matrix.attempt }}
+          path: ${{ env.test_container_app_path }}/e2e/artifacts/
+          retention-days: 7

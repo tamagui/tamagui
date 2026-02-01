@@ -51,11 +51,14 @@ class PaymentModal {
   // promo support
   activePromo: PromoConfig | null = null
   prefilledCouponCode: string | null = null
+  // parity discount (stacks with promo)
+  parityDiscount: number = 0
+  parityCountry: string | null = null
 }
 
 export const paymentModal = createStore(PaymentModal)
 export const usePaymentModal = createUseStore(PaymentModal)
 
 // V2 Pro pricing constants
-export const V2_LICENSE_PRICE = 999 // $999 one-time
-export const V2_UPGRADE_PRICE = 300 // $300/year for updates
+export const V2_LICENSE_PRICE = 400 // $400 one-time
+export const V2_UPGRADE_PRICE = 100 // $100/year for updates

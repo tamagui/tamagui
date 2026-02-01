@@ -42,7 +42,7 @@ import { ListItem, Separator, YGroup } from 'tamagui'
 import { ChevronRight } from '@tamagui/lucide-icons' // Example icon
 
 export default () => (
-  <YGroup 
+  <YGroup
     self="center"
     borderWidth={1}
     borderColor="$borderColor"
@@ -54,11 +54,7 @@ export default () => (
       <ListItem title="Star" icon={ChevronRight} />
     </YGroup.Item>
     <YGroup.Item>
-      <ListItem
-        title="Moon"
-        subTitle="Subtitle for Moon"
-        iconAfter={ChevronRight}
-      />
+      <ListItem title="Moon" subTitle="Subtitle for Moon" iconAfter={ChevronRight} />
     </YGroup.Item>
     <YGroup.Item>
       <ListItem>Custom children content</ListItem>
@@ -230,8 +226,7 @@ ListItems extend Stack views, inheriting all the [Tamagui standard props](/docs/
       name: 'title',
       required: false,
       type: 'React.ReactNode',
-      description:
-        'Main text content of the list item. Renders using `ListItem.Title`.',
+      description: 'Main text content of the list item. Renders using `ListItem.Title`.',
     },
     {
       name: 'subTitle',

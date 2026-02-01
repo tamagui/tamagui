@@ -144,11 +144,7 @@ If you know the position ahead of time, use the `forcePlacement` prop:
 
 ```tsx
 function MyFirstItem({ children }) {
-  return (
-    <XGroup.Item forcePlacement="first">
-      {children}
-    </XGroup.Item>
-  )
+  return <XGroup.Item forcePlacement="first">{children}</XGroup.Item>
 }
 
 export default () => (
@@ -171,10 +167,7 @@ For full control, use the `useGroupItem` hook directly in your custom component:
 import { useGroupItem } from '@tamagui/group'
 
 function MyItem({ children, forcePlacement }) {
-  const groupItemProps = useGroupItem(
-    { disabled: false },
-    forcePlacement
-  )
+  const groupItemProps = useGroupItem({ disabled: false }, forcePlacement)
 
   return React.cloneElement(children, groupItemProps)
 }

@@ -19,7 +19,7 @@ your custom contexts like navigation or app state won't be available inside
 portaled content. The re-propagation also adds some overhead.
 
 We recommend using
-[react-native-teleport](https://github.com/nicksrandall/react-native-teleport)
+[react-native-teleport](https://github.com/kirillzyusko/react-native-teleport)
 to solve this. It uses React Native's native portal API to preserve context
 automatically.
 
@@ -129,10 +129,11 @@ every context you use.
       type: `boolean | number | 'global'`,
       description: (
         <span>
-          Enable automatic z-index stacking. Tamagui intelligently stacks z-index both horizontally
-          (based on mount order) and vertically (nested content is always above parent but below
-          sibling content that comes after). <code>true</code> enables stacking, a number adds to the
-          stacked value, <code>'global'</code> only stacks horizontally without nesting logic.
+          Enable automatic z-index stacking. Tamagui intelligently stacks z-index both
+          horizontally (based on mount order) and vertically (nested content is always
+          above parent but below sibling content that comes after). <code>true</code>{' '}
+          enables stacking, a number adds to the stacked value, <code>'global'</code> only
+          stacks horizontally without nesting logic.
         </span>
       ),
     },

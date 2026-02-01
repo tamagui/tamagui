@@ -8,16 +8,16 @@ export default function RNStylePropsTest() {
       </Text>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">boxShadow (string)</Text>
-        <Square
-          size={100}
-          bg="$blue10"
-          boxShadow="0px 4px 12px rgba(0,0,0,0.3)"
-        />
+        <Text fontSize="$5" fontWeight="bold">
+          boxShadow (string)
+        </Text>
+        <Square size={100} bg="$blue10" boxShadow="0px 4px 12px rgba(0,0,0,0.3)" />
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">boxShadow (object)</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          boxShadow (object)
+        </Text>
         <Square
           size={100}
           bg="$green10"
@@ -32,16 +32,16 @@ export default function RNStylePropsTest() {
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">boxShadow with tokens</Text>
-        <Square
-          size={100}
-          bg="$red10"
-          boxShadow="$2 $4 $8 $shadowColor"
-        />
+        <Text fontSize="$5" fontWeight="bold">
+          boxShadow with tokens
+        </Text>
+        <Square size={100} bg="$red10" boxShadow="$2 $4 $8 $shadowColor" />
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">boxShadow object with tokens</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          boxShadow object with tokens
+        </Text>
         <Square
           size={100}
           bg="$blue10"
@@ -55,7 +55,9 @@ export default function RNStylePropsTest() {
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">boxShadow inset</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          boxShadow inset
+        </Text>
         <Square
           size={100}
           bg="$yellow10"
@@ -70,16 +72,16 @@ export default function RNStylePropsTest() {
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">filter (brightness)</Text>
-        <Square
-          size={100}
-          bg="$blue10"
-          filter={{ brightness: 1.3 }}
-        />
+        <Text fontSize="$5" fontWeight="bold">
+          filter (brightness)
+        </Text>
+        <Square size={100} bg="$blue10" filter={{ brightness: 1.3 }} />
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">filter (multiple)</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          filter (multiple)
+        </Text>
         <Square
           size={100}
           bg="$green10"
@@ -88,7 +90,9 @@ export default function RNStylePropsTest() {
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">mixBlendMode</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          mixBlendMode
+        </Text>
         <XStack>
           <Square size={100} bg="$red10" />
           <Square size={100} bg="$blue10" ml={-50} mixBlendMode="multiply" />
@@ -96,7 +100,9 @@ export default function RNStylePropsTest() {
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">isolation</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          isolation
+        </Text>
         <XStack isolation="isolate">
           <Square size={100} bg="$red10" />
           <Square size={100} bg="$blue10" ml={-50} mixBlendMode="multiply" />
@@ -104,7 +110,9 @@ export default function RNStylePropsTest() {
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">boxSizing</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          boxSizing
+        </Text>
         <XStack gap="$2">
           <Square
             width={100}
@@ -132,7 +140,9 @@ export default function RNStylePropsTest() {
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">outline props</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          outline props
+        </Text>
         <Square
           size={100}
           bg="$red10"
@@ -144,7 +154,9 @@ export default function RNStylePropsTest() {
       </YStack>
 
       <YStack gap="$2">
-        <Text fontSize="$5" fontWeight="bold">display: contents</Text>
+        <Text fontSize="$5" fontWeight="bold">
+          display: contents
+        </Text>
         <XStack gap="$2" bg="$gray5" p="$2">
           <Square size={50} bg="$red10" />
           <YStack display="contents">

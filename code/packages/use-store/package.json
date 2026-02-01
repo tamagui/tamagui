@@ -1,38 +1,39 @@
 {
   "name": "@tamagui/use-store",
-  "version": "2.0.0-1769680173943",
-  "type": "module",
-  "sideEffects": false,
-  "types": "./src",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "version": "2.0.0-rc.0-1769885482630",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-types",
-    "watch": "tamagui-build --skip-types --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./src",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./src/index.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./src/index.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/simple-hash": "workspace:*"
@@ -40,13 +41,10 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "@testing-library/react": "^16.1.0",
-    "react": "*",
-    "vitest": "^4.0.4"
-  },
-  "publishConfig": {
-    "access": "public"
+    "react": ">=19",
+    "vitest": "4.0.4"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=19"
   }
 }

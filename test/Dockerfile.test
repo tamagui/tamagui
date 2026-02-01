@@ -1,10 +1,10 @@
 # This Dockerfile is used to run tests for the Tamagui monorepo in a clean environment
-# If CI is failing you can run yarn test:docker on your own machine to debug
+# If CI is failing you can run bun run test:docker on your own machine to debug
 
 # syntax=docker/dockerfile:1.2
 
-# Use an official Node.js LTS runtime as a parent image
-FROM node:20.17.0
+# Use an official Bun image
+FROM oven/bun:1.2.22
 ENV CI=true
 
 # Install required dependencies
@@ -16,30 +16,27 @@ RUN apt-get update && apt-get install -y \
   xxd \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Yarn
-RUN corepack enable && corepack prepare yarn@4.4.0 --activate
-
 # Copy the entire project into the Docker image
 # Copy the local .git folder into the Docker image
 COPY .git /.git
 
-ARG CACHEBUST=1 
+ARG CACHEBUST=1
 RUN git clone --local /.git /repo
 COPY .env /repo/.env
 
 WORKDIR /repo
 
-# Verify Yarn version
-RUN yarn --version
+# Verify Bun version
+RUN bun --version
 
 # Install dependencies
-RUN yarn install
+RUN bun install
 
 # Build JavaScript
-RUN yarn build:js
+RUN bun run build:js
 
 # Install Playwright dependencies in a separate layer
-RUN yarn playwright install-deps && yarn playwright install
+RUN bunx playwright install-deps && bunx playwright install
 
 # Run the tests
-CMD yarn test
+CMD bun run test

@@ -1,10 +1,4 @@
-export function getPragmaOptions({
-  source,
-  path,
-}: {
-  source: string
-  path: string
-}) {
+export function getPragmaOptions({ source, path }: { source: string; path: string }) {
   let shouldPrintDebug: boolean | 'verbose' = false
   let shouldDisable = false
 
@@ -15,7 +9,7 @@ export function getPragmaOptions({
   for (const line of firstLines.split('\n')) {
     pragma =
       line
-        .match(/(\/\/|\/\*)\s?\!?\s?(tamagui-ignore|debug|debug-verbose)(\n|\s|$).*/)?.[2]
+        .match(/(\/\/|\/\*)\s?!?\s?(tamagui-ignore|debug|debug-verbose)(\n|\s|$).*/)?.[2]
         .trim() || ''
     if (pragma) {
       pragma = pragma.replace('!', '').trim()

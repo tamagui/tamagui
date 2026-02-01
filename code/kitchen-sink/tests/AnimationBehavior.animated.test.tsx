@@ -13,52 +13,45 @@ import { setupPage } from './test-utils'
 const TOLERANCE = 0.05
 
 async function getOpacity(page: Page, testId: string): Promise<number> {
-  return page.evaluate(
-    (id) => {
-      const el = document.querySelector(`[data-testid="${id}"]`)
-      if (!el) return -1
-      return Number.parseFloat(getComputedStyle(el).opacity)
-    },
-    testId
-  )
+  return page.evaluate((id) => {
+    const el = document.querySelector(`[data-testid="${id}"]`)
+    if (!el) return -1
+    return Number.parseFloat(getComputedStyle(el).opacity)
+  }, testId)
 }
 
 async function getScale(page: Page, testId: string): Promise<number> {
-  return page.evaluate(
-    (id) => {
-      const el = document.querySelector(`[data-testid="${id}"]`)
-      if (!el) return -1
-      const transform = getComputedStyle(el).transform
-      if (transform === 'none') return 1
-      const match = transform.match(/matrix\(([^,]+),/)
-      return match ? Number.parseFloat(match[1]) : 1
-    },
-    testId
-  )
+  return page.evaluate((id) => {
+    const el = document.querySelector(`[data-testid="${id}"]`)
+    if (!el) return -1
+    const transform = getComputedStyle(el).transform
+    if (transform === 'none') return 1
+    const match = transform.match(/matrix\(([^,]+),/)
+    return match ? Number.parseFloat(match[1]) : 1
+  }, testId)
 }
 
 async function getTranslateX(page: Page, testId: string): Promise<number> {
-  return page.evaluate(
-    (id) => {
-      const el = document.querySelector(`[data-testid="${id}"]`)
-      if (!el) return -1
-      const transform = getComputedStyle(el).transform
-      if (transform === 'none') return 0
-      const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+),/)
-      return match ? Number.parseFloat(match[1]) : 0
-    },
-    testId
-  )
+  return page.evaluate((id) => {
+    const el = document.querySelector(`[data-testid="${id}"]`)
+    if (!el) return -1
+    const transform = getComputedStyle(el).transform
+    if (transform === 'none') return 0
+    const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+),/)
+    return match ? Number.parseFloat(match[1]) : 0
+  }, testId)
 }
 
 async function elementExists(page: Page, testId: string): Promise<boolean> {
-  return page.evaluate(
-    (id) => !!document.querySelector(`[data-testid="${id}"]`),
-    testId
-  )
+  return page.evaluate((id) => !!document.querySelector(`[data-testid="${id}"]`), testId)
 }
 
-function isIntermediate(value: number, start: number, end: number, tolerance = TOLERANCE): boolean {
+function isIntermediate(
+  value: number,
+  start: number,
+  end: number,
+  tolerance = TOLERANCE
+): boolean {
   const notAtStart = Math.abs(value - start) > tolerance
   const notAtEnd = Math.abs(value - end) > tolerance
   const min = Math.min(start, end)
@@ -84,7 +77,8 @@ test.describe('Animation Behavior', () => {
     const testInfo = test.info()
     const driver = (testInfo.project?.metadata as any)?.animationDriver
 
-    const START = 1, END = 0.2
+    const START = 1,
+      END = 0.2
 
     const startOpacity = await getOpacity(page, 'scenario-36-target')
     expect(startOpacity, 'Start').toBeCloseTo(START, 1)
@@ -98,13 +92,17 @@ test.describe('Animation Behavior', () => {
     const endOpacity = await getOpacity(page, 'scenario-36-target')
 
     expect(endOpacity, 'End').toBeCloseTo(END, 1)
-    expect(isIntermediate(midOpacity, START, END), `Mid (${midOpacity.toFixed(2)}) should be intermediate`).toBe(true)
+    expect(
+      isIntermediate(midOpacity, START, END),
+      `Mid (${midOpacity.toFixed(2)}) should be intermediate`
+    ).toBe(true)
   })
 
   test('scale timing animation has intermediate values', async ({ page }) => {
     const testInfo = test.info()
     const driver = (testInfo.project?.metadata as any)?.animationDriver
-    const START = 1, END = 1.5
+    const START = 1,
+      END = 1.5
 
     const startScale = await getScale(page, 'scenario-36-target')
     expect(startScale, 'Start').toBeCloseTo(START, 1)
@@ -118,11 +116,15 @@ test.describe('Animation Behavior', () => {
     const endScale = await getScale(page, 'scenario-36-target')
 
     expect(endScale, 'End').toBeCloseTo(END, 1)
-    expect(isIntermediate(midScale, START, END), `Mid (${midScale.toFixed(2)}) should be intermediate`).toBe(true)
+    expect(
+      isIntermediate(midScale, START, END),
+      `Mid (${midScale.toFixed(2)}) should be intermediate`
+    ).toBe(true)
   })
 
   test('animation with delay completes correctly', async ({ page }) => {
-    const START = 1, END = 0.3
+    const START = 1,
+      END = 0.3
 
     const startOpacity = await getOpacity(page, 'scenario-20-target')
     expect(startOpacity, 'Start').toBeCloseTo(START, 1)
@@ -135,7 +137,8 @@ test.describe('Animation Behavior', () => {
   })
 
   test('multi-property animation completes correctly', async ({ page }) => {
-    const OPACITY_END = 0.5, SCALE_END = 1.3
+    const OPACITY_END = 0.5,
+      SCALE_END = 1.3
 
     await page.getByTestId('scenario-28-trigger').click()
     await page.waitForTimeout(3000)
@@ -148,7 +151,8 @@ test.describe('Animation Behavior', () => {
   })
 
   test('per-property configs complete correctly', async ({ page }) => {
-    const OPACITY_END = 0.3, SCALE_END = 1.5
+    const OPACITY_END = 0.3,
+      SCALE_END = 1.5
 
     await page.getByTestId('scenario-31-trigger').click()
     await page.waitForTimeout(3000)
@@ -175,13 +179,21 @@ test.describe('Animation Behavior', () => {
     expect(await getScale(page, 'scenario-21-target'), 'End scale').toBeCloseTo(1, 0)
   })
 
-  test('exitStyle has intermediate values during exit animation', async ({ page }, testInfo) => {
+  test('exitStyle has intermediate values during exit animation', async ({
+    page,
+  }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
-    const START_OPACITY = 1, END_OPACITY = 0
+    const START_OPACITY = 1,
+      END_OPACITY = 0
 
     // Element should be visible initially
-    expect(await elementExists(page, 'scenario-22-target'), 'Initially visible').toBe(true)
-    expect(await getOpacity(page, 'scenario-22-target'), 'Start opacity').toBeCloseTo(START_OPACITY, 1)
+    expect(await elementExists(page, 'scenario-22-target'), 'Initially visible').toBe(
+      true
+    )
+    expect(await getOpacity(page, 'scenario-22-target'), 'Start opacity').toBeCloseTo(
+      START_OPACITY,
+      1
+    )
 
     // Click to trigger exit animation
     await page.getByTestId('scenario-22-trigger').click()
@@ -196,7 +208,8 @@ test.describe('Animation Behavior', () => {
       const midOpacity = await getOpacity(page, 'scenario-22-target')
       // Mid values should be intermediate (not at start, not at end)
       expect(
-        isIntermediate(midOpacity, START_OPACITY, END_OPACITY) || midOpacity < START_OPACITY,
+        isIntermediate(midOpacity, START_OPACITY, END_OPACITY) ||
+          midOpacity < START_OPACITY,
         `Mid opacity (${midOpacity.toFixed(2)}) should be animating`
       ).toBe(true)
     }
@@ -205,11 +218,14 @@ test.describe('Animation Behavior', () => {
     await page.waitForTimeout(2500)
 
     // Element should be gone after exit animation completes
-    expect(await elementExists(page, 'scenario-22-target'), 'Hidden after exit').toBe(false)
+    expect(await elementExists(page, 'scenario-22-target'), 'Hidden after exit').toBe(
+      false
+    )
   })
 
   test('interruption redirects to new target', async ({ page }) => {
-    const START = 0, FINAL = 100
+    const START = 0,
+      FINAL = 100
 
     expect(await getTranslateX(page, 'scenario-25-target'), 'Start').toBeCloseTo(START, 0)
 
@@ -220,7 +236,8 @@ test.describe('Animation Behavior', () => {
   })
 
   test('complex multi-property completes correctly', async ({ page }) => {
-    const OPACITY_END = 0.7, SCALE_END = 1.2
+    const OPACITY_END = 0.7,
+      SCALE_END = 1.2
 
     await page.getByTestId('scenario-34-trigger').click()
     await page.waitForTimeout(4000)
@@ -237,7 +254,9 @@ test.describe('Animation Behavior', () => {
     const END_OPACITY = 1
 
     // Element should not exist initially
-    expect(await elementExists(page, 'scenario-37-target'), 'Initially hidden').toBe(false)
+    expect(await elementExists(page, 'scenario-37-target'), 'Initially hidden').toBe(
+      false
+    )
 
     // Click to show element
     await page.getByTestId('scenario-37-trigger').click()
@@ -246,7 +265,10 @@ test.describe('Animation Behavior', () => {
     await page.waitForTimeout(100)
 
     // Element should exist now
-    expect(await elementExists(page, 'scenario-37-target'), 'Should exist after click').toBe(true)
+    expect(
+      await elementExists(page, 'scenario-37-target'),
+      'Should exist after click'
+    ).toBe(true)
 
     // Get scaleX value (first value in matrix transform)
     const getScaleX = async () => {
@@ -271,7 +293,9 @@ test.describe('Animation Behavior', () => {
     expect(endOpacity, 'End opacity').toBeCloseTo(END_OPACITY, 1)
   })
 
-  test('per-property config with transform: unlisted properties still animate', async ({ page }) => {
+  test('per-property config with transform: unlisted properties still animate', async ({
+    page,
+  }) => {
     // this tests the "animationClamped" pattern fix
     // transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }]}
     // scale and y are NOT in the per-property config but should still animate
@@ -300,7 +324,9 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 
-  test('object format per-property config: unlisted properties still animate', async ({ page }) => {
+  test('object format per-property config: unlisted properties still animate', async ({
+    page,
+  }) => {
     // same as above but using object format: { opacity: '200ms', default: 'quick' }
     const OPACITY_END = 0.5
     const SCALE_END = 1.3
@@ -318,7 +344,9 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 
-  test('object format WITHOUT default: only specified properties animate', async ({ page }, testInfo) => {
+  test('object format WITHOUT default: only specified properties animate', async ({
+    page,
+  }, testInfo) => {
     // this test is CSS-driver specific - other drivers may handle transitions differently
     const driver = (testInfo.project?.metadata as any)?.animationDriver
     if (driver !== 'css') {
@@ -347,10 +375,13 @@ test.describe('Animation Behavior', () => {
     expect(endOpacity, 'Opacity should animate to end').toBeCloseTo(OPACITY_END, 1)
   })
 
-  test('per-property config with delay: both delay and per-property work together', async ({ page }) => {
+  test('per-property config with delay: both delay and per-property work together', async ({
+    page,
+  }) => {
     // transition={['quick', { delay: 300, opacity: '500ms' }]}
     // 300ms delay, then opacity=500ms, scale=quick
-    const OPACITY_START = 1, OPACITY_END = 0.5
+    const OPACITY_START = 1,
+      OPACITY_END = 0.5
     const SCALE_END = 1.3
 
     const initialOpacity = await getOpacity(page, 'scenario-41-target')
@@ -361,7 +392,10 @@ test.describe('Animation Behavior', () => {
     // at 150ms (before delay ends), values should still be at start
     await page.waitForTimeout(150)
     const duringDelay = await getOpacity(page, 'scenario-41-target')
-    expect(duringDelay, 'During delay, opacity should be near start').toBeCloseTo(OPACITY_START, 0)
+    expect(duringDelay, 'During delay, opacity should be near start').toBeCloseTo(
+      OPACITY_START,
+      0
+    )
 
     // wait for delay + animations to complete (300ms delay + 500ms opacity + buffer)
     await page.waitForTimeout(1000)

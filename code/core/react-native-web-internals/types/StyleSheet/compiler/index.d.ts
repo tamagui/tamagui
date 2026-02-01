@@ -6,7 +6,7 @@
  *
  * @flow strict-local
  */
-type Value = Object | Array<any> | string | number;
+type Value = object | Array<any> | string | number;
 type Style = {
     [K in string]: Value;
 };
