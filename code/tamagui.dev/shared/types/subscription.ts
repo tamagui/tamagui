@@ -42,10 +42,16 @@ export type PricingType = (typeof Pricing)[keyof typeof Pricing]
 
 export type UserSubscriptionStatus = {
   pro: boolean
+  /** Has V1 Pro subscription (legacy) */
+  proV1: boolean
+  /** Has V2 Pro license */
+  proV2: boolean
   chat: boolean
   supportTier: number
   teamSeats: number
   couponCodes: {
     [key: string]: string
   }
+  /** Whether this user is a developer who can test the purchase flow */
+  isDeveloper?: boolean
 }

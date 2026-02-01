@@ -3,7 +3,12 @@
 Simplish reactive classes in react. It doesn't do granular deep object reaction, just the top level set.
 
 ```tsx
-import { createUseStore, createStoreInstance, useStore, useGlobalStore } from '@tamagui/use-store'
+import {
+  createUseStore,
+  createStoreInstance,
+  useStore,
+  useGlobalStore,
+} from '@tamagui/use-store'
 
 class X {
   y = 0
@@ -22,7 +27,7 @@ export function ReactComponent() {
   const x0 = useStore(X)
   const x1 = useX()
   const x2 = useGlobalStore(x)
-  
+
   return (
     <>
       <div>{x0.y}</div>
@@ -36,20 +41,16 @@ export function ReactComponentAlt() {
   const x0 = useStore(X, { id: 100 })
   const x1 = useX({ id: 100 })
   const x2 = useGlobalStore(x, { id: 100 })
-  
-  return (
-    <div>{x0.y}</div>
-  )
+
+  return <div>{x0.y}</div>
 }
 
 // finally, you can make selectors with
 export function ReactComponentAlt() {
-  const xplusten0 = useStoreSelector(X, { id: 100 }, x => x.y + 10)
-  const xplusten1 = useGlobalStoreSelector(X, { id: 100 }, x => x.y + 10)
+  const xplusten0 = useStoreSelector(X, { id: 100 }, (x) => x.y + 10)
+  const xplusten1 = useGlobalStoreSelector(X, { id: 100 }, (x) => x.y + 10)
 
-  return (
-    <div>{xplusten}</div>
-  )
+  return <div>{xplusten}</div>
 }
 ```
 
@@ -58,7 +59,6 @@ export function ReactComponentAlt() {
 TODO
 
 - usePortal
-
 
 Better selectors/reactions:
 
@@ -81,7 +81,7 @@ useEffect(() => {
     () => {
       return homeStore.isActive && mapStore.isActive
     },
-    isValid => {
+    (isValid) => {
       // ...
     }
   )

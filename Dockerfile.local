@@ -1,0 +1,68 @@
+# local build dockerfile - uses bento from ../bento
+# build from PARENT directory: docker build -f tamagui5/Dockerfile.local -t tamagui-site .
+FROM node:22
+
+# install bun
+RUN npm install -g bun
+
+ARG CF_API_KEY
+ARG CF_EMAIL
+ARG CF_ZONE_ID
+ARG DISCORD_BOT_TOKEN
+ARG DISCORD_ID
+ARG DISCORD_OAUTH2
+ARG DISCORD_PUB_KEY
+ARG GITHUB_ADMIN_TOKEN
+ARG GITHUB_APP_CLIENT_ID
+ARG GITHUB_APP_SECRET
+ARG GITHUB_SPONSOR_WEBHOOK_SECRET
+ARG GITHUB_TOKEN
+ARG IS_TAMAGUI_DEV
+ARG NEXT_PUBLIC_GITHUB_APP_ID
+ARG NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID
+ARG NEXT_PUBLIC_IS_TAMAGUI_DEV
+ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_URL
+ARG POSTMARK_SERVER_TOKEN
+ARG CLOUDFLARE_TURNSTILE_SECRET
+ARG SHOULD_UNLOCK_GIT_CRYPT
+ARG STRIPE_SECRET_KEY
+ARG STRIPE_SIGNING_SIGNATURE_SECRET
+ARG STUDIO_JWT_SECRET
+ARG SUPABASE_SERVICE_ROLE_KEY
+ARG TAKEOUT_RENEWAL_COUPON_ID
+ARG URL
+ARG ONE_SERVER_URL
+ARG APP_NAME
+ARG TAMAGUI_PRO_SECRET
+ARG DEEPSEEK_API_KEY
+
+# install dependencies (sharp needs libvips for image processing)
+RUN apt-get update && apt-get install -y git bsdmainutils vim-common libvips-dev
+
+WORKDIR /root
+
+# copy both repos
+COPY bento /root/bento
+COPY tamagui5 /root/tamagui
+
+WORKDIR /root/tamagui
+
+# init git (allow empty commit if nothing to commit)
+RUN git config --global user.email "you@example.com" && git config --global user.name "Docker Build" && git init . && git add -A && (git commit -m 'add' > /dev/null || true)
+
+# install tamagui deps first
+RUN bun install
+
+# setup bento - merge deps and symlink node_modules
+RUN node scripts/with-bento.mjs && bun install
+
+# build
+RUN bun run build:js
+RUN bun run build:app
+
+EXPOSE 3000
+
+CMD ["bun", "run", "docker:serve"]

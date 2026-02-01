@@ -32,7 +32,7 @@ function extractDuration(animation: string): number {
   return 300
 }
 
-export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
+export function createAnimations<A extends object>(animations: A): AnimationDriver<A> {
   const reactionListeners = new WeakMap<any, Set<Function>>()
 
   return {

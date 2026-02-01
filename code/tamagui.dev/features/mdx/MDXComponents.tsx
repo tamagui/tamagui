@@ -76,7 +76,7 @@ import { Tab } from '~/components/RovingTabs'
 import { SimpleTable } from './SimpleTable'
 
 if (!React.version.startsWith('19')) {
-  console.error(`\n\n\n\Not on React 19 ❌\n\n\n\n`)
+  console.error(`\n\n\nNot on React 19 ❌\n\n\n\n`)
 }
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {

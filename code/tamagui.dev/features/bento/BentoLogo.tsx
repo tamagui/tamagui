@@ -1,5 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { H1, Theme, type ThemeProps, YStack } from 'tamagui'
+import { useFontLoaded } from '~/features/site/fonts/LoadFonts'
 
 const offsetAdjust = 1
 
@@ -25,7 +26,13 @@ export const BentoLogo = ({
   children = 'BENTO',
   scale = 1,
   backgrounded,
-}: { children?: string; scale?: number; backgrounded?: boolean }) => {
+}: {
+  children?: string
+  scale?: number
+  backgrounded?: boolean
+}) => {
+  const fontLoaded = useFontLoaded('Cherry Bomb')
+
   return (
     <YStack
       pointerEvents="none"
@@ -34,6 +41,8 @@ export const BentoLogo = ({
       my={-(1 - scale) * 100}
       mx={-(1 - scale) * 270}
       scale={scale}
+      opacity={fontLoaded ? 1 : 0}
+      x={20}
       {...(backgrounded && {
         bg: '$background',
       })}

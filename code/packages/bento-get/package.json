@@ -1,46 +1,41 @@
 {
   "name": "bento-get",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0-1769885482630",
   "license": "MIT",
   "bin": "dist/cli.js",
-  "type": "module",
-  "engines": {
-    "node": ">=20"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "source": "src/cli.tsx",
-  "types": "./types/cli.d.ts",
-  "module": "dist",
   "files": [
     "source",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-types",
-    "watch": "yarn build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "local-npm-link": "npm link --local --force"
-  },
+  "type": "module",
+  "module": "dist",
+  "types": "./types/cli.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --skip-types",
+    "watch": "bun run build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "local-npm-link": "npm link --local --force"
   },
   "dependencies": {
     "@inkjs/ui": "2.0.0",
@@ -68,5 +63,8 @@
     "@types/copy-paste": "^1.1.33",
     "@types/ink": "^2.0.3",
     "@types/react": "~19.1.10"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

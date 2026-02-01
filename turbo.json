@@ -11,11 +11,19 @@
       "inputs": [
         "tsconfig.json",
         "package.json",
-        "src/**",
+        "src/**/*",
         "tamagui-build.js",
         "externalNodePlugin.js"
       ],
-      "outputs": [".next/**", "dist/**", "types/**", "**/*.css"]
+      "outputs": [".next/**/*", "dist/**/*", "types/**/*", "**/*.css"]
+    },
+    "check": {
+      "cache": false,
+      "outputs": []
+    },
+    "typecheck": {
+      "cache": false,
+      "outputs": []
     },
     "start": {
       "dependsOn": ["^build"],
@@ -23,31 +31,35 @@
     },
     "test": {
       "dependsOn": ["^build:js"],
-      "inputs": ["../../yarn.lock", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+      "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
       "outputs": [],
-      "env": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE", "SKIP_NATIVE_TESTS"],
-      "passThroughEnv": ["TAMAGUI_TARGET", "TEST_NATIVE_PLATFORM", "DISABLE_NATIVE_TEST", "DISABLE_REACT_NATIVE", "SKIP_NATIVE_TESTS"]
+      "env": [
+        "TAMAGUI_TARGET",
+        "TEST_NATIVE_PLATFORM",
+        "DISABLE_NATIVE_TEST",
+        "DISABLE_REACT_NATIVE",
+        "SKIP_NATIVE_TESTS"
+      ],
+      "passThroughEnv": [
+        "TAMAGUI_TARGET",
+        "TEST_NATIVE_PLATFORM",
+        "DISABLE_NATIVE_TEST",
+        "DISABLE_REACT_NATIVE",
+        "SKIP_NATIVE_TESTS"
+      ]
     },
     "test:web": {
       "dependsOn": ["^build:js"],
-      "inputs": ["../../yarn.lock", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+      "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
       "outputs": []
     },
     "clean": {
-      "outputs": ["dist/**"],
+      "outputs": ["dist/**/*"],
       "cache": false
     },
     "clean:build": {
       "outputs": [],
       "cache": false
-    },
-    "lint": {
-      "cache": false,
-      "outputs": []
-    },
-    "lint:fix": {
-      "cache": false,
-      "outputs": ["src/**"]
     },
     "dev": {
       "cache": false

@@ -17,13 +17,17 @@ const prodProject = {
 }
 
 const projects =
-  mode === 'both' ? [devProject, prodProject] : mode === 'prod' ? [prodProject] : [devProject]
+  mode === 'both'
+    ? [devProject, prodProject]
+    : mode === 'prod'
+      ? [prodProject]
+      : [devProject]
 
 const webServers: any[] = []
 
 if (mode === 'dev' || mode === 'both') {
   webServers.push({
-    command: `yarn dev --port ${devPort}`,
+    command: `bun run dev --port ${devPort}`,
     url: `http://localhost:${devPort}`,
     reuseExistingServer: true,
     timeout: 120000,
@@ -32,7 +36,7 @@ if (mode === 'dev' || mode === 'both') {
 
 if (mode === 'prod' || mode === 'both') {
   webServers.push({
-    command: `yarn build:web && yarn serve --port ${prodPort}`,
+    command: `bun run build:web && bun run serve --port ${prodPort}`,
     url: `http://localhost:${prodPort}`,
     reuseExistingServer: true,
     timeout: 180000,
@@ -53,5 +57,9 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   projects,
-  webServer: process.env.CI ? undefined : webServers.length === 1 ? webServers[0] : webServers,
+  webServer: process.env.CI
+    ? undefined
+    : webServers.length === 1
+      ? webServers[0]
+      : webServers,
 })

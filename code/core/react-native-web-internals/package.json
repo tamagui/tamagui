@@ -1,23 +1,24 @@
 {
   "name": "@tamagui/react-native-web-internals",
-  "version": "2.0.0-1769680173943",
-  "type": "module",
+  "version": "2.0.0-rc.0-1769885482630",
   "description": "React Native for Web",
-  "sideEffects": false,
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "typings": "./types/index.d.ts",
+  "keywords": [
+    "react",
+    "react-component",
+    "react-native",
+    "web"
+  ],
+  "license": "MIT",
   "files": [
     "types",
     "dist",
     "src"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "typings": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -26,6 +27,12 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
     }
+  },
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/normalize-css-color": "workspace:*",
@@ -37,21 +44,14 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*"
   },
-  "license": "MIT",
   "tags": [
     "react"
-  ],
-  "keywords": [
-    "react",
-    "react-component",
-    "react-native",
-    "web"
   ]
 }

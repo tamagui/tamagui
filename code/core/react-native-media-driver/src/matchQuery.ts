@@ -6,8 +6,8 @@ See the accompanying LICENSE file for terms.
 
 // -----------------------------------------------------------------------------
 
-const RE_MEDIA_QUERY = /(?:(only|not)?\s*([^\s\(\)]+)(?:\s*and)?\s*)?(.+)?/i
-const RE_MQ_EXPRESSION = /\(\s*([^\s\:\)]+)\s*(?:\:\s*([^\s\)]+))?\s*\)/
+const RE_MEDIA_QUERY = /(?:(only|not)?\s*([^\s()]+)(?:\s*and)?\s*)?(.+)?/i
+const RE_MQ_EXPRESSION = /\(\s*([^\s:)]+)\s*(?::\s*([^\s)]+))?\s*\)/
 const RE_MQ_FEATURE = /^(?:(min|max)-)?(.+)/
 const RE_LENGTH_UNIT = /(em|rem|px|cm|mm|in|pt|pc)?$/
 const RE_RESOLUTION_UNIT = /(dpi|dpcm|dppx)?$/
@@ -106,7 +106,7 @@ export function parseQuery(mediaQuery: string): ({
     const type = captures[2]
     const expressionsCapture = captures[3] || ''
     // Split expressions into a list.
-    const expressions = expressionsCapture.match(/\([^\)]+\)/g) || []
+    const expressions = expressionsCapture.match(/\([^)]+\)/g) || []
 
     return {
       inverse: !!modifier && modifier.toLowerCase() === 'not',

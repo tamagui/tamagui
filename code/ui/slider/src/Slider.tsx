@@ -602,7 +602,6 @@ const SliderComponent = React.forwardRef(
     const [values = [], setValues] = useControllableState({
       prop: value,
       defaultProp: defaultValue,
-      transition: true,
       onChange: (value: number[]) => {
         updateThumbFocus(valueIndexToChangeRef.current)
         onValueChange(value)

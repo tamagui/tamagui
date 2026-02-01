@@ -1,17 +1,15 @@
 ---
 title: Tamagui CLI
-description:
-  Command-line tools for building, checking, and managing Tamagui projects
+description: Command-line tools for building, checking, and managing Tamagui projects
 ---
 
 <IntroParagraph>
-  The Tamagui CLI provides a suite of command-line tools for optimizing
-  components, managing dependencies, adding fonts and icons, and more.
+  The Tamagui CLI provides a suite of command-line tools for optimizing components,
+  managing dependencies, adding fonts and icons, and more.
 </IntroParagraph>
 
 <Notice theme="gray">
-  **Just starting out?** Skim this section, the CLI is not necessary to get
-  going.
+  **Just starting out?** Skim this section, the CLI is not necessary to get going.
 </Notice>
 
 ## Installation
@@ -80,7 +78,7 @@ export default {
   config: './tamagui.config.ts',
   components: ['tamagui'],
   importsWhitelist: ['constants.js', 'colors.js'],
-  outputCSS: './public/tamagui.css',
+  outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 
@@ -161,7 +159,7 @@ npx tamagui generate
 
 ### generate-css
 
-Generate the `tamagui.css` file from your configuration. Useful for build
+Generate the `tamagui.generated.css` file from your configuration. Useful for build
 pipelines or when you need to regenerate CSS without running a full build.
 
 ```bash
@@ -170,14 +168,14 @@ npx tamagui generate-css
 
 **Flags:**
 
-- `--output <path>` - Custom output path (default: `tamagui.css`)
+- `--output <path>` - Custom output path (default: `tamagui.generated.css`)
 - `--debug` - Enable debug output
 - `--verbose` - Enable verbose debug output
 
 **Example:**
 
 ```bash
-npx tamagui generate-css --output ./public/styles/tamagui.css
+npx tamagui generate-css --output ./public/styles/tamagui.generated.css
 ```
 
 ### generate-themes
@@ -206,8 +204,7 @@ pre-computes your themes at build time rather than runtime.
 ### add
 
 <Notice theme="green">
-  **Tamagui Pro** - This command is available exclusively to Tamagui Pro
-  members.
+  **Tamagui Pro** - This command is available exclusively to Tamagui Pro members.
 </Notice>
 
 Add pre-configured fonts and icons from Tamagui's curated collections. This

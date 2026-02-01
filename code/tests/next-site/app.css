@@ -1,8 +1,17 @@
 html,
 body {
   max-width: 100vw;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
     'Segoe UI Symbol';
 }
 
@@ -62,4 +71,3 @@ a {
   text-decoration-thickness: 4px;
   text-decoration-color: var(--color8);
 }
-

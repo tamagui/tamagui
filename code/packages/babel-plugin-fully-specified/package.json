@@ -1,23 +1,16 @@
 {
   "name": "@tamagui/babel-plugin-fully-specified",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0-1769885482630",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "license": "MIT",
   "source": "src/index.ts",
-  "main": "permanent/cjs/index.js",
-  "module": "permanent/esm/index.mjs",
   "files": [
     "src",
     "types",
     "permanent"
   ],
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "test": "vitest --run"
-  },
+  "main": "permanent/cjs/index.js",
+  "module": "permanent/esm/index.mjs",
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
@@ -33,12 +26,17 @@
       "require": "./permanent/cjs/commonjs.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "vitest --run"
+  },
   "dependencies": {
     "@babel/core": "^7.25.2"
   },
   "devDependencies": {
     "@babel/types": "^7.25.4",
-    "vitest": "^4.0.4"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+    "vitest": "4.0.4"
+  }
 }

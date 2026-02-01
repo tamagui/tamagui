@@ -264,6 +264,11 @@ export type TamaguiComponentPropsBaseBase = {
   themeShallow?: boolean
 
   /**
+   * If true, component themes will not be applied
+   */
+  unstyled?: boolean
+
+  /**
    * Same as the web id property for setting a uid on an element
    */
   id?: string
@@ -529,8 +534,7 @@ export type TamaguiWebElement<T extends HTMLElement = HTMLElement> = T &
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
 
 export interface TamaguiComponentPropsBase
-  extends TamaguiComponentPropsBaseBase,
-    WebOnlyPressEvents {}
+  extends TamaguiComponentPropsBaseBase, WebOnlyPressEvents {}
 
 /**
  * For static / studio
@@ -702,7 +706,7 @@ type Tokenify<A extends GenericTokens> = Omit<
   zIndex: TokenifyRecord<A extends { zIndex: any } ? A['zIndex'] : {}>
 }
 
-type TokenifyRecord<A extends Object> = {
+type TokenifyRecord<A extends object> = {
   [Key in keyof A]: CoerceToVariable<A[Key]>
 }
 
@@ -777,8 +781,7 @@ type GenericAnimations = {
 export interface TamaguiCustomConfig {}
 
 export interface TamaguiConfig
-  extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>,
-    TamaguiCustomConfig {}
+  extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {}
 
 export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
   onlyAllowShorthands: infer X
@@ -868,33 +871,27 @@ type EmptyTamaguiSettings = {
 }
 
 // Helper to extract animation config from AnimationDriver<Config> or multi-driver object
-type ExtractAnimationConfig<E> = E extends AnimationDriver<infer Config>
-  ? Config
-  : E extends { default: AnimationDriver<infer Config> }
+type ExtractAnimationConfig<E> =
+  E extends AnimationDriver<infer Config>
     ? Config
-    : E extends GenericAnimations
-      ? E
-      : EmptyAnimations
+    : E extends { default: AnimationDriver<infer Config> }
+      ? Config
+      : E extends GenericAnimations
+        ? E
+        : EmptyAnimations
 
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
-  infer A,
-  infer B,
-  infer C,
-  infer D,
-  infer E,
-  infer F,
-  infer H
->
-  ? TamaguiInternalConfig<
-      A extends GenericTokens ? A : EmptyTokens,
-      B extends GenericThemes ? B : EmptyThemes,
-      C extends GenericShorthands ? C : EmptyShorthands,
-      D extends GenericMedia ? D : EmptyMedia,
-      ExtractAnimationConfig<E>,
-      F extends GenericFonts ? F : EmptyFonts,
-      H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings
-    >
-  : unknown
+export type InferTamaguiConfig<Conf> =
+  Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H>
+    ? TamaguiInternalConfig<
+        A extends GenericTokens ? A : EmptyTokens,
+        B extends GenericThemes ? B : EmptyThemes,
+        C extends GenericShorthands ? C : EmptyShorthands,
+        D extends GenericMedia ? D : EmptyMedia,
+        ExtractAnimationConfig<E>,
+        F extends GenericFonts ? F : EmptyFonts,
+        H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings
+      >
+    : unknown
 
 // for use in creation functions so it doesnt get overwritten
 export type GenericTamaguiConfig = CreateTamaguiConfig<
@@ -965,11 +962,10 @@ type GetAnimationsFromMultiDriver<T> = T extends { default: infer D }
 type ExtractDriver<T> = Extract<T, AnimationDriver<any>>
 
 // Main extraction - use Extract to get AnimationDriver from union, then get keys
-type InferredTransitionKeys = ExtractDriver<
-  TamaguiConfig['animations']
-> extends AnimationDriver<any>
-  ? GetAnimationsFromDriver<ExtractDriver<TamaguiConfig['animations']>>
-  : GetAnimationsFromMultiDriver<TamaguiConfig['animations']>
+type InferredTransitionKeys =
+  ExtractDriver<TamaguiConfig['animations']> extends AnimationDriver<any>
+    ? GetAnimationsFromDriver<ExtractDriver<TamaguiConfig['animations']>>
+    : GetAnimationsFromMultiDriver<TamaguiConfig['animations']>
 
 export type TransitionKeys = InferredTransitionKeys
 
@@ -1011,6 +1007,7 @@ export type UseThemeWithStateProps = ThemeProps & {
   passThrough?: boolean
   disable?: boolean
   needsUpdate?: () => boolean
+  unstyled?: boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
@@ -1350,9 +1347,10 @@ export interface TypeOverride {
   animationDrivers(): 1
 }
 
-export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1
-  ? never
-  : ReturnType<TypeOverride['groupNames']>
+export type GroupNames =
+  ReturnType<TypeOverride['groupNames']> extends 1
+    ? never
+    : ReturnType<TypeOverride['groupNames']>
 
 type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin'
 
@@ -1700,9 +1698,8 @@ export type ParseFont<A extends GenericFont> = {
   face: TokenPrefixedIfExists<A['face']>
 }
 
-export type TokenPrefixedIfExists<A> = A extends Record<string, any>
-  ? TokenPrefixed<A>
-  : {}
+export type TokenPrefixedIfExists<A> =
+  A extends Record<string, any> ? TokenPrefixed<A> : {}
 
 //
 // adds theme short values to relevant props
@@ -1831,7 +1828,7 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 // add both theme and shorthands
 //
 export type WithThemeAndShorthands<
-  A extends Object,
+  A extends object,
   Variants = {},
 > = OnlyAllowShorthands extends true
   ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>>
@@ -1841,7 +1838,7 @@ export type WithThemeAndShorthands<
 // combines all of theme, shorthands, pseudos...
 //
 export type WithThemeShorthandsAndPseudos<
-  A extends Object,
+  A extends object,
   Variants = {},
 > = WithThemeAndShorthands<A, Variants> &
   WithPseudoProps<WithThemeAndShorthands<A, Variants>>
@@ -1850,7 +1847,7 @@ export type WithThemeShorthandsAndPseudos<
 // ... media queries and animations
 //
 export type WithThemeShorthandsPseudosMedia<
-  A extends Object,
+  A extends object,
   Variants = {},
 > = WithThemeShorthandsAndPseudos<A, Variants> &
   WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>
@@ -2296,7 +2293,8 @@ interface ExtraBaseProps {
 }
 
 interface ExtendedBaseProps
-  extends TransformStyleProps,
+  extends
+    TransformStyleProps,
     ExtendBaseTextProps,
     ExtendBaseStackProps,
     ExtraStyleProps,
@@ -2307,12 +2305,10 @@ interface ExtendedBaseProps
 }
 
 export interface StackStyleBase
-  extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>,
-    ExtendedBaseProps {}
+  extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {}
 
 export interface TextStylePropsBase
-  extends Omit<RNTextStyle, keyof ExtendedBaseProps>,
-    ExtendedBaseProps {
+  extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
   ellipsis?: boolean
   textDecorationDistance?: number
   textOverflow?: Properties['textOverflow']
@@ -2329,7 +2325,7 @@ export interface TextStylePropsBase
 // Stack
 //
 
-type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B)
+type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B)
 
 // v2: Removed A11yDeprecated - use web-standard props instead:
 // - accessibilityLabel → aria-label
@@ -2345,7 +2341,8 @@ type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B)
 // - nativeID → id
 
 export interface StackNonStyleProps
-  extends Omit<
+  extends
+    Omit<
       ViewProps,
       | 'hitSlop' //  we bring our own via Pressable in TamaguiComponentPropsBase
       | 'pointerEvents'
@@ -2377,7 +2374,8 @@ export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
 //
 
 export interface TextNonStyleProps
-  extends Omit<
+  extends
+    Omit<
       ReactTextProps,
       | 'children'
       | keyof WebOnlyPressEvents
@@ -2412,18 +2410,16 @@ export type Styleable<
   Props,
   Ref,
   NonStyledProps,
-  BaseStyles extends Object,
+  BaseStyles extends object,
   VariantProps,
   ParentStaticProperties,
 > = <
-  CustomProps extends Object | void = void,
+  CustomProps extends object | void = void,
   MergedProps = CustomProps extends void
     ? Props
     : Omit<Props, keyof CustomProps> & CustomProps,
-  FunctionDef extends ForwardRefRenderFunction<
-    Ref,
-    MergedProps
-  > = ForwardRefRenderFunction<Ref, MergedProps>,
+  FunctionDef extends ForwardRefRenderFunction<Ref, MergedProps> =
+    ForwardRefRenderFunction<Ref, MergedProps>,
 >(
   a: FunctionDef,
   options?: StyleableOptions
@@ -2440,7 +2436,7 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,
   keyof StylePropsBase | keyof Variants
 > &
-  (StylePropsBase extends Object
+  (StylePropsBase extends object
     ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
     : {})
 
@@ -2448,7 +2444,7 @@ export type TamaguiComponent<
   Props = any,
   Ref = any,
   NonStyledProps = {},
-  BaseStyles extends Object = {},
+  BaseStyles extends object = {},
   Variants = {},
   ParentStaticProperties = {},
 > = ForwardRefExoticComponent<
@@ -2469,17 +2465,16 @@ export type TamaguiComponent<
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties]
   }
 
-export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
-  ? Props
-  : A extends ForwardRefExoticComponent<infer P>
-    ? P
-    : A extends ReactComponentWithRef<infer P, any>
+export type InferGenericComponentProps<A> =
+  A extends ComponentType<infer Props>
+    ? Props
+    : A extends ForwardRefExoticComponent<infer P>
       ? P
-      : A extends new (
-            props: infer Props
-          ) => any
-        ? Props
-        : {}
+      : A extends ReactComponentWithRef<infer P, any>
+        ? P
+        : A extends new (props: infer Props) => any
+          ? Props
+          : {}
 
 export type InferStyledProps<
   A extends StylableComponent,
@@ -2543,7 +2538,7 @@ export type StaticComponentObject<
   Props,
   Ref,
   NonStyledProps,
-  BaseStyles extends Object,
+  BaseStyles extends object,
   VariantProps,
   ParentStaticProperties,
 > = {
@@ -2566,7 +2561,7 @@ export type StaticComponentObject<
 
 export type TamaguiComponentExpectingVariants<
   Props = {},
-  Variants extends Object = {},
+  Variants extends object = {},
 > = TamaguiComponent<Props, any, any, any, Variants>
 
 export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
@@ -2750,9 +2745,7 @@ export type StylableComponent =
   | ComponentType<any>
   | ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>
-  | (new (
-      props: any
-    ) => any)
+  | (new (props: any) => any)
 
 export type SpreadKeys =
   | '...fontSize'
@@ -2774,7 +2767,7 @@ export type VariantDefinitions<
   }
     ? S
     : {},
-  MyProps extends Object = Partial<
+  MyProps extends object = Partial<
     GetVariantProps<
       Parent,
       StaticConfig['isText'] extends true
@@ -2809,7 +2802,7 @@ export type GetVariantProps<
       IsText extends true ? TextStylePropsBase : StackStyleBase
     >
 
-export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
+export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object
   ? {
       [propName: string]:
         | VariantSpreadFunction<MyProps, Val>
@@ -3090,12 +3083,10 @@ export type UseAnimationHook = (props: {
   ref?: any
 }
 
-export type GestureReponderEvent = Exclude<
-  View['props']['onResponderMove'],
-  void
-> extends (event: infer Event) => void
-  ? Event
-  : never
+export type GestureReponderEvent =
+  Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void
+    ? Event
+    : never
 
 export type RulesToInsert = Record<string, StyleObject>
 
@@ -3119,12 +3110,13 @@ export type ClassNamesObject = Record<string, string>
 
 export type ModifyTamaguiComponentStyleProps<
   Comp extends TamaguiComponent,
-  ChangedProps extends Object,
-> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E>
-  ? A extends Object
-    ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E>
+  ChangedProps extends object,
+> =
+  Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E>
+    ? A extends object
+      ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E>
+      : never
     : never
-  : never
 
 /**
  * Narrow copied from ts-toolbelt
@@ -3149,8 +3141,9 @@ export type Narrow<A> = Try<A, [], NarrowRaw<A>>
  */
 
 export type Falsy = undefined | null | false | ''
-export interface RecursiveArray<T>
-  extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {}
+export interface RecursiveArray<T> extends Array<
+  T | ReadonlyArray<T> | RecursiveArray<T>
+> {}
 /** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */
 
 export type RegisteredStyle<T> = number & { __registeredStyleBrand: T }

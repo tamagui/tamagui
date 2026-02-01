@@ -1,4 +1,4 @@
-export declare const v5Templates: Record<"light_base" | "light_surface1" | "light_surface2" | "light_accent" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_accent", {
+export declare const v5Templates: Record<"light_base" | "light_surface1" | "light_surface2" | "light_surface3" | "light_accent" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_accent", {
     placeholderColor: number;
     colorTransparent: number;
     color: number;

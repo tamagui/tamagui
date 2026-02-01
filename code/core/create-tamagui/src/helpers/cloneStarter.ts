@@ -93,7 +93,10 @@ async function setupTamaguiDotDir(template: (typeof templates)[number]) {
       }
     } catch (error) {
       if (error instanceof Error) {
-        if (template.value === 'takeout-pro' || template.value === 'takeout-pro-classic') {
+        if (
+          template.value === 'takeout-pro' ||
+          template.value === 'takeout-pro-classic'
+        ) {
           if ((error as any)?.stderr?.includes('Repository not found')) {
             console.info(
               chalk.yellow(

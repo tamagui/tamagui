@@ -44,7 +44,12 @@ export function ScrollViewRefCase() {
       </Text>
 
       <YStack flexDirection="row" gap="$2">
-        <Button id="scroll-to-btn" testID="scroll-to-btn" size="$2" onPress={handleScrollTo}>
+        <Button
+          id="scroll-to-btn"
+          testID="scroll-to-btn"
+          size="$2"
+          onPress={handleScrollTo}
+        >
           scrollTo(200)
         </Button>
         <Button

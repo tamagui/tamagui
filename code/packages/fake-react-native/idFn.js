@@ -1,1 +1,1 @@
-export default (_ => _)
+export default (_) => _

@@ -22,7 +22,7 @@ const resolveDynamicValue = (value: any, isDark: boolean): any => {
   return value
 }
 
-type AnimationsConfig<A extends Object = any> = { [Key in keyof A]: AnimationConfig }
+type AnimationsConfig<A extends object = any> = { [Key in keyof A]: AnimationConfig }
 
 type SpringConfig = { type?: 'spring' } & Partial<
   Pick<

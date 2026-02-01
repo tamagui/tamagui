@@ -6,7 +6,9 @@ test.beforeEach(async ({ page }) => {
 })
 
 test.describe('Sheet snapPointsMode="fit"', () => {
-  test('standalone sheet with fit mode opens and closes without issues', async ({ page }) => {
+  test('standalone sheet with fit mode opens and closes without issues', async ({
+    page,
+  }) => {
     const trigger = page.getByTestId('standalone-fit-trigger')
     const frame = page.getByTestId('standalone-fit-frame')
     const closeButton = page.getByTestId('standalone-fit-close')

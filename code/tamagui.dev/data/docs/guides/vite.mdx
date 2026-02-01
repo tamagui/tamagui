@@ -8,7 +8,8 @@ Tamagui now has two plugins for Vite: one that sets up everything you need to ge
 ## Install
 
 <Notice theme="green">
-  For a full-featured example, you can create a new app using `npm create tamagui@latest` and select the 'Simple Web' option which includes a Vite setup.
+  For a full-featured example, you can create a new app using `npm create tamagui@latest`
+  and select the 'Simple Web' option which includes a Vite setup.
 </Notice>
 
 Create a new [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) project:
@@ -40,8 +41,9 @@ export default {
       // points to any linked packages or node_modules
       // that have tamagui components to optimize
       components: ['tamagui'],
-      // turns on the optimizing compiler
-      optimize: true,
+      // disable optimizing compiler but keep debug helper transforms,
+      // or other options like pre-building CSS
+      disableExtraction: true,
     }),
   ].filter(Boolean),
 }

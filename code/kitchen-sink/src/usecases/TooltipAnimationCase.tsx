@@ -16,7 +16,14 @@ export function TooltipAnimationCase() {
   const [showCount, setShowCount] = useState(0)
 
   return (
-    <YStack flex={1} gap="$8" p="$4" bg="$background" alignItems="center" justifyContent="center">
+    <YStack
+      flex={1}
+      gap="$8"
+      p="$4"
+      bg="$background"
+      alignItems="center"
+      justifyContent="center"
+    >
       <XStack gap="$4">
         <Paragraph data-testid="show-count">Show count: {showCount}</Paragraph>
       </XStack>

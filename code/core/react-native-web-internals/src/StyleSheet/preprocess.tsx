@@ -19,7 +19,7 @@ const emptyObject = {}
 
 const defaultOffset = { height: 0, width: 0 }
 
-export const createBoxShadowValue = (style: Object): void | string => {
+export const createBoxShadowValue = (style: object): void | string => {
   const { shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
   const { height, width } = shadowOffset || defaultOffset
   const offsetX = normalizeValueWithProperty(width)
@@ -31,7 +31,7 @@ export const createBoxShadowValue = (style: Object): void | string => {
   }
 }
 
-export const createTextShadowValue = (style: Object): void | string => {
+export const createTextShadowValue = (style: object): void | string => {
   const { textShadowColor, textShadowOffset, textShadowRadius } = style
   const { height, width } = textShadowOffset || defaultOffset
   const radius = textShadowRadius || 0
@@ -57,7 +57,7 @@ export const createTextShadowValue = (style: Object): void | string => {
 export const preprocess = <
   T extends {
     [K in string]: any
-  }
+  },
 >(
   originalStyle: T
 ): T => {

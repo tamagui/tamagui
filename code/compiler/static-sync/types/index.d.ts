@@ -9,7 +9,7 @@
  */
 import type { BabelFileResult } from '@babel/core';
 import type { TamaguiOptions } from '@tamagui/types';
-export type { ExtractedResponse, TamaguiProjectInfo, } from '@tamagui/static';
+export type { ExtractedResponse, TamaguiProjectInfo } from '@tamagui/static';
 export type { TamaguiOptions } from '@tamagui/types';
 export declare const getPragmaOptions: (props: {
     source: string;

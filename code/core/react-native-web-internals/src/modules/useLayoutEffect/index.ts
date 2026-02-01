@@ -1,4 +1,4 @@
-import React from "react"; /**
+import React from 'react' /**
  * Copyright (c) Nicolas Gallagher.
  *
  * This source code is licensed under the MIT license found in the
@@ -10,8 +10,6 @@ import React from "react"; /**
  * @flow
  */
 
+import { canUseDOM } from '../canUseDOM'
 
-
-import { canUseDOM } from '../canUseDOM';
-
-export const useLayoutEffectImpl = canUseDOM ? React.useLayoutEffect : React.useEffect;
+export const useLayoutEffectImpl = canUseDOM ? React.useLayoutEffect : React.useEffect

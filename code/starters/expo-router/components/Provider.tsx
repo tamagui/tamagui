@@ -19,12 +19,10 @@ export function Provider({
       <ToastProvider
         swipeDirection="horizontal"
         duration={6000}
-        native={
-          [
-            // uncomment the next line to do native toasts on mobile. NOTE: it'll require you making a dev build and won't work with Expo Go
-            // 'mobile'
-          ]
-        }
+        native={[
+          // uncomment the next line to do native toasts on mobile. NOTE: it'll require you making a dev build and won't work with Expo Go
+          // 'mobile'
+        ]}
       >
         {children}
         <CurrentToast />

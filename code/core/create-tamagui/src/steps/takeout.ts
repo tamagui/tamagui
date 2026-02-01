@@ -9,11 +9,9 @@ import prompts from 'prompts'
 import { takeoutAsciiArt, tamaguiRainbowAsciiArt } from '../helpers/asciiArts'
 import type { ExtraSteps } from './types'
 
-const packageManager = 'yarn'
-const useYarn = packageManager === 'yarn'
+const packageManager = 'bun'
 
-const runCommand = (scriptName: string) =>
-  `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
+const runCommand = (scriptName: string) => `${packageManager} run ${scriptName}`
 
 const main: ExtraSteps = async ({ isFullClone, projectName, projectPath }) => {
   console.info(`
@@ -43,7 +41,7 @@ ${takeoutAsciiArt}
     })
 
     if (startLocalSupabase) {
-      const supabaseStarted = await runRetryableCommand(`yarn supa start`)
+      const supabaseStarted = await runRetryableCommand(`bun run supa start`)
 
       if (supabaseStarted) {
         console.info()
@@ -56,7 +54,9 @@ ${takeoutAsciiArt}
         })
 
         if (setUpSupabaseEnv) {
-          const envs = getEnvFromSupabaseStatus(execSync('yarn supa status').toString())
+          const envs = getEnvFromSupabaseStatus(
+            execSync('bun run supa status').toString()
+          )
           const newEnvContent = Object.entries(envs)
             .map(([key, value]) => `${key}=${value}`)
             .join('\n')

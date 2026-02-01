@@ -7,7 +7,9 @@ package: roving-focus
 ---
 
 <IntroParagraph marginTop={-5} marginBottom={30}>
-  A utility component for managing keyboard focus within a group of elements using the roving tabindex pattern. Enables arrow key navigation between focusable items while maintaining a single tab stop for the group.
+  A utility component for managing keyboard focus within a group of elements using the
+  roving tabindex pattern. Enables arrow key navigation between focusable items while
+  maintaining a single tab stop for the group.
 </IntroParagraph>
 
 Note that this is primarily a web component. On native it renders children without keyboard navigation management.
@@ -59,6 +61,7 @@ export default () => (
 The roving tabindex pattern allows a group of focusable elements to act as a single tab stop. When the user tabs into the group, focus moves to the currently active item. Arrow keys then navigate between items within the group.
 
 This improves keyboard navigation by:
+
 - Reducing the number of tab stops on a page
 - Providing intuitive arrow key navigation within related controls
 - Maintaining focus state across the group
@@ -224,20 +227,17 @@ export default () => (
     {
       name: 'currentTabStopId',
       type: 'string | null',
-      description:
-        'The controlled id of the current tab stop.',
+      description: 'The controlled id of the current tab stop.',
     },
     {
       name: 'defaultCurrentTabStopId',
       type: 'string',
-      description:
-        'The default id of the current tab stop for uncontrolled usage.',
+      description: 'The default id of the current tab stop for uncontrolled usage.',
     },
     {
       name: 'onCurrentTabStopIdChange',
       type: '(tabStopId: string | null) => void',
-      description:
-        'Callback when the current tab stop changes.',
+      description: 'Callback when the current tab stop changes.',
     },
     {
       name: 'onEntryFocus',
@@ -249,8 +249,7 @@ export default () => (
       name: 'asChild',
       type: 'boolean',
       default: 'false',
-      description:
-        'When true, renders as a Slot, merging props onto the child element.',
+      description: 'When true, renders as a Slot, merging props onto the child element.',
     },
   ]}
 />
@@ -262,8 +261,7 @@ export default () => (
     {
       name: 'tabStopId',
       type: 'string',
-      description:
-        'A unique identifier for this item. Auto-generated if not provided.',
+      description: 'A unique identifier for this item. Auto-generated if not provided.',
     },
     {
       name: 'focusable',
@@ -283,21 +281,20 @@ export default () => (
       name: 'asChild',
       type: 'boolean',
       default: 'false',
-      description:
-        'When true, renders as a Slot, merging props onto the child element.',
+      description: 'When true, renders as a Slot, merging props onto the child element.',
     },
   ]}
 />
 
 ## Keyboard Navigation
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Move focus into/out of the group |
-| `Arrow Left/Right` | Move focus between items (horizontal orientation) |
-| `Arrow Up/Down` | Move focus between items (vertical orientation) |
-| `Home` / `Page Up` | Move focus to first item |
-| `End` / `Page Down` | Move focus to last item |
+| Key                 | Action                                            |
+| ------------------- | ------------------------------------------------- |
+| `Tab`               | Move focus into/out of the group                  |
+| `Arrow Left/Right`  | Move focus between items (horizontal orientation) |
+| `Arrow Up/Down`     | Move focus between items (vertical orientation)   |
+| `Home` / `Page Up`  | Move focus to first item                          |
+| `End` / `Page Down` | Move focus to last item                           |
 
 ## Usage in Components
 
@@ -308,5 +305,7 @@ RovingFocusGroup is used internally by several Tamagui components to provide key
 - [ToggleGroup](/docs/components/toggle-group) - Navigate between toggle options
 
 <Notice>
-  RovingFocusGroup is primarily designed for web platforms. On React Native, it renders children without keyboard navigation management since native platforms handle focus differently.
+  RovingFocusGroup is primarily designed for web platforms. On React Native, it renders
+  children without keyboard navigation management since native platforms handle focus
+  differently.
 </Notice>

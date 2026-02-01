@@ -20,7 +20,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, {
     name: 'ThemeNested',
     type: 'useCase',
-    searchParams: { v4theme: 'true' }
+    searchParams: { v4theme: 'true' },
   })
 })
 

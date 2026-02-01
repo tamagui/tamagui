@@ -16,7 +16,7 @@ export declare const UIManager: {
         width: number;
         height: number;
     } | null>;
-    measureLayout(node: HTMLElement, relativeToNativeNode?: HTMLElement, onFail: any, onSuccess: any): Promise<any>;
+    measureLayout(node: HTMLElement, relativeToNativeNode: HTMLElement | undefined, onFail: () => void, onSuccess: (x: number, y: number, width: number, height: number) => void): Promise<any>;
     configureNextLayoutAnimation(config: any, onAnimationDidEnd: any): void;
     setLayoutAnimationEnabledExperimental(): void;
 };

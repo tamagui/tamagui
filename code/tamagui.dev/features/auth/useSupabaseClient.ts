@@ -49,19 +49,43 @@ export async function getAccessToken(): Promise<string | null> {
     }
   }
 
-  if (!client) return null
+  // Try via client first
+  if (client) {
+    const { data, error } = await client.auth.getSession()
+    if (!error && data.session) {
+      return data.session.access_token
+    }
+  }
 
-  const { data, error } = await client.auth.getSession()
-  if (error || !data.session) return null
+  // Fallback: read directly from localStorage
+  // This handles the case where SWR fetches before the client is fully ready
+  try {
+    const stored = localStorage.getItem('sb-auth-token')
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      if (parsed.access_token) {
+        return parsed.access_token
+      }
+    }
+  } catch {
+    // ignore parse errors
+  }
 
-  return data.session.access_token
+  return null
 }
 
 export function useSupabaseClient(given?: SupabaseAuthOnlyClient) {
   const [current, setCurrent] = useState(() => given ?? client)
 
   useEffect(() => {
-    if (current || client) return
+    // if we already have it in state, nothing to do
+    if (current) return
+    // if module-level client exists, sync it to state
+    if (client) {
+      setCurrent(client)
+      return
+    }
+    // otherwise create it
     client = createClient()
     if (client) {
       globalThis['supabaseClient'] = client
@@ -84,15 +108,24 @@ export function useSupabaseSession(client?: SupabaseAuthOnlyClient) {
 
       if (reply.error) {
         console.error(`Error authenticating`, reply.error)
+        setSession(null)
         return
       }
 
-      if (reply.data.session) {
-        setSession(reply.data.session)
-      }
+      // Always update session state (including when null after logout)
+      setSession(reply.data.session)
     }
 
     run()
+
+    // Listen for auth changes to update session state
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
   }, [supabase])
 
   return session
@@ -107,6 +140,14 @@ export const useSupabase = () => {
     if (!supabase) return
 
     const listener = supabase.auth.onAuthStateChange(async (event, currentSession) => {
+      // Skip events that shouldn't trigger user data refetch:
+      // - TOKEN_REFRESHED: fires periodically (~hourly), would cause unnecessary refetches
+      // - INITIAL_SESSION: fires on page load, SWR already handles initial fetch
+      if (event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
+        return
+      }
+
+      // Skip if same user already signed in (prevents duplicate fetches)
       if (event === 'SIGNED_IN') {
         if (session?.user.id === currentSession?.user.id) {
           return

@@ -54,7 +54,9 @@ test('custom color tokens have correct CSS variables', async ({ page }) => {
       customRed: rootStyles.getPropertyValue('--c-color-customRed').trim(),
       customBlue: rootStyles.getPropertyValue('--c-color-customBlue').trim(),
       customGreen: rootStyles.getPropertyValue('--c-color-customGreen').trim(),
-      testDifferent: rootStyles.getPropertyValue('--c-color-testsomethingdifferent').trim(),
+      testDifferent: rootStyles
+        .getPropertyValue('--c-color-testsomethingdifferent')
+        .trim(),
     }
   })
 

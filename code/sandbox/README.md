@@ -7,7 +7,7 @@ Welcome to One!
 Run your One app in development:
 
 ```bash
-yarn dev
+bun run dev
 ```
 
 ## Production
@@ -17,7 +17,7 @@ To build your app for production:
 ### Web
 
 ```bash
-yarn build:web
+bun run build:web
 ```
 
 ### iOS
@@ -25,7 +25,7 @@ yarn build:web
 First, you'll need to generate the native code for your app:
 
 ```bash
-yarn prebuild:native
+bun run prebuild:native
 ```
 
 Afterward, follow the instructions printed in the terminal to build and upload your iOS app for distribution.

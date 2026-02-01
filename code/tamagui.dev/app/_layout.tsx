@@ -1,6 +1,6 @@
 import '@tamagui/core/reset.css'
 import '~/app.css'
-import '~/tamagui.css'
+import '~/tamagui.generated.css'
 
 import { LoadProgressBar, Slot, usePathname } from 'one'
 import { setupPopper } from 'tamagui'

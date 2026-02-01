@@ -15,7 +15,7 @@ import { invariant } from '@tamagui/react-native-web-internals'
 
 import { renderApplication, getApplication } from './renderApplication'
 
-type AppParams = Object
+type AppParams = object
 
 type Runnable = {
   getApplication?: (appParams: AppParams) => {
@@ -123,7 +123,6 @@ export class AppRegistry {
       const params = { ...appParameters }
       params.rootTag = `#${params.rootTag.id}`
 
-      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log(
         `Running application "${appKey}" with appParams:\n`,
         params,

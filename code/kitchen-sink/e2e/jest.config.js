@@ -14,6 +14,6 @@ module.exports = {
   testEnvironment: 'detox/runners/jest/testEnvironment',
   verbose: true,
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { isolatedModules: true }]
+    '^.+\\.tsx?$': ['ts-jest', { isolatedModules: true }],
   },
-};
+}

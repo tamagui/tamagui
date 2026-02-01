@@ -136,9 +136,9 @@ describe.skip('PressStyleNative', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 200))
 
-      const afterDragScreenshot = await element(by.id('color-test-pressable')).takeScreenshot(
-        'color-test-after-drag'
-      )
+      const afterDragScreenshot = await element(
+        by.id('color-test-pressable')
+      ).takeScreenshot('color-test-after-drag')
 
       const color = getDominantColor(afterDragScreenshot)
       assert.ok(
@@ -191,9 +191,9 @@ describe.skip('PressStyleNative', () => {
 
     it('should show blue background at rest (animated)', async () => {
       await new Promise((resolve) => setTimeout(resolve, 100))
-      const restScreenshot = await element(by.id('animated-color-test-pressable')).takeScreenshot(
-        'animated-color-test-rest'
-      )
+      const restScreenshot = await element(
+        by.id('animated-color-test-pressable')
+      ).takeScreenshot('animated-color-test-rest')
 
       const color = getDominantColor(restScreenshot)
       assert.ok(

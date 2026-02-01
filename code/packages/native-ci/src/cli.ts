@@ -9,9 +9,21 @@
  */
 
 import { generateFingerprint, generatePreFingerprintHash } from './fingerprint'
-import { createCacheKey, saveFingerprintToKV, getFingerprintFromKV, saveCache, loadCache } from './cache'
+import {
+  createCacheKey,
+  saveFingerprintToKV,
+  getFingerprintFromKV,
+  saveCache,
+  loadCache,
+} from './cache'
 import { setGitHubOutput, isGitHubActions, isCI } from './runner'
-import { checkDeps, ensureIosDeps, ensureAndroidDeps, ensureMaestro, printDepsStatus } from './deps'
+import {
+  checkDeps,
+  ensureIosDeps,
+  ensureAndroidDeps,
+  ensureMaestro,
+  printDepsStatus,
+} from './deps'
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
 import { ensureIOSFolder, ensureIOSApp } from './ios'
@@ -247,7 +259,8 @@ try {
           const { $ } = await import('bun')
           // Flows are at ./flows/ in kitchen-sink, not .maestro/flows/
           const flowArg = flow ? `./flows/${flow}` : './flows'
-          const result = await $`maestro test ${flowArg} --exclude-tags=util --no-ansi`.nothrow()
+          const result =
+            await $`maestro test ${flowArg} --exclude-tags=util --no-ansi`.nothrow()
           return result.exitCode
         })
         process.exit(exitCode)
@@ -371,8 +384,14 @@ try {
 
       console.info('Generating fingerprints...\n')
 
-      const iosResult = await generateFingerprint({ platform: 'ios', projectRoot: options.projectRoot })
-      const androidResult = await generateFingerprint({ platform: 'android', projectRoot: options.projectRoot })
+      const iosResult = await generateFingerprint({
+        platform: 'ios',
+        projectRoot: options.projectRoot,
+      })
+      const androidResult = await generateFingerprint({
+        platform: 'android',
+        projectRoot: options.projectRoot,
+      })
 
       const iosFingerprint = iosResult.hash
       const androidFingerprint = androidResult.hash
@@ -395,8 +414,12 @@ try {
 
         if (iosChanged || androidChanged) {
           console.info('Fingerprints changed!')
-          if (iosChanged) console.info('   - iOS fingerprint changed (would trigger iOS rebuild)')
-          if (androidChanged) console.info('   - Android fingerprint changed (would trigger Android rebuild)')
+          if (iosChanged)
+            console.info('   - iOS fingerprint changed (would trigger iOS rebuild)')
+          if (androidChanged)
+            console.info(
+              '   - Android fingerprint changed (would trigger Android rebuild)'
+            )
         } else {
           console.info('Fingerprints match - no rebuild needed')
         }
@@ -405,7 +428,11 @@ try {
       }
 
       // Save current fingerprints
-      saveCache(CACHE_FILE, { ios: iosFingerprint, android: androidFingerprint, timestamp: new Date().toISOString() })
+      saveCache(CACHE_FILE, {
+        ios: iosFingerprint,
+        android: androidFingerprint,
+        timestamp: new Date().toISOString(),
+      })
       console.info(`\nSaved fingerprints to ${CACHE_FILE}`)
 
       console.info(`

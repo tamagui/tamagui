@@ -190,8 +190,7 @@ export const AnimatePresence: FunctionComponent<
     <>
       {exiting.size
         ? childrenToRender
-        : // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-          childrenToRender.map((child) => cloneElement(child))}
+        : childrenToRender.map((child) => cloneElement(child))}
     </>
   )
 }

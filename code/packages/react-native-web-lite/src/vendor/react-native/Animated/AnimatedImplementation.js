@@ -642,7 +642,7 @@ const AnimatedImplementationExports = {
    * Expose Event class, so it can be used as a type for type checkers.
    */
   Event: AnimatedEvent,
-};
+}
 
 export { AnimatedImplementationExports }
 export { AnimatedImplementationExports as AnimatedImplementation }

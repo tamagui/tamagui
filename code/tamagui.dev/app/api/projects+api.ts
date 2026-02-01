@@ -1,5 +1,6 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 export default apiRoute(async (req) => {
   if (req.method === 'GET') {
@@ -16,12 +17,13 @@ export default apiRoute(async (req) => {
 
 /**
  * Get all projects for the authenticated user (owned + team member)
+ * Uses admin client to bypass RLS policy recursion issue
  */
 const getProjects = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
-  // Get projects owned by user
-  const { data: ownedProjects, error: ownedError } = await supabase
+  // Get projects owned by user (using admin to bypass RLS recursion)
+  const { data: ownedProjects, error: ownedError } = await supabaseAdmin
     .from('projects')
     .select(`
       *,
@@ -41,7 +43,7 @@ const getProjects = async (req: Request) => {
   }
 
   // Get project IDs where user is a team member (but not owner)
-  const { data: memberships, error: memberError } = await supabase
+  const { data: memberships, error: memberError } = await supabaseAdmin
     .from('project_team_members')
     .select('project_id')
     .eq('user_id', user.id)
@@ -60,7 +62,7 @@ const getProjects = async (req: Request) => {
 
   let memberProjectsList: typeof ownedProjects = []
   if (nonOwnedProjectIds.length > 0) {
-    const { data: memberProjectsData } = await supabase
+    const { data: memberProjectsData } = await supabaseAdmin
       .from('projects')
       .select(`
         *,
@@ -85,9 +87,10 @@ const getProjects = async (req: Request) => {
 
 /**
  * Create a new project (called after successful v2 purchase)
+ * Uses admin client to bypass RLS policy recursion issue
  */
 const createProject = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const { name, domain } = await req.json()
 
@@ -106,16 +109,18 @@ const createProject = async (req: Request) => {
     )
   }
 
-  // Calculate updates_expire_at (1 year from now)
+  // Calculate dates
+  const now = new Date()
   const updatesExpireAt = new Date()
   updatesExpireAt.setFullYear(updatesExpireAt.getFullYear() + 1)
 
-  const { data: project, error: projectError } = await supabase
+  const { data: project, error: projectError } = await supabaseAdmin
     .from('projects')
     .insert({
       user_id: user.id,
       name,
       domain,
+      license_purchased_at: now.toISOString(),
       updates_expire_at: updatesExpireAt.toISOString(),
     })
     .select()
@@ -133,7 +138,7 @@ const createProject = async (req: Request) => {
   }
 
   // Add owner as team member
-  await supabase.from('project_team_members').insert({
+  await supabaseAdmin.from('project_team_members').insert({
     project_id: project.id,
     user_id: user.id,
     role: 'owner',
@@ -144,9 +149,10 @@ const createProject = async (req: Request) => {
 
 /**
  * Update a project's name or domain
+ * Uses admin client to bypass RLS policy recursion issue
  */
 const updateProject = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const { project_id, name, domain } = await req.json()
 
@@ -154,10 +160,10 @@ const updateProject = async (req: Request) => {
     return Response.json({ error: 'Project ID is required' }, { status: 400 })
   }
 
-  // Verify ownership
-  const { data: existing, error: existingError } = await supabase
+  // Verify ownership and get current domain for history tracking
+  const { data: existing, error: existingError } = await supabaseAdmin
     .from('projects')
-    .select('id')
+    .select('id, domain')
     .eq('id', project_id)
     .eq('user_id', user.id)
     .single()
@@ -174,7 +180,16 @@ const updateProject = async (req: Request) => {
     return Response.json({ error: 'No valid updates provided' }, { status: 400 })
   }
 
-  const { data: project, error: updateError } = await supabase
+  // If domain is changing, record it in history
+  if (updates.domain && existing.domain && updates.domain !== existing.domain) {
+    await supabaseAdmin.from('project_domain_history').insert({
+      project_id,
+      domain: existing.domain,
+      changed_by: user.id,
+    })
+  }
+
+  const { data: project, error: updateError } = await supabaseAdmin
     .from('projects')
     .update(updates)
     .eq('id', project_id)

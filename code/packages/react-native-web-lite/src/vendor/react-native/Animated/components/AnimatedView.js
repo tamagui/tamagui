@@ -10,6 +10,6 @@
 import { View } from '../../../../View'
 import { createAnimatedComponent } from '../createAnimatedComponent'
 
-const AnimatedView = createAnimatedComponent(View);
+const AnimatedView = createAnimatedComponent(View)
 export { AnimatedView }
 export default AnimatedView

@@ -8,9 +8,9 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import { infoLog } from '../infoLog';
+import { infoLog } from '../infoLog'
 
 // Handler interface removed
 
@@ -27,59 +27,59 @@ import { infoLog } from '../infoLog';
  * queried with `getStats`.
  */
 const JSEventLoopWatchdog = {
-  getStats: function() {
-    return {stallCount, totalStallTime, longestStall, acceptableBusyTime};
+  getStats: function () {
+    return { stallCount, totalStallTime, longestStall, acceptableBusyTime }
   },
-  reset: function() {
-    infoLog('JSEventLoopWatchdog: reset');
-    totalStallTime = 0;
-    stallCount = 0;
-    longestStall = 0;
-    lastInterval = window.performance.now();
+  reset: function () {
+    infoLog('JSEventLoopWatchdog: reset')
+    totalStallTime = 0
+    stallCount = 0
+    longestStall = 0
+    lastInterval = window.performance.now()
   },
-  addHandler: function(handler) {
-    handlers.push(handler);
+  addHandler: function (handler) {
+    handlers.push(handler)
   },
-  install: function({thresholdMS}) {
-    acceptableBusyTime = thresholdMS;
+  install: function ({ thresholdMS }) {
+    acceptableBusyTime = thresholdMS
     if (installed) {
-      return;
+      return
     }
-    installed = true;
-    lastInterval = window.performance.now();
+    installed = true
+    lastInterval = window.performance.now()
     function iteration() {
-      const now = window.performance.now();
-      const busyTime = now - lastInterval;
+      const now = window.performance.now()
+      const busyTime = now - lastInterval
       if (busyTime >= thresholdMS) {
-        const stallTime = busyTime - thresholdMS;
-        stallCount++;
-        totalStallTime += stallTime;
-        longestStall = Math.max(longestStall, stallTime);
+        const stallTime = busyTime - thresholdMS
+        stallCount++
+        totalStallTime += stallTime
+        longestStall = Math.max(longestStall, stallTime)
         let msg =
           `JSEventLoopWatchdog: JS thread busy for ${busyTime}ms. ` +
-          `${totalStallTime}ms in ${stallCount} stalls so far. `;
-        handlers.forEach(handler => {
-          msg += handler.onStall({lastInterval, busyTime}) || '';
-        });
-        infoLog(msg);
+          `${totalStallTime}ms in ${stallCount} stalls so far. `
+        handlers.forEach((handler) => {
+          msg += handler.onStall({ lastInterval, busyTime }) || ''
+        })
+        infoLog(msg)
       }
-      handlers.forEach(handler => {
-        handler.onIterate && handler.onIterate();
-      });
-      lastInterval = now;
-      setTimeout(iteration, thresholdMS / 5);
+      handlers.forEach((handler) => {
+        handler.onIterate && handler.onIterate()
+      })
+      lastInterval = now
+      setTimeout(iteration, thresholdMS / 5)
     }
-    iteration();
+    iteration()
   },
-};
+}
 
-let acceptableBusyTime = 0;
-let installed = false;
-let totalStallTime = 0;
-let stallCount = 0;
-let longestStall = 0;
-let lastInterval = 0;
-const handlers = [];
+let acceptableBusyTime = 0
+let installed = false
+let totalStallTime = 0
+let stallCount = 0
+let longestStall = 0
+let lastInterval = 0
+const handlers = []
 
 export { JSEventLoopWatchdog }
-export default JSEventLoopWatchdog;
+export default JSEventLoopWatchdog

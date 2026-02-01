@@ -8,8 +8,7 @@
  * @format
  */
 
-import {useCallback, useRef} from 'react';
-
+import { useCallback, useRef } from 'react'
 
 /**
  * Constructs a callback ref that provides similar semantics as `useEffect`. The
@@ -25,23 +24,21 @@ import {useCallback, useRef} from 'react';
  *
  * WARNING: The `effect` callback should be stable (e.g. using `useCallback`).
  */
-function useRefEffect(
-  effect,
-) {
-  const cleanupRef = useRef(undefined);
+function useRefEffect(effect) {
+  const cleanupRef = useRef(undefined)
   return useCallback(
-    instance => {
+    (instance) => {
       if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = undefined;
+        cleanupRef.current()
+        cleanupRef.current = undefined
       }
       if (instance != null) {
-        cleanupRef.current = effect(instance);
+        cleanupRef.current = effect(instance)
       }
     },
-    [effect],
-  );
+    [effect]
+  )
 }
 
 export { useRefEffect }
-export default useRefEffect;
+export default useRefEffect

@@ -51,7 +51,10 @@ const seasonKeys = [
 export const SeasonLogoWords = ({
   family,
   scale = 1,
-}: { family: TintFamily; scale?: number }) => {
+}: {
+  family: TintFamily
+  scale?: number
+}) => {
   const { families } = getTints()
   const tints = families[family]
 

@@ -881,7 +881,6 @@ const Performance = () => {
 
   return (
     <>
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
       <div style={{ color: 'red' }} onClick={() => setK(Math.random())}>
         render
       </div>

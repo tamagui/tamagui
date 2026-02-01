@@ -171,7 +171,10 @@ const needsRepropagation = needsPortalRepropagation()
 const DialogPortalItem = ({
   context,
   children,
-}: { context: DialogContextValue; children: React.ReactNode }) => {
+}: {
+  context: DialogContextValue
+  children: React.ReactNode
+}) => {
   const themeName = useThemeName()
   const isAdapted = useAdaptIsActive(context.adaptScope)
   const adaptContext = useAdaptContext(context.adaptScope)

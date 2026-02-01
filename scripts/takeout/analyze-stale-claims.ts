@@ -100,11 +100,11 @@ async function main() {
   // Fetch data
   const [subscriptions, claims] = await Promise.all([
     getAllActiveStripeSubscriptions(),
-    getAllActiveClaims()
+    getAllActiveClaims(),
   ])
 
   // Build set of active subscription IDs
-  const activeSubIds = new Set(subscriptions.map(s => s.id))
+  const activeSubIds = new Set(subscriptions.map((s) => s.id))
 
   console.log(`\n📊 Analysis:`)
   console.log(`   Active Stripe subscriptions: ${activeSubIds.size}`)
@@ -133,7 +133,9 @@ async function main() {
 
   console.log(`\n✅ Valid claims (subscription is active): ${validClaims.length}`)
   console.log(`⚠️  Stale claims (subscription not active): ${staleClaims.length}`)
-  console.log(`❓ Claims with invalid subscription IDs: ${claimsWithInvalidSubIds.length}`)
+  console.log(
+    `❓ Claims with invalid subscription IDs: ${claimsWithInvalidSubIds.length}`
+  )
 
   // Create temp directory
   const tempDir = join(process.cwd(), 'tmp')
@@ -144,59 +146,87 @@ async function main() {
 
   // 1. All active subscription IDs from Stripe
   const activeSubsFile = join(tempDir, `active-subscriptions-${timestamp}.json`)
-  writeFileSync(activeSubsFile, JSON.stringify({
-    generated_at: new Date().toISOString(),
-    count: activeSubIds.size,
-    subscription_ids: Array.from(activeSubIds).sort()
-  }, null, 2))
+  writeFileSync(
+    activeSubsFile,
+    JSON.stringify(
+      {
+        generated_at: new Date().toISOString(),
+        count: activeSubIds.size,
+        subscription_ids: Array.from(activeSubIds).sort(),
+      },
+      null,
+      2
+    )
+  )
 
   // 2. Valid claims (should keep)
   const validClaimsFile = join(tempDir, `valid-claims-${timestamp}.json`)
-  writeFileSync(validClaimsFile, JSON.stringify({
-    generated_at: new Date().toISOString(),
-    count: validClaims.length,
-    claims: validClaims.map(c => ({
-      id: c.id,
-      subscription_id: c.subscription_id,
-      product_id: c.product_id,
-      github_username: (c.data as ClaimData)?.user_github?.login,
-      repository_name: (c.data as ClaimData)?.repository_name,
-      created_at: c.created_at,
-    }))
-  }, null, 2))
+  writeFileSync(
+    validClaimsFile,
+    JSON.stringify(
+      {
+        generated_at: new Date().toISOString(),
+        count: validClaims.length,
+        claims: validClaims.map((c) => ({
+          id: c.id,
+          subscription_id: c.subscription_id,
+          product_id: c.product_id,
+          github_username: (c.data as ClaimData)?.user_github?.login,
+          repository_name: (c.data as ClaimData)?.repository_name,
+          created_at: c.created_at,
+        })),
+      },
+      null,
+      2
+    )
+  )
 
   // 3. Stale claims (candidates for cleanup)
   const staleClaimsFile = join(tempDir, `stale-claims-${timestamp}.json`)
-  writeFileSync(staleClaimsFile, JSON.stringify({
-    generated_at: new Date().toISOString(),
-    count: staleClaims.length,
-    warning: 'REVIEW CAREFULLY BEFORE CLEANING UP',
-    claims: staleClaims.map(c => ({
-      id: c.id,
-      subscription_id: c.subscription_id,
-      product_id: c.product_id,
-      github_username: (c.data as ClaimData)?.user_github?.login,
-      repository_name: (c.data as ClaimData)?.repository_name,
-      team_slug: (c.data as ClaimData)?.team_slug,
-      created_at: c.created_at,
-    }))
-  }, null, 2))
+  writeFileSync(
+    staleClaimsFile,
+    JSON.stringify(
+      {
+        generated_at: new Date().toISOString(),
+        count: staleClaims.length,
+        warning: 'REVIEW CAREFULLY BEFORE CLEANING UP',
+        claims: staleClaims.map((c) => ({
+          id: c.id,
+          subscription_id: c.subscription_id,
+          product_id: c.product_id,
+          github_username: (c.data as ClaimData)?.user_github?.login,
+          repository_name: (c.data as ClaimData)?.repository_name,
+          team_slug: (c.data as ClaimData)?.team_slug,
+          created_at: c.created_at,
+        })),
+      },
+      null,
+      2
+    )
+  )
 
   // 4. Claims with invalid subscription IDs
   let invalidClaimsFile = ''
   if (claimsWithInvalidSubIds.length > 0) {
     invalidClaimsFile = join(tempDir, `invalid-claims-${timestamp}.json`)
-    writeFileSync(invalidClaimsFile, JSON.stringify({
-      generated_at: new Date().toISOString(),
-      count: claimsWithInvalidSubIds.length,
-      claims: claimsWithInvalidSubIds.map(c => ({
-        id: c.id,
-        subscription_id: c.subscription_id,
-        product_id: c.product_id,
-        github_username: (c.data as ClaimData)?.user_github?.login,
-        created_at: c.created_at,
-      }))
-    }, null, 2))
+    writeFileSync(
+      invalidClaimsFile,
+      JSON.stringify(
+        {
+          generated_at: new Date().toISOString(),
+          count: claimsWithInvalidSubIds.length,
+          claims: claimsWithInvalidSubIds.map((c) => ({
+            id: c.id,
+            subscription_id: c.subscription_id,
+            product_id: c.product_id,
+            github_username: (c.data as ClaimData)?.user_github?.login,
+            created_at: c.created_at,
+          })),
+        },
+        null,
+        2
+      )
+    )
   }
 
   // Generate summary report
@@ -218,7 +248,7 @@ BREAKDOWN BY PRODUCT:
 ---------------------
 ${(() => {
   const staleByProduct = new Map<string, number>()
-  staleClaims.forEach(c => {
+  staleClaims.forEach((c) => {
     staleByProduct.set(c.product_id, (staleByProduct.get(c.product_id) || 0) + 1)
   })
   return Array.from(staleByProduct.entries())
@@ -231,7 +261,7 @@ BREAKDOWN BY REPOSITORY:
 ------------------------
 ${(() => {
   const staleByRepo = new Map<string, number>()
-  staleClaims.forEach(c => {
+  staleClaims.forEach((c) => {
     const repo = (c.data as ClaimData)?.repository_name || 'unknown'
     staleByRepo.set(repo, (staleByRepo.get(repo) || 0) + 1)
   })
@@ -243,9 +273,13 @@ ${(() => {
 
 SAMPLE STALE CLAIMS (first 20):
 --------------------------------
-${staleClaims.slice(0, 20).map(c =>
-  `  Claim ${c.id}: ${(c.data as ClaimData)?.user_github?.login || 'no-user'} (${c.subscription_id})`
-).join('\n')}
+${staleClaims
+  .slice(0, 20)
+  .map(
+    (c) =>
+      `  Claim ${c.id}: ${(c.data as ClaimData)?.user_github?.login || 'no-user'} (${c.subscription_id})`
+  )
+  .join('\n')}
 ${staleClaims.length > 20 ? `\n  ... and ${staleClaims.length - 20} more` : ''}
 
 FILES GENERATED:
@@ -260,8 +294,12 @@ FILES GENERATED:
    - Claims that are candidates for cleanup (subscription not active)
    ⚠️  REVIEW THIS FILE CAREFULLY BEFORE PROCEEDING
 
-${claimsWithInvalidSubIds.length > 0 ? `4. ${invalidClaimsFile}
-   - Claims with invalid subscription ID format` : ''}
+${
+  claimsWithInvalidSubIds.length > 0
+    ? `4. ${invalidClaimsFile}
+   - Claims with invalid subscription ID format`
+    : ''
+}
 
 NEXT STEPS:
 -----------

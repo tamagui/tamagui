@@ -84,9 +84,7 @@ export default () => (
           </ContextMenu.SubTrigger>
           <ContextMenu.Portal zIndex={200}>
             <ContextMenu.SubContent>
-              <ContextMenu.Label fontSize={'$1'}>
-                Note settings
-              </ContextMenu.Label>
+              <ContextMenu.Label fontSize={'$1'}>Note settings</ContextMenu.Label>
               <ContextMenu.Item onSelect={onSelect} key="create-note">
                 <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
               </ContextMenu.Item>
@@ -168,8 +166,7 @@ Contains every component for the ContextMenu.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
-      description:
-        'Flips the menu to the opposite side if there is insufficient space.',
+      description: 'Flips the menu to the opposite side if there is insufficient space.',
     },
     {
       name: 'offset',
@@ -569,8 +566,7 @@ This allows you to conditionally render a checkmark.
       name: 'forceMount',
       type: 'true',
       required: false,
-      description:
-        'Forces the indicator to stay mounted for animation control.',
+      description: 'Forces the indicator to stay mounted for animation control.',
     },
   ]}
 />
@@ -665,9 +661,7 @@ A menu item that opens a sub-menu on hover/focus. Accepts the same props as
 When the ContextMenu is visible, this renders a custom preview component. Only
 works with native iOS menus.
 
-<Notice>
-  Should be rendered as a child of `ContextMenu.Content`.
-</Notice>
+<Notice>Should be rendered as a child of `ContextMenu.Content`.</Notice>
 
 <PropsTable
   data={[
@@ -676,8 +670,7 @@ works with native iOS menus.
       type: 'React.ReactNode | (() => React.ReactNode)',
       required: true,
       platform: 'ios',
-      description:
-        'The preview content to render. Can be a function for lazy rendering.',
+      description: 'The preview content to render. Can be a function for lazy rendering.',
     },
     {
       name: 'size',

@@ -8,20 +8,19 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import * as React from 'react';
-
+import * as React from 'react'
 
 class StaticRenderer extends React.Component {
   shouldComponentUpdate(nextProps) {
-    return nextProps.shouldUpdate;
+    return nextProps.shouldUpdate
   }
 
   render() {
-    return this.props.render();
+    return this.props.render()
   }
 }
 
 export { StaticRenderer }
-export default StaticRenderer;
+export default StaticRenderer

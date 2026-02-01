@@ -8,7 +8,6 @@
  * @format
  */
 
-
 import { View } from '../../../View'
 import { StyleSheet, invariant } from '@tamagui/react-native-web-internals'
 import { VirtualizedListCellContextProvider } from './VirtualizedListContext'

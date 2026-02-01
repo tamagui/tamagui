@@ -23,7 +23,7 @@ type Content =
     }
 
 export class Share {
-  static share(content: Content, options: Object = {}): Promise<void> {
+  static share(content: Content, options: object = {}): Promise<void> {
     invariant(
       typeof content === 'object' && content !== null,
       'Content to share must be a valid object'

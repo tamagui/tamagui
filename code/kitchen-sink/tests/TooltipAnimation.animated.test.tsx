@@ -16,39 +16,35 @@ import { setupPage } from './test-utils'
 const TOLERANCE = 0.1
 
 async function getOpacity(page: Page, testId: string): Promise<number> {
-  return page.evaluate(
-    (id) => {
-      const el = document.querySelector(`[data-testid="${id}"]`)
-      if (!el) return -1
-      return Number.parseFloat(getComputedStyle(el).opacity)
-    },
-    testId
-  )
+  return page.evaluate((id) => {
+    const el = document.querySelector(`[data-testid="${id}"]`)
+    if (!el) return -1
+    return Number.parseFloat(getComputedStyle(el).opacity)
+  }, testId)
 }
 
 async function getTranslateY(page: Page, testId: string): Promise<number> {
-  return page.evaluate(
-    (id) => {
-      const el = document.querySelector(`[data-testid="${id}"]`)
-      if (!el) return -9999
-      const transform = getComputedStyle(el).transform
-      if (transform === 'none') return 0
-      // matrix(a, b, c, d, tx, ty) - translateY is in the 'ty' position (6th value)
-      const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^)]+)\)/)
-      return match ? Number.parseFloat(match[1]) : 0
-    },
-    testId
-  )
+  return page.evaluate((id) => {
+    const el = document.querySelector(`[data-testid="${id}"]`)
+    if (!el) return -9999
+    const transform = getComputedStyle(el).transform
+    if (transform === 'none') return 0
+    // matrix(a, b, c, d, tx, ty) - translateY is in the 'ty' position (6th value)
+    const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^)]+)\)/)
+    return match ? Number.parseFloat(match[1]) : 0
+  }, testId)
 }
 
 async function elementExists(page: Page, testId: string): Promise<boolean> {
-  return page.evaluate(
-    (id) => !!document.querySelector(`[data-testid="${id}"]`),
-    testId
-  )
+  return page.evaluate((id) => !!document.querySelector(`[data-testid="${id}"]`), testId)
 }
 
-function isIntermediate(value: number, start: number, end: number, tolerance = TOLERANCE): boolean {
+function isIntermediate(
+  value: number,
+  start: number,
+  end: number,
+  tolerance = TOLERANCE
+): boolean {
   const notAtStart = Math.abs(value - start) > tolerance
   const notAtEnd = Math.abs(value - end) > tolerance
   const min = Math.min(start, end)
@@ -86,7 +82,10 @@ test.describe('Tooltip animation', () => {
 
     // Wait for tooltip to appear
     await page.waitForTimeout(50)
-    expect(await elementExists(page, 'tooltip-content'), 'Element exists after hover').toBe(true)
+    expect(
+      await elementExists(page, 'tooltip-content'),
+      'Element exists after hover'
+    ).toBe(true)
 
     // Capture mid-animation value (after ~400ms of 1000ms animation)
     await page.waitForTimeout(350)
@@ -114,7 +113,10 @@ test.describe('Tooltip animation', () => {
 
     // Wait for tooltip to appear
     await page.waitForTimeout(50)
-    expect(await elementExists(page, 'tooltip-content'), 'Element exists after hover').toBe(true)
+    expect(
+      await elementExists(page, 'tooltip-content'),
+      'Element exists after hover'
+    ).toBe(true)
 
     // Capture mid-animation value (sample earlier on fast machines)
     await page.waitForTimeout(200)
@@ -140,7 +142,10 @@ test.describe('Tooltip animation', () => {
     // First show
     await page.getByTestId('tooltip-trigger').hover()
     await page.waitForTimeout(50)
-    expect(await elementExists(page, 'tooltip-content'), 'First show: element exists').toBe(true)
+    expect(
+      await elementExists(page, 'tooltip-content'),
+      'First show: element exists'
+    ).toBe(true)
 
     // Capture first show mid-animation values (sample earlier on fast machines)
     await page.waitForTimeout(200)
@@ -157,7 +162,10 @@ test.describe('Tooltip animation', () => {
     // Second show
     await page.getByTestId('tooltip-trigger').hover()
     await page.waitForTimeout(50)
-    expect(await elementExists(page, 'tooltip-content'), 'Second show: element exists').toBe(true)
+    expect(
+      await elementExists(page, 'tooltip-content'),
+      'Second show: element exists'
+    ).toBe(true)
 
     // Capture second show mid-animation values
     await page.waitForTimeout(200)
@@ -167,7 +175,8 @@ test.describe('Tooltip animation', () => {
     // Both should be animating (intermediate or at end for fast machines)
     // The key is they shouldn't be stuck at start (0 opacity, -20 Y)
     const firstAnimating = isIntermediate(firstMidOpacity, 0, 1) || firstMidOpacity > 0.5
-    const secondAnimating = isIntermediate(secondMidOpacity, 0, 1) || secondMidOpacity > 0.5
+    const secondAnimating =
+      isIntermediate(secondMidOpacity, 0, 1) || secondMidOpacity > 0.5
 
     expect(
       firstAnimating,
@@ -181,7 +190,8 @@ test.describe('Tooltip animation', () => {
 
     // Y should also be animating (not stuck at -20)
     const firstYAnimating = isIntermediate(firstMidY, -20, 0) || Math.abs(firstMidY) < 5
-    const secondYAnimating = isIntermediate(secondMidY, -20, 0) || Math.abs(secondMidY) < 5
+    const secondYAnimating =
+      isIntermediate(secondMidY, -20, 0) || Math.abs(secondMidY) < 5
 
     expect(
       firstYAnimating,
@@ -218,7 +228,8 @@ test.describe('Tooltip animation', () => {
     if (stillExists) {
       const midOpacity = await getOpacity(page, 'tooltip-content')
       expect(
-        isIntermediate(midOpacity, START_OPACITY, END_OPACITY) || midOpacity < START_OPACITY,
+        isIntermediate(midOpacity, START_OPACITY, END_OPACITY) ||
+          midOpacity < START_OPACITY,
         `Mid exit opacity (${midOpacity.toFixed(3)}) should be animating`
       ).toBe(true)
     }

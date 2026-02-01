@@ -289,8 +289,34 @@ describe('theme-builder getTheme', () => {
 
   // Issue #3546: accent theme extra values should override base theme values
   test('createThemes accent extra values override base extra values', () => {
-    const lightPalette = ['#fff', '#eee', '#ddd', '#ccc', '#bbb', '#aaa', '#999', '#888', '#262626', '#444', '#333', '#000']
-    const accentPalette = ['#ff0000', '#ff1a1a', '#ff3333', '#ff4d4d', '#ff6666', '#ff8080', '#ff9999', '#ffb3b3', '#ffcccc', '#ffe6e6', '#fff0f0', '#ffffff']
+    const lightPalette = [
+      '#fff',
+      '#eee',
+      '#ddd',
+      '#ccc',
+      '#bbb',
+      '#aaa',
+      '#999',
+      '#888',
+      '#262626',
+      '#444',
+      '#333',
+      '#000',
+    ]
+    const accentPalette = [
+      '#ff0000',
+      '#ff1a1a',
+      '#ff3333',
+      '#ff4d4d',
+      '#ff6666',
+      '#ff8080',
+      '#ff9999',
+      '#ffb3b3',
+      '#ffcccc',
+      '#ffe6e6',
+      '#fff0f0',
+      '#ffffff',
+    ]
 
     const themes = createThemes({
       base: {

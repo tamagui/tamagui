@@ -1,27 +1,19 @@
 {
   "name": "@tamagui/native",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0-1769885482630",
   "description": "Native setup modules for Tamagui - portals, gesture handler, worklets, and more",
-  "type": "module",
-  "sideEffects": [
-    "**/setup-*"
-  ],
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
+  "type": "module",
+  "sideEffects": [
+    "**/setup-*"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "typesVersions": {
     "*": {
       "setup-teleport": [
@@ -47,93 +39,102 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "types": "./types/index.d.ts",
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
     },
     "./setup-teleport": {
+      "types": "./types/setup-teleport.d.ts",
       "react-native": {
         "types": "./types/setup-teleport.d.ts",
         "module": "./dist/esm/setup-teleport.native.js",
         "import": "./dist/esm/setup-teleport.native.js",
         "require": "./dist/cjs/setup-teleport.native.js"
       },
-      "types": "./types/setup-teleport.d.ts",
       "module": "./dist/esm/setup-teleport.mjs",
       "import": "./dist/esm/setup-teleport.mjs",
       "require": "./dist/cjs/setup-teleport.cjs"
     },
     "./setup-gesture-handler": {
+      "types": "./types/setup-gesture-handler.d.ts",
       "react-native": {
         "types": "./types/setup-gesture-handler.d.ts",
         "module": "./dist/esm/setup-gesture-handler.native.js",
         "import": "./dist/esm/setup-gesture-handler.native.js",
         "require": "./dist/cjs/setup-gesture-handler.native.js"
       },
-      "types": "./types/setup-gesture-handler.d.ts",
       "module": "./dist/esm/setup-gesture-handler.mjs",
       "import": "./dist/esm/setup-gesture-handler.mjs",
       "require": "./dist/cjs/setup-gesture-handler.cjs"
     },
     "./setup-worklets": {
+      "types": "./types/setup-worklets.d.ts",
       "react-native": {
         "types": "./types/setup-worklets.d.ts",
         "module": "./dist/esm/setup-worklets.native.js",
         "import": "./dist/esm/setup-worklets.native.js",
         "require": "./dist/cjs/setup-worklets.native.js"
       },
-      "types": "./types/setup-worklets.d.ts",
       "module": "./dist/esm/setup-worklets.mjs",
       "import": "./dist/esm/setup-worklets.mjs",
       "require": "./dist/cjs/setup-worklets.cjs"
     },
     "./setup-safe-area": {
+      "types": "./types/setup-safe-area.d.ts",
       "react-native": {
         "types": "./types/setup-safe-area.d.ts",
         "module": "./dist/esm/setup-safe-area.native.js",
         "import": "./dist/esm/setup-safe-area.native.js",
         "require": "./dist/cjs/setup-safe-area.native.js"
       },
-      "types": "./types/setup-safe-area.d.ts",
       "module": "./dist/esm/setup-safe-area.mjs",
       "import": "./dist/esm/setup-safe-area.mjs",
       "require": "./dist/cjs/setup-safe-area.cjs"
     },
     "./setup-expo-linear-gradient": {
+      "types": "./types/setup-expo-linear-gradient.d.ts",
       "react-native": {
         "types": "./types/setup-expo-linear-gradient.d.ts",
         "module": "./dist/esm/setup-expo-linear-gradient.native.js",
         "import": "./dist/esm/setup-expo-linear-gradient.native.js",
         "require": "./dist/cjs/setup-expo-linear-gradient.native.js"
       },
-      "types": "./types/setup-expo-linear-gradient.d.ts",
       "module": "./dist/esm/setup-expo-linear-gradient.mjs",
       "import": "./dist/esm/setup-expo-linear-gradient.mjs",
       "require": "./dist/cjs/setup-expo-linear-gradient.cjs"
     },
     "./setup-keyboard-controller": {
+      "types": "./types/setup-keyboard-controller.d.ts",
       "react-native": {
         "types": "./types/setup-keyboard-controller.d.ts",
         "module": "./dist/esm/setup-keyboard-controller.native.js",
         "import": "./dist/esm/setup-keyboard-controller.native.js",
         "require": "./dist/cjs/setup-keyboard-controller.native.js"
       },
-      "types": "./types/setup-keyboard-controller.d.ts",
       "module": "./dist/esm/setup-keyboard-controller.mjs",
       "import": "./dist/esm/setup-keyboard-controller.mjs",
       "require": "./dist/cjs/setup-keyboard-controller.cjs"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-keyboard-controller": "^1.16.0",
@@ -166,8 +167,5 @@
     "react-native-worklets-core": {
       "optional": true
     }
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

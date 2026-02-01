@@ -10,7 +10,7 @@ import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../type
 
 // import { astToLiteral } from './literalToAst'
 
-export function isPresent<T extends Object>(
+export function isPresent<T extends object>(
   input: null | void | undefined | T
 ): input is T {
   return input != null

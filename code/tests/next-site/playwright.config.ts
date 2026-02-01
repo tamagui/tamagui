@@ -8,7 +8,7 @@ const config: PlaywrightTestConfig = {
   fullyParallel: false,
   testDir: 'tests/e2e',
   webServer: {
-    command: isProd ? `yarn next:start` : `yarn dev`,
+    command: isProd ? `bun run next:start` : `bun run dev`,
     port: port,
     reuseExistingServer: !process.env.CI,
   },

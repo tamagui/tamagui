@@ -328,11 +328,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // check if this is a Popper element with animated position
               const isPopperElement = node.hasAttribute('data-popper-animate-position')
 
+              // also apply fix for AnimatePresence children that just finished entering
+              // this fixes roving tabs indicator jumping when rapidly switching
+              const isEnteringPresenceChild = presence && justFinishedEntering
+
               if (
                 isRunning &&
                 controls.current &&
                 isPositionOnlyTransform &&
-                isPopperElement
+                (isPopperElement || isEnteringPresenceChild)
               ) {
                 const currentTransform = getComputedStyle(node).transform
 
@@ -658,10 +662,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 }
 
 function removeRemovedStyles(
-  prev: Object,
-  next: Object,
+  prev: object,
+  next: object,
   node: HTMLElement,
-  dontClearIfIn?: Object
+  dontClearIfIn?: object
 ) {
   for (const key in prev) {
     if (!(key in next)) {
@@ -752,8 +756,8 @@ function createMotionView(defaultTag: string) {
       const out = getSplitStyles(
         props,
         isText ? Text.staticConfig : View.staticConfig,
-        state?.theme!,
-        state?.name!,
+        state?.theme,
+        state?.name,
         {
           unmounted: false,
         },

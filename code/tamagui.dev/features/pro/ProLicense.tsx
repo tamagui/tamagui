@@ -48,7 +48,7 @@ export const ProLicense = () => {
       <H3>Updates and Upgrades</H3>
       <Paragraph>
         Your initial purchase includes one year of updates. After the first year, you will
-        be automatically enrolled in an upgrade subscription at $300/year to continue
+        be automatically enrolled in an upgrade subscription at $100/year to continue
         receiving updates. You may cancel the upgrade subscription at any time, but you
         will not receive new updates after cancellation. You retain lifetime rights to all
         code downloaded prior to cancellation.

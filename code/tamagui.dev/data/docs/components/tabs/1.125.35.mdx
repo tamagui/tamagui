@@ -49,7 +49,7 @@ npm install @tamagui/tabs
 ## Usage
 
 ```tsx
-import { SizableText, Tabs } from "tamagui";
+import { SizableText, Tabs } from 'tamagui'
 
 export default () => (
   <Tabs defaultValue="tab1" width={400}>
@@ -69,7 +69,7 @@ export default () => (
       <H5>Tab 2</H5>
     </Tabs.Content>
   </Tabs>
-);
+)
 ```
 
 ## API Reference
@@ -81,35 +81,35 @@ Root tabs component. Extends [Stack](/docs/components/stacks). Passing the `size
 <PropsTable
   data={[
     {
-      name: "value",
-      type: "string",
+      name: 'value',
+      type: 'string',
       description: `The value for the selected tab, if controlled`,
     },
     {
-      name: "defaultValue",
-      type: "string",
+      name: 'defaultValue',
+      type: 'string',
       description: `The value of the tab to select by default, if uncontrolled`,
     },
     {
-      name: "onValueChange",
-      type: "(value: string) => void",
+      name: 'onValueChange',
+      type: '(value: string) => void',
       description: `A function called when a new tab is selected`,
     },
     {
-      name: "orientation",
+      name: 'orientation',
       type: '"horizontal" | "vertical"',
-      default: "horizontal",
+      default: 'horizontal',
       description: `The orientation the tabs are laid out.`,
     },
     {
-      name: "dir",
+      name: 'dir',
       type: '"ltr" | "rtl"',
       description: `The direction of navigation between toolbar items`,
     },
     {
-      name: "activationMode",
+      name: 'activationMode',
       type: '"manual" | "automatic"',
-      default: "automatic",
+      default: 'automatic',
       description: `Whether or not a tab is activated automatically or manually. Not applicable on mobile`,
     },
   ]}
@@ -122,9 +122,9 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
 <PropsTable
   data={[
     {
-      name: "loop",
-      type: "boolean",
-      default: "true",
+      name: 'loop',
+      type: 'boolean',
+      default: 'true',
       description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation`,
     },
   ]}
@@ -137,27 +137,27 @@ The clickable tab button that activates its corresponding content. Extends [Them
 <PropsTable
   data={[
     {
-      name: "value",
-      type: "string",
+      name: 'value',
+      type: 'string',
       description: `The value for the tabs state to be changed to after activation of the tab`,
     },
     {
-      name: "onInteraction",
+      name: 'onInteraction',
       type: `(type: InteractionType, layout: TabLayout | null) => void`,
       description: `Used for making custom indicators when tab is interacted with. InteractionType is 'select' | 'focus' | 'hover'`,
     },
     {
-      name: "disabled",
+      name: 'disabled',
       type: `boolean`,
       description: `When true, prevents user interaction with the tab`,
     },
     {
-      name: "disableActiveTheme",
+      name: 'disableActiveTheme',
       type: `boolean`,
       description: `When true, disables applying the 'active' theme when the tab is selected`,
     },
     {
-      name: "unstyled",
+      name: 'unstyled',
       type: `boolean`,
       description: `When true, remove all default tamagui styling`,
     },
@@ -175,17 +175,17 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 <PropsTable
   data={[
     {
-      name: "value",
-      type: "string",
+      name: 'value',
+      type: 'string',
       description: `The value for the tabs state to be changed to after activation of the trigger`,
     },
     {
-      name: "onInteraction",
+      name: 'onInteraction',
       type: `(type: InteractionType, layout: TabLayout | null) => void`,
       description: `Used for making custom indicators when trigger interacted with`,
     },
     {
-      name: "unstyled",
+      name: 'unstyled',
       type: `boolean`,
       description: `When true, remove all default tamagui styling`,
     },
@@ -199,14 +199,14 @@ Where each tab's content will be shown. Extends [ThemeableStack](/docs/component
 <PropsTable
   data={[
     {
-      name: "value",
-      type: "string",
+      name: 'value',
+      type: 'string',
       description: `Will show the content when the value matches the state of Tabs root`,
     },
     {
-      name: "forceMount",
-      type: "boolean",
-      default: "false",
+      name: 'forceMount',
+      type: 'boolean',
+      default: 'false',
       description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations`,
     },
   ]}

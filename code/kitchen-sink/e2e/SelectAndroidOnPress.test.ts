@@ -62,7 +62,9 @@ describe('SelectAndroidOnPress (#3436)', () => {
     await expect(element(by.id('select-android-selected-value'))).toHaveText(
       'Selected value: (none)'
     )
-    await expect(element(by.id('select-android-change-count'))).toHaveText('Change count: 0')
+    await expect(element(by.id('select-android-change-count'))).toHaveText(
+      'Change count: 0'
+    )
 
     // open the select
     await element(by.id('select-android-trigger')).tap()
@@ -87,7 +89,9 @@ describe('SelectAndroidOnPress (#3436)', () => {
       'Selected value: pear'
     )
     // the change count should have incremented (proving onValueChange was called)
-    await expect(element(by.id('select-android-change-count'))).toHaveText('Change count: 1')
+    await expect(element(by.id('select-android-change-count'))).toHaveText(
+      'Change count: 1'
+    )
   })
 
   it('should handle tap with slight movement (simulates physical device jitter)', async () => {
@@ -98,7 +102,9 @@ describe('SelectAndroidOnPress (#3436)', () => {
     // On physical devices, fingers are never perfectly still during a tap.
     // This small movement can trigger onMoveShouldSetResponder on the parent ScrollView,
     // which steals the responder and prevents onPress from firing on the child.
-    await expect(element(by.id('select-android-change-count'))).toHaveText('Change count: 0')
+    await expect(element(by.id('select-android-change-count'))).toHaveText(
+      'Change count: 0'
+    )
 
     // open the select
     await element(by.id('select-android-trigger')).tap()
@@ -131,7 +137,9 @@ describe('SelectAndroidOnPress (#3436)', () => {
     await expect(element(by.id('select-android-selected-value'))).toHaveText(
       'Selected value: peach'
     )
-    await expect(element(by.id('select-android-change-count'))).toHaveText('Change count: 1')
+    await expect(element(by.id('select-android-change-count'))).toHaveText(
+      'Change count: 1'
+    )
   })
 
   it('should allow multiple selections', async () => {
@@ -149,7 +157,9 @@ describe('SelectAndroidOnPress (#3436)', () => {
     await expect(element(by.id('select-android-selected-value'))).toHaveText(
       'Selected value: apple'
     )
-    await expect(element(by.id('select-android-change-count'))).toHaveText('Change count: 1')
+    await expect(element(by.id('select-android-change-count'))).toHaveText(
+      'Change count: 1'
+    )
 
     // second selection - change to blackberry
     await element(by.id('select-android-trigger')).tap()
@@ -164,7 +174,8 @@ describe('SelectAndroidOnPress (#3436)', () => {
     await expect(element(by.id('select-android-selected-value'))).toHaveText(
       'Selected value: blackberry'
     )
-    await expect(element(by.id('select-android-change-count'))).toHaveText('Change count: 2')
+    await expect(element(by.id('select-android-change-count'))).toHaveText(
+      'Change count: 2'
+    )
   })
 })
-

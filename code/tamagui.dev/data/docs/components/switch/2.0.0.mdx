@@ -23,28 +23,13 @@ demoName: Switch
 </Tabs.List>
 
 <HeroContainer showAnimationDriverControl>
-  <Tabs.Content
-    value="styled"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="styled" justifyContent="center" alignItems="center" width="100%">
     <SwitchDemo />
   </Tabs.Content>
-  <Tabs.Content
-    value="unstyled"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
     <SwitchUnstyledDemo />
   </Tabs.Content>
-  <Tabs.Content
-    value="headless"
-    justifyContent="center"
-    alignItems="center"
-    width="100%"
-  >
+  <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
     <SwitchHeadlessDemo />
   </Tabs.Content>
 </HeroContainer>
@@ -304,9 +289,9 @@ The `useSwitch` hook accepts three arguments:
 
 ```tsx
 const { switchProps, switchRef, bubbleInput } = useSwitch(
-  props,        // SwitchProps
-  state,        // [checked: boolean, setChecked: (checked: boolean) => void]
-  ref           // React.Ref
+  props, // SwitchProps
+  state, // [checked: boolean, setChecked: (checked: boolean) => void]
+  ref // React.Ref
 )
 ```
 
@@ -350,18 +335,18 @@ const { switchProps, switchRef, bubbleInput } = useSwitch(
 #### State (second argument)
 
 A tuple of `[checked, setChecked]` where:
+
 - `checked`: Current boolean state
 - `setChecked`: React state setter function
 
 #### Return Value
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `switchProps` | `object` | Props to spread on your switch element (role, aria-checked, onPress, etc.) |
-| `switchRef` | `Ref` | Composed ref to attach to your switch element |
-| `bubbleInput` | `ReactNode \| null` | Hidden input for form compatibility (render as sibling, web only) |
+| Property      | Type                | Description                                                                |
+| ------------- | ------------------- | -------------------------------------------------------------------------- |
+| `switchProps` | `object`            | Props to spread on your switch element (role, aria-checked, onPress, etc.) |
+| `switchRef`   | `Ref`               | Composed ref to attach to your switch element                              |
+| `bubbleInput` | `ReactNode \| null` | Hidden input for form compatibility (render as sibling, web only)          |
 
 </Tabs.Content>
 
 </Tabs>
-

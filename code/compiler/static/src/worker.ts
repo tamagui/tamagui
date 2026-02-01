@@ -10,9 +10,23 @@ import { extractToClassNames as extractToClassNamesImpl } from './extractor/extr
 import { extractToNative as extractToNativeImpl } from './extractor/extractToNative'
 import type { TamaguiOptions } from './types'
 
-// Create extractors for web and native in worker
-const webExtractor = createExtractor({ platform: 'web' })
-const nativeExtractor = createExtractor({ platform: 'native' })
+// Create extractors lazily to avoid loading unused ones
+let webExtractor: ReturnType<typeof createExtractor> | null = null
+let nativeExtractor: ReturnType<typeof createExtractor> | null = null
+
+function getWebExtractor() {
+  if (!webExtractor) {
+    webExtractor = createExtractor({ platform: 'web' })
+  }
+  return webExtractor
+}
+
+function getNativeExtractor() {
+  if (!nativeExtractor) {
+    nativeExtractor = createExtractor({ platform: 'native' })
+  }
+  return nativeExtractor
+}
 
 // Cache config loading to avoid reloading
 const configCache: Map<string, Promise<any>> = new Map()
@@ -61,14 +75,14 @@ export async function runTask(task: WorkerTask): Promise<WorkerResult> {
         })
 
         if (!configCache.has(cacheKey)) {
-          configCache.set(cacheKey, webExtractor.loadTamagui(task.options))
+          configCache.set(cacheKey, getWebExtractor().loadTamagui(task.options))
         }
 
         await configCache.get(cacheKey)
       }
 
       const result = await extractToClassNamesImpl({
-        extractor: webExtractor,
+        extractor: getWebExtractor(),
         source: task.source,
         sourcePath: task.sourcePath,
         options: task.options,
@@ -86,7 +100,7 @@ export async function runTask(task: WorkerTask): Promise<WorkerResult> {
       })
 
       if (!configCache.has(cacheKey)) {
-        configCache.set(cacheKey, nativeExtractor.loadTamagui(task.options))
+        configCache.set(cacheKey, getNativeExtractor().loadTamagui(task.options))
       }
 
       await configCache.get(cacheKey)

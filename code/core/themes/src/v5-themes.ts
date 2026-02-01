@@ -30,16 +30,25 @@ export const V5_BG_OFFSET = 6 + 1
 export { interpolateColor, opacify } from './opacify'
 
 export const v5ComponentThemes = {
-  Button: { template: 'surface1' },
+  Button: { template: 'surface3' },
   Input: { template: 'surface1' },
-  Progress: { template: 'surface2' },
-  ProgressIndicator: { template: 'accent' },
+  Progress: { template: 'surface1' },
+  ProgressIndicator: { template: 'surface3' },
   Slider: { template: 'surface1' },
-  SliderActive: { template: 'surface2' },
-  SliderThumb: { template: 'accent' },
-  Switch: { template: 'surface2' },
-  SwitchThumb: { template: 'accent' },
+  SliderActive: { template: 'surface3' },
+  SliderThumb: { template: 'surface2' },
+  Switch: { template: 'surface1' },
   TextArea: { template: 'surface1' },
+  Tooltip: { template: 'surface3' },
+  SwitchThumb: { template: 'surface3' },
+} as const
+
+// inverses are confusing af
+export const v5ComponentThemesWithInverses = {
+  ...v5ComponentThemes,
+  ProgressIndicator: { template: 'accent' },
+  SliderThumb: { template: 'accent' },
+  SwitchThumb: { template: 'accent' },
   Tooltip: { template: 'accent' },
 } as const
 
@@ -356,10 +365,8 @@ type BaseExtraDark = BaseExtraCommon &
 
 export type CreateV5ThemeOptions<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
-  GrandChildren extends Record<
-    string,
-    GrandChildrenThemeDefinition
-  > = typeof v5GrandchildrenThemes,
+  GrandChildren extends Record<string, GrandChildrenThemeDefinition> =
+    typeof v5GrandchildrenThemes,
 > = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: string[]
@@ -406,10 +413,8 @@ export type CreateV5ThemeOptions<
  */
 export function createV5Theme<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
-  GrandChildren extends Record<
-    string,
-    GrandChildrenThemeDefinition
-  > = typeof v5GrandchildrenThemes,
+  GrandChildren extends Record<string, GrandChildrenThemeDefinition> =
+    typeof v5GrandchildrenThemes,
 >(
   options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<
     Children,

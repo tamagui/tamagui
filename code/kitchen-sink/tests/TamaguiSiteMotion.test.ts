@@ -21,7 +21,9 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
   })
 
   test.describe('Logo Jitter Bug', () => {
-    test('dot indicator should not jitter when moving mouse rapidly across TAMAGUI text', async ({ page }) => {
+    test('dot indicator should not jitter when moving mouse rapidly across TAMAGUI text', async ({
+      page,
+    }) => {
       await page.goto(SITE_URL, { waitUntil: 'networkidle' })
       await page.waitForTimeout(1000)
 
@@ -37,20 +39,20 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
       // inject position tracking for the Circle (dot indicator)
       // the dot is a Circle with position absolute inside logo-words
       await page.evaluate(() => {
-        (window as any).__dotPositions = []
+        ;(window as any).__dotPositions = []
         ;(window as any).__dotDebug = { found: false, selector: null }
         const track = () => {
           // find the circle element inside logo-words
           // it's in the header, which has render="header" so becomes a <header> tag
           const header = document.querySelector('header')
           if (!header) {
-            (window as any).__dotDebug.selector = 'no header found'
+            ;(window as any).__dotDebug.selector = 'no header found'
             requestAnimationFrame(track)
             return
           }
           const logoWords = header.querySelector('.logo-words')
           if (!logoWords) {
-            (window as any).__dotDebug.selector = 'no logo-words in header'
+            ;(window as any).__dotDebug.selector = 'no logo-words in header'
             requestAnimationFrame(track)
             return
           }
@@ -65,9 +67,11 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
               ;(window as any).__dotDebug.selector = 'found absolute positioned child'
               const transform = computed.transform
               if (transform && transform !== 'none') {
-                const match = transform.match(/matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/)
+                const match = transform.match(
+                  /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
+                )
                 if (match) {
-                  (window as any).__dotPositions.push({
+                  ;(window as any).__dotPositions.push({
                     x: parseFloat(match[1]),
                     y: parseFloat(match[2]),
                     time: Date.now(),
@@ -89,7 +93,8 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
             }
           }
           if (!found) {
-            ;(window as any).__dotDebug.selector = 'no absolute child - children: ' + logoWords.children.length
+            ;(window as any).__dotDebug.selector =
+              'no absolute child - children: ' + logoWords.children.length
           }
           requestAnimationFrame(track)
         }
@@ -130,13 +135,13 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
       for (let sweep = 0; sweep < 3; sweep++) {
         for (let i = 0; i <= 10; i++) {
           const t = i / 10
-          const x = logoBox.x + (logoBox.width) * t
+          const x = logoBox.x + logoBox.width * t
           await page.mouse.move(x, centerY)
           await page.waitForTimeout(8)
         }
         for (let i = 0; i <= 10; i++) {
           const t = i / 10
-          const x = logoBox.x + logoBox.width - (logoBox.width) * t
+          const x = logoBox.x + logoBox.width - logoBox.width * t
           await page.mouse.move(x, centerY)
           await page.waitForTimeout(8)
         }
@@ -228,7 +233,9 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
   })
 
   test.describe('PromoLinksRow Tooltip Position Jump', () => {
-    test('tooltip should not jump when moving between promo buttons', async ({ page }) => {
+    test('tooltip should not jump when moving between promo buttons', async ({
+      page,
+    }) => {
       await page.goto(SITE_URL, { waitUntil: 'networkidle' })
       await page.waitForTimeout(1000)
 
@@ -272,7 +279,7 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
       // inject position tracking for tooltip
       // the tooltip content has animatePosition and scope="promo-tooltip"
       await page.evaluate(() => {
-        (window as any).__tooltipPositions = []
+        ;(window as any).__tooltipPositions = []
         ;(window as any).__jumpLog = []
         let lastPos: any = null
 
@@ -288,7 +295,9 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
 
             // also extract matrix values if present
             if (transform && transform !== 'none') {
-              const match = transform.match(/matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/)
+              const match = transform.match(
+                /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
+              )
               if (match) {
                 // use rect for tracking since that's where it visually appears
               }
@@ -316,13 +325,19 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
       })
 
       // step 1: hover on rightmost button (Consulting) to open tooltip
-      const consultingCenter = { x: consultingBox.x + consultingBox.width / 2, y: consultingBox.y + consultingBox.height / 2 }
+      const consultingCenter = {
+        x: consultingBox.x + consultingBox.width / 2,
+        y: consultingBox.y + consultingBox.height / 2,
+      }
       await page.mouse.move(consultingCenter.x, consultingCenter.y)
       await page.waitForTimeout(800) // wait for tooltip to fully appear
 
       // step 2: FAST move to leftmost button (Takeout)
       // this is the pattern that triggers the jump bug
-      const takeoutCenter = { x: takeoutBox.x + takeoutBox.width / 2, y: takeoutBox.y + takeoutBox.height / 2 }
+      const takeoutCenter = {
+        x: takeoutBox.x + takeoutBox.width / 2,
+        y: takeoutBox.y + takeoutBox.height / 2,
+      }
 
       // fast sweep across all 3 buttons
       const steps = 10
@@ -337,7 +352,9 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
       await page.waitForTimeout(400)
 
       // analyze for position jumps
-      const positions = await page.evaluate(() => (window as any).__tooltipPositions || [])
+      const positions = await page.evaluate(
+        () => (window as any).__tooltipPositions || []
+      )
       const jumpLog = await page.evaluate(() => (window as any).__jumpLog || [])
 
       const jumps: any[] = []
@@ -374,7 +391,9 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
       expect(jumps.length, `Tooltip jumped ${jumps.length} times!`).toBe(0)
     })
 
-    test('inner content animations should not get stuck at endpoints', async ({ page }) => {
+    test('inner content animations should not get stuck at endpoints', async ({
+      page,
+    }) => {
       await page.goto(SITE_URL, { waitUntil: 'networkidle' })
       await page.waitForTimeout(1000)
 
@@ -394,7 +413,7 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
 
       // inject tracking for Frame (inner content) animations
       await page.evaluate(() => {
-        (window as any).__framePositions = []
+        ;(window as any).__framePositions = []
         const track = () => {
           const frames = document.querySelectorAll('.header-popover-frame')
           frames.forEach((frame, idx) => {
@@ -402,9 +421,11 @@ test.describe.skip('Tamagui.dev Motion Issues', () => {
             const transform = getComputedStyle(el).transform
             const opacity = getComputedStyle(el).opacity
             if (transform && transform !== 'none') {
-              const match = transform.match(/matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/)
+              const match = transform.match(
+                /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
+              )
               if (match) {
-                (window as any).__framePositions.push({
+                ;(window as any).__framePositions.push({
                   idx,
                   x: parseFloat(match[1]),
                   y: parseFloat(match[2]),

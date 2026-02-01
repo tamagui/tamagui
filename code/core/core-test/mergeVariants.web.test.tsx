@@ -87,7 +87,9 @@ describe('mergeVariants', () => {
       },
     }
 
-    const sizeFunction = (val: any, config: any) => ({ fontSize: val === 'tiny' ? 8 : 14 })
+    const sizeFunction = (val: any, config: any) => ({
+      fontSize: val === 'tiny' ? 8 : 14,
+    })
     const ourVariants = {
       size: sizeFunction as any,
     }
@@ -156,23 +158,23 @@ describe('mergeVariants', () => {
   test('should handle complex nested variants', () => {
     const parentVariants = {
       size: {
-        small: { 
-          fontSize: 12, 
+        small: {
+          fontSize: 12,
           padding: 8,
           borderRadius: 4,
         },
-        medium: { 
-          fontSize: 16, 
+        medium: {
+          fontSize: 16,
           padding: 12,
           borderRadius: 6,
         },
       },
       variant: {
-        primary: { 
+        primary: {
           backgroundColor: 'blue',
           color: 'white',
         },
-        secondary: { 
+        secondary: {
           backgroundColor: 'gray',
           color: 'black',
         },
@@ -315,4 +317,4 @@ describe('mergeVariants', () => {
       },
     })
   })
-}) 
+})

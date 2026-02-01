@@ -35,6 +35,7 @@ export const config = createTamagui({
 ```
 
 When `disableSSR` is true:
+
 - Media queries immediately use actual values
 - No double render occurs
 - Your entire app is wrapped with `<ClientOnly enabled>`
@@ -109,6 +110,7 @@ function MyComponent() {
 ```
 
 **Behavior:**
+
 - Server/before hydration: `false`
 - After hydration: `true`
 - Inside `<ClientOnly enabled>`: always `true`
@@ -151,11 +153,13 @@ function WindowInfo() {
 ### When to Use disableSSR
 
 **Use it for:**
+
 - Single-page applications
 - Client-only web apps
 - Maximum performance without SSR overhead
 
 **Avoid for:**
+
 - SEO-critical content
 - Server-rendered frameworks (Next.js SSR/SSG)
 - Fast initial page loads
@@ -163,11 +167,13 @@ function WindowInfo() {
 ### When to Use ClientOnly
 
 **Use it for:**
+
 - Expensive client-only components (charts, editors)
 - Browser API dependencies
 - Non-critical UI that can load after initial render
 
 **Example:**
+
 ```tsx
 function ProductPage({ product }) {
   return (
@@ -194,10 +200,10 @@ function ProductPage({ product }) {
 
 ```tsx
 import {
-  ClientOnly,        // Component for client-only subtrees
-  useDidFinishSSR,   // Hook for hydration state
-  useIsClientOnly,   // Hook for client-only context
-  useClientValue,    // Hook for client-only values
+  ClientOnly, // Component for client-only subtrees
+  useDidFinishSSR, // Hook for hydration state
+  useIsClientOnly, // Hook for client-only context
+  useClientValue, // Hook for client-only values
 } from '@tamagui/use-did-finish-ssr'
 ```
 

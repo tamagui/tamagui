@@ -11,9 +11,8 @@ const StyledButton = styled(View, {
   cursor: 'pointer',
 })
 
-// Test: render prop with anchor tag
-const StyledAnchor = styled(Text, {
-  render: 'a',
+// Test: styled.a() - styled-components style API with proper href typing
+const StyledAnchor = styled.a({
   color: '$blue10',
   textDecorationLine: 'underline',
 })
@@ -116,9 +115,9 @@ export function RenderPropCase() {
         <Text testID="styled-button-text">Styled Button (render='button')</Text>
       </StyledButton>
 
-      {/* @ts-expect-error - href only valid on web */}
-      <StyledAnchor testID="styled-anchor" data-testid="styled-anchor" href={isWeb ? '#' : undefined}>
-        Styled Anchor (render='a')
+      {/* href is now properly typed because styled.a() adds AnchorHTMLAttributes */}
+      <StyledAnchor data-testid="styled-anchor" href={isWeb ? '#' : undefined}>
+        Styled Anchor (styled.a())
       </StyledAnchor>
 
       {/* Test semantic elements */}

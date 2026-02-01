@@ -107,7 +107,7 @@ test.describe('Select Focus Scope', () => {
 
     // Select should close
     await expect(selectViewport).not.toBeVisible()
-    
+
     // Note: Select doesn't automatically restore focus to trigger like Dialog/Popover do
   })
 
@@ -143,7 +143,7 @@ test.describe('Select Focus Scope', () => {
 
     // first item (apple) is focused on open
     const apple = page.getByTestId('select-apple')
-    const isAppleFocused = await apple.evaluate(el => el === document.activeElement)
+    const isAppleFocused = await apple.evaluate((el) => el === document.activeElement)
     expect(isAppleFocused).toBe(true)
 
     // Navigate down through all items
@@ -158,7 +158,9 @@ test.describe('Select Focus Scope', () => {
 
     // Should be at broccoli now
     const broccoli = page.getByTestId('select-broccoli')
-    const isBroccoliFocused = await broccoli.evaluate(el => el === document.activeElement)
+    const isBroccoliFocused = await broccoli.evaluate(
+      (el) => el === document.activeElement
+    )
     expect(isBroccoliFocused).toBe(true)
 
     // Navigate up
@@ -166,7 +168,7 @@ test.describe('Select Focus Scope', () => {
     await page.waitForTimeout(50)
 
     const carrot = page.getByTestId('select-carrot')
-    const isCarrotFocused = await carrot.evaluate(el => el === document.activeElement)
+    const isCarrotFocused = await carrot.evaluate((el) => el === document.activeElement)
     expect(isCarrotFocused).toBe(true)
   })
 })

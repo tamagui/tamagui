@@ -12,7 +12,11 @@ import { Button, Paragraph, Square, XStack, YStack, View, Text } from 'tamagui'
  */
 
 // Global frame logging system
-const useAnimationLogger = (scenarioId: string, elementRef: React.RefObject<HTMLElement | null>, properties: string[]) => {
+const useAnimationLogger = (
+  scenarioId: string,
+  elementRef: React.RefObject<HTMLElement | null>,
+  properties: string[]
+) => {
   const frameCountRef = useRef(0)
   const lastTimeRef = useRef(0)
   const lastValuesRef = useRef<Record<string, string>>({})
@@ -64,7 +68,9 @@ const useAnimationLogger = (scenarioId: string, elementRef: React.RefObject<HTML
 
         if (lastValuesRef.current[prop] !== value) {
           hasChanges = true
-          console.log(`[ANIM_FRAME] scenario:${scenarioId} frame:${frameCountRef.current} prop:${prop} value:${value} time:${Math.round(now)} delta:${Math.round(delta)}`)
+          console.log(
+            `[ANIM_FRAME] scenario:${scenarioId} frame:${frameCountRef.current} prop:${prop} value:${value} time:${Math.round(now)} delta:${Math.round(delta)}`
+          )
           lastValuesRef.current[prop] = value
         }
       }
@@ -85,7 +91,9 @@ const useAnimationLogger = (scenarioId: string, elementRef: React.RefObject<HTML
     if (rafIdRef.current) {
       cancelAnimationFrame(rafIdRef.current)
     }
-    console.log(`[ANIM_END] scenario:${scenarioId} totalFrames:${frameCountRef.current} time:${Date.now()}`)
+    console.log(
+      `[ANIM_END] scenario:${scenarioId} totalFrames:${frameCountRef.current} time:${Date.now()}`
+    )
   }, [scenarioId])
 
   useEffect(() => {
@@ -106,8 +114,12 @@ const useAnimationLogger = (scenarioId: string, elementRef: React.RefObject<HTML
 export function AnimationComprehensiveCase() {
   return (
     <YStack gap="$2" padding="$2" flex={1} overflow="scroll">
-      <Paragraph fontWeight="bold" fontSize="$5">Comprehensive Animation Test Suite (30+ Scenarios)</Paragraph>
-      <Paragraph size="$2" color="$color10">Open console to see [ANIM_FRAME] logs</Paragraph>
+      <Paragraph fontWeight="bold" fontSize="$5">
+        Comprehensive Animation Test Suite (30+ Scenarios)
+      </Paragraph>
+      <Paragraph size="$2" color="$color10">
+        Open console to see [ANIM_FRAME] logs
+      </Paragraph>
 
       {/* SECTION 1: Basic Property Animations */}
       <SectionHeader>1. Basic Property Animations</SectionHeader>
@@ -199,7 +211,9 @@ export function AnimationComprehensiveCase() {
 }
 
 const SectionHeader = ({ children }: { children: string }) => (
-  <Paragraph fontWeight="bold" fontSize="$3" marginTop="$3" color="$blue10">{children}</Paragraph>
+  <Paragraph fontWeight="bold" fontSize="$3" marginTop="$3" color="$blue10">
+    {children}
+  </Paragraph>
 )
 
 // ============================================================================
@@ -208,16 +222,33 @@ const SectionHeader = ({ children }: { children: string }) => (
 function Scenario01_OpacityBasic() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('01-opacity-basic', ref, ['opacity'])
+  const { startLogging, stopLogging } = useAnimationLogger('01-opacity-basic', ref, [
+    'opacity',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-01-trigger" data-testid="scenario-01-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-01-trigger"
+        data-testid="scenario-01-trigger"
+      >
         01: Opacity
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$blue10" opacity={active ? 0.2 : 1}
-        testID="scenario-01-target" data-testid="scenario-01-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.2 : 1}
+        testID="scenario-01-target"
+        data-testid="scenario-01-target"
+      />
       <Paragraph size="$1">{active ? '0.2' : '1'}</Paragraph>
     </XStack>
   )
@@ -229,16 +260,33 @@ function Scenario01_OpacityBasic() {
 function Scenario02_ScaleBasic() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('02-scale-basic', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('02-scale-basic', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-02-trigger" data-testid="scenario-02-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-02-trigger"
+        data-testid="scenario-02-trigger"
+      >
         02: Scale
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$green10" scale={active ? 1.5 : 1}
-        testID="scenario-02-target" data-testid="scenario-02-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$green10"
+        scale={active ? 1.5 : 1}
+        testID="scenario-02-target"
+        data-testid="scenario-02-target"
+      />
       <Paragraph size="$1">{active ? '1.5' : '1'}</Paragraph>
     </XStack>
   )
@@ -250,16 +298,33 @@ function Scenario02_ScaleBasic() {
 function Scenario03_TranslateX() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('03-translateX', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('03-translateX', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-03-trigger" data-testid="scenario-03-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-03-trigger"
+        data-testid="scenario-03-trigger"
+      >
         03: TranslateX
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$blue10" x={active ? 50 : 0}
-        testID="scenario-03-target" data-testid="scenario-03-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$blue10"
+        x={active ? 50 : 0}
+        testID="scenario-03-target"
+        data-testid="scenario-03-target"
+      />
       <Paragraph size="$1">{active ? '50px' : '0'}</Paragraph>
     </XStack>
   )
@@ -271,16 +336,33 @@ function Scenario03_TranslateX() {
 function Scenario04_TranslateY() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('04-translateY', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('04-translateY', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-04-trigger" data-testid="scenario-04-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-04-trigger"
+        data-testid="scenario-04-trigger"
+      >
         04: TranslateY
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$yellow10" y={active ? -30 : 0}
-        testID="scenario-04-target" data-testid="scenario-04-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$yellow10"
+        y={active ? -30 : 0}
+        testID="scenario-04-target"
+        data-testid="scenario-04-target"
+      />
       <Paragraph size="$1">{active ? '-30px' : '0'}</Paragraph>
     </XStack>
   )
@@ -292,16 +374,33 @@ function Scenario04_TranslateY() {
 function Scenario05_Rotate() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('05-rotate', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('05-rotate', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-05-trigger" data-testid="scenario-05-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-05-trigger"
+        data-testid="scenario-05-trigger"
+      >
         05: Rotate
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$red10" rotate={active ? '45deg' : '0deg'}
-        testID="scenario-05-target" data-testid="scenario-05-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$red10"
+        rotate={active ? '45deg' : '0deg'}
+        testID="scenario-05-target"
+        data-testid="scenario-05-target"
+      />
       <Paragraph size="$1">{active ? '45deg' : '0'}</Paragraph>
     </XStack>
   )
@@ -313,17 +412,37 @@ function Scenario05_Rotate() {
 function Scenario06_MultipleTransforms() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('06-multi-transform', ref, ['transform', 'opacity'])
+  const { startLogging, stopLogging } = useAnimationLogger('06-multi-transform', ref, [
+    'transform',
+    'opacity',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-06-trigger" data-testid="scenario-06-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-06-trigger"
+        data-testid="scenario-06-trigger"
+      >
         06: Multi-Transform
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$red10"
-        scale={active ? 1.2 : 1} x={active ? 20 : 0} rotate={active ? '15deg' : '0deg'} opacity={active ? 0.7 : 1}
-        testID="scenario-06-target" data-testid="scenario-06-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$red10"
+        scale={active ? 1.2 : 1}
+        x={active ? 20 : 0}
+        rotate={active ? '15deg' : '0deg'}
+        opacity={active ? 0.7 : 1}
+        testID="scenario-06-target"
+        data-testid="scenario-06-target"
+      />
       <Paragraph size="$1">{active ? 'active' : 'default'}</Paragraph>
     </XStack>
   )
@@ -339,12 +458,27 @@ function Scenario07_Width() {
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1500); }}
-        testID="scenario-07-trigger" data-testid="scenario-07-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1500)
+        }}
+        testID="scenario-07-trigger"
+        data-testid="scenario-07-trigger"
+      >
         07: Width
       </Button>
-      <View ref={ref as any} transition="quick" height={40} width={active ? 150 : 40} bg="$blue10"
-        testID="scenario-07-target" data-testid="scenario-07-target" />
+      <View
+        ref={ref as any}
+        transition="quick"
+        height={40}
+        width={active ? 150 : 40}
+        bg="$blue10"
+        testID="scenario-07-target"
+        data-testid="scenario-07-target"
+      />
       <Paragraph size="$1">{active ? '150px' : '40px'}</Paragraph>
     </XStack>
   )
@@ -360,12 +494,27 @@ function Scenario08_Height() {
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1500); }}
-        testID="scenario-08-trigger" data-testid="scenario-08-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1500)
+        }}
+        testID="scenario-08-trigger"
+        data-testid="scenario-08-trigger"
+      >
         08: Height
       </Button>
-      <View ref={ref as any} transition="quick" width={40} height={active ? 80 : 40} bg="$green10"
-        testID="scenario-08-target" data-testid="scenario-08-target" />
+      <View
+        ref={ref as any}
+        transition="quick"
+        width={40}
+        height={active ? 80 : 40}
+        bg="$green10"
+        testID="scenario-08-target"
+        data-testid="scenario-08-target"
+      />
       <Paragraph size="$1">{active ? '80px' : '40px'}</Paragraph>
     </XStack>
   )
@@ -377,16 +526,34 @@ function Scenario08_Height() {
 function Scenario09_WidthAndHeight() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('09-width-height', ref, ['width', 'height'])
+  const { startLogging, stopLogging } = useAnimationLogger('09-width-height', ref, [
+    'width',
+    'height',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1500); }}
-        testID="scenario-09-trigger" data-testid="scenario-09-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1500)
+        }}
+        testID="scenario-09-trigger"
+        data-testid="scenario-09-trigger"
+      >
         09: W+H
       </Button>
-      <View ref={ref as any} transition="quick" width={active ? 100 : 40} height={active ? 60 : 40} bg="$blue10"
-        testID="scenario-09-target" data-testid="scenario-09-target" />
+      <View
+        ref={ref as any}
+        transition="quick"
+        width={active ? 100 : 40}
+        height={active ? 60 : 40}
+        bg="$blue10"
+        testID="scenario-09-target"
+        data-testid="scenario-09-target"
+      />
       <Paragraph size="$1">{active ? '100x60' : '40x40'}</Paragraph>
     </XStack>
   )
@@ -398,16 +565,34 @@ function Scenario09_WidthAndHeight() {
 function Scenario10_BorderRadius() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('10-border-radius', ref, ['borderRadius'])
+  const { startLogging, stopLogging } = useAnimationLogger('10-border-radius', ref, [
+    'borderRadius',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-10-trigger" data-testid="scenario-10-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-10-trigger"
+        data-testid="scenario-10-trigger"
+      >
         10: BorderRadius
       </Button>
-      <View ref={ref as any} transition="quick" width={40} height={40} bg="$yellow10" borderRadius={active ? 20 : 0}
-        testID="scenario-10-target" data-testid="scenario-10-target" />
+      <View
+        ref={ref as any}
+        transition="quick"
+        width={40}
+        height={40}
+        bg="$yellow10"
+        borderRadius={active ? 20 : 0}
+        testID="scenario-10-target"
+        data-testid="scenario-10-target"
+      />
       <Paragraph size="$1">{active ? '20px' : '0'}</Paragraph>
     </XStack>
   )
@@ -419,16 +604,32 @@ function Scenario10_BorderRadius() {
 function Scenario11_BackgroundColor() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('11-bg-color', ref, ['backgroundColor'])
+  const { startLogging, stopLogging } = useAnimationLogger('11-bg-color', ref, [
+    'backgroundColor',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-11-trigger" data-testid="scenario-11-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-11-trigger"
+        data-testid="scenario-11-trigger"
+      >
         11: BgColor
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} backgroundColor={active ? '$red10' : '$blue10'}
-        testID="scenario-11-target" data-testid="scenario-11-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        backgroundColor={active ? '$red10' : '$blue10'}
+        testID="scenario-11-target"
+        data-testid="scenario-11-target"
+      />
       <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
   )
@@ -440,16 +641,33 @@ function Scenario11_BackgroundColor() {
 function Scenario12_TextColor() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('12-text-color', ref, ['color'])
+  const { startLogging, stopLogging } = useAnimationLogger('12-text-color', ref, [
+    'color',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-12-trigger" data-testid="scenario-12-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-12-trigger"
+        data-testid="scenario-12-trigger"
+      >
         12: TextColor
       </Button>
-      <Text ref={ref as any} transition="quick" fontSize="$5" fontWeight="bold" color={active ? '$red10' : '$blue10'}
-        testID="scenario-12-target" data-testid="scenario-12-target">
+      <Text
+        ref={ref as any}
+        transition="quick"
+        fontSize="$5"
+        fontWeight="bold"
+        color={active ? '$red10' : '$blue10'}
+        testID="scenario-12-target"
+        data-testid="scenario-12-target"
+      >
         ABC
       </Text>
       <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
@@ -463,17 +681,34 @@ function Scenario12_TextColor() {
 function Scenario13_BorderColor() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('13-border-color', ref, ['borderColor'])
+  const { startLogging, stopLogging } = useAnimationLogger('13-border-color', ref, [
+    'borderColor',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-13-trigger" data-testid="scenario-13-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-13-trigger"
+        data-testid="scenario-13-trigger"
+      >
         13: BorderColor
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="transparent" borderWidth={3}
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="transparent"
+        borderWidth={3}
         borderColor={active ? '$red10' : '$blue10'}
-        testID="scenario-13-target" data-testid="scenario-13-target" />
+        testID="scenario-13-target"
+        data-testid="scenario-13-target"
+      />
       <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
   )
@@ -485,16 +720,33 @@ function Scenario13_BorderColor() {
 function Scenario14_SpringBouncy() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('14-spring-bouncy', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('14-spring-bouncy', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1500); }}
-        testID="scenario-14-trigger" data-testid="scenario-14-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1500)
+        }}
+        testID="scenario-14-trigger"
+        data-testid="scenario-14-trigger"
+      >
         14: Bouncy
       </Button>
-      <Square ref={ref as any} transition="bouncy" size={40} bg="$blue10" scale={active ? 1.5 : 1}
-        testID="scenario-14-target" data-testid="scenario-14-target" />
+      <Square
+        ref={ref as any}
+        transition="bouncy"
+        size={40}
+        bg="$blue10"
+        scale={active ? 1.5 : 1}
+        testID="scenario-14-target"
+        data-testid="scenario-14-target"
+      />
       <Paragraph size="$1">bouncy spring</Paragraph>
     </XStack>
   )
@@ -506,16 +758,33 @@ function Scenario14_SpringBouncy() {
 function Scenario15_SpringLazy() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('15-spring-lazy', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('15-spring-lazy', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
-        testID="scenario-15-trigger" data-testid="scenario-15-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-15-trigger"
+        data-testid="scenario-15-trigger"
+      >
         15: Lazy
       </Button>
-      <Square ref={ref as any} transition="lazy" size={40} bg="$green10" scale={active ? 1.5 : 1}
-        testID="scenario-15-target" data-testid="scenario-15-target" />
+      <Square
+        ref={ref as any}
+        transition="lazy"
+        size={40}
+        bg="$green10"
+        scale={active ? 1.5 : 1}
+        testID="scenario-15-target"
+        data-testid="scenario-15-target"
+      />
       <Paragraph size="$1">lazy spring</Paragraph>
     </XStack>
   )
@@ -527,16 +796,33 @@ function Scenario15_SpringLazy() {
 function Scenario16_SpringQuick() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('16-spring-quick', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('16-spring-quick', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 800); }}
-        testID="scenario-16-trigger" data-testid="scenario-16-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 800)
+        }}
+        testID="scenario-16-trigger"
+        data-testid="scenario-16-trigger"
+      >
         16: Quick
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$blue10" scale={active ? 1.5 : 1}
-        testID="scenario-16-target" data-testid="scenario-16-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$blue10"
+        scale={active ? 1.5 : 1}
+        testID="scenario-16-target"
+        data-testid="scenario-16-target"
+      />
       <Paragraph size="$1">quick spring</Paragraph>
     </XStack>
   )
@@ -548,19 +834,35 @@ function Scenario16_SpringQuick() {
 function Scenario17_SpringCustom() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('17-spring-custom', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('17-spring-custom', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1500); }}
-        testID="scenario-17-trigger" data-testid="scenario-17-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1500)
+        }}
+        testID="scenario-17-trigger"
+        data-testid="scenario-17-trigger"
+      >
         17: Custom
       </Button>
-      <Square ref={ref as any} transition="quick"
+      <Square
+        ref={ref as any}
+        transition="quick"
         // @ts-ignore
         animationConfig={{ type: 'spring', damping: 5, stiffness: 100, mass: 0.5 }}
-        size={40} bg="$yellow10" scale={active ? 1.5 : 1}
-        testID="scenario-17-target" data-testid="scenario-17-target" />
+        size={40}
+        bg="$yellow10"
+        scale={active ? 1.5 : 1}
+        testID="scenario-17-target"
+        data-testid="scenario-17-target"
+      />
       <Paragraph size="$1">custom spring</Paragraph>
     </XStack>
   )
@@ -572,16 +874,33 @@ function Scenario17_SpringCustom() {
 function Scenario18_Timing100ms() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('18-timing-100ms', ref, ['opacity'])
+  const { startLogging, stopLogging } = useAnimationLogger('18-timing-100ms', ref, [
+    'opacity',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 500); }}
-        testID="scenario-18-trigger" data-testid="scenario-18-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 500)
+        }}
+        testID="scenario-18-trigger"
+        data-testid="scenario-18-trigger"
+      >
         18: 100ms
       </Button>
-      <Square ref={ref as any} transition="100ms" size={40} bg="$blue10" opacity={active ? 0.3 : 1}
-        testID="scenario-18-target" data-testid="scenario-18-target" />
+      <Square
+        ref={ref as any}
+        transition="100ms"
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.3 : 1}
+        testID="scenario-18-target"
+        data-testid="scenario-18-target"
+      />
       <Paragraph size="$1">timing 100ms</Paragraph>
     </XStack>
   )
@@ -593,16 +912,33 @@ function Scenario18_Timing100ms() {
 function Scenario19_Timing200ms() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('19-timing-200ms', ref, ['opacity'])
+  const { startLogging, stopLogging } = useAnimationLogger('19-timing-200ms', ref, [
+    'opacity',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 600); }}
-        testID="scenario-19-trigger" data-testid="scenario-19-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 600)
+        }}
+        testID="scenario-19-trigger"
+        data-testid="scenario-19-trigger"
+      >
         19: 200ms
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$green10" opacity={active ? 0.3 : 1}
-        testID="scenario-19-target" data-testid="scenario-19-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$green10"
+        opacity={active ? 0.3 : 1}
+        testID="scenario-19-target"
+        data-testid="scenario-19-target"
+      />
       <Paragraph size="$1">quick spring</Paragraph>
     </XStack>
   )
@@ -614,16 +950,33 @@ function Scenario19_Timing200ms() {
 function Scenario20_TimingWithDelay() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('20-timing-delay', ref, ['opacity'])
+  const { startLogging, stopLogging } = useAnimationLogger('20-timing-delay', ref, [
+    'opacity',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-20-trigger" data-testid="scenario-20-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-20-trigger"
+        data-testid="scenario-20-trigger"
+      >
         20: Delay
       </Button>
-      <Square ref={ref as any} transition={['quick', { delay: 300 }]} size={40} bg="$blue10" opacity={active ? 0.3 : 1}
-        testID="scenario-20-target" data-testid="scenario-20-target" />
+      <Square
+        ref={ref as any}
+        transition={['quick', { delay: 300 }]}
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.3 : 1}
+        testID="scenario-20-target"
+        data-testid="scenario-20-target"
+      />
       <Paragraph size="$1">300ms delay</Paragraph>
     </XStack>
   )
@@ -635,18 +988,35 @@ function Scenario20_TimingWithDelay() {
 function Scenario21_EnterStyle() {
   const [visible, setVisible] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('21-enter-style', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('21-enter-style', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { if (!visible) startLogging(); setVisible(!visible); setTimeout(stopLogging, 1000); }}
-        testID="scenario-21-trigger" data-testid="scenario-21-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          if (!visible) startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-21-trigger"
+        data-testid="scenario-21-trigger"
+      >
         21: EnterStyle
       </Button>
       {visible && (
-        <Square ref={ref as any} transition="bouncy" size={40} bg="$blue10"
+        <Square
+          ref={ref as any}
+          transition="bouncy"
+          size={40}
+          bg="$blue10"
           enterStyle={{ opacity: 0, scale: 0.5 }}
-          testID="scenario-21-target" data-testid="scenario-21-target" />
+          testID="scenario-21-target"
+          data-testid="scenario-21-target"
+        />
       )}
       <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
@@ -659,19 +1029,37 @@ function Scenario21_EnterStyle() {
 function Scenario22_ExitStyle() {
   const [visible, setVisible] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('22-exit-style', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('22-exit-style', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { if (visible) startLogging(); setVisible(!visible); setTimeout(stopLogging, 1000); }}
-        testID="scenario-22-trigger" data-testid="scenario-22-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          if (visible) startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-22-trigger"
+        data-testid="scenario-22-trigger"
+      >
         22: ExitStyle
       </Button>
       <AnimatePresence>
         {visible && (
-          <Square key="exit-square" ref={ref as any} transition="bouncy" size={40} bg="$green10"
+          <Square
+            key="exit-square"
+            ref={ref as any}
+            transition="bouncy"
+            size={40}
+            bg="$green10"
             exitStyle={{ opacity: 0, scale: 0.5 }}
-            testID="scenario-22-target" data-testid="scenario-22-target" />
+            testID="scenario-22-target"
+            data-testid="scenario-22-target"
+          />
         )}
       </AnimatePresence>
       <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
@@ -685,20 +1073,38 @@ function Scenario22_ExitStyle() {
 function Scenario23_EnterExitCombined() {
   const [visible, setVisible] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('23-enter-exit', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('23-enter-exit', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 1000); }}
-        testID="scenario-23-trigger" data-testid="scenario-23-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-23-trigger"
+        data-testid="scenario-23-trigger"
+      >
         23: Enter+Exit
       </Button>
       <AnimatePresence>
         {visible && (
-          <Square key="enter-exit-square" ref={ref as any} transition="bouncy" size={40} bg="$blue10"
+          <Square
+            key="enter-exit-square"
+            ref={ref as any}
+            transition="bouncy"
+            size={40}
+            bg="$blue10"
             enterStyle={{ opacity: 0, scale: 0.5, y: -20 }}
             exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
-            testID="scenario-23-target" data-testid="scenario-23-target" />
+            testID="scenario-23-target"
+            data-testid="scenario-23-target"
+          />
         )}
       </AnimatePresence>
       <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
@@ -712,14 +1118,16 @@ function Scenario23_EnterExitCombined() {
 function Scenario24_RapidToggle() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('24-rapid-toggle', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('24-rapid-toggle', ref, [
+    'transform',
+  ])
   const toggleCountRef = useRef(0)
 
   const handleRapidToggle = () => {
     startLogging()
     toggleCountRef.current = 0
     const interval = setInterval(() => {
-      setActive(v => !v)
+      setActive((v) => !v)
       toggleCountRef.current++
       if (toggleCountRef.current >= 6) {
         clearInterval(interval)
@@ -730,12 +1138,23 @@ function Scenario24_RapidToggle() {
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={handleRapidToggle}
-        testID="scenario-24-trigger" data-testid="scenario-24-trigger">
+      <Button
+        size="$2"
+        onPress={handleRapidToggle}
+        testID="scenario-24-trigger"
+        data-testid="scenario-24-trigger"
+      >
         24: Rapid
       </Button>
-      <Square ref={ref as any} transition="quick" size={40} bg="$yellow10" scale={active ? 1.5 : 1}
-        testID="scenario-24-target" data-testid="scenario-24-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        size={40}
+        bg="$yellow10"
+        scale={active ? 1.5 : 1}
+        testID="scenario-24-target"
+        data-testid="scenario-24-target"
+      />
       <Paragraph size="$1">6 toggles @ 100ms</Paragraph>
     </XStack>
   )
@@ -747,7 +1166,9 @@ function Scenario24_RapidToggle() {
 function Scenario25_Interruption() {
   const [position, setPosition] = useState(0) // 0, 1, 2
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('25-interruption', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('25-interruption', ref, [
+    'transform',
+  ])
 
   const handleInterrupt = () => {
     startLogging()
@@ -758,14 +1179,26 @@ function Scenario25_Interruption() {
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={handleInterrupt}
-        testID="scenario-25-trigger" data-testid="scenario-25-trigger">
+      <Button
+        size="$2"
+        onPress={handleInterrupt}
+        testID="scenario-25-trigger"
+        data-testid="scenario-25-trigger"
+      >
         25: Interrupt
       </Button>
-      <Square ref={ref as any} transition="lazy" size={40} bg="$red10"
+      <Square
+        ref={ref as any}
+        transition="lazy"
+        size={40}
+        bg="$red10"
         x={position === 0 ? 0 : position === 1 ? 50 : 100}
-        testID="scenario-25-target" data-testid="scenario-25-target" />
-      <Button size="$2" onPress={() => setPosition(0)}>Reset</Button>
+        testID="scenario-25-target"
+        data-testid="scenario-25-target"
+      />
+      <Button size="$2" onPress={() => setPosition(0)}>
+        Reset
+      </Button>
     </XStack>
   )
 }
@@ -776,17 +1209,36 @@ function Scenario25_Interruption() {
 function Scenario26_AnimateOnly() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('26-animate-only', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('26-animate-only', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-26-trigger" data-testid="scenario-26-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-26-trigger"
+        data-testid="scenario-26-trigger"
+      >
         26: AnimateOnly
       </Button>
-      <Square ref={ref as any} transition="quick" animateOnly={['opacity']} size={40} bg="$blue10"
-        opacity={active ? 0.3 : 1} scale={active ? 1.5 : 1}
-        testID="scenario-26-target" data-testid="scenario-26-target" />
+      <Square
+        ref={ref as any}
+        transition="quick"
+        animateOnly={['opacity']}
+        size={40}
+        bg="$blue10"
+        opacity={active ? 0.3 : 1}
+        scale={active ? 1.5 : 1}
+        testID="scenario-26-target"
+        data-testid="scenario-26-target"
+      />
       <Paragraph size="$1">only opacity</Paragraph>
     </XStack>
   )
@@ -798,19 +1250,35 @@ function Scenario26_AnimateOnly() {
 function Scenario27_AnimationConfig() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('27-animation-config', ref, ['transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('27-animation-config', ref, [
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
-        testID="scenario-27-trigger" data-testid="scenario-27-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-27-trigger"
+        data-testid="scenario-27-trigger"
+      >
         27: Config
       </Button>
-      <Square ref={ref as any} transition="quick"
+      <Square
+        ref={ref as any}
+        transition="quick"
         // @ts-ignore
         animationConfig={{ type: 'spring', damping: 8, stiffness: 80 }}
-        size={40} bg="$green10" scale={active ? 1.5 : 1}
-        testID="scenario-27-target" data-testid="scenario-27-target" />
+        size={40}
+        bg="$green10"
+        scale={active ? 1.5 : 1}
+        testID="scenario-27-target"
+        data-testid="scenario-27-target"
+      />
       <Paragraph size="$1">config override</Paragraph>
     </XStack>
   )
@@ -822,20 +1290,39 @@ function Scenario27_AnimationConfig() {
 function Scenario28_MultiProperty() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('28-multi-property', ref, ['opacity', 'transform', 'borderRadius'])
+  const { startLogging, stopLogging } = useAnimationLogger('28-multi-property', ref, [
+    'opacity',
+    'transform',
+    'borderRadius',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-28-trigger" data-testid="scenario-28-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-28-trigger"
+        data-testid="scenario-28-trigger"
+      >
         28: Multi
       </Button>
-      <View ref={ref as any} transition="bouncy" width={40} height={40} bg="$blue10"
+      <View
+        ref={ref as any}
+        transition="bouncy"
+        width={40}
+        height={40}
+        bg="$blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         rotate={active ? '30deg' : '0deg'}
         borderRadius={active ? 20 : 4}
-        testID="scenario-28-target" data-testid="scenario-28-target" />
+        testID="scenario-28-target"
+        data-testid="scenario-28-target"
+      />
       <Paragraph size="$1">4 props</Paragraph>
     </XStack>
   )
@@ -848,23 +1335,53 @@ function Scenario29_NestedAnimations() {
   const [active, setActive] = useState(false)
   const outerRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
-  const { startLogging: startOuter, stopLogging: stopOuter } = useAnimationLogger('29-nested-outer', outerRef, ['transform'])
-  const { startLogging: startInner, stopLogging: stopInner } = useAnimationLogger('29-nested-inner', innerRef, ['opacity'])
+  const { startLogging: startOuter, stopLogging: stopOuter } = useAnimationLogger(
+    '29-nested-outer',
+    outerRef,
+    ['transform']
+  )
+  const { startLogging: startInner, stopLogging: stopInner } = useAnimationLogger(
+    '29-nested-inner',
+    innerRef,
+    ['opacity']
+  )
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => {
-        startOuter(); startInner();
-        setActive(!active);
-        setTimeout(() => { stopOuter(); stopInner(); }, 1000);
-      }}
-        testID="scenario-29-trigger" data-testid="scenario-29-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startOuter()
+          startInner()
+          setActive(!active)
+          setTimeout(() => {
+            stopOuter()
+            stopInner()
+          }, 1000)
+        }}
+        testID="scenario-29-trigger"
+        data-testid="scenario-29-trigger"
+      >
         29: Nested
       </Button>
-      <View ref={outerRef as any} transition="quick" scale={active ? 1.2 : 1} padding="$1" bg="$blue5"
-        testID="scenario-29-outer" data-testid="scenario-29-outer">
-        <Square ref={innerRef as any} transition="bouncy" size={30} bg="$blue10" opacity={active ? 0.5 : 1}
-          testID="scenario-29-inner" data-testid="scenario-29-inner" />
+      <View
+        ref={outerRef as any}
+        transition="quick"
+        scale={active ? 1.2 : 1}
+        padding="$1"
+        bg="$blue5"
+        testID="scenario-29-outer"
+        data-testid="scenario-29-outer"
+      >
+        <Square
+          ref={innerRef as any}
+          transition="bouncy"
+          size={30}
+          bg="$blue10"
+          opacity={active ? 0.5 : 1}
+          testID="scenario-29-inner"
+          data-testid="scenario-29-inner"
+        />
       </View>
       <Paragraph size="$1">parent+child</Paragraph>
     </XStack>
@@ -876,7 +1393,10 @@ function Scenario29_NestedAnimations() {
 // ============================================================================
 function Scenario30_HoverAnimation() {
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('30-hover', ref, ['transform', 'backgroundColor'])
+  const { startLogging, stopLogging } = useAnimationLogger('30-hover', ref, [
+    'transform',
+    'backgroundColor',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
@@ -907,12 +1427,23 @@ function Scenario30_HoverAnimation() {
 function Scenario31_PerPropertyConfigs() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('31-per-prop-configs', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('31-per-prop-configs', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
-        testID="scenario-31-trigger" data-testid="scenario-31-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-31-trigger"
+        data-testid="scenario-31-trigger"
+      >
         31: PerProp
       </Button>
       <Square
@@ -922,7 +1453,8 @@ function Scenario31_PerPropertyConfigs() {
         bg="$blue10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
-        testID="scenario-31-target" data-testid="scenario-31-target"
+        testID="scenario-31-target"
+        data-testid="scenario-31-target"
       />
       <Paragraph size="$1">opacity=lazy, scale=bouncy</Paragraph>
     </XStack>
@@ -936,7 +1468,10 @@ function Scenario31_PerPropertyConfigs() {
 function Scenario32_PerPropertyWithInterruption() {
   const [state, setState] = useState<0 | 1 | 2>(0)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('32-per-prop-interrupt', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('32-per-prop-interrupt', ref, [
+    'opacity',
+    'transform',
+  ])
 
   const handleInterrupt = () => {
     startLogging()
@@ -948,8 +1483,12 @@ function Scenario32_PerPropertyWithInterruption() {
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={handleInterrupt}
-        testID="scenario-32-trigger" data-testid="scenario-32-trigger">
+      <Button
+        size="$2"
+        onPress={handleInterrupt}
+        testID="scenario-32-trigger"
+        data-testid="scenario-32-trigger"
+      >
         32: Interrupt
       </Button>
       <Square
@@ -960,9 +1499,12 @@ function Scenario32_PerPropertyWithInterruption() {
         opacity={state === 0 ? 1 : state === 1 ? 0.5 : 0.2}
         scale={state === 0 ? 1 : state === 1 ? 1.3 : 1.6}
         x={state === 0 ? 0 : state === 1 ? 30 : 60}
-        testID="scenario-32-target" data-testid="scenario-32-target"
+        testID="scenario-32-target"
+        data-testid="scenario-32-target"
       />
-      <Button size="$2" onPress={() => setState(0)}>Reset</Button>
+      <Button size="$2" onPress={() => setState(0)}>
+        Reset
+      </Button>
       <Paragraph size="$1">state={state}</Paragraph>
     </XStack>
   )
@@ -975,12 +1517,24 @@ function Scenario32_PerPropertyWithInterruption() {
 function Scenario33_MixedSpringTiming() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('33-mixed-spring-timing', ref, ['opacity', 'transform', 'borderRadius'])
+  const { startLogging, stopLogging } = useAnimationLogger(
+    '33-mixed-spring-timing',
+    ref,
+    ['opacity', 'transform', 'borderRadius']
+  )
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
-        testID="scenario-33-trigger" data-testid="scenario-33-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-33-trigger"
+        data-testid="scenario-33-trigger"
+      >
         33: Mixed
       </Button>
       <View
@@ -992,7 +1546,8 @@ function Scenario33_MixedSpringTiming() {
         opacity={active ? 0.4 : 1}
         scale={active ? 1.4 : 1}
         borderRadius={active ? 20 : 4}
-        testID="scenario-33-target" data-testid="scenario-33-target"
+        testID="scenario-33-target"
+        data-testid="scenario-33-target"
       />
       <Paragraph size="$1">scale=bouncy, opacity=quick, radius=lazy</Paragraph>
     </XStack>
@@ -1006,25 +1561,44 @@ function Scenario33_MixedSpringTiming() {
 function Scenario34_ComplexObjectManyProps() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('34-complex-many-props', ref,
-    ['opacity', 'transform', 'width', 'height', 'borderRadius', 'backgroundColor'])
+  const { startLogging, stopLogging } = useAnimationLogger('34-complex-many-props', ref, [
+    'opacity',
+    'transform',
+    'width',
+    'height',
+    'borderRadius',
+    'backgroundColor',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2500); }}
-        testID="scenario-34-trigger" data-testid="scenario-34-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2500)
+        }}
+        testID="scenario-34-trigger"
+        data-testid="scenario-34-trigger"
+      >
         34: Complex
       </Button>
       <View
         ref={ref as any}
-        transition={['quick', {
-          opacity: 'lazy',
-          scale: 'bouncy',
-          width: 'lazy',
-          height: 'lazy',
-          borderRadius: 'bouncy',
-          backgroundColor: '200ms'
-        }] as any}
+        transition={
+          [
+            'quick',
+            {
+              opacity: 'lazy',
+              scale: 'bouncy',
+              width: 'lazy',
+              height: 'lazy',
+              borderRadius: 'bouncy',
+              backgroundColor: '200ms',
+            },
+          ] as any
+        }
         width={active ? 80 : 40}
         height={active ? 60 : 40}
         backgroundColor={active ? '$red10' : '$blue10'}
@@ -1032,7 +1606,8 @@ function Scenario34_ComplexObjectManyProps() {
         scale={active ? 1.2 : 1}
         rotate={active ? '15deg' : '0deg'}
         borderRadius={active ? 16 : 4}
-        testID="scenario-34-target" data-testid="scenario-34-target"
+        testID="scenario-34-target"
+        data-testid="scenario-34-target"
       />
       <Paragraph size="$1">7 props, 4 configs</Paragraph>
     </XStack>
@@ -1046,7 +1621,10 @@ function Scenario34_ComplexObjectManyProps() {
 function Scenario35_RapidPerPropertyChanges() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('35-rapid-per-prop', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('35-rapid-per-prop', ref, [
+    'opacity',
+    'transform',
+  ])
   const toggleCountRef = useRef(0)
 
   const handleRapid = () => {
@@ -1054,7 +1632,7 @@ function Scenario35_RapidPerPropertyChanges() {
     toggleCountRef.current = 0
     // Toggle every 150ms - fast enough to interrupt lazy animations
     const interval = setInterval(() => {
-      setActive(v => !v)
+      setActive((v) => !v)
       toggleCountRef.current++
       if (toggleCountRef.current >= 8) {
         clearInterval(interval)
@@ -1065,8 +1643,12 @@ function Scenario35_RapidPerPropertyChanges() {
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={handleRapid}
-        testID="scenario-35-trigger" data-testid="scenario-35-trigger">
+      <Button
+        size="$2"
+        onPress={handleRapid}
+        testID="scenario-35-trigger"
+        data-testid="scenario-35-trigger"
+      >
         35: Rapid
       </Button>
       <Square
@@ -1077,7 +1659,8 @@ function Scenario35_RapidPerPropertyChanges() {
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
         x={active ? 40 : 0}
-        testID="scenario-35-target" data-testid="scenario-35-target"
+        testID="scenario-35-target"
+        data-testid="scenario-35-target"
       />
       <Paragraph size="$1">8 toggles @ 150ms</Paragraph>
     </XStack>
@@ -1091,12 +1674,23 @@ function Scenario35_RapidPerPropertyChanges() {
 function Scenario36_TimingTest() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('36-timing-test', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('36-timing-test', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1500); }}
-        testID="scenario-36-trigger" data-testid="scenario-36-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1500)
+        }}
+        testID="scenario-36-trigger"
+        data-testid="scenario-36-trigger"
+      >
         36: 1000ms
       </Button>
       <Square
@@ -1106,7 +1700,8 @@ function Scenario36_TimingTest() {
         bg="$blue10"
         opacity={active ? 0.2 : 1}
         scale={active ? 1.5 : 1}
-        testID="scenario-36-target" data-testid="scenario-36-target"
+        testID="scenario-36-target"
+        data-testid="scenario-36-target"
       />
       <Paragraph size="$1">1000ms timing</Paragraph>
     </XStack>
@@ -1120,12 +1715,23 @@ function Scenario36_TimingTest() {
 function Scenario37_EnterStyleScaleX() {
   const [visible, setVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('37-enter-scaleX', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('37-enter-scaleX', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { if (!visible) startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
-        testID="scenario-37-trigger" data-testid="scenario-37-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          if (!visible) startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-37-trigger"
+        data-testid="scenario-37-trigger"
+      >
         37: EnterScaleX
       </Button>
       {visible && (
@@ -1136,7 +1742,8 @@ function Scenario37_EnterStyleScaleX() {
           height={20}
           bg="$red10"
           enterStyle={{ opacity: 0, scaleX: 0 }}
-          testID="scenario-37-target" data-testid="scenario-37-target"
+          testID="scenario-37-target"
+          data-testid="scenario-37-target"
         />
       )}
       <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
@@ -1153,12 +1760,24 @@ function Scenario37_EnterStyleScaleX() {
 function Scenario38_PerPropertyWithTransform() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('38-per-prop-transform', ref, ['opacity', 'transform', 'backgroundColor'])
+  const { startLogging, stopLogging } = useAnimationLogger('38-per-prop-transform', ref, [
+    'opacity',
+    'transform',
+    'backgroundColor',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
-        testID="scenario-38-trigger" data-testid="scenario-38-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-38-trigger"
+        data-testid="scenario-38-trigger"
+      >
         38: PerProp+Transform
       </Button>
       <Square
@@ -1171,7 +1790,8 @@ function Scenario38_PerPropertyWithTransform() {
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         y={active ? -10 : 0}
-        testID="scenario-38-target" data-testid="scenario-38-target"
+        testID="scenario-38-target"
+        data-testid="scenario-38-target"
       />
       <Paragraph size="$1">opacity/bg=200ms, scale/y=quick</Paragraph>
     </XStack>
@@ -1186,24 +1806,39 @@ function Scenario38_PerPropertyWithTransform() {
 function Scenario39_ObjectFormatPerProperty() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('39-object-per-prop', ref, ['opacity', 'transform', 'backgroundColor'])
+  const { startLogging, stopLogging } = useAnimationLogger('39-object-per-prop', ref, [
+    'opacity',
+    'transform',
+    'backgroundColor',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
-        testID="scenario-39-trigger" data-testid="scenario-39-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-39-trigger"
+        data-testid="scenario-39-trigger"
+      >
         39: Object Format
       </Button>
       <Square
         ref={ref as any}
         // object format - same as array but different syntax
-        transition={{ opacity: '200ms', backgroundColor: '200ms', default: 'quick' } as any}
+        transition={
+          { opacity: '200ms', backgroundColor: '200ms', default: 'quick' } as any
+        }
         size={40}
         bg={active ? '$red10' : '$blue10'}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         y={active ? -10 : 0}
-        testID="scenario-39-target" data-testid="scenario-39-target"
+        testID="scenario-39-target"
+        data-testid="scenario-39-target"
       />
       <Paragraph size="$1">object: opacity/bg=200ms, default=quick</Paragraph>
     </XStack>
@@ -1217,12 +1852,23 @@ function Scenario39_ObjectFormatPerProperty() {
 function Scenario40_ObjectFormatNoDefault() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('40-object-no-default', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('40-object-no-default', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 1000); }}
-        testID="scenario-40-trigger" data-testid="scenario-40-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 1000)
+        }}
+        testID="scenario-40-trigger"
+        data-testid="scenario-40-trigger"
+      >
         40: No Default
       </Button>
       <Square
@@ -1233,7 +1879,8 @@ function Scenario40_ObjectFormatNoDefault() {
         bg="$blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
-        testID="scenario-40-target" data-testid="scenario-40-target"
+        testID="scenario-40-target"
+        data-testid="scenario-40-target"
       />
       <Paragraph size="$1">only opacity animates (500ms)</Paragraph>
     </XStack>
@@ -1248,12 +1895,23 @@ function Scenario40_ObjectFormatNoDefault() {
 function Scenario41_PerPropertyWithDelay() {
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('41-per-prop-delay', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('41-per-prop-delay', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center">
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
-        testID="scenario-41-trigger" data-testid="scenario-41-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-41-trigger"
+        data-testid="scenario-41-trigger"
+      >
         41: PerProp+Delay
       </Button>
       <Square
@@ -1264,7 +1922,8 @@ function Scenario41_PerPropertyWithDelay() {
         bg="$blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
-        testID="scenario-41-target" data-testid="scenario-41-target"
+        testID="scenario-41-target"
+        data-testid="scenario-41-target"
       />
       <Paragraph size="$1">300ms delay, opacity=500ms, scale=quick</Paragraph>
     </XStack>
@@ -1280,12 +1939,23 @@ function Scenario41_PerPropertyWithDelay() {
 function Scenario42_TransitionEnterExit() {
   const [visible, setVisible] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('42-enter-exit', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('42-enter-exit', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
-        testID="scenario-42-trigger" data-testid="scenario-42-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-42-trigger"
+        data-testid="scenario-42-trigger"
+      >
         42: Enter/Exit
       </Button>
       <AnimatePresence>
@@ -1299,11 +1969,14 @@ function Scenario42_TransitionEnterExit() {
             bg="$blue10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
             exitStyle={{ opacity: 0, scale: 0.5 }}
-            testID="scenario-42-target" data-testid="scenario-42-target"
+            testID="scenario-42-target"
+            data-testid="scenario-42-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=500ms, exit=100ms)</Paragraph>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (enter=500ms, exit=100ms)
+      </Paragraph>
     </XStack>
   )
 }
@@ -1317,12 +1990,23 @@ function Scenario42_TransitionEnterExit() {
 function Scenario43_TransitionEnterOnly() {
   const [visible, setVisible] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('43-enter-only', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('43-enter-only', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
-        testID="scenario-43-trigger" data-testid="scenario-43-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-43-trigger"
+        data-testid="scenario-43-trigger"
+      >
         43: Enter Only
       </Button>
       <AnimatePresence>
@@ -1336,11 +2020,14 @@ function Scenario43_TransitionEnterOnly() {
             bg="$green10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
             exitStyle={{ opacity: 0, scale: 0.5 }}
-            testID="scenario-43-target" data-testid="scenario-43-target"
+            testID="scenario-43-target"
+            data-testid="scenario-43-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=500ms, default=100ms)</Paragraph>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (enter=500ms, default=100ms)
+      </Paragraph>
     </XStack>
   )
 }
@@ -1354,12 +2041,23 @@ function Scenario43_TransitionEnterOnly() {
 function Scenario44_TransitionExitOnly() {
   const [visible, setVisible] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('44-exit-only', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('44-exit-only', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
-        testID="scenario-44-trigger" data-testid="scenario-44-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-44-trigger"
+        data-testid="scenario-44-trigger"
+      >
         44: Exit Only
       </Button>
       <AnimatePresence>
@@ -1373,11 +2071,14 @@ function Scenario44_TransitionExitOnly() {
             bg="$yellow10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
             exitStyle={{ opacity: 0, scale: 0.5 }}
-            testID="scenario-44-target" data-testid="scenario-44-target"
+            testID="scenario-44-target"
+            data-testid="scenario-44-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (exit=500ms, default=100ms)</Paragraph>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (exit=500ms, default=100ms)
+      </Paragraph>
     </XStack>
   )
 }
@@ -1392,16 +2093,35 @@ function Scenario45_TransitionEnterExitWithDefault() {
   const [visible, setVisible] = useState(true)
   const [active, setActive] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('45-enter-exit-default', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('45-enter-exit-default', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
-        testID="scenario-45-trigger" data-testid="scenario-45-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-45-trigger"
+        data-testid="scenario-45-trigger"
+      >
         45: Toggle
       </Button>
-      <Button size="$2" onPress={() => { startLogging(); setActive(!active); setTimeout(stopLogging, 2000); }}
-        testID="scenario-45-trigger-prop" data-testid="scenario-45-trigger-prop">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setActive(!active)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-45-trigger-prop"
+        data-testid="scenario-45-trigger-prop"
+      >
         Prop
       </Button>
       <AnimatePresence>
@@ -1416,11 +2136,14 @@ function Scenario45_TransitionEnterExitWithDefault() {
             opacity={active ? 0.5 : 1}
             enterStyle={{ opacity: 0, scale: 0.5 }}
             exitStyle={{ opacity: 0, scale: 0.5 }}
-            testID="scenario-45-target" data-testid="scenario-45-target"
+            testID="scenario-45-target"
+            data-testid="scenario-45-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, default=500ms)</Paragraph>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, default=500ms)
+      </Paragraph>
     </XStack>
   )
 }
@@ -1434,12 +2157,24 @@ function Scenario45_TransitionEnterExitWithDefault() {
 function Scenario46_TransitionEnterExitPerProperty() {
   const [visible, setVisible] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('46-enter-exit-per-prop', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger(
+    '46-enter-exit-per-prop',
+    ref,
+    ['opacity', 'transform']
+  )
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
-        testID="scenario-46-trigger" data-testid="scenario-46-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-46-trigger"
+        data-testid="scenario-46-trigger"
+      >
         46: PerProp
       </Button>
       <AnimatePresence>
@@ -1453,11 +2188,14 @@ function Scenario46_TransitionEnterExitPerProperty() {
             bg="$blue10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
             exitStyle={{ opacity: 0, scale: 0.5 }}
-            testID="scenario-46-target" data-testid="scenario-46-target"
+            testID="scenario-46-target"
+            data-testid="scenario-46-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, opacity=500ms)</Paragraph>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, opacity=500ms)
+      </Paragraph>
     </XStack>
   )
 }
@@ -1471,12 +2209,23 @@ function Scenario46_TransitionEnterExitPerProperty() {
 function Scenario47_TransitionEnterExitWithDelay() {
   const [visible, setVisible] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
-  const { startLogging, stopLogging } = useAnimationLogger('47-enter-exit-delay', ref, ['opacity', 'transform'])
+  const { startLogging, stopLogging } = useAnimationLogger('47-enter-exit-delay', ref, [
+    'opacity',
+    'transform',
+  ])
 
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
-      <Button size="$2" onPress={() => { startLogging(); setVisible(!visible); setTimeout(stopLogging, 2000); }}
-        testID="scenario-47-trigger" data-testid="scenario-47-trigger">
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-47-trigger"
+        data-testid="scenario-47-trigger"
+      >
         47: Delay
       </Button>
       <AnimatePresence>
@@ -1489,11 +2238,14 @@ function Scenario47_TransitionEnterExitWithDelay() {
             bg="$color10"
             enterStyle={{ opacity: 0, scale: 0.5 }}
             exitStyle={{ opacity: 0, scale: 0.5 }}
-            testID="scenario-47-target" data-testid="scenario-47-target"
+            testID="scenario-47-target"
+            data-testid="scenario-47-target"
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, delay=200ms)</Paragraph>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, delay=200ms)
+      </Paragraph>
     </XStack>
   )
 }

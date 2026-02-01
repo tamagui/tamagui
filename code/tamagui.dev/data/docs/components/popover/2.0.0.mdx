@@ -28,9 +28,8 @@ pressed, floating above the current content. Be sure to open the code example
 above for a copy-paste implementation.
 
 <Notice>
-  Note: Popovers are not a recommended pattern for mobile apps. Instead you can
-  use Adapt and render them as a Sheet, or just conditionally render them to
-  some native UI.
+  Note: Popovers are not a recommended pattern for mobile apps. Instead you can use Adapt
+  and render them as a Sheet, or just conditionally render them to some native UI.
 </Notice>
 
 ## Installation
@@ -79,7 +78,9 @@ export default App
 />
 
 <Notice theme="blue">
-  For native apps, we recommend [setting up native portals](/docs/components/portal#native-portal-setup-recommended) to preserve React context inside Popover content.
+  For native apps, we recommend [setting up native
+  portals](/docs/components/portal#native-portal-setup-recommended) to preserve React
+  context inside Popover content.
 </Notice>
 
 ## Anatomy
@@ -247,9 +248,8 @@ For most of these properties, you'll want to reference the
 [floating-ui docs](https://floating-ui.com/docs/getting-started).
 
 <Notice>
-  If using `modal={true}` (which is `true` by default), refer to the
-  [PortalProvider installation](#portalprovider) for more
-  information.
+  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider
+  installation](#portalprovider) for more information.
 </Notice>
 
 ### Popover.Arrow
@@ -263,8 +263,7 @@ Popover. Arrows extend YStack, see [Stacks](/docs/components/stacks).
     {
       name: 'animatePosition',
       type: 'boolean',
-      description:
-        'Enable smooth animation when the arrow position changes.',
+      description: 'Enable smooth animation when the arrow position changes.',
     },
     {
       name: 'size',
@@ -308,8 +307,7 @@ Extends PopperContent which extends SizableStack which extends a YStack (see
       name: 'size',
       type: 'SizeTokens',
       required: false,
-      description:
-        'Controls default padding/borderRadius when unstyled is false.',
+      description: 'Controls default padding/borderRadius when unstyled is false.',
     },
     {
       name: 'unstyled',
@@ -334,15 +332,13 @@ Extends PopperContent which extends SizableStack which extends a YStack (see
       name: 'onOpenAutoFocus',
       type: `FocusScopeProps['onMountAutoFocus']`,
       default: false,
-      description:
-        'Event handler called when auto-focusing on open. Can be prevented.',
+      description: 'Event handler called when auto-focusing on open. Can be prevented.',
     },
     {
       name: 'onCloseAutoFocus',
       type: `FocusScopeProps['onUnmountAutoFocus'] | false`,
       default: false,
-      description:
-        'Event handler called when auto-focusing on close. Can be prevented.',
+      description: 'Event handler called when auto-focusing on close. Can be prevented.',
     },
     {
       name: 'lazyMount',

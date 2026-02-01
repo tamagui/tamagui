@@ -38,20 +38,9 @@ const hiddenSize = 10_000.1
 let _cachedSafeAreaTop: number | undefined
 function getSafeAreaTopInset(): number {
   if (_cachedSafeAreaTop !== undefined) return _cachedSafeAreaTop
-  // try tamagui native safe area state first
-  const sa = getSafeArea()
-  if (sa.isEnabled) {
-    _cachedSafeAreaTop = sa.getInsets().top
-    return _cachedSafeAreaTop
-  }
-  // fallback: react-native-safe-area-context initialWindowMetrics (no provider needed)
-  try {
-    const sac = require('react-native-safe-area-context')
-    _cachedSafeAreaTop = sac.initialWindowMetrics?.insets?.top ?? 0
-  } catch {
-    _cachedSafeAreaTop = 0
-  }
-  return _cachedSafeAreaTop ?? 0
+  // use @tamagui/native abstraction - returns 0 when not enabled
+  _cachedSafeAreaTop = getSafeArea().getInsets().top
+  return _cachedSafeAreaTop
 }
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
@@ -120,7 +109,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       // look up named animation config from driver if available
       if (animationProp && animationDriver.animations?.[animationProp as string]) {
         return {
-          ...(animationDriver.animations[animationProp as string] as Object),
+          ...(animationDriver.animations[animationProp as string] as object),
           ...animationPropConfig,
         }
       }

@@ -8,7 +8,7 @@
  */
 export declare const AccessibilityUtil: {
     isDisabled: (props: Record<string, any>) => boolean;
-    propsToAccessibilityComponent: (props?: Object) => void | string;
+    propsToAccessibilityComponent: (props?: object) => void | string;
     propsToAriaRole: ({ accessibilityRole, }: {
         accessibilityRole?: string;
     }) => string | void;

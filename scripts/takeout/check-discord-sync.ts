@@ -78,9 +78,12 @@ async function getActiveStripeSubscriptions() {
   }
 
   // Filter for early-access products
-  const takeoutSubscriptions = allSubscriptions.filter(sub => {
-    return sub.items.data.some(item => {
-      const productId = typeof item.price.product === 'string' ? item.price.product : item.price.product.id
+  const takeoutSubscriptions = allSubscriptions.filter((sub) => {
+    return sub.items.data.some((item) => {
+      const productId =
+        typeof item.price.product === 'string'
+          ? item.price.product
+          : item.price.product.id
       return EARLY_ACCESS_PRODUCT_IDS.includes(productId)
     })
   })
@@ -100,13 +103,13 @@ async function getUsersWithTakeoutRole() {
       limit: 1000,
     })
 
-    const membersWithRole = members.filter(member =>
+    const membersWithRole = members.filter((member) =>
       member.roles.includes(TAKEOUT_ROLE_ID)
     )
 
     console.log(`   Found ${membersWithRole.length} Discord users with Takeout role`)
 
-    return membersWithRole.map(m => ({
+    return membersWithRole.map((m) => ({
       id: m.user!.id,
       username: m.user!.username,
       globalName: m.user!.global_name,
@@ -132,7 +135,7 @@ async function getDiscordToSubscriptionMapping(discordUserIds: string[]) {
 
   // Create map of discord_user_id -> subscription_ids[]
   const mapping = new Map<string, string[]>()
-  data?.forEach(row => {
+  data?.forEach((row) => {
     if (row.discord_user_id) {
       const existing = mapping.get(row.discord_user_id) || []
       existing.push(row.subscription_id)
@@ -152,16 +155,16 @@ async function main() {
   // Fetch all data
   const [subscriptions, discordUsersWithRole] = await Promise.all([
     getActiveStripeSubscriptions(),
-    getUsersWithTakeoutRole()
+    getUsersWithTakeoutRole(),
   ])
 
   // Get subscription mappings
   const discordToSubscriptions = await getDiscordToSubscriptionMapping(
-    discordUsersWithRole.map(u => u.id)
+    discordUsersWithRole.map((u) => u.id)
   )
 
   // Create set of active subscription IDs
-  const activeSubscriptionIds = new Set(subscriptions.map(s => s.id))
+  const activeSubscriptionIds = new Set(subscriptions.map((s) => s.id))
 
   console.log('\n' + '='.repeat(80))
   console.log('ANALYSIS')
@@ -169,7 +172,9 @@ async function main() {
 
   // Check which Discord users should have access
   const validDiscordUsers: typeof discordUsersWithRole = []
-  const invalidDiscordUsers: (typeof discordUsersWithRole[0] & { subscriptionIds?: string[] })[] = []
+  const invalidDiscordUsers: ((typeof discordUsersWithRole)[0] & {
+    subscriptionIds?: string[]
+  })[] = []
   const discordUsersNoMapping: typeof discordUsersWithRole = []
 
   for (const discordUser of discordUsersWithRole) {
@@ -182,7 +187,7 @@ async function main() {
     }
 
     // Check if any of their subscriptions are still active
-    const hasActiveSubscription = subscriptionIds.some(subId =>
+    const hasActiveSubscription = subscriptionIds.some((subId) =>
       activeSubscriptionIds.has(subId)
     )
 
@@ -191,7 +196,7 @@ async function main() {
     } else {
       invalidDiscordUsers.push({
         ...discordUser,
-        subscriptionIds
+        subscriptionIds,
       })
     }
   }
@@ -238,16 +243,23 @@ async function main() {
   // Save invalid users list
   if (invalidDiscordUsers.length > 0) {
     const invalidUsersFile = join(tempDir, `discord-users-to-remove-${timestamp}.json`)
-    writeFileSync(invalidUsersFile, JSON.stringify({
-      generated_at: new Date().toISOString(),
-      count: invalidDiscordUsers.length,
-      users: invalidDiscordUsers.map(u => ({
-        discord_id: u.id,
-        username: u.username,
-        global_name: u.globalName,
-        inactive_subscription_ids: u.subscriptionIds,
-      }))
-    }, null, 2))
+    writeFileSync(
+      invalidUsersFile,
+      JSON.stringify(
+        {
+          generated_at: new Date().toISOString(),
+          count: invalidDiscordUsers.length,
+          users: invalidDiscordUsers.map((u) => ({
+            discord_id: u.id,
+            username: u.username,
+            global_name: u.globalName,
+            inactive_subscription_ids: u.subscriptionIds,
+          })),
+        },
+        null,
+        2
+      )
+    )
 
     console.log(`\n📄 Saved users to remove: ${invalidUsersFile}`)
   }

@@ -2,6 +2,14 @@ import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagu
 import { type TamaguiProjectInfo } from './bundleConfig';
 export declare function loadTamagui(propsIn: Partial<TamaguiOptions>): Promise<TamaguiProjectInfo | null>;
 export declare const generateThemesAndLog: (options: TamaguiOptions, force?: boolean) => Promise<void>;
+/**
+ * Load tamagui.build.ts config using esbuild-wasm transform
+ * Uses WASM to avoid native esbuild service lifecycle issues (EPIPE errors)
+ */
+export declare function loadTamaguiBuildConfigAsync(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
+/**
+ * @deprecated Use loadTamaguiBuildConfigAsync instead to avoid EPIPE errors
+ */
 export declare function loadTamaguiBuildConfigSync(tamaguiOptions: Partial<TamaguiOptions> | undefined): TamaguiOptions;
 export declare function loadTamaguiSync({ forceExports, cacheKey, ...propsIn }: Partial<TamaguiOptions> & {
     forceExports?: boolean;

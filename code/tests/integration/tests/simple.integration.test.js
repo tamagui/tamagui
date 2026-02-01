@@ -6,7 +6,7 @@ const port = 5008
 const domain = `http://localhost:${port}`
 
 test(`loads dev mode no error or warning logs`, async ({ page }) => {
-  const server = $`yarn dev`
+  const server = $`bun run dev`
   server.catch(console.log)
   try {
     await waitPort({
@@ -49,8 +49,8 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
 })
 
 test(`builds to prod same thing`, async ({ page }) => {
-  await $`yarn build:prod`
-  const server = $`yarn vite preview --port ${port}`
+  await $`bun run build:prod`
+  const server = $`bun run vite preview --port ${port}`
   server.catch(console.log)
 
   try {

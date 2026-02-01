@@ -3,10 +3,10 @@
 # run-detox.sh - Complete Detox E2E test runner
 #
 # Usage:
-#   yarn detox:run:ios                     # run all iOS tests
-#   yarn detox:run:ios "Sheet"             # run tests matching "Sheet"
-#   yarn detox:run:android                 # run all Android tests
-#   yarn detox:run:android "Select"        # run tests matching "Select"
+#   bun run detox:run:ios                     # run all iOS tests
+#   bun run detox:run:ios "Sheet"             # run tests matching "Sheet"
+#   bun run detox:run:android                 # run all Android tests
+#   bun run detox:run:android "Select"        # run tests matching "Select"
 #
 # This script handles the full workflow:
 #   1. Checks if pods need installing (iOS only)
@@ -35,12 +35,12 @@ case "$PLATFORM" in
   ios)
     CONFIG="ios.sim.debug"
     APP_PATH="ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app"
-    BUILD_CMD="yarn detox:build:ios"
+    BUILD_CMD="bun run detox:build:ios"
     ;;
   android)
     CONFIG="android.emu.debug"
     APP_PATH="android/app/build/outputs/apk/debug/app-debug.apk"
-    BUILD_CMD="yarn detox:build:android"
+    BUILD_CMD="bun run detox:build:android"
     ;;
   *)
     echo "Unknown platform: $PLATFORM"
@@ -127,7 +127,7 @@ if [ "$SKIP_METRO" != "1" ]; then
     echo "Metro already running on port 8081"
   else
     echo "Starting Metro..."
-    yarn start > /tmp/metro-detox.log 2>&1 &
+    bun run start > /tmp/metro-detox.log 2>&1 &
     METRO_PID=$!
     STARTED_METRO=true
 

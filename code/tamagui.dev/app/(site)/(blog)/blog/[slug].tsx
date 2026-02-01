@@ -16,9 +16,8 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
-  const { getCompilationExamples, getMDXBySlug } = await import(
-    '~/features/mdx/getMDXBySlug'
-  )
+  const { getCompilationExamples, getMDXBySlug } =
+    await import('~/features/mdx/getMDXBySlug')
   const { slug } = props.params
   const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string)
   const relatedPosts = frontmatter.relatedIds

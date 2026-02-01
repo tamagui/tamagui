@@ -454,7 +454,7 @@ export const getSplitStyles: StyleSplitter = (
     const parentVariant = parentVariants?.[keyInit]
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
-        (isValidStyleKeyInit || isMediaOrPseudo || parentVariant || keyInit in skipProps)
+      (isValidStyleKeyInit || isMediaOrPseudo || parentVariant || keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
@@ -1399,7 +1399,7 @@ function mergeStyle(
 export const getSubStyle = (
   styleState: GetStyleState,
   subKey: string,
-  styleIn: Object,
+  styleIn: object,
   avoidMergeTransform?: boolean
 ): TextStyle => {
   const { staticConfig, conf, styleProps } = styleState
@@ -1558,7 +1558,7 @@ const mapTransformKeys = {
 }
 
 function passDownProp(
-  viewProps: Object,
+  viewProps: object,
   key: string,
   val: any,
   shouldMergeObject = false

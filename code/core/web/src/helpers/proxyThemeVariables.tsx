@@ -1,4 +1,4 @@
-export function proxyThemeVariables<A extends Object>(obj: A): A {
+export function proxyThemeVariables<A extends object>(obj: A): A {
   return new Proxy<A>(obj || {}, {
     has(target, key) {
       return Reflect.has(target, removeStarting$(key))

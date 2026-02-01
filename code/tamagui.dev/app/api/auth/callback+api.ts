@@ -5,7 +5,7 @@ export const GET: Endpoint = async (req) => {
   const code = url.searchParams.get('code')
 
   if (!code) {
-    return Response.error()
+    return new Response('Missing code parameter', { status: 400 })
   }
 
   // Pass code to client page - client will exchange using its stored PKCE code verifier

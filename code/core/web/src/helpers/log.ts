@@ -8,7 +8,6 @@ export function log(...args: any[]) {
       return console.info(...args)
     }
     // react native doesn't log in the cli unless it's log
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     return console.log(...args)
   } catch (err) {
     console.error(err)

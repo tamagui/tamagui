@@ -32,8 +32,7 @@ export interface SelectItemExtraProps {
 }
 
 export interface SelectItemProps
-  extends Omit<ListItemProps, keyof SelectItemExtraProps>,
-    SelectItemExtraProps {}
+  extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {}
 
 export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
   function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {

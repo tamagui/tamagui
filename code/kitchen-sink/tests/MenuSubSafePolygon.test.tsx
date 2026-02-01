@@ -31,7 +31,9 @@ test('submenu has data-side attribute required for safePolygon', async ({ page }
   expect(dataSide).toBe('right')
 })
 
-test('safePolygon keeps submenu open when mouse crosses parent menu items', async ({ page }) => {
+test('safePolygon keeps submenu open when mouse crosses parent menu items', async ({
+  page,
+}) => {
   await page.waitForLoadState('networkidle')
 
   const menuTrigger = page.locator('#menu-trigger')

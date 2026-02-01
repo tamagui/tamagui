@@ -40,9 +40,13 @@ test.describe('Dialog Pointer Events Unlock', () => {
       }>((resolve) => {
         const contentPointerEvents: string[] = []
         const buttonAccessible: boolean[] = []
-        const closeButton = document.querySelector('[data-testid="dialog-close"]') as HTMLElement
+        const closeButton = document.querySelector(
+          '[data-testid="dialog-close"]'
+        ) as HTMLElement
         const dialogContent = document.querySelector('[role="dialog"]') as HTMLElement
-        const backgroundBtn = document.querySelector('[data-testid="background-button"]') as HTMLElement
+        const backgroundBtn = document.querySelector(
+          '[data-testid="background-button"]'
+        ) as HTMLElement
 
         // start sampling immediately
         const interval = setInterval(() => {
@@ -88,7 +92,9 @@ test.describe('Dialog Pointer Events Unlock', () => {
     // (within first few samples) - this is the actual user-facing behavior we care about
     // note: the dialog portal container gets pointer-events: none, which allows clicks
     // to pass through even if the dialog content itself has pointer-events: auto
-    const buttonAccessibleEarly = results.buttonAccessible.some((accessible, i) => i < 8 && accessible)
+    const buttonAccessibleEarly = results.buttonAccessible.some(
+      (accessible, i) => i < 8 && accessible
+    )
     expect(buttonAccessibleEarly).toBeTruthy()
 
     // wait for dialog to fully close (reanimated driver can be slower)

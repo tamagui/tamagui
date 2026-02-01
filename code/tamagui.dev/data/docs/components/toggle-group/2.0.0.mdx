@@ -73,10 +73,14 @@ For vertical layouts, use `YGroup`:
 <ToggleGroup type="single" orientation="vertical">
   <YGroup>
     <YGroup.Item>
-      <ToggleGroup.Item value="top" borderRadius="$4">Top</ToggleGroup.Item>
+      <ToggleGroup.Item value="top" borderRadius="$4">
+        Top
+      </ToggleGroup.Item>
     </YGroup.Item>
     <YGroup.Item>
-      <ToggleGroup.Item value="bottom" borderRadius="$4">Bottom</ToggleGroup.Item>
+      <ToggleGroup.Item value="bottom" borderRadius="$4">
+        Bottom
+      </ToggleGroup.Item>
     </YGroup.Item>
   </YGroup>
 </ToggleGroup>
@@ -179,7 +183,7 @@ Customize the active/pressed state using `activeStyle`:
 
 ```tsx
 // Inline usage
-<ToggleGroup.Item
+;<ToggleGroup.Item
   value="left"
   activeStyle={{ backgroundColor: '$green9', color: '$yellow9' }}
 >
@@ -212,15 +216,11 @@ import { useToggleGroupItem, ToggleGroup } from '@tamagui/toggle-group'
 
 function CustomLabel({ children }) {
   const { active, color } = useToggleGroupItem()
-  return (
-    <Text color={active ? '$green10' : '$color'}>
-      {children}
-    </Text>
-  )
+  return <Text color={active ? '$green10' : '$color'}>{children}</Text>
 }
 
 // Usage
-<ToggleGroup.Item value="option1">
+;<ToggleGroup.Item value="option1">
   <CustomLabel>Option 1</CustomLabel>
 </ToggleGroup.Item>
 ```

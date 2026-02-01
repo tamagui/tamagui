@@ -3,6 +3,7 @@
 ## Overview
 
 This plan covers:
+
 1. Simplifying the purchase modal UI (keep FAQ tab, add support toggle)
 2. Reorganizing all purchase/pro code into `features/pro/`
 3. Separating Stripe dependencies so overview modal loads fast
@@ -13,7 +14,9 @@ This plan covers:
 ## Part 1: UI Changes
 
 ### 1.1 Promo Text Update
+
 **File:** `promoConfig.ts`
+
 ```diff
 - description: 'for launch month',
 + description: 'during Takeout 2 beta',
@@ -21,11 +24,11 @@ This plan covers:
 
 ### 1.2 Support Tiers (New Structure)
 
-| Tier | Name | Price | SLA | Description |
-|------|------|-------|-----|-------------|
-| `chat` | Chat | Included | None | Community chat room access, no SLA guarantee |
-| `direct` | Direct | $500/mo | 2 business days | 5 bug fixes/year, 2 business day response, fixes prioritized |
-| `sponsor` | Sponsor | $2,000/mo | 1 day | Unlimited priority fixes, 1 day response, monthly video call |
+| Tier      | Name    | Price     | SLA             | Description                                                  |
+| --------- | ------- | --------- | --------------- | ------------------------------------------------------------ |
+| `chat`    | Chat    | Included  | None            | Community chat room access, no SLA guarantee                 |
+| `direct`  | Direct  | $500/mo   | 2 business days | 5 bug fixes/year, 2 business day response, fixes prioritized |
+| `sponsor` | Sponsor | $2,000/mo | 1 day           | Unlimited priority fixes, 1 day response, monthly video call |
 
 **Base plan explicitly has NO support** - just chat access to community room.
 
@@ -81,14 +84,17 @@ This plan covers:
 **Proposed new questions:**
 
 1. **Can I buy licenses for multiple projects?**
+
    > Yes! Each license covers one project (web domain + iOS + Android apps). You can purchase additional project licenses anytime. Update subscriptions are always $300/year per project regardless of when you buy.
 
 2. **What's the difference between support levels?**
+
    > **Chat (Included):** Access to the private #takeout Discord channel. No SLA guarantee.
    > **Direct ($500/mo):** 5 bug fixes per year, guaranteed response within 2 business days, your issues get prioritized.
    > **Sponsor ($2,000/mo):** Unlimited top-priority bug fixes, 1 day response time, plus a monthly video call.
 
 3. **What about companies with significant revenue?**
+
    > Companies with over $1M in annual revenue should contact us at support@tamagui.dev for enterprise pricing. The standard license is intended for bootstrapped companies, solo developers, and early-stage startups.
 
 4. **What support do I get in the base plan?** (UPDATE existing)
@@ -194,6 +200,7 @@ features/
 **Problem:** Still loads some Stripe types/deps at import time
 
 **New Architecture:**
+
 ```tsx
 // features/pro/modals/purchase/PurchaseModal.tsx
 // NO Stripe imports at all - just UI + stores
@@ -249,6 +256,7 @@ export function CheckoutModal({ open, onOpenChange }: Props) {
 ```
 
 **Benefits:**
+
 1. Stripe JS starts loading as soon as purchase modal opens
 2. User browses features/FAQ while Stripe loads in background
 3. When they click "Checkout", Stripe is already ready - no wait
@@ -257,10 +265,12 @@ export function CheckoutModal({ open, onOpenChange }: Props) {
 #### 2.2 Consolidate Stores
 
 **Current:** Two nearly identical stores
+
 - `purchaseModalStore.ts` - has `show`, pricing fields, promo fields
 - `paymentModalStore.ts` - has `show`, pricing fields, promo fields, V2 fields
 
 **New:** Single source of truth with clear separation
+
 ```tsx
 // features/pro/stores/purchaseModal.ts
 class PurchaseStore {
@@ -306,6 +316,7 @@ features/
 ## Part 3: Implementation Order
 
 ### Phase 1: UI Changes (Can deploy independently)
+
 1. ✅ Update promo text in `promoConfig.ts`
 2. ✅ Add new FAQ content to `FaqTabContent.tsx`
 3. ✅ Simplify NewPurchaseModal (remove Support tab, add ToggleGroup)
@@ -313,6 +324,7 @@ features/
 5. ✅ Add funding threshold notice
 
 ### Phase 2: Code Reorganization
+
 1. Create `features/pro/` directory structure
 2. Move stores with deprecation re-exports from old location
 3. Move config files
@@ -322,12 +334,14 @@ features/
 7. Remove old files once all imports updated
 
 ### Phase 3: Stripe Separation
+
 1. Create new `CheckoutModal` with all Stripe deps
 2. Update `PurchaseModal` to lazy-load it
 3. Test that Stripe JS only loads at checkout time
 4. Remove Stripe deps from overview modal file
 
 ### Phase 4: Stripe Backend (Later/Manual)
+
 1. Create new Stripe products for support tiers ($500, $2000)
 2. Update API endpoints
 3. Deprecate old support tier products ($800, $1600, $2400)
@@ -339,6 +353,7 @@ features/
 When user is logged in and wants to change support tier:
 
 **Simple flow:**
+
 1. User goes to Account modal → Upgrade tab
 2. Sees current tier + new ToggleGroup with tiers
 3. Selects new tier
@@ -373,6 +388,7 @@ When user is logged in and wants to change support tier:
 ## Files to Create/Modify Summary
 
 ### Create (Phase 2+):
+
 ```
 features/pro/
 ├── index.ts
@@ -419,10 +435,12 @@ features/pro/
 ```
 
 ### Modify:
+
 - `app/(site)/_layout.tsx` - Update imports
 - All files importing from `features/site/purchase/`
 
 ### Delete (after migration):
+
 - `features/site/purchase/` (entire directory)
 - `features/stripe/tiers.ts` (if unused)
 
@@ -435,6 +453,7 @@ Based on analysis of 10+ files across the tamagui.dev codebase, these are the pa
 ### Layout Patterns
 
 #### Containers
+
 ```tsx
 // Use YStack for vertical layouts, XStack for horizontal
 <YStack gap="$4" p="$6">
@@ -442,6 +461,7 @@ Based on analysis of 10+ files across the tamagui.dev codebase, these are the pa
 ```
 
 #### Responsive Breakpoints
+
 ```tsx
 $sm       // small
 $gtSm     // > 768px
@@ -455,8 +475,9 @@ $maxMd={{ flexDirection: 'column' }}
 ```
 
 #### Modal Pattern (Dialog + Sheet Adapt)
+
 ```tsx
-<Dialog modal open={store.show} onOpenChange={val => store.show = val}>
+<Dialog modal open={store.show} onOpenChange={(val) => (store.show = val)}>
   <Dialog.Adapt when="maxMd">
     <Sheet modal transition="quick">
       <Sheet.Frame bg="$color1" p={0}>
@@ -478,6 +499,7 @@ $maxMd={{ flexDirection: 'column' }}
 ```
 
 #### Tab Pattern
+
 ```tsx
 <Tabs
   flex={1}
@@ -489,7 +511,9 @@ $maxMd={{ flexDirection: 'column' }}
   <Tabs.List>
     <YStack width="50%" flex={1}>
       <Tabs.Tab value="pro" unstyled items="center" justify="center" height={60}>
-        <Paragraph fontFamily="$mono" size="$7">Pro</Paragraph>
+        <Paragraph fontFamily="$mono" size="$7">
+          Pro
+        </Paragraph>
       </Tabs.Tab>
     </YStack>
     {/* more tabs... */}
@@ -549,7 +573,9 @@ $borderColor // borders
   bg="$color1"
   hoverStyle={{ bg: '$color2' }}
 >
-  <H3 fontFamily="$mono" size="$6">{title}</H3>
+  <H3 fontFamily="$mono" size="$6">
+    {title}
+  </H3>
   <Paragraph color="$color10">{description}</Paragraph>
 </YStack>
 ```
@@ -558,7 +584,7 @@ $borderColor // borders
 
 ```tsx
 <XStack flexWrap="wrap" gap="$3" items="center" justify="center">
-  {features.map(feature => (
+  {features.map((feature) => (
     <YStack
       key={feature.id}
       borderWidth={1}
@@ -570,7 +596,9 @@ $borderColor // borders
       gap="$2"
     >
       <feature.icon size={24} color="$color11" />
-      <Paragraph size="$3" text="center">{feature.label}</Paragraph>
+      <Paragraph size="$3" text="center">
+        {feature.label}
+      </Paragraph>
     </YStack>
   ))}
 </XStack>
@@ -611,19 +639,25 @@ $borderColor // borders
   <ToggleGroup.Item value="chat" flex={1}>
     <YStack items="center" gap="$1" p="$3">
       <Paragraph fontWeight="600">Chat</Paragraph>
-      <Paragraph size="$2" color="$color9">included</Paragraph>
+      <Paragraph size="$2" color="$color9">
+        included
+      </Paragraph>
     </YStack>
   </ToggleGroup.Item>
   <ToggleGroup.Item value="direct" flex={1}>
     <YStack items="center" gap="$1" p="$3">
       <Paragraph fontWeight="600">Direct</Paragraph>
-      <Paragraph size="$2" color="$color9">$500/mo</Paragraph>
+      <Paragraph size="$2" color="$color9">
+        $500/mo
+      </Paragraph>
     </YStack>
   </ToggleGroup.Item>
   <ToggleGroup.Item value="sponsor" flex={1}>
     <YStack items="center" gap="$1" p="$3">
       <Paragraph fontWeight="600">Sponsor</Paragraph>
-      <Paragraph size="$2" color="$color9">$2,000/mo</Paragraph>
+      <Paragraph size="$2" color="$color9">
+        $2,000/mo
+      </Paragraph>
     </YStack>
   </ToggleGroup.Item>
 </ToggleGroup>
@@ -662,17 +696,10 @@ $10  = 40px  (section separators)
 
 ```tsx
 <Theme name="yellow">
-  <XStack
-    bg="$color3"
-    rounded="$4"
-    borderWidth={0.5}
-    borderColor="$color8"
-    p="$3"
-  >
+  <XStack bg="$color3" rounded="$4" borderWidth={0.5} borderColor="$color8" p="$3">
     <Paragraph size="$3" color="$color11">
       For companies with over $1M in annual revenue,{' '}
-      <Link href="mailto:support@tamagui.dev">contact us</Link>
-      {' '}for enterprise pricing.
+      <Link href="mailto:support@tamagui.dev">contact us</Link> for enterprise pricing.
     </Paragraph>
   </XStack>
 </Theme>
@@ -708,11 +735,13 @@ $10  = 40px  (section separators)
 const CheckoutModal = lazy(() => import('../checkout/CheckoutModal'))
 
 // In component:
-{store.show && (
-  <Suspense fallback={null}>
-    <CheckoutModal open={checkoutOpen} onOpenChange={setCheckoutOpen} />
-  </Suspense>
-)}
+{
+  store.show && (
+    <Suspense fallback={null}>
+      <CheckoutModal open={checkoutOpen} onOpenChange={setCheckoutOpen} />
+    </Suspense>
+  )
+}
 ```
 
 ### Store Pattern

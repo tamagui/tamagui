@@ -1,44 +1,28 @@
 {
   "name": "@tamagui/lucide-icons",
-  "version": "2.0.0-1769680173943",
+  "version": "2.0.0-rc.0-1769885482630",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "description": "React Native components for Lucide icons - native and web",
+  "license": "MIT",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "type": "module",
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/esm/index.mjs",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "TAMAGUI_BUILD_CLEANUP_JS_FILES=1 tamagui-build",
-    "watch": "tamagui-build --watch",
-    "clean": "tamagui-build clean",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean:build": "tamagui-build clean:build",
-    "generate": "node ./bin/build.cjs"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "@tamagui/core": "workspace:*",
-    "@tamagui/helpers-icon": "workspace:*"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-native-svg": ">=12"
-  },
+  "type": "module",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -8845,20 +8829,33 @@
       "require": "./dist/cjs/icons/ZoomOut.cjs"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "TAMAGUI_BUILD_CLEANUP_JS_FILES=1 tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "generate": "node ./bin/build.cjs"
+  },
+  "dependencies": {
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers-icon": "workspace:*"
+  },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
     "@tamagui/build": "workspace:*",
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",
     "glob": "^7.1.6",
     "lucide-static": "^0.508.0",
     "prop-types": "^15.7.2",
-    "react": "*",
+    "react": ">=19",
     "react-native-svg": "15.12.1",
     "uppercamelcase": "^3.0.0"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "peerDependencies": {
+    "react": ">=19",
+    "react-native-svg": ">=12"
+  }
 }

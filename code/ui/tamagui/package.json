@@ -1,20 +1,14 @@
 {
   "name": "tamagui",
-  "version": "2.0.0-1769680173943",
-  "type": "module",
+  "version": "2.0.0-rc.0-1769885482630",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
-  "removeSideEffects": true,
-  "alsoPublishAs_disabled": [
-    "@tamagui/ui"
-  ],
-  "sideEffects": [
-    "setup.js"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "code/ui/tamagui"
+  },
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
@@ -23,45 +17,41 @@
     "native.js",
     "native.d.ts"
   ],
-  "scripts": {
-    "build": "tamagui-build",
-    "afterBuild": "node bundle-native.mjs",
-    "watch": "tamagui-build --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "check": "yarn check-circular-deps",
-    "check-circular-deps": "npx madge --circular ./src/index.ts"
-  },
+  "type": "module",
+  "sideEffects": [
+    "setup.js"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./react-native-web": {
-      "react-native": "./dist/cjs/react-native-web.native.js",
       "types": "./types/index.d.ts",
+      "react-native": "./dist/cjs/react-native-web.native.js",
       "module": "./dist/esm/react-native-web.mjs",
       "import": "./dist/esm/react-native-web.mjs",
       "require": "./dist/cjs/react-native-web.cjs"
     },
     "./web": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
@@ -76,16 +66,25 @@
       "react-native": "./dist/test.native.js"
     },
     "./linear-gradient": {
+      "types": "./types/linear-gradient.d.ts",
       "react-native": {
         "module": "./dist/esm/linear-gradient.native.js",
         "import": "./dist/esm/linear-gradient.native.js",
         "require": "./dist/cjs/linear-gradient.native.js"
       },
-      "types": "./types/linear-gradient.d.ts",
       "module": "./dist/esm/linear-gradient.mjs",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs"
     }
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "afterBuild": "node bundle-native.mjs",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "check": "bun run check-circular-deps",
+    "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
     "@tamagui/accordion": "workspace:*",
@@ -147,18 +146,17 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5",
     "react-native-web": "^0.21.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "code/ui/tamagui"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native": "*"
-  }
+  },
+  "alsoPublishAs_disabled": [
+    "@tamagui/ui"
+  ],
+  "module:jsx": "dist/jsx",
+  "removeSideEffects": true
 }

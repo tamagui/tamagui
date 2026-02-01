@@ -23,8 +23,8 @@ The end result is less abstraction - like a `div` on web, or plain React Native
 <TamaguiExamplesCode />
 
 <Notice theme="blue">
-  The compiler generates built versions of your components and config into a
-  `.tamagui` directory. You'll want to add that directory to your `.gitignore`.
+  The compiler generates built versions of your components and config into a `.tamagui`
+  directory. You'll want to add that directory to your `.gitignore`.
 </Notice>
 
 ## Install
@@ -140,8 +140,9 @@ export default defineConfig({
       // points to any linked packages or node_modules
       // that have tamagui components to optimize
       components: ['tamagui'],
-      // turns on the optimizing compiler
-      optimize: true,
+      // disable optimizing compiler but keep debug helper transforms,
+      // or other options like pre-building CSS
+      disableExtraction: true,
     }),
   ],
 })
@@ -276,7 +277,7 @@ export default {
   config: './tamagui.config.ts',
   components: ['tamagui'],
   importsWhitelist: ['constants.js', 'colors.js'],
-  outputCSS: './public/tamagui.css',
+  outputCSS: './public/tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 
@@ -285,7 +286,7 @@ export default {
 ```json
 {
   "scripts": {
-    "build": "tamagui build ./src && next build"
+    "build": "tamagui build ./src -- next build"
   }
 }
 ```
@@ -319,7 +320,7 @@ The `--expect-optimizations` flag ensures your build is actually optimizing comp
 ```json
 {
   "scripts": {
-    "build": "tamagui build --target web --expect-optimizations 10 ./src && next build"
+    "build": "tamagui build --target web --expect-optimizations 10 ./src -- next build"
   }
 }
 ```
@@ -335,9 +336,9 @@ If the compiler produces fewer than the expected number of optimizations, the bu
 The CLI automatically handles platform-specific files (`.web.tsx`,
 `.native.tsx`, `.ios.tsx`, `.android.tsx`):
 
-- Files with `.web.tsx` or `.ios.tsx` extensions are optimized for web only
-- Files with `.native.tsx` or `.android.tsx` extensions are optimized for native
-  only
+- Files with `.web.tsx` extensions are optimized for web only
+- Files with `.native.tsx`, `.ios.tsx`, or `.android.tsx` extensions are
+  optimized for native only
 - Base files (`.tsx`) without platform-specific versions are optimized for all
   platforms
 - If both `.web.tsx` and `.native.tsx` exist, the base `.tsx` file is skipped
@@ -373,7 +374,7 @@ command. Here are some examples:
 {
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "tamagui build --target web ./src && next build"
+    "build": "tamagui build --target web ./src -- next build"
   }
 }
 ```
@@ -383,7 +384,7 @@ command. Here are some examples:
 ```json
 {
   "scripts": {
-    "build": "tamagui build --target web ./src && vite build"
+    "build": "tamagui build --target web ./src -- vite build"
   }
 }
 ```
@@ -393,8 +394,8 @@ command. Here are some examples:
 ```json
 {
   "scripts": {
-    "build:ios": "tamagui build --target native ./src && eas build --platform ios",
-    "build:android": "tamagui build --target native ./src && eas build --platform android"
+    "build:ios": "tamagui build --target native ./src -- eas build --platform ios",
+    "build:android": "tamagui build --target native ./src -- eas build --platform android"
   }
 }
 ```

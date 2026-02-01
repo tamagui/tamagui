@@ -98,7 +98,7 @@ const FeatureRow = ({
 
 const features = [
   { feature: 'Framework', v1: 'Next.js + Expo', v2: 'One', v2free: 'One' },
-  { feature: 'Real-time Sync', v1: false, v2: 'Zero', v2free: 'Zero' },
+  { feature: 'Real-time Sync', v1: false, v2: true, v2free: true },
   { feature: 'Authentication', v1: 'Supabase', v2: 'Better Auth', v2free: 'Better Auth' },
   {
     feature: 'Database',
@@ -106,10 +106,14 @@ const features = [
     v2: 'Postgres + Drizzle',
     v2free: 'Postgres + Drizzle',
   },
-  { feature: 'Deployment', v1: 'Vercel + EAS', v2: 'SST / Uncloud', v2free: false },
-  { feature: 'CLI Tools', v1: false, v2: 'bun tko', v2free: false },
+  { feature: 'IaC, CI/CD', v1: false, v2: 'SST / Uncloud', v2free: false },
+  { feature: 'CLI Scripts', v1: false, v2: '46+', v2free: false },
+  { feature: 'Agent Docs', v1: false, v2: '25+', v2free: false },
+  { feature: 'Hot Updates', v1: false, v2: 'OTA', v2free: false },
+  { feature: 'Robust Flows', v1: '3', v2: '7+', v2free: false },
+  { feature: 'UI Primitives', v1: '~30', v2: '50+', v2free: 'Few' },
+  { feature: 'Support', v1: 'Chat', v2: 'Chat', v2free: false },
   { feature: 'Private GitHub', v1: true, v2: true, v2free: false },
-  { feature: 'Private Discord', v1: true, v2: true, v2free: false },
   { feature: 'Native Apps', v1: true, v2: true, v2free: true },
   { feature: 'Tamagui UI', v1: true, v2: true, v2free: true },
 ]
@@ -218,6 +222,23 @@ export function VersionComparison() {
               >
                 <Button.Text fontFamily="$mono" color="$color12">
                   Docs
+                </Button.Text>
+              </Button>
+            </ThemeTintAlt>
+          </Link>
+          <Link href="https://takeout.tamagui.dev/docs/highlights" target="_blank">
+            <ThemeTintAlt offset={2}>
+              <Button
+                size="$4"
+                bg="$color5"
+                borderWidth={0.5}
+                borderColor="$color7"
+                cursor="pointer"
+                hoverStyle={{ bg: '$color6', borderColor: '$color8' }}
+                pressStyle={{ bg: '$color7' }}
+              >
+                <Button.Text fontFamily="$mono" color="$color12">
+                  Highlights
                 </Button.Text>
               </Button>
             </ThemeTintAlt>

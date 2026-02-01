@@ -832,6 +832,13 @@ export function createExtractor(
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
 
+          if (process.env.NODE_ENV === 'production') {
+            if (isTextView) {
+              // temporarily disabled - need to fix css nesting dix
+              return
+            }
+          }
+
           // find render="a" render="main" etc dom indicators
           let tagName = defaultProps.render ?? (isTextView ? 'span' : 'div')
           traversePath
@@ -881,9 +888,7 @@ export function createExtractor(
               : []),
           ])
 
-          const inlineWhenUnflattened = new Set([
-            ...(staticConfig.inlineWhenUnflattened || []),
-          ])
+          const inlineWhenUnflattened = new Set(staticConfig.inlineWhenUnflattened || [])
 
           // Generate scope object at this level
           const staticNamespace = getStaticBindingsForScope(
@@ -1603,7 +1608,7 @@ export function createExtractor(
             inlined.delete('theme')
           }
 
-          for (const [key] of [...inlined]) {
+          for (const [key] of inlined) {
             const isStaticObjectVariant =
               staticConfig.variants?.[key] && variantValues.has(key)
             if (INLINE_EXTRACTABLE[key] || isStaticObjectVariant) {
@@ -1615,14 +1620,14 @@ export function createExtractor(
 
           let shouldFlatten = Boolean(
             flatNodeName &&
-              !shouldDeopt &&
-              canFlattenProps &&
-              !hasSpread &&
-              !staticConfig.isStyledHOC &&
-              !staticConfig.isHOC &&
-              !staticConfig.isReactNative &&
-              staticConfig.neverFlatten !== true &&
-              (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+            !shouldDeopt &&
+            canFlattenProps &&
+            !hasSpread &&
+            !staticConfig.isStyledHOC &&
+            !staticConfig.isHOC &&
+            !staticConfig.isReactNative &&
+            staticConfig.neverFlatten !== true &&
+            (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
           )
 
           const usedThemeKeys = new Set<string>()
@@ -1811,7 +1816,7 @@ export function createExtractor(
             )
           }
 
-          function mergeToEnd(obj: Object, key: string, val: any) {
+          function mergeToEnd(obj: object, key: string, val: any) {
             if (key in obj) {
               delete obj[key]
             }
@@ -2015,7 +2020,7 @@ export function createExtractor(
 
           // post process
           const getProps = (
-            props: Object | null,
+            props: object | null,
             includeProps = false,
             debugName = ''
           ) => {

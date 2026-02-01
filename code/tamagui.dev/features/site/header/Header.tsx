@@ -209,14 +209,13 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <UpgradeToProPopover />
 
-        {/* <Theme name="teal">
+        <Theme name="teal">
           <Link href="/blog/version-two">
             <Button
               size="$2"
               bg="$color3"
               borderWidth={0}
               theme="teal"
-              // boxShadow="inset 0 -2px 0 1px $color1"
               $theme-light={{
                 boxShadow: 'inset 0 -2px 0 1px $color8',
               }}
@@ -229,7 +228,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               </Span>
             </Button>
           </Link>
-        </Theme> */}
+        </Theme>
       </XStack>
 
       <View flex={1} />
@@ -428,11 +427,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
 
 type ID = 'core' | 'ui' | 'theme' | 'menu'
 
-export const HeaderLink = (props: {
-  id: ID
-  children: string
-  href: string
-}) => {
+export const HeaderLink = (props: { id: ID; children: string; href: string }) => {
   const pathname = usePathname()
   const section = getDocsSectionFromPath(pathname)
   const isActive =
@@ -679,7 +674,14 @@ const HeaderMenuContents = (props: { id: ID }) => {
       return (
         <>
           <HeaderMenuMoreContents />
-          {isOnlyShowingMenu && <ActivePageDocsMenuContents />}
+          <Separator borderColor="$color02" opacity={0.25} my="$2" />
+          {isOnlyShowingMenu && (
+            <>
+              <ActivePageDocsMenuContents />
+              <Separator borderColor="$color02" opacity={0.25} my="$2" />
+            </>
+          )}
+          <SeasonChooser />
         </>
       )
     }
@@ -852,7 +854,7 @@ const HeaderMenuMoreContents = () => {
 
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      {!userSwr.data?.userDetails && (
+      {!userSwr.data?.user && (
         <HeadAnchor grid onPress={handleLogin}>
           <span>Login</span>
           <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
@@ -861,7 +863,7 @@ const HeaderMenuMoreContents = () => {
         </HeadAnchor>
       )}
 
-      {userSwr.data?.userDetails && (
+      {userSwr.data?.user && (
         <HeadAnchor
           grid
           onPress={() => {
@@ -885,7 +887,7 @@ const HeaderMenuMoreContents = () => {
         <Link asChild href="/takeout">
           <HeadAnchor grid half render="a">
             <XStack items="center">
-              <span>Takeout </span>
+              <span>Takeout</span>
               <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
                 <TakeoutIcon scale={0.65} />
               </YStack>
@@ -895,7 +897,9 @@ const HeaderMenuMoreContents = () => {
             </SizableText>
           </HeadAnchor>
         </Link>
+      </XStack>
 
+      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$2" width="100%">
         <Link asChild href="/bento">
           <HeadAnchor grid half render="a">
             <XStack items="center">
@@ -981,10 +985,6 @@ const HeaderMenuMoreContents = () => {
           </YStack>
         </HeadAnchor>
       </Link>
-
-      <Separator borderColor="$color02" opacity={0.25} my="$2" />
-
-      <SeasonChooser />
     </YStack>
   )
 }

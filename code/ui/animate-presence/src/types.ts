@@ -53,7 +53,7 @@ export interface AnimatePresenceProps {
    *
    * @public
    */
-  custom?: Object
+  custom?: object
 
   /**
    * Fires when all exiting nodes have completed animating out.

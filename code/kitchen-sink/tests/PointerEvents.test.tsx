@@ -60,4 +60,3 @@ test('pointer events - move fires during drag', async ({ page }) => {
   const count = parseInt(text?.replace('Move: ', '') || '0')
   expect(count).toBeGreaterThan(0)
 })
-

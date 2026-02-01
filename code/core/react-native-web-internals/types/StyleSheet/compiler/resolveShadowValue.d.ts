@@ -6,5 +6,5 @@
  *
  * @flow
  */
-export declare const resolveShadowValue: (style: Object) => void | string;
+export declare const resolveShadowValue: (style: object) => void | string;
 //# sourceMappingURL=resolveShadowValue.d.ts.map

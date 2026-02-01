@@ -1,6 +1,7 @@
 import { isServer, isWeb } from '@tamagui/constants'
 import { useRef, useSyncExternalStore } from 'react'
 import { getConfig, getSetting } from '../config'
+import { resetMediaStyleCache } from '../helpers/createMediaStyle'
 import { matchMedia } from '../helpers/matchMedia'
 import type {
   ComponentContextI,
@@ -85,6 +86,8 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   const mediaQueryDefaultActive = getSetting('mediaQueryDefaultActive')
   if (!media) return
   mediaVersion++
+  // reset cached media style prefixes/selectors so they get recalculated with new key order
+  resetMediaStyleCache()
   for (const key in media) {
     mediaState[key] = mediaQueryDefaultActive?.[key] || false
     mediaKeys.add(`$${key}`)
