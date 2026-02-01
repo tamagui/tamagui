@@ -13,7 +13,10 @@ import type { ThemeProps, ThemeState } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
 // conditional import for native-style-registry (only on native)
-let ThemeScopeProvider: React.ComponentType<{ themeName: string; children: React.ReactNode }> | null = null
+let ThemeScopeProvider: React.ComponentType<{
+  themeName: string
+  children: React.ReactNode
+}> | null = null
 if (!isWeb) {
   try {
     const registry = require('@tamagui/native-style-registry')
@@ -198,11 +201,7 @@ export function getThemedChildren(
   // on native, wrap with ThemeScopeProvider to signal theme changes to native registry
   // this enables zero-re-render theme switching via ShadowTree updates
   if (ThemeScopeProvider && themeState.name) {
-    return (
-      <ThemeScopeProvider themeName={themeState.name}>
-        {children}
-      </ThemeScopeProvider>
-    )
+    return <ThemeScopeProvider themeName={themeState.name}>{children}</ThemeScopeProvider>
   }
 
   return children

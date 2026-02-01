@@ -1,4 +1,5 @@
-import React, { createElement, useCallback, useEffect, useRef, useContext } from 'react'
+import type React from 'react'
+import { createElement, useCallback, useEffect, useRef, useContext } from 'react'
 import { View, type ViewProps, type ViewStyle } from 'react-native'
 
 // conditional import for native-style-registry
@@ -166,10 +167,6 @@ export function _TamaguiView({
 
   // use View component (not RCTView) because setNativeProps needs the View wrapper
   return (
-    <View
-      ref={handleRef}
-      {...props}
-      style={themedStyle ? [themedStyle, style] : style}
-    />
+    <View ref={handleRef} {...props} style={themedStyle ? [themedStyle, style] : style} />
   )
 }

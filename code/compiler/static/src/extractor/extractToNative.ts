@@ -627,7 +627,7 @@ function filterToBaseThemes(themes: Record<string, any>): Record<string, any> {
     const parts = themeName.split('_')
 
     // check if all parts are lowercase (no component names like "Button")
-    const isBaseTheme = parts.every(part => part === part.toLowerCase())
+    const isBaseTheme = parts.every((part) => part === part.toLowerCase())
 
     if (isBaseTheme) {
       result[themeName] = themes[themeName]

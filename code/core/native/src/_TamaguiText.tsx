@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useCallback, createElement, forwardRef } from 'react'
+import type React from 'react'
+import { useRef, useEffect, useCallback, createElement, forwardRef } from 'react'
 import { Text, type TextProps, type TextStyle } from 'react-native'
 
 // conditional import for native-style-registry
