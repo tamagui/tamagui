@@ -75,32 +75,1039 @@ const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _ex
 `;
 
 exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "flexDirection": "column",
-    "transform": [{
-      "translateY": 10
-    }, {
-      "translateX": 20
-    }, {
-      "rotate": "10deg"
-    }]
-  }
-});
-const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+"const __TamaguiView = require('@tamagui/native')._TamaguiView;
+const __TamaguiText = require('@tamagui/native')._TamaguiText;
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(isLoading) {
-  return <_ReactNativeViewStyled0 />;
-}
-const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["0"], {
-      "backgroundColor": theme.background.get()
-    }];
-  }, _expressions);
-});"
+  return <__TamaguiView __styles={{
+    "dark": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "#050505",
+      "__themes": ["dark", "dark_alt1", "dark_alt2"]
+    },
+    "dark_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "#232323",
+      "__themes": ["dark_active", "dark_surface3"]
+    },
+    "dark_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "#151515"
+    },
+    "dark_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "#191919"
+    },
+    "dark_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "#323232"
+    },
+    "dark_blue": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(212, 35.0%, 9.2%)",
+      "__themes": ["dark_blue", "dark_blue_alt1", "dark_blue_alt2"]
+    },
+    "dark_blue_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(214, 65.8%, 17.9%)",
+      "__themes": ["dark_blue_active", "dark_blue_surface3"]
+    },
+    "dark_blue_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(216, 50.0%, 11.8%)"
+    },
+    "dark_blue_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(214, 59.4%, 15.3%)"
+    },
+    "dark_blue_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(212, 77.4%, 23.1%)"
+    },
+    "dark_gray": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 8.5%)",
+      "__themes": ["dark_gray", "dark_gray_alt1", "dark_gray_alt2"]
+    },
+    "dark_gray_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 15.8%)",
+      "__themes": ["dark_gray_active", "dark_gray_surface3"]
+    },
+    "dark_gray_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 11.0%)"
+    },
+    "dark_gray_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 13.6%)"
+    },
+    "dark_gray_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 20.5%)"
+    },
+    "dark_green": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(146, 30.0%, 7.4%)",
+      "__themes": ["dark_green", "dark_green_alt1", "dark_green_alt2"]
+    },
+    "dark_green_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(154, 48.4%, 12.9%)",
+      "__themes": ["dark_green_active", "dark_green_surface3"]
+    },
+    "dark_green_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(155, 44.2%, 8.4%)"
+    },
+    "dark_green_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(155, 46.7%, 10.9%)"
+    },
+    "dark_green_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(154, 50.9%, 17.6%)"
+    },
+    "dark_orange": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(30, 70.0%, 7.2%)",
+      "__themes": ["dark_orange", "dark_orange_alt1", "dark_orange_alt2"]
+    },
+    "dark_orange_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(25, 88.3%, 14.1%)",
+      "__themes": ["dark_orange_active", "dark_orange_surface3"]
+    },
+    "dark_orange_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(28, 100%, 8.4%)"
+    },
+    "dark_orange_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(26, 91.1%, 11.6%)"
+    },
+    "dark_orange_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(24, 88.6%, 19.8%)"
+    },
+    "dark_pink": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(318, 25.0%, 9.6%)",
+      "__themes": ["dark_pink", "dark_pink_alt1", "dark_pink_alt2"]
+    },
+    "dark_pink_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(320, 45.4%, 18.7%)",
+      "__themes": ["dark_pink_active", "dark_pink_surface3"]
+    },
+    "dark_pink_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(319, 32.2%, 11.6%)"
+    },
+    "dark_pink_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(319, 41.0%, 16.0%)"
+    },
+    "dark_pink_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(321, 53.6%, 24.4%)"
+    },
+    "dark_purple": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(284, 20.0%, 9.6%)",
+      "__themes": ["dark_purple", "dark_purple_alt1", "dark_purple_alt2"]
+    },
+    "dark_purple_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(280, 41.2%, 20.0%)",
+      "__themes": ["dark_purple_active", "dark_purple_surface3"]
+    },
+    "dark_purple_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(283, 30.0%, 11.8%)"
+    },
+    "dark_purple_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(281, 37.5%, 16.5%)"
+    },
+    "dark_purple_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(277, 46.4%, 27.5%)"
+    },
+    "dark_red": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(353, 23.0%, 9.8%)",
+      "__themes": ["dark_red", "dark_red_alt1", "dark_red_alt2"]
+    },
+    "dark_red_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(356, 47.6%, 19.2%)",
+      "__themes": ["dark_red_active", "dark_red_surface3"]
+    },
+    "dark_red_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(357, 34.4%, 12.0%)"
+    },
+    "dark_red_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(356, 43.4%, 16.4%)"
+    },
+    "dark_red_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(356, 55.2%, 25.9%)"
+    },
+    "dark_yellow": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(45, 100%, 5.5%)",
+      "__themes": ["dark_yellow", "dark_yellow_alt1", "dark_yellow_alt2"]
+    },
+    "dark_yellow_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(45, 100%, 10.4%)",
+      "__themes": ["dark_yellow_active", "dark_yellow_surface3"]
+    },
+    "dark_yellow_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(46, 100%, 6.7%)"
+    },
+    "dark_yellow_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(45, 100%, 8.7%)"
+    },
+    "dark_yellow_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(49, 100%, 14.3%)"
+    },
+    "light": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "#fff",
+      "__themes": ["light", "light_alt1", "light_alt2"]
+    },
+    "light_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 94.1%)",
+      "__themes": ["light_active", "light_surface3"]
+    },
+    "light_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "#f8f8f8"
+    },
+    "light_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 96.3%)"
+    },
+    "light_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 90.0%)"
+    },
+    "light_blue": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(206, 100%, 99.2%)",
+      "__themes": ["light_blue", "light_blue_alt1", "light_blue_alt2"]
+    },
+    "light_blue_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(210, 98.8%, 94.0%)",
+      "__themes": ["light_blue_active", "light_blue_surface3"]
+    },
+    "light_blue_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(210, 100%, 98.0%)"
+    },
+    "light_blue_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(209, 100%, 96.5%)"
+    },
+    "light_blue_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(209, 81.2%, 84.5%)"
+    },
+    "light_gray": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 99.0%)",
+      "__themes": ["light_gray", "light_gray_alt1", "light_gray_alt2"]
+    },
+    "light_gray_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 93.0%)",
+      "__themes": ["light_gray_active", "light_gray_surface3"]
+    },
+    "light_gray_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 97.3%)"
+    },
+    "light_gray_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 95.1%)"
+    },
+    "light_gray_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(0, 0%, 88.7%)"
+    },
+    "light_green": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(136, 50.0%, 98.9%)",
+      "__themes": ["light_green", "light_green_alt1", "light_green_alt2"]
+    },
+    "light_green_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(140, 48.7%, 91.0%)",
+      "__themes": ["light_green_active", "light_green_surface3"]
+    },
+    "light_green_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(138, 62.5%, 96.9%)"
+    },
+    "light_green_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(139, 55.2%, 94.5%)"
+    },
+    "light_green_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(143, 40.3%, 79.0%)"
+    },
+    "light_orange": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(24, 70.0%, 99.0%)",
+      "__themes": ["light_orange", "light_orange_alt1", "light_orange_alt2"]
+    },
+    "light_orange_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(25, 100%, 92.2%)",
+      "__themes": ["light_orange_active", "light_orange_surface3"]
+    },
+    "light_orange_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(24, 83.3%, 97.6%)"
+    },
+    "light_orange_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(24, 100%, 95.3%)"
+    },
+    "light_orange_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(25, 100%, 82.8%)"
+    },
+    "light_pink": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(322, 100%, 99.4%)",
+      "__themes": ["light_pink", "light_pink_alt1", "light_pink_alt2"]
+    },
+    "light_pink_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(323, 78.7%, 94.2%)",
+      "__themes": ["light_pink_active", "light_pink_surface3"]
+    },
+    "light_pink_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(323, 100%, 98.4%)"
+    },
+    "light_pink_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(323, 86.3%, 96.5%)"
+    },
+    "light_pink_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(323, 66.3%, 86.6%)"
+    },
+    "light_purple": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(280, 65.0%, 99.4%)",
+      "__themes": ["light_purple", "light_purple_alt1", "light_purple_alt2"]
+    },
+    "light_purple_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(275, 76.4%, 94.7%)",
+      "__themes": ["light_purple_active", "light_purple_surface3"]
+    },
+    "light_purple_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(276, 100%, 99.0%)"
+    },
+    "light_purple_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(276, 83.1%, 97.0%)"
+    },
+    "light_purple_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(274, 65.4%, 87.8%)"
+    },
+    "light_red": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(359, 100%, 99.4%)",
+      "__themes": ["light_red", "light_red_alt1", "light_red_alt2"]
+    },
+    "light_red_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(360, 97.9%, 94.8%)",
+      "__themes": ["light_red_active", "light_red_surface3"]
+    },
+    "light_red_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(359, 100%, 98.6%)"
+    },
+    "light_red_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(360, 100%, 96.8%)"
+    },
+    "light_red_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(360, 81.7%, 87.8%)"
+    },
+    "light_yellow": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(60, 54.0%, 98.5%)",
+      "__themes": ["light_yellow", "light_yellow_alt1", "light_yellow_alt2"]
+    },
+    "light_yellow_active": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(54, 100%, 86.6%)",
+      "__themes": ["light_yellow_active", "light_yellow_surface3"]
+    },
+    "light_yellow_surface1": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(52, 100%, 95.5%)"
+    },
+    "light_yellow_surface2": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(55, 100%, 90.9%)"
+    },
+    "light_yellow_surface4": {
+      "flexDirection": "column",
+      "transform": [{
+        "translateY": 10
+      }, {
+        "translateX": 20
+      }, {
+        "rotate": "10deg"
+      }],
+      "backgroundColor": "hsl(50, 89.4%, 76.1%)"
+    }
+  }} />;
+}"
 `;

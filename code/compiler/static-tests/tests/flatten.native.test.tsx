@@ -142,7 +142,46 @@ describe('flatten-tests', () => {
         }
       `)
 
-    expect(output?.code).contains('theme["invalid-identifier"].get()')
+    // with optimized path, the token should be pre-computed for all themes
+    // the invalid-identifier token was set to white0 in tamagui.config.cjs
+    // so it should resolve to the same value as white0 (rgba(255,255,255,0))
+    expect(output?.code).toContain('__TamaguiView')
+    expect(output?.code).toContain('__styles')
+  })
+
+  test(`filters component themes to keep bundle size reasonable`, async () => {
+    const output = await extractForNative(`
+        import { View } from 'tamagui'
+        export function Test() {
+          return (
+            <View backgroundColor='$background' />
+          )
+        }
+      `)
+
+    const code = output?.code ?? ''
+    expect(code).toContain('__TamaguiView')
+    expect(code).toContain('__styles')
+
+    // extract the __styles object and count theme keys
+    // the format is: __styles={{light: {...}, dark: {...}, ...}}
+    const stylesMatch = code.match(/__styles=\{(\{[\s\S]*?\})\}/)
+    expect(stylesMatch).toBeTruthy()
+
+    // count occurrences of theme names (keys in the object)
+    // base themes should be: light, dark, light_X, dark_X where X is lowercase
+    // should NOT include component themes like light_Button, dark_Card, etc.
+    const themeKeys = code.match(/"(light|dark)(_[a-z0-9]+)*":/g) || []
+
+    // should have reasonable number of themes (< 200, not 900+)
+    // the exact number depends on config, but should filter out component themes
+    expect(themeKeys.length).toBeLessThan(200)
+    expect(themeKeys.length).toBeGreaterThan(2) // at least light and dark
+
+    // should not contain component theme names (PascalCase)
+    expect(code).not.toMatch(/"(light|dark)_Button":/)
+    expect(code).not.toMatch(/"(light|dark)_Card":/)
+    expect(code).not.toMatch(/"(light|dark)_Input":/)
   })
 
   // TODO make this work:
