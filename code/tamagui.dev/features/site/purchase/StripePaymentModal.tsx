@@ -168,7 +168,7 @@ import {
   V2_LICENSE_PRICE,
   usePaymentModal,
 } from './paymentModalStore'
-import { calculatePromoPrice } from './promoConfig'
+import { calculatePromoPrice, getActivePromo } from './promoConfig'
 
 type StripePaymentModalProps = {
   yearlyTotal: number
@@ -570,35 +570,80 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const supportTier = store.supportTier || propSupportTier
   const teamSeats = store.teamSeats || propTeamSeats
 
-  // auto-apply prefilled coupon when modal opens
+  // auto-apply promo coupon when modal opens
+  // always check for active promo as the single source of truth, regardless of how modal was opened
   useEffect(() => {
-    if (store.show && store.prefilledCouponCode && !finalCoupon) {
-      setCouponCode(store.prefilledCouponCode)
-      // auto-validate the coupon
-      const validateCoupon = async () => {
-        try {
-          const response = await fetch('/api/validate-coupon', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code: store.prefilledCouponCode }),
-          })
+    if (!store.show || finalCoupon) return
 
-          const result = await response.json()
-          const data = couponResponseSchema.parse(result)
+    // determine which coupon code to use:
+    // 1. prefilled code from store (passed from purchase modal)
+    // 2. active promo from config (global fallback - ensures promo always applies)
+    const activePromo = getActivePromo()
+    const codeToValidate = store.prefilledCouponCode || activePromo?.code
 
-          if (data.valid) {
-            setFinalCoupon(data.coupon)
-          }
-        } catch (error) {
-          // silently fail - user can still manually enter coupon
-          console.error('Failed to auto-apply coupon:', error)
+    if (!codeToValidate) return
+
+    setCouponCode(codeToValidate)
+
+    // auto-validate the coupon
+    const validateCoupon = async () => {
+      try {
+        const response = await fetch('/api/validate-coupon', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code: codeToValidate }),
+        })
+
+        const result = await response.json()
+        const data = couponResponseSchema.parse(result)
+
+        if (data.valid) {
+          setFinalCoupon(data.coupon)
         }
+      } catch (error) {
+        // silently fail - user can still manually enter coupon
+        console.error('Failed to auto-apply coupon:', error)
       }
-      validateCoupon()
     }
+    validateCoupon()
   }, [store.show, store.prefilledCouponCode])
+
+  // fetch parity discount from API (ensures it's always available, even if modal opened directly)
+  const [parityDiscount, setParityDiscount] = useState<{
+    discount: number
+    country: string
+    flag: string
+  } | null>(
+    store.parityDiscount > 0
+      ? { discount: store.parityDiscount, country: store.parityCountry || '', flag: '🌍' }
+      : null
+  )
+
+  useEffect(() => {
+    if (!store.show || parityDiscount) return
+
+    const fetchParity = async () => {
+      try {
+        const response = await fetch('/api/parity-discount')
+        const data = await response.json()
+        if (data.discount > 0) {
+          // convert country code to flag emoji
+          const flag = data.country
+            ? String.fromCodePoint(
+                data.country.charCodeAt(0) + 127397,
+                data.country.charCodeAt(1) + 127397
+              )
+            : '🌍'
+          setParityDiscount({ discount: data.discount, country: data.countryName, flag })
+        }
+      } catch (error) {
+        console.error('Failed to fetch parity discount:', error)
+      }
+    }
+    fetchParity()
+  }, [store.show])
 
   const handleApplyCoupon = async () => {
     try {
@@ -627,18 +672,26 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     }
   }
 
+  // calculate total discount with parity and coupon stacking
+  // parity is applied first, then coupon on top
   const calculateDiscountedAmount = (amount: number, coupon: Coupon | null): number => {
-    if (!coupon) return amount
+    let discounted = amount
 
-    if (coupon.percent_off) {
-      return amount * (1 - coupon.percent_off / 100)
+    // apply parity discount first (for display purposes - actual discount applied server-side)
+    if (parityDiscount) {
+      discounted = discounted * (1 - parityDiscount.discount / 100)
     }
 
-    if (coupon.amount_off) {
-      return Math.max(0, amount - coupon.amount_off / 100)
+    // then apply coupon discount
+    if (coupon) {
+      if (coupon.percent_off) {
+        discounted = discounted * (1 - coupon.percent_off / 100)
+      } else if (coupon.amount_off) {
+        discounted = Math.max(0, discounted - coupon.amount_off / 100)
+      }
     }
 
-    return amount
+    return discounted
   }
 
   const renderContent = () => {
@@ -814,6 +867,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       // V2 Order Summary
       if (isV2) {
         const discountedPrice = calculateDiscountedAmount(V2_LICENSE_PRICE, finalCoupon)
+        const hasAnyDiscount = parityDiscount || finalCoupon
         return (
           <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
             <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
@@ -826,7 +880,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 Tamagui Pro V2 License
               </Paragraph>
               <YStack items="flex-end">
-                {finalCoupon && (
+                {hasAnyDiscount && (
                   <Paragraph
                     fontFamily="$mono"
                     size="$3"
@@ -841,6 +895,28 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 </Paragraph>
               </YStack>
             </XStack>
+
+            {/* show applied discounts */}
+            {parityDiscount && (
+              <XStack justify="space-between">
+                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                  {parityDiscount.flag} Parity ({parityDiscount.country})
+                </Paragraph>
+                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                  -{parityDiscount.discount}%
+                </Paragraph>
+              </XStack>
+            )}
+            {finalCoupon && (
+              <XStack justify="space-between">
+                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                  Promo: {finalCoupon.code}
+                </Paragraph>
+                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                  -{finalCoupon.percent_off}%
+                </Paragraph>
+              </XStack>
+            )}
 
             {supportTier !== 'chat' && (
               <XStack justify="space-between">
