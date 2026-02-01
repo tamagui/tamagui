@@ -38,7 +38,7 @@ export default function TamaguiHomePage() {
     <>
       <HeadInfo
         title="Tamagui"
-        description="React style library and UI kit that unifies React Native and React web"
+        description="React Native style library and UI kit with the best web performance"
       />
 
       <ThemeNameEffectNoTheme disableTint={3} colorKey="$color3" />
