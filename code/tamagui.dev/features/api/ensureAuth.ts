@@ -1,5 +1,6 @@
 import type { User } from '@supabase/supabase-js'
 import { redirect } from 'one'
+import { supabaseAdmin } from '../auth/supabaseAdmin'
 import { setupCors } from './cors'
 import { getSupabaseServerClient } from './getSupabaseServerClient'
 
@@ -74,8 +75,8 @@ export const ensureAuth = async ({
 
     console.info(`Update user info`, updateData.email)
 
-    // fill in info
-    const result = await supabase
+    // use supabaseAdmin to bypass RLS - server-side client doesn't have proper session for RLS
+    const result = await supabaseAdmin
       .from('users_private')
       .upsert(updateData)
       .eq('id', user.id)

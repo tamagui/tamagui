@@ -19,6 +19,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { authFetch } from '../../api/authFetch'
 import { getAccessToken } from '../../auth/useSupabaseClient'
 import { defaultModel } from '../../api/generateModels'
 import { getActivePromo } from '../../site/purchase/promoConfig'
@@ -72,7 +73,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
   const { data: historiesData } = useSWR(
     user.data ? '/api/theme/histories' : null,
     async (url) => {
-      const res = await fetch(url)
+      const res = await authFetch(url)
       const data = await res.json()
       return data.histories.map((history) => ({
         themeSuite: history.theme_data,

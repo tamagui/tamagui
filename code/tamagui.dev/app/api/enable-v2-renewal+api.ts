@@ -1,5 +1,6 @@
 import Stripe from 'stripe'
 import { apiRoute } from '~/features/api/apiRoute'
+import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { sendV2RenewalEnabledEmail } from '~/features/email/helpers'
@@ -8,14 +9,14 @@ import { V1_PRODUCTS } from '~/features/stripe/products'
 
 /**
  * Enable V2 renewal for a V1 subscription
- * No auth required - link comes from verified email
- * Rate limited by subscription ID
+ * Requires authentication - user must own the subscription
  */
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
+  const { user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
   const subscriptionId = body['subscription_id']
 
@@ -29,6 +30,20 @@ export default apiRoute(async (req) => {
   }
 
   try {
+    // verify user owns this subscription
+    const { data: subData } = await supabaseAdmin
+      .from('subscriptions')
+      .select('user_id')
+      .eq('id', subscriptionId)
+      .single()
+
+    if (!subData || subData.user_id !== user.id) {
+      return Response.json(
+        { error: 'Subscription not found or not owned by this user' },
+        { status: 404 }
+      )
+    }
+
     // get subscription from Stripe to verify it exists and get details
     const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
       expand: ['items.data.price.product'],
@@ -73,25 +88,17 @@ export default apiRoute(async (req) => {
     })
 
     // get user info to send confirmation email
-    const { data: sub } = await supabaseAdmin
-      .from('subscriptions')
-      .select('user_id')
-      .eq('id', subscriptionId)
+    const { data: userData } = await supabaseAdmin
+      .from('users')
+      .select('email, full_name')
+      .eq('id', user.id)
       .single()
 
-    if (sub?.user_id) {
-      const { data: user } = await supabaseAdmin
-        .from('users')
-        .select('email, full_name')
-        .eq('id', sub.user_id)
-        .single()
-
-      if (user?.email) {
-        // send confirmation email
-        await sendV2RenewalEnabledEmail(user.email, {
-          name: user.full_name || 'there',
-        })
-      }
+    if (userData?.email) {
+      // send confirmation email
+      await sendV2RenewalEnabledEmail(userData.email, {
+        name: userData.full_name || 'there',
+      })
     }
 
     return Response.json({

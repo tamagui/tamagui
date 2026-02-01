@@ -1,4 +1,4 @@
-import { Check, Edit3, Gift, LogOut, Plus, Search, X } from '@tamagui/lucide-icons'
+import { Check, Edit3, Gift, LogOut, Plus, Search, Users, X } from '@tamagui/lucide-icons'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
@@ -30,6 +30,7 @@ import {
   YStack,
 } from 'tamagui'
 import { authFetch } from '~/features/api/authFetch'
+import { ADMIN_EMAILS } from '~/features/api/isAdmin'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { CURRENT_PRODUCTS, V1_PRODUCTS } from '~/features/stripe/products'
@@ -62,7 +63,7 @@ export { accountModal, useAccountModal } from './accountModalStore'
 
 type Subscription = NonNullable<UserContextType['subscriptions']>[number]
 
-type TabName = 'plan' | 'manage' | 'team' | 'faq'
+type TabName = 'plan' | 'manage' | 'team' | 'faq' | 'admin'
 
 export const NewAccountModal = () => {
   const store = useAccountModal()
@@ -252,6 +253,9 @@ export const AccountView = () => {
   const user = data.user
   const isTeamAdmin = haveTeamSeats && user?.id === proTeamSubscription?.user_id
   const isTeamMember = haveTeamSeats && !isTeamAdmin
+  const isAdmin = (ADMIN_EMAILS as readonly string[]).includes(
+    user?.email?.toLowerCase() || ''
+  )
 
   const renderTabs = () => {
     switch (currentTab) {
@@ -286,6 +290,9 @@ export const AccountView = () => {
 
       case 'faq':
         return <FaqTabContent />
+
+      case 'admin':
+        return <AdminTab />
 
       default:
         return null
@@ -326,6 +333,13 @@ export const AccountView = () => {
               FAQ
             </Tab>
           </YStack>
+          {isAdmin && (
+            <YStack width={'33.3333%'} flex={1}>
+              <Tab isActive={currentTab === 'admin'} value="admin">
+                Admin
+              </Tab>
+            </YStack>
+          )}
         </Tabs.List>
 
         <YStack overflow="hidden" flex={1} flexBasis="auto">
@@ -660,10 +674,7 @@ const DiscordPanel = ({
     subscription?.id
       ? `/api/discord/${apiType}?${new URLSearchParams({ subscription_id: subscription.id })}`
       : null,
-    (url) =>
-      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
-        res.json()
-      ),
+    (url) => authFetch(url).then((res) => res.json()),
     { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
   )
   const [draftQuery, setDraftQuery] = useState('')
@@ -672,20 +683,14 @@ const DiscordPanel = ({
     query
       ? `/api/discord/search-member?${new URLSearchParams({ query }).toString()}`
       : null,
-    (url) =>
-      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
-        res.json()
-      )
+    (url) => authFetch(url).then((res) => res.json())
   )
 
   const resetChannelMutation = useSWRMutation(
     subscription?.id ? [`/api/discord/${apiType}`, 'DELETE', subscription.id] : null,
-    (url) =>
-      fetch(`/api/discord/${apiType}`, {
+    () =>
+      authFetch(`/api/discord/${apiType}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           subscription_id: subscription?.id,
         }),
@@ -1442,9 +1447,8 @@ const V2RenewalCard = ({ subscription }: { subscription: Subscription }) => {
     setError(null)
 
     try {
-      const response = await fetch('/api/enable-v2-renewal', {
+      const response = await authFetch('/api/enable-v2-renewal', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ subscription_id: subscription.id }),
       })
 
@@ -2263,7 +2267,7 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
   const { data, isLoading, mutate } = useSWR(
     '/api/bento/cli/login',
     async (url) => {
-      const response = await fetch(url)
+      const response = await authFetch(url)
       if (!response.ok) {
         throw new Error('Failed to fetch access token')
       }
@@ -2346,5 +2350,178 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
           : null
       }
     />
+  )
+}
+
+// admin-only tab for recent purchases and impersonation
+type Purchase = {
+  id: string
+  amount: number
+  currency: string
+  created: number
+  description: string | null
+  customerEmail: string | null
+  customerId: string | null
+  supabaseUserId: string | null
+  userName: string | null
+  githubUsername: string | null
+}
+
+const AdminTab = () => {
+  const [isImpersonating, setIsImpersonating] = useState<string | null>(null)
+
+  const {
+    data: purchasesData,
+    isLoading,
+    error,
+  } = useSWR<{ purchases: Purchase[] }>(
+    '/api/admin/recent-purchases?limit=30',
+    (url: string) => authFetch(url).then((res) => res.json())
+  )
+
+  const handleImpersonate = async (userId: string | null, email: string | null) => {
+    if (!userId && !email) {
+      alert('Cannot impersonate: no user ID or email found')
+      return
+    }
+
+    setIsImpersonating(userId || email)
+
+    try {
+      const response = await authFetch('/api/admin/impersonate', {
+        method: 'POST',
+        body: JSON.stringify(userId ? { userId } : { email }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        alert(`Impersonation failed: ${data.error}`)
+        setIsImpersonating(null)
+        return
+      }
+
+      // the response is HTML that sets localStorage and redirects
+      const html = await response.text()
+      document.open()
+      document.write(html)
+      document.close()
+    } catch (err) {
+      console.error('Impersonation error:', err)
+      alert('Failed to impersonate user')
+      setIsImpersonating(null)
+    }
+  }
+
+  const formatCurrency = (amount: number, currency: string) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency.toUpperCase(),
+    }).format(amount / 100)
+  }
+
+  const formatDate = (timestamp: number) => {
+    return new Date(timestamp * 1000).toLocaleString()
+  }
+
+  if (isLoading) {
+    return (
+      <YStack flex={1} items="center" justify="center" p="$6">
+        <Spinner size="large" />
+        <Paragraph color="$color10" mt="$4">
+          Loading recent purchases...
+        </Paragraph>
+      </YStack>
+    )
+  }
+
+  if (error) {
+    return (
+      <YStack gap="$4" p="$4">
+        <Paragraph color="$red10">Error loading purchases: {error.message}</Paragraph>
+      </YStack>
+    )
+  }
+
+  const purchases = purchasesData?.purchases || []
+
+  return (
+    <YStack gap="$6">
+      <YStack gap="$2">
+        <XStack items="center" gap="$2">
+          <Users size={20} />
+          <H3>Recent Purchases</H3>
+        </XStack>
+        <Paragraph color="$color10">
+          View recent purchases and impersonate users to debug issues.
+        </Paragraph>
+      </YStack>
+
+      <YStack gap="$3">
+        {purchases.length === 0 ? (
+          <Paragraph color="$color10">No recent purchases found.</Paragraph>
+        ) : (
+          purchases.map((purchase) => (
+            <YStack
+              key={purchase.id}
+              p="$4"
+              borderWidth={1}
+              borderColor="$color4"
+              rounded="$4"
+              gap="$2"
+            >
+              <XStack justify="space-between" items="flex-start">
+                <YStack flex={1} gap="$1">
+                  <Paragraph fontWeight="bold">
+                    {formatCurrency(purchase.amount, purchase.currency)}
+                  </Paragraph>
+                  <Paragraph size="$2" color="$color10">
+                    {formatDate(purchase.created)}
+                  </Paragraph>
+                  {purchase.description && (
+                    <Paragraph size="$2" color="$color9">
+                      {purchase.description}
+                    </Paragraph>
+                  )}
+                </YStack>
+
+                <YStack items="flex-end" gap="$1">
+                  {purchase.customerEmail && (
+                    <Paragraph size="$2">{purchase.customerEmail}</Paragraph>
+                  )}
+                  {purchase.userName && (
+                    <Paragraph size="$2" color="$color10">
+                      {purchase.userName}
+                    </Paragraph>
+                  )}
+                  {purchase.githubUsername && (
+                    <Paragraph size="$2" color="$color9">
+                      @{purchase.githubUsername}
+                    </Paragraph>
+                  )}
+                </YStack>
+              </XStack>
+
+              <XStack justify="flex-end" gap="$2">
+                <Button
+                  size="$2"
+                  theme="blue"
+                  disabled={!!isImpersonating}
+                  onPress={() =>
+                    handleImpersonate(purchase.supabaseUserId, purchase.customerEmail)
+                  }
+                >
+                  <Button.Text>
+                    {isImpersonating ===
+                    (purchase.supabaseUserId || purchase.customerEmail)
+                      ? 'Impersonating...'
+                      : 'Impersonate'}
+                  </Button.Text>
+                </Button>
+              </XStack>
+            </YStack>
+          ))
+        )}
+      </YStack>
+    </YStack>
   )
 }
