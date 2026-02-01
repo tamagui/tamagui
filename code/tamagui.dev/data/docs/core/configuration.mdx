@@ -843,11 +843,9 @@ You should be sure to either use the Vite or Webpack Tamagui plugins, or
 configure your bundler to define the environment variables for tree shaking. On
 native, it is not a concern as the extra size is minimal.
 
-## Tree Shaking Themes (Production Optimization)
+### Tree Shaking Themes
 
-Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS
-variables, you can remove the themes JS from your client bundle for better
-Lighthouse scores.
+**Production Optimization** - Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS variables, you can remove the themes JS from your client bundle for better Lighthouse scores.
 
 This works because Tamagui generates CSS variables for all theme values. On the
 client, it reads these from the DOM instead of needing the JS object.

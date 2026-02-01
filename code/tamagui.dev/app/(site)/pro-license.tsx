@@ -1,8 +1,12 @@
 import { YStack } from 'tamagui'
+import { HeadInfo } from '~/components/HeadInfo'
 import { ProLicense } from '~/features/pro/ProLicense'
 
 export default () => (
-  <YStack p="$8">
-    <ProLicense />
-  </YStack>
+  <>
+    <HeadInfo title="Pro License" />
+    <YStack p="$8">
+      <ProLicense />
+    </YStack>
+  </>
 )

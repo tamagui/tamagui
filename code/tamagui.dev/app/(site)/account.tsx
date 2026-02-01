@@ -1,6 +1,7 @@
 import { useRouter } from 'one'
 import { useEffect } from 'react'
 import { Spinner, YStack } from 'tamagui'
+import { HeadInfo } from '~/components/HeadInfo'
 import { accountModal } from '~/features/site/purchase/accountModalStore'
 import { useUser } from '~/features/user/useUser'
 
@@ -22,8 +23,11 @@ export default function AccountPage() {
   }, [data, isLoading, router])
 
   return (
-    <YStack items="center" flex={1} justify="center">
-      <Spinner size="large" />
-    </YStack>
+    <>
+      <HeadInfo title="Account" />
+      <YStack items="center" flex={1} justify="center">
+        <Spinner size="large" />
+      </YStack>
+    </>
   )
 }

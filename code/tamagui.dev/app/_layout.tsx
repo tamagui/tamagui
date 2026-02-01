@@ -2,9 +2,8 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.generated.css'
 
-import { LoadProgressBar, Slot, usePathname } from 'one'
+import { LoadProgressBar, Slot } from 'one'
 import { setupPopper } from 'tamagui'
-import { HeadInfo } from '~/components/HeadInfo'
 import { Providers } from '../components/Providers'
 
 setupPopper({
@@ -13,8 +12,6 @@ setupPopper({
 })
 
 export default function Layout() {
-  const pathname = usePathname()
-
   return (
     <html lang="en-US">
       <head>
@@ -72,21 +69,6 @@ export default function Layout() {
           type="font/woff2"
         />
         <link crossOrigin="anonymous" href="/fonts/silkscreen.css" rel="stylesheet" />
-        {!pathname.startsWith('/theme/') && (
-          <HeadInfo
-            openGraph={{
-              type: 'website',
-              locale: 'en_US',
-              url: 'https://tamagui.dev',
-              siteName: 'Tamagui',
-              images: [
-                {
-                  url: '/social.png',
-                },
-              ],
-            }}
-          />
-        )}
       </head>
 
       <body>

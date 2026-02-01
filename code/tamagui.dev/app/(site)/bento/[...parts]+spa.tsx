@@ -19,6 +19,7 @@ import {
   Theme,
 } from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
+import { HeadInfo } from '~/components/HeadInfo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
@@ -53,6 +54,13 @@ export default function BentoPage() {
 
   return (
     <CurrentRouteProvider section={section} part={part}>
+      <HeadInfo
+        title={`${section} / ${part} - Tamagui Bento`}
+        description={`Copy-paste ${section} ${part} component for React Native and Web`}
+        openGraph={{
+          images: [{ url: '/bento/social.png' }],
+        }}
+      />
       <BentoPageFrame>
         <ContainerBento>
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
