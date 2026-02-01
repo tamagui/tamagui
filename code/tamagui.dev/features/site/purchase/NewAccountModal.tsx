@@ -29,6 +29,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { authFetch } from '~/features/api/authFetch'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { CURRENT_PRODUCTS, V1_PRODUCTS } from '~/features/stripe/products'
@@ -1620,11 +1621,8 @@ const ManageTab = ({
 
     setIsLoading(true)
     try {
-      const res = await fetch('/api/cancel-subscription', {
+      const res = await authFetch('/api/cancel-subscription', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           subscription_id: subscriptionId,
         }),

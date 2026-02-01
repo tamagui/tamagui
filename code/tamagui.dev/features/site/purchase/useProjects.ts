@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import { authFetch } from '~/features/api/authFetch'
 
 export type Project = {
   id: string
@@ -23,7 +24,7 @@ export type ProjectsResponse = {
 }
 
 const fetcher = async (url: string) => {
-  const res = await fetch(url)
+  const res = await authFetch(url)
   if (!res.ok) {
     throw new Error('Failed to fetch projects')
   }
@@ -52,9 +53,8 @@ export const useProjects = (shouldFetch = true) => {
 }
 
 export const createProject = async (project: { name: string; domain: string }) => {
-  const res = await fetch('/api/projects', {
+  const res = await authFetch('/api/projects', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(project),
   })
 
@@ -70,9 +70,8 @@ export const updateProject = async (
   projectId: string,
   updates: { name?: string; domain?: string }
 ) => {
-  const res = await fetch('/api/projects', {
+  const res = await authFetch('/api/projects', {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ project_id: projectId, ...updates }),
   })
 

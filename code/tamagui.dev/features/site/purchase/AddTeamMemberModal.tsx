@@ -21,6 +21,7 @@ import {
   useThemeName,
   SizableText,
 } from 'tamagui'
+import { authFetch } from '~/features/api/authFetch'
 import { useUser } from '~/features/user/useUser'
 
 const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -105,11 +106,8 @@ const PaymentForm = ({
         throw paymentMethodError
       }
 
-      const response = await fetch('/api/add-team-seats', {
+      const response = await authFetch('/api/add-team-seats', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           paymentMethodId: paymentMethod.id,
           subscriptionId,
