@@ -876,11 +876,8 @@ const DiscordMember = ({
   const { data, error, isMutating, trigger } = useSWRMutation(
     [`/api/discord/${apiType}`, 'POST', member.user?.id],
     async () => {
-      const res = await fetch(`/api/discord/${apiType}`, {
+      const res = await authFetch(`/api/discord/${apiType}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           subscription_id: subscriptionId,
           discord_id: member.user?.id,
@@ -1100,11 +1097,8 @@ const PlanTab = ({
     setIsResendingInvite(true)
 
     try {
-      const res = await fetch(`/api/resend-github-invite`, {
+      const res = await authFetch(`/api/resend-github-invite`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           subscription_id: subscription.id,
           product_id: subscriptionProduct.id,
@@ -2039,7 +2033,7 @@ const TeamTab = ({
         }
         setIsSearching(true)
         try {
-          const response = await fetch(`/api/github/users?q=${query}`)
+          const response = await authFetch(`/api/github/users?q=${query}`)
           const data = await response.json()
           if (response.ok) {
             setSearchResults(data.users)
