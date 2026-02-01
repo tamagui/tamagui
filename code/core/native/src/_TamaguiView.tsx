@@ -1,6 +1,4 @@
-import type React from 'react'
-import { useRef, useEffect, useCallback } from 'react'
-import { useThemeName } from '@tamagui/core'
+import React, { createElement, useCallback, useEffect, useRef, useContext } from 'react'
 import { View, type ViewProps, type ViewStyle } from 'react-native'
 
 // conditional import for native-style-registry
@@ -9,6 +7,15 @@ try {
   registry = require('@tamagui/native-style-registry')
 } catch {
   // package not installed, use JS-only mode
+}
+
+// fallback to useThemeName when native registry not available
+let useThemeName: () => string = () => 'light'
+try {
+  const core = require('@tamagui/core')
+  useThemeName = core.useThemeName
+} catch {
+  // @tamagui/core not available
 }
 
 interface DeduplicatedStyle extends ViewStyle {
@@ -93,8 +100,14 @@ function cacheResult(
  * The compiler generates __styles with resolved values for each theme,
  * eliminating runtime style computation.
  *
- * When native-style-registry is available and native module is loaded,
- * theme changes update the view directly via ShadowTree without React re-renders.
+ * When native-style-registry is available and native module is loaded:
+ * - Component renders ONCE with initial theme style
+ * - Theme changes update the view directly via ShadowTree
+ * - NO React re-renders on theme change
+ *
+ * When native module is NOT available (JS fallback):
+ * - Uses useThemeName() which subscribes to theme changes
+ * - Re-renders on theme change (same as current behavior)
  *
  * Supports deduplicated styles where multiple themes share the same values.
  */
@@ -104,10 +117,22 @@ export function _TamaguiView({
   ...props
 }: TamaguiViewProps): React.ReactElement {
   const unlinkRef = useRef<(() => void) | null>(null)
-  const themeName = useThemeName()
 
-  // check if native module is available
+  // check if native module is available ONCE
   const nativeAvailable = registry?.isNativeModuleAvailable?.() ?? false
+
+  // get scope ID from context (if Theme component wrapped us)
+  const scopeId = registry?.useThemeScopeId?.()
+
+  // for initial render style:
+  // - if native available: use initial theme name (no subscription)
+  // - if native NOT available: use useThemeName (subscribes, causes re-renders)
+  //
+  // the key insight: when native is available, we DON'T subscribe to theme changes
+  // because the native registry will update our styles directly via ShadowTree
+  const themeName = nativeAvailable
+    ? (registry?.useInitialThemeName?.() ?? 'light')
+    : useThemeName()
 
   // ref callback - link/unlink with native registry
   const handleRef = useCallback(
@@ -118,12 +143,12 @@ export function _TamaguiView({
         unlinkRef.current = null
       }
 
-      // link new instance
+      // link new instance (only when native is available)
       if (instance && __styles && registry && nativeAvailable) {
-        unlinkRef.current = registry.link(instance, __styles)
+        unlinkRef.current = registry.link(instance, __styles, scopeId)
       }
     },
-    [__styles, nativeAvailable]
+    [__styles, nativeAvailable, scopeId]
   )
 
   // cleanup on unmount
@@ -136,10 +161,15 @@ export function _TamaguiView({
     }
   }, [])
 
-  // compute initial style for first render (and JS fallback mode)
+  // compute style for render
   const themedStyle = __styles ? findStyleForTheme(__styles, themeName) : undefined
 
+  // use View component (not RCTView) because setNativeProps needs the View wrapper
   return (
-    <View ref={handleRef} {...props} style={themedStyle ? [themedStyle, style] : style} />
+    <View
+      ref={handleRef}
+      {...props}
+      style={themedStyle ? [themedStyle, style] : style}
+    />
   )
 }

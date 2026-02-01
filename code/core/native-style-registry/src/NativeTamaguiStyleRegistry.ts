@@ -9,38 +9,35 @@ import { TurboModuleRegistry } from 'react-native'
 
 export interface Spec extends TurboModule {
   /**
-   * Register a view with pre-computed theme styles.
+   * Link a view by its native tag with pre-computed theme styles.
+   * The native module will track this view and update its styles on theme change.
    */
-  register(viewId: string, stylesJson: string, scopeId?: string): void
+  link(tag: number, stylesJson: string, scopeId?: string | null): void
 
   /**
-   * Set the native tag for a registered view.
-   * Called after the view mounts to link JS registration to native view.
+   * Unlink a view when it unmounts.
    */
-  setNativeTag(viewId: string, tag: number): void
-
-  /**
-   * Unregister a view when it unmounts.
-   */
-  unregister(viewId: string): void
+  unlink(tag: number): void
 
   /**
    * Set the global theme.
+   * Updates all linked views via UIManager.updateShadowTree().
    */
   setTheme(themeName: string): void
 
   /**
    * Set theme for a specific scope.
+   * Only views linked with this scopeId will be updated.
    */
-  setThemeForScope(scopeId: string, themeName: string): void
+  setScopedTheme(scopeId: string, themeName: string): void
 
   /**
-   * Create a new theme scope.
+   * Get current theme name (synchronous).
    */
-  createScope(name: string, parentScopeId?: string): string
+  getTheme(): string
 
   /**
-   * Get registry statistics.
+   * Get registry statistics (synchronous).
    */
   getStats(): {
     viewCount: number

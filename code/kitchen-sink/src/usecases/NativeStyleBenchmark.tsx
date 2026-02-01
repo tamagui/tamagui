@@ -9,16 +9,26 @@
  * 4. With Native Module - zero re-render via ShadowTree (when available)
  */
 
-import { useState, useCallback, useRef, memo } from 'react'
+import React, { useState, useCallback, useRef, memo, createElement, forwardRef } from 'react'
 import {
   View as RNView,
   Text as RNText,
   StyleSheet,
   FlatList,
+  type ViewProps,
+  type TextProps,
 } from 'react-native'
 import { Button, YStack, XStack, Text, H3, Separator, Theme } from 'tamagui'
 import { _TamaguiView, _TamaguiText } from '@tamagui/native'
 import * as registry from '@tamagui/native-style-registry'
+
+// lean RCT components - bypass View.js/Text.js overhead (~30% faster)
+const RCTView = forwardRef<RNView, ViewProps>((props, ref) => {
+  return createElement('RCTView', { ...props, ref })
+})
+const RCTText = forwardRef<RNText, TextProps>((props, ref) => {
+  return createElement('RCTText', { ...props, ref })
+})
 
 // number of items in benchmark list
 const ITEM_COUNT = 100
@@ -58,7 +68,7 @@ interface BenchmarkResult {
   toggleCount: number
 }
 
-// regular RN list item
+// regular RN list item (uses View from react-native)
 const RNListItem = memo(function RNListItem({
   index,
   isDark,
@@ -72,6 +82,23 @@ const RNListItem = memo(function RNListItem({
         RN Item {index + 1}
       </RNText>
     </RNView>
+  )
+})
+
+// RCT list item - uses RCTView/RCTText directly (~30% faster than RN)
+const RCTListItem = memo(function RCTListItem({
+  index,
+  isDark,
+}: {
+  index: number
+  isDark: boolean
+}) {
+  return (
+    <RCTView style={[styles.item, isDark ? styles.itemDark : styles.itemLight]}>
+      <RCTText style={isDark ? styles.textDark : styles.textLight}>
+        RCT Item {index + 1}
+      </RCTText>
+    </RCTView>
   )
 })
 
@@ -114,7 +141,7 @@ const listData = Array.from({ length: ITEM_COUNT }, (_, i) => ({ id: i }))
 
 export function NativeStyleBenchmark() {
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light')
-  const [approach, setApproach] = useState<'rn' | 'tamagui' | 'optimized'>('optimized')
+  const [approach, setApproach] = useState<'rn' | 'rct' | 'tamagui' | 'optimized'>('optimized')
   const [results, setResults] = useState<BenchmarkResult[]>([])
   const [isRunning, setIsRunning] = useState(false)
   const renderCountRef = useRef(0)
@@ -153,7 +180,7 @@ export function NativeStyleBenchmark() {
     const avgTime = times.length > 0 ? times.reduce((a, b) => a + b, 0) / times.length : 0
 
     const result: BenchmarkResult = {
-      approach: approach === 'rn' ? 'Regular RN' : approach === 'tamagui' ? 'Regular Tamagui' : 'Optimized',
+      approach: approach === 'rn' ? 'RN View' : approach === 'rct' ? 'RCTView' : approach === 'tamagui' ? 'Tamagui' : 'Optimized',
       avgToggleTime: Math.round(avgTime * 100) / 100,
       renderCount: renderCountRef.current,
       toggleCount,

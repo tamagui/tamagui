@@ -154,6 +154,7 @@ const demos = [
       { title: 'Sandbox', route: '/sandbox' },
       { title: 'Benchmark', route: '/test/Benchmark' },
       { title: '🔧 Native Style Optimization', route: '/test/NativeStyleOptimization' },
+      { title: '📊 Native Style Benchmark', route: '/test/NativeStyleBenchmark' },
       {
         title: 'Test Cases',
         route: '/tests',

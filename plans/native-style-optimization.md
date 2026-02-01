@@ -303,14 +303,14 @@ Modify the `Theme` component to notify the native registry:
 
 ```tsx
 // Theme.tsx
-import { useId, useEffect, useMemo } from 'react'
+import { useId, useLayoutEffect, useMemo } from 'react'
 import { TamaguiStyleRegistry } from '@tamagui/native'
 import { ThemeScopeContext } from './ThemeScopeContext'
 
 export function Theme({ name, children, ...props }) {
   const scopeId = useId()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Tell native registry about theme change in this scope
     TamaguiStyleRegistry.setTheme(scopeId, name)
   }, [scopeId, name])

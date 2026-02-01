@@ -1,6 +1,3 @@
-declare let _findNodeHandle: ((ref: any) => number | null) | undefined;
-export declare function __setFindNodeHandle(fn: typeof _findNodeHandle): void;
-export declare function __setNativeModules(modules: any): void;
 import type { ThemeStyleMap, RegistryStats } from './types';
 export type { ThemeStyleMap, ViewRef, RegistryStats } from './types';
 export { ThemeScopeContext, ThemeScopeProvider, useThemeScopeId, } from './ThemeScopeContext';
@@ -9,7 +6,7 @@ export { useInitialThemeName } from './useInitialThemeName';
  * Get the native tag from a React ref.
  * Uses React Native's findNodeHandle which is the official API.
  */
-declare function getTagFromRef(ref: any): number | null;
+export declare function getTagFromRef(ref: any): number | null;
 /**
  * Link a view ref directly with its styles.
  * Uses findNodeHandle to get the native tag, then registers with native module.
@@ -20,7 +17,6 @@ declare function getTagFromRef(ref: any): number | null;
  * @returns cleanup function to unlink on unmount
  */
 export declare function link(ref: any, styles: ThemeStyleMap, scopeId?: string): () => void;
-export { getTagFromRef };
 /**
  * Set the current theme globally.
  * This triggers an update on all linked views WITHOUT causing React re-renders.
@@ -54,4 +50,4 @@ export declare function isNativeModuleAvailable(): boolean;
  * Reset the registry (for testing purposes).
  */
 export declare function resetRegistry(): void;
-//# sourceMappingURL=index.d.ts.map
+//# sourceMappingURL=index.native.d.ts.map

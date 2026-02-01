@@ -1,0 +1,11 @@
+{
+  "cxxNamespace": ["tamagui", "styleregistry"],
+  "ios": {
+    "iosModuleName": "TamaguiStyleRegistry"
+  },
+  "android": {
+    "androidNamespace": ["tamagui", "styleregistry"],
+    "androidCxxLibName": "tamaguistyleregistry"
+  },
+  "autolinking": {}
+}

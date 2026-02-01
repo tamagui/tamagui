@@ -1,324 +1,421 @@
 /**
  * TamaguiStyleRegistry.cpp
  *
- * Implementation of the native style registry.
- * Based on Unistyles' ShadowTreeManager approach.
+ * Implementation of the native style registry using RN 0.81's
+ * UIManager.updateShadowTree() for zero-re-render theme switching.
  */
 
 #include "TamaguiStyleRegistry.h"
 
 #include <folly/json.h>
-#include <glog/logging.h>
-#include <react/renderer/uimanager/UIManagerBinding.h>
-#include <cxxreact/ReactNativeVersion.h>
+#include <os/log.h>
+#include <cmath>
+#include <regex>
+#include <sstream>
+#include <string>
+#include <unordered_set>
 
 namespace tamagui {
 
-using namespace facebook::react;
+// color property names that need conversion
+static const std::unordered_set<std::string> colorProps = {
+    "color",
+    "backgroundColor",
+    "borderColor",
+    "borderTopColor",
+    "borderRightColor",
+    "borderBottomColor",
+    "borderLeftColor",
+    "shadowColor",
+    "textDecorationColor",
+    "textShadowColor",
+    "tintColor",
+    "overlayColor",
+};
+
+/**
+ * Parse a hex color string to ARGB integer.
+ * Supports #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+ */
+static int64_t parseHexColor(const std::string& hex) {
+  std::string h = hex.substr(1); // remove #
+
+  uint8_t r, g, b, a = 255;
+
+  if (h.length() == 3) {
+    // #RGB -> #RRGGBB
+    r = std::stoi(std::string(2, h[0]), nullptr, 16);
+    g = std::stoi(std::string(2, h[1]), nullptr, 16);
+    b = std::stoi(std::string(2, h[2]), nullptr, 16);
+  } else if (h.length() == 4) {
+    // #RGBA -> #RRGGBBAA
+    r = std::stoi(std::string(2, h[0]), nullptr, 16);
+    g = std::stoi(std::string(2, h[1]), nullptr, 16);
+    b = std::stoi(std::string(2, h[2]), nullptr, 16);
+    a = std::stoi(std::string(2, h[3]), nullptr, 16);
+  } else if (h.length() == 6) {
+    // #RRGGBB
+    r = std::stoi(h.substr(0, 2), nullptr, 16);
+    g = std::stoi(h.substr(2, 2), nullptr, 16);
+    b = std::stoi(h.substr(4, 2), nullptr, 16);
+  } else if (h.length() == 8) {
+    // #RRGGBBAA
+    r = std::stoi(h.substr(0, 2), nullptr, 16);
+    g = std::stoi(h.substr(2, 2), nullptr, 16);
+    b = std::stoi(h.substr(4, 2), nullptr, 16);
+    a = std::stoi(h.substr(6, 2), nullptr, 16);
+  } else {
+    return -1; // invalid
+  }
+
+  // ARGB format (what RN expects)
+  return (static_cast<int64_t>(a) << 24) |
+         (static_cast<int64_t>(r) << 16) |
+         (static_cast<int64_t>(g) << 8) |
+         static_cast<int64_t>(b);
+}
+
+/**
+ * Convert HSL to RGB.
+ * h: 0-360, s: 0-100, l: 0-100
+ */
+static void hslToRgb(double h, double s, double l, uint8_t& r, uint8_t& g, uint8_t& b) {
+  s /= 100.0;
+  l /= 100.0;
+
+  double c = (1.0 - std::abs(2.0 * l - 1.0)) * s;
+  double x = c * (1.0 - std::abs(std::fmod(h / 60.0, 2.0) - 1.0));
+  double m = l - c / 2.0;
+
+  double rp, gp, bp;
+
+  if (h < 60) {
+    rp = c; gp = x; bp = 0;
+  } else if (h < 120) {
+    rp = x; gp = c; bp = 0;
+  } else if (h < 180) {
+    rp = 0; gp = c; bp = x;
+  } else if (h < 240) {
+    rp = 0; gp = x; bp = c;
+  } else if (h < 300) {
+    rp = x; gp = 0; bp = c;
+  } else {
+    rp = c; gp = 0; bp = x;
+  }
+
+  r = static_cast<uint8_t>(std::round((rp + m) * 255));
+  g = static_cast<uint8_t>(std::round((gp + m) * 255));
+  b = static_cast<uint8_t>(std::round((bp + m) * 255));
+}
+
+/**
+ * Parse HSL/HSLA color string to ARGB integer.
+ * Supports hsl(h, s%, l%) and hsla(h, s%, l%, a)
+ */
+static int64_t parseHslColor(const std::string& color) {
+  // match hsl(h, s%, l%) or hsla(h, s%, l%, a)
+  std::regex hslRegex(R"(hsla?\s*\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)%\s*,\s*(\d+(?:\.\d+)?)%\s*(?:,\s*(\d+(?:\.\d+)?))?\s*\))");
+  std::smatch match;
+
+  if (!std::regex_match(color, match, hslRegex)) {
+    return -1;
+  }
+
+  double h = std::stod(match[1].str());
+  double s = std::stod(match[2].str());
+  double l = std::stod(match[3].str());
+  double a = match[4].matched ? std::stod(match[4].str()) : 1.0;
+
+  uint8_t r, g, b;
+  hslToRgb(h, s, l, r, g, b);
+  uint8_t alpha = static_cast<uint8_t>(std::round(a * 255));
+
+  return (static_cast<int64_t>(alpha) << 24) |
+         (static_cast<int64_t>(r) << 16) |
+         (static_cast<int64_t>(g) << 8) |
+         static_cast<int64_t>(b);
+}
+
+/**
+ * Parse RGB/RGBA color string to ARGB integer.
+ * Supports rgb(r, g, b) and rgba(r, g, b, a)
+ */
+static int64_t parseRgbColor(const std::string& color) {
+  // match rgb(r, g, b) or rgba(r, g, b, a)
+  std::regex rgbRegex(R"(rgba?\s*\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*(?:,\s*(\d+(?:\.\d+)?))?\s*\))");
+  std::smatch match;
+
+  if (!std::regex_match(color, match, rgbRegex)) {
+    return -1;
+  }
+
+  uint8_t r = static_cast<uint8_t>(std::stod(match[1].str()));
+  uint8_t g = static_cast<uint8_t>(std::stod(match[2].str()));
+  uint8_t b = static_cast<uint8_t>(std::stod(match[3].str()));
+  double a = match[4].matched ? std::stod(match[4].str()) : 1.0;
+  uint8_t alpha = static_cast<uint8_t>(std::round(a * 255));
+
+  return (static_cast<int64_t>(alpha) << 24) |
+         (static_cast<int64_t>(r) << 16) |
+         (static_cast<int64_t>(g) << 8) |
+         static_cast<int64_t>(b);
+}
+
+/**
+ * Parse any color string to ARGB integer.
+ * Returns -1 if parsing fails.
+ */
+static int64_t parseColor(const std::string& color) {
+  if (color.empty()) {
+    return -1;
+  }
+
+  if (color[0] == '#') {
+    return parseHexColor(color);
+  }
+
+  if (color.substr(0, 3) == "hsl") {
+    return parseHslColor(color);
+  }
+
+  if (color.substr(0, 3) == "rgb") {
+    return parseRgbColor(color);
+  }
+
+  // TODO: named colors (black, white, etc.)
+  return -1;
+}
+
+/**
+ * Process colors in a style object, converting strings to integers.
+ */
+static folly::dynamic processColorsInStyle(const folly::dynamic& style) {
+  if (!style.isObject()) {
+    return style;
+  }
+
+  folly::dynamic processed = folly::dynamic::object();
+
+  for (const auto& [key, value] : style.items()) {
+    std::string keyStr = key.asString();
+
+    if (colorProps.count(keyStr) && value.isString()) {
+      std::string colorStr = value.asString();
+      int64_t colorInt = parseColor(colorStr);
+
+      if (colorInt >= 0) {
+        processed[key] = colorInt;
+      } else {
+        // keep original if parsing failed
+        processed[key] = value;
+        os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] Failed to parse color: %{public}s", colorStr.c_str());
+      }
+    } else {
+      processed[key] = value;
+    }
+  }
+
+  return processed;
+}
+
+namespace jsi = facebook::jsi;
 
 TamaguiStyleRegistry& TamaguiStyleRegistry::getInstance() {
   static TamaguiStyleRegistry instance;
   return instance;
 }
 
-TamaguiStyleRegistry::TamaguiStyleRegistry() {
-  // initialize global scope
-  scopes_[GLOBAL_SCOPE_ID] = ThemeScope{
-      .name = "global",
-      .parentId = "",
-      .currentTheme = "light",
-      .viewIds = {}};
+void TamaguiStyleRegistry::link(
+    Tag tag,
+    const folly::dynamic& styles,
+    const std::string& scopeId) {
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  _linkedViews[tag] = styles;
+
+  if (!scopeId.empty()) {
+    _viewScopes[tag] = scopeId;
+  }
 }
 
-void TamaguiStyleRegistry::setRuntime(jsi::Runtime* rt) {
-  std::lock_guard<std::mutex> lock(mutex_);
-  runtime_ = rt;
+void TamaguiStyleRegistry::unlink(Tag tag) {
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  _linkedViews.erase(tag);
+  _viewScopes.erase(tag);
 }
 
-void TamaguiStyleRegistry::linkShadowNode(
-    const ShadowNodeFamily* family,
-    const std::string& stylesJson) {
-  std::lock_guard<std::mutex> lock(mutex_);
+void TamaguiStyleRegistry::setTheme(
+    jsi::Runtime& rt,
+    const std::string& themeName) {
+  std::lock_guard<std::mutex> lock(_mutex);
 
-  // parse styles JSON
-  ThemeStyleMap styles;
+  // store the new theme
+  _currentTheme = themeName;
 
-  try {
-    auto parsed = folly::parseJson(stylesJson);
-    if (parsed.isObject()) {
-      for (const auto& [themeName, style] : parsed.items()) {
-        styles[themeName.asString()] = style;
-      }
-    }
-  } catch (const std::exception& e) {
-    LOG(ERROR) << "TamaguiStyleRegistry: Failed to parse styles JSON: " << e.what();
-    return;
-  }
-
-  // store registration
-  linkedNodes_[family] = LinkedNode{
-      .family = family,
-      .styles = std::move(styles),
-      .scopeId = GLOBAL_SCOPE_ID};
-}
-
-void TamaguiStyleRegistry::unlinkShadowNode(const ShadowNodeFamily* family) {
-  std::lock_guard<std::mutex> lock(mutex_);
-  linkedNodes_.erase(family);
-}
-
-void TamaguiStyleRegistry::setTheme(const std::string& themeName) {
-  std::lock_guard<std::mutex> lock(mutex_);
-
-  if (currentTheme_ == themeName) {
-    return; // no change
-  }
-
-  currentTheme_ = themeName;
-  scopes_[GLOBAL_SCOPE_ID].currentTheme = themeName;
-
-  // queue update
-  pendingThemeChange_ = true;
-}
-
-void TamaguiStyleRegistry::flush() {
-  std::lock_guard<std::mutex> lock(mutex_);
-
-  if (!pendingThemeChange_ || !runtime_) {
-    return;
-  }
-
-  pendingThemeChange_ = false;
-  updateShadowTree(*runtime_);
-}
-
-void TamaguiStyleRegistry::updateShadowTree(jsi::Runtime& rt) {
-  if (linkedNodes_.empty()) {
-    return;
-  }
-
-  // collect updates: family -> new props
-  std::unordered_map<const ShadowNodeFamily*, folly::dynamic> updates;
-
-  for (const auto& [family, node] : linkedNodes_) {
-    auto style = findStyleForTheme(node, currentTheme_);
-    if (!style.empty()) {
-      // wrap in "style" prop
-      updates[family] = folly::dynamic::object("style", style);
-    }
-  }
-
-  if (updates.empty()) {
-    return;
-  }
-
-#if REACT_NATIVE_VERSION_MINOR >= 81
-  // RN 0.81+ has updateShadowTree API
+  // build tag -> props map for all linked views
   std::unordered_map<Tag, folly::dynamic> tagToProps;
 
-  for (const auto& [family, props] : updates) {
-    tagToProps.insert({family->getTag(), props});
+  for (const auto& [tag, styles] : _linkedViews) {
+    // check if this view has a scoped theme
+    std::string effectiveTheme = themeName;
+    auto scopeIt = _viewScopes.find(tag);
+    if (scopeIt != _viewScopes.end()) {
+      auto scopedThemeIt = _scopeThemes.find(scopeIt->second);
+      if (scopedThemeIt != _scopeThemes.end()) {
+        effectiveTheme = scopedThemeIt->second;
+      }
+    }
 
-    // persist props on family (like Unistyles/Reanimated do)
-    auto* mutableFamily = const_cast<ShadowNodeFamily*>(family);
-    if (mutableFamily->nativeProps_DEPRECATED) {
-      mutableFamily->nativeProps_DEPRECATED->update(props);
-    } else {
-      mutableFamily->nativeProps_DEPRECATED = std::make_unique<folly::dynamic>(props);
+    // get the style for this theme
+    auto style = getStyleForTheme(styles, effectiveTheme);
+    if (!style.empty()) {
+      // pass style properties directly (not wrapped in "style" key)
+      // updateShadowTree expects raw props like { backgroundColor: ..., padding: ... }
+      tagToProps[tag] = style;
+      if (tagToProps.size() <= 3) {
+        os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] tag %d style: %{public}s", tag, folly::toJson(style).c_str());
+      }
     }
   }
 
-  UIManagerBinding::getBinding(rt)->getUIManager().updateShadowTree(std::move(tagToProps));
-#else
-  // older RN - need to clone shadow tree manually
-  const auto& shadowTreeRegistry = UIManagerBinding::getBinding(rt)->getUIManager().getShadowTreeRegistry();
+  if (tagToProps.empty()) {
+    return;
+  }
 
-  shadowTreeRegistry.enumerate([this, &updates](const ShadowTree& shadowTree, bool& stop) {
-    auto transaction = [this, &updates](const RootShadowNode& oldRootShadowNode) {
-      auto affectedNodes = findAffectedNodes(oldRootShadowNode, updates);
+  // use UIManager.updateShadowTree() to update all views in a single batch
+  // this is the zero-re-render path - updates go directly to native views
+  try {
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] About to call updateShadowTree with %zu views", tagToProps.size());
+    auto binding = UIManagerBinding::getBinding(rt);
+    if (binding) {
+      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] Got UIManagerBinding, calling updateShadowTree");
+      binding->getUIManager().updateShadowTree(std::move(tagToProps));
+      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] updateShadowTree completed");
+    } else {
+      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] UIManagerBinding is null!");
+    }
+  } catch (const std::exception& e) {
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] updateShadowTree exception: %{public}s", e.what());
+  }
+}
 
-      // persist props on families
-      for (const auto& [family, props] : updates) {
-        auto* mutableFamily = const_cast<ShadowNodeFamily*>(family);
-        if (mutableFamily->nativeProps_DEPRECATED) {
-          mutableFamily->nativeProps_DEPRECATED->update(props);
-        } else {
-          mutableFamily->nativeProps_DEPRECATED = std::make_unique<folly::dynamic>(props);
+std::string TamaguiStyleRegistry::getTheme() const {
+  std::lock_guard<std::mutex> lock(_mutex);
+  return _currentTheme;
+}
+
+void TamaguiStyleRegistry::setScopedTheme(
+    jsi::Runtime& rt,
+    const std::string& scopeId,
+    const std::string& themeName) {
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  // store the scoped theme
+  _scopeThemes[scopeId] = themeName;
+
+  // build tag -> props map for views in this scope
+  std::unordered_map<Tag, folly::dynamic> tagToProps;
+
+  for (const auto& [tag, styles] : _linkedViews) {
+    // only update views in this scope
+    auto scopeIt = _viewScopes.find(tag);
+    if (scopeIt == _viewScopes.end() || scopeIt->second != scopeId) {
+      continue;
+    }
+
+    // get the style for this theme
+    auto style = getStyleForTheme(styles, themeName);
+    if (!style.empty()) {
+      // pass style properties directly (not wrapped in "style" key)
+      tagToProps[tag] = style;
+    }
+  }
+
+  if (tagToProps.empty()) {
+    return;
+  }
+
+  // update all views in this scope
+  try {
+    auto binding = UIManagerBinding::getBinding(rt);
+    if (binding) {
+      binding->getUIManager().updateShadowTree(std::move(tagToProps));
+    }
+  } catch (const std::exception& e) {
+    // log error but don't crash
+  }
+}
+
+RegistryStats TamaguiStyleRegistry::getStats() const {
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  return RegistryStats{
+      .viewCount = _linkedViews.size(),
+      .scopeCount = _scopeThemes.size(),
+      .currentTheme = _currentTheme};
+}
+
+void TamaguiStyleRegistry::reset() {
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  _linkedViews.clear();
+  _viewScopes.clear();
+  _scopeThemes.clear();
+  _currentTheme = "light";
+}
+
+folly::dynamic TamaguiStyleRegistry::getStyleForTheme(
+    const folly::dynamic& styles,
+    const std::string& themeName) const {
+  folly::dynamic result = folly::dynamic::object();
+
+  // direct lookup
+  if (styles.count(themeName)) {
+    auto style = styles[themeName];
+    // remove __themes metadata if present
+    if (style.isObject() && style.count("__themes")) {
+      for (const auto& [key, value] : style.items()) {
+        if (key.asString() != "__themes") {
+          result[key] = value;
         }
       }
-
-      return std::static_pointer_cast<RootShadowNode>(
-          cloneShadowTree(oldRootShadowNode, updates, affectedNodes));
-    };
-
-    // commit with mountSynchronously=true
-    shadowTree.commit(transaction, {false, true});
-    stop = true; // single surface assumption
-  });
-#endif
-}
-
-TamaguiStyleRegistry::AffectedNodes TamaguiStyleRegistry::findAffectedNodes(
-    const RootShadowNode& rootNode,
-    const std::unordered_map<const ShadowNodeFamily*, folly::dynamic>& updates) {
-  AffectedNodes affectedNodes;
-
-  for (const auto& [family, _] : updates) {
-    auto ancestors = family->getAncestors(rootNode);
-
-    for (auto it = ancestors.rbegin(); it != ancestors.rend(); ++it) {
-      const auto& [parentNode, index] = *it;
-      const auto parentFamily = &parentNode.get().getFamily();
-      auto [setIt, inserted] = affectedNodes.try_emplace(parentFamily, std::unordered_set<int>{});
-      setIt->second.insert(index);
+    } else {
+      result = style;
     }
+    // process colors to integers
+    return processColorsInStyle(result);
   }
 
-  return affectedNodes;
-}
-
-std::shared_ptr<ShadowNode> TamaguiStyleRegistry::cloneShadowTree(
-    const ShadowNode& shadowNode,
-    const std::unordered_map<const ShadowNodeFamily*, folly::dynamic>& updates,
-    AffectedNodes& affectedNodes) {
-  const auto family = &shadowNode.getFamily();
-  const auto childrenIt = affectedNodes.find(family);
-
-  // only copy children if we need to update them
-  std::shared_ptr<std::vector<std::shared_ptr<const ShadowNode>>> childrenPtr;
-  const auto& originalChildren = shadowNode.getChildren();
-
-  if (childrenIt != affectedNodes.end()) {
-    auto children = originalChildren;
-    for (const auto index : childrenIt->second) {
-      children[index] = cloneShadowTree(*children[index], updates, affectedNodes);
-    }
-    childrenPtr = std::make_shared<std::vector<std::shared_ptr<const ShadowNode>>>(std::move(children));
-  } else {
-    childrenPtr = std::make_shared<std::vector<std::shared_ptr<const ShadowNode>>>(originalChildren);
-  }
-
-  Props::Shared updatedProps = computeUpdatedProps(shadowNode, updates);
-
-  return shadowNode.clone({
-      .props = updatedProps,
-      .children = childrenPtr,
-      .state = shadowNode.getState()});
-}
-
-Props::Shared TamaguiStyleRegistry::computeUpdatedProps(
-    const ShadowNode& shadowNode,
-    const std::unordered_map<const ShadowNodeFamily*, folly::dynamic>& updates) {
-  const auto family = &shadowNode.getFamily();
-  const auto rawPropsIt = updates.find(family);
-
-  if (rawPropsIt == updates.end()) {
-    return ShadowNodeFragment::propsPlaceholder();
-  }
-
-  const auto& componentDescriptor = shadowNode.getComponentDescriptor();
-  const auto& props = shadowNode.getProps();
-
-  PropsParserContext propsParserContext{
-      shadowNode.getSurfaceId(),
-      *shadowNode.getContextContainer()};
-
-  return componentDescriptor.cloneProps(
-      propsParserContext,
-      props,
-      RawProps(rawPropsIt->second));
-}
-
-folly::dynamic TamaguiStyleRegistry::findStyleForTheme(
-    const LinkedNode& node,
-    const std::string& themeName) const {
-  // direct match
-  auto it = node.styles.find(themeName);
-  if (it != node.styles.end()) {
-    auto style = it->second;
-    // remove __themes from output
+  // search through __themes arrays for deduplication
+  for (const auto& [key, style] : styles.items()) {
     if (style.isObject() && style.count("__themes")) {
-      style.erase("__themes");
-    }
-    return style;
-  }
-
-  // check deduplicated styles - find canonical style that includes this theme
-  for (const auto& [canonicalTheme, style] : node.styles) {
-    if (style.isObject() && style.count("__themes")) {
-      const auto& themesArray = style["__themes"];
-      if (themesArray.isArray()) {
-        for (const auto& t : themesArray) {
-          if (t.asString() == themeName) {
-            auto cleanStyle = style;
-            cleanStyle.erase("__themes");
-            return cleanStyle;
+      const auto& themes = style["__themes"];
+      if (themes.isArray()) {
+        for (const auto& t : themes) {
+          if (t.isString() && t.asString() == themeName) {
+            // found via deduplication
+            for (const auto& [k, v] : style.items()) {
+              if (k.asString() != "__themes") {
+                result[k] = v;
+              }
+            }
+            // process colors to integers
+            return processColorsInStyle(result);
           }
         }
       }
     }
   }
 
-  // fallback: try base theme (e.g., "dark_blue" -> "dark")
+  // fallback to base theme (dark_blue -> dark)
   auto underscorePos = themeName.find('_');
   if (underscorePos != std::string::npos) {
     std::string baseTheme = themeName.substr(0, underscorePos);
-    return findStyleForTheme(node, baseTheme);
+    return getStyleForTheme(styles, baseTheme);
   }
 
-  // no match found
   return folly::dynamic::object();
-}
-
-std::string TamaguiStyleRegistry::createScope(
-    const std::string& name,
-    const std::string& parentScopeId) {
-  std::lock_guard<std::mutex> lock(mutex_);
-
-  std::string scopeId = "scope_" + std::to_string(++scopeIdCounter_);
-
-  // determine parent
-  std::string effectiveParentId = parentScopeId.empty() ? GLOBAL_SCOPE_ID : parentScopeId;
-
-  // inherit theme from parent
-  std::string inheritedTheme = currentTheme_;
-  if (scopes_.count(effectiveParentId)) {
-    inheritedTheme = scopes_[effectiveParentId].currentTheme;
-  }
-
-  scopes_[scopeId] = ThemeScope{
-      .name = name,
-      .parentId = effectiveParentId,
-      .currentTheme = inheritedTheme,
-      .viewIds = {}};
-
-  return scopeId;
-}
-
-RegistryStats TamaguiStyleRegistry::getStats() const {
-  std::lock_guard<std::mutex> lock(mutex_);
-
-  return RegistryStats{
-      .viewCount = linkedNodes_.size(),
-      .scopeCount = scopes_.size(),
-      .currentTheme = currentTheme_};
-}
-
-void TamaguiStyleRegistry::reset() {
-  std::lock_guard<std::mutex> lock(mutex_);
-
-  linkedNodes_.clear();
-  scopes_.clear();
-  currentTheme_ = "light";
-  scopeIdCounter_ = 0;
-  pendingThemeChange_ = false;
-
-  // reinitialize global scope
-  scopes_[GLOBAL_SCOPE_ID] = ThemeScope{
-      .name = "global",
-      .parentId = "",
-      .currentTheme = "light",
-      .viewIds = {}};
 }
 
 } // namespace tamagui

@@ -2,57 +2,24 @@
  * TamaguiStyleRegistry.h
  *
  * Native style registry for zero-re-render theme switching.
- * This C++ core manages view registrations and provides theme updates
- * that bypass React's reconciliation by directly updating the ShadowTree.
- *
- * Based on Unistyles' ShadowTreeManager approach.
+ * Uses UIManager.updateShadowTree() available in RN 0.81+.
  */
 
 #pragma once
 
 #include <folly/dynamic.h>
 #include <jsi/jsi.h>
-#include <react/renderer/core/ShadowNode.h>
-#include <react/renderer/core/ShadowNodeFamily.h>
-#include <react/renderer/mounting/ShadowTree.h>
-#include <react/renderer/uimanager/UIManager.h>
+#include <react/renderer/uimanager/primitives.h>
+#include <react/renderer/uimanager/UIManagerBinding.h>
 
-#include <memory>
 #include <mutex>
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
-#include <vector>
 
 namespace tamagui {
 
-using namespace facebook;
 using namespace facebook::react;
-
-/**
- * Stores pre-computed styles for each theme variant.
- * The key is the theme name (e.g., "dark", "light", "dark_blue").
- */
-using ThemeStyleMap = std::unordered_map<std::string, folly::dynamic>;
-
-/**
- * A linked ShadowNode with its theme styles.
- */
-struct LinkedNode {
-  const ShadowNodeFamily* family;
-  ThemeStyleMap styles;
-  std::string scopeId;
-};
-
-/**
- * Theme scope for nested theme support.
- */
-struct ThemeScope {
-  std::string name;
-  std::string parentId;
-  std::string currentTheme;
-  std::unordered_set<std::string> viewIds;
-};
+namespace jsi = facebook::jsi;
 
 /**
  * Registry stats for debugging.
@@ -64,123 +31,80 @@ struct RegistryStats {
 };
 
 /**
- * Core registry that manages ShadowNode registrations and theme updates.
- * Uses the same approach as Unistyles for ShadowTree manipulation.
+ * Minimal registry that uses RN 0.81's UIManager.updateShadowTree().
+ *
+ * Stores: tag -> theme styles map
+ * On theme change: builds tag -> new style map, calls updateShadowTree()
  */
 class TamaguiStyleRegistry {
- public:
+public:
   static TamaguiStyleRegistry& getInstance();
 
-  // prevent copying
   TamaguiStyleRegistry(const TamaguiStyleRegistry&) = delete;
   TamaguiStyleRegistry& operator=(const TamaguiStyleRegistry&) = delete;
 
   /**
-   * Set the JSI runtime reference.
-   * Must be called during module initialization.
+   * Link a view (by tag) with pre-computed theme styles.
+   * styles is a folly::dynamic object: { themeName: { prop: value, ... }, ... }
    */
-  void setRuntime(jsi::Runtime* rt);
+  void link(Tag tag, const folly::dynamic& styles, const std::string& scopeId = "");
 
   /**
-   * Link a ShadowNode with pre-computed theme styles.
-   * Called from JS when a component mounts.
-   *
-   * @param family The ShadowNodeFamily from the React ref
-   * @param stylesJson JSON string of theme->style map
+   * Unlink a view when it unmounts.
    */
-  void linkShadowNode(const ShadowNodeFamily* family, const std::string& stylesJson);
+  void unlink(Tag tag);
 
   /**
-   * Unlink a ShadowNode when it unmounts.
+   * Set the global theme and update all linked views.
+   * Uses UIManager.updateShadowTree() for efficient batch update.
    */
-  void unlinkShadowNode(const ShadowNodeFamily* family);
+  void setTheme(jsi::Runtime& rt, const std::string& themeName);
 
   /**
-   * Set the global theme. Queues an update for next flush.
+   * Get current theme name.
    */
-  void setTheme(const std::string& themeName);
+  std::string getTheme() const;
 
   /**
-   * Flush pending theme changes to the ShadowTree.
-   * Call this after setTheme to apply the update.
+   * Set theme for a specific scope.
    */
-  void flush();
+  void setScopedTheme(
+      jsi::Runtime& rt,
+      const std::string& scopeId,
+      const std::string& themeName);
 
   /**
-   * Create a new theme scope for nested themes.
-   */
-  std::string createScope(const std::string& name, const std::string& parentScopeId = "");
-
-  /**
-   * Get current registry statistics.
+   * Get registry stats.
    */
   RegistryStats getStats() const;
 
   /**
-   * Reset the registry (for testing).
+   * Reset (for testing).
    */
   void reset();
 
- private:
-  TamaguiStyleRegistry();
-
-  using AffectedNodes = std::unordered_map<const ShadowNodeFamily*, std::unordered_set<int>>;
+private:
+  TamaguiStyleRegistry() = default;
 
   /**
-   * Apply theme changes to the ShadowTree.
-   * Uses UIManagerBinding::getBinding(rt) like Unistyles does.
+   * Get the style for a theme from the styles map.
+   * Handles __themes array for deduplication.
    */
-  void updateShadowTree(jsi::Runtime& rt);
-
-  /**
-   * Find nodes affected by updates (for tree cloning).
-   */
-  AffectedNodes findAffectedNodes(
-      const RootShadowNode& rootNode,
-      const std::unordered_map<const ShadowNodeFamily*, folly::dynamic>& updates);
-
-  /**
-   * Clone the ShadowTree with new props.
-   */
-  std::shared_ptr<ShadowNode> cloneShadowTree(
-      const ShadowNode& shadowNode,
-      const std::unordered_map<const ShadowNodeFamily*, folly::dynamic>& updates,
-      AffectedNodes& affectedNodes);
-
-  /**
-   * Compute updated props for a node.
-   */
-  Props::Shared computeUpdatedProps(
-      const ShadowNode& shadowNode,
-      const std::unordered_map<const ShadowNodeFamily*, folly::dynamic>& updates);
-
-  /**
-   * Find the style for a given theme name, handling deduplication and fallbacks.
-   */
-  folly::dynamic findStyleForTheme(
-      const LinkedNode& node,
+  folly::dynamic getStyleForTheme(
+      const folly::dynamic& styles,
       const std::string& themeName) const;
 
-  mutable std::mutex mutex_;
-  jsi::Runtime* runtime_{nullptr};
+  mutable std::mutex _mutex;
+  std::string _currentTheme = "light";
 
-  // linked nodes: ShadowNodeFamily* -> LinkedNode
-  std::unordered_map<const ShadowNodeFamily*, LinkedNode> linkedNodes_;
+  // tag -> { themeName: style, ... }
+  std::unordered_map<Tag, folly::dynamic> _linkedViews;
 
-  // scope registry: scopeId -> ThemeScope
-  std::unordered_map<std::string, ThemeScope> scopes_;
+  // tag -> scopeId
+  std::unordered_map<Tag, std::string> _viewScopes;
 
-  // global theme
-  std::string currentTheme_{"light"};
-
-  // pending theme change flag
-  bool pendingThemeChange_{false};
-
-  // ID counter for scope generation
-  uint64_t scopeIdCounter_{0};
-
-  // global scope ID constant
-  static constexpr const char* GLOBAL_SCOPE_ID = "__global__";
+  // scopeId -> themeName
+  std::unordered_map<std::string, std::string> _scopeThemes;
 };
 
 } // namespace tamagui

@@ -1,4 +1,4 @@
-import type { ViewStyle, TextStyle } from 'react-native';
+import type { ViewStyle, TextStyle, TurboModule } from 'react-native';
 export type StyleValue = ViewStyle | TextStyle;
 export type DeduplicatedStyle = StyleValue & {
     __themes?: string[];
@@ -14,12 +14,22 @@ export interface RegistryStats {
     scopeCount: number;
     currentTheme: string;
 }
-export interface NativeStyleRegistryModule {
-    register(viewId: string, stylesJson: string, scopeId?: string): void;
-    unregister(viewId: string): void;
+/**
+ * ShadowNode extracted from React Native internals.
+ * Obtained via ref.__internalInstanceHandle?.stateNode?.node
+ */
+export type ShadowNode = unknown;
+/**
+ * Style object mapping theme names to resolved styles.
+ * Same as __styles prop from compiler.
+ */
+export type Unistyle = Record<string, DeduplicatedStyle>;
+export interface NativeStyleRegistryModule extends TurboModule {
+    link(tag: number, stylesJson: string, scopeId?: string | null): void;
+    unlink(tag: number): void;
     setTheme(themeName: string): void;
-    setThemeForScope(scopeId: string, themeName: string): void;
-    createScope(name: string, parentScopeId?: string): string;
+    setScopedTheme(scopeId: string, themeName: string): void;
+    getTheme(): string;
     getStats(): RegistryStats;
 }
 //# sourceMappingURL=types.d.ts.map

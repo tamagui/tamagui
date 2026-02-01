@@ -1,7 +1,8 @@
 /**
  * TamaguiStyleRegistry.mm
  *
- * iOS implementation of the native style registry.
+ * iOS TurboModule bridge to the C++ TamaguiStyleRegistry.
+ * Requires RN 0.81+ with New Architecture enabled.
  */
 
 #import "TamaguiStyleRegistry.h"
@@ -10,20 +11,21 @@
 #import <React/RCTLog.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
-#import <React/RCTScheduler.h>
 #import <React/RCTSurfacePresenter.h>
 #import <react/renderer/uimanager/UIManager.h>
-#import <TamaguiStyleRegistry/TamaguiStyleRegistry.h>
+#import <folly/json.h>
+#import "../cpp/TamaguiStyleRegistry.h"
 #endif
 
-using namespace facebook::react;
-
-@implementation TamaguiStyleRegistry {
 #ifdef RCT_NEW_ARCH_ENABLED
-  __weak id<RCTSurfacePresenterStub> _surfacePresenter;
-  BOOL _initialized;
+// static storage for runtime pointer
+static void* _storedRuntime = nullptr;
 #endif
-}
+
+@implementation TamaguiStyleRegistry
+
+// synthesize bridge property from RCTBridgeModule protocol
+@synthesize bridge = _bridge;
 
 RCT_EXPORT_MODULE();
 
@@ -31,91 +33,96 @@ RCT_EXPORT_MODULE();
   return NO;
 }
 
-- (void)initialize {
 #ifdef RCT_NEW_ARCH_ENABLED
-  if (_initialized) {
-    return;
-  }
-
-  if (_surfacePresenter) {
-    RCTScheduler *scheduler = [(RCTSurfacePresenter *)_surfacePresenter scheduler];
-    if (scheduler && scheduler.uiManager) {
-      auto uiManager = scheduler.uiManager;
-      tamagui::TamaguiStyleRegistry::getInstance().initialize(uiManager);
-      _initialized = YES;
-      RCTLogInfo(@"TamaguiStyleRegistry: Initialized with UIManager");
-    }
-  }
-#endif
++ (void)setRuntime:(void *)runtime {
+  _storedRuntime = runtime;
+  NSLog(@"[TamaguiStyleRegistry] Runtime stored: %p", runtime);
 }
 
-#pragma mark - Bridgeless mode setup
-
-- (void)setSurfacePresenter:(id<RCTSurfacePresenterStub>)surfacePresenter {
-#ifdef RCT_NEW_ARCH_ENABLED
-  _surfacePresenter = surfacePresenter;
++ (void *)getRuntime {
+  return _storedRuntime;
+}
 #endif
+
+- (instancetype)init {
+  if (self = [super init]) {
+    NSLog(@"[TamaguiStyleRegistry] init called - module instance created");
+#ifdef RCT_NEW_ARCH_ENABLED
+    NSLog(@"[TamaguiStyleRegistry] RCT_NEW_ARCH_ENABLED is defined");
+#else
+    NSLog(@"[TamaguiStyleRegistry] RCT_NEW_ARCH_ENABLED is NOT defined - TurboModule disabled");
+#endif
+  }
+  return self;
 }
 
 #pragma mark - Native module methods
 
-RCT_EXPORT_METHOD(register:(NSString *)viewId
+RCT_EXPORT_METHOD(link:(double)tag
                   stylesJson:(NSString *)stylesJson
                   scopeId:(NSString * _Nullable)scopeId) {
 #ifdef RCT_NEW_ARCH_ENABLED
-  // note: we need the native tag, but in the new architecture
-  // this requires additional setup. for now, we use a placeholder
-  // and will need to get the tag from the JS side
-  tamagui::TamaguiStyleRegistry::getInstance().registerView(
-      [viewId UTF8String],
-      0, // tag will be set via setNativeTag method
-      [stylesJson UTF8String],
-      scopeId ? [scopeId UTF8String] : "");
+  try {
+    auto styles = folly::parseJson([stylesJson UTF8String]);
+    tamagui::TamaguiStyleRegistry::getInstance().link(
+        static_cast<facebook::react::Tag>(tag),
+        styles,
+        scopeId ? [scopeId UTF8String] : "");
+  } catch (const std::exception& e) {
+    RCTLogError(@"TamaguiStyleRegistry: Failed to parse styles: %s", e.what());
+  }
 #else
   RCTLogWarn(@"TamaguiStyleRegistry: Native module only available with New Architecture");
 #endif
 }
 
-RCT_EXPORT_METHOD(setNativeTag:(NSString *)viewId
-                  tag:(double)tag) {
+RCT_EXPORT_METHOD(unlink:(double)tag) {
 #ifdef RCT_NEW_ARCH_ENABLED
-  // update the tag for a registered view
-  // this is called from JS after the view mounts
-  // (implementation would need registry method to update tag)
-  RCTLogInfo(@"TamaguiStyleRegistry: setNativeTag %@ -> %f", viewId, tag);
-#endif
-}
-
-RCT_EXPORT_METHOD(unregister:(NSString *)viewId) {
-#ifdef RCT_NEW_ARCH_ENABLED
-  tamagui::TamaguiStyleRegistry::getInstance().unregisterView([viewId UTF8String]);
+  tamagui::TamaguiStyleRegistry::getInstance().unlink(
+      static_cast<facebook::react::Tag>(tag));
 #endif
 }
 
 RCT_EXPORT_METHOD(setTheme:(NSString *)themeName) {
 #ifdef RCT_NEW_ARCH_ENABLED
-  tamagui::TamaguiStyleRegistry::getInstance().setTheme([themeName UTF8String]);
+  NSLog(@"[TamaguiStyleRegistry] setTheme called with: %@", themeName);
+  NSLog(@"[TamaguiStyleRegistry] self.bridge: %@", self.bridge);
+
+  // get the runtime from the bridge
+  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
+  NSLog(@"[TamaguiStyleRegistry] cxxBridge: %@, runtime: %p", cxxBridge, cxxBridge ? cxxBridge.runtime : nil);
+
+  if (cxxBridge && cxxBridge.runtime) {
+    auto& rt = *reinterpret_cast<facebook::jsi::Runtime*>(cxxBridge.runtime);
+    NSLog(@"[TamaguiStyleRegistry] calling C++ setTheme");
+    tamagui::TamaguiStyleRegistry::getInstance().setTheme(rt, [themeName UTF8String]);
+    NSLog(@"[TamaguiStyleRegistry] C++ setTheme completed");
+  } else {
+    NSLog(@"[TamaguiStyleRegistry] ERROR: No bridge or runtime available!");
+  }
 #endif
 }
 
-RCT_EXPORT_METHOD(setThemeForScope:(NSString *)scopeId
+RCT_EXPORT_METHOD(setScopedTheme:(NSString *)scopeId
                   themeName:(NSString *)themeName) {
 #ifdef RCT_NEW_ARCH_ENABLED
-  tamagui::TamaguiStyleRegistry::getInstance().setThemeForScope(
-      [scopeId UTF8String],
-      [themeName UTF8String]);
+  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
+  if (cxxBridge && cxxBridge.runtime) {
+    auto& rt = *reinterpret_cast<facebook::jsi::Runtime*>(cxxBridge.runtime);
+    tamagui::TamaguiStyleRegistry::getInstance().setScopedTheme(
+        rt,
+        [scopeId UTF8String],
+        [themeName UTF8String]);
+  }
 #endif
 }
 
-RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(createScope:(NSString *)name
-                                        parentScopeId:(NSString * _Nullable)parentScopeId) {
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getTheme) {
 #ifdef RCT_NEW_ARCH_ENABLED
-  std::string scopeId = tamagui::TamaguiStyleRegistry::getInstance().createScope(
-      [name UTF8String],
-      parentScopeId ? [parentScopeId UTF8String] : "");
-  return [NSString stringWithUTF8String:scopeId.c_str()];
+  std::string theme = tamagui::TamaguiStyleRegistry::getInstance().getTheme();
+  return [NSString stringWithUTF8String:theme.c_str()];
 #else
-  return @"";
+  return @"light";
 #endif
 }
 
@@ -134,6 +141,13 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getStats) {
     @"currentTheme": @"light"
   };
 #endif
+}
+
+#pragma mark - Bridge setup and initialization
+
+- (void)initialize {
+  // RCTInitializing protocol - called after module instantiation
+  NSLog(@"[TamaguiStyleRegistry] initialize called, bridge: %@", self.bridge);
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED

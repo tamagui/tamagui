@@ -1,48 +1,50 @@
 import { describe, expect, test, beforeEach, vi } from 'vitest'
 import {
-  registerView,
-  unregisterView,
+  link,
   setTheme,
-  setThemeForScope,
-  createScope,
+  getTheme,
+  setScopedTheme,
   getRegistryStats,
   resetRegistry,
   isNativeModuleAvailable,
+  __setFindNodeHandle,
 } from '../index'
 
 describe('TamaguiStyleRegistry', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    resetRegistry() // reset state between tests
+    resetRegistry()
+    // set up mock findNodeHandle for tests
+    __setFindNodeHandle((ref: any) => ref?._tag ?? null)
   })
 
-  describe('registerView', () => {
-    test('stores view reference with styles', () => {
-      const viewRef = { current: {} }
+  describe('link', () => {
+    test('stores view with styles when given a tag', () => {
+      const ref = { _tag: 1 }
       const styles = {
         dark: { backgroundColor: '#000' },
         light: { backgroundColor: '#fff' },
       }
 
-      const viewId = registerView(viewRef, styles)
+      const unlink = link(ref, styles)
 
-      expect(viewId).toBeDefined()
-      expect(typeof viewId).toBe('string')
+      expect(typeof unlink).toBe('function')
+      expect(getRegistryStats().viewCount).toBe(1)
     })
 
-    test('generates unique IDs for each view', () => {
-      const viewRef1 = { current: {} }
-      const viewRef2 = { current: {} }
+    test('returns cleanup function that unlinks view', () => {
+      const ref = { _tag: 1 }
       const styles = { dark: {}, light: {} }
 
-      const id1 = registerView(viewRef1, styles)
-      const id2 = registerView(viewRef2, styles)
+      const unlink = link(ref, styles)
+      expect(getRegistryStats().viewCount).toBe(1)
 
-      expect(id1).not.toBe(id2)
+      unlink()
+      expect(getRegistryStats().viewCount).toBe(0)
     })
 
     test('handles deduplicated styles with __themes array', () => {
-      const viewRef = { current: {} }
+      const ref = { _tag: 1 }
       const styles = {
         dark: {
           backgroundColor: '#000',
@@ -50,171 +52,135 @@ describe('TamaguiStyleRegistry', () => {
         },
       }
 
-      const viewId = registerView(viewRef, styles as any)
-      expect(viewId).toBeDefined()
+      const unlink = link(ref, styles as any)
+      expect(getRegistryStats().viewCount).toBe(1)
+      unlink()
     })
-  })
 
-  describe('unregisterView', () => {
-    test('removes view from registry', () => {
-      const viewRef = { current: {} }
+    test('returns no-op when ref is null', () => {
       const styles = { dark: {}, light: {} }
-      const viewId = registerView(viewRef, styles)
+      const unlink = link(null, styles)
+      expect(typeof unlink).toBe('function')
+      expect(getRegistryStats().viewCount).toBe(0)
+    })
 
-      // verify it was registered
-      const statsBefore = getRegistryStats()
-      expect(statsBefore.viewCount).toBe(1)
+    test('returns no-op when styles is null', () => {
+      const ref = { _tag: 1 }
+      const unlink = link(ref, null as any)
+      expect(typeof unlink).toBe('function')
+      expect(getRegistryStats().viewCount).toBe(0)
+    })
 
-      unregisterView(viewId)
-
-      // view should no longer be tracked
-      const statsAfter = getRegistryStats()
-      expect(statsAfter.viewCount).toBe(0)
+    test('returns no-op when findNodeHandle returns null', () => {
+      __setFindNodeHandle(() => null)
+      const ref = { _tag: 1 }
+      const styles = { dark: {}, light: {} }
+      const unlink = link(ref, styles)
+      expect(typeof unlink).toBe('function')
+      expect(getRegistryStats().viewCount).toBe(0)
     })
   })
 
   describe('setTheme', () => {
     test('updates global theme', () => {
-      const viewRef1 = { current: {} }
-      const viewRef2 = { current: {} }
-      const styles = {
-        dark: { backgroundColor: '#000' },
-        light: { backgroundColor: '#fff' },
-      }
-
-      registerView(viewRef1, styles)
-      registerView(viewRef2, styles)
-
-      // set theme - in JS fallback this just updates state
       setTheme('light')
+      expect(getTheme()).toBe('light')
 
-      const stats = getRegistryStats()
-      expect(stats.currentTheme).toBe('light')
+      setTheme('dark')
+      expect(getTheme()).toBe('dark')
     })
 
-    test('does NOT trigger React re-render (in JS fallback, just updates state)', () => {
-      // this is the key test - we need to verify that changing theme
-      // updates styles via native module without causing React re-render
-      // in JS fallback mode, we just verify state is updated
+    test('tracks sub-theme names', () => {
+      setTheme('dark_blue')
+      expect(getTheme()).toBe('dark_blue')
+    })
+
+    test('does NOT trigger React re-render in JS fallback', () => {
+      // the real zero-re-render happens in the native module
+      // which directly updates the ShadowTree
+      // in JS fallback, we just verify state updates without re-renders
+      const ref = { _tag: 1 }
       const renderCount = { count: 0 }
-      const viewRef = {
-        current: {},
-        onRender: () => {
-          renderCount.count++
-        },
-      }
       const styles = {
         dark: { backgroundColor: '#000' },
         light: { backgroundColor: '#fff' },
       }
 
-      registerView(viewRef, styles)
-      const initialRenderCount = renderCount.count
+      link(ref, styles)
+      const initialCount = renderCount.count
 
       setTheme('light')
       setTheme('dark')
       setTheme('light')
 
-      // in JS mode, render count doesn't change because we're not
-      // actually forcing re-renders (the real zero-re-render happens
-      // in the native module which directly updates the ShadowTree)
-      expect(renderCount.count).toBe(initialRenderCount)
+      // no re-renders triggered - state just updates
+      expect(renderCount.count).toBe(initialCount)
     })
   })
 
-  describe('theme scopes', () => {
-    test('creates nested theme scope', () => {
-      const scopeId = createScope('blue')
-      expect(scopeId).toBeDefined()
-      expect(typeof scopeId).toBe('string')
-    })
+  describe('getTheme', () => {
+    test('returns current theme', () => {
+      expect(getTheme()).toBe('light') // default
 
-    test('setThemeForScope updates scope', () => {
-      const scopeId = createScope('blue')
-      const viewRef1 = { current: {} }
-      const viewRef2 = { current: {} }
+      setTheme('dark')
+      expect(getTheme()).toBe('dark')
+    })
+  })
+
+  describe('setScopedTheme', () => {
+    test('sets theme for a specific scope (JS fallback)', () => {
+      // in JS fallback, this just stores the state
+      // real implementation updates only views with that scopeId
+      const ref = { _tag: 1 }
       const styles = {
         dark: { backgroundColor: '#000' },
         dark_blue: { backgroundColor: '#00f' },
       }
 
-      registerView(viewRef1, styles, scopeId)
-      registerView(viewRef2, styles) // global scope
+      link(ref, styles, 'scope-1')
+      setScopedTheme('scope-1', 'dark_blue')
 
-      // in JS fallback, this just stores the scope theme
-      setThemeForScope(scopeId, 'dark_blue')
-
-      // verify stats still work
-      const stats = getRegistryStats()
-      expect(stats.viewCount).toBe(2)
-    })
-
-    test('nested scopes inherit from parent', () => {
-      const parentScope = createScope('blue')
-      const childScope = createScope('active', parentScope)
-
-      // when parent theme changes, child should get combined theme
-      // e.g., if parent is "dark_blue" and child is "active",
-      // child should resolve to "dark_blue_active"
-      expect(childScope).toBeDefined()
-      expect(parentScope).not.toBe(childScope)
+      // verify global theme is unchanged
+      expect(getTheme()).toBe('light')
     })
   })
 
   describe('getRegistryStats', () => {
     test('returns current registry state', () => {
-      const viewRef = { current: {} }
+      const ref1 = { _tag: 1 }
+      const ref2 = { _tag: 2 }
       const styles = { dark: {}, light: {} }
-      registerView(viewRef, styles)
+
+      link(ref1, styles)
+      link(ref2, styles)
 
       const stats = getRegistryStats()
-
-      expect(stats.viewCount).toBe(1)
-      expect(stats.scopeCount).toBeGreaterThanOrEqual(1) // at least global scope
-    })
-  })
-
-  describe('sub-theme resolution', () => {
-    test('tracks theme changes for sub-themes', () => {
-      const viewRef = { current: {} }
-      const styles = {
-        dark: { backgroundColor: '#000' },
-        dark_blue: { backgroundColor: '#00f' },
-        light: { backgroundColor: '#fff' },
-        light_blue: { backgroundColor: '#aaf' },
-      }
-
-      registerView(viewRef, styles)
-
-      // when theme is set to 'dark_blue', should track it
-      setTheme('dark_blue')
-
-      const stats = getRegistryStats()
-      expect(stats.currentTheme).toBe('dark_blue')
-    })
-
-    test('tracks base theme changes', () => {
-      const viewRef = { current: {} }
-      const styles = {
-        dark: { backgroundColor: '#000' },
-        light: { backgroundColor: '#fff' },
-      }
-
-      registerView(viewRef, styles)
-
-      // requesting dark_blue - in JS fallback, we just track it
-      setTheme('dark_blue')
-      const stats = getRegistryStats()
-      expect(stats.currentTheme).toBe('dark_blue')
-
-      // the native module would handle fallback to 'dark'
+      expect(stats.viewCount).toBe(2)
+      expect(stats.currentTheme).toBe('light')
     })
   })
 
   describe('isNativeModuleAvailable', () => {
     test('returns false in test environment', () => {
-      // in test environment, native module is not available
       expect(isNativeModuleAvailable()).toBe(false)
+    })
+  })
+
+  describe('resetRegistry', () => {
+    test('clears all state', () => {
+      const ref = { _tag: 1 }
+      const styles = { dark: {}, light: {} }
+
+      link(ref, styles)
+      setTheme('dark')
+
+      expect(getRegistryStats().viewCount).toBe(1)
+      expect(getTheme()).toBe('dark')
+
+      resetRegistry()
+
+      expect(getRegistryStats().viewCount).toBe(0)
+      expect(getTheme()).toBe('light')
     })
   })
 })

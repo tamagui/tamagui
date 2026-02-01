@@ -10,6 +10,25 @@ import { useState, useCallback, useRef, useEffect, memo } from 'react'
 import { Button, YStack, XStack, Text, H3, Separator, Theme, ScrollView } from 'tamagui'
 import { _TamaguiView, _TamaguiText } from '@tamagui/native'
 import * as registry from '@tamagui/native-style-registry'
+import { NativeModules, TurboModuleRegistry, processColor } from 'react-native'
+
+// debug: check what's in NativeModules
+const debugTurbo = TurboModuleRegistry.get('TamaguiStyleRegistry')
+const debugBridge = (NativeModules as any).TamaguiStyleRegistry
+const debugInfo = {
+  turbo: debugTurbo ? 'found' : 'null',
+  bridge: debugBridge ? 'found' : 'undefined',
+  bridgeKeys: Object.keys(NativeModules).filter(k => k.toLowerCase().includes('tamagui')),
+}
+
+// test processColor with HSLA
+const colorTests = {
+  hex: processColor('#ffffff'),
+  hsla: processColor('hsla(0, 0%, 100%, 1)'),
+  hsl: processColor('hsl(0, 0%, 100%)'),
+  rgba: processColor('rgba(255, 255, 255, 1)'),
+}
+console.log('[NativeStyleOptimization] processColor tests:', JSON.stringify(colorTests))
 
 // pre-computed styles (what compiler would generate)
 const viewStyles = {
@@ -180,6 +199,15 @@ export function NativeStyleOptimization() {
                 Views: {stats.viewCount} | Theme: {stats.currentTheme}
               </Text>
             )}
+            <Text fontSize={9} color="$color8">
+              Debug: turbo={debugInfo.turbo}, bridge={debugInfo.bridge}
+            </Text>
+            <Text fontSize={9} color="$color8">
+              Keys: {debugInfo.bridgeKeys.join(', ') || 'none'}
+            </Text>
+            <Text fontSize={9} color="$color8">
+              getTheme: {registry.getTheme()}
+            </Text>
           </YStack>
 
           <Separator />

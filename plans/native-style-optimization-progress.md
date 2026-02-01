@@ -36,11 +36,15 @@ Build a full native module (C++/JSI) that enables zero-re-render theme switching
 - [ ] **TODO**: Build and test native module on Android device
 - [ ] Tests for native module integration
 
-### Phase 3: Theme Integration - NOT STARTED
-- [ ] Modify Theme component to use native registry
-- [ ] Handle nested theme scopes
-- [ ] Sub-theme support (dark_blue, light_red, etc.)
+### Phase 3: Theme Integration - IN PROGRESS
+- [x] Modify Theme component to use native registry (wraps with ThemeScopeProvider on native)
+- [x] Created ThemeScopeContext for passing scope IDs down component tree
+- [x] Created useInitialThemeName hook (reads theme ONCE without subscribing)
+- [x] Updated _TamaguiView and _TamaguiText to NOT use useThemeName() when native available
+- [x] Handle nested theme scopes (via scopeId passed to link())
+- [x] Sub-theme support (dark_blue, light_red, etc.) - fallback logic in findStyleForTheme
 - [ ] Tests for theme integration
+- [ ] Build and test on device to verify zero re-renders
 
 ### Phase 4: JSX/createElement Shim - IN PROGRESS
 - [x] Design shim approach (Babel plugin like Unistyles)
@@ -150,6 +154,39 @@ Build a full native module (C++/JSI) that enables zero-re-render theme switching
 4. ✅ Created Babel plugin to wrap View/Text with TamaguiStyleRegistry
 5. ✅ Created wrapped View/Text components
 
+### Iteration 6 (Complete)
+**Goal**: Nitro modules integration and inline RCTView compilation
+
+**Tasks**:
+1. ✅ Updated Babel plugin to compile View/Text directly to createElement('RCTView', ...) inline
+2. ✅ Added inlineRCT mode (default) - no forwardRef wrapper overhead
+3. ✅ 13 Babel plugin tests passing
+4. ✅ Created Nitro module spec (ShadowRegistry.nitro.ts)
+5. ✅ Created C++ HybridShadowRegistry for RN 0.81+
+6. ✅ Updated package.json with nitro-modules peer dependency
+7. ✅ Fixed component TypeScript issues
+8. ✅ 26 total tests passing (13 registry + 13 babel)
+9. [ ] Test Babel plugin in kitchen-sink with inlineRCT mode
+10. [ ] Build and test native module on iOS
+11. [ ] CPU performance benchmarks
+
+**Key Architecture**:
+- **Babel inlineRCT mode**: `<View>` → `createElement('RCTView', ...)` directly, no wrapper
+- **Nitro modules**: Uses `react-native-nitro-modules` for cleaner JSI bindings
+- **RN 0.81+ only**: Uses `UIManager.updateShadowTree()` for efficient batch updates
+- **ShadowNode access**: `ref.__internalInstanceHandle?.stateNode?.node` (same as Unistyles)
+
+**Files Created**:
+- `babel/index.cjs` - Babel plugin with inlineRCT mode
+- `babel/__tests__/plugin.test.cjs` - 13 babel plugin tests
+- `src/specs/ShadowRegistry.nitro.ts` - Nitro module interface
+- `src/specs/index.ts` - Nitro module JS wrapper
+- `src/index.native.ts` - Native-specific exports
+- `cpp/HybridShadowRegistry.hpp` - C++ header
+- `cpp/HybridShadowRegistry.cpp` - C++ implementation
+- `nitro.json` - Nitro module config
+- `TamaguiStyleRegistry.podspec` - iOS CocoaPods spec
+
 **Results**:
 - Optimized components: 1 render (card) + 6 renders (boxes) = 7 total
 - Regular Tamagui: 400+ renders after 37 theme toggles
@@ -182,6 +219,116 @@ Build a full native module (C++/JSI) that enables zero-re-render theme switching
 - ShadowNode extracted from ref using React Native internals (same as Unistyles)
 - Falls back to JS-only mode when native module not available
 - Initial style still computed in JS for first render
+
+### Iteration 7 (Complete)
+**Goal**: Fix architecture so _TamaguiView doesn't subscribe to theme changes
+
+**Problem Identified**:
+- Previous implementation used `useThemeName()` in `_TamaguiView`, which subscribes to theme changes
+- This caused re-renders even with memo() wrapper
+- The "0 re-renders" display was misleading - it showed parent re-renders, not child component re-renders
+- For true zero re-renders, components must NOT subscribe to React theme context
+
+**Solution Implemented**:
+1. ✅ Created `ThemeScopeContext` - passes scope IDs down tree to child components
+2. ✅ Created `ThemeScopeProvider` - wraps children and signals theme changes to native registry
+3. ✅ Created `useInitialThemeName` hook - reads theme name ONCE without subscribing
+4. ✅ Updated `_TamaguiView` and `_TamaguiText`:
+   - When native available: use `useInitialThemeName()` (no subscription, no re-renders)
+   - When native NOT available: fall back to `useThemeName()` (subscribes, re-renders like before)
+5. ✅ Updated `Theme` component to wrap children with `ThemeScopeProvider` on native
+6. ✅ Updated `link()` function to accept scopeId parameter
+7. ✅ All 26 tests passing
+
+**Key Architecture Change**:
+```
+BEFORE (wrong):
+_TamaguiView -> useThemeName() -> subscribes -> re-renders on theme change
+
+AFTER (correct):
+_TamaguiView -> useInitialThemeName() -> reads once -> NO subscription
+Theme -> ThemeScopeProvider -> setThemeForScope() -> native registry updates ShadowTree
+```
+
+**Files Created**:
+- `code/core/native-style-registry/src/ThemeScopeContext.tsx` - context and provider
+- `code/core/native-style-registry/src/useInitialThemeName.ts` - non-subscribing hook
+
+**Files Modified**:
+- `code/core/native/src/_TamaguiView.tsx` - conditional subscription based on native availability
+- `code/core/native/src/_TamaguiText.tsx` - same as _TamaguiView
+- `code/core/web/src/views/Theme.tsx` - wraps with ThemeScopeProvider on native
+- `code/core/native-style-registry/src/index.ts` - exports new context/hook, updated link() signature
+
+### Iteration 8 (In Progress) - HONEST REASSESSMENT
+**Goal**: Critical review and path to actually working native module
+
+**Critical Review Findings** (via independent agent review):
+The native module is **NOT functional**. Current state:
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| JS API | ✅ Complete | Works perfectly, 26 tests pass |
+| Babel Plugin | ✅ Complete | Transforms imports correctly |
+| C++ Header | 🟠 Exists | Has code but uses non-existent APIs |
+| C++ Implementation | ❌ Non-functional | `UIManager.updateShadowTree()` doesn't exist |
+| iOS Bridge | 🟠 Exists | Calls C++ but C++ won't compile |
+| Android Bridge | 🟠 Exists | Has TODOs, no JNI bindings |
+| Podspec | ❌ Wrong | Only includes ios/ not cpp/ |
+| Build System | ❌ Missing | No CMakeLists.txt, no working build |
+| Nitro Integration | ❌ Not hooked up | nitro.json exists but unused |
+
+**Problems with current C++ code**:
+1. `UIManagerBinding::getBinding(rt)->getUIManager().updateShadowTree()` - This API doesn't exist!
+2. `nativeProps_DEPRECATED` - Deprecated and doesn't work in modern RN
+3. No Nitro module registration
+4. No actual build configuration
+
+**Reality Check**:
+- Tests pass because they only test JS fallback mode
+- Native module ALWAYS returns `undefined`
+- JS fallback still uses `useThemeName()` → still re-renders
+- Zero re-renders is NOT achieved
+
+**What Actually Needs to Happen**:
+To achieve zero re-renders, we need to study how Unistyles ACTUALLY does it:
+1. Use `commitHooks` to intercept ShadowTree commits
+2. Modify styles during the commit phase
+3. Store styles in a way that persists across commits
+
+**Plan for This Iteration**:
+1. [x] Study Unistyles source code for actual implementation
+2. [x] Fixed `useInitialThemeName` - was using `useContext` which subscribes!
+3. [ ] Create minimal working native module that compiles
+4. [ ] Test on actual device
+
+**Unistyles Architecture Learnings**:
+From studying [jpudysz/react-native-unistyles](https://github.com/jpudysz/react-native-unistyles):
+1. Uses ShadowTrafficController for thread-safe update queuing
+2. ShadowTreeManager handles actual tree updates
+3. For RN 0.81+: Uses `UIManager.updateShadowTree(tagToProps)` via [PR #50020](https://github.com/facebook/react-native/pull/50020)
+4. For older RN: Uses `shadowTree.commit(transaction, {false, true})`
+5. Uses commit traits to identify Unistyles commits vs React/Reanimated
+6. Single transaction pattern for batch updates (not per-node commits)
+
+**Fixed Bug**:
+`useInitialThemeName` was incorrectly using `useContext(ThemeStateContext)` which
+DOES subscribe to context changes. Changed to use `getRootThemeState()` which
+reads directly from global state without subscribing.
+
+**Current Architecture Status**:
+```
+JS Side (Working):
+- _TamaguiView/__TamaguiText: Use useInitialThemeName() (no subscription) + link()
+- Theme component: Wraps with ThemeScopeProvider on native
+- Registry: Stores view→styles mapping, calls setTheme on theme change
+
+C++ Side (NOT Working):
+- HybridShadowRegistry.cpp: Has code but uses wrong APIs
+- Podspec: Only includes ios/, not cpp/
+- No Nitro module registration
+- UIManager.updateShadowTree() signature is wrong
+```
 
 ---
 

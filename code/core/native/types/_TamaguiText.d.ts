@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import { type TextProps, type TextStyle } from "react-native";
 interface DeduplicatedStyle extends TextStyle {
 	__themes?: string[];
@@ -17,8 +17,14 @@ export interface TamaguiTextProps extends TextProps {
 * The compiler generates __styles with resolved values for each theme,
 * eliminating runtime style computation.
 *
-* When native-style-registry is available and native module is loaded,
-* theme changes update the view directly via ShadowTree without React re-renders.
+* When native-style-registry is available and native module is loaded:
+* - Component renders ONCE with initial theme style
+* - Theme changes update the view directly via ShadowTree
+* - NO React re-renders on theme change
+*
+* When native module is NOT available (JS fallback):
+* - Uses useThemeName() which subscribes to theme changes
+* - Re-renders on theme change (same as current behavior)
 *
 * Supports deduplicated styles where multiple themes share the same values.
 */
