@@ -27,7 +27,7 @@ npm install @tamagui/config
   `v5-reanimated`, or `v5-motion`. See
   [Choosing an Animation Driver](#choosing-an-animation-driver).
 - **Media query naming** - `2xl`/`2xs` → `xxl`/`xxs`/`xxxs`. Max queries use
-  different casing: `max2Xl` → `maxXXL`.
+  kebab-case: `max2Xl` → `max-xxl`.
 - **`styleCompat: 'react-native'`** - `flex` now uses `flexBasis: 0` by default
   (v4 used `'legacy'` with `flexBasis: auto`).
 - **`defaultPosition` not set** - Defaults to browser `static` instead of v4's
@@ -38,7 +38,7 @@ npm install @tamagui/config
 - **More color themes**: gray, blue, red, yellow, green, orange, pink, purple,
   teal, neutral (v4 had blue, red, yellow, green, black, white)
 - **`createV5Theme` helper** for easy theme customization
-- **Height-based media queries**: `heightXXXS`, `heightXXS`, `heightXS`, etc.
+- **Height-based media queries**: `height-xxxs`, `height-xxs`, `height-xs`, etc.
 - **`pointerTouch`** media query for touch device detection
 - **Color utilities**: `adjustPalette`, `adjustPalettes` for transforming
   palettes
@@ -65,7 +65,7 @@ export const config = createTamagui({
 ```
 
 Update media query names in your code: `$2xl` → `$xxl`, `$2xs` → `$xxs`,
-`$max2Xl` → `$maxXXL`.
+`$max2Xl` → `$max-xxl`.
 
 ---
 
@@ -519,14 +519,14 @@ sizes.
 
 <PropsTable
   data={[
-    { name: 'maxXXXS', description: 'maxWidth: 260' },
-    { name: 'maxXXS', description: 'maxWidth: 340' },
-    { name: 'maxXS', description: 'maxWidth: 460' },
-    { name: 'maxSM', description: 'maxWidth: 640' },
-    { name: 'maxMD', description: 'maxWidth: 768' },
-    { name: 'maxLG', description: 'maxWidth: 1024' },
-    { name: 'maxXL', description: 'maxWidth: 1280' },
-    { name: 'maxXXL', description: 'maxWidth: 1536' },
+    { name: 'max-xxxs', description: 'maxWidth: 260' },
+    { name: 'max-xxs', description: 'maxWidth: 340' },
+    { name: 'max-xs', description: 'maxWidth: 460' },
+    { name: 'max-sm', description: 'maxWidth: 640' },
+    { name: 'max-md', description: 'maxWidth: 768' },
+    { name: 'max-lg', description: 'maxWidth: 1024' },
+    { name: 'max-xl', description: 'maxWidth: 1280' },
+    { name: 'max-xxl', description: 'maxWidth: 1536' },
   ]}
 />
 
@@ -534,12 +534,12 @@ sizes.
 
 <PropsTable
   data={[
-    { name: 'heightXXXS', description: 'minHeight: 260' },
-    { name: 'heightXXS', description: 'minHeight: 340' },
-    { name: 'heightXS', description: 'minHeight: 460' },
-    { name: 'heightSM', description: 'minHeight: 640' },
-    { name: 'heightMD', description: 'minHeight: 768' },
-    { name: 'heightLG', description: 'minHeight: 1024' },
+    { name: 'height-xxxs', description: 'minHeight: 260' },
+    { name: 'height-xxs', description: 'minHeight: 340' },
+    { name: 'height-xs', description: 'minHeight: 460' },
+    { name: 'height-sm', description: 'minHeight: 640' },
+    { name: 'height-md', description: 'minHeight: 768' },
+    { name: 'height-lg', description: 'minHeight: 1024' },
   ]}
 />
 
@@ -592,7 +592,7 @@ export const config = createTamagui({
    import { animations } from '@tamagui/config/v5-css'
    ```
 2. **Update media query names** - `2xl` → `xxl`, `2xs` → `xxs`, `max2Xl` →
-   `maxXXL`
+   `max-xxl`
 3. **Review flex behavior** - v5 uses `flexBasis: 0` by default (React Native
    style)
 4. **Review position** - v5 doesn't set `defaultPosition` (defaults to `static`)

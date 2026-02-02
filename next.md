@@ -1,5 +1,5 @@
-- maxXXL => max-xxl to further align w tailwind-style
-  - probably ok for RC, it's a single find/replace
+- ~~maxXXL => max-xxl to further align w tailwind-style~~ DONE
+  - Code already uses `max-xxl` style, updated docs to match
 
 ## Fix ref type issues properly
 
@@ -21,8 +21,6 @@ Consider using `useWebRef` from `@tamagui/element` for these components to prope
 
 - remove the transparencies from _palette_ and background0: 1 etc from template
   thats all done in getTheme now + we should add color-mix or /opacity
-
-⚠️ When bento `migrate-tamagui-v2` branch is merged to main, update Dockerfile to remove the branch specifier
 
 - accept type not looking right?
 
