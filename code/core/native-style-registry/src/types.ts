@@ -48,5 +48,7 @@ export interface NativeStyleRegistryModule extends TurboModule {
  * Allows passing refs directly for ShadowNodeFamily extraction.
  */
 declare global {
-  var __tamaguiLinkView: ((ref: any, stylesJson: string, scopeId?: string) => void) | undefined
+  var __tamaguiLinkView:
+    | ((ref: any, stylesJson: string, scopeId?: string) => void)
+    | undefined
 }

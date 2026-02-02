@@ -9,7 +9,14 @@
  * 4. With Native Module - zero re-render via ShadowTree (when available)
  */
 
-import React, { useState, useCallback, useRef, memo, createElement, forwardRef } from 'react'
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  memo,
+  createElement,
+  forwardRef,
+} from 'react'
 import {
   View as RNView,
   Text as RNText,
@@ -122,11 +129,7 @@ function TamaguiListItem({ index }: { index: number }) {
 }
 
 // optimized Tamagui list item
-const OptimizedListItem = memo(function OptimizedListItem({
-  index,
-}: {
-  index: number
-}) {
+const OptimizedListItem = memo(function OptimizedListItem({ index }: { index: number }) {
   return (
     <_TamaguiView __styles={optimizedStyles}>
       <_TamaguiText __styles={optimizedTextStyles}>
@@ -141,7 +144,9 @@ const listData = Array.from({ length: ITEM_COUNT }, (_, i) => ({ id: i }))
 
 export function NativeStyleBenchmark() {
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light')
-  const [approach, setApproach] = useState<'rn' | 'rct' | 'tamagui' | 'optimized'>('optimized')
+  const [approach, setApproach] = useState<'rn' | 'rct' | 'tamagui' | 'optimized'>(
+    'optimized'
+  )
   const [results, setResults] = useState<BenchmarkResult[]>([])
   const [isRunning, setIsRunning] = useState(false)
   const renderCountRef = useRef(0)
@@ -180,7 +185,14 @@ export function NativeStyleBenchmark() {
     const avgTime = times.length > 0 ? times.reduce((a, b) => a + b, 0) / times.length : 0
 
     const result: BenchmarkResult = {
-      approach: approach === 'rn' ? 'RN View' : approach === 'rct' ? 'RCTView' : approach === 'tamagui' ? 'Tamagui' : 'Optimized',
+      approach:
+        approach === 'rn'
+          ? 'RN View'
+          : approach === 'rct'
+            ? 'RCTView'
+            : approach === 'tamagui'
+              ? 'Tamagui'
+              : 'Optimized',
       avgToggleTime: Math.round(avgTime * 100) / 100,
       renderCount: renderCountRef.current,
       toggleCount,
@@ -250,7 +262,9 @@ export function NativeStyleBenchmark() {
 
           {results.length > 0 && (
             <YStack gap="$1" p="$2" bg="$color2" borderRadius="$2">
-              <Text fontWeight="bold" fontSize={12}>Results:</Text>
+              <Text fontWeight="bold" fontSize={12}>
+                Results:
+              </Text>
               {results.map((r, i) => (
                 <Text key={i} fontSize={11}>
                   {r.approach}: {r.avgToggleTime}ms avg, {r.renderCount} renders

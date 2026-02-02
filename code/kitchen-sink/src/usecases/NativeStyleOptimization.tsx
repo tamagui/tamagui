@@ -78,9 +78,7 @@ const OptimizedBox = memo(function OptimizedBox({ index }: { index: number }) {
   count.current++
   return (
     <_TamaguiView __styles={boxStyles} testID={`optimized-box-${index}`}>
-      <_TamaguiText __styles={textStyles}>
-        {index + 1}
-      </_TamaguiText>
+      <_TamaguiText __styles={textStyles}>{index + 1}</_TamaguiText>
     </_TamaguiView>
   )
 })
@@ -136,7 +134,7 @@ export function NativeStyleOptimization() {
 
   const resetCounts = useCallback(() => {
     toggleCount.current = 0
-    setRenderKey(k => k + 1)
+    setRenderKey((k) => k + 1)
   }, [])
 
   const isNative = registry.isNativeModuleAvailable()
@@ -151,7 +149,12 @@ export function NativeStyleOptimization() {
             <Button size="$3" onPress={toggleTheme} testID="toggle-theme-btn">
               Toggle ({currentTheme})
             </Button>
-            <Button size="$3" theme="gray" onPress={resetCounts} testID="reset-counts-btn">
+            <Button
+              size="$3"
+              theme="gray"
+              onPress={resetCounts}
+              testID="reset-counts-btn"
+            >
               Reset
             </Button>
             <Text fontSize={12}>Toggles: {toggleCount.current}</Text>
@@ -170,10 +173,14 @@ export function NativeStyleOptimization() {
 
           <Separator />
 
-          <Text fontWeight="bold" fontSize={13}>Optimized Card (should stay at 1):</Text>
+          <Text fontWeight="bold" fontSize={13}>
+            Optimized Card (should stay at 1):
+          </Text>
           <OptimizedCard key={`opt-${renderKey}`} />
 
-          <Text fontWeight="bold" fontSize={13}>Optimized Boxes (should stay at 1 each):</Text>
+          <Text fontWeight="bold" fontSize={13}>
+            Optimized Boxes (should stay at 1 each):
+          </Text>
           <XStack gap="$2" flexWrap="wrap">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <OptimizedBox key={`box-${i}-${renderKey}`} index={i} />
@@ -182,22 +189,22 @@ export function NativeStyleOptimization() {
 
           <Separator />
 
-          <Text fontWeight="bold" fontSize={13}>Regular Card (increments on toggle):</Text>
+          <Text fontWeight="bold" fontSize={13}>
+            Regular Card (increments on toggle):
+          </Text>
           <RegularCard key={`reg-${renderKey}`} />
 
           <Separator />
 
           <YStack gap="$2" p="$3" bg="$color2" borderRadius="$3">
-            <Text fontWeight="bold" fontSize={13}>Expected Behavior:</Text>
-            <Text fontSize={12}>
-              • Optimized components: render count stays at 1
+            <Text fontWeight="bold" fontSize={13}>
+              Expected Behavior:
             </Text>
+            <Text fontSize={12}>• Optimized components: render count stays at 1</Text>
             <Text fontSize={12}>
               • Regular component: render count increases each toggle
             </Text>
-            <Text fontSize={12}>
-              • Both should visually update themes correctly
-            </Text>
+            <Text fontSize={12}>• Both should visually update themes correctly</Text>
           </YStack>
         </YStack>
       </ScrollView>

@@ -2,7 +2,12 @@
  * React Native specific implementation using TurboModule.
  * Uses findNodeHandle to get native tags for view registration.
  */
-import { findNodeHandle, TurboModuleRegistry, NativeModules, processColor } from 'react-native'
+import {
+  findNodeHandle,
+  TurboModuleRegistry,
+  NativeModules,
+  processColor,
+} from 'react-native'
 
 import type {
   ThemeStyleMap,
@@ -25,8 +30,11 @@ import { __bindRegistryFunctions } from './ThemeScopeContext'
 export { useInitialThemeName } from './useInitialThemeName'
 
 // get the native module - try TurboModuleRegistry first (new arch), fallback to NativeModules (bridge)
-const turboModule = TurboModuleRegistry.get<NativeStyleRegistryModule>('TamaguiStyleRegistry')
-const bridgeModule = NativeModules.TamaguiStyleRegistry as NativeStyleRegistryModule | undefined
+const turboModule =
+  TurboModuleRegistry.get<NativeStyleRegistryModule>('TamaguiStyleRegistry')
+const bridgeModule = NativeModules.TamaguiStyleRegistry as
+  | NativeStyleRegistryModule
+  | undefined
 
 const NativeRegistry: NativeStyleRegistryModule | undefined = turboModule ?? bridgeModule
 
@@ -44,7 +52,12 @@ function ensureJSIBindings(): boolean {
     const result = NativeRegistry.installBindings()
     jsiBindingsInstalled = result
     if (__DEV__) {
-      console.log('[TamaguiStyleRegistry] JSI bindings installed:', result, ', __tamaguiLinkView:', typeof global.__tamaguiLinkView)
+      console.log(
+        '[TamaguiStyleRegistry] JSI bindings installed:',
+        result,
+        ', __tamaguiLinkView:',
+        typeof global.__tamaguiLinkView
+      )
     }
     return result
   } catch (e) {
@@ -58,7 +71,10 @@ function ensureJSIBindings(): boolean {
 // debug logging
 if (__DEV__) {
   console.log('[TamaguiStyleRegistry] TurboModule:', turboModule ? 'found' : 'not found')
-  console.log('[TamaguiStyleRegistry] BridgeModule:', bridgeModule ? 'found' : 'not found')
+  console.log(
+    '[TamaguiStyleRegistry] BridgeModule:',
+    bridgeModule ? 'found' : 'not found'
+  )
 }
 
 // map from tag -> { ref, styles } for setNativeProps calls
@@ -91,7 +107,9 @@ function processColorsInStyle(style: Record<string, any>): Record<string, any> {
       const processedColor = processColor(value)
       if (__DEV__) {
         // log color conversion for debugging
-        console.log(`[TamaguiStyleRegistry] processColor: ${key} "${value}" -> ${String(processedColor)} (type: ${typeof processedColor})`)
+        console.log(
+          `[TamaguiStyleRegistry] processColor: ${key} "${value}" -> ${String(processedColor)} (type: ${typeof processedColor})`
+        )
       }
       processed[key] = processedColor ?? value
     } else {
@@ -154,7 +172,9 @@ function findStyleForTheme(
  * Uses setNativeProps for zero-re-render updates.
  */
 function applyThemeUpdates(themeName: string, scopeId?: string) {
-  console.log(`[TamaguiStyleRegistry] applyThemeUpdates called, theme: ${themeName}, views: ${tagToView.size}`)
+  console.log(
+    `[TamaguiStyleRegistry] applyThemeUpdates called, theme: ${themeName}, views: ${tagToView.size}`
+  )
 
   for (const [tag, view] of tagToView) {
     // if scopeId specified, only update views in that scope
@@ -166,9 +186,15 @@ function applyThemeUpdates(themeName: string, scopeId?: string) {
 
     // debug: log ref structure
     const refKeys = view.ref ? Object.keys(view.ref) : []
-    const protoKeys = view.ref ? Object.getOwnPropertyNames(Object.getPrototypeOf(view.ref) || {}) : []
-    console.log(`[TamaguiStyleRegistry] tag ${tag}: ref keys: ${refKeys.slice(0, 5).join(',')}, proto: ${protoKeys.slice(0, 5).join(',')}`)
-    console.log(`[TamaguiStyleRegistry] tag ${tag}: style found: ${!!style}, hasSetNativeProps: ${!!(view.ref && view.ref.setNativeProps)}`)
+    const protoKeys = view.ref
+      ? Object.getOwnPropertyNames(Object.getPrototypeOf(view.ref) || {})
+      : []
+    console.log(
+      `[TamaguiStyleRegistry] tag ${tag}: ref keys: ${refKeys.slice(0, 5).join(',')}, proto: ${protoKeys.slice(0, 5).join(',')}`
+    )
+    console.log(
+      `[TamaguiStyleRegistry] tag ${tag}: style found: ${!!style}, hasSetNativeProps: ${!!(view.ref && view.ref.setNativeProps)}`
+    )
 
     if (style && view.ref) {
       // remove __themes metadata if present
@@ -176,7 +202,10 @@ function applyThemeUpdates(themeName: string, scopeId?: string) {
       delete (cleanStyle as any).__themes
 
       if (view.ref.setNativeProps) {
-        console.log(`[TamaguiStyleRegistry] calling setNativeProps on tag ${tag}:`, JSON.stringify(cleanStyle))
+        console.log(
+          `[TamaguiStyleRegistry] calling setNativeProps on tag ${tag}:`,
+          JSON.stringify(cleanStyle)
+        )
         try {
           view.ref.setNativeProps({ style: cleanStyle })
           console.log(`[TamaguiStyleRegistry] setNativeProps SUCCESS on tag ${tag}`)
@@ -186,7 +215,10 @@ function applyThemeUpdates(themeName: string, scopeId?: string) {
       } else {
         // setNativeProps not available - log available methods
         console.warn(`[TamaguiStyleRegistry] setNativeProps NOT available on tag ${tag}`)
-        console.warn(`[TamaguiStyleRegistry] ref methods:`, Object.getOwnPropertyNames(Object.getPrototypeOf(view.ref) || {}).join(', '))
+        console.warn(
+          `[TamaguiStyleRegistry] ref methods:`,
+          Object.getOwnPropertyNames(Object.getPrototypeOf(view.ref) || {}).join(', ')
+        )
       }
     }
   }
@@ -235,7 +267,10 @@ export function link(ref: any, styles: ThemeStyleMap, scopeId?: string): () => v
   if (__DEV__ && tag !== null) {
     const firstTheme = Object.keys(processedStyles)[0]
     if (firstTheme && tagToView.size < 3) {
-      console.log(`[TamaguiStyleRegistry] link tag ${tag} processed style:`, JSON.stringify(processedStyles[firstTheme]))
+      console.log(
+        `[TamaguiStyleRegistry] link tag ${tag} processed style:`,
+        JSON.stringify(processedStyles[firstTheme])
+      )
     }
   }
 
@@ -261,7 +296,10 @@ export function link(ref: any, styles: ThemeStyleMap, scopeId?: string): () => v
       }
     } catch (e) {
       if (__DEV__) {
-        console.warn('[TamaguiStyleRegistry] JSI link failed, falling back to tag-based:', e)
+        console.warn(
+          '[TamaguiStyleRegistry] JSI link failed, falling back to tag-based:',
+          e
+        )
       }
     }
   }

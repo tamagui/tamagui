@@ -103,7 +103,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
           // for optimized path: stores pre-computed styles for all themes
-          const optimizedStyles: Record<string, Record<string, Object>> = {}
+          const optimizedStyles: Record<string, Record<string, object>> = {}
 
           // babel doesnt append the `//` so we need to
           const firstCommentContents = // join because you can join together multiple pragmas
@@ -496,7 +496,7 @@ function splitThemeStyles(style: object) {
 function tryOptimizedExtraction(
   props: ExtractTagProps,
   themes: Record<string, any>,
-  optimizedStyles: Record<string, Record<string, Object>>,
+  optimizedStyles: Record<string, Record<string, object>>,
   styleCount: number,
   root: any,
   hasImportedTamaguiView: boolean,
@@ -504,7 +504,7 @@ function tryOptimizedExtraction(
   setStyleCount: (v: number) => void
 ): boolean {
   // collect all static styles from attrs
-  let combinedStyle: Object = {}
+  let combinedStyle: object = {}
 
   for (const attr of props.attrs) {
     if (attr.type === 'style' && attr.value) {
@@ -646,8 +646,8 @@ function filterToBaseThemes(themes: Record<string, any>): Record<string, any> {
  * Returns a map where each unique style has a list of theme names that use it.
  */
 function deduplicateThemeStyles(
-  themedStyles: Record<string, Object>
-): Record<string, Object> {
+  themedStyles: Record<string, object>
+): Record<string, object> {
   // map from JSON string of style -> canonical theme name
   const styleToTheme: Map<string, string> = new Map()
   // map from canonical theme -> list of all theme names with same style
@@ -671,7 +671,7 @@ function deduplicateThemeStyles(
 
   // build result with deduplicated styles
   // each entry has __themes array listing all theme names that use this style
-  const result: Record<string, Object> = {}
+  const result: Record<string, object> = {}
   for (const [canonicalTheme, aliases] of themeAliases.entries()) {
     const style = themedStyles[canonicalTheme]
     if (aliases.length > 1) {
@@ -697,9 +697,9 @@ function deduplicateThemeStyles(
  * Deduplicates themes with identical style values.
  */
 function resolveStylesForAllThemes(
-  style: Object,
+  style: object,
   themes: Record<string, any>
-): Record<string, Object> | null {
+): Record<string, object> | null {
   const { plain, themed } = splitThemeStyles(style)
 
   // no theme tokens, nothing to resolve
@@ -710,7 +710,7 @@ function resolveStylesForAllThemes(
   // filter to only base themes, excluding component themes like Button, Card, etc.
   const filteredThemes = filterToBaseThemes(themes)
 
-  const result: Record<string, Object> = {}
+  const result: Record<string, object> = {}
 
   for (const themeName of Object.keys(filteredThemes)) {
     const theme = filteredThemes[themeName]

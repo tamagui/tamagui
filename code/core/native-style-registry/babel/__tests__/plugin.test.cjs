@@ -200,7 +200,9 @@ describe('tamagui-style-registry babel plugin', () => {
 
       expect(output).toContain('@tamagui/native-style-registry/components/View')
       expect(output).toContain('@tamagui/native-style-registry/components/Text')
-      expect(output).toContain('@tamagui/native-style-registry/components/TouchableOpacity')
+      expect(output).toContain(
+        '@tamagui/native-style-registry/components/TouchableOpacity'
+      )
       expect(output).toContain('StyleSheet')
     })
 

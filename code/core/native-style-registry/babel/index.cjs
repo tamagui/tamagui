@@ -50,11 +50,8 @@ module.exports = function tamaguiStyleRegistryBabelPlugin({ types: t }) {
           // track which local names map to which RN components for JSX transformation
           state.file.rnImportMap = state.file.rnImportMap || {}
 
-          path.node.specifiers.forEach(specifier => {
-            if (
-              t.isImportSpecifier(specifier) &&
-              t.isIdentifier(specifier.imported)
-            ) {
+          path.node.specifiers.forEach((specifier) => {
+            if (t.isImportSpecifier(specifier) && t.isIdentifier(specifier.imported)) {
               const importedName = specifier.imported.name
               const localName = specifier.local.name
 
@@ -76,7 +73,7 @@ module.exports = function tamaguiStyleRegistryBabelPlugin({ types: t }) {
           const specifiersToReplace = []
           const remainingSpecifiers = []
 
-          path.node.specifiers.forEach(specifier => {
+          path.node.specifiers.forEach((specifier) => {
             if (
               t.isImportSpecifier(specifier) &&
               t.isIdentifier(specifier.imported) &&
@@ -120,11 +117,11 @@ module.exports = function tamaguiStyleRegistryBabelPlugin({ types: t }) {
           let hasReactImport = false
           let reactIdentifier = null
 
-          path.node.body.forEach(node => {
+          path.node.body.forEach((node) => {
             if (t.isImportDeclaration(node) && node.source.value === 'react') {
               hasReactImport = true
               // find the default import name
-              node.specifiers.forEach(spec => {
+              node.specifiers.forEach((spec) => {
                 if (t.isImportDefaultSpecifier(spec)) {
                   reactIdentifier = spec.local.name
                 }
@@ -143,7 +140,7 @@ module.exports = function tamaguiStyleRegistryBabelPlugin({ types: t }) {
           } else {
             state.file.reactName = reactIdentifier || 'React'
           }
-        }
+        },
       },
 
       // transform JSX to createElement('RCTView', ...)
@@ -167,7 +164,7 @@ module.exports = function tamaguiStyleRegistryBabelPlugin({ types: t }) {
 
         // convert JSX attributes to object properties
         const props = []
-        openingElement.attributes.forEach(attr => {
+        openingElement.attributes.forEach((attr) => {
           if (t.isJSXAttribute(attr)) {
             const name = attr.name.name
             let value
@@ -191,14 +188,14 @@ module.exports = function tamaguiStyleRegistryBabelPlugin({ types: t }) {
 
         // convert children
         const children = path.node.children
-          .filter(child => {
+          .filter((child) => {
             // filter out whitespace-only text
             if (t.isJSXText(child)) {
               return child.value.trim() !== ''
             }
             return true
           })
-          .map(child => {
+          .map((child) => {
             if (t.isJSXText(child)) {
               return t.stringLiteral(child.value.trim())
             }
@@ -219,10 +216,7 @@ module.exports = function tamaguiStyleRegistryBabelPlugin({ types: t }) {
         }
 
         const createElementCall = t.callExpression(
-          t.memberExpression(
-            t.identifier(reactName),
-            t.identifier('createElement')
-          ),
+          t.memberExpression(t.identifier(reactName), t.identifier('createElement')),
           createElementArgs
         )
 
