@@ -7,11 +7,11 @@ export type StoreData = { themeSuites: Record<string, any> }
 
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
-  const { teamId } = await ensureAccess({
-    req,
-    supabase,
-    checkForStudioAccess: true,
-  })
+  const { hasPro, teamId } = await ensureAccess({ req, supabase })
+
+  if (!hasPro) {
+    throw Response.json({ error: 'Must have Pro account' }, { status: 403 })
+  }
 
   const body: StoreData = await readBodyJSON(req)
 

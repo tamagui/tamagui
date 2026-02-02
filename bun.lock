@@ -6,7 +6,7 @@
       "devDependencies": {
         "@manypkg/cli": "^0.23.0",
         "@playwright/test": "^1.49.1",
-        "@take-out/cli": "0.0.60",
+        "@take-out/cli": "0.0.65",
         "@testing-library/dom": "^10.4.0",
         "dotenv-cli": "^7.4.2",
         "esbuild": "^0.27.2",
@@ -4815,13 +4815,13 @@
 
     "@szmarczak/http-timer": ["@szmarczak/http-timer@4.0.6", "", { "dependencies": { "defer-to-connect": "^2.0.0" } }, "sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w=="],
 
-    "@take-out/cli": ["@take-out/cli@0.0.60", "", { "dependencies": { "@clack/prompts": "^0.8.2", "@take-out/docs": "0.0.60", "@take-out/scripts": "0.0.60", "citty": "^0.1.6", "picocolors": "^1.1.1" }, "peerDependencies": { "@expo/config-plugins": "*" }, "optionalPeers": ["@expo/config-plugins"], "bin": { "takeout": "cli.mjs", "tko": "cli.mjs" } }, "sha512-dNQPSjZ9S8fu+JApcpLrxBuOe+ZCYggBZsOafewJuaSQIXz7rKKhv1WQhJd4jD67fhwW6Nv8zjDRXK8frUkIyQ=="],
+    "@take-out/cli": ["@take-out/cli@0.0.65", "", { "dependencies": { "@clack/prompts": "^0.8.2", "@take-out/docs": "0.0.62", "@take-out/scripts": "0.0.62", "citty": "^0.1.6", "picocolors": "^1.1.1" }, "peerDependencies": { "@expo/config-plugins": "*" }, "optionalPeers": ["@expo/config-plugins"], "bin": { "takeout": "cli.mjs", "tko": "cli.mjs" } }, "sha512-2VoTxUTYqKFkNn2PRWu7SN35Krx6ETOIkSfDUEObGXM1m5MHuAITrtHxJAsYHe4ZVyhevIpjA6BMi1T38OgH/g=="],
 
-    "@take-out/docs": ["@take-out/docs@0.0.60", "", {}, "sha512-znoQxKXI2i9nTv2CDxv7NZmDou2NLIy4OWpTA+0dTjZr1iktx9I9CG5gNQdDoPP8du/4Jz9EtBG4vo3muEpt6A=="],
+    "@take-out/docs": ["@take-out/docs@0.0.62", "", {}, "sha512-4hBrE+8FnCRLfc9IR1P5JmolhSRceBPmXspknVMIjyA17QY1Elkz+mfX0fMNPJ2kNTq92xtIZKp+HxP5k3sdtw=="],
 
-    "@take-out/helpers": ["@take-out/helpers@0.0.60", "", { "dependencies": { "@tamagui/constants": "2.0.0-rc.0", "dequal": "^2.0.3" }, "peerDependencies": { "@rocicorp/zero": "^0.25.11", "expo-clipboard": "*", "react": "*", "react-native": "*" } }, "sha512-MK9RmRB5zwJmqqsbDqigwlElivR+FUqnJjae0cWTfHgoo/am+WKydSYQJgNWGysKgTmaoMl975MZsp9hRvk6gg=="],
+    "@take-out/helpers": ["@take-out/helpers@0.0.62", "", { "dependencies": { "@tamagui/constants": "2.0.0-rc.0-1769885482630", "dequal": "^2.0.3" }, "peerDependencies": { "@rocicorp/zero": "^0.25.11", "expo-clipboard": "*", "react": "*", "react-native": "*" } }, "sha512-tJgZ2BAPsxtikmYbLwwMCVKgherkf5UVfRqPF9OSJaS0vNbhvsL1248ZrhIrqsPQRTaDEu6JVPcizCTVldSSTA=="],
 
-    "@take-out/scripts": ["@take-out/scripts@0.0.60", "", { "dependencies": { "@take-out/helpers": "0.0.60" } }, "sha512-7XhqZ3jQWOtf4xhvIcLXstcdgEh/PbBIpVAvQwTEpjGK4c4f4Zr633eEnhdV8vMWJ39/RFXQeof2RxG0T2+mVg=="],
+    "@take-out/scripts": ["@take-out/scripts@0.0.62", "", { "dependencies": { "@take-out/helpers": "0.0.62" } }, "sha512-pMZ3vtfKPfy93qvgIpdpDzroKH8wjwKmt3nEV58mB7ZFTrDXY3/a5qrIK8gNUldVsQ0uNDmg8cDoAXtLBnRUDw=="],
 
     "@tamagui/accordion": ["@tamagui/accordion@workspace:code/ui/accordion"],
 
@@ -9206,6 +9206,8 @@
     "@supabase/storage-js/tslib": ["tslib@2.8.1", "", {}, "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="],
 
     "@swc/helpers/tslib": ["tslib@2.8.1", "", {}, "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="],
+
+    "@take-out/helpers/@tamagui/constants": ["@tamagui/constants@2.0.0-rc.0-1769885482630", "", { "peerDependencies": { "react": ">=19", "react-native": "*" } }, "sha512-Wl63ae/weTmydNmbnK+aBuQvAd43L3n3+2vfirqyWkCWPhKJZD75XJnnHEt8tLAy0bZ1hboxnTQAXgpEHSwwxA=="],
 
     "@testing-library/jest-dom/aria-query": ["aria-query@5.3.2", "", {}, "sha512-COROpnaoap1E2F000S62r6A60uHZnmlvomhfyT2DlTcrY1OrBKn2UhH7qn5wTC9zMvD0AY7csdPSNwKP+7WiQw=="],
 

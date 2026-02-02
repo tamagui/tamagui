@@ -44,9 +44,7 @@ export default function BentoPage() {
 
   const { showAppropriateModal, subscriptionStatus, userData } = useSubscriptionModal()
 
-  // Check both current PRO subscription and legacy Bento access (from product_ownership table)
-  // For Bento purposes, both should be treated as having full access
-  const isProUser = subscriptionStatus.pro || userData?.accessInfo?.hasBentoAccess
+  const isProUser = userData?.accessInfo?.hasPro
 
   if (!Comp) {
     return null

@@ -61,14 +61,12 @@ export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
   try {
-    const { hasTakeoutAccess, hasBentoAccess } = await ensureAccess({ req, supabase })
+    const { hasPro } = await ensureAccess({ supabase, user })
 
-    console.info(
-      `[theme/generate] user=${user.email} hasTakeoutAccess=${hasTakeoutAccess} hasBentoAccess=${hasBentoAccess}`
-    )
+    console.info(`[theme/generate] user=${user.email} hasPro=${hasPro}`)
 
-    if (!(hasTakeoutAccess || hasBentoAccess)) {
-      console.info(`[theme/generate] user=${user.email} denied - no access`)
+    if (!hasPro) {
+      console.info(`[theme/generate] user=${user.email} denied - no Pro access`)
       throw Response.json(
         {
           error: `Must have Pro account`,

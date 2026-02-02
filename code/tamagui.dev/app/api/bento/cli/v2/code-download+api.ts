@@ -1,7 +1,7 @@
 import type { Endpoint } from 'one'
 import { getQuery } from '~/features/api/getQuery'
 import { getBentoComponentCategory } from '~/features/auth/supabaseAdmin'
-import { hasBentoAccess } from '~/features/bento/hasBentoAccess'
+import { hasProAccess } from '~/features/bento/hasProAccess'
 import { OSS_COMPONENTS } from '../../code+api'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
@@ -34,9 +34,9 @@ export const GET: Endpoint = async (req) => {
     return Response.json({ error: 'invalid_token' }, { status: 401 })
   }
 
-  // Check Bento access
-  const resultHasBentoAccess = await hasBentoAccess(user.user.id)
-  if (!resultHasBentoAccess) {
+  // Check Pro access
+  const hasPro = await hasProAccess(user.user.id)
+  if (!hasPro) {
     return Response.json({ error: 'not_authorized' }, { status: 401 })
   }
 

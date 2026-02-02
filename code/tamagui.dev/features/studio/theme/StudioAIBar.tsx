@@ -65,8 +65,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     inputRef.current?.focus()
   }, [id])
 
-  const hasAccess =
-    user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
+  const hasAccess = user.data?.accessInfo.hasPro
 
   const username = user.data?.userDetails?.full_name
 
