@@ -53,8 +53,14 @@ export function useEvents(
   // _internalInstanceHandle on a null native view). By passing events down, the inner
   // component handles gesture detection at its own level.
   if (isHOC && events) {
-    const { onPressIn, onPressOut, onPress, onLongPress } = events
-    Object.assign(viewProps, { onPressIn, onPressOut, onPress, onLongPress })
+    const { onPressIn, onPressOut, onPress, onLongPress, delayLongPress } = events
+    Object.assign(viewProps, {
+      onPressIn,
+      onPressOut,
+      onPress,
+      onLongPress,
+      delayLongPress,
+    })
     // HOCs don't use gesture handler at this level
     return null
   }
