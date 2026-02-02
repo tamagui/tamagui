@@ -1,5 +1,5 @@
 import { hsla, parseToHsla, toHex } from 'color2k'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
   Input,
   Popover,
@@ -43,6 +43,136 @@ export const ColorPicker = memo((props: ColorPickerProps) => {
 const hueLinearGradient = `linear-gradient(to right, ${Array.from(Array(36))
   .map((_, idx) => `hsl(${(idx + 1) * 10}, 100%, 50%)`)
   .join(', ')})`
+
+// Memoized slider components to prevent re-renders when other state changes
+const HueSlider = memo(
+  ({
+    value,
+    onChange,
+    onSlideEnd,
+  }: {
+    value: number
+    onChange: (val: number) => void
+    onSlideEnd: () => void
+  }) => {
+    return (
+      <Slider
+        orientation="horizontal"
+        min={0}
+        max={360}
+        step={10}
+        value={[value]}
+        onValueChange={(val) => onChange(val[0])}
+        onSlideEnd={onSlideEnd}
+      >
+        <Slider.Track
+          width="100%"
+          minWidth={80}
+          height={3}
+          style={{
+            background: hueLinearGradient,
+          }}
+        />
+        <Slider.Thumb
+          unstyled
+          position="absolute"
+          index={0}
+          size="$1"
+          bg="$color12"
+          circular
+          elevate
+        />
+      </Slider>
+    )
+  }
+)
+
+const SatSlider = memo(
+  ({
+    value,
+    hue,
+    onChange,
+    onSlideEnd,
+  }: {
+    value: number
+    hue: number
+    onChange: (val: number) => void
+    onSlideEnd: () => void
+  }) => {
+    return (
+      <Slider
+        orientation="horizontal"
+        min={0}
+        max={1}
+        step={0.03}
+        value={[value]}
+        onValueChange={(val) => onChange(val[0])}
+        onSlideEnd={onSlideEnd}
+      >
+        <Slider.Track
+          height={3}
+          width="100%"
+          minWidth={80}
+          style={{
+            background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
+          }}
+        />
+        <Slider.Thumb
+          unstyled
+          position="absolute"
+          index={0}
+          size="$1"
+          bg="$color12"
+          circular
+          elevate
+        />
+      </Slider>
+    )
+  }
+)
+
+const LightSlider = memo(
+  ({
+    value,
+    onChange,
+    onSlideEnd,
+  }: {
+    value: number
+    onChange: (val: number) => void
+    onSlideEnd: () => void
+  }) => {
+    return (
+      <Slider
+        orientation="horizontal"
+        min={0}
+        max={1}
+        step={0.03}
+        value={[value]}
+        onValueChange={(val) => onChange(val[0])}
+        onSlideEnd={onSlideEnd}
+      >
+        <Slider.Track
+          height={3}
+          rounded="$10"
+          width="100%"
+          minWidth={80}
+          style={{
+            background: `linear-gradient(to right, #000, #fff)`,
+          }}
+        />
+        <Slider.Thumb
+          unstyled
+          position="absolute"
+          index={0}
+          size="$1"
+          bg="$color12"
+          circular
+          elevate
+        />
+      </Slider>
+    )
+  }
+)
 
 export const ColorPickerContents = memo((props: ColorPickerProps) => {
   const defaultValue = props.value || 'hsl(10, 50%, 50%)'
@@ -95,19 +225,17 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
     setTimeout(() => sendOnChange(stateRef.current), 0)
   })
 
-  const updateHue = (newHue: number) => {
-    setState({ ...state, hue: newHue })
-  }
+  const updateHue = useCallback((newHue: number) => {
+    setState((prev) => ({ ...prev, hue: newHue }))
+  }, [])
 
-  const updateSat = (newSat: number) => {
-    const newState = { ...state, sat: newSat }
-    setState(newState)
-  }
+  const updateSat = useCallback((newSat: number) => {
+    setState((prev) => ({ ...prev, sat: newSat }))
+  }, [])
 
-  const updateLight = (newLight: number) => {
-    const newState = { ...state, light: newLight }
-    setState(newState)
-  }
+  const updateLight = useCallback((newLight: number) => {
+    setState((prev) => ({ ...prev, light: newLight }))
+  }, [])
 
   const hex = toHex(hsla(hue, sat, light, 1))
   // separate state only for intermediate typed values in the hex input
@@ -228,41 +356,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           <SizableText size="$1" select="none" color="$color9">
             Hue
           </SizableText>
-          <Slider
-            orientation="horizontal"
-            min={0}
-            max={360}
-            step={10}
-            value={[hue]}
-            onValueChange={(val) => updateHue(val[0])}
-            onSlideEnd={handleSlideEnd}
-          >
-            <Slider.Track
-              width="100%"
-              minWidth={80}
-              height={3}
-              style={{
-                background: hueLinearGradient,
-              }}
-            ></Slider.Track>
-            <Slider.Thumb
-              borderWidth={0}
-              focusStyle={{
-                bg: '$color1',
-              }}
-              hoverStyle={{
-                bg: '$color1',
-              }}
-              pressStyle={{
-                bg: '$color1',
-              }}
-              bg="$color1"
-              size="$1"
-              index={0}
-              circular
-              elevate
-            />
-          </Slider>
+          <HueSlider value={hue} onChange={updateHue} onSlideEnd={handleSlideEnd} />
         </YStack>
 
         <YStack
@@ -276,43 +370,12 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           <SizableText size="$1" select="none" color="$color9">
             Saturation
           </SizableText>
-          <YStack>
-            <Slider
-              orientation="horizontal"
-              min={0}
-              max={1}
-              step={0.03}
-              value={[sat]}
-              onValueChange={(val) => updateSat(val[0])}
-              onSlideEnd={handleSlideEnd}
-            >
-              <Slider.Track
-                height={3}
-                width="100%"
-                minWidth={80}
-                style={{
-                  background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
-                }}
-              ></Slider.Track>
-              <Slider.Thumb
-                borderWidth={0}
-                focusStyle={{
-                  bg: '$color1',
-                }}
-                hoverStyle={{
-                  bg: '$color1',
-                }}
-                pressStyle={{
-                  bg: '$color1',
-                }}
-                bg="$color1"
-                size="$1"
-                index={0}
-                circular
-                elevate
-              />
-            </Slider>
-          </YStack>
+          <SatSlider
+            value={sat}
+            hue={hue}
+            onChange={updateSat}
+            onSlideEnd={handleSlideEnd}
+          />
         </YStack>
 
         {!props.disableLightness && (
@@ -320,45 +383,11 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             <SizableText size="$1" select="none" color="$color9">
               Lightness
             </SizableText>
-            <YStack rounded="$2">
-              <Slider
-                orientation="horizontal"
-                min={0}
-                max={1}
-                step={0.03}
-                value={[light]}
-                onValueChange={(val) => updateLight(val[0])}
-                onSlideEnd={handleSlideEnd}
-              >
-                <Slider.Track
-                  height={3}
-                  rounded="$10"
-                  width="100%"
-                  minWidth={80}
-                  style={{
-                    background: `linear-gradient(to right, #000, #fff)`,
-                  }}
-                />
-
-                <Slider.Thumb
-                  borderWidth={0}
-                  focusStyle={{
-                    bg: '$color1',
-                  }}
-                  hoverStyle={{
-                    bg: '$color1',
-                  }}
-                  pressStyle={{
-                    bg: '$color1',
-                  }}
-                  bg="$color1"
-                  size="$1"
-                  index={0}
-                  circular
-                  elevate
-                />
-              </Slider>
-            </YStack>
+            <LightSlider
+              value={light}
+              onChange={updateLight}
+              onSlideEnd={handleSlideEnd}
+            />
           </YStack>
         )}
       </XStack>
