@@ -4,7 +4,7 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 
 const handler = apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
-  const { hasPro, teamId } = await ensureAccess({ req, supabase })
+  const { hasPro, teamId } = await ensureAccess({ supabase, user })
 
   if (!hasPro) {
     throw Response.json({ error: 'Must have Pro account' }, { status: 403 })

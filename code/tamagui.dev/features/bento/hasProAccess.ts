@@ -6,20 +6,7 @@ import { getSubscriptions } from '../user/helpers'
  * Check if a user has Pro access via subscription or legacy product ownership
  */
 export const hasProAccess = async (userId: string) => {
-  console.info(`[hasProAccess] checking for userId=${userId}`)
-
-  let subscriptions
-  try {
-    subscriptions = await getSubscriptions(userId)
-  } catch (err) {
-    console.error(`[hasProAccess] getSubscriptions error:`, err)
-    return false
-  }
-
-  console.info(
-    `[hasProAccess] userId=${userId} found ${subscriptions?.length || 0} subscriptions`
-  )
-  console.info(`[hasProAccess] subscriptions:`, JSON.stringify(subscriptions, null, 2))
+  const subscriptions = await getSubscriptions(userId)
 
   const validProProducts = [
     ProductName.TamaguiPro,
@@ -30,23 +17,15 @@ export const hasProAccess = async (userId: string) => {
   ]
 
   // check for current subscription-based access (active or trialing)
-  const hasSubscriptionAccess = Boolean(
-    subscriptions?.some((subscription) => {
-      const isActiveOrTrialing =
-        subscription.status === 'active' || subscription.status === 'trialing'
-      const hasValidProduct = subscription.subscription_items?.some((item) => {
-        const productName = item.price?.product?.name
-        const matches = validProProducts.some((product) => productName?.includes(product))
-        console.info(
-          `[hasProAccess] item product=${productName} status=${subscription.status} matches=${matches}`
-        )
-        return matches
-      })
-      return isActiveOrTrialing && hasValidProduct
+  const hasSubscriptionAccess = subscriptions?.some((subscription) => {
+    const isActiveOrTrialing =
+      subscription.status === 'active' || subscription.status === 'trialing'
+    const hasValidProduct = subscription.subscription_items?.some((item) => {
+      const productName = item.price?.product?.name
+      return validProProducts.some((product) => productName?.includes(product))
     })
-  )
-
-  console.info(`[hasProAccess] hasSubscriptionAccess=${hasSubscriptionAccess}`)
+    return isActiveOrTrialing && hasValidProduct
+  })
 
   if (hasSubscriptionAccess) {
     return true

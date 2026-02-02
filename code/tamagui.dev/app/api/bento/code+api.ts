@@ -34,8 +34,8 @@ export const GET: Endpoint = async (req) => {
   }
 
   // Authorize
-  const { supabase } = await ensureAuth({ req })
-  const { hasPro } = await ensureAccess({ req, supabase })
+  const { supabase, user } = await ensureAuth({ req })
+  const { hasPro } = await ensureAccess({ supabase, user })
   if (!hasPro) {
     return Response.json({ error: 'Must have Pro account' }, { status: 403 })
   }
