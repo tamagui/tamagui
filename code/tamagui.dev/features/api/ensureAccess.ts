@@ -44,8 +44,12 @@ export async function ensureAccess({
   }
 
   const user = (await supabase.auth.getUser()).data.user
+  console.info(`[ensureAccess] user=${user?.email} checking access...`)
   const { hasBentoAccess, hasStudioAccess, hasTakeoutAccess, teamsWithAccess } =
     await getUserAccessInfo(supabase, user)
+  console.info(
+    `[ensureAccess] user=${user?.email} hasBento=${hasBentoAccess} hasTakeout=${hasTakeoutAccess} hasStudio=${hasStudioAccess} teams=${teamsWithAccess.length}`
+  )
 
   const payload: PayloadShape = {
     hasStudioAccess,
