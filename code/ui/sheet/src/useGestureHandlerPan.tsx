@@ -126,6 +126,9 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
     const gesture = Gesture.Pan()
       .withRef(panGestureRef)
       // NO manualActivation - let both gestures run via simultaneousHandlers
+      // activeOffsetY: activate pan when user moves 10px vertically (required on Android)
+      .activeOffsetY([-10, 10])
+      // failOffsetX: cancel pan if user moves 20px horizontally (horizontal scroll takes over)
       .failOffsetX([-20, 20])
       .shouldCancelWhenOutside(false)
       .onBegin(() => {
