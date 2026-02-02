@@ -105,9 +105,12 @@ const reactCompilerPlugin = {
   },
 }
 
-const shouldSkipTypes = !!(
-  process.argv.includes('--skip-types') || process.env.SKIP_TYPES
-)
+const shouldSwapExports = process.argv.includes('--swap-exports')
+
+// when swapping exports for publish, we MUST build types (ignore --skip-types)
+const shouldSkipTypes = shouldSwapExports
+  ? false
+  : !!(process.argv.includes('--skip-types') || process.env.SKIP_TYPES)
 
 const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
@@ -120,7 +123,6 @@ const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
-const shouldSwapExports = process.argv.includes('--swap-exports')
 
 // get command after "--" to run with swapped exports
 const dashDashIndex = process.argv.indexOf('--')
@@ -313,9 +315,24 @@ const originalExportTypes = new Map()
  * @returns {boolean} true if any swaps were made
  */
 function swapExportsTypes(pkg, direction) {
-  if (!pkg.exports) return false
-
   let swapped = false
+
+  // handle top-level "types" field
+  if (pkg.types && typeof pkg.types === 'string') {
+    if (direction === 'to-dist' && pkg.types.startsWith('./src/')) {
+      originalExportTypes.set('pkg.types', pkg.types)
+      pkg.types = pkg.types.replace(/^\.\/src\//, './types/').replace(/\.tsx?$/, '.d.ts')
+      swapped = true
+    } else if (direction === 'to-src') {
+      const original = originalExportTypes.get('pkg.types')
+      if (original) {
+        pkg.types = original
+        swapped = true
+      }
+    }
+  }
+
+  if (!pkg.exports) return swapped
 
   function walk(obj, pathKey) {
     if (!obj || typeof obj !== 'object') return
