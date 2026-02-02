@@ -1,23 +1,24 @@
 ---
 title: Tamagui 2
 publishedAt: '2025-12-29'
-description: Stability, ease of use, docs, and new components.
+description: More stable, easy, documented, fast, and feature-complete.
 by: nate
-image: /blog/version-two.webp
+image: /blog/version-two.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui makes cross-platform React styling fast, easy, and feature-complete.
-  Its optimizing compiler turns logical, typed, inline styles into optimally
-  performant output. Plus, a huge ecosystem of components, themes, copy-paste
-  UI, and starters.
+  Tamagui brings high performing, consistent, typed inline styles to React Native and
+  React Web, plus composable UI components, a novel theme system and an optimizing
+  compiler.
 </IntroParagraph>
 
-We're excited to announce that the release candidate of **Tamagui v2 is here**!
+We're excited to announce **the first release candidate for Tamagui v2 is
+here**!
 
-If you want to: [skip to what's new](#new-in-v2)...
+We'll do a little housekeeping first, so if you want to,
+[skip to what's new](#new-in-v2).
 
-### Background
+### What makes it great
 
 Tamagui brings many style features from CSS to native. Every style it supports
 works on both native and web, at both run-time and compile-time, and server-side
@@ -25,26 +26,28 @@ as well as client-side.
 
 In comparison to other solutions, Tamagui is especially strong at:
 
-- **Sharing between web and native without sacrifice.** Many other solutions
-  focus on one platform more than others, or implement their features in sub-par
-  ways on web, Tamagui has a large style featureset and hard-fought parity
-  between platforms.
-- **Great performance everywhere.** A small example - you can choose from 4
+- **Many features, high performance everywhere.** Other solutions prioritize one
+  platform, and bail out of the hard parts of web performance that require a
+  compiler _and_ a lot of careful work to get right. Some examples of large
+  areas Tamagui does well - SSR safe spring animations, SSR safe light-dark
+  themes, SSR safe media queries and Container all the above features working
+  with CSS or springs, and so on.
+- **Top tier performance everywhere.** A small example - you can choose from 4
   animation drivers (CSS, Reanimated, Motion, React Native), per-platform, yet
-  no matter which you choose proper SSR support even with media queries and dark
-  mode properly rendering and hydrating without jumps or flickers.
-- **Fast, type-safe, mergeable inline styling.** Inline styles are productivity
-  boosts, but Tamagui adds type safety, easy/controllable merging, and an
-  optimizing compiler that does partial analysis to optimize even logic-filled
-  styling.
-- **Refined, unstyled, composable components.** Great on web and native thanks
-  to composable components, native adaptation, the Adapt primitive, and a lot of
-  iteration.
+  no matter which you choose you get proper SSR support—even media queries and
+  dark mode render and hydrate without jumps or flickers.
+- **Type-safe inline styling that merges and optimizes.** Inline styles are
+  productivity boosts, but Tamagui adds type safety, easy/controllable merging,
+  and an optimizing compiler that does partial analysis to optimize even
+  logic-filled styling. It's an underrated boost to productivity.
+- **Refined, styled and unstyled composable components.** Great on web and
+  native thanks to composable components, native adaptation, the Adapt
+  primitive, and a lot of iteration.
 - **Robust.** Tamagui has been developed actively for years, proven in
   [large apps](https://uniswap.org), and has more than tripled test coverage
   just in the last year.
 
-### Highlights since v1
+### During v1
 
 - **8,500+ commits** over 2 years (~330/month).
 - **900+ issues closed**.
@@ -54,9 +57,9 @@ In comparison to other solutions, Tamagui is especially strong at:
   Maestro.
 - Released
   [`@tamagui/build`](https://github.com/tamagui/tamagui/blob/v2/code/packages/build/README.md),
-  the only way to publish npm packages that support CommonJS and ESModules,
-  native and web without requiring any configuration at all when importing -
-  whether it's Metro, Node, Vite, or otherwise.
+  which makes it trivial to publish npm packages that support CommonJS and
+  ESModules, native and web without requiring any configuration at all when
+  importing - whether it's Metro, Node, Vite, or otherwise.
 - Platform, theme, and container queries, plus combined container and media
   queries.
 - New compound components [Tabs](/docs/components/tabs),
@@ -72,28 +75,57 @@ In comparison to other solutions, Tamagui is especially strong at:
 
 ## New in v2
 
-Version 2 is a relatively easy migration. It mostly removes deprecated APIs,
-improves performance, aligns with modern React, React Native, and web standards,
-and includes a few new features and components. It does simplify a few
-components API surfaces.
+Version 2 is a huge release but the migration from v1 should only be moderate.
+We removed mostly deprecated APIs, aligned to web and modern React Native,
+improved performance and native library integrations, and dropped a few new
+features and components.
 
 Find a [list of breaking changes at the bottom of the post](#breaking-changes).
 
-<Notice>
-  Give this blog post URL to your favorite coding agent to help upgrade!
-</Notice>
+<Notice>Give this blog post URL to your favorite coding agent to help upgrade!</Notice>
 
 ### Features
 
-#### New Style Props
+#### Config v5
 
-Many style properties that were previously web-only now work on React Native
-with the New Architecture. See the [Style API docs](/docs/intro/styles) for the
-full reference.
+The default Tamagui configuration has been upgraded to v5 with a more complete
+design system and easier customization. See the
+[Config v5 docs](/docs/core/config-v5) for full details.
 
+**More color themes** - V5 adds gray, orange, pink, purple, teal, and neutral to
+the existing blue, red, yellow, and green palettes, all using Radix Colors v3
+for improved accessibility.
+
+**Opacity tokens** - New foreground and background opacity variants make subtle
+overlays and borders easy: `$color01`, `$color0075`, `$color005`,
+`$background01`, and more.
+
+**Shadow colors** - Pre-tuned shadow opacities (`$shadow1` through `$shadow6`)
+that work well in both light and dark modes.
+
+**Expanded media queries** - Height-based queries (`$heightXS`, `$heightSM`,
+etc.), a `$pointerTouch` query for touch detection, and renamed size queries
+(`$xxl`, `$xxs`, `$xxxs`). The `$sm` through `$xxl` breakpoints now match
+Tailwind CSS exactly (640, 768, 1024, 1280, 1536), making it easier to work
+across both ecosystems. The smaller breakpoints (`$xxxs`, `$xxs`, `$xs`) are
+designed for container queries where you need finer control below 640px.
+
+**Easy customization** - The new `createV5Theme` helper lets you add or override
+color themes with minimal boilerplate, working directly with `@tamagui/colors`.
+
+**Subtle variant** - Import from `@tamagui/config/v5-subtle` for a more muted,
+desaturated color palette. Or use `adjustPalette` and `adjustPalettes` to create
+your own custom color transformations.
+
+#### New Styles
+
+See the [Style API docs](/docs/intro/styles) for the full reference, some
+highlights:
+
+- **`backgroundImage`** - CSS `linear-gradient` and `radial-gradient` syntax
+  with token support.
 - **`boxShadow`** - Full CSS box-shadow support including multiple shadows,
   spread, and inset. Accepts strings with your tokens.
-- **`backgroundImage`** - CSS `linear-gradient` syntax with token support.
 - **`filter`** - Graphical filters like `brightness`, `opacity`, `blur`.
 - **`mixBlendMode`** - Blend modes like `multiply`, `screen`, `overlay`, etc.
 - **`isolation`** - Creates a new stacking context (`auto` | `isolate`)
@@ -105,25 +137,111 @@ full reference.
   "squircle"). iOS 13+ only.
 - **`cursor`** - Cursor style. Full CSS values on web; `auto` | `pointer` on iOS
   17+ (trackpad/stylus).
+- **`textShadow`** - CSS text-shadow shorthand with token support:
+  `textShadow="2px 2px 4px $shadowColor"`. On native, only single shadows
+  supported.
 
-#### Motion-powered Animations
+### New Components
+
+#### Menu
+
+[Menu](/docs/components/menu) provides dropdown menus with full keyboard
+navigation, submenus, checkbox items, and animations. On iOS and Android, it
+automatically renders using native platform menus.
+
+<HeroContainer>
+  <MenuDemo />
+</HeroContainer>
+
+```tsx hero template=Menu
+
+```
+
+#### ContextMenu
+
+[ContextMenu](/docs/components/context-menu) works like Menu but activates on
+right-click (web) or long-press (native). It includes support for preview
+content on iOS.
+
+<HeroContainer>
+  <ContextMenuDemo />
+</HeroContainer>
+
+```tsx hero template=ContextMenu
+
+```
+
+#### Input & TextArea
+
+<HeroContainer demoMultiple>
+  <NewInputsDemo />
+</HeroContainer>
+
+```tsx hero template=Inputs
+
+```
+
+Input has been rewritten from scratch with a web-first approach - you write
+standard HTML input attributes and Tamagui automatically converts them to React
+Native equivalents on native platforms:
+
+```tsx
+// Web-standard API that works everywhere
+<Input type="email" enterKeyHint="send" />
+<Input type="password" />
+<Input type="tel" />
+```
+
+This replaces the React Native-style props like `keyboardType`,
+`secureTextEntry`, and `returnKeyType` with their web equivalents. The old props
+still work but are deprecated. See the [Input docs](/docs/components/inputs) for
+the full migration guide.
+
+#### Image
+
+The [Image](/docs/components/image) component follows the same web-first
+philosophy as Input. It uses standard HTML `<img>` attributes like `src`, `alt`,
+`loading`, and `decoding` as the primary API, with automatic conversion to React
+Native equivalents on native.
+
+On native, you can choose your image loading adapter - use the built-in React
+Native Image, or integrate with optimized libraries like `expo-image` or
+`react-native-fast-image` for better caching and performance.
+
+#### Sheet, Button, ListItem, Select
+
+All were re-written internally to retain much the same API surface, but align
+better to the web, and run dramatically faster and better.
+
+Select on web and Sheet on native got big upgrades.
+
+### Motion Animation Driver
 
 ![Motion animation library banner](/blog/motion-banner.webp)
 
-We've added a new [animation driver](/docs/core/animations-motion) powered by
-[Motion](https://motion.dev), and it's our recommended choice for web. The
-`@tamagui/animations-motion` package is fast thanks to two optimizations:
+The all powerful [Motion animation library](https://motion.dev) comes to Tamagui
+as an [animation driver](/docs/core/animations-motion), bringing real innovation
+to web aimations.
 
-- **No re-renders**: Tamagui now supports an `avoidReRenders` mode for animation
-  drivers. Instead of updating state, style changes flow through a callback that
-  mutates the DOM directly.
-- **Off main thread**: Motion uses the
-  [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
-  which runs animations off the main JavaScript thread.
+The driver is still somewhat experimental, we're still working through some very
+subtle issues with sending updates rapidly, and are working them to isolate it.
 
-Together these make for much smoother spring animations on web.
+What makes this even more interesting is that Tamagui completely re-wrote the
+internal component logic to allow a new `avoidReRenders` path option for
+animation drivers. When true, all group, media, pseudo, and some theme styles
+all move out of React.
 
-#### Reanimated Improvements
+Combined with Motion's support of the off-thread
+[Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API),
+and it makes for really incredibly smooth feeling apps.
+
+We noticed a large gain in performance in a large app by just swapping to the
+driver, and the animations feel great — see them for yourself on this site. Just
+note, there's a can be occasionally hiccups with some enter styles. There's a
+way to work around this, but then you de-opt other parts. We're sure we'll get
+Motion out of beta soon, and even in it's current state it's worth considering.
+
+### Reanimated Driver
 
 The [Reanimated](https://docs.swmansion.com/react-native-reanimated/) driver
 comes back in style with `worklet` and `avoidReRenders` support. This means
@@ -137,7 +255,7 @@ The Moti driver (`@tamagui/animations-moti`) is now deprecated in favor of the
 compatibility issues. If you're using `@tamagui/animations-moti`, switch to
 `@tamagui/animations-reanimated` - the API is the same.
 
-#### Swap Animation Drivers Per-Component
+#### Swap Animation Drivers Inline
 
 You can now configure multiple animation drivers and select per-component using
 the new `animatedBy` prop. This serves two important purposes: it allows mixing
@@ -176,7 +294,7 @@ All animation drivers now support delays:
 
 This works with CSS, React Native Animated, Reanimated, and Motion drivers.
 
-#### Granular Enter/Exit Transitions
+#### Enter/Exit Transition Control
 
 The `transition` prop now supports different animations for enter and exit. This
 is useful for creating asymmetric animations where elements enter slowly but
@@ -241,9 +359,9 @@ const GreenTab = styled(Tabs.Tab, {
 })
 ```
 
-This replaces a variety of incosistent APIs in v1.
+This replaces a variety of inconsistent APIs in v1.
 
-#### Component Cleanups
+#### Faster, Lighter, more Consistent Components
 
 Several components have been significantly simplified:
 
@@ -308,7 +426,7 @@ bundled JS on web by aliasing to this package. It's not perfectly compatible
 with `react-native-web` - it strips out the style system to share Tamagui
 internals - but for Tamagui-first apps, it's a nice optimization.
 
-#### Component Scoping
+#### Component Scope
 
 [Dialog](/docs/components/dialog), [Popover](/docs/components/popover),
 [Sheet](/docs/components/sheet), and [Tooltip](/docs/components/tooltip) now
@@ -346,28 +464,28 @@ This pattern is especially valuable for data-heavy views like tables, lists, or
 dashboards where you might have dozens or hundreds of interactive elements that
 need tooltips or popovers.
 
-#### Colors
+### New Colors
 
 `@tamagui/colors` has been updated to Radix v3, old colors are available at
 `@tamagui/colors/legacy`. See the [Colors docs](/docs/intro/colors) for full
 details.
 
-#### Native Compiler Improvements
+### Compiler Improvements
 
-The [native compiler](/docs/intro/compiler-install) has been significantly
-improved in v2. Most notably, the experimental theme optimization setting is now
-on by default, and stable. This means better performance on native without any
-configuration needed.
+The [compiler](/docs/intro/compiler-install) has been significantly improved in
+v2, especially for native. Most notably, the experimental theme optimization
+setting is now on by default, and stable. This means better performance on
+native without any configuration needed.
 
-#### Native Portals
+### Native Portals
 
 Tamagui's portal-based components (Sheet, Dialog, Popover, Select, and Toast)
 now support true native portals via
 [react-native-teleport](https://github.com/nicksrandall/react-native-teleport).
 
-Native doesn't support portal. Tamagui v1 found a workaround for this abusing
-private APIs, and fell back to automatically re-propagating its own contexts ,
-but your custom contexts would break. This also added lots of overhead.
+Native doesn't support portals. Tamagui v1 worked around this by abusing private
+APIs and automatically re-propagating its own contexts, but your custom contexts
+would break. This also added lots of overhead.
 
 In v2 you can now add `react-native-teleport`, then import:
 
@@ -379,119 +497,26 @@ Now all components that portal work better and faster. See the
 [Portal docs](/docs/components/portal) for details and alternative approaches
 like component scoping.
 
-#### Sheet Native Gesture Handler
+### Native Sheet Gestures
 
-You can make all your press events and [Sheet](/docs/components/sheet) now
-optional integration with `react-native-gesture-handler` for much smoother
-performance on native. Install `react-native-gesture-handler` and add the setup
-import before any Tamagui imports:
+[Sheet](/docs/components/sheet) now has optional integration with
+`react-native-gesture-handler` for much smoother performance on native. Install
+`react-native-gesture-handler` and add the setup import before any Tamagui
+imports.
 
 See the [`@tamagui/native` docs](/ui/native) or
 [Sheet docs](/docs/components/sheet) for full details.
 
-### New Components
+### Cross-Platform Pointer Events
 
-#### Input & TextArea
+Pointer events (`onPointerDown`, `onPointerUp`, `onPointerMove`,
+`onPointerEnter`, `onPointerLeave`, `onPointerCancel`) now work cross-platform.
+On native, they're mapped to touch events with a normalized event shape matching
+the web API: The `setPointerCapture` and `releasePointerCapture` APIs are
+supported for drag scenarios where you need move events to continue firing even
+after the pointer leaves the element bounds.
 
-<HeroContainer demoMultiple>
-  <NewInputsDemo />
-</HeroContainer>
-
-```tsx hero template=Inputs
-
-```
-
-Input has been rewritten from scratch with a web-first approach - you write
-standard HTML input attributes and Tamagui automatically converts them to React
-Native equivalents on native platforms:
-
-```tsx
-// Web-standard API that works everywhere
-<Input type="email" enterKeyHint="send" />
-<Input type="password" />
-<Input type="tel" />
-```
-
-This replaces the React Native-style props like `keyboardType`,
-`secureTextEntry`, and `returnKeyType` with their web equivalents. The old props
-still work but are deprecated. See the [Input docs](/docs/components/inputs) for
-the full migration guide.
-
-#### Image
-
-The [Image](/docs/components/image) component follows the same web-first
-philosophy as Input. It uses standard HTML `<img>` attributes like `src`, `alt`,
-`loading`, and `decoding` as the primary API, with automatic conversion to React
-Native equivalents on native.
-
-On native, you can choose your image loading adapter - use the built-in React
-Native Image, or integrate with optimized libraries like `expo-image` or
-`react-native-fast-image` for better caching and performance.
-
-#### Toast
-
-[Toast](/docs/components/toast) has been completely rewritten with a simple,
-Sonner-inspired API. Gone are the complex provider/controller patterns - now you
-just call `toast()`:
-
-```tsx
-import { toast, Toaster } from '@tamagui/toast'
-
-// Add Toaster once at your app root
-<Toaster position="bottom-right" closeButton />
-
-// Show toasts from anywhere
-toast('Event created')
-toast.success('Saved!')
-toast.error('Something went wrong')
-
-// With options
-toast('Deleted', {
-  description: 'The item was removed',
-  action: { label: 'Undo', onClick: () => restore() },
-})
-```
-
-For colored toasts, wrap with Theme - no internal type logic needed:
-
-```tsx
-<Theme name="green">
-  <Toaster />
-</Theme>
-```
-
-The old `Toast`, `ToastProvider`, `ToastViewport`, `useToastController`, and
-`useToastState` APIs have been removed.
-
-#### Menu
-
-[Menu](/docs/components/menu) provides dropdown menus with full keyboard
-navigation, submenus, checkbox items, and animations. On iOS and Android, it
-automatically renders using native platform menus.
-
-<HeroContainer>
-  <MenuDemo />
-</HeroContainer>
-
-```tsx hero template=Menu
-
-```
-
-#### ContextMenu
-
-[ContextMenu](/docs/components/context-menu) works like Menu but activates on
-right-click (web) or long-press (native). It includes support for preview
-content on iOS.
-
-<HeroContainer>
-  <ContextMenuDemo />
-</HeroContainer>
-
-```tsx hero template=ContextMenu
-
-```
-
-#### CLI Improvements / Agent Docs Generation
+### CLI Improvements and Agent Prompt Generation
 
 The [Tamagui CLI](/docs/guides/cli) has new commands for building and working
 with your design system:
@@ -501,7 +526,7 @@ with your design system:
   restore files after.
 - **`tamagui generate`** - Build your full Tamagui configuration and output CSS.
   Validates your config and pre-generates your design system.
-- **`tamagui generate-css`** - Generate the `tamagui.css` file from your config.
+- **`tamagui generate-css`** - Generate the `tamagui.generated.css` file from your config.
   Use `--output` to specify a custom output path.
 - **`tamagui generate-prompt`** - Generate an LLM-friendly markdown file from
   your config, documenting all tokens, themes, components, and shorthands for
@@ -513,13 +538,27 @@ We recommend generating your prompt and committing to your repo, even before you
 do your full upgrade to version 2, as it will help agents understand your
 Tamagui config better.
 
+### Smaller Bundle Size
+
+The `@tamagui/core` bundle has been reduced by ~32% (from ~37KB to ~25KB
+gzipped). This was achieved through several optimizations to color parsing,
+expensive gesture handling, and automatically trimming optional theme generation
+code.
+
 ### Breaking Changes
 
+- **Shadow colors** output opacities using `color-mix()` which may break
+  snapshot tests or any code testing the expected parsed format.
+- **Removed `@tamagui/react-native-use-responder-events`.** If you were using
+  `onResponderGrant`, `onResponderMove`, `onResponderRelease`, or
+  `onResponderTerminate` props on web, switch to standard pointer events
+  (`onPointerDown`, `onPointerMove`, `onPointerUp`) or touch events. On native,
+  use React Native's built-in responder system.
 - **Config v5 changes from v4.** Media query names change (`2xl` → `xxl`, `2xs`
   → `xxs`), style defaults align with React Native. See
   [Config v5 docs](/docs/core/config-v5).
-- **React Native 0.82+, React 19+, and TypeScript 5+ required.** Tamagui 2
-  targets React Native 0.82, React 19, and TypeScript 5 and above with New
+- **React Native 0.81+, React 19+, and TypeScript 5+ required.** Tamagui 2
+  targets React Native 0.81, React 19, and TypeScript 5 and above with New
   Architecture support. This enables significant new style features, improved
   type inference, and simplified internals.
 - Default flex and position styles align with the latest React Native versions,
@@ -547,9 +586,6 @@ Tamagui config better.
   control their own sizing - apply size/responsive props directly to child
   components. Add `<Separator />` manually between items when needed.
 - Moved `<Spacer />` from core to `@tamagui/spacer`.
-- Toast API completely rewritten. Removed `Toast`, `ToastProvider`,
-  `ToastViewport`, `useToastController`, and `useToastState`. Use `toast()` and
-  `<Toaster />` instead. See [Toast docs](/docs/components/toast).
 - Moved all settings on `createTamagui` to the `settings` object.
 - Native portals no longer auto-import React internals hack. If you want native
   portals for better context preservation, add

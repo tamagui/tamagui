@@ -15,9 +15,7 @@ import { FillRateHelper } from '../FillRateHelper'
 import { StateSafePureComponent } from './StateSafePureComponent'
 import { ViewabilityHelper } from '../ViewabilityHelper'
 import { CellRenderer } from './VirtualizedListCellRenderer'
-import {
-  VirtualizedListContext
-} from './VirtualizedListContext'
+import { VirtualizedListContext } from './VirtualizedListContext'
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -122,10 +120,7 @@ class VirtualizedList extends StateSafePureComponent {
     const frame = this.__getFrameMetricsApprox(veryLast, this.props)
     const offset = Math.max(
       0,
-      frame.offset +
-        frame.length +
-        this._footerLength -
-        this._scrollMetrics.visibleLength
+      frame.offset + frame.length + this._footerLength - this._scrollMetrics.visibleLength
     )
 
     if (this._scrollRef == null) {
@@ -149,13 +144,8 @@ class VirtualizedList extends StateSafePureComponent {
   }
 
   scrollToIndex(params) {
-    const {
-      data,
-      horizontal,
-      getItemCount,
-      getItemLayout,
-      onScrollToIndexFailed,
-    } = this.props
+    const { data, horizontal, getItemCount, getItemLayout, onScrollToIndexFailed } =
+      this.props
     const { animated, index, viewOffset, viewPosition } = params
     invariant(
       index >= 0,
@@ -163,9 +153,7 @@ class VirtualizedList extends StateSafePureComponent {
     )
     invariant(
       getItemCount(data) >= 1,
-      `scrollToIndex out of range: item length ${getItemCount(
-        data
-      )} but minimum is 1`
+      `scrollToIndex out of range: item length ${getItemCount(data)} but minimum is 1`
     )
     invariant(
       index < getItemCount(data),
@@ -191,8 +179,7 @@ class VirtualizedList extends StateSafePureComponent {
       Math.max(
         0,
         this._getOffsetApprox(index, this.props) -
-          (viewPosition || 0) *
-            (this._scrollMetrics.visibleLength - frame.length)
+          (viewPosition || 0) * (this._scrollMetrics.visibleLength - frame.length)
       ) - (viewOffset || 0)
 
     if (this._scrollRef == null) {
@@ -200,15 +187,12 @@ class VirtualizedList extends StateSafePureComponent {
     }
 
     this._scrollRef.scrollTo(
-      horizontalOrDefault(horizontal)
-        ? { x: offset, animated }
-        : { y: offset, animated }
+      horizontalOrDefault(horizontal) ? { x: offset, animated } : { y: offset, animated }
     )
   }
 
   scrollToItem(params) {
-    const { data, getItem, getItemCount, horizontal, onScrollToIndexFailed } =
-      this.props
+    const { data, getItem, getItemCount, horizontal, onScrollToIndexFailed } = this.props
     const { animated, item, viewPosition, viewOffset } = params
     const index = this.props.data.indexOf(item)
     if (index !== -1) {
@@ -331,9 +315,7 @@ class VirtualizedList extends StateSafePureComponent {
         onLayout={this._onLayout}
         onScroll={this._onScroll}
         refreshControl={
-          onRefresh && (
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          )
+          onRefresh && <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         scrollEventThrottle={scrollEventThrottleOrDefault(this.props.scrollEventThrottle)}
         removeClippedSubviews={removeClippedSubviews}
@@ -346,7 +328,7 @@ class VirtualizedList extends StateSafePureComponent {
   _renderChildren() {
     const { data, getItem, getItemCount, renderItem } = this.props
     const items = []
-    
+
     for (let i = 0; i < getItemCount(data); i++) {
       const item = getItem(data, i)
       items.push(
@@ -359,7 +341,7 @@ class VirtualizedList extends StateSafePureComponent {
         />
       )
     }
-    
+
     return items
   }
 
@@ -393,4 +375,4 @@ class VirtualizedList extends StateSafePureComponent {
 }
 
 export { VirtualizedList }
-export default VirtualizedList 
+export default VirtualizedList

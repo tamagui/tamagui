@@ -25,27 +25,15 @@ export function MenuHighlightCase() {
             borderColor="$borderColor"
             elevation="$3"
           >
-            <Menu.Item
-              data-testid="menu-item-1"
-              key="item-1"
-              textValue="Item One"
-            >
+            <Menu.Item data-testid="menu-item-1" key="item-1" textValue="Item One">
               <Menu.ItemTitle>Item One</Menu.ItemTitle>
             </Menu.Item>
 
-            <Menu.Item
-              data-testid="menu-item-2"
-              key="item-2"
-              textValue="Item Two"
-            >
+            <Menu.Item data-testid="menu-item-2" key="item-2" textValue="Item Two">
               <Menu.ItemTitle>Item Two</Menu.ItemTitle>
             </Menu.Item>
 
-            <Menu.Item
-              data-testid="menu-item-3"
-              key="item-3"
-              textValue="Item Three"
-            >
+            <Menu.Item data-testid="menu-item-3" key="item-3" textValue="Item Three">
               <Menu.ItemTitle>Item Three</Menu.ItemTitle>
             </Menu.Item>
           </Menu.Content>

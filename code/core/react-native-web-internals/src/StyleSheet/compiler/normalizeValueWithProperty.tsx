@@ -23,10 +23,7 @@ const colorProps = {
   textShadowColor: true,
 }
 
-export function normalizeValueWithProperty(
-  value: any,
-  property?: string | null
-): any {
+export function normalizeValueWithProperty(value: any, property?: string | null): any {
   let returnValue = value
   if ((property == null || !unitlessNumbers[property]) && typeof value === 'number') {
     returnValue = `${value}px`

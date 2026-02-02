@@ -33,12 +33,13 @@ The motion driver (`@tamagui/animations-motion`) has several issues that need to
 **Symptoms**: Moving mouse left/right fast over the TAMAGUI text causes the dot indicator to jitter erratically.
 
 **Relevant Code**:
+
 ```tsx
 <Circle
   transition="quicker"
   position="absolute"
   y={mounted === 'start' ? -30 : -3}
-  x={x}  // Computed from tintIndex
+  x={x} // Computed from tintIndex
   size={4}
   backgroundColor="$color12"
 />
@@ -53,15 +54,18 @@ The motion driver (`@tamagui/animations-motion`) has several issues that need to
 **Component**: `Header.tsx` - `HeaderLinksPopover` and `HeaderLinksPopoverContent`
 
 **Symptoms**:
+
 1. Inner content animations can get 'stuck' at the ends
 2. The popover itself sometimes doesn't move to where it should when moving back and forth
 
 **Relevant Code**:
+
 - `Popover.Content` uses `enableAnimationForPositionChange` and `transition="medium"`
 - `Frame` component uses `AnimatePresence` with custom `going` prop for enter/exit animations
 - `Frame` has `enterStyle` and `exitStyle` with x offset based on direction
 
 **Potential Issues**:
+
 1. AnimatePresence combined with enableAnimationForPositionChange may have conflicting transform animations
 2. The `going` direction calculation may be getting out of sync
 3. The position-only transform fix may be incorrectly applied to the Frame's enter/exit x transforms
@@ -75,15 +79,19 @@ The motion driver (`@tamagui/animations-motion`) has several issues that need to
 ## Test Cases Needed
 
 ### 1. Logo Animation Test
+
 Create test for rapid x position changes on Circle component with motion driver.
 
 ### 2. SlidingPopover Test
+
 Create test for:
+
 - Popover position transitions when switching between menu items
 - Inner content animations (enter/exit) when switching rapidly
 - Combined position + content transitions
 
 ### 3. Regression Tests
+
 Ensure existing tooltip position jump test still passes after fixes.
 
 ## Analysis of the getComputedStyle Fix
@@ -111,6 +119,7 @@ if (isRunning && controls.current && isPositionOnlyTransform) {
 ```
 
 **Problem**: This fires for ANY translate-only transform changes when animation is running. This includes:
+
 1. Tooltip position changes (intended - should fix jumps)
 2. Logo dot position changes (unintended - causes jitter)
 3. SlidingPopover enter/exit animations if they use translate
@@ -142,6 +151,7 @@ The fix uses **approach #4: element attribute marker** to distinguish Popper ele
 ### Why This Works
 
 The key insight is that:
+
 - **Tooltip/Popover with `enableAnimationForPositionChange`**: These are floating-ui positioned elements that jump 100-160px between positions. They NEED the `getComputedStyle` fix to prevent jumps to origin.
 - **Logo Circle**: This is a regular animated element that moves ~15-70px. It does NOT need the fix, and applying it causes jitter due to the overhead of `getComputedStyle` on rapid updates.
 
@@ -150,6 +160,7 @@ By using an explicit opt-in marker (`data-popper-animated`), we can selectively 
 ## Test Results
 
 All tests pass:
+
 - ✅ Logo jitter test: 0 jitters detected (was 4 before)
 - ✅ Tooltip position jump test: 0 jumps detected
 - ✅ Inner content animations test: 11 stuck frames (under threshold of 50)

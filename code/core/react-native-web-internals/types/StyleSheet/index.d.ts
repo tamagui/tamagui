@@ -57,8 +57,8 @@ export declare namespace StyleSheet {
 }
 export type IStyleSheet = {
     (styles: any, options?: Options): StyleProps;
-    absoluteFill: Object;
-    absoluteFillObject: Object;
+    absoluteFill: object;
+    absoluteFillObject: object;
     create: typeof create;
     compose: typeof compose;
     flatten: typeof flatten;

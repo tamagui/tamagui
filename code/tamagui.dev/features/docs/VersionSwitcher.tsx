@@ -6,11 +6,7 @@ import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagu
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { type Href, usePathname, useRouter } from 'one'
 
-export function VersionSwitcher({
-  versions,
-}: {
-  versions: { name: string }[]
-}) {
+export function VersionSwitcher({ versions }: { versions: { name: string }[] }) {
   return (
     <YStack gap="$4">
       <XStack width="100%" items="center" gap="$4">
@@ -20,11 +16,7 @@ export function VersionSwitcher({
   )
 }
 
-export function VersionSwitcherItem({
-  versions,
-}: {
-  versions: { name: string }[]
-}) {
+export function VersionSwitcherItem({ versions }: { versions: { name: string }[] }) {
   const router = useRouter()
 
   const pathname = usePathname()

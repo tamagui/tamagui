@@ -5,7 +5,7 @@ import React from 'react'
 import { Separator, Theme, XStack, YStack } from 'tamagui'
 import { Provider } from './provider'
 import { Sandbox } from './Sandbox'
-import * as TestCases from './usecases'
+import * as TestCases from './usecases/index.web'
 
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
@@ -104,7 +104,6 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
         </XStack>
       </Theme>
       {showThemeSwitch && (
-        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
         <div
           style={{
             position: 'fixed',

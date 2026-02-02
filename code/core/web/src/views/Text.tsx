@@ -29,6 +29,7 @@ export const Text = createComponent<
   TextNonStyleProps,
   TextStylePropsBase
 >({
+  componentName: 'Text',
   acceptsClassName: true,
   isText: true,
 

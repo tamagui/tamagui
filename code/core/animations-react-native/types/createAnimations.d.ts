@@ -1,6 +1,6 @@
 import type { AnimationDriver, UniversalAnimatedNumber, UseAnimatedNumberReaction, UseAnimatedNumberStyle } from "@tamagui/web";
 import { Animated, type Text, type View } from "react-native";
-type AnimationsConfig<A extends Object = any> = { [Key in keyof A] : AnimationConfig };
+type AnimationsConfig<A extends object = any> = { [Key in keyof A] : AnimationConfig };
 type SpringConfig = {
 	type?: "spring";
 } & Partial<Pick<Animated.SpringAnimationConfig, "delay" | "bounciness" | "damping" | "friction" | "mass" | "overshootClamping" | "speed" | "stiffness" | "tension" | "velocity">>;

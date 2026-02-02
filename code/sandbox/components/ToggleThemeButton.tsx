@@ -42,7 +42,9 @@ export function useToggleTheme() {
         systemScheme === 'light'
           ? ['system', 'dark', 'light'] // system -> dark -> light -> system
           : ['system', 'light', 'dark'] // system -> light -> dark -> system
-      const next = order[(order.indexOf(userScheme.setting) + 1) % 3] as (typeof schemeSettings)[number]
+      const next = order[
+        (order.indexOf(userScheme.setting) + 1) % 3
+      ] as (typeof schemeSettings)[number]
 
       setVal(next)
 

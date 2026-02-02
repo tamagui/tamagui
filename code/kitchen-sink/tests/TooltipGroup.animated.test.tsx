@@ -12,10 +12,7 @@ import { setupPage } from './test-utils'
  */
 
 async function tooltipVisible(page: Page, testId: string): Promise<boolean> {
-  return page.evaluate(
-    (id) => !!document.querySelector(`[data-testid="${id}"]`),
-    testId
-  )
+  return page.evaluate((id) => !!document.querySelector(`[data-testid="${id}"]`), testId)
 }
 
 test.describe('TooltipGroup', () => {

@@ -13,6 +13,7 @@ import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandlin
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
+import { usePointerEvents } from './helpers/pointerEvents'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
@@ -221,7 +222,7 @@ export function createComponent<
   ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
   BaseProps = never,
-  BaseStyles extends Object = never,
+  BaseStyles extends object = never,
 >(staticConfig: StaticConfig) {
   let config: TamaguiInternalConfig | null = null
 
@@ -512,6 +513,7 @@ export function createComponent<
       disable: disableTheme,
       shallow: props.themeShallow,
       debug: debugProp,
+      unstyled: props.unstyled,
     }
 
     // this is set conditionally if existing in props because we wrap children with
@@ -748,9 +750,26 @@ export function createComponent<
       }
 
       // don't change this ever or else you break ComponentContext and cause re-rendering
+      // use a Set of listeners so multiple components can register
+      componentContext.mediaEmitListeners ||= new Set()
+
+      // only register once per component instance
+      if (!stateRef.current.mediaEmitCleanup) {
+        const updateListener = (next: Record<string, boolean>) => {
+          stateRef.current.nextMedia = next
+          stateRef.current.updateStyleListener?.()
+        }
+        componentContext.mediaEmitListeners.add(updateListener)
+        stateRef.current.mediaEmitCleanup = () => {
+          componentContext.mediaEmitListeners?.delete(updateListener)
+        }
+      }
+
       componentContext.mediaEmit ||= (next) => {
-        stateRef.current.nextMedia = next
-        stateRef.current.updateStyleListener?.()
+        // notify all registered components
+        for (const listener of componentContext.mediaEmitListeners!) {
+          listener(next)
+        }
       }
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
@@ -1003,6 +1022,9 @@ export function createComponent<
 
     viewProps.ref = stateRef.current.composedRef
 
+    // handle pointer events (native: maps to touch events, web: no-op)
+    usePointerEvents(props, viewProps)
+
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
         React.Children.toArray(props.children).forEach((item) => {
@@ -1084,6 +1106,7 @@ export function createComponent<
 
       return () => {
         componentSetStates.delete(setState)
+        stateRef.current.mediaEmitCleanup?.()
       }
     }, [state.unmounted, supportsCSS])
 
@@ -1119,26 +1142,26 @@ export function createComponent<
     const runtimeFocusVisibleStyle = !disabled && noClass && pseudos?.focusVisibleStyle
     const attachFocus = Boolean(
       runtimePressStyle ||
-        runtimeFocusStyle ||
-        runtimeFocusVisibleStyle ||
-        onFocus ||
-        onBlur ||
-        !!componentContext.setParentFocusState
+      runtimeFocusStyle ||
+      runtimeFocusVisibleStyle ||
+      onFocus ||
+      onBlur ||
+      !!componentContext.setParentFocusState
     )
 
     const hasDynamicGroupChildren = Boolean(groupName && state.hasDynGroupChildren)
 
     const attachPress = Boolean(
       hasDynamicGroupChildren ||
-        runtimePressStyle ||
-        onPress ||
-        onPressOut ||
-        onPressIn ||
-        onMouseDown ||
-        onMouseUp ||
-        onLongPress ||
-        onClick ||
-        pseudos?.focusVisibleStyle
+      runtimePressStyle ||
+      onPress ||
+      onPressOut ||
+      onPressIn ||
+      onMouseDown ||
+      onMouseUp ||
+      onLongPress ||
+      onClick ||
+      pseudos?.focusVisibleStyle
     )
 
     const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
@@ -1154,11 +1177,11 @@ export function createComponent<
       !props.asChild &&
       Boolean(
         attachFocus ||
-          attachPress ||
-          attachHover ||
-          runtimePressStyle ||
-          runtimeHoverStyle ||
-          runtimeFocusStyle
+        attachPress ||
+        attachHover ||
+        runtimePressStyle ||
+        runtimeHoverStyle ||
+        runtimeFocusStyle
       )
 
     const needsPressState = Boolean(hasDynamicGroupChildren || runtimePressStyle)
@@ -1397,13 +1420,13 @@ export function createComponent<
     const needsReset = Boolean(
       // not when passing down to child
       !asChild &&
-        // not when passThrough
-        splitStyles &&
-        // not when HOC
-        !isHOC &&
-        ResetPresence &&
-        willBeAnimated &&
-        (hasEnterStyle || presenceState)
+      // not when passThrough
+      splitStyles &&
+      // not when HOC
+      !isHOC &&
+      ResetPresence &&
+      willBeAnimated &&
+      (hasEnterStyle || presenceState)
     )
     // avoid re-parenting
     const hasEverReset = stateRef.current.hasEverResetPresence
@@ -1554,8 +1577,7 @@ export function createComponent<
           }
         }
         if (debugProp === 'break') {
-          // biome-ignore lint/suspicious/noDebugger: ok
-          debugger
+          // debugger intentionally here for debugging
         }
       }
     }

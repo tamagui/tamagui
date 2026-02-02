@@ -4,7 +4,7 @@ import type { Shorthands } from '../types'
 /**
  * @deprecated use useProps instead
  */
-export function getExpandedShorthands<A extends Object>(
+export function getExpandedShorthands<A extends object>(
   props: A
 ): Omit<A, keyof Shorthands> {
   const shorthands = getConfig().shorthands
@@ -17,7 +17,7 @@ export function getExpandedShorthands<A extends Object>(
   return res
 }
 
-export function getExpandedShorthand(propKey: string, props: Object) {
+export function getExpandedShorthand(propKey: string, props: object) {
   const shorthands = getConfig().inverseShorthands
   return props[propKey] ?? props[shorthands[propKey]]
 }

@@ -22,7 +22,7 @@ const resolveDynamicValue = (value: any, isDark: boolean): any => {
   return value
 }
 
-type AnimationsConfig<A extends Object = any> = { [Key in keyof A]: AnimationConfig }
+type AnimationsConfig<A extends object = any> = { [Key in keyof A]: AnimationConfig }
 
 type SpringConfig = { type?: 'spring' } & Partial<
   Pick<
@@ -169,6 +169,8 @@ export function createAnimations<A extends AnimationsConfig>(
 ): AnimationDriver<A> {
   return {
     isReactNative: true,
+    inputStyle: 'value',
+    outputStyle: 'inline',
     animations,
     View: AnimatedView,
     Text: AnimatedText,

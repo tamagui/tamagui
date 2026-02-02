@@ -113,7 +113,10 @@ function printTypescriptCompilationError(err, packageName) {
     console.error(`  ${err.message}`)
     if (err.stack && process.env.DEBUG) {
       console.error('\nStack trace (DEBUG mode):')
-      err.stack.split('\n').slice(1, 6).forEach((line) => console.error(`  ${line.trim()}`))
+      err.stack
+        .split('\n')
+        .slice(1, 6)
+        .forEach((line) => console.error(`  ${line.trim()}`))
     }
   } else {
     console.error(`  ${err}`)

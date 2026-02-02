@@ -4,6 +4,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
+import { needsPortalRepropagation } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VIEWPORT_NAME } from './constants'
 import {
@@ -12,8 +13,6 @@ import {
   useSelectItemParentContext,
 } from './context'
 import type { SelectViewportExtraProps } from './types'
-import { needsPortalRepropagation } from '@tamagui/portal'
-import { useId } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport

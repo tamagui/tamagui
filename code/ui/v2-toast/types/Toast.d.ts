@@ -8,13 +8,13 @@ import { ToastProvider } from './ToastProvider';
 import type { ToastViewportProps } from './ToastViewport';
 import { ToastViewport } from './ToastViewport';
 declare const ToastTitle: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type ToastTitleProps = GetProps<typeof ToastTitle>;
 declare const ToastDescription: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type ToastDescriptionProps = GetProps<typeof ToastDescription>;
 type ToastActionProps = ScopedProps<ToastCloseProps & {
@@ -33,35 +33,35 @@ declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<import("
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>;
 type ToastCloseProps = ScopedProps<ToastCloseFrameProps & {}>;
 declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }>, keyof ToastExtraProps> & ToastExtraProps & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }>, keyof ToastExtraProps> & ToastExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastExtraProps, import("@tamagui/core").StackStyleBase, {
+    unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }>, keyof ToastExtraProps> & ToastExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastExtraProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
     Title: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Description: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Action: React.ForwardRefExoticComponent<Omit<ToastActionProps, "scope"> & {
         scope?: import("./ToastProvider").ToastScopes;

@@ -152,7 +152,8 @@ test.describe('Sheet Animation - CSS Driver', () => {
     // Check that there's a transition that applies to transform
     // CSS transition "0.1s ease-in" (without property name) means "all 0.1s ease-in"
     // which applies to all properties including transform
-    const hasTransition = debugInfo.found && debugInfo.transition && debugInfo.transition !== 'all'
+    const hasTransition =
+      debugInfo.found && debugInfo.transition && debugInfo.transition !== 'all'
     expect(hasTransition).toBe(true)
 
     await closeButton.click()
@@ -209,11 +210,7 @@ test.describe('Sheet Animation - CSS Driver', () => {
 
   test('all sheet variants open and close correctly', async ({ page }) => {
     // CSS driver doesn't support transitionConfig prop reliably - only test transition variants
-    const testIds = [
-      'animation-quick',
-      'animation-lazy',
-      'animation-slow',
-    ]
+    const testIds = ['animation-quick', 'animation-lazy', 'animation-slow']
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
@@ -262,11 +259,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
 
   test('all sheet variants open and close correctly', async ({ page }) => {
     // Skip transitionConfig variants - not working reliably
-    const testIds = [
-      'animation-quick',
-      'animation-lazy',
-      'animation-slow',
-    ]
+    const testIds = ['animation-quick', 'animation-lazy', 'animation-slow']
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
@@ -304,10 +297,13 @@ test.describe('Sheet Animation - Motion Driver', () => {
       measurements.push({ quick: quickDuration, lazy: lazyDuration })
     }
 
-    const avgQuick = measurements.reduce((sum, m) => sum + m.quick, 0) / measurements.length
+    const avgQuick =
+      measurements.reduce((sum, m) => sum + m.quick, 0) / measurements.length
     const avgLazy = measurements.reduce((sum, m) => sum + m.lazy, 0) / measurements.length
 
-    console.info(`Motion Driver - quick avg: ${avgQuick.toFixed(0)}ms, lazy avg: ${avgLazy.toFixed(0)}ms`)
+    console.info(
+      `Motion Driver - quick avg: ${avgQuick.toFixed(0)}ms, lazy avg: ${avgLazy.toFixed(0)}ms`
+    )
 
     // Motion driver uses spring physics
     // quick: stiffness 250, lazy: stiffness 50
@@ -330,7 +326,9 @@ test.describe('Sheet Animation - Motion Driver', () => {
     await expect(frame).not.toBeInViewport()
   })
 
-  test('transitionConfig overrides animation prop (lazy+fastConfig faster than lazy)', async ({ page }) => {
+  test('transitionConfig overrides animation prop (lazy+fastConfig faster than lazy)', async ({
+    page,
+  }) => {
     // transition="lazy" + fast transitionConfig should use the config
     // run multiple measurements for stability
     const measurements: { override: number; lazy: number }[] = []
@@ -351,10 +349,13 @@ test.describe('Sheet Animation - Motion Driver', () => {
       measurements.push({ override: overrideDuration, lazy: lazyDuration })
     }
 
-    const avgOverride = measurements.reduce((sum, m) => sum + m.override, 0) / measurements.length
+    const avgOverride =
+      measurements.reduce((sum, m) => sum + m.override, 0) / measurements.length
     const avgLazy = measurements.reduce((sum, m) => sum + m.lazy, 0) / measurements.length
 
-    console.info(`Motion Driver - lazy avg: ${avgLazy.toFixed(0)}ms, lazy+fastConfig avg: ${avgOverride.toFixed(0)}ms`)
+    console.info(
+      `Motion Driver - lazy avg: ${avgLazy.toFixed(0)}ms, lazy+fastConfig avg: ${avgOverride.toFixed(0)}ms`
+    )
 
     // transitionConfig should override animation prop
     // allow generous margin for measurement noise in CI environments
@@ -376,11 +377,7 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
 
   test('all sheet variants open and close correctly', async ({ page }) => {
     // Skip transitionConfig variants - not working reliably
-    const testIds = [
-      'animation-quick',
-      'animation-lazy',
-      'animation-slow',
-    ]
+    const testIds = ['animation-quick', 'animation-lazy', 'animation-slow']
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
@@ -418,10 +415,13 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
       measurements.push({ quick: quickDuration, lazy: lazyDuration })
     }
 
-    const avgQuick = measurements.reduce((sum, m) => sum + m.quick, 0) / measurements.length
+    const avgQuick =
+      measurements.reduce((sum, m) => sum + m.quick, 0) / measurements.length
     const avgLazy = measurements.reduce((sum, m) => sum + m.lazy, 0) / measurements.length
 
-    console.info(`Reanimated Driver - quick avg: ${avgQuick.toFixed(0)}ms, lazy avg: ${avgLazy.toFixed(0)}ms`)
+    console.info(
+      `Reanimated Driver - quick avg: ${avgQuick.toFixed(0)}ms, lazy avg: ${avgLazy.toFixed(0)}ms`
+    )
 
     // Reanimated uses spring physics
     // quick: stiffness 250, lazy: stiffness 50
@@ -464,10 +464,13 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
       measurements.push({ override: overrideDuration, lazy: lazyDuration })
     }
 
-    const avgOverride = measurements.reduce((sum, m) => sum + m.override, 0) / measurements.length
+    const avgOverride =
+      measurements.reduce((sum, m) => sum + m.override, 0) / measurements.length
     const avgLazy = measurements.reduce((sum, m) => sum + m.lazy, 0) / measurements.length
 
-    console.info(`Reanimated Driver - lazy avg: ${avgLazy.toFixed(0)}ms, lazy+fastConfig avg: ${avgOverride.toFixed(0)}ms`)
+    console.info(
+      `Reanimated Driver - lazy avg: ${avgLazy.toFixed(0)}ms, lazy+fastConfig avg: ${avgOverride.toFixed(0)}ms`
+    )
 
     // transitionConfig should override animation prop
     // allow generous margin for measurement noise in CI environments

@@ -115,9 +115,9 @@ export const build = async (
     if (platformMatch) {
       // Platform-specific file - only optimize for that platform
       const platform = platformMatch[1]
-      if (platform === 'web' || platform === 'ios') {
+      if (platform === 'web') {
         filePlatforms = ['web']
-      } else if (platform === 'native' || platform === 'android') {
+      } else if (platform === 'native' || platform === 'ios' || platform === 'android') {
         filePlatforms = ['native']
       }
     } else {
@@ -128,15 +128,13 @@ export const build = async (
         (f) =>
           f === `${basePath}.native.tsx` ||
           f === `${basePath}.native.jsx` ||
+          f === `${basePath}.ios.tsx` ||
+          f === `${basePath}.ios.jsx` ||
           f === `${basePath}.android.tsx` ||
           f === `${basePath}.android.jsx`
       )
       const hasWeb = allFiles.some(
-        (f) =>
-          f === `${basePath}.web.tsx` ||
-          f === `${basePath}.web.jsx` ||
-          f === `${basePath}.ios.tsx` ||
-          f === `${basePath}.ios.jsx`
+        (f) => f === `${basePath}.web.tsx` || f === `${basePath}.web.jsx`
       )
 
       // Only optimize for targets that don't have platform-specific files
@@ -227,11 +225,16 @@ export const build = async (
 
           if (out) {
             stats.filesProcessed++
+            stats.optimized += out.stats.optimized
+            stats.flattened += out.stats.flattened
+            stats.styled += out.stats.styled
+            stats.found += out.stats.found
 
             const cssName = '_' + basename(sourcePath, extname(sourcePath))
             const stylePath = join(dirname(sourcePath), cssName + '.css')
             const cssImport = `import "./${cssName}.css"`
-            const jsContent = typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
+            const jsContent =
+              typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
             const code = insertCssImport(jsContent, cssImport)
 
             // Track original file before modifying

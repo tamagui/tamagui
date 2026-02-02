@@ -454,7 +454,7 @@ export const getSplitStyles: StyleSplitter = (
     const parentVariant = parentVariants?.[keyInit]
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
-        (isValidStyleKeyInit || isMediaOrPseudo || parentVariant || keyInit in skipProps)
+      (isValidStyleKeyInit || isMediaOrPseudo || parentVariant || keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
@@ -763,7 +763,12 @@ export const getSplitStyles: StyleSplitter = (
         const priority = mediaStylesSeen
         mediaStylesSeen += 1
 
-        if (shouldDoClasses) {
+        // for theme media ($theme-light, $theme-dark), always generate CSS classes for proper SSR
+        // even when noClass is set (animation drivers with inline output still need theme CSS)
+        const shouldDoClassesForThisMedia =
+          shouldDoClasses || (isWeb && isMedia === 'theme')
+
+        if (shouldDoClassesForThisMedia) {
           const mediaStyle = getSubStyle(styleState, key, val, false)
           const mediaStyles = getCSSStylesAtomic(mediaStyle)
 
@@ -1394,7 +1399,7 @@ function mergeStyle(
 export const getSubStyle = (
   styleState: GetStyleState,
   subKey: string,
-  styleIn: Object,
+  styleIn: object,
   avoidMergeTransform?: boolean
 ): TextStyle => {
   const { staticConfig, conf, styleProps } = styleState
@@ -1553,7 +1558,7 @@ const mapTransformKeys = {
 }
 
 function passDownProp(
-  viewProps: Object,
+  viewProps: object,
   key: string,
   val: any,
   shouldMergeObject = false

@@ -1,8 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Text with hoverStyle and conditional spread preserves ternary 1`] = `
-"const _cn2 = "font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _cur-pointer _col-0hover-color12 ";
-const _cn = "font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _cur-pointer _fow-800 _col-color12 ";
+"const _cn2 = "is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _cur-pointer _col-0hover-color12 ";
+const _cn = "is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _cur-pointer _fow-800 _col-color12 ";
 // debug
 import { Text } from '@tamagui/core';
 export function Test({
@@ -206,8 +206,8 @@ exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `
 `;
 
 exports[`font_body class is present in BOTH ternary branches 1`] = `
-"const _cn2 = "font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
-const _cn = "font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family _fow-800 ";
+"const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
+const _cn = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family _fow-800 ";
 import { Text } from '@tamagui/core';
 export function Test({
   isActive
@@ -248,9 +248,9 @@ export function Test(props) {
 `;
 
 exports[`ternaries + font families works 1`] = `
-"const _cn3 = "font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px ";
-const _cn2 = "font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
-const _cn = "font_body font_heading _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
+"const _cn3 = "is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px ";
+const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
+const _cn = "is_Text font_body font_heading _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
 import { Text } from '@tamagui/core';
 export function Test(props) {
   return <span className={!window ? _cn : window ? _cn2 : _cn3} />;

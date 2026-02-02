@@ -107,10 +107,7 @@ export function RadioGroupUnstyledDemo() {
   )
 }
 
-function RadioGroupItemWithLabel(props: {
-  value: string
-  label: string
-}) {
+function RadioGroupItemWithLabel(props: { value: string; label: string }) {
   const id = `radiogroup-${props.value}`
   return (
     <XStack width={300} items="center" gap="$4">

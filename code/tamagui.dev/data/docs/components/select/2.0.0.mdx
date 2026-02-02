@@ -32,7 +32,9 @@ npm install @tamagui/select
 ```
 
 <Notice theme="blue">
-  For native apps, we recommend [setting up native portals](/docs/components/portal#native-portal-setup-recommended) to preserve React context inside Select content.
+  For native apps, we recommend [setting up native
+  portals](/docs/components/portal#native-portal-setup-recommended) to preserve React
+  context inside Select content.
 </Notice>
 
 ## Anatomy
@@ -65,8 +67,8 @@ export default () => (
 ```
 
 <Notice>
-  Note that Select only works on Native using the Adapt component to adapt it to
-  a Sheet. See below for docs.
+  Note that Select only works on Native using the Adapt component to adapt it to a Sheet.
+  See below for docs.
 </Notice>
 
 ## API Reference
@@ -199,8 +201,8 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrol
 />
 
 <Notice>
-  Make sure to not pass `height` prop as that is managed internally because of
-  UX reasons and having a fixed height will break that behavior.
+  Make sure to not pass `height` prop as that is managed internally because of UX reasons
+  and having a fixed height will break that behavior.
 </Notice>
 
 ### Select.Group
@@ -229,7 +231,8 @@ Extends [ListItem](/docs/components/list-item). Used to add selectable values to
       type: 'string',
       description: `Provide a value that will be passed on selection.`,
     },
-  ]}
+
+]}
 />
 
 ### Select.ItemText
@@ -243,16 +246,16 @@ An animated indicator that highlights the currently focused item. Place it insid
 ```tsx
 <Select.Viewport>
   <Select.Indicator transition="quick" />
-  <Select.Group>
-    {/* items */}
-  </Select.Group>
+  <Select.Group>{/* items */}</Select.Group>
 </Select.Viewport>
 ```
 
 Use the `transition` prop to control the animation speed. You can use any animation name from your config like `quick`, `quicker`, or `quickest`.
 
 <Notice>
-  By default, Select uses the item's `hoverStyle` and `pressStyle` for hover feedback. Add `Select.Indicator` for a smoother animated effect. If using the indicator, you may want to set items to have transparent hover styles to avoid visual conflict.
+  By default, Select uses the item's `hoverStyle` and `pressStyle` for hover feedback. Add
+  `Select.Indicator` for a smoother animated effect. If using the indicator, you may want
+  to set items to have transparent hover styles to avoid visual conflict.
 </Notice>
 
 ### Select.FocusScope

@@ -13,7 +13,9 @@ animations off-thread and provides smooth spring and timing animations.
 yarn add @tamagui/animations-reanimated react-native-reanimated
 ```
 
-Follow the [Reanimated installation guide](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/) to complete setup for your platform.
+Follow the
+[Reanimated installation guide](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/)
+to complete setup for your platform.
 
 ## Configuration
 
@@ -50,7 +52,8 @@ export default createTamagui({
 ## How it Works
 
 At runtime, this driver parses animatable style properties and hands them over
-to Reanimated using worklets. Animations run on the UI thread for smooth 60fps performance.
+to Reanimated using worklets. Animations run on the UI thread for smooth 60fps
+performance.
 
 ## Animation Configuration
 
@@ -89,6 +92,7 @@ The delay is specified in milliseconds.
 ## When to Use
 
 **Advantages:**
+
 - **Off-thread animations** - Runs on UI thread for 60fps performance
 - **Cross-platform** - Works on web and React Native
 - **Advanced features** - Worklets, gesture integration, shared values
@@ -96,6 +100,7 @@ The delay is specified in milliseconds.
 - **Powerful** - Most feature-rich animation driver
 
 **Considerations:**
+
 - Larger bundle size
 - Requires Reanimated setup and configuration
 - More complex than simpler drivers
@@ -175,6 +180,11 @@ export const MyComponent = () => (
 )
 ```
 
+## Zero Re-renders
+
+The Reanimated driver now works with Tamagui to bypasses all internal style
+changes to instead directly hand off to Reanimated worklets.
+
 ## Advanced Features
 
 Reanimated provides advanced features:
@@ -184,7 +194,9 @@ Reanimated provides advanced features:
 - **Worklets** - JavaScript functions that run on the UI thread
 - **Custom animations** - Full control over animation curves
 
-See the [Reanimated documentation](https://docs.swmansion.com/react-native-reanimated/) for more details.
+See the
+[Reanimated documentation](https://docs.swmansion.com/react-native-reanimated/)
+for more details.
 
 ## See Also
 

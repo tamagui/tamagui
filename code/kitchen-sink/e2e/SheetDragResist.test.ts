@@ -68,7 +68,9 @@ describe('SheetDragResist', () => {
       await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify we're at position 0 (top snap point)
-      await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText('Current snap point: 0')
+      await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText(
+        'Current snap point: 0'
+      )
 
       // screenshot removed for CI speed
 
@@ -80,7 +82,9 @@ describe('SheetDragResist', () => {
       // screenshot removed for CI speed
 
       // sheet should still be at position 0 (didn't dismiss or change snap)
-      await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText('Current snap point: 0')
+      await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText(
+        'Current snap point: 0'
+      )
       // frame should still be visible (sheet didn't disappear)
       await expect(element(by.id('no-scroll-frame'))).toBeVisible()
     })
@@ -97,7 +101,9 @@ describe('SheetDragResist', () => {
       await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify at position 0
-      await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText('Current snap point: 0')
+      await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText(
+        'Current snap point: 0'
+      )
 
       // reset tracking
       await element(by.id('no-scroll-reset')).tap()
@@ -112,7 +118,9 @@ describe('SheetDragResist', () => {
       // screenshot removed for CI speed
 
       // sheet should snap back to position 0
-      await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText('Current snap point: 0')
+      await expect(element(by.id('no-scroll-snap-indicator'))).toHaveText(
+        'Current snap point: 0'
+      )
 
       // check the max drag indicator - should be > 0 if resistance was working
       // (the test component tracks maximum upward drag distance)
@@ -150,7 +158,9 @@ describe('SheetDragResist', () => {
       await element(by.id('non-scrollable-reset')).tap()
 
       // verify we start at position 0
-      await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText('Current snap point: 0')
+      await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText(
+        'Current snap point: 0'
+      )
 
       // screenshot removed for CI speed
 
@@ -163,13 +173,22 @@ describe('SheetDragResist', () => {
       // screenshot removed for CI speed
 
       // check results
-      const posAttr = await element(by.id('non-scrollable-snap-indicator')).getAttributes()
+      const posAttr = await element(
+        by.id('non-scrollable-snap-indicator')
+      ).getAttributes()
       const statusAttr = await element(by.id('non-scrollable-status')).getAttributes()
-      console.log('Bug #1 result - Position:', (posAttr as any).text, 'Status:', (statusAttr as any).text)
+      console.log(
+        'Bug #1 result - Position:',
+        (posAttr as any).text,
+        'Status:',
+        (statusAttr as any).text
+      )
 
       // EXPECTED: position changes to 1 (sheet moved down to lower snap)
       // BUGGY: position stays 0 but scroll events fired
-      await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText('Current snap point: 1')
+      await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText(
+        'Current snap point: 1'
+      )
     })
 
     // Also skipped due to same Detox limitation - handle swipe also fails with non-scrollable content
@@ -185,7 +204,9 @@ describe('SheetDragResist', () => {
       await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify we start at position 0
-      await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText('Current snap point: 0')
+      await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText(
+        'Current snap point: 0'
+      )
 
       // screenshot removed for CI speed
 
@@ -198,7 +219,9 @@ describe('SheetDragResist', () => {
       // screenshot removed for CI speed
 
       // handle drag should move the sheet
-      await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText('Current snap point: 1')
+      await expect(element(by.id('non-scrollable-snap-indicator'))).toHaveText(
+        'Current snap point: 1'
+      )
     })
   })
 
@@ -321,7 +344,9 @@ describe('SheetDragResist', () => {
       await new Promise((resolve) => setTimeout(resolve, 400))
 
       // verify at snap index 0
-      await expect(element(by.id('actions-sheet-snap-indicator'))).toHaveText('Snap index: 0')
+      await expect(element(by.id('actions-sheet-snap-indicator'))).toHaveText(
+        'Snap index: 0'
+      )
 
       // screenshot removed for CI speed
 
@@ -333,7 +358,9 @@ describe('SheetDragResist', () => {
       // screenshot removed for CI speed
 
       // if actions-sheet can move via Detox swipe, expect snap index 1
-      await expect(element(by.id('actions-sheet-snap-indicator'))).toHaveText('Snap index: 1')
+      await expect(element(by.id('actions-sheet-snap-indicator'))).toHaveText(
+        'Snap index: 1'
+      )
     })
   })
 })

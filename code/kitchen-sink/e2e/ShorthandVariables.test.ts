@@ -51,4 +51,3 @@ describe('ShorthandVariables', () => {
     await expect(element(by.id('boxshadow-plain'))).toBeVisible()
   })
 })
-

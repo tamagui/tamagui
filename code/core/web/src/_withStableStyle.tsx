@@ -6,7 +6,7 @@ import { useTheme } from './hooks/useTheme'
 
 export const _withStableStyle = (
   Component: any,
-  styleProvider: (theme: any, expressions: any[]) => Object
+  styleProvider: (theme: any, expressions: any[]) => object
 ) =>
   React.forwardRef((props: any, ref) => {
     const { _expressions = [], ...rest } = props

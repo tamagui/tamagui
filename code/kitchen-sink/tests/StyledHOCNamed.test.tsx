@@ -4,7 +4,7 @@ import { getStyles } from './utils'
 import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await setupPage(page, { name: "StyledHOCNamed", type: "useCase" })
+  await setupPage(page, { name: 'StyledHOCNamed', type: 'useCase' })
 })
 
 test(`styled() name works on HOC`, async ({ page }) => {

@@ -13,7 +13,7 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 
 const defaultOffset = { height: 0, width: 0 }
 
-export const resolveShadowValue = (style: Object): void | string => {
+export const resolveShadowValue = (style: object): void | string => {
   const { shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
   const { height, width } = shadowOffset || defaultOffset
   const offsetX = normalizeValueWithProperty(width)

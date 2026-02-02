@@ -51,11 +51,10 @@ interface ContextMenuTriggerProps extends ViewProps {
 type ContextMenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>
 
 type ContextMenuContentElement = React.ComponentRef<BaseMenu['Content']>
-interface ContextMenuContentProps
-  extends Omit<
-    React.ComponentPropsWithoutRef<BaseMenu['Content']>,
-    'onEntryFocus' | 'side' | 'sideOffset' | 'align'
-  > {}
+interface ContextMenuContentProps extends Omit<
+  React.ComponentPropsWithoutRef<BaseMenu['Content']>,
+  'onEntryFocus' | 'side' | 'sideOffset' | 'align'
+> {}
 
 type ContextMenuGroupProps = React.ComponentPropsWithoutRef<BaseMenu['Group']>
 type ContextMenuItemProps = React.ComponentPropsWithoutRef<BaseMenu['Item']>
@@ -210,7 +209,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
             data-disabled={disabled ? '' : undefined}
             {...triggerProps}
             ref={composeRefs(forwardedRef, context.triggerRef as any)}
-            style={isWeb ? { WebkitTouchCallout: 'none', ...(style as Object) } : null}
+            style={isWeb ? { WebkitTouchCallout: 'none', ...(style as object) } : null}
             {...(isWeb && {
               onContextMenu: disabled
                 ? props.onContextMenu
@@ -511,7 +510,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
         style={
           isWeb
             ? {
-                ...(props.style as Object),
+                ...(props.style as object),
                 ...({
                   '--tamagui-context-menu-content-transform-origin':
                     'var(--tamagui-popper-transform-origin)',

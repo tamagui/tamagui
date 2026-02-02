@@ -40,23 +40,14 @@ Use the `src` prop for the image URL:
 import { Image } from 'tamagui'
 
 export default () => (
-  <Image
-    src="https://example.com/photo.jpg"
-    width={200}
-    height={200}
-  />
+  <Image src="https://example.com/photo.jpg" width={200} height={200} />
 )
 ```
 
 You can also use `objectFit` to control how the image fits its container:
 
 ```tsx
-<Image
-  src="https://example.com/photo.jpg"
-  width="100%"
-  height={300}
-  objectFit="cover"
-/>
+<Image src="https://example.com/photo.jpg" width="100%" height={300} objectFit="cover" />
 ```
 
 ## Using with expo-image
@@ -97,11 +88,36 @@ export default () => (
 <SimpleTable
   headers={['Option', 'Type', 'Default', 'Description']}
   rows={[
-    ['Component', '`ComponentType`', '-', 'The underlying image component (expo-image, react-native-fast-image, etc.)'],
-    ['resizeModePropName', '`string`', "`'resizeMode'`", "The prop name for resize mode. expo-image uses `'contentFit'`"],
-    ['objectPositionPropName', '`string`', '`undefined`', "The prop name for object position. expo-image uses `'contentPosition'`"],
-    ['mapObjectFitToResizeMode', '`function`', 'Default mapper', 'Custom function to map `objectFit` values to the component\'s resize mode'],
-    ['transformSource', '`function`', 'Default transformer', 'Custom function to transform source props'],
+    [
+      'Component',
+      '`ComponentType`',
+      '-',
+      'The underlying image component (expo-image, react-native-fast-image, etc.)',
+    ],
+    [
+      'resizeModePropName',
+      '`string`',
+      "`'resizeMode'`",
+      "The prop name for resize mode. expo-image uses `'contentFit'`",
+    ],
+    [
+      'objectPositionPropName',
+      '`string`',
+      '`undefined`',
+      "The prop name for object position. expo-image uses `'contentPosition'`",
+    ],
+    [
+      'mapObjectFitToResizeMode',
+      '`function`',
+      'Default mapper',
+      "Custom function to map `objectFit` values to the component's resize mode",
+    ],
+    [
+      'transformSource',
+      '`function`',
+      'Default transformer',
+      'Custom function to transform source props',
+    ],
   ]}
 />
 
@@ -155,17 +171,20 @@ Extends View with [Tamagui props](/docs/intro/props), plus:
     {
       name: 'alt',
       type: 'string',
-      description: 'Alternative text describing the image for accessibility. Use empty string for decorative images.',
+      description:
+        'Alternative text describing the image for accessibility. Use empty string for decorative images.',
     },
     {
       name: 'objectFit',
       type: "'cover' | 'contain' | 'fill' | 'none' | 'scale-down'",
-      description: 'How the image should be resized to fit its container. Maps to CSS object-fit on web and resizeMode on native.',
+      description:
+        'How the image should be resized to fit its container. Maps to CSS object-fit on web and resizeMode on native.',
     },
     {
       name: 'objectPosition',
       type: 'string',
-      description: 'How the image should be positioned within its container. On native, requires expo-image or similar for full support.',
+      description:
+        'How the image should be positioned within its container. On native, requires expo-image or similar for full support.',
     },
     {
       name: 'source',
@@ -189,27 +208,32 @@ These props pass through to the native `<img>` element on web:
     {
       name: 'loading',
       type: "'lazy' | 'eager'",
-      description: 'Lazy load images below the fold. Use eager (default) for above-the-fold images.',
+      description:
+        'Lazy load images below the fold. Use eager (default) for above-the-fold images.',
     },
     {
       name: 'decoding',
       type: "'async' | 'sync' | 'auto'",
-      description: 'Hint for how the browser should decode the image. Use async for non-blocking decode.',
+      description:
+        'Hint for how the browser should decode the image. Use async for non-blocking decode.',
     },
     {
       name: 'fetchPriority',
       type: "'high' | 'low' | 'auto'",
-      description: 'Hint for fetch priority. Use high for LCP (largest contentful paint) images.',
+      description:
+        'Hint for fetch priority. Use high for LCP (largest contentful paint) images.',
     },
     {
       name: 'srcSet',
       type: 'string',
-      description: 'Comma-separated list of image sources with width descriptors for responsive images.',
+      description:
+        'Comma-separated list of image sources with width descriptors for responsive images.',
     },
     {
       name: 'sizes',
       type: 'string',
-      description: 'Media conditions describing the image display size, used with srcSet.',
+      description:
+        'Media conditions describing the image display size, used with srcSet.',
     },
     {
       name: 'crossOrigin',
@@ -231,7 +255,8 @@ These props pass through to the native `<img>` element on web:
     {
       name: 'alt',
       type: 'string',
-      description: 'Alternative text for screen readers. Required for meaningful images, use empty string for decorative.',
+      description:
+        'Alternative text for screen readers. Required for meaningful images, use empty string for decorative.',
     },
     {
       name: 'accessible',
@@ -241,7 +266,8 @@ These props pass through to the native `<img>` element on web:
     {
       name: 'accessibilityLabel',
       type: 'string',
-      description: 'Native only. Label read by screen readers. Use with accessible={true}.',
+      description:
+        'Native only. Label read by screen readers. Use with accessible={true}.',
     },
     {
       name: 'aria-label',
@@ -261,11 +287,14 @@ These props pass through to the native `<img>` element on web:
     {
       name: 'role',
       type: 'string',
-      description: "Set to 'presentation' or 'none' for decorative images, or 'img' (default).",
+      description:
+        "Set to 'presentation' or 'none' for decorative images, or 'img' (default).",
     },
   ]}
 />
 
 <Notice theme="green">
-  Web props like `loading`, `srcSet`, and `fetchPriority` only apply on web. On native, use expo-image via `createImage` for advanced features like blurhash placeholders and priority loading.
+  Web props like `loading`, `srcSet`, and `fetchPriority` only apply on web. On native,
+  use expo-image via `createImage` for advanced features like blurhash placeholders and
+  priority loading.
 </Notice>

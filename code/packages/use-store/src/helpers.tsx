@@ -2,7 +2,7 @@ import { simpleHash } from '@tamagui/simple-hash'
 
 import type { StoreInfo } from './interfaces'
 
-export function getStoreUid(Constructor: any, props: string | Object | void) {
+export function getStoreUid(Constructor: any, props: string | object | void) {
   return simpleHash(
     `${Constructor}${
       !props ? '' : typeof props === 'string' ? props : JSON.stringify(props)

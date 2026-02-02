@@ -47,6 +47,19 @@ export function createSheet<
       const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
       const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef)
 
+      // track if sheet was being dragged to prevent onPress toggle after drag
+      const wasDraggingRef = useRef(false)
+
+      // subscribe to parent dragging changes to track if we dragged during this press
+      useEffect(() => {
+        if (!context.scrollBridge) return
+        return context.scrollBridge.onParentDragging((isDragging: boolean) => {
+          if (isDragging) {
+            wasDraggingRef.current = true
+          }
+        })
+      }, [context.scrollBridge])
+
       if (context.onlyShowFrame) {
         return null
       }
@@ -55,7 +68,16 @@ export function createSheet<
         // @ts-ignore
         <Handle
           ref={composedRef}
+          onPressIn={() => {
+            // reset at start of new press
+            wasDraggingRef.current = false
+          }}
           onPress={() => {
+            // skip toggle if this was a drag gesture
+            if (wasDraggingRef.current) {
+              wasDraggingRef.current = false
+              return
+            }
             // don't toggle to the bottom snap position when dismissOnSnapToBottom set
             const max =
               context.snapPoints.length + (context.dismissOnSnapToBottom ? -1 : 0)
@@ -203,7 +225,6 @@ export function createSheet<
             <Frame
               {...props}
               componentName="SheetCover"
-              // biome-ignore lint/correctness/noChildrenProp: <explanation>
               children={null}
               // Don't inherit testID - this is a visual helper element
               testID={undefined}

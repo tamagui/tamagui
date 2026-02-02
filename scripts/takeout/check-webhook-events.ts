@@ -37,7 +37,7 @@ async function main() {
   const eventsByType = new Map<string, number>()
   const recentSubEvents: Stripe.Event[] = []
 
-  events.data.forEach(event => {
+  events.data.forEach((event) => {
     eventsByType.set(event.type, (eventsByType.get(event.type) || 0) + 1)
 
     if (event.type.startsWith('customer.subscription')) {
@@ -60,7 +60,7 @@ async function main() {
   if (recentSubEvents.length === 0) {
     console.log('No recent subscription events found')
   } else {
-    recentSubEvents.slice(0, 20).forEach(event => {
+    recentSubEvents.slice(0, 20).forEach((event) => {
       const sub = event.data.object as Stripe.Subscription
       const date = new Date(event.created * 1000).toISOString()
       console.log(`[${date}] ${event.type}`)
@@ -87,7 +87,7 @@ async function main() {
   if (endpoints.data.length === 0) {
     console.log('⚠️  No webhook endpoints configured!')
   } else {
-    endpoints.data.forEach(endpoint => {
+    endpoints.data.forEach((endpoint) => {
       console.log(`Endpoint: ${endpoint.url}`)
       console.log(`  Status: ${endpoint.status}`)
       console.log(`  Events: ${endpoint.enabled_events.join(', ')}`)

@@ -37,7 +37,10 @@ export function Navigation() {
   const colorScheme = useColorScheme()
 
   return (
-    <NavigationContainer linking={linking} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer
+      linking={linking}
+      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+    >
       <Stack.Navigator initialRouteName="home">
         <Stack.Screen
           name="home"

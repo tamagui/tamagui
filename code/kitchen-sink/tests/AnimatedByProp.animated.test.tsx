@@ -13,7 +13,12 @@ import { setupPage } from './test-utils'
 
 const TOLERANCE = 0.05
 
-function isIntermediate(value: number, start: number, end: number, tolerance = TOLERANCE): boolean {
+function isIntermediate(
+  value: number,
+  start: number,
+  end: number,
+  tolerance = TOLERANCE
+): boolean {
   const notAtStart = Math.abs(value - start) > tolerance
   const notAtEnd = Math.abs(value - end) > tolerance
   const min = Math.min(start, end)
@@ -25,7 +30,10 @@ function isIntermediate(value: number, start: number, end: number, tolerance = T
 test.describe('animatedBy prop', () => {
   // Skip native driver - it doesn't work on web
   test.beforeEach(async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name === 'animated-native', 'Native driver not supported on web')
+    test.skip(
+      testInfo.project.name === 'animated-native',
+      'Native driver not supported on web'
+    )
 
     await setupPage(page, {
       name: 'AnimatedByProp',
@@ -35,12 +43,13 @@ test.describe('animatedBy prop', () => {
   })
 
   test('animatedBy="default" element animates properly', async ({ page }) => {
-    const START = 0.5, END = 1
+    const START = 0.5,
+      END = 1
     const explicitElement = page.getByTestId('explicit-default')
 
     // Initial state
-    const initialOpacity = await explicitElement.evaluate(
-      (el) => Number(getComputedStyle(el).opacity)
+    const initialOpacity = await explicitElement.evaluate((el) =>
+      Number(getComputedStyle(el).opacity)
     )
     expect(initialOpacity).toBeCloseTo(START, 1)
 
@@ -51,15 +60,15 @@ test.describe('animatedBy prop', () => {
     // If broken (no driver), opacity jumps instantly to END
     // If working, opacity should NOT be at END yet (animation in progress)
     await page.waitForTimeout(16) // ~1 frame
-    const immediateOpacity = await explicitElement.evaluate(
-      (el) => Number(getComputedStyle(el).opacity)
+    const immediateOpacity = await explicitElement.evaluate((el) =>
+      Number(getComputedStyle(el).opacity)
     )
 
     // Wait for animation to complete
     await page.waitForTimeout(600)
 
-    const finalOpacity = await explicitElement.evaluate(
-      (el) => Number(getComputedStyle(el).opacity)
+    const finalOpacity = await explicitElement.evaluate((el) =>
+      Number(getComputedStyle(el).opacity)
     )
 
     // Should reach end state eventually
@@ -74,30 +83,31 @@ test.describe('animatedBy prop', () => {
     expect(
       jumpedInstantly,
       `With animatedBy="default", opacity should not jump instantly to ${END}. ` +
-      `Got immediate=${immediateOpacity.toFixed(2)}. If it jumped, the driver lookup is broken.`
+        `Got immediate=${immediateOpacity.toFixed(2)}. If it jumped, the driver lookup is broken.`
     ).toBe(false)
   })
 
   test('context default (no animatedBy) also animates', async ({ page }) => {
-    const START = 0.5, END = 1
+    const START = 0.5,
+      END = 1
 
     const contextElement = page.getByTestId('context-driver')
 
-    const initialOpacity = await contextElement.evaluate(
-      (el) => Number(getComputedStyle(el).opacity)
+    const initialOpacity = await contextElement.evaluate((el) =>
+      Number(getComputedStyle(el).opacity)
     )
     expect(initialOpacity).toBeCloseTo(START, 1)
 
     await page.getByTestId('toggle-trigger').click()
     await page.waitForTimeout(50)
 
-    const midOpacity = await contextElement.evaluate(
-      (el) => Number(getComputedStyle(el).opacity)
+    const midOpacity = await contextElement.evaluate((el) =>
+      Number(getComputedStyle(el).opacity)
     )
 
     await page.waitForTimeout(500)
-    const finalOpacity = await contextElement.evaluate(
-      (el) => Number(getComputedStyle(el).opacity)
+    const finalOpacity = await contextElement.evaluate((el) =>
+      Number(getComputedStyle(el).opacity)
     )
 
     expect(finalOpacity, 'End opacity').toBeCloseTo(END, 1)

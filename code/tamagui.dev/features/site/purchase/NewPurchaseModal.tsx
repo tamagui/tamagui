@@ -6,25 +6,25 @@ import {
   Button,
   Dialog,
   H3,
-  Input,
-  Label,
   Paragraph,
+  ScrollView,
   Separator,
   Sheet,
   SizableText,
+  Span,
   styled,
   Tabs,
   Text,
   Theme,
+  ToggleGroup,
   Unspaced,
-  useMedia,
   XStack,
   YStack,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
-import { Select } from '../../../components/Select'
+import { Link } from '../../../components/Link'
 import { sendEvent } from '../../analytics/sendEvent'
 import { PromoCards } from '../header/PromoCards'
 import { ProAgreementModal } from './AgreementModal'
@@ -32,7 +32,7 @@ import { BigP, P } from './BigP'
 import { ProPoliciesModal } from './PoliciesModal'
 import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { PurchaseButton } from './helpers'
-import { paymentModal } from './paymentModalStore'
+import { paymentModal, usePaymentModal } from './paymentModalStore'
 import { usePurchaseModal } from './purchaseModalStore'
 import { useTakeoutStore } from './useTakeoutStore'
 
@@ -47,29 +47,27 @@ export { purchaseModal, usePurchaseModal } from './purchaseModalStore'
 // import for internal use
 import { FaqTabContent } from './FaqTabContent'
 import { calculatePromoPrice } from './promoConfig'
+import { SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
 
 export const NewPurchaseModal = () => {
   return <PurchaseModalContents />
 }
 
-const tabOrder = ['purchase', 'support', 'faq'] as const
+const tabOrder = ['pro', 'faq'] as const
 
 type Tab = (typeof tabOrder)[number]
 
 export function PurchaseModalContents() {
   const store = usePurchaseModal()
+  const paymentStore = usePaymentModal()
   const takeoutStore = useTakeoutStore()
-  const [lastTab, setLastTab] = useState<Tab>('purchase')
-  const [currentTab, setCurrentTab] = useState<Tab>('purchase')
-  const [chatSupport, setChatSupport] = useState(false)
-  const [supportTier, setSupportTier] = useState('0')
+  const [currentTab, setCurrentTab] = useState<Tab>('pro')
+  const [supportTier, setSupportTier] = useState<SupportTier>('chat')
   const [isProcessing, setIsProcessing] = useState(false)
-  const [error, setError] = useState<Error | StripeError | null>(null)
-  const { gtMd } = useMedia()
+  const [, setError] = useState<Error | StripeError | null>(null)
 
   const { data: userData, subscriptionStatus } = useUser()
   const { parityDeals } = useParityDiscount()
-  const [teamSeats, setTeamSeats] = useState(0)
 
   const hasSubscribedBefore = useMemo(() => {
     return (
@@ -100,12 +98,8 @@ export function PurchaseModalContents() {
 
   function changeTab(next: string) {
     sendEvent(`Pro: Change Tab`, { tab: next })
-    if (next === 'purchase' || next === 'support' || next === 'faq') {
-      if (currentTab === 'purchase' && next === 'support') {
-        setLastTab(currentTab)
-        setCurrentTab(next)
-      } else if (!isProcessing) {
-        setLastTab(currentTab)
+    if (next === 'pro' || next === 'faq') {
+      if (!isProcessing) {
         setCurrentTab(next)
       }
     }
@@ -129,106 +123,158 @@ export function PurchaseModalContents() {
 
     if (isProcessing) return
 
+    const supportTierPrice = SUPPORT_TIERS[supportTier].price
+
     paymentModal.show = true
-    paymentModal.yearlyTotal = yearlyTotal
-    paymentModal.monthlyTotal = monthlyTotal
+    paymentModal.yearlyTotal = V2_PRICE
+    paymentModal.monthlyTotal = supportTierPrice
     paymentModal.disableAutoRenew = false
-    paymentModal.chatSupport = chatSupport
-    paymentModal.supportTier = Number(supportTier)
-    paymentModal.teamSeats = teamSeats
+    paymentModal.chatSupport = false
+    paymentModal.supportTier = supportTier
+    paymentModal.teamSeats = 0
     paymentModal.selectedPrices = {
       disableAutoRenew: false,
-      chatSupport,
-      supportTier: Number(supportTier),
-      teamSeats,
+      chatSupport: false,
+      supportTier: supportTier,
+      teamSeats: 0,
     }
+    // V2 purchase - not a support upgrade only
+    paymentModal.isV2 = true
+    paymentModal.isSupportUpgradeOnly = false
     // pass promo info from purchase modal
     paymentModal.activePromo = store.activePromo
     paymentModal.prefilledCouponCode = store.prefilledCouponCode
+    // pass parity discount (fetched via API, validated server-side)
+    if (parityDeals) {
+      paymentModal.parityDiscount = Number(parityDeals.discountPercentage)
+      paymentModal.parityCountry = parityDeals.country
+    }
   }
 
-  // Calculate direction for animation
-  const direction = tabOrder.indexOf(currentTab) > tabOrder.indexOf(lastTab) ? 1 : -1
+  // V2 Pricing: $400 one-time per project
+  const V2_PRICE = 400
 
-  // V2 Pricing: $999 one-time per project
-  const V2_PRICE = 999
-
-  // Legacy V1 prices (for existing subscribers adding support)
-  const chatSupportMonthly = chatSupport ? 200 : 0
-  const supportTierMonthly = Number(supportTier) * 800
-
-  // For V2, yearly total is just the base price (no more per-seat)
-  const yearlyTotal = V2_PRICE
-  const monthlyTotal = supportTierMonthly // Chat support included in V2, only premium support extra
-
-  // V2 subscription message
-  const subscriptionMessage = useMemo(() => {
-    const hasSupportTier = Number(supportTier) > 0
-    if (hasSupportTier) {
-      return `$${V2_PRICE.toLocaleString()} one-time + $${supportTierMonthly}/month premium support`
-    }
-    return `$${V2_PRICE.toLocaleString()} one-time. Includes 1 year of updates, then $300/year.`
-  }, [supportTier, supportTierMonthly])
+  // Support tier monthly price
+  const supportTierMonthly = SUPPORT_TIERS[supportTier].price
 
   const tabContents = {
-    purchase: () => {
+    pro: () => {
       return (
         <YStack>
           <YStack $gtMd={{ gap: '$6' }} gap="$5">
-            <BigP text="center">
-              The best you can get for building a cross-platform React + React Native app.
+            <BigP mt={-10} text="center" size="$4" $gtXs={{ size: '$6' }}>
+              The new Takeout stack represents years of effort: AI&nbsp;integration, docs,
+              scripting, and UI result in remarkably fast development.
             </BigP>
 
-            <XStack mx="$-4" flexWrap="wrap" gap="$3" items="center" justify="center">
+            <XStack
+              px="$4"
+              mx="$-4"
+              gap="$3"
+              items="center"
+              justify="center"
+              flexWrap="wrap"
+              $gtMd={{ px: 0 }}
+            >
               <PromoCards />
             </XStack>
 
-            <YStack gap="$3" p="$3" rounded="$4">
-              <H3 fontFamily="$mono" size="$6">
-                What's Included
-              </H3>
-              <YStack gap="$0.5">
-                <P color="$color11" size="$4">
-                  - 3 templates: Takeout v1, Takeout v2, Takeout Static
-                </P>
-                <P color="$color11" size="$4">
-                  - Bento pro components
-                </P>
-                <P color="$color11" size="$4">
-                  - 1 year of updates
-                </P>
-                <P color="$color11" size="$4">
-                  - Unlimited team members (no extra cost)
-                </P>
-                <P color="$color11" size="$4">
-                  - Private #takeout chat room in Discord
-                </P>
-                <P color="$color11" size="$4">
-                  - Lifetime rights to all code
-                </P>
+            <Theme name="green">
+              <P size="$3" color="$color11" text="center" px="$8">
+                <Span fontFamily="$mono" color="$color8">
+                  1&nbsp;year&nbsp;of&nbsp;updates
+                </Span>
+                {' · '}
+                <Span fontFamily="$mono">Unlimited&nbsp;team&nbsp;members</Span>
+                <br />
+                <Span fontFamily="$mono" color="$color8">
+                  Private&nbsp;#takeout&nbsp;Discord
+                </Span>
+                {' · '}
+                <Span fontFamily="$mono">Lifetime&nbsp;code&nbsp;rights</Span>
+              </P>
+            </Theme>
+
+            <Separator />
+
+            {/* Support Tier Selection */}
+            <YStack
+              gap="$4"
+              $gtMd={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <YStack gap="$2" flexShrink={1} $gtMd={{ flex: 1 }}>
+                <Paragraph fontFamily="$mono" fontWeight="600" size="$5">
+                  Support Level
+                </Paragraph>
+                <Paragraph fontFamily="$mono" size="$4" color="$color9">
+                  {SUPPORT_TIERS[supportTier].description}
+                </Paragraph>
               </YStack>
+
+              <XStack
+                borderRadius="$4"
+                borderWidth={1}
+                borderColor="$color4"
+                overflow="hidden"
+                flexShrink={0}
+                alignSelf="flex-start"
+                $gtMd={{ alignSelf: 'auto' }}
+              >
+                {(Object.keys(SUPPORT_TIERS) as SupportTier[]).map((tier) => (
+                  <YStack
+                    key={tier}
+                    items="center"
+                    gap="$0.5"
+                    py="$2"
+                    px="$4"
+                    bg={supportTier === tier ? '$color4' : '$color1'}
+                    hoverStyle={{ bg: supportTier === tier ? '$color4' : '$color2' }}
+                    pressStyle={{ bg: '$color3' }}
+                    cursor="pointer"
+                    onPress={() => setSupportTier(tier)}
+                  >
+                    <Paragraph fontWeight="600" size="$3">
+                      {SUPPORT_TIERS[tier].label}
+                    </Paragraph>
+                    <Paragraph size="$2" color="$color9">
+                      {SUPPORT_TIERS[tier].priceLabel}
+                    </Paragraph>
+                  </YStack>
+                ))}
+              </XStack>
             </YStack>
 
-            <YStack gap="$2">
-              <P color="$color11" size="$4">
-                License covers one project: your web domain + iOS app + Android app. After
-                the first year, continue receiving updates for $300/year
-                (auto-subscribed).
-              </P>
-            </YStack>
+            <Separator />
+
+            <P size="$2" color="$color9">
+              License covers one project: your web domain + iOS app + Android app. After
+              the first year, continue receiving updates for $100/year (auto-subscribed).
+            </P>
+
+            {/* Enterprise Notice */}
+            <Theme name="yellow">
+              <XStack
+                bg="$color2"
+                rounded="$4"
+                borderWidth={0.5}
+                borderColor="$color5"
+                p="$3"
+              >
+                <Paragraph size="$3" color="$color11">
+                  For companies with over $1M in annual revenue,{' '}
+                  <Link href="mailto:support@tamagui.dev">contact us</Link> for enterprise
+                  pricing.
+                </Paragraph>
+              </XStack>
+            </Theme>
           </YStack>
         </YStack>
       )
     },
-
-    support: () => (
-      <SupportTabContent
-        chatSupport={chatSupport}
-        setChatSupport={setChatSupport}
-        supportTier={supportTier}
-        setSupportTier={setSupportTier}
-      />
-    ),
 
     faq: FaqTabContent,
   }
@@ -248,8 +294,8 @@ export function PurchaseModalContents() {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal transition="quick">
-            <Sheet.Frame bg="$color1" p={0} gap="$4">
-              <Sheet.ScrollView>
+            <Sheet.Frame bg="$color1" p={0} flex={1}>
+              <Sheet.ScrollView flex={1}>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Frame>
@@ -290,115 +336,109 @@ export function PurchaseModalContents() {
             exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
             width="90%"
             maxW={900}
+            height="85%"
+            maxH="calc(min(85vh, 800px))"
+            minH={500}
             p={0}
           >
-            <YStack height="100%">
+            <YStack flex={1} flexBasis="auto" overflow="hidden">
               <Tabs
                 orientation="horizontal"
                 flexDirection="column"
-                defaultValue="purchase"
+                flex={1}
+                flexBasis="auto"
+                overflow="hidden"
+                defaultValue="pro"
                 size="$6"
                 value={currentTab}
                 onValueChange={changeTab}
               >
-                <Tabs.List>
-                  <YStack width={'33.3333%'} flex={1}>
-                    <Tab isActive={currentTab === 'purchase'} value="purchase">
+                <Tabs.List flexShrink={0}>
+                  <YStack width={'50%'} flex={1}>
+                    <Tab isActive={currentTab === 'pro'} value="pro">
                       Pro
                     </Tab>
                   </YStack>
-                  <YStack width={'33.3333%'} flex={1}>
-                    <Tab isActive={currentTab === 'support'} value="support">
-                      Support
-                    </Tab>
-                  </YStack>
-                  <YStack width={'33.3333%'} flex={1}>
+                  <YStack width={'50%'} flex={1}>
                     <Tab isActive={currentTab === 'faq'} value="faq" end>
                       FAQ
                     </Tab>
                   </YStack>
                 </Tabs.List>
 
-                <YStack group="takeoutBody">
-                  <AnimatedYStack key={currentTab}>
+                <YStack group="takeoutBody" flex={1} flexBasis="auto" overflow="hidden">
+                  <AnimatedYStack key={currentTab} overflow="hidden">
                     <Tabs.Content
                       value={currentTab}
                       forceMount
                       flex={1}
-                      minH={550}
-                      $gtMd={{
-                        height: 'calc(min(100vh - 200px, 900px))',
-                      }}
+                      flexBasis="auto"
+                      overflow="hidden"
                     >
-                      <YStack
-                        $gtMd={{
-                          p: '$8',
-                          gap: '$6',
-                        }}
-                        p="$4"
-                        gap="$4"
-                        height="100%"
-                        {...(gtMd && {
-                          style: {
-                            overflowY: 'scroll',
-                          },
-                        })}
-                      >
-                        {tabContents[currentTab]()}
-                      </YStack>
+                      <ScrollView flex={1} flexBasis="auto">
+                        <YStack p="$4" gap="$4" $gtMd={{ p: '$8', gap: '$6' }}>
+                          {tabContents[currentTab]()}
+                        </YStack>
+                      </ScrollView>
                     </Tabs.Content>
                   </AnimatedYStack>
                 </YStack>
-
-                <Separator />
               </Tabs>
 
               {/* Bottom */}
-              <YStack p="$4" $gtXs={{ p: '$6' }} gap="$2" bg="$color1">
+              <YStack
+                flexShrink={0}
+                p="$4"
+                $gtXs={{ p: '$6' }}
+                gap="$2"
+                borderTopWidth={0.5}
+                borderTopColor={'$color5'}
+              >
                 <YStack
                   justify="center"
                   items="center"
                   gap="$4"
-                  $gtXs={{
-                    justify: 'space-between',
-                    items: 'flex-start',
+                  $gtSm={{
                     flexDirection: 'row',
-                    gap: '$6',
                   }}
                 >
-                  <YStack gap="$1" flex={1} width="100%" $gtXs={{ width: '40%' }}>
-                    <XStack items="baseline" gap="$2">
-                      {store.activePromo && (
-                        <H3
-                          size="$10"
-                          fontWeight="200"
-                          opacity={0.5}
-                          textDecorationLine="line-through"
-                          color="$green10"
-                          y={-3}
-                          letterSpacing={-2}
-                        >
-                          ${Intl.NumberFormat('en-US').format(V2_PRICE)}
-                        </H3>
-                      )}
-                      <H3 size="$11" letterSpacing={-2}>
+                  <YStack
+                    gap="$1"
+                    width="100%"
+                    $gtXs={{ flex: 1, flexBasis: 'auto', width: '40%' }}
+                  >
+                    <XStack items="baseline" gap="$2" flexWrap="wrap">
+                      <H3 size="$9" $gtXs={{ size: '$11' }} letterSpacing={-2}>
                         $
                         {Intl.NumberFormat('en-US').format(
                           calculatePromoPrice(V2_PRICE, store.activePromo)
                         )}
                       </H3>
+
+                      {store.activePromo && (
+                        <XStack items="baseline" gap="$1">
+                          <Paragraph
+                            size="$4"
+                            color="$color8"
+                            textDecorationLine="line-through"
+                          >
+                            ${Intl.NumberFormat('en-US').format(V2_PRICE)}
+                          </Paragraph>
+                          <Paragraph size="$2" color="$color8">
+                            {store.activePromo.description}
+                          </Paragraph>
+                        </XStack>
+                      )}
                     </XStack>
 
                     <Paragraph color="$color9" size="$3">
-                      {store.activePromo
-                        ? `${store.activePromo.label}! ${subscriptionMessage}`
-                        : subscriptionMessage}
+                      One payment, one year updates, $100/year subscription
                     </Paragraph>
                   </YStack>
 
-                  <YStack gap="$2" width="100%" $gtXs={{ width: '42%' }}>
+                  <YStack gap="$2" width="100%" pt="$4" $gtXs={{ width: '42%', pt: 0 }}>
                     {parityDeals && (
-                      <Theme name="yellow">
+                      <Theme name="green">
                         <XStack
                           mb="$2"
                           bg="$color3"
@@ -412,11 +452,9 @@ export function PurchaseModalContents() {
                             color="$color11"
                             style={{ textWrap: 'balance' }}
                           >
-                            You are from {parityDeals.country}.{`\n`} Use code{' '}
-                            <Text fontWeight="bold" fontFamily="$mono" color="$color12">
-                              {parityDeals.couponCode}
-                            </Text>{' '}
-                            at checkout for {parityDeals.discountPercentage}% off
+                            {parityDeals.flag} {parityDeals.discountPercentage}% parity
+                            discount for {parityDeals.country} — auto-applied
+                            {store.activePromo && ' (stacks with beta discount!)'}
                           </Paragraph>
                         </XStack>
                       </Theme>
@@ -505,105 +543,21 @@ export function PurchaseModalContents() {
 
       <ProAgreementModal />
 
-      <Suspense fallback={null}>
-        <StripePaymentModal
-          yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : yearlyTotal} // if they have a pro subscription or have subscribed before, the yearly total is 0
-          monthlyTotal={monthlyTotal}
-          disableAutoRenew={false}
-          chatSupport={chatSupport}
-          supportTier={Number(supportTier)}
-          teamSeats={teamSeats}
-          onSuccess={handlePaymentSuccess}
-          onError={handlePaymentError}
-        />
-      </Suspense>
-    </>
-  )
-}
-
-// FaqTabContent moved to FaqTabContent.tsx
-
-const SupportTabContent = ({
-  chatSupport,
-  setChatSupport,
-  supportTier,
-  setSupportTier,
-}: {
-  chatSupport: boolean
-  setChatSupport: (value: boolean) => void
-  supportTier: string
-  setSupportTier: (value: string) => void
-}) => {
-  const tiers = [
-    { value: '0', label: 'None', price: 0 },
-    { value: '1', label: 'Tier 1', price: 800 },
-    { value: '2', label: 'Tier 2', price: 1600 },
-    { value: '3', label: 'Tier 3', price: 2400 },
-  ]
-
-  // Handle support tier change
-  const handleSupportTierChange = (value: string) => {
-    setSupportTier(value)
-  }
-
-  return (
-    <>
-      <BigP>
-        Premium support helps teams using Tamagui ensure bugs get fixed quickly and
-        questions are answered promptly.
-      </BigP>
-
-      <YStack gap="$6">
-        <YStack gap="$3" p="$4" rounded="$4">
-          <XStack items="center">
-            <Text fontSize="$5" color="$green10" width={0}>
-              ✓
-            </Text>
-            <P fontWeight="600">Basic Chat Support - Included</P>
-          </XStack>
-          <P maxW={500} size="$4" lineHeight="$6" color="$color9">
-            Access to the private #takeout Discord channel. We prioritize responses there
-            over public Discord. No SLA, but we typically respond within 1-2 business
-            days.
-          </P>
-        </YStack>
-
-        <YStack gap="$3">
-          <XStack overflow="hidden" items="center">
-            <Label flex={1} htmlFor="support-tier" rounded="$4">
-              <P>Premium Support </P>
-            </Label>
-
-            <XStack flex={1} maxW={200}>
-              <Select
-                id="support-tier"
-                size="$4"
-                rounded="$4"
-                value={supportTier}
-                onValueChange={handleSupportTierChange}
-                disabled={chatSupport} // Disable if chat support is enabled
-              >
-                {tiers.map((tier) => (
-                  <Select.Item
-                    key={tier.value}
-                    value={tier.value}
-                    index={Number(tier.value)}
-                  >
-                    {tier.value === '0'
-                      ? tier.label
-                      : `${tier.label} · $${tier.price}/mo`}
-                  </Select.Item>
-                ))}
-              </Select>
-            </XStack>
-          </XStack>
-
-          <P size="$5" lineHeight="$6" maxW={500} opacity={supportTier !== '0' ? 1 : 0.5}>
-            Each tier adds 4 hours of development a month, faster response times, and 4
-            additional private chat invites.
-          </P>
-        </YStack>
-      </YStack>
+      {/* Lazy load Stripe when purchase modal opens OR payment modal is requested from elsewhere */}
+      {(store.show || paymentStore.show) && (
+        <Suspense fallback={null}>
+          <StripePaymentModal
+            yearlyTotal={subscriptionStatus?.pro || hasSubscribedBefore ? 0 : V2_PRICE}
+            monthlyTotal={supportTierMonthly}
+            disableAutoRenew={false}
+            chatSupport={false}
+            supportTier={supportTier}
+            teamSeats={0}
+            onSuccess={handlePaymentSuccess}
+            onError={handlePaymentError}
+          />
+        </Suspense>
+      )}
     </>
   )
 }
@@ -681,40 +635,5 @@ function Tab({
         {children}
       </Paragraph>
     </Tabs.Tab>
-  )
-}
-
-const TeamSeatsInput = ({
-  value,
-  onChange,
-  yearlyPrice,
-}: {
-  value: number
-  onChange: (seats: number) => void
-  yearlyPrice: number
-}) => {
-  return (
-    <YStack gap="$3">
-      <XStack items="center">
-        <Label flex={1} htmlFor="team-seats">
-          <Text>Additional Team Seats</Text>
-        </Label>
-        <Input
-          id="team-seats"
-          value={value.toString()}
-          onChange={(e) => {
-            const val = e.target?.value
-            onChange(Math.max(0, Number.parseInt(val) || 0))
-          }}
-          type="number-pad"
-          width={100}
-        />
-      </XStack>
-      {value > 0 && (
-        <Text color="$color9">
-          +${yearlyPrice}/year for {value} additional {value === 1 ? 'seat' : 'seats'}
-        </Text>
-      )}
-    </YStack>
   )
 }

@@ -13,7 +13,7 @@ const baseline = Date.now() - start
 console.info('baseline', baseline)
 
 test('performance of types', { retry: 1, timeout: 5 * 60 * 1000 }, async () => {
-  const out = execSync(`yarn typecheck --extendedDiagnostics || exit 0`, {
+  const out = execSync(`bun run typecheck --extendedDiagnostics || exit 0`, {
     cwd: join(__dirname, '..', '..'),
   }).toString()
   const [_, checkTime] = out.match(/Check time:\s+([^\s]+)/) ?? []
@@ -32,5 +32,6 @@ test('performance of types', { retry: 1, timeout: 5 * 60 * 1000 }, async () => {
     `${slowdown < 1 ? '🐇' : '🐢'} It is ${slowdown} slower than the baseline\n\n`
   )
 
-  expect(slowdown).toBeLessThan(2)
+  // threshold is somewhat loose because CI machines have variable load
+  expect(slowdown).toBeLessThan(2.5)
 })

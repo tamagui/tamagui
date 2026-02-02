@@ -1,42 +1,42 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "2.0.0-1769467800680",
-  "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "version": "2.0.0-rc.0-1769885482630",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/constants": "workspace:*",
@@ -55,12 +55,10 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
-  },
-  "publishConfig": {
-    "access": "public"
+    "react": ">=19"
   },
   "peerDependencies": {
-    "react": "*"
-  }
+    "react": ">=19"
+  },
+  "module:jsx": "dist/jsx"
 }

@@ -87,7 +87,7 @@ const STYLE_SHORT_FORM_EXPANSIONS = {
 // { scale: 2 } => 'scale(2)'
 // { translateX: 20 } => 'translateX(20px)'
 // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-const mapTransform = (transform: Object): string => {
+const mapTransform = (transform: object): string => {
   const type = Object.keys(transform)[0]
   const value = transform[type]
   if (type === 'matrix' || type === 'matrix3d') {

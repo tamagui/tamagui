@@ -7,9 +7,44 @@ import type { InputNativeProps } from './InputNativeProps';
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 type InputTextStyleProps = Pick<TextStyle, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
 type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck';
-export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps> & InputTextStyleProps & Omit<InputNativeProps, OverlappingNativeProps> & {
+export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps | OverlappingNativeProps> & InputTextStyleProps & Omit<InputNativeProps, OverlappingNativeProps> & {
+    /**
+     * Controls automatic spelling correction.
+     *
+     * Cross-platform values:
+     * - `true` or `'on'` - Enable auto-correction
+     * - `false` or `'off'` - Disable auto-correction
+     *
+     * @example
+     * ```tsx
+     * <Input autoCorrect={false} />
+     * <Input autoCorrect="off" />
+     * ```
+     */
     autoCorrect?: boolean | 'on' | 'off';
+    /**
+     * Controls automatic text capitalization.
+     *
+     * Native values (work on all platforms):
+     * - `'none'` - No automatic capitalization
+     * - `'sentences'` - Capitalize first letter of sentences
+     * - `'words'` - Capitalize first letter of each word
+     * - `'characters'` - Capitalize all characters
+     *
+     * Web compatibility values (mapped on native):
+     * - `'off'` - Maps to `'none'` on native
+     * - `'on'` - Maps to `'sentences'` on native
+     *
+     * @example
+     * ```tsx
+     * <Input autoCapitalize="none" />
+     * <Input autoCapitalize="words" />
+     * ```
+     */
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
+    /**
+     * Controls spell checking.
+     */
     spellCheck?: boolean;
     /**
      * Rows for textarea (when render="textarea")

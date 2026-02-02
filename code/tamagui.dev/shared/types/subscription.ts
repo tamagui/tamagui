@@ -1,7 +1,11 @@
 export const ProductName = {
   TamaguiPro: 'Tamagui Pro',
+  TamaguiProV2: 'Tamagui Pro V2', // V2 per-project license
+  TamaguiProV2Upgrade: 'Tamagui Pro V2 Upgrade', // V2 yearly renewal
   TamaguiChat: 'Tamagui Chat',
   TamaguiSupport: 'Tamagui Support',
+  TamaguiSupportDirect: 'Tamagui Support Direct', // V2 direct support
+  TamaguiSupportSponsor: 'Tamagui Support Sponsor', // V2 sponsor support
   TamaguiProTeamSeats: 'Tamagui Pro Team Seats',
   TamaguiBento: 'Bento',
   TamaguiTakeoutStack: 'Takeout Stack',
@@ -38,10 +42,16 @@ export type PricingType = (typeof Pricing)[keyof typeof Pricing]
 
 export type UserSubscriptionStatus = {
   pro: boolean
+  /** Has V1 Pro subscription (legacy) */
+  proV1: boolean
+  /** Has V2 Pro license */
+  proV2: boolean
   chat: boolean
   supportTier: number
   teamSeats: number
   couponCodes: {
     [key: string]: string
   }
+  /** Whether this user is a developer who can test the purchase flow */
+  isDeveloper?: boolean
 }

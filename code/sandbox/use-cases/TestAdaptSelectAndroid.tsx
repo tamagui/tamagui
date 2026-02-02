@@ -11,7 +11,13 @@ export default function TestSelectAdapt(props: SelectProps) {
   const [val, setVal] = React.useState('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll renderValue={getItemLabel} {...props}>
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      renderValue={getItemLabel}
+      {...props}
+    >
       <Select.Trigger width={220} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>

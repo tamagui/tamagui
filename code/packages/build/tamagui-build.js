@@ -43,6 +43,14 @@ const {
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
 
+// write file only if contents changed to avoid triggering watchers
+async function writeIfUnchanged(filePath, contents) {
+  const existing = await FSE.readFile(filePath, 'utf8').catch(() => null)
+  if (existing === contents) return false
+  await FSE.outputFile(filePath, contents, 'utf8')
+  return true
+}
+
 /**
  * esbuild plugin that runs React Compiler on TS/TSX files before transformation
  */
@@ -433,8 +441,8 @@ async function buildTsc(allFiles) {
           const output = `${code}\n//# sourceMappingURL=${path.basename(mapPath)}`
           await FSE.ensureDir(dirname(dtsPath))
           await Promise.all([
-            FSE.writeFile(dtsPath, output),
-            FSE.writeFile(mapPath, JSON.stringify(map, null, 2)),
+            writeIfUnchanged(dtsPath, output),
+            writeIfUnchanged(mapPath, JSON.stringify(map, null, 2)),
           ])
         })
       )
@@ -880,20 +888,7 @@ async function esbuildWriteIfChanged(
   const cleanupNonMjsFiles = []
   const cleanupNonCjsFiles = []
 
-  async function flush(path, contents) {
-    if (shouldWatch) {
-      if (
-        !(await FSE.pathExists(path)) ||
-        (await FSE.readFile(path, 'utf8')) !== contents
-      ) {
-        await FSE.outputFile(path, contents, 'utf8')
-        return true
-      }
-    } else {
-      await FSE.outputFile(path, contents, 'utf8')
-      return true
-    }
-  }
+  const flush = writeIfUnchanged
 
   const outputs = (
     await Promise.all(
@@ -970,13 +965,12 @@ async function esbuildWriteIfChanged(
           contents = result.join('\n')
         }
 
-        // only if writes + not map do we continue to specification
-        if (await flush(path, contents)) {
-          if (!isMap) {
-            return {
-              path,
-              contents,
-            }
+        // write the file (only if changed), but always return file info for further processing
+        await flush(path, contents)
+        if (!isMap) {
+          return {
+            path,
+            contents,
           }
         }
       })
@@ -991,7 +985,7 @@ async function esbuildWriteIfChanged(
       if (!file) return
       const { path, contents } = file
       // write it without specifics to just .js for older react-native compat
-      await FSE.writeFile(path, contents)
+      await flush(path, contents)
     })
   )
 
@@ -1020,7 +1014,7 @@ async function esbuildWriteIfChanged(
 
         cleanupNonCjsFiles.push(path)
 
-        await FSE.writeFile(path.replace(/\.js$/, '.cjs'), result.code)
+        await flush(path.replace(/\.js$/, '.cjs'), result.code)
       })
     )
     return
@@ -1069,16 +1063,13 @@ async function esbuildWriteIfChanged(
       }
 
       // output to mjs fully specified
-      if (
-        await flush(
-          newOutPath,
-          result.code +
-            (result.map ? `\n//# sourceMappingURL=${basename(newOutPath)}.map\n` : '')
-        )
-      ) {
-        if (result.map) {
-          await FSE.writeFile(newOutPath + '.map', JSON.stringify(result.map), 'utf8')
-        }
+      await flush(
+        newOutPath,
+        result.code +
+          (result.map ? `\n//# sourceMappingURL=${basename(newOutPath)}.map\n` : '')
+      )
+      if (result.map) {
+        await flush(newOutPath + '.map', JSON.stringify(result.map))
       }
     })
   )

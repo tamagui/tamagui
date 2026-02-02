@@ -8,13 +8,19 @@ export const TooltipLabelLarge = ({
   subtitle,
   icon,
   href,
-}: { href?: string; icon: any; title: string; subtitle: string }) => {
+}: {
+  href?: string
+  icon: any
+  title: string
+  subtitle: string
+}) => {
   const content = (
     <YStack
       cursor={href ? 'pointer' : 'default'}
       flex={1}
       flexBasis="auto"
-      p="$3.5"
+      py="$2.5"
+      px="$3"
       rounded="$4"
       gap="$1"
     >

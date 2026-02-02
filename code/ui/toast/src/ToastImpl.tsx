@@ -31,7 +31,7 @@ import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
 const ToastImplFrame = styled(YStack, {
   name: 'ToastImpl',
-  focusable: true,
+  tabIndex: 0,
 
   variants: {
     unstyled: {
@@ -330,8 +330,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
         {announceTextContent && (
           <ToastAnnounce
             scope={scope}
-            // Toasts are always role=status to avoid stuttering issues with role=alert in SRs.
-            // biome-ignore lint/a11y/useSemanticElements: <explanation>
+            // toasts are always role=status to avoid stuttering issues with role=alert in SRs
             role="status"
             aria-live={type === 'foreground' ? 'assertive' : 'polite'}
             aria-atomic

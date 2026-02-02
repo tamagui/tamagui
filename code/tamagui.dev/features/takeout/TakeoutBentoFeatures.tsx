@@ -88,8 +88,8 @@ function BentoCard({
     size: featured ? 280 : 220,
     strategy: 'blur',
     blurPct: 50,
-    color: isDark ? 'var(--color8)' : 'var(--color6)',
-    opacity: 0.4,
+    color: isDark ? 'var(--color3)' : 'var(--color6)',
+    opacity: 0.2,
     background: 'transparent',
   })
 
@@ -242,17 +242,17 @@ export function TakeoutBentoFeatures() {
         </ThemeTintAlt>
 
         <H2
-          fontSize={36}
+          fontSize={28}
           fontWeight="800"
           text="center"
           color="$color12"
           style={{ lineHeight: '1.15' }}
-          $sm={{ fontSize: 44 }}
+          $gtSm={{ fontSize: 44 }}
         >
           Modern, robust, maintained
         </H2>
 
-        <SubTitle maxW={680} text="center" size="$5">
+        <SubTitle maxW={680} text="center" size="$5" px="$2">
           We get it, starter kits are a dime a dozen. Takeout is built by industry
           veterans, and extracted out of real-world large apps.
         </SubTitle>

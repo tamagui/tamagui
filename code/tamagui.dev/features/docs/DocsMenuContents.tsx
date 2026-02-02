@@ -38,7 +38,10 @@ const sections = {
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   section: propsSection,
   inMenu,
-}: { inMenu?: boolean; section?: keyof typeof sections }) {
+}: {
+  inMenu?: boolean
+  section?: keyof typeof sections
+}) {
   const { currentPath, section: docsSection } = useDocsMenu()
   // compiler pages now show core section (merged)
   const rawSection = propsSection ?? docsSection
@@ -113,9 +116,11 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }}
         aria-label="Docs Menu"
       >
-        <XStack justifyContent="flex-end" pr="$2" mb="$2">
-          <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
-        </XStack>
+        {!inMenu && (
+          <XStack justifyContent="flex-end" pr="$2" mb="$2">
+            <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
+          </XStack>
+        )}
         <Accordion value={openSections} onValueChange={setOpenSections} type="multiple">
           {Object.keys(uiGroupedItems).map((label) => {
             const items = uiGroupedItems[label]
@@ -147,9 +152,11 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
-      <XStack justifyContent="flex-end" pr="$2" mb="$2">
-        <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
-      </XStack>
+      {!inMenu && (
+        <XStack justifyContent="flex-end" pr="$2" mb="$2">
+          <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
+        </XStack>
+      )}
       <Accordion value={openSections} onValueChange={setOpenSections} type="multiple">
         {Object.keys(groupedItems).map((sectionTitle) => {
           const items = groupedItems[sectionTitle]
@@ -180,9 +187,9 @@ const ToggleAllButton = ({
     <TooltipSimple label={expanded ? 'Collapse all' : 'Expand all'} placement="right">
       <Button
         circular
-        size="$2"
+        size="$3"
+        my="$-3"
         chromeless
-        opacity={0.5}
         hoverStyle={{ opacity: 1, backgroundColor: '$color3' }}
         pressStyle={{ opacity: 0.8, backgroundColor: '$color2' }}
         onPress={onPress}

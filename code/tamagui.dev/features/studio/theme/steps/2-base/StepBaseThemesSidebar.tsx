@@ -32,11 +32,7 @@ export function StepBaseThemesSidebar() {
   )
 }
 
-const Contents = ({
-  themeNameBase,
-}: {
-  themeNameBase: string
-}) => {
+const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
   const themeBuilder = useThemeBuilderStore()
   const { schemes, accentSetting } = themeBuilder
   const procedureStore = useStore(StudioProcedureStore)

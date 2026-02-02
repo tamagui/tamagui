@@ -4,6 +4,7 @@ import { Color, colorLog } from '@tamagui/cli-color'
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
+import * as esbuildWasm from 'esbuild-wasm'
 import * as fsExtra from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
@@ -122,6 +123,75 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
 const last: Record<string, TamaguiProjectInfo | null> = {}
 const lastVersion: Record<string, string> = {}
 
+// esbuild-wasm state - initialized once per process
+let esbuildWasmInitialized = false
+
+/**
+ * Load tamagui.build.ts config using esbuild-wasm transform
+ * Uses WASM to avoid native esbuild service lifecycle issues (EPIPE errors)
+ */
+export async function loadTamaguiBuildConfigAsync(
+  tamaguiOptions: Partial<TamaguiOptions> | undefined
+): Promise<TamaguiOptions> {
+  const buildFilePath = tamaguiOptions?.buildFile ?? './tamagui.build.ts'
+  const absolutePath =
+    buildFilePath[0] === '.' ? join(process.cwd(), buildFilePath) : buildFilePath
+
+  if (fsExtra.existsSync(absolutePath)) {
+    try {
+      const source = await fsExtra.readFile(absolutePath, 'utf-8')
+
+      // initialize esbuild-wasm once
+      if (!esbuildWasmInitialized) {
+        await esbuildWasm.initialize({})
+        esbuildWasmInitialized = true
+      }
+
+      // use esbuild-wasm.transform to compile - no native service needed
+      const result = await esbuildWasm.transform(source, {
+        loader: 'ts',
+        format: 'cjs',
+        target: 'node18',
+        sourcefile: absolutePath,
+      })
+
+      // evaluate the compiled code to get the exports
+      // pass process so process.env works in the config
+      const module = { exports: {} as any }
+      const fn = new Function('module', 'exports', 'require', 'process', result.code)
+      fn(module, module.exports, require, process)
+
+      const out = module.exports.default || module.exports
+      if (!out || typeof out !== 'object') {
+        throw new Error(`No default export found in ${buildFilePath}: ${out}`)
+      }
+
+      tamaguiOptions = {
+        ...tamaguiOptions,
+        ...out,
+      }
+    } catch (err) {
+      console.error(`[tamagui] Error loading ${buildFilePath}:`, err)
+      throw err
+    }
+  }
+
+  if (!tamaguiOptions) {
+    throw new Error(
+      `No tamagui build options found either via input props or at tamagui.build.ts`
+    )
+  }
+
+  return {
+    config: 'tamagui.config.ts',
+    components: ['tamagui', '@tamagui/core'],
+    ...tamaguiOptions,
+  } as TamaguiOptions
+}
+
+/**
+ * @deprecated Use loadTamaguiBuildConfigAsync instead to avoid EPIPE errors
+ */
 export function loadTamaguiBuildConfigSync(
   tamaguiOptions: Partial<TamaguiOptions> | undefined
 ) {
@@ -393,7 +463,7 @@ export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
         name: `on-rebuild`,
         setup({ onEnd, onResolve }) {
           // external node modules
-          let filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/ // Must not start with "/" or "./" or "../"
+          let filter = /^[^./]|^\.[^./]|^\.\.[^/]/ // Must not start with "/" or "./" or "../"
           onResolve({ filter }, (args) => ({ path: args.path, external: true }))
 
           onEnd(() => {

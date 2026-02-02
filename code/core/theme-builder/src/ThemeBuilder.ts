@@ -23,7 +23,7 @@ export type ThemeBuilderInternalState = {
   masks?: MaskDefinitions
 }
 
-type ObjectStringKeys<A extends Object | undefined> = A extends Object
+type ObjectStringKeys<A extends object | undefined> = A extends object
   ? Exclude<keyof A, symbol | number>
   : never
 
@@ -58,17 +58,18 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderInternalState> = TD extends {
 type ThemeBuilderBuildResult<
   S extends ThemeBuilderInternalState,
   FinalTheme extends Record<string, string | number> = Record<string, string>,
-> = Record<string, string> extends FinalTheme
-  ? FinalTheme extends Record<string, string>
-    ? {
-        [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
-      }
+> =
+  Record<string, string> extends FinalTheme
+    ? FinalTheme extends Record<string, string>
+      ? {
+          [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
+        }
+      : {
+          [Key in keyof S['themes']]: FinalTheme
+        }
     : {
         [Key in keyof S['themes']]: FinalTheme
       }
-  : {
-      [Key in keyof S['themes']]: FinalTheme
-    }
 
 type GetParentName<N extends string> =
   N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}`
@@ -92,11 +93,12 @@ type Prettify<T> = {
   [K in keyof T]: T[K]
 } & {}
 
-type FlattenUnion<T extends Record<string, string | number>> = Prettify<{
-  [K in keyof UnionToIntersection<T>]: UnionToIntersection<T>[K]
-}> extends infer R extends Record<string, string | number>
-  ? R
-  : never
+type FlattenUnion<T extends Record<string, string | number>> =
+  Prettify<{
+    [K in keyof UnionToIntersection<T>]: UnionToIntersection<T>[K]
+  }> extends infer R extends Record<string, string | number>
+    ? R
+    : never
 
 export class ThemeBuilder<
   State extends ThemeBuilderInternalState = ThemeBuilderInternalState,

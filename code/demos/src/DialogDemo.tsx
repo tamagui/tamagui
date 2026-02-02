@@ -29,7 +29,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>
-        <Button theme="surface3">
+        <Button>
           <Button.Text>Show Dialog{disableAdapt ? ` (No Sheet)` : ''}</Button.Text>
         </Button>
       </Dialog.Trigger>
@@ -136,14 +136,7 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button
-                  theme="surface3"
-                  position="absolute"
-                  r="$3"
-                  size="$2"
-                  circular
-                  icon={X}
-                />
+                <Button position="absolute" r="$3" size="$2" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>

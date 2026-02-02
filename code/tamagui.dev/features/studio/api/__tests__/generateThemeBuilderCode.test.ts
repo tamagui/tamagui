@@ -94,8 +94,8 @@ describe('generateThemeBuilderCode', () => {
       includeSizeTokens: false,
     })
 
-    expect(code).toContain('defaultComponentThemes')
-    expect(code).toContain('componentThemes: defaultComponentThemes,')
+    expect(code).toContain('v5ComponentThemes')
+    expect(code).toContain('componentThemes: v5ComponentThemes,')
   })
 
   it('disables componentThemes when not enabled', async () => {
@@ -106,7 +106,7 @@ describe('generateThemeBuilderCode', () => {
     })
 
     expect(code).toContain('componentThemes: false,')
-    expect(code).not.toContain('defaultComponentThemes')
+    expect(code).not.toContain('v5ComponentThemes')
   })
 
   it('exports themes type and conditional themes', async () => {

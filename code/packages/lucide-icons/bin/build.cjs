@@ -31,7 +31,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     if (filePath.endsWith('svg-part')) {
       //
     } else {
-      out = out.slice(out.search(/\<Svg/g))
+      out = out.slice(out.search(/<Svg/g))
       out = out.slice(0, out.search(/<\/Svg>.*/g)) + '</Svg>'
     }
 
@@ -104,8 +104,8 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
       cname,
       $('svg')
         .toString()
-        .replace(/ class=\"[^\"]+\"/g, '')
-        .replace(/ version=\"[^\"]+\"/g, '')
+        .replace(/ class="[^"]+"/g, '')
+        .replace(/ version="[^"]+"/g, '')
         .replace(new RegExp('stroke="currentColor"', 'g'), 'stroke={color}')
         .replace('width="24"', 'width={size}')
         .replace('height="24"', 'height={size}')

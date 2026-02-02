@@ -62,11 +62,16 @@ export function SheetScrollableDrag() {
       </RNScrollView>
 
       <Text testID="sheet-scrollable-drag-instructions" fontSize="$3" color="$gray11">
-        Test smooth handoff: drag down then up to scroll, scroll up then drag down to drag sheet.
+        Test smooth handoff: drag down then up to scroll, scroll up then drag down to drag
+        sheet.
       </Text>
 
       <YStack flexDirection="row" gap="$2">
-        <Button testID="sheet-scrollable-drag-trigger" onPress={() => setOpen(true)} flex={1}>
+        <Button
+          testID="sheet-scrollable-drag-trigger"
+          onPress={() => setOpen(true)}
+          flex={1}
+        >
           Open Sheet
         </Button>
         <Button
@@ -87,10 +92,18 @@ export function SheetScrollableDrag() {
 
       <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
         <Text testID="sheet-scrollable-drag-position">Sheet position: {position}</Text>
-        <Text testID="sheet-scrollable-drag-scroll-y">ScrollView Y: {scrollY.toFixed(0)}</Text>
-        <Text testID="sheet-scrollable-drag-scroll-count">Scroll events: {scrollEventCount}</Text>
-        <Text testID="sheet-scrollable-drag-min-scroll-y">Min scroll Y: {minScrollY.toFixed(0)}</Text>
-        <Text testID="sheet-scrollable-drag-max-scroll-y">Max scroll Y: {maxScrollY.toFixed(0)}</Text>
+        <Text testID="sheet-scrollable-drag-scroll-y">
+          ScrollView Y: {scrollY.toFixed(0)}
+        </Text>
+        <Text testID="sheet-scrollable-drag-scroll-count">
+          Scroll events: {scrollEventCount}
+        </Text>
+        <Text testID="sheet-scrollable-drag-min-scroll-y">
+          Min scroll Y: {minScrollY.toFixed(0)}
+        </Text>
+        <Text testID="sheet-scrollable-drag-max-scroll-y">
+          Max scroll Y: {maxScrollY.toFixed(0)}
+        </Text>
         <Text testID="sheet-scrollable-drag-events">
           Events: {dragEvents.join(', ') || '(none)'}
         </Text>
@@ -157,11 +170,19 @@ export function SheetScrollableDrag() {
             scrollEventThrottle={16}
           >
             <YStack gap="$3" padding="$4">
-              <Text testID="sheet-scrollable-drag-snap-label" fontSize="$3" color="$gray11">
+              <Text
+                testID="sheet-scrollable-drag-snap-label"
+                fontSize="$3"
+                color="$gray11"
+              >
                 Snap: {position} | Scroll Y: {scrollY.toFixed(0)} | Items: {itemCount}
               </Text>
 
-              <Text testID="sheet-scrollable-drag-content-top" fontWeight="bold" fontSize="$4">
+              <Text
+                testID="sheet-scrollable-drag-content-top"
+                fontWeight="bold"
+                fontSize="$4"
+              >
                 ↕ Drag here to test handoff ↕
               </Text>
 
@@ -173,7 +194,12 @@ export function SheetScrollableDrag() {
                 Add 5 Items ({itemCount} total)
               </Button>
 
-              <Text testID="sheet-scrollable-drag-scroll-indicator" padding="$2" bg="$blue3" borderRadius="$2">
+              <Text
+                testID="sheet-scrollable-drag-scroll-indicator"
+                padding="$2"
+                bg="$blue3"
+                borderRadius="$2"
+              >
                 Scroll Y: {scrollY.toFixed(0)}
               </Text>
 

@@ -50,7 +50,7 @@ export async function generateThemes(inputFile: string) {
 const dedupedTokens = new Map<string, string>()
 
 function generatedThemesToTypescript(themes: Record<string, any>) {
-  const dedupedThemes = new Map<string, Object>()
+  const dedupedThemes = new Map<string, object>()
   const dedupedThemeToNames = new Map<string, string[]>()
 
   let i = 0
@@ -153,7 +153,7 @@ function t(a: [number, number][]) {
 }
 
 function objectToJsString(
-  obj: Object,
+  obj: object,
   keys: string[],
   valueToIndex: Record<string, number>
 ) {

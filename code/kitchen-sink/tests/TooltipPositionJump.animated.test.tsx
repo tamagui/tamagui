@@ -24,7 +24,9 @@ test.describe('Tooltip Position Jump', () => {
     await page.waitForTimeout(500)
   })
 
-  test('scoped tooltip should not jump when moving quickly between triggers', async ({ page }) => {
+  test('scoped tooltip should not jump when moving quickly between triggers', async ({
+    page,
+  }) => {
     // get button positions
     const hireBtn = page.locator('[data-testid="tooltip-trigger-hire"]')
     const bentoBtn = page.locator('[data-testid="tooltip-trigger-bento"]')
@@ -42,14 +44,18 @@ test.describe('Tooltip Position Jump', () => {
     await page.evaluate(() => {
       ;(window as any).__tooltipPositions = []
       ;(window as any).__trackTooltip = () => {
-        const el = document.querySelector('[data-testid="tooltip-jump-content"]') as HTMLElement
+        const el = document.querySelector(
+          '[data-testid="tooltip-jump-content"]'
+        ) as HTMLElement
         if (!el) return null
 
         const style = getComputedStyle(el)
         const transform = style.transform
         if (!transform || transform === 'none') return null
 
-        const match = transform.match(/matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/)
+        const match = transform.match(
+          /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
+        )
         if (!match) return null
 
         const pos = { x: parseFloat(match[1]), y: parseFloat(match[2]), time: Date.now() }
@@ -66,13 +72,19 @@ test.describe('Tooltip Position Jump', () => {
     })
 
     // step 1: hover on rightmost button (HIRE) and wait for tooltip to fully appear
-    const hireCenter = { x: hireBox.x + hireBox.width / 2, y: hireBox.y + hireBox.height / 2 }
+    const hireCenter = {
+      x: hireBox.x + hireBox.width / 2,
+      y: hireBox.y + hireBox.height / 2,
+    }
     await page.mouse.move(hireCenter.x, hireCenter.y)
     await page.waitForTimeout(800)
 
     // step 2: move mouse QUICKLY across to leftmost button (TAKEOUT)
     // must actually traverse the path, not teleport
-    const takeoutCenter = { x: takeoutBox.x + takeoutBox.width / 2, y: takeoutBox.y + takeoutBox.height / 2 }
+    const takeoutCenter = {
+      x: takeoutBox.x + takeoutBox.width / 2,
+      y: takeoutBox.y + takeoutBox.height / 2,
+    }
 
     // do fast sweep: HIRE -> TAKEOUT in ~100ms total
     const steps = 10
@@ -136,16 +148,20 @@ test.describe('Tooltip Position Jump', () => {
     await page.evaluate(() => {
       ;(window as any).__tooltipPositions = []
       const track = () => {
-        const el = document.querySelector('[data-testid="tooltip-jump-content"]') as HTMLElement
+        const el = document.querySelector(
+          '[data-testid="tooltip-jump-content"]'
+        ) as HTMLElement
         if (el) {
           const transform = getComputedStyle(el).transform
           if (transform && transform !== 'none') {
-            const match = transform.match(/matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/)
+            const match = transform.match(
+              /matrix\([^,]+,\s*[^,]+,\s*[^,]+,\s*[^,]+,\s*([^,]+),\s*([^)]+)\)/
+            )
             if (match) {
               ;(window as any).__tooltipPositions.push({
                 x: parseFloat(match[1]),
                 y: parseFloat(match[2]),
-                time: Date.now()
+                time: Date.now(),
               })
             }
           }
@@ -155,8 +171,14 @@ test.describe('Tooltip Position Jump', () => {
       requestAnimationFrame(track)
     })
 
-    const hireCenter = { x: hireBox.x + hireBox.width / 2, y: hireBox.y + hireBox.height / 2 }
-    const takeoutCenter = { x: takeoutBox.x + takeoutBox.width / 2, y: takeoutBox.y + takeoutBox.height / 2 }
+    const hireCenter = {
+      x: hireBox.x + hireBox.width / 2,
+      y: hireBox.y + hireBox.height / 2,
+    }
+    const takeoutCenter = {
+      x: takeoutBox.x + takeoutBox.width / 2,
+      y: takeoutBox.y + takeoutBox.height / 2,
+    }
 
     // hover HIRE first
     await page.mouse.move(hireCenter.x, hireCenter.y)

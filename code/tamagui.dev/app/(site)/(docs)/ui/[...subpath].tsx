@@ -38,9 +38,8 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
-  const { getMDXBySlug, getAllVersionsFromPath } = await import(
-    '~/features/mdx/getMDXBySlug'
-  )
+  const { getMDXBySlug, getAllVersionsFromPath } =
+    await import('~/features/mdx/getMDXBySlug')
 
   const subpath = Array.isArray(props.params.subpath)
     ? props.params.subpath[0]
@@ -85,7 +84,7 @@ export function DocComponentsPage() {
       previous={previous}
     >
       <HeadInfo
-        title={`${frontmatter.title} | Tamagui — style library and UI kit for React Native and React Web`}
+        title={`${frontmatter.title} | Tamagui — React Native UI kit with copy-paste composable components`}
         description={frontmatter.description || 'UI Kit'}
         openGraph={{
           images: [

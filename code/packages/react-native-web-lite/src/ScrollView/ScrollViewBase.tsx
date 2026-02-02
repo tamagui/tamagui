@@ -85,7 +85,7 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
   const scrollRef = React.useRef(null)
 
   function createPreventableScrollHandler(handler: Function) {
-    return (e: Object) => {
+    return (e: object) => {
       if (scrollEnabled) {
         if (handler) {
           handler(e)
@@ -120,19 +120,19 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
     }
   }
 
-  function handleScrollStart(e: Object) {
+  function handleScrollStart(e: object) {
     scrollState.current.isScrolling = true
     handleScrollTick(e)
   }
 
-  function handleScrollTick(e: Object) {
+  function handleScrollTick(e: object) {
     scrollState.current.scrollLastTick = Date.now()
     if (onScroll) {
       onScroll(normalizeScrollEvent(e))
     }
   }
 
-  function handleScrollEnd(e: Object) {
+  function handleScrollEnd(e: object) {
     scrollState.current.isScrolling = false
     if (onScroll) {
       onScroll(normalizeScrollEvent(e))

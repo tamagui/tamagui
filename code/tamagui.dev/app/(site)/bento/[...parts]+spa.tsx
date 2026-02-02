@@ -19,6 +19,7 @@ import {
   Theme,
 } from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
+import { HeadInfo } from '~/components/HeadInfo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
@@ -53,6 +54,13 @@ export default function BentoPage() {
 
   return (
     <CurrentRouteProvider section={section} part={part}>
+      <HeadInfo
+        title={`${section} / ${part} - Tamagui Bento`}
+        description={`Copy-paste ${section} ${part} component for React Native and Web`}
+        openGraph={{
+          images: [{ url: '/bento/social.png' }],
+        }}
+      />
       <BentoPageFrame>
         <ContainerBento>
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
@@ -176,7 +184,7 @@ export const DetailHeader = (props: { children: string }) => {
               <DropTamaguiConfig />
 
               <Button
-                icon={bentoStore.disableTint ? CircleDashed : Paintbrush}
+                icon={bentoStore.disableTint ? Paintbrush : CircleDashed}
                 size="$3"
                 rounded="$6"
                 onPress={() => {
@@ -185,7 +193,7 @@ export const DetailHeader = (props: { children: string }) => {
                   })
                 }}
               >
-                {bentoStore.disableTint ? 'Dark/Light' : 'Tinted'}
+                {bentoStore.disableTint ? 'Tinted' : 'Dark/Light'}
               </Button>
             </XStack>
           </YStack>
@@ -193,27 +201,42 @@ export const DetailHeader = (props: { children: string }) => {
 
         <XStack p={0.5} items="center" gap="$2">
           <Link href="/bento/">
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize">
+            <Anchor
+              fontFamily="$mono"
+              render="span"
+              textTransform="capitalize"
+              color="$color9"
+            >
               Bento
             </Anchor>
           </Link>
 
-          <SizableText color="$color10" render="span" select="none" size="$2">
+          <SizableText color="$color9" render="span" select="none" size="$2">
             &raquo;
           </SizableText>
 
           <Link href={`/bento#${category}`}>
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize">
+            <Anchor
+              fontFamily="$mono"
+              render="span"
+              textTransform="capitalize"
+              color="$color9"
+            >
               {category}
             </Anchor>
           </Link>
 
-          <SizableText color="$color10" render="span" select="none" size="$2">
+          <SizableText color="$color9" render="span" select="none" size="$2">
             &raquo;
           </SizableText>
 
           <Link href={`/bento/${category}/${subCategory}`}>
-            <Anchor fontFamily="$mono" render="span" textTransform="capitalize">
+            <Anchor
+              fontFamily="$mono"
+              render="span"
+              textTransform="capitalize"
+              color="$color9"
+            >
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>

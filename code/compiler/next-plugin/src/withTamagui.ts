@@ -235,32 +235,30 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
           }
 
           // externalize react native things from bundle
-          webpackConfig.externals = [
-            ...webpackConfig.externals.map((external) => {
-              if (typeof external !== 'function') {
-                return external
-              }
-              // only runs on server
-              return (ctx, cb) => {
-                const isCb = typeof cb === 'function'
-                const res = externalize(ctx.context, ctx.request)
-                if (isCb) {
-                  if (typeof res === 'string') {
-                    return cb(null, res)
-                  }
-                  if (res) {
-                    return external(ctx, cb)
-                  }
-                  return cb()
+          webpackConfig.externals = webpackConfig.externals.map((external) => {
+            if (typeof external !== 'function') {
+              return external
+            }
+            // only runs on server
+            return (ctx, cb) => {
+              const isCb = typeof cb === 'function'
+              const res = externalize(ctx.context, ctx.request)
+              if (isCb) {
+                if (typeof res === 'string') {
+                  return cb(null, res)
                 }
-                return !res
-                  ? Promise.resolve(undefined)
-                  : typeof res === 'string'
-                    ? Promise.resolve(res)
-                    : external(ctx)
+                if (res) {
+                  return external(ctx, cb)
+                }
+                return cb()
               }
-            }),
-          ]
+              return !res
+                ? Promise.resolve(undefined)
+                : typeof res === 'string'
+                  ? Promise.resolve(res)
+                  : external(ctx)
+            }
+          })
         }
 
         webpackConfig.plugins.push(tamaguiPlugin)

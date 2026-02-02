@@ -1,12 +1,9 @@
 {
   "name": "@tamagui/react-native-svg",
-  "version": "2.0.0-1769467800680",
-  "main": "dist/cjs",
+  "version": "2.0.0-rc.0-1769885482630",
   "type": "module",
+  "main": "dist/cjs",
   "module": "dist/esm/index.js",
-  "publishConfig": {
-    "access": "public"
-  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -21,11 +18,18 @@
       "default": "./dist/cjs/index.native.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react-native-svg": "15.12.1"
   },
   "peerDependencies": {
     "react-native-svg": "*"
@@ -34,9 +38,5 @@
     "react-native-svg": {
       "optional": true
     }
-  },
-  "devDependencies": {
-    "@tamagui/build": "workspace:*",
-    "react-native-svg": "15.12.1"
   }
 }

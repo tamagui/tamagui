@@ -212,7 +212,10 @@ function CustomizationEnabledBanner() {
 function Content({
   tab,
   CodeBlock,
-}: { tab: { name: string; content: string }; CodeBlock: React.ComponentType<any> }) {
+}: {
+  tab: { name: string; content: string }
+  CodeBlock: React.ComponentType<any>
+}) {
   return (
     <YStack
       width="100%"

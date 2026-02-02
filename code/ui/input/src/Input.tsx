@@ -36,8 +36,8 @@ export const Input = StyledInput.styleable<InputProps>((props, _forwardedRef) =>
     allowFontScaling,
     multiline,
     keyboardType,
-    autoCapitalize,
-    autoCorrect,
+    autoCapitalize: autoCapitalizeProp,
+    autoCorrect: autoCorrectProp,
     autoFocusNative,
     textContentType,
     onEndEditing,
@@ -81,6 +81,16 @@ export const Input = StyledInput.styleable<InputProps>((props, _forwardedRef) =>
 
   const { ref, composedRef } = useWebRef<HTMLInputElement>(_forwardedRef)
   const theme = useTheme()
+
+  // convert native-style values to web equivalents
+  const autoCorrect =
+    autoCorrectProp === true ? 'on' : autoCorrectProp === false ? 'off' : autoCorrectProp
+  const autoCapitalize =
+    autoCapitalizeProp === 'sentences' || autoCapitalizeProp === 'words'
+      ? 'on'
+      : autoCapitalizeProp === 'none' || autoCapitalizeProp === 'characters'
+        ? 'off'
+        : autoCapitalizeProp
 
   // Handle selection changes
   React.useEffect(() => {
@@ -141,6 +151,8 @@ export const Input = StyledInput.styleable<InputProps>((props, _forwardedRef) =>
     disabled,
     id,
     rows,
+    autoCorrect,
+    autoCapitalize,
     onKeyDown: onSubmitEditing ? handleKeyDown : rest.onKeyDown,
     onChange: onChangeText ? handleChange : rest.onChange,
     style: {

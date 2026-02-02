@@ -141,11 +141,17 @@ const transform = (source) => {
   return output.code
 }
 // Get list of all workspaces
-const workspacesOutput = execSync('yarn workspaces list --json')
-  .toString()
-  .trim()
-  .split('\n')
-const workspaces = workspacesOutput.map((line) => JSON.parse(line))
+const output = execSync('bun pm ls').toString()
+const lines = output.split('\n').filter((line) => line.includes('workspace:'))
+const workspaces = lines
+  .map((line) => {
+    const match = line.match(/([^\s]+)@workspace:(.+)$/)
+    if (match) {
+      return { name: match[1], location: match[2] }
+    }
+    return null
+  })
+  .filter(Boolean)
 
 // Iterate over each workspace and run the codemod
 workspaces.forEach((workspace) => {

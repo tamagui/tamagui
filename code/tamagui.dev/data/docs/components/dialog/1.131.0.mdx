@@ -134,6 +134,7 @@ Note that the `Trigger` scope ties to the `Dialog` scope.
 ## Dismissal Behavior
 
 By default, dialogs can be dismissed by:
+
 - Clicking outside the dialog content (on the overlay)
 - Pressing the Escape key
 - Clicking a Dialog.Close element
@@ -144,7 +145,6 @@ By default, dialogs can be dismissed by:
   - In v1, have `disableOutsidePointerEvents` set to `true` by default
   - Still dismiss on outside click, but prevent interaction with elements behind the dialog
   - Prevent right-click dismissal (right-clicks on the overlay are ignored)
-  
 - **Non-modal dialogs** (`modal={false}`):
   - Allow interaction with elements behind the dialog
   - Dismiss on any outside click
@@ -396,9 +396,9 @@ export default () => (
 ```
 
 <Notice>
-  Note that Dialog.Sheet currently doesn't preserve state of the contents when
-  it transitions between Sheet and Portal. In the future, we can do this on the
-  web using react-reparenting.
+  Note that Dialog.Sheet currently doesn't preserve state of the contents when it
+  transitions between Sheet and Portal. In the future, we can do this on the web using
+  react-reparenting.
 </Notice>
 
 ### PortalProvider
@@ -428,9 +428,7 @@ import { PortalProvider } from 'tamagui'
 // this component used in react-navigation/expo-router with `presentation: "modal"`
 export function Page() {
   return (
-    <PortalProvider>
-      {/* rest of your page, including the Dialog... */}
-    </PortalProvider>
+    <PortalProvider>{/* rest of your page, including the Dialog... */}</PortalProvider>
   )
 }
 ```

@@ -52,14 +52,15 @@ import {
   Spinner,
   Theme,
   Unspaced,
-  useMedia,
-  useTheme,
-  useThemeName,
   View,
   XStack,
   YStack,
+  useMedia,
+  useTheme,
+  useThemeName,
 } from 'tamagui'
 import { z } from 'zod'
+import { authFetch } from '~/features/api/authFetch'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useUser } from '~/features/user/useUser'
@@ -105,9 +106,23 @@ const ErrorMessage = ({ error }: { error: Error | StripeError }) => {
     if (typeof error === 'string') {
       return error
     }
+    // check for Stripe error schema first
     const parsed = stripeErrorSchema.safeParse(error)
     if (parsed.success) {
       return parsed.data.message
+    }
+    // check for standard Error with message
+    if (error instanceof Error && error.message) {
+      // try to parse JSON error message from API responses
+      try {
+        const jsonError = JSON.parse(error.message)
+        if (jsonError.error) {
+          return jsonError.error
+        }
+      } catch {
+        // not JSON, use message directly
+      }
+      return error.message
     }
     return 'An error occurred during payment processing'
   }, [error])
@@ -142,18 +157,25 @@ export {
   usePaymentModal,
   V2_LICENSE_PRICE,
   V2_UPGRADE_PRICE,
+  SUPPORT_TIERS,
+  type SupportTier,
 } from './paymentModalStore'
 
 // also import for internal use
-import { usePaymentModal, V2_LICENSE_PRICE, V2_UPGRADE_PRICE } from './paymentModalStore'
-import { calculatePromoPrice } from './promoConfig'
+import {
+  SUPPORT_TIERS,
+  type SupportTier,
+  V2_LICENSE_PRICE,
+  usePaymentModal,
+} from './paymentModalStore'
+import { calculatePromoPrice, getActivePromo } from './promoConfig'
 
 type StripePaymentModalProps = {
   yearlyTotal: number
   monthlyTotal: number
   disableAutoRenew: boolean
   chatSupport: boolean
-  supportTier: number
+  supportTier: SupportTier
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
   teamSeats: number
@@ -175,21 +197,18 @@ const PaymentForm = ({
   children,
   // V2 fields
   isV2,
-  projectName,
-  projectDomain,
-  onProjectNameChange,
-  onProjectDomainChange,
+  isSupportUpgradeOnly,
 }: {
   onSuccess: (subscriptionId: string) => void
   onError: (error: Error | StripeError) => void
   autoRenew: boolean
   chatSupport: boolean
-  supportTier: number
+  supportTier: SupportTier
   teamSeats: number
   selectedPrices: {
     disableAutoRenew: boolean
     chatSupport: boolean
-    supportTier: number
+    supportTier: SupportTier
     teamSeats: number
   }
   isProcessing: boolean
@@ -200,36 +219,15 @@ const PaymentForm = ({
   children: React.ReactNode
   // V2 fields
   isV2: boolean
-  projectName: string
-  projectDomain: string
-  onProjectNameChange: (value: string) => void
-  onProjectDomainChange: (value: string) => void
+  isSupportUpgradeOnly: boolean
 }) => {
   const stripe = useStripe()
   const elements = useElements()
   const [error, setError] = useState<Error | StripeError | null>(null)
 
-  // V2 validation
-  const v2ValidationError = useMemo(() => {
-    if (!isV2) return null
-    if (!projectName || projectName.length <= 2)
-      return 'Project name must be more than 2 characters'
-    if (!projectDomain || projectDomain.length <= 2)
-      return 'Domain must be more than 2 characters'
-    return null
-  }, [isV2, projectName, projectDomain])
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setError(null)
-
-    // V2 validation
-    if (isV2 && v2ValidationError) {
-      const validationErr = new Error(v2ValidationError)
-      setError(validationErr)
-      onError(validationErr)
-      return
-    }
 
     if (!stripe || !elements) {
       return
@@ -239,64 +237,89 @@ const PaymentForm = ({
 
     try {
       // Submit the form first
+      console.log('[Payment] Submitting elements...')
       const { error: submitError } = await elements.submit()
+
       if (submitError) {
+        console.error('[Payment] Submit error:', submitError)
         setError(submitError)
         onError(submitError)
         return
       }
+      console.log('[Payment] Elements submitted successfully')
 
       // Create payment method
+      console.log('[Payment] Creating payment method...')
       const { error: paymentMethodError, paymentMethod } =
         await stripe.createPaymentMethod({
           elements,
         })
 
       if (paymentMethodError) {
+        console.error('[Payment] Payment method error:', paymentMethodError)
         setError(paymentMethodError)
         onError(paymentMethodError)
         return
       }
+      console.log('[Payment] Payment method created:', paymentMethod.id)
 
       let data: any = null
 
-      // Only create Pro subscription if user doesn't already have PRO
-      if (!subscriptionStatus.pro) {
-        // V2 purchase flow
-        if (isV2) {
-          const response = await fetch('/api/create-v2-subscription', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+      // V2 purchase flow - V1 users can buy V2 (different product), V2 users can't buy again
+      if (isV2 && !subscriptionStatus.proV2) {
+        console.log('[Payment] Creating V2 subscription...')
+        const response = await authFetch('/api/create-v2-subscription', {
+          method: 'POST',
+          body: JSON.stringify({
+            paymentMethodId: paymentMethod.id,
+            couponId: finalCoupon?.id,
+            supportTier: selectedPrices.supportTier,
+          }),
+        })
+
+        data = await response.json()
+        console.log('[Payment] V2 subscription response:', response.status, data)
+
+        if (!response.ok) {
+          console.error('[Payment] V2 subscription failed:', data)
+          const error = new Error(data.error || JSON.stringify(data))
+          setError(error)
+          onError(error)
+          return
+        }
+
+        // Handle 3DS authentication if required
+        if (data.status === 'requires_action' && data.clientSecret) {
+          const result = await stripe.confirmPayment({
+            elements,
+            redirect: 'if_required',
+            confirmParams: {
+              payment_method: paymentMethod.id,
             },
-            body: JSON.stringify({
-              paymentMethodId: paymentMethod.id,
-              projectName,
-              projectDomain,
-              couponId: finalCoupon?.id,
-            }),
+            clientSecret: data.clientSecret,
           })
 
-          data = await response.json()
-
-          if (!response.ok) {
-            const error = new Error(data.error || JSON.stringify(data))
-            setError(error)
-            onError(error)
+          if (result.error) {
+            setError(result.error)
+            onError(result.error)
             return
           }
 
-          // V2 purchase successful
+          // After 3DS, verify payment completed
+          // The webhook will handle project creation
           onSuccess(data.invoiceId)
           return
         }
 
-        // Legacy V1 subscription/payment flow
-        const response = await fetch('/api/create-subscription', {
+        // V2 purchase successful (no 3DS required)
+        onSuccess(data.invoiceId)
+        return
+      }
+
+      // Legacy V1 subscription/payment flow - only if not V2 mode and user doesn't have V1 Pro
+      if (!isV2 && !subscriptionStatus.proV1) {
+        const response = await authFetch('/api/create-subscription', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify({
             paymentMethodId: paymentMethod.id,
             disableAutoRenew: selectedPrices.disableAutoRenew,
@@ -335,12 +358,9 @@ const PaymentForm = ({
       }
 
       // If Chat or Support is selected, create additional subscription
-      if (selectedPrices.chatSupport || selectedPrices.supportTier > 0) {
-        const upgradeResponse = await fetch('/api/upgrade-subscription', {
+      if (selectedPrices.chatSupport || selectedPrices.supportTier !== 'chat') {
+        const upgradeResponse = await authFetch('/api/upgrade-subscription', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify({
             paymentMethodId: paymentMethod.id,
             chatSupport: selectedPrices.chatSupport,
@@ -452,50 +472,6 @@ const PaymentForm = ({
           }}
           py="$4"
         >
-          {/* V2 Project Information Fields */}
-          {isV2 && (
-            <YStack gap="$4" mb="$4">
-              <YStack gap="$2">
-                <Paragraph fontFamily="$mono" fontWeight="600" size="$4">
-                  Project Information
-                </Paragraph>
-                <Paragraph size="$3" color="$color9">
-                  Enter your project name and primary domain. Your license covers this
-                  domain plus iOS/Android apps.
-                </Paragraph>
-              </YStack>
-
-              <YStack gap="$2">
-                <Paragraph fontFamily="$mono" size="$3">
-                  Project Name
-                </Paragraph>
-                <Input
-                  placeholder="My Awesome App"
-                  value={projectName}
-                  onChangeText={onProjectNameChange}
-                  fontFamily="$mono"
-                />
-              </YStack>
-
-              <YStack gap="$2">
-                <Paragraph fontFamily="$mono" size="$3">
-                  Domain
-                </Paragraph>
-                <Input
-                  placeholder="myapp.com"
-                  value={projectDomain}
-                  onChangeText={onProjectDomainChange}
-                  fontFamily="$mono"
-                />
-                <Paragraph size="$2" color="$color9">
-                  Primary web domain for your project
-                </Paragraph>
-              </YStack>
-
-              <Separator my="$2" />
-            </YStack>
-          )}
-
           <PaymentElement
             options={{
               layout: 'accordion',
@@ -535,6 +511,7 @@ const PaymentForm = ({
               }}
             >
               <Button
+                render={<button type="submit" />}
                 rounded="$10"
                 self="flex-end"
                 $maxMd={{
@@ -577,10 +554,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const [couponError, setCouponError] = useState<string | null>(null)
   const { handleLogin } = useLoginLink()
 
-  // V2 project fields
-  const [projectName, setProjectName] = useState(store.projectName || '')
-  const [projectDomain, setProjectDomain] = useState(store.projectDomain || '')
+  // V2 mode flags (project info is now collected after payment)
   const isV2 = store.isV2 ?? true // Default to V2 for new purchases
+  const isSupportUpgradeOnly = store.isSupportUpgradeOnly ?? false
 
   const theme = useTheme()
   const themeName = useThemeName()
@@ -594,35 +570,80 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const supportTier = store.supportTier || propSupportTier
   const teamSeats = store.teamSeats || propTeamSeats
 
-  // auto-apply prefilled coupon when modal opens
+  // auto-apply promo coupon when modal opens
+  // always check for active promo as the single source of truth, regardless of how modal was opened
   useEffect(() => {
-    if (store.show && store.prefilledCouponCode && !finalCoupon) {
-      setCouponCode(store.prefilledCouponCode)
-      // auto-validate the coupon
-      const validateCoupon = async () => {
-        try {
-          const response = await fetch('/api/validate-coupon', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code: store.prefilledCouponCode }),
-          })
+    if (!store.show || finalCoupon) return
 
-          const result = await response.json()
-          const data = couponResponseSchema.parse(result)
+    // determine which coupon code to use:
+    // 1. prefilled code from store (passed from purchase modal)
+    // 2. active promo from config (global fallback - ensures promo always applies)
+    const activePromo = getActivePromo()
+    const codeToValidate = store.prefilledCouponCode || activePromo?.code
 
-          if (data.valid) {
-            setFinalCoupon(data.coupon)
-          }
-        } catch (error) {
-          // silently fail - user can still manually enter coupon
-          console.error('Failed to auto-apply coupon:', error)
+    if (!codeToValidate) return
+
+    setCouponCode(codeToValidate)
+
+    // auto-validate the coupon
+    const validateCoupon = async () => {
+      try {
+        const response = await fetch('/api/validate-coupon', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code: codeToValidate }),
+        })
+
+        const result = await response.json()
+        const data = couponResponseSchema.parse(result)
+
+        if (data.valid) {
+          setFinalCoupon(data.coupon)
         }
+      } catch (error) {
+        // silently fail - user can still manually enter coupon
+        console.error('Failed to auto-apply coupon:', error)
       }
-      validateCoupon()
     }
+    validateCoupon()
   }, [store.show, store.prefilledCouponCode])
+
+  // fetch parity discount from API (ensures it's always available, even if modal opened directly)
+  const [parityDiscount, setParityDiscount] = useState<{
+    discount: number
+    country: string
+    flag: string
+  } | null>(
+    store.parityDiscount > 0
+      ? { discount: store.parityDiscount, country: store.parityCountry || '', flag: '🌍' }
+      : null
+  )
+
+  useEffect(() => {
+    if (!store.show || parityDiscount) return
+
+    const fetchParity = async () => {
+      try {
+        const response = await fetch('/api/parity-discount')
+        const data = await response.json()
+        if (data.discount > 0) {
+          // convert country code to flag emoji
+          const flag = data.country
+            ? String.fromCodePoint(
+                data.country.charCodeAt(0) + 127397,
+                data.country.charCodeAt(1) + 127397
+              )
+            : '🌍'
+          setParityDiscount({ discount: data.discount, country: data.countryName, flag })
+        }
+      } catch (error) {
+        console.error('Failed to fetch parity discount:', error)
+      }
+    }
+    fetchParity()
+  }, [store.show])
 
   const handleApplyCoupon = async () => {
     try {
@@ -651,18 +672,26 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     }
   }
 
+  // calculate total discount with parity and coupon stacking
+  // parity is applied first, then coupon on top
   const calculateDiscountedAmount = (amount: number, coupon: Coupon | null): number => {
-    if (!coupon) return amount
+    let discounted = amount
 
-    if (coupon.percent_off) {
-      return amount * (1 - coupon.percent_off / 100)
+    // apply parity discount first (for display purposes - actual discount applied server-side)
+    if (parityDiscount) {
+      discounted = discounted * (1 - parityDiscount.discount / 100)
     }
 
-    if (coupon.amount_off) {
-      return Math.max(0, amount - coupon.amount_off / 100)
+    // then apply coupon discount
+    if (coupon) {
+      if (coupon.percent_off) {
+        discounted = discounted * (1 - coupon.percent_off / 100)
+      } else if (coupon.amount_off) {
+        discounted = Math.max(0, discounted - coupon.amount_off / 100)
+      }
     }
 
-    return amount
+    return discounted
   }
 
   const renderContent = () => {
@@ -710,7 +739,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       },
     }
 
-    // V2: $999 one-time, V1: legacy monthly + yearly
+    // V2: $400 one-time, V1: legacy monthly + yearly
     const baseAmount = isV2
       ? V2_LICENSE_PRICE * 100
       : monthlyTotal * 100 + yearlyTotal * 100
@@ -719,9 +748,126 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     )
 
     const renderTotalView = () => {
+      // Support Tier Upgrade Only (for existing V2 Pro users)
+      if (isSupportUpgradeOnly && supportTier !== 'chat') {
+        const supportPrice = SUPPORT_TIERS[supportTier].price
+        const discountedSupportPrice = calculateDiscountedAmount(
+          supportPrice,
+          finalCoupon
+        )
+        return (
+          <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
+            <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+              Order summary
+            </H3>
+            <Separator />
+
+            <XStack justify="space-between">
+              <Paragraph fontFamily="$mono">
+                {SUPPORT_TIERS[supportTier].label} Support
+              </Paragraph>
+              <YStack items="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    fontFamily="$mono"
+                    size="$3"
+                    opacity={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${supportPrice.toLocaleString()}/mo
+                  </Paragraph>
+                )}
+                <Paragraph fontFamily="$mono">
+                  ${Math.ceil(discountedSupportPrice).toLocaleString()}/mo
+                </Paragraph>
+              </YStack>
+            </XStack>
+
+            <YStack gap="$2" bg="$color3" p="$3" rounded="$3">
+              <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
+                {SUPPORT_TIERS[supportTier].label} Support includes:
+              </Paragraph>
+              <Paragraph size="$2" color="$color9">
+                {SUPPORT_TIERS[supportTier].description}
+              </Paragraph>
+            </YStack>
+
+            <Separator />
+
+            <XStack justify="space-between">
+              <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+                Total
+              </H3>
+              <YStack items="flex-end">
+                {finalCoupon && (
+                  <Paragraph
+                    fontFamily="$mono"
+                    size="$3"
+                    opacity={0.5}
+                    textDecorationLine="line-through"
+                  >
+                    ${supportPrice.toLocaleString()}/mo
+                  </Paragraph>
+                )}
+                <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
+                  ${Math.ceil(discountedSupportPrice).toLocaleString()}/mo
+                </H3>
+              </YStack>
+            </XStack>
+
+            <YStack gap="$2">
+              <SizableText
+                color="$color10"
+                opacity={0.3}
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
+                $maxMd={{
+                  fontSize: '$3',
+                }}
+                onPress={() => setShowCoupon((x) => !x)}
+              >
+                {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+              </SizableText>
+              {showCoupon && (
+                <XStack gap="$2" items="center">
+                  <Input
+                    flex={1}
+                    size="$3"
+                    borderWidth={1}
+                    placeholder="Enter code"
+                    value={couponCode}
+                    onChange={(e) => {
+                      const text = e.target?.value
+                      setCouponCode(text)
+                    }}
+                  />
+                  <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                    <Button.Text>Apply</Button.Text>
+                  </Button>
+                </XStack>
+              )}
+              {couponError && (
+                <Paragraph size="$2" color="$red10">
+                  {couponError}
+                </Paragraph>
+              )}
+              {finalCoupon && (
+                <Paragraph size="$2" color="$green10">
+                  Coupon applied:{' '}
+                  {finalCoupon.percent_off
+                    ? `${finalCoupon.percent_off}% off`
+                    : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+                </Paragraph>
+              )}
+            </YStack>
+          </YStack>
+        )
+      }
+
       // V2 Order Summary
       if (isV2) {
         const discountedPrice = calculateDiscountedAmount(V2_LICENSE_PRICE, finalCoupon)
+        const hasAnyDiscount = parityDiscount || finalCoupon
         return (
           <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
             <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
@@ -734,7 +880,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 Tamagui Pro V2 License
               </Paragraph>
               <YStack items="flex-end">
-                {finalCoupon && (
+                {hasAnyDiscount && (
                   <Paragraph
                     fontFamily="$mono"
                     size="$3"
@@ -749,6 +895,58 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 </Paragraph>
               </YStack>
             </XStack>
+
+            {/* show applied discounts */}
+            {parityDiscount && (
+              <XStack justify="space-between">
+                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                  {parityDiscount.flag} Parity ({parityDiscount.country})
+                </Paragraph>
+                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                  -{parityDiscount.discount}%
+                </Paragraph>
+              </XStack>
+            )}
+            {finalCoupon && (
+              <XStack justify="space-between">
+                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                  Promo: {finalCoupon.code}
+                </Paragraph>
+                <Paragraph fontFamily="$mono" size="$3" color="$green10">
+                  -{finalCoupon.percent_off}%
+                </Paragraph>
+              </XStack>
+            )}
+
+            {supportTier !== 'chat' && (
+              <XStack justify="space-between">
+                <Paragraph fontFamily="$mono">
+                  {SUPPORT_TIERS[supportTier].label} Support
+                </Paragraph>
+                <YStack items="flex-end">
+                  {finalCoupon && (
+                    <Paragraph
+                      fontFamily="$mono"
+                      size="$3"
+                      opacity={0.5}
+                      textDecorationLine="line-through"
+                    >
+                      ${SUPPORT_TIERS[supportTier].price.toLocaleString()}/mo
+                    </Paragraph>
+                  )}
+                  <Paragraph fontFamily="$mono">
+                    $
+                    {Math.ceil(
+                      calculateDiscountedAmount(
+                        SUPPORT_TIERS[supportTier].price,
+                        finalCoupon
+                      )
+                    ).toLocaleString()}
+                    /mo
+                  </Paragraph>
+                </YStack>
+              </XStack>
+            )}
 
             <YStack gap="$2" bg="$color3" p="$3" rounded="$3">
               <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
@@ -773,7 +971,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
             <XStack justify="space-between" items="center">
               <Paragraph size="$3" color="$color9">
-                After 1 year: $300/year for updates
+                After 1 year: $100/year for updates
               </Paragraph>
               <Paragraph size="$2" color="$color9">
                 (auto-subscribed)
@@ -795,13 +993,68 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     textDecorationLine="line-through"
                   >
                     ${V2_LICENSE_PRICE.toLocaleString()}
+                    {supportTier !== 'chat' &&
+                      ` + $${SUPPORT_TIERS[supportTier].price.toLocaleString()}/mo`}
                   </Paragraph>
                 )}
                 <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
                   ${Math.ceil(discountedPrice).toLocaleString()}
+                  {supportTier !== 'chat' &&
+                    ` + $${Math.ceil(
+                      calculateDiscountedAmount(
+                        SUPPORT_TIERS[supportTier].price,
+                        finalCoupon
+                      )
+                    ).toLocaleString()}/mo`}
                 </H3>
               </YStack>
             </XStack>
+
+            <YStack gap="$2">
+              <SizableText
+                color="$color10"
+                opacity={0.3}
+                cursor="pointer"
+                hoverStyle={{ opacity: 0.8 }}
+                $maxMd={{
+                  fontSize: '$3',
+                }}
+                onPress={() => setShowCoupon((x) => !x)}
+              >
+                {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+              </SizableText>
+              {showCoupon && (
+                <XStack gap="$2" items="center">
+                  <Input
+                    flex={1}
+                    size="$3"
+                    borderWidth={1}
+                    placeholder="Enter code"
+                    value={couponCode}
+                    onChange={(e) => {
+                      const text = e.target?.value
+                      setCouponCode(text)
+                    }}
+                  />
+                  <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                    <Button.Text>Apply</Button.Text>
+                  </Button>
+                </XStack>
+              )}
+              {couponError && (
+                <Paragraph size="$2" color="$red10">
+                  {couponError}
+                </Paragraph>
+              )}
+              {finalCoupon && (
+                <Paragraph size="$2" color="$green10">
+                  Coupon applied:{' '}
+                  {finalCoupon.percent_off
+                    ? `${finalCoupon.percent_off}% off`
+                    : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+                </Paragraph>
+              )}
+            </YStack>
 
             <Theme name="red">
               <YStack
@@ -869,14 +1122,17 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       </Paragraph>
                     )}
                     <Paragraph fontFamily="$mono">
-                      ${Math.ceil(calculateDiscountedAmount(200, finalCoupon))}/month
+                      ${Math.ceil(calculateDiscountedAmount(200, finalCoupon))}
+                      /month
                     </Paragraph>
                   </YStack>
                 </XStack>
               )}
-              {supportTier > 0 && (
+              {supportTier !== 'chat' && (
                 <XStack justify="space-between">
-                  <Paragraph fontFamily="$mono">Support tier ({supportTier})</Paragraph>
+                  <Paragraph fontFamily="$mono">
+                    {SUPPORT_TIERS[supportTier].label} Support
+                  </Paragraph>
                   <YStack items="flex-end">
                     {finalCoupon && (
                       <Paragraph
@@ -885,13 +1141,16 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                         opacity={0.5}
                         textDecorationLine="line-through"
                       >
-                        ${supportTier * 800}/month
+                        ${SUPPORT_TIERS[supportTier].price}/month
                       </Paragraph>
                     )}
                     <Paragraph fontFamily="$mono">
                       $
                       {Math.ceil(
-                        calculateDiscountedAmount(supportTier * 800, finalCoupon)
+                        calculateDiscountedAmount(
+                          SUPPORT_TIERS[supportTier].price,
+                          finalCoupon
+                        )
                       )}
                       /month
                     </Paragraph>
@@ -1038,7 +1297,6 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 currency: 'usd',
                 amount,
                 paymentMethodTypes: ['card', 'link'],
-                payment_method_types: ['card', 'link'],
                 paymentMethodCreation: 'manual',
                 ...(monthlyTotal > 0 && {
                   setup_future_usage: 'off_session',
@@ -1055,7 +1313,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 selectedPrices={{
                   disableAutoRenew,
                   chatSupport,
-                  supportTier: Number(supportTier),
+                  supportTier,
                   teamSeats: Number(teamSeats),
                 }}
                 isProcessing={isProcessing}
@@ -1065,10 +1323,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 subscriptionStatus={subscriptionStatus}
                 // V2 fields
                 isV2={isV2}
-                projectName={projectName}
-                projectDomain={projectDomain}
-                onProjectNameChange={setProjectName}
-                onProjectDomainChange={setProjectDomain}
+                isSupportUpgradeOnly={isSupportUpgradeOnly}
               >
                 {maxMd && renderTotalView()}
               </PaymentForm>
@@ -1109,6 +1364,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         <Dialog.Overlay
           key="overlay"
           transition="medium"
+          bg="$shadow3"
           opacity={0.95}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}

@@ -143,7 +143,7 @@ export type ViewProps = {
   style?: GenericStyleProp<ViewStyle>
   testID?: string | null
   // unstable
-  dataSet?: Object | null
+  dataSet?: object | null
   onMouseDown?: (e: any) => void
   onMouseEnter?: (e: any) => void
   onMouseLeave?: (e: any) => void

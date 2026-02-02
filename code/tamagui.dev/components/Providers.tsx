@@ -1,25 +1,19 @@
-import { getDocsSection, InitialPathContext } from '@tamagui/logo'
+import { InitialPathContext, SeasonProvider } from '@tamagui/logo'
 import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'
-import { usePathname } from 'one'
 import { TamaguiProvider } from 'tamagui'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { ToastProvider } from '~/features/studio/ToastProvider'
 
 export const Providers = (props: { children: any }) => {
-  const pathname = usePathname()
-  const section = getDocsSection(pathname)
-  let initial = 3
-  if (section) {
-    initial = section === 'compiler' || section === 'core' ? 4 : 6
-  }
-
   return (
-    <InitialPathContext.Provider value={initial}>
+    <InitialPathContext.Provider value={3}>
       <SchemeProvider>
-        <WebsiteTamaguiProvider>
-          <SearchProvider>{props.children}</SearchProvider>
-        </WebsiteTamaguiProvider>
+        <SeasonProvider>
+          <WebsiteTamaguiProvider>
+            <SearchProvider>{props.children}</SearchProvider>
+          </WebsiteTamaguiProvider>
+        </SeasonProvider>
       </SchemeProvider>
     </InitialPathContext.Provider>
   )

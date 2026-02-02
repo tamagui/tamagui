@@ -1,9 +1,11 @@
 # Toast v2 Implementation Plan
 
 ## Overview
+
 Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cross-platform using Tamagui's animation system - NO CSS cheats.
 
 ## Reference Implementations
+
 - ~/github/sonner - primary inspiration
 - ~/github/base-ui - additional patterns
 - @tamagui/sheet - gesture/drag patterns, resistive pull
@@ -62,6 +64,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 ## Style Checklist
 
 ### Container (Toaster)
+
 - [x] position: fixed (web) / absolute (native)
 - [x] z-index: 100000+ (very high)
 - [x] width: 356px (TOAST_WIDTH constant)
@@ -69,6 +72,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] pointerEvents: 'box-none' for pass-through
 
 ### Position Variants
+
 - [x] bottom-right: bottom + right offsets
 - [x] bottom-left: bottom + left offsets
 - [x] bottom-center: bottom + left 50% + translateX(-50%)
@@ -77,6 +81,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] top-center: top + left 50% + translateX(-50%) ✅ FIXED anchor
 
 ### Toast Item Frame
+
 - [x] position: absolute (within container)
 - [x] left: 0, right: 0 (full width of container)
 - [x] **Dynamic anchor: top:0 for top positions, bottom:0 for bottom positions** ✅ FIXED
@@ -89,6 +94,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] **focusVisibleStyle instead of focusStyle** ✅ FIXED
 
 ### Toast Content Layout
+
 - [x] flex row with icon, content, close button
 - [x] icon: 16x16px, flex-shrink: 0
 - [x] content: flex column, gap $1
@@ -97,6 +103,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] gap: $3 between elements
 
 ### Close Button
+
 - [x] positioned inline (user decided against absolute overlap)
 - [x] 20x20px circle
 - [x] borderRadius: $10 (circular)
@@ -105,6 +112,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] pressStyle: $color7
 
 ### Action Buttons ✅ FIXED
+
 - [x] **New ToastActionButton component** with proper sizing
 - [x] borderRadius: $2
 - [x] paddingHorizontal: $2
@@ -115,6 +123,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] justifyContent: flex-end
 
 ### Rich Colors (Type Variants)
+
 - [x] success: $green2 background, $green6 border
 - [x] error: $red2 background, $red6 border
 - [x] warning: $yellow2 background, $yellow6 border
@@ -122,6 +131,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] loading: default (neutral)
 
 ### Icons
+
 - [x] success: ✓ in $green10
 - [x] error: ✕ in $red10
 - [x] warning: ⚠ in $yellow10
@@ -134,6 +144,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 ## Feature Checklist
 
 ### Core Toast API
+
 - [x] toast() - basic toast
 - [x] toast.success() - success type
 - [x] toast.error() - error type
@@ -146,6 +157,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] toast.dismiss() - dismiss all
 
 ### Toast Options
+
 - [x] id - custom id for updating
 - [x] title - main text (string or function)
 - [x] description - secondary text (string or function)
@@ -159,6 +171,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] closeButton - per-toast close button override
 
 ### Toaster Props
+
 - [x] position - 6 positions
 - [x] expand - always show expanded
 - [x] **visibleToasts - max visible (default 4)** ✅ CHANGED from 3
@@ -174,6 +187,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] theme - light/dark/system
 
 ### Stacking Behavior
+
 - [x] Only show visibleToasts (default 4)
 - [x] Scale down non-front toasts: `1 - (index * 0.05)`
 - [x] Y-offset for collapsed stack: 10px per toast
@@ -184,6 +198,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] **Fade out last visible toast (opacity 0.5)** ✅ NEW
 
 ### Hover Expand ✅ COMPLETE
+
 - [x] Expand on hover (onMouseEnter + onMouseMove)
 - [x] Pause timers when expanded/hovered
 - [x] Resume timers when mouse leaves
@@ -193,6 +208,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] **Timer sync issue when leaving hover** ✅ FIXED with lastPauseTimeRef guard
 
 ### Swipe to Dismiss ✅ COMPLETE
+
 - [x] Pointer event tracking (setPointerCapture)
 - [x] Direction lock on first significant movement
 - [x] Threshold-based dismiss (50px default)
@@ -202,6 +218,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] Snap back on cancel
 
 ### Enter/Exit Animations ✅ REFINED
+
 - [x] enterStyle: opacity 0, y: ±10, scale: 0.95 (subtle)
 - [x] exitStyle: opacity 0, x/y: ±30 for swipe, ±10 for normal, scale: 0.95
 - [x] AnimatePresence for mount/unmount
@@ -209,11 +226,13 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] Disable animation while dragging
 
 ### Keyboard Support
+
 - [x] Escape to dismiss focused toast
 - [x] Hotkey to expand toaster (alt+T)
 - [x] Focus management (tabIndex, lastFocusedElementRef)
 
 ### Accessibility
+
 - [x] role="status"
 - [x] aria-live="polite"
 - [x] aria-atomic
@@ -226,32 +245,38 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 ## Test Checklist
 
 ### Basic Toast Tests ✅
+
 - [x] shows a default toast
 - [x] shows typed toasts (success, error, warning, info)
 - [x] shows loading toast
 - [x] shows multiple stacked toasts
 
 ### Interaction Tests ✅
+
 - [x] dismisses all toasts
 - [x] closes toast when clicking close button
 - [x] keyboard escape dismisses focused toast
 - [x] shows action button
 
 ### Promise Tests ✅
+
 - [x] promise toast transitions loading -> success
 - [x] promise toast shows error on rejection
 
 ### Position Tests ✅
+
 - [x] changes position when clicking position buttons
 - [x] all 6 positions verified with screenshots
 
 ### Hover Tests ✅
+
 - [x] hover expands stacked toasts
 - [x] hover pauses auto-dismiss timer
 - [x] mouse leave collapses stack
 - [x] **no flicker when mouse moves between toasts**
 
 ### Swipe Tests ✅
+
 - [x] swipe right dismisses (default)
 - [x] swipe threshold works
 - [x] velocity-based dismiss
@@ -259,6 +284,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] swipe cancel snaps back
 
 ### Interrupt Tests ✅ NEW
+
 - [x] toast closing does not interrupt on mouse re-entry
 - [x] drag gesture moves toast visually
 - [x] fast swipe dismisses via velocity
@@ -268,6 +294,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 ## TODO - Remaining Work (DEADLINE: 9:00 AM DEMO VIDEO)
 
 ### TIMELINE
+
 - **NOW - 8:20**: Fix top position bug, verify tests pass
 - **8:20 - 8:35**: Write clean ToastDemo, verify on tamagui.dev /ui/toast (mobile + safe areas)
 - **8:35 - 8:45**: Update docs, update version-two blog post
@@ -275,30 +302,36 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - **8:55 - 9:00**: Clean commit, push to CI, /alert user
 
 ### CRITICAL - Before 8:20
+
 1. [x] **Fix timer sync bug** ✅ DONE - added lastPauseTimeRef guard
 2. [x] **FIX: Top position toast outside viewport** ✅ FIXED - explicitly set top/bottom to avoid conflicts
 3. [x] Test action buttons after ToastActionButton fix ✅ VERIFIED - buttons render correctly
 
 ### Before 8:35 (Demo Ready)
+
 4. [x] Write clean ToastDemo for tamagui.dev ✅ DONE - code/demos/src/ToastDemo.tsx
 5. [x] Verify on yarn dev site at /ui/toast ✅ VERIFIED - page renders, toast works
 6. [x] Mobile web + safe areas check (SSR safe!) ✅ FIXED - use-window-dimensions isClient guard
 7. [ ] Web-only code but use conditionals for future native support
 
 ### Before 8:45 (Docs + Blog)
+
 8. [ ] Update Toast docs - clean up (2.0.0.mdx exists but has old API docs)
 9. [ ] Update version-two blog post with Toast feature/demo hero
 
 ### Before 8:55 (Testing + Review)
+
 10. [x] yarn test - 31 toast tests passing ✅
 11. [x] yarn lint, yarn typecheck ✅ - fixed biome issues, types clean
 12. [ ] Sub-agent code review
 
 ### Before 9:00 (Ship It)
+
 13. [ ] Clean commit and push to CI
 14. [ ] /alert user every 30s until acknowledged
 
 ### Low Priority (Post-Demo)
+
 - [ ] Export .Close component (Dialog pattern)
 - [ ] Add animateOnly={['transform', 'opacity']} to examples
 - [ ] All animation drivers tested
@@ -310,12 +343,14 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 ## Key Formulas (from Sonner)
 
 ### Stack Scale
+
 ```
 scale = 1 - (index * 0.05)
 // index 0: 1.0, index 1: 0.95, index 2: 0.90
 ```
 
 ### Collapsed Y Offset
+
 ```
 // For bottom position
 stackY = isFront ? 0 : -peekAmount * index
@@ -324,6 +359,7 @@ stackY = isFront ? 0 : peekAmount * index
 ```
 
 ### Expanded Y Offset
+
 ```
 offset = (heightIndex * gap) + toastsHeightBefore
 // For bottom: -offset
@@ -331,6 +367,7 @@ offset = (heightIndex * gap) + toastsHeightBefore
 ```
 
 ### Resistive Pull (from Sheet)
+
 ```typescript
 function resisted(delta: number, maxResist = 25): number {
   if (delta >= 0) return delta
@@ -341,12 +378,14 @@ function resisted(delta: number, maxResist = 25): number {
 ```
 
 ### Velocity Threshold
+
 ```
 VELOCITY_THRESHOLD = 0.11 // px/ms
 shouldDismiss = passedThreshold || velocity > VELOCITY_THRESHOLD
 ```
 
 ### Gap Filler (prevents hover flicker)
+
 ```typescript
 // Invisible hit area above/below toast when expanded
 const gapFillerHeight = expanded ? gap + 1 : 0
@@ -361,6 +400,7 @@ const gapFillerHeight = expanded ? gap + 1 : 0
 ```
 
 ### Opacity Fade for Limit
+
 ```typescript
 // Fade out toasts as they approach visibility limit
 let computedOpacity = 1

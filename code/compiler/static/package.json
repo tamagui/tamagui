@@ -1,23 +1,17 @@
 {
   "name": "@tamagui/static",
-  "version": "2.0.0-1769467800680",
+  "version": "2.0.0-rc.0-1769885482630",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "license": "MIT",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "type": "commonjs",
-  "main": "dist",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src"
-  },
+  "type": "commonjs",
+  "main": "dist",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -33,13 +27,15 @@
       "import": "./dist/worker.cjs"
     }
   },
-  "tests": {
-    "parallel": true
-  },
   "publishConfig": {
     "access": "public"
   },
-  "license": "MIT",
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
   "dependencies": {
     "@babel/core": "^7.25.2",
     "@babel/generator": "^7.25.5",
@@ -64,10 +60,11 @@
     "@tamagui/types": "workspace:*",
     "@tamagui/web": "workspace:*",
     "babel-literal-to-ast": "^2.1.0",
-    "browserslist": "^4.22.2",
+    "browserslist": "^4.28.1",
     "check-dependency-version-consistency": "^4.1.0",
-    "esbuild": "^0.25.11",
+    "esbuild": "^0.27.2",
     "esbuild-register": "^3.6.0",
+    "esbuild-wasm": "^0.27.2",
     "fast-glob": "^3.2.11",
     "find-cache-dir": "^3.3.2",
     "find-root": "^1.1.0",
@@ -78,7 +75,6 @@
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",
-    "@expo/match-media": "^0.4.0",
     "@tamagui/build": "workspace:*",
     "@types/babel__core": "^7.20.5",
     "@types/find-root": "^1.1.2",
@@ -87,13 +83,15 @@
     "babel-loader": "^9.1.3",
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5",
     "typescript": "~5.9.2"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
-    "react": "*",
+    "react": ">=19",
     "react-native": "*"
+  },
+  "tests": {
+    "parallel": true
   }
 }

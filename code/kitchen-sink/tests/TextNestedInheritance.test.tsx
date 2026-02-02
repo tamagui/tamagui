@@ -21,9 +21,7 @@ test(`nested text inherits color from parent`, async ({ page }) => {
 test(`nested text inherits whiteSpace from parent (for numberOfLines)`, async ({
   page,
 }) => {
-  const parentStyles = await getStyles(
-    page.getByTestId('parent-number-of-lines').first()
-  )
+  const parentStyles = await getStyles(page.getByTestId('parent-number-of-lines').first())
   const nestedStyles = await getStyles(
     page.getByTestId('nested-in-number-of-lines').first()
   )
@@ -39,12 +37,8 @@ test(`nested text inherits whiteSpace from parent (for numberOfLines)`, async ({
 })
 
 test(`nested text inherits explicit whiteSpace from parent`, async ({ page }) => {
-  const parentStyles = await getStyles(
-    page.getByTestId('parent-whitespace').first()
-  )
-  const nestedStyles = await getStyles(
-    page.getByTestId('nested-whitespace').first()
-  )
+  const parentStyles = await getStyles(page.getByTestId('parent-whitespace').first())
+  const nestedStyles = await getStyles(page.getByTestId('nested-whitespace').first())
 
   // Parent should have nowrap
   expect(parentStyles.whiteSpace).toBe('nowrap')
@@ -54,12 +48,8 @@ test(`nested text inherits explicit whiteSpace from parent`, async ({ page }) =>
 })
 
 test(`nested text inherits letterSpacing from parent`, async ({ page }) => {
-  const parentStyles = await getStyles(
-    page.getByTestId('parent-letter-spacing').first()
-  )
-  const nestedStyles = await getStyles(
-    page.getByTestId('nested-letter-spacing').first()
-  )
+  const parentStyles = await getStyles(page.getByTestId('parent-letter-spacing').first())
+  const nestedStyles = await getStyles(page.getByTestId('nested-letter-spacing').first())
 
   // Parent should have letter-spacing of 5px
   expect(parentStyles.letterSpacing).toBe('5px')
@@ -80,12 +70,8 @@ test(`styled nested text inherits color from parent`, async ({ page }) => {
 })
 
 test(`explicit color override on nested text still works`, async ({ page }) => {
-  const parentStyles = await getStyles(
-    page.getByTestId('parent-override').first()
-  )
-  const nestedStyles = await getStyles(
-    page.getByTestId('nested-override').first()
-  )
+  const parentStyles = await getStyles(page.getByTestId('parent-override').first())
+  const nestedStyles = await getStyles(page.getByTestId('nested-override').first())
 
   // Parent should have purple color
   expect(parentStyles.color).toBe('rgb(128, 0, 128)')

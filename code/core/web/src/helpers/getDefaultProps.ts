@@ -24,8 +24,12 @@ export const getDefaultProps = (
   }
 
   if (process.env.TAMAGUI_TARGET === 'web' && isSubText) {
+    // for nested text, inherit from parent unless component explicitly set a fontFamily
+    // staticConfig.defaultProps contains explicit component defaults (e.g., SizableText sets $body)
+    // userDefaultProps contains global config defaults - these should be overridden for nested text
+    const hasExplicitFontFamily = staticConfig?.defaultProps?.fontFamily
     defaultProps = { ...defaultProps }
-    if (!defaultProps.fontFamily) defaultProps.fontFamily = 'inherit'
+    if (!hasExplicitFontFamily) defaultProps.fontFamily = 'inherit'
     if (!defaultProps.color) defaultProps.color = 'inherit'
     if (defaultProps.whiteSpace === 'pre-wrap') defaultProps.whiteSpace = 'inherit'
     if (defaultProps.wordWrap === 'break-word') defaultProps.wordWrap = 'inherit'

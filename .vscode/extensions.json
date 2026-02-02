@@ -1,4 +1,4 @@
 {
-  "recommendations": ["biomejs.biome"],
-  "unwantedRecommendations": []
+  "recommendations": ["oxc.oxc-vscode"],
+  "unwantedRecommendations": ["biomejs.biome"]
 }

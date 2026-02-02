@@ -1,9 +1,4 @@
-import {
-  ChevronRight,
-  FilePlus,
-  Settings,
-  Trash2,
-} from '@tamagui/lucide-icons'
+import { ChevronRight, FilePlus, Settings, Trash2 } from '@tamagui/lucide-icons'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
 import { Button, YStack } from 'tamagui'
@@ -47,7 +42,7 @@ export function MenuAccessibilityCase() {
               key="item-1"
               textValue="Settings"
               style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-              hoverStyle={{ bg: '$backgroundHover' }}
+              focusStyle={{ bg: '$backgroundHover' }}
             >
               <Settings size={14} />
               <Menu.ItemTitle marginLeft="$2">Settings</Menu.ItemTitle>
@@ -58,7 +53,7 @@ export function MenuAccessibilityCase() {
               key="item-2"
               textValue="Profile"
               style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-              hoverStyle={{ bg: '$backgroundHover' }}
+              focusStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle>Profile</Menu.ItemTitle>
             </Menu.Item>
@@ -68,7 +63,7 @@ export function MenuAccessibilityCase() {
               key="item-3"
               textValue="Preferences"
               style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-              hoverStyle={{ bg: '$backgroundHover' }}
+              focusStyle={{ bg: '$backgroundHover' }}
             >
               <Menu.ItemTitle>Preferences</Menu.ItemTitle>
             </Menu.Item>
@@ -87,7 +82,7 @@ export function MenuAccessibilityCase() {
                 justify="space-between"
                 textValue="Actions"
                 style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                hoverStyle={{ bg: '$backgroundHover' }}
+                focusStyle={{ bg: '$backgroundHover' }}
               >
                 <Menu.ItemTitle>Actions</Menu.ItemTitle>
                 <ChevronRight size={12} color="$color10" />
@@ -108,7 +103,7 @@ export function MenuAccessibilityCase() {
                     key="create"
                     textValue="Create new"
                     style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                    hoverStyle={{ bg: '$backgroundHover' }}
+                    focusStyle={{ bg: '$backgroundHover' }}
                   >
                     <FilePlus size={14} />
                     <Menu.ItemTitle marginLeft="$2">Create new</Menu.ItemTitle>
@@ -119,7 +114,7 @@ export function MenuAccessibilityCase() {
                     key="delete"
                     textValue="Delete all"
                     style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                    hoverStyle={{ bg: '$backgroundHover' }}
+                    focusStyle={{ bg: '$backgroundHover' }}
                   >
                     <Trash2 size={14} />
                     <Menu.ItemTitle marginLeft="$2">Delete all</Menu.ItemTitle>

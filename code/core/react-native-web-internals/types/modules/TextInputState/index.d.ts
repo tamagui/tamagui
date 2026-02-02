@@ -16,23 +16,23 @@ export declare const TextInputState: {
     /**
      * Internal state
      */
-    _currentlyFocusedNode: Object | null;
+    _currentlyFocusedNode: object | null;
     /**
      * Returns the ID of the currently focused text field, if one exists
      * If no text field is focused it returns null
      */
-    currentlyFocusedField(): Object | null;
+    currentlyFocusedField(): object | null;
     /**
      * @param {Object} TextInputID id of the text field to focus
      * Focuses the specified text field
      * noop if the text field was already focused
      */
-    focusTextInput(textFieldNode: Object | null): void;
+    focusTextInput(textFieldNode: object | null): void;
     /**
      * @param {Object} textFieldNode id of the text field to focus
      * Unfocuses the specified text field
      * noop if it wasn't focused
      */
-    blurTextInput(textFieldNode: Object | null): void;
+    blurTextInput(textFieldNode: object | null): void;
 };
 //# sourceMappingURL=index.d.ts.map

@@ -3,8 +3,8 @@
 exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -14,11 +14,11 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_tr-0hover-scale21281 _pos-static _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red _bxsh-0px0px10pxr538535358 test1"
+          class="_tr-0hover-scale21281 _pos-static _dsp-flex _ai-stretch _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red _bxsh-0px0px10px0946673987 test1"
           rounded="100"
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -35,8 +35,8 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -52,7 +52,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
           class="ease-in-out-top _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px "
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -69,8 +69,8 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 2`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -86,7 +86,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
           class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top "
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -103,8 +103,8 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 exports[`webpack-tests > 5. spread conditional 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -132,8 +132,8 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
 exports[`webpack-tests > 6. spread ternary 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -146,7 +146,7 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
           class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -163,8 +163,8 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
 exports[`webpack-tests > 6. spread ternary 2`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -177,7 +177,7 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
           class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-red "
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -194,8 +194,8 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
 exports[`webpack-tests > 7. ternary + data-is 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -225,8 +225,8 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
 exports[`webpack-tests > 8. styleExpansions 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -258,8 +258,8 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
 exports[`webpack-tests > 9. combines with classname 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -283,8 +283,8 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
 exports[`webpack-tests > 10. extracts Text 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -294,14 +294,14 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
         style="color: var(--color); display: contents;"
       >
         <span
-          class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos-10px "
+          class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos-10px "
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
             select="auto"
           >
             <span
-              class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-inherit _ws-inherit _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
+              class="is_Text _ff-inherit _dsp-inline _bxs-border-box _ww-inherit _ws-inherit _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
             >
               hello
             </span>
@@ -319,8 +319,8 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
 exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -344,8 +344,8 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
 exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -369,8 +369,8 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
 exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -397,8 +397,8 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -422,8 +422,8 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
 exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -436,7 +436,7 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
           class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fwr-wrap _fd-row _gap-t-space-2 "
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -453,8 +453,8 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
 exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -469,7 +469,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
           justify="space-between"
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -486,8 +486,8 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
 exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -502,7 +502,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
           justify="space-between"
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -519,8 +519,8 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
 exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -533,7 +533,7 @@ exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
           class="_pos-static _dsp-flex _bxs-border-box _mih-0px _miw-0px _fd-column _fwr-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start "
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>
@@ -550,8 +550,8 @@ exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
 exports[`webpack-tests > 21. complex real-world case - flexWrap with many conditionals and media queries 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -570,7 +570,7 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
             justify="flex-start"
           >
             <span
-              class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+              class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
             >
               hello world
             </span>
@@ -588,8 +588,8 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
 exports[`webpack-tests > 21. complex real-world case - flexWrap with many conditionals and media queries 2`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -608,7 +608,7 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
             justify="center"
           >
             <span
-              class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+              class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
             >
               hello world
             </span>
@@ -626,8 +626,8 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
 exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
 <div>
   <span
-    class=""
-    style="display: contents;"
+    class="font_body"
+    style="display: contents; font-family: var(--f-family);"
   >
     <span
       class="t_dark _dsp_contents"
@@ -640,7 +640,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
           class="_pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-_sm_nowrap _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fwr-wrap _gap-t-space-2 _fd-row "
         >
           <span
-            class="font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
           >
             hello world
           </span>

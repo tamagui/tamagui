@@ -6,6 +6,7 @@ import { ProductName } from '~/shared/types/subscription'
 export default apiRoute(async () => {
   try {
     const products = await Promise.all([
+      // V1 Products
       supabaseAdmin
         .from('products')
         .select('*, prices(*)')
@@ -16,41 +17,75 @@ export default apiRoute(async () => {
         .select('*, prices(*)')
         .eq('name', ProductName.TamaguiSupport)
         .single(),
+      // V2 Products
+      supabaseAdmin
+        .from('products')
+        .select('*, prices(*)')
+        .eq('name', ProductName.TamaguiProV2)
+        .single(),
+      supabaseAdmin
+        .from('products')
+        .select('*, prices(*)')
+        .eq('name', ProductName.TamaguiSupportDirect)
+        .single(),
+      supabaseAdmin
+        .from('products')
+        .select('*, prices(*)')
+        .eq('name', ProductName.TamaguiSupportSponsor)
+        .single(),
     ])
 
-    if (!products.length) {
-      return Response.json({ error: 'No products found' }, { status: 404 })
+    // Check V1 products (required)
+    const [v1Pro, v1Support, v2Pro, v2SupportDirect, v2SupportSponsor] = products
+
+    if (v1Pro.error || v1Support.error) {
+      return Response.json({ error: v1Pro.error || v1Support.error }, { status: 500 })
     }
 
-    for (const product of products) {
-      if (product.error) {
-        return Response.json({ error: product.error }, { status: 500 })
-      }
-      if (
-        !product.data.prices ||
-        !Array.isArray(product.data.prices) ||
-        product.data.prices.length === 0
-      ) {
-        return Response.json(
-          { error: 'No prices are attached to the product.' },
-          { status: 404 }
-        )
-      }
+    if (!v1Pro.data?.prices?.length || !v1Support.data?.prices?.length) {
+      return Response.json(
+        { error: 'No prices are attached to the V1 products.' },
+        { status: 404 }
+      )
     }
 
     return Response.json({
+      // V1 Products
       pro: {
-        ...products[0].data!,
-        prices: uniqueDescription(
-          getArray(products[0].data!.prices!).filter((p) => p.active)
-        ),
+        ...v1Pro.data!,
+        prices: uniqueDescription(getArray(v1Pro.data!.prices!).filter((p) => p.active)),
       },
       support: {
-        ...products[1].data!,
+        ...v1Support.data!,
         prices: uniqueDescription(
-          getArray(products[1].data!.prices!).filter((p) => p.active)
+          getArray(v1Support.data!.prices!).filter((p) => p.active)
         ),
       },
+      // V2 Products (optional - may not exist in all environments)
+      proV2: v2Pro.data
+        ? {
+            ...v2Pro.data,
+            prices: uniqueDescription(
+              getArray(v2Pro.data.prices || []).filter((p) => p.active)
+            ),
+          }
+        : null,
+      supportDirect: v2SupportDirect.data
+        ? {
+            ...v2SupportDirect.data,
+            prices: uniqueDescription(
+              getArray(v2SupportDirect.data.prices || []).filter((p) => p.active)
+            ),
+          }
+        : null,
+      supportSponsor: v2SupportSponsor.data
+        ? {
+            ...v2SupportSponsor.data,
+            prices: uniqueDescription(
+              getArray(v2SupportSponsor.data.prices || []).filter((p) => p.active)
+            ),
+          }
+        : null,
     })
   } catch (err) {
     return Response.json(

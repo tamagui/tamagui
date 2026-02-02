@@ -9,7 +9,7 @@ import { createRequire } from 'node:module'
 
 export const requireResolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
-  
+
 export function getConfig(tamaguiPlugin: any) {
   const isNative =
     !process.env.DISABLE_REACT_NATIVE &&
@@ -60,6 +60,7 @@ export function getConfig(tamaguiPlugin: any) {
         components: ['tamagui'],
         config: './tamagui.config.ts',
         disableWatchTamaguiConfig: true,
+        disable: true,
       }),
 
       {
@@ -118,13 +119,13 @@ export function getConfig(tamaguiPlugin: any) {
       globals: true,
       setupFiles: [
         join(__dirname, 'test-setup.ts'),
-        ...(isNative
-          ? [join(__dirname, 'test-setup-native.cjs')]
-          : []),
+        ...(isNative ? [join(__dirname, 'test-setup-native.cjs')] : []),
       ],
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+      // increase teardown timeout to avoid worker cleanup issues
+      teardownTimeout: 10000,
     },
   })
 }

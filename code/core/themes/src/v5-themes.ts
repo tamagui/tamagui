@@ -19,30 +19,44 @@ import {
   yellowDark,
 } from '@tamagui/colors'
 import { createThemes } from '@tamagui/theme-builder'
-import { interpolateColor, opacify } from './opacify'
+import { opacify } from './opacify'
 import { v5Templates } from './v5-templates'
+
+// base theme uses elevated background (like old surface1)
+// this offset aligns getTheme's palette index with that elevation
+export const V5_BG_OFFSET = 6 + 1
 
 // re-export color utilities for users
 export { interpolateColor, opacify } from './opacify'
 
-export const defaultComponentThemes = {
+export const v5ComponentThemes = {
   Button: { template: 'surface3' },
-  Switch: { template: 'surface2' },
-  SwitchThumb: { template: 'accent' },
-  Progress: { template: 'surface1' },
-  SliderThumb: { template: 'accent' },
-  Tooltip: { template: 'accent' },
-  ProgressIndicator: { template: 'accent' },
   Input: { template: 'surface1' },
+  Progress: { template: 'surface1' },
+  ProgressIndicator: { template: 'surface3' },
+  Slider: { template: 'surface1' },
+  SliderActive: { template: 'surface3' },
+  SliderThumb: { template: 'surface2' },
+  Switch: { template: 'surface1' },
   TextArea: { template: 'surface1' },
+  Tooltip: { template: 'surface3' },
+  SwitchThumb: { template: 'surface3' },
+} as const
+
+// inverses are confusing af
+export const v5ComponentThemesWithInverses = {
+  ...v5ComponentThemes,
+  ProgressIndicator: { template: 'accent' },
+  SliderThumb: { template: 'accent' },
+  SwitchThumb: { template: 'accent' },
+  Tooltip: { template: 'accent' },
 } as const
 
 /** Default grandchildren themes available in v5 */
-export const defaultGrandChildrenThemes = {
+export const v5GrandchildrenThemes = {
   accent: { template: 'accent' },
   surface1: { template: 'surface1' },
   surface2: { template: 'surface2' },
-  surface3: { template: 'surface3' },
 } satisfies Record<string, GrandChildrenThemeDefinition>
 
 // ---- adjustPalette: generic HSL color adjustment ----
@@ -210,7 +224,7 @@ const lightPalette = [
   'hsl(0, 0%, 45%)',
   'hsl(0, 0%, 30%)',
   'hsl(0, 0%, 20%)',
-  'hsl(0, 0%, 12%)',
+  'hsl(0, 0%, 14%)',
   'hsl(0, 0%, 2%)',
 ]
 
@@ -251,20 +265,46 @@ const whiteBlack = {
 
 const darkShadows = {
   shadow1: 'rgba(0,0,0,0.1)',
-  shadow2: 'rgba(0,0,0,0.18)',
-  shadow3: 'rgba(0,0,0,0.25)',
-  shadow4: 'rgba(0,0,0,0.4)',
-  shadow5: 'rgba(0,0,0,0.55)',
-  shadow6: 'rgba(0,0,0,0.66)',
+  shadow2: 'rgba(0,0,0,0.2)',
+  shadow3: 'rgba(0,0,0,0.3)',
+  shadow4: 'rgba(0,0,0,0.45)',
+  shadow5: 'rgba(0,0,0,0.65)',
+  shadow6: 'rgba(0,0,0,0.85)',
+  shadow7: 'rgba(0,0,0,0.95)',
+  shadow8: 'rgba(0,0,0,1)',
 }
 
 const lightShadows = {
-  shadow1: 'rgba(0,0,0,0.06)',
-  shadow2: 'rgba(0,0,0,0.09)',
-  shadow3: 'rgba(0,0,0,0.12)',
-  shadow4: 'rgba(0,0,0,0.16)',
-  shadow5: 'rgba(0,0,0,0.22)',
-  shadow6: 'rgba(0,0,0,0.32)',
+  shadow1: 'rgba(0,0,0,0.05)',
+  shadow2: 'rgba(0,0,0,0.1)',
+  shadow3: 'rgba(0,0,0,0.15)',
+  shadow4: 'rgba(0,0,0,0.3)',
+  shadow5: 'rgba(0,0,0,0.4)',
+  shadow6: 'rgba(0,0,0,0.55)',
+  shadow7: 'rgba(0,0,0,0.7)',
+  shadow8: 'rgba(0,0,0,0.85)',
+}
+
+const darkHighlights = {
+  highlight1: 'rgba(255,255,255,0.1)',
+  highlight2: 'rgba(255,255,255,0.2)',
+  highlight3: 'rgba(255,255,255,0.3)',
+  highlight4: 'rgba(255,255,255,0.45)',
+  highlight5: 'rgba(255,255,255,0.65)',
+  highlight6: 'rgba(255,255,255,0.85)',
+  highlight7: 'rgba(255,255,255,0.95)',
+  highlight8: 'rgba(255,255,255,1)',
+}
+
+const lightHighlights = {
+  highlight1: 'rgba(255,255,255,0.05)',
+  highlight2: 'rgba(255,255,255,0.1)',
+  highlight3: 'rgba(255,255,255,0.15)',
+  highlight4: 'rgba(255,255,255,0.3)',
+  highlight5: 'rgba(255,255,255,0.4)',
+  highlight6: 'rgba(255,255,255,0.55)',
+  highlight7: 'rgba(255,255,255,0.7)',
+  highlight8: 'rgba(255,255,255,0.85)',
 }
 
 // Export palettes for customization
@@ -316,15 +356,17 @@ type WhiteColors = ReturnType<typeof paletteToNamedColors<'white'>>
 
 // Base extra colors type (always included) - getTheme computes opacity/interpolation colors
 type BaseExtraCommon = BlackColors & WhiteColors & typeof whiteBlack
-type BaseExtraLight = BaseExtraCommon & typeof lightShadows & { shadowColor: string }
-type BaseExtraDark = BaseExtraCommon & typeof darkShadows & { shadowColor: string }
+type BaseExtraLight = BaseExtraCommon &
+  typeof lightShadows &
+  typeof lightHighlights & { shadowColor: string }
+type BaseExtraDark = BaseExtraCommon &
+  typeof darkShadows &
+  typeof darkHighlights & { shadowColor: string }
 
 export type CreateV5ThemeOptions<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
-  GrandChildren extends Record<
-    string,
-    GrandChildrenThemeDefinition
-  > = typeof defaultGrandChildrenThemes,
+  GrandChildren extends Record<string, GrandChildrenThemeDefinition> =
+    typeof v5GrandchildrenThemes,
 > = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: string[]
@@ -337,7 +379,7 @@ export type CreateV5ThemeOptions<
   childrenThemes?: Children
   /**
    * Override grandChildren themes (alt1, alt2, surface1, etc.)
-   * Pass undefined or omit to use defaultGrandChildrenThemes
+   * Pass undefined or omit to use v5GrandchildrenThemes
    */
   grandChildrenThemes?: GrandChildren
   /**
@@ -371,10 +413,8 @@ export type CreateV5ThemeOptions<
  */
 export function createV5Theme<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
-  GrandChildren extends Record<
-    string,
-    GrandChildrenThemeDefinition
-  > = typeof defaultGrandChildrenThemes,
+  GrandChildren extends Record<string, GrandChildrenThemeDefinition> =
+    typeof v5GrandchildrenThemes,
 >(
   options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<
     Children,
@@ -385,8 +425,8 @@ export function createV5Theme<
     darkPalette: customDarkPalette = darkPalette,
     lightPalette: customLightPalette = lightPalette,
     childrenThemes = defaultChildrenThemes as unknown as Children,
-    grandChildrenThemes = defaultGrandChildrenThemes as unknown as GrandChildren,
-    componentThemes: customComponentThemes = defaultComponentThemes,
+    grandChildrenThemes = v5GrandchildrenThemes as unknown as GrandChildren,
+    componentThemes: customComponentThemes = v5ComponentThemes,
   } = options
 
   // Generate black/white named colors from palettes
@@ -403,9 +443,15 @@ export function createV5Theme<
   const lightExtraBase = {
     ...extraBase,
     ...lightShadows,
-    shadowColor: lightShadows.shadow1,
+    ...lightHighlights,
+    shadowColor: lightShadows.shadow3,
   }
-  const darkExtraBase = { ...extraBase, ...darkShadows, shadowColor: darkShadows.shadow1 }
+  const darkExtraBase = {
+    ...extraBase,
+    ...darkShadows,
+    ...darkHighlights,
+    shadowColor: darkShadows.shadow3,
+  }
 
   // Spread all children colors into extra - types flow from Children generic
   type LightExtra = BaseExtraLight & MergedChildrenColors<Children, 'light'>
@@ -474,20 +520,17 @@ export function createV5Theme<
     grandChildrenThemes,
 
     // Add computed colors to ALL themes based on each theme's palette
-    getTheme: ({ palette }) => {
+    getTheme: ({ palette, scheme }) => {
       if (!palette || palette.length < 3) {
         throw new Error(`invalid palette: ${JSON.stringify(palette)}`)
       }
 
-      // palette[1] is background-ish, palette[length-2] is foreground-ish
-      const bgColor = palette[1]!
+      // TODO this should just be aligned with the offsets we use in templates
+      // and all really simplified down
+      const bgColor = palette[V5_BG_OFFSET]!
       const fgColor = palette[palette.length - 2]!
 
       return {
-        // In-between shades
-        color0pt5: interpolateColor(bgColor, palette[2]!, 0.5),
-        color1pt5: interpolateColor(palette[1]!, palette[2]!, 0.5),
-        color2pt5: interpolateColor(palette[2]!, palette[3]!, 0.5),
         // Opacity variants of foreground color
         color01: opacify(fgColor, 0.1),
         color0075: opacify(fgColor, 0.075),
@@ -495,6 +538,7 @@ export function createV5Theme<
         color0025: opacify(fgColor, 0.025),
         color002: opacify(fgColor, 0.02),
         color001: opacify(fgColor, 0.01),
+
         // Opacity variants of background color
         background01: opacify(bgColor, 0.1),
         background0075: opacify(bgColor, 0.075),
@@ -502,6 +546,13 @@ export function createV5Theme<
         background0025: opacify(bgColor, 0.025),
         background002: opacify(bgColor, 0.02),
         background001: opacify(bgColor, 0.01),
+        background02: opacify(bgColor, 0.2),
+        background04: opacify(bgColor, 0.4),
+        background06: opacify(bgColor, 0.6),
+        background08: opacify(bgColor, 0.8),
+
+        // a slightly stronger but translucent color
+        outlineColor: opacify(palette[V5_BG_OFFSET + 4], 0.6),
       }
     },
   })

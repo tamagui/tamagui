@@ -1,3 +1,4 @@
+import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GroupProps } from '@tamagui/group'
 import { Group, useGroupItem } from '@tamagui/group'
@@ -6,7 +7,6 @@ import { RovingFocusGroup, type RovingFocusGroupProps } from '@tamagui/roving-fo
 import { SizableContext } from '@tamagui/sizable-context'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import { useWebRef } from '@tamagui/element'
 import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
 import * as React from 'react'
@@ -22,11 +22,7 @@ export function createTabs<
   C extends TabsComponent,
   T extends TabComponent,
   F extends ContentComponent,
->(createProps: {
-  ContentFrame: F
-  TabFrame: T
-  TabsFrame: C
-}) {
+>(createProps: { ContentFrame: F; TabFrame: T; TabsFrame: C }) {
   const {
     ContentFrame = DefaultTabsContentFrame,
     TabFrame = DefaultTabsTabFrame,
@@ -98,13 +94,37 @@ export function createTabs<
       const contentId = makeContentId(context.baseId, value)
       const isSelected = value === context.value
       const [layout, setLayout] = React.useState<TabLayout | null>(null)
-      const { ref, composedRef } = useWebRef<TamaguiElement>(forwardedRef)
+      const triggerRef = React.useRef<TamaguiElement>(null)
       const groupItemProps = useGroupItem({ disabled: !!disabled })
 
       React.useEffect(() => {
         context.registerTrigger()
         return () => context.unregisterTrigger()
       }, [])
+
+      React.useEffect(() => {
+        if (!triggerRef.current || !isWeb) return
+
+        const el = triggerRef.current as unknown as HTMLElement
+
+        function getTriggerSize() {
+          if (!el) return
+          setLayout({
+            width: el.offsetWidth,
+            height: el.offsetHeight,
+            x: el.offsetLeft,
+            y: el.offsetTop,
+          })
+        }
+        getTriggerSize()
+
+        const observer = new ResizeObserver(getTriggerSize)
+        observer.observe(el)
+
+        return () => {
+          observer.unobserve(el)
+        }
+      }, [context.triggersCount])
 
       React.useEffect(() => {
         if (isSelected && layout) {
@@ -120,11 +140,6 @@ export function createTabs<
           active={isSelected}
         >
           <TabFrame
-            onLayout={(event) => {
-              if (!isWeb) {
-                setLayout(event.nativeEvent.layout)
-              }
-            }}
             onMouseEnter={composeEventHandlers(props.onMouseEnter, () => {
               if (layout) {
                 onInteraction?.('hover', layout)
@@ -154,7 +169,7 @@ export function createTabs<
             {...groupItemProps}
             disabled={disabled ?? groupItemProps.disabled}
             {...triggerProps}
-            ref={composedRef}
+            ref={composeRefs(forwardedRef, triggerRef)}
             onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
               // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
               // but not when the control key is pressed (avoiding MacOS right click)

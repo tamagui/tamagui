@@ -11,6 +11,7 @@
 * import '@tamagui/native/setup-worklets'
 * import '@tamagui/native/setup-safe-area'
 * import '@tamagui/native/expo-linear-gradient'
+* import '@tamagui/native/setup-keyboard-controller'
 *
 * // Then use Tamagui components normally
 * // Sheet will automatically use native gestures when available
@@ -28,6 +29,8 @@ export { getSafeArea } from "./safeAreaState";
 export type { SafeAreaAccessor } from "./safeAreaState";
 export { getLinearGradient } from "./linearGradientState";
 export type { LinearGradientAccessor } from "./linearGradientState";
+export { isKeyboardControllerEnabled, getKeyboardControllerState, setKeyboardControllerState } from "./keyboardControllerState";
+export type { KeyboardControllerState } from "./keyboardControllerState";
 export { NativePortal, NativePortalHost, NativePortalProvider } from "./components";
 export { _TamaguiView, type TamaguiViewProps } from "./_TamaguiView";
 export { _TamaguiText, type TamaguiTextProps } from "./_TamaguiText";

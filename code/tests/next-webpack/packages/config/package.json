@@ -1,16 +1,16 @@
 {
   "name": "@my/config",
-  "version": "2.0.0-1769467800680",
-  "sideEffects": [
-    "*.css"
-  ],
+  "version": "2.0.0-rc.0-1769885482630",
   "private": true,
-  "types": "./src",
-  "main": "src/index.ts",
   "files": [
     "types",
     "dist"
   ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "src/index.ts",
+  "types": "./src",
   "scripts": {
     "build": "tamagui-build --skip-types",
     "watch": "tamagui-build --skip-types --watch"

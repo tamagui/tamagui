@@ -203,9 +203,7 @@ export default () => {
   // access the value
   console.log(theme.bg.val)
 
-  return (
-    <View backgroundColor={theme.color1} />
-  )
+  return <View backgroundColor={theme.color1} />
 }
 ```
 
@@ -213,7 +211,7 @@ export default () => {
 
 This is a more advanced use for building custom hooks or components, but you can
 pass in a theme name and a component theme name (as
-[discussed here](/docs/intro/themes#component-subset-themes)) to grab the right
+[discussed here](/docs/intro/themes#component-themes)) to grab the right
 subset theme:
 
 ```tsx

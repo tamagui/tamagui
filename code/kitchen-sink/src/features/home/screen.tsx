@@ -1,10 +1,11 @@
 import { ChevronRight } from '@tamagui/lucide-icons'
+import { getGestureHandler } from '@tamagui/native'
 import { useState } from 'react'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { Button, H1, ListItem, YGroup, YStack } from 'tamagui'
+import { Button, H1, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
 import * as TestCases from '../../usecases'
 
 const testCaseNames = Object.keys(TestCases)
@@ -75,13 +76,57 @@ function TestCasesSection() {
 }
 
 export function HomeScreen() {
+  const gestureHandlerEnabled = getGestureHandler().isEnabled
+
   return (
     <ScrollView testID="home-scroll-view">
-      <YStack bg="$color2" p="$3" pt="$4" pb="$8" flex={1} gap="$2">
-        <H1 fontFamily="$heading">Kitchen Sink</H1>
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
+        <H1 fontFamily="$heading" size="$9">
+          Kitchen Sink
+        </H1>
 
-        {/* Collapsible quick access to test cases */}
+        <Paragraph size="$2" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
+          RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
+        </Paragraph>
+
+        {/* Collapsible quick access to test cases for Detox */}
         <TestCasesSection />
+
+        {/* Quick access to RNGH test case */}
+        <YGroup size="$4">
+          <YGroup.Item>
+            <LinkListItem
+              bg="$blue3"
+              href="/test/SheetScrollableDrag"
+              pressStyle={{ backgroundColor: '$blue4' }}
+              size="$5"
+              testID="home-sheet-scroll-test"
+            >
+              🧪 Sheet + ScrollView Test (RNGH)
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
+              bg="$green3"
+              href="/test/SheetKeyboardDragCase"
+              pressStyle={{ backgroundColor: '$green4' }}
+              size="$5"
+              testID="home-sheet-keyboard-test"
+            >
+              ⌨️ Sheet + Keyboard Test
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
+              bg="$purple3"
+              href="/test/ActionsSheetComparison"
+              pressStyle={{ backgroundColor: '$purple4' }}
+              size="$5"
+            >
+              🔄 Actions Sheet Comparison
+            </LinkListItem>
+          </YGroup.Item>
+        </YGroup>
 
         <YStack gap="$4" maxW={600}>
           {demos.map(({ pages }, i) => {
@@ -95,7 +140,6 @@ export function HomeScreen() {
                   return (
                     <YGroup.Item key={route}>
                       <LinkListItem
-                        rounded="$4"
                         bg="$color1"
                         href={route}
                         pressStyle={{ backgroundColor: '$color2' }}

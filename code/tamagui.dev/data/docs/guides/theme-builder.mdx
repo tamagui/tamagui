@@ -9,19 +9,19 @@ demoName: ThemeBuilder
 </HeroContainer>
 
 <IntroParagraph>
-  Tamagui themes start simple, but can do some pretty powerful things. To make
-  them easier to generate, we've built a few helpers. You can always just skip
-  themes, or add a single basic theme if you prefer. This guide is for users
-  wanting to generate a more complex suite of themes.
+  Tamagui themes start simple, but can do some pretty powerful things. To make them easier
+  to generate, we've built a few helpers. You can always just skip themes, or add a single
+  basic theme if you prefer. This guide is for users wanting to generate a more complex
+  suite of themes.
 </IntroParagraph>
 
 We have three ways to generate themes, from simplest to most powerful:
 
-| Helper | Best for |
-|--------|----------|
-| **`createV5Theme`** | Quick start with sensible defaults. Minimal config. |
-| **`createThemes`** | Custom palettes and structure while keeping conventions. |
-| **`createThemeBuilder`** | Full control over every aspect of theme generation. |
+| Helper                   | Best for                                                 |
+| ------------------------ | -------------------------------------------------------- |
+| **`createV5Theme`**      | Quick start with sensible defaults. Minimal config.      |
+| **`createThemes`**       | Custom palettes and structure while keeping conventions. |
+| **`createThemeBuilder`** | Full control over every aspect of theme generation.      |
 
 We've also released [Theme](/theme), a free visual tool to create themes.
 
@@ -116,8 +116,15 @@ export const themes = createThemes({
   },
 
   childrenThemes: {
-    blue: { palette: { light: Object.values(Colors.blue), dark: Object.values(Colors.blueDark) } },
-    red: { palette: { light: Object.values(Colors.red), dark: Object.values(Colors.redDark) } },
+    blue: {
+      palette: {
+        light: Object.values(Colors.blue),
+        dark: Object.values(Colors.blueDark),
+      },
+    },
+    red: {
+      palette: { light: Object.values(Colors.red), dark: Object.values(Colors.redDark) },
+    },
   },
 
   grandChildrenThemes: {
@@ -274,7 +281,7 @@ A palette is a gradient of colors from background to foreground:
 
 ```tsx
 const dark_blue = [
-  'hsl(212, 35.0%, 9.2%)',  // background
+  'hsl(212, 35.0%, 9.2%)', // background
   'hsl(216, 50.0%, 11.8%)',
   // ...
   'hsl(206, 98.0%, 95.8%)', // foreground
@@ -296,9 +303,9 @@ Underscore in theme names defines nesting: `dark_subtle` is a sub-theme of `dark
 
 ```tsx
 <Theme name="dark">
-  <Box />  {/* uses dark theme */}
+  <Box /> {/* uses dark theme */}
   <Theme name="subtle">
-    <Box />  {/* uses dark_subtle theme */}
+    <Box /> {/* uses dark_subtle theme */}
   </Theme>
 </Theme>
 ```
@@ -339,4 +346,36 @@ Add values that don't cascade to child themes:
     },
   },
 })
+```
+
+### Inverse Themes
+
+In v2, the `<Theme inverse />` prop and `themeInverse` prop were removed. To
+create inverse-like themes, follow the pattern used by the v5 config's `accent`
+theme: swap your light and dark palettes.
+
+```tsx
+// with createThemes - swap palettes for inverse effect
+accent: {
+  palette: {
+    light: darkPalette,  // use dark colors in light mode
+    dark: lightPalette,  // use light colors in dark mode
+  },
+},
+```
+
+This gives you an "inverted" theme where light mode shows dark colors and vice
+versa - commonly used for accent buttons or cards that should stand out. This
+approach is also SSR-safe.
+
+Use it in your components:
+
+```tsx
+<Theme name="accent">
+  <Button>Inverted colors</Button>
+</Theme>
+
+// or use activeTheme on supported components
+<Switch activeTheme="accent" />
+<Checkbox activeTheme="accent" />
 ```

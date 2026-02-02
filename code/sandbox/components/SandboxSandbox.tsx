@@ -18,7 +18,6 @@ import { PopoverDemo } from '../../demos/src/PopoverDemo'
 import { DialogDemo } from '../../demos/src/DialogDemo'
 import { TestPopoverTransformOrigin } from '../use-cases/TestPopoverTransformOrigin'
 import { animationsMotion } from '../config/tamagui/animationMotion'
-import { animations as animationsMoti } from '../config/tamagui/animations'
 import { animationsCSS } from '../config/tamagui/animationsCSS'
 import { animationsNative } from '../config/tamagui/animationNative'
 
@@ -105,11 +104,11 @@ function AnimationDelayDemo() {
           />
         </Configuration>
 
-        <Configuration animationDriver={animationsMoti}>
+        <Configuration animationDriver={animationsNative}>
           <DelayDemoContent
             show={showMoti}
             onToggle={() => setShowMoti(!showMoti)}
-            driverName="Moti"
+            driverName="RN Animated (2)"
           />
         </Configuration>
 
@@ -844,7 +843,7 @@ const Motion = () => {
 const Drivers = () => {
   return (
     <>
-      <Configuration animationDriver={animationsMoti}>
+      <Configuration animationDriver={animationsMotion}>
         <YStack group="card">
           <XStack
             transition="bouncy"
@@ -882,7 +881,6 @@ const Performance = () => {
 
   return (
     <>
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
       <div style={{ color: 'red' }} onClick={() => setK(Math.random())}>
         render
       </div>

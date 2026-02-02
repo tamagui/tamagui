@@ -4,18 +4,18 @@ import { AddEvenBrandIcon } from '~/features/icons/AddEvenBrandIcon'
 export const ConsultingButton = (props: ButtonProps) => {
   return (
     <Button
-      theme="black"
-      borderColor="$color5"
+      theme="gray"
+      borderColor="$color6"
       elevation="$2"
       size="$3"
       rounded="$10"
       {...props}
     >
       <Button.Text fontFamily="$silkscreen" fontSize={12}>
-        Hire Us!
+        Hire Us
       </Button.Text>
       <Button.Icon>
-        <AddEvenBrandIcon scale={0.75} />
+        <AddEvenBrandIcon scale={1} />
       </Button.Icon>
     </Button>
   )

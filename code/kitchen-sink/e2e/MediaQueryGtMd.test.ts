@@ -69,4 +69,3 @@ describe('MediaQueryGtMd', () => {
     await device.takeScreenshot('media-query-mobile')
   })
 })
-

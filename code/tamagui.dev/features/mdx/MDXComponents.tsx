@@ -76,7 +76,7 @@ import { Tab } from '~/components/RovingTabs'
 import { SimpleTable } from './SimpleTable'
 
 if (!React.version.startsWith('19')) {
-  console.error(`\n\n\n\Not on React 19 ❌\n\n\n\n`)
+  console.error(`\n\n\nNot on React 19 ❌\n\n\n\n`)
 }
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
@@ -451,10 +451,10 @@ const componentsIn = {
     <H2
       position="relative"
       width={`fit-content` as any}
-      pt="$6"
-      mb="$3"
+      mt="$8"
+      mb="$4"
       data-heading
-      size="$8"
+      size="$9"
       color="$color12"
       {...props}
     >
@@ -463,14 +463,13 @@ const componentsIn = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading pt="$6" mb="$2" id={id}>
+    <LinkHeading data-heading mt="$6" mb="$2" id={id}>
       <H3
         maxW="100%"
         position="relative"
         width={`fit-content` as any}
         id={id}
-        data-heading
-        size="$7"
+        size="$8"
         color="$color11"
         fontWeight="600"
         {...props}
@@ -485,14 +484,17 @@ const componentsIn = {
     <H4
       position="relative"
       width={`fit-content` as any}
-      mt="$5"
+      mt="$8"
       mb="$2"
+      size="$8"
+      color="$color8"
+      data-heading
       {...props}
-      fontWeight="700"
+      fontWeight="400"
     />
   ),
 
-  h5: (props) => <H5 fontWeight="600" mt="$4" {...props} />,
+  h5: (props) => <H5 size="$6" fontWeight="600" mt="$4" {...props} />,
 
   p: (props) => (
     <Paragraph className="docs-paragraph" display="block" size="$6" my="$2" {...props} />
@@ -569,9 +571,7 @@ const componentsIn = {
 
   img: ({ ...props }) => (
     <YStack render="span" my="$6">
-      <Link href={props.src as Href} target="_blank">
-        <YStack render="img" {...props} maxW="100%" cursor="pointer" />
-      </Link>
+      <YStack render="img" {...props} maxW="100%" />
     </YStack>
   ),
 
@@ -761,8 +761,8 @@ const componentsIn = {
           </IntroParagraph>
 
           <UL mt="$4" pl="$4" gap="$2">
-            <Theme name="red">
-              <LI size="$6" color="$color11">
+            <Theme name="gray">
+              <LI mb="$4" size="$6" color="$color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/core/configuration">
                   <CodeInline>
@@ -777,8 +777,8 @@ const componentsIn = {
               </LI>
             </Theme>
 
-            <Theme name="green">
-              <LI size="$6" color="$color11">
+            <Theme name="gray">
+              <LI mb="$4" size="$6" color="$color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/docs/intro/compiler-install">
                   <CodeInline>
@@ -798,8 +798,8 @@ const componentsIn = {
               </LI>
             </Theme>
 
-            <Theme name="blue">
-              <LI size="$6" color="$color11">
+            <Theme name="gray">
+              <LI mb="$4" size="$6" color="$color11">
                 {/* @ts-ignore */}
                 <Link fontSize="inherit" href="/ui/intro">
                   <CodeInline>
@@ -998,6 +998,7 @@ export const components = Object.fromEntries(
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
     render="a"
+    data-heading
     // @ts-expect-error
     href={`#${id}`}
     id={id}

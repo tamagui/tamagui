@@ -26,11 +26,7 @@ export function TestModal() {
             t={-40}
           />
 
-          <Sheet.Overlay
-            height={windowHeight}
-            width={windowWidth}
-            bg="$background"
-          />
+          <Sheet.Overlay height={windowHeight} width={windowWidth} bg="$background" />
 
           {/* Uncommenting this causes a rare crash on native iOS Safari */}
           <Sheet.Frame theme="red">

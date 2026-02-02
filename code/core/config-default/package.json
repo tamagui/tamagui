@@ -1,20 +1,23 @@
 {
   "name": "@tamagui/config-default",
-  "version": "2.0.0-1769467800680",
-  "sideEffects": false,
+  "version": "2.0.0-rc.0-1769885482630",
   "source": "src/index.ts",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "sideEffects": false,
   "main": "dist/index.cjs",
   "types": "./types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "files": [
-    "types",
-    "dist"
-  ],
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
@@ -24,8 +27,5 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

@@ -4,9 +4,37 @@
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
+import { execSync } from 'node:child_process'
 import { $ } from 'bun'
 import { isCI } from './runner'
 import { generateFingerprint } from './fingerprint'
+
+/**
+ * Shutdown all simulators and clean up zombie simulator processes.
+ * macOS doesn't properly clean up simulators between test runs, leading to
+ * resource exhaustion (40+ simulators can accumulate).
+ */
+export async function cleanupSimulators(): Promise<void> {
+  console.info('\n--- Cleaning up simulators ---')
+
+  try {
+    // shutdown all booted simulators
+    execSync('xcrun simctl shutdown all 2>/dev/null || true', { stdio: 'pipe' })
+
+    // kill any zombie Simulator.app processes
+    execSync('pkill -9 -f "Simulator.app" 2>/dev/null || true', { stdio: 'pipe' })
+
+    // list remaining booted (should be 0)
+    const booted = execSync('xcrun simctl list devices | grep -i booted | wc -l', {
+      encoding: 'utf-8',
+    }).trim()
+
+    console.info(`Simulators cleaned up (${booted} still booted)`)
+  } catch {
+    // ignore errors - cleanup is best effort
+    console.info('Simulator cleanup completed (some commands may have failed)')
+  }
+}
 
 /**
  * Ensure the ios/ folder has full prebuild structure for Metro.
@@ -76,6 +104,9 @@ function saveFingerprintCache(projectRoot: string, cache: FingerprintCache): voi
  * On CI, this is a no-op since CI builds the app in a separate job.
  * Locally, this will build the app if the binary is missing OR if the
  * fingerprint has changed (indicating native dependencies changed).
+ *
+ * IMPORTANT: Fingerprint only changes when NATIVE dependencies change
+ * (Podfile, native modules, etc). JS-only changes don't require rebuild.
  */
 export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<void> {
   // On CI, the app is built separately - don't build here
@@ -87,48 +118,95 @@ export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<vo
   const projectRoot = process.cwd()
 
   // Check if app binary exists (use the path from detoxrc)
-  const appPath = process.env.DETOX_IOS_APP_PATH ||
+  const appPath =
+    process.env.DETOX_IOS_APP_PATH ||
     'ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app'
   const fullAppPath = join(projectRoot, appPath)
   const appExists = existsSync(fullAppPath)
 
-  // Generate current fingerprint
+  // If app doesn't exist, we must build regardless of fingerprint
+  if (!appExists) {
+    console.info(`\n--- iOS app not found at ${appPath}, building... ---`)
+    await buildIOSApp(config, projectRoot, appPath, '')
+    return
+  }
+
+  // App exists - check if fingerprint changed (native deps changed)
   let currentFingerprint: string
   try {
     const result = await generateFingerprint({ platform: 'ios', projectRoot })
     currentFingerprint = result.hash
   } catch (err) {
-    // if fingerprint generation fails, fall back to existence check
-    console.warn('Could not generate fingerprint, falling back to existence check')
-    if (appExists) {
-      console.info(`iOS app found at ${appPath}`)
-      return
-    }
-    // fall through to build
-    currentFingerprint = ''
+    // if fingerprint generation fails, skip rebuild (app exists)
+    console.warn('Could not generate fingerprint, using existing app')
+    console.info(`iOS app found at ${appPath}`)
+    return
   }
 
   // Check cached fingerprint
   const cache = loadFingerprintCache(projectRoot)
-  const fingerprintMatch = cache?.fingerprint === currentFingerprint && currentFingerprint !== ''
+  const fingerprintMatch =
+    cache?.fingerprint === currentFingerprint && currentFingerprint !== ''
 
-  if (appExists && fingerprintMatch) {
-    console.info(`iOS app found at ${appPath} (fingerprint matches)`)
+  if (fingerprintMatch) {
+    console.info(`iOS app found at ${appPath} (fingerprint matches - no native changes)`)
     return
   }
 
-  // Determine why we're rebuilding
-  if (appExists && !fingerprintMatch) {
-    console.info(`\n--- iOS app exists but fingerprint changed, rebuilding... ---`)
-    console.info(`Previous: ${cache?.fingerprint?.slice(0, 16) || 'none'}...`)
+  // Fingerprint changed - but let user decide if they want to rebuild
+  // Many fingerprint changes are false positives (timestamp changes, etc)
+  if (cache?.fingerprint) {
+    console.info(`\n--- iOS fingerprint changed ---`)
+    console.info(`Previous: ${cache.fingerprint.slice(0, 16)}...`)
     console.info(`Current:  ${currentFingerprint.slice(0, 16)}...`)
-  } else {
-    console.info(`\n--- iOS app not found at ${appPath}, building... ---`)
+    console.info(`App exists at ${appPath}`)
+
+    // Check if FORCE_IOS_REBUILD is set
+    if (process.env.FORCE_IOS_REBUILD) {
+      console.info('FORCE_IOS_REBUILD set, rebuilding...')
+      await buildIOSApp(config, projectRoot, appPath, currentFingerprint)
+      return
+    }
+
+    // Otherwise use existing app but update fingerprint cache
+    // This avoids unnecessary rebuilds from timestamp/metadata changes
+    console.info('Using existing app (set FORCE_IOS_REBUILD=1 to force rebuild)')
+    saveFingerprintCache(projectRoot, {
+      fingerprint: currentFingerprint,
+      timestamp: new Date().toISOString(),
+      appPath,
+    })
+    return
   }
 
+  // No cache but app exists - just save fingerprint and use existing app
+  console.info(`iOS app found at ${appPath} (saving fingerprint)`)
+  saveFingerprintCache(projectRoot, {
+    fingerprint: currentFingerprint,
+    timestamp: new Date().toISOString(),
+    appPath,
+  })
+}
+
+/**
+ * Build the iOS app using detox build
+ */
+async function buildIOSApp(
+  config: string,
+  projectRoot: string,
+  appPath: string,
+  fingerprint: string
+): Promise<void> {
   // Ensure pods are installed first
   // Check for actual pod config files, not just the Pods directory (which may be incomplete)
-  const podConfigPath = join(projectRoot, 'ios', 'Pods', 'Target Support Files', 'Pods-tamaguikitchensink', 'Pods-tamaguikitchensink.debug.xcconfig')
+  const podConfigPath = join(
+    projectRoot,
+    'ios',
+    'Pods',
+    'Target Support Files',
+    'Pods-tamaguikitchensink',
+    'Pods-tamaguikitchensink.debug.xcconfig'
+  )
   if (!existsSync(podConfigPath)) {
     console.info('Installing CocoaPods dependencies...')
     await $`pod install --project-directory=ios`
@@ -140,9 +218,9 @@ export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<vo
   await $`npx detox build -c ${config}`
 
   // Save the fingerprint cache
-  if (currentFingerprint) {
+  if (fingerprint) {
     saveFingerprintCache(projectRoot, {
-      fingerprint: currentFingerprint,
+      fingerprint,
       timestamp: new Date().toISOString(),
       appPath,
     })

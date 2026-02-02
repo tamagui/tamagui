@@ -418,7 +418,6 @@ const MyComponent = () => {
 const MyComponent2 = () => {
   return <Toast viewportName="viewport-custom" />
 }
-
 ```
 
 ### Custom data
@@ -427,7 +426,7 @@ Just pass your custom data to the second parameter of the `show()` method.
 
 ```ts
 const toastController = useToastController()
-toastController.show("Title", { myPreset: 'error' }) // or toastController.show("Title", { customData: { myPreset: 'error' } })
+toastController.show('Title', { myPreset: 'error' }) // or toastController.show("Title", { customData: { myPreset: 'error' } })
 ```
 
 then, when showing the toast, you can retrieve them like so:
@@ -445,7 +444,6 @@ declare module '@tamagui/toast' {
     myPreset: 'error' | 'success' | 'warning'
   }
 }
-
 ```
 
 ### Without hooks

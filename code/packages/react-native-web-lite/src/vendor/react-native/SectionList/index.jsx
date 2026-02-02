@@ -97,4 +97,4 @@ class SectionList extends React.PureComponent {
 }
 
 export { SectionList }
-export default SectionList;
+export default SectionList

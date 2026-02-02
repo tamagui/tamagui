@@ -1,4 +1,4 @@
-export declare function getPragmaOptions({ source, path, }: {
+export declare function getPragmaOptions({ source, path }: {
     source: string;
     path: string;
 }): {

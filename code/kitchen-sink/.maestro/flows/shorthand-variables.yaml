@@ -3,21 +3,21 @@ appId: com.tamagui.kitchen-sink
 # Test that shorthand CSS properties with $variables render correctly on native
 - launchApp
 - tapOn:
-    text: "All Test Cases"
+    text: 'All Test Cases'
     optional: true
 - scrollUntilVisible:
     element:
-      id: "test-case-ShorthandVariables"
+      id: 'test-case-ShorthandVariables'
     direction: DOWN
 - tapOn:
-    id: "test-case-ShorthandVariables"
+    id: 'test-case-ShorthandVariables'
 - assertVisible:
-    id: "boxshadow-var"
+    id: 'boxshadow-var'
 - assertVisible:
-    id: "boxshadow-multi"
+    id: 'boxshadow-multi'
 - assertVisible:
-    id: "border-var"
+    id: 'border-var'
 - assertVisible:
-    id: "boxshadow-plain"
+    id: 'boxshadow-plain'
 # Note: boxShadow with $variable resolves to actual color on native (RN 0.77+)
 # border shorthand is web-only; native falls back to individual border props

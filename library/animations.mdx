@@ -4,8 +4,7 @@ You define animations on `createTamagui` and can choose from animation drivers: 
 
 ```tsx
 import { View } from 'tamagui'
-
-<View animation="100ms" />
+;<View animation="100ms" />
 ```
 
 When defined like this, Tamagui will animate all [animatable properties](#animatable-properties) when they change.
@@ -92,7 +91,7 @@ Here's some rough pseudo code of how you'd do that, you can find plenty of examp
 function MyComponent() {
   // you would have your own logic for the "direction" here:
   const towards = isGoingRight ? -1 : 1
-  
+
   return (
     <AnimatePresence custom={{ towards }} initial={false}>
       {/* note the key changes when you need to "run" the animation: */}

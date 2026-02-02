@@ -41,10 +41,6 @@ export const DefaultTabsTabFrame = styled(
             backgroundColor: '$backgroundPress',
           },
 
-          hoverStyle: {
-            backgroundColor: '$backgroundHover',
-          },
-
           focusVisibleStyle: {
             outlineColor: '$outlineColor',
             outlineWidth: 2,

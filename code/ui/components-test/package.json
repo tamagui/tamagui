@@ -1,29 +1,29 @@
 {
   "name": "@tamagui/components-test",
-  "version": "2.0.0-1769467800680",
-  "module": "dist/esm",
+  "version": "2.0.0-rc.0-1769885482630",
+  "private": true,
+  "license": "MIT",
   "type": "module",
   "sideEffects": [
     "*.css"
   ],
-  "private": true,
-  "license": "MIT",
+  "module": "dist/esm",
   "scripts": {
-    "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
-    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
-    "test": "yarn test:native"
+    "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.web.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.native.test.tsx",
+    "test": "bun run test:native"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "jsdom": "^25.0.1",
-    "react": "*",
+    "react": ">=19",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.4",
+    "vitest": "4.0.4",
     "vitest-axe": "^0.1.0"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=19"
   }
 }

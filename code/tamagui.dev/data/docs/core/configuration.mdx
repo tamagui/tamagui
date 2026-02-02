@@ -9,9 +9,9 @@ animations, shorthands, and settings.
 First, create a `tamagui.config.ts` file.
 
 <Notice theme="blue">
-  We recommend starting with [`@tamagui/config/v5`](/docs/core/config-v5), our
-  preset configuration with sensible defaults, Tailwind-aligned shorthands, and
-  a complete theme system.
+  We recommend starting with [`@tamagui/config/v5`](/docs/core/config-v5), our preset
+  configuration with sensible defaults, Tailwind-aligned shorthands, and a complete theme
+  system.
 </Notice>
 
 ```bash
@@ -65,11 +65,11 @@ export const config = createTamagui({
   themes: {
     light: {
       bg: '#f2f2f2',
-      color: '#fff',
+      color: '#000',
     },
     dark: {
       bg: '#111',
-      color: '#000',
+      color: '#fff',
     },
     // sub-themes are a powerful feature of tamagui, explained later in the docs
     // user theme like <Theme name="dark"><Theme name="blue">
@@ -111,9 +111,9 @@ declare module 'tamagui' {
 ```
 
 <Notice theme="green">
-  In this guide we import everything from `tamagui`, but if you are using the
-  lower-level style library only, you can change the imports in this guide out
-  for `@tamagui/core`, which is a strict subset.
+  In this guide we import everything from `tamagui`, but if you are using the lower-level
+  style library only, you can change the imports in this guide out for `@tamagui/core`,
+  which is a strict subset.
 </Notice>
 
 Finally, pass your `config` export to a `<TamaguiProvider />` at the root of
@@ -133,13 +133,12 @@ export default () => (
 You're all set up!
 
 <Notice>
-  To avoid issues with hot reloading and circular imports, make sure to only
-  import your `tamagui.config.ts` once near the root of your app. If you need to
-  access the configuration in other files, you generally do this just by using
-  props on your styled components, or with hooks like `useMedia` or `useTheme`.
-  We do have some getters like `getTokenValue`, and if you really need to access
-  the full configuration object (though we don't find it necessary in most
-  cases), you can use `getConfig`.
+  To avoid issues with hot reloading and circular imports, make sure to only import your
+  `tamagui.config.ts` once near the root of your app. If you need to access the
+  configuration in other files, you generally do this just by using props on your styled
+  components, or with hooks like `useMedia` or `useTheme`. We do have some getters like
+  `getTokenValue`, and if you really need to access the full configuration object (though
+  we don't find it necessary in most cases), you can use `getConfig`.
 </Notice>
 
 ## In more detail
@@ -259,9 +258,10 @@ type AppConfig = typeof config
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 
-  // if you want types for group styling props, define them like so:
+  // if you want types for named group styling props (e.g. $group-card-hover),
+  // define your group names here:
   interface TypeOverride {
-    groupNames(): 'card'
+    groupNames(): 'card' | 'header' | 'sidebar'
   }
 }
 
@@ -280,8 +280,8 @@ The `createTamagui` function receives a configuration object with properties:
 - [`shorthands`](#shorthands): Define shorter names for any style property.
 
 <Notice theme="blue">
-  On Android you need to set the `face` option in `createFont` or else fonts
-  won't pick up different weights, due to a React Native restriction.
+  On Android you need to set the `face` option in `createFont` or else fonts won't pick up
+  different weights, due to a React Native restriction.
 </Notice>
 
 Note, for `tamagui` (not core), it expects you to define a `true` token that
@@ -306,9 +306,8 @@ export const tokens = createTokens({
 ```
 
 <Notice theme="green">
-  If using the compiler, your tamagui.config.ts is parsed at build-time. For
-  this reason, we recommend keeping it relatively simple. Avoid importing heavy
-  dependencies.
+  If using the compiler, your tamagui.config.ts is parsed at build-time. For this reason,
+  we recommend keeping it relatively simple. Avoid importing heavy dependencies.
 </Notice>
 
 ## TamaguiProvider
@@ -390,13 +389,13 @@ export default {
   plugins: [
     tamaguiPlugin({
       config: './src/tamagui.config.ts',
-      outputCSS: './src/tamagui.css',
+      outputCSS: './src/tamagui.generated.css',
     }),
   ],
 }
 ```
 
-And then you'll want to import the resulting `tamagui.css` into your app.
+And then you'll want to import the resulting `tamagui.generated.css` into your app.
 
 As final option, you can also generate it yourself with the CLI. First create a
 `tamagui.build.ts`:
@@ -407,7 +406,7 @@ import type { TamaguiBuildOptions } from 'tamagui'
 export default {
   components: ['tamagui'],
   config: './config/tamagui.config.ts',
-  outputCSS: './tamagui.css',
+  outputCSS: './tamagui.generated.css',
 } satisfies TamaguiBuildOptions
 ```
 
@@ -467,8 +466,8 @@ const interFont = createFont({
 ```
 
 <Notice theme="blue">
-  We use numbered keys as an example, but you can use any strings you'd like.
-  The optional default styles in `tamagui` make use of number keys 1-10.
+  We use numbered keys as an example, but you can use any strings you'd like. The optional
+  default styles in `tamagui` make use of number keys 1-10.
 </Notice>
 
 This gives you a lot of power over customizing every aspect of your design based
@@ -529,7 +528,7 @@ tokens to use based on the style property you use.
 
 ```tsx
 const App = () => (
-  <Text fontSize="$lg" lineHeight="$lg" fontFamily="$mono" color="$white">
+  <Text fontSize="$lg" lineHeight="$lg" fontFamily="$body" color="$white">
     Hello world
   </Text>
 )
@@ -665,7 +664,7 @@ export const animations = createAnimations({
 ```
 
 You can use different drivers per-platform - see the
-[Platform-Specific Configuration](/docs/core/animations#platform-specific-configuration)
+[Platform-Specific Drivers](/docs/core/animation-drivers#platform-specific-drivers)
 section.
 
 ### Shorthands
@@ -844,14 +843,18 @@ You should be sure to either use the Vite or Webpack Tamagui plugins, or
 configure your bundler to define the environment variables for tree shaking. On
 native, it is not a concern as the extra size is minimal.
 
-## Tree Shaking Themes (Production Optimization)
+### Tree Shaking Themes
 
-Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS
-variables, you can remove the themes JS from your client bundle for better
-Lighthouse scores.
+**Production Optimization** - Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS variables, you can remove the themes JS from your client bundle for better Lighthouse scores.
 
 This works because Tamagui generates CSS variables for all theme values. On the
 client, it reads these from the DOM instead of needing the JS object.
+
+<Notice>
+  This optimization only applies to SSR web apps (Next.js, One, Vite SSR). It doesn't
+  apply to Metro/Expo or static sites. Note that v5 themes are already more optimized than
+  v4, so this is mainly relevant if chasing the last few Lighthouse points.
+</Notice>
 
 ### Setup
 
@@ -868,7 +871,7 @@ export const config = createTamagui({
 ```
 
 <Notice theme="green">
-  This optimization requires server-side rendering. The CSS must be rendered on
-  the server for the client to hydrate from it. Make sure you're using
-  `config.getCSS()` or the bundler plugin's `outputCSS` option.
+  This optimization requires server-side rendering. The CSS must be rendered on the server
+  for the client to hydrate from it. Make sure you're using `config.getCSS()` or the
+  bundler plugin's `outputCSS` option.
 </Notice>

@@ -106,7 +106,6 @@ This script will:
 
 ---
 
-
 ## 7. How "Pro Plan" Status is Determined
 
 A user is considered to be on the "Pro" plan if they have an active or trialing subscription named **"Tamagui Pro"**.
@@ -156,5 +155,3 @@ This logic is used to check access to specific features like Pro, Chat, or Suppo
 - Confirm the payment method ID is valid
 - Check whether you're using the correct `sk_test_...` or `sk_live_...` key
 - Use stripe `paymentMethods.list` to view available methods
-
-

@@ -1,22 +1,22 @@
 {
   "name": "@tamagui/focus-guard",
-  "version": "2.0.0-1769467800680",
-  "sideEffects": true,
+  "version": "2.0.0-rc.0-1769885482630",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "sideEffects": true,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "../../node_modules/.bin/biome check src",
-    "lint:fix": "../../node_modules/.bin/biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -24,14 +24,12 @@
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/use-event": "workspace:*"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": ">=19"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "module:jsx": "dist/jsx"
 }

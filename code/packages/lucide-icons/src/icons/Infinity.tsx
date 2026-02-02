@@ -1,4 +1,5 @@
 // @ts-nocheck
+/* eslint-disable no-shadow-restricted-names */
 import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
 import { Svg, Path } from 'react-native-svg'

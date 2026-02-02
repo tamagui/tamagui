@@ -82,7 +82,7 @@ function fromBouncinessAndSpeed(bounciness, speed) {
 const SpringConfig = {
   fromOrigamiTensionAndFriction,
   fromBouncinessAndSpeed,
-};
+}
 
 export { SpringConfig }
 export default SpringConfig

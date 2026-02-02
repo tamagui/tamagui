@@ -31,7 +31,7 @@ Alert Dialog is already installed in `tamagui`, or you can install it independen
 npm install @tamagui/alert-dialog
 ```
 
-In order to use this component independently of `tamagui`, you'll first need to install the `@tamagui/portal` package: 
+In order to use this component independently of `tamagui`, you'll first need to install the `@tamagui/portal` package:
 
 ```bash
 npm install @tamagui/portal
@@ -194,9 +194,7 @@ import { PortalProvider } from 'tamagui'
 // this component used in react-navigation/expo-router with `presentation: "modal"`
 export function Page() {
   return (
-    <PortalProvider>
-      {/* rest of your page, including the Dialog... */}
-    </PortalProvider>
+    <PortalProvider>{/* rest of your page, including the Dialog... */}</PortalProvider>
   )
 }
 ```

@@ -6,8 +6,8 @@
  *
  * @flow
  */
-export declare const createBoxShadowValue: (style: Object) => void | string;
-export declare const createTextShadowValue: (style: Object) => void | string;
+export declare const createBoxShadowValue: (style: object) => void | string;
+export declare const createTextShadowValue: (style: object) => void | string;
 /**
  * Preprocess styles
  */

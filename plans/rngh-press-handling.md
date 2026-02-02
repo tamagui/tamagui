@@ -1,6 +1,7 @@
 # Plan: RNGH Press Handling via @tamagui/native
 
 ## Goal
+
 Replace RN's JS-thread Pressability with RNGH's native-thread gestures. Use the new `@tamagui/native` getter pattern. Keep web logic separate and smart about avoiding re-parenting.
 
 ## Architecture
@@ -66,7 +67,7 @@ export function getGestureHandler() {
       if (config.hitSlop) longPress.hitSlop(config.hitSlop)
 
       return Gesture.Exclusive(longPress, tap)
-    }
+    },
   }
 }
 ```
@@ -75,7 +76,10 @@ export function getGestureHandler() {
 
 ```typescript
 // web event handling - maps RN-style events to DOM events
-import type { TamaguiComponentEvents, WebOnlyPressEvents } from './interfaces/TamaguiComponentEvents'
+import type {
+  TamaguiComponentEvents,
+  WebOnlyPressEvents,
+} from './interfaces/TamaguiComponentEvents'
 
 type EventKeys = keyof (TamaguiComponentEvents & WebOnlyPressEvents)
 type EventLikeObject = { [key in EventKeys]?: any }
@@ -113,7 +117,8 @@ import { getGestureHandler } from '@tamagui/native'
 import { composeEventHandlers } from '@tamagui/helpers'
 
 // fallback to RN's pressability
-const usePressability = require('react-native/Libraries/Pressability/usePressability').default
+const usePressability =
+  require('react-native/Libraries/Pressability/usePressability').default
 
 export function getWebEvents() {
   // not used on native
@@ -137,7 +142,8 @@ export function usePressHandling(
   }
   const tracking = gestureRefs.get(stateRef)!
 
-  const hasPressEvents = events?.onPress || events?.onPressIn || events?.onPressOut || events?.onLongPress
+  const hasPressEvents =
+    events?.onPress || events?.onPressIn || events?.onPressOut || events?.onLongPress
 
   if (gh.isEnabled && hasPressEvents) {
     // use RNGH
@@ -165,7 +171,11 @@ export function usePressHandling(
   return gestureRef.current
 }
 
-export function wrapWithGestureDetector(content: any, gesture: any, hasEverWrapped: boolean) {
+export function wrapWithGestureDetector(
+  content: any,
+  gesture: any,
+  hasEverWrapped: boolean
+) {
   const gh = getGestureHandler()
   const { GestureDetector } = gh.state
 
@@ -244,10 +254,10 @@ export default function App() {
 
 ## Files Summary
 
-| File | Action |
-|------|--------|
-| `@tamagui/native/gestureState.ts` | Add `createPressGesture` method |
-| `code/core/web/src/eventHandling.ts` | Create (web version) |
-| `code/core/web/src/eventHandling.native.ts` | Create (native version) |
-| `code/core/web/src/createComponent.tsx` | Import from eventHandling, remove inline getWebEvents |
-| `code/core/core/src/index.tsx` | Simplify useEvents hook |
+| File                                        | Action                                                |
+| ------------------------------------------- | ----------------------------------------------------- |
+| `@tamagui/native/gestureState.ts`           | Add `createPressGesture` method                       |
+| `code/core/web/src/eventHandling.ts`        | Create (web version)                                  |
+| `code/core/web/src/eventHandling.native.ts` | Create (native version)                               |
+| `code/core/web/src/createComponent.tsx`     | Import from eventHandling, remove inline getWebEvents |
+| `code/core/core/src/index.tsx`              | Simplify useEvents hook                               |

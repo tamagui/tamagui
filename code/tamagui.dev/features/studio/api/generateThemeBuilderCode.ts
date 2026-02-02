@@ -34,10 +34,10 @@ export async function generateThemeBuilderCode({
   const lightAccent = paletteToCreateThemes(palettesOut.light_accent)
 
   const componentThemesProp = includeComponentThemes
-    ? `\n  componentThemes: defaultComponentThemes,`
+    ? `\n  componentThemes: v5ComponentThemes,`
     : `\n  componentThemes: false,`
 
-  return `import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5'${includeComponentThemes ? `\nimport { defaultComponentThemes } from '@tamagui/themes/v5'` : ``}
+  return `import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5'${includeComponentThemes ? `\nimport { v5ComponentThemes } from '@tamagui/themes/v5'` : ``}
 import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'
 
 const darkPalette = ${arrayToJS(darkPalette)}

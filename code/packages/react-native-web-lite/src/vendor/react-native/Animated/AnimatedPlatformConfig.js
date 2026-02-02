@@ -8,5 +8,4 @@
  * @format
  */
 
-'use strict';
-
+'use strict'

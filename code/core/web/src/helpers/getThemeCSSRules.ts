@@ -3,7 +3,7 @@ import { getSetting } from '../config'
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed, Variable } from '../types'
-import { tokensValueToVariable } from './registerCSSVariable'
+import { getOrCreateVariable, getOrCreateMutatedVariable } from './registerCSSVariable'
 import { sortString } from './sortString'
 
 const darkLight = ['dark', 'light']
@@ -15,17 +15,19 @@ export function getThemeCSSRules(props: {
   theme: ThemeParsed
   names: string[]
   hasDarkLight?: boolean
-}) {
-  const cssRuleSets: string[] = []
-
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    return cssRuleSets
-  }
-  if (
+  // Use mutated variable prefix (mt) instead of regular (t) - for dynamic theme mutation
+  useMutatedVariables?: boolean
+}): string[] {
+  if (process.env.TAMAGUI_DID_OUTPUT_CSS) {
+    // empty - CSS already extracted at build time
+  } else if (process.env.TAMAGUI_TARGET === 'native') {
+    // no CSS on native
+  } else if (
     !process.env.TAMAGUI_DOES_SSR_CSS ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'false'
   ) {
+    const cssRuleSets: string[] = []
     const { config, themeName, theme, names } = props
 
     // special case for SSR
@@ -36,15 +38,13 @@ export function getThemeCSSRules(props: {
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
+    const variableCreator = props.useMutatedVariables
+      ? getOrCreateMutatedVariable
+      : getOrCreateVariable
+
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
-      let value: any = null
-
-      if (!tokensValueToVariable.has(variable.val)) {
-        value = variable.val
-      } else {
-        value = tokensValueToVariable.get(variable.val)!.variable
-      }
+      const value = variableCreator(variable.val).variable
       // Hash themeKey in case it has invalid chars too
       vars += `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(
         themeKey,
@@ -174,9 +174,11 @@ export function getThemeCSSRules(props: {
         }
       }
     }
+
+    return cssRuleSets
   }
 
-  return cssRuleSets
+  return []
 }
 
 const darkSelector = '.t_dark'

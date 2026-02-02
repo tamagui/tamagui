@@ -253,8 +253,9 @@ describe('getSplitStyles', () => {
       shadowOpacity: 0.5,
     })
     expect(Object.values(styles.rulesToInsert).length).toEqual(1)
+    // on web, opacity is applied via CSS color-mix instead of parsing to rgba
     expect(Object.values(styles.rulesToInsert)[0][StyleObjectValue]).toEqual(
-      `0px 0px 0px rgba(255,0,0,0.5)`
+      `0px 0px 0px color-mix(in srgb, red 50%, transparent)`
     )
     expect(Object.values(styles.rulesToInsert)[0][StyleObjectProperty]).toEqual(
       `boxShadow`

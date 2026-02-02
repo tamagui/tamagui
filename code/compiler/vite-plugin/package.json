@@ -1,27 +1,16 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "2.0.0-1769467800680",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "type": "module",
-  "module": "dist/esm",
+  "version": "2.0.0-rc.0-1769885482630",
   "license": "MIT",
-  "tamagui": {
-    "build": {
-      "skipEnvToMeta": true
-    }
-  },
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
+  "type": "module",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -31,6 +20,15 @@
       "import": "./dist/esm/index.mjs",
       "default": "./dist/cjs/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/fake-react-native": "workspace:*",
@@ -48,10 +46,12 @@
     "@tamagui/build": "workspace:*",
     "vite": "^7.1.12"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "peerDependencies": {
     "vite": "*"
+  },
+  "tamagui": {
+    "build": {
+      "skipEnvToMeta": true
+    }
   }
 }

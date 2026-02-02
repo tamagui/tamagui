@@ -379,8 +379,10 @@ const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemConte
   createStyledContext<AccordionItemContextValue>()
 type AccordionItemElement = React.ElementRef<typeof Collapsible>
 type CollapsibleProps = React.ComponentPropsWithoutRef<typeof Collapsible>
-interface AccordionItemProps
-  extends Omit<CollapsibleProps, 'open' | 'defaultOpen' | 'onOpenChange'> {
+interface AccordionItemProps extends Omit<
+  CollapsibleProps,
+  'open' | 'defaultOpen' | 'onOpenChange'
+> {
   /**
    * Whether or not an accordion item is disabled from user interaction.
    *

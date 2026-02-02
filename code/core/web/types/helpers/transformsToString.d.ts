@@ -1,2 +1,2 @@
-export declare function transformsToString(transforms: Object[]): string;
+export declare function transformsToString(transforms: object[]): string;
 //# sourceMappingURL=transformsToString.d.ts.map

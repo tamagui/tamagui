@@ -1,60 +1,60 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 
 /**
  * This is useful for syncing state between components on the same page.
+ * Uses useSyncExternalStore for SSR safety.
  */
 export function useLocalStorageWatcher(key: string, defaultValue: string) {
-  const [isMounted, setIsMounted] = useState(false)
-  const [storageItem, setStorageItem] = useState(defaultValue)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  const handleStorageChange = useCallback(
-    (e: StorageEvent | CustomEvent) => {
-      if ('key' in e && e.key === key) {
-        setStorageItem(e.newValue || defaultValue)
-      } else if ('detail' in e && e.detail.key === key) {
-        setStorageItem(e.detail.newValue || defaultValue)
+  const subscribe = useCallback(
+    (onStoreChange: () => void) => {
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === key) {
+          onStoreChange()
+        }
       }
-    },
-    [key, defaultValue]
-  )
-
-  useEffect(() => {
-    if (!isMounted) {
-      return
-    }
-
-    if (typeof window !== 'undefined' && window.localStorage) {
-      setStorageItem(localStorage.getItem(key) || defaultValue)
+      const handleCustomChange = (e: Event) => {
+        const customEvent = e as CustomEvent
+        if (customEvent.detail?.key === key) {
+          onStoreChange()
+        }
+      }
       window.addEventListener('storage', handleStorageChange)
-      window.addEventListener('localStorageChange', handleStorageChange as EventListener)
+      window.addEventListener('localStorageChange', handleCustomChange)
       return () => {
         window.removeEventListener('storage', handleStorageChange)
-        window.removeEventListener(
-          'localStorageChange',
-          handleStorageChange as EventListener
-        )
+        window.removeEventListener('localStorageChange', handleCustomChange)
       }
-    }
-  }, [key, isMounted, defaultValue, handleStorageChange])
+    },
+    [key]
+  )
 
-  return {
-    storageItem,
-    setItem: (newValue: string) => {
+  const getSnapshot = useCallback(() => {
+    return localStorage.getItem(key) || defaultValue
+  }, [key, defaultValue])
+
+  const getServerSnapshot = useCallback(() => {
+    return defaultValue
+  }, [defaultValue])
+
+  const storageItem = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+
+  const setItem = useCallback(
+    (newValue: string) => {
       localStorage.setItem(key, newValue)
       window.dispatchEvent(
         new CustomEvent('localStorageChange', {
           detail: {
             key: key,
-            oldValue: storageItem,
             newValue: newValue,
           },
         })
       )
-      setStorageItem(newValue)
     },
+    [key]
+  )
+
+  return {
+    storageItem,
+    setItem,
   }
 }

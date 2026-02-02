@@ -59,7 +59,10 @@ test.describe('Transform Media Query Merge', () => {
     // If cumulative (bug): x = -100 + 50 = -50
     // If overwrite (correct): x = 50
     const x1 = await getTranslateX(page, 'test1')
-    expect(x1, 'styled $sm x should OVERWRITE to 50, not cumulate to -50').toBeCloseTo(50, 0)
+    expect(x1, 'styled $sm x should OVERWRITE to 50, not cumulate to -50').toBeCloseTo(
+      50,
+      0
+    )
   })
 
   test('runtime prop media query x OVERWRITES base value', async ({ page }) => {
@@ -70,7 +73,10 @@ test.describe('Transform Media Query Merge', () => {
     // If cumulative (bug): x = -75 + 75 = 0
     // If overwrite (correct): x = 75
     const x3 = await getTranslateX(page, 'test3')
-    expect(x3, 'runtime $sm x should OVERWRITE to 75, not cumulate to 0').toBeCloseTo(75, 0)
+    expect(x3, 'runtime $sm x should OVERWRITE to 75, not cumulate to 0').toBeCloseTo(
+      75,
+      0
+    )
   })
 
   test('viewport resize updates transform correctly', async ({ page }) => {

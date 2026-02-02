@@ -34,3 +34,8 @@ tsconfig.tsbuildinfo
 # generated code
 /ios
 /android
+
+# playwright
+.playwright-report
+.playwright-results
+test-results

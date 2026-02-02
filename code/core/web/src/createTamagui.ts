@@ -3,10 +3,15 @@ import { getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
-import { getThemeCSSRules } from './helpers/getThemeCSSRules'
-import { getAllRules, scanAllSheets } from './helpers/insertStyleRule'
+import {
+  buildCSSRuleSets,
+  createFontCSS,
+  createThemeCSS,
+  createTokenCSS,
+  getCSS as getCSSHelper,
+} from './helpers/createDesignSystem'
+import { scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
-import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
 import { ensureThemeVariable } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
@@ -78,7 +83,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   let foundThemes: DedupedThemes | undefined
   if (configIn.themes) {
     const noThemes = Object.keys(configIn.themes).length === 0
-    if (noThemes) {
+    if (noThemes && !process.env.TAMAGUI_DID_OUTPUT_CSS) {
       foundThemes = scanAllSheets(noThemes, tokensParsed)
     }
   }
@@ -114,23 +119,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const specificTokens = {}
 
   const themeConfig = (() => {
-    const cssRuleSets: string[] = []
-
-    const declarations: string[] = []
-    const fontDeclarations: Record<
-      string,
-      { name: string; declarations: string[]; language?: string }
-    > = {}
-
-    // Sort token categories for deterministic CSS output order
+    // populate specificTokens (needed for runtime)
     const sortedTokenKeys = Object.keys(tokens).sort()
     for (const key of sortedTokenKeys) {
-      // Sort token keys within each category for deterministic order
       const sortedSubKeys = Object.keys(tokens[key]).sort()
       for (const skey of sortedSubKeys) {
         const variable = tokens[key][skey] as any as Variable
-
-        // set specific tokens (like $size.sm)
         specificTokens[`$${key}.${skey}`] = variable
 
         if (process.env.NODE_ENV === 'development') {
@@ -140,54 +134,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
             )
           }
         }
-
-        if (isWeb) {
-          registerCSSVariable(variable)
-          // Check if this specific variable needs px units
-          const variableNeedsPx = variable.needsPx === true
-          const categoryNeedsPx = shouldTokenCategoryHaveUnits(key)
-          const shouldBeUnitless = !(variableNeedsPx || categoryNeedsPx)
-          declarations.push(variableToCSS(variable, shouldBeUnitless))
-        }
       }
     }
 
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // Sort font keys for deterministic CSS output order
-      const sortedFontKeys = fontsParsed ? Object.keys(fontsParsed).sort() : []
-      for (const key of sortedFontKeys) {
-        const fontParsed = fontsParsed![key]
-        const [name, language] = key.includes('_') ? key.split('_') : [key]
-        const fontVars = registerFontVariables(fontParsed)
-        fontDeclarations[key] = {
-          name: name.slice(1),
-          declarations: fontVars,
-          language,
-        }
-      }
-
-      const sep = ` `
-      function declarationsToRuleSet(decs: string[], selector = '') {
-        return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}\n}`
-      }
-
-      // non-font
-      cssRuleSets.push(declarationsToRuleSet(declarations))
-
-      // fonts - iterate in sorted order for deterministic CSS output
-      if (fontDeclarations) {
-        const sortedFontDeclarationKeys = Object.keys(fontDeclarations).sort()
-        for (const key of sortedFontDeclarationKeys) {
-          const { name, declarations, language = 'default' } = fontDeclarations[key]
-          const fontSelector = `.font_${name}`
-          const langSelector = `:root .t_lang-${name}-${language} ${fontSelector}`
-          const selectors =
-            language === 'default' ? ` ${fontSelector}, ${langSelector}` : langSelector
-          const specificRuleSet = declarationsToRuleSet(declarations, selectors)
-          cssRuleSets.push(specificRuleSet)
-        }
-      }
-    }
+    // CSS generation (tree-shaken when TAMAGUI_DID_OUTPUT_CSS is set)
+    const declarations = createTokenCSS(tokens as any, shouldTokenCategoryHaveUnits)
+    const fontDeclarations = createFontCSS(fontsParsed, registerFontVariables)
+    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations)
 
     const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn, tokens.color)
@@ -197,23 +150,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       themes,
       cssRuleSets,
       getThemeRulesSets() {
-        // then, generate CSS from de-duped
-        let themeRuleSets: string[] = []
-
-        if (isWeb) {
-          for (const { names, theme } of dedupedThemes) {
-            const nextRules = getThemeCSSRules({
-              config: configIn,
-              themeName: names[0],
-              names,
-              theme,
-            })
-
-            themeRuleSets = [...themeRuleSets, ...nextRules]
-          }
-        }
-
-        return themeRuleSets
+        return createThemeCSS(dedupedThemes, configIn)
       },
     }
   })()
@@ -224,42 +161,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // Merge built-in shorthands with user shorthands (user takes precedence)
   const shorthands = { ...builtinShorthands, ...userShorthands }
 
-  let lastCSSInsertedRulesIndex = -1
+  const lastCSSIndex = { value: -1 }
 
   const getCSS: GetCSS = (opts = {}) => {
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      const { separator = '\n', sinceLastCall, exclude } = opts
-      if (sinceLastCall && lastCSSInsertedRulesIndex >= 0) {
-        // after first run with sinceLastCall
-        const rules = getAllRules()
-        const newRules = rules.slice(lastCSSInsertedRulesIndex)
-        lastCSSInsertedRulesIndex = rules.length
-        return newRules.join(separator)
-      }
-
-      // set so next time getNewCSS will trigger only new rules
-      lastCSSInsertedRulesIndex = 0
-
-      const runtimeStyles = getAllRules().join(separator)
-
-      if (exclude === 'design-system') {
-        return runtimeStyles
-      }
-
-      const designSystem = `._ovs-contain {overscroll-behavior:contain;}
-  .is_Text .is_Text {display:inline-flex;}
-  ._dsp_contents {display:contents;}
-  ._no_backdrop::backdrop {display: none;}
-  .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}
-  .is_Input::placeholder, .is_TextArea::placeholder {color: var(--placeholderColor);}
-  ${themeConfig.cssRuleSets.join(separator)}`
-
-      return `${designSystem}
-  ${exclude ? '' : themeConfig.getThemeRulesSets().join(separator)}
-  ${runtimeStyles}`
-    } else {
-      return ''
-    }
+    return getCSSHelper(themeConfig, opts, lastCSSIndex)
   }
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })

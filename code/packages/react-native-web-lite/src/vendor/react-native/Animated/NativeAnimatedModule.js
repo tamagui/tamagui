@@ -8,14 +8,14 @@
  * @format
  */
 
-import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry';
+import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry'
 
 // Type definitions
-export const EventMapping = {};
-export const AnimatedNodeConfig = {};
-export const AnimatingNodeConfig = {};
-export const SaveValueCallback = () => {};
-export const EndCallback = () => {};
+export const EventMapping = {}
+export const AnimatedNodeConfig = {}
+export const AnimatingNodeConfig = {}
+export const SaveValueCallback = () => {}
+export const EndCallback = () => {}
 
 // The config has different keys depending on the type of the Node
 // TODO(T54896888): Make these types strict
@@ -30,12 +30,7 @@ const spec = {
   stopListeningToAnimatedNodeValue: (tag) => {},
   connectAnimatedNodes: (parentTag, childTag) => {},
   disconnectAnimatedNodes: (parentTag, childTag) => {},
-  startAnimatingNode: (
-    animationId,
-    nodeTag,
-    config,
-    endCallback,
-  ) => {},
+  startAnimatingNode: (animationId, nodeTag, config, endCallback) => {},
   stopAnimation: (animationId) => {},
   setAnimatedNodeValue: (nodeTag, value) => {},
   setAnimatedNodeOffset: (nodeTag, offset) => {},
@@ -45,16 +40,8 @@ const spec = {
   disconnectAnimatedNodeFromView: (nodeTag, viewTag) => {},
   restoreDefaultValues: (nodeTag) => {},
   dropAnimatedNode: (tag) => {},
-  addAnimatedEventToView: (
-    viewTag,
-    eventName,
-    eventMapping,
-  ) => {},
-  removeAnimatedEventFromView: (
-    viewTag,
-    eventName,
-    animatedNodeTag,
-  ) => {},
+  addAnimatedEventToView: (viewTag, eventName, eventMapping) => {},
+  removeAnimatedEventFromView: (viewTag, eventName, animatedNodeTag) => {},
 
   // Events
   addListener: (eventName) => {},
@@ -62,8 +49,9 @@ const spec = {
 
   // All of the above in a batched mode
   queueAndExecuteBatchedOperations: (operationsAndArgs) => {},
-};
+}
 
-const NativeAnimatedNonTurboModule = TurboModuleRegistry.get('NativeAnimatedModule') || spec;
+const NativeAnimatedNonTurboModule =
+  TurboModuleRegistry.get('NativeAnimatedModule') || spec
 export { NativeAnimatedNonTurboModule }
-export default NativeAnimatedNonTurboModule;
+export default NativeAnimatedNonTurboModule

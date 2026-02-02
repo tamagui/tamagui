@@ -117,7 +117,12 @@ export const TooltipGroup = ({
   delay,
   preventAnimation = false,
   timeoutMs,
-}: { children?: any; delay: Delay; preventAnimation?: boolean; timeoutMs?: number }) => {
+}: {
+  children?: any
+  delay: Delay
+  preventAnimation?: boolean
+  timeoutMs?: number
+}) => {
   return (
     <PreventTooltipAnimationContext.Provider value={preventAnimation}>
       <FloatingDelayGroup

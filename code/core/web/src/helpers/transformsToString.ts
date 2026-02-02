@@ -1,6 +1,6 @@
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 
-export function transformsToString(transforms: Object[]) {
+export function transformsToString(transforms: object[]) {
   return transforms
     .map(
       // { scale: 2 } => 'scale(2)'

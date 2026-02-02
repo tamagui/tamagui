@@ -10,10 +10,10 @@ describe('RNGH Status Check', () => {
     await waitFor(element(by.text('Kitchen Sink')))
       .toExist()
       .withTimeout(60000)
-    
+
     // Take screenshot to see RNGH status
     await device.takeScreenshot('rngh-status')
-    
+
     // Check for RNGH text - it shows either "RNGH: ✓ enabled" or "RNGH: ✗ disabled"
     // We'll log what we see
     try {

@@ -115,8 +115,6 @@ export default function Community() {
             <YStack items="center" gap="$4">
               <Link href="https://www.figma.com/community/file/1326593766534421119">
                 <YStack
-                  target="_blank"
-                  rel="noopener noreferrer"
                   rounded="$5"
                   overflow="hidden"
                   borderWidth={0.5}
@@ -132,11 +130,9 @@ export default function Community() {
                       borderColor: '$color',
                     }}
                     opacity={0.5}
-                    source={{
-                      uri: '/figma.png',
-                      width: 1466 * 0.25,
-                      height: 776 * 0.25,
-                    }}
+                    src="/figma.png"
+                    width={1466 * 0.25}
+                    height={776 * 0.25}
                   />
                 </YStack>
               </Link>
@@ -153,7 +149,7 @@ export default function Community() {
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" gap="$4">
               <StarterRepoCard
-                url="https://galaxies.dev/course/react-native-tamagui  "
+                url="https://galaxies.dev/course/react-native-tamagui"
                 name="Universal Apps with Tamagui (Guide)"
                 author="Simon Grimm"
               />

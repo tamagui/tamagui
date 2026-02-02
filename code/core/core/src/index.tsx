@@ -2,7 +2,6 @@
 export * from '@tamagui/web'
 
 import { createMedia } from '@tamagui/react-native-media-driver'
-import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import {
   createMeasure,
   createMeasureInWindow,
@@ -45,8 +44,7 @@ export {
 
 type RNExclusiveViewProps = Omit<RNViewProps, keyof StackNonStyleProps>
 export interface RNTamaguiViewNonStyleProps
-  extends StackNonStyleProps,
-    RNExclusiveViewProps {}
+  extends StackNonStyleProps, RNExclusiveViewProps {}
 
 type RNTamaguiView = TamaguiComponent<
   TamaDefer,
@@ -58,8 +56,7 @@ type RNTamaguiView = TamaguiComponent<
 
 type RNExclusiveTextProps = Omit<RNTextProps, keyof TextProps>
 export interface RNTamaguiTextNonStyleProps
-  extends TextNonStyleProps,
-    RNExclusiveTextProps {}
+  extends TextNonStyleProps, RNExclusiveTextProps {}
 
 type RNTamaguiText = TamaguiComponent<
   TamaDefer,
@@ -150,7 +147,8 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         useElementLayout(stateRef, !isDOM ? undefined : (onLayout as any))
-        useResponderEvents(stateRef, !isDOM ? undefined : propsIn)
+        // responder events removed for web - use native pointer/touch events instead
+        // the onResponder* props are stripped above and not passed to DOM
       }
 
       if (isDOM) {

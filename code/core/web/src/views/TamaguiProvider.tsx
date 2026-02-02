@@ -1,11 +1,11 @@
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ClientOnly } from '@tamagui/use-did-finish-ssr'
-import React from 'react'
-import { getSetting } from '../config'
+import React, { useEffect } from 'react'
+import { getConfig, getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
-import type { TamaguiProviderProps } from '../types'
+import type { AnimationDriver, TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
 
 export function TamaguiProvider({
@@ -29,7 +29,7 @@ export function TamaguiProvider({
 
   // Get the default animation driver from config
   // animations can be a single driver or { default: driver, ...others }
-  const defaultAnimationDriver = React.useMemo(() => {
+  const defaultAnimationDriver: AnimationDriver = React.useMemo(() => {
     const animations = config?.animations
     if (!animations) return null
     if ('default' in animations) {
@@ -37,6 +37,10 @@ export function TamaguiProvider({
     }
     return animations
   }, [config?.animations])
+
+  useEffect(() => {
+    defaultAnimationDriver?.onMount?.()
+  }, [])
 
   let contents = (
     <UnmountedClassName>
@@ -76,7 +80,7 @@ export function TamaguiProvider({
   )
 }
 
-// for CSS animations
+// for CSS animations and default font inheritance
 function UnmountedClassName(props: { children: React.ReactNode }) {
   const [mounted, setMounted] = React.useState(false)
 
@@ -88,8 +92,20 @@ function UnmountedClassName(props: { children: React.ReactNode }) {
     return props.children
   }
 
+  const config = getConfig()
+  const defaultFont = config.defaultFont
+  const fontClass = defaultFont ? `font_${defaultFont}` : ''
+  const className = [mounted ? '' : 't_unmounted', fontClass].filter(Boolean).join(' ')
+
   return (
-    <span style={{ display: 'contents' }} className={mounted ? '' : 't_unmounted'}>
+    <span
+      style={{
+        display: 'contents',
+        // set default font so nested text inherits
+        fontFamily: defaultFont ? 'var(--f-family)' : undefined,
+      }}
+      className={className || undefined}
+    >
       {props.children}
     </span>
   )

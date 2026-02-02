@@ -61,8 +61,8 @@ export default () => (
 ```
 
 <Notice>
-  Note that Select only works on Native using the Adapt component to adapt it to
-  a Sheet. See below for docs.
+  Note that Select only works on Native using the Adapt component to adapt it to a Sheet.
+  See below for docs.
 </Notice>
 
 ## Server-Side Rendering (SSR)
@@ -78,8 +78,7 @@ const items = [
 ]
 
 // Create a lookup function
-const getLabel = (value: string) =>
-  items.find((item) => item.value === value)?.label
+const getLabel = (value: string) => items.find((item) => item.value === value)?.label
 
 export function MySelect() {
   const [value, setValue] = React.useState('apple')
@@ -236,8 +235,8 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrol
 />
 
 <Notice>
-  Make sure to not pass `height` prop as that is managed internally because of
-  UX reasons and having a fixed height will break that behavior
+  Make sure to not pass `height` prop as that is managed internally because of UX reasons
+  and having a fixed height will break that behavior
 </Notice>
 
 ### Select.Group

@@ -2,6 +2,12 @@ import React from 'react'
 
 import type { DismissableBranchProps, DismissableProps } from './DismissableProps'
 
+// stub for native - not used but needed for export compatibility
+export function dispatchDiscreteCustomEvent<E extends CustomEvent>(
+  _target: E['target'],
+  _event: E
+) {}
+
 export const Dismissable = React.forwardRef((props: DismissableProps, _ref) => {
   return props.children as any
 })

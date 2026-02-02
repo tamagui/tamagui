@@ -72,7 +72,7 @@ export const LogoWords: React.MemoExoticComponent<
   }, [Tint])
 
   const getColor = (i: number) => {
-    if (hovered) return hoveredColors[i]
+    if (hovered) return `var(--${Tint.tints[i]}9)`
     return defaultColors[i]
   }
 
