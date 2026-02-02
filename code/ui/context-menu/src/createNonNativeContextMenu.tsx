@@ -30,7 +30,7 @@ type BaseMenu = ReturnType<typeof createBaseMenu>['Menu']
 
 type ContextMenuContextValue = {
   triggerId: string
-  triggerRef: React.RefObject<HTMLButtonElement>
+  triggerRef: React.RefObject<TamaguiElement | null>
   contentId: string
   open: boolean
   onOpenChange(open: boolean): void
@@ -100,7 +100,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
   const ContextMenuComp = (props: ScopedProps<ContextMenuProps>) => {
     const { scope, children, onOpenChange, dir, modal = true, ...rest } = props
     const [open, setOpen] = React.useState(false)
-    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const triggerRef = React.useRef<TamaguiElement>(null)
 
     const handleOpenChange = React.useCallback(
       (open: boolean) => {
@@ -114,7 +114,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
       <ContextMenuProvider
         scope={scope}
         triggerId={useId()}
-        triggerRef={triggerRef as any}
+        triggerRef={triggerRef}
         contentId={useId()}
         open={open}
         onOpenChange={handleOpenChange}
@@ -208,7 +208,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
             data-state={context.open ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
             {...triggerProps}
-            ref={composeRefs(forwardedRef, context.triggerRef as any)}
+            ref={composeRefs(forwardedRef, context.triggerRef)}
             style={isWeb ? { WebkitTouchCallout: 'none', ...(style as object) } : null}
             {...(isWeb && {
               onContextMenu: disabled

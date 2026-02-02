@@ -29,7 +29,7 @@ type ScopedProps<P> = P & { scope?: string }
 
 type MenuContextValue = {
   triggerId: string
-  triggerRef: React.RefObject<HTMLButtonElement>
+  triggerRef: React.RefObject<TamaguiElement | null>
   contentId: string
   open: boolean
   onOpenChange(open: boolean): void
@@ -158,7 +158,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       modal = true,
       ...rest
     } = props
-    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const triggerRef = React.useRef<TamaguiElement>(null)
     const [open = false, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen!,
@@ -170,7 +170,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
         scope={scope}
         triggerId={useId()}
         // TODO
-        triggerRef={triggerRef as any}
+        triggerRef={triggerRef}
         contentId={useId()}
         open={open}
         onOpenChange={setOpen}
@@ -237,7 +237,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             data-state={context.open ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
             aria-disabled={disabled || undefined}
-            ref={composeRefs(forwardedRef, context.triggerRef as any)}
+            ref={composeRefs(forwardedRef, context.triggerRef)}
             {...{
               [pressEvent]: composeEventHandlers(
                 //@ts-ignore

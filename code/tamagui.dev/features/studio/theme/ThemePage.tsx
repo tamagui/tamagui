@@ -136,7 +136,7 @@ const ThemeBuilderModal = memo(() => {
 
   return (
     <YStack
-      position={'fixed' as any}
+      position="fixed"
       t={70}
       r={0}
       b={0}

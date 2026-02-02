@@ -946,24 +946,25 @@ export function createBaseMenu({
         iosIconName,
         ...itemProps
       } = props
-      const ref = React.useRef<HTMLDivElement>(null)
+      const ref = React.useRef<TamaguiElement>(null)
       const rootContext = useMenuRootContext(scope)
       const contentContext = useMenuContentContext(scope)
-      const composedRefs = useComposedRefs(forwardedRef, ref as any)
+      const composedRefs = useComposedRefs(forwardedRef, ref)
       const isPointerDownRef = React.useRef(false)
 
       const handleSelect = () => {
         const menuItem = ref.current
         if (!disabled && menuItem) {
           if (isWeb) {
+            const menuItemEl = menuItem as HTMLElement
             const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
               bubbles: true,
               cancelable: true,
             })
-            menuItem.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
+            menuItemEl.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
               once: true,
             })
-            dispatchDiscreteCustomEvent(menuItem, itemSelectEvent)
+            dispatchDiscreteCustomEvent(menuItemEl, itemSelectEvent)
             if (itemSelectEvent.defaultPrevented) {
               isPointerDownRef.current = false
             } else {
