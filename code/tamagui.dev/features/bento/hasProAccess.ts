@@ -3,11 +3,23 @@ import { ProductName } from '~/shared/types/subscription'
 import { getSubscriptions } from '../user/helpers'
 
 /**
- * Check if a user has Pro access via subscription or legacy product ownership
+ * Check if a user has Pro access via subscription, legacy product ownership, or whitelist
+ * Runs all checks in parallel for speed
  */
 export const hasProAccess = async (userId: string) => {
-  const subscriptions = await getSubscriptions(userId)
+  // run all checks in parallel
+  const [subscriptions, legacyAccess, whitelistAccess] = await Promise.all([
+    getSubscriptions(userId),
+    hasLegacyAccess(userId),
+    hasWhitelistAccess(userId),
+  ])
 
+  // check whitelist first (fastest path for gifted users)
+  if (whitelistAccess) {
+    return true
+  }
+
+  // check for current subscription-based access (active or trialing)
   const validProProducts = [
     ProductName.TamaguiPro,
     ProductName.TamaguiProV2,
@@ -16,7 +28,6 @@ export const hasProAccess = async (userId: string) => {
     ProductName.TamaguiSupportSponsor,
   ]
 
-  // check for current subscription-based access (active or trialing)
   const hasSubscriptionAccess = subscriptions?.some((subscription) => {
     const isActiveOrTrialing =
       subscription.status === 'active' || subscription.status === 'trialing'
@@ -32,7 +43,7 @@ export const hasProAccess = async (userId: string) => {
   }
 
   // check for legacy lifetime access
-  return await hasLegacyAccess(userId)
+  return legacyAccess
 }
 
 const hasLegacyAccess = async (userId: string) => {
@@ -69,6 +80,34 @@ const hasLegacyAccess = async (userId: string) => {
   })
 
   return hasLifetimeAccess
+}
+
+/**
+ * Check if user is on the pro whitelist by their github username
+ * Uses a single joined query for efficiency
+ */
+const hasWhitelistAccess = async (userId: string): Promise<boolean> => {
+  // get github username and check whitelist in parallel via a single query pattern
+  const userResult = await supabaseAdmin
+    .from('users_private')
+    .select('github_user_name')
+    .eq('id', userId)
+    .single()
+
+  const githubUsername = userResult.data?.github_user_name
+  if (!githubUsername) {
+    return false
+  }
+
+  // check if they're on the whitelist (case-insensitive)
+  const whitelistResult = await supabaseAdmin
+    .from('pro_whitelist')
+    .select('id')
+    .ilike('github_username', githubUsername)
+    .limit(1)
+    .maybeSingle()
+
+  return !!whitelistResult.data
 }
 
 // backwards compat alias

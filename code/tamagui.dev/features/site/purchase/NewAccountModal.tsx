@@ -1,4 +1,14 @@
-import { Check, Edit3, Gift, LogOut, Plus, Search, Users, X } from '@tamagui/lucide-icons'
+import {
+  Check,
+  Edit3,
+  Gift,
+  LogOut,
+  Plus,
+  Search,
+  Trash2,
+  Users,
+  X,
+} from '@tamagui/lucide-icons'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
@@ -2353,7 +2363,7 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
   )
 }
 
-// admin-only tab for recent purchases and impersonation
+// admin-only tab with sub-tabs for purchases and whitelist management
 type Purchase = {
   id: string
   amount: number
@@ -2367,7 +2377,49 @@ type Purchase = {
   githubUsername: string | null
 }
 
+type WhitelistEntry = {
+  id: number
+  github_username: string
+  note: string | null
+  created_at: string
+  created_by: string | null
+}
+
+type AdminSubTab = 'purchases' | 'whitelist'
+
 const AdminTab = () => {
+  const [subTab, setSubTab] = useState<AdminSubTab>('purchases')
+
+  return (
+    <YStack gap="$4">
+      <XStack gap="$2">
+        <Button
+          size="$3"
+          theme={subTab === 'purchases' ? 'accent' : undefined}
+          onPress={() => setSubTab('purchases')}
+          chromeless={subTab !== 'purchases'}
+        >
+          <Button.Text>Purchases</Button.Text>
+        </Button>
+        <Button
+          size="$3"
+          theme={subTab === 'whitelist' ? 'accent' : undefined}
+          onPress={() => setSubTab('whitelist')}
+          chromeless={subTab !== 'whitelist'}
+        >
+          <Button.Text>Whitelist</Button.Text>
+        </Button>
+      </XStack>
+
+      <Separator />
+
+      {subTab === 'purchases' && <AdminPurchasesSubTab />}
+      {subTab === 'whitelist' && <AdminWhitelistSubTab />}
+    </YStack>
+  )
+}
+
+const AdminPurchasesSubTab = () => {
   const [isImpersonating, setIsImpersonating] = useState<string | null>(null)
 
   const {
@@ -2400,7 +2452,6 @@ const AdminTab = () => {
         return
       }
 
-      // the response is HTML that sets localStorage and redirects
       const html = await response.text()
       document.open()
       document.write(html)
@@ -2519,6 +2570,189 @@ const AdminTab = () => {
                 </Button>
               </XStack>
             </YStack>
+          ))
+        )}
+      </YStack>
+    </YStack>
+  )
+}
+
+const AdminWhitelistSubTab = () => {
+  const [newUsername, setNewUsername] = useState('')
+  const [newNote, setNewNote] = useState('')
+  const [isAdding, setIsAdding] = useState(false)
+  const [deletingId, setDeletingId] = useState<number | null>(null)
+
+  const {
+    data: whitelistData,
+    isLoading,
+    error,
+    mutate: mutateWhitelist,
+  } = useSWR<{ whitelist: WhitelistEntry[] }>('/api/admin/whitelist', (url: string) =>
+    authFetch(url).then((res) => res.json())
+  )
+
+  const handleAdd = async () => {
+    if (!newUsername.trim()) return
+
+    setIsAdding(true)
+    try {
+      const response = await authFetch('/api/admin/whitelist', {
+        method: 'POST',
+        body: JSON.stringify({
+          github_username: newUsername.trim(),
+          note: newNote.trim() || null,
+        }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        alert(`Failed to add: ${data.error}`)
+        return
+      }
+
+      setNewUsername('')
+      setNewNote('')
+      mutateWhitelist()
+    } catch (err) {
+      console.error('Error adding to whitelist:', err)
+      alert('Failed to add to whitelist')
+    } finally {
+      setIsAdding(false)
+    }
+  }
+
+  const handleDelete = async (entry: WhitelistEntry) => {
+    if (!confirm(`Remove @${entry.github_username} from whitelist?`)) return
+
+    setDeletingId(entry.id)
+    try {
+      const response = await authFetch('/api/admin/whitelist', {
+        method: 'DELETE',
+        body: JSON.stringify({ id: entry.id }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        alert(`Failed to remove: ${data.error}`)
+        return
+      }
+
+      mutateWhitelist()
+    } catch (err) {
+      console.error('Error removing from whitelist:', err)
+      alert('Failed to remove from whitelist')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <YStack flex={1} items="center" justify="center" p="$6">
+        <Spinner size="large" />
+        <Paragraph color="$color10" mt="$4">
+          Loading whitelist...
+        </Paragraph>
+      </YStack>
+    )
+  }
+
+  if (error) {
+    return (
+      <YStack gap="$4" p="$4">
+        <Paragraph color="$red10">Error loading whitelist: {error.message}</Paragraph>
+      </YStack>
+    )
+  }
+
+  const whitelist = whitelistData?.whitelist || []
+
+  return (
+    <YStack gap="$6">
+      <YStack gap="$2">
+        <XStack items="center" gap="$2">
+          <Gift size={20} />
+          <H3>Pro Whitelist</H3>
+        </XStack>
+        <Paragraph color="$color10">
+          Grant pro access to GitHub users (contributors, partners, etc).
+        </Paragraph>
+      </YStack>
+
+      <YStack gap="$3" p="$4" borderWidth={1} borderColor="$color4" rounded="$4">
+        <Paragraph fontWeight="bold" size="$3">
+          Add to whitelist
+        </Paragraph>
+        <XStack gap="$3" flexWrap="wrap">
+          <Input
+            flex={1}
+            minWidth={150}
+            placeholder="GitHub username"
+            value={newUsername}
+            onChangeText={setNewUsername}
+          />
+          <Input
+            flex={1}
+            minWidth={150}
+            placeholder="Note (optional)"
+            value={newNote}
+            onChangeText={setNewNote}
+          />
+          <Button
+            theme="green"
+            disabled={!newUsername.trim() || isAdding}
+            onPress={handleAdd}
+            icon={isAdding ? <Spinner size="small" /> : <Plus size={16} />}
+          >
+            <Button.Text>Add</Button.Text>
+          </Button>
+        </XStack>
+      </YStack>
+
+      <YStack gap="$3">
+        {whitelist.length === 0 ? (
+          <Paragraph color="$color10">No whitelisted users.</Paragraph>
+        ) : (
+          whitelist.map((entry) => (
+            <XStack
+              key={entry.id}
+              p="$3"
+              borderWidth={1}
+              borderColor="$color4"
+              rounded="$4"
+              items="center"
+              justify="space-between"
+              gap="$3"
+            >
+              <YStack flex={1} gap="$1">
+                <Paragraph fontWeight="bold">@{entry.github_username}</Paragraph>
+                {entry.note && (
+                  <Paragraph size="$2" color="$color10">
+                    {entry.note}
+                  </Paragraph>
+                )}
+                <Paragraph size="$1" color="$color9">
+                  Added {new Date(entry.created_at).toLocaleDateString()}
+                </Paragraph>
+              </YStack>
+
+              <Button
+                size="$2"
+                theme="red"
+                disabled={deletingId === entry.id}
+                onPress={() => handleDelete(entry)}
+                icon={
+                  deletingId === entry.id ? (
+                    <Spinner size="small" />
+                  ) : (
+                    <Trash2 size={14} />
+                  )
+                }
+              >
+                <Button.Text>Remove</Button.Text>
+              </Button>
+            </XStack>
           ))
         )}
       </YStack>

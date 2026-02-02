@@ -291,6 +291,30 @@ export type Database = {
           },
         ]
       }
+      pro_whitelist: {
+        Row: {
+          id: number
+          github_username: string
+          note: string | null
+          created_at: string
+          created_by: string | null
+        }
+        Insert: {
+          id?: number
+          github_username: string
+          note?: string | null
+          created_at?: string
+          created_by?: string | null
+        }
+        Update: {
+          id?: number
+          github_username?: string
+          note?: string | null
+          created_at?: string
+          created_by?: string | null
+        }
+        Relationships: []
+      }
       product_ownership: {
         Row: {
           created_at: string
