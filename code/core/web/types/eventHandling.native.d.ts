@@ -5,8 +5,8 @@ import type { StaticConfig, TamaguiComponentStateRef } from './types';
 export declare function getWebEvents(): {};
 export declare function useEvents(events: any, viewProps: any, stateRef: {
     current: TamaguiComponentStateRef;
-}, staticConfig: StaticConfig): any;
+}, staticConfig: StaticConfig, isHOC?: boolean): any;
 export declare function wrapWithGestureDetector(content: any, gesture: any, stateRef: {
     current: TamaguiComponentStateRef;
-}): any;
+}, isHOC?: boolean): any;
 //# sourceMappingURL=eventHandling.native.d.ts.map
