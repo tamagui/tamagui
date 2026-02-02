@@ -3,7 +3,7 @@ import type { UseHoverProps } from '@floating-ui/react';
 import type { SizeTokens, ViewProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import { type PopperArrowExtraProps, type PopperArrowProps, type PopperContentProps, type PopperProps } from '@tamagui/popper';
+import { type PopperArrowExtraProps, type PopperArrowProps, type PopperContentProps, PopperPlacement, type PopperProps } from '@tamagui/popper';
 import { type ScrollViewProps } from '@tamagui/scroll-view';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
@@ -235,6 +235,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         scope?: string;
     } & React.RefAttributes<import("react-native").ScrollView>>;
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
+    Placement: typeof PopperPlacement;
 };
 export {};
 //# sourceMappingURL=Popover.d.ts.map

@@ -39,6 +39,8 @@ import {
   PopperContent,
   PopperContentFrame,
   type PopperContentProps,
+  PopperPlacement,
+  type PopperPlacementProps,
   type PopperProps,
   PopperProvider,
   usePopperContext,
@@ -667,6 +669,7 @@ export const Popover = withStaticProperties(
     Adapt,
     ScrollView: PopoverScrollView,
     FocusScope: FocusScopeController,
+    Placement: PopperPlacement,
   }
 )
 

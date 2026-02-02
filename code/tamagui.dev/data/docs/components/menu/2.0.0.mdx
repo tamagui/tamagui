@@ -649,6 +649,53 @@ Renders the content of a submenu. Same props as `Menu.Content`, excluding `side`
 A menu item that opens a submenu on hover or focus. Accepts the same props as
 `Menu.Item`.
 
+### Menu.Placement
+
+A render prop component that provides placement-aware values for animations. Use this when you want animations that respond to the actual placement of the content (e.g., slide-in from the correct direction).
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: '(info: PlacementInfo) => React.ReactNode',
+      required: true,
+      description: 'Render function that receives placement information.',
+    },
+  ]}
+/>
+
+The render function receives a `PlacementInfo` object with:
+
+- `side`: `'left' | 'right' | 'top' | 'bottom'` - The actual side the content is placed on
+- `align`: `'start' | 'center' | 'end'` - The alignment within that side
+- `placement`: The full placement string (e.g., `'bottom-start'`)
+- `isLeft`, `isRight`, `isTop`, `isBottom`: Boolean helpers
+- `xDir`: `1` for right-opening, `-1` for left-opening - useful for horizontal animations
+- `yDir`: `1` for bottom-opening, `-1` for top-opening - useful for vertical animations
+
+```jsx
+<Menu.Sub placement="right-start">
+  <Menu.SubTrigger>
+    <Menu.ItemTitle>Actions</Menu.ItemTitle>
+  </Menu.SubTrigger>
+
+  <Menu.Portal>
+    <Menu.Placement>
+      {({ xDir }) => (
+        <Menu.SubContent
+          enterStyle={{ scale: 0.9, opacity: 0, x: -5 * xDir }}
+          exitStyle={{ scale: 0.95, opacity: 0, x: -3 * xDir }}
+        >
+          {/* items */}
+        </Menu.SubContent>
+      )}
+    </Menu.Placement>
+  </Menu.Portal>
+</Menu.Sub>
+```
+
+This is especially useful when `allowFlip` is enabled - the submenu might open on the left instead of right when near the viewport edge, and `xDir` will automatically adjust so your animation slides in from the correct side.
+
 ## Styling
 
 ### Item Highlight Behavior

@@ -2,6 +2,7 @@ import '@tamagui/polyfill-dev';
 import type { SizeTokens, TamaguiElement } from '@tamagui/core';
 import type { PopoverAnchorProps, PopoverContentProps, PopoverTriggerProps } from '@tamagui/popover';
 import type { PopperProps } from '@tamagui/popper';
+import { PopperPlacement } from '@tamagui/popper';
 import * as React from 'react';
 export type TooltipScopes = string;
 type ScopedProps<P> = Omit<P, 'scope'> & {
@@ -80,6 +81,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps &
     Trigger: React.ForwardRefExoticComponent<Omit<PopoverTriggerProps, "scope"> & {
         scope?: TooltipScopes;
     } & React.RefAttributes<unknown>>;
+    Placement: typeof PopperPlacement;
 };
 export {};
 //# sourceMappingURL=Tooltip.d.ts.map

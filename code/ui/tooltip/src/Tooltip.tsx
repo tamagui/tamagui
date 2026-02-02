@@ -30,7 +30,7 @@ import {
   PopoverTrigger,
 } from '@tamagui/popover'
 import type { PopperArrowProps, PopperProps } from '@tamagui/popper'
-import { Popper, PopperContentFrame } from '@tamagui/popper'
+import { Popper, PopperContentFrame, PopperPlacement } from '@tamagui/popper'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
@@ -296,6 +296,7 @@ export const Tooltip = withStaticProperties(TooltipComponent, {
   Arrow: TooltipArrow,
   Content: TooltipContent,
   Trigger: TooltipTrigger,
+  Placement: PopperPlacement,
 })
 
 const voidFn = () => {}

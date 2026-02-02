@@ -665,6 +665,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
   const ItemSubtitle = MenuItemSubTitle
   const ItemImage = MenuItemImage
   const ItemIcon = MenuItemIcon
+  const Placement = Menu.Placement
 
   return withStaticProperties(MenuComp, {
     Root,
@@ -687,6 +688,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
     ItemSubtitle,
     ItemImage,
     ItemIcon,
+    Placement,
   })
 }
 

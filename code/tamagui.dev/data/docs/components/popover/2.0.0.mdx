@@ -417,3 +417,37 @@ Must be nested inside Content. Renders as a plain React Native ScrollView. If
 used alongside `<Adapt />` and Sheet, Tamagui will automatically know to remove
 this ScrollView when swapping into the Sheet, as the Sheet must use its own
 ScrollView that handles special logic for interactions with dragging.
+
+### Popover.Placement
+
+A render prop component that provides placement-aware values for animations. Use this when you want animations that respond to the actual placement of the content (e.g., slide-in from the correct direction when `allowFlip` causes the popover to flip sides).
+
+```jsx
+<Popover>
+  <Popover.Trigger asChild>
+    <Button>Open</Button>
+  </Popover.Trigger>
+
+  <Popover.Portal>
+    <Popover.Placement>
+      {({ xDir, yDir }) => (
+        <Popover.Content
+          enterStyle={{ scale: 0.9, opacity: 0, y: -10 * yDir }}
+          exitStyle={{ scale: 0.95, opacity: 0, y: -5 * yDir }}
+        >
+          {/* content */}
+        </Popover.Content>
+      )}
+    </Popover.Placement>
+  </Popover.Portal>
+</Popover>
+```
+
+The render function receives a `PlacementInfo` object with:
+
+- `side`: `'left' | 'right' | 'top' | 'bottom'`
+- `align`: `'start' | 'center' | 'end'`
+- `placement`: The full placement string
+- `isLeft`, `isRight`, `isTop`, `isBottom`: Boolean helpers
+- `xDir`: `1` for right-opening, `-1` for left-opening
+- `yDir`: `1` for bottom-opening, `-1` for top-opening

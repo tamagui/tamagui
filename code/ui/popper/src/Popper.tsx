@@ -847,4 +847,70 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
   }
 )
 
+/* -------------------------------------------------------------------------------------------------
+ * PopperPlacement
+ * -----------------------------------------------------------------------------------------------*/
+
+export type PopperPlacementInfo = {
+  /** The current placement side: 'top' | 'bottom' | 'left' | 'right' */
+  side: Side
+  /** The current alignment: 'start' | 'center' | 'end' */
+  align: 'start' | 'center' | 'end'
+  /** Full placement string like 'bottom-start' */
+  placement: Placement
+  /** True if content is placed on the left side */
+  isLeft: boolean
+  /** True if content is placed on the right side */
+  isRight: boolean
+  /** True if content is placed on the top side */
+  isTop: boolean
+  /** True if content is placed on the bottom side */
+  isBottom: boolean
+  /** Horizontal direction multiplier: 1 for right-opening, -1 for left-opening */
+  xDir: 1 | -1
+  /** Vertical direction multiplier: 1 for bottom-opening, -1 for top-opening */
+  yDir: 1 | -1
+}
+
+export type PopperPlacementProps = {
+  scope?: string
+  children: (info: PopperPlacementInfo) => React.ReactNode
+}
+
+/**
+ * Render prop component that provides placement-aware values for animations.
+ *
+ * @example
+ * ```tsx
+ * <Popover.Placement>
+ *   {({ side, xDir }) => (
+ *     <Popover.Content
+ *       enterStyle={{ scale: 0.95, opacity: 0, x: 5 * xDir }}
+ *     >
+ *       ...
+ *     </Popover.Content>
+ *   )}
+ * </Popover.Placement>
+ * ```
+ */
+export function PopperPlacement({ scope, children }: PopperPlacementProps) {
+  const context = usePopperContext(scope)
+  const placement = context.placement || 'bottom'
+  const [side, align] = getSideAndAlignFromPlacement(placement)
+
+  const info: PopperPlacementInfo = {
+    side,
+    align,
+    placement,
+    isLeft: side === 'left',
+    isRight: side === 'right',
+    isTop: side === 'top',
+    isBottom: side === 'bottom',
+    xDir: side === 'left' ? -1 : 1,
+    yDir: side === 'top' ? -1 : 1,
+  }
+
+  return <>{children(info)}</>
+}
+
 /* -----------------------------------------------------------------------------------------------*/

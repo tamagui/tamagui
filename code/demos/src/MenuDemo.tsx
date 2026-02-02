@@ -106,55 +106,59 @@ export function MenuDemo() {
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
-                <Menu.SubContent
-                  enterStyle={{ scale: 0.9, opacity: 0, x: -5 }}
-                  exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
-                  transition="100ms"
-                  transformOrigin="left top"
-                  elevation="$3"
-                  minW={160}
-                  bg="$background"
-                  p="$1.5"
-                  borderWidth={1}
-                  borderColor="$borderColor"
-                >
-                  <Menu.Label pt="$2" pb="$2" color="$color8">
-                    Note settings
-                  </Menu.Label>
-                  <Menu.Item
-                    onSelect={onSelect}
-                    key="create-note"
-                    textValue="Create note"
-                    justify="space-between"
-                  >
-                    <Menu.ItemTitle>Create note</Menu.ItemTitle>
-                    <Menu.ItemIcon>
-                      <FilePlus size={14} color="$color10" />
-                    </Menu.ItemIcon>
-                  </Menu.Item>
-                  <Menu.Item
-                    onSelect={onSelect}
-                    key="delete-all-notes"
-                    textValue="Delete all notes"
-                    justify="space-between"
-                  >
-                    <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
-                    <Menu.ItemIcon>
-                      <Trash2 size={14} color="$color10" />
-                    </Menu.ItemIcon>
-                  </Menu.Item>
-                  <Menu.Item
-                    onSelect={onSelect}
-                    key="sync-all"
-                    textValue="Sync notes"
-                    justify="space-between"
-                  >
-                    <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
-                    <Menu.ItemIcon>
-                      <RefreshCw size={14} color="$color10" />
-                    </Menu.ItemIcon>
-                  </Menu.Item>
-                </Menu.SubContent>
+                {/* Use Menu.Placement for placement-aware animations */}
+                <Menu.Placement>
+                  {({ xDir }) => (
+                    <Menu.SubContent
+                      enterStyle={{ scale: 0.9, opacity: 0, x: -5 * xDir }}
+                      exitStyle={{ scale: 0.95, opacity: 0, x: -3 * xDir }}
+                      transition="100ms"
+                      elevation="$3"
+                      minW={160}
+                      bg="$background"
+                      p="$1.5"
+                      borderWidth={1}
+                      borderColor="$borderColor"
+                    >
+                      <Menu.Label pt="$2" pb="$2" color="$color8">
+                        Note settings
+                      </Menu.Label>
+                      <Menu.Item
+                        onSelect={onSelect}
+                        key="create-note"
+                        textValue="Create note"
+                        justify="space-between"
+                      >
+                        <Menu.ItemTitle>Create note</Menu.ItemTitle>
+                        <Menu.ItemIcon>
+                          <FilePlus size={14} color="$color10" />
+                        </Menu.ItemIcon>
+                      </Menu.Item>
+                      <Menu.Item
+                        onSelect={onSelect}
+                        key="delete-all-notes"
+                        textValue="Delete all notes"
+                        justify="space-between"
+                      >
+                        <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
+                        <Menu.ItemIcon>
+                          <Trash2 size={14} color="$color10" />
+                        </Menu.ItemIcon>
+                      </Menu.Item>
+                      <Menu.Item
+                        onSelect={onSelect}
+                        key="sync-all"
+                        textValue="Sync notes"
+                        justify="space-between"
+                      >
+                        <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
+                        <Menu.ItemIcon>
+                          <RefreshCw size={14} color="$color10" />
+                        </Menu.ItemIcon>
+                      </Menu.Item>
+                    </Menu.SubContent>
+                  )}
+                </Menu.Placement>
               </Menu.Portal>
             </Menu.Sub>
 

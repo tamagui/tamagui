@@ -1,6 +1,6 @@
 import type { SizeTokens, TamaguiElement } from '@tamagui/core';
 import { createStyledContext } from '@tamagui/core';
-import type { Coords, OffsetOptions, Placement, SizeOptions, Strategy, UseFloatingReturn } from '@tamagui/floating';
+import type { Coords, OffsetOptions, Placement, Side, SizeOptions, Strategy, UseFloatingReturn } from '@tamagui/floating';
 import { flip, shift } from '@tamagui/floating';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
@@ -173,5 +173,46 @@ export declare const PopperArrow: React.ForwardRefExoticComponent<Omit<import("@
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants & PopperArrowExtraProps & React.RefAttributes<TamaguiElement>>;
+export type PopperPlacementInfo = {
+    /** The current placement side: 'top' | 'bottom' | 'left' | 'right' */
+    side: Side;
+    /** The current alignment: 'start' | 'center' | 'end' */
+    align: 'start' | 'center' | 'end';
+    /** Full placement string like 'bottom-start' */
+    placement: Placement;
+    /** True if content is placed on the left side */
+    isLeft: boolean;
+    /** True if content is placed on the right side */
+    isRight: boolean;
+    /** True if content is placed on the top side */
+    isTop: boolean;
+    /** True if content is placed on the bottom side */
+    isBottom: boolean;
+    /** Horizontal direction multiplier: 1 for right-opening, -1 for left-opening */
+    xDir: 1 | -1;
+    /** Vertical direction multiplier: 1 for bottom-opening, -1 for top-opening */
+    yDir: 1 | -1;
+};
+export type PopperPlacementProps = {
+    scope?: string;
+    children: (info: PopperPlacementInfo) => React.ReactNode;
+};
+/**
+ * Render prop component that provides placement-aware values for animations.
+ *
+ * @example
+ * ```tsx
+ * <Popover.Placement>
+ *   {({ side, xDir }) => (
+ *     <Popover.Content
+ *       enterStyle={{ scale: 0.95, opacity: 0, x: 5 * xDir }}
+ *     >
+ *       ...
+ *     </Popover.Content>
+ *   )}
+ * </Popover.Placement>
+ * ```
+ */
+export declare function PopperPlacement({ scope, children }: PopperPlacementProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=Popper.d.ts.map

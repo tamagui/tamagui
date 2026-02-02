@@ -1805,6 +1805,15 @@ export function createBaseMenu({
   const ItemImage = MenuItemImage
   const ItemIcon = MenuItemIcon
 
+  // placement render prop for placement-aware animations
+  const Placement = (
+    props: Omit<PopperPrimitive.PopperPlacementProps, 'scope'> & ScopedProps<{}>
+  ) => {
+    const { scope = MENU_CONTEXT, ...rest } = props
+    return <PopperPrimitive.PopperPlacement scope={scope} {...rest} />
+  }
+  Placement.displayName = 'MenuPlacement'
+
   const Menu = withStaticProperties(MenuComp, {
     Anchor,
     Portal,
@@ -1825,6 +1834,7 @@ export function createBaseMenu({
     ItemSubtitle,
     ItemImage,
     ItemIcon,
+    Placement,
   })
 
   return {

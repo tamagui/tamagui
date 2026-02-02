@@ -69,12 +69,14 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test tests/YourTest.test.tsx
    ```
 
-5. **Debug tests**:
+5. **Debug tests** (headed mode for visual debugging):
    ```bash
    bun run test:web:debug
    # or
    npx playwright test --debug
    ```
+
+**Note:** Always run tests headless by default. Only use `--headed` or `--debug` when you need to visually debug a specific issue.
 
 ### Test Structure
 
@@ -84,6 +86,16 @@ Tests are located in `code/kitchen-sink/tests/` and follow these naming conventi
 - `ComponentName.animated.test.tsx` - Animation-dependent tests that run with ALL animation drivers (css, native, reanimated, motion)
 
 This separation significantly speeds up the test suite since most tests don't need to run 4x across all animation drivers. Only use `.animated.test.tsx` for tests that specifically verify animation behavior across different drivers.
+
+### Use Case Exports
+
+**IMPORTANT:** Use cases must be exported from the appropriate index file or tests will fail to find them:
+
+- **Web tests:** Export from `code/kitchen-sink/src/usecases/index.web.ts`
+- **Native tests:** Export from `code/kitchen-sink/src/usecases/index.native.ts`
+- **Both platforms:** Export from both files
+
+If a test times out waiting for an element that should exist, first check that the use case is properly exported.
 
 ### Writing Tests
 
