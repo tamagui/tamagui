@@ -45,91 +45,134 @@ const hueLinearGradient = `linear-gradient(to right, ${Array.from(Array(36))
   .join(', ')})`
 
 // Memoized slider components to prevent re-renders when other state changes
-const HueSlider = memo(({ value, onChange, onSlideEnd }: {
-  value: number
-  onChange: (val: number) => void
-  onSlideEnd: () => void
-}) => {
-  return (
-    <Slider
-      orientation="horizontal"
-      min={0}
-      max={360}
-      step={10}
-      value={[value]}
-      onValueChange={(val) => onChange(val[0])}
-      onSlideEnd={onSlideEnd}
-    >
-      <Slider.Track
-        width="100%"
-        minWidth={80}
-        height={3}
-        style={{
-          background: hueLinearGradient,
-        }}
-      />
-      <Slider.Thumb unstyled position="absolute" index={0} size="$1" bg="$color12" circular elevate />
-    </Slider>
-  )
-})
+const HueSlider = memo(
+  ({
+    value,
+    onChange,
+    onSlideEnd,
+  }: {
+    value: number
+    onChange: (val: number) => void
+    onSlideEnd: () => void
+  }) => {
+    return (
+      <Slider
+        orientation="horizontal"
+        min={0}
+        max={360}
+        step={10}
+        value={[value]}
+        onValueChange={(val) => onChange(val[0])}
+        onSlideEnd={onSlideEnd}
+      >
+        <Slider.Track
+          width="100%"
+          minWidth={80}
+          height={3}
+          style={{
+            background: hueLinearGradient,
+          }}
+        />
+        <Slider.Thumb
+          unstyled
+          position="absolute"
+          index={0}
+          size="$1"
+          bg="$color12"
+          circular
+          elevate
+        />
+      </Slider>
+    )
+  }
+)
 
-const SatSlider = memo(({ value, hue, onChange, onSlideEnd }: {
-  value: number
-  hue: number
-  onChange: (val: number) => void
-  onSlideEnd: () => void
-}) => {
-  return (
-    <Slider
-      orientation="horizontal"
-      min={0}
-      max={1}
-      step={0.03}
-      value={[value]}
-      onValueChange={(val) => onChange(val[0])}
-      onSlideEnd={onSlideEnd}
-    >
-      <Slider.Track
-        height={3}
-        width="100%"
-        minWidth={80}
-        style={{
-          background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
-        }}
-      />
-      <Slider.Thumb unstyled position="absolute" index={0} size="$1" bg="$color12" circular elevate />
-    </Slider>
-  )
-})
+const SatSlider = memo(
+  ({
+    value,
+    hue,
+    onChange,
+    onSlideEnd,
+  }: {
+    value: number
+    hue: number
+    onChange: (val: number) => void
+    onSlideEnd: () => void
+  }) => {
+    return (
+      <Slider
+        orientation="horizontal"
+        min={0}
+        max={1}
+        step={0.03}
+        value={[value]}
+        onValueChange={(val) => onChange(val[0])}
+        onSlideEnd={onSlideEnd}
+      >
+        <Slider.Track
+          height={3}
+          width="100%"
+          minWidth={80}
+          style={{
+            background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
+          }}
+        />
+        <Slider.Thumb
+          unstyled
+          position="absolute"
+          index={0}
+          size="$1"
+          bg="$color12"
+          circular
+          elevate
+        />
+      </Slider>
+    )
+  }
+)
 
-const LightSlider = memo(({ value, onChange, onSlideEnd }: {
-  value: number
-  onChange: (val: number) => void
-  onSlideEnd: () => void
-}) => {
-  return (
-    <Slider
-      orientation="horizontal"
-      min={0}
-      max={1}
-      step={0.03}
-      value={[value]}
-      onValueChange={(val) => onChange(val[0])}
-      onSlideEnd={onSlideEnd}
-    >
-      <Slider.Track
-        height={3}
-        rounded="$10"
-        width="100%"
-        minWidth={80}
-        style={{
-          background: `linear-gradient(to right, #000, #fff)`,
-        }}
-      />
-      <Slider.Thumb unstyled position="absolute" index={0} size="$1" bg="$color12" circular elevate />
-    </Slider>
-  )
-})
+const LightSlider = memo(
+  ({
+    value,
+    onChange,
+    onSlideEnd,
+  }: {
+    value: number
+    onChange: (val: number) => void
+    onSlideEnd: () => void
+  }) => {
+    return (
+      <Slider
+        orientation="horizontal"
+        min={0}
+        max={1}
+        step={0.03}
+        value={[value]}
+        onValueChange={(val) => onChange(val[0])}
+        onSlideEnd={onSlideEnd}
+      >
+        <Slider.Track
+          height={3}
+          rounded="$10"
+          width="100%"
+          minWidth={80}
+          style={{
+            background: `linear-gradient(to right, #000, #fff)`,
+          }}
+        />
+        <Slider.Thumb
+          unstyled
+          position="absolute"
+          index={0}
+          size="$1"
+          bg="$color12"
+          circular
+          elevate
+        />
+      </Slider>
+    )
+  }
+)
 
 export const ColorPickerContents = memo((props: ColorPickerProps) => {
   const defaultValue = props.value || 'hsl(10, 50%, 50%)'
@@ -327,7 +370,12 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           <SizableText size="$1" select="none" color="$color9">
             Saturation
           </SizableText>
-          <SatSlider value={sat} hue={hue} onChange={updateSat} onSlideEnd={handleSlideEnd} />
+          <SatSlider
+            value={sat}
+            hue={hue}
+            onChange={updateSat}
+            onSlideEnd={handleSlideEnd}
+          />
         </YStack>
 
         {!props.disableLightness && (
@@ -335,7 +383,11 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             <SizableText size="$1" select="none" color="$color9">
               Lightness
             </SizableText>
-            <LightSlider value={light} onChange={updateLight} onSlideEnd={handleSlideEnd} />
+            <LightSlider
+              value={light}
+              onChange={updateLight}
+              onSlideEnd={handleSlideEnd}
+            />
           </YStack>
         )}
       </XStack>
