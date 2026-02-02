@@ -160,7 +160,7 @@ const DialogContent = styled(Dialog.Content, {
   shadowColor: '$shadow3',
   shadowRadius: 20,
   shadowOffset: { height: 20, width: 0 },
-  maxH: '90vh',
+  maxH: 600,
   width: '60%',
   minW: 200,
   maxW: 500,
