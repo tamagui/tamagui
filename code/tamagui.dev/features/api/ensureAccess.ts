@@ -28,10 +28,15 @@ export async function ensureAccess({
   checkForStudioAccess?: boolean
   checkForBentoAccess?: boolean
 }): Promise<PayloadShape> {
+  console.info(`[ensureAccess] START`)
   const oldJwt = getCookie(req.headers, JWT_NAME)
+  console.info(`[ensureAccess] oldJwt=${oldJwt ? 'found' : 'not found'}`)
   if (oldJwt) {
     try {
       const payload = jwt.verify(oldJwt, JWT_SECRET) as PayloadShape
+      console.info(
+        `[ensureAccess] using cached JWT: hasBento=${payload.hasBentoAccess} hasTakeout=${payload.hasTakeoutAccess}`
+      )
       return payload
     } catch (error) {
       // continue to create a new one and set it
