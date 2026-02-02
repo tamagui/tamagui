@@ -19,7 +19,8 @@ export function useEvents(
   events: any,
   viewProps: any,
   stateRef: { current: TamaguiComponentStateRef },
-  staticConfig: StaticConfig
+  staticConfig: StaticConfig,
+  isHOC?: boolean
 ) {
   // focus/blur events always attached directly
   if (events) {
@@ -44,6 +45,17 @@ export function useEvents(
     }
     Object.assign(viewProps, inputEvents)
     // inputs don't use gesture handler
+    return null
+  }
+
+  // HOC special case - pass press events to the inner component instead of wrapping
+  // HOC components may return null which crashes GestureDetector (it tries to access
+  // _internalInstanceHandle on a null native view). By passing events down, the inner
+  // component handles gesture detection at its own level.
+  if (isHOC && events) {
+    const { onPressIn, onPressOut, onPress, onLongPress } = events
+    Object.assign(viewProps, { onPressIn, onPressOut, onPress, onLongPress })
+    // HOCs don't use gesture handler at this level
     return null
   }
 
@@ -108,8 +120,15 @@ export function useEvents(
 export function wrapWithGestureDetector(
   content: any,
   gesture: any,
-  stateRef: { current: TamaguiComponentStateRef }
+  stateRef: { current: TamaguiComponentStateRef },
+  isHOC?: boolean
 ) {
+  // Skip wrapping for HOC components - they may return null which crashes GestureDetector
+  // (GestureDetector tries to access _internalInstanceHandle on a null native view)
+  if (isHOC) {
+    return content
+  }
+
   const gh = getGestureHandler()
   const { GestureDetector, Gesture } = gh.state
 

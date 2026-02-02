@@ -25,7 +25,8 @@ export function getWebEvents<E extends EventLikeObject>(events: E, webStyle = tr
 export function wrapWithGestureDetector(
   content: any,
   _gesture: any,
-  _stateRef: { current: any }
+  _stateRef: { current: any },
+  _isHOC?: boolean
 ) {
   return content
 }
@@ -35,7 +36,8 @@ export function useEvents(
   _events: any,
   _viewProps: any,
   _stateRef: { current: any },
-  _staticConfig: any
+  _staticConfig: any,
+  _isHOC?: boolean
 ) {
   return null
 }

@@ -19,9 +19,9 @@ export declare function getWebEvents<E extends EventLikeObject>(events: E, webSt
 };
 export declare function wrapWithGestureDetector(content: any, _gesture: any, _stateRef: {
     current: any;
-}): any;
+}, _isHOC?: boolean): any;
 export declare function useEvents(_events: any, _viewProps: any, _stateRef: {
     current: any;
-}, _staticConfig: any): null;
+}, _staticConfig: any, _isHOC?: boolean): null;
 export {};
 //# sourceMappingURL=eventHandling.d.ts.map

@@ -1335,9 +1335,10 @@ export function createComponent<
     }
 
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
+    // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'
-        ? useEvents(events, viewProps, stateRef, staticConfig)
+        ? useEvents(events, viewProps, stateRef, staticConfig, isHOC)
         : null
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
@@ -1410,8 +1411,9 @@ export function createComponent<
     }
 
     // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
+    // Skip for HOC components - they pass press events to inner component instead
     if (process.env.TAMAGUI_TARGET === 'native') {
-      content = wrapWithGestureDetector(content, pressGesture, stateRef)
+      content = wrapWithGestureDetector(content, pressGesture, stateRef, isHOC)
     }
 
     // needs to reset the presence state for nested children
